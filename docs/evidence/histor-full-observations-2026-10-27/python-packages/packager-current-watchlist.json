@@ -1,0 +1,23 @@
+{
+  "format": "histor.upgrade-watchlist/v1",
+  "title": "packager current",
+  "dependencies": [
+    {
+      "id": "pypi:aimarket-mcp-packager",
+      "before": "snapshots/current-packager-baseline.json",
+      "after": "snapshots/current-packager-recheck.json",
+      "tools": [
+        "package_capability"
+      ],
+      "workflows": [
+        {
+          "id": "selected-flow",
+          "description": "Selected workflow",
+          "tools": [
+            "package_capability"
+          ]
+        }
+      ]
+    }
+  ]
+}

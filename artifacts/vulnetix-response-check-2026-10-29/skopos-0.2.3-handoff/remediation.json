@@ -1,0 +1,66 @@
+{
+  "completed_at_utc": "2026-10-29T06:28:51.198996+00:00",
+  "result": "Fixed locally and packaged as skopos-fleet 0.2.3; not published or deployed.",
+  "changes": [
+    "Resolve actual Uvicorn socket peer through current Streamlit session client.",
+    "Do not establish identity from forwarded ASGI scope or Streamlit context IP.",
+    "Missing or invalid transport peer uses a shared unknown bucket without reading address headers.",
+    "Preserve verified peer if the header view is unavailable.",
+    "Keep explicit proxy allowlist and TRUSTED_PROXY_HOPS=0 effective even with upstream proxy middleware."
+  ],
+  "wheel": {
+    "package": "skopos-fleet",
+    "version": "0.2.3",
+    "wheel": "skopos_fleet-0.2.3-py3-none-any.whl",
+    "sha256": "c721cab41adc8b1f757a29ed0945c687ea7d981e094be44b5b2a45ff0e691347",
+    "size": 568832,
+    "python_files_verified_against_workspace": 168,
+    "mismatches": [],
+    "dependencies": [
+      "streamlit>=1.66.1",
+      "pandas>=2.0",
+      "pillow>=13.0.0",
+      "plotly>=5.18",
+      "pyyaml>=6.0",
+      "paramiko>=5.0.0",
+      "python-dotenv>=1.2.2",
+      "httpx>=0.27",
+      "geoip2>=4.8",
+      "cryptography>=44",
+      "aimarket-oracle-core[pqc]>=0.2",
+      "pytest>=8.0; extra == \"dev\"",
+      "psycopg[binary]>=3.2; extra == \"postgres\""
+    ],
+    "packaged_app_auth_sha256": "2b87018f9b65e65f59e783d0e92acea60122f6c0ef760b52d26eb2dbf70ecb56"
+  },
+  "verification": {
+    "packaged_tests_passed": 110,
+    "network_integration_cases_included": 8,
+    "streamlit_version": "1.66.1",
+    "uvicorn_protocols": [
+      "websockets",
+      "websockets-sansio"
+    ],
+    "log": "packaged-tests.log",
+    "all_packaged_python_files_match_source": true,
+    "independent_code_review": "No blockers",
+    "diff_whitespace": "passed"
+  },
+  "publication": {
+    "status": "prepared_only_not_published",
+    "only_package_requiring_new_upload": "skopos-fleet",
+    "version": "0.2.3",
+    "wheel": "wheels/skopos_fleet-0.2.3-py3-none-any.whl",
+    "other_eight_packages_need_reupload_for_this_fix": false,
+    "comment_replacement_after_upload": "comment-replacement-after-upload.txt",
+    "first_fixed_000639": "0.2.2",
+    "first_fixed_000644": "0.2.2",
+    "recommended_skopos_upgrade": "0.2.3"
+  },
+  "limitations": [
+    "No live deployment changed.",
+    "The socket adapter uses private ASGI transport details; an incompatible future adapter falls back to the shared unknown bucket, without trusting headers.",
+    "Package tests used Python 3.12, Streamlit 1.66.1 and the existing local dependency environment."
+  ],
+  "external_mutations": false
+}

@@ -1,0 +1,283 @@
+[
+  {
+    "query": "alexar76",
+    "url": "https://hn.algolia.com/api/v1/search_by_date?query=alexar76&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+    "checked_at": "2026-10-28T11:30:42.222382+00:00",
+    "status": 200,
+    "bytes": 437,
+    "sha256": "d31344bbeeab9b7ed55a4efeb7e58e7a016bd84898524ee72fd5b936e6e2cf15",
+    "nbHits": 0,
+    "hits": []
+  },
+  {
+    "query": "independentai.network",
+    "url": "https://hn.algolia.com/api/v1/search_by_date?query=independentai.network&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+    "checked_at": "2026-10-28T11:30:42.222671+00:00",
+    "status": 200,
+    "bytes": 433,
+    "sha256": "5b811613229ed7d81e9b1d28d5a5dc0632d33c0845be24f06ba29526d54f7655",
+    "nbHits": 0,
+    "hits": []
+  },
+  {
+    "query": "attestedmemory.net",
+    "url": "https://hn.algolia.com/api/v1/search_by_date?query=attestedmemory.net&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+    "checked_at": "2026-10-28T11:30:42.222856+00:00",
+    "status": 200,
+    "bytes": 441,
+    "sha256": "7d47a0eec873ed464449bd9be70fdc2d421028a0b23955999cf2ec6f8f67fe9d",
+    "nbHits": 0,
+    "hits": []
+  },
+  {
+    "query": "emberlinedesk.com",
+    "url": "https://hn.algolia.com/api/v1/search_by_date?query=emberlinedesk.com&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+    "checked_at": "2026-10-28T11:30:42.222991+00:00",
+    "status": 200,
+    "bytes": 448,
+    "sha256": "01bfc8d640240e19dd94549ca81e2333a3a9e2f443a6540276463c5ddc952013",
+    "nbHits": 0,
+    "hits": []
+  },
+  {
+    "query": "pantheon.modelmarket.dev",
+    "url": "https://hn.algolia.com/api/v1/search_by_date?query=pantheon.modelmarket.dev&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+    "checked_at": "2026-10-28T11:30:42.754971+00:00",
+    "status": 200,
+    "bytes": 451,
+    "sha256": "dc4e7912403f4d0c3b4f25e8b7b832958d49e66bcedc8e4e171b6a5cba83ff06",
+    "nbHits": 0,
+    "hits": []
+  },
+  {
+    "query": "Trace of Refusal",
+    "url": "https://hn.algolia.com/api/v1/search_by_date?query=Trace+of+Refusal&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+    "checked_at": "2026-10-28T11:30:43.073588+00:00",
+    "status": 200,
+    "bytes": 115815,
+    "sha256": "8d1955afb1f0741aee6e3bd80b8337b8183ba3664a904450b1bb89d487062a71",
+    "nbHits": 26,
+    "hits": [
+      {
+        "author": "Scaevolus",
+        "comment_text": "Reverse engineering and decompilation is not currently blocked by the models, leading to the proliferation of LLM-assisted decomps&#x2F;recomps. If you ask it to find <i>bugs</i> you&#x27;re more likely to get a refusal, but simply pointing an LLM at a Ghidra MCP server and telling it to trace program flow, rename functions, or answer questions behaves like normal.",
+        "created_at": "2026-10-10T04:25:46Z",
+        "objectID": "50029557",
+        "story_title": "REA Reverse – Engineer Anything",
+        "story_url": "https://rea.tools/"
+      },
+      {
+        "author": "nateb2022",
+        "comment_text": "I think this part of their comment:<p>&gt; The claims seem a bit overstated though, since the metrics mentioned are cherrypicking refusal count and KL divergence, both of which make the outcome seem the most dramatic.<p>is right out of an LLM. It&#x27;s the kind of language I&#x27;d expect out of a thinking trace also mentioning &quot;boundaries&quot; and &quot;oracles&quot; and &quot;contracts.&quot;",
+        "created_at": "2026-09-21T14:18:02Z",
+        "objectID": "49787625",
+        "story_title": "Heretic removes restrictions from language models",
+        "story_url": "https://heretic-project.org/"
+      },
+      {
+        "author": "strangecasts",
+        "comment_text": "&gt; If you look at the field of mechanistic interpretability, compared to “GOFAI” like learned decision trees, an LLM is completely opaque.<p>I think the field deserves more credit than that, there are plenty of interpretability tools like<p>* natural language autoencoders for explanations of activations: <a href=\"https:&#x2F;&#x2F;transformer-circuits.pub&#x2F;2026&#x2F;nla&#x2F;index.html\" rel=\"nofollow\">https:&#x2F;&#x2F;transformer-circuits.pub&#x2F;2026&#x2F;nla&#x2F;index.html</a> (demo at <a href=\"https:&#x2F;&#x2F;www.neuronpedia.org&#x2F;llama3.3-70b-it&#x2F;nla\" rel=\"nofollow\">https:&#x2F;&#x2F;www.neuronpedia.org&#x2F;llama3.3-70b-it&#x2F;nla</a> )<p>* easier-to-interpret language model families like Backpack models: <a href=\"https:&#x2F;&#x2F;aclanthology.org&#x2F;2023.acl-long.506&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;aclanthology.org&#x2F;2023.acl-long.506&#x2F;</a><p>* attribution graphs to trace internal reasoning steps: <a href=\"https:&#x2F;&#x2F;www.anthropic.com&#x2F;research&#x2F;open-source-circuit-tracing\" rel=\"nofollow\">https:&#x2F;&#x2F;www.anthropic.com&#x2F;research&#x2F;open-source-circuit-traci...</a> (demo at <a href=\"https:&#x2F;&#x2F;www.neuronpedia.org&#x2F;gemma-2-2b&#x2F;graph\" rel=\"nofollow\">https:&#x2F;&#x2F;www.neuronpedia.org&#x2F;gemma-2-2b&#x2F;graph</a>)<p>* functional analyses which have identified how LLMs do arithmetic - <a href=\"https:&#x2F;&#x2F;arxiv.org&#x2F;html&#x2F;2502.00873v1\" rel=\"nofollow\">https:&#x2F;&#x2F;arxiv.org&#x2F;html&#x2F;2502.00873v1</a> - and how refusal happens: <a href=\"https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2406.11717\" rel=\"nofollow\">https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2406.11717</a><p>* data attribution methods linking training data to specific attention heads <a href=\"https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2601.21996\" rel=\"nofollow\">https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2601.21996</a><p>If we could give a comprehensive and global explanation of an LLM&#x27;s behavior in a single paragraph, we wouldn&#x27;t need the model to begin with, but that doesn&#x27;t mean there&#x27;s absolutely no understanding of the model internals whatsoever",
+        "created_at": "2026-09-19T00:04:54Z",
+        "objectID": "49761900",
+        "story_title": "US Military had close call after using AI for hallucinated intelligence report",
+        "story_url": "https://www.cnn.com/2026/09/18/politics/us-military-ai-false-intelligence-china-ship"
+      },
+      {
+        "author": "iamskeole",
+        "created_at": "2026-09-01T15:34:48Z",
+        "num_comments": 0,
+        "objectID": "49523381",
+        "points": 2,
+        "title": "Show HN: Don't trust me bro: fixing GPT-OSS (3.49B tokens, 1k GPU hours, 1x3090)",
+        "url": "https://github.com/iamskeole/burrito-core"
+      },
+      {
+        "author": "toomuchtodo",
+        "comment_text": "This is a systemic failure indicator. This was a shipment rejected by China for safety reasons. The US beef import supply chain is compromised.<p>&gt; China rejected a 22-tonne Argentine beef shipment over a banned antibiotic in March. Here&#x27;s what Trump&#x27;s quota actually changed, the 29,628 lb recall nobody covered, and why the package won&#x27;t tell you.<p>&gt; The shipment came from the ArreBeef plant in Pérez Millán, Buenos Aires province. It was roughly 22 tonnes, about 48,500 pounds, and China&#x27;s General Administration of Customs rejected the whole container after detecting chloramphenicol residue, then suspended imports from that facility while it worked out what happened.<p>&gt; China&#x27;s standard here is zero. There&#x27;s no &quot;acceptable level&quot; of chloramphenicol in food, so any detectable trace is grounds for refusal. That&#x27;s why one positive result turns into a rejected container instead of a fine.<p>&gt; The standard is zero because of what the drug does. Chloramphenicol can cause aplastic anemia, a bone-marrow failure that&#x27;s rare, unpredictable, unrelated to dose, and frequently fatal. The IARC classified it as Group 2A, &quot;probably carcinogenic to humans,&quot; in Volume 50 (1990), and the US National Toxicology Program&#x27;s Report on Carcinogens lists it as reasonably anticipated to be a human carcinogen. It&#x27;s still used in human medicine for a handful of severe infections where nothing else works. It&#x27;s not supposed to be anywhere near a cow.<p><a href=\"https:&#x2F;&#x2F;tallow.app&#x2F;blog&#x2F;china-rejected-argentina-beef-chloramphenicol\" rel=\"nofollow\">https:&#x2F;&#x2F;tallow.app&#x2F;blog&#x2F;china-rejected-argentina-beef-chlora...</a><p><a href=\"https:&#x2F;&#x2F;www.ibtimes.co.uk&#x2F;trump-beef-import-plan-backlash-1816152\" rel=\"nofollow\">https:&#x2F;&#x2F;www.ibtimes.co.uk&#x2F;trump-beef-import-plan-backlash-18...</a>",
+        "created_at": "2026-08-28T21:54:44Z",
+        "objectID": "49484695",
+        "story_title": "USDA recalls 30k pounds of Argentine beef sold in Texas and Florida",
+        "story_url": "https://cbsaustin.com/news/local/usda-recalls-30000-pounds-of-argentine-beef-sold-in-texas-and-florida"
+      },
+      {
+        "author": "springtimesun",
+        "comment_text": "It trips a content restriction. It’s vague, but I’m guessing because the podcasts are adjacent to&#x2F;are copyrighted material.<p>What’s really interesting is it’s also tied to thinking level. The sweet spot for quality with low refusal is Claude 4.6 high effort, go higher in effort and and it will trip too. 4.7 is hit and miss with high and often with xhigh and above 4.8 is often. I didn’t try Fable. Sonnet wasn’t good enough quality wise.<p>It also seems to be related to asking it producing what it knows is copied content. I originally had it return full corrected transcripts and that hit all the time. Then I started having it return just correction lists and that works much better.<p>These big models recall is absolutely astounding. I built the transcript pipeline so I could search and find that episode that I kind of remember part of from a year ago. I asked fable to search the transcripts to find a particular Conan Needs a Friend episode (Katakai, as god made her!). It knew there were actually multiple episodes where that anecdote was told _before_ it had even searched. When Kimi K3 does a correction you can see in the thinking trace that it instantly recalls people and works before it reasons in to whether it’s certain that’s right.<p>I’m still testing, but Claude is going to get replaced for K3 when I get some time. It’s very good at this work.",
+        "created_at": "2026-07-30T17:50:12Z",
+        "objectID": "49113303",
+        "story_title": "Kimi K3's Design Secret May Be in Its Thinking Traces",
+        "story_url": "https://notes.designarena.ai/kimi-k3s-design-secret-may-be-in-its-thinking-traces/"
+      },
+      {
+        "author": "reinitctxoffset",
+        "comment_text": "I don&#x27;t think anyone&#x27;s disputing that the models are better than a year ago (though clearly all this, recursive self improvement stuff is utterly hypothetical and that&#x27;s being generous, most of the progress has been on cost and fit and finish stuff). When it&#x27;s on the plan, I&#x27;ll use Fable for some stuff. If I&#x27;m paying for Opus? It&#x27;s 4.5 or 4.6 which were dramatically better aligned and token efficient in the trace at a capability gap that&#x27;s &quot;you win some and lose some&quot;.<p>That can be true while it also being the case that to someone who has no idea how this stuff works under the hood, it&#x27;s basically Dunning Kreuger in a box. The next person to go &#x2F;u&#x2F;PhdInEverything on me with Fable is getting an education in the history of hardware support for mixed precision training or something. Fable is a masterclass in refusal to ground and a dozen other alignment catastrophes.<p>So yeah, the models are still getting a little better, but from here out I think it&#x27;s rapidly becoming a skill game.",
+        "created_at": "2026-07-19T17:42:45Z",
+        "objectID": "48970127",
+        "story_title": "AI Mania Is Eviscerating Global Decision-Making",
+        "story_url": "https://ludic.mataroa.blog/blog/ai-mania-is-eviscerating-global-decision-making/#fnref:3"
+      },
+      {
+        "author": "lebovic",
+        "comment_text": "Thanks!<p>For that eval, I used an account that was labeled as a known red-teaming org by Anthropic, and I read the traces. There were no refusals or obvious avoidance behaviors, though it may have been silently nerfed.<p>On the same eval, Opus 4.7 and 4.8 outperformed GLM 5.1, but GLM 5.2 is on par again with Opus. So it&#x27;s at least partially measuring capabilities without respect to refusals.<p>One possible contributing factor is that model capabilities are shaped differently (an example of this is GLM 5.1 vs. DeepSeek v4 Pro: <a href=\"https:&#x2F;&#x2F;dualuse.dev&#x2F;posts&#x2F;deepseek-v4-thinks-different\" rel=\"nofollow\">https:&#x2F;&#x2F;dualuse.dev&#x2F;posts&#x2F;deepseek-v4-thinks-different</a>). So if you use RL-based &quot;distillation&quot; from multiple models like Opus 4.x and GPT 5.x, you could get a more capable model.",
+        "created_at": "2026-06-25T01:55:20Z",
+        "objectID": "48667886",
+        "story_title": "Anthropic says Alibaba illicitly extracted Claude AI model capabilities",
+        "story_url": "https://www.reuters.com/world/china/anthropic-says-alibaba-illicitly-extracted-claude-ai-model-capabilities-2026-06-24/"
+      },
+      {
+        "author": "weitendorf",
+        "comment_text": "They are training them on decompilation and reverse engineering&#x2F;blackbox reimplementations&#x2F;pentesting because it’s one of the best ways to generate interesting and rare RL traces for agentic coding AND teach them how lots of things work under the hood.<p>Just throw Claude at millions of binaries and you can get amazing training data. Oh wait 4.7 gives you refusals for that now",
+        "created_at": "2026-04-17T06:16:17Z",
+        "objectID": "47802952",
+        "story_title": "Claude Opus 4.7",
+        "story_url": "https://www.anthropic.com/news/claude-opus-4-7"
+      },
+      {
+        "author": "tawayaccount",
+        "created_at": "2026-03-01T12:46:26Z",
+        "num_comments": 0,
+        "objectID": "47206221",
+        "points": 1,
+        "title": "Ask HN: Upstream-First vs. the \"Culture of Silence\" in Embedded Engineering"
+      },
+      {
+        "author": "ACCount37",
+        "comment_text": "OpenAI has the worst tuning across all frontier labs. Overzealous refusals, weird patterns, both-sides to a hilarious extreme.<p>Gemini and Claude have traces of this, but nowhere near the pit of atrocious tuning that OpenAI puts on ChatGPT.",
+        "created_at": "2026-02-18T00:26:33Z",
+        "objectID": "47055427",
+        "story_title": "Claude Sonnet 4.6",
+        "story_url": "https://www.anthropic.com/news/claude-sonnet-4-6"
+      },
+      {
+        "author": "NitpickLawyer",
+        "comment_text": "What&#x27;s your intuition on other &quot;directions&quot;? Have you tried it on something other than &quot;refusals&quot;? Say &quot;correctness&quot; in math or something like that. I have some datasets prepared for DPO on &quot;thinking&quot; traces that are correct &#x2F; incorrect, wondering if it&#x27;d be something that could work, or if it&#x27;s out of scope (i.e. correctness is not a single direction, like refusal training)",
+        "created_at": "2025-11-16T17:23:55Z",
+        "objectID": "45946733",
+        "story_title": "Heretic: Automatic censorship removal for language models",
+        "story_url": "https://github.com/p-e-w/heretic"
+      },
+      {
+        "author": "NitpickLawyer",
+        "comment_text": "Yeah, makes sense. Good observations regarding the benchmark vs. vibes in general, and I didn&#x27;t know &#x2F; made the connection between the lead of phi models going to oAI and gpt-oss. Could very well be a similar exercise + their &quot;new&quot; prompt level adherence (system &gt; developer &gt; user). In all the traces I&#x27;ve seen of refusals the model &quot;quotes&quot; the policy quite religiously. Similar thing was announced for gpt5.<p>I think the mention of the &quot;horny people&quot; is warranted, they are an important part of the open models (and first to explore the idea of &quot;identities &#x2F; personas&quot; for LLMs, AFAIK). Plenty of fine-tuning bits of know-how trickled from there to the &quot;common knowledge&quot;.<p>There&#x27;s a thing that I would have liked to be explored, perhaps. The idea that companies might actually want what -oss offers. While the local llm communities might want freedom and a horny assistant, businesses absolutely do not want that. And in fact they spend a lot of effort into implementing (sometimes less than ideal) guardrails, to keep the models on track. For very easy usecases like support chatbots and the like, businesses will always prefer something that errs on the side of less than useful but &quot;safe&quot;, rather than have the bot start going crazy with sex&#x2F;slurs&#x2F;insults&#x2F;etc.<p>I do have a problem with this section though:<p>&gt; Really open weight, not open source, because the weights are freely available but the training data and code is not.<p>This is factually incorrect. The -oss models <i>are</i> by definition open source. Apache2.0 is open source (I think even the purists agree with this). The requirement of sharing &quot;training data and code&quot; is absolutely not a prerequisite for being open source (and historically it was never required. The craze surrounding LLMs suddenly made this a thing. It&#x27;s not).<p>Here&#x27;s the definition of source in &quot;open source&quot;:<p>&gt; &quot;Source&quot; form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files.<p>Well, for LLMs the weights <i>are</i> the &quot;preffered form of making modifications&quot;. The labs themselves modify models the same as you are allowed to by the license! They might use more advanced tools, or better datasets, but in the end the definition still holds. And you get all the other stuff, like the right to modify, re-release, etc. I&#x27;d really wish people would stop proliferating this open weight nonsense.<p>Models released under open source licenses <i>are</i> open source. gpt-oss, qwens and mistrals (apache2.0), deepseeks(MIT), etc.<p>Models released under non open source licenses also exist, and they&#x27;re not open source because the licenses under which they&#x27;re released aren&#x27;t. LLamas, gemmas, etc.",
+        "created_at": "2025-08-07T20:23:58Z",
+        "objectID": "44829876",
+        "story_title": "OpenAI's new open-source model is basically Phi-5",
+        "story_url": "https://www.seangoedecke.com/gpt-oss-is-phi-5/"
+      },
+      {
+        "author": "kashunstva",
+        "comment_text": "&gt; I don&#x27;t understand the utter incompetence<p>Simply put, it’s a reflection of Trump’s own incompetence, or perhaps carelessness and his utter refusal to recognize and make use of expertise in others. I’m about halfway through “Lucky Loser” (Buettner &amp; Craig) which traces his financial history. His disdain for objective data over “intuition” has always been alarming. I suspect his hiring for cabinet positions follows a similar carelessness.",
+        "created_at": "2025-04-21T00:11:12Z",
+        "objectID": "43747515",
+        "story_title": "Pete Hegseth shared Yemen attack details in second Signal chat",
+        "story_url": "https://www.theguardian.com/us-news/2025/apr/20/pete-hegseth-signal-chat-yemen-attack"
+      },
+      {
+        "author": "lo_zamoyski",
+        "comment_text": "The problem isn&#x27;t so much technical as cultural. The American car lobby was quite powerful, which is why we have historically invested so much in highways and so little in rail. But why should the lobby be so effective? Well, if you look at historical advertising, you can clearly see what they appealed to, namely, the liberal American spirit of wanting to be &quot;independent&quot; and &quot;free&quot;, and sex. The automobile is a symbol of unrestrained, do-what-you-want-when-you-want mentality. It&#x27;s why even modest and sensible restrictions around car traffic are met with such violent opposition. It&#x27;s perceived as an attack on the liberal American ethos. The sex part associates cars in the minds of men with virility and masculinity, as if having a car is what makes you a man, and that without one, you are weak, a mere boy, and undesirable, irresponsible. And many women believe it, too, especially of a certain ilk. (It is true that refusal to own a car when one is needed can be a sign of immaturity and irresponsibility, concealed behind claims of caring for the environment or whatever. But this is quite different from the blanket, rigid, and irrational belief that you MUST own a car, even when it isn&#x27;t the better option, for vacuously symbolic reasons.)<p>Owning a car isn&#x27;t the problem, of course, but the excess importance attached to the car through decades of conditioning and cultural reinforcement has made the car something of a religious symbol in the American religion.<p>Similar reasons stand behind gun ownership, something the Left consistently fails to grasp. Some trace this to the myth surrounding the frontiersman Daniel Boone who, interestingly enough, was a Quaker. The firearm is an instrument of self-sufficiency and protection, of being able to face the frontier without fear. It, too, is bound up with American sensibilities regarding masculinity. Restrictions on gun ownership and regulations around gun acquisition, however mild and sensible, are predictably seen as attacks on the aforementioned.<p>Most people, and that includes most people here, are awful at examining their sense of normality, not to undermine it, but to know what they&#x27;re standing on, to know how it is justified and if it is justified, and so on. Many political conflicts, especially today, are rooted in a failure to understand the true source of disagreement, which often lies in presuppositions <i>n</i> layers deep.",
+        "created_at": "2024-06-04T12:46:19Z",
+        "objectID": "40573960",
+        "story_title": "America's commute to work is getting longer and longer",
+        "story_url": "https://www.wsj.com/lifestyle/workplace/americas-commute-to-work-is-getting-longer-and-longer-0fbf79c3"
+      },
+      {
+        "author": "Normal_gaussian",
+        "comment_text": "Do we?<p>The vast majority of our computing infrastructure is not actively and forensicly monitored; vulns are either actively patched out, accidently patched out, or &#x27;reset&#x27; when services&#x2F;servers are rolled (often due to &quot;misbehaviour&quot;, be it a desktop by a user or a server by a tech), leaving no trace that they were exploited. The vast majority of vendors and sysadmins are incentivised not to reveal that they had an exploit, often by reclassification (exploit -&gt; bug), failure to inform, or refusal to detect.<p>I think this is what the parent meant by &quot;I&#x27;d assert that a good fraction of exploits are never caught&#x2F;analyzed.&quot;.<p>Afaict as an outsider we account for this with honeypots, which should give us some kind of estimation at least.",
+        "created_at": "2021-07-29T23:42:42Z",
+        "objectID": "28002894",
+        "story_title": "Top Routinely Exploited Vulnerabilities",
+        "story_url": "https://us-cert.cisa.gov/ncas/alerts/aa21-209a"
+      },
+      {
+        "author": "haltingproblem",
+        "comment_text": "Those links cite <i>primary</i> sources which are actual orders - firnamas - issued by Mughal rulers for demolishing temples, slaughtering priests etc. This is Aurangzeb&#x27;s order burying hundreds of idols below the Jama Majsid [1]. These edicts preserved in museums throughout India. History is done, through primary sources not quoting your favorite secondary sources or top level wikipedia articles.<p>As a Buddhist, whose traditions were destroyed, this level of Holocaust denial is mind-numbing.  I didn&#x27;t understand the reason behind the refusal to acknowledge the Holocaust visited by the Turkmen Islamic invaders (not Persian!!) upon the Indic traditions. Millennia old traditions wiped out, monasteries burnt and traces of whole civilizations erased. But I now realize there is something primal in Human nature which wants to bury Holocausts like the ones inflicted upon the Jews in Europe, the Armenian genocide, the Congo Holocaust. It allows us to pretend human nature is benign and nurturing. Your denial of the Mughal&#x2F;Turkmen atrocities is just another facet of that human nature.<p>[1] <a href=\"https:&#x2F;&#x2F;twitter.com&#x2F;VertigoWarrior&#x2F;status&#x2F;1315211390311755776\" rel=\"nofollow\">https:&#x2F;&#x2F;twitter.com&#x2F;VertigoWarrior&#x2F;status&#x2F;131521139031175577...</a>",
+        "created_at": "2020-10-13T16:20:54Z",
+        "objectID": "24767016",
+        "story_title": "Kautilya Arthashastra and its relevance to Urban Planning Studies [pdf]",
+        "story_url": "http://www.itpi.org.in/uploads/journalfiles/jan8_10.pdf"
+      },
+      {
+        "author": "imglorp",
+        "comment_text": "I&#x27;ll posit that political will counts double because you need everyone behind you to contact trace, both the agencies and the populace. It&#x27;s not just budget.<p>Anecdote. An acquaintance is a disease export working for NIH near DC who also does contract tracing in the field. Sometimes their contact with the public includes death threats, refusals to cooperate, and even been spit on. They are good people trying to prevent more illness.  Some of the public has been coached that the doctors are taking their jobs, closing employers, etc.<p>Leadership needs to get everyone behind the same spear so we can snuff this out quickly.",
+        "created_at": "2020-07-25T20:49:49Z",
+        "objectID": "23952292",
+        "story_title": "What's the point of a Covid-19 test that takes 19 days for results?",
+        "story_url": "https://www.buzzfeednews.com/article/davidmack/coronavirus-testing-delays-backlog"
+      },
+      {
+        "author": "yesenadam",
+        "comment_text": "I don&#x27;t think many people are unaware. Sometimes when I see dead comments I trace their comment history back to the point they were banned. Cause I&#x27;m curious how those subterranean dwellers got that way. Almost invariably they were reprimanded by dang, repeatedly, and refused to change their ways, or to write to HN saying they&#x27;d change their ways. I don&#x27;t recall seeing someone just mysteriously banned without an obvious refusal to behave decently&#x2F;put some effort into their comments. The white dead comments don&#x27;t start at some random point, they start with the person being told they are banned, and what to do about it.<p>Although I did see a fairly new account the other day with every comment dead, from the very first one, with no visible mod intervention; I figured it was from being a sockpuppet or someone with a track record.<p>p.s. I wouldn&#x27;t want showdead on all the time! I use this &quot;HN ungrey&quot; bookmarklet to see whited-out comments on a page. Also it&#x27;s useful to read comments that have just been voted down enough to be hard to read:<p><pre><code>  javascript:(function(){var i,x=document.querySelectorAll(&quot;.commtext&quot;);for (i=0;i&lt;x.length;i++) x[i].className=&#x27;commtext c00&#x27;})();\n</code></pre>\nFor other sites–on the topic of useful bookmarklets–this one, &quot;Kill Element&quot;, is a lifesaver. On any site with an annoying fixed window thing on the screen, like a &quot;cookies?&quot; popup etc, just click on the bookmarklet then on the offending element and it disappears! Hugely satisfying, and instant. Enjoy!<p><pre><code>  javascript:for(var i=0; i&lt;(document.getElementsByTagName(&#x27;a&#x27;)).length; i++) {(document.getElementsByTagName(&#x27;a&#x27;)[i]).style.pointerEvents = &#x27;none&#x27;;}function handler(e) {e = e || window.event;var target = e.target || e.srcElement;target.style.display = &#x27;none&#x27;;document.removeEventListener(&#x27;click&#x27;, handler, false);cursor(&#x27;default&#x27;);for(var i=0; i&lt;(document.getElementsByTagName(&#x27;a&#x27;)).length; i++) {(document.getElementsByTagName(&#x27;a&#x27;)[i]).style.pointerEvents = &#x27;initial&#x27;;}}document.addEventListener(&#x27;click&#x27;, handler, false);cursor(&#x27;crosshair&#x27;);function cursor(cur) { document.body.style.cursor = cur; }</code></pre>",
+        "created_at": "2020-02-14T06:24:15Z",
+        "objectID": "22324383",
+        "story_title": "I Add 3-25 Seconds of Latency to Every Site I Visit",
+        "story_url": "https://howonlee.github.io/2020/02/12/I-20Add-2020-20Seconds-20of-20Latency-20to-20Every-20Website-20I-20Visit.html"
+      },
+      {
+        "author": "dkersten",
+        "comment_text": "To gnaritas (comment dead):<p>Things don&#x27;t usually start out bad, but they become bad only after you have a more complex codebase with many users (ie many queries). Its at this point that you need to know what a query is doing, yet its at this point that the query logs are full of queries, so finding the ones I want becomes hard. Putting a trace on the queries also becomes hard when you have a large codebase where the query logic is intermingled with application logic. I mentioned this in my comment.<p>You say it&#x27;s my <i>&quot;refusal to want to change the way you work that is the issue&quot;</i>, but I never chose to work that way. All of the codebases where I&#x27;ve had this issue were inherited: I was not the one to decide to work like this and I did not mix the query logic into the application logic. But that was my point: I&#x27;ve had the same experience across multiple teams in multiple companies, so blaming the developers seems like a cop out and not much of a solution. I&#x27;ll happily adapt the way I work, but I can&#x27;t force existing teams to change. Maybe discipline could fix it, but I have not experienced this discipline anywhere I&#x27;ve worked. But sure, its my fault somehow.",
+        "created_at": "2019-09-22T12:45:55Z",
+        "objectID": "21041110",
+        "story_title": "What ORMs have taught me: just learn SQL (2014)",
+        "story_url": "https://wozniak.ca/blog/2014/08/03/What-ORMs-have-taught-me-just-learn-SQL/"
+      },
+      {
+        "author": "DanBC",
+        "comment_text": "I&#x27;m submitting this because it&#x27;s a Twitter thread of people who&#x27;ve had a loved one die talking about the digital traces that are left, and how they back them up.<p>These things are <i>important</i> to people, and if you run a service I hope you&#x27;ve considered how to support the export and backup of these memories.<p>I also wanted to juxtapose these things we want to remember with this story about a woman murdered by her partner and Facebook&#x27;s refusal to remove photos of him from her wall. (They did eventually change their mind, but still).<p><a href=\"https:&#x2F;&#x2F;www.independent.co.uk&#x2F;news&#x2F;uk&#x2F;home-news&#x2F;hollie-gazzard-facebook-refuses-to-remove-photograph-of-murder-victim-posing-with-killer-ex-a6711611.html\" rel=\"nofollow\">https:&#x2F;&#x2F;www.independent.co.uk&#x2F;news&#x2F;uk&#x2F;home-news&#x2F;hollie-gazza...</a><p><a href=\"https:&#x2F;&#x2F;www.bbc.co.uk&#x2F;news&#x2F;uk-england-gloucestershire-34781905\" rel=\"nofollow\">https:&#x2F;&#x2F;www.bbc.co.uk&#x2F;news&#x2F;uk-england-gloucestershire-347819...</a><p>EDIT: THe full content of the tweet is &quot;my dad refuses to get an iphone because a voicemail from his mom that passed away won’t transfer from an android, so me and my sister put it in a bear. merry christmas dad&quot; so I took 80 chars from it for the title.",
+        "created_at": "2018-12-26T23:24:39Z",
+        "objectID": "18765764",
+        "story_title": "Dad refuses to get an iphone because a voicemail from his mom that passed away",
+        "story_url": "https://twitter.com/meliatinnin/status/1077579421148692480"
+      },
+      {
+        "author": "sgp_",
+        "comment_text": "&gt; Main issue: Ringsize is small. Used to be 3 [why??] got bumped to 5 because 3 is obviously useless. Now getting bumped to 7. The team is taking a very aggressive approach here. Aggressive approaches with security tend not to work. They should be conservative and set the ringsize high then back off later once they have done the research to support a small ringsize.<p>This is a balancing act. Will the anonymity set actually lower if transaction fees double?<p>&gt; Despite this they refuse to provide any sort of disclaimer. Contrast to Tor Project which makes a big deal of telling users they can hurt themselves and Tor is not some magic. In comparison Monero just claims untraceable &amp; private with no caveat whatsoever. This is irresponsible &amp; reckless, damaging to users and not justified. Only when users start thinking and asking questions are they told oh of course you need to churn but no one knows what this is.<p>&gt; The response to all this is &#x27;churn&#x27;. This is sending coins to yourself [looks same as sending to other people] so that you obfuscate the connection over time. But despite that this is a core feature of Monero they have provided zero research zero guide on how to do so. They spend money and time researching fancy new maths and this is great. Yet the core functionality to answer the question: How anonymous am I, how mixed in am I, this remains unanswered.<p>&gt; Despite this they refuse to provide any sort of disclaimer. Contrast to Tor Project which makes a big deal of telling users they can hurt themselves and Tor is not some magic. In comparison Monero just claims untraceable &amp; private with no caveat whatsoever. This is irresponsible &amp; reckless, damaging to users and not justified. Only when users start thinking and asking questions are they told oh of course you need to churn but no one knows what this is.<p>I think thus is a fair concern, but no one has &quot;refuse[d] to provide any sort of disclaimer.&quot; I think it&#x27;s totally fair to write one up. Add it to a certain portion of the website.<p>For churning, research has been ongoing. Specifically for EAE scenarios.<p>&gt; 1. Unencrypted transactions. Your ISP or NSA may easily monitor which tx you broadcast. This let them link your IP to a tx as well as link your tx across time. Even though HTTP is used thus adding TLS [unauthenticated but at least preventing passive snooping] would be an obvious step. On the other hand... traffic analysis might break this anyway. Tor is needed to really protect but see below.<p>Kovri will include encrypted connections. Monero community members have never claimed to provide IP protection in the current state. If you are currently worried, use a public hotspot somewhere.<p>&gt; 2. Wallet leaks information. When connecting, it requests block info from the last block it has. This allows tracking that user over time. The obvious solution of having the wallet always request fixed number of blocks back in history is not implemented. This is simple engineering fixing, not fancy math.<p>This is an issue with remote nodes only. This can be mitigated at a cost of efficiency, and even if mitigated, it can still be relatively traceable if enough connections are made. If you are concerned about this risk, use your own node. There will always be privacy loss when using someone else&#x27;s copy of the blockchain.<p>&gt; 3. The height leak is very damaging for users attempting to churn. In that case they connect, sync, broadcast, disconnect, repeat. Every time they connect they are indicating approximately where they left off. This means when they broadcast again ... one only need to look at the tx to see if there is a ring member near where the wallet connected. If so, you have linked TX.<p>I argue that churning is absolutely outside the scope of users who are using remote nodes. It&#x27;s extremely unlikely an advanced user who cares about their privacy will make a fundamental mistake in trusting someone else&#x27;s node. This is outside the scope of protections. Just run your own node if your threat model even considers churning.<p>&gt; 4. The wallet will ask to confirm transactions sometimes... AFTER it has send the ring to the remote node! If you cancel tx then try again, you have sent 2 rings to the remote node but in each ring the real input is the same. Congrats, tx linked or ownership of output now shown.<p>This was disclosed in HackerOne and has been patched.<p>&gt; 5. Wallet and network does not support Tor. Despite using HTTP they do not have proxy support. On Linux they suggest hooking syscall to force proxy [torsocks]. On Windows they scorn users and tell them to use Linux. At the Monero network level only IP addresses are accepted meaning we cannot have Tor-to-Tor.<p>Little effort has gone into this since the support is being designed for I2P.<p>&gt; 6. Tor is downplayed because they are writing-from-scratch a new I2P implementation in C++ named Kovri. Instead of using Tor today they provide no sort of IP hiding while everyone must wait for a new I2P impl. This is bad engineering and means few people can properly submit tx over Tor.<p>There are other considerations when submitting transactions over Tor. I&#x27;m not an expert here, but fluffypony has been critical of this approach in the past.<p>&gt; 7. All TX are not the same. There is no solution to joining bad outputs. When you make a multi-in transaction you provide strong linkage if an attacker knows or suspects multiple outputs are yours. Example: you accept donations or are a darknet dealer. Attacker sends many small outputs to you. Attacker will know when you make a move because they will see a multi-input transaction containing one of their known outputs in each ring. This is useful for LE: send small money then know when money is moved. From that point trace forward and see if descendants of that TX end up at known exchange. Now you have a short list of suspects.<p>Each output is used in several transactions. While it does not completely mitigate the risk you describe, it means there is at least some plausible deniability in practice. If you are in a situation with a significant number of outputs, you definitely should not simply send a transaction with these to an exchange or similar.<p>&gt; 8. A lot of metadata per TX. Each TX can have a payment ID [old style], payment ID [new style] or none. Each tx has a fee, and fee is one of 4 levels [0.25x, 1x, and 2 large x]. But the default is 1x. This encourages smart or big users to change from default to 0.25x to save money. But now their tx look different from common users. Exchanges in particular may do this.<p>There will always be some metadata, but based on how the system works, there will always need to have the fee. The multiplier is set to be more automatic in the latest version. The payment ID metadata has been improved to be encrypted, and to encourage use for all transactions with integrated addresses. Metadata for these two items is the least of our concerns since there is still a pretty large entropy set for normal situations, but of course there could be improvements.<p>&gt; 9. Probably other things I am not thinking off of the top of my head.<p>Me too :) Key  image reuse attacks seemed to come out of nowhere, and we needed to respond to them.<p>&gt; In short I think that Monero practical privacy for users that have something to hide [darknet] and may find themselves against a LEA might find themselves in a bad position. Compounding this is Monero&#x27;s total refusal to warn users and provide self-sabotaging options. A Tor-style warning is absolutely required given the state of things. More paranoid people might think the lack of warning and some of these issues are intentional.<p>I disagree with your tone here. Here I am, a community member, agreeing with many of your criticisms. The idea of a better warning guide has been discussed for quite some time, and I believe it has been relatively strongly received. If you were to start a project on Taiga to get this started I&#x27;m sure many people would respect you.<p>The best summary I can say is this: Monero is a tool that can provide significant privacy under a variety of use-cases. If your use-case is hiding your wallet balance and transactions from merchants, ad agencies, and most attackers, you can use Monero with little to no significant consideration for your privacy. If you are worried about colluding KYC exchanges, governments, and motivated attempts to target you specifically by powerful attackers, then the use-case for Monero needs to be better-defined. Monero will preserve privacy under some situations better than others. Given that it is relatively hard to understand, Monero will need to use a mix of education and default&#x2F;mandatory functionality to encourage the correct behavior.",
+        "created_at": "2018-03-27T16:39:04Z",
+        "objectID": "16690223",
+        "story_title": "Monero Is Less Untraceable Than It Seems",
+        "story_url": "https://www.wired.com/story/monero-privacy/"
+      },
+      {
+        "author": "the_stc",
+        "comment_text": "Monero has some real issues! These papers are OK but I am not sure if they focus on current practical issues:<p>Main issue: Ringsize is small. Used to be 3 [why??] got bumped to 5 because 3 is obviously useless. Now getting bumped to 7. The team is taking a very aggressive approach here. Aggressive approaches with security tend not to work. They should be conservative and set the ringsize high then back off later once they have done the research to support a small ringsize.<p>Users cannot just increase their ringsize. Doing so makes their transactions stick out: different metadata. If you always use, example, ringsize 21: then your tx look different on-blockchain. Despite this, BOTH wallets in common use have features that encourage users to make this mistake. It is like sabotage. The official GUI provides a slider that goes to 26 and says more privacy [you see a good number of of ringsize 26 tx]. The &#x27;official&#x27; Web Wallet run by the Monero lead offers a 4-setting: 5 [default], 11 21 &amp; 41. You see a good number of 11 21 41 ringsize tx because of this.<p>It has been known for a long time that picking and forcing one ringsize is a good idea yet both wallets insist on encouraging the user to mess up. Not good. No warnings in the wallet, either. We need higher ringsize because the privacy of your transaction going forward depends on other users picking your output as a decoy in their own rings.<p>Now the small ringsize is made worse by the fact that a single entity, ShapeShift.io, runs 7-15% at least of the network by tx volume! That means with one hack or warrant an attacker will be able to eliminate many fake decoys from other tx rings! How much will a few other exchanges or payment processors make up of the network? 50%? More? Despite this the ringsize stays very small.<p>The response to all this is &#x27;churn&#x27;. This is sending coins to yourself [looks same as sending to other people] so that you obfuscate the connection over time. But despite that this is a core feature of Monero they have provided zero research zero guide on how to do so. They spend money and time researching fancy new maths and this is great. Yet the core functionality to answer the question: How anonymous am I, how mixed in am I, this remains unanswered.<p>Despite this they refuse to provide any sort of disclaimer. Contrast to Tor Project which makes a big deal of telling users they can hurt themselves and Tor is not some magic. In comparison Monero just claims untraceable &amp; private with no caveat whatsoever. This is irresponsible &amp; reckless, damaging to users and not justified. Only when users start thinking and asking questions are they told oh of course you need to churn but no one knows what this is.<p>That is the core issue. Other issues:<p>1. Unencrypted transactions. Your ISP or NSA may easily monitor which tx you broadcast. This let them link your IP to a tx as well as link your tx across time. Even though HTTP is used thus adding TLS [unauthenticated but at least preventing passive snooping] would be an obvious step. On the other hand... traffic analysis might break this anyway. Tor is needed to really protect but see below.<p>2. Wallet leaks information. When connecting, it requests block info from the last block it has. This allows tracking that user over time. The obvious solution of having the wallet always request fixed number of blocks back in history is not implemented. This is simple engineering fixing, not fancy math.<p>3. The height leak is very damaging for users attempting to churn. In that case they connect, sync, broadcast, disconnect, repeat. Every time they connect they are indicating approximately where they left off. This means when they broadcast again ... one only need to look at the tx to see if there is a ring member near where the wallet connected. If so, you have linked TX.<p>4. The wallet will ask to confirm transactions sometimes... AFTER it has send the ring to the remote node! If you cancel tx then try again, you have sent 2 rings to the remote node but in each ring the real input is the same. Congrats, tx linked or ownership of output now shown.<p>5. Wallet and network does not support Tor. Despite using HTTP they do not have proxy support. On Linux they suggest hooking syscall to force proxy [torsocks]. On Windows they scorn users and tell them to use Linux. At the Monero network level only IP addresses are accepted meaning we cannot have Tor-to-Tor.<p>6. Tor is downplayed because they are writing-from-scratch a new I2P implementation in C++ named Kovri. Instead of using Tor today they provide no sort of IP hiding while everyone must wait for a new I2P impl. This is bad engineering and means few people can properly submit tx over Tor.<p>7. All TX are not the same. There is no solution to joining bad outputs. When you make a multi-in transaction you provide strong linkage if an attacker knows or suspects multiple outputs are yours. Example: you accept donations or are a darknet dealer. Attacker sends many small outputs to you. Attacker will know when you make a move because they will see a multi-input transaction containing one of their known outputs in each ring. This is useful for LE: send small money then know when money is moved. From that point trace forward and see if descendants of that TX end up at known exchange. Now you have a short list of suspects.<p>8. A lot of metadata per TX. Each TX can have a payment ID [old style], payment ID [new style] or none. Each tx has a fee, and fee is one of 4 levels [0.25x, 1x, and 2 large x]. But the default is 1x. This encourages smart or big users to change from default to 0.25x to save money. But now their tx look different from common users. Exchanges in particular may do this.<p>9. Probably other things I am not thinking off of the top of my head.<p>In short I think that Monero practical privacy for users that have something to hide [darknet] and may find themselves against a LEA might find themselves in a bad position. Compounding this is Monero&#x27;s total refusal to warn users and provide self-sabotaging options. A Tor-style warning is absolutely required given the state of things. More paranoid people might think the lack of warning and some of these issues are intentional.<p>Edit: I still support Monero and think it is the best project. Despite ZCash looking better on paper the team makes me nervous and I avoid it. [Their wallet software is even worse despite them having many millions to fix it] ... I just want Monero stronger as it will help our users overall and that is good for my business.",
+        "created_at": "2018-03-27T14:01:46Z",
+        "objectID": "16688416",
+        "story_title": "Monero Is Less Untraceable Than It Seems",
+        "story_url": "https://www.wired.com/story/monero-privacy/"
+      },
+      {
+        "author": "joe_the_user",
+        "comment_text": "Perhaps you could include poverty and despair (and trace back from there to a collapsing education system, ideological pathology...).<p>It&#x27;s hard not to see the opioid crisis as anything but an &quot;ensemble effort&quot; of everything that&#x27;s falling apart in America - punctuated by the refusal of pundits and politicians to acknowledge these problems or move towards solving them.<p>Edit: you could even say the willingness of drug companies to effectively transform themselves to dope dealers comes as a combination of for-profit medicine and regulatory capture, problems that have been festering for a while.",
+        "created_at": "2017-09-12T18:39:42Z",
+        "objectID": "15230204",
+        "story_title": "60 journalists all spend one week covering Cincinnati's battle with heroin",
+        "story_url": "http://www.cincinnati.com/pages/interactives/seven-days-of-heroin-epidemic-cincinnati/"
+      },
+      {
+        "author": "awinder",
+        "comment_text": "The raw numbers seem to disagree with portions of this analysis.  Clinton is looking to have received 6M less votes than Obama in 2012, and 9M less than in 2008, while Trump matched Romney &#x2F; McCain vote totals from the same periods.  This wasn&#x27;t some raucous turnout by voters who hadn&#x27;t been voting, spurred by overtures by Trump.  It was a refusal to turn out among traditionally democratic voters -- many in states like Pennsylvania and Wisconsin, where they were asked to vote for a politician who they could directly trace back to NAFTA and a significant inflection point in the stability of their homes, families, and towns.",
+        "created_at": "2016-11-10T15:08:31Z",
+        "objectID": "12920952",
+        "story_title": "Trump’s Data Team Saw a Different America",
+        "story_url": "http://www.bloomberg.com/news/articles/2016-11-10/trump-s-data-team-saw-a-different-america-and-they-were-right"
+      },
+      {
+        "author": "balding_n_tired",
+        "comment_text": "Cute, but really kind of dumb, unless you can trace the Civil Rights Acts, the refusal of the Democratic national conventions to seat all-white delegations, etc. to air conditioning. With obvious &#38; rare exceptions such as the Bush family's displacement from Connecticut (The Grapes of Cash?), the Republican Party in the south is made up mostly of the descendants of the Democrats who dominated southern politics all those years.",
+        "created_at": "2010-01-19T21:46:10Z",
+        "objectID": "1063317",
+        "points": null,
+        "story_title": "How air conditioning created the modern Republican Party                 ",
+        "story_url": "http://voices.washingtonpost.com/ezra-klein/2010/01/how_air_conditioning_created_t.html"
+      }
+    ]
+  },
+  {
+    "query": "pingblip",
+    "url": "https://hn.algolia.com/api/v1/search_by_date?query=pingblip&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+    "checked_at": "2026-10-28T11:30:43.581784+00:00",
+    "status": 200,
+    "bytes": 488,
+    "sha256": "c613182cda4cc98ef9d2dfb088288486c87b0f8992942e6cd279f6c1b12a4a01",
+    "nbHits": 0,
+    "hits": []
+  }
+]

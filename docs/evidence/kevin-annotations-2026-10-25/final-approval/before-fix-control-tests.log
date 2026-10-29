@@ -1,0 +1,67 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/work[39m
+
+ [31m❯[39m test/annotation-review.test.ts [2m([22m[2m28 tests[22m[2m | [22m[31m3 failed[39m[2m | [22m[33m25 skipped[39m[2m)[22m[33m 1447[2mms[22m[39m
+     [2m[90m↓[39m[22m is opt-in and does not infer trust from a reassuring hint
+     [2m[90m↓[39m[22m reviews either boolean value of readOnlyHint
+     [2m[90m↓[39m[22m reviews either boolean value of destructiveHint
+     [2m[90m↓[39m[22m reviews either boolean value of openWorldHint
+     [2m[90m↓[39m[22m renders bounded diagnostics for malformed hints without echoing attacker prose
+     [2m[90m↓[39m[22m does not turn titles or nonstandard destination claims into a permission mechanism
+     [2m[90m↓[39m[22m defers to explicit operator labels and only exact complete capability bindings
+     [2m[90m↓[39m[22m binds acknowledgement to launch identity and every tool definition field
+     [2m[90m↓[39m[22m loads only the two supported option values
+     [2m[90m↓[39m[22m asks once for the exact annotated tool in a wrapper, and asks again in a new wrapper
+     [2m[90m↓[39m[22m does not record a decline as review and does not forward the refused call
+     [2m[90m↓[39m[22m keeps no-UI calls working when review is disabled or auditing: {"flow":false}
+     [2m[90m↓[39m[22m keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"annotationReview":"off"}}
+     [2m[90m↓[39m[22m keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"mode":"off"}}
+     [2m[90m↓[39m[22m keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"mode":"audit"}}
+     [2m[90m↓[39m[22m fails closed without consent only under the enabled policy: {"flags":[]}
+     [2m[90m↓[39m[22m fails closed without consent only under the enabled policy: {"flags":["--ask","refuse"]}
+     [2m[90m↓[39m[22m fails closed without consent only under the enabled policy: {"flowPolicy":{"mode":"deny"}}
+     [2m[90m↓[39m[22m freshly lists after a yes and refuses silent definition drift without remembering that approval
+[31m     [31m×[31m never reuses an old tools/list already in flight when approval arrives[39m[33m 889[2mms[22m[39m
+[31m     [31m×[31m rechecks shared credential/taint state after annotation approval, literal secret=true[39m[33m 318[2mms[22m[39m
+[31m     [31m×[31m rechecks shared credential/taint state after annotation approval, literal secret=false[39m[32m 238[2mms[22m[39m
+     [2m[90m↓[39m[22m accepts the same unchanged flow-ask basis instead of asking indefinitely
+     [2m[90m↓[39m[22m documents conservative refusal when the first precheck already consumed an exact public grant
+     [2m[90m↓[39m[22m never waives repeated sensitive-tool approval after annotation review
+     [2m[90m↓[39m[22m does not read annotation claims from model-controlled call arguments
+     [2m[90m↓[39m[22m does not let forged read-only arguments waive review of the advertised tool
+     [2m[90m↓[39m[22m keeps the credential guard above reassuring annotations and allowed destinations after review
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/annotation-review.test.ts[2m > [22mannotation first-use review through the real stdio proxy[2m > [22mnever reuses an old tools/list already in flight when approval arrives
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'message')[39m
+[36m [2m❯[22m test/annotation-review.test.ts:[2m192:31[22m[39m
+    [90m190|[39m     h.change({ listDelay: 0, tools: [{ ...tool(), description: 'Change…
+    [90m191|[39m     h[33m.[39m[34msend[39m({ jsonrpc[33m:[39m [32m'2.0'[39m[33m,[39m id[33m:[39m h[33m.[39masked[[34m0[39m][33m.[39mid[33m,[39m [33m...[39m[34maccept[39m() })[33m;[39m
+    [90m192|[39m     expect((await call).error.message).toContain('definitions changed …
+    [90m   |[39m                               [31m^[39m
+    [90m193|[39m     [35mawait[39m preApprovalList[33m;[39m
+    [90m194|[39m     expect(readFileSync(snapshots, 'utf8').trim().split('\n').length).…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/annotation-review.test.ts[2m > [22mannotation first-use review through the real stdio proxy[2m > [22mrechecks shared credential/taint state after annotation approval, literal secret=true
+[41m[1m FAIL [22m[49m test/annotation-review.test.ts[2m > [22mannotation first-use review through the real stdio proxy[2m > [22mrechecks shared credential/taint state after annotation approval, literal secret=false
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'message')[39m
+[36m [2m❯[22m test/annotation-review.test.ts:[2m204:26[22m[39m
+    [90m202|[39m     h[33m.[39m[34msend[39m({ jsonrpc[33m:[39m [32m'2.0'[39m[33m,[39m id[33m:[39m h[33m.[39masked[[34m0[39m][33m.[39mid[33m,[39m [33m...[39m[34maccept[39m() })[33m;[39m
+    [90m203|[39m     [35mconst[39m refused [33m=[39m [35mawait[39m call[33m;[39m
+    [90m204|[39m     expect(refused.error.message).toContain(literal ? 'Denied' : 'risk…
+    [90m   |[39m                          [31m^[39m
+    [90m205|[39m     expect(h.asked).toHaveLength(1); expect(h.sent()).toHaveLength(0);…
+    [90m206|[39m   })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[33m25 skipped[39m[90m (28)[39m
+[2m   Start at [22m 11:18:24
+[2m   Duration [22m 10.35s[2m (transform 602ms, setup 17ms, import 714ms, tests 1.45s, environment 0ms)[22m
+
+JSON report written to /out/before-fix-control-tests.json

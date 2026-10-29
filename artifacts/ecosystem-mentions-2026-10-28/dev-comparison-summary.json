@@ -1,0 +1,123 @@
+[
+  {
+    "article_id": 4904350,
+    "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l",
+    "metadata": 51,
+    "visible": 51,
+    "external": 26,
+    "own": 25,
+    "new_comments": []
+  },
+  {
+    "article_id": 4894770,
+    "url": "https://dev.to/alexar76/mcp-servers-edit-the-instructions-your-agent-reads-warden-018-shows-which-words-changed-397f",
+    "metadata": 7,
+    "visible": 7,
+    "external": 3,
+    "own": 4,
+    "new_comments": []
+  },
+  {
+    "article_id": 4884244,
+    "url": "https://dev.to/alexar76/45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset-2mhe",
+    "metadata": 3,
+    "visible": 3,
+    "external": 1,
+    "own": 2,
+    "new_comments": []
+  },
+  {
+    "article_id": 4881999,
+    "url": "https://dev.to/alexar76/three-x402-sellers-compared-notes-the-routes-answer-nobody-comes-back-to-buy-5897",
+    "metadata": 6,
+    "visible": 6,
+    "external": 4,
+    "own": 2,
+    "new_comments": []
+  },
+  {
+    "article_id": 4879058,
+    "url": "https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011",
+    "metadata": 3,
+    "visible": 3,
+    "external": 1,
+    "own": 2,
+    "new_comments": []
+  },
+  {
+    "article_id": 4873079,
+    "url": "https://dev.to/alexar76/a-flow-guard-for-mcp-what-agentdojo-measured-and-what-our-security-audit-found-2ckm",
+    "metadata": 2,
+    "visible": 2,
+    "external": 1,
+    "own": 1,
+    "new_comments": []
+  },
+  {
+    "article_id": 4868973,
+    "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4",
+    "metadata": 6,
+    "visible": 6,
+    "external": 3,
+    "own": 3,
+    "new_comments": []
+  },
+  {
+    "article_id": 4847905,
+    "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh",
+    "metadata": 23,
+    "visible": 23,
+    "external": 11,
+    "own": 12,
+    "new_comments": []
+  },
+  {
+    "article_id": 4811646,
+    "url": "https://dev.to/alexar76/one-key-for-an-agents-tool-calls-a-prepaid-usdc-balance-on-an-mcp-connection-a06",
+    "metadata": 3,
+    "visible": 3,
+    "external": 1,
+    "own": 2,
+    "new_comments": []
+  },
+  {
+    "article_id": 4804987,
+    "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498",
+    "metadata": 28,
+    "visible": 28,
+    "external": 15,
+    "own": 13,
+    "new_comments": []
+  },
+  {
+    "article_id": 4802035,
+    "url": "https://dev.to/alexar76/two-strangers-took-the-job-the-one-that-lied-was-paid-nothing-3g7i",
+    "metadata": 6,
+    "visible": 6,
+    "external": 4,
+    "own": 2,
+    "new_comments": []
+  },
+  {
+    "article_id": 3658657,
+    "url": "https://dev.to/alexar76/open-source-multi-agent-pipeline-61k-python-12-agents-5-quality-gates-4hl4",
+    "metadata": 2,
+    "visible": 2,
+    "external": 1,
+    "own": 1,
+    "new_comments": [
+      {
+        "id": "38nc4",
+        "time": "2026-06-01T06:02:13Z",
+        "author": "harjjotsinghh",
+        "text": " the way you tackled the consistency problems with LLM failover is really insightful. it's crucial to ensure that output remains reliable across different providers. moonshift could help streamline your deployments - you can get a full next.js + postgres + auth app up in about 7 min, and you own the code on your github. if you're curious, I'd be happy to offer a free run to give it a spin. \n\n"
+      },
+      {
+        "id": "38ne7",
+        "time": "2026-06-01T06:36:00Z",
+        "author": "alexar76",
+        "text": " Thanks, Harjot, glad the failover section worked) \nthe hardest part wasn't the failover mechanism itself, but keeping the output semantically stable when a request seamlessly transitions to another provider mid-run. I normalized everything into a provider-agnostic schema before it reaches the state machine, plus deterministic retries on gate failures, so retrying with a different model doesn't break the pipeline. \n\n and it's funny you mention Moonshift — I looked into it, and we're clearly working on systems in the same class: you've got 14 agents in a 10-stage workflow with a human-approval gate, while I've got 12 agents + 5 quality gates with an AI Director. I couldn't find how Moonshift handles this part, but my solution is multi-provider, which is exactly why fault tolerance matters so much \nthe main difference is positioning: this project is fully open-source and self-hosted, while Moonshift bundles the entire \"launch day\" (deployment, DNS, launch copy, hero images) into a managed SaaS — frankly, the part most developers skip. \n\n so it's less a direct comparison and more two approaches to the same idea, thanks for the free-run offer — I'll definitely give it a try, curious how you organize the deploy and launch-kit phases. 👍 \n\n"
+      }
+    ]
+  }
+]

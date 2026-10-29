@@ -1,0 +1,588 @@
+{
+  "extrasCoverage": "observed",
+  "format": "histor.upgrade-observation/v1",
+  "launch": {
+    "client": {
+      "name": "histor",
+      "reader": "McpReader",
+      "version": "0.4.2"
+    },
+    "endpoint": "https://modelmarket.dev/mcp",
+    "profile": {
+      "allowPrivate": false,
+      "authentication": "none",
+      "deadlineSeconds": 90,
+      "followRedirects": false,
+      "methods": [
+        "initialize",
+        "notifications/initialized",
+        "server/discover",
+        "tools/list"
+      ],
+      "timeoutSeconds": 30,
+      "trustEnvironment": false
+    },
+    "runtime": {
+      "httpx": "0.28.1",
+      "python": "3.12.13"
+    },
+    "transport": "streamable-http"
+  },
+  "observedAt": "2026-10-27T13:14:29.832590Z",
+  "packageVersion": null,
+  "protocol": "2025-06-18",
+  "serverName": "aimarket-hub-mcp",
+  "serverVersion": "1.2.0",
+  "status": "ok",
+  "targetId": "https://modelmarket.dev/mcp",
+  "tools": [
+    {
+      "description": "Search this hub's catalogue of live data and computation by what you need, in plain words. Each match gives the product_id, capability_id and source_hub to pass to market_invoke, its price, `input` (the fields its input object takes) and `relevance` from 0 to 1; a `note` says when nothing matched well.",
+      "inputSchema": {
+        "properties": {
+          "budget": {
+            "description": "Optional cap on price per call, in USD.",
+            "type": "number"
+          },
+          "category": {
+            "description": "Optional category filter, e.g. 'security'.",
+            "type": "string"
+          },
+          "intent": {
+            "description": "What you want done, in plain language.",
+            "type": "string"
+          },
+          "limit": {
+            "description": "Maximum results (default 10, max 50).",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "intent"
+        ],
+        "type": "object"
+      },
+      "name": "market_search"
+    },
+    {
+      "description": "Invoke a capability found via market_search. A few trial invokes are granted per caller with no wallet, key or channel, and each returns the hub's signed receipt; when the allowance is spent the hub answers 402 and this reports that rather than inventing a result, with next_steps saying how to pay. Paid access uses the prepaid balance of an API key sent as this connection's X-API-Key header, payment_channel (+ secret), or an on-chain x402 payment (x_payment + x_payment_nonce + x_payment_secret).",
+      "inputSchema": {
+        "properties": {
+          "capability_id": {
+            "description": "The exact capability_id from market_search.",
+            "type": "string"
+          },
+          "include_full_receipt": {
+            "description": "Return the hub's raw response, including the full hybrid Ed25519 + ML-DSA-65 receipt signature (about 7 KB).",
+            "type": "boolean"
+          },
+          "input": {
+            "description": "Input object for the capability; {} when it takes none.",
+            "type": "object"
+          },
+          "max_price_usd": {
+            "description": "Atomic total-price ceiling. Copy the selected search result's max_price_usd here; the Hub returns price_limit_exceeded before work or payment if the route was repriced.",
+            "maximum": 1000000,
+            "minimum": 0,
+            "type": "number"
+          },
+          "payment_authorization": {
+            "type": "object"
+          },
+          "payment_channel": {
+            "type": "string"
+          },
+          "payment_channel_secret": {
+            "type": "string"
+          },
+          "product_id": {
+            "description": "The product_id from market_search.",
+            "type": "string"
+          },
+          "source_hub": {
+            "description": "The source_hub from market_search, when it shows one. Required for federated capabilities — most of the catalogue; omitting it makes the hub look for the capability locally and answer 404.",
+            "type": "string"
+          },
+          "x_payment": {
+            "description": "x402 seller-direct payment: the hash of the USDC transfer you broadcast for the 402's invoice (see next_steps).",
+            "type": "string"
+          },
+          "x_payment_nonce": {
+            "description": "The invoice nonce from the 402 that x_payment pays.",
+            "type": "string"
+          },
+          "x_payment_secret": {
+            "description": "The payment_secret from that 402. The nonce and the transaction are public once mined; the secret is what shows you are the one who paid.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "product_id",
+          "capability_id"
+        ],
+        "type": "object"
+      },
+      "name": "market_invoke"
+    },
+    {
+      "description": "Validate a graph and return a signed quote and payment offers. No work or payment. Free steps require no wallet; paid steps require buyer wallet address. Use gas_mode=required to demand gas sponsorship or auto to prefer it. Inspect ready/blockers and gas_sponsorship. Sign offers LOCALLY, never provide a private key. Then call pipeline_invoke.",
+      "inputSchema": {
+        "$defs": {
+          "StudioNode": {
+            "description": "One hop of a studio blueprint — the executor's node shape, validated here too.",
+            "properties": {
+              "capability_id": {
+                "maxLength": 80,
+                "minLength": 2,
+                "title": "Capability Id",
+                "type": "string"
+              },
+              "depends_on": {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 16,
+                "title": "Depends On",
+                "type": "array"
+              },
+              "id": {
+                "default": "",
+                "maxLength": 64,
+                "title": "Id",
+                "type": "string"
+              },
+              "input": {
+                "additionalProperties": true,
+                "title": "Input",
+                "type": "object"
+              },
+              "input_from": {
+                "anyOf": [
+                  {
+                    "maxLength": 64,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Input From"
+              },
+              "product_id": {
+                "maxLength": 80,
+                "minLength": 2,
+                "title": "Product Id",
+                "type": "string"
+              },
+              "source_hub": {
+                "anyOf": [
+                  {
+                    "maxLength": 200,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Hub"
+              }
+            },
+            "required": [
+              "product_id",
+              "capability_id"
+            ],
+            "title": "StudioNode",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "gas_mode": {
+            "default": "buyer",
+            "enum": [
+              "buyer",
+              "auto",
+              "required"
+            ],
+            "title": "Gas Mode",
+            "type": "string"
+          },
+          "max_budget_usd": {
+            "anyOf": [
+              {
+                "maximum": 100000,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Budget Usd"
+          },
+          "nodes": {
+            "items": {
+              "$ref": "#/$defs/StudioNode"
+            },
+            "maxItems": 16,
+            "minItems": 1,
+            "title": "Nodes",
+            "type": "array"
+          },
+          "wallet": {
+            "default": "0x0000000000000000000000000000000000000000",
+            "pattern": "^0x[0-9a-fA-F]{40}$",
+            "title": "Wallet",
+            "type": "string"
+          }
+        },
+        "required": [
+          "nodes"
+        ],
+        "title": "PrepareGraph",
+        "type": "object"
+      },
+      "name": "pipeline_prepare"
+    },
+    {
+      "description": "Execute or continue the SAME prepared graph. Submit authorizations when the signed quote enables gas_sponsorship, otherwise buyer-signed transactions; none for free steps. Never submit both payment modes. Retain run_id/access_token and the exact bundle. Pending is not failure; repeat the same run or read pipeline_status. Never create a replacement purchase after a lost response.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "access_token": {
+            "maxLength": 128,
+            "minLength": 20,
+            "title": "Access Token",
+            "type": "string"
+          },
+          "authorizations": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "pattern": "^0x[0-9a-fA-F]{130}$",
+                  "type": "string"
+                },
+                "maxProperties": 16,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Authorizations"
+          },
+          "run_id": {
+            "pattern": "^paid_[0-9a-f]{32}$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "transactions": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "maxLength": 4098,
+                  "pattern": "^0x[0-9a-fA-F]+$",
+                  "type": "string"
+                },
+                "maxProperties": 16,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Transactions"
+          }
+        },
+        "required": [
+          "run_id",
+          "access_token"
+        ],
+        "title": "PipelineInput",
+        "type": "object"
+      },
+      "name": "pipeline_invoke"
+    },
+    {
+      "description": "Read an existing pipeline, including cached signed result, without broadcasting payments or invoking providers. No wallet signer or blockchain RPC required. Inspect recovery.action for unresolved work.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "access_token": {
+            "maxLength": 128,
+            "minLength": 20,
+            "type": "string"
+          },
+          "run_id": {
+            "pattern": "^paid_[0-9a-f]{32}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "access_token"
+        ],
+        "type": "object"
+      },
+      "name": "pipeline_status"
+    },
+    {
+      "description": "Prepare a cash refund for a verified paid step of a finished pipeline. This moves no money. The original seller must approve the exact EIP-3009 authorization locally; never send a private key. Refunds require seller cooperation and a configured gas sponsor.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "access_token": {
+            "maxLength": 128,
+            "minLength": 20,
+            "title": "Access Token",
+            "type": "string"
+          },
+          "run_id": {
+            "pattern": "^paid_[0-9a-f]{32}$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "step_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Step Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "access_token",
+          "step_id"
+        ],
+        "title": "RefundToolInput",
+        "type": "object"
+      },
+      "name": "pipeline_refund_prepare"
+    },
+    {
+      "description": "Submit the original seller's refund authorization or resume the SAME refund. The recipient is the original buyer, amount is the paid step price, and the sponsor pays gas. Preserve the exact authorization after a lost response. Returns a separately signed credit note; the original bill is unchanged.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "access_token": {
+            "maxLength": 128,
+            "minLength": 20,
+            "title": "Access Token",
+            "type": "string"
+          },
+          "authorization": {
+            "anyOf": [
+              {
+                "pattern": "^0x[0-9a-fA-F]{130}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Authorization"
+          },
+          "run_id": {
+            "pattern": "^paid_[0-9a-f]{32}$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "step_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Step Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "access_token",
+          "step_id"
+        ],
+        "title": "RefundApproveToolInput",
+        "type": "object"
+      },
+      "name": "pipeline_refund"
+    },
+    {
+      "description": "Read the saved cash-refund status and signed credit note without broadcasting a transaction. No private key or RPC is required. Pending means resume the same refund, never send a replacement transfer.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "access_token": {
+            "maxLength": 128,
+            "minLength": 20,
+            "title": "Access Token",
+            "type": "string"
+          },
+          "run_id": {
+            "pattern": "^paid_[0-9a-f]{32}$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "step_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Step Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "access_token",
+          "step_id"
+        ],
+        "title": "RefundToolInput",
+        "type": "object"
+      },
+      "name": "pipeline_refund_status"
+    },
+    {
+      "description": "Current weather at a place: temperature (°C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Meteo relay within 75 km, with a signed receipt. Pass latitude and longitude, or a city. Costs $0.001 per call. The first 5 priced calls per caller are free.",
+      "inputSchema": {
+        "properties": {
+          "city": {
+            "description": "A city instead of coordinates, e.g. \"Tokyo\"; many spellings work (Токио, 東京).",
+            "type": "string"
+          },
+          "latitude": {
+            "description": "Latitude in degrees.",
+            "maximum": 90,
+            "minimum": -90,
+            "type": "number"
+          },
+          "longitude": {
+            "description": "Longitude in degrees.",
+            "maximum": 180,
+            "minimum": -180,
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "name": "weather_now"
+    },
+    {
+      "description": "Current air quality at a place: PM2.5 and PM10 (µg/m³), US and European AQI, from Copernicus CAMS via Open-Meteo, with a signed receipt. Pass latitude and longitude, or a city. Costs $0.001 per call. The first 5 priced calls per caller are free.",
+      "inputSchema": {
+        "properties": {
+          "city": {
+            "description": "A city instead of coordinates, e.g. \"Tokyo\"; many spellings work (Токио, 東京).",
+            "type": "string"
+          },
+          "latitude": {
+            "description": "Latitude in degrees.",
+            "maximum": 90,
+            "minimum": -90,
+            "type": "number"
+          },
+          "longitude": {
+            "description": "Longitude in degrees.",
+            "maximum": 180,
+            "minimum": -180,
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "name": "air_quality_now"
+    },
+    {
+      "description": "The nearest live public sensors to a point, one per layer asked for (e.g. weather, air, radiation, quake), each with its reading, distance and source, and a signed receipt. Costs $0.03 per call. The first 5 priced calls per caller are free.",
+      "inputSchema": {
+        "properties": {
+          "latitude": {
+            "description": "Latitude in degrees.",
+            "maximum": 90,
+            "minimum": -90,
+            "type": "number"
+          },
+          "layers": {
+            "description": "Sensor layers to search, e.g. [\"weather\", \"air\"]; default weather.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "longitude": {
+            "description": "Longitude in degrees.",
+            "maximum": 180,
+            "minimum": -180,
+            "type": "number"
+          },
+          "max_km": {
+            "description": "Refuse sensors farther than this.",
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "type": "object"
+      },
+      "name": "nearby_sensors"
+    },
+    {
+      "description": "Verifiable random bytes for a draw, raffle or tie-break: an ECVRF output over your seed plus a proof anyone can check offline. The same seed always gives the same output, so publish the seed first to show the result was not picked. Costs $0.006 per call. The first 5 priced calls per caller are free.",
+      "inputSchema": {
+        "properties": {
+          "num_bytes": {
+            "description": "Output length (default 32).",
+            "maximum": 64,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "seed": {
+            "description": "Seed or message the draw is bound to.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seed"
+        ],
+        "type": "object"
+      },
+      "name": "fair_random"
+    },
+    {
+      "description": "Check a signed x402 USDC payment before submitting it: recovers the EIP-712 signer, runs USDC's own checks and the seller's (payTo, amount, asset, network), and when the signature fails names the domain it was really made for (e.g. Base Sepolia's 'USDC' used on Base, where USDC is 'USD Coin'). Costs $0.003 per call. The first 5 priced calls per caller are free.",
+      "inputSchema": {
+        "properties": {
+          "authorization": {
+            "description": "Instead of x_payment: from, to, value, validAfter, validBefore, nonce.",
+            "type": "object"
+          },
+          "network": {
+            "description": "With authorization: base, base-sepolia, … or eip155:<id>.",
+            "type": "string"
+          },
+          "now": {
+            "description": "Unix seconds, to check the validity window.",
+            "type": "integer"
+          },
+          "requirements": {
+            "description": "The 402's accepts entry: payTo, amount, asset, network.",
+            "type": "object"
+          },
+          "signature": {
+            "description": "With authorization: the 65-byte hex signature.",
+            "type": "string"
+          },
+          "x_payment": {
+            "description": "The X-PAYMENT header (base64).",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "name": "x402_check"
+    }
+  ]
+}

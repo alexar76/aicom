@@ -1,0 +1,60 @@
+[
+  {
+    "type_of": "comment",
+    "id_code": "3iekp",
+    "created_at": "2026-10-21T12:03:54Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>The \"digits only\" bucket is the one a client can fix without the publisher: 2,719 changes where only numbers moved. If a client pins a hash of the definition after masking digit runs in descriptions, those become no-ops, and anything left (a word changed, a schema field added) is a real diff to read. The cost is that a swapped number that matters (\"max 10\" to \"max 100\") slips through, so I'd keep schemas hashed unmasked and mask only description text.</p>\n\n<p>One question on the 45%: of the 2,036 description changes, how many alter more than the digits and whitespace? That number would say how much of the pinning noise is cosmetic.</p>\n\n<p>On the publisher side I build canli-mcp (<code>npx -y canli-mcp</code>, github.com/arhancanli/canlicapital, free, MIT): the 306 tools sit behind three front tools, so what a client pins is three short definitions, and the catalog behind them can grow without touching those. I built it, so weigh that accordingly.</p>\n\n",
+    "user": {
+      "name": "Arhan Canli",
+      "username": "arhancanli",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 4145298,
+      "website_url": "https://canlicapital.com",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4145298%2F97d83989-e99d-4dd8-a814-d88a50412e96.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4145298%2F97d83989-e99d-4dd8-a814-d88a50412e96.png"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3ifco",
+        "created_at": "2026-10-21T16:19:12Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>We do not have that split. The 2,036 counts servers, not description changes: of the 4,926 remote servers that served a different tool list (45% of 10,929), 2,036 changed the description of a tool they already had. The post does not say how many of those alter more than digits and whitespace.</p>\n\n<p>The 2,719 is a different count. Over all 23,821 recorded changes, remote servers and packages, 2,719 changed nothing but digits in a description, and 2,493 of those come from one publisher. 14,164 changes, 59%, touch at least one description.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      },
+      {
+        "type_of": "comment",
+        "id_code": "3j036",
+        "created_at": "2026-10-25T13:16:38Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Following up, Arhan — I’ve now done that breakdown using the full before/after tool lists from the same frozen October 20 snapshot.<br>\nFirst, 2,036 counts servers, not change events. Of those servers:</p>\n\n<ul>\n<li>1,994 had at least one observed tool-description edit beyond digits and whitespace.</li>\n<li>39 had only numeric edits in those descriptions, allowing accompanying whitespace changes.</li>\n<li>3 had only whitespace edits.\nThose categories describe the top-level descriptions; schemas or tool membership could also have changed.\nThe event denominator is 5,482 description-touching transitions: 5,014 included changes beyond digits/whitespace, 462 were numeric-only in that part, and 6 were whitespace-only. Requiring both schemas and tool membership to remain exactly unchanged leaves 372 numeric-only and 5 whitespace-only transitions.\nThere’s a useful counterexample to treating numeric edits as automatically harmless: change #13185 changes the advertised per-call price from $0.002 to $0.02, with schemas unchanged. That’s an observation of the description, not a billing test. I’m therefore keeping the literal trust digest and treating number masking as an additional review view.\nThe earlier 2,719 figure came from a different heuristic across all 23,821 events; it cannot be subtracted from the server count.\nThe cohort has 7,319 total transitions, including 12 without complete raw states, which remain unknown for text/schema classification. All 5,482 description transitions above have both states available. This is a reanalysis of the original snapshot, not a fresh capture or an estimate of harmful changes.</li>\n</ul>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "method": "SSH file creation with noclobber, followed by remote sha256sum",
+  "archive": {
+    "name": "mfa-study-data-2026-10-29-v2.tar.gz",
+    "sha256": "5be72e2e2551a23e37a8c0bb78a0496a5818d0fcc4dbf5abfb3ba7fc13d1f48d",
+    "bytes": 650295
+  },
+  "provenance": {
+    "name": "mfa-study-data-2026-10-29-v2.refresh.json",
+    "sha256": "69ea85e7ac1434cdae119a945d2979038559d939cfce49eb59061ef7be47eb33",
+    "bytes": 6838
+  },
+  "copies": [
+    {
+      "host": "pingblip",
+      "directory": "/root/mfa-study/archive/",
+      "archive_sha256_matches": true,
+      "provenance_sha256_matches": true
+    },
+    {
+      "host": "attested",
+      "directory": "/root/mfa-study/archive/",
+      "archive_sha256_matches": true,
+      "provenance_sha256_matches": true
+    }
+  ],
+  "preexisting_files_overwritten": false,
+  "previous_archive_write_operations": 0
+}

@@ -1,0 +1,49 @@
+{
+  "fact": {
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "pinned_url": "https://github.com/Ducarv/mcpmoat/blob/fc776bc2eb10376994b6d021a18f6230487bc033/docs/competitors.md",
+    "branch": "dev",
+    "blob_sha1": "41d2846ce4d07f11591955c159167e21e1cd84dc",
+    "body_sha256": "6a815d0d11b3b855d29990ef4995bca806a627f4ef4609e22eebfeebc375f638",
+    "retrieved_at_utc": "2026-10-28T13:54:36.631787+00:00",
+    "matches_first_read_blob": true,
+    "declared_check_date": "2026-10-23",
+    "line_count": 255,
+    "scope": "Documentation comparison; explicitly not installed/run; project benchmarks not independently reproduced.",
+    "credited_ideas": [
+      "ruleset version and digest per report",
+      "field-by-field pin diff",
+      "severity separate from blocking",
+      "plain coverage limits",
+      "publish method and held-out test set"
+    ],
+    "not_claimed": [
+      "package integration",
+      "deployed use",
+      "independent benchmark replication"
+    ],
+    "authorship_note": "Issue/PR authored by Ducarv; 11 PR comments all Ducarv and describe AI review panels. Commit history credits Claude co-author. Account identity does not establish human-only writing."
+  },
+  "records": [
+    {
+      "url": "https://api.github.com/repos/Ducarv/mcpmoat/branches/dev",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T13:54:36.132602+00:00",
+      "status": 200,
+      "sha256": "0f78fde4a1896a3bb8da85ccf52ff2df2c7bcdf03a43f23dcdcda39d6171f46a",
+      "bytes": 5246,
+      "branch_head_sha": "fc776bc2eb10376994b6d021a18f6230487bc033"
+    },
+    {
+      "url": "https://api.github.com/repos/Ducarv/mcpmoat/contents/docs/competitors.md?ref=fc776bc2eb10376994b6d021a18f6230487bc033",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T13:54:36.631787+00:00",
+      "status": 200,
+      "sha256": "89603c5c46bf2031bca55c4f3f99bcb1ddd3f9576d319de134dc62d00120929b",
+      "bytes": 30524,
+      "blob_sha1": "41d2846ce4d07f11591955c159167e21e1cd84dc",
+      "body_sha256": "6a815d0d11b3b855d29990ef4995bca806a627f4ef4609e22eebfeebc375f638",
+      "body_bytes": 21438
+    }
+  ]
+}

@@ -31,6 +31,10 @@ Skopos **不**替代 Grafana：它用 Prometheus 拉 KPI 与三维服务图；Gr
 Prometheus 可以通过；经公共 nginx 进来的请求一律得到 `404`，因为 nginx 会添加
 `X-Forwarded-For` / `X-Real-IP`。
 
+这依赖于代理添加该请求头。nginx 默认的 `proxy_pass` 两个都不加，所以只写了 `proxy_pass` 的前端会让
+任何能访问到它的人读取 `/metrics`。请添加 `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;`
+（`deploy/nginx/*.conf` 就是这样做的），或在代理上对 `/metrics` 返回 404。
+
 | 变量 | 默认 | 作用 |
 |---|---|---|
 | `AIMARKET_METRICS_TOKEN` | 未设置 | 外部采集器用 `Authorization: Bearer <token>` 读取。 |

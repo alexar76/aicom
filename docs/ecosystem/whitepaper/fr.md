@@ -35,7 +35,7 @@ Surfaces publiques :
 | **Âtre HESTIA** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [landing](https://alexar76.github.io/hestia/) | Runtime hébergé et isolé — pas le catalogue du Hub |
 | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) | Mémoire vérifiable pour agents IA |
 | **Kit d'opérateur eSIM** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · [guides](https://esim.modelmarket.dev/fr/kit) | eSIM de voyage vendues aux gens et aux agents IA ; les opérateurs rejoignent en une commande |
-| **EMPORION** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · [landing](https://alexar76.github.io/emporion/) | Faits de registre public pour les agents qui commercent, vendus via le Hub |
+| **SYMMARTYS** | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) · [landing](https://symmartys.modelmarket.dev/) | Faits de registre public pour les agents qui commercent, vendus via le Hub |
 
 ![Graphe complet de l'écosystème — Alien Monitor en mode LIVE](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -166,7 +166,7 @@ flowchart TB
     argus["ARGUS-3<br/>Local agent · optional economy"]
     memory["Attested Memory<br/>mémoire vérifiable"]
     esim["Opérateurs eSIM<br/>boutique · nœud vendeur · x402"]
-    emporion["EMPORION<br/>TVA · LEI · registres · change · sanctions<br/>OTS · captures web · minuteurs"]
+    symmartys["SYMMARTYS<br/>TVA · LEI · registres · change · sanctions<br/>OTS · captures web · minuteurs"]
   end
 
   subgraph external["External"]
@@ -189,7 +189,7 @@ flowchart TB
   argus -->|écrire · chercher| memory
   argus -->|commande x402 · remboursement| esim
   esim -->|offres signées · reçus| aicom
-  emporion -->|faits de registre public signés| aicom
+  symmartys -->|faits de registre public signés| aicom
   aicom -->|télémétrie publique| logos
   aicom -->|prompts| llm
   aicom -->|on-chain| chain
@@ -208,7 +208,7 @@ flowchart TB
 | [`gaia/`](https://github.com/alexar76/gaia) | **oracles physiques GAIA** | `:9320` | `gaia` |
 | [`atlas/`](https://github.com/alexar76/atlas) | **carte capteurs ATLAS** | [atlas.modelmarket.dev](https://atlas.modelmarket.dev) | `atlas` |
 | [`esim-kit/`](https://github.com/alexar76/esim-operator-kit) | **Kit d'opérateur eSIM** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · vendeur démo [modelmarket.dev/providers/esim](https://modelmarket.dev/providers/esim/healthz) | `esim-operator-kit` |
-| [`emporion/`](https://github.com/alexar76/emporion) | **EMPORION : faits pour le commerce** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · `:9351` · pair du hub [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health) | `emporion` |
+| [`symmartys/`](https://github.com/alexar76/symmartys/blob/main/README.md) | **SYMMARTYS : faits pour le commerce** | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) · `:9351` · pair du hub [modelmarket.dev/providers/symmartys](https://modelmarket.dev/providers/symmartys/health) | `symmartys` |
 | [`logos/`](https://github.com/alexar76/logos) | **LOGOS · analytique fédérée** | [logos.modelmarket.dev](https://logos.modelmarket.dev) · `:9460` | `logos` |
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS admission** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · porte Hub | `themis` |
@@ -307,7 +307,7 @@ flowchart TB
     E1["Boutique pour les gens · nœud vendeur /agents<br/>x402 · remboursements · reçus de livraison signés"]
   end
 
-  subgraph EMP["EMPORION · faits de registre public"]
+  subgraph SYM["SYMMARTYS · faits de registre public"]
     E2["TVA via VIES · GLEIF LEI · taux de la BCE<br/>listes de sanctions · OpenTimestamps<br/>registres des sociétés · EORI · RDAP · jours ouvrés<br/>captures web · minuteurs"]
   end
 
@@ -339,7 +339,7 @@ flowchart TB
   MESH -->|"MESH_HUB_URL"| HUB
   CLIENTS --> HUB
   ESIM -->|"offres signées · nœud ou propre hub"| HUB
-  EMP -->|"vérifications signées · vendues via un hub"| HUB
+  SYM -->|"vérifications signées · vendues via un hub"| HUB
   C1 -->|"commande x402 · remboursement"| E1
   C1 --> MESH
   HUB --> CHAIN
@@ -516,17 +516,19 @@ Bibliothèque **`oracle-core`** partagée. Chaque oracle émet des artefacts sig
 
 **En direct :** vendeur démo sur [esim.modelmarket.dev](https://esim.modelmarket.dev) (prix réels, aucune vente). Trois fenêtres de test le 15 octobre 2026 ont vendu de vraies eSIM à ARGUS et à un agent de programmation puis les ont remboursées, chaque transaction sur Base ([cas réels](https://esim.modelmarket.dev/fr/kit/cases)). **Satellite :** `esim-kit/` → [alexar76/esim-operator-kit](https://github.com/alexar76/esim-operator-kit).
 
-### 3.6d EMPORION — faits de registre public pour les agents qui commercent
+### 3.6d SYMMARTYS — faits de registre public pour les agents qui commercent
 
-**Rôle :** ce qu'un agent vérifie avant de traiter avec une entreprise ou de déplacer de l'argent, avec la réponse des registres publics eux-mêmes : si un numéro de TVA de l'UE est valide (VIES, avec le numéro de consultation que l'UE délivre pour la vérification), qui est une entité juridique (GLEIF LEI), le taux de référence de la BCE à une date (un taux de référence, pas un taux de transaction), si un nom ou une adresse de portefeuille figure sur les listes de sanctions de l'UE, de l'OFAC SDN ou du Royaume-Uni (la liste britannique reprend les désignations de l'ONU avec leur numéro), et une preuve d'horodatage ancrée dans Bitcoin pour une empreinte (OpenTimestamps, `.ots` standard). Six capacités payantes à 0,001–0,002 $ — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — et la gratuite `emporion.sources@v1`.
+**État du déploiement (2026-10-29) :** SYMMARTYS (συμμάρτυς, témoin corroborant) 0.5.0 est en service sur [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) avec 16 capacités. Les clés, les données et l’historique du fournisseur sont conservés. Les mises à jour de GitHub, PyPI, GHCR et MCP Registry ne sont pas encore publiées.
+
+**Rôle :** ce qu'un agent vérifie avant de traiter avec une entreprise ou de déplacer de l'argent, avec la réponse des registres publics eux-mêmes : si un numéro de TVA de l'UE est valide (VIES, avec le numéro de consultation que l'UE délivre pour la vérification), qui est une entité juridique (GLEIF LEI), le taux de référence de la BCE à une date (un taux de référence, pas un taux de transaction), si un nom ou une adresse de portefeuille figure sur les listes de sanctions de l'UE, de l'OFAC SDN ou du Royaume-Uni (la liste britannique reprend les désignations de l'ONU avec leur numéro), et une preuve d'horodatage ancrée dans Bitcoin pour une empreinte (OpenTimestamps, `.ots` standard). Six capacités payantes à 0,001–0,002 $ — `symmartys.vat.check@v1`, `symmartys.lei.lookup@v1`, `symmartys.fx.rate@v1`, `symmartys.sanctions.screen@v1`, `symmartys.timestamp.stamp@v1`, `symmartys.timestamp.verify@v1` — et la gratuite `symmartys.sources@v1`.
 
 **Honnête par construction :** chaque réponse est signée en Ed25519 avec sa source, l'heure de récupération et le SHA-256 de ce que la source a renvoyé. Un filtrage des listes de sanctions est une recherche, pas une décision : une correspondance est une raison de regarder de plus près, et l'absence de correspondance n'est pas un feu vert. Les listes sont conservées sur disque avec leur heure de récupération et leur empreinte d'origine : un redémarrage ou une panne de la source ne vide jamais une liste en silence, et `/health` nomme les listes réellement chargées.
 
 **Depuis la 0.2 — les questions suivantes, et deux outils :** registres nationaux des sociétés par numéro ou par nom (Norvège, France, République tchèque, Finlande), numéros EORI pour la douane de l'UE, qui a enregistré un domaine et quand (RDAP, depuis le registre du TLD via le bootstrap de l'IANA) et jours ouvrés dans ~250 pays et sur des marchés comme TARGET2. Deux capacités vont au-delà des recherches : une **capture web** enregistre ce qu'une page a répondu à un instant — URL finale, redirections, IP, certificat TLS et SHA-256 du corps — et ancre cet enregistrement dans Bitcoin ; un **minuteur** appelle le callback https d'un agent par un événement signé à une heure donnée, ou comme interrupteur d'homme mort quand l'agent cesse de pointer. Les deux n'atteignent que des adresses publiques, épinglées à l'adresse vérifiée.
 
-**Vendu via le Hub :** EMPORION tourne sur `oracle-core` avec la barrière de prix activée : une capacité payante ne répond qu'à un appel signé par un hub de confiance, un appel direct reçoit `402` avec le hub qui la vend (§4.3), et chaque appel est inscrit au journal des appels du fournisseur.
+**Vendu via le Hub :** SYMMARTYS tourne sur `oracle-core` avec la barrière de prix activée : une capacité payante ne répond qu'à un appel signé par un hub de confiance, un appel direct reçoit `402` avec le hub qui la vend (§4.3), et chaque appel est inscrit au journal des appels du fournisseur.
 
-**En ligne :** [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) — une landing avec une agora 3D en direct de ses sources — et le pair du hub sur [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health). **Satellite :** `emporion/` → [alexar76/emporion](https://github.com/alexar76/emporion).
+**En ligne :** [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) — une landing avec une agora 3D en direct de ses sources — et le pair du hub sur [modelmarket.dev/providers/symmartys](https://modelmarket.dev/providers/symmartys/health). **Satellite :** `symmartys/` → [symmartys/](https://github.com/alexar76/symmartys/blob/main/README.md).
 
 ### 3.7 ARGUS-3
 
@@ -764,7 +766,7 @@ Ne jamais faire fonctionner les deux rails sur le même dépôt : le `usedAmount
 
 **Livraisons confirmées par les acheteurs.** Un vendeur payé directement (x402 seller-direct) est invisible pour le Hub : une boutique qui encaisse sans rien livrer ressemblait à une boutique qui livre. Les vendeurs qui signent des reçus de livraison et de remboursement (le kit eSIM le fait, §3.6c) permettent à l'acheteur de prouver une livraison : `POST /ai-market/v2/reputation/deliveries` vérifie la signature avec le `provider_pubkey` publié par le listing et le transfert sous le propre nonce EIP-3009 du reçu on-chain, le compte une fois par transaction, et ne garde en clair ni montant, ni adresse, ni transaction. La recherche affiche `deliveries_30d {confirmed, distinct_buyers, refunded}`, et le score de confiance compte un succès par acheteur distinct. Les portefeuilles ne coûtent rien : cela se lit « des acheteurs ont confirmé que ce vendeur a livré », pas « ce vendeur est bon ».
 
-**Les appels payants passent par un hub.** L'URL d'invocation d'un fournisseur est publique : jusqu'en octobre 2026, un appelant qui contournait le hub obtenait gratuitement toute capacité payante. Les fournisseurs sur `oracle-core` 0.5+ ont une barrière de prix : une capacité payante n'est servie qu'à un appel signé par un hub auquel le fournisseur fait confiance — le hub l'a admis, payé ou dans son essai gratuit — ou à un appelant désigné par l'opérateur ; tout autre reçoit `402` avec le hub qui la vend. Sur une commande payante d'un appareil, le hub signe aussi qui a payé, pour que GAIA réserve la prise commutée à son payeur. Chaque appel est inscrit au journal des appels du fournisseur (issue, qui l'a garanti, latence — jamais l'entrée ni une adresse IP), et seuls les appels signés par un hub comptent comme revenus. GAIA et EMPORION appliquent la barrière depuis le 16 octobre 2026.
+**Les appels payants passent par un hub.** L'URL d'invocation d'un fournisseur est publique : jusqu'en octobre 2026, un appelant qui contournait le hub obtenait gratuitement toute capacité payante. Les fournisseurs sur `oracle-core` 0.5+ ont une barrière de prix : une capacité payante n'est servie qu'à un appel signé par un hub auquel le fournisseur fait confiance — le hub l'a admis, payé ou dans son essai gratuit — ou à un appelant désigné par l'opérateur ; tout autre reçoit `402` avec le hub qui la vend. Sur une commande payante d'un appareil, le hub signe aussi qui a payé, pour que GAIA réserve la prise commutée à son payeur. Chaque appel est inscrit au journal des appels du fournisseur (issue, qui l'a garanti, latence — jamais l'entrée ni une adresse IP), et seuls les appels signés par un hub comptent comme revenus. GAIA et SYMMARTYS appliquent la barrière depuis le 16 octobre 2026.
 
 ### 4.4 Boucle de paiement des oracles
 

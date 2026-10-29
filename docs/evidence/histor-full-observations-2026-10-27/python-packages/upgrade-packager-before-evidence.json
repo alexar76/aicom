@@ -1,0 +1,440 @@
+{
+  "actualArgv": [
+    "/private/tmp/pypi-mcp-releases-20261027/bin/python",
+    "-I",
+    "-B",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/launch_list_only.py",
+    "--module",
+    "aimarket_mcp_packager.stdio_server",
+    "--overlay",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/active/packager"
+  ],
+  "artifact": {
+    "extractedPath": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/artifacts/packager-2.1.1",
+    "pythonFiles": [
+      {
+        "path": "aimarket_mcp_packager/__init__.py",
+        "sha256": "c1f7aeec59f75925d5ad182561a37b07f6c919613532332a0cbd06a61cd1f6fe"
+      },
+      {
+        "path": "aimarket_mcp_packager/mcp_packager.py",
+        "sha256": "863e076c7476fa44a40d172851940e777b112fb5a9d9bfcdea6a5a2982feefe8"
+      },
+      {
+        "path": "aimarket_mcp_packager/packager_core.py",
+        "sha256": "cbd5bc6b2ef08e1cd2380cc9a64228a19f963b19963ba4e06864bba9299f53f1"
+      },
+      {
+        "path": "aimarket_mcp_packager/plugin.py",
+        "sha256": "9543fbd8f4e0ea30d68e09c12a683fe181640d6c4d8267a9c9570ef162ae5330"
+      },
+      {
+        "path": "aimarket_mcp_packager/stdio_server.py",
+        "sha256": "efcac047c6564b2aabdadfd43c10dc39010906533165a8b19eae88eb8781085a"
+      }
+    ],
+    "sha256": "1f546e31478f7fa2c6fc2e76a8fca868240d51e0a2540e8b95f826fae0146df1",
+    "wheel": "docs/evidence/histor-full-observations-2026-10-27/python-packages/wheels/aimarket_mcp_packager-2.1.1-py3-none-any.whl"
+  },
+  "error": null,
+  "events": [
+    {
+      "direction": "client",
+      "message": {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "server/discover",
+        "params": {
+          "_meta": {
+            "io.modelcontextprotocol/clientCapabilities": {},
+            "io.modelcontextprotocol/clientInfo": {
+              "name": "histor-tool-cost",
+              "version": "0.4.2"
+            },
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28"
+          }
+        }
+      }
+    },
+    {
+      "direction": "client",
+      "message": {
+        "id": 2,
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "capabilities": {},
+          "clientInfo": {
+            "name": "histor-tool-cost",
+            "version": "0.4.2"
+          },
+          "protocolVersion": "2025-06-18"
+        }
+      }
+    },
+    {
+      "direction": "server",
+      "method": "initialize",
+      "result": {
+        "capabilities": {
+          "experimental": {},
+          "prompts": {
+            "listChanged": false
+          },
+          "resources": {
+            "listChanged": false,
+            "subscribe": false
+          },
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "instructions": "Package an AIMarket hub capability as a self-hosted MCP server product. Call `package_capability` first to get the manifest, Docker image name, pricing tiers, and connection string; then `generate_dockerfile` and `generate_claude_desktop_config` to get the deployable artifacts. All three tools are pure and read-only \u2014 they never deploy or mutate anything.",
+        "protocolVersion": "2025-06-18",
+        "serverInfo": {
+          "name": "aimarket-mcp-packager",
+          "version": "1.30.0"
+        }
+      }
+    },
+    {
+      "direction": "client",
+      "message": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      }
+    },
+    {
+      "direction": "client",
+      "message": {
+        "id": 3,
+        "jsonrpc": "2.0",
+        "method": "tools/list",
+        "params": {}
+      }
+    },
+    {
+      "direction": "server",
+      "method": "tools/list",
+      "result": {
+        "tools": [
+          {
+            "description": "Build a complete self-hosted MCP server package for an AIMarket capability.\n\n    Use this first. It assembles everything needed to ship the capability as a\n    standalone MCP server: the Docker image name, the MCP manifest (server +\n    tool definition), subscription/pricing tiers, and a connection string.\n\n    Returns:\n        A JSON object (string) with keys:\n          - `docker_image`: the image name to build/run.\n          - `mcp_manifest`: the full MCP manifest (server metadata + tools).\n          - `subscription_tiers`: pricing tiers derived for the capability.\n          - `connection_string`: how a client connects to the running server.\n\n    Example:\n        package_capability(\n            capability_id=\"translate.multi@v2\",\n            product_id=\"prod-translate\",\n            name=\"Lyra Translator\",\n            description=\"Translate text into multiple languages.\",\n            input_schema={\"type\": \"object\",\n                          \"properties\": {\"text\": {\"type\": \"string\"}},\n                          \"required\": [\"text\"]},\n        )\n    ",
+            "inputSchema": {
+              "properties": {
+                "capability_id": {
+                  "description": "Fully-qualified capability identifier to package, e.g. 'translate.multi@v2'. This is the single capability the generated MCP server will expose as a tool.",
+                  "examples": [
+                    "translate.multi@v2",
+                    "summarize.long@v1"
+                  ],
+                  "title": "Capability Id",
+                  "type": "string"
+                },
+                "description": {
+                  "default": "",
+                  "description": "One- or two-sentence summary of what the capability does. Surfaced in the MCP manifest and the Claude Desktop config. Optional but strongly recommended \u2014 it becomes the tool description in the generated server.",
+                  "examples": [
+                    "Translate text into multiple languages with one call."
+                  ],
+                  "title": "Description",
+                  "type": "string"
+                },
+                "input_schema": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "JSON Schema object describing the capability's input. For example, an object with a required string property 'text'. Omit or pass null for a schema-less capability.",
+                  "examples": [
+                    {
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "text"
+                      ],
+                      "type": "object"
+                    }
+                  ],
+                  "title": "Input Schema"
+                },
+                "name": {
+                  "description": "Human-readable display name for the packaged MCP server, shown to end users in MCP clients such as Claude Desktop (e.g. 'Lyra Translator').",
+                  "examples": [
+                    "Lyra Translator"
+                  ],
+                  "title": "Name",
+                  "type": "string"
+                },
+                "product_id": {
+                  "description": "Owning product ID on the AIMarket hub, e.g. 'prod-translate'. Used to namespace the Docker image and the MCP manifest.",
+                  "examples": [
+                    "prod-translate"
+                  ],
+                  "title": "Product Id",
+                  "type": "string"
+                },
+                "registry": {
+                  "default": "aifactory",
+                  "description": "Container registry namespace for the built image. Defaults to 'aifactory'. Set your own org/namespace to publish under a different account (e.g. 'ghcr.io/acme').",
+                  "examples": [
+                    "aifactory",
+                    "ghcr.io/acme"
+                  ],
+                  "title": "Registry",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "capability_id",
+                "product_id",
+                "name"
+              ],
+              "title": "package_capabilityArguments",
+              "type": "object"
+            },
+            "name": "package_capability",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "package_capabilityOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Generate a ready-to-build Dockerfile for the packaged MCP server.\n\n    Takes the same capability inputs as `package_capability` and returns the\n    Dockerfile text that builds the self-hosted MCP server image for it.\n\n    Returns:\n        The Dockerfile contents as plain text \u2014 write it to `Dockerfile` and\n        run `docker build` to produce the image named in `package_capability`'s\n        `docker_image` field.\n\n    Example:\n        generate_dockerfile(\n            capability_id=\"translate.multi@v2\",\n            product_id=\"prod-translate\",\n            name=\"Lyra Translator\",\n        )\n    ",
+            "inputSchema": {
+              "properties": {
+                "capability_id": {
+                  "description": "Fully-qualified capability identifier to package, e.g. 'translate.multi@v2'. This is the single capability the generated MCP server will expose as a tool.",
+                  "examples": [
+                    "translate.multi@v2",
+                    "summarize.long@v1"
+                  ],
+                  "title": "Capability Id",
+                  "type": "string"
+                },
+                "description": {
+                  "default": "",
+                  "description": "One- or two-sentence summary of what the capability does. Surfaced in the MCP manifest and the Claude Desktop config. Optional but strongly recommended \u2014 it becomes the tool description in the generated server.",
+                  "examples": [
+                    "Translate text into multiple languages with one call."
+                  ],
+                  "title": "Description",
+                  "type": "string"
+                },
+                "input_schema": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "JSON Schema object describing the capability's input. For example, an object with a required string property 'text'. Omit or pass null for a schema-less capability.",
+                  "examples": [
+                    {
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "text"
+                      ],
+                      "type": "object"
+                    }
+                  ],
+                  "title": "Input Schema"
+                },
+                "name": {
+                  "description": "Human-readable display name for the packaged MCP server, shown to end users in MCP clients such as Claude Desktop (e.g. 'Lyra Translator').",
+                  "examples": [
+                    "Lyra Translator"
+                  ],
+                  "title": "Name",
+                  "type": "string"
+                },
+                "product_id": {
+                  "description": "Owning product ID on the AIMarket hub, e.g. 'prod-translate'. Used to namespace the Docker image and the MCP manifest.",
+                  "examples": [
+                    "prod-translate"
+                  ],
+                  "title": "Product Id",
+                  "type": "string"
+                },
+                "registry": {
+                  "default": "aifactory",
+                  "description": "Container registry namespace for the built image. Defaults to 'aifactory'. Set your own org/namespace to publish under a different account (e.g. 'ghcr.io/acme').",
+                  "examples": [
+                    "aifactory",
+                    "ghcr.io/acme"
+                  ],
+                  "title": "Registry",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "capability_id",
+                "product_id",
+                "name"
+              ],
+              "title": "generate_dockerfileArguments",
+              "type": "object"
+            },
+            "name": "generate_dockerfile",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "generate_dockerfileOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Generate a claude_desktop_config.json snippet for the packaged MCP server.\n\n    Takes the same capability inputs as `package_capability` and returns the\n    `mcpServers` entry that registers the docker-run MCP server with Claude\n    Desktop (or any MCP host that reads this config format).\n\n    Returns:\n        A JSON object (string) containing an `mcpServers` block \u2014 merge it into\n        the user's existing `claude_desktop_config.json` and restart the host.\n\n    Example:\n        generate_claude_desktop_config(\n            capability_id=\"translate.multi@v2\",\n            product_id=\"prod-translate\",\n            name=\"Lyra Translator\",\n        )\n    ",
+            "inputSchema": {
+              "properties": {
+                "capability_id": {
+                  "description": "Fully-qualified capability identifier to package, e.g. 'translate.multi@v2'. This is the single capability the generated MCP server will expose as a tool.",
+                  "examples": [
+                    "translate.multi@v2",
+                    "summarize.long@v1"
+                  ],
+                  "title": "Capability Id",
+                  "type": "string"
+                },
+                "description": {
+                  "default": "",
+                  "description": "One- or two-sentence summary of what the capability does. Surfaced in the MCP manifest and the Claude Desktop config. Optional but strongly recommended \u2014 it becomes the tool description in the generated server.",
+                  "examples": [
+                    "Translate text into multiple languages with one call."
+                  ],
+                  "title": "Description",
+                  "type": "string"
+                },
+                "input_schema": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "JSON Schema object describing the capability's input. For example, an object with a required string property 'text'. Omit or pass null for a schema-less capability.",
+                  "examples": [
+                    {
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "text"
+                      ],
+                      "type": "object"
+                    }
+                  ],
+                  "title": "Input Schema"
+                },
+                "name": {
+                  "description": "Human-readable display name for the packaged MCP server, shown to end users in MCP clients such as Claude Desktop (e.g. 'Lyra Translator').",
+                  "examples": [
+                    "Lyra Translator"
+                  ],
+                  "title": "Name",
+                  "type": "string"
+                },
+                "product_id": {
+                  "description": "Owning product ID on the AIMarket hub, e.g. 'prod-translate'. Used to namespace the Docker image and the MCP manifest.",
+                  "examples": [
+                    "prod-translate"
+                  ],
+                  "title": "Product Id",
+                  "type": "string"
+                },
+                "registry": {
+                  "default": "aifactory",
+                  "description": "Container registry namespace for the built image. Defaults to 'aifactory'. Set your own org/namespace to publish under a different account (e.g. 'ghcr.io/acme').",
+                  "examples": [
+                    "aifactory",
+                    "ghcr.io/acme"
+                  ],
+                  "title": "Registry",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "capability_id",
+                "product_id",
+                "name"
+              ],
+              "title": "generate_claude_desktop_configArguments",
+              "type": "object"
+            },
+            "name": "generate_claude_desktop_config",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "generate_claude_desktop_configOutput",
+              "type": "object"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "label": "upgrade-packager-before",
+  "protocol": "2025-06-18",
+  "purpose": "controlled version replay now",
+  "resolvedOverlay": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/artifacts/packager-2.1.1",
+  "serverInfo": {
+    "name": "aimarket-mcp-packager",
+    "version": "1.30.0"
+  },
+  "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/upgrade-packager-before.json",
+  "snapshotSha256": "905851d689d5f4d6a2e0258306785d5ed259b5df41b906e305892518110623fa",
+  "sourceFilesSha256": {
+    "capture": "26f7beebb7fdb78b3cbf53dfaec79a68f21c9e7b9d6d4862e1a9de67d1e3252b",
+    "launcher": "d748c343073bd35cc62daf208c5c27bd23244b9beb951f9a6fbef38ce8c93197",
+    "reader": "1f21efca7015e9ce34c11bcbf41e7e27daf4ce4c1e4c99fac0740415ce765fd2"
+  },
+  "stderr": "upgrade-packager-before-stderr.log",
+  "toolCalls": 0,
+  "toolCount": 3
+}

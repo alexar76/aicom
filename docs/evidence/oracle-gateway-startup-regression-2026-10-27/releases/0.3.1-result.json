@@ -1,0 +1,57 @@
+{
+  "argv": [
+    "/private/tmp/pypi-mcp-releases-20261027/bin/python",
+    "-I",
+    "-B",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/guarded_launch.py",
+    "--package-root",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/artifacts/0.3.1"
+  ],
+  "artifact": {
+    "files": [
+      {
+        "path": "docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/artifacts/0.3.1/aimarket_oracle_gateway/__init__.py",
+        "sha256": "ddefe118c96466edb7dd12a63ae4d83a8d1232c3ddf3d8eb0a75dfb4ef5a30f7"
+      },
+      {
+        "path": "docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/artifacts/0.3.1/aimarket_oracle_gateway/gateway_core.py",
+        "sha256": "58374f00dfbf69f0d090065490f3491d985289d6d8688b1037476eccf3ac3a64"
+      },
+      {
+        "path": "docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/artifacts/0.3.1/aimarket_oracle_gateway/mcp_tool_surface.py",
+        "sha256": "c3b8ce969fa3dba0580846bc402e1741c75ea9e0c552384dec8f22613bad54bb"
+      },
+      {
+        "path": "docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/artifacts/0.3.1/aimarket_oracle_gateway/stdio_server.py",
+        "sha256": "3866122cebf656a6672b0cde626ad3fd56c3165224a45b0b9bcd758d6364fce5"
+      }
+    ],
+    "metadata": {
+      "Name": "aimarket-oracle-gateway",
+      "Version": "0.3.1"
+    },
+    "wheel": "docs/evidence/histor-full-observations-2026-10-27/python-packages/wheels/aimarket_oracle_gateway-0.3.1-py3-none-any.whl",
+    "wheelSha256": "89feba4ff53724754dc29d981c9e013d9080ab4a132a0630df5321caa0af8101"
+  },
+  "completedAt": "2026-10-27T13:30:57.074898Z",
+  "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/state/0.3.1",
+  "environmentNames": [
+    "PATH"
+  ],
+  "error": {
+    "message": "server exited before answering initialize",
+    "type": "RuntimeError"
+  },
+  "guard": "Python audit hooks deny DNS, connections and child processes; not an OS sandbox",
+  "initialize": null,
+  "processExitCode": 1,
+  "sourceHashes": {
+    "guarded_launch.py": "70533a10fb610b8ef50761f1bd2c3be8fb73a2c4d1ccbcd50d81d9778811ff68",
+    "reproduce.py": "6dc7b2f7c6de9224e89843845001154914371b3a24d43b4bdb8ead8f0cd63999"
+  },
+  "startedAt": "2026-10-27T13:30:56.780257Z",
+  "toolCalls": 0,
+  "toolCount": null,
+  "tools": null,
+  "version": "0.3.1"
+}

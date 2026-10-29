@@ -1,0 +1,76 @@
+{
+  "verifiedAt": "2026-10-28T16:52:05.857755+00:00",
+  "result": "verified",
+  "deployedRuntimeCommit": "27dd35d785935a1938f18d375eb56214ee6e3aad",
+  "initialAssetSnapshotCommit": "adea1f8a197d4e9badfed559b960518bd1449cf4",
+  "sourceNote": "The metadata-only commit was synchronized after the initial archive and before game/World builds. Forge runtime is unchanged by that commit. The deploy log prints the initial archive commit.",
+  "origins": {
+    "forge": "https://forge.pingblip.com",
+    "game": "https://pingblip.com",
+    "world": "https://world.pingblip.com"
+  },
+  "containers": {
+    "/pingblip-forge-1": {
+      "tag": "pingblip-forge",
+      "imageDigest": "sha256:140a0c56f285345b53a3fba6764bbab6dfef0f594110bf1406fd55c6d71107ac",
+      "state": "running"
+    },
+    "/pingblip-pingblip-1": {
+      "tag": "pingblip-pingblip",
+      "imageDigest": "sha256:a3fbf9146ac1b74a628ec0570ea1801f2e777496dfe7351021cd8abcff0851d2",
+      "state": "running"
+    },
+    "/pingblip-world-1": {
+      "tag": "pingblip-world",
+      "imageDigest": "sha256:507f4cae897f5ba002b7be06f0e2cce170768fb080f14d202accb18cc5a81f45",
+      "state": "running"
+    }
+  },
+  "assetUrls": {
+    "checked": 745,
+    "passed": 745,
+    "failed": 0,
+    "report": "live-assets.json"
+  },
+  "socialPreviews": {
+    "metadataChecked": 160,
+    "metadataPassed": 160,
+    "renderedOgChecked": 14,
+    "renderedOgPassed": 14,
+    "oldJpegComparisons": 14,
+    "ambiguousOldComparisons": [],
+    "report": "live-og-verification.json"
+  },
+  "browser": {
+    "checked": 33,
+    "passed": 33,
+    "failed": 0,
+    "screenshots": 47,
+    "report": "browser-smoke-summary.json"
+  },
+  "compiledGameVersions": {
+    "result": "all-80-match",
+    "observed": 80,
+    "expected": 80
+  },
+  "httpsHealth": {
+    "ok": true,
+    "report": "https-health.json"
+  },
+  "observations": [
+    {
+      "check": "forge-spark-moth",
+      "url": "https://telegram.org/js/telegram-web-app.js",
+      "browserError": "Failed to load resource: net::ERR_SOCKET_NOT_CONNECTED",
+      "independentHttpProbe": {
+        "method": "HEAD",
+        "status": 200,
+        "contentType": "application/javascript",
+        "evidence": "telegram-script-http.txt"
+      },
+      "effect": "Optional Telegram integration script; selected Forge model version, SHA256 and rendering pass."
+    }
+  ],
+  "dataAndEnvironment": "Production environment and persistent volumes retained; PostgreSQL container remained healthy and was not recreated.",
+  "publicationTarget": "Gitea alexar76/aicom main only; no GitHub writes"
+}

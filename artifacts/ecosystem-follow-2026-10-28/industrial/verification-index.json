@@ -1,0 +1,274 @@
+{
+  "generated_at_utc": "2026-10-28T15:06:13.123701+00:00",
+  "request_count": 24,
+  "statuses": {
+    "200": 23,
+    "403": 1
+  },
+  "records": [
+    {
+      "key": null,
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/commits?path=gateway%2Faimarket-federation.mjs&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:59:24.674691+00:00",
+      "status": 200,
+      "sha256": "8eeb0abb4ad4eee979fe1d2d9e643e4f4bd8626ffa88f7a9a5ea8997c4db6842",
+      "bytes": 7562,
+      "rate_remaining": "59",
+      "source_file": "adapter-history.json"
+    },
+    {
+      "key": "announce-runs",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/actions/workflows/announce-sentinel-aimarket.yml/runs?per_page=20",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:01:11.624829+00:00",
+      "status": 200,
+      "sha256": "9e82e03ef54343324e747acd71551cf0f2fe3c265e33ce92169e115d9392c97b",
+      "bytes": 64467,
+      "rate_remaining": "49",
+      "source_file": "announce-runs.json"
+    },
+    {
+      "key": "announce-success-jobs",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/actions/runs/37386350807/jobs",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:02:14.328368+00:00",
+      "status": 200,
+      "sha256": "b9c83866f4e257b92f0e018e4dbbbab2b7c2318b3caab9e1644a10a10158d7df",
+      "bytes": 1585,
+      "rate_remaining": "44",
+      "source_file": "announce-success-jobs.json"
+    },
+    {
+      "key": "announce-success-logs",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/actions/runs/37386350807/logs",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:02:14.328872+00:00",
+      "status": 403,
+      "sha256": null,
+      "bytes": null,
+      "rate_remaining": null,
+      "source_file": "announce-success-logs.json"
+    },
+    {
+      "key": null,
+      "url": "https://pypi.org/pypi/aimarket-hub/3.14.0/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:05:17.134441+00:00",
+      "status": 200,
+      "sha256": "07690489b8a8ef742e17ff7b4a004fb4a1a97cbfb708fbda2cb0e19adb6d4dae",
+      "bytes": 57294,
+      "rate_remaining": null,
+      "source_file": "ci-package-provenance.json"
+    },
+    {
+      "key": "current-requirements",
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/aimarket-sentinel/requirements.txt",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:02:51.999107+00:00",
+      "status": 200,
+      "sha256": "a32ecd725282ec79f7a44563d9828509fe2a8f1a96564bebd7fb296fc6220fe0",
+      "bytes": 90,
+      "rate_remaining": null,
+      "source_file": "current-requirements.json"
+    },
+    {
+      "key": "distribution-initial-jobs",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/actions/runs/37384892675/jobs",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:04:00.067046+00:00",
+      "status": 200,
+      "sha256": "85b46987d26aa08608235f4ebd85b95c288414fe02e47814a37991ef650eb061",
+      "bytes": 4772,
+      "rate_remaining": "42",
+      "source_file": "distribution-initial-jobs.json"
+    },
+    {
+      "key": null,
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/actions/workflows/verify-sentinel-distribution.yml/runs?per_page=20",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:03:17.219334+00:00",
+      "status": 200,
+      "sha256": "423b3a93ccf932581d28de0c2822de0335c438dc6ffec68bc4137722bf315956",
+      "bytes": 96683,
+      "rate_remaining": "43",
+      "source_file": "distribution-runs.json"
+    },
+    {
+      "key": "distribution-test-workflow",
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/5a400bd4b2d82c495ccb54e0aea007a02cb9f60a/.github/workflows/verify-sentinel-distribution.yml",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:02:52.000195+00:00",
+      "status": 200,
+      "sha256": "9ec7ee8402c8bcea636e88f37804fd94d506162acd3a632188a340e459c72fd6",
+      "bytes": 1919,
+      "rate_remaining": null,
+      "source_file": "distribution-test-workflow.json"
+    },
+    {
+      "key": "dockerfile",
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/0266b6d59355acdebec6e76036e2451396d2799f/aimarket-sentinel/Dockerfile",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:01:11.624213+00:00",
+      "status": 200,
+      "sha256": "6ca24aa991a6408cbf9482752c3f390523e95ff50bb7fb987654b985956f4856",
+      "bytes": 256,
+      "rate_remaining": null,
+      "source_file": "dockerfile.json"
+    },
+    {
+      "key": "initial-associated-prs",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/commits/e3cd89289faed6d785fa4fddaf406e158403cfe8/pulls",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:00:05.783074+00:00",
+      "status": 200,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2,
+      "rate_remaining": "58",
+      "source_file": "initial-associated-prs.json"
+    },
+    {
+      "key": "initial-commit",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/commits/e3cd89289faed6d785fa4fddaf406e158403cfe8",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:00:05.782506+00:00",
+      "status": 200,
+      "sha256": "7f884667e9ed0f60359ddb3ec8d16af91241c7187a707113aea8117bcebfb17c",
+      "bytes": 18755,
+      "rate_remaining": "56",
+      "source_file": "initial-commit.json"
+    },
+    {
+      "key": "pin-commit",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/commits/0266b6d59355acdebec6e76036e2451396d2799f",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:00:05.782945+00:00",
+      "status": 200,
+      "sha256": "b746ae794e6952751f7bedf970ed6b34b4243125004d398cbc1b0f6ece596010",
+      "bytes": 8330,
+      "rate_remaining": "57",
+      "source_file": "pin-commit.json"
+    },
+    {
+      "key": null,
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/0266b6d59355acdebec6e76036e2451396d2799f/.github/workflows/announce-sentinel-aimarket.yml",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:00:36.107650+00:00",
+      "status": 200,
+      "sha256": "eb131ae99f1c959c460b0245b033459e7270e45ff8203ce966f11a9519be9565",
+      "bytes": 2683,
+      "rate_remaining": null,
+      "source_file": "pinned-federation-docs.json"
+    },
+    {
+      "key": null,
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/0266b6d59355acdebec6e76036e2451396d2799f/aimarket-sentinel/README.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:00:36.108072+00:00",
+      "status": 200,
+      "sha256": "7dc8bed82037c9a2ec5008e010c2332430b54f5098d35824fc58bacb8e39e439",
+      "bytes": 1221,
+      "rate_remaining": null,
+      "source_file": "pinned-federation-docs.json"
+    },
+    {
+      "key": null,
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/0266b6d59355acdebec6e76036e2451396d2799f/aimarket-sentinel/app.py",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:00:36.108204+00:00",
+      "status": 200,
+      "sha256": "15fb078fa567ff5328f3150ccc75ccad64df887219f0fc33ef7d2d4c69ef35c6",
+      "bytes": 4372,
+      "rate_remaining": null,
+      "source_file": "pinned-federation-docs.json"
+    },
+    {
+      "key": null,
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/0266b6d59355acdebec6e76036e2451396d2799f/gateway/server.mjs",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:00:36.108328+00:00",
+      "status": 200,
+      "sha256": "cbfb9fa97693976e52bbc6e12b23dde715eeeae982d0f4faf2886c8d82ef7a37",
+      "bytes": 65058,
+      "rate_remaining": null,
+      "source_file": "pinned-federation-docs.json"
+    },
+    {
+      "key": null,
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/0266b6d59355acdebec6e76036e2451396d2799f/.github/workflows/industrial-sentinel.yml",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:00:36.531650+00:00",
+      "status": 200,
+      "sha256": "67bca6f64ab46976044ac574a8eca2902656dd2b26e4cf32cee782233a864bf1",
+      "bytes": 710,
+      "rate_remaining": null,
+      "source_file": "pinned-federation-docs.json"
+    },
+    {
+      "key": "pinned-tree",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/git/trees/0266b6d59355acdebec6e76036e2451396d2799f?recursive=1",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:00:05.783185+00:00",
+      "status": 200,
+      "sha256": "d70a24d3a0201486fd4c773e0ffd6b43bb464510711756a394ef0e4b0f376ff2",
+      "bytes": 127528,
+      "rate_remaining": "55",
+      "source_file": "pinned-tree.json"
+    },
+    {
+      "key": "python-hub-history",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/commits?path=aimarket-sentinel%2FDockerfile&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:01:11.624976+00:00",
+      "status": 200,
+      "sha256": "4a0669db1ef78c4b8301325a767ca8da7da4786246cba69dd9f25bf88c362cbf",
+      "bytes": 3801,
+      "rate_remaining": "50",
+      "source_file": "python-hub-history.json"
+    },
+    {
+      "key": "python-introduction",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/commits/5a400bd4b2d82c495ccb54e0aea007a02cb9f60a",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:02:14.329134+00:00",
+      "status": 200,
+      "sha256": "db2c4eea54d3b990223925b78f361ba42050516720fe114b2746442463722cea",
+      "bytes": 36264,
+      "rate_remaining": "46",
+      "source_file": "python-introduction.json"
+    },
+    {
+      "key": "requirements-at-initial-run",
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/5a400bd4b2d82c495ccb54e0aea007a02cb9f60a/aimarket-sentinel/requirements.txt",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:04:00.067423+00:00",
+      "status": 200,
+      "sha256": "e4b883996010d9901410a1b0280103a7fcca3966c2b214b07a0b222daa5b5470",
+      "bytes": 21,
+      "rate_remaining": null,
+      "source_file": "requirements-at-initial-run.json"
+    },
+    {
+      "key": "requirements",
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/0266b6d59355acdebec6e76036e2451396d2799f/aimarket-sentinel/requirements.txt",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:01:11.624679+00:00",
+      "status": 200,
+      "sha256": "a32ecd725282ec79f7a44563d9828509fe2a8f1a96564bebd7fb296fc6220fe0",
+      "bytes": 90,
+      "rate_remaining": null,
+      "source_file": "requirements.json"
+    },
+    {
+      "key": "workflow-at-success",
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/e8f654c6e9825a23b885a8d92a414ea6a29109d9/.github/workflows/announce-sentinel-aimarket.yml",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:02:14.328996+00:00",
+      "status": 200,
+      "sha256": "eb131ae99f1c959c460b0245b033459e7270e45ff8203ce966f11a9519be9565",
+      "bytes": 2683,
+      "rate_remaining": null,
+      "source_file": "workflow-at-success.json"
+    }
+  ]
+}

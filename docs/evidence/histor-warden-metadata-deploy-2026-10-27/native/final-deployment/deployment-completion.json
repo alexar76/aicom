@@ -1,0 +1,20 @@
+{
+  "unit": "histor-warden-metadata-deploy-4afe02438-resume.service",
+  "systemdSuccessCompletionObserved": true,
+  "systemdFailureObserved": false,
+  "controlledEvents": [
+    {
+      "at": "2026-10-27T17:26:45.746042+00:00",
+      "phase": "native-deploy-started",
+      "imageDigest": "sha256:1221f1bcc8af9081c923b9064301674d5bc4d8d0ce701cca1075a5b1355b3017",
+      "orderId": "deploy-operator-warden-metadata-4afe02438-1793122005"
+    },
+    {
+      "at": "2026-10-27T17:27:22.205231+00:00",
+      "phase": "native-deploy-verified",
+      "imageDigest": "sha256:1221f1bcc8af9081c923b9064301674d5bc4d8d0ce701cca1075a5b1355b3017",
+      "sourceCommit": "4afe0243856d02b6b543b9b9559f2a286fab1a90",
+      "version": "0.22.2"
+    }
+  ]
+}

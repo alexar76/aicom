@@ -1,0 +1,206 @@
+[
+  {
+    "url": "https://protocolprobe.com/mcp/servers/dev.modelmarket/mcp-security",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T15:01:14.066430+00:00",
+    "status": 200,
+    "bytes": 84990,
+    "sha256": "96dabcd64e2d10faad9d0e5f57be43e5448321cac932cce20be3d1c228c659eb",
+    "links": [
+      "/mcp/reports",
+      "/mcp/reports",
+      "/docs/api",
+      "/mcp/reports/registry-vs-reality",
+      "/mcp/reports/catalogue",
+      "/mcp/reports/not-tested",
+      "/methodology",
+      "/mcp/publishers/dev.modelmarket",
+      "https://modelcontextprotocol.io/registry/about#verifying-server-authenticity",
+      "https://github.com/alexar76/warden",
+      "https://modelmarket.dev/tools/",
+      "/methodology#token-cost",
+      "/methodology#auth-kind",
+      "/mcp/publishers/dev.modelmarket",
+      "https://github.com/alexar76/warden",
+      "https://github.com/alexar76/warden/blob/HEAD/SECURITY.md",
+      "/methodology#cross-llm",
+      "/mcp/compare?a=dev.modelmarket/mcp-security&b=com.decionis/mcp",
+      "/mcp/compare?a=dev.modelmarket/mcp-security&b=io.github.JesseGdotIO/hermes-plant",
+      "/mcp/compare?a=dev.modelmarket/mcp-security&b=io.github.philpof102-svg/mainstreet",
+      "/mcp/compare?a=dev.modelmarket/mcp-security&b=com.decision-anchor/da",
+      "/mcp/compare?a=dev.modelmarket/mcp-security&b=com.fidacy/ai-agent-firewall",
+      "/mcp/compare?a=dev.modelmarket/mcp-security&b=com.kenwea.www/marketplace",
+      "/api/v1/servers/dev.modelmarket/mcp-security",
+      "/docs/api",
+      "mailto:hello@protocolprobe.com?subject=Server%20page%3A%20dev.modelmarket%2Fmcp-security",
+      "/methodology",
+      "/docs/api",
+      "/mcp/reports/registry-vs-reality",
+      "/mcp/reports/catalogue",
+      "/mcp/reports/not-tested",
+      "/methodology",
+      "/about"
+    ],
+    "scripts": [
+      "/js/fold.js",
+      "/theme.js",
+      "/_vercel/insights/script.js"
+    ],
+    "contexts": [
+      {
+        "needle": "2026-10-23",
+        "text": "Updates Corrections log MCP servers › dev.modelmarket › mcp-security MCP server · registry snapshot 2026-10-23 · last tested 2026-10-23 dev.modelmarket/mcp-security MCP security checks — WARDEN and HISTOR — the publisher's title by modelmarket.dev · domain (the registry's namespace rule) repository owner on GitHub: alexar76 (personal account) Source ↗ Website ↗ Scan MCP tool definitions for poisoning, look up server history, count tool-list tokens. Free. — the publisher's description 5 of 5 record checks met Read-only · tools listed 2026-10-23 Topic: security · AI-classified Pricing: free · AI-classified version 1.0.0 TypeScript streamable HTTP 4 tools Summary What it offers Tool descriptions Add to your client Install and updates Listing v"
+      },
+      {
+        "needle": "2026-10-23",
+        "text": "CP servers › dev.modelmarket › mcp-security MCP server · registry snapshot 2026-10-23 · last tested 2026-10-23 dev.modelmarket/mcp-security MCP security checks — WARDEN and HISTOR — the publisher's title by modelmarket.dev · domain (the registry's namespace rule) repository owner on GitHub: alexar76 (personal account) Source ↗ Website ↗ Scan MCP tool definitions for poisoning, look up server history, count tool-list tokens. Free. — the publisher's description 5 of 5 record checks met Read-only · tools listed 2026-10-23 Topic: security · AI-classified Pricing: free · AI-classified version 1.0.0 TypeScript streamable HTTP 4 tools Summary What it offers Tool descriptions Add to your client Install and updates Listing vs reality Who made it Thr"
+      },
+      {
+        "needle": "18 checks",
+        "text": ". Same values as each page; no score. Security testing What did we test, and what did we leave out? 18 checks · features #1, #2 Not probed (we call no server's tools) We connected and read what the server declares, but did not call its tools: ProtocolProbe calls no server's tools for anything it publishes. This is our choice, not a block by the server. No security score is given; a check we did not run is never counted as passed. The 18 checks at a glance our test · 2026-10-23 1 Inventory : exercised 2 Hidden instructions : exercised 3 Real execution : not run · our policy 4 Secret leak : not run · nothing to check it against 5 Internal addresses : not run · our policy 6 Unconfirmed changes : not run · our policy 7 Bad input : not run · our"
+      },
+      {
+        "needle": "18 checks",
+        "text": "k by the server. No security score is given; a check we did not run is never counted as passed. The 18 checks at a glance our test · 2026-10-23 1 Inventory : exercised 2 Hidden instructions : exercised 3 Real execution : not run · our policy 4 Secret leak : not run · nothing to check it against 5 Internal addresses : not run · our policy 6 Unconfirmed changes : not run · our policy 7 Bad input : not run · our policy 8 Model requests : not run · nothing to check it against 9 Sensitive questions : not run · nothing to check it against 10 Folder boundary : not run · our policy 11 Log leaks : not run · nothing to check it against 12 Hidden content : not run · nothing to check it against 13 Fake assistant turns : not applicable 14 Token passthro"
+      },
+      {
+        "needle": "did not",
+        "text": "e descriptions, not something we tested, and the server opened a session without any credential. We did not call it. Each line comes from a section below, with its source and date. How fresh this is Live-tested yes, a real session (not a text-only review) Last tested 2026-10-23 Mode read-only (no tool calls) Latest version 1.0.0 , published 2026-10-20 (registry, as of the 2026-10-23 snapshot) First listed version 2026-10-20 (earliest version still in the registry; older removed versions would be earlier) Registry data snapshot 2026-10-23 Package and repository checked 2026-10-22 Engine mcp-runtime-engine@0.1.0 · sdk@1.32.0 Dead or stale signals None found in the records we hold Looked for and not found: deprecated in the registry; repositor"
+      },
+      {
+        "needle": "did not",
+        "text": "out the “changes data” mark is described as only reading, searching or calculating, or the two runs did not agree. No tool was called. Read the publisher’s full description before relying on it. “Publisher declares” lists the hints the server itself sends with the tool (MCP annotations: read-only, destructive, idempotent, open-world); they are the publisher's claims, not checked by us. Inputs are the parameters in the tool's own input schema: name, declared type, whether it is required, and the first sentence of its description. Read 2026-10-23. How well are its tools described? Features #4 and #5 How clearly this server's own tool descriptions say what a tool does, and how consistent its tool list is. The first part is an AI model's yes/no"
+      },
+      {
+        "needle": "No security",
+        "text": "e calls no server's tools for anything it publishes. This is our choice, not a block by the server. No security verdict is published before verification. What can dev.modelmarket/mcp-security do? It lists 4 tools. In our AI model's reading of their descriptions (two runs had to agree, nobody checked it by hand), they include tools that read or search and move money. We did not call any tool, so this describes the text, not the behaviour. Can dev.modelmarket/mcp-security change or delete data? 1 of its tools says in its description that it creates, edits, deletes, sends or runs something (our AI model's reading). We did not call any tool, so we cannot say what actually happens. Does dev.modelmarket/mcp-security publish a security policy? Yes"
+      },
+      {
+        "needle": "No security",
+        "text": "e calls no server's tools for anything it publishes. This is our choice, not a block by the server. No security score is given; a check we did not run is never counted as passed. The 18 checks at a glance our test · 2026-10-23 1 Inventory : exercised 2 Hidden instructions : exercised 3 Real execution : not run · our policy 4 Secret leak : not run · nothing to check it against 5 Internal addresses : not run · our policy 6 Unconfirmed changes : not run · our policy 7 Bad input : not run · our policy 8 Model requests : not run · nothing to check it against 9 Sensitive questions : not run · nothing to check it against 10 Folder boundary : not run · our policy 11 Log leaks : not run · nothing to check it against 12 Hidden content : not run · not"
+      },
+      {
+        "needle": "protocol",
+        "text": "t in the MCP Inspector · runs on your machine, opens in your browser · Node 22.19+ npx @modelcontextprotocol/inspector@2.11.0 --server-url https://modelmarket.dev/tools/mcp/security --transport http The server runs on the operator's infrastructure; it may ask you to sign in when you first connect. Zed's docs we read on 2026-10-26 describe remote servers by URL and do not name the transport. The MCP Inspector lists the server's tools, resources and prompts; a tool you call there runs for real. Built from the server's registry entry with each client's documented format (checked 2026-10-14; the Cursor link and the VS Code command 2026-10-19; the MCP Inspector command 2026-10-21; Cline, Gemini CLI, OpenAI Codex and Zed 2026-10-26). Values in < "
+      },
+      {
+        "needle": "protocol",
+        "text": "r the command starts, or your own server at its URL after a one-time proof that you control it: npx protocolprobe-selftest . How three small models read this tool list Tool list sent to three models · no tool called Each list was sent once to three small, low-cost models, each at its lowest reasoning setting, with the same one-line request and no system prompt: Claude Haiku 5.5, GPT-5-nano and Gemini 2.5 Flash. These results describe that model on that day, not the vendor's other models and not how a real client will behave; larger models, reasoning, or a client's own system prompt can give different results. Claude Haiku 5.5 Claude Haiku 5.5 (Anthropic's count): 1,330 prompt tokens for this tool list and the one-line request, on 2026-10-25"
+      },
+      {
+        "needle": "How we",
+        "text": " declared type, whether it is required, and the first sentence of its description. Read 2026-10-23. How well are its tools described? Features #4 and #5 How clearly this server's own tool descriptions say what a tool does, and how consistent its tool list is. The first part is an AI model's yes/no reading of each description; the second part is counted. We do not turn it into a grade. Descriptions AI reading of each description Says what the tool does 100% of 4 tools Says what it returns 100% of 4 tools States limits, defaults or errors 0% of 3 tools Says when to use it 100% of 4 tools Items covered per tool 3.3 of 4 on average Counted from the listing Parameters with a description 100% of 11 Tools with a description 100% of 4 Typical descr"
+      },
+      {
+        "needle": "scoring",
+        "text": "own test , 2026-10-23 , mcp-runtime-engine@0.1.0 . Which checks count and why follows our published scoring model. What happened during the test? Feature #8 The steps in order, as the test record holds them. 0 ms Started a read-only session with the server's remote endpoint 531 ms Connected after 0 redirects. No credential was sent or needed. Read the inventory: 4 tools, 0 resources, 0 prompts. 3,730 ms Finished: 2 checks exercised. Reference How is it classified? 18 fields One value per field, each with its source. Fields written by AI models are marked. A field with no value says why. Topic AI-classified security AI-classified · 2026-10-23 Pricing model AI-classified free read from modelmarket.dev/tools/ · 2026-10-23 “ Free tools for deve"
+      },
+      {
+        "needle": "static",
+        "text": "scan reads or searches “ Scan an MCP server's tools/list with WARDEN, the open-source MCP firewall: static rules and a threat list over every name, description, schema and annotation. ” Publisher declares: read-only yes · destructive no · idempotent yes · open-world yes 2 inputs , 1 required tools array required “ The server's tools/list result: [{name, description, inputSchema, ...}] ” server object “ Optional {name, url} to label the verdict ” histor_check reads or searches “ Look up an MCP server in HISTOR, a public append-only log of MCP tool sets: when its tool set was first pinned, how often it changed, and what the pattern scan found. ” Publisher declares: read-only yes · destructive no · idempotent yes · open-world yes 2 inputs endp"
+      },
+      {
+        "needle": "runtime",
+        "text": " be earlier) Registry data snapshot 2026-10-23 Package and repository checked 2026-10-22 Engine mcp-runtime-engine@0.1.0 · sdk@1.32.0 Dead or stale signals None found in the records we hold Looked for and not found: deprecated in the registry; repository link does not open; repository archived; no push in over 365 days. Does not apply: listed version cannot be installed or is withdrawn. Each line is a dated fact from a public record. It does not say whether the server still works, and a record can change after the date shown. Changes since the last refresh New in the registry: not in the list of 2026-10-04, listed on 2026-10-23 with version 1.0.0 (published 2026-10-20). Source: the official MCP Registry list on 2026-10-04 and on 2026-10-23."
+      },
+      {
+        "needle": "runtime",
+        "text": " so there are no sign-in addresses to check. not applicable Source: our own test , 2026-10-23 , mcp-runtime-engine@0.1.0 . Which checks count and why follows our published scoring model. What happened during the test? Feature #8 The steps in order, as the test record holds them. 0 ms Started a read-only session with the server's remote endpoint 531 ms Connected after 0 redirects. No credential was sent or needed. Read the inventory: 4 tools, 0 resources, 0 prompts. 3,730 ms Finished: 2 checks exercised. Reference How is it classified? 18 fields One value per field, each with its source. Fields written by AI models are marked. A field with no value says why. Topic AI-classified security AI-classified · 2026-10-23 Pricing model AI-classified "
+      },
+      {
+        "needle": "test",
+        "text": "ools change data Test your own server Run our checks from your machine; nothing is sent to us. Self-test command Test your server at its URL A server that needs a token Run it in CI (GitHub code scanning) How record checks are counted Your server’s page and README badge Discover servers on your machine Use the data Free to reuse, with dates and sources. API (no key) Dataset and how to cite Feed: reports, updates, corrections llms.txt for AI tools Understand the registry What we measured, how, and what changed. MCP in numbers: every figure, with charts Tool lists at three AI models Main report What is in the registry Why some servers are not tested Changes: registry and re-checked facts Servers removed from the registry Methodology Updates C"
+      },
+      {
+        "needle": "test",
+        "text": "h charts Tool lists at three AI models Main report What is in the registry Why some servers are not tested Changes: registry and re-checked facts Servers removed from the registry Methodology Updates Corrections log MCP servers › dev.modelmarket › mcp-security MCP server · registry snapshot 2026-10-23 · last tested 2026-10-23 dev.modelmarket/mcp-security MCP security checks — WARDEN and HISTOR — the publisher's title by modelmarket.dev · domain (the registry's namespace rule) repository owner on GitHub: alexar76 (personal account) Source ↗ Website ↗ Scan MCP tool definitions for poisoning, look up server history, count tool-list tokens. Free. — the publisher's description 5 of 5 record checks met Read-only · tools listed 2026-10-23 Topic: s"
+      },
+      {
+        "needle": "audit",
+        "text": "age registry Dependency advisories does not apply ships no package, so there are no dependencies to audit Popularity does not apply remote-only server: ships no package, so there is nothing to look up in a package registry Publisher signals owner: a personal account · repository age: 31–90 days · stars: 0–9 api.github.com · 2026-10-22 Maintenance active api.github.com · 2026-10-22 Environment the publisher's infrastructure where it runs, from the hosting type “Not stated” means the source did not state it; “does not apply” means it does not apply to this kind of server; “our limit” means our own lookup failed. A linked value opens the directory filtered to the same value. Cite or correct this page Sources and corrections Suggested citation "
+      }
+    ]
+  },
+  {
+    "url": "https://index.canopii.dev/server/io.github.alexar76/aimarket-plugins",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T15:01:14.066844+00:00",
+    "status": 200,
+    "bytes": 153683,
+    "sha256": "8e7de8c6a2420536015277acbe8c7fff359183c19274365b6f3f1fbedef3901f",
+    "links": [
+      "https://canopii.dev?utm_source=trust-index&utm_medium=header&utm_campaign=enterprise",
+      "https://github.com/alexar76/aimarket-plugins",
+      "/api/claim/github/start?server=io.github.alexar76%2Faimarket-plugins",
+      "/server/io.github.alexar76/aimarket-plugins/2.1.2",
+      "/server/io.github.alexar76/aimarket-plugins/2.1.1",
+      "/server/io.github.alexar76/aimarket-plugins/2.0.1"
+    ],
+    "scripts": [
+      "/_next/static/chunks/39nyd8wqasf5f.js",
+      "/_next/static/chunks/1q0dyz96ecazf.js",
+      "/_next/static/chunks/turbopack-0s_hk1g03famx.js",
+      "/_next/static/chunks/1l1k9o1m1lmt-.js",
+      "/_next/static/chunks/3iktgm5dbj29x.js",
+      "/_next/static/chunks/3vgpnpxhqmsmy.js",
+      "/_next/static/chunks/42deluxebks5h.js",
+      "/_next/static/chunks/0fd5nfz6mxns7.js",
+      "/_next/static/chunks/0cz1d0mv5g_q7.js",
+      "/_next/static/chunks/2gf5-47k32z5w.js"
+    ],
+    "contexts": [
+      {
+        "needle": "96",
+        "text": "aimarket-plugins MCP Server Security — Score 96/100, Grade A · Canopii Trust Index Canopii Trust Index All servers Resources Enterprise → aimarket-plugins MCP Server Security Report io.github.alexar76/aimarket-plugins Stdio MCP packager: AIMarket hub plugins into self-hosted MCP server products. 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % latest v 2.1.2 Repository Publisher-verified Declared MCP capabilities Tools 25 Resources Prompts Run it securely Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Are you the maintainer? Verify with Gi"
+      },
+      {
+        "needle": "96",
+        "text": "r76/aimarket-plugins Stdio MCP packager: AIMarket hub plugins into self-hosted MCP server products. 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % latest v 2.1.2 Repository Publisher-verified Declared MCP capabilities Tools 25 Resources Prompts Run it securely Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Are you the maintainer? Verify with GitHub to get alerted whenever alexar76/aimarket-plugins changes score — and claim the badge for your README. Claim this server The short answer Is aimarket-plugins safe to use? aimarket-plugins scores 96/100 (grade A) on the Canopii Trust Index — strong"
+      },
+      {
+        "needle": "AIMarket",
+        "text": "aimarket-plugins MCP Server Security Report io.github.alexar76/aimarket-plugins Stdio MCP packager: AIMarket hub plugins into self-hosted MCP server products. 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % latest v 2.1.2 Repository Publisher-verified Declared MCP capabilities Tools 25 Resources Prompts Run it securely Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Are you the maintainer? Verify with GitHub to get alerted whenever alexar76/aimarket-plugins changes score — and claim the badge for your README. Claim this server The short answer Is aimarket-plugins safe to use? aimarket-plugins "
+      },
+      {
+        "needle": "aimarket-plugins",
+        "text": "aimarket-plugins MCP Server Security — Score 96/100, Grade A · Canopii Trust Index Canopii Trust Index All servers Resources Enterprise → aimarket-plugins MCP Server Security Report io.github.alexar76/aimarket-plugins Stdio MCP packager: AIMarket hub plugins into self-hosted MCP server products. 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % latest v 2.1.2 Repository Publisher-verified Declared MCP capabilities Tools 25 Resources Prompts Run it securely Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii G"
+      },
+      {
+        "needle": "aimarket-plugins",
+        "text": " Score 96/100, Grade A · Canopii Trust Index Canopii Trust Index All servers Resources Enterprise → aimarket-plugins MCP Server Security Report io.github.alexar76/aimarket-plugins Stdio MCP packager: AIMarket hub plugins into self-hosted MCP server products. 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % latest v 2.1.2 Repository Publisher-verified Declared MCP capabilities Tools 25 Resources Prompts Run it securely Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Are you the maintainer? Verify with GitHub to get alerted whenever alexar76/aimarket-plugins changes score — and claim the badge fo"
+      },
+      {
+        "needle": "runtime",
+        "text": " prompt definitions stay fixed during a session — they don't change after a few calls, which is how runtime-gated rug-pulls slip past one-time review. Pass User-in-the-Loop / Approval Scope guard no destructive tool scope No over-broad or destructive tools (arbitrary shell, bulk-delete) that warrant human approval. Application Security Checks Warn Established maintainer recently published Brand-new / single anonymous maintainers raise takeover and malware risk. Fix: Publish under an established account/org; add multiple maintainers. Warn Adoption & popularity limited adoption A small, capped nudge from stars/downloads — widely-used servers get more eyes on bugs. It can never offset a real security failure. Fix: Adoption grows naturally with"
+      },
+      {
+        "needle": "runtime",
+        "text": "ding secrets from env/secret stores avoids hardcoding them. Pass No known-vulnerable dependencies 1 runtime deps, no known CVEs Runtime dependencies (parsed from the lockfile) are scanned against OSV.dev for published CVEs. Advisory: flagged dependencies lower the score but don't hard-cap it, since transitive reachability is unproven. Pass Dependencies pinned (lockfile) lockfile present A lockfile makes installs reproducible and resistant to silent dependency swaps. Pass Package name not typosquatting guard distinct package name Names mimicking popular packages are a common malware delivery vector. Pass Actively maintained recent commits Unmaintained servers don't receive security fixes. Pass Repository not archived guard active Archived re"
+      },
+      {
+        "needle": "test",
+        "text": " 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % latest v 2.1.2 Repository Publisher-verified Declared MCP capabilities Tools 25 Resources Prompts Run it securely Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Are you the maintainer? Verify with GitHub to get alerted whenever alexar76/aimarket-plugins changes score — and claim the badge for your README. Claim this server The short answer Is aimarket-plugins safe to use? aimarket-plugins scores 96/100 (grade A) on the Canopii Trust Index — strong posture. It passes 20 of the 26 security controls that apply to it, with no confirmed security fai"
+      },
+      {
+        "needle": "test",
+        "text": "s published. Reputation 3 stars 0 forks 0 open issues today last commit <1y age Security controls latest scored version v 2.1.2 Each control is evaluated deterministically with evidence. The score is earned from passing controls; a failed guard caps it. Model–MCP Runtime Guardrails Warn Strict JSON Schema Enforcement schemas not strict Tool inputs are constrained (additionalProperties:false), so unexpected arguments can't be smuggled in. Fix: Set additionalProperties:false and require explicit parameters on every tool. Pass Indirect Prompt Injection (IPI) Defenses guard no injection markers Tool/prompt/resource text is free of hidden instructions that could hijack the agent. Pass Tool Definition Integrity guard tool definitions stable; no r"
+      },
+      {
+        "needle": "audit",
+        "text": ".alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Are you the maintainer? Verify with GitHub to get alerted whenever alexar76/aimarket-plugins changes score — and claim the badge for your README. Claim this server The short answer Is aimarket-plugins safe to use? aimarket-plugins scores 96/100 (grade A) on the Canopii Trust Index — strong posture. It passes 20 of the 26 security controls that apply to it, with no confirmed security failures. How reliable is the security score for aimarket-plugins? We could evaluate 92% of the controls that apply to aimarket-plugins. Scores are deterministic — the same source always produces the same score — and a partially-"
+      },
+      {
+        "needle": "evidence",
+        "text": "ge Security controls latest scored version v 2.1.2 Each control is evaluated deterministically with evidence. The score is earned from passing controls; a failed guard caps it. Model–MCP Runtime Guardrails Warn Strict JSON Schema Enforcement schemas not strict Tool inputs are constrained (additionalProperties:false), so unexpected arguments can't be smuggled in. Fix: Set additionalProperties:false and require explicit parameters on every tool. Pass Indirect Prompt Injection (IPI) Defenses guard no injection markers Tool/prompt/resource text is free of hidden instructions that could hijack the agent. Pass Tool Definition Integrity guard tool definitions stable; no risky changes in version history Every consecutive version pair is diffed for "
+      },
+      {
+        "needle": "confidence",
+        "text": "MCP server products. 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % latest v 2.1.2 Repository Publisher-verified Declared MCP capabilities Tools 25 Resources Prompts Run it securely Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Are you the maintainer? Verify with GitHub to get alerted whenever alexar76/aimarket-plugins changes score — and claim the badge for your README. Claim this server The short answer Is aimarket-plugins safe to use? aimarket-plugins scores 96/100 (grade A) on the Canopii Trust Index — strong posture. It passes 20 of the 26 security controls that apply to it, with no co"
+      },
+      {
+        "needle": "confidence",
+        "text": "lways produces the same score — and a partially-scannable server cannot present a high one, because confidence caps the result. The scanner is open source, so this score can be reproduced independently. How was aimarket-plugins scored? Its published source was scanned against a fixed catalog of weighted security controls covering code safety, committed secrets, dependency vulnerabilities, tool-description integrity, authentication and transport, and maintenance. A confirmed flaw caps the score outright regardless of what else passes. The full rubric is published. Reputation 3 stars 0 forks 0 open issues today last commit <1y age Security controls latest scored version v 2.1.2 Each control is evaluated deterministically with evidence. The sc"
+      }
+    ]
+  }
+]

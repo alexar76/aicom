@@ -1,0 +1,21 @@
+{
+  "url": "https://noadsgames.org/",
+  "status": 200,
+  "retrieved_at": "2026-10-27T05:29:43.214354+00:00",
+  "sha256": "d5ae9494b1d6bcdf10937be1c49cbfab0a965f2b1ef510d4b9a780330c8bce9e",
+  "script_srcs": [
+    "https://www.googletagmanager.com/gtag/js?id=G-99K0L824D8",
+    "https://noadsgames.org/content/themes/dark-grid/js/player-journey.js?v=2",
+    "https://accounts.google.com/gsi/client",
+    "https://noadsgames.org/content/themes/dark-grid/js/jquery-3.6.2.min.js",
+    "https://noadsgames.org/content/themes/dark-grid/js/lazysizes.min.js",
+    "https://noadsgames.org/content/themes/dark-grid/js/bootstrap.bundle.min.js",
+    "https://noadsgames.org/js/comment-system.js",
+    "https://noadsgames.org/content/themes/dark-grid/js/script.js?v=4",
+    "https://noadsgames.org/content/themes/dark-grid/js/custom.js",
+    "https://noadsgames.org/content/themes/dark-grid/js/player-library.js?v=2",
+    "https://noadsgames.org/content/themes/dark-grid/js/analytics.js?v=6",
+    "https://noadsgames.org/js/stats.js"
+  ],
+  "html_tail": "dsgames.org/content/themes/dark-grid/js/player-library.js?v=2\" defer></script>\n<script type=\"text/javascript\" src=\"https://noadsgames.org/content/themes/dark-grid/js/analytics.js?v=6\" defer></script>\n<script type=\"text/javascript\" src=\"https://noadsgames.org/js/stats.js\" defer></script>\n<script>\n\t$(document).ready(function () {\n\t\tvar currentUrl = window.location.href;\n\t\t// Remove trailing slash if present for consistent matching (optional, but good practice)\n\t\tcurrentUrl = currentUrl.replace(/\\/$/, \"\");\n\n\n\t\t// Video Hover Logic (Lazy Loading)\n\t\t$('.list-game[data-video-src]').hover(\n\t\t\tfunction () {\n\t\t\t\tvar $this = $(this);\n\t\t\t\tvar videoSrc = $this.data('video-src');\n\t\t\t\tif (videoSrc && !$this.find('video.hover-video').length) {\n\t\t\t\t\t// Create video element on hover\n\t\t\t\t\tvar video = document.createElement('video');\n\t\t\t\t\tvideo.className = 'hover-video';\n\t\t\t\t\tvideo.loop = true;\n\t\t\t\t\tvideo.muted = true;\n\t\t\t\t\tvideo.playsInline = true;\n\t\t\t\t\tvideo.onerror = function() { $(this).remove(); };\n\t\t\t\t\tvideo.src = videoSrc;\n\t\t\t\t\t$this.prepend(video);\n\t\t\t\t\tvideo.play().catch(function () { $(video).remove(); });\n\t\t\t\t}\n\t\t\t},\n\t\t\tfunction () {\n\t\t\t\t// Remove video on mouse leave to free memory\n\t\t\t\tvar video = $(this).find('video.hover-video');\n\t\t\t\tif (video.length) {\n\t\t\t\t\tvideo[0].pause();\n\t\t\t\t\tvideo.remove();\n\t\t\t\t}\n\t\t\t}\n\t\t);\n\n\t\t$('.sidebar-menu a').each(function () {\n\t\t\tvar linkUrl = $(this).attr('href').replace(/\\/$/, \"\");\n\t\t\tif (linkUrl === currentUrl) {\n\t\t\t\t$(this).addClass('active');\n\t\t\t}\n\t\t});\n\n\t\t// Prefetch links on hover for faster navigation (reduces flash effect)\n\t\tvar prefetchedUrls = {};\n\t\t$('.sidebar-menu a, .navbar a').on('mouseenter', function() {\n\t\t\tvar url = $(this).attr('href');\n\t\t\tif (url && !prefetchedUrls[url] && url.indexOf('https://noadsgames.org/') === 0) {\n\t\t\t\tprefetchedUrls[url] = true;\n\t\t\t\tvar link = document.createElement('link');\n\t\t\t\tlink.rel = 'prefetch';\n\t\t\t\tlink.href = url;\n\t\t\t\tdocument.head.appendChild(link);\n\t\t\t}\n\t\t});\n\t});\n</script>\n</body>\n\n</html>\n"
+}

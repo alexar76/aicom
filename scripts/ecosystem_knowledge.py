@@ -78,6 +78,11 @@ def is_github_published(sat: dict[str, Any]) -> bool:
     return sat.get("github_published") is not False
 
 
+def is_knowledge_visible(sat: dict[str, Any]) -> bool:
+    """Explicit local/runtime entries can be known without inventing a GitHub repo."""
+    return is_github_published(sat) or sat.get("knowledge_visible") is True
+
+
 def load_runtime(path: Path | None = None) -> dict[str, dict[str, Any]]:
     p = path or RUNTIME_PATH
     if not p.is_file():
@@ -101,13 +106,15 @@ def components(*, map_path: Path | None = None,
     rt = load_runtime(runtime_path)
     rows: list[dict[str, Any]] = []
     for sat in load_satellites(map_path):
-        if not is_github_published(sat):
-            continue                    # unpublished: outside every knowledge base by rule
+        if not is_knowledge_visible(sat):
+            continue
         cid = str(sat["id"])
         extra = rt.get(cid, {})
         rows.append({
             "id": cid,
             "repo": str(sat.get("repo") or cid),
+            "github_published": is_github_published(sat),
+            "deployment_status": str(sat.get("deployment_status") or ""),
             "description": str(sat.get("description") or "").strip(),
             "description_i18n": {
                 str(lang): str(text).strip()
@@ -147,6 +154,8 @@ def render_block(rows: list[dict[str, Any]] | None = None, *, org: str = "alexar
         bits = [f"- {r['id']}"]
         if r["repo"] != r["id"]:
             bits.append(f"(repo {r['repo']})")
+        if r.get("github_published") is False:
+            bits.append("(local source; GitHub publication pending)")
         if r["optional"]:
             bits.append("(profile README)")
         if r.get("factory_embedded"):

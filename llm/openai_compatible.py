@@ -12,11 +12,13 @@ Implements LLMProvider for external OpenAI-compatible APIs:
 from __future__ import annotations
 
 import logging
-import os
 import time
 from typing import TYPE_CHECKING
 
 import httpx
+
+from llm.provider_secrets import resolve_provider_api_key
+from llm.credential_redaction import CredentialStreamRedactor, redact_credential
 
 from .provider import (
     GenerationConfig,
@@ -57,10 +59,12 @@ class OpenAICompatibleProvider(LLMProvider):
         super().__init__(name, config or {})
         self.base_url = base_url.rstrip("/")
         
-        # Resolve API key from env var or direct value
-        if api_key_env and not api_key:
-            api_key = os.environ.get(api_key_env, "")
-        self.api_key = api_key or ""
+        key_config = dict(config or {})
+        if api_key:
+            key_config["api_key"] = api_key
+        if api_key_env:
+            key_config["api_key_env"] = api_key_env
+        self.api_key = resolve_provider_api_key(key_config)
         
         self.model = model
         self.fallback_model = fallback_model
@@ -132,7 +136,7 @@ class OpenAICompatibleProvider(LLMProvider):
                 tokens_used = int(tt)
 
             choice = (result.get("choices") or [{}])[0]
-            cfg.finish_reason = str(choice.get("finish_reason") or "")
+            cfg.finish_reason = redact_credential(str(choice.get("finish_reason") or ""), self.api_key)
             if cfg.was_truncated:
                 logger.warning(
                     "%s: completion stopped at the output limit (finish_reason=%s) — the reply is "
@@ -148,11 +152,13 @@ class OpenAICompatibleProvider(LLMProvider):
                                active_model, cfg.finish_reason)
                 response_text = ""
 
+            response_text = redact_credential(response_text, self.api_key)
+
             self._update_metrics(tokens_used, latency)
             self._record_success()
 
             self._log_llm_call(
-                prompt,
+                redact_credential(prompt, self.api_key),
                 response_text,
                 latency,
                 True,
@@ -168,10 +174,10 @@ class OpenAICompatibleProvider(LLMProvider):
             return response_text
 
         except httpx.HTTPError as e:
+            error = redact_credential(str(e), self.api_key)
             latency = (time.time() - start_time) * 1000
             self._update_metrics(0, latency)
-            self._record_failure(str(e))
-            str(e)
+            self._record_failure(error)
             
             # Try fallback model if available
             if self.fallback_model and self.model != self.fallback_model:
@@ -183,20 +189,20 @@ class OpenAICompatibleProvider(LLMProvider):
                 finally:
                     self.model = original_model
             
-            logger.error(f"OpenAI-compatible generate failed: {e}")
+            logger.error("OpenAI-compatible generate failed: %s", error)
             self._log_llm_call(
-                prompt,
-                str(e),
+                redact_credential(prompt, self.api_key),
+                error,
                 latency,
                 False,
-                error=str(e),
+                error=error,
                 model=active_model,
                 task_type=cfg.task_type,
                 agent_type=cfg.agent_type,
                 model_role=getattr(cfg, "model_role", None),
                 product_id=getattr(cfg, "product_id", None),
             )
-            raise RuntimeError(f"Generation failed for {self.name}: {e}") from e
+            raise RuntimeError(f"Generation failed for {self.name}: {error}") from None
 
     async def stream(
         self, prompt: str, config: GenerationConfig | None = None
@@ -207,6 +213,7 @@ class OpenAICompatibleProvider(LLMProvider):
         # Honor the per-task model selection — streaming previously always used
         # self.model, ignoring model_override (wrong model + mispriced spend).
         active_model = cfg.model_override or self.model
+        redactor = CredentialStreamRedactor(self.api_key)
 
         try:
             messages = self._build_messages(prompt, cfg)
@@ -231,17 +238,28 @@ class OpenAICompatibleProvider(LLMProvider):
                         if data_str:
                             import json
                             data = json.loads(data_str)
+                            if data.get("error"):
+                                error = data["error"]
+                                message = error.get("message", "stream error") if isinstance(error, dict) else str(error)
+                                cfg.finish_reason = "error"
+                                raise RuntimeError(redact_credential(str(message), self.api_key))
                             choice = (data.get("choices") or [{}])[0]
                             # The terminal chunk carries it; a stream that ran out of budget
                             # otherwise ends exactly like one that finished, and the caller
                             # cannot tell a complete answer from a severed one.
                             if choice.get("finish_reason"):
-                                cfg.finish_reason = str(choice["finish_reason"])
+                                cfg.finish_reason = redact_credential(str(choice["finish_reason"]), self.api_key)
                             delta = choice.get("delta", {})
                             content = delta.get("content", "")
                             if content:
                                 total_tokens += 1
-                                yield content
+                                safe_content = redactor.feed(content)
+                                if safe_content:
+                                    yield safe_content
+
+            remaining = redactor.finish()
+            if remaining:
+                yield remaining
 
             latency = (time.time() - start_time) * 1000
             if cfg.was_truncated:
@@ -253,7 +271,7 @@ class OpenAICompatibleProvider(LLMProvider):
             # Book spend for the streamed call (was previously unrecorded, so
             # streaming bypassed the daily/monthly USD cost caps).
             self._log_llm_call(
-                prompt, "", latency, True,
+                redact_credential(prompt, self.api_key), "", latency, True,
                 tokens_used=total_tokens,
                 completion_tokens=total_tokens,
                 model=active_model,
@@ -263,19 +281,20 @@ class OpenAICompatibleProvider(LLMProvider):
                 product_id=getattr(cfg, "product_id", None),
             )
 
-        except httpx.HTTPError as e:
+        except Exception as e:
+            error = redact_credential(str(e), self.api_key)
             latency = (time.time() - start_time) * 1000
             self._update_metrics(total_tokens, latency)
-            self._record_failure(str(e))
+            self._record_failure(error)
             self._log_llm_call(
-                prompt, str(e), latency, False, error=str(e),
+                redact_credential(prompt, self.api_key), error, latency, False, error=error,
                 tokens_used=total_tokens, model=active_model,
                 task_type=cfg.task_type, agent_type=cfg.agent_type,
                 model_role=getattr(cfg, "model_role", None),
                 product_id=getattr(cfg, "product_id", None),
             )
-            logger.error(f"OpenAI-compatible stream failed: {e}")
-            raise RuntimeError(f"Streaming failed for {self.name}: {e}") from e
+            logger.error("OpenAI-compatible stream failed: %s", error)
+            raise RuntimeError(f"Streaming failed for {self.name}: {error}") from None
 
     async def check_health(self) -> ProviderHealth:
         start_time = time.time()
@@ -300,7 +319,7 @@ class OpenAICompatibleProvider(LLMProvider):
                 self.health.error_message = f"Unexpected status: {response.status_code}"
         except httpx.HTTPError as e:
             self.health.status = ProviderStatus.UNAVAILABLE
-            self.health.error_message = str(e)
+            self.health.error_message = redact_credential(str(e), self.api_key)
             self.health.consecutive_failures += 1
 
         self.health.last_check = time.time()

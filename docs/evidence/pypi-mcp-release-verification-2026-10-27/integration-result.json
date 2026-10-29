@@ -1,0 +1,564 @@
+{
+  "phase": "integration",
+  "checkedAt": "2026-10-27T10:58:23.973898+00:00",
+  "isolatedPython": true,
+  "environment": "/private/tmp/pypi-mcp-releases-20261027",
+  "packages": [
+    {
+      "distribution": "aimarket-metis",
+      "version": "0.2.4",
+      "modulePath": "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/metis/__init__.py"
+    },
+    {
+      "distribution": "aimarket-oracle-gateway",
+      "version": "0.3.2",
+      "modulePath": "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/aimarket_oracle_gateway/__init__.py"
+    },
+    {
+      "distribution": "aimarket-mcp-packager",
+      "version": "2.1.2",
+      "modulePath": "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/aimarket_mcp_packager/__init__.py"
+    }
+  ],
+  "packagerGenerator": {
+    "status": "ok",
+    "pluginVersion": "2.1.2"
+  },
+  "stdioIntegration": [
+    {
+      "preset": "aimarket-oracle-gateway",
+      "command": "python",
+      "args": [
+        "-m",
+        "aimarket_oracle_gateway.stdio_server"
+      ],
+      "status": "ok",
+      "toolCount": 36,
+      "safeCall": "list_oracle_capabilities",
+      "safeCallResult": {
+        "tools": [
+          {
+            "tool": "get_random",
+            "capability_id": "platon.random@v1",
+            "product_id": "prod-platon",
+            "price_usd": 0.004,
+            "category": "randomness",
+            "summary": "Unbiasable, Ed25519-signed verifiable randomness with a proof you can verify.",
+            "subscription_tiers": [
+              {
+                "name": "Starter",
+                "calls_per_month": 10000,
+                "price_usd_month": 10.0
+              },
+              {
+                "name": "Pro",
+                "calls_per_month": 100000,
+                "price_usd_month": 50.0
+              }
+            ]
+          },
+          {
+            "tool": "get_randomness_beacon",
+            "capability_id": "platon.beacon@v1",
+            "product_id": "prod-platon",
+            "price_usd": 0.004,
+            "category": "randomness",
+            "summary": "Latest public randomness beacon (shared across callers in a round)."
+          },
+          {
+            "tool": "ask_oracle",
+            "capability_id": "platon.ask@v1",
+            "product_id": "prod-platon",
+            "price_usd": 0.003,
+            "category": "randomness",
+            "summary": "Grounded, entropy-derived read-only answer to a question."
+          },
+          {
+            "tool": "verify_random",
+            "capability_id": "platon.verify@v1",
+            "product_id": "prod-platon",
+            "price_usd": 0.001,
+            "category": "randomness",
+            "summary": "Verify a Platon randomness draw (random_hex + proof + signature)."
+          },
+          {
+            "tool": "compute_vdf",
+            "capability_id": "chronos.eval@v1",
+            "product_id": "prod-chronos",
+            "price_usd": 0.01,
+            "category": "delay",
+            "summary": "Verifiable Delay Function: proves T sequential squarings (~elapsed time) over RSA-2048.",
+            "subscription_tiers": [
+              {
+                "name": "Starter",
+                "calls_per_month": 10000,
+                "price_usd_month": 15.0
+              },
+              {
+                "name": "Pro",
+                "calls_per_month": 100000,
+                "price_usd_month": 75.0
+              }
+            ]
+          },
+          {
+            "tool": "verify_vdf",
+            "capability_id": "chronos.verify@v1",
+            "product_id": "prod-chronos",
+            "price_usd": 0.001,
+            "category": "delay",
+            "summary": "Verify a VDF proof in one exponentiation."
+          },
+          {
+            "tool": "get_reputation_scores",
+            "capability_id": "lumen.reputation@v1",
+            "product_id": "prod-lumen",
+            "price_usd": 0.005,
+            "category": "reputation",
+            "summary": "PageRank/EigenTrust trust scores over a directed trust graph you supply.",
+            "subscription_tiers": [
+              {
+                "name": "Starter",
+                "calls_per_month": 5000,
+                "price_usd_month": 20.0
+              },
+              {
+                "name": "Pro",
+                "calls_per_month": 50000,
+                "price_usd_month": 100.0
+              }
+            ]
+          },
+          {
+            "tool": "get_agent_trust",
+            "capability_id": "lumen.score@v1",
+            "product_id": "prod-lumen",
+            "price_usd": 0.003,
+            "category": "reputation",
+            "summary": "Trust score, rank, and percentile of one target node in a trust graph."
+          },
+          {
+            "tool": "verify_reputation",
+            "capability_id": "lumen.verify@v1",
+            "product_id": "prod-lumen",
+            "price_usd": 0.002,
+            "category": "reputation",
+            "summary": "Re-derive PageRank over a supplied graph and confirm claimed scores."
+          },
+          {
+            "tool": "aggregate_values",
+            "capability_id": "murmuration.aggregate@v1",
+            "product_id": "prod-murmuration",
+            "price_usd": 0.002,
+            "category": "consensus",
+            "summary": "Robust consensus aggregation \u2014 median, trimmed mean, biweight, DeGroot convergence.",
+            "subscription_tiers": [
+              {
+                "name": "Starter",
+                "calls_per_month": 10000,
+                "price_usd_month": 10.0
+              },
+              {
+                "name": "Pro",
+                "calls_per_month": 100000,
+                "price_usd_month": 50.0
+              }
+            ]
+          },
+          {
+            "tool": "audit_compute_cost",
+            "capability_id": "landauer.audit@v1",
+            "product_id": "prod-landauer",
+            "price_usd": 0.01,
+            "category": "thermodynamics",
+            "summary": "Thermodynamic audit: irreversible bit erasures, energy floor, efficiency, hot gates.",
+            "subscription_tiers": [
+              {
+                "name": "Starter",
+                "calls_per_month": 10000,
+                "price_usd_month": 15.0
+              },
+              {
+                "name": "Pro",
+                "calls_per_month": 100000,
+                "price_usd_month": 75.0
+              }
+            ]
+          },
+          {
+            "tool": "verify_compute_cost",
+            "capability_id": "landauer.verify@v1",
+            "product_id": "prod-landauer",
+            "price_usd": 0.001,
+            "category": "thermodynamics",
+            "summary": "Trustless replay of a Landauer audit \u2014 recompute erasures and energy floor."
+          },
+          {
+            "tool": "compute_least_time_route",
+            "capability_id": "fermat.route@v1",
+            "product_id": "prod-fermat",
+            "price_usd": 0.01,
+            "category": "routing",
+            "summary": "Least-time path on a weighted graph with eikonal potentials + dual certificate.",
+            "subscription_tiers": [
+              {
+                "name": "Starter",
+                "calls_per_month": 10000,
+                "price_usd_month": 25.0
+              },
+              {
+                "name": "Pro",
+                "calls_per_month": 100000,
+                "price_usd_month": 120.0
+              }
+            ]
+          },
+          {
+            "tool": "verify_least_time_route",
+            "capability_id": "fermat.verify@v1",
+            "product_id": "prod-fermat",
+            "price_usd": 0.001,
+            "category": "routing",
+            "summary": "Trustless O(E) certificate check for a Fermat least-time route."
+          },
+          {
+            "tool": "analyze_cascade_risk",
+            "capability_id": "ablation.cascade@v1",
+            "product_id": "prod-ablation",
+            "price_usd": 0.01,
+            "category": "risk",
+            "summary": "SOC cascade-risk: avalanche distribution, power-law tau, VaR/CVaR, trigger nodes.",
+            "subscription_tiers": [
+              {
+                "name": "Starter",
+                "calls_per_month": 5000,
+                "price_usd_month": 50.0
+              },
+              {
+                "name": "Pro",
+                "calls_per_month": 50000,
+                "price_usd_month": 250.0
+              }
+            ]
+          },
+          {
+            "tool": "verify_cascade_risk",
+            "capability_id": "ablation.verify@v1",
+            "product_id": "prod-ablation",
+            "price_usd": 0.001,
+            "category": "risk",
+            "summary": "Trustless replay of an ablation sandpile cascade and tau claim."
+          },
+          {
+            "tool": "get_quasirandom_sequence",
+            "capability_id": "lattice.sequence@v1",
+            "product_id": "prod-lattice",
+            "price_usd": 0.002,
+            "category": "sampling",
+            "summary": "Halton low-discrepancy quasi-random sequence in [0,1)^dim \u2014 QMC sampling."
+          },
+          {
+            "tool": "optimize_route",
+            "capability_id": "colony.optimize@v1",
+            "product_id": "prod-colony",
+            "price_usd": 0.005,
+            "category": "optimization",
+            "summary": "Euclidean TSP tour with admissible lower bound and optimality gap certificate."
+          },
+          {
+            "tool": "get_blue_noise",
+            "capability_id": "turing.bluenoise@v1",
+            "product_id": "prod-turing",
+            "price_usd": 0.002,
+            "category": "sampling",
+            "summary": "Mitchell best-candidate blue-noise point set \u2014 even spacing, no clumping."
+          },
+          {
+            "tool": "analyze_network_resilience",
+            "capability_id": "percola.threshold@v1",
+            "product_id": "prod-percola",
+            "price_usd": 0.01,
+            "category": "resilience",
+            "summary": "Percolation threshold f_c, collapse curves, robustness scalar, keystone nodes."
+          },
+          {
+            "tool": "verify_network_resilience",
+            "capability_id": "percola.verify@v1",
+            "product_id": "prod-percola",
+            "price_usd": 0.001,
+            "category": "resilience",
+            "summary": "Trustless replay \u2014 recompute percolation sweep and check claimed f_c."
+          },
+          {
+            "tool": "sortes_draw",
+            "capability_id": "sortes.draw@v1",
+            "product_id": "prod-sortes",
+            "price_usd": 0.006,
+            "category": "randomness",
+            "summary": "True ECVRF (RFC 9381) draw \u2014 one valid output per (key, input), offline-verifiable from an 80-byte proof."
+          },
+          {
+            "tool": "sortes_verify",
+            "capability_id": "sortes.verify@v1",
+            "product_id": "prod-sortes",
+            "price_usd": 0.001,
+            "category": "randomness",
+            "summary": "Verify an ECVRF proof offline \u2014 confirm the output is the unique valid one for (public key, input)."
+          },
+          {
+            "tool": "gauss_field",
+            "capability_id": "gauss.field@v1",
+            "product_id": "prod-gauss",
+            "price_usd": 0.006,
+            "category": "learning",
+            "summary": "Gaussian-process regression: calibrated posterior mean with honest uncertainty everywhere."
+          },
+          {
+            "tool": "gauss_suggest",
+            "capability_id": "gauss.suggest@v1",
+            "product_id": "prod-gauss",
+            "price_usd": 0.006,
+            "category": "learning",
+            "summary": "Single best next point to sample via Expected Improvement \u2014 principled Bayesian-optimization exploration."
+          },
+          {
+            "tool": "gauss_verify",
+            "capability_id": "gauss.verify@v1",
+            "product_id": "prod-gauss",
+            "price_usd": 0.001,
+            "category": "learning",
+            "summary": "Trustless replay of a Gauss GP posterior / suggestion claim."
+          },
+          {
+            "tool": "aestus_seal",
+            "capability_id": "aestus.seal@v1",
+            "product_id": "prod-aestus",
+            "price_usd": 0.006,
+            "category": "time-lock",
+            "summary": "RSW time-lock: seal data so nobody can open it before ~T sequential squarings of wall-clock elapse."
+          },
+          {
+            "tool": "aestus_open",
+            "capability_id": "aestus.open@v1",
+            "product_id": "prod-aestus",
+            "price_usd": 0.01,
+            "category": "time-lock",
+            "summary": "Open an Aestus time-lock by performing the T squarings \u2014 no trapdoor holder, anyone can."
+          },
+          {
+            "tool": "aestus_verify",
+            "capability_id": "aestus.verify@v1",
+            "product_id": "prod-aestus",
+            "price_usd": 0.001,
+            "category": "time-lock",
+            "summary": "Verify an Aestus time-lock seal/opening \u2014 confirm the puzzle and recovered plaintext."
+          },
+          {
+            "tool": "betti_homology",
+            "capability_id": "betti.homology@v1",
+            "product_id": "prod-betti",
+            "price_usd": 0.008,
+            "category": "topology",
+            "summary": "Persistent homology (Vietoris-Rips): Betti numbers b0/b1/b2 (components, loops, voids) across scale."
+          },
+          {
+            "tool": "betti_distance",
+            "capability_id": "betti.distance@v1",
+            "product_id": "prod-betti",
+            "price_usd": 0.004,
+            "category": "topology",
+            "summary": "Bottleneck-distance drift alarm between two persistence diagrams \u2014 topological change detection."
+          },
+          {
+            "tool": "kantor_transport",
+            "capability_id": "kantor.transport@v1",
+            "product_id": "prod-kantor",
+            "price_usd": 0.006,
+            "category": "transport",
+            "summary": "Exact optimal transport (Wasserstein) via min-cost flow \u2014 transport plan plus Kantorovich dual potentials."
+          },
+          {
+            "tool": "kantor_verify",
+            "capability_id": "kantor.verify@v1",
+            "product_id": "prod-kantor",
+            "price_usd": 0.001,
+            "category": "transport",
+            "summary": "Verify a Kantor transport plan in O(m*n) from the dual potentials, without re-solving."
+          },
+          {
+            "tool": "fourier_spectrum",
+            "capability_id": "fourier.spectrum@v1",
+            "product_id": "prod-fourier",
+            "price_usd": 0.005,
+            "category": "spectral",
+            "summary": "Graph Laplacian spectrum: algebraic connectivity lambda-2, Fiedler vector, spectral cut & conductance."
+          },
+          {
+            "tool": "fourier_verify",
+            "capability_id": "fourier.verify@v1",
+            "product_id": "prod-fourier",
+            "price_usd": 0.001,
+            "category": "spectral",
+            "summary": "Trustless replay of a Fourier graph-spectral analysis \u2014 recompute the Laplacian spectrum and claims."
+          }
+        ],
+        "categories": {
+          "randomness": "Platon \u2014 verifiable randomness & entropy-derived answers",
+          "delay": "Chronos \u2014 verifiable delay function (proof-of-elapsed-time)",
+          "reputation": "LUMEN \u2014 PageRank/EigenTrust agent trust scoring",
+          "consensus": "Murmuration \u2014 Byzantine-resistant multi-agent aggregation",
+          "thermodynamics": "Landauer \u2014 thermodynamic compute-cost audit (ESG / EU AI Act)",
+          "routing": "Fermat \u2014 least-time routing with dual optimality certificate",
+          "risk": "Ablation \u2014 systemic cascade-risk (sandpile / SOC)",
+          "sampling": "Lattice & Turing \u2014 quasi-random and blue-noise point sets",
+          "optimization": "Colony \u2014 TSP routing with optimality gap certificate",
+          "resilience": "Percola \u2014 percolation threshold & network keystone analysis",
+          "learning": "Gauss \u2014 Gaussian-process regression & active-learning (Expected Improvement)",
+          "time-lock": "Aestus \u2014 RSW time-lock puzzles (seal the future; anyone opens after ~T)",
+          "topology": "Betti \u2014 persistent homology (shape of data, drift detection)",
+          "transport": "Kantor \u2014 exact optimal transport (Wasserstein) with dual certificate",
+          "spectral": "Fourier \u2014 graph-spectral analysis (Laplacian, Fiedler, spectral cut)"
+        },
+        "tool_count": 35
+      },
+      "messages": [
+        {
+          "method": "initialize",
+          "params": {
+            "protocolVersion": "2025-06-18",
+            "capabilities": {},
+            "clientInfo": {
+              "name": "metis",
+              "version": "0.2.4"
+            }
+          }
+        },
+        {
+          "method": "tools/list",
+          "params": {}
+        },
+        {
+          "method": "tools/call",
+          "params": {
+            "name": "list_oracle_capabilities",
+            "arguments": {}
+          }
+        }
+      ],
+      "paidCalls": 0
+    },
+    {
+      "preset": "aimarket-plugins",
+      "command": "python",
+      "args": [
+        "-m",
+        "aimarket_mcp_packager.stdio_server"
+      ],
+      "status": "ok",
+      "toolCount": 3,
+      "safeCall": "package_capability",
+      "safeCallResult": {
+        "docker_image": "aifactory/release-check:2.0.0",
+        "mcp_manifest": {
+          "protocol": "mcp",
+          "version": "1.0",
+          "server": {
+            "name": "Release Check MCP Server",
+            "description": "",
+            "vendor": "aifactory"
+          },
+          "tools": [
+            {
+              "name": "echo-v1",
+              "description": "",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "pricing": {
+            "model": "subscription",
+            "tiers": [
+              {
+                "name": "Starter",
+                "calls_per_month": 100,
+                "price_usd_month": 9.99
+              },
+              {
+                "name": "Pro",
+                "calls_per_month": 1000,
+                "price_usd_month": 49.99
+              },
+              {
+                "name": "Enterprise",
+                "calls_per_month": 10000,
+                "price_usd_month": 299.99
+              }
+            ]
+          }
+        },
+        "subscription_tiers": [
+          {
+            "name": "Starter",
+            "calls_per_month": 100,
+            "price_usd_month": 9.99
+          },
+          {
+            "name": "Pro",
+            "calls_per_month": 1000,
+            "price_usd_month": 49.99
+          },
+          {
+            "name": "Enterprise",
+            "calls_per_month": 10000,
+            "price_usd_month": 299.99
+          }
+        ],
+        "connection_string": "{\n  \"mcpServers\": {\n    \"release-check\": {\n      \"command\": \"docker\",\n      \"args\": [\n        \"run\",\n        \"--rm\",\n        \"-i\",\n        \"--env\",\n        \"AIMARKET_API_KEY\",\n        \"--env\",\n        \"AIMARKET_HUB_URL\",\n        \"--env\",\n        \"AIMARKET_SOURCE_HUB\",\n        \"aifactory/release-check:2.0.0\"\n      ]\n    }\n  }\n}"
+      },
+      "messages": [
+        {
+          "method": "initialize",
+          "params": {
+            "protocolVersion": "2025-06-18",
+            "capabilities": {},
+            "clientInfo": {
+              "name": "metis",
+              "version": "0.2.4"
+            }
+          }
+        },
+        {
+          "method": "tools/list",
+          "params": {}
+        },
+        {
+          "method": "tools/call",
+          "params": {
+            "name": "package_capability",
+            "arguments": {
+              "capability_id": "echo@v1",
+              "product_id": "prod-echo",
+              "name": "Release Check",
+              "input_schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "paidCalls": 0
+    }
+  ],
+  "status": "ok"
+}

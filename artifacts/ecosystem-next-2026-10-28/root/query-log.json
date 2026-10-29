@@ -1,0 +1,87 @@
+{
+  "web_query_count": 16,
+  "queries": [
+    {
+      "query": "\"modelmarket.dev\" \"review\" site:youtube.com OR site:podcasts.apple.com OR site:open.spotify.com",
+      "origin": "web search",
+      "source_file": "independent-media-and-comparisons.json"
+    },
+    {
+      "query": "\"alexar76\" site:substack.com OR site:medium.com -site:github.com -site:dev.to",
+      "origin": "web search",
+      "source_file": "independent-media-and-comparisons.json"
+    },
+    {
+      "query": "\"histor.modelmarket.dev\" \"security\" -site:github.com -site:dev.to -site:modelmarket.dev -site:qiita.com -site:libhunt.com -site:legit.show -site:newruntime.com -site:radyz.cz",
+      "origin": "web search",
+      "source_file": "independent-media-and-comparisons.json"
+    },
+    {
+      "query": "\"alexar76/warden\" \"comparison\" -site:github.com/alexar76 -site:github.com/Ducarv -site:dev.to -site:modelmarket.dev -site:glama.ai -site:libhunt.com",
+      "origin": "web search",
+      "source_file": "independent-media-and-comparisons.json"
+    },
+    {
+      "query": "\"histor.modelmarket.dev\" \"引用\" -site:github.com -site:dev.to -site:modelmarket.dev -site:qiita.com -site:glama.ai",
+      "origin": "web search",
+      "source_file": "audits-and-other-references.json"
+    },
+    {
+      "query": "\"alexar76\" \"newsletter\" -site:github.com -site:dev.to -site:modelmarket.dev -site:libhunt.com",
+      "origin": "web search",
+      "source_file": "audits-and-other-references.json"
+    },
+    {
+      "query": "\"aimarket-plugins\" \"audit\" -site:github.com/alexar76 -site:glama.ai -site:odel.app -site:smithery.ai -site:dev.to",
+      "origin": "web search",
+      "source_file": "audits-and-other-references.json"
+    },
+    {
+      "query": "\"WARDEN\" \"alexar76\" \"versus\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:libhunt.com",
+      "origin": "web search",
+      "source_file": "audits-and-other-references.json"
+    },
+    {
+      "query": "\"HISTOR\" site:ai-outline.com",
+      "origin": "web search",
+      "source_file": "japanese-news-digest-followup.json"
+    },
+    {
+      "query": "\"alexar76\" site:ai-outline.com",
+      "origin": "web search",
+      "source_file": "japanese-news-digest-followup.json"
+    },
+    {
+      "query": "\"WARDEN\" site:ai-outline.com",
+      "origin": "web search",
+      "source_file": "japanese-news-digest-followup.json"
+    },
+    {
+      "query": "\"qwezzy721\" site:ai-outline.com",
+      "origin": "web search",
+      "source_file": "japanese-news-digest-followup.json"
+    },
+    {
+      "query": "\"リモート MCP\" \"4,926\" -site:qiita.com -site:github.com -site:dev.to",
+      "origin": "web search",
+      "source_file": "japanese-specific-study-dissemination.json"
+    },
+    {
+      "query": "\"ツール定義\" \"HISTOR\" -site:qiita.com -site:github.com -site:glama.ai -site:modelmarket.dev -site:dev.to",
+      "origin": "web search",
+      "source_file": "japanese-specific-study-dissemination.json"
+    },
+    {
+      "query": "\"b71aaeaae84fcb360fe6\" -site:qiita.com -site:github.com -site:dev.to -site:modelmarket.dev",
+      "origin": "web search",
+      "source_file": "japanese-specific-study-dissemination.json"
+    },
+    {
+      "query": "\"MCP\" \"12,915\" -site:github.com -site:dev.to -site:modelmarket.dev -site:hubwiz.com -site:libhunt.com",
+      "origin": "web search",
+      "source_file": "japanese-specific-study-dissemination.json"
+    }
+  ],
+  "native_api_graph_queries": 14,
+  "note": "PyPI metadata and rejected HTML reads are in HTTP index, not additional web queries."
+}

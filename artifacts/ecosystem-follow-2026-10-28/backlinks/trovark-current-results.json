@@ -1,0 +1,116 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/lets-order-some-fries/trovark/main/index/results.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T15:02:18.103537+00:00",
+    "provenance": "Exact paths observed in public index tree",
+    "status": 200,
+    "bytes": 323713,
+    "sha256": "73a17dfbd74e82d028b13ef5e697cff698f251d68c8eda82d79ebf09ff03f4ba",
+    "top_keys": [
+      "generatedAt",
+      "rubricVersion",
+      "coverage",
+      "stats",
+      "entries"
+    ],
+    "metadata": {
+      "generatedAt": "2026-08-15T19:32:30.425Z",
+      "rubricVersion": "1.7.0"
+    },
+    "matching_records": [
+      {
+        "path": "/entries/155",
+        "record": {
+          "ref": "alexar76/aimarket-plugins",
+          "ok": true,
+          "overall": 72,
+          "grade": "B-",
+          "repoUrl": "https://github.com/alexar76/aimarket-plugins",
+          "dims": {
+            "health": {
+              "score": 63,
+              "confidence": "high"
+            },
+            "reliability": {
+              "score": null,
+              "confidence": "medium"
+            },
+            "security": {
+              "score": 85,
+              "confidence": "medium"
+            },
+            "cost": {
+              "score": 70,
+              "confidence": "medium"
+            }
+          },
+          "daysSinceLastCommit": 0,
+          "integrity": {
+            "payloads": 0,
+            "observations": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "url": "https://raw.githubusercontent.com/lets-order-some-fries/trovark/main/index/site.ts",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T15:02:18.103827+00:00",
+    "provenance": "Exact paths observed in public index tree",
+    "status": 200,
+    "bytes": 12931,
+    "sha256": "2ebe017dc277163e25d0c6410858b3da13464c6a9089c89c695b015083de9827",
+    "selected_lines": [
+      {
+        "line": 1,
+        "text": "// results.json → one self-contained static page (docs/index.html)"
+      },
+      {
+        "line": 2,
+        "text": "import { readFileSync, writeFileSync } from 'node:fs'"
+      },
+      {
+        "line": 25,
+        "text": "  // insufficientData (\"we read it, couldn't score it\") and notServer (\"we"
+      },
+      {
+        "line": 66,
+        "text": "  // V2: rendered distinctly from insufficientData — this is a library/SDK/"
+      },
+      {
+        "line": 69,
+        "text": "  // insufficientData by construction (see src/scoring/score.ts), checked"
+      },
+      {
+        "line": 78,
+        "text": "  if (e.insufficientData) {"
+      },
+      {
+        "line": 158,
+        "text": "<a href=\"https://github.com/lets-order-some-fries/trovark\">github</a> ·"
+      },
+      {
+        "line": 159,
+        "text": "<a href=\"https://www.npmjs.com/package/trovark\">npm</a> ·"
+      },
+      {
+        "line": 160,
+        "text": "<a href=\"https://github.com/lets-order-some-fries/trovark/blob/main/docs/methodology.md\">methodology</a> ·"
+      },
+      {
+        "line": 183,
+        "text": "  const inPath = arg('--in', 'index/results.json')"
+      },
+      {
+        "line": 187,
+        "text": "  const out = arg('--out', 'docs/index.html')"
+      },
+      {
+        "line": 188,
+        "text": "  writeFileSync(out, renderSite(results, drift))"
+      }
+    ]
+  }
+]

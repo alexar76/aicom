@@ -1,0 +1,487 @@
+{
+  "checked_date_moscow": "2026-10-28",
+  "method": "Public unauthenticated HTTP GET only",
+  "sources": [
+    {
+      "requested_url": "https://agenteconomy.report/s/modelmarket.dev.json",
+      "retrieved_at_utc": "2026-10-28T11:32:00.258254+00:00",
+      "status": 200,
+      "final_url": "https://agenteconomy.report/s/modelmarket.dev.json",
+      "content_type": "application/json",
+      "bytes": 6183,
+      "sha256": "f95b90c8bcdc0b8a60a61e0b6b81672cf6e470ba232550392d777d7e42182aef",
+      "public_json": {
+        "host": "modelmarket.dev",
+        "as_of": "2026-10-28",
+        "tier": "CC",
+        "tier_raw": "CC",
+        "above_trust_line": false,
+        "trust_line": "BBB",
+        "outlook": "positive",
+        "trend": "improving",
+        "outlook_basis": {
+          "compares": "organic paying agents, last 7 days vs previous 7 days",
+          "organic_paying_agents_last_7d": 3,
+          "organic_paying_agents_previous_7d": 0,
+          "text": "3 organic paying agents in the last 7 days vs 0 in the 7 before (from zero)"
+        },
+        "flag": null,
+        "score": 10.3,
+        "uptime": 0.5,
+        "retired_resources": 0,
+        "resources": {
+          "count": 8,
+          "shown": 8,
+          "source": "x402 discovery catalogs (CDP Bazaar, PayAI), as listed today",
+          "operator_supplied": [
+            "items[].path",
+            "items[].url",
+            "items[].description",
+            "items[].network"
+          ],
+          "untrusted": true,
+          "items": [
+            {
+              "path": "/x402/histor-check",
+              "url": "https://modelmarket.dev/x402/histor-check",
+              "withheld": false,
+              "price_usd": 0.001,
+              "price_is_max": false,
+              "network": "Base",
+              "paid_calls_30d": 14
+            },
+            {
+              "path": "/x402/air-quality-now",
+              "url": "https://modelmarket.dev/x402/air-quality-now",
+              "withheld": false,
+              "price_usd": 0.001,
+              "price_is_max": false,
+              "network": "Base",
+              "paid_calls_30d": 8
+            },
+            {
+              "path": "/x402/warden-scan",
+              "url": "https://modelmarket.dev/x402/warden-scan",
+              "withheld": false,
+              "price_usd": 0.001,
+              "price_is_max": false,
+              "network": "Base",
+              "paid_calls_30d": 8
+            },
+            {
+              "path": "/x402/weather-now",
+              "url": "https://modelmarket.dev/x402/weather-now",
+              "withheld": false,
+              "price_usd": 0.001,
+              "price_is_max": false,
+              "network": "Base",
+              "paid_calls_30d": 8
+            },
+            {
+              "path": "/x402/mcp-diff",
+              "url": "https://modelmarket.dev/x402/mcp-diff",
+              "withheld": false,
+              "price_usd": 0.003,
+              "price_is_max": false,
+              "network": "Base",
+              "paid_calls_30d": 6
+            },
+            {
+              "path": "/x402/fair-random",
+              "url": "https://modelmarket.dev/x402/fair-random",
+              "withheld": false,
+              "price_usd": 0.006,
+              "price_is_max": false,
+              "network": "Base",
+              "paid_calls_30d": 4
+            },
+            {
+              "path": "/x402/x402-check",
+              "url": "https://modelmarket.dev/x402/x402-check",
+              "withheld": false,
+              "price_usd": 0.003,
+              "price_is_max": false,
+              "network": "Base",
+              "paid_calls_30d": 4
+            },
+            {
+              "path": "/x402/nearby-sensors",
+              "url": "https://modelmarket.dev/x402/nearby-sensors",
+              "withheld": false,
+              "price_usd": 0.03,
+              "price_is_max": false,
+              "network": "Base",
+              "paid_calls_30d": 3
+            }
+          ]
+        },
+        "organic_paying_agents": 3,
+        "paying_wallets_raw": 12,
+        "settled_usd_14d": 0.39,
+        "centrality": 0.014,
+        "url": "https://agenteconomy.report/s/modelmarket.dev",
+        "method": "https://agenteconomy.report/s/",
+        "owner": {
+          "verified": true,
+          "name": "AIMarket",
+          "url": "https://modelmarket.dev/",
+          "contact": null,
+          "method": "wallet_signature",
+          "network": "evm",
+          "verified_at": "2026-10-21T11:22:23.875185+00:00",
+          "pro": false,
+          "pro_until": null,
+          "operator_supplied": [
+            "name",
+            "url",
+            "contact"
+          ],
+          "untrusted": true
+        }
+      },
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained.",
+      "extracted_facts": {
+        "comparison_local_snapshot": "2026-10-24: D, 0 organic, 5 raw paying wallets, settled_usd_14d 0.34"
+      }
+    },
+    {
+      "requested_url": "https://agenteconomy.report/s/modelmarket.dev",
+      "retrieved_at_utc": "2026-10-28T11:32:00.258645+00:00",
+      "status": 200,
+      "final_url": "https://agenteconomy.report/s/modelmarket.dev",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 15095,
+      "sha256": "e5c510b2bffe9e0d41f9fcc449bd3d75d1c43b3ce4299e7552b9ac109c54e434",
+      "title": "modelmarket.dev: Trust Rating CC | Agent Economy Report",
+      "has_modelmarket_domain": true,
+      "has_alexar76": false,
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained."
+    },
+    {
+      "requested_url": "https://x402-list.com/api/v1/services/aimarket/volume",
+      "retrieved_at_utc": "2026-10-28T11:32:00.258802+00:00",
+      "status": 200,
+      "final_url": "https://x402-list.com/api/v1/services/aimarket/volume",
+      "content_type": "application/json",
+      "bytes": 1519,
+      "sha256": "6cdd2217006419daa2f9ef089db95b98a55175163ef1b7161593da0d9dfd0f99",
+      "public_json": {
+        "data": [
+          {
+            "date": "2026-10-02",
+            "volume_usd": 0.04,
+            "tx_count": 6
+          },
+          {
+            "date": "2026-10-03",
+            "volume_usd": 0,
+            "tx_count": 1
+          },
+          {
+            "date": "2026-10-05",
+            "volume_usd": 0.02,
+            "tx_count": 5
+          },
+          {
+            "date": "2026-10-08",
+            "volume_usd": 0.04,
+            "tx_count": 6
+          },
+          {
+            "date": "2026-10-09",
+            "volume_usd": 0.01,
+            "tx_count": 3
+          },
+          {
+            "date": "2026-10-10",
+            "volume_usd": 0,
+            "tx_count": 4
+          },
+          {
+            "date": "2026-10-11",
+            "volume_usd": 0.01,
+            "tx_count": 5
+          },
+          {
+            "date": "2026-10-14",
+            "volume_usd": 0.31,
+            "tx_count": 2
+          },
+          {
+            "date": "2026-10-15",
+            "volume_usd": 0.01,
+            "tx_count": 2
+          },
+          {
+            "date": "2026-10-18",
+            "volume_usd": 0,
+            "tx_count": 1
+          },
+          {
+            "date": "2026-10-19",
+            "volume_usd": 0.01,
+            "tx_count": 1
+          },
+          {
+            "date": "2026-10-21",
+            "volume_usd": 0.01,
+            "tx_count": 1
+          },
+          {
+            "date": "2026-10-23",
+            "volume_usd": 0,
+            "tx_count": 1
+          },
+          {
+            "date": "2026-10-24",
+            "volume_usd": 0.01,
+            "tx_count": 8
+          },
+          {
+            "date": "2026-10-25",
+            "volume_usd": 0.04,
+            "tx_count": 14
+          },
+          {
+            "date": "2026-10-27",
+            "volume_usd": 0,
+            "tx_count": 2
+          },
+          {
+            "date": "2026-10-28",
+            "volume_usd": 0,
+            "tx_count": 1
+          }
+        ],
+        "caveat": "Conservative undercount: only USDC settlements via facilitators we measure are counted. Operator-level (the full payout address), not pro-rata: do not sum across services that share a payout address. The daily series rolls up hourly, so the latest day can be up to about an hour behind, and briefly after a deploy the whole series can read low until the first rollup finishes (usually within minutes).",
+        "provenance": {
+          "license": "CC-BY-4.0",
+          "attribution_required": true,
+          "attribution": "Data: x402-list.com (CC BY 4.0)",
+          "cite_as": "https://x402-list.com/api/v1/services/aimarket/volume",
+          "source": "https://x402-list.com"
+        }
+      },
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained."
+    },
+    {
+      "requested_url": "https://x402-list.com/api/v1/services/aimarket/buyers",
+      "retrieved_at_utc": "2026-10-28T11:32:00.258934+00:00",
+      "status": 200,
+      "final_url": "https://x402-list.com/api/v1/services/aimarket/buyers",
+      "content_type": "application/json",
+      "bytes": 1542,
+      "sha256": "ff3fba9d15640b88800c284ed92e8c806d5f9cd84cc1ad0c7eac337fb0e6cd83",
+      "public_json": {
+        "data": [
+          {
+            "date": "2026-10-02",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-03",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-05",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-08",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-09",
+            "unique_buyers": 2
+          },
+          {
+            "date": "2026-10-10",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-11",
+            "unique_buyers": 2
+          },
+          {
+            "date": "2026-10-14",
+            "unique_buyers": 2
+          },
+          {
+            "date": "2026-10-15",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-18",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-19",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-21",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-23",
+            "unique_buyers": 1
+          },
+          {
+            "date": "2026-10-24",
+            "unique_buyers": 5
+          },
+          {
+            "date": "2026-10-25",
+            "unique_buyers": 6
+          },
+          {
+            "date": "2026-10-27",
+            "unique_buyers": 2
+          },
+          {
+            "date": "2026-10-28",
+            "unique_buyers": 1
+          }
+        ],
+        "caveat": "Conservative undercount: only USDC settlements via facilitators we measure are counted. Operator-level (the full payout address), not pro-rata: do not sum across services that share a payout address. The daily series rolls up hourly, so the latest day can be up to about an hour behind, and briefly after a deploy the whole series can read low until the first rollup finishes (usually within minutes). Distinct buyers are counted per payout address, so a service with more than one payout address is an upper bound (a buyer paying two of its addresses on the same day counts once per address); a single-address service is exact.",
+        "provenance": {
+          "license": "CC-BY-4.0",
+          "attribution_required": true,
+          "attribution": "Data: x402-list.com (CC BY 4.0)",
+          "cite_as": "https://x402-list.com/api/v1/services/aimarket/buyers",
+          "source": "https://x402-list.com"
+        }
+      },
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained."
+    },
+    {
+      "requested_url": "https://www.x402-list.com/services/aimarket",
+      "retrieved_at_utc": "2026-10-28T11:32:00.259047+00:00",
+      "status": 200,
+      "final_url": "https://www.x402-list.com/services/aimarket",
+      "content_type": "text/html",
+      "bytes": 139310,
+      "sha256": "234f656763350ef84b3aaf6a314758a27bbc5fe629df0c4312b4ab1f724a8dbb",
+      "title": "AIMarket | x402 Data API | x402 List",
+      "has_modelmarket_domain": true,
+      "has_alexar76": false,
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained.",
+      "extracted_facts": {
+        "assessment_computed_at_utc": "2026-10-28 10:04:48",
+        "latest_service_check_at_utc": "2026-10-28 11:18:17",
+        "header_uptime_percent": 99.6,
+        "header_p95_ms": 326,
+        "compliance_passed": 14,
+        "compliance_evaluated": 14
+      }
+    },
+    {
+      "requested_url": "https://mcp.market/server/modelmarket-weather",
+      "retrieved_at_utc": "2026-10-28T11:32:00.259243+00:00",
+      "status": 200,
+      "final_url": "https://mcp.market/server/modelmarket-weather",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 130473,
+      "sha256": "e1906ee3acb1a5e8b0f2a4341ed99d8b2218073956f81826476e8a3dbd46b6f3",
+      "title": "Live weather and air quality (GAIA) MCP server · mcp.market",
+      "has_modelmarket_domain": true,
+      "has_alexar76": false,
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained.",
+      "extracted_facts": {
+        "namespace": "dev.modelmarket/weather",
+        "endpoint": "https://modelmarket.dev/tools/mcp/weather",
+        "version": "1.0.0",
+        "last_release_date": "2026-10-26",
+        "scan_date": "2026-10-27",
+        "scanner_version": "0.1.10",
+        "safety_score": 91,
+        "grade": "A",
+        "tools": 3,
+        "no_findings": true,
+        "code_scan_performed": false,
+        "reachability_checks_successful": 12,
+        "reachability_checks_total": 12,
+        "user_reviews": 0
+      }
+    },
+    {
+      "requested_url": "https://inite.ai/en/atlas/modelmarket.dev",
+      "retrieved_at_utc": "2026-10-28T11:32:00.634660+00:00",
+      "status": 200,
+      "final_url": "https://inite.ai/en/atlas/modelmarket.dev",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 182377,
+      "sha256": "0552849d9d3e03967b40f9a7bb071dd5f48195528ceaf23efcce70a23bdddebd",
+      "title": "Modelmarket: alternatives, price, who uses it | INITE Atlas",
+      "has_modelmarket_domain": true,
+      "has_alexar76": false,
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained.",
+      "extracted_facts": {
+        "card_present": true,
+        "links_modelmarket_domain": true,
+        "kind": "Automated catalog reading, not user review"
+      }
+    },
+    {
+      "requested_url": "https://inite.ai/en/atlas/modelmarket.dev/alternatives",
+      "retrieved_at_utc": "2026-10-28T11:32:00.685706+00:00",
+      "status": 200,
+      "final_url": "https://inite.ai/en/atlas/modelmarket.dev/alternatives",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 139824,
+      "sha256": "011597efa4143d3b7e5eddd766450d20e2c8811870a0a44fc896d57b991ea7a9",
+      "title": "Modelmarket alternatives in 2026: 10 tools that do the same job | INITE Atlas",
+      "has_modelmarket_domain": false,
+      "has_alexar76": false,
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained.",
+      "extracted_facts": {
+        "read_date": "2026-10-28"
+      }
+    },
+    {
+      "requested_url": "https://inite.ai/en/atlas/all/m",
+      "retrieved_at_utc": "2026-10-28T11:32:00.767270+00:00",
+      "status": 200,
+      "final_url": "https://inite.ai/en/atlas/all/m",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 1469012,
+      "sha256": "7492fa8b030109259a031d59fcf3be39be0b3230908891a3f80d801a789332d7",
+      "title": "AI tools starting with M | INITE Atlas",
+      "has_modelmarket_domain": true,
+      "has_alexar76": false,
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained."
+    },
+    {
+      "requested_url": "https://inite.ai/en/atlas/method",
+      "retrieved_at_utc": "2026-10-28T11:32:00.796587+00:00",
+      "status": 200,
+      "final_url": "https://inite.ai/en/atlas/method",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 98424,
+      "sha256": "251df53e7b9630887753c4f8548e522d32d0871c372c6671202c2529290b60b4",
+      "title": "How the INITE Atlas reads a tool | INITE Atlas",
+      "has_modelmarket_domain": false,
+      "has_alexar76": false,
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained."
+    },
+    {
+      "requested_url": "https://mcpbridge.org/directory/ai-ml/",
+      "retrieved_at_utc": "2026-10-28T11:32:00.846498+00:00",
+      "status": 200,
+      "final_url": "https://mcpbridge.org/directory/ai-ml/",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 950469,
+      "sha256": "b90ea2521858c48018395e1a7985a3fb4cc6078591331a3b91e3532da78952c8",
+      "title": "AI & ML MCP Servers & Model I·1j8 MCP Directory | MCP Bridge",
+      "has_modelmarket_domain": false,
+      "has_alexar76": true,
+      "retention": "Response SHA-256 and selected public facts only; full HTML not retained.",
+      "extracted_facts": {
+        "project": "alexar76/aimarket-plugins",
+        "status": "Active",
+        "score": 58,
+        "plugins": 15
+      }
+    }
+  ]
+}

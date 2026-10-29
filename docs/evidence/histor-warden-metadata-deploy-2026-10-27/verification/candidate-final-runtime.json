@@ -1,0 +1,65 @@
+{
+  "observedAt": "2026-10-27T16:57:19Z",
+  "scope": "network-none/read-only/default-user candidate metadata and discovery; no service start or tool calls",
+  "passed": true,
+  "imageDigest": "sha256:1221f1bcc8af9081c923b9064301674d5bc4d8d0ce701cca1075a5b1355b3017",
+  "sourceCommit": "4afe0243856d02b6b543b9b9559f2a286fab1a90",
+  "checks": {
+    "exactSourceCommit": true,
+    "unprivilegedUser": true,
+    "packageVersion": true,
+    "packageMode": true,
+    "packageBytes": true,
+    "javascriptBytes": true,
+    "scannerRuntimeMetadata": true,
+    "mcpRuntimeMetadata": true,
+    "historSourcePreserved": true
+  },
+  "runtime": {
+    "runtimeUid": 65532,
+    "runtimeGid": 65532,
+    "package": {
+      "name": "@aimarket/warden",
+      "version": "0.22.2",
+      "sha256": "0411601d6ec47d8d14f608a6643a94589e094940dcd93dde36bdcda52a57a34b",
+      "mode": "0644"
+    },
+    "javascript": {
+      "files": 63,
+      "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de"
+    },
+    "scannerDescribe": {
+      "warden": {
+        "package": "@aimarket/warden@0.22.2",
+        "version": "0.22.2"
+      },
+      "patternSetPackage": "@aimarket/warden@0.22.2",
+      "recordSetPackage": "@aimarket/warden@0.22.2"
+    },
+    "mcpDiscovery": {
+      "serverInfo": {
+        "name": "warden",
+        "title": "WARDEN MCP security firewall",
+        "version": "0.22.2"
+      },
+      "protocolVersion": "2025-03-26",
+      "toolNames": [
+        "approve_mcp_server",
+        "canonicalize_json",
+        "check_egress_url",
+        "classify_sensitive_tools",
+        "list_scan_rules",
+        "revoke_mcp_server",
+        "static_scan_tools",
+        "status_mcp_server",
+        "vet_mcp_server"
+      ],
+      "toolCalls": 0
+    }
+  },
+  "historApplication": {
+    "version": "0.4.2",
+    "pythonFiles": 43,
+    "sourceSha256": "a24be58d10784e10a1e0bade153d9bd6ac1ccdd5335c063a47b5cb14b0111e41"
+  }
+}

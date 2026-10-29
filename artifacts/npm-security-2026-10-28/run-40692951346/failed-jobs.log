@@ -1,0 +1,322 @@
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	﻿2026-10-28T13:03:19.2652858Z Current runner version: '2.338.0'
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2687660Z ##[group]Runner Image Provisioner
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2688998Z Hosted Compute Agent
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2690173Z Version: 20261021.618
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2691395Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2693158Z Build Date: 2026-10-21T00:45:21Z
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2694385Z Worker ID: {359f3016-1d6b-4577-a2a6-9e55008cd971}
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2695737Z Region: eastus
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2696798Z Cloud: Azure
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2697771Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2700293Z ##[group]Operating System
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2701401Z Ubuntu
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2702740Z 26.04.1
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2703661Z LTS
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2704691Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2705712Z ##[group]Runner Image
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2706777Z Image: ubuntu-26.04
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2707899Z Version: 20261012.163.1
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2710038Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261012.163/images/ubuntu/Ubuntu2604-Readme.md
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2713304Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261012.163
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2715663Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2717632Z ##[group]GITHUB_TOKEN Permissions
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2720836Z Contents: read
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2721814Z Metadata: read
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2723193Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2726385Z Secret source: Actions
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2728009Z Cache mode: write
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.2729609Z Prepare workflow directory
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.3418313Z Prepare all required actions
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.3471018Z Getting action download info
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.5371408Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.6568354Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7207097Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9042044Z Complete job name: audit (products/prod-e1a3b0abf16a/frontend)
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9870714Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9871885Z with:
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9872655Z   repository: alexar76/aicom-products
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9876780Z   token: ***
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9877223Z   ssh-strict: true
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9877660Z   ssh-user: git
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9878105Z   persist-credentials: true
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9878606Z   clean: true
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9879045Z   sparse-checkout-cone-mode: true
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9879562Z   fetch-depth: 1
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9879988Z   fetch-tags: false
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9880424Z   show-progress: true
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9880870Z   lfs: false
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9881276Z   submodules: false
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9881722Z   set-safe-directory: true
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.9882679Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2652073Z Syncing repository: alexar76/aicom-products
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2654766Z ##[group]Getting Git version info
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2657341Z Working directory is '/home/runner/work/aicom-products/aicom-products'
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2659097Z [command]/usr/bin/git version
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2660856Z git version 2.55.0
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2693645Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2714205Z Temporarily overriding HOME='/home/runner/work/_temp/9893cdc7-1d88-454e-aa78-c85cf7e550d6' before making global git config changes
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2717737Z Adding repository directory to the temporary git global config as a safe directory
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2729569Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/aicom-products/aicom-products
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2796065Z Deleting the contents of '/home/runner/work/aicom-products/aicom-products'
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2802161Z ##[group]Initializing the repository
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2809148Z [command]/usr/bin/git init /home/runner/work/aicom-products/aicom-products
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2974016Z hint: Using 'master' as the name for the initial branch. This default branch name
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2979931Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2982830Z hint: to use in all of your new repositories, which will suppress this warning,
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2984974Z hint: call:
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2986298Z hint:
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.2988098Z hint: 	git config --global init.defaultBranch <name>
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3020174Z hint:
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3021847Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3024759Z hint: 'development'. The just-created branch can be renamed via this command:
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3026913Z hint:
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3028461Z hint: 	git branch -m <name>
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3029894Z hint:
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3031659Z hint: Disable this message with "git config set advice.defaultBranchName false"
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3035009Z Initialized empty Git repository in /home/runner/work/aicom-products/aicom-products/.git/
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3040195Z [command]/usr/bin/git remote add origin https://github.com/alexar76/aicom-products
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3068511Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3070535Z ##[group]Disabling automatic garbage collection
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3074920Z [command]/usr/bin/git config --local gc.auto 0
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3122537Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3124568Z ##[group]Setting up auth
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3129855Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3175856Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3696605Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.3731806Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4020389Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4066030Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4067900Z ##[group]Fetching the repository
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4077591Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2524c1146cd063b3982c84cbdb927bedf5f03f75:refs/remotes/origin/main
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6842468Z From https://github.com/alexar76/aicom-products
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6844551Z  * [new ref]         2524c1146cd063b3982c84cbdb927bedf5f03f75 -> origin/main
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6850391Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6851655Z ##[group]Determining the checkout info
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6854014Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6858786Z [command]/usr/bin/git sparse-checkout disable
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6911371Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6943077Z ##[group]Checking out the ref
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6947102Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7155798Z Switched to a new branch 'main'
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7158180Z branch 'main' set up to track 'origin/main'.
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7166824Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7227569Z [command]/usr/bin/git log -1 --format=%H
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7253521Z 2524c1146cd063b3982c84cbdb927bedf5f03f75
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7651332Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7653308Z with:
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7654206Z   node-version: 22
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7655191Z   always-auth: false
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7656220Z   check-latest: false
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7667617Z   token: ***
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.7668543Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.9216966Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.9220247Z (node:2367) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.9224140Z (Use `node --trace-deprecation ...` to show where the warning was created)
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.9226672Z ##[group]Environment details
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1621563Z node: v22.23.3
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1622433Z npm: 10.9.9
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1622781Z yarn: 1.22.22
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1623721Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1770913Z ##[group]Run npm audit --package-lock-only --include=dev --ignore-scripts --audit-level=high --json > npm-audit-report.json
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1771934Z ^[[36;1mnpm audit --package-lock-only --include=dev --ignore-scripts --audit-level=high --json > npm-audit-report.json^[[0m
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1980492Z shell: /usr/bin/bash -e {0}
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1980896Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.8934978Z ##[error]Process completed with exit code 1.
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.9046508Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.9046956Z with:
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.9047155Z   name: npm-audit-1
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.9047480Z   path: products/prod-e1a3b0abf16a/frontend/npm-audit-report.json
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.9047840Z   if-no-files-found: warn
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.9048087Z   compression-level: 6
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.9048321Z   overwrite: false
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.9048539Z   include-hidden-files: false
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:25.9048780Z ##[endgroup]
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.0811277Z (node:2412) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.0812765Z (Use `node --trace-deprecation ...` to show where the warning was created)
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.0853579Z With the provided path, there will be 1 file uploaded
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.0860268Z Artifact name is valid!
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.0861278Z Root directory input is valid!
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.2835234Z Beginning upload of artifact content to blob storage
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.3082696Z (node:2412) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.3481495Z Uploaded bytes 1821
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.3661019Z Finished uploading artifact content to blob storage!
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.3663092Z SHA256 digest of uploaded artifact zip is e7e200fb63b0f083bee2d4bc7179c3589f87c4da3aa8b928b8ccbb171c014be5
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.3665096Z Finalizing artifact upload
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.7654037Z Artifact npm-audit-1.zip successfully finalized. Artifact ID 12818420456
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.7655958Z Artifact npm-audit-1 has been successfully uploaded! Final size is 1821 bytes. Artifact ID is 12818420456
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.7660758Z Artifact download URL: https://github.com/alexar76/aicom-products/actions/runs/40692951346/artifacts/12818420456
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.7954464Z Post job cleanup.
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.8845047Z [command]/usr/bin/git version
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.8890952Z git version 2.55.0
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.8930533Z Temporarily overriding HOME='/home/runner/work/_temp/dd55f4b5-2a07-476c-aca8-3090b5f01fc8' before making global git config changes
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.8931994Z Adding repository directory to the temporary git global config as a safe directory
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.8937205Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/aicom-products/aicom-products
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.8978627Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.9017749Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.9343114Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.9373916Z http.https://github.com/.extraheader
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.9386362Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.9432547Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:26.9924354Z Cleaning up orphan processes
+audit (products/prod-e1a3b0abf16a/frontend)	UNKNOWN STEP	2026-10-28T13:03:27.0295758Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	﻿2026-10-28T13:03:19.1161388Z Current runner version: '2.338.0'
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1185946Z ##[group]Runner Image Provisioner
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1186896Z Hosted Compute Agent
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1187495Z Version: 20261021.618
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1188119Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1188938Z Build Date: 2026-10-21T00:45:21Z
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1189705Z Worker ID: {4b909e5c-ee00-49c0-b22a-f927415fa064}
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1190519Z Region: eastus
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1191113Z Cloud: Azure
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1191679Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1193192Z ##[group]Operating System
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1194263Z Ubuntu
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1194896Z 26.04.1
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1195451Z LTS
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1195992Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1196634Z ##[group]Runner Image
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1197331Z Image: ubuntu-26.04
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1197916Z Version: 20261025.179.1
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1199337Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261025.179/images/ubuntu/Ubuntu2604-Readme.md
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1201097Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261025.179
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1202147Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1203600Z ##[group]GITHUB_TOKEN Permissions
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1205870Z Contents: read
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1206578Z Metadata: read
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1207232Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1209978Z Secret source: Actions
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1210976Z Cache mode: write
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1212509Z Prepare workflow directory
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1733011Z Prepare all required actions
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.1782848Z Getting action download info
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.3395173Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.4679408Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.5294208Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7064833Z Complete job name: audit (products/prod-bdb1634806de/frontend)
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7861574Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7862648Z with:
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7863116Z   repository: alexar76/aicom-products
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7867509Z   token: ***
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7867941Z   ssh-strict: true
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7868383Z   ssh-user: git
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7868826Z   persist-credentials: true
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7869314Z   clean: true
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7869762Z   sparse-checkout-cone-mode: true
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7870287Z   fetch-depth: 1
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7870719Z   fetch-tags: false
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7871173Z   show-progress: true
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7871621Z   lfs: false
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7872033Z   submodules: false
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7872486Z   set-safe-directory: true
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:19.7873444Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0491282Z Syncing repository: alexar76/aicom-products
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0494749Z ##[group]Getting Git version info
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0495785Z Working directory is '/home/runner/work/aicom-products/aicom-products'
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0497193Z [command]/usr/bin/git version
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0522580Z git version 2.56.0
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0545558Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0562115Z Temporarily overriding HOME='/home/runner/work/_temp/73ee6ec8-71a7-446b-bbae-fca83fd16f12' before making global git config changes
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0565612Z Adding repository directory to the temporary git global config as a safe directory
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0568502Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/aicom-products/aicom-products
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0639509Z Deleting the contents of '/home/runner/work/aicom-products/aicom-products'
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0643682Z ##[group]Initializing the repository
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0648986Z [command]/usr/bin/git init /home/runner/work/aicom-products/aicom-products
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0755562Z hint: Using 'master' as the name for the initial branch. This default branch name
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0757164Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0758501Z hint: to use in all of your new repositories, which will suppress this warning,
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0759563Z hint: call:
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0760102Z hint:
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0760795Z hint: 	git config --global init.defaultBranch <name>
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0761640Z hint:
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0762421Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0764021Z hint: 'development'. The just-created branch can be renamed via this command:
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0765093Z hint:
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0765653Z hint: 	git branch -m <name>
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0766302Z hint:
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0767157Z hint: Disable this message with "git config set advice.defaultBranchName false"
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0780854Z Initialized empty Git repository in /home/runner/work/aicom-products/aicom-products/.git/
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0794449Z [command]/usr/bin/git remote add origin https://github.com/alexar76/aicom-products
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0851501Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0853924Z ##[group]Disabling automatic garbage collection
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0860277Z [command]/usr/bin/git config --local gc.auto 0
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0910130Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0912372Z ##[group]Setting up auth
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0938159Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.0944600Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.1485638Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.1531651Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.1829495Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.1870592Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.1871794Z ##[group]Fetching the repository
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.1880613Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2524c1146cd063b3982c84cbdb927bedf5f03f75:refs/remotes/origin/main
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4394285Z From https://github.com/alexar76/aicom-products
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4397166Z  * [new ref]         2524c1146cd063b3982c84cbdb927bedf5f03f75 -> origin/main
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4401875Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4403921Z ##[group]Determining the checkout info
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4405882Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4418245Z [command]/usr/bin/git sparse-checkout disable
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4465608Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4495779Z ##[group]Checking out the ref
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4499393Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4711423Z Switched to a new branch 'main'
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4717360Z branch 'main' set up to track 'origin/main'.
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4725277Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4771082Z [command]/usr/bin/git log -1 --format=%H
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.4799446Z 2524c1146cd063b3982c84cbdb927bedf5f03f75
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.5109924Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.5110775Z with:
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.5111226Z   node-version: 22
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.5111707Z   always-auth: false
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.5112191Z   check-latest: false
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.5116502Z   token: ***
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.5116979Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6629926Z Found in cache @ /opt/hostedtoolcache/node/22.23.4/x64
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6634095Z (node:2313) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6637024Z (Use `node --trace-deprecation ...` to show where the warning was created)
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:20.6639885Z ##[group]Environment details
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:21.0984657Z node: v22.23.4
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:21.0986287Z npm: 10.9.9
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:21.0987240Z yarn: 1.22.22
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:21.0989582Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:21.1225907Z ##[group]Run npm audit --package-lock-only --include=dev --ignore-scripts --audit-level=high --json > npm-audit-report.json
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:21.1230069Z ^[[36;1mnpm audit --package-lock-only --include=dev --ignore-scripts --audit-level=high --json > npm-audit-report.json^[[0m
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:21.1274927Z shell: /usr/bin/bash -e {0}
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:21.1276162Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1869624Z ##[error]Process completed with exit code 1.
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1989831Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1990330Z with:
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1990555Z   name: npm-audit-0
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1990908Z   path: products/prod-bdb1634806de/frontend/npm-audit-report.json
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1991321Z   if-no-files-found: warn
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1991593Z   compression-level: 6
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1991849Z   overwrite: false
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1992089Z   include-hidden-files: false
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.1992365Z ##[endgroup]
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.3690634Z (node:2359) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.3692439Z (Use `node --trace-deprecation ...` to show where the warning was created)
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.3733065Z With the provided path, there will be 1 file uploaded
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.3744239Z Artifact name is valid!
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.3774458Z Root directory input is valid!
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.5718232Z Beginning upload of artifact content to blob storage
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.6044441Z (node:2359) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.6516756Z Uploaded bytes 3255
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.6854204Z Finished uploading artifact content to blob storage!
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.6867409Z SHA256 digest of uploaded artifact zip is 48f6d8fe7c8dfa1399f93ce91d39c5c93bc42d8650e3154af3eab41da4808887
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:23.6871201Z Finalizing artifact upload
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.1402812Z Artifact npm-audit-0.zip successfully finalized. Artifact ID 12816679594
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.1404785Z Artifact npm-audit-0 has been successfully uploaded! Final size is 3255 bytes. Artifact ID is 12816679594
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.1406329Z Artifact download URL: https://github.com/alexar76/aicom-products/actions/runs/40692951346/artifacts/12816679594
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.1655906Z Post job cleanup.
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.2531066Z [command]/usr/bin/git version
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.2577208Z git version 2.56.0
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.2650240Z Temporarily overriding HOME='/home/runner/work/_temp/f18e415a-cd4b-47c8-aa0d-a139760ce44b' before making global git config changes
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.2651947Z Adding repository directory to the temporary git global config as a safe directory
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.2656606Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/aicom-products/aicom-products
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.2700681Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.2740238Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.3051290Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.3084389Z http.https://github.com/.extraheader
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.3094741Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.3129102Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.3588618Z Cleaning up orphan processes
+audit (products/prod-bdb1634806de/frontend)	UNKNOWN STEP	2026-10-28T13:03:24.3967212Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

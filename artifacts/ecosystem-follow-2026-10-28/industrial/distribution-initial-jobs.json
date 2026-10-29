@@ -1,0 +1,162 @@
+{
+  "key": "distribution-initial-jobs",
+  "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/actions/runs/37384892675/jobs",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T15:04:00.067046+00:00",
+  "status": 200,
+  "sha256": "85b46987d26aa08608235f4ebd85b95c288414fe02e47814a37991ef650eb061",
+  "bytes": 4772,
+  "rate_remaining": "42",
+  "jobs": [
+    {
+      "id": 112015630799,
+      "name": "aimarket",
+      "html_url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/actions/runs/37384892675/job/112015630799",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-05T22:49:36Z",
+      "completed_at": "2026-10-05T22:49:48Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-05T22:49:37Z",
+          "completed_at": "2026-10-05T22:49:38Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-05T22:49:38Z",
+          "completed_at": "2026-10-05T22:49:38Z"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-05T22:49:38Z",
+          "completed_at": "2026-10-05T22:49:38Z"
+        },
+        {
+          "name": "Run pip install -r requirements.txt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-05T22:49:38Z",
+          "completed_at": "2026-10-05T22:49:45Z"
+        },
+        {
+          "name": "Import hub and verify four offerable capabilities",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-05T22:49:45Z",
+          "completed_at": "2026-10-05T22:49:47Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-05T22:49:47Z",
+          "completed_at": "2026-10-05T22:49:47Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-05T22:49:47Z",
+          "completed_at": "2026-10-05T22:49:47Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-05T22:49:47Z",
+          "completed_at": "2026-10-05T22:49:47Z"
+        }
+      ]
+    },
+    {
+      "id": 112015631037,
+      "name": "portable",
+      "html_url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/actions/runs/37384892675/job/112015631037",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-05T22:49:36Z",
+      "completed_at": "2026-10-05T22:49:48Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-05T22:49:37Z",
+          "completed_at": "2026-10-05T22:49:38Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-05T22:49:38Z",
+          "completed_at": "2026-10-05T22:49:39Z"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-05T22:49:39Z",
+          "completed_at": "2026-10-05T22:49:41Z"
+        },
+        {
+          "name": "Validate JSON manifests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-05T22:49:41Z",
+          "completed_at": "2026-10-05T22:49:41Z"
+        },
+        {
+          "name": "Verify skills.sh-compatible install",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-05T22:49:41Z",
+          "completed_at": "2026-10-05T22:49:46Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-05T22:49:46Z",
+          "completed_at": "2026-10-05T22:49:46Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-05T22:49:46Z",
+          "completed_at": "2026-10-05T22:49:46Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-05T22:49:46Z",
+          "completed_at": "2026-10-05T22:49:46Z"
+        }
+      ]
+    }
+  ]
+}

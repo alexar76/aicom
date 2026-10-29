@@ -1,0 +1,40 @@
+{
+  "verified_at_utc": "2026-10-29T11:51:41.066Z",
+  "payer": "0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+  "payee": "0x097f9685d1e0752bf8b02d61e5ce9be7ea0fba7f",
+  "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+  "total_usdc": "0.06",
+  "total_atomic": "60000",
+  "records": [
+    {
+      "call_id": "review-1",
+      "transaction": "0x4e90d18b9fd68ccf9b43e10f4716ffea6d55382ec7ccb2052beb6d34cb8fbdbb",
+      "status": "success",
+      "block_number": "53242645",
+      "value_atomic": "50000",
+      "transfer_matches_approved_payment": true,
+      "authorization_nonce_matches": true,
+      "verified": true
+    },
+    {
+      "call_id": "review-2",
+      "transaction": "0xa7b54c90d0044fc51426fe1082b2dd67a6805448e0016b00a04499404047a022",
+      "status": "success",
+      "block_number": "53242648",
+      "value_atomic": "5000",
+      "transfer_matches_approved_payment": true,
+      "authorization_nonce_matches": true,
+      "verified": true
+    },
+    {
+      "call_id": "review-3",
+      "transaction": "0x12f358fb77214c2aef33be44d8ef2731269417423a9777c880a70403f08957fe",
+      "status": "success",
+      "block_number": "53242649",
+      "value_atomic": "5000",
+      "transfer_matches_approved_payment": true,
+      "authorization_nonce_matches": true,
+      "verified": true
+    }
+  ]
+}

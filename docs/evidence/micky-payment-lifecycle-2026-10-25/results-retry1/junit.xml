@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="0.830" timestamp="2026-10-25T10:35:07.254115+00:00" hostname="532efdd3209d"><testcase classname="" name="tests.test_mandates" time="0.000"><error message="collection failure">tests/test_mandates.py:15: in &lt;module&gt;
+    from tests._mandate_kit import (  # noqa: E402  (importorskip awr first)
+tests/_mandate_kit.py:29: in &lt;module&gt;
+    from aimarket_hub.api import create_app  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket_hub/api.py:58: in &lt;module&gt;
+    from aimarket_hub.channels import (
+aimarket_hub/channels.py:1061: in &lt;module&gt;
+    _ledger = ChannelLedger()
+              ^^^^^^^^^^^^^^^
+aimarket_hub/channels.py:1040: in __init__
+    self._backend = create_backend(
+aimarket_hub/db_backend.py:1127: in create_backend
+    return SQLiteBackend(requested)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket_hub/db_backend.py:276: in __init__
+    self.db_path.parent.mkdir(parents=True, exist_ok=True)
+/usr/local/lib/python3.11/pathlib.py:1116: in mkdir
+    os.mkdir(self, mode)
+E   OSError: [Errno 30] Read-only file system: 'data'</error></testcase><testcase classname="" name="tests.test_channels" time="0.000"><error message="collection failure">tests/test_channels.py:10: in &lt;module&gt;
+    from aimarket_hub.channels import (
+aimarket_hub/channels.py:1061: in &lt;module&gt;
+    _ledger = ChannelLedger()
+              ^^^^^^^^^^^^^^^
+aimarket_hub/channels.py:1040: in __init__
+    self._backend = create_backend(
+aimarket_hub/db_backend.py:1127: in create_backend
+    return SQLiteBackend(requested)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket_hub/db_backend.py:276: in __init__
+    self.db_path.parent.mkdir(parents=True, exist_ok=True)
+/usr/local/lib/python3.11/pathlib.py:1116: in mkdir
+    os.mkdir(self, mode)
+E   OSError: [Errno 30] Read-only file system: 'data'</error></testcase></testsuite></testsuites>

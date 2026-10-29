@@ -1,0 +1,100 @@
+{
+  "format": "histor.real-upgrade-projection/v1",
+  "limits": [
+    "Only saved public HISTOR responses are projected into observations",
+    "Current extras are not copied onto historical core toolsets",
+    "Self-reported serverVersion is never substituted for packageVersion",
+    "No production configuration, tool calls, payment or package execution"
+  ],
+  "observations": [
+    {
+      "dependency": "https://modelmarket.dev/mcp",
+      "eventId": 26174,
+      "eventObservedAt": "2026-10-22T19:29:04Z",
+      "historicalExtrasCompared": false,
+      "launchGuessed": false,
+      "protocolGuessed": false,
+      "side": "before",
+      "sourceDetail": "raw/server-hub.json",
+      "sourceTools": "raw/toolset-hub-before.json",
+      "timelineCount": 29,
+      "timelineFrom": "2026-10-07T08:51:11Z",
+      "timelineUntil": "2026-10-20T22:09:59Z",
+      "toolSetDigest": "sha256-GITr4yl4/YJFas1F/z6LKMEM9rycGrfMxUvZCagQwYs="
+    },
+    {
+      "dependency": "https://modelmarket.dev/mcp",
+      "eventId": 26174,
+      "eventObservedAt": "2026-10-22T19:29:04Z",
+      "historicalExtrasCompared": false,
+      "launchGuessed": false,
+      "protocolGuessed": false,
+      "side": "after",
+      "sourceDetail": "raw/server-hub.json",
+      "sourceTools": "raw/toolset-hub-after.json",
+      "timelineCount": 2,
+      "timelineFrom": "2026-10-27T02:27:17Z",
+      "timelineUntil": "2026-10-27T08:27:19Z",
+      "toolSetDigest": "sha256-ITFm2gk2KuHgrw08squExsrGSdZw2/xWsHAU8+/YVRY="
+    },
+    {
+      "dependency": "npm:@aimarket/warden",
+      "eventId": 28932,
+      "eventObservedAt": "2026-10-24T20:03:47Z",
+      "historicalExtrasCompared": false,
+      "launchGuessed": false,
+      "protocolGuessed": false,
+      "side": "before",
+      "sourceDetail": "raw/server-warden.json",
+      "sourceTools": "raw/toolset-warden-before.json",
+      "timelineCount": 3,
+      "timelineFrom": "2026-10-21T10:54:02Z",
+      "timelineUntil": "2026-10-23T18:45:39Z",
+      "toolSetDigest": "sha256-E6s0oh417i8CZLJYVTuZwy9F51CcSlL9UPpZR7BE2Mk="
+    },
+    {
+      "dependency": "npm:@aimarket/warden",
+      "eventId": 28932,
+      "eventObservedAt": "2026-10-24T20:03:47Z",
+      "historicalExtrasCompared": false,
+      "launchGuessed": false,
+      "protocolGuessed": false,
+      "side": "after",
+      "sourceDetail": "raw/server-warden.json",
+      "sourceTools": "raw/toolset-warden-after.json",
+      "timelineCount": 1,
+      "timelineFrom": "2026-10-26T20:59:44Z",
+      "timelineUntil": "2026-10-26T20:59:44Z",
+      "toolSetDigest": "sha256-oc4ZUKD5KONt5yMkyZbMvboUIcQgK+oZc+qqAQIRov0="
+    },
+    {
+      "cardPackageVersion": "0.3.1",
+      "cardVersionNotSubstitutedForObservation": true,
+      "dependency": "pypi:aimarket-oracle-gateway",
+      "observedStatus": "exited",
+      "side": "after",
+      "sourceDetail": "raw/server-oracle-gateway.json",
+      "successfulPairAvailable": false,
+      "timelineCount": 1,
+      "timelineFrom": "2026-10-19T13:37:41Z",
+      "timelineUntil": "2026-10-19T13:37:41Z"
+    },
+    {
+      "alternateProfile": {
+        "pins": [
+          "mcp<2"
+        ]
+      },
+      "currentProfileNotAssumedEquivalent": true,
+      "dependency": "pypi:aimarket-mcp-packager",
+      "observedAt": "2026-10-17T14:27:29Z",
+      "packageVersion": "2.1.1",
+      "side": "before",
+      "sourceDetail": "raw/server-packager.json",
+      "sourcePointer": "server.packageSignals.legacy",
+      "sourceTools": "raw/toolset-packager-pinned-baseline.json",
+      "successfulPairAvailable": false,
+      "toolSetDigest": "sha256-8ept5R1CHdmEFLYaFzHm8/YjnSVx01LCS+8pXRvMitw="
+    }
+  ]
+}

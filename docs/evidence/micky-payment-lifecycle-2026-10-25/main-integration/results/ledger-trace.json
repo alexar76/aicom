@@ -1,0 +1,1386 @@
+{
+  "schema": "micky-credit-ledger-trace/1",
+  "recorded_at_utc": "2026-10-25T11:56:26.992310+00:00",
+  "runtime": {
+    "platform": "Linux",
+    "python": "3.11.17"
+  },
+  "rail": "prepaid credits, current source, disposable SQLite with actual HubDatabase migrations",
+  "funding": "1.00 synthetic grant, not a paid top-up or USDC transfer",
+  "real_payment_or_chain_transport": false,
+  "unit": {
+    "millicents_per_usd": 100000
+  },
+  "source_sha256": {
+    "trace_ledger": "08c228056289c05c1ff4a0bfa5a03879fcaf6f9c38ec24c2b1ba770cc1971f2c",
+    "aimarket_hub.credits": "5fc6355e26e124d8953c8f4fc0fa379fb7c9e55b0f1d5aacb0eb16e75b10d953",
+    "aimarket_hub.invoke_funding": "ddcf1286d2d2cfda3177738eff483f10d52aa1bf30a902a46197c879d3451f99",
+    "aimarket_hub.mandates": "fb18599747c8c0ee99cbceb08fbe057d10d9050f80e9ed083d70cf7f514e41c2",
+    "HubDatabase": "f6c54c6a26942991495e44eaf732751c7e10db484674d6b6c62f3ba1fe3f0638"
+  },
+  "passed_checks": [
+    "Failed hold returns 0.20 credit once; duplicate release is a no-op.",
+    "Successful capture records 0.20 spent once; duplicate capture is a no-op.",
+    "0.90 hold with 0.80 available is refused without any account, hold or ledger mutation.",
+    "Abandoned hold stays held at exactly 3600 seconds, releases after 3600 seconds, then sweeps idempotently.",
+    "Every step conserves 100000 millicents; release restores service credit without reducing the operator liability through a payout."
+  ],
+  "steps": [
+    {
+      "step": "01_initial_fake_grant",
+      "operation_result": {
+        "fake_grant_usd": 1.0
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 1.0,
+        "held_usd": 0.0,
+        "spent_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 100000,
+        "held_mc": 0,
+        "spent_mc": 0,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.0,
+        "outstanding_credit_usd": 1.0,
+        "held_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.0
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "02_hold_for_failed_call",
+      "operation_result": {
+        "held_usd": 0.2,
+        "remaining_balance": 0.8
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.8,
+        "held_usd": 0.2,
+        "spent_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 80000,
+        "held_mc": 20000,
+        "spent_mc": 0,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "held",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.0,
+        "outstanding_credit_usd": 1.0,
+        "held_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.0
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "03_release_after_failed_call",
+      "operation_result": {
+        "released_usd": 0.2,
+        "remaining_balance": 1.0
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 1.0,
+        "held_usd": 0.0,
+        "spent_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 100000,
+        "held_mc": 0,
+        "spent_mc": 0,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.0,
+        "outstanding_credit_usd": 1.0,
+        "held_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.0
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "04_repeat_release_is_noop",
+      "operation_result": {
+        "released_usd": 0.0,
+        "already": "released"
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 1.0,
+        "held_usd": 0.0,
+        "spent_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 100000,
+        "held_mc": 0,
+        "spent_mc": 0,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.0,
+        "outstanding_credit_usd": 1.0,
+        "held_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.0
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "05_hold_for_successful_call",
+      "operation_result": {
+        "held_usd": 0.2,
+        "remaining_balance": 0.8
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.8,
+        "held_usd": 0.2,
+        "spent_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 80000,
+        "held_mc": 20000,
+        "spent_mc": 0,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "held",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.0,
+        "outstanding_credit_usd": 1.0,
+        "held_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.0
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "06_capture_after_successful_call",
+      "operation_result": {
+        "captured_usd": 0.2,
+        "remaining_balance": 0.8
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.8,
+        "held_usd": 0.0,
+        "spent_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 80000,
+        "held_mc": 0,
+        "spent_mc": 20000,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "captured",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.2,
+        "outstanding_credit_usd": 0.8,
+        "held_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.2
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "capture",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "07_repeat_capture_is_noop",
+      "operation_result": {
+        "captured_usd": 0.0,
+        "already": "captured"
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.8,
+        "held_usd": 0.0,
+        "spent_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 80000,
+        "held_mc": 0,
+        "spent_mc": 20000,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "captured",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.2,
+        "outstanding_credit_usd": 0.8,
+        "held_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.2
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "capture",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "08_before_overbudget_attempt",
+      "operation_result": {
+        "attempt_usd": 0.9
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.8,
+        "held_usd": 0.0,
+        "spent_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 80000,
+        "held_mc": 0,
+        "spent_mc": 20000,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "captured",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.2,
+        "outstanding_credit_usd": 0.8,
+        "held_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.2
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "capture",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "09_overbudget_hold_refused",
+      "operation_result": {
+        "error": "insufficient credit: 0.9 needed, 0.8 available"
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.8,
+        "held_usd": 0.0,
+        "spent_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 80000,
+        "held_mc": 0,
+        "spent_mc": 20000,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "captured",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.2,
+        "outstanding_credit_usd": 0.8,
+        "held_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.2
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "capture",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "10_abandoned_call_held",
+      "operation_result": {
+        "held_usd": 0.1,
+        "remaining_balance": 0.7
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.7,
+        "held_usd": 0.1,
+        "spent_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 70000,
+        "held_mc": 10000,
+        "spent_mc": 20000,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "abandoned-call",
+          "amount_mc": 10000,
+          "status": "held",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "captured",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.2,
+        "outstanding_credit_usd": 0.8,
+        "held_usd": 0.1,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.2
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.1,
+          "receipt_id": "abandoned-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "capture",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "11_artificially_age_hold",
+      "operation_result": {
+        "fixture_created_at": "2000-01-01 00:00:00",
+        "timezone": "UTC"
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.7,
+        "held_usd": 0.1,
+        "spent_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 70000,
+        "held_mc": 10000,
+        "spent_mc": 20000,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "abandoned-call",
+          "amount_mc": 10000,
+          "status": "held",
+          "created_at": "2000-01-01 00:00:00"
+        },
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "captured",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.2,
+        "outstanding_credit_usd": 0.8,
+        "held_usd": 0.1,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.2
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.1,
+          "receipt_id": "abandoned-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "capture",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "12_sweep_at_3600_seconds",
+      "operation_result": {
+        "released_holds": 0,
+        "fixture_age_s": 3600.0
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.7,
+        "held_usd": 0.1,
+        "spent_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 70000,
+        "held_mc": 10000,
+        "spent_mc": 20000,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "abandoned-call",
+          "amount_mc": 10000,
+          "status": "held",
+          "created_at": "2000-01-01 00:00:00"
+        },
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "captured",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.2,
+        "outstanding_credit_usd": 0.8,
+        "held_usd": 0.1,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.2
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.1,
+          "receipt_id": "abandoned-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "capture",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "13_sweep_after_3600_seconds",
+      "operation_result": {
+        "released_holds": 1,
+        "fixture_age_s": 3600.001
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.8,
+        "held_usd": 0.0,
+        "spent_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 80000,
+        "held_mc": 0,
+        "spent_mc": 20000,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "abandoned-call",
+          "amount_mc": 10000,
+          "status": "released",
+          "created_at": "2000-01-01 00:00:00"
+        },
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "captured",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.2,
+        "outstanding_credit_usd": 0.8,
+        "held_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.2
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.1,
+          "receipt_id": "abandoned-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.1,
+          "receipt_id": "abandoned-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "capture",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    },
+    {
+      "step": "14_repeat_sweep_is_noop",
+      "operation_result": {
+        "released_holds": 0,
+        "fixture_age_s": 7200.0
+      },
+      "account": {
+        "account_id": "acct_cc2cf57747746090",
+        "label": "Micky controlled trace, fake grant only",
+        "balance_usd": 0.8,
+        "held_usd": 0.0,
+        "spent_usd": 0.2,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "status": "active",
+        "created_at": "2026-10-25 11:56:26"
+      },
+      "raw_millicents": {
+        "balance_mc": 80000,
+        "held_mc": 0,
+        "spent_mc": 20000,
+        "collateral_mc": 0,
+        "granted_mc": 100000,
+        "topped_up_mc": 0
+      },
+      "holds": [
+        {
+          "receipt_id": "abandoned-call",
+          "amount_mc": 10000,
+          "status": "released",
+          "created_at": "2000-01-01 00:00:00"
+        },
+        {
+          "receipt_id": "failed-call",
+          "amount_mc": 20000,
+          "status": "released",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "receipt_id": "successful-call",
+          "amount_mc": 20000,
+          "status": "captured",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "stats": {
+        "accounts": 1,
+        "credits_earned_usd": 0.2,
+        "outstanding_credit_usd": 0.8,
+        "held_usd": 0.0,
+        "collateral_usd": 0.0,
+        "granted_usd": 1.0,
+        "topped_up_usd": 0.0,
+        "publisher_payouts_usd": 0.0,
+        "operator_net_usd": 0.2
+      },
+      "ledger_entries": [
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.1,
+          "receipt_id": "abandoned-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.1,
+          "receipt_id": "abandoned-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "capture",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "successful-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "release",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "hold",
+          "amount_usd": 0.2,
+          "receipt_id": "failed-call",
+          "note": "",
+          "created_at": "2026-10-25 11:56:26"
+        },
+        {
+          "account_id": "acct_cc2cf57747746090",
+          "kind": "grant",
+          "amount_usd": 1.0,
+          "receipt_id": "",
+          "note": "synthetic opening credit; no funds received",
+          "created_at": "2026-10-25 11:56:26"
+        }
+      ],
+      "invariants": {
+        "nonnegative_amounts": true,
+        "balance_plus_held_plus_spent_plus_collateral_mc": 100000,
+        "held_rows_equal_account_held_mc": true,
+        "paid_topups_mc": 0
+      }
+    }
+  ]
+}

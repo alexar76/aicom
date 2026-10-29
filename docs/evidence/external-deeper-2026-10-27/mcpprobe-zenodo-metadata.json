@@ -1,0 +1,140 @@
+{
+  "url": "https://zenodo.org/api/records/22996025",
+  "status": 200,
+  "retrieved_at": "2026-10-27T08:32:54.595544+00:00",
+  "sha256": "97790d71b0405e83ad2b30d546471f2010bfcfcc5263136b11c4b23c8e1157b1",
+  "body": {
+    "created": "2026-09-27T11:37:28.385936+00:00",
+    "modified": "2026-09-27T11:37:28.797822+00:00",
+    "id": 22996025,
+    "conceptrecid": "22996024",
+    "doi": "10.5281/zenodo.22996025",
+    "conceptdoi": "10.5281/zenodo.22996024",
+    "doi_url": "https://doi.org/10.5281/zenodo.22996025",
+    "metadata": {
+      "title": "Installed, Launched, Probed: An Execution-Based Conformance Census of the Model Context Protocol Registry",
+      "doi": "10.5281/zenodo.22996025",
+      "publication_date": "2026-09-27",
+      "description": "<p>The Model Context Protocol (MCP) connects LLM agents to external tools, and public registries now list tens of thousands of MCP servers. Most empirical studies of this ecosystem are static. None calls the tools of registry servers at scale to check whether the servers start and follow the protocol. This paper does. From the official registry (17,432 unique servers) we run a complete census of all 6,106 self-contained, locally-installable servers, each launched in an isolated sandbox. A conformance harness then sends each one an unknown tool name, an argument of the wrong type and a malformed protocol frame. Only 63.5% (95% CI 59.9–66.5) of installable servers start and complete a handshake. Of those that respond, 88.4% (95% CI 86.6–90.0) report an unknown tool differently from the specification's illustration. Another 3.5% (95% CI 2.8–4.2) run a tool on an argument their own declared schema rejects and return an ordinary result, although the specification requires servers to validate all tool inputs; asked for top stories with a limit of \"not-a-number\", one returned an empty feed. Both behaviors trace to SDK defaults rather than to server authors. A re-run sixty-nine days later shows how far that dependence reaches: a breaking release of the official Python SDK, published nine days after our snapshot, stopped 58% of the Python-SDK servers that had worked, and pinning the SDK below it restores them. Conformance among the servers that still ran did not change. We release the harness and the disclosure-filtered dataset.</p>",
+      "access_right": "open",
+      "creators": [
+        {
+          "name": "Faraj, Ahmed Elsayed Abdo Ali",
+          "affiliation": "Suez Canal University",
+          "orcid": "0009-0007-9177-5176"
+        }
+      ],
+      "keywords": [
+        "Model Context Protocol",
+        "conformance testing",
+        "software ecosystems",
+        "dependency management",
+        "LLM agents",
+        "mining software repositories"
+      ],
+      "related_identifiers": [
+        {
+          "identifier": "10.5281/zenodo.22981443",
+          "relation": "isSupplementedBy",
+          "resource_type": "dataset",
+          "scheme": "doi"
+        }
+      ],
+      "language": "eng",
+      "resource_type": {
+        "title": "Preprint",
+        "type": "publication",
+        "subtype": "preprint"
+      },
+      "license": {
+        "id": "cc-by-4.0"
+      },
+      "relations": {
+        "version": [
+          {
+            "index": 0,
+            "is_last": true,
+            "parent": {
+              "pid_type": "recid",
+              "pid_value": "22996024"
+            }
+          }
+        ]
+      }
+    },
+    "title": "Installed, Launched, Probed: An Execution-Based Conformance Census of the Model Context Protocol Registry",
+    "links": {
+      "self": "https://zenodo.org/api/records/22996025",
+      "self_html": "https://zenodo.org/records/22996025",
+      "preview_html": "https://zenodo.org/records/22996025?preview=1",
+      "doi": "https://doi.org/10.5281/zenodo.22996025",
+      "self_doi": "https://doi.org/10.5281/zenodo.22996025",
+      "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22996025",
+      "reserve_doi": "https://zenodo.org/api/records/22996025/draft/pids/doi",
+      "parent": "https://zenodo.org/api/records/22996024",
+      "parent_html": "https://zenodo.org/records/22996024",
+      "parent_doi": "https://doi.org/10.5281/zenodo.22996024",
+      "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22996024",
+      "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22996025/manifest",
+      "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22996025/sequence/default",
+      "files": "https://zenodo.org/api/records/22996025/files",
+      "media_files": "https://zenodo.org/api/records/22996025/media-files",
+      "thumbnails": {
+        "10": "https://zenodo.org/api/iiif/record:22996025:Faraj-2026-MCP-conformance-census-preprint.pdf/full/%5E10,/0/default.jpg",
+        "50": "https://zenodo.org/api/iiif/record:22996025:Faraj-2026-MCP-conformance-census-preprint.pdf/full/%5E50,/0/default.jpg",
+        "100": "https://zenodo.org/api/iiif/record:22996025:Faraj-2026-MCP-conformance-census-preprint.pdf/full/%5E100,/0/default.jpg",
+        "250": "https://zenodo.org/api/iiif/record:22996025:Faraj-2026-MCP-conformance-census-preprint.pdf/full/%5E250,/0/default.jpg",
+        "750": "https://zenodo.org/api/iiif/record:22996025:Faraj-2026-MCP-conformance-census-preprint.pdf/full/%5E750,/0/default.jpg",
+        "1200": "https://zenodo.org/api/iiif/record:22996025:Faraj-2026-MCP-conformance-census-preprint.pdf/full/%5E1200,/0/default.jpg"
+      },
+      "latest": "https://zenodo.org/api/records/22996025/versions/latest",
+      "latest_html": "https://zenodo.org/records/22996025/latest",
+      "versions": "https://zenodo.org/api/records/22996025/versions",
+      "draft": "https://zenodo.org/api/records/22996025/draft",
+      "access_links": "https://zenodo.org/api/records/22996025/access/links",
+      "access_grants": "https://zenodo.org/api/records/22996025/access/grants",
+      "access_users": "https://zenodo.org/api/records/22996025/access/users",
+      "access_request": "https://zenodo.org/api/records/22996025/access/request",
+      "access": "https://zenodo.org/api/records/22996025/access",
+      "communities": "https://zenodo.org/api/records/22996025/communities",
+      "communities-suggestions": "https://zenodo.org/api/records/22996025/communities-suggestions",
+      "request_deletion": "https://zenodo.org/api/records/22996025/request-deletion",
+      "file_modification": "https://zenodo.org/api/records/22996025/file-modification",
+      "quota_increase": "https://zenodo.org/api/records/22996025/quota-increase",
+      "requests": "https://zenodo.org/api/records/22996025/requests"
+    },
+    "updated": "2026-09-27T11:37:28.797822+00:00",
+    "recid": "22996025",
+    "revision": 3,
+    "files": [
+      {
+        "id": "e7ec8f90-edbb-41fe-953e-a7f6da107c42",
+        "key": "Faraj-2026-MCP-conformance-census-preprint.pdf",
+        "size": 565387,
+        "checksum": "md5:4c23100baf4f819fff9408af82b4608a",
+        "links": {
+          "self": "https://zenodo.org/api/records/22996025/files/Faraj-2026-MCP-conformance-census-preprint.pdf/content"
+        }
+      }
+    ],
+    "swh": {},
+    "owners": [
+      {
+        "id": "1903353"
+      }
+    ],
+    "status": "published",
+    "stats": {
+      "downloads": 6,
+      "unique_downloads": 6,
+      "views": 139,
+      "unique_views": 119,
+      "version_downloads": 6,
+      "version_unique_downloads": 6,
+      "version_unique_views": 119,
+      "version_views": 139
+    },
+    "state": "done",
+    "submitted": true
+  }
+}

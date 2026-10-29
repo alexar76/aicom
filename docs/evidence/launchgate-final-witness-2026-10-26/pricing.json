@@ -1,0 +1,19 @@
+{
+  "checkedDate": "2026-10-26",
+  "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "modelAlias": "deepseek-flash",
+  "documentedVersion": "DeepSeek-V4.1-Flash-1017",
+  "peakUSDPerMillionTokens": {
+    "inputMiss": 0.3,
+    "inputHit": 0.006,
+    "output": 1.2
+  },
+  "offPeakMultiplier": 0.5,
+  "expectedUSD": [
+    0.02,
+    0.05
+  ],
+  "conservativeLedgerLimitUSD": 0.08,
+  "reservationUSD": 0.01,
+  "scope": "Final matched comparison; plus prior prospective peak cost .057868866, combined conservative cap .137868866."
+}

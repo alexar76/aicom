@@ -1,0 +1,57 @@
+{
+  "signatureVerified": true,
+  "phase": "candidate",
+  "imageDigest": "sha256:04c6683cbf8d36201359baf9322aee49c580b6f00b63ab5f59598881bc232639",
+  "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+  "run": "20261027T163801",
+  "status": "passed",
+  "full": true,
+  "expiresAt": 1793285223.3316393,
+  "suites": {
+    "candidates": {
+      "passed": true,
+      "counts": {
+        "attacks": 0,
+        "benign": 0,
+        "candidates": 27,
+        "falsePositives": 0,
+        "incomplete": 0,
+        "missed": 0
+      }
+    },
+    "development": {
+      "passed": true,
+      "counts": {
+        "attacks": 8244,
+        "benign": 362,
+        "candidates": 0,
+        "falsePositives": 0,
+        "incomplete": 0,
+        "missed": 0
+      }
+    },
+    "holdout": {
+      "passed": true,
+      "counts": {
+        "attacks": 24,
+        "benign": 24,
+        "candidates": 0,
+        "falsePositives": 0,
+        "incomplete": 0,
+        "missed": 0
+      }
+    }
+  },
+  "behaviour": {
+    "cases": 72,
+    "evaluatedAt": 1793119178.667355,
+    "executed": 72,
+    "falsePositives": 0,
+    "fixturesSha256": "0f94b16bc18b2bb5a6943bcab451dc8a94c59b7d27659bf1522df7499a04b867",
+    "incomplete": 0,
+    "missed": 0,
+    "observerSha256": "fd969fc1816b3a689a34059c70f1aac06b8c736d777cef355a8c1d6a1c8660bf",
+    "passed": true,
+    "seed": "20261027T163801"
+  }
+}

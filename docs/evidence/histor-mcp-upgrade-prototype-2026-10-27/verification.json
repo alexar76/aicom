@@ -1,0 +1,257 @@
+{
+  "checked_at_utc": "2026-10-27T11:30:05.654231+00:00",
+  "scope": "local implementation and synthetic acceptance only",
+  "full_suite": {
+    "passed": 828,
+    "skipped": 216,
+    "deselected": 12,
+    "warning": "existing Starlette/httpx deprecation"
+  },
+  "final_focused_suite": {
+    "passed": 61,
+    "overlaps_full_suite": true,
+    "includes_new_real_transport_acceptance_tests": 2
+  },
+  "ruff": "passed: histor tests sandbox",
+  "diff_check": "passed",
+  "modern_revision": "2026-07-28",
+  "external_actions": [],
+  "sources": [
+    {
+      "path": "histor/.env.example",
+      "sha256": "71abac8627ada2ec4238aad868eb487f0c7161131a278f6c479cdd30d6b5eb88"
+    },
+    {
+      "path": "histor/CHANGELOG.md",
+      "sha256": "ca3499da83b108a1b4b150042fbc15e1b1c0ad3a06151d85fd4010a71704ba31"
+    },
+    {
+      "path": "histor/README.es.md",
+      "sha256": "bbd2f4710ff81685191a1b13def1d5e34a12e8280eb2a3aab185c8449ff86bf7"
+    },
+    {
+      "path": "histor/README.fr.md",
+      "sha256": "d0587d322c5c962a2d30ab938c7a8fc14be72db1d7b9cfb9e70dc4137a28b872"
+    },
+    {
+      "path": "histor/README.md",
+      "sha256": "ab673ac5f4f42de7c90f370017c65629a32211f6df7b5d25298bc5623d8cf303"
+    },
+    {
+      "path": "histor/README.ru.md",
+      "sha256": "c2a1fa7f9f7d2d2c4be095985c70617952b04141d2d09a7b2e160b99feca97b5"
+    },
+    {
+      "path": "histor/README.zh.md",
+      "sha256": "cc8cdccea1feab034b4003fd62393e1dee4bcfb4a64c0d4195ac1ed9c31df4f4"
+    },
+    {
+      "path": "histor/docker-compose.yml",
+      "sha256": "30e7b58353c099b819c75b5cfcf1491984e19c516719ebe2de0a819846000587"
+    },
+    {
+      "path": "histor/docs/architecture.es.md",
+      "sha256": "fb7ae09dd4b7785984ff1a8678197e918783b76d6895b8af743aa7d881a8b8cf"
+    },
+    {
+      "path": "histor/docs/architecture.fr.md",
+      "sha256": "a178ff28985140d76906bed52101975736cf965ebbf2c341754075b40a8f6168"
+    },
+    {
+      "path": "histor/docs/architecture.md",
+      "sha256": "001b99cadada089f302d0433bf2a438fd94d996b3a74e1e11825b41d9e5dca4c"
+    },
+    {
+      "path": "histor/docs/architecture.ru.md",
+      "sha256": "d5b2ae23f7edc03331190ef692135eb8b4493ec7639fa65d96b89b4fe83fc054"
+    },
+    {
+      "path": "histor/docs/architecture.zh.md",
+      "sha256": "04c2d87bc0790df7fb2fcb562e16fa3ecbd29663f0a860d05ece96e928617201"
+    },
+    {
+      "path": "histor/docs/mcp-compatibility.md",
+      "sha256": "bd20b759df63d5b26bdf094ef46127933805a46d5a97005711a3f4461f68436f"
+    },
+    {
+      "path": "histor/docs/operations.es.md",
+      "sha256": "da997cdd970ed669c348651fdfe4468e2bbc31b5d78da059662a8c5cf5d806f6"
+    },
+    {
+      "path": "histor/docs/operations.fr.md",
+      "sha256": "89187c67baa9ed8fc6d317f2aea83ed467778638291516f5f0b60f45e1c26ce5"
+    },
+    {
+      "path": "histor/docs/operations.md",
+      "sha256": "854472505bdc7406007ae553925b9bdd301c959b8554bd770618698fd1f4ebc1"
+    },
+    {
+      "path": "histor/docs/operations.ru.md",
+      "sha256": "64230589e368853827f4c8e717dc26f8d5ee662259569cfab45cf58a2be249e5"
+    },
+    {
+      "path": "histor/docs/operations.zh.md",
+      "sha256": "3d056b89f860b3579c591eff3e04efcc787d4e9ae141fe3fae22464037759a03"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.ru.md",
+      "sha256": "6c229b77a9c3ba243b4d1c95e7cf4e1e0fe2f9cb5d5f922082f17d6102d9ff0c"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.md",
+      "sha256": "c87086579506a1863966c0a42c8660a7bb39c00d62e01c3c03f7bdedb6b20cae"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/migration-after.json",
+      "sha256": "80a04b3ec2e35f3b0330bd643d3ff8a7297c34e74288e6f91ecbed1290177e98"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/migration-before.json",
+      "sha256": "aae66bbd278f22d34ff079b78b6a2c449043920db192aa710b916bc609006e4d"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/offline-after.json",
+      "sha256": "66727987e9474aba873aec44d9f5567fcc3f9678fbdeab69717dcfb269effa63"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/offline-before.json",
+      "sha256": "8d1528bbe8087c1cbceeaa0f4cbac46469e27eed3ff3ca9f50a56b714bb4e59c"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/research-after.json",
+      "sha256": "57194207461aaed52fd64ce50ed29039245f7b89d680b86f835158882721bc8f"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/research-before.json",
+      "sha256": "f0d61f85b2ce2de63595690bd528b70994f329e3db903ac4d59950fb3b8263da"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.json",
+      "sha256": "e02b2ccd26fe814d1ed3a3c8080a6e54176e85260f6fbd6f935ca9f11624bbcb"
+    },
+    {
+      "path": "histor/histor/__main__.py",
+      "sha256": "76135c19f6d92f19fc615b5e7dcefd88973b8a07441fe9d71bd1f22a79704245"
+    },
+    {
+      "path": "histor/histor/app.py",
+      "sha256": "ea1592bd39cb3cda28ce513d35e78c090533e2de408e7001a651ee2c4c2e0591"
+    },
+    {
+      "path": "histor/histor/config.py",
+      "sha256": "df6a082257ef5e70e64c3aac401c878211aeba10b700fcc51844002c1a506e29"
+    },
+    {
+      "path": "histor/histor/dataset.py",
+      "sha256": "2f70cfc7809c3d3851ee8312605ba0b849cd2794db5ac50d9d7b3110322adaf4"
+    },
+    {
+      "path": "histor/histor/diffing.py",
+      "sha256": "f2e1c0f20a81b53623e326b1de2a5509dfeb57ba6c9aebc332891f2e23e07911"
+    },
+    {
+      "path": "histor/histor/mcp_stdio.py",
+      "sha256": "6a052d355210760c0145d6c777c451fae633db8addcd5ec70e11e461b07d83a7"
+    },
+    {
+      "path": "histor/histor/mcpclient.py",
+      "sha256": "46abbd51efe7bd2f8a0bd9504b1f8709e562b87b6796e36a1eedabe8d543a9c7"
+    },
+    {
+      "path": "histor/histor/store.py",
+      "sha256": "2bac8a760b89b8130cd09045fca413f54970ac4a8ed550d9aed76b57231cc811"
+    },
+    {
+      "path": "histor/histor/toolcost_cli.py",
+      "sha256": "1f21efca7015e9ce34c11bcbf41e7e27daf4ce4c1e4c99fac0740415ce765fd2"
+    },
+    {
+      "path": "histor/histor/upgrade_brief.py",
+      "sha256": "4bdb1c1c9265e25feab33f928d6956e87cd15da186560ffa4c964e1f5cfa9474"
+    },
+    {
+      "path": "histor/histor/upgrade_brief_cli.py",
+      "sha256": "df16024ec645a999d126cadc44497844891f07699ad2097e15769c22b406957e"
+    },
+    {
+      "path": "histor/histor/upgrade_capture.py",
+      "sha256": "1c4d4e055215bb308d3157159547ddd3812b16623c499d31e40dbdb73bf19d28"
+    },
+    {
+      "path": "histor/sandbox/histor_observe.py",
+      "sha256": "313291a52d976186b25c916b82221b49b825341992b5b9f67df5c5578866644d"
+    },
+    {
+      "path": "histor/tests/test_config.py",
+      "sha256": "f5a82f35628166ba17de6c79a33532c04dd5afaa4f6909333fee17bde287669a"
+    },
+    {
+      "path": "histor/tests/test_diffing.py",
+      "sha256": "dc4dbb448c8fbe35f069ec8df2737da29e828b38f37f2e5128f004e557f18fae"
+    },
+    {
+      "path": "histor/tests/test_edges.py",
+      "sha256": "0df8b0260a1b09b29088cdf3b6377fab7a970280222ec3808ac67f58ec5595f8"
+    },
+    {
+      "path": "histor/tests/test_exit_reasons.py",
+      "sha256": "e67cff1e6ae25fb8850283290394daed0024706e8d887885745218541058636c"
+    },
+    {
+      "path": "histor/tests/test_hostile.py",
+      "sha256": "630b7c99a3e150f72408d2fa477892d103365355dd381f17cc89e0cc7d20e810"
+    },
+    {
+      "path": "histor/tests/test_mcp_stdio.py",
+      "sha256": "f5c9b16c8afa19e7ca648c7d9b614c5f6fa4d758d6fdfa0318a224867009d38b"
+    },
+    {
+      "path": "histor/tests/test_mcpclient.py",
+      "sha256": "2de6276cc63c314e2d606fe28419f264ed1f7b820e85349a9e22f1a2cede3c9f"
+    },
+    {
+      "path": "histor/tests/test_mcpclient_modern.py",
+      "sha256": "7d54898549ef7071737db2155a7e5350c7990e354b27873ef0aac607b88d75be"
+    },
+    {
+      "path": "histor/tests/test_observer.py",
+      "sha256": "01504b5b935969de69d405644da2ddfc077643e5f0d51ab3f235e32c3cdc5c27"
+    },
+    {
+      "path": "histor/tests/test_packages.py",
+      "sha256": "6f2fa538ea0ab7d1d45e000d8b18739f08177d7f15537eb6ec8e6f5152871a5d"
+    },
+    {
+      "path": "histor/tests/test_protocol_provenance.py",
+      "sha256": "a9bca34ffe632399e8c73c4ec42b6d1a1c0d3589a993efcb4c61c8b872ad9803"
+    },
+    {
+      "path": "histor/tests/test_sandbox_pool.py",
+      "sha256": "afe8e65ca20645fa2038171fa5c03035a7200ea703f53289b76dadeb395a9c8d"
+    },
+    {
+      "path": "histor/tests/test_toolcost.py",
+      "sha256": "f0010e741703df3fee5c458ee620732eddb473465fe923ef04de9e4ceb364fc9"
+    },
+    {
+      "path": "histor/tests/test_toolcost_modern.py",
+      "sha256": "3bb867ee0ebd646e3c4da4863c92814763471123cbe38a7c231cb024b248f328"
+    },
+    {
+      "path": "histor/tests/test_upgrade_brief.py",
+      "sha256": "1677e389a937697ee6cc3dbb58580ac90cdb3811ae4d4b850e3e1e9df19e78ff"
+    },
+    {
+      "path": "histor/tests/test_upgrade_capture.py",
+      "sha256": "ba91c80e82c0073fae4a063ffc8bbd79ffbb7ba6a2333bf77e44cdce08a69ede"
+    },
+    {
+      "path": "histor/tests/test_upgrade_end_to_end.py",
+      "sha256": "3c73604cc93b6a65688f4984c7408673f0ed117987cf3b4fd1a3adf174cf8208"
+    },
+    {
+      "path": "histor/tests/test_upgrade_rendering.py",
+      "sha256": "116133e113b5e3087e4d3a694e1ef2e6647d2220c9cd43f83cd87a62f9242178"
+    }
+  ]
+}

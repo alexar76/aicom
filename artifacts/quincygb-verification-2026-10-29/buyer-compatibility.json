@@ -1,0 +1,43 @@
+{
+  "checked_at_utc": "2026-10-29T11:44:29.243Z",
+  "checks": [
+    {
+      "key": "route-check-unpaid",
+      "accepted": true,
+      "verdict": "payable",
+      "x402_version": 2,
+      "terms": {
+        "amount": "50000",
+        "payTo": "0x097f9685d1e0752bf8b02d61e5ce9be7ea0fba7f",
+        "network": "eip155:8453",
+        "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        "scheme": "exact",
+        "domain": {
+          "name": "USD Coin",
+          "version": "2"
+        }
+      },
+      "source": "unpaid-probes.json",
+      "proof_limit": "The SDK can parse and accept these saved terms. No payment or paid response tested."
+    },
+    {
+      "key": "recheck-unpaid",
+      "accepted": true,
+      "verdict": "payable",
+      "x402_version": 2,
+      "terms": {
+        "amount": "5000",
+        "payTo": "0x097f9685d1e0752bf8b02d61e5ce9be7ea0fba7f",
+        "network": "eip155:8453",
+        "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        "scheme": "exact",
+        "domain": {
+          "name": "USD Coin",
+          "version": "2"
+        }
+      },
+      "source": "unpaid-probes.json",
+      "proof_limit": "The SDK can parse and accept these saved terms. No payment or paid response tested."
+    }
+  ]
+}

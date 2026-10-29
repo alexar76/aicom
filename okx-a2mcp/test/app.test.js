@@ -91,6 +91,29 @@ test("histor-check passes HISTOR's rate limit through and reports an unreachable
   } finally { await close(); }
 });
 
+test("histor-check retries a lost connection once, and never retries an answer HISTOR gave", async () => {
+  let calls = 0;
+  let script = [];
+  const fetchImpl = async () => { calls++; const step = script.shift(); if (step === "drop") throw new Error("connect timeout"); return step; };
+  const { call, close } = await serve({ fetchImpl });
+  try {
+    script = ["drop", json(200, { type: "histor.check/v1", match: "not-listed" })];
+    let res = await call("/a2mcp/histor-check", post({ name: "a.b/c" }));
+    assert.equal(res.status, 200);
+    assert.equal(calls, 2);
+    calls = 0; script = [json(503, { detail: "busy" }), json(200, {})];
+    res = await call("/a2mcp/histor-check", post({ name: "a.b/c" }));
+    assert.equal(res.status, 502);
+    assert.equal((await res.json()).error, "upstream_error");
+    assert.equal(calls, 1);
+    calls = 0; script = ["drop", "drop", json(200, {})];
+    res = await call("/a2mcp/histor-check", post({ name: "a.b/c" }));
+    assert.equal(res.status, 502);
+    assert.equal((await res.json()).error, "upstream_unreachable");
+    assert.equal(calls, 2);
+  } finally { await close(); }
+});
+
 test("warden-scan allows an honest definition and blocks a poisoned one", async () => {
   const { call, close } = await serve();
   try {

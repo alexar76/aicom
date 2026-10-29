@@ -1,0 +1,18 @@
+{"stage": "dependencies", "startedAt": "2026-10-25T17:38:50.679665+00:00"}
+{"stage": "dependencies", "exitCode": 0}
+{"stage": "build", "startedAt": "2026-10-25T17:38:55.375387+00:00"}
+{"stage": "build", "exitCode": 0}
+{"stage": "typecheck", "startedAt": "2026-10-25T17:39:04.646457+00:00"}
+{"stage": "typecheck", "exitCode": 0}
+{"stage": "warden-tests", "startedAt": "2026-10-25T17:39:12.904612+00:00"}
+{"stage": "warden-tests", "exitCode": 1}
+Traceback (most recent call last):
+  File "/tmp/launchgate-live-20261025.ZIuex9/study/research/remote_run.py", line 132, in <module>
+    if __name__=='__main__':run()
+                            ^^^^^
+  File "/tmp/launchgate-live-20261025.ZIuex9/study/research/remote_run.py", line 61, in run
+    check('warden-tests',container()+['node_modules/vitest/vitest.mjs','run',*TESTS,'--maxWorkers=1','--no-file-parallelism',
+  File "/tmp/launchgate-live-20261025.ZIuex9/study/research/remote_run.py", line 57, in check
+    assert item['exitCode']==0,'Check failed: '+name
+           ^^^^^^^^^^^^^^^^^^^
+AssertionError: Check failed: warden-tests

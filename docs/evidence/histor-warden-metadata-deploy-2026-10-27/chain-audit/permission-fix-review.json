@@ -1,0 +1,37 @@
+{
+  "reviewedAt": "2026-10-27T16:51:24.969890+00:00",
+  "reviewedAtMoscow": "2026-10-27T19:51:24.969890+03:00",
+  "scope": "Read-only local permission-fix and recorded candidate-probe review",
+  "decision": "permission-fix-approved; new source commit and helper constants must be pinned before next native build",
+  "recipeSha256": "d4e40dd761cb6898d11fc5336a9d507caf7b4614ec1c0012ff2b2dcd0c4ff4d2",
+  "rejectedCandidate": {
+    "imageDigest": "sha256:04c6683cbf8d36201359baf9322aee49c580b6f00b63ab5f59598881bc232639",
+    "sourceCommit": "231c6b0618670b408c460ce63fe8d5b1af287563",
+    "componentTestsPassedAndEnforced": true,
+    "runtimeUid": 65532,
+    "publicPackageMetadataMode": "0o600",
+    "ownerUid": 0,
+    "runtimeReadable": false,
+    "errorClass": "PermissionError",
+    "errno": "EACCES",
+    "rootReadVersion": "0.22.2",
+    "status": "rejected-before-production-deployment",
+    "evidence": "../verification/candidate-diagnosis.json",
+    "qualityLimit": "Passing component/MOMUS JS checks cannot override failed runtime metadata access."
+  },
+  "fixReviewed": {
+    "publicPackageMetadataNormalizedTo0644InTestStage": true,
+    "artifactAndEvidenceUmaskRemainsRestrictive": true,
+    "finalNodeJsonReadGateUsesInheritedUnprivilegedUser": true,
+    "jsonPackageNameAndNonemptyVersionChecked": true,
+    "helperStillRequiresExact0222PackageHashAndJsDigest": true,
+    "userOverrideAdded": false,
+    "recursivePermissionChangeAdded": false,
+    "finalCopyPathsChanged": false,
+    "runtimeSourceOrJsBytesChanged": false,
+    "componentAssertionsWeakened": false
+  },
+  "remainingCondition": "Parent must pin the new source/branch/recipe hash, run the native build, and accept the new default-UID metadata probe plus signed exact-image MOMUS evidence before deployment.",
+  "remoteActionsByReviewer": false,
+  "credentialOrSettingsReadsByReviewer": false
+}

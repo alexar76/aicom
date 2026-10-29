@@ -1,0 +1,34 @@
+{
+  "url": "https://hn.algolia.com/api/v1/search_by_date?query=alexar76&hitsPerPage=100",
+  "retrieved_at": "2026-10-27T04:55:23.060090+00:00",
+  "status": 200,
+  "sha256": "757cd0ea08995095165f7a4f42af05be4fca3d1ce2bf422c7d4d9a6aa850d57c",
+  "body": {
+    "exhaustive": {
+      "nbHits": false,
+      "typo": false
+    },
+    "exhaustiveNbHits": false,
+    "exhaustiveTypo": false,
+    "hits": [],
+    "hitsPerPage": 100,
+    "nbHits": 0,
+    "nbPages": 0,
+    "page": 0,
+    "params": "query=alexar76&hitsPerPage=100&advancedSyntax=true&analyticsTags=backend",
+    "processingTimeMS": 5,
+    "processingTimingsMS": {
+      "_request": {
+        "queue": 1,
+        "roundTrip": 20
+      },
+      "fetch": {
+        "query": 3,
+        "total": 4
+      },
+      "total": 5
+    },
+    "query": "alexar76",
+    "serverTimeMS": 6
+  }
+}

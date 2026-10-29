@@ -1,0 +1,90 @@
+{
+  "key": "hubwiz-registry",
+  "url": "https://www.hubwiz.com/blog/mcp-registry-supply-chain-audit/",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T13:52:13.124568+00:00",
+  "status": 200,
+  "final_url": "https://www.hubwiz.com/blog/mcp-registry-supply-chain-audit/",
+  "bytes": 52180,
+  "sha256": "a742015afdfc67e9bc521e2aaa2e088e9a6536d165ee36ba07e488c443e4fd0d",
+  "identifiers": {
+    "alexar76": 0,
+    "modelmarket.dev": 0,
+    "HISTOR": 0,
+    "WARDEN": 0,
+    "AICOM": 0,
+    "1932": 0,
+    "1,932": 0,
+    "25 微秒": 0
+  },
+  "contexts": {
+    "来源": [
+      ".modelcontextprotocol.io/v0/servers 。它按\"发布版本\"计数，所以原始条目会高估生态规模： 2026-08-16 快照的 73,460 条记录，按来源去重后是 17,535 个组件 。其中 15,341 个（87.5%） 完成扫描，其余 2,194 个按原因计数： 未扫描原因 组件数 占比 仓库或包已不可访问 1,637 9.3% 超过 60 秒时限 302 1.7% 超过 50 MB 体积上限 188 1.1% 其他 65 0.4% 访问被拒绝 2 0.0% 按托管位置看，覆盖率差异很大： 生态 已扫描 已列出 覆盖率 npm 6,967 7,152 97.4% PyPI 2,985 3,071 97.2% git 5,389 7,312 73.7% 近十分之一（9.3%）的组件指向一个已经消失或私有的仓库/包。 这本身就是一条供应链事实：你抄下来的 npx 行，可能指向一个已经不由原作者控制的东",
+      "那个 npm 包 。 1. 名字从项目本身取，不从搜索结果取 从项目自己的 README 或官网取包名与仓库，然后与配置里的字符串 逐字符 比对。REA 的 README 只列三个来源： morluto/rea 、 rea.tools 、npm 包 rea-agents 。其他都不算，包括 README 一模一样的仓库。仿冒品通常只差一个字符：用域名当组织名、一个连字符、一个复数。 2. 查仓库归属，以及它是什么时候建的 GitHub REST API 会返回仓库创建时间、是否为 fork、以及父仓库。用 gh api --jq 一次打印： gh api repos/morluto/rea \\ --jq '.created_at, .fork, .parent.full_name' 如果 owner 是组织，也查组织： gh api orgs/<org> --jq '.created_at, .public_repos' 一个三天前",
+      "、把两件事合成一个卡点 群体数据回答\"这类东西平均能做什么\"，8 项检查回答\"这一个能不能进我的配置\"。落到流程上，建议在采购/引入环节加一张表： 检查 命令/证据 通过标准 名称来源 项目 README / 官网 与配置逐字符一致 仓库年龄 gh api repos/<o>/<r> --jq '.created_at,.fork' 不是新近创建的单仓库组织 npm 回指 npm view <pkg> repository.url 与仓库一致（仅作辅助） provenance npm view <pkg>@<ver> dist.attestations... 有证明且发布者可信 安装脚本 npm view <pkg>@<ver> scripts.* 无脚本，或脚本已读且可解释 版本 配置文件 钉死 @x.y.z ，不用 latest tarball npm pack + diff -rq 差异项全部读过 能力清单 扫描/人工阅读 联"
+    ],
+    "Tools": [
+      "个让 coding agent 逆向二进制、Electron 应用、APK 的开源 MCP 服务器与 CLI）的仓库收到 issue #2424，标题很直接：「一个假仓库 rea-tools/rea 在分发带木马的 Windows exe」。 按该 issue 的描述： 项 细节 手法 复制 REA 的 README，加一节「Windows Standalone .exe」，指向一个 82.6 MB 压缩包 检测 Microsoft Defender 把压缩包标为 Trojan:Script/Wacatac.B!ml ，解压出的 rea-x64.exe 标为 Trojan:Win32/Wacatac.B!ml 多引擎 VirusTotal 上 8/45 个引擎报毒 传播量 172 次下载 仓库背景 rea-tools 组织创建于 2026-10-10 ，名下只有这一个仓库；名字在模仿 REA 的真实站点 rea.tools 处置 维护者当",
+      "rea-x64.exe 标为 Trojan:Win32/Wacatac.B!ml 多引擎 VirusTotal 上 8/45 个引擎报毒 传播量 172 次下载 仓库背景 rea-tools 组织创建于 2026-10-10 ，名下只有这一个仓库；名字在模仿 REA 的真实站点 rea.tools 处置 维护者当天关闭 issue，并通过 PR #2429 更新 README：只从 morluto/rea 、 rea.tools 或 npm 包 rea-agents 获取 REA 当时的热度正是攻击者选择的理由：走红几天内约 14.5 万 star ，目前仓库已超过 28 万 。README 现在多了一句关键的话—— 「相似的仓库名或复制的 README，不能证明下载是官方的。」 这句话就是 MCP 生态的核心问题：你从一条推文或一个列表里看到服务器名，把一行配置粘进 agent，agent 就用 你的权限 把它跑起来。 二、群体画像：1",
+      "l 上 8/45 个引擎报毒 传播量 172 次下载 仓库背景 rea-tools 组织创建于 2026-10-10 ，名下只有这一个仓库；名字在模仿 REA 的真实站点 rea.tools 处置 维护者当天关闭 issue，并通过 PR #2429 更新 README：只从 morluto/rea 、 rea.tools 或 npm 包 rea-agents 获取 REA 当时的热度正是攻击者选择的理由：走红几天内约 14.5 万 star ，目前仓库已超过 28 万 。README 现在多了一句关键的话—— 「相似的仓库名或复制的 README，不能证明下载是官方的。」 这句话就是 MCP 生态的核心问题：你从一条推文或一个列表里看到服务器名，把一行配置粘进 agent，agent 就用 你的权限 把它跑起来。 二、群体画像：15,341 个服务器能做什么 扫描对象是官方注册表 registry.modelcontextprotoco"
+    ]
+  },
+  "meta": [
+    {
+      "name": "description",
+      "content": "官方 MCP 注册表 15,341 个组件静态扫描：64.8% 能联网、21.1% 能开 shell、7.4% 安装时跑代码；附 npx 一个 MCP 服务器前的 8 项检查与假 REA 仓库复盘。"
+    },
+    {
+      "property": "og:type",
+      "content": "article"
+    },
+    {
+      "property": "og:title",
+      "content": "MCP 供应链体检：15,341 个服务器扫描与上线前 8 项检查"
+    },
+    {
+      "property": "og:description",
+      "content": "15,341 个 MCP 服务器里 64.8% 能联网、21.1% 能开 shell、7.4% 装的时候就跑代码。附 npx 之前必须做的 8 项检查。"
+    },
+    {
+      "property": "article:published_time",
+      "content": "2026-10-17T12:42:39.000Z"
+    },
+    {
+      "property": "article:modified_time",
+      "content": "2026-10-17T13:01:40.000Z"
+    },
+    {
+      "name": "twitter:title",
+      "content": "MCP 供应链体检：15,341 个服务器扫描与上线前 8 项检查"
+    },
+    {
+      "name": "twitter:description",
+      "content": "15,341 个 MCP 服务器里 64.8% 能联网、21.1% 能开 shell、7.4% 装的时候就跑代码。附 npx 之前必须做的 8 项检查。"
+    }
+  ],
+  "source_links": [
+    "https://www.hubwiz.com/blog",
+    "https://www.hubwiz.com/blog/",
+    "https://www.hubwiz.com/blog/vibe-coding-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/local-llm-stack/",
+    "https://www.hubwiz.com/blog/ai-industrial-stack/",
+    "https://www.hubwiz.com/blog/tag/mcp/",
+    "https://dev.to/dmitrii_p_762d68551e7b37f/what-15341-mcp-servers-can-do-a-static-scan-of-the-official-registry-1a93?ref=hubwiz.com",
+    "https://github.com/pezhik/skilltotal?ref=hubwiz.com",
+    "https://dev.to/gabrielanhaia/before-you-npx-an-mcp-server-8-checks-that-would-have-caught-the-fake-rea-repo-300o?ref=hubwiz.com",
+    "https://github.com/morluto/rea/issues/2424?ref=hubwiz.com",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+    "https://www.hubwiz.com/blog/mcp-tool-count-1932-runs-measured/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/rag-data-stack/",
+    "https://www.hubwiz.com/blog/generative-media-stack/",
+    "https://www.hubwiz.com/blog/ai-infra-stack/",
+    "https://www.hubwiz.com/blog/ai-tools/",
+    "https://www.hubwiz.com/blog/about/",
+    "https://www.hubwiz.com/blog/contribute/",
+    "https://www.hubwiz.com/blog/privacy/"
+  ]
+}

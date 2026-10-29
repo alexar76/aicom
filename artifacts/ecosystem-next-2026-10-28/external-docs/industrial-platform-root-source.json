@@ -1,0 +1,281 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/README.md",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:11:03.454440+00:00",
+    "path": "README.md",
+    "status": 200,
+    "sha256": "c024953c637ebc6715cc1b8d4f13921ab07470a9f709a664314d8264411260b0",
+    "bytes": 13032,
+    "urls": [
+      "https://allmcps.com/api/badge/industrial-platform?style=shield",
+      "https://allmcps.com/mcp/industrial-platform",
+      "https://mcp.apify.com?tools=industrial_platform/research-brief-agent,industrial_platform/web-change-intelligence,industrial_platform/web-metadata-intelligence,industrial_platform/article-content-intelligence,industrial_platform/pdf-text-intelligence",
+      "https://mcp.apify.com?tools=industrial_platform/research-brief-agent,industrial_platform/web-change-intelligence,industrial_platform/web-metadata-intelligence,industrial_platform/article-content-intelligence,industrial_platform/pdf-text-intelligence,industrial_platform/sitemap-intelligence&payment=x402",
+      "https://mcp.apify.com?tools=industrial_platform/web-metadata-intelligence,industrial_platform/web-change-intelligence&payment=x402",
+      "https://x402-gateway-production-1f21.up.railway.app",
+      "https://x402-gateway-production-1f21.up.railway.app/.well-known/x402",
+      "https://x402-gateway-production-1f21.up.railway.app/llms.txt",
+      "https://x402-gateway-production-1f21.up.railway.app/openapi.json",
+      "https://x402-mcp-gateway-production.up.railway.app/mcp"
+    ],
+    "selected_lines": [
+      {
+        "line": 12,
+        "text": "```text"
+      },
+      {
+        "line": 13,
+        "text": "https://x402-mcp-gateway-production.up.railway.app/mcp"
+      },
+      {
+        "line": 14,
+        "text": "```"
+      },
+      {
+        "line": 15,
+        "text": ""
+      },
+      {
+        "line": 16,
+        "text": "Literal recurring tool names are optimized for auto-import and delegation:"
+      },
+      {
+        "line": 28,
+        "text": ""
+      },
+      {
+        "line": 29,
+        "text": "## Install in your agent IDE"
+      },
+      {
+        "line": 30,
+        "text": ""
+      },
+      {
+        "line": 31,
+        "text": "For the lowest-friction recurring workflow, install **Web Metadata + Web Change** first. Both currently complete in about 3 seconds median and cost $0.01 per successful unit."
+      },
+      {
+        "line": 32,
+        "text": ""
+      },
+      {
+        "line": 33,
+        "text": "- **Cursor:** [one-click install](cursor://anysphere.cursor-deeplink/mcp/install?name=industrial-platform-fast-web&config=eyJ0eXBlIjoiaHR0cCIsInVybCI6Imh0dHBzOi8vbWNwLmFwaWZ5LmNvbT90b29scz1pbmR1c3RyaWFsX3BsYXRmb3JtL3dlYi1tZXRhZGF0YS1pbnRlbGxpZ2VuY2UsaW5kdXN0cmlhbF9wbGF0Zm9ybS93ZWItY2hhbmdlLWludGVsbGlnZW5jZSZwYXltZW50PXg0MDIifQ%3D%3D)"
+      },
+      {
+        "line": 34,
+        "text": "- **VS Code / GitHub Copilot:** [one-click install](vscode:mcp/install?%7B%22name%22%3A%22industrial-platform-fast-web%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fmcp.apify.com%3Ftools%3Dindustrial_platform%2Fweb-metadata-intelligence%2Cindustrial_platform%2Fweb-change-intelligence%26payment%3Dx402%22%7D)"
+      },
+      {
+        "line": 35,
+        "text": "- **GitHub Copilot CLI:** `copilot mcp add --transport http industrial-platform-fast-web 'https://mcp.apify.com?tools=industrial_platform/web-metadata-intelligence,industrial_platform/web-change-intelligence&payment=x402'`"
+      },
+      {
+        "line": 36,
+        "text": "- **Claude Code:** `claude mcp add --transport http industrial-platform-fast-web 'https://mcp.apify.com?tools=industrial_platform/web-metadata-intelligence,industrial_platform/web-change-intelligence&payment=x402'`"
+      },
+      {
+        "line": 37,
+        "text": "- **Cline:** `cline mcp install industrial-platform-fast-web --transport http 'https://mcp.apify.com?tools=industrial_platform/web-metadata-intelligence,industrial_platform/web-change-intelligence&payment=x402'`"
+      },
+      {
+        "line": 38,
+        "text": ""
+      },
+      {
+        "line": 39,
+        "text": "See [INSTALL.md](./INSTALL.md) for the full installer matrix, recurring-use patterns, and the full portfolio endpoint."
+      },
+      {
+        "line": 40,
+        "text": ""
+      },
+      {
+        "line": 41,
+        "text": "## One MCP endpoint for the full portfolio"
+      },
+      {
+        "line": 42,
+        "text": ""
+      },
+      {
+        "line": 94,
+        "text": "catalog.json"
+      },
+      {
+        "line": 95,
+        "text": "manifests/mcp-bundle.json"
+      },
+      {
+        "line": 96,
+        "text": "examples/mcp/remote-server.json"
+      },
+      {
+        "line": 97,
+        "text": "```"
+      },
+      {
+        "line": 98,
+        "text": ""
+      },
+      {
+        "line": 102,
+        "text": ""
+      },
+      {
+        "line": 103,
+        "text": "### MCP bundle manifest"
+      },
+      {
+        "line": 104,
+        "text": ""
+      },
+      {
+        "line": 105,
+        "text": "`manifests/mcp-bundle.json` defines the hosted MCP endpoint and the Actors included in the bundle."
+      },
+      {
+        "line": 106,
+        "text": ""
+      },
+      {
+        "line": 107,
+        "text": "### MCP client configuration"
+      },
+      {
+        "line": 108,
+        "text": ""
+      },
+      {
+        "line": 112,
+        "text": ""
+      },
+      {
+        "line": 113,
+        "text": "Industrial Platform also exposes a direct Base x402 gateway for autonomous callers that do not need the Apify MCP layer:"
+      },
+      {
+        "line": 114,
+        "text": ""
+      },
+      {
+        "line": 115,
+        "text": "```text"
+      },
+      {
+        "line": 116,
+        "text": "https://x402-gateway-production-1f21.up.railway.app"
+      },
+      {
+        "line": 117,
+        "text": "```"
+      },
+      {
+        "line": 118,
+        "text": ""
+      },
+      {
+        "line": 119,
+        "text": "Machine-readable discovery:"
+      },
+      {
+        "line": 121,
+        "text": "```text"
+      },
+      {
+        "line": 122,
+        "text": "https://x402-gateway-production-1f21.up.railway.app/.well-known/x402"
+      },
+      {
+        "line": 123,
+        "text": "https://x402-gateway-production-1f21.up.railway.app/openapi.json"
+      },
+      {
+        "line": 124,
+        "text": "https://x402-gateway-production-1f21.up.railway.app/llms.txt"
+      },
+      {
+        "line": 125,
+        "text": "```"
+      },
+      {
+        "line": 126,
+        "text": ""
+      },
+      {
+        "line": 127,
+        "text": "Direct x402-native MCP:"
+      },
+      {
+        "line": 129,
+        "text": "```text"
+      },
+      {
+        "line": 130,
+        "text": "https://x402-mcp-gateway-production.up.railway.app/mcp"
+      },
+      {
+        "line": 131,
+        "text": "```"
+      },
+      {
+        "line": 132,
+        "text": ""
+      },
+      {
+        "line": 133,
+        "text": "The MCP server exposes the same paid tool catalog over Streamable HTTP and performs x402 negotiation at tool-call time. Tool discovery is free; a caller wallet signs the advertised Base USDC requirement when it invokes a paid tool."
+      },
+      {
+        "line": 150,
+        "text": "```bash"
+      },
+      {
+        "line": 151,
+        "text": "npm install -g @apify/mcpc"
+      },
+      {
+        "line": 152,
+        "text": "mcpc x402 init"
+      },
+      {
+        "line": 153,
+        "text": "mcpc connect \"https://mcp.apify.com?tools=industrial_platform/research-brief-agent,industrial_platform/web-change-intelligence,industrial_platform/web-metadata-intelligence,industrial_platform/article-content-intelligence,industrial_platform/pdf-text-intelligence,industrial_platform/sitemap-intelligence&payment=x402\" @industrial-platform --x402"
+      },
+      {
+        "line": 154,
+        "text": "mcpc @industrial-platform tools-list"
+      },
+      {
+        "line": 275,
+        "text": "│"
+      },
+      {
+        "line": 276,
+        "text": "├── manifests/"
+      },
+      {
+        "line": 277,
+        "text": "│   └── mcp-bundle.json"
+      },
+      {
+        "line": 278,
+        "text": "│"
+      },
+      {
+        "line": 279,
+        "text": "├── examples/"
+      }
+    ]
+  },
+  {
+    "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/package.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:11:03.454828+00:00",
+    "path": "package.json",
+    "status": 404,
+    "error": "HTTP Error 404: Not Found"
+  }
+]

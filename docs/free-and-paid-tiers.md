@@ -1,5 +1,7 @@
 # Free and paid tiers — what the ecosystem gives away, and why
 
+> SYMMARTYS is the current name of the public-record provider. The dated measurements below retain the original product and capability IDs used in those requests.
+
 *Also available in [Русский](free-and-paid-tiers.ru.md) · [Español](free-and-paid-tiers.es.md) · [Français](free-and-paid-tiers.fr.md) · [中文](free-and-paid-tiers.zh.md)*
 
 Almost every capability on `modelmarket.dev` is free right now — no key, no
@@ -243,7 +245,7 @@ granted only to a caller the operator has explicitly nominated.
 | variable | meaning |
 |---|---|
 | `ORACLE_PAID_TIER_SECRET` | A shared secret sent as `X-AIMarket-Paid-Tier`. Compared in constant time. Independent of network topology — **prefer this one**. |
-| `ORACLE_TRUSTED_PAYMENT_PROXIES` | Comma-separated IPs/CIDRs. A request from one of them carrying a non-empty `X-Payment-Channel` counts as paid, on the grounds that the hub took a hold before forwarding it. Trusts the reverse proxy to set `X-Real-IP` — the same trust the rate limiter already places. |
+| `ORACLE_TRUSTED_PAYMENT_PROXIES` | Comma-separated IPs/CIDRs. A request from one of them carrying a non-empty `X-Payment-Channel` counts as paid, on the grounds that the hub took a hold before forwarding it. Trusts the reverse proxy to set `X-Real-IP` — the same trust the rate limiter already places. A loopback caller never counts, whatever the list says: every process on the machine shares the address, a reverse proxy that passes no `X-Real-IP` (nginx's default `proxy_pass`) included. A hub on the same machine uses the secret. |
 
 With **neither** set — the shipped default — *no call is ever lifted*, including
 calls from the hub. The free ceiling applies to everybody. That is the intended

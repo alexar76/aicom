@@ -1,0 +1,86 @@
+{
+  "key": "hubwiz-payments",
+  "url": "https://www.hubwiz.com/blog/agent-payment-security-x402-guardrails/",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T13:51:05.584726+00:00",
+  "status": 200,
+  "final_url": "https://www.hubwiz.com/blog/agent-payment-security-x402-guardrails/",
+  "bytes": 47392,
+  "sha256": "0b006f9e18c4b4518240f7febfb7b73533cc3551851624ce9e1fdcdcdef9b7c4",
+  "identifiers": {
+    "alexar76": 0,
+    "modelmarket.dev": 0,
+    "HISTOR": 0,
+    "WARDEN": 0,
+    "AICOM": 0,
+    "1932": 0,
+    "1,932": 1,
+    "25 微秒": 2
+  },
+  "contexts": {
+    "来源": [
+      "无需逐笔批准。这正是协议有意思的地方，也恰恰是 安全边界移动的地方 ：facilitator 只验证签名有效、金额与收款人匹配—— 它没有理由知道买方原本预期花多少钱、买什么 。 来源文章作者用 官方 x402 客户端 连到 Base Sepolia（公共测试网）上的测试卖家，用公共 facilitator 跑了一组攻击。六种失败最值得记录—— 每一种里，支付机器都运转正常 。 二、六种\"付款成功\"的错误交易 # 失败 机制 支付系统为什么没拦住 1 价格操纵 目录里标价 5 分钱，实际支付请求要 50 分钱 facilitator 只验签，不知道买方的预期价格；客户端默认 1 美元上限高于 50 分 2 一次付款、多次交付 同一份签名支付并发发 5 次，卖方交付 5 次 链上防了双花， 没防重复交付 ；买方超时重试还会重复扣款 3 白嫖 验证通过但结算失败，卖方已经交付 验证 ≠ 结算；同一资源还有未保护的路径（ /report ",
+      "保护所有资源路径； 记住那条边界 ：\"付款成功\"只说明支付系统执行了。它没有回答： Agent 是否按预期金额、付给了预期卖家、买到了预期资源，以及不可信内容有没有改变它的决定。 来源 @dailycontext, Your Agent Paid. That Does Not Mean It Should Have. （dev.to，2026-10-11）：https://dev.to/dailycontext/your-agent-paid-that-does-not-mean-it-should-have-2dnd @dailycontext, An Agent's Plan Isn't Permission （dev.to，2026-10-14）：https://dev.to/dailycontext/an-agents-plan-isnt-permission-5cf8 Auth0, AI Agents Are Not Us",
+      "tbaseline.org 延伸阅读（本站） MCP 工具该给几个？1,932 次实测：准确率不降，成本看客户端 不是\"有没有依据\"，而是\"依据来自哪个源\"：MCP Agent 的来源感知验证 多 Agent 团队值得吗？50 个应用实测与\"独行侠\"的回归 专题：Agent / MCP / 自动化完全指南 本文由 汇智网 · Software 2.0 编译整理，转载请注明出处。 想系统了解 Agent 的权限、审计与成本控制，见 Agent / MCP / 自动化完全指南 。 这是「Agent / MCP」专题的一部分。 完整地图见： Agent / MCP / 自动化完全指南 阅读更多 AI 算力不是堆芯片：Google 的 token 产能每半年翻一倍 10 万张卡跑一个训练，一小时可能挂几次。Google 的答案不是买更多卡：提高 goodput，让每瓦交付更多有用 token。 By admin 28 10月 2026 AI"
+    ],
+    "来源文章": [
+      "无需逐笔批准。这正是协议有意思的地方，也恰恰是 安全边界移动的地方 ：facilitator 只验证签名有效、金额与收款人匹配—— 它没有理由知道买方原本预期花多少钱、买什么 。 来源文章作者用 官方 x402 客户端 连到 Base Sepolia（公共测试网）上的测试卖家，用公共 facilitator 跑了一组攻击。六种失败最值得记录—— 每一种里，支付机器都运转正常 。 二、六种\"付款成功\"的错误交易 # 失败 机制 支付系统为什么没拦住 1 价格操纵 目录里标价 5 分钱，实际支付请求要 50 分钱 facilitator 只验签，不知道买方的预期价格；客户端默认 1 美元上限高于 50 分 2 一次付款、多次交付 同一份签名支付并发发 5 次，卖方交付 5 次 链上防了双花， 没防重复交付 ；买方超时重试还会重复扣款 3 白嫖 验证通过但结算失败，卖方已经交付 验证 ≠ 结算；同一资源还有未保护的路径（ /report 受保"
+    ]
+  },
+  "meta": [
+    {
+      "name": "description",
+      "content": "x402 让 Agent 能自动付款，但\"付款成功\"不等于\"应该付款\"。本文整理官方客户端在测试网跑出的六种错误交易（价格操纵、重复交付、白嫖、付错货、恶意发现、提示注入），以及确定性护栏、Agent 身份与四级权限审批的可落地设计。"
+    },
+    {
+      "property": "og:type",
+      "content": "article"
+    },
+    {
+      "property": "og:title",
+      "content": "AI Agent 支付安全：六种\"付款成功\"的错误交易与护栏设计"
+    },
+    {
+      "property": "og:description",
+      "content": "付款成功 ≠ 应该付款。x402 实测的六种错误交易、25 微秒确定性护栏，以及 Agent 身份与四级权限的可落地设计。"
+    },
+    {
+      "property": "article:published_time",
+      "content": "2026-10-15T18:22:29.000Z"
+    },
+    {
+      "property": "article:modified_time",
+      "content": "2026-10-15T18:25:48.000Z"
+    },
+    {
+      "name": "twitter:title",
+      "content": "AI Agent 支付安全：六种\"付款成功\"的错误交易与护栏设计"
+    },
+    {
+      "name": "twitter:description",
+      "content": "付款成功 ≠ 应该付款。x402 实测的六种错误交易、25 微秒确定性护栏，以及 Agent 身份与四级权限的可落地设计。"
+    }
+  ],
+  "source_links": [
+    "https://www.hubwiz.com/blog",
+    "https://www.hubwiz.com/blog/",
+    "https://www.hubwiz.com/blog/vibe-coding-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/local-llm-stack/",
+    "https://www.hubwiz.com/blog/ai-industrial-stack/",
+    "https://www.hubwiz.com/blog/tag/ai-agent/",
+    "https://www.hubwiz.com/blog/mcp-tool-count-1932-runs-measured/",
+    "https://www.hubwiz.com/blog/source-aware-verification-for-mcp-agents/",
+    "https://www.hubwiz.com/blog/do-agent-teams-pay-off/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/rag-data-stack/",
+    "https://www.hubwiz.com/blog/generative-media-stack/",
+    "https://www.hubwiz.com/blog/ai-infra-stack/",
+    "https://www.hubwiz.com/blog/ai-tools/",
+    "https://www.hubwiz.com/blog/about/",
+    "https://www.hubwiz.com/blog/contribute/",
+    "https://www.hubwiz.com/blog/privacy/"
+  ]
+}

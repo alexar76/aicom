@@ -1,0 +1,302 @@
+{
+  "info": {
+    "author": null,
+    "author_email": null,
+    "bugtrack_url": null,
+    "classifiers": [],
+    "description": "# aimarket-mcp-packager \u2014 MCP server\n\n<!-- mcp-name: io.github.alexar76/aimarket-plugins -->\n\n<!-- aicom-readme-badges -->\n<p align=\"center\">\n  <a href=\"https://github.com/alexar76/aimarket-plugins/actions/workflows/ci.yml\"><img src=\"docs/badges/ci.svg\" alt=\"CI\" /></a>\n  <a href=\"https://glama.ai/mcp/servers/alexar76/aimarket-plugins\"><img src=\"https://glama.ai/mcp/servers/alexar76/aimarket-plugins/badges/score.svg\" alt=\"aimarket-plugins MCP server\" /></a>\n  <a href=\"docs/badges/coverage.svg\"><img src=\"docs/badges/coverage.svg\" alt=\"Test coverage\" /></a>\n  <a href=\"LICENSE\"><img src=\"docs/badges/license.svg\" alt=\"License: Apache-2.0\" /></a>\n</p>\n<!-- /aicom-readme-badges -->\n\nQuality score: **[glama.ai/mcp/servers/alexar76/aimarket-plugins/score](https://glama.ai/mcp/servers/alexar76/aimarket-plugins/score)** \u00b7\n[![alexar76/aimarket-plugins MCP server](https://glama.ai/mcp/servers/alexar76/aimarket-plugins/badges/score.svg)](https://glama.ai/mcp/servers/alexar76/aimarket-plugins)\n\n**This repository ships a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server** that packages AIMarket capabilities into self-hosted MCP server products (Docker image metadata, MCP manifest, Claude Desktop config).\n\nTransport: **stdio** (`aimarket_mcp_packager/stdio_server.py`). Built with the official **[MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)** (`mcp` package, `FastMCP`).\n\nCompatible hosts: Claude Desktop, Cursor, Glama, and any MCP client that supports stdio servers.\n\n---\n\n## MCP server in this repo\n\n| Item | Location |\n|------|----------|\n| MCP entrypoint | `aimarket_mcp_packager/stdio_server.py` |\n| MCP SDK dependency | [`requirements-mcp.txt`](requirements-mcp.txt) \u2014 `mcp>=1.6,<4` |\n| Glama / Docker run | [`Dockerfile`](Dockerfile), [`glama.json`](glama.json), [docs/GLAMA.md](docs/GLAMA.md) |\n| Tool implementation | [`aimarket_mcp_packager/packager_core.py`](aimarket_mcp_packager/packager_core.py) |\n\nRun locally:\n\n```bash\npip install -r requirements-mcp.txt\npip install -e .\npython -m aimarket_mcp_packager.stdio_server\n```\n\nOr with Docker (stdio MCP server):\n\n```bash\ndocker build -t aimarket-mcp-packager .\ndocker run --rm -i aimarket-mcp-packager\n```\n\n---\n\n## MCP tools\n\nThe server exposes **3 tools** (no MCP resources or prompts):\n\n| Tool | Description |\n|------|-------------|\n| `package_capability` | Build an MCP server package: Docker image name, `mcp_manifest`, subscription tiers, connection string |\n| `generate_dockerfile` | Generate a Dockerfile template for the packaged MCP server |\n| `generate_claude_desktop_config` | Generate a `claude_desktop_config.json` snippet (`mcpServers`) for docker-run MCP |\n\nExample tool call (conceptual):\n\n```json\n{\n  \"name\": \"package_capability\",\n  \"arguments\": {\n    \"capability_id\": \"translate.multi@v2\",\n    \"product_id\": \"prod-001\",\n    \"name\": \"Lyra\",\n    \"description\": \"Multilingual translator\",\n    \"input_schema\": { \"type\": \"object\", \"properties\": { \"text\": { \"type\": \"string\" } }, \"required\": [\"text\"] }\n  }\n}\n```\n\n> `input_schema` takes a JSON Schema **object** (a JSON string is also tolerated for backward compatibility). Every tool parameter is documented in the server's tool schema for MCP clients.\n\n---\n\n## MCP resources\n\nThis server does **not** register MCP resources or prompts \u2014 only the tools above. Output is JSON text returned from each tool call.\n\n---\n\n## Client configuration\n\n### Claude Desktop\n\n```json\n{\n  \"mcpServers\": {\n    \"aimarket-mcp-packager\": {\n      \"command\": \"python\",\n      \"args\": [\"-m\", \"aimarket_mcp_packager.stdio_server\"]\n    }\n  }\n}\n```\n\nCompat path (what Glama's admin form historically used \u2014 keep the shim file):\n\n```json\n{\n  \"mcpServers\": {\n    \"aimarket-mcp-packager\": {\n      \"command\": \"python\",\n      \"args\": [\"plugins/aimarket-mcp-packager/mcp_stdio_server.py\"]\n    }\n  }\n}\n```\n\nDocker variant (see `generate_claude_desktop_config` tool output):\n\n```json\n{\n  \"mcpServers\": {\n    \"aimarket-mcp-packager\": {\n      \"command\": \"docker\",\n      \"args\": [\"run\", \"--rm\", \"-i\", \"aimarket-mcp-packager:latest\"]\n    }\n  }\n}\n```\n\n### Cursor\n\nAdd the same stdio server under **Settings \u2192 MCP** (command + args pointing at `aimarket_mcp_packager/stdio_server.py` or the Docker image above).\n\n---\n\n## Python library (optional)\n\nThe same packaging logic is available as a library and as an AIMarket Hub plugin (PyPI package coming soon \u2014 for now `pip install -e .` from this directory, or use the AIMarket Hub Docker image). Hub HTTP routes are optional; **the MCP server runs standalone** via `aimarket_mcp_packager/stdio_server.py`.\n\n```python\nfrom aimarket_mcp_packager.mcp_packager import MCPPackager\n\npackager = MCPPackager()\npkg = packager.package(\n    capability_id=\"translate.multi@v2\",\n    product_id=\"prod-001\",\n    name=\"Lyra\",\n    description=\"Multilingual translator\",\n    input_schema={\"type\": \"object\", \"properties\": {\"text\": {\"type\": \"string\"}}},\n    price_per_call_usd=0.40,\n)\n\nprint(pkg.docker_image)\nprint(pkg.mcp_manifest)\nprint(packager.generate_claude_desktop_config(pkg))\n```\n\n---\n\n## When to use\n\n- Distribute AI capabilities as self-hosted MCP servers (Docker + manifest)\n- Generate Claude Desktop / Cursor MCP client configs\n- Enterprise on-prem deployment with subscription tiers\n\n## Subscription tiers (packaged products)\n\n| Tier | Calls/month | Price |\n|------|------------|-------|\n| Starter | 100 | $9.99 |\n| Pro | 1,000 | $49.99 |\n| Enterprise | 10,000 | $299.99 |\n\n## Documentation\n\n| Document | Description |\n|----------|-------------|\n| [User guide](docs/user-guide.md) | Install, Hub plugin, verify loaded |\n| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |\n| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |\n\n## License\n\nMIT \u00b7 Maintained by AI-Factory\n",
+    "description_content_type": "text/markdown",
+    "docs_url": null,
+    "download_url": null,
+    "downloads": {
+      "last_day": -1,
+      "last_month": -1,
+      "last_week": -1
+    },
+    "dynamic": [
+      "License-File"
+    ],
+    "home_page": null,
+    "keywords": null,
+    "license": "MIT",
+    "license_expression": null,
+    "license_files": [
+      "LICENSE"
+    ],
+    "maintainer": null,
+    "maintainer_email": null,
+    "name": "aimarket-mcp-packager",
+    "package_url": "https://pypi.org/project/aimarket-mcp-packager/",
+    "platform": null,
+    "project_url": "https://pypi.org/project/aimarket-mcp-packager/",
+    "project_urls": null,
+    "provides_extra": [
+      "mcp",
+      "dev"
+    ],
+    "release_url": "https://pypi.org/project/aimarket-mcp-packager/2.1.1/",
+    "requires_dist": [
+      "aimarket-hub>=3.0.0",
+      "mcp<2,>=1.6; extra == \"mcp\"",
+      "pytest>=8; extra == \"dev\""
+    ],
+    "requires_python": ">=3.11",
+    "summary": "Package products as ready-to-run MCP servers for Claude Desktop",
+    "version": "2.1.1",
+    "yanked": false,
+    "yanked_reason": null
+  },
+  "last_serial": 42304454,
+  "ownership": {
+    "organization": null,
+    "roles": [
+      {
+        "role": "Owner",
+        "user": "aleksandr.artamokhov"
+      }
+    ]
+  },
+  "releases": {
+    "2.0.0": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "1cb094b485168be47287b2f089a621b891ccfb372998d6665afdfb14856d628b"
+        },
+        "digests": {
+          "blake2b_256": "c54a9e3a7fcde62c50a984217929026192fd4c411e321e6ca4fdfed54d0e975a",
+          "md5": "ce188b2641461594f64a2f80670429fe",
+          "sha256": "da90ed70e01756c84958c829a659d59ddfd24520b84528d9c136ba5d0b877406"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp_packager-2.0.0-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "ce188b2641461594f64a2f80670429fe",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.11",
+        "size": 7578,
+        "upload_time": "2026-06-22T08:27:06",
+        "upload_time_iso_8601": "2026-06-22T08:27:06.405838Z",
+        "url": "https://files.pythonhosted.org/packages/c5/4a/9e3a7fcde62c50a984217929026192fd4c411e321e6ca4fdfed54d0e975a/aimarket_mcp_packager-2.0.0-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "ceacb7ac53ca9988522f173676b4bb848f8475f576585f5c91af11c4ef1d65ec",
+          "md5": "73b4d70570d6897d46f34a1144bff9a1",
+          "sha256": "75d311b4313922295fd4079655721f083f2e82ca4b33dd0ffc88d5ef2b64d9fd"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp_packager-2.0.0.tar.gz",
+        "has_sig": false,
+        "md5_digest": "73b4d70570d6897d46f34a1144bff9a1",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.11",
+        "size": 6211,
+        "upload_time": "2026-06-22T08:27:07",
+        "upload_time_iso_8601": "2026-06-22T08:27:07.686128Z",
+        "url": "https://files.pythonhosted.org/packages/ce/ac/b7ac53ca9988522f173676b4bb848f8475f576585f5c91af11c4ef1d65ec/aimarket_mcp_packager-2.0.0.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "2.0.1": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "7fa88fe05db764b1d8f1303a46197156b77fa6adefaf28db395991cc010e5092"
+        },
+        "digests": {
+          "blake2b_256": "e48aeb382efd1110688873121dbce03693c9ac0bf11550d2558f962b4683caa7",
+          "md5": "6fddbffd297ccfea587eae96ca1b76e6",
+          "sha256": "7ebf12be6a6830e866b7027ccc6bb95310ad34723dfff3047cdbf350aabe1247"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp_packager-2.0.1-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "6fddbffd297ccfea587eae96ca1b76e6",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.11",
+        "size": 7619,
+        "upload_time": "2026-07-07T17:46:28",
+        "upload_time_iso_8601": "2026-07-07T17:46:28.888786Z",
+        "url": "https://files.pythonhosted.org/packages/e4/8a/eb382efd1110688873121dbce03693c9ac0bf11550d2558f962b4683caa7/aimarket_mcp_packager-2.0.1-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "8a74afb9efa16a6e91de58e1cd03b7b677610e04f4c5c1133af29d259240a565",
+          "md5": "7c1f8e77982cc4da368cc84940013711",
+          "sha256": "bb75f4cc465cec0299ddb0320a13dce20a8b3ccc8bac88f61003c9eeb478d703"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp_packager-2.0.1.tar.gz",
+        "has_sig": false,
+        "md5_digest": "7c1f8e77982cc4da368cc84940013711",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.11",
+        "size": 6268,
+        "upload_time": "2026-07-07T17:46:29",
+        "upload_time_iso_8601": "2026-07-07T17:46:29.984787Z",
+        "url": "https://files.pythonhosted.org/packages/8a/74/afb9efa16a6e91de58e1cd03b7b677610e04f4c5c1133af29d259240a565/aimarket_mcp_packager-2.0.1.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "2.1.0": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "fa55afc94e959a39b3cd1055d4b1b828a4e27367d88d9a133feda960afe633af"
+        },
+        "digests": {
+          "blake2b_256": "3eb3cb492225f2007f2561b73ba0b2fce6ae8637b9a50956c5ebfc99d54d5dc6",
+          "md5": "8a4bcbaa0bbe1ae49003b559721e7836",
+          "sha256": "a0336fb71cbc7df613c7e3ac4adf09e4efc192488d9ff98ace8a363c8916bbdc"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp_packager-2.1.0-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "8a4bcbaa0bbe1ae49003b559721e7836",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.11",
+        "size": 10091,
+        "upload_time": "2026-08-12T05:06:17",
+        "upload_time_iso_8601": "2026-08-12T05:06:17.294048Z",
+        "url": "https://files.pythonhosted.org/packages/3e/b3/cb492225f2007f2561b73ba0b2fce6ae8637b9a50956c5ebfc99d54d5dc6/aimarket_mcp_packager-2.1.0-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "bbe6a675090a03510e49eca68c77b55bc8f046ee0035565d7f54452ca6e48d9e",
+          "md5": "9acfb1a8e6f9a80b2a8421eab0dffa73",
+          "sha256": "6070938314f2588083257ad1d8b936306c04ae380d47ac7bf0db20bb515b35a2"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp_packager-2.1.0.tar.gz",
+        "has_sig": false,
+        "md5_digest": "9acfb1a8e6f9a80b2a8421eab0dffa73",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.11",
+        "size": 10378,
+        "upload_time": "2026-08-12T05:06:18",
+        "upload_time_iso_8601": "2026-08-12T05:06:18.161039Z",
+        "url": "https://files.pythonhosted.org/packages/bb/e6/a675090a03510e49eca68c77b55bc8f046ee0035565d7f54452ca6e48d9e/aimarket_mcp_packager-2.1.0.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "2.1.1": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "e0ef2e971d4388efc6ee994efeb64ab3c6cbe073585f296a37353fc31c1a0c71"
+        },
+        "digests": {
+          "blake2b_256": "455264523b99845f5fa8eb6165df52cdd398acecbf401df5f7ec8983f725c3c5",
+          "md5": "4291c3b13e38591f43efb9128044dea6",
+          "sha256": "1f546e31478f7fa2c6fc2e76a8fca868240d51e0a2540e8b95f826fae0146df1"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp_packager-2.1.1-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "4291c3b13e38591f43efb9128044dea6",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.11",
+        "size": 10201,
+        "upload_time": "2026-10-16T03:42:37",
+        "upload_time_iso_8601": "2026-10-16T03:42:37.335044Z",
+        "url": "https://files.pythonhosted.org/packages/45/52/64523b99845f5fa8eb6165df52cdd398acecbf401df5f7ec8983f725c3c5/aimarket_mcp_packager-2.1.1-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "5cafbcf54d4465375b51ee41d246ad52b75787298c4d1859860941774ed3bc77",
+          "md5": "044ead95a5a9fbd886a115a2d6820d36",
+          "sha256": "e1210522224c84b1019e826218f9fcdaf1106dd1fb2cfa41e8e2c7cff34a1ecc"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp_packager-2.1.1.tar.gz",
+        "has_sig": false,
+        "md5_digest": "044ead95a5a9fbd886a115a2d6820d36",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.11",
+        "size": 10951,
+        "upload_time": "2026-10-16T03:42:38",
+        "upload_time_iso_8601": "2026-10-16T03:42:38.319738Z",
+        "url": "https://files.pythonhosted.org/packages/5c/af/bcf54d4465375b51ee41d246ad52b75787298c4d1859860941774ed3bc77/aimarket_mcp_packager-2.1.1.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ]
+  },
+  "urls": [
+    {
+      "comment_text": null,
+      "core-metadata": {
+        "sha256": "e0ef2e971d4388efc6ee994efeb64ab3c6cbe073585f296a37353fc31c1a0c71"
+      },
+      "digests": {
+        "blake2b_256": "455264523b99845f5fa8eb6165df52cdd398acecbf401df5f7ec8983f725c3c5",
+        "md5": "4291c3b13e38591f43efb9128044dea6",
+        "sha256": "1f546e31478f7fa2c6fc2e76a8fca868240d51e0a2540e8b95f826fae0146df1"
+      },
+      "downloads": -1,
+      "filename": "aimarket_mcp_packager-2.1.1-py3-none-any.whl",
+      "has_sig": false,
+      "md5_digest": "4291c3b13e38591f43efb9128044dea6",
+      "packagetype": "bdist_wheel",
+      "python_version": "py3",
+      "requires_python": ">=3.11",
+      "size": 10201,
+      "upload_time": "2026-10-16T03:42:37",
+      "upload_time_iso_8601": "2026-10-16T03:42:37.335044Z",
+      "url": "https://files.pythonhosted.org/packages/45/52/64523b99845f5fa8eb6165df52cdd398acecbf401df5f7ec8983f725c3c5/aimarket_mcp_packager-2.1.1-py3-none-any.whl",
+      "yanked": false,
+      "yanked_reason": null
+    },
+    {
+      "comment_text": null,
+      "core-metadata": false,
+      "digests": {
+        "blake2b_256": "5cafbcf54d4465375b51ee41d246ad52b75787298c4d1859860941774ed3bc77",
+        "md5": "044ead95a5a9fbd886a115a2d6820d36",
+        "sha256": "e1210522224c84b1019e826218f9fcdaf1106dd1fb2cfa41e8e2c7cff34a1ecc"
+      },
+      "downloads": -1,
+      "filename": "aimarket_mcp_packager-2.1.1.tar.gz",
+      "has_sig": false,
+      "md5_digest": "044ead95a5a9fbd886a115a2d6820d36",
+      "packagetype": "sdist",
+      "python_version": "source",
+      "requires_python": ">=3.11",
+      "size": 10951,
+      "upload_time": "2026-10-16T03:42:38",
+      "upload_time_iso_8601": "2026-10-16T03:42:38.319738Z",
+      "url": "https://files.pythonhosted.org/packages/5c/af/bcf54d4465375b51ee41d246ad52b75787298c4d1859860941774ed3bc77/aimarket_mcp_packager-2.1.1.tar.gz",
+      "yanked": false,
+      "yanked_reason": null
+    }
+  ],
+  "vulnerabilities": []
+}

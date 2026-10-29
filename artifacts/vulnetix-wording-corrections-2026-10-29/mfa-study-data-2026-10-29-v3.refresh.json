@@ -1,0 +1,126 @@
+{
+  "kind": "documentation-only refresh",
+  "source_archive_sha256": "e117f283951060cf1c1ba19b8b868830ad84d859010097ca30f0207cf97a3b60",
+  "source_archive_commit": "4510a8f297d85018672e2b7623e49ae163a4b0f5",
+  "documentation_commit": "b79aa7982223824d1dab25804cc70520479a8c3d",
+  "output": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/vulnetix-wording-corrections-2026-10-29/mfa-study-data-2026-10-29-v3.tar.gz",
+  "sha256": "0f4970c53faa34cd1e3a73701dcf3c5dc4070e43b0541521b1cb1f2b1ff428af",
+  "bytes": 650554,
+  "sha256sums_rows": 99,
+  "unchanged_data_files": 48,
+  "data_and_random_ids_unchanged": true,
+  "changed_code_or_report_members": [
+    "code/METHODOLOGY.md",
+    "code/data-manifest.json",
+    "report/malware-feed-accuracy.es.md",
+    "report/malware-feed-accuracy.fr.md",
+    "report/malware-feed-accuracy.md",
+    "report/malware-feed-accuracy.ru.md",
+    "report/malware-feed-accuracy.zh.md"
+  ],
+  "source_member_sha256": {
+    "code/METHODOLOGY.md": "758945fa00648fa3b78b37739ab407068b92e1dd3557352f4ee7c791ee14de0d",
+    "code/analyze.py": "2620ae68f067bc1ea24228a8c3fda57116d6e581fff4b9f45309ec0eed40d10e",
+    "code/archive-README.md": "4bedabd18c60d24188a91d0a3643642ee471fe6bf20b5ee9f57d70b299d14530",
+    "code/build_archive.py": "eec43963708bb854ecca29c7de76c775a1a742f4b91f67fbfc87025da063e1b4",
+    "code/data-manifest.json": "86653fea452d2ed64815c7bcb5a48e1ce6e85ea6aefd8b2a48a86d46d6b1e5ae",
+    "code/disputes_dossier.py": "1783d069cd13f33dcccac39bc2e8aa5b27f35aa1f82fafd49d2269259fb1e106",
+    "code/disputes_measure.py": "2dbb30dbfe9f53576bacb35fa585ae3bd0a56382d9a01cc2580bfb8b4c18b7cd",
+    "code/fetch_snapshots.sh": "8d35507cc3c238754771c1b8f6d8e1f18f05609005fe6c1a3ef90471ddf1bcdd",
+    "code/normalize.py": "69a56dce8f082c67fc87857f9041229dac04dc0d6697c8a2510e74861abf3cfc",
+    "code/own-packages/guarddog-3.2.0-results.jsonl": "d2424a3697e6ce34de588e86ecb58b7c3c8f71c5e5081231a96ace31396d2e76",
+    "code/own-packages/guarddog_scan.sh": "53ce07c25cb5d00f75155cf8e720828aff9c792d39be450e2d4afac49cd8095e",
+    "code/own-packages/npm.txt": "565dfddf82b5a24c43217a50e4e96a0f900ca671a68439487805ecafee04ce2f",
+    "code/own-packages/pypi.txt": "92aa4acba9f8f7662a67d970f3260cbdd7a61e73ea5d060dcfb31e1de76d476b",
+    "code/publication-date.txt": "f0b50188ef34ad2286ac00656503bd679e8b0f9ae5b8f5546948a100f1d1f3ce",
+    "code/registry_check.py": "a94ecdd0ec0962ef07051c86481317bf7f5f447f471e5ce11d20259ff061737c",
+    "code/restore_stage2_inputs.py": "ee53f1621b993149fc96ec9c1053dbfea0047157840bf5e7e5c6dfa695757edf",
+    "code/s3_ossgadget.sh": "2259d977b6e2ebcacbc15d8fbcb95c4915ec7e408de4bf47738bb0b959754117",
+    "code/s3_scan_set.sh": "5a4bb0182cbd1c52d8b66fadc1889a871df3571154762ce811b9040b64fe9439",
+    "code/stage1_compare.py": "55dcf47e178ce1f4416e81f3c36f8a7df093153fca437aaea1cafd304d6526e4",
+    "code/stage1_published_2026-10-24.json": "e1fd96864501cc1a4c76a893c3ee7228ee0248e8863669ee6274f7e5519058be",
+    "code/stage2_audit.py": "4f2e4a02adbe71ead3ce57d11e13507420a5c299ff5761af62d6143590985c24",
+    "code/stage2_bundle.py": "20595c8535962d847a78812e9e1880b52b2fc4b0f16cfd5aac539f2cf23830de",
+    "code/stage2_digest.py": "e7f1aa7ea26a9b099469985939ec19d38a672679daff14b9807c5f27f19657dc",
+    "code/stage2_rate.py": "185290dd106edcb60b4177b8055bad2bf67efc822487c3f743aa8c49cb83a49f",
+    "code/stage2_sample.py": "6816a4e0c8c1d345cd1886ad63f6ddd417e46b8fa202425e202a7a00e645f501",
+    "code/stage2_score.py": "b2e40309ad5cadbf51d6f10d40e66820a3534cfb44135c023ecb66f23c114b9a",
+    "code/stage3_fetch.py": "d68fed2e12ad38cc35c99adbaf4d661d70c33551cf5e269778f597946dfb24c7",
+    "code/stage3_recent.py": "a96a72c9e83158f50ccab3d32970783c72d1ea070a46c5b27fc922481958842e",
+    "code/stage3_scan.py": "eee754d5758333df38ed263afa78e37d0879af892ee6da5a976082678aa251a9",
+    "code/stage3_score.py": "6f197de328e4ee1805853fbb1cf50c31c6b45d0bc2d6e69098071159ec9ceb9b",
+    "code/stage3_volumes.json": "f67465a5c8c1ce92d608a89fd0728cda62c42133809cf5a98e256d3d2623bc9a",
+    "code/transparency/README.md": "1c451a1cf329bbb89cd98dfef56fdcb2e252392464fb832e251774f838942ae2",
+    "code/transparency/disputes.jsonl": "338f874a88296deec2b89e7bae570b5cba90db38f8df8553ee239d7f32680489",
+    "code/transparency/disputes_summary.json": "670b305f0cf9288320fe14d6222c32b4ddeba0d15685cf81eed2525a8d5c648f",
+    "code/transparency/sample_records.jsonl": "99caac5acc445e2c31846f7833f85962e1dde2481d0b1cdb66c4da3ee9ebe200",
+    "code/transparency/scored.jsonl": "9fbf0fc3a944e55dc5544ac4ab9ab30560ef14ebf9569aefdd4a6f6d91655722",
+    "code/transparency/summary.json": "34a3af49ac6f690fedcca43ed6a42cccf6965dc8f89c71371121094f6e694987",
+    "code/transparency/vulnetix_followup_2026-10-29.json": "51b47a7142ebfd65f969525b26f052ca30358933748fb7a7a9e5a09e6d4133ac",
+    "code/transparency/vulnetix_remaining_600_2026-10-29.jsonl": "929e5733c02832abd9b01449e9b1e695d456b2398a76b519b9a7fc29703b74a3",
+    "code/transparency_sample.py": "2ffd40d2977fc66281126d84c9e9a2356b75ca4ed47e369dc8e0ba3f1dbc4431",
+    "code/transparency_score.py": "72d26c76ee38840e1eb2c55250c173e76e1e493591b594acb55b0f7756ffef81",
+    "code/verify_archive.py": "ea0bcf1de1224852c16e5307866d29bc3fb597f93ec5f4bb3e1c5b4b7bf4c030",
+    "code/vx_followup.py": "ab63c7f90a4821955d5c518aef1662c5b998289c1664f4fb5a01f36ea2abfded",
+    "code/vx_review_methods.py": "2978967ce6f1e2d8520a5b909a1f5e9e6d4b3e827dbb111cf35f426355307448",
+    "report/malware-feed-accuracy.es.md": "a1e4531cec7d23cf061c4b36b8a8839b5efd72a8fa3a4a27fa833c52b0c7254d",
+    "report/malware-feed-accuracy.fr.md": "f5d6f4cbd807492f3b23b8962de060947502113c9a79b98ff923e0fb5470b499",
+    "report/malware-feed-accuracy.md": "eede46e0f5bf9adb9cff64544406f73b6c96d8b00f44d815c498aaf8ace05832",
+    "report/malware-feed-accuracy.ru.md": "14f94338d7a11ed312d597af15f996dda8bd7bb4c4d56d0d7895a04c406f7beb",
+    "report/malware-feed-accuracy.zh.md": "cbad5b8ea86185f4a548811deffb1441f05cbeceb46eb00ab49a1ca09499641e"
+  },
+  "verification_runs": [
+    {
+      "exit_code": 0,
+      "stdout": "stage 1, registry action per stratum vs 2026-10-24: same\nstage 2, labels and rates: same | printed tables: same\nstage 2, held-out controls: same\nstage 3, every scanner number: same\nALL SAME"
+    },
+    {
+      "exit_code": 0,
+      "stdout": "stage 1, registry action per stratum vs 2026-10-24: same\nstage 2, labels and rates: same | printed tables: same\nstage 2, held-out controls: same\nstage 3, every scanner number: same\nALL SAME"
+    },
+    {
+      "exit_code": 0,
+      "stdout": "stage 1, registry action per stratum vs 2026-10-24: same\nstage 2, labels and rates: same | printed tables: same\nstage 2, held-out controls: same\nstage 3, every scanner number: same\nALL SAME"
+    }
+  ],
+  "private_study_inputs_read": false,
+  "original_archive_unchanged": true,
+  "author_footnote_removal_checks": [
+    {
+      "file": "malware-feed-accuracy.es.md",
+      "tables_same_as_v2": true,
+      "verbatim_quote_same_as_v2": true,
+      "previous_author_footnote_removed": true,
+      "archive_equals_source_commit": true
+    },
+    {
+      "file": "malware-feed-accuracy.fr.md",
+      "tables_same_as_v2": true,
+      "verbatim_quote_same_as_v2": true,
+      "previous_author_footnote_removed": true,
+      "archive_equals_source_commit": true
+    },
+    {
+      "file": "malware-feed-accuracy.md",
+      "tables_same_as_v2": true,
+      "verbatim_quote_same_as_v2": true,
+      "previous_author_footnote_removed": true,
+      "archive_equals_source_commit": true
+    },
+    {
+      "file": "malware-feed-accuracy.ru.md",
+      "tables_same_as_v2": true,
+      "verbatim_quote_same_as_v2": true,
+      "previous_author_footnote_removed": true,
+      "archive_equals_source_commit": true
+    },
+    {
+      "file": "malware-feed-accuracy.zh.md",
+      "tables_same_as_v2": true,
+      "verbatim_quote_same_as_v2": true,
+      "previous_author_footnote_removed": true,
+      "archive_equals_source_commit": true
+    }
+  ],
+  "data_same_as_v2": true
+}

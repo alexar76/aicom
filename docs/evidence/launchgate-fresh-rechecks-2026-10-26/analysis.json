@@ -1,0 +1,182 @@
+{
+  "schema": "fresh-recheck-analysis/1",
+  "scope": "288 retained fresh continuations from twelve fixed saved initial answers; run-02 operational repeat only; no independent holdout or native-client rendering",
+  "review_method": "post-hoc AI-assisted, unblinded; not independent human adjudication",
+  "reviewed_unique_full_texts": 80,
+  "treatments": {
+    "old": {
+      "calls": 96,
+      "factual_corrections": 2,
+      "factual_correction_opportunities": 32,
+      "remaining_contradictions": 30,
+      "unknown_factual_outcomes": 0,
+      "disclosure_retained": 56,
+      "disclosure_retention_opportunities": 80,
+      "disclosure_added": 0,
+      "disclosure_addition_opportunities": 16,
+      "supported_case_new_contradictions": 0,
+      "supported_case_opportunities": 64,
+      "selected_id_changes": 0,
+      "admissible_final_ids": 96,
+      "final_model_disclosures": 56,
+      "formerly_lost_stratum_model_disclosures": 10,
+      "formerly_lost_stratum_size": 24,
+      "by_initial_error": [
+        {
+          "source_pair_id": "16cd5bd384d46b96543bbdb9",
+          "fixture": "tie-2",
+          "original_repeat": 0,
+          "corrected": 0,
+          "denominator": 8
+        },
+        {
+          "source_pair_id": "74f864750d11540c67eee5f6",
+          "fixture": "tie-4",
+          "original_repeat": 5,
+          "corrected": 0,
+          "denominator": 8
+        },
+        {
+          "source_pair_id": "dd3a55f7b0e448fc6de797db",
+          "fixture": "tie-4",
+          "original_repeat": 3,
+          "corrected": 0,
+          "denominator": 8
+        },
+        {
+          "source_pair_id": "ec79302796382450c9c87fbf",
+          "fixture": "tie-4",
+          "original_repeat": 7,
+          "corrected": 2,
+          "denominator": 8
+        }
+      ]
+    },
+    "new_plain": {
+      "calls": 96,
+      "factual_corrections": 0,
+      "factual_correction_opportunities": 32,
+      "remaining_contradictions": 32,
+      "unknown_factual_outcomes": 0,
+      "disclosure_retained": 80,
+      "disclosure_retention_opportunities": 80,
+      "disclosure_added": 16,
+      "disclosure_addition_opportunities": 16,
+      "supported_case_new_contradictions": 0,
+      "supported_case_opportunities": 64,
+      "selected_id_changes": 0,
+      "admissible_final_ids": 96,
+      "final_model_disclosures": 96,
+      "formerly_lost_stratum_model_disclosures": 24,
+      "formerly_lost_stratum_size": 24,
+      "by_initial_error": [
+        {
+          "source_pair_id": "16cd5bd384d46b96543bbdb9",
+          "fixture": "tie-2",
+          "original_repeat": 0,
+          "corrected": 0,
+          "denominator": 8
+        },
+        {
+          "source_pair_id": "74f864750d11540c67eee5f6",
+          "fixture": "tie-4",
+          "original_repeat": 5,
+          "corrected": 0,
+          "denominator": 8
+        },
+        {
+          "source_pair_id": "dd3a55f7b0e448fc6de797db",
+          "fixture": "tie-4",
+          "original_repeat": 3,
+          "corrected": 0,
+          "denominator": 8
+        },
+        {
+          "source_pair_id": "ec79302796382450c9c87fbf",
+          "fixture": "tie-4",
+          "original_repeat": 7,
+          "corrected": 0,
+          "denominator": 8
+        }
+      ]
+    },
+    "new_facts": {
+      "calls": 96,
+      "factual_corrections": 19,
+      "factual_correction_opportunities": 32,
+      "remaining_contradictions": 13,
+      "unknown_factual_outcomes": 0,
+      "disclosure_retained": 80,
+      "disclosure_retention_opportunities": 80,
+      "disclosure_added": 16,
+      "disclosure_addition_opportunities": 16,
+      "supported_case_new_contradictions": 0,
+      "supported_case_opportunities": 64,
+      "selected_id_changes": 0,
+      "admissible_final_ids": 96,
+      "final_model_disclosures": 96,
+      "formerly_lost_stratum_model_disclosures": 24,
+      "formerly_lost_stratum_size": 24,
+      "by_initial_error": [
+        {
+          "source_pair_id": "16cd5bd384d46b96543bbdb9",
+          "fixture": "tie-2",
+          "original_repeat": 0,
+          "corrected": 8,
+          "denominator": 8
+        },
+        {
+          "source_pair_id": "74f864750d11540c67eee5f6",
+          "fixture": "tie-4",
+          "original_repeat": 5,
+          "corrected": 0,
+          "denominator": 8
+        },
+        {
+          "source_pair_id": "dd3a55f7b0e448fc6de797db",
+          "fixture": "tie-4",
+          "original_repeat": 3,
+          "corrected": 3,
+          "denominator": 8
+        },
+        {
+          "source_pair_id": "ec79302796382450c9c87fbf",
+          "fixture": "tie-4",
+          "original_repeat": 7,
+          "corrected": 8,
+          "denominator": 8
+        }
+      ]
+    }
+  },
+  "directional_correction_prediction_supported_on_these_contexts": true,
+  "stronger_prediction_at_least_24_of_32_met": false,
+  "selection_flip_success_endpoint": false,
+  "new_facts_persistent_errors_outside_final_eligibility_extraction": [],
+  "annotation_sha256": "cd9ebf9b9582d62958a9649a1e5f9ad7399c45f1fae60e820bb864600901e787",
+  "claim_audit_sha256": "960cd1875b1ca64c89afaa11118fcb1367c69520ea85a9c9c4b37776523baabf",
+  "accounting": {
+    "schema": "fresh-recheck-artifact-audit/1",
+    "paidAttempts": 288,
+    "completeAnswers": 288,
+    "errors": 0,
+    "retainedRequests": 288,
+    "retainedResponses": 288,
+    "allOutputsHashVerified": 590,
+    "protocolFrozenBeforeEveryDispatch": true,
+    "usageTokens": {
+      "input": 254440,
+      "cache_hit": 195584,
+      "output": 28840
+    },
+    "conservativeAccountingUSD": 0.053438304,
+    "guardContinuationNotices": 192,
+    "newGuardSecondContinuations": 0,
+    "remoteTemporaryRootRemoved": true,
+    "semanticClaims": "not assessed by this accounting audit",
+    "currentInvoiceTariffVerified": false,
+    "priorUnretainedCallsReported": 288,
+    "priorUnretainedConservativeAccountingUSDReported": 0.053408928,
+    "combinedConservativeAccountingUSD": 0.106847232
+  }
+}

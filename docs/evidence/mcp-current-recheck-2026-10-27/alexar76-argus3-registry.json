@@ -1,0 +1,116 @@
+{
+  "bin": {
+    "argus": "dist/index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/alexar76/argus/issues"
+  },
+  "dist": {
+    "shasum": "ba22ee938570da52ba8ccb5a6493d29a158e60d1",
+    "tarball": "https://registry.npmjs.org/@alexar76/argus3/-/argus3-0.3.3.tgz",
+    "fileCount": 394,
+    "integrity": "sha512-4R5IJojPnsY/0mk7qPFHoLetIu8tmiIUP0HGisB8iV0J/H1BIBick9KEDew1qNQWKsIQGfc6tvSxYBQUBqz/qg==",
+    "signatures": [
+      {
+        "sig": "MEYCIQDCn5IkxpJx6yHVvxEPmLULmEWF80xIi2iFAs795YVicwIhAKh4pYNUWx+W7XkfcNYV4uBY2MbeQxmRcOU9tPasW/+I",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "sig": "MEUCIG5O3lIC6MIU6B2rTM7DoiJvuqFOwcCgnL62W4RloEykAiEAk5/SXwPLhjl5JFW/b4guO984rccLRIHTF0baydbWx2Q=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 1284608
+  },
+  "main": "./dist/index.js",
+  "name": "@alexar76/argus3",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "author": {
+    "url": "alexar76",
+    "name": "AICOM"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "gitHead": "ee700e56940925da0fa4fb5e01d098e1176cefa6",
+  "license": "MIT",
+  "mcpName": "io.github.alexar76/argus3",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "test": "vitest run",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "_npmUser": {
+    "name": "alexar76",
+    "email": "alexar76@rambler.ru"
+  },
+  "homepage": "https://magic-ai-factory.com/argus/",
+  "keywords": [
+    "mcp",
+    "mcp-security",
+    "prompt-injection",
+    "warden",
+    "firewall",
+    "ai-agent",
+    "llm",
+    "aicom",
+    "aimarket",
+    "agent-economy",
+    "multi-provider",
+    "telegram-bot",
+    "argus-warden"
+  ],
+  "repository": {
+    "url": "git+https://github.com/alexar76/argus.git",
+    "type": "git"
+  },
+  "_npmVersion": "10.9.4",
+  "description": "ARGUS-3 \u2014 WARDEN MCP firewall blocks poisoned servers before any tool runs. Frugal personal AI agent; wallet and on-chain economy optional; crypto OFF by default.",
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "alexar76",
+      "email": "alexar76@rambler.ru"
+    }
+  ],
+  "_nodeVersion": "22.22.1",
+  "dependencies": {
+    "zod": "^3.24.1",
+    "viem": "^2.21.55",
+    "@aimarket/warden": "0.8.2",
+    "@noble/post-quantum": "^0.6.1",
+    "@modelcontextprotocol/sdk": "^1.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "_hasShrinkwrap": false,
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "vitest": "^4.1.11",
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2",
+    "@aimarket/agent": "^0.1.0",
+    "@vitest/coverage-v8": "^4.1.11"
+  },
+  "peerDependencies": {
+    "@aimarket/agent": "^0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@aimarket/agent": {
+      "optional": true
+    }
+  },
+  "_npmOperationalInternal": {
+    "tmp": "tmp/argus3_0.3.3_1791740162249_0.40233968860538205",
+    "host": "s3://npm-registry-packages-npm-production"
+  },
+  "_id": "@alexar76/argus3@0.3.3",
+  "version": "0.3.3"
+}

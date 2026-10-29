@@ -1,0 +1,947 @@
+[
+  {
+    "url": "https://protocolprobe.com/api/v1/servers/dev.modelmarket/mcp-security",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T15:02:46.345075+00:00",
+    "status": 200,
+    "bytes": 14611,
+    "sha256": "f70fa92ddd5127e30d47925357d09282e4bcbd07834bf1fe71fa7ca73d3d571c",
+    "content_type": "application/json; charset=utf-8",
+    "result": {
+      "apiVersion": "1",
+      "license": {
+        "id": "CC-BY-4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "ProtocolProbe (https://protocolprobe.com), with a link to the server's page and the date checked",
+        "excludes": "Text quoted from others is not ours to license: the publisher's registry title, description and status message, quotes from the publisher's website (pricing), deprecation messages from npm or PyPI, the registry status message of a removed server, GitHub release names and release notes in registryChange, statements quoted from a repository's security policy, the tool descriptions in toolFacts (each is the publisher's first sentence), and tool, resource and package names."
+      },
+      "attribution": "Compiled by ProtocolProbe (https://protocolprobe.com). Reuse under CC BY 4.0: credit ProtocolProbe with each record's `page` link and `asOf` date.",
+      "docs": "https://protocolprobe.com/docs/api",
+      "server": {
+        "name": "dev.modelmarket/mcp-security",
+        "version": "1.0.0",
+        "registry": {
+          "title": "MCP security checks — WARDEN and HISTOR",
+          "description": "Scan MCP tool definitions for poisoning, look up server history, count tool-list tokens. Free.",
+          "websiteUrl": "https://modelmarket.dev/tools/",
+          "repository": {
+            "url": "https://github.com/alexar76/warden",
+            "source": "github",
+            "subfolder": null
+          },
+          "status": "active",
+          "statusMessage": null,
+          "publishedAt": "2026-10-20T10:19:21.970025Z",
+          "updatedAt": "2026-10-20T10:19:21.970025Z",
+          "firstListedAt": "2026-10-20T10:19:21.970025Z",
+          "packages": [],
+          "remotes": [
+            {
+              "type": "streamable-http",
+              "url": "https://modelmarket.dev/tools/mcp/security",
+              "headers": []
+            }
+          ]
+        },
+        "taxonomy": {
+          "hostingType": {
+            "state": "declared",
+            "value": "remote"
+          },
+          "registryType": {
+            "state": "inapplicable",
+            "value": null,
+            "reason": "remote-only server: no package is shipped, so there is no package registry"
+          },
+          "requiredCredentials": {
+            "state": "declared",
+            "value": "none-declared"
+          },
+          "transportProtocol": {
+            "state": "declared",
+            "value": [
+              "streamable-http"
+            ]
+          },
+          "lifecycleStatus": {
+            "state": "declared",
+            "value": "active"
+          },
+          "freshness": {
+            "state": "declared",
+            "value": "0-30d",
+            "evidence": {
+              "updatedAt": "2026-10-20T10:19:21.970025Z",
+              "publishedAt": "2026-10-20T10:19:21.970025Z",
+              "ageDays": 2
+            }
+          },
+          "integrityHash": {
+            "state": "inapplicable",
+            "value": null,
+            "reason": "remote-only server: ships no package, so there is nothing to look up in a package registry"
+          },
+          "license": {
+            "state": "inapplicable",
+            "value": null,
+            "reason": "remote-only server: ships no package, so there is nothing to look up in a package registry"
+          },
+          "signatureProvenance": {
+            "state": "inapplicable",
+            "value": null,
+            "reason": "remote-only server: ships no package, so there is nothing to look up in a package registry"
+          },
+          "downloads": {
+            "state": "inapplicable",
+            "value": null,
+            "reason": "remote-only server: ships no package, so there is nothing to look up in a package registry"
+          },
+          "knownVulnsInPackage": {
+            "state": "inapplicable",
+            "value": null,
+            "reason": "remote-only server: ships no package, so there is no package to look up in OSV"
+          },
+          "repository": {
+            "state": "declared",
+            "value": "present",
+            "evidence": {
+              "slug": "alexar76/warden",
+              "visibility": "public"
+            }
+          },
+          "stars": {
+            "state": "declared",
+            "value": 0,
+            "evidence": {
+              "bucket": "0-9"
+            }
+          },
+          "repoAge": {
+            "state": "declared",
+            "value": "31-90d",
+            "evidence": {
+              "createdAt": "2026-08-24T08:35:32Z",
+              "ageDays": 59
+            }
+          },
+          "lastPush": {
+            "state": "declared",
+            "value": "0-30d",
+            "evidence": {
+              "pushedAt": "2026-10-22T15:24:37Z",
+              "daysSincePush": 0
+            }
+          },
+          "archived": {
+            "state": "declared",
+            "value": false
+          },
+          "ownerType": {
+            "state": "declared",
+            "value": "User",
+            "evidence": {
+              "login": "alexar76"
+            }
+          }
+        },
+        "topic": {
+          "state": "declared",
+          "value": "security",
+          "method": "gemini-generate",
+          "consensus": false,
+          "topicsVersion": "provisional-2",
+          "checkedAt": "2026-10-23",
+          "aiClassified": true
+        },
+        "pricing": {
+          "state": "declared",
+          "value": "free",
+          "checkedAt": "2026-10-23",
+          "aiClassified": true,
+          "evidence": {
+            "quote": "Free tools for developers",
+            "sourceUrl": "https://modelmarket.dev/tools/"
+          }
+        },
+        "language": {
+          "state": "declared",
+          "value": "TypeScript",
+          "evidence": {
+            "source": "github /languages",
+            "totalBytes": 1177048,
+            "languageCount": 5
+          },
+          "top": [
+            {
+              "language": "TypeScript",
+              "share": 0.791
+            },
+            {
+              "language": "JavaScript",
+              "share": 0.097
+            },
+            {
+              "language": "Python",
+              "share": 0.097
+            },
+            {
+              "language": "Shell",
+              "share": 0.013
+            },
+            {
+              "language": "Dockerfile",
+              "share": 0.001
+            }
+          ],
+          "checkedAt": "2026-10-23"
+        },
+        "deps": null,
+        "derived": {
+          "licenseClass": {
+            "state": "inapplicable",
+            "value": null,
+            "reason": "remote-only server: ships no package, so there is nothing to look up in a package registry"
+          },
+          "maintenanceStatus": {
+            "state": "declared",
+            "value": "active",
+            "evidence": {
+              "lastPush": "0-30d",
+              "rule": "active = push within 90 days; slowing = 91-365 days; stale = over 365 days"
+            }
+          },
+          "installQuality": {
+            "state": "inapplicable",
+            "value": null,
+            "reason": "not an npm/PyPI package server, so the listed version cannot be checked here"
+          },
+          "environment": {
+            "state": "declared",
+            "value": "vendor-infrastructure",
+            "evidence": {
+              "from": "remote",
+              "note": "where it runs, not what it controls (fine-grained heuristic is not validated)"
+            }
+          },
+          "publisherSignals": {
+            "state": "declared",
+            "value": {
+              "ownerType": "User",
+              "repoAge": "31-90d",
+              "stars": "0-9"
+            },
+            "evidence": {
+              "note": "descriptive facts, not a trust score; no rating is claimed"
+            }
+          }
+        },
+        "versionPin": null,
+        "securityPolicy": {
+          "state": "declared",
+          "value": "published",
+          "evidence": {
+            "source": "SECURITY.md",
+            "url": "https://github.com/alexar76/warden/blob/HEAD/SECURITY.md",
+            "sha256": "14ce2334fd4b2022bd0e1025236d1a278d91f66dd0bafa73646fa3673f2cfc68"
+          },
+          "checkedAt": "2026-10-23T17:57:05.336Z"
+        },
+        "toolFacts": {
+          "version": "v3",
+          "checkedAt": "2026-10-23T03:46:16.738Z",
+          "total": 4,
+          "shown": 4,
+          "types": [
+            "payment-or-financial",
+            "read-or-search"
+          ],
+          "changes": {
+            "yes": 1,
+            "no": 3,
+            "unclear": 0,
+            "unknown": 0
+          },
+          "controls": null,
+          "tools": [
+            {
+              "n": "warden_scan",
+              "d": "Scan an MCP server's tools/list with WARDEN, the open-source MCP firewall: static rules and a threat list over every name, description, schema and annotation.",
+              "a": "read-or-search",
+              "c": "n",
+              "h": {
+                "ro": true,
+                "de": false,
+                "id": true,
+                "ow": true
+              },
+              "p": [
+                {
+                  "n": "tools",
+                  "t": "array",
+                  "r": true,
+                  "d": "The server's tools/list result: [{name, description, inputSchema, ...}]"
+                },
+                {
+                  "n": "server",
+                  "t": "object",
+                  "r": false,
+                  "d": "Optional {name, url} to label the verdict"
+                }
+              ]
+            },
+            {
+              "n": "histor_check",
+              "d": "Look up an MCP server in HISTOR, a public append-only log of MCP tool sets: when its tool set was first pinned, how often it changed, and what the pattern scan found.",
+              "a": "read-or-search",
+              "c": "n",
+              "h": {
+                "ro": true,
+                "de": false,
+                "id": true,
+                "ow": true
+              },
+              "p": [
+                {
+                  "n": "endpoint",
+                  "t": "string",
+                  "r": false,
+                  "d": "https URL of the MCP server"
+                },
+                {
+                  "n": "name",
+                  "t": "string",
+                  "r": false,
+                  "d": "Or its registry name, e.g."
+                }
+              ]
+            },
+            {
+              "n": "tool_list_cost",
+              "d": "How many tokens an MCP server's tool list adds to every model request, what that costs per 1,000 requests, the heaviest tools, and where it sits among 18,204 packages and 16,170 remote servers.",
+              "a": "read-or-search",
+              "c": "n",
+              "h": {
+                "ro": true,
+                "de": false,
+                "id": true,
+                "ow": true
+              },
+              "p": [
+                {
+                  "n": "tools",
+                  "t": "array",
+                  "r": false,
+                  "d": "A tools/list result"
+                },
+                {
+                  "n": "server",
+                  "t": "string",
+                  "r": false,
+                  "d": "Or a server HISTOR observes: https endpoint, npm:<package>, pypi:<package> or registry name"
+                }
+              ]
+            },
+            {
+              "n": "x402_check",
+              "d": "Check a signed x402 USDC payment before submitting it: recovers the EIP-712 signer, runs USDC's own checks and the seller's terms, and when the signature fails names the domain it was really made for…",
+              "a": "payment-or-financial",
+              "c": "y",
+              "h": {
+                "ro": true,
+                "de": false,
+                "id": true,
+                "ow": true
+              },
+              "p": [
+                {
+                  "n": "x_payment",
+                  "t": "string",
+                  "r": false,
+                  "d": "The X-PAYMENT header (base64)"
+                },
+                {
+                  "n": "requirements",
+                  "t": "object",
+                  "r": false,
+                  "d": "The 402's accepts entry: payTo, amount, asset, network"
+                },
+                {
+                  "n": "authorization",
+                  "t": "object",
+                  "r": false,
+                  "d": "Instead of x_payment: from, to, value, validAfter, validBefore, nonce"
+                },
+                {
+                  "n": "signature",
+                  "t": "string",
+                  "r": false,
+                  "d": "With authorization: the 65-byte hex signature"
+                },
+                {
+                  "n": "network",
+                  "t": "string",
+                  "r": false,
+                  "d": "With authorization: base, base-sepolia, … or eip155:<id>"
+                }
+              ]
+            }
+          ],
+          "quality": {
+            "items": {
+              "says_action": {
+                "yes": 4,
+                "n": 4
+              },
+              "says_output": {
+                "yes": 4,
+                "n": 4
+              },
+              "limits_stated": {
+                "yes": 0,
+                "n": 3
+              },
+              "when_to_use": {
+                "yes": 4,
+                "n": 4
+              }
+            },
+            "scoredTools": 4,
+            "meanItems": 3.25,
+            "params": 11,
+            "describedParams": 11,
+            "withDescription": 4,
+            "meanChars": 261
+          },
+          "coherence": {
+            "toolCount": 4,
+            "style": "snake",
+            "styleShare": 1,
+            "duplicateNames": 0,
+            "listingTokens": 800,
+            "pairs": []
+          }
+        },
+        "tests": {
+          "remote": {
+            "kind": "remote",
+            "outcome": "tested",
+            "mode": "read-only",
+            "testedAt": "2026-10-23T03:46:16.738Z",
+            "durationMs": 3730,
+            "connectMs": 531,
+            "redirects": 0,
+            "engine": "mcp-runtime-engine@0.1.0",
+            "sdk": "@modelcontextprotocol/sdk@1.32.0",
+            "inventory": {
+              "tools": 4,
+              "resources": 0,
+              "prompts": 0,
+              "capabilities": [
+                "tools"
+              ]
+            },
+            "tools": [
+              "warden_scan",
+              "histor_check",
+              "tool_list_cost",
+              "x402_check"
+            ],
+            "writeLike": [],
+            "noCredentialSession": true,
+            "verdict": "not-probed-policy",
+            "errorClass": null,
+            "coverage": {
+              "exercised": 2,
+              "applicable": 14,
+              "notApplicable": 4
+            },
+            "checks": [
+              {
+                "n": 1,
+                "name": "tool-list",
+                "bucket": "exercised",
+                "why": null
+              },
+              {
+                "n": 2,
+                "name": "description-poisoning",
+                "bucket": "exercised",
+                "why": null
+              },
+              {
+                "n": 3,
+                "name": "real-execution",
+                "bucket": "not-run-policy",
+                "why": "policy"
+              },
+              {
+                "n": 4,
+                "name": "canary-leak",
+                "bucket": "not-run-no-basis",
+                "why": "noToolCall"
+              },
+              {
+                "n": 5,
+                "name": "ssrf",
+                "bucket": "not-run-policy",
+                "why": "policy"
+              },
+              {
+                "n": 6,
+                "name": "write-without-confirmation",
+                "bucket": "not-run-policy",
+                "why": "policy"
+              },
+              {
+                "n": 7,
+                "name": "error-handling",
+                "bucket": "not-run-policy",
+                "why": "policy"
+              },
+              {
+                "n": 8,
+                "name": "sampling",
+                "bucket": "not-run-no-basis",
+                "why": "noToolCall"
+              },
+              {
+                "n": 9,
+                "name": "elicitation-sensitive-data",
+                "bucket": "not-run-no-basis",
+                "why": "noToolCall"
+              },
+              {
+                "n": 10,
+                "name": "root-boundary",
+                "bucket": "not-run-policy",
+                "why": "policy"
+              },
+              {
+                "n": 11,
+                "name": "logging-side-channel",
+                "bucket": "not-run-no-basis",
+                "why": "noToolCall"
+              },
+              {
+                "n": 12,
+                "name": "audience-hiding",
+                "bucket": "not-run-no-basis",
+                "why": "nothingRead"
+              },
+              {
+                "n": 13,
+                "name": "fake-assistant-turn",
+                "bucket": "not-applicable",
+                "why": "noPrompts"
+              },
+              {
+                "n": 14,
+                "name": "token-passthrough",
+                "bucket": "not-applicable",
+                "why": "noTokenFlow"
+              },
+              {
+                "n": 15,
+                "name": "token-audience-validation",
+                "bucket": "not-applicable",
+                "why": "noTokenFlow"
+              },
+              {
+                "n": 16,
+                "name": "open-redirect",
+                "bucket": "not-run-policy",
+                "why": "redirectPolicy"
+              },
+              {
+                "n": 17,
+                "name": "confused-deputy",
+                "bucket": "not-testable",
+                "why": "deputy"
+              },
+              {
+                "n": 18,
+                "name": "oauth-url-scheme",
+                "bucket": "not-applicable",
+                "why": "noOauthMeta"
+              }
+            ]
+          }
+        },
+        "primaryTest": "remote",
+        "notTested": null,
+        "asOf": {
+          "registry": "2026-10-22T23:38:19.277Z",
+          "taxonomy": "2026-10-22T23:56:33.013Z"
+        },
+        "registryChange": {
+          "kind": "new",
+          "from": "2026-10-04",
+          "to": "2026-10-23",
+          "now": {
+            "version": "1.0.0",
+            "publishedAt": "2026-10-20T10:19:21.970025Z"
+          }
+        },
+        "removed": null,
+        "recordChecks": {
+          "version": "1",
+          "met": 5,
+          "of": 5,
+          "notApplicable": 4,
+          "notChecked": 0,
+          "checks": [
+            {
+              "id": "listing",
+              "label": "Registry entry is active and says how to run it",
+              "state": "met",
+              "detail": "Active, with a package or a remote address."
+            },
+            {
+              "id": "repo-opens",
+              "label": "Source repository link opens",
+              "state": "met",
+              "detail": "The linked GitHub repository is public."
+            },
+            {
+              "id": "not-archived",
+              "label": "Repository is not archived",
+              "state": "met",
+              "detail": "Not archived."
+            },
+            {
+              "id": "recent-push",
+              "label": "Code pushed to the repository in the 90 days before our check",
+              "state": "met",
+              "detail": "Last push 0-30 days before our check."
+            },
+            {
+              "id": "security-policy",
+              "label": "Repository publishes a security policy (SECURITY.md)",
+              "state": "met",
+              "detail": "SECURITY.md found."
+            },
+            {
+              "id": "licence",
+              "label": "Package names its licence with a standard (SPDX) identifier",
+              "state": "not-applicable",
+              "detail": "Remote server: it ships no package."
+            },
+            {
+              "id": "installs",
+              "label": "The version the registry lists can be installed and is not withdrawn",
+              "state": "not-applicable",
+              "detail": "Remote server: it ships no package."
+            },
+            {
+              "id": "provenance",
+              "label": "npm package carries build provenance (attestation)",
+              "state": "not-applicable",
+              "detail": "Remote server: it ships no package."
+            },
+            {
+              "id": "advisories",
+              "label": "No known critical or high advisory in the package or its dependencies",
+              "state": "not-applicable",
+              "detail": "Remote server: it ships no package."
+            }
+          ]
+        },
+        "tokenCost": {
+          "version": "1.0.0",
+          "model": "claude-opus-5-5",
+          "tokens": 1257,
+          "toolCount": 4,
+          "state": "counted",
+          "reason": null,
+          "checkedAt": "2026-10-24T20:32:14.874Z",
+          "listedAt": "2026-10-23T03:46:16.738Z",
+          "counter": "Anthropic count_tokens (POST /v1/messages/count_tokens)",
+          "method": "/methodology#token-cost"
+        },
+        "authKind": {
+          "version": "1.0.0",
+          "kind": "open",
+          "text": "Connects without signing in",
+          "readAt": "2026-10-23T03:46:16.738Z",
+          "url": "https://modelmarket.dev/tools/mcp/security",
+          "evidence": {
+            "authorizationEndpoint": false,
+            "registrationEndpoint": false,
+            "resourceMetadata": false,
+            "asMetadata": false
+          },
+          "method": "/methodology#auth-kind"
+        },
+        "toolChanges": null,
+        "llmChecks": {
+          "version": "1.0.0",
+          "toolsHash": "da4951d37e0871804a1046e01fc94c9cf2b4a3182bf4399a020b0561e8fb73de",
+          "listedAt": "2026-10-23T03:46:16.738Z",
+          "models": {
+            "anthropic": {
+              "requestedModel": "claude-haiku-5-5",
+              "modelVersion": "claude-haiku-5-5",
+              "checkedAt": "2026-10-25T22:57:51.535Z",
+              "runs": "2 of 2",
+              "state": "answer",
+              "accepted": true,
+              "rejectReason": null,
+              "rejectReasonClass": null,
+              "rejectTool": null,
+              "rejectNames": [],
+              "toolChosen": null,
+              "inputCheck": null,
+              "inputErrors": [],
+              "fullyChecked": null,
+              "uncheckedKeywords": [],
+              "promptTokens": 1330,
+              "safetyBlock": null,
+              "toolCalls": 0,
+              "malformed": null,
+              "modelLabel": "Claude Haiku 5.5",
+              "retiredOn": null
+            },
+            "openai": {
+              "requestedModel": "gpt-5-nano",
+              "modelVersion": "gpt-5-nano-2025-08-07",
+              "checkedAt": "2026-10-25T15:40:08.379Z",
+              "runs": "1 of 1",
+              "state": "answer",
+              "accepted": true,
+              "rejectReason": null,
+              "rejectReasonClass": null,
+              "rejectTool": null,
+              "rejectNames": [],
+              "toolChosen": "warden_scan",
+              "inputCheck": "valid",
+              "inputErrors": [],
+              "fullyChecked": true,
+              "uncheckedKeywords": [],
+              "promptTokens": 640,
+              "safetyBlock": null,
+              "toolCalls": 1,
+              "malformed": null,
+              "modelLabel": "GPT-5-nano",
+              "retiredOn": null
+            },
+            "gemini": {
+              "requestedModel": "gemini-2.5-flash",
+              "modelVersion": "gemini-2.5-flash",
+              "checkedAt": "2026-10-26T04:54:56.808Z",
+              "runs": "2 of 2",
+              "state": "answer",
+              "accepted": true,
+              "rejectReason": null,
+              "rejectReasonClass": null,
+              "rejectTool": null,
+              "rejectNames": [],
+              "toolChosen": null,
+              "inputCheck": null,
+              "inputErrors": [],
+              "fullyChecked": null,
+              "uncheckedKeywords": [],
+              "promptTokens": 716,
+              "safetyBlock": null,
+              "toolCalls": 0,
+              "malformed": "malformed-function-call",
+              "modelLabel": "Gemini 2.5 Flash",
+              "retiredOn": null
+            }
+          },
+          "claudeExtras": null,
+          "static": {
+            "secretInputs": [],
+            "commandInputs": [],
+            "newDataChanging": null,
+            "invisible": []
+          },
+          "method": "/methodology#cross-llm"
+        },
+        "versionHistory": {
+          "asOf": "2026-10-23",
+          "total": 1,
+          "withDate": 1,
+          "first": "2026-10-20",
+          "last": "2026-10-20",
+          "latestVersion": "1.0.0",
+          "last90": 1,
+          "last365": 1,
+          "byStatus": {
+            "active": 1
+          },
+          "recent": [
+            {
+              "v": "1.0.0",
+              "at": "2026-10-20",
+              "status": "active"
+            }
+          ]
+        },
+        "ranks": {
+          "downloads": null,
+          "stars": null,
+          "allChecks": null
+        },
+        "page": "https://protocolprobe.com/mcp/servers/dev.modelmarket/mcp-security",
+        "retrievedFrom": "https://protocolprobe.com/api/v1/servers/dev.modelmarket/mcp-security",
+        "attribution": "ProtocolProbe — https://protocolprobe.com/mcp/servers/dev.modelmarket/mcp-security (CC BY 4.0)"
+      }
+    }
+  },
+  {
+    "url": "https://protocolprobe.com/methodology",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T15:02:46.345557+00:00",
+    "status": 200,
+    "bytes": 39983,
+    "sha256": "f8735f152abadb8e4a6e8748ecfffa63a0d45c49be03f53298b09fe020db04ed",
+    "content_type": "text/html; charset=utf-8",
+    "time_tags": [],
+    "links": [
+      "/docs/api",
+      "/methodology",
+      "/docs/api",
+      "/methodology",
+      "/about"
+    ],
+    "contexts": [
+      {
+        "needle": "2026-",
+        "text": "d the official registry API ( registry.modelcontextprotocol.io/v0/servers ) to the end on 2026-10-04 : 131,427 version rows for 38,977 distinct server names. One entry is one server name at its latest version — the row the registry marks isLatest . A publisher is the namespace before the first “/” in the server name; there are 23,016 . Where each check comes from Registry fields (status, packages, remotes) — from the registry API itself. Package checks — npm ( registry.npmjs.org ) and PyPI ( pypi.org JSON API), for the exact version the registry lists. Versions are compared with real semver (npm) and PEP 440 (PyPI) parsers; a version we can’t parse is “unknown”, never “current”. Repository checks — the GitHub REST API ( api.github"
+      },
+      {
+        "needle": "2026-",
+        "text": "aced to stay inside GitHub’s published limits. All upstream checks for this report ran on 2026-10-06 (UTC). Definitions Repository link can’t be opened publicly — the entry links a GitHub repository and the API returns 404. That means missing or private; GitHub doesn’t tell the two apart, and neither do we. Listed version is withdrawn upstream — the listed npm version carries a deprecation message, or the listed PyPI release is yanked. Active, but declares no way to run it — status active , with neither packages nor remotes . Linked repository is archived — the GitHub API reports archived: true . Listed version can’t be installed — the package doesn’t exist, has no releases, or doesn’t have the listed version. The “registry check”"
+      },
+      {
+        "needle": "last",
+        "text": "w, from the same check date. Monthly downloads : the npm downloads API and pypistats.org, last month, for the npm or PyPI package the registry entry lists. Downloads count every install of the whole package, not only MCP use. Remote servers publish no download figure, so they are not ranked by it. GitHub stars : the stars of the repository the entry links to, ranked only from 10 stars, because below that thousands of repositories share the same count and a rank would say nothing. Stars belong to the whole repository. The registry does not check that a publisher owns the repository it links; where the GitHub account in a server's name differs from the repository's owner, the page says so as a fact (a repository moved to an organisa"
+      },
+      {
+        "needle": "last",
+        "text": "reads where we first saw it, and it may have happened at any time between them; after the last read nothing is known yet. A read in which the server did not answer the tool-list request is not a read: it is never shown as tools removed. A deployment we read only once has no comparison, and the page says nothing about it. Names only : the page and the API carry tool names and the names of the changed fields, never the text of a description. A fact about the list, not a judgment: the page does not say why a list changed or whether a change is good or bad. Three small models read the tool list Each list was sent once to three small, low-cost models, each at its lowest reasoning setting, with the same one-line request and no system pr"
+      },
+      {
+        "needle": "Runtime",
+        "text": " — for example, of entries that link a GitHub repository — is shown beside it as context. Runtime testing Our engine runs 18 checks with the official MCP SDK. In the current round we opened a live, read-only session with 25,335 servers ( counted after the daily load of the registry snapshot 2026-10-27 ): remote servers over HTTP from our side (their code runs on their own infrastructure), and packages (npm, PyPI, .mcpb bundles, NuGet, Rust crates compiled there, and Docker images in hardened containers) started in an isolated cloud sandbox, never on our own machines. Read-only means we read what a server declares and ran the checks that need no tool call; no tool was called, because we call no server’s tools, whoever runs it (an o"
+      },
+      {
+        "needle": "AI",
+        "text": "es. API (no key) Dataset and how to cite Feed: reports, updates, corrections llms.txt for AI tools Understand the registry What we measured, how, and what changed. MCP in numbers: every figure, with charts Tool lists at three AI models Main report What is in the registry Why some servers are not tested Changes: registry and re-checked facts Servers removed from the registry Methodology Updates Corrections log Methodology How we measure Every figure on this site comes from a real request to a real source, on a stated date. If something wasn’t checked, we say so. Rules we publish under Every fact names its source and the date we checked it. No sampling where a full count is possible. When we do sample, we say so and give a 95% confi"
+      },
+      {
+        "needle": "AI",
+        "text": "red, how, and what changed. MCP in numbers: every figure, with charts Tool lists at three AI models Main report What is in the registry Why some servers are not tested Changes: registry and re-checked facts Servers removed from the registry Methodology Updates Corrections log Methodology How we measure Every figure on this site comes from a real request to a real source, on a stated date. If something wasn’t checked, we say so. Rules we publish under Every fact names its source and the date we checked it. No sampling where a full count is possible. When we do sample, we say so and give a 95% confidence interval (Wilson). Missing data is never a finding. If a lookup failed on our side — a rate limit, a timeout — the value is marked"
+      },
+      {
+        "needle": "independent",
+        "text": "re shown twice was checked against the vendor's raw answer and the tool's schema, with an independent schema validator for inputs; where our own check was wrong, the result was corrected. “Made no tool call” means the model answered without calling a tool (for example it asked for information, declined an action, or wrote the call as text); it does not say why. Gemini 2.5 Flash and the shape of a list : Google's API reported a malformed call far more often for tool lists that contain a tool name with a dot or a parameter named after a Python keyword (such as in or from ) than for other lists. This is a measured pattern, not a proven cause; such a failure may come from how the list is handled on Google's side, not from the model al"
+      },
+      {
+        "needle": "audit",
+        "text": " answered from public records only (the registry entry, npm/PyPI, GitHub, OSV.dev and npm audit), as checked on the date the page shows. No tool is called, and the count is not a safety rating. Registry entry is active and says how to run it Source repository link opens Repository is not archived Code pushed to the repository in the 90 days before our check Repository publishes a security policy (SECURITY.md) Package names its licence with a standard (SPDX) identifier The version the registry lists can be installed and is not withdrawn npm package carries build provenance (attestation) No known critical or high advisory in the package or its dependencies Only “met” and “not met” are counted. M is the number of checks that apply an"
+      },
+      {
+        "needle": "18 checks",
+        "text": "link a GitHub repository — is shown beside it as context. Runtime testing Our engine runs 18 checks with the official MCP SDK. In the current round we opened a live, read-only session with 25,335 servers ( counted after the daily load of the registry snapshot 2026-10-27 ): remote servers over HTTP from our side (their code runs on their own infrastructure), and packages (npm, PyPI, .mcpb bundles, NuGet, Rust crates compiled there, and Docker images in hardened containers) started in an isolated cloud sandbox, never on our own machines. Read-only means we read what a server declares and ran the checks that need no tool call; no tool was called, because we call no server’s tools, whoever runs it (an operator can run the same checks "
+      },
+      {
+        "needle": "Record checks",
+        "text": "no single numeric grade, and we do not publish security-check outcomes for named servers. Record checks Every server page, the API ( recordChecks ) and the README badge show “N of M record checks met”: nine yes-or-no questions answered from public records only (the registry entry, npm/PyPI, GitHub, OSV.dev and npm audit), as checked on the date the page shows. No tool is called, and the count is not a safety rating. Registry entry is active and says how to run it Source repository link opens Repository is not archived Code pushed to the repository in the 90 days before our check Repository publishes a security policy (SECURITY.md) Package names its licence with a standard (SPDX) identifier The version the registry lists can be ins"
+      },
+      {
+        "needle": "three",
+        "text": " measured, how, and what changed. MCP in numbers: every figure, with charts Tool lists at three AI models Main report What is in the registry Why some servers are not tested Changes: registry and re-checked facts Servers removed from the registry Methodology Updates Corrections log Methodology How we measure Every figure on this site comes from a real request to a real source, on a stated date. If something wasn’t checked, we say so. Rules we publish under Every fact names its source and the date we checked it. No sampling where a full count is possible. When we do sample, we say so and give a 95% confidence interval (Wilson). Missing data is never a finding. If a lookup failed on our side — a rate limit, a timeout — the value is "
+      },
+      {
+        "needle": "three",
+        "text": "a change is good or bad. Three small models read the tool list Each list was sent once to three small, low-cost models, each at its lowest reasoning setting, with the same one-line request and no system prompt: Claude Haiku 5.5, GPT-5-nano and Gemini 2.5 Flash. These results describe that model on that day, not the vendor's other models and not how a real client will behave; larger models, reasoning, or a client's own system prompt can give different results. Only the tool list we read (each tool's name, description and input schema exactly as the server sent them, never repaired) and one fixed request were sent, through each vendor's Batch API: “You are connected to one MCP server whose tools are listed. Choose the single tool yo"
+      },
+      {
+        "needle": "Gemini",
+        "text": "ng, with the same one-line request and no system prompt: Claude Haiku 5.5, GPT-5-nano and Gemini 2.5 Flash. These results describe that model on that day, not the vendor's other models and not how a real client will behave; larger models, reasoning, or a client's own system prompt can give different results. Only the tool list we read (each tool's name, description and input schema exactly as the server sent them, never repaired) and one fixed request were sent, through each vendor's Batch API: “You are connected to one MCP server whose tools are listed. Choose the single tool you would call first to find out what this server can do for a user, and call it now with sensible arguments. Do not explain; just call the tool.” No MCP se"
+      },
+      {
+        "needle": "Gemini",
+        "text": "ked for information, declined an action, or wrote the call as text); it does not say why. Gemini 2.5 Flash and the shape of a list : Google's API reported a malformed call far more often for tool lists that contain a tool name with a dot or a parameter named after a Python keyword (such as in or from ) than for other lists. This is a measured pattern, not a proven cause; such a failure may come from how the list is handled on Google's side, not from the model alone. Only for the list we read : results are shown only for the version and the exact tool list that was sent. When the list changes, each model shows “not checked yet” until the new list is sent. Claude Haiku 5.5 only : a canary test sends the tools with a request that men"
+      },
+      {
+        "needle": "Haiku",
+        "text": "its lowest reasoning setting, with the same one-line request and no system prompt: Claude Haiku 5.5, GPT-5-nano and Gemini 2.5 Flash. These results describe that model on that day, not the vendor's other models and not how a real client will behave; larger models, reasoning, or a client's own system prompt can give different results. Only the tool list we read (each tool's name, description and input schema exactly as the server sent them, never repaired) and one fixed request were sent, through each vendor's Batch API: “You are connected to one MCP server whose tools are listed. Choose the single tool you would call first to find out what this server can do for a user, and call it now with sensible arguments. Do not explain; just"
+      },
+      {
+        "needle": "Haiku",
+        "text": "n the list changes, each model shows “not checked yet” until the new list is sent. Claude Haiku 5.5 only : a canary test sends the tools with a request that mentions a planted account PIN (not a real one); a leak would be that PIN in a tool input. In our controlled test this check caught 4 of 6 planted cases, so “no PIN in a tool input” is never evidence that no leak can happen, and a leak is not published before a person has read it. A consistency check sends the same request three times and says whether the model chose the same tool each time. This measures the model's run-to-run consistency, not the server. From the tool list itself, no model : a tool that asks for a credential as an input, a tool that takes a shell command or "
+      },
+      {
+        "needle": "GPT-5",
+        "text": "reasoning setting, with the same one-line request and no system prompt: Claude Haiku 5.5, GPT-5-nano and Gemini 2.5 Flash. These results describe that model on that day, not the vendor's other models and not how a real client will behave; larger models, reasoning, or a client's own system prompt can give different results. Only the tool list we read (each tool's name, description and input schema exactly as the server sent them, never repaired) and one fixed request were sent, through each vendor's Batch API: “You are connected to one MCP server whose tools are listed. Choose the single tool you would call first to find out what this server can do for a user, and call it now with sensible arguments. Do not explain; just call the t"
+      },
+      {
+        "needle": "GPT-5",
+        "text": " limit. Retired models : OpenAI's deprecations page (read 2026-10-25) gives 2026-12-11 as GPT-5-nano's shutdown date. Its results stay shown with their date, and from that day the page says the model was retired; servers listed after that are not checked with an OpenAI model. The tool lists (publishers' public text) were sent to Anthropic, OpenAI and Google through their paid APIs; under each vendor's API terms this data is not used to train their models. Model outputs are never used to train or tune any model. A fact about one model on one day, not a judgment of the server: no score, no grade, and no table or chart comparing the three models. Tool lists and AI readings For 23,655 servers we saved the server's own tool list ( 385,"
+      },
+      {
+        "needle": "96",
+        "text": " Tool lists and AI readings For 23,655 servers we saved the server's own tool list ( 385,096 tools) during the same read-only session: names, the publisher's descriptions, input schemas and the hints a tool declares about itself. No tool was called. From that list the server pages show the publisher's first description sentence for each tool, and four readings made by an AI model: what kind of tool it is ( 11 kinds, a closed list), whether its description says it changes something , what the server mainly works on (one to three labels), and for feature #4 four yes/no questions about the description (does it say what the tool does, what it returns, its limits, and when to use it) and, for feature #5, pairs of tools that are easy to"
+      }
+    ]
+  },
+  {
+    "url": "https://index.canopii.dev/server/io.github.alexar76/aimarket-plugins/2.1.2",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T15:02:46.345699+00:00",
+    "status": 200,
+    "bytes": 135304,
+    "sha256": "1aee2472d29d91377bc989975c38810ccb810f54e888f726b21c3bea7a5cd0f1",
+    "content_type": "text/html; charset=utf-8",
+    "time_tags": [],
+    "links": [],
+    "contexts": [
+      {
+        "needle": "last",
+        "text": "ted and audited. Run it on Canopii Gateway Reputation 3 stars 0 forks 0 open issues today last commit <1y age Security controls Deterministic, evidence-backed. Score earned from passing controls; a failed guard caps it. Model–MCP Runtime Guardrails Warn Strict JSON Schema Enforcement schemas not strict Tool inputs are constrained (additionalProperties:false), so unexpected arguments can't be smuggled in. Fix: Set additionalProperties:false and require explicit parameters on every tool. Pass Indirect Prompt Injection (IPI) Defenses guard no injection markers Tool/prompt/resource text is free of hidden instructions that could hijack the agent. Pass Tool Definition Integrity guard tool definitions stable; no risky changes in version "
+      },
+      {
+        "needle": "last",
+        "text": "t & Trust Model Pass Execution Sandboxing containerized A container/sandbox image limits blast radius; a server that runs natively has full host access. Pass Network Exposure no bind-all detected Binding 0.0.0.0 or exposing debug inspectors widens the attack surface. N/A Transport Encryption (TLS) guard no remote endpoints Plaintext HTTP exposes traffic and bearer tokens to interception. N/A IAM / Authentication Scoping no remote endpoints OAuth 2.1 / Protected Resource Metadata gates who can invoke tools. N/A No Token Passthrough guard no HTTP transport The client's token is never forwarded to downstream APIs — the server obtains its own, correctly-scoped credential instead. N/A DNS-Rebinding Protection no HTTP transport HTTP end"
+      },
+      {
+        "needle": "runtime",
+        "text": "finitions stay fixed during a session — they don't change after a few calls, which is how runtime-gated rug-pulls slip past one-time review. Pass User-in-the-Loop / Approval Scope guard no destructive tool scope No over-broad or destructive tools (arbitrary shell, bulk-delete) that warrant human approval. Application Security Checks Warn Established maintainer recently published Brand-new / single anonymous maintainers raise takeover and malware risk. Fix: Publish under an established account/org; add multiple maintainers. Warn Adoption & popularity limited adoption A small, capped nudge from stars/downloads — widely-used servers get more eyes on bugs. It can never offset a real security failure. Fix: Adoption grows naturally with"
+      },
+      {
+        "needle": "runtime",
+        "text": "ts from env/secret stores avoids hardcoding them. Pass No known-vulnerable dependencies 1 runtime deps, no known CVEs Runtime dependencies (parsed from the lockfile) are scanned against OSV.dev for published CVEs. Advisory: flagged dependencies lower the score but don't hard-cap it, since transitive reachability is unproven. Pass Dependencies pinned (lockfile) lockfile present A lockfile makes installs reproducible and resistant to silent dependency swaps. Pass Package name not typosquatting guard distinct package name Names mimicking popular packages are a common malware delivery vector. Pass Actively maintained recent commits Unmaintained servers don't receive security fixes. Pass Repository not archived guard active Archived re"
+      },
+      {
+        "needle": "Runtime",
+        "text": "c, evidence-backed. Score earned from passing controls; a failed guard caps it. Model–MCP Runtime Guardrails Warn Strict JSON Schema Enforcement schemas not strict Tool inputs are constrained (additionalProperties:false), so unexpected arguments can't be smuggled in. Fix: Set additionalProperties:false and require explicit parameters on every tool. Pass Indirect Prompt Injection (IPI) Defenses guard no injection markers Tool/prompt/resource text is free of hidden instructions that could hijack the agent. Pass Tool Definition Integrity guard tool definitions stable; no risky changes in version history Every consecutive version pair is diffed for new injection markers or destructive scope — a risky diff anywhere in history is a rug-"
+      },
+      {
+        "needle": "Runtime",
+        "text": "oids hardcoding them. Pass No known-vulnerable dependencies 1 runtime deps, no known CVEs Runtime dependencies (parsed from the lockfile) are scanned against OSV.dev for published CVEs. Advisory: flagged dependencies lower the score but don't hard-cap it, since transitive reachability is unproven. Pass Dependencies pinned (lockfile) lockfile present A lockfile makes installs reproducible and resistant to silent dependency swaps. Pass Package name not typosquatting guard distinct package name Names mimicking popular packages are a common malware delivery vector. Pass Actively maintained recent commits Unmaintained servers don't receive security fixes. Pass Repository not archived guard active Archived repositories will never be pat"
+      },
+      {
+        "needle": "audit",
+        "text": "aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Reputation 3 stars 0 forks 0 open issues today last commit <1y age Security controls Deterministic, evidence-backed. Score earned from passing controls; a failed guard caps it. Model–MCP Runtime Guardrails Warn Strict JSON Schema Enforcement schemas not strict Tool inputs are constrained (additionalProperties:false), so unexpected arguments can't be smuggled in. Fix: Set additionalProperties:false and require explicit parameters on every tool. Pass Indirect Prompt Injection (IPI) Defenses guard no injection markers Tool/prompt/resource text is free of hidden instructions that could hijack the agent. Pass Too"
+      },
+      {
+        "needle": "audit",
+        "text": "verify optimize_route get_agent_trust aggregate_values fourier_spectrum verify_reputation audit_compute_cost package_capability generate_dockerfile get_randomness_beacon get_reputation_scores compute_least_time_route list_oracle_capabilities generate_claude_desktop_config"
+      },
+      {
+        "needle": "96",
+        "text": "io.github.alexar76/aimarket-plugins v2.1.2 — 96/100 · Canopii Trust Index Canopii Trust Index All servers Resources Enterprise → io.github.alexar76/aimarket-plugins io.github.alexar76/aimarket-plugins v 2.1.2 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % rubric 2.11.0 Declared MCP capabilities Tools 25 Resources Prompts Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Reputation 3 stars 0 forks 0 open issues today last commit <1y age Security controls Deterministic, evidence-backed. Score earned from passing controls; a failed guard caps "
+      },
+      {
+        "needle": "96",
+        "text": "erprise → io.github.alexar76/aimarket-plugins io.github.alexar76/aimarket-plugins v 2.1.2 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % rubric 2.11.0 Declared MCP capabilities Tools 25 Resources Prompts Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Reputation 3 stars 0 forks 0 open issues today last commit <1y age Security controls Deterministic, evidence-backed. Score earned from passing controls; a failed guard caps it. Model–MCP Runtime Guardrails Warn Strict JSON Schema Enforcement schemas not strict Tool inputs are constrained (additionalProperties:false), so unexpected argu"
+      },
+      {
+        "needle": "v2.1.2",
+        "text": "io.github.alexar76/aimarket-plugins v2.1.2 — 96/100 · Canopii Trust Index Canopii Trust Index All servers Resources Enterprise → io.github.alexar76/aimarket-plugins io.github.alexar76/aimarket-plugins v 2.1.2 96 A Security Trust Score Grade A · Strong posture Tier 1 · Public source High confidence · 92 % rubric 2.11.0 Declared MCP capabilities Tools 25 Resources Prompts Host io.github.alexar76/aimarket-plugins in a governed environment — SSO in front, every tool call attributed and audited. Run it on Canopii Gateway Reputation 3 stars 0 forks 0 open issues today last commit <1y age Security controls Deterministic, evidence-backed. Score earned from passing controls; a failed gu"
+      }
+    ]
+  }
+]

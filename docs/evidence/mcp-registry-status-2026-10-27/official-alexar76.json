@@ -1,0 +1,1033 @@
+{
+  "servers": [
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-hub",
+        "description": "Search and invoke real AI capabilities on modelmarket.dev. Free trial, then a prepaid key.",
+        "title": "AIMarket \u2014 live agent marketplace",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-hub",
+          "source": "github"
+        },
+        "version": "3.15.21",
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://modelmarket.dev/mcp",
+            "headers": [
+              {
+                "description": "Optional key from modelmarket.dev/start. Pays priced calls after the free trial.",
+                "isSecret": true,
+                "name": "X-API-Key"
+              }
+            ]
+          },
+          {
+            "type": "streamable-http",
+            "url": "https://modelmarket.dev/mcp/k/{api_key}",
+            "variables": {
+              "api_key": {
+                "description": "Key from modelmarket.dev/start, for clients that take a URL and no header.",
+                "isRequired": true,
+                "isSecret": true
+              }
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-07T10:00:06.908496Z",
+          "publishedAt": "2026-10-07T10:00:06.908496Z",
+          "updatedAt": "2026-10-07T10:00:06.908496Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-hub",
+        "description": "Search and invoke real AI capabilities on modelmarket.dev. Free trial, then USDC on Base.",
+        "title": "AIMarket \u2014 live agent marketplace",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-hub",
+          "source": "github"
+        },
+        "version": "3.2.1",
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://modelmarket.dev/mcp"
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-08-16T20:44:17.87315Z",
+          "publishedAt": "2026-08-16T20:44:17.87315Z",
+          "updatedAt": "2026-08-16T20:44:17.87315Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-mcp",
+        "description": "Streamable-HTTP MCP gateway: web_fetch, web_search, metis_verify (SSRF-hardened).",
+        "title": "AIMarket MCP Gateway",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-mcp",
+          "source": "github"
+        },
+        "version": "0.1.0",
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://{aimarket_host}/mcp",
+            "headers": [
+              {
+                "description": "Bearer token matching AIMARKET_MCP_KEY when auth is enabled",
+                "isSecret": true,
+                "name": "Authorization"
+              }
+            ],
+            "variables": {
+              "aimarket_host": {
+                "description": "Host[:port] of your aimarket-mcp deployment (no scheme). Default: local Docker.",
+                "default": "127.0.0.1:9090"
+              }
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-07-12T07:26:21.533013Z",
+          "publishedAt": "2026-07-12T07:26:21.533013Z",
+          "updatedAt": "2026-07-12T07:26:21.533013Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-mcp",
+        "description": "Stdio + Streamable-HTTP MCP gateway: SSRF-hardened web_fetch, web_search, metis_verify.",
+        "title": "AIMarket MCP Gateway",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-mcp",
+          "source": "github"
+        },
+        "version": "0.2.0",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "aimarket-mcp",
+            "version": "0.2.0",
+            "transport": {
+              "type": "stdio"
+            },
+            "environmentVariables": [
+              {
+                "description": "Metis verify API base URL",
+                "name": "AIMARKET_METIS_URL"
+              },
+              {
+                "description": "Optional bearer token for Metis verify",
+                "isSecret": true,
+                "name": "AIMARKET_METIS_KEY"
+              },
+              {
+                "description": "DuckDuckGo HTML search endpoint override",
+                "name": "AIMARKET_SEARCH_URL"
+              }
+            ]
+          }
+        ],
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://{aimarket_host}/mcp",
+            "headers": [
+              {
+                "description": "Bearer token matching AIMARKET_MCP_KEY when auth is enabled",
+                "isSecret": true,
+                "name": "Authorization"
+              }
+            ],
+            "variables": {
+              "aimarket_host": {
+                "description": "Host[:port] of your aimarket-mcp deployment (no scheme). Default: local Docker.",
+                "default": "127.0.0.1:9090"
+              }
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-07-28T08:34:03.752496Z",
+          "publishedAt": "2026-07-28T08:34:03.752496Z",
+          "updatedAt": "2026-07-28T08:34:03.752496Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-mcp",
+        "description": "Stdio + Streamable-HTTP MCP gateway: SSRF-hardened web_fetch, web_search, metis_verify.",
+        "title": "AIMarket MCP Gateway",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-mcp",
+          "source": "github"
+        },
+        "version": "0.2.1",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "aimarket-mcp",
+            "version": "0.2.1",
+            "transport": {
+              "type": "stdio"
+            },
+            "environmentVariables": [
+              {
+                "description": "Metis verify API base URL",
+                "name": "AIMARKET_METIS_URL"
+              },
+              {
+                "description": "Optional bearer token for Metis verify",
+                "isSecret": true,
+                "name": "AIMARKET_METIS_KEY"
+              },
+              {
+                "description": "DuckDuckGo HTML search endpoint override",
+                "name": "AIMARKET_SEARCH_URL"
+              }
+            ]
+          }
+        ],
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://{aimarket_host}/mcp",
+            "headers": [
+              {
+                "description": "Bearer token matching AIMARKET_MCP_KEY when auth is enabled",
+                "isSecret": true,
+                "name": "Authorization"
+              }
+            ],
+            "variables": {
+              "aimarket_host": {
+                "description": "Host[:port] of your aimarket-mcp deployment (no scheme). Default: local Docker.",
+                "default": "127.0.0.1:9090"
+              }
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-07-28T09:15:38.624757Z",
+          "publishedAt": "2026-07-28T09:15:38.624757Z",
+          "updatedAt": "2026-07-28T09:15:38.624757Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-mcp",
+        "description": "Stdio + Streamable-HTTP MCP gateway: SSRF-hardened web_fetch, web_search, metis_verify.",
+        "title": "AIMarket MCP Gateway",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-mcp",
+          "source": "github"
+        },
+        "version": "0.2.3",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "aimarket-mcp",
+            "version": "0.2.3",
+            "transport": {
+              "type": "stdio"
+            },
+            "environmentVariables": [
+              {
+                "description": "Metis verify API base URL",
+                "name": "AIMARKET_METIS_URL"
+              },
+              {
+                "description": "Optional bearer token for Metis verify",
+                "isSecret": true,
+                "name": "AIMARKET_METIS_KEY"
+              },
+              {
+                "description": "DuckDuckGo HTML search endpoint override",
+                "name": "AIMARKET_SEARCH_URL"
+              }
+            ]
+          }
+        ],
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://{aimarket_host}/mcp",
+            "headers": [
+              {
+                "description": "Bearer token matching AIMARKET_MCP_KEY when auth is enabled",
+                "isSecret": true,
+                "name": "Authorization"
+              }
+            ],
+            "variables": {
+              "aimarket_host": {
+                "description": "Host[:port] of your aimarket-mcp deployment (no scheme). Default: local Docker.",
+                "default": "127.0.0.1:9090"
+              }
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-07-28T17:35:50.82722Z",
+          "publishedAt": "2026-07-28T17:35:50.82722Z",
+          "updatedAt": "2026-07-28T17:35:50.82722Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-mcp",
+        "description": "Stdio + HTTP MCP gateway: SSRF-hardened web_fetch, web_search, metis_verify, market_search.",
+        "title": "AIMarket MCP Gateway",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-mcp",
+          "source": "github"
+        },
+        "version": "0.3.0",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "aimarket-mcp",
+            "version": "0.3.0",
+            "transport": {
+              "type": "stdio"
+            },
+            "environmentVariables": [
+              {
+                "description": "Metis verify API base URL",
+                "name": "AIMARKET_METIS_URL"
+              },
+              {
+                "description": "Optional bearer token for Metis verify",
+                "isSecret": true,
+                "name": "AIMARKET_METIS_KEY"
+              },
+              {
+                "description": "DuckDuckGo HTML search endpoint override",
+                "name": "AIMARKET_SEARCH_URL"
+              }
+            ]
+          }
+        ],
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://{aimarket_host}/mcp",
+            "headers": [
+              {
+                "description": "Bearer token matching AIMARKET_MCP_KEY when auth is enabled",
+                "isSecret": true,
+                "name": "Authorization"
+              }
+            ],
+            "variables": {
+              "aimarket_host": {
+                "description": "Host[:port] of YOUR OWN aimarket-mcp deployment (no scheme). For the hosted marketplace with no install, use the io.github.alexar76/aimarket-hub server instead.",
+                "default": "127.0.0.1:9090"
+              }
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-08-16T20:44:18.893109Z",
+          "publishedAt": "2026-08-16T20:44:18.893109Z",
+          "updatedAt": "2026-08-16T20:44:18.893109Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-mcp",
+        "description": "Stdio + HTTP MCP gateway: SSRF-hardened web_fetch, web_search, metis_verify, market_search.",
+        "title": "AIMarket MCP Gateway",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-mcp",
+          "source": "github"
+        },
+        "version": "0.4.0",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "aimarket-mcp",
+            "version": "0.4.0",
+            "transport": {
+              "type": "stdio"
+            },
+            "environmentVariables": [
+              {
+                "description": "Metis verify API base URL",
+                "name": "AIMARKET_METIS_URL"
+              },
+              {
+                "description": "Optional bearer token for Metis verify",
+                "isSecret": true,
+                "name": "AIMARKET_METIS_KEY"
+              },
+              {
+                "description": "DuckDuckGo HTML search endpoint override",
+                "name": "AIMARKET_SEARCH_URL"
+              },
+              {
+                "description": "Optional key from https://modelmarket.dev/start: pays priced market_invoke calls from a prepaid USDC balance once the free trial is spent",
+                "isSecret": true,
+                "name": "AIMARKET_API_KEY"
+              }
+            ]
+          }
+        ],
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://{aimarket_host}/mcp",
+            "headers": [
+              {
+                "description": "Bearer token matching AIMARKET_MCP_KEY when auth is enabled",
+                "isSecret": true,
+                "name": "Authorization"
+              }
+            ],
+            "variables": {
+              "aimarket_host": {
+                "description": "Host[:port] of YOUR OWN aimarket-mcp deployment (no scheme). For the hosted marketplace with no install, use the io.github.alexar76/aimarket-hub server instead.",
+                "default": "127.0.0.1:9090"
+              }
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-07T09:59:21.293075Z",
+          "publishedAt": "2026-10-07T09:59:21.293075Z",
+          "updatedAt": "2026-10-07T09:59:21.293075Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-oracle-gateway",
+        "description": "Stdio MCP: 17 verifiable AIMarket oracles, 35 pay-per-call tools for AI agents.",
+        "title": "AIMarket Oracle Gateway",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-oracle-gateway",
+          "source": "github"
+        },
+        "version": "0.2.0",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "aimarket-oracle-gateway",
+            "version": "0.2.0",
+            "transport": {
+              "type": "stdio"
+            },
+            "environmentVariables": [
+              {
+                "description": "AIMarket Hub base URL (recommended metered path)",
+                "name": "AIMARKET_HUB_URL"
+              },
+              {
+                "description": "Direct oracle-family URL (demo/free path if no hub)",
+                "name": "AIMARKET_ORACLE_URL"
+              },
+              {
+                "description": "Hard cap per call in USD (default 0.10)",
+                "name": "AIMARKET_MAX_PER_CALL_USD"
+              },
+              {
+                "description": "Hard cumulative budget for this process (default 5.0)",
+                "name": "AIMARKET_MAX_SPEND_USD"
+              }
+            ]
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-07-07T17:39:25.06867Z",
+          "publishedAt": "2026-07-07T17:39:25.06867Z",
+          "updatedAt": "2026-07-07T17:39:25.06867Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-oracle-gateway",
+        "description": "Stdio MCP: 17 verifiable AIMarket oracles, 35 pay-per-call tools for AI agents.",
+        "title": "AIMarket Oracle Gateway",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-oracle-gateway",
+          "source": "github"
+        },
+        "version": "0.3.1",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "aimarket-oracle-gateway",
+            "version": "0.3.1",
+            "transport": {
+              "type": "stdio"
+            },
+            "environmentVariables": [
+              {
+                "description": "AIMarket Hub base URL (recommended metered path)",
+                "name": "AIMARKET_HUB_URL"
+              },
+              {
+                "description": "Direct oracle-family URL (demo/free path if no hub)",
+                "name": "AIMARKET_ORACLE_URL"
+              },
+              {
+                "description": "Hard cap per call in USD (default 0.10)",
+                "name": "AIMARKET_MAX_PER_CALL_USD"
+              },
+              {
+                "description": "Hard cumulative budget for this process (default 5.0)",
+                "name": "AIMARKET_MAX_SPEND_USD"
+              }
+            ]
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-21T08:07:26.528636Z",
+          "publishedAt": "2026-10-21T08:07:26.528636Z",
+          "updatedAt": "2026-10-21T08:07:26.528636Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-plugins",
+        "description": "Stdio MCP packager: AIMarket hub plugins into self-hosted MCP server products.",
+        "title": "AIMarket MCP Packager",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-plugins",
+          "source": "github"
+        },
+        "version": "2.0.1",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "aimarket-mcp-packager",
+            "version": "2.0.1",
+            "transport": {
+              "type": "stdio"
+            },
+            "environmentVariables": [
+              {
+                "description": "AIMarket Hub base URL",
+                "name": "AIMARKET_HUB_URL"
+              }
+            ]
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-07-07T17:53:12.739341Z",
+          "publishedAt": "2026-07-07T17:53:12.739341Z",
+          "updatedAt": "2026-07-07T17:53:12.739341Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/aimarket-plugins",
+        "description": "Stdio MCP packager: AIMarket hub plugins into self-hosted MCP server products.",
+        "title": "AIMarket MCP Packager",
+        "repository": {
+          "url": "https://github.com/alexar76/aimarket-plugins",
+          "source": "github"
+        },
+        "version": "2.1.1",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "aimarket-mcp-packager",
+            "version": "2.1.1",
+            "transport": {
+              "type": "stdio"
+            },
+            "environmentVariables": [
+              {
+                "description": "AIMarket Hub base URL",
+                "name": "AIMARKET_HUB_URL"
+              }
+            ]
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-21T08:07:24.696125Z",
+          "publishedAt": "2026-10-21T08:07:24.696125Z",
+          "updatedAt": "2026-10-21T08:07:24.696125Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/argus3",
+        "description": "ARGUS-3 stdio MCP (argus_ask, argus_status). WARDEN firewall blocks poisoned MCP servers.",
+        "title": "ARGUS-3 MCP Server",
+        "repository": {
+          "url": "https://github.com/alexar76/argus",
+          "source": "github"
+        },
+        "version": "0.2.4",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@alexar76/argus3",
+            "version": "0.2.4",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-07-07T17:51:34.121873Z",
+          "publishedAt": "2026-07-07T17:51:34.121873Z",
+          "updatedAt": "2026-07-07T17:51:34.121873Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/argus3",
+        "description": "ARGUS-3 stdio MCP with WARDEN firewall: argus_ask, argus_status, argus_capabilities.",
+        "title": "ARGUS-3 MCP Server",
+        "repository": {
+          "url": "https://github.com/alexar76/argus",
+          "source": "github"
+        },
+        "version": "0.2.5",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@alexar76/argus3",
+            "version": "0.2.5",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-07-23T11:00:32.944276Z",
+          "publishedAt": "2026-07-23T11:00:32.944276Z",
+          "updatedAt": "2026-07-23T11:00:32.944276Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/argus3",
+        "description": "ARGUS-3 stdio MCP with WARDEN firewall: argus_ask, argus_status, argus_capabilities.",
+        "title": "ARGUS-3 MCP Server",
+        "repository": {
+          "url": "https://github.com/alexar76/argus",
+          "source": "github"
+        },
+        "version": "0.3.3",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@alexar76/argus3",
+            "version": "0.3.3",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-21T08:07:23.623994Z",
+          "publishedAt": "2026-10-21T08:07:23.623994Z",
+          "updatedAt": "2026-10-21T08:07:23.623994Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/attested-memory",
+        "description": "Attestable memory, truth, provenance. Hybrid Ed25519 + ML-DSA-65 receipts; USDC settlement on Base.",
+        "title": "Attested Memory Market",
+        "repository": {
+          "url": "https://github.com/alexar76/attested-memory",
+          "source": "github"
+        },
+        "version": "3.15.16",
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://hub.attestedmemory.net/mcp"
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-11T13:46:48.312295Z",
+          "publishedAt": "2026-10-11T13:46:48.312295Z",
+          "updatedAt": "2026-10-11T13:46:48.312295Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/warden",
+        "description": "MCP security firewall: stdio wrap proxy or inspection tools; zero runtime dependencies.",
+        "title": "WARDEN \u2014 MCP Security Firewall",
+        "repository": {
+          "url": "https://github.com/alexar76/warden",
+          "source": "github"
+        },
+        "version": "0.14.0",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@aimarket/warden",
+            "version": "0.14.0",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-11T13:56:59.334323Z",
+          "publishedAt": "2026-10-11T13:56:59.334323Z",
+          "updatedAt": "2026-10-11T13:56:59.334323Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/warden",
+        "description": "MCP security firewall: stdio wrap proxy or inspection tools; zero runtime dependencies.",
+        "title": "WARDEN \u2014 MCP Security Firewall",
+        "repository": {
+          "url": "https://github.com/alexar76/warden",
+          "source": "github"
+        },
+        "version": "0.16.0",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@aimarket/warden",
+            "version": "0.16.0",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-14T10:11:43.852157Z",
+          "publishedAt": "2026-10-14T10:11:43.852157Z",
+          "updatedAt": "2026-10-14T10:11:43.852157Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/warden",
+        "description": "MCP security firewall: stdio wrap proxy or inspection tools; zero runtime dependencies.",
+        "title": "WARDEN \u2014 MCP Security Firewall",
+        "repository": {
+          "url": "https://github.com/alexar76/warden",
+          "source": "github"
+        },
+        "version": "0.17.0",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@aimarket/warden",
+            "version": "0.17.0",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-20T10:39:03.018707Z",
+          "publishedAt": "2026-10-20T10:39:03.018707Z",
+          "updatedAt": "2026-10-20T10:39:03.018707Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/warden",
+        "description": "MCP security firewall: stdio wrap proxy or inspection tools; zero runtime dependencies.",
+        "title": "WARDEN \u2014 MCP Security Firewall",
+        "repository": {
+          "url": "https://github.com/alexar76/warden",
+          "source": "github"
+        },
+        "version": "0.18.0",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@aimarket/warden",
+            "version": "0.18.0",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-21T09:07:07.279498Z",
+          "publishedAt": "2026-10-21T09:07:07.279498Z",
+          "updatedAt": "2026-10-21T09:07:07.279498Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/warden",
+        "description": "MCP security firewall: stdio wrap proxy or inspection tools; zero runtime dependencies.",
+        "title": "WARDEN \u2014 MCP Security Firewall",
+        "repository": {
+          "url": "https://github.com/alexar76/warden",
+          "source": "github"
+        },
+        "version": "0.21.0",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@aimarket/warden",
+            "version": "0.21.0",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-25T15:27:50.893048Z",
+          "publishedAt": "2026-10-25T15:27:50.893048Z",
+          "updatedAt": "2026-10-25T15:27:50.893048Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/warden",
+        "description": "MCP security firewall: vet tool definitions before they reach the model.",
+        "title": "WARDEN \u2014 MCP Security Firewall",
+        "repository": {
+          "url": "https://github.com/alexar76/warden",
+          "source": "github"
+        },
+        "version": "0.5.0",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@aimarket/warden",
+            "version": "0.5.0",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-09-04T15:10:21.622327Z",
+          "publishedAt": "2026-09-04T15:10:21.622327Z",
+          "updatedAt": "2026-09-04T15:10:21.622327Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/warden",
+        "description": "MCP security firewall: stdio wrap proxy or inspection tools; zero runtime dependencies.",
+        "title": "WARDEN \u2014 MCP Security Firewall",
+        "repository": {
+          "url": "https://github.com/alexar76/warden",
+          "source": "github"
+        },
+        "version": "0.8.2",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@aimarket/warden",
+            "version": "0.8.2",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-02T13:21:34.912571Z",
+          "publishedAt": "2026-10-02T13:21:34.912571Z",
+          "updatedAt": "2026-10-02T13:21:34.912571Z",
+          "isLatest": false
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "io.github.alexar76/warden",
+        "description": "MCP security firewall: stdio wrap proxy or inspection tools; zero runtime dependencies.",
+        "title": "WARDEN \u2014 MCP Security Firewall",
+        "repository": {
+          "url": "https://github.com/alexar76/warden",
+          "source": "github"
+        },
+        "version": "0.9.0",
+        "packages": [
+          {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "@aimarket/warden",
+            "version": "0.9.0",
+            "transport": {
+              "type": "stdio"
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "statusChangedAt": "2026-10-09T14:10:29.602276Z",
+          "publishedAt": "2026-10-09T14:10:29.602276Z",
+          "updatedAt": "2026-10-09T14:10:29.602276Z",
+          "isLatest": false
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "count": 24
+  }
+}

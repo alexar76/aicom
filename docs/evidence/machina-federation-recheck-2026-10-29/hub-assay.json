@@ -1,0 +1,93 @@
+{
+  "url": "https://modelmarket.dev/ai-market/v2/federation/assay?url=https%3A%2F%2Fmach402.dev",
+  "checked_at_utc": "2026-10-29T04:00:59.133535+00:00",
+  "method": "GET",
+  "status": 200,
+  "final_url": "https://modelmarket.dev/ai-market/v2/federation/assay?url=https%3A%2F%2Fmach402.dev",
+  "headers": {
+    "Server": "nginx/1.24.0 (Ubuntu)",
+    "Date": "Thu, 29 Oct 2026 04:00:59 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "1655",
+    "Connection": "close",
+    "vary": "Origin",
+    "x-content-type-options": "nosniff",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "x-frame-options": "DENY",
+    "content-security-policy": "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
+    "strict-transport-security": "max-age=31536000"
+  },
+  "body_sha256": "ff8df53a62fa2173d70a4b3a9ed20d3afaee33ca954ef58d3148dcc3fc362be2",
+  "body_truncated": false,
+  "json": {
+    "url": "https://mach402.dev",
+    "verdict": "fail",
+    "trusted": false,
+    "indexed": false,
+    "auto_promoted": false,
+    "quarantined": true,
+    "advertised_key": "",
+    "checks": [
+      {
+        "id": "llm_verdict",
+        "ok": null,
+        "detail": "not consulted; well-known copy and capability descriptions are self-claims"
+      },
+      {
+        "id": "url_public",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "id": "well_known_schema",
+        "ok": false,
+        "detail": "fetch failed: Client error '404 Not Found' for url 'https://172.67.134.217/.well-known/ai-market.json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+      },
+      {
+        "id": "advertised_key",
+        "ok": false,
+        "detail": "signer_public_key missing"
+      },
+      {
+        "id": "well_known_signed",
+        "ok": null,
+        "detail": "unsigned well-known is allowed; gossip will not relay observations"
+      },
+      {
+        "id": "manifest_schema",
+        "ok": false,
+        "detail": "fetch failed: Client error '404 Not Found' for url 'https://172.67.134.217/ai-market/manifest'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+      },
+      {
+        "id": "manifest_signed",
+        "ok": false,
+        "detail": "the peer advertises no signing key"
+      },
+      {
+        "id": "manifest_fresh",
+        "ok": false,
+        "detail": ""
+      },
+      {
+        "id": "invoke_same_origin",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "id": "sandbox_probe",
+        "ok": null,
+        "detail": "no publicly offered capability to probe, free or priced"
+      },
+      {
+        "id": "sandbox_receipt_signed",
+        "ok": null,
+        "detail": "not attempted"
+      }
+    ],
+    "sandbox": {
+      "attempted": false
+    },
+    "note": "Sandbox evidence only. Names and descriptions were not scored. Auto-admit needs a judge token (MiniMax via OpenRouter): the model may veto the live result; it cannot mint a pass from marketing copy. Without a token, a pass is a scorecard — an operator must Approve.",
+    "ran_at": "2026-10-28T15:49:23Z"
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "containers": {
+    "cna": {
+      "affected": [
+        {
+          "collectionURL": "https://pypi.org",
+          "defaultStatus": "unknown",
+          "modules": [
+            "treasury.service"
+          ],
+          "packageName": "aimarket-treasury",
+          "product": "aimarket-treasury",
+          "programFiles": [
+            "treasury/service.py"
+          ],
+          "programRoutines": [
+            {
+              "name": "treasury.service._local_caller"
+            },
+            {
+              "name": "treasury.service._caller_is_this_user"
+            }
+          ],
+          "vendor": "pypi",
+          "versions": [
+            {
+              "lessThanOrEqual": "0.1.3",
+              "status": "affected",
+              "version": "0.1.0",
+              "versionType": "python"
+            }
+          ]
+        }
+      ],
+      "configurations": [
+        {
+          "lang": "en",
+          "value": "TREASURY_CLIENT_TOKEN is unset and production mode is off."
+        },
+        {
+          "lang": "en",
+          "value": "A reverse proxy, tunnel or port forward relays requests to the service from inside its network namespace, and it runs as the service's user or the host is not Linux."
+        }
+      ],
+      "descriptions": [
+        {
+          "lang": "en",
+          "value": "If you run aimarket-treasury without TREASURY_CLIENT_TOKEN behind a reverse proxy, tunnel or port forward on the same host, and that proxy runs as the same user as the service or the host is not Linux, every caller of the proxy can use the routes that decide and move money (POST /authorize, /deposit, /vault/fund, /vault/reserve, /vault/top-up and /explain). A keyless service answers only callers it judges local (treasury.service._local_caller). The test added in 0.1.3 (treasury.service._caller_is_this_user) tells a proxy from a local client only by the owner of its socket in /proc/net/tcp: a proxy running as the service's user passes it, and where /proc/net/tcp does not exist (macOS, Windows) every caller passes it. Earlier versions answered every caller (GCVE-110-VULN-PYPI-2026-000614). Affects 0.1.0 through 0.1.3."
+        }
+      ],
+      "metrics": [
+        {
+          "cvssV3_1": {
+            "baseScore": 3.7,
+            "baseSeverity": "LOW",
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
+            "version": "3.1"
+          }
+        }
+      ],
+      "problemTypes": [
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-306",
+              "description": "Missing Authentication for Critical Function",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        },
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-1188",
+              "description": "Initialization of a Resource with an Insecure Default",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "dateUpdated": "2026-10-28T01:49:28Z",
+        "orgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+        "shortName": "Vulnetix"
+      },
+      "references": [
+        {
+          "tags": [
+            "third-party-advisory"
+          ],
+          "url": "https://pypi.org/project/aimarket-treasury/"
+        }
+      ],
+      "solutions": [
+        {
+          "lang": "en",
+          "value": "Set TREASURY_CLIENT_TOKEN on every deployment, and have every client send it as X-Treasury-Client. This is the only control that works in every affected version."
+        }
+      ],
+      "title": "Keyless Treasury service treats a same-user or non-Linux reverse proxy as a local caller",
+      "workarounds": [
+        {
+          "lang": "en",
+          "value": "On 0.1.3, run the proxy in a different container or host that does not share the service's network namespace, or, on Linux, as a different user from the service."
+        },
+        {
+          "lang": "en",
+          "value": "Require authentication at the proxy itself (client certificates over mTLS, or an identity-aware proxy)."
+        }
+      ],
+      "x_vulnetix_classification": "weakness"
+    }
+  },
+  "cveMetadata": {
+    "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+    "assignerShortName": "Vulnetix",
+    "cveId": "GCVE-110-VULN-PYPI-2026-000642",
+    "datePublished": "2026-10-27T22:42:51Z",
+    "dateUpdated": "2026-10-28T01:49:28Z",
+    "state": "PUBLISHED"
+  },
+  "dataType": "CVE_RECORD",
+  "dataVersion": "5.1"
+}

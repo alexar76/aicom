@@ -1,0 +1,634 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.17, pytest-9.1.1, pluggy-1.6.0
+cachedir: /tmp/micky-pytest-cache
+rootdir: /work
+configfile: pyproject.toml
+plugins: asyncio-1.4.0, httpx-0.36.2, anyio-4.14.2
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 146 items
+
+tests/test_micky_credit_lifecycle.py ..................                  [ 12%]
+tests/test_micky_mcp_payment_flow.py .............                       [ 21%]
+tests/test_micky_expiry_recovery.py .....                                [ 24%]
+tests/test_credits_rail.py ....................                          [ 38%]
+tests/test_credits_invoke.py .............................               [ 58%]
+tests/test_credit_hold_recovery.py .....                                 [ 61%]
+tests/test_mcp_api_key.py ...........................                    [ 80%]
+tests/test_mandates.py ..........                                        [ 86%]
+tests/test_channels.py ...................                               [100%]
+
+=============================== warnings summary ===============================
+../deps/fastapi/testclient.py:1
+  /deps/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+==================================== PASSES ====================================
+_______ test_mcp_hold_precedes_provider_and_success_captures_exact_price _______
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_mcp_hold_precedes_provide0/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_mcp_hold_precedes_provide0/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_________ test_provider_failure_releases_hold_without_a_debit[http500] _________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases0/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases0/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_________ test_provider_failure_releases_hold_without_a_debit[http400] _________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases1/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases1/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+____ test_provider_failure_releases_hold_without_a_debit[explicit_failure] _____
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases2/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases2/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+________ test_provider_failure_releases_hold_without_a_debit[non_json] _________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases3/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases3/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+______ test_provider_failure_releases_hold_without_a_debit[bad_signature] ______
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases4/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_failure_releases4/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+__________ test_capture_error_withholds_output_and_releases_real_hold __________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_capture_error_withholds_o0/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_capture_error_withholds_o0/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+ERROR    aimarket_hub.api:invoke.py:1595 invoke: capture of reservation rcpt_923c8fd8b93d460f5d96427a781c31f7 failed: synthetic write refusal
+_______________ test_insufficient_balance_never_reaches_provider _______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_insufficient_balance_neve0/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_insufficient_balance_neve0/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____ test_repriced_offer_over_ceiling_is_refused_before_hold_or_provider ______
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_repriced_offer_over_ceili0/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_repriced_offer_over_ceili0/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_______ test_provider_claimed_overage_does_not_change_the_reserved_price _______
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_claimed_overage_0/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_provider_claimed_overage_0/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+__ test_timeout_releases_money_but_plain_retry_can_duplicate_external_effect ___
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_timeout_releases_money_bu0/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_timeout_releases_money_bu0/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___ test_disabled_key_stops_before_provider_and_does_not_fall_back_to_trial ____
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_disabled_key_stops_before0/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_disabled_key_stops_before0/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+________ test_rate_limited_second_call_creates_no_second_hold_or_charge ________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_rate_limited_second_call_0/provider.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_rate_limited_second_call_0/hub.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____________ test_signed_mandate_expiry_is_an_exclusive_boundary ______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_signed_mandate_expiry_is_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestPricedInvokeWithoutAChain.test_priced_capability_is_free_when_no_rail_is_on _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_priced_capability_is_free0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestPricedInvokeWithoutAChain.test_priced_capability_demands_payment_once_credits_are_on _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_priced_capability_demands0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestPricedInvokeWithoutAChain.test_a_closed_signup_is_not_offered_as_the_way_in _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_closed_signup_is_not_of0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestPricedInvokeWithoutAChain.test_an_unknown_key_is_refused_rather_than_served_free _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_an_unknown_key_is_refused0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+____ TestPricedInvokeWithoutAChain.test_signup_then_paid_invoke_moves_money ____
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_signup_then_paid_invoke_m0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+________ TestPricedInvokeWithoutAChain.test_an_empty_balance_cannot_buy ________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_an_empty_balance_cannot_b0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_______ TestPricedInvokeWithoutAChain.test_operator_top_up_is_admin_only _______
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_operator_top_up_is_admin_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____ TestOperatorVisibility.test_the_manifest_advertises_a_reachable_rail _____
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_the_manifest_advertises_a0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___ TestOperatorVisibility.test_live_stats_separate_earnings_from_money_held ___
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_live_stats_separate_earni0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___ TestSignupDoor.test_closed_signup_refuses_strangers_but_not_the_operator ___
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_closed_signup_refuses_str0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_________ TestSignupDoor.test_open_signup_is_rate_limited_per_address __________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_open_signup_is_rate_limit0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestSignupDoor.test_a_signup_that_is_not_json_is_refused_and_spends_nothing __
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_signup_that_is_not_json0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____ TestSignupDoor.test_ipv6_signups_are_counted_per_48_not_per_address ______
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_ipv6_signups_are_counted_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+__________ TestSignupDoor.test_accounts_are_off_when_the_rail_is_off ___________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_accounts_are_off_when_the0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+______________ test_open_signup_grants_until_the_budget_is_spent _______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at data/hub_signing_key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.signing:signing.py:362 NEW post-quantum (ML-DSA-65) signing key generated at data/hub_signing_key_mldsa. Back it up together with the Ed25519 key beside it. Peers pin it, and the ratchet then refuses this hub if it ever comes back without it: a hub that was already federating should restore the old file.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+________________ test_grant_usd_is_refused_rather_than_ignored _________________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+________________ test_only_admin_may_move_money_into_an_account ________________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+__ TestOneCallIsChargedOnce.test_paying_on_chain_does_not_also_spend_credits ___
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_paying_on_chain_does_not_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+__ TestOneCallIsChargedOnce.test_a_refused_call_leaves_the_payment_redeemable __
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_refused_call_leaves_the0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestCollateralCanLeaveTheHub.test_the_operator_can_return_posted_collateral __
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_the_operator_can_return_p0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestCollateralCanLeaveTheHub.test_returning_more_than_was_posted_is_refused __
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_returning_more_than_was_p0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+____________ TestCollateralCanLeaveTheHub.test_it_is_operator_only _____________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_it_is_operator_only0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestACreditLineBuysOnlyTheOperatorsOwnResources.test_credits_cannot_buy_a_listing_that_pays_someone_else _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_credits_cannot_buy_a_list0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestACreditLineBuysOnlyTheOperatorsOwnResources.test_the_buyer_is_not_charged_for_the_refusal _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_the_buyer_is_not_charged_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestACreditLineBuysOnlyTheOperatorsOwnResources.test_the_operators_own_listing_is_still_bought_with_credits _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_the_operators_own_listing0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestACreditLineBuysOnlyTheOperatorsOwnResources.test_a_listing_with_no_external_payee_is_unaffected _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_listing_with_no_externa0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestAShortRequestFreezesNothing.test_the_hold_is_released_and_the_complete_call_is_charged_once _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_the_hold_is_released_and_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___________ test_a_holder_rotates_a_leaked_key_without_the_operator ____________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_holder_rotates_a_leaked0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+________________ test_free_studio_runs_are_bounded_per_address _________________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_free_studio_runs_are_boun0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____________ test_abandoned_credit_and_mandate_holds_recover_once _____________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_abandoned_credit_and_mand0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____ test_reaper_leaves_verification_bonds_and_allowances_to_their_owner ______
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_reaper_leaves_verificatio0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_reaper_leaves_verificatio0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+______________ test_the_age_of_a_hold_is_read_with_its_time_zone _______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_the_age_of_a_hold_is_read0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____________ test_a_hold_freed_under_a_running_call_fails_closed ______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_hold_freed_under_a_runn0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+ERROR    aimarket_hub.api:invoke.py:1595 invoke: capture of reservation rcpt_2f024dbf54be2d974b075792a4eeac79 failed: None
+________ test_an_abandoned_credit_hold_is_released_when_the_hub_starts _________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_an_abandoned_credit_hold_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_an_abandoned_credit_hold_0/restarted.key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+WARNING  aimarket_hub.api:api.py:967 credits: released 1 abandoned invoke hold(s)
+___________ test_a_keyed_call_is_paid_from_the_balance_not_the_trial ___________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_keyed_call_is_paid_from0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_______________ test_a_bearer_account_key_is_read_like_x_api_key _______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_bearer_account_key_is_r0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_________________ test_someone_elses_bearer_is_never_forwarded _________________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_someone_elses_bearer_is_n0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_________________ test_a_short_balance_falls_back_to_the_trial _________________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_short_balance_falls_bac0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+____________ test_short_balance_and_spent_trial_point_at_the_top_up ____________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_short_balance_and_spent_t0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+______________ test_a_listing_credits_cannot_buy_is_named_as_such ______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_listing_credits_cannot_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_________________ test_an_unknown_key_fails_closed_with_a_fix __________________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_an_unknown_key_fails_clos0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___________ test_a_malformed_key_still_reaches_the_hub_to_be_refused ___________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_malformed_key_still_rea0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___________ test_a_payer_on_another_rail_does_not_also_send_the_key ____________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_payer_on_another_rail_d0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+____________ test_the_wall_names_the_key_first_while_signup_is_open ____________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_the_wall_names_the_key_fi0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____________________ test_a_closed_signup_is_not_offered ______________________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_closed_signup_is_not_of1/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___________ test_account_status_is_listed_only_on_a_keyed_connection ___________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_account_status_is_listed_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____ test_a_place_tool_called_with_nothing_says_what_to_send[weather_now] _____
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_place_tool_called_with_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___ test_a_place_tool_called_with_nothing_says_what_to_send[air_quality_now] ___
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_place_tool_called_with_1/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____________ test_signup_free_call_wall_top_up_and_a_charged_call _____________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_signup_free_call_wall_top0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+__________ test_account_status_with_an_unknown_key_says_how_to_fix_it __________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_account_status_with_an_un0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_______________ test_start_page_is_served_with_the_shared_chrome _______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_start_page_is_served_with0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+____ test_the_manifest_and_the_402_name_the_page_only_while_signup_is_open _____
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_the_manifest_and_the_402_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_the_manifest_and_the_402_0/hub-1/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_________________ test_a_key_in_the_path_pays_like_the_header __________________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_key_in_the_path_pays_li0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+____________ test_a_garbage_path_key_reaches_the_hub_to_be_refused _____________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_garbage_path_key_reache0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; free/sandbox tier active; no payment rail can enforce 402; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.api:api.py:1101 AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___________________________ TestLimits.test_per_call ___________________________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_per_call0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+______________ TestLimits.test_per_day_stops_exactly_at_the_limit ______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_per_day_stops_exactly_at_0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+______________ TestLimits.test_siblings_share_their_parent_limit _______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_siblings_share_their_pare0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_______ TestLimits.test_concurrent_reservations_never_overrun_a_counter ________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_concurrent_reservations_n0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___________ TestLimits.test_a_failed_call_gives_its_reservation_back ___________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_failed_call_gives_its_r0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestLimitsCannotBeDodged.test_a_fresh_product_id_does_not_open_a_fresh_per_product_counter _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_fresh_product_id_does_n0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_____ TestLimitsCannotBeDodged.test_per_call_covers_every_hold_of_the_call _____
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_per_call_covers_every_hol0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+_ TestLimitsCannotBeDodged.test_release_after_capture_keeps_the_money_counted __
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_release_after_capture_kee0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+__ TestLimitsCannotBeDodged.test_a_hold_that_raises_does_not_strand_the_limit __
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:335 NEW Ed25519 signing key generated at /tmp/pytest-of-unknown/pytest-0/test_a_hold_that_raises_does_n0/hub-0/key. It signs every manifest and receipt of this hub; back it up now. If this hub was already known to peers, they pinned the previous key and will refuse this one: restore the old key file instead of running on a new one.
+WARNING  aimarket_hub.api:api.py:846 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+WARNING  aimarket_hub.supply_chain_admission:supply_chain_admission.py:240 Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+___ TestPayoutObligations.test_mark_paid_requires_tx_hash_and_is_single_shot ___
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.channels:sweeps.py:255 Obligation on channel ch_13f022e14a874e75 marked PAID out-of-band by the operator (payout tx 0x111111111111) — attestation only, no funds moved by this process
+_ TestOrphanedHoldReaper.test_orphaned_hold_is_released_and_reap_is_idempotent _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.channels:sweeps.py:451 Reaped orphaned hold orphan_1 on channel ch_853368bc88c04b84 — 200 cents returned to balance (reaped: no live verification after 86400s)
+_ TestOrphanedHoldReaper.test_resolved_settlement_row_does_not_protect_a_stuck_hold _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.channels:sweeps.py:451 Reaped orphaned hold done_1 on channel ch_0745d7ed9dba4933 — 200 cents returned to balance (reaped: no live verification after 86400s)
+_____ TestOrphanedHoldReaper.test_unreadable_settlements_db_reaps_nothing ______
+------------------------------ Captured log call -------------------------------
+ERROR    aimarket_hub.channels:sweeps.py:332 Hold reaper: cannot read verified_settlements from /tmp/pytest-of-unknown/pytest-0/test_unreadable_settlements_db0/hub.db (unable to open database file) — refusing to release any hold
+_____ TestOrphanedHoldReaper.test_missing_settlements_table_reaps_nothing ______
+------------------------------ Captured log call -------------------------------
+ERROR    aimarket_hub.channels:sweeps.py:323 Hold reaper: no verified_settlements table in /tmp/pytest-of-unknown/pytest-0/test_missing_settlements_table0/hub.db — refusing to release holds whose ownership cannot be checked
+________ TestOrphanedHoldReaper.test_partially_captured_hold_is_refused ________
+------------------------------ Captured log call -------------------------------
+ERROR    aimarket_hub.channels:sweeps.py:413 Hold halfcap_1 is 'held' but already has a debit receipt — refusing to release; ledger needs operator reconciliation
+_______________ TestOrphanedHoldReaper.test_age_knob_is_honoured _______________
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.channels:sweeps.py:451 Reaped orphaned hold knob_1 on channel ch_e35221213eeb4b4e — 200 cents returned to balance (reaped: no live verification after 3600s)
+_ TestOrphanedHoldReaper.test_sqlite_default_timestamp_format_is_aged_correctly _
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.channels:sweeps.py:451 Reaped orphaned hold fmt_1 on channel ch_a588a2cc36814c96 — 200 cents returned to balance (reaped: no live verification after 86400s)
+------------------ generated xml file: /out/junit-retry3.xml -------------------
+=========================== short test summary info ============================
+PASSED tests/test_micky_credit_lifecycle.py::test_hold_moves_exact_millicents_without_spending
+PASSED tests/test_micky_credit_lifecycle.py::test_first_resolution_wins_and_all_replays_are_noops[capture]
+PASSED tests/test_micky_credit_lifecycle.py::test_first_resolution_wins_and_all_replays_are_noops[release]
+PASSED tests/test_micky_credit_lifecycle.py::test_failed_hold_leaves_no_reservation_or_ledger_entry
+PASSED tests/test_micky_credit_lifecycle.py::test_existing_receipt_cannot_be_repriced_or_rebound
+PASSED tests/test_micky_credit_lifecycle.py::test_disabled_account_and_disabled_rail_do_not_strand_existing_hold
+PASSED tests/test_micky_credit_lifecycle.py::test_real_concurrent_holds_cannot_overspend[shared-connection]
+PASSED tests/test_micky_credit_lifecycle.py::test_real_concurrent_holds_cannot_overspend[independent-connections]
+PASSED tests/test_micky_credit_lifecycle.py::test_capture_and_release_racing_on_independent_connections_have_one_winner
+PASSED tests/test_micky_credit_lifecycle.py::test_routing_debits_and_call_holds_compete_for_the_same_balance
+PASSED tests/test_micky_credit_lifecycle.py::test_real_sqlite_ledger_failure_rolls_back_the_whole_move[hold]
+PASSED tests/test_micky_credit_lifecycle.py::test_real_sqlite_ledger_failure_rolls_back_the_whole_move[capture]
+PASSED tests/test_micky_credit_lifecycle.py::test_real_sqlite_ledger_failure_rolls_back_the_whole_move[release]
+PASSED tests/test_micky_credit_lifecycle.py::test_failed_child_returns_to_open_allowance_or_buyer_balance[allowance-open]
+PASSED tests/test_micky_credit_lifecycle.py::test_failed_child_returns_to_open_allowance_or_buyer_balance[allowance-closed]
+PASSED tests/test_micky_credit_lifecycle.py::test_release_is_not_an_operator_refund
+PASSED tests/test_micky_credit_lifecycle.py::test_operator_refund_has_no_receipt_replay_or_spend_cap
+PASSED tests/test_micky_credit_lifecycle.py::test_hold_age_alone_does_not_expire_or_increase_its_capture_amount
+PASSED tests/test_micky_mcp_payment_flow.py::test_mcp_hold_precedes_provider_and_success_captures_exact_price
+PASSED tests/test_micky_mcp_payment_flow.py::test_provider_failure_releases_hold_without_a_debit[http500]
+PASSED tests/test_micky_mcp_payment_flow.py::test_provider_failure_releases_hold_without_a_debit[http400]
+PASSED tests/test_micky_mcp_payment_flow.py::test_provider_failure_releases_hold_without_a_debit[explicit_failure]
+PASSED tests/test_micky_mcp_payment_flow.py::test_provider_failure_releases_hold_without_a_debit[non_json]
+PASSED tests/test_micky_mcp_payment_flow.py::test_provider_failure_releases_hold_without_a_debit[bad_signature]
+PASSED tests/test_micky_mcp_payment_flow.py::test_capture_error_withholds_output_and_releases_real_hold
+PASSED tests/test_micky_mcp_payment_flow.py::test_insufficient_balance_never_reaches_provider
+PASSED tests/test_micky_mcp_payment_flow.py::test_repriced_offer_over_ceiling_is_refused_before_hold_or_provider
+PASSED tests/test_micky_mcp_payment_flow.py::test_provider_claimed_overage_does_not_change_the_reserved_price
+PASSED tests/test_micky_mcp_payment_flow.py::test_timeout_releases_money_but_plain_retry_can_duplicate_external_effect
+PASSED tests/test_micky_mcp_payment_flow.py::test_disabled_key_stops_before_provider_and_does_not_fall_back_to_trial
+PASSED tests/test_micky_mcp_payment_flow.py::test_rate_limited_second_call_creates_no_second_hold_or_charge
+PASSED tests/test_micky_expiry_recovery.py::test_old_credit_key_and_balance_do_not_expire_automatically
+PASSED tests/test_micky_expiry_recovery.py::test_abandoned_credit_hold_recovers_only_after_the_age_boundary
+PASSED tests/test_micky_expiry_recovery.py::test_release_restores_credit_and_preserves_the_operator_liability
+PASSED tests/test_micky_expiry_recovery.py::test_signed_mandate_expiry_is_an_exclusive_boundary
+PASSED tests/test_micky_expiry_recovery.py::test_transfer_channel_expiry_waits_for_a_sweep_and_pending_hold_resolution
+PASSED tests/test_credits_rail.py::test_account_key_is_hashed_and_usable_once
+PASSED tests/test_credits_rail.py::test_sub_cent_prices_are_exact
+PASSED tests/test_credits_rail.py::test_hold_cannot_overdraw_and_reports_the_shortfall
+PASSED tests/test_credits_rail.py::test_concurrent_holds_cannot_oversell_one_balance
+PASSED tests/test_credits_rail.py::test_release_returns_the_money_and_capture_does_not
+PASSED tests/test_credits_rail.py::test_resolution_is_idempotent
+PASSED tests/test_credits_rail.py::test_receipt_ids_cannot_be_reused
+PASSED tests/test_credits_rail.py::test_disabled_account_cannot_spend
+PASSED tests/test_credits_rail.py::test_stats_separate_earned_from_money_still_owed
+PASSED tests/test_credits_rail.py::test_grant_and_refund_are_distinguishable_in_the_ledger
+PASSED tests/test_credits_rail.py::test_grant_rejects_unknown_account_rather_than_creating_one
+PASSED tests/test_credits_rail.py::test_grant_reference_is_idempotent
+PASSED tests/test_credits_rail.py::test_grant_reference_cannot_be_rebound
+PASSED tests/test_credits_rail.py::test_collateral_is_not_revenue
+PASSED tests/test_credits_rail.py::test_signup_grant_is_its_own_switch
+PASSED tests/test_credits_rail.py::test_grant_budget_bounds_the_blast_radius
+PASSED tests/test_credits_rail.py::test_a_zero_daily_budget_means_no_grants_not_unlimited
+PASSED tests/test_credits_rail.py::test_lifetime_budget_is_separate_from_the_daily_one
+PASSED tests/test_credits_rail.py::test_an_operator_credit_is_not_counted_against_the_grant_budget
+PASSED tests/test_credits_rail.py::test_an_operator_opening_balance_does_not_eat_the_signup_budget
+PASSED tests/test_credits_invoke.py::TestPricedInvokeWithoutAChain::test_priced_capability_is_free_when_no_rail_is_on
+PASSED tests/test_credits_invoke.py::TestPricedInvokeWithoutAChain::test_priced_capability_demands_payment_once_credits_are_on
+PASSED tests/test_credits_invoke.py::TestPricedInvokeWithoutAChain::test_a_closed_signup_is_not_offered_as_the_way_in
+PASSED tests/test_credits_invoke.py::TestPricedInvokeWithoutAChain::test_an_unknown_key_is_refused_rather_than_served_free
+PASSED tests/test_credits_invoke.py::TestPricedInvokeWithoutAChain::test_signup_then_paid_invoke_moves_money
+PASSED tests/test_credits_invoke.py::TestPricedInvokeWithoutAChain::test_an_empty_balance_cannot_buy
+PASSED tests/test_credits_invoke.py::TestPricedInvokeWithoutAChain::test_operator_top_up_is_admin_only
+PASSED tests/test_credits_invoke.py::TestOperatorVisibility::test_the_manifest_advertises_a_reachable_rail
+PASSED tests/test_credits_invoke.py::TestOperatorVisibility::test_live_stats_separate_earnings_from_money_held
+PASSED tests/test_credits_invoke.py::TestSignupDoor::test_closed_signup_refuses_strangers_but_not_the_operator
+PASSED tests/test_credits_invoke.py::TestSignupDoor::test_open_signup_is_rate_limited_per_address
+PASSED tests/test_credits_invoke.py::TestSignupDoor::test_a_signup_that_is_not_json_is_refused_and_spends_nothing
+PASSED tests/test_credits_invoke.py::TestSignupDoor::test_ipv6_signups_are_counted_per_48_not_per_address
+PASSED tests/test_credits_invoke.py::TestSignupDoor::test_accounts_are_off_when_the_rail_is_off
+PASSED tests/test_credits_invoke.py::test_open_signup_grants_until_the_budget_is_spent
+PASSED tests/test_credits_invoke.py::test_grant_usd_is_refused_rather_than_ignored
+PASSED tests/test_credits_invoke.py::test_only_admin_may_move_money_into_an_account
+PASSED tests/test_credits_invoke.py::TestOneCallIsChargedOnce::test_paying_on_chain_does_not_also_spend_credits
+PASSED tests/test_credits_invoke.py::TestOneCallIsChargedOnce::test_a_refused_call_leaves_the_payment_redeemable
+PASSED tests/test_credits_invoke.py::TestCollateralCanLeaveTheHub::test_the_operator_can_return_posted_collateral
+PASSED tests/test_credits_invoke.py::TestCollateralCanLeaveTheHub::test_returning_more_than_was_posted_is_refused
+PASSED tests/test_credits_invoke.py::TestCollateralCanLeaveTheHub::test_it_is_operator_only
+PASSED tests/test_credits_invoke.py::TestACreditLineBuysOnlyTheOperatorsOwnResources::test_credits_cannot_buy_a_listing_that_pays_someone_else
+PASSED tests/test_credits_invoke.py::TestACreditLineBuysOnlyTheOperatorsOwnResources::test_the_buyer_is_not_charged_for_the_refusal
+PASSED tests/test_credits_invoke.py::TestACreditLineBuysOnlyTheOperatorsOwnResources::test_the_operators_own_listing_is_still_bought_with_credits
+PASSED tests/test_credits_invoke.py::TestACreditLineBuysOnlyTheOperatorsOwnResources::test_a_listing_with_no_external_payee_is_unaffected
+PASSED tests/test_credits_invoke.py::TestAShortRequestFreezesNothing::test_the_hold_is_released_and_the_complete_call_is_charged_once
+PASSED tests/test_credits_invoke.py::test_a_holder_rotates_a_leaked_key_without_the_operator
+PASSED tests/test_credits_invoke.py::test_free_studio_runs_are_bounded_per_address
+PASSED tests/test_credit_hold_recovery.py::test_abandoned_credit_and_mandate_holds_recover_once
+PASSED tests/test_credit_hold_recovery.py::test_reaper_leaves_verification_bonds_and_allowances_to_their_owner
+PASSED tests/test_credit_hold_recovery.py::test_the_age_of_a_hold_is_read_with_its_time_zone
+PASSED tests/test_credit_hold_recovery.py::test_a_hold_freed_under_a_running_call_fails_closed
+PASSED tests/test_credit_hold_recovery.py::test_an_abandoned_credit_hold_is_released_when_the_hub_starts
+PASSED tests/test_mcp_api_key.py::test_a_keyed_call_is_paid_from_the_balance_not_the_trial
+PASSED tests/test_mcp_api_key.py::test_a_bearer_account_key_is_read_like_x_api_key
+PASSED tests/test_mcp_api_key.py::test_someone_elses_bearer_is_never_forwarded
+PASSED tests/test_mcp_api_key.py::test_a_short_balance_falls_back_to_the_trial
+PASSED tests/test_mcp_api_key.py::test_short_balance_and_spent_trial_point_at_the_top_up
+PASSED tests/test_mcp_api_key.py::test_a_listing_credits_cannot_buy_is_named_as_such
+PASSED tests/test_mcp_api_key.py::test_an_unknown_key_fails_closed_with_a_fix
+PASSED tests/test_mcp_api_key.py::test_a_malformed_key_still_reaches_the_hub_to_be_refused
+PASSED tests/test_mcp_api_key.py::test_a_payer_on_another_rail_does_not_also_send_the_key
+PASSED tests/test_mcp_api_key.py::test_the_wall_names_the_key_first_while_signup_is_open
+PASSED tests/test_mcp_api_key.py::test_a_closed_signup_is_not_offered
+PASSED tests/test_mcp_api_key.py::test_account_status_is_listed_only_on_a_keyed_connection
+PASSED tests/test_mcp_api_key.py::test_a_place_tool_called_with_nothing_says_what_to_send[weather_now]
+PASSED tests/test_mcp_api_key.py::test_a_place_tool_called_with_nothing_says_what_to_send[air_quality_now]
+PASSED tests/test_mcp_api_key.py::test_a_place_tool_accepts_either_way_in[args0]
+PASSED tests/test_mcp_api_key.py::test_a_place_tool_accepts_either_way_in[args1]
+PASSED tests/test_mcp_api_key.py::test_a_place_tool_accepts_either_way_in[args2]
+PASSED tests/test_mcp_api_key.py::test_a_place_tool_refuses_half_a_place[args0]
+PASSED tests/test_mcp_api_key.py::test_a_place_tool_refuses_half_a_place[args1]
+PASSED tests/test_mcp_api_key.py::test_a_place_tool_refuses_half_a_place[args2]
+PASSED tests/test_mcp_api_key.py::test_signup_free_call_wall_top_up_and_a_charged_call
+PASSED tests/test_mcp_api_key.py::test_account_status_with_an_unknown_key_says_how_to_fix_it
+PASSED tests/test_mcp_api_key.py::test_start_page_is_served_with_the_shared_chrome
+PASSED tests/test_mcp_api_key.py::test_the_manifest_and_the_402_name_the_page_only_while_signup_is_open
+PASSED tests/test_mcp_api_key.py::test_a_key_in_the_path_pays_like_the_header
+PASSED tests/test_mcp_api_key.py::test_a_garbage_path_key_reaches_the_hub_to_be_refused
+PASSED tests/test_mcp_api_key.py::test_the_access_log_never_shows_a_path_key
+PASSED tests/test_mandates.py::TestLimits::test_per_call
+PASSED tests/test_mandates.py::TestLimits::test_per_day_stops_exactly_at_the_limit
+PASSED tests/test_mandates.py::TestLimits::test_siblings_share_their_parent_limit
+PASSED tests/test_mandates.py::TestLimits::test_concurrent_reservations_never_overrun_a_counter
+PASSED tests/test_mandates.py::TestLimits::test_a_failed_call_gives_its_reservation_back
+PASSED tests/test_mandates.py::TestLimitsCannotBeDodged::test_a_fresh_product_id_does_not_open_a_fresh_per_product_counter
+PASSED tests/test_mandates.py::TestLimitsCannotBeDodged::test_per_call_covers_every_hold_of_the_call
+PASSED tests/test_mandates.py::TestLimitsCannotBeDodged::test_release_after_capture_keeps_the_money_counted
+PASSED tests/test_mandates.py::TestLimitsCannotBeDodged::test_a_hold_that_raises_does_not_strand_the_limit
+PASSED tests/test_mandates.py::TestLimitsCannotBeDodged::test_limits_count_what_the_ledger_actually_holds
+PASSED tests/test_channels.py::TestPayoutObligations::test_close_records_obligation_and_reports_owed
+PASSED tests/test_channels.py::TestPayoutObligations::test_fully_spent_channel_owes_nothing
+PASSED tests/test_channels.py::TestPayoutObligations::test_obligation_is_idempotent
+PASSED tests/test_channels.py::TestPayoutObligations::test_expiry_sweep_owes_only_the_unspent_part
+PASSED tests/test_channels.py::TestPayoutObligations::test_expired_volume_is_counted
+PASSED tests/test_channels.py::TestPayoutObligations::test_mark_paid_requires_tx_hash_and_is_single_shot
+PASSED tests/test_channels.py::TestPayoutObligations::test_module_level_obligation_readers
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_orphaned_hold_is_released_and_reap_is_idempotent
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_live_verification_hold_is_never_released[pending]
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_live_verification_hold_is_never_released[verifying]
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_resolved_settlement_row_does_not_protect_a_stuck_hold
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_fresh_hold_is_not_reaped
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_unreadable_settlements_db_reaps_nothing
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_missing_settlements_table_reaps_nothing
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_partially_captured_hold_is_refused
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_capture_after_scan_wins_over_reaper
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_reaper_can_be_disabled
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_age_knob_is_honoured
+PASSED tests/test_channels.py::TestOrphanedHoldReaper::test_sqlite_default_timestamp_format_is_aged_correctly
+======================= 146 passed, 1 warning in 27.95s ========================

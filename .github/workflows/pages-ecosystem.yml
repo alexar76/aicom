@@ -40,7 +40,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install build deps
-        run: pip install 'pyyaml==6.0.2'
+        run: pip install 'pyyaml==6.0.2' -r scripts/github-io/requirements.txt
 
       # oracles/ is a satellite — fetch the catalog TS so /oracles/ SEO pages build.
       # At a pinned commit of alexar76/oracles (2026-10-08), not whatever main is today.

@@ -1,0 +1,296 @@
+[
+  {
+    "key": "hubwiz",
+    "url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+    "checked_at_utc": "2026-10-28T12:35:30.950126+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+    "content_type": "text/html",
+    "bytes": 56332,
+    "sha256": "e704e68d7fa8f3d790ec1c7f3a9b4aef38b38cfbcb77f8d34ef8161676cd7afe",
+    "title": "AI Agent 安全：九起事故、六项控制与 MCP 供应链",
+    "markers": {
+      "alexar76": 3,
+      "modelmarket.dev": 1,
+      "HISTOR": 11,
+      "WARDEN": 3,
+      "attestedmemory.net": 0,
+      "pingblip": 0,
+      "independentai.network": 0
+    },
+    "ecosystem_links": [],
+    "excerpts": [
+      "半径压住。 本文编译三组 2026 年 10 月的新材料：GitGuardian 官方账号对 2025-05 至 2026-07 九起公开事故 的复盘与六项控制（dev.to，2026-10-15）；HISTOR 团队对 12,915 个 MCP 服务器 的真实安装与启动实测（dev.to，2026-10-14，快照 2026-10-13）；以及 Noma Labs 的 Claude Code Desktop 预览漏洞（CVE 级别 CVSS 8.7）、MCP Inspector 2.9.0 的密钥日志修复等补充（dev.to，2026-10-14 / 10-15）。 立场先说清楚 ：GitGuardian 是安全厂商、HI",
+      "E 级别 CVSS 8.7）、MCP Inspector 2.9.0 的密钥日志修复等补充（dev.to，2026-10-14 / 10-15）。 立场先说清楚 ：GitGuardian 是安全厂商、HISTOR/WARDEN 是作者团队的自建项目，文中数据均为其自述，本文按\"方法与数据\"引用与整理，不替任何产品背书。这不是一篇\"AI 要被取代了吗\"的文章，而是一份 上线前检查清单 。 一、三个攻击面：宿主、身份、Agent 本身 传统进程模型里，安全评估只需要看两样东西： 代码能力 （它能做什么）和 运行环境 （在哪做）。Agent 多了第三样： 攻击面 包含什么 老控制是否适用 宿主（Host） 文件系统、进程执行、网络",
+      "SS 8.7）、MCP Inspector 2.9.0 的密钥日志修复等补充（dev.to，2026-10-14 / 10-15）。 立场先说清楚 ：GitGuardian 是安全厂商、HISTOR/WARDEN 是作者团队的自建项目，文中数据均为其自述，本文按\"方法与数据\"引用与整理，不替任何产品背书。这不是一篇\"AI 要被取代了吗\"的文章，而是一份 上线前检查清单 。 一、三个攻击面：宿主、身份、Agent 本身 传统进程模型里，安全评估只需要看两样东西： 代码能力 （它能做什么）和 运行环境 （在哪做）。Agent 多了第三样： 攻击面 包含什么 老控制是否适用 宿主（Host） 文件系统、进程执行、网络、环境变量、摄",
+      "与参考实现，但还没有出货的 coding agent 强制它。 五、MCP 供应链体检：12,915 个服务器的真实启动数据 Agent 的工具面大多通过 MCP 接入，那么\"工具供应链\"的成色如何？HISTOR 团队做了另一半工作： 不只读注册表，而是真的安装并启动 。方法值得照抄——npm 用 --ignore-scripts 、PyPI 只装 wheel；gVisor（runsc）沙箱、非特权用户、只读 root、512MB/1 核； 没有出口路由 （所有 DNS 解析到陷阱并记录）；在 HOME 里放置诱饵凭据（ ~/.ssh 、 ~/.aws 、 ~/.npmrc 、 ~/.netrc 、shell history"
+    ],
+    "article_meta": {
+      "og:title": "AI Agent 安全：九起事故、六项控制与 MCP 供应链",
+      "og:url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+      "article:published_time": "2026-10-15T21:25:33.000Z",
+      "article:modified_time": "2026-10-22T16:13:47.000Z"
+    },
+    "datePublished_fields": [
+      "2026-10-15T21:25:33.000Z"
+    ]
+  },
+  {
+    "key": "qiita-author",
+    "url": "https://qiita.com/qwezzy721/items/b71aaeaae84fcb360fe6",
+    "checked_at_utc": "2026-10-28T12:35:30.950489+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://qiita.com/qwezzy721/items/b71aaeaae84fcb360fe6",
+    "content_type": "text/html",
+    "bytes": 141644,
+    "sha256": "507af0ea697a7189d104beedfe6937926ba8a07895f2f0700a7a90b9f9941186",
+    "title": "リモート MCP サーバーの 45% が 4 週間でツール定義を変更していた — 記録をデータセットとして公開 #AI - Qiita",
+    "markers": {
+      "alexar76": 6,
+      "modelmarket.dev": 14,
+      "HISTOR": 26,
+      "WARDEN": 6,
+      "attestedmemory.net": 0,
+      "pingblip": 0,
+      "independentai.network": 0
+    },
+    "ecosystem_links": [
+      "https://modelmarket.dev/blog/45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset/",
+      "https://histor.modelmarket.dev/datasets/?utm_source=qiita&utm_medium=article&utm_campaign=histor-dataset",
+      "https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions",
+      "https://modelmarket.dev/tools/histor-check?utm_source=qiita&utm_medium=article&utm_campaign=histor-dataset",
+      "https://github.com/alexar76/histor"
+    ],
+    "excerpts": [
+      "ーの 45% が 4 週間でツール定義を変更していた — 記録をデータセットとして公開 MCP AI Security データセット OSS 1 Posted at 2026-10-21 この記事は modelmarket.dev のブログ記事 (英語) の日本語版です。 MCP サーバーに接続するクライアントは、そのツール定義（名前、説明文、入力スキーマ）を読み込みます。モデルはそれを指示として読みます。定義を一度固定（ピン留め）して以後それを信頼するというやり方は、定義が変わらない場合にしか成り立ちません。 私たちが公開している MCP サーバーのログ HISTOR は、公式 MCP レジストリに載っているすべてのリモートサーバーのツール",
+      "み込みます。モデルはそれを指示として読みます。定義を一度固定（ピン留め）して以後それを信頼するというやり方は、定義が変わらない場合にしか成り立ちません。 私たちが公開している MCP サーバーのログ HISTOR は、公式 MCP レジストリに載っているすべてのリモートサーバーのツール一覧を 1 日 1 回読み取り、変更をすべて記録しています。その記録全体をファイルとしてダウンロードできるようになりました。最初のスナップショット（2026 年 10 月 20 日）から、定義がどれくらいの頻度で変わるのかを紹介します。 半数近くが変わる 9 月 24 日までにツール一覧が記録され、現在もレジストリに掲載されているリモートサーバ",
+      "ほとんどありません。23,821 件の変更のうち、以前に示した一覧に戻ったものは 200 件だけです。 パッケージは事情が異なります。npm や PyPI で公開したバージョンは変更できないためです。HISTOR は新しいバージョンが出るたびにサンドボックスで実行しています。21,738 パッケージのうち 1,419 パッケージで、新しいバージョンのツール一覧が変わっていました。 何が変わるのか 記録された全 23,821 件の変更（リモートサーバーとパッケージ、9 月 24 日〜10 月 20 日）の内訳です。 変更数 既存ツールの変更のみ（追加・削除なし） 16,436 (69%) ツールの追加・削除のみ 2,330 (",
+      "ストを通じてクライアントのルーティングに口を出すことになります。クライアントは、それに従う前にユーザーに確認することができます。 この計測でわからないこと 認証情報を持つクライアントが受け取る内容。 HISTOR は匿名で接続します。キーが必要なサーバーは、公開しているツール一覧を返すか、何も返しません。 変更の原因。 新しいツール一覧はリリースかもしれませんし、デプロイのロールバックや機能フラグかもしれません。ほとんどの変更は通常のリリースです。ログは変更が起きたことを記録しますが、理由は記録しません。 変更が有害かどうか。 これらの変更のうち、WARDEN のパターンスキャンで新たにブロック段階に入ったサーバーは 3 台"
+    ],
+    "article_meta": {
+      "og:title": "リモート MCP サーバーの 45% が 4 週間でツール定義を変更していた — 記録をデータセットとして公開 - Qiita",
+      "og:url": "https://qiita.com/qwezzy721/items/b71aaeaae84fcb360fe6"
+    },
+    "datePublished_fields": [
+      "2026-10-21T23:15:00.000+09:00"
+    ]
+  },
+  {
+    "key": "ai-outline",
+    "url": "https://ai-outline.com/2026/10/21/",
+    "checked_at_utc": "2026-10-28T12:35:30.950616+00:00",
+    "method": "GET",
+    "status": 403,
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "key": "billionare-histor",
+    "url": "https://billionare.me/items/jb1aevxo65vp3w52bi7vy1kh4",
+    "checked_at_utc": "2026-10-28T12:35:30.950752+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://billionare.me/items/jb1aevxo65vp3w52bi7vy1kh4",
+    "content_type": "text/html",
+    "bytes": 31785,
+    "sha256": "c61691a0dc2d3d4205c950f61e3fbdce793169ea2e0a4840a7b5341338b9f664",
+    "title": "HISTOR 发布 MCP 工具定义变更数据集，覆盖 81,879 个服务器与包 · billionare.me",
+    "markers": {
+      "alexar76": 0,
+      "modelmarket.dev": 5,
+      "HISTOR": 21,
+      "WARDEN": 0,
+      "attestedmemory.net": 0,
+      "pingblip": 0,
+      "independentai.network": 0
+    },
+    "ecosystem_links": [
+      "https://histor.modelmarket.dev/datasets/",
+      "https://histor.modelmarket.dev/datasets/",
+      "https://histor.modelmarket.dev/datasets/"
+    ],
+    "excerpts": [
+      "HISTOR 发布 MCP 工具定义变更数据集，覆盖 81,879 个服务器与包 · billionare.me 跳到正文 billionare.me 今日 精选 全部独立开发动态 独立开发日报 情报 热榜中心 主题 系统 收藏 Agent 接入 关于 更新日志 反馈 深色 浅色 返回 原文 返回 来源 Hacker News Show HN alex_artamokhov 发布时间 2026-10-22 18:38 6 天前 ",
+      "间 2026-10-22 18:38 6 天前 返回 Hacker News Show HN · alex_artamokhov · 2026-10-22 18:38 · 6 天前 AI 评分 52 HISTOR 发布 MCP 工具定义变更数据集，覆盖 81,879 个服务器与包 Show HN: An open dataset of MCP tool definitions and every change to them AI 导读 HISTOR 发布 MCP 工具定义数据集，每天读取官方 MCP registry 中每个远程服务器的工具列表，并在沙箱中运行 npm 和 PyPI 上 MCP 包的新版本，每月以文件形式公",
+      "据集，覆盖 81,879 个服务器与包 Show HN: An open dataset of MCP tool definitions and every change to them AI 导读 HISTOR 发布 MCP 工具定义数据集，每天读取官方 MCP registry 中每个远程服务器的工具列表，并在沙箱中运行 npm 和 PyPI 上 MCP 包的新版本，每月以文件形式公开记录。 来源： Hacker News Show HN · histor.modelmarket.dev # 榜单/数据 # AI/技术 # API/集成 # 开源/仓库 # GitHub # Hugging Face 查看事件全部后续 打",
+      "官方 MCP registry 中每个远程服务器的工具列表，并在沙箱中运行 npm 和 PyPI 上 MCP 包的新版本，每月以文件形式公开记录。 来源： Hacker News Show HN · histor.modelmarket.dev # 榜单/数据 # AI/技术 # API/集成 # 开源/仓库 # GitHub # Hugging Face 查看事件全部后续 打开原文 AI 评分 AI 评分 52 标签 # 榜单/数据 # AI/技术 # API/集成 # 开源/仓库 # GitHub # Hugging Face 精选 全部 日报 更多"
+    ],
+    "article_meta": {
+      "og:title": "HISTOR 发布 MCP 工具定义变更数据集，覆盖 81,879 个服务器与包",
+      "og:url": "https://billionare.me/items/jb1aevxo65vp3w52bi7vy1kh4"
+    },
+    "datePublished_fields": []
+  },
+  {
+    "key": "bittide",
+    "url": "https://bittide.aicompass.dev/article/bb82d6c4-9c7b-4cb6-92ed-0afcd6fa0e7f?locale=zh",
+    "checked_at_utc": "2026-10-28T12:35:31.415595+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://bittide.aicompass.dev/article/bb82d6c4-9c7b-4cb6-92ed-0afcd6fa0e7f?locale=zh",
+    "content_type": "text/html",
+    "bytes": 44603,
+    "sha256": "d6681de7741f6b661434f44636fe5dfa30561581b4b5896d0c7c40c0bb22f818",
+    "title": "punkpeye/优秀MCP服务器",
+    "markers": {
+      "alexar76": 4,
+      "modelmarket.dev": 2,
+      "HISTOR": 0,
+      "WARDEN": 0,
+      "attestedmemory.net": 0,
+      "pingblip": 0,
+      "independentai.network": 0
+    },
+    "ecosystem_links": [],
+    "excerpts": [
+      " 📇 ☁️ - 将任何REST API转换为托管的MCP服务器。18个免费公共服务器（GitHub、Stripe、Slack、OpenAI、Notion等）——无需设置，自带API密钥即可使用。 - alexar76/aimarket-plugins (https://github.com/alexar76/aimarket-plugins) alexar76/aimarket-plugins MCP server (https://glama.ai/mcp/servers/alexar76/aimarket-plugins) 📇 ☁️ 🏠 🍎 🪟 🐧 - aimarket-mcp-packager 中心插件：将AIMarket",
+      "Hub、Stripe、Slack、OpenAI、Notion等）——无需设置，自带API密钥即可使用。 - alexar76/aimarket-plugins (https://github.com/alexar76/aimarket-plugins) alexar76/aimarket-plugins MCP server (https://glama.ai/mcp/servers/alexar76/aimarket-plugins) 📇 ☁️ 🏠 🍎 🪟 🐧 - aimarket-mcp-packager 中心插件：将AIMarket能力转换为自托管的MCP服务器（Docker镜像 + mcp_manifest + Clau",
+      "ion等）——无需设置，自带API密钥即可使用。 - alexar76/aimarket-plugins (https://github.com/alexar76/aimarket-plugins) alexar76/aimarket-plugins MCP server (https://glama.ai/mcp/servers/alexar76/aimarket-plugins) 📇 ☁️ 🏠 🍎 🪟 🐧 - aimarket-mcp-packager 中心插件：将AIMarket能力转换为自托管的MCP服务器（Docker镜像 + mcp_manifest + Claude Desktop mcpServers 配置）。属",
+      "b.com/alexar76/aimarket-plugins) alexar76/aimarket-plugins MCP server (https://glama.ai/mcp/servers/alexar76/aimarket-plugins) 📇 ☁️ 🏠 🍎 🪟 🐧 - aimarket-mcp-packager 中心插件：将AIMarket能力转换为自托管的MCP服务器（Docker镜像 + mcp_manifest + Claude Desktop mcpServers 配置）。属于15插件AIMarket Hub (modelmarket.dev (https://modelmarket.dev))的一部分；协"
+    ],
+    "article_meta": {},
+    "datePublished_fields": []
+  },
+  {
+    "key": "claudeskills-zh-hant",
+    "url": "https://claudeskills.info/zh-hant/mcp/alexar76/aimarket-mcp/",
+    "checked_at_utc": "2026-10-28T12:35:31.923385+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://claudeskills.info/zh-hant/mcp/alexar76/aimarket-mcp/",
+    "content_type": "text/html",
+    "bytes": 125059,
+    "sha256": "a624288fd504330a5912b9c88666deec62148c0d4b328b382d7cd2566ce2f91c",
+    "title": "AIMarket MCP Gateway MCP Server | Claude Skills Hub",
+    "markers": {
+      "alexar76": 38,
+      "modelmarket.dev": 0,
+      "HISTOR": 1,
+      "WARDEN": 0,
+      "attestedmemory.net": 0,
+      "pingblip": 0,
+      "independentai.network": 0
+    },
+    "ecosystem_links": [
+      "https://github.com/alexar76/aimarket-mcp",
+      "https://github.com/alexar76/aimarket-mcp",
+      "/out/spaceship?s=mcp-alexar76-aimarket-mcp&t=mcp&p=detail-rail-side-1&l=zh-Hant",
+      "/out/verdent?s=mcp-alexar76-aimarket-mcp&t=mcp&p=detail-rail-side-2&l=zh-Hant",
+      "/out/granola?s=mcp-alexar76-aimarket-mcp&t=mcp&p=detail-rail-side-3&l=zh-Hant",
+      "/out/littlebird?s=mcp-alexar76-aimarket-mcp&t=mcp&p=detail-rail-side-4&l=zh-Hant",
+      "/out/chatbase?s=mcp-alexar76-aimarket-mcp&t=mcp&p=detail-rail-side-5&l=zh-Hant"
+    ],
+    "excerpts": [
+      "P Gateway v 0.1.0 Streamable-HTTP MCP gateway: web_fetch, web_search, metis_verify (SSRF-hardened). alexar76/aimarket-mcp 搜尋與研究 遠端 ↗ 在 GitHub 上檢視 GITHUB 數據 ★ Star 數 1 加入你的 README 複製 README 徽章 連接 AIMarket MCP Gateway Claude Code Codex 1 claude mcp add --transport http aimarket-mcp-gateway https://{aimarket_host}/mcp 進",
+      "//{aimarket_host}/mcp Copy 這是託管端點 —— 將 MCP 用戶端指向此 URL 即可，無須在本機安裝。 Registry 項目 Registry 名稱 io.github.alexar76/aimarket-mcp 來源 官方 MCP Registry 推薦工具 聯盟連結 · 我們可能獲得佣金 Spaceship 在一個平台註冊網域並管理 Web 主機代管。 造訪 Spaceship → Verdent 使用並行 AI 代理規劃、建置與驗證軟體。 試用 Verdent → Granola 無需機器人加入會議，即可將會議整理成清晰的筆記。 首月免費 試用 Granola → Littlebird 一個記"
+    ],
+    "article_meta": {
+      "og:title": "AIMarket MCP Gateway MCP Server",
+      "og:url": "https://claudeskills.info/zh-hant/mcp/alexar76/aimarket-mcp/"
+    },
+    "datePublished_fields": []
+  },
+  {
+    "key": "papers-ananclaw",
+    "url": "https://papers.ananclaw.com/repos?category=ai&form=tutorial&primary=engineering",
+    "checked_at_utc": "2026-10-28T12:35:32.200597+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://papers.ananclaw.com/repos?category=ai&form=tutorial&primary=engineering",
+    "content_type": "text/html",
+    "bytes": 32686,
+    "sha256": "0aa1037cddd6015d3c76ca78b955302b32a16a0a3fd1d7aa8adcd672b2da6d62",
+    "title": "仓库 · 研究库",
+    "markers": {
+      "alexar76": 4,
+      "modelmarket.dev": 2,
+      "HISTOR": 2,
+      "WARDEN": 0,
+      "attestedmemory.net": 0,
+      "pingblip": 0,
+      "independentai.network": 0
+    },
+    "ecosystem_links": [
+      "/repo/2680-alexar76-aimarket-school",
+      "/repo/2680-alexar76-aimarket-school",
+      "https://github.com/alexar76/aimarket-school"
+    ],
+    "excerpts": [
+      "hackindia-team:ai-first-startup-hackathon-build-a-startup-using-ai-only:codebyte] agent 详情 GitHub ↗ alexar76/aimarket-school Python · 2026-08-20 工程化 教程 实验 Stars 0 周增 +0 AIMarket School —— 10 节免费片段课程（Try-it + Colab），作为学院课程的入门引导。门户地址：edu.modelmarket.dev AIMarket School — 10 free clip lessons (Try-it + Colab) that on-ra",
+      "26-08-20 工程化 教程 实验 Stars 0 周增 +0 AIMarket School —— 10 节免费片段课程（Try-it + Colab），作为学院课程的入门引导。门户地址：edu.modelmarket.dev AIMarket School — 10 free clip lessons (Try-it + Colab) that on-ramp into the academies. Live portal: edu.modelmarket.dev agent 详情 GitHub ↗ 1,815 论文 4,678 仓库 1,676 攻略 7,294 笔记 447 摘要 研 研究库 · 从热点进入今天,从解读、趋势与攻略进",
+      "et School — 10 free clip lessons (Try-it + Colab) that on-ramp into the academies. Live portal: edu.modelmarket.dev agent 详情 GitHub ↗ 1,815 论文 4,678 仓库 1,676 攻略 7,294 笔记 447 摘要 研 研究库 · 从热点进入今天,从解读、趋势与攻略进入可复用知识。 Paper Vault — maintained daily by five collaborating OpenClaw instances. "
+    ],
+    "article_meta": {
+      "og:title": "仓库 · 研究库",
+      "og:url": "https://papers.ananclaw.com/repos"
+    },
+    "datePublished_fields": []
+  },
+  {
+    "key": "zenn-azure-candidate",
+    "url": "https://zenn.dev/kazu_aiengineer/articles/azure-mcp-server-3-ga",
+    "checked_at_utc": "2026-10-28T12:35:33.400613+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://zenn.dev/kazu_aiengineer/articles/azure-mcp-server-3-ga",
+    "content_type": "text/html",
+    "bytes": 97869,
+    "sha256": "878e70fa140f141c65abf3ef73b76d65591669e308721d072950d55e0f8c95f7",
+    "title": "Azure MCP 3.0 GA。全ツールで約14万トークン、既定の10倍",
+    "markers": {
+      "alexar76": 0,
+      "modelmarket.dev": 0,
+      "HISTOR": 0,
+      "WARDEN": 0,
+      "attestedmemory.net": 0,
+      "pingblip": 0,
+      "independentai.network": 0
+    },
+    "ecosystem_links": [],
+    "excerpts": [],
+    "article_meta": {
+      "og:url": "https://zenn.dev/kazu_aiengineer/articles/azure-mcp-server-3-ga",
+      "og:title": "Azure MCP 3.0 GA。全ツールで約14万トークン、既定の10倍"
+    },
+    "datePublished_fields": []
+  },
+  {
+    "key": "note-aimarket-candidate",
+    "url": "https://note.com/magic_otter8503/n/nfe572e964b88?hl=ko",
+    "checked_at_utc": "2026-10-28T12:35:33.424274+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://note.com/magic_otter8503/n/nfe572e964b88?hl=ko",
+    "content_type": "text/html",
+    "bytes": 323656,
+    "sha256": "f092b528d78bde755ee17e4e6a701413204c5f703301c4abb73d349810e5c360",
+    "title": "Claude Haiku 5.5をGemini・ChatGPTと比べて分かったこと｜AIMarket",
+    "markers": {
+      "alexar76": 0,
+      "modelmarket.dev": 0,
+      "HISTOR": 1,
+      "WARDEN": 0,
+      "attestedmemory.net": 0,
+      "pingblip": 0,
+      "independentai.network": 0
+    },
+    "ecosystem_links": [],
+    "excerpts": [],
+    "article_meta": {
+      "og:title": "Claude Haiku 5.5をGemini・ChatGPTと比べて分かったこと｜AIMarket",
+      "og:url": "https://note.com/magic_otter8503/n/nfe572e964b88"
+    },
+    "datePublished_fields": [
+      "2026-10-08T14:03:23.000+09:00"
+    ]
+  },
+  {
+    "key": "github-cn-mirror",
+    "url": "https://github.itlym.cn/topics/aicom",
+    "checked_at_utc": "2026-10-28T12:35:33.588451+00:00",
+    "method": "GET",
+    "status": null,
+    "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1129)>"
+  }
+]

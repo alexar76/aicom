@@ -1,0 +1,2534 @@
+[
+  {
+    "path": "docs/exit-codes.md",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/exit-codes.md",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:05:24.301523+00:00",
+    "status": 200,
+    "sha256": "743f3944d51375724d4ae2995346898053625bda196344a4b0c7a98d1a198f81",
+    "bytes": 12509,
+    "line_count": 168,
+    "selected_lines": [
+      {
+        "line": 1,
+        "text": "# Exit codes"
+      },
+      {
+        "line": 2,
+        "text": ""
+      },
+      {
+        "line": 3,
+        "text": "This page is the exit-code contract of `mcpmoat scan`. Other docs give a short form and link"
+      },
+      {
+        "line": 4,
+        "text": "here."
+      },
+      {
+        "line": 5,
+        "text": ""
+      },
+      {
+        "line": 6,
+        "text": "| Code | Meaning |"
+      },
+      {
+        "line": 7,
+        "text": "|---|---|"
+      },
+      {
+        "line": 8,
+        "text": "| 0 | No execution error, and no finding that is not ignored has severity at or above `--fail-on`. |"
+      },
+      {
+        "line": 9,
+        "text": "| 1 | No execution error, and at least one finding that is not ignored has severity at or above `--fail-on`. |"
+      },
+      {
+        "line": 10,
+        "text": "| 2 | Execution or usage error. Exit code 2 wins over 1. |"
+      },
+      {
+        "line": 11,
+        "text": ""
+      },
+      {
+        "line": 12,
+        "text": "- `--fail-on low|medium|high|critical` sets the lowest severity that gives exit code 1. The default"
+      },
+      {
+        "line": 13,
+        "text": "  is `high`. Only these exact lowercase words work. Another value, an empty value or a second"
+      },
+      {
+        "line": 14,
+        "text": "  `--fail-on` is a usage error (exit code 2). It is a `scan` flag only. `pin` never exits with"
+      },
+      {
+        "line": 15,
+        "text": "  code 1."
+      },
+      {
+        "line": 16,
+        "text": "- Ignored findings (`--ignore`, or `.mcpmoat-ignore` with `--use-ignore-file`) never give exit"
+      },
+      {
+        "line": 17,
+        "text": "  code 1. Without `--use-ignore-file`, `scan` does not read the file, so it drops nothing (see"
+      },
+      {
+        "line": 18,
+        "text": "  [Ignore findings](ignore.md))."
+      },
+      {
+        "line": 19,
+        "text": "- With `--llm`, the LLM findings (`MOAT-LLM-001`, `MOAT-LLM-002`) count like any other finding."
+      },
+      {
+        "line": 20,
+        "text": "  They are `high` at most."
+      },
+      {
+        "line": 21,
+        "text": "- mcpmoat fails closed. A finding with a severity that mcpmoat does not know always counts, at"
+      },
+      {
+        "line": 22,
+        "text": "  every `--fail-on` value. A finding whose rule ID is not in the rule set counts as critical."
+      },
+      {
+        "line": 23,
+        "text": "- No built-in rule is critical yet, so `--fail-on critical` passes every built-in finding, also a"
+      },
+      {
+        "line": 24,
+        "text": "  rug pull (`MOAT-T2-001` is high). `scan` says so on stderr: `mcpmoat scan: note: no built-in"
+      },
+      {
+        "line": 25,
+        "text": "  rule is critical yet, so with --fail-on critical no built-in finding gives exit code 1`. It fails"
+      },
+      {
+        "line": 26,
+        "text": "  only in the two fail-closed cases above, or when a description or schema rule from `--rules` is"
+      },
+      {
+        "line": 27,
+        "text": "  critical: then a finding of that rule and a `MOAT-T1-023` budget finding or a `MOAT-T1-024` cap"
+      },
+      {
+        "line": 28,
+        "text": "  finding (see below) give exit code 1."
+      },
+      {
+        "line": 29,
+        "text": "- An unpinned server that fails or times out is a warning only (in the summary, or on stderr with"
+      },
+      {
+        "line": 30,
+        "text": "  `--json`). It does not change the exit code. A pinned server that fails or times out is a high"
+      },
+      {
+        "line": 31,
+        "text": "  `MOAT-T2-004` finding."
+      },
+      {
+        "line": 32,
+        "text": "- The rule analysis shares one time limit between all servers (see [Limits](limits.md)). A server"
+      },
+      {
+        "line": 33,
+        "text": "  that uses up its share is a `MOAT-T1-023` finding. A server that `scan` does not reach in time"
+      },
+      {
+        "line": 34,
+        "text": "  is not analysed, and the servers after it are not analysed either. Each of them gets the same"
+      },
+      {
+        "line": 35,
+        "text": "  finding for all its tools. Its severity is the highest severity"
+      },
+      {
+        "line": 36,
+        "text": "  of the description and schema rules that `scan` applies, but never lower than high. So it is"
+      },
+      {
+        "line": 37,
+        "text": "  high with the built-in rules, and critical when a description or schema rule from `--rules` is"
+      },
+      {
+        "line": 38,
+        "text": "  critical (see the `--fail-on critical` item above). It is not an execution error: it gives exit"
+      },
+      {
+        "line": 39,
+        "text": "  code 1 with the default `--fail-on`, and the JSON `complete` stays `true`. Only a signal (see"
+      },
+      {
+        "line": 40,
+        "text": "  below) stops the scan with exit code 2; the end of the time limit does not. `scan` also prints a"
+      },
+      {
+        "line": 41,
+        "text": "  warning on stderr (see [Scan output](scan-output.md)). A `.mcpmoat-ignore` file cannot drop the"
+      },
+      {
+        "line": 42,
+        "text": "  finding. Only `--ignore MOAT-T1-023` can."
+      },
+      {
+        "line": 43,
+        "text": "- `scan` lists at most 1000 tool rule findings for each server, the most severe ones. It counts the"
+      },
+      {
+        "line": 44,
+        "text": "  rest and adds one `MOAT-T1-024` finding that says how many it left out (\"N more tool findings are"
+      },
+      {
+        "line": 45,
+        "text": "  not listed; limit M\"). Its severity is the highest severity of the description and schema rules that `scan`"
+      },
+      {
+        "line": 46,
+        "text": "  applies, but never lower than high, as for `MOAT-T1-023`. It is not an execution error: it gives"
+      },
+      {
+        "line": 47,
+        "text": "  exit code 1 with the default `--fail-on`, and the JSON `complete` stays `true`. The exit code"
+      },
+      {
+        "line": 48,
+        "text": "  follows `--fail-on` like for any other finding. A `.mcpmoat-ignore` file cannot drop it, also"
+      },
+      {
+        "line": 49,
+        "text": "  with `--use-ignore-file`, because it can come from a cloned repository. Only"
+      },
+      {
+        "line": 50,
+        "text": "  `--ignore MOAT-T1-024` can."
+      },
+      {
+        "line": 51,
+        "text": "- `scan` lists at most 100 config findings (`MOAT-T4-*` and `MOAT-T5-*`) for each server and"
+      },
+      {
+        "line": 52,
+        "text": "  10,000 for the whole scan, the most severe ones. A server that loses config findings to a limit"
+      },
+      {
+        "line": 53,
+        "text": "  gets one `MOAT-T4-005` finding that says how many it left out (\"N more config findings are not"
+      },
+      {
+        "line": 54,
+        "text": "  listed; limit M\"). Its severity is high, or higher when a finding that it left out is higher. It"
+      },
+      {
+        "line": 55,
+        "text": "  is not an execution error: it gives exit code 1 with the default `--fail-on`, and the JSON"
+      },
+      {
+        "line": 56,
+        "text": "  `complete` stays `true`. A `.mcpmoat-ignore` file cannot drop it. Only `--ignore MOAT-T4-005`"
+      },
+      {
+        "line": 57,
+        "text": "  can (see [Limits](limits.md))."
+      },
+      {
+        "line": 58,
+        "text": ""
+      },
+      {
+        "line": 59,
+        "text": "Exit code 2 comes, for example, from a usage error (invalid flags), invalid rules (also a regex in"
+      },
+      {
+        "line": 60,
+        "text": "a `--rules` file that does not compile, with or without `--no-connect`), an unreadable"
+      },
+      {
+        "line": 61,
+        "text": "`--config` file, a problem in a config file, a `pins.json` that cannot be read or saved (see [Pins"
+      },
+      {
+        "line": 62,
+        "text": "errors](#pins-errors)), a report"
+      },
+      {
+        "line": 63,
+        "text": "that cannot be written (a closed stdout), an unknown home or working directory in auto-discovery,"
+      },
+      {
+        "line": 64,
+        "text": "an `--llm` problem (a missing or invalid `MCPMOAT_LLM_API_KEY`, a provider failure, a provider"
+      },
+      {
+        "line": 65,
+        "text": "refusal of every tool, the 10-minute time limit of the LLM step, an internal error of the LLM"
+      },
+      {
+        "line": 66,
+        "text": "step, or tools over the 500-tool cap), an internal error of the tool rule step, or another"
+      },
+      {
+        "line": 67,
+        "text": "internal error. One tool that the provider refuses (HTTP 400, 413 or 422) is not an execution"
+      },
+      {
+        "line": 68,
+        "text": "error: it is a `medium` finding, and the scan goes on (see [Optional LLM classification](llm.md))."
+      },
+      {
+        "line": 69,
+        "text": "That is below the default `--fail-on high`, so a hostile server that makes the provider refuse its"
+      },
+      {
+        "line": 70,
+        "text": "tool descriptions can keep their LLM rating from reaching `high`. Some of these errors still print"
+      },
+      {
+        "line": 71,
+        "text": "the report on stdout first, so you can read the findings:"
+      },
+      {
+        "line": 72,
+        "text": ""
+      },
+      {
+        "line": 73,
+        "text": "| Execution error | Report |"
+      },
+      {
+        "line": 74,
+        "text": "|---|---|"
+      },
+      {
+        "line": 75,
+        "text": "| A problem in a config file | Printed, then the problems. A `--config` file with a problem and no server prints only the problem. |"
+      },
+      {
+        "line": 76,
+        "text": "| A `pins.json` that cannot be read or saved | Printed |"
+      },
+      {
+        "line": 77,
+        "text": "| An internal error of the inspection (`inspect.Run`) | Printed |"
+      },
+      {
+        "line": 78,
+        "text": "| An LLM provider failure, a provider refusal of every tool, the 10-minute time limit of the LLM step, an internal error of the LLM step, or tools over the 500-tool cap with `--llm` | Printed |"
+      },
+      {
+        "line": 79,
+        "text": "| A signal before the save of new pins | Printed |"
+      },
+      {
+        "line": 80,
+        "text": "| A usage error (also a bad `--llm-*` flag or a missing API key), invalid rules, or an unknown home or working directory | Not printed |"
+      },
+      {
+        "line": 81,
+        "text": "| A signal during the inspection, the tool rule step or the LLM step | Not printed |"
+      },
+      {
+        "line": 82,
+        "text": "| An internal error of the tool rule step. `scan` prints `mcpmoat scan: server <name>: the rule analysis failed (internal error)` | Not printed |"
+      },
+      {
+        "line": 83,
+        "text": "| A report that cannot be written | Not printed |"
+      },
+      {
+        "line": 84,
+        "text": ""
+      },
+      {
+        "line": 85,
+        "text": "A signal is Ctrl-C, `SIGTERM` or `SIGHUP`. It gives exit code 2 at these times:"
+      },
+      {
+        "line": 86,
+        "text": ""
+      },
+      {
+        "line": 87,
+        "text": "- While `scan` reads the configs. The read stops, and the file it did not read is a config file"
+      },
+      {
+        "line": 88,
+        "text": "  problem with the reason `canceled`. If `scan` found a server and you did not use `--no-connect`,"
+      },
+      {
+        "line": 89,
+        "text": "  it then stops at the inspection, as in the next item: it prints the line below and no report."
+      },
+      {
+        "line": 90,
+        "text": "  A `pins.json` that cannot be read is the exception: `scan` reads it before the inspection, so"
+      },
+      {
+        "line": 91,
+        "text": "  it prints the report and the `pins.json` error, without the line below."
+      },
+      {
+        "line": 92,
+        "text": "- During the inspection. `scan` stops the stdio servers that it started, prints"
+      },
+      {
+        "line": 93,
+        "text": "  `mcpmoat scan: interrupted; no pins were saved`, saves nothing and prints no report."
+      },
+      {
+        "line": 94,
+        "text": "- During the tool rule step, which applies the description and schema rules to the tools after"
+      },
+      {
+        "line": 95,
+        "text": "  the inspection. `scan` stops the rule analysis, prints the same line, saves nothing and prints no"
+      },
+      {
+        "line": 96,
+        "text": "  report."
+      },
+      {
+        "line": 97,
+        "text": "- During the LLM step of a `--llm` scan. `scan` stops the requests and then does the same: it"
+      },
+      {
+        "line": 98,
+        "text": "  prints the same line, saves nothing and prints no report. The 10-minute time limit of the LLM"
+      },
+      {
+        "line": 99,
+        "text": "  step is not a signal: it prints the report (see the table above)."
+      },
+      {
+        "line": 100,
+        "text": "- After the report, before the save of new pins. `scan` prints the same line and saves nothing."
+      },
+      {
+        "line": 101,
+        "text": "  This applies only when the scan has new servers to pin."
+      },
+      {
+        "line": 102,
+        "text": ""
+      },
+      {
+        "line": 103,
+        "text": "At other times the scan ends with exit code 0 or 1, as if no signal came. A second signal ends"
+      },
+      {
+        "line": 104,
+        "text": "mcpmoat at once."
+      },
+      {
+        "line": 105,
+        "text": ""
+      },
+      {
+        "line": 106,
+        "text": "To use the exit code in CI or in a git hook, see [Using mcpmoat in CI and git hooks](ci.md)."
+      },
+      {
+        "line": 107,
+        "text": ""
+      },
+      {
+        "line": 108,
+        "text": "## Pins errors"
+      },
+      {
+        "line": 109,
+        "text": ""
+      },
+      {
+        "line": 110,
+        "text": "`scan` and `pin --accept` exit with code 2 when they cannot read or update `pins.json`. With"
+      },
+      {
+        "line": 111,
+        "text": "`scan`, the report is still printed. The causes are:"
+      },
+      {
+        "line": 112,
+        "text": ""
+      },
+      {
+        "line": 113,
+        "text": "- The pins directory, a parent directory of it, or `pins.json` is unsafe: another user owns it,"
+      },
+      {
+        "line": 114,
+        "text": "  group or others can write it, a macOS ACL lets a user or group write the pins directory or"
+      },
+      {
+        "line": 115,
+        "text": "  `pins.json`, or `pins.json` is a symlink, or another user owns a symlink on the path to the pins"
+      },
+      {
+        "line": 116,
+        "text": "  directory. A parent passes the owner check when root owns it (group or other write without the"
+      },
+      {
+        "line": 117,
+        "text": "  sticky bit is still refused), and a parent with the sticky bit (as `/tmp`) passes the write"
+      },
+      {
+        "line": 118,
+        "text": "  check. The error names the path and gives a fix (see [Pins and rug pulls](pins.md))."
+      },
+      {
+        "line": 119,
+        "text": "- On macOS, an ACL entry of a parent directory of the pins directory lets a user or group change"
+      },
+      {
+        "line": 120,
+        "text": "  it: an allow entry with a write right, for any user or group. A deny entry passes, so the default"
+      },
+      {
+        "line": 121,
+        "text": "  `everyone deny delete` entry of a home directory is fine. The error names the directory and the"
+      },
+      {
+        "line": 122,
+        "text": "  index of the entry, and the fix removes only that entry: `chmod -a# <index> <path>` (or \"ask root"
+      },
+      {
+        "line": 123,
+        "text": "  to run\" it, or \"ask the owner or root to run\" it, when you do not own the directory)."
+      },
+      {
+        "line": 124,
+        "text": "  `ls -led <path>` shows the entries."
+      },
+      {
+        "line": 125,
+        "text": "- No part of the pins path exists, or a part of it is a file."
+      },
+      {
+        "line": 126,
+        "text": "- The lock file `pins.json.lock` in the pins directory is unsafe: it is not a regular file (a"
+      },
+      {
+        "line": 127,
+        "text": "  symlink, for example), another user owns it, its group or others have any access (mode 0600"
+      },
+      {
+        "line": 128,
+        "text": "  passes, 0644 is refused), or on macOS an ACL entry lets a user or group open it. mcpmoat never"
+      },
+      {
+        "line": 129,
+        "text": "  changes the mode of an existing lock file. The fix is `rm -- '<path>', then mcpmoat makes a new"
+      },
+      {
+        "line": 130,
+        "text": "  one with mode 0600` (`rmdir -- '<path>', ...` when the lock entry is a directory). For an ACL"
+      }
+    ]
+  },
+  {
+    "path": "internal/pins/render.go",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/pins/render.go",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:05:24.301974+00:00",
+    "status": 200,
+    "sha256": "b14a81625e1143ed8e5d3f66573f491061af77a56b4f41c7c44a30c75cb2552f",
+    "bytes": 11285,
+    "line_count": 298,
+    "selected_lines": [
+      {
+        "line": 1,
+        "text": "package pins"
+      },
+      {
+        "line": 2,
+        "text": ""
+      },
+      {
+        "line": 3,
+        "text": "import ("
+      },
+      {
+        "line": 4,
+        "text": "\t\"bytes\""
+      },
+      {
+        "line": 5,
+        "text": "\t\"encoding/json\""
+      },
+      {
+        "line": 6,
+        "text": "\t\"encoding/json/jsontext\""
+      },
+      {
+        "line": 7,
+        "text": "\t\"errors\""
+      },
+      {
+        "line": 8,
+        "text": "\t\"fmt\""
+      },
+      {
+        "line": 9,
+        "text": "\t\"io\""
+      },
+      {
+        "line": 10,
+        "text": "\t\"strings\""
+      },
+      {
+        "line": 11,
+        "text": "\t\"unicode/utf8\""
+      },
+      {
+        "line": 12,
+        "text": ")"
+      },
+      {
+        "line": 13,
+        "text": ""
+      },
+      {
+        "line": 14,
+        "text": "const ("
+      },
+      {
+        "line": 15,
+        "text": "\t// maxLineRunes is the longest text, in runes, that one rendered line holds"
+      },
+      {
+        "line": 16,
+        "text": "\t// after its prefix or indentation. A longer line is wrapped into chunks."
+      },
+      {
+        "line": 17,
+        "text": "\t// The report cuts each diff line at a far larger length, so without"
+      },
+      {
+        "line": 18,
+        "text": "\t// wrapping a payload at the end of one long line would not show in the diff."
+      },
+      {
+        "line": 19,
+        "text": "\tmaxLineRunes = 200"
+      },
+      {
+        "line": 20,
+        "text": ""
+      },
+      {
+        "line": 21,
+        "text": "\t// maxIndent is the most indentation that a rendered line keeps, in bytes."
+      },
+      {
+        "line": 22,
+        "text": "\t// A deeply nested JSON line would else start with so many spaces that the"
+      },
+      {
+        "line": 23,
+        "text": "\t// report cuts the line before its text, and its change would not show."
+      },
+      {
+        "line": 24,
+        "text": "\tmaxIndent = 200"
+      },
+      {
+        "line": 25,
+        "text": ""
+      },
+      {
+        "line": 26,
+        "text": "\t// contMarker ends the lead of a wrapped chunk after the first one (see"
+      },
+      {
+        "line": 27,
+        "text": "\t// render). No real line has it at that place."
+      },
+      {
+        "line": 28,
+        "text": "\tcontMarker = \"+ \""
+      },
+      {
+        "line": 29,
+        "text": ")"
+      },
+      {
+        "line": 30,
+        "text": ""
+      },
+      {
+        "line": 31,
+        "text": "// renderedTool is the shape of the canonical form that render reads. The"
+      },
+      {
+        "line": 32,
+        "text": "// schemas, _meta, icons and the annotations stay raw JSON, because render only"
+      },
+      {
+        "line": 33,
+        "text": "// re-indents them. The field names are the keys that Canonical writes."
+      },
+      {
+        "line": 34,
+        "text": "type renderedTool struct {"
+      },
+      {
+        "line": 35,
+        "text": "\tName         string          `json:\"name\"`"
+      },
+      {
+        "line": 36,
+        "text": "\tTitle        string          `json:\"title\"`"
+      },
+      {
+        "line": 37,
+        "text": "\tDescription  string          `json:\"description\"`"
+      },
+      {
+        "line": 38,
+        "text": "\tAnnotations  json.RawMessage `json:\"annotations\"`"
+      },
+      {
+        "line": 39,
+        "text": "\tMeta         json.RawMessage `json:\"_meta\"`"
+      },
+      {
+        "line": 40,
+        "text": "\tIcons        json.RawMessage `json:\"icons\"`"
+      },
+      {
+        "line": 41,
+        "text": "\tInputSchema  json.RawMessage `json:\"inputSchema\"`"
+      },
+      {
+        "line": 42,
+        "text": "\tOutputSchema json.RawMessage `json:\"outputSchema\"`"
+      },
+      {
+        "line": 43,
+        "text": "}"
+      },
+      {
+        "line": 44,
+        "text": ""
+      },
+      {
+        "line": 45,
+        "text": "// render turns the canonical form of a tool (the output of Canonical, one line"
+      },
+      {
+        "line": 46,
+        "text": "// of JCS) into text with one item per line, so that a line diff is useful."
+      },
+      {
+        "line": 47,
+        "text": "//"
+      },
+      {
+        "line": 48,
+        "text": "// Each line of the text is one of these:"
+      },
+      {
+        "line": 49,
+        "text": "//"
+      },
+      {
+        "line": 50,
+        "text": "//\tname: <line of the name>"
+      },
+      {
+        "line": 51,
+        "text": "//\ttitle: <line of the title>"
+      },
+      {
+        "line": 52,
+        "text": "//\tdescription: <line of the description>"
+      },
+      {
+        "line": 53,
+        "text": "//\tannotations:"
+      },
+      {
+        "line": 54,
+        "text": "//\t  <line of the indented JSON>"
+      },
+      {
+        "line": 55,
+        "text": "//\t_meta:"
+      },
+      {
+        "line": 56,
+        "text": "//\t  <line of the indented JSON>"
+      },
+      {
+        "line": 57,
+        "text": "//\ticons:"
+      },
+      {
+        "line": 58,
+        "text": "//\t  <line of the indented JSON>"
+      },
+      {
+        "line": 59,
+        "text": "//\tinputSchema:"
+      },
+      {
+        "line": 60,
+        "text": "//\t  <line of the indented JSON>"
+      },
+      {
+        "line": 61,
+        "text": "//\toutputSchema:"
+      },
+      {
+        "line": 62,
+        "text": "//\t  <line of the indented JSON>"
+      },
+      {
+        "line": 63,
+        "text": "//"
+      },
+      {
+        "line": 64,
+        "text": "// A name, a title or a description with line breaks gives one line for each of"
+      },
+      {
+        "line": 65,
+        "text": "// its lines, and each line has the prefix. So text from a server cannot make"
+      },
+      {
+        "line": 66,
+        "text": "// a line that looks like another field."
+      },
+      {
+        "line": 67,
+        "text": "//"
+      },
+      {
+        "line": 68,
+        "text": "// A line with more than maxLineRunes runes after its prefix or indentation is"
+      },
+      {
+        "line": 69,
+        "text": "// wrapped: it becomes several lines of at most maxLineRunes runes, cut on rune"
+      },
+      {
+        "line": 70,
+        "text": "// boundaries. So a line diff shows the chunk that changed, also in a very long"
+      },
+      {
+        "line": 71,
+        "text": "// line. The first chunk keeps the prefix, or the indentation, of the line. The"
+      },
+      {
+        "line": 72,
+        "text": "// next chunks have a continuation lead: the field name and \"+ \" (for example"
+      },
+      {
+        "line": 73,
+        "text": "// \"description+ \"), or the indentation and \"+ \". A real line never starts like"
+      },
+      {
+        "line": 74,
+        "text": "// that (a field line has \": \", and a JSON line never starts with \"+\"), so a"
+      },
+      {
+        "line": 75,
+        "text": "// wrapped line and a line break in the text never render the same."
+      },
+      {
+        "line": 76,
+        "text": "//"
+      },
+      {
+        "line": 77,
+        "text": "// The JSON parts have two spaces of indent for each level, and the key order"
+      },
+      {
+        "line": 78,
+        "text": "// of the canonical form. A schema, _meta or icons value that the server did not"
+      },
+      {
+        "line": 79,
+        "text": "// send is null."
+      },
+      {
+        "line": 80,
+        "text": "//"
+      },
+      {
+        "line": 81,
+        "text": "// mask, when it is not nil, hides secret values (see CompareMasked). render"
+      },
+      {
+        "line": 82,
+        "text": "// applies it to the decoded text before it wraps the lines: to the name, the"
+      },
+      {
+        "line": 83,
+        "text": "// title and the description, and to every string (object keys included) and"
+      },
+      {
+        "line": 84,
+        "text": "// every number in the JSON parts (see maskJSON). So a secret that would be"
+      },
+      {
+        "line": 85,
+        "text": "// split over two wrapped lines is still found. A secret that the server writes"
+      },
+      {
+        "line": 86,
+        "text": "// with a JSON escape (such as \\\" or \\u0041) is also found, because the decode"
+      },
+      {
+        "line": 87,
+        "text": "// removes the escape. The mask does not find a configured value that holds a"
+      },
+      {
+        "line": 88,
+        "text": "// backslash sequence as plain characters (such as the \\t and \\n of the Windows"
+      },
+      {
+        "line": 89,
+        "text": "// path C:\\tools\\new_dir) when the server sends the real characters (a tab, a"
+      },
+      {
+        "line": 90,
+        "text": "// newline). The output then escapes those characters, so the value can show."
+      },
+      {
+        "line": 91,
+        "text": "// docs/limits.md lists this limit. A nil mask changes nothing."
+      },
+      {
+        "line": 92,
+        "text": "//"
+      },
+      {
+        "line": 93,
+        "text": "// Apart from the mask, render keeps every byte of the strings as the server"
+      },
+      {
+        "line": 94,
+        "text": "// sent them. It does not escape or normalise anything, so an added invisible"
+      },
+      {
+        "line": 95,
+        "text": "// character is a changed line. The caller must escape the text before it"
+      },
+      {
+        "line": 96,
+        "text": "// writes it to a terminal. render returns an error, and never panics, when"
+      },
+      {
+        "line": 97,
+        "text": "// canonical is not the canonical form of a tool."
+      },
+      {
+        "line": 98,
+        "text": "func render(canonical string, mask func(string) string) (string, error) {"
+      },
+      {
+        "line": 99,
+        "text": "\tvar t renderedTool"
+      },
+      {
+        "line": 100,
+        "text": "\tif err := json.Unmarshal([]byte(canonical), &t); err != nil {"
+      },
+      {
+        "line": 101,
+        "text": "\t\t// The error of encoding/json can quote input, so it is not wrapped,"
+      },
+      {
+        "line": 102,
+        "text": "\t\t// like the error of json.Indent below. The caller adds the context."
+      },
+      {
+        "line": 103,
+        "text": "\t\treturn \"\", errors.New(\"parse canonical form\")"
+      },
+      {
+        "line": 104,
+        "text": "\t}"
+      },
+      {
+        "line": 105,
+        "text": "\tif mask != nil {"
+      },
+      {
+        "line": 106,
+        "text": "\t\tif err := maskTool(&t, mask); err != nil {"
+      },
+      {
+        "line": 107,
+        "text": "\t\t\treturn \"\", err"
+      },
+      {
+        "line": 108,
+        "text": "\t\t}"
+      },
+      {
+        "line": 109,
+        "text": "\t}"
+      },
+      {
+        "line": 110,
+        "text": ""
+      },
+      {
+        "line": 111,
+        "text": "\tvar b strings.Builder"
+      },
+      {
+        "line": 112,
+        "text": "\twritePrefixed(&b, \"name: \", t.Name)"
+      },
+      {
+        "line": 113,
+        "text": "\twritePrefixed(&b, \"title: \", t.Title)"
+      },
+      {
+        "line": 114,
+        "text": "\twritePrefixed(&b, \"description: \", t.Description)"
+      },
+      {
+        "line": 115,
+        "text": ""
+      },
+      {
+        "line": 116,
+        "text": "\t// annotations, _meta and icons come before the schemas, so a large unchanged"
+      },
+      {
+        "line": 117,
+        "text": "\t// schema cannot push a change in them out of a cut diff. The server controls"
+      },
+      {
+        "line": 118,
+        "text": "\t// the size of _meta, so a large _meta change, or a large _meta or icons"
+      },
+      {
+        "line": 119,
+        "text": "\t// value in a new tool, can still push the schemas out (issue #162)."
+      },
+      {
+        "line": 120,
+        "text": "\tsections := []struct {"
+      },
+      {
+        "line": 121,
+        "text": "\t\tlabel string"
+      },
+      {
+        "line": 122,
+        "text": "\t\traw   json.RawMessage"
+      },
+      {
+        "line": 123,
+        "text": "\t}{"
+      },
+      {
+        "line": 124,
+        "text": "\t\t{\"annotations:\", t.Annotations},"
+      },
+      {
+        "line": 125,
+        "text": "\t\t{\"_meta:\", t.Meta},"
+      },
+      {
+        "line": 126,
+        "text": "\t\t{\"icons:\", t.Icons},"
+      },
+      {
+        "line": 127,
+        "text": "\t\t{\"inputSchema:\", t.InputSchema},"
+      },
+      {
+        "line": 128,
+        "text": "\t\t{\"outputSchema:\", t.OutputSchema},"
+      },
+      {
+        "line": 129,
+        "text": "\t}"
+      },
+      {
+        "line": 130,
+        "text": "\tfor _, s := range sections {"
+      },
+      {
+        "line": 131,
+        "text": "\t\tif err := writeIndented(&b, s.label, s.raw); err != nil {"
+      },
+      {
+        "line": 132,
+        "text": "\t\t\treturn \"\", err"
+      },
+      {
+        "line": 133,
+        "text": "\t\t}"
+      },
+      {
+        "line": 134,
+        "text": "\t}"
+      },
+      {
+        "line": 135,
+        "text": "\treturn b.String(), nil"
+      },
+      {
+        "line": 136,
+        "text": "}"
+      },
+      {
+        "line": 137,
+        "text": ""
+      },
+      {
+        "line": 138,
+        "text": "// maskTool applies mask to the text fields of t and to the strings and"
+      },
+      {
+        "line": 139,
+        "text": "// numbers of its JSON parts. mask must not be nil. The error names only the"
+      },
+      {
+        "line": 140,
+        "text": "// part, never server text."
+      },
+      {
+        "line": 141,
+        "text": "func maskTool(t *renderedTool, mask func(string) string) error {"
+      },
+      {
+        "line": 142,
+        "text": "\tt.Name = mask(t.Name)"
+      },
+      {
+        "line": 143,
+        "text": "\tt.Title = mask(t.Title)"
+      },
+      {
+        "line": 144,
+        "text": "\tt.Description = mask(t.Description)"
+      },
+      {
+        "line": 145,
+        "text": ""
+      },
+      {
+        "line": 146,
+        "text": "\t// A pointer to each field lets one loop change the field in place."
+      },
+      {
+        "line": 147,
+        "text": "\tparts := []struct {"
+      },
+      {
+        "line": 148,
+        "text": "\t\tlabel string"
+      },
+      {
+        "line": 149,
+        "text": "\t\traw   *json.RawMessage"
+      },
+      {
+        "line": 150,
+        "text": "\t}{"
+      },
+      {
+        "line": 151,
+        "text": "\t\t{\"annotations\", &t.Annotations},"
+      },
+      {
+        "line": 152,
+        "text": "\t\t{\"_meta\", &t.Meta},"
+      },
+      {
+        "line": 153,
+        "text": "\t\t{\"icons\", &t.Icons},"
+      },
+      {
+        "line": 154,
+        "text": "\t\t{\"inputSchema\", &t.InputSchema},"
+      },
+      {
+        "line": 155,
+        "text": "\t\t{\"outputSchema\", &t.OutputSchema},"
+      },
+      {
+        "line": 156,
+        "text": "\t}"
+      },
+      {
+        "line": 157,
+        "text": "\tfor _, p := range parts {"
+      },
+      {
+        "line": 158,
+        "text": "\t\tmasked, err := maskJSON(*p.raw, mask)"
+      },
+      {
+        "line": 159,
+        "text": "\t\tif err != nil {"
+      },
+      {
+        "line": 160,
+        "text": "\t\t\treturn fmt.Errorf(\"mask %s: %w\", p.label, err)"
+      }
+    ]
+  },
+  {
+    "path": "cmd/mcpmoat/scan_findings.go",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/cmd/mcpmoat/scan_findings.go",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:05:24.302101+00:00",
+    "status": 200,
+    "sha256": "ce8f92a68b54f9eec32513805efca58a674e3e512906de35bd66d4ff34c195b4",
+    "bytes": 21486,
+    "line_count": 505,
+    "selected_lines": [
+      {
+        "line": 1,
+        "text": "package main"
+      },
+      {
+        "line": 2,
+        "text": ""
+      },
+      {
+        "line": 3,
+        "text": "import ("
+      },
+      {
+        "line": 4,
+        "text": "\t\"cmp\""
+      },
+      {
+        "line": 5,
+        "text": "\t\"fmt\""
+      },
+      {
+        "line": 6,
+        "text": "\t\"slices\""
+      },
+      {
+        "line": 7,
+        "text": ""
+      },
+      {
+        "line": 8,
+        "text": "\t\"github.com/Ducarv/mcpmoat/internal/discover\""
+      },
+      {
+        "line": 9,
+        "text": "\t\"github.com/Ducarv/mcpmoat/internal/report\""
+      },
+      {
+        "line": 10,
+        "text": "\t\"github.com/Ducarv/mcpmoat/internal/rules\""
+      },
+      {
+        "line": 11,
+        "text": ")"
+      },
+      {
+        "line": 12,
+        "text": ""
+      },
+      {
+        "line": 13,
+        "text": "// configRowsPerServer is the largest number of config finding rows that scan"
+      },
+      {
+        "line": 14,
+        "text": "// keeps for one server (issue #213). The config checks add one finding for"
+      },
+      {
+        "line": 15,
+        "text": "// each env key and each header key of a server (MOAT-T4-* and MOAT-T5-*), so a"
+      },
+      {
+        "line": 16,
+        "text": "// hostile project .mcp.json with many short keys could make a huge report. A"
+      },
+      {
+        "line": 17,
+        "text": "// server with more rows gets one summary finding (rules.RuleConfigFindingCap)"
+      },
+      {
+        "line": 18,
+        "text": "// in place of the rest. The step keeps the most severe rows (see"
+      },
+      {
+        "line": 19,
+        "text": "// cutConfigHits), so a server cannot push a severe finding out of the report"
+      },
+      {
+        "line": 20,
+        "text": "// with many weak ones."
+      },
+      {
+        "line": 21,
+        "text": "const configRowsPerServer = 100"
+      },
+      {
+        "line": 22,
+        "text": ""
+      },
+      {
+        "line": 23,
+        "text": "// configRowsTotal is the largest number of config finding rows that scan keeps"
+      },
+      {
+        "line": 24,
+        "text": "// for all the servers together. Without it, a hostile config with many"
+      },
+      {
+        "line": 25,
+        "text": "// servers could still make a huge report, 100 rows at a time. Scan keeps the"
+      },
+      {
+        "line": 26,
+        "text": "// most severe rows of the whole scan, not the rows of the first servers, so"
+      },
+      {
+        "line": 27,
+        "text": "// many servers with weak findings cannot push a severe finding of a later"
+      },
+      {
+        "line": 28,
+        "text": "// server out of the report. A server that loses rows to this cap gets the"
+      },
+      {
+        "line": 29,
+        "text": "// same summary finding as for the per-server cap. That finding does not count"
+      },
+      {
+        "line": 30,
+        "text": "// toward the cap, so the report holds at most configRowsTotal rows plus one"
+      },
+      {
+        "line": 31,
+        "text": "// summary row for each server that lost rows (see docs/limits.md)."
+      },
+      {
+        "line": 32,
+        "text": "const configRowsTotal = 10_000"
+      },
+      {
+        "line": 33,
+        "text": ""
+      },
+      {
+        "line": 34,
+        "text": "// configCaps holds the two limits of the config finding rows. A value of zero"
+      },
+      {
+        "line": 35,
+        "text": "// or less means the default (configRowsPerServer and configRowsTotal), so the"
+      },
+      {
+        "line": 36,
+        "text": "// zero configCaps gives the real limits. Tests set small values, so that they"
+      },
+      {
+        "line": 37,
+        "text": "// do not need a hundred findings."
+      },
+      {
+        "line": 38,
+        "text": "type configCaps struct {"
+      },
+      {
+        "line": 39,
+        "text": "\t// perServer is the largest number of config rows of one server."
+      },
+      {
+        "line": 40,
+        "text": "\tperServer int"
+      },
+      {
+        "line": 41,
+        "text": "\t// total is the largest number of config rows of the whole scan."
+      },
+      {
+        "line": 42,
+        "text": "\ttotal int"
+      },
+      {
+        "line": 43,
+        "text": "}"
+      },
+      {
+        "line": 44,
+        "text": ""
+      },
+      {
+        "line": 45,
+        "text": "// orDefault returns c with each value of zero or less set to its default."
+      },
+      {
+        "line": 46,
+        "text": "func (c configCaps) orDefault() configCaps {"
+      },
+      {
+        "line": 47,
+        "text": "\tif c.perServer <= 0 {"
+      },
+      {
+        "line": 48,
+        "text": "\t\tc.perServer = configRowsPerServer"
+      },
+      {
+        "line": 49,
+        "text": "\t}"
+      },
+      {
+        "line": 50,
+        "text": "\tif c.total <= 0 {"
+      },
+      {
+        "line": 51,
+        "text": "\t\tc.total = configRowsTotal"
+      },
+      {
+        "line": 52,
+        "text": "\t}"
+      },
+      {
+        "line": 53,
+        "text": "\treturn c"
+      },
+      {
+        "line": 54,
+        "text": "}"
+      },
+      {
+        "line": 55,
+        "text": ""
+      },
+      {
+        "line": 56,
+        "text": "// The fixed texts of a rules.RuleConfigFindingCap row (see configCapRow). Like"
+      },
+      {
+        "line": 57,
+        "text": "// the tool findings cap, this rule has no YAML file, so the rule set does not"
+      },
+      {
+        "line": 58,
+        "text": "// hold its texts. They never hold config text."
+      },
+      {
+        "line": 59,
+        "text": "const ("
+      },
+      {
+        "line": 60,
+        "text": "\tconfigCapTitle = \"Config findings over the limit are not listed\""
+      },
+      {
+        "line": 61,
+        "text": "\tconfigCapRisk  = \"This server has more config findings than the report lists, \" +"
+      },
+      {
+        "line": 62,
+        "text": "\t\t\"so the report is short but not complete. A hostile config file can use this to hide a finding among many.\""
+      },
+      {
+        "line": 63,
+        "text": "\tconfigCapRemediation = \"Do not use this server until you have read its config entry yourself: \" +"
+      },
+      {
+        "line": 64,
+        "text": "\t\t\"the command, the args, the URL and the env and header keys. \" +"
+      },
+      {
+        "line": 65,
+        "text": "\t\t\"Treat the findings that the report lists as a sample, not as the full list.\""
+      },
+      {
+        "line": 66,
+        "text": ")"
+      },
+      {
+        "line": 67,
+        "text": ""
+      },
+      {
+        "line": 68,
+        "text": "// configChecks holds what the config rules need: the rule set (for the"
+      },
+      {
+        "line": 69,
+        "text": "// severity of a finding), the typosquat check (T5) and the row caps."
+      },
+      {
+        "line": 70,
+        "text": "type configChecks struct {"
+      },
+      {
+        "line": 71,
+        "text": "\tset  *rules.Set"
+      },
+      {
+        "line": 72,
+        "text": "\ttypo *rules.Typosquat"
+      },
+      {
+        "line": 73,
+        "text": "\t// caps holds the limits of the config rows. The zero value gives the"
+      },
+      {
+        "line": 74,
+        "text": "\t// default limits (see configCaps)."
+      },
+      {
+        "line": 75,
+        "text": "\tcaps configCaps"
+      },
+      {
+        "line": 76,
+        "text": "}"
+      },
+      {
+        "line": 77,
+        "text": ""
+      },
+      {
+        "line": 78,
+        "text": "// configHit is a config finding that the ignore list keeps, while findings"
+      },
+      {
+        "line": 79,
+        "text": "// waits to know which ones fit under the caps. It holds the index of the"
+      },
+      {
+        "line": 80,
+        "text": "// finding in a list, not a copy of it or of its row, so a server with very"
+      },
+      {
+        "line": 81,
+        "text": "// many findings does not hold a row for each one. The memory before the cut is"
+      },
+      {
+        "line": 82,
+        "text": "// not bounded by the caps: findings holds all the findings of one server while"
+      },
+      {
+        "line": 83,
+        "text": "// it cuts them, and then up to the per-server cap for each server until the row"
+      },
+      {
+        "line": 84,
+        "text": "// build (see docs/limits.md)."
+      },
+      {
+        "line": 85,
+        "text": "type configHit struct {"
+      },
+      {
+        "line": 86,
+        "text": "\t// index is the index of the finding in the list that is cut: the"
+      },
+      {
+        "line": 87,
+        "text": "\t// findings of one server for the per-server cap, or the hits of all the"
+      },
+      {
+        "line": 88,
+        "text": "\t// servers for the scan cap."
+      },
+      {
+        "line": 89,
+        "text": "\tindex int"
+      },
+      {
+        "line": 90,
+        "text": "\t// severity is the severity word of the row (see findingRule)."
+      },
+      {
+        "line": 91,
+        "text": "\tseverity string"
+      },
+      {
+        "line": 92,
+        "text": "\t// untrusted is true when the server of the hit comes from a project file"
+      },
+      {
+        "line": 93,
+        "text": "\t// (discover.Server.Untrusted). The scan cap keeps the hits of other"
+      },
+      {
+        "line": 94,
+        "text": "\t// servers first among hits of the same severity (see cutConfigHits)."
+      },
+      {
+        "line": 95,
+        "text": "\tuntrusted bool"
+      },
+      {
+        "line": 96,
+        "text": "}"
+      },
+      {
+        "line": 97,
+        "text": ""
+      },
+      {
+        "line": 98,
+        "text": "// configServerHits holds what findings knows about one server after the"
+      },
+      {
+        "line": 99,
+        "text": "// per-server cap, while it waits for the scan cap."
+      },
+      {
+        "line": 100,
+        "text": "type configServerHits struct {"
+      },
+      {
+        "line": 101,
+        "text": "\t// ref is the server of the rows. Its Name is the server name, also for"
+      },
+      {
+        "line": 102,
+        "text": "\t// the ignore key of the cap row."
+      },
+      {
+        "line": 103,
+        "text": "\tref report.ServerRef"
+      },
+      {
+        "line": 104,
+        "text": "\t// kept holds the findings that the per-server cap keeps, in their first"
+      },
+      {
+        "line": 105,
+        "text": "\t// order. There are at most caps.perServer of them."
+      },
+      {
+        "line": 106,
+        "text": "\tkept []rules.Finding"
+      },
+      {
+        "line": 107,
+        "text": "\t// start is the index of the first kept finding in the hits of all the"
+      },
+      {
+        "line": 108,
+        "text": "\t// servers (see findings)."
+      },
+      {
+        "line": 109,
+        "text": "\tstart int"
+      },
+      {
+        "line": 110,
+        "text": "\t// omitted is the number of findings that the per-server cap left out."
+      },
+      {
+        "line": 111,
+        "text": "\tomitted int"
+      },
+      {
+        "line": 112,
+        "text": "\t// worst is the severity of the cap row for these omitted findings (see"
+      },
+      {
+        "line": 113,
+        "text": "\t// configCapSeverity). It is high when the per-server cap left out"
+      },
+      {
+        "line": 114,
+        "text": "\t// nothing."
+      },
+      {
+        "line": 115,
+        "text": "\tworst rules.Severity"
+      },
+      {
+        "line": 116,
+        "text": "}"
+      },
+      {
+        "line": 117,
+        "text": ""
+      },
+      {
+        "line": 118,
+        "text": "// findings runs the static config checks on every server and returns one"
+      },
+      {
+        "line": 119,
+        "text": "// report row for each finding that the ignore list does not drop, up to the"
+      },
+      {
+        "line": 120,
+        "text": "// caps. The order of the rows follows the order of servers. For one server,"
+      },
+      {
+        "line": 121,
+        "text": "// the T4 checks (rules.CheckConfig) come first, then the T5 check"
+      },
+      {
+        "line": 122,
+        "text": "// (typo.Check), then the rules.RuleConfigFindingCap row when there is one."
+      },
+      {
+        "line": 123,
+        "text": "//"
+      },
+      {
+        "line": 124,
+        "text": "// The servers are checked as discover gives them, with no expansion of"
+      },
+      {
+        "line": 125,
+        "text": "// variables in the command, args or URL. The checks look at the text in the"
+      },
+      {
+        "line": 126,
+        "text": "// config file, not at what a shell would run. Disabled servers are checked"
+      },
+      {
+        "line": 127,
+        "text": "// too, because a user can turn a disabled server on later."
+      },
+      {
+        "line": 128,
+        "text": "//"
+      },
+      {
+        "line": 129,
+        "text": "// The severity, the title, the risk and the remediation of a row come from the"
+      },
+      {
+        "line": 130,
+        "text": "// rule set. A finding whose rule is not in the set gets severity \"critical\""
+      },
+      {
+        "line": 131,
+        "text": "// (an unknown rule must never pass silently) and empty texts. The report"
+      },
+      {
+        "line": 132,
+        "text": "// leaves out an empty title and prints \"-\" for an empty risk or remediation."
+      },
+      {
+        "line": 133,
+        "text": "// A row holds the names of the server and the rule text from the built-in rule"
+      },
+      {
+        "line": 134,
+        "text": "// set (rule ID, field, key, related). It never holds a Finding.Message or a"
+      },
+      {
+        "line": 135,
+        "text": "// config value."
+      },
+      {
+        "line": 136,
+        "text": "//"
+      },
+      {
+        "line": 137,
+        "text": "// A server keeps at most cc.caps.perServer rows (configRowsPerServer by"
+      },
+      {
+        "line": 138,
+        "text": "// default), and the whole scan at most cc.caps.total rows (configRowsTotal by"
+      },
+      {
+        "line": 139,
+        "text": "// default). The caps count the rows after the ignore list: a row that the list"
+      },
+      {
+        "line": 140,
+        "text": "// drops does not count, so the user can make room for the other rows. The cut"
+      },
+      {
+        "line": 141,
+        "text": "// has two steps, and each keeps the most severe rows (see cutConfigHits):"
+      },
+      {
+        "line": 142,
+        "text": "//"
+      },
+      {
+        "line": 143,
+        "text": "//  1. The per-server cap cuts the rows of each server."
+      },
+      {
+        "line": 144,
+        "text": "//  2. When the rows that are left are more than the scan cap, the scan keeps"
+      },
+      {
+        "line": 145,
+        "text": "//     the most severe of them across all the servers. Among rows of the same"
+      },
+      {
+        "line": 146,
+        "text": "//     severity, it keeps the rows of servers from a user file before the rows"
+      },
+      {
+        "line": 147,
+        "text": "//     of servers from a project file (discover.Server.Untrusted), then the"
+      },
+      {
+        "line": 148,
+        "text": "//     rows of the first servers, and in one server the first rows."
+      },
+      {
+        "line": 149,
+        "text": "//"
+      },
+      {
+        "line": 150,
+        "text": "// The kept rows of a server stay in their first order. A server that lost"
+      },
+      {
+        "line": 151,
+        "text": "// rows in one or both steps gets one rules.RuleConfigFindingCap row after its"
+      },
+      {
+        "line": 152,
+        "text": "// kept rows (see configCapRow). It counts all the rows that the server lost"
+      },
+      {
+        "line": 153,
+        "text": "// in the two steps, and its severity is the highest of them, but never lower"
+      },
+      {
+        "line": 154,
+        "text": "// than high. Its limit is the per-server cap when only that cap cut the"
+      },
+      {
+        "line": 155,
+        "text": "// server, and the scan cap when the scan cap cut one or more rows of the"
+      },
+      {
+        "line": 156,
+        "text": "// server. The cap row does not count toward the caps. Below the caps, the"
+      },
+      {
+        "line": 157,
+        "text": "// rows are the same as with no caps. The per-server cut comes first, so the"
+      },
+      {
+        "line": 158,
+        "text": "// scan step holds at most cc.caps.perServer findings for each server."
+      },
+      {
+        "line": 159,
+        "text": "//"
+      },
+      {
+        "line": 160,
+        "text": "// Each finding and the cap row go through ignore.ignored. So .mcpmoat-ignore"
+      },
+      {
+        "line": 161,
+        "text": "// can drop a config finding but not the cap row: only --ignore can (see"
+      },
+      {
+        "line": 162,
+        "text": "// fileCannotIgnore). A nil ignore ignores nothing."
+      },
+      {
+        "line": 163,
+        "text": "//"
+      },
+      {
+        "line": 164,
+        "text": "// ignored counts the findings that the ignore list dropped, by rule ID. It is"
+      },
+      {
+        "line": 165,
+        "text": "// nil when the list dropped nothing. The caller must tell the user"
+      },
+      {
+        "line": 166,
+        "text": "// about these findings, because an ignore file can come from an untrusted"
+      },
+      {
+        "line": 167,
+        "text": "// folder and hide a finding. The map holds only rule IDs and counts."
+      },
+      {
+        "line": 168,
+        "text": "//"
+      },
+      {
+        "line": 169,
+        "text": "// perServer holds, for each server, the number of rows that the server got,"
+      },
+      {
+        "line": 170,
+        "text": "// with the cap row. The index is the index in servers, so two servers with the"
+      },
+      {
+        "line": 171,
+        "text": "// same name are counted apart."
+      },
+      {
+        "line": 172,
+        "text": "//"
+      },
+      {
+        "line": 173,
+        "text": "// fileBlocked lists the rule IDs that have a .mcpmoat-ignore entry that"
+      },
+      {
+        "line": 174,
+        "text": "// matches a row but is not applied (see scanIgnores.ignored). It is sorted,"
+      },
+      {
+        "line": 175,
+        "text": "// each ID is in it once, and it is nil when there is no such entry. The caller"
+      },
+      {
+        "line": 176,
+        "text": "// must call warnFileCannotIgnore for each ID."
+      },
+      {
+        "line": 177,
+        "text": "//"
+      },
+      {
+        "line": 178,
+        "text": "// cutServers is the number of servers that lost rows to a cap. A server"
+      },
+      {
+        "line": 179,
+        "text": "// counts even when the ignore list then drops its cap row, so the caller can"
+      },
+      {
+        "line": 180,
+        "text": "// still tell the user that the report is not complete."
+      }
+    ]
+  },
+  {
+    "path": "internal/report/findings.go",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/report/findings.go",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:05:24.302211+00:00",
+    "status": 200,
+    "sha256": "73a7b567b5e35403d3243b8144179cd1fdb17e853910ab82728e0f97da7409f8",
+    "bytes": 11393,
+    "line_count": 320,
+    "selected_lines": [
+      {
+        "line": 1,
+        "text": "package report"
+      },
+      {
+        "line": 2,
+        "text": ""
+      },
+      {
+        "line": 3,
+        "text": "import ("
+      },
+      {
+        "line": 4,
+        "text": "\t\"fmt\""
+      },
+      {
+        "line": 5,
+        "text": "\t\"io\""
+      },
+      {
+        "line": 6,
+        "text": "\t\"slices\""
+      },
+      {
+        "line": 7,
+        "text": "\t\"strings\""
+      },
+      {
+        "line": 8,
+        "text": ""
+      },
+      {
+        "line": 9,
+        "text": "\t\"github.com/Ducarv/mcpmoat/internal/discover\""
+      },
+      {
+        "line": 10,
+        "text": "\t\"github.com/Ducarv/mcpmoat/internal/termsafe\""
+      },
+      {
+        "line": 11,
+        "text": ")"
+      },
+      {
+        "line": 12,
+        "text": ""
+      },
+      {
+        "line": 13,
+        "text": "// emptyCell is what the report prints for a field with no text."
+      },
+      {
+        "line": 14,
+        "text": "const emptyCell = \"-\""
+      },
+      {
+        "line": 15,
+        "text": ""
+      },
+      {
+        "line": 16,
+        "text": "// Caps on the rule text of a finding, in runes of raw text. A rule is a YAML"
+      },
+      {
+        "line": 17,
+        "text": "// file in rules/ and its text is one sentence, so a real rule is far below"
+      },
+      {
+        "line": 18,
+        "text": "// these caps. They stop a rule file with a huge text from flooding the screen."
+      },
+      {
+        "line": 19,
+        "text": "const ("
+      },
+      {
+        "line": 20,
+        "text": "\tmaxTitleRunes    = 200"
+      },
+      {
+        "line": 21,
+        "text": "\tmaxRuleTextRunes = 500"
+      },
+      {
+        "line": 22,
+        "text": ")"
+      },
+      {
+        "line": 23,
+        "text": ""
+      },
+      {
+        "line": 24,
+        "text": "// The severity words of a finding."
+      },
+      {
+        "line": 25,
+        "text": "const ("
+      },
+      {
+        "line": 26,
+        "text": "\tseverityCritical = \"critical\""
+      },
+      {
+        "line": 27,
+        "text": "\tseverityHigh     = \"high\""
+      },
+      {
+        "line": 28,
+        "text": "\tseverityMedium   = \"medium\""
+      },
+      {
+        "line": 29,
+        "text": "\tseverityLow      = \"low\""
+      },
+      {
+        "line": 30,
+        "text": ")"
+      },
+      {
+        "line": 31,
+        "text": ""
+      },
+      {
+        "line": 32,
+        "text": "// severityOrder lists the severity words in the order of the groups of"
+      },
+      {
+        "line": 33,
+        "text": "// WriteFindings: the worst first. A row with any other severity word goes to"
+      },
+      {
+        "line": 34,
+        "text": "// the first group, \"critical\" (fail closed, like findingRule in"
+      },
+      {
+        "line": 35,
+        "text": "// cmd/mcpmoat). It is an array, not a slice, so no code can change it."
+      },
+      {
+        "line": 36,
+        "text": "var severityOrder = [...]string{severityCritical, severityHigh, severityMedium, severityLow}"
+      },
+      {
+        "line": 37,
+        "text": ""
+      },
+      {
+        "line": 38,
+        "text": "// groupSeverity returns s when it is a known severity word, and \"critical\""
+      },
+      {
+        "line": 39,
+        "text": "// otherwise. An unknown severity fails closed: it is grouped and coloured as"
+      },
+      {
+        "line": 40,
+        "text": "// the worst one."
+      },
+      {
+        "line": 41,
+        "text": "func groupSeverity(s string) string {"
+      },
+      {
+        "line": 42,
+        "text": "\tif slices.Contains(severityOrder[:], s) {"
+      },
+      {
+        "line": 43,
+        "text": "\t\treturn s"
+      },
+      {
+        "line": 44,
+        "text": "\t}"
+      },
+      {
+        "line": 45,
+        "text": "\treturn severityCritical"
+      },
+      {
+        "line": 46,
+        "text": "}"
+      },
+      {
+        "line": 47,
+        "text": ""
+      },
+      {
+        "line": 48,
+        "text": "// ServerRef names one server and says which config it comes from. Two servers"
+      },
+      {
+        "line": 49,
+        "text": "// can have the same name in two clients or two scopes, so the name alone does"
+      },
+      {
+        "line": 50,
+        "text": "// not tell them apart. FindingRow and ServerStatus embed ServerRef, and both"
+      },
+      {
+        "line": 51,
+        "text": "// print it as \"name (client, scope)\"."
+      },
+      {
+        "line": 52,
+        "text": "//"
+      },
+      {
+        "line": 53,
+        "text": "// All strings come from untrusted config files. The report escapes and cuts"
+      },
+      {
+        "line": 54,
+        "text": "// them."
+      },
+      {
+        "line": 55,
+        "text": "type ServerRef struct {"
+      },
+      {
+        "line": 56,
+        "text": "\t// Name is the server name in the config."
+      },
+      {
+        "line": 57,
+        "text": "\tName string"
+      },
+      {
+        "line": 58,
+        "text": "\t// Client is the client whose config declared the server."
+      },
+      {
+        "line": 59,
+        "text": "\tClient discover.Client"
+      },
+      {
+        "line": 60,
+        "text": "\t// Scope is discover.ScopeGlobal or discover.ScopeProject."
+      },
+      {
+        "line": 61,
+        "text": "\tScope discover.Scope"
+      },
+      {
+        "line": 62,
+        "text": "\t// ProjectPath is the project path of a server with project scope. It is"
+      },
+      {
+        "line": 63,
+        "text": "\t// empty for a global server."
+      },
+      {
+        "line": 64,
+        "text": "\tProjectPath string"
+      },
+      {
+        "line": 65,
+        "text": "\t// Untrusted is true for a server from a project file, which a cloned"
+      },
+      {
+        "line": 66,
+        "text": "\t// repository can ship (discover.Server.Untrusted)."
+      },
+      {
+        "line": 67,
+        "text": "\tUntrusted bool"
+      },
+      {
+        "line": 68,
+        "text": "\t// Index is the position of the server in the scanned list. It becomes"
+      },
+      {
+        "line": 69,
+        "text": "\t// server_index in scan --json, so a JSON consumer can find the server even"
+      },
+      {
+        "line": 70,
+        "text": "\t// when two names are the same after the cut. The terminal report does not"
+      },
+      {
+        "line": 71,
+        "text": "\t// print it."
+      },
+      {
+        "line": 72,
+        "text": "\tIndex int"
+      },
+      {
+        "line": 73,
+        "text": "}"
+      },
+      {
+        "line": 74,
+        "text": ""
+      },
+      {
+        "line": 75,
+        "text": "// NewServerRef returns the ServerRef of s. index is the position of s in the"
+      },
+      {
+        "line": 76,
+        "text": "// scanned list (see ServerRef.Index)."
+      },
+      {
+        "line": 77,
+        "text": "func NewServerRef(s discover.Server, index int) ServerRef {"
+      },
+      {
+        "line": 78,
+        "text": "\treturn ServerRef{"
+      },
+      {
+        "line": 79,
+        "text": "\t\tName:        s.Name,"
+      },
+      {
+        "line": 80,
+        "text": "\t\tClient:      s.Client,"
+      },
+      {
+        "line": 81,
+        "text": "\t\tScope:       s.Scope,"
+      },
+      {
+        "line": 82,
+        "text": "\t\tProjectPath: s.ProjectPath,"
+      },
+      {
+        "line": 83,
+        "text": "\t\tUntrusted:   s.Untrusted,"
+      },
+      {
+        "line": 84,
+        "text": "\t\tIndex:       index,"
+      },
+      {
+        "line": 85,
+        "text": "\t}"
+      },
+      {
+        "line": 86,
+        "text": "}"
+      },
+      {
+        "line": 87,
+        "text": ""
+      },
+      {
+        "line": 88,
+        "text": "// label returns the escaped text \"name (client, scope)\". The scope is the"
+      },
+      {
+        "line": 89,
+        "text": "// SCOPE cell of WriteServers: \"global\", or \"project:\" and the path, and then"
+      },
+      {
+        "line": 90,
+        "text": "// \" (untrusted)\" for an untrusted server. Name and client are cut at"
+      },
+      {
+        "line": 91,
+        "text": "// MaxShortCellRunes and the path at maxPathRunes, so a hostile config cannot"
+      },
+      {
+        "line": 92,
+        "text": "// flood the screen."
+      },
+      {
+        "line": 93,
+        "text": "func (r ServerRef) label() string {"
+      },
+      {
+        "line": 94,
+        "text": "\treturn findingCell(r.Name) + \" (\" + findingCell(string(r.Client)) + \", \" +"
+      },
+      {
+        "line": 95,
+        "text": "\t\tscopeCell(r.Scope, r.ProjectPath, r.Untrusted) + \")\""
+      },
+      {
+        "line": 96,
+        "text": "}"
+      },
+      {
+        "line": 97,
+        "text": ""
+      },
+      {
+        "line": 98,
+        "text": "// Source tells what made a finding. It is the type of FindingRow.Source."
+      },
+      {
+        "line": 99,
+        "text": "type Source string"
+      },
+      {
+        "line": 100,
+        "text": ""
+      },
+      {
+        "line": 101,
+        "text": "// The values of FindingRow.Source. The zero value \"\" means SourceRule."
+      },
+      {
+        "line": 102,
+        "text": "const ("
+      },
+      {
+        "line": 103,
+        "text": "\t// SourceRule is a finding from a mcpmoat rule (a built-in check or a rule"
+      },
+      {
+        "line": 104,
+        "text": "\t// file), not from the LLM."
+      },
+      {
+        "line": 105,
+        "text": "\tSourceRule Source = \"rule\""
+      },
+      {
+        "line": 106,
+        "text": "\t// SourceLLM is a finding from the optional LLM classification (--llm). It"
+      },
+      {
+        "line": 107,
+        "text": "\t// is advisory: a model made it, not a rule."
+      },
+      {
+        "line": 108,
+        "text": "\tSourceLLM Source = \"llm\""
+      },
+      {
+        "line": 109,
+        "text": ")"
+      },
+      {
+        "line": 110,
+        "text": ""
+      },
+      {
+        "line": 111,
+        "text": "// normalize returns the source that the writers use for s: SourceLLM stays"
+      },
+      {
+        "line": 112,
+        "text": "// SourceLLM, and every other value (\"\" or an unknown value) is SourceRule."
+      },
+      {
+        "line": 113,
+        "text": "// So the terminal and the JSON report always agree on the source of a row."
+      },
+      {
+        "line": 114,
+        "text": "func (s Source) normalize() Source {"
+      },
+      {
+        "line": 115,
+        "text": "\tif s == SourceLLM {"
+      },
+      {
+        "line": 116,
+        "text": "\t\treturn SourceLLM"
+      },
+      {
+        "line": 117,
+        "text": "\t}"
+      },
+      {
+        "line": 118,
+        "text": "\treturn SourceRule"
+      },
+      {
+        "line": 119,
+        "text": "}"
+      },
+      {
+        "line": 120,
+        "text": ""
+      },
+      {
+        "line": 121,
+        "text": "// FindingRow is one finding as the report prints it. It holds names and the"
+      },
+      {
+        "line": 122,
+        "text": "// text of the rule, never a value from a config. The caller fills Severity,"
+      },
+      {
+        "line": 123,
+        "text": "// Title, Risk and Remediation from the rule set, because this package does not"
+      },
+      {
+        "line": 124,
+        "text": "// know the rules."
+      },
+      {
+        "line": 125,
+        "text": "type FindingRow struct {"
+      },
+      {
+        "line": 126,
+        "text": "\t// ServerRef is the server that the finding is about."
+      },
+      {
+        "line": 127,
+        "text": "\tServerRef"
+      },
+      {
+        "line": 128,
+        "text": ""
+      },
+      {
+        "line": 129,
+        "text": "\t// Source tells what made the finding. The zero value means SourceRule."
+      },
+      {
+        "line": 130,
+        "text": "\t// WriteFindings marks a SourceLLM row as advisory."
+      },
+      {
+        "line": 131,
+        "text": "\tSource Source"
+      },
+      {
+        "line": 132,
+        "text": ""
+      },
+      {
+        "line": 133,
+        "text": "\t// RuleID is the ID of the rule that matched."
+      },
+      {
+        "line": 134,
+        "text": "\tRuleID string"
+      },
+      {
+        "line": 135,
+        "text": "\t// Severity is the severity word of the rule: \"critical\", \"high\", \"medium\""
+      },
+      {
+        "line": 136,
+        "text": "\t// or \"low\". Any other word is shown in the group \"critical\"."
+      },
+      {
+        "line": 137,
+        "text": "\tSeverity string"
+      },
+      {
+        "line": 138,
+        "text": "\t// Title is the short title of the rule. WriteFindings leaves it out when"
+      },
+      {
+        "line": 139,
+        "text": "\t// it is empty."
+      },
+      {
+        "line": 140,
+        "text": "\tTitle string"
+      },
+      {
+        "line": 141,
+        "text": "\t// Risk says why the finding matters. It is the text of the rule."
+      },
+      {
+        "line": 142,
+        "text": "\tRisk string"
+      },
+      {
+        "line": 143,
+        "text": "\t// Remediation says how to fix the finding. It is the text of the rule."
+      },
+      {
+        "line": 144,
+        "text": "\tRemediation string"
+      },
+      {
+        "line": 145,
+        "text": ""
+      },
+      {
+        "line": 146,
+        "text": "\t// Field is the config field that matched, for example \"env\" or \"args\". A"
+      },
+      {
+        "line": 147,
+        "text": "\t// pin row has the field \"tool\" and the tool name in Key."
+      },
+      {
+        "line": 148,
+        "text": "\tField string"
+      },
+      {
+        "line": 149,
+        "text": "\t// Key is the key name in Field, for example an env variable name."
+      },
+      {
+        "line": 150,
+        "text": "\tKey string"
+      }
+    ]
+  }
+]

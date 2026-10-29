@@ -1,0 +1,140 @@
+{
+  "completed_at_utc": "2026-10-28T06:03:04.792383+00:00",
+  "baseline_commit": "85db7deea2338e43a3ce01b7c70ab938aa7c99b8",
+  "result": "All remaining findings from the supplied list are closed in local source. Releases are built and verified locally; no publication or deployment performed.",
+  "newly_closed": [
+    "GCVE-110-VULN-PYPI-2026-000640",
+    "GCVE-110-VULN-PYPI-2026-000641",
+    "GCVE-110-VULN-PYPI-2026-000642",
+    "GCVE-110-VULN-PYPI-2026-000643",
+    "GCVE-110-VULN-PYPI-2026-000644"
+  ],
+  "previously_closed_rechecked": [
+    "000630",
+    "000631",
+    "000632",
+    "000633",
+    "000634",
+    "000635",
+    "000636",
+    "000637",
+    "000638",
+    "000639",
+    "LOGOS default bind"
+  ],
+  "changes": {
+    "000640-000643": "MCP, Metis, Treasury, Platon and oracle_platon mirror deny tokenless TCP by default, including arbitrary same-UID relays. LOCAL_RELAY explicitly trusts local TCP; missing proc also requires LOCAL_UNVERIFIED. Configured credentials, production restrictions, peer/Host/Origin/forwarding guards preserved. Removed process-name/listener heuristic.",
+    "000644": "Shared failures delay a submitted login once, using a bounded monotonic deadline. Other failures cannot extend it; operator password is checked after its own delay. Own IP/session lockout rechecked after waiting; known recent-IP exemption retained."
+  },
+  "behavior_change": "HTTP users should configure their package API/client/steer token. Keyless local development now requires explicit LOCAL_RELAY trust; platforms without proc additionally require LOCAL_UNVERIFIED. MCP stdio is unchanged.",
+  "verification": {
+    "test_results": "remediation-tests.json",
+    "passed": 800,
+    "skipped": 1,
+    "independent_security_review": "Approved, no blockers. Separate reruns not counted in 800.",
+    "wheel_results": "local-wheel-verification.json",
+    "wheel_count": 8,
+    "python_files_in_wheels_verified": 387,
+    "packaged_authorization_gates_verified": 4,
+    "diff_whitespace": "passed",
+    "critical_python_static_checks": "passed"
+  },
+  "local_releases": [
+    {
+      "package": "aimarket-atlas",
+      "version": "0.3.3",
+      "wheel": "aimarket_atlas-0.3.3-py3-none-any.whl",
+      "sha256": "2e1c91cb97d59c09e8a7c241f998c7968a466559c51b6ed9a38c30a64d52f298",
+      "python_sources_verified": 49
+    },
+    {
+      "package": "aimarket-logos",
+      "version": "0.2.2",
+      "wheel": "aimarket_logos-0.2.2-py3-none-any.whl",
+      "sha256": "f95239a2c6b6a3af12c04a2abfe06dc196a2e7cae82bde6bf585a620201da94f",
+      "python_sources_verified": 31
+    },
+    {
+      "package": "aimarket-mcp",
+      "version": "0.6.4",
+      "wheel": "aimarket_mcp-0.6.4-py3-none-any.whl",
+      "sha256": "4bc6117d5793862d04f58233d6bad8dd41b579c4afa0fc86d66f0a740d01a575",
+      "python_sources_verified": 5
+    },
+    {
+      "package": "aimarket-metis",
+      "version": "0.2.5",
+      "wheel": "aimarket_metis-0.2.5-py3-none-any.whl",
+      "sha256": "223d6611794fcfb5d262eb0b2cee3d286ab293e9b14558d2e7a7073ee583915e",
+      "python_sources_verified": 102
+    },
+    {
+      "package": "aimarket-oracle-core",
+      "version": "0.6.3",
+      "wheel": "aimarket_oracle_core-0.6.3-py3-none-any.whl",
+      "sha256": "48b71b8c05a1ae5fd0fb0ca9bd0953b86c42340b35eae8e91fe4c246e873c062",
+      "python_sources_verified": 12
+    },
+    {
+      "package": "aimarket-platon",
+      "version": "0.1.6",
+      "wheel": "aimarket_platon-0.1.6-py3-none-any.whl",
+      "sha256": "02cc244612be327018820de981cfe591d119b17a74b5610bb0706f855025c281",
+      "python_sources_verified": 17
+    },
+    {
+      "package": "aimarket-treasury",
+      "version": "0.1.4",
+      "wheel": "aimarket_treasury-0.1.4-py3-none-any.whl",
+      "sha256": "3fc7995aa4e3420f85dfea98132a1a71846e61bc933b005224ae0bb2f774292f",
+      "python_sources_verified": 3
+    },
+    {
+      "package": "skopos-fleet",
+      "version": "0.2.2",
+      "wheel": "skopos_fleet-0.2.2-py3-none-any.whl",
+      "sha256": "5984ca19c7c414439342b0fad79d5e75a356e39f19145cf25b810d76ac5a927a",
+      "python_sources_verified": 168
+    }
+  ],
+  "release_bundle": "security-release-wheels.zip",
+  "limits": [
+    "No PyPI/GitHub publishing or live deployment. Existing registry versions and deployments are unchanged.",
+    "One native Linux socket test skipped on this macOS host; synthetic proc and actual ASGI route tests cover default-deny behavior."
+  ],
+  "implementation_source_sha256": {
+    "aimarket-mcp/aimarket_mcp/server.py": "6363c667036cbe08f327a6a937ce18190064c330d04e88a212c8c920a4181f8f",
+    "aimarket-mcp/tests/conftest.py": "75e3a85fafbfafef9c359f137ac2f667ec51f9d8d6b1e3567256a245e36d3df0",
+    "aimarket-mcp/tests/test_gateway.py": "6521653c5f5adc81b16ba34eedd96a17a65f277758f16ee7374052292b8a0eba",
+    "aimarket-mcp/tests/test_metis_errors.py": "b1eb20aff6b4e3fd43c3a6030f020a6e7bb2198b6158f7716d569fc3cfe4c080",
+    "aimarket-mcp/tests/test_version.py": "21fe398251dcea9fb8ade095b320aa7619d350446ace4840eac35b281f182e86",
+    "metis/metis/api/auth.py": "623d70f6ae4220010c12ea1523993a82eabc84ea8dbf6e207b675459e49a3434",
+    "metis/metis/coordinator_server.py": "d4bbec047001efb2cd10895a1804893c35f280d7da1c07024ab2d19288100efb",
+    "metis/metis/distributed/server.py": "dd4f5379bba9bf6896b40a98546517359e8bd03a2159dbbb4ed1db5ac3350ed3",
+    "metis/tests/conftest.py": "cb9df73e8fa5811f258ead478bec011b241b6cd20435cf698c28d38a1c0fb05a",
+    "metis/tests/test_api.py": "3b32458e347a709a11b82fc9fd3ba2df4124870405e85969f8bd0774e18e5f9f",
+    "metis/tests/test_api_app.py": "cce9e598e8c7c33cf14d484fc6f401345fd28c18e2934c42f90fe857ea9c2d77",
+    "metis/tests/test_api_observability.py": "078d0f19ed2f2c7d8d215bcfac71f8c3f6915bc63118b4949b5e0219fe17afc7",
+    "metis/tests/test_coordinator_server.py": "c21b67e61952fd921fb94598a820b11cdcc176a8b803fc48f8ae706a7bcc27b4",
+    "metis/tests/test_distributed_node_server.py": "b7aa77393b031c4e25d0aa3fe653c9e5869101d013b0be1db45204cca1e24f2a",
+    "metis/tests/test_ecosystem_api.py": "4743ae0d702058a49d54748405d3d7f4cc8949260bc1545b8bc195578a6a5ae6",
+    "metis/tests/test_host_execution_policy.py": "a866a03f23741336c9098f8723ef24902457a8d483dcdc80a3d92155d38a64b8",
+    "metis/tests/test_jury.py": "5a8e91f9a201fbe97944272251332f60b54bfc9284ae1e1c15e76a1cf5eb5f9f",
+    "metis/tests/test_multimodal.py": "c322d9440689096fad04da2d63b45a03f2803c7bcea4ae4ab0247b5395a14c0a",
+    "metis/tests/test_pipeline_event_sink.py": "a216b19637e8180284f0c2f5862f90917c1a7d0b948a25d268962eb58f0d81ec",
+    "metis/tests/test_verify_guarantee.py": "9066d398cb89ae817d011d487992f0cd051ccce552651433b58d17520c33893b",
+    "oracles/oracles/platon/backend/oracle_platon/main.py": "a505c4507a2b64dcc4fa213e2c917ae14f7cef86ce96d0a7571b406df75eabe1",
+    "oracles/oracles/platon/backend/tests/conftest.py": "400989f49d9babb3c9dcdba5bfa81498af7b91c024666e0363743b85f192269c",
+    "oracles/oracles/platon/backend/tests/test_api.py": "c8caff003b7d2ae74c22fe9db6b75e64c554b22955af71b92a433bbce91a2a56",
+    "platon/backend/platon/main.py": "55e3ddcb60f6c0a2c20373f83e80efa57560bdbfaf162a0d4c3df6244aae620b",
+    "platon/backend/tests/conftest.py": "3871142eff9337fece9f6baec5ec0e6f396db197b546e51e25f94bcc70236c87",
+    "platon/backend/tests/test_api.py": "e7a8c88f838029d154653de0b66670ddbe9579753d948eff0f324935cb5c3270",
+    "skopos/skopos/app_auth.py": "8ab1edc1f84523b71ca3bb26fe4c34ddc4c62a64ed26cab9d83feec74de98ad3",
+    "skopos/skopos/auth_store.py": "704581efa87a1561ad2843f046d5d9986ddfe1cf85e8a2edcab930d777719bc6",
+    "treasury/tests/conftest.py": "e9ca43b81d58622cf4869e6231ba53b10f56f9b9e353e9ba2aec0657fa1ed11e",
+    "treasury/tests/test_treasury_service.py": "954816bcc4308e590c5df7f0db412409e8fecb3657918a0a8acf7623af2d3cea",
+    "treasury/treasury/service.py": "84b758161573099f7fb41347416956666b99d825f7d83f9f453335117e94446d",
+    "tests/test_keyless_tcp_authorization.py": "6ccdae44f9692bd41cfdb2ca84ff06ee058e40b8be5eff35b4a046c21d5f5cb7",
+    "skopos/tests/test_login_pacing.py": "0f460eea546baefe95609b1303a33216898f87a34ce256bd56c781bda5c7033c"
+  }
+}

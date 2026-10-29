@@ -1,0 +1,261 @@
+{
+  "date": "2026-10-27",
+  "languages": [
+    "en",
+    "ru",
+    "es",
+    "fr",
+    "zh"
+  ],
+  "python": "3.12.13",
+  "checks": {
+    "documents": 10,
+    "localLinks": 90,
+    "validatedJsonBlocks": 10,
+    "cliRuns": 10,
+    "repeatableOutput": true,
+    "unchangedExampleInputs": true,
+    "languageIndependentAnalysis": true,
+    "expectedSummary": {
+      "changed": 1,
+      "unchanged": 0,
+      "context_changed": 1,
+      "unknown": 1
+    }
+  },
+  "execution": "Offline source checkout; verifier children use -S -B; capture and package installation were not invoked.",
+  "commands": [
+    {
+      "command": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/bin/python",
+        "-S",
+        "-B",
+        "examples/upgrade-brief/verify.py",
+        "--out-dir",
+        "../output/histor-upgrade-brief-example"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor",
+      "exitCode": 0,
+      "log": "example-verification.log"
+    },
+    {
+      "command": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/bin/ruff",
+        "check",
+        "examples/upgrade-brief/verify.py"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor",
+      "exitCode": 0,
+      "log": "ruff.log"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor",
+      "exitCode": 0,
+      "log": "diff-check.log"
+    }
+  ],
+  "sources": [
+    {
+      "path": "histor/docs/upgrade-brief.md",
+      "bytes": 9162,
+      "sha256": "ae38563ca37dfe85d8b860cb392b7e5fbf4f862d37faddaa245030ca009cb62e"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.ru.md",
+      "bytes": 16037,
+      "sha256": "6ca9add78fc8f138413503e570066729f6c61a1e767fa1b44325271ab553fedc"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.es.md",
+      "bytes": 10390,
+      "sha256": "c064078c13ff0cceba3a5569478b77178f0bc9f39eb0bd25305e4e00c00ad593"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.fr.md",
+      "bytes": 10920,
+      "sha256": "ceaf415fdbd1e546592962ac3e6acaee5b10f62f48c383d44cfd0e0e25f9991d"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.zh.md",
+      "bytes": 8989,
+      "sha256": "5c40bd05e120d3d25dd3cc6bc5a445f44974f825c4dd08d22761fb382d341d1d"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.md",
+      "bytes": 4046,
+      "sha256": "6c94bdefc0681c099eba93bff7967eb01976f28105ae6755c8a8f04a65ee335b"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.ru.md",
+      "bytes": 6255,
+      "sha256": "53b466558901375f8d900ad89c96157cad5b7249ceb0664b70b66b24cb42a2b0"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.es.md",
+      "bytes": 4485,
+      "sha256": "80f1e4f03c7ea52f0f69c8661666075d9f9b8a6fcad61c81bb807f1c345b90a2"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.fr.md",
+      "bytes": 4699,
+      "sha256": "1cbffe76a71d0a7e287696daaa4fce06b1fa016a49bb63a4990a7a582eb5e0dc"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.zh.md",
+      "bytes": 3904,
+      "sha256": "475a02dafae44f482352d8c9ea3504bfc106d729f445fc8aaee5ff174e9a2c08"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.en.json",
+      "bytes": 1557,
+      "sha256": "0876494f4c77303cda37bc4359c1809b6c9ea82e05bd2dfd8c4f46a8767108e1"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.es.json",
+      "bytes": 1593,
+      "sha256": "deefad6a79adfd546e4f07c5715d68cf445a063f74f390e4e1623271ffe8e167"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.fr.json",
+      "bytes": 1599,
+      "sha256": "4344ced92bcff8f3518c095a736a56a687ee24a6f42e15ab40ef0baef2094882"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.json",
+      "bytes": 1788,
+      "sha256": "e02b2ccd26fe814d1ed3a3c8080a6e54176e85260f6fbd6f935ca9f11624bbcb"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.zh.json",
+      "bytes": 1518,
+      "sha256": "ed2c44c23337bbe06715a9f5319a193bb2320dfae0042b5edd1cfb8764228477"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/migration-after.json",
+      "bytes": 534,
+      "sha256": "80a04b3ec2e35f3b0330bd643d3ff8a7297c34e74288e6f91ecbed1290177e98"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/migration-before.json",
+      "bytes": 534,
+      "sha256": "aae66bbd278f22d34ff079b78b6a2c449043920db192aa710b916bc609006e4d"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/offline-after.json",
+      "bytes": 369,
+      "sha256": "66727987e9474aba873aec44d9f5567fcc3f9678fbdeab69717dcfb269effa63"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/offline-before.json",
+      "bytes": 532,
+      "sha256": "8d1528bbe8087c1cbceeaa0f4cbac46469e27eed3ff3ca9f50a56b714bb4e59c"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/research-after.json",
+      "bytes": 1757,
+      "sha256": "57194207461aaed52fd64ce50ed29039245f7b89d680b86f835158882721bc8f"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/snapshots/research-before.json",
+      "bytes": 1614,
+      "sha256": "f0d61f85b2ce2de63595690bd528b70994f329e3db903ac4d59950fb3b8263da"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/expected.json",
+      "bytes": 3167,
+      "sha256": "4ee5813d16fb400456376ea07e115613e56e35f3bac0899487b6e1ca60f92df9"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/verify.py",
+      "bytes": 6436,
+      "sha256": "060ebcf6bfaeedaddd12835a1c4ed62716d165528bc90a6335872e012b89c786"
+    },
+    {
+      "path": "histor/CHANGELOG.md",
+      "bytes": 8793,
+      "sha256": "fae6ff81529a05e0c921d7777c13504ca88b5fdd696a75c8cae8dc3273c63bff"
+    },
+    {
+      "path": "histor/README.md",
+      "bytes": 13603,
+      "sha256": "9310a37fb1160bf7dbafb27d656a2fc3f4363606020794b51dc47892cb5a7db7"
+    },
+    {
+      "path": "histor/README.ru.md",
+      "bytes": 18143,
+      "sha256": "0720670475d4799f6b8ed607835d8642413dce7baccd5b377c5ce90ad052a264"
+    },
+    {
+      "path": "histor/README.es.md",
+      "bytes": 13247,
+      "sha256": "fa265f8641b96960ea850cb6bc1ce14a964bae864d2bb8c09de67070237cb7a3"
+    },
+    {
+      "path": "histor/README.fr.md",
+      "bytes": 13620,
+      "sha256": "a1a441dd9a11f3e29ca6855ca43d866b89e1fc3de4046b4514c663e4cbd05ec9"
+    },
+    {
+      "path": "histor/README.zh.md",
+      "bytes": 12461,
+      "sha256": "0287cd1286d4c72a25d54c59049d04c8dd9e627c002b346b14d9cffab7cf7333"
+    }
+  ],
+  "reports": [
+    {
+      "path": "output/histor-upgrade-brief-example/en/report.json",
+      "bytes": 19491,
+      "sha256": "24a2858e4588a2f6a961cdc2e3874e68c984698a0c25e4d3f5199b507cd55b48"
+    },
+    {
+      "path": "output/histor-upgrade-brief-example/en/report.md",
+      "bytes": 6298,
+      "sha256": "1ca4fb5f4db65e7c4b389cc8485280847adbe82d351286cc3bbdb4e99044e923"
+    },
+    {
+      "path": "output/histor-upgrade-brief-example/es/report.json",
+      "bytes": 19543,
+      "sha256": "56810eeac34cbe43c3971c7e136d30f09f62a758083f990ff19e2705bcf934f7"
+    },
+    {
+      "path": "output/histor-upgrade-brief-example/es/report.md",
+      "bytes": 6334,
+      "sha256": "cedb1f22a3c62b7a1b4290582a7fd9f1d199abdccd6df4a8839532d654510056"
+    },
+    {
+      "path": "output/histor-upgrade-brief-example/fr/report.json",
+      "bytes": 19567,
+      "sha256": "6fad1e1708dc329999dfa85baca429664f7693a6209f4388458852f13c80f4ed"
+    },
+    {
+      "path": "output/histor-upgrade-brief-example/fr/report.md",
+      "bytes": 6340,
+      "sha256": "1bb6a213a5acc152c53fbafe5349cc5c1589753e79c4f29501f1ce2346d45265"
+    },
+    {
+      "path": "output/histor-upgrade-brief-example/ru/report.json",
+      "bytes": 20494,
+      "sha256": "d568fbed8b36faff20f211da6cb37031c2d563bd1b967229ab1fcb1b04413b82"
+    },
+    {
+      "path": "output/histor-upgrade-brief-example/ru/report.md",
+      "bytes": 6529,
+      "sha256": "d40c41dc70f3c01849978d5afdeac7e5d6bc82cb7523d64274e0005020b38b49"
+    },
+    {
+      "path": "output/histor-upgrade-brief-example/zh/report.json",
+      "bytes": 19584,
+      "sha256": "64dba83223a9f312690620e9b043b1694c572c8c216572059c78daa5be60384b"
+    },
+    {
+      "path": "output/histor-upgrade-brief-example/zh/report.md",
+      "bytes": 6259,
+      "sha256": "32f29b00063aa952051dc7bbe3b69f89d396e45b80b3d3eaa228f5d3b078cb6a"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "summary": {"changed": 0, "unchanged": 0, "context_changed": 0, "unknown": 4},
+  "dependencies": {
+    "https://modelmarket.dev/mcp": {
+      "fieldCoverage": "core-only", "observedChanges": true, "toolCount": 13,
+      "tools": {"market_search": ["description"], "market_invoke": []},
+      "workflows": {
+        "hub-search-relevance": [[null, "check_context"], ["market_search", "check_description"], ["market_search", "check_extras_missing"]],
+        "hub-search-to-invoke": [[null, "check_context"], ["market_invoke", "check_extras_missing"], ["market_search", "check_description"], ["market_search", "check_extras_missing"]]
+      }
+    },
+    "npm:@aimarket/warden": {
+      "fieldCoverage": "core-only", "observedChanges": true, "toolCount": 9,
+      "tools": {"approve_mcp_server": ["inputSchema"], "status_mcp_server": ["inputSchema", "outputSchema"]},
+      "workflows": {
+        "warden-origin-review": [[null, "check_context"], ["status_mcp_server", "check_input"], ["status_mcp_server", "check_output"], ["status_mcp_server", "check_extras_missing"]],
+        "warden-review-to-approval": [[null, "check_context"], ["approve_mcp_server", "check_input"], ["approve_mcp_server", "check_extras_missing"], ["status_mcp_server", "check_input"], ["status_mcp_server", "check_output"], ["status_mcp_server", "check_extras_missing"]]
+      }
+    },
+    "pypi:aimarket-oracle-gateway": {
+      "fieldCoverage": "none", "observedChanges": null, "toolCount": null,
+      "tools": {"list_oracle_capabilities": []},
+      "workflows": {"metis-oracle-catalog": [[null, "check_context"], ["list_oracle_capabilities", "check_observations_missing"]]}
+    },
+    "pypi:aimarket-mcp-packager": {
+      "fieldCoverage": "none", "observedChanges": null, "toolCount": null,
+      "tools": {"package_capability": []},
+      "workflows": {"metis-package-capability": [[null, "check_context"], ["package_capability", "check_observations_missing"]]}
+    }
+  }
+}

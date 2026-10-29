@@ -1,0 +1,148 @@
+{
+  "audit_date_msk": "2026-10-27",
+  "external_sources_checked": [
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning",
+      "supports": "Modern/legacy/dual-era compatibility and optional backward compatibility"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/changelog",
+      "supports": "Removal of initialize handshake and per-request metadata"
+    },
+    {
+      "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6420613934",
+      "supports": "Paraphern confirmed six corrected snapshots"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/registry/registry-aggregators",
+      "supports": "Downstream registry aggregator model"
+    },
+    {
+      "url": "https://www.anthropic.com/research/code-execution-with-mcp",
+      "supports": "Selective tool loading and context efficiency"
+    },
+    {
+      "url": "https://docs.stacklok.com/toolhive",
+      "supports": "Existing runtime, registry, gateway and observability capabilities"
+    },
+    {
+      "url": "https://github.com/snyk/agent-scan/blob/main/docs/cli-reference.md",
+      "supports": "Existing MCP configuration inspection and scanning capabilities"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http",
+      "supports": "Modern HTTP Accept header requirements checked in positive and negative fixture controls"
+    }
+  ],
+  "local_sources": [
+    {
+      "path": "aimarket-hub/aimarket_hub/mcp_gateway.py",
+      "sha256": "660e4b22f85f96f3caa4f2b5671b367f61b6bec7aaf12238b732cdc507855604"
+    },
+    {
+      "path": "cite-desks/kernel/README.md",
+      "sha256": "d742ccf394533858b455926e69799b8ad00cbc5c25bab8bb0ee650ee29380b07"
+    },
+    {
+      "path": "courses/README.md",
+      "sha256": "5a4584da0f5f9beec056c5ce6d115cdd29c744ddfe7ec3e685c35ee70494db25"
+    },
+    {
+      "path": "courses/mcp-security-course/courselib/exercises.py",
+      "sha256": "0d29eade3fd9996015cf6107f99a89bb96b93ce875cf9bc119e2baa29a732fea"
+    },
+    {
+      "path": "courses/mcp-security-course/labs/run_exercises.py",
+      "sha256": "451041db3f906d7a2103bc9ac73dc3d35a725b7fd53fd5f8a3f411ba6b43bacc"
+    },
+    {
+      "path": "docs/evidence/ecosystem-growth-audit-2026-10-27/compatibility-probe.json",
+      "sha256": "63ce99c8beffab2d8ed3bed463795ec65b28c3895f915ad55996cc597f23de11"
+    },
+    {
+      "path": "docs/evidence/ecosystem-growth-audit-2026-10-27/compatibility_probe.py",
+      "sha256": "82e8206907b30d5d58e887210c08d36b3b9ddf888309b4afcbe68325aa47c208"
+    },
+    {
+      "path": "docs/evidence/procurement-production-2026-10-11/README.md",
+      "sha256": "13c2a1c17e43bcf984c03e04d8010f490a480069d18569e5c845e8de0c7604f5"
+    },
+    {
+      "path": "docs/external-presence-2026-10-24.ru.md",
+      "sha256": "25ab81c5cfe7f5f8f95bb7352c42521578bedbd87d436dd3538182dfea6451c8"
+    },
+    {
+      "path": "docs/growth/external-signals-2026-10-27.ru.md",
+      "sha256": "28dbba934b4b0e8997e2e8924f0bd706ac492c779d3cd47af4ba01972c83061b"
+    },
+    {
+      "path": "docs/growth/textokit-five-payers-2026-10-25.md",
+      "sha256": "f51e4fdcf731aab7b1c92b650065ebd985065853b490e0955527b496f6bbc0bc"
+    },
+    {
+      "path": "docs/security/code-audit-2026-10-25.md",
+      "sha256": "7956e463c48e9e1e5f8a8aeab8cfc9a01a8be23e130403f8bd8eb8b61dbcf054"
+    },
+    {
+      "path": "domain-kit/docs/sentinel-pilot/ru.md",
+      "sha256": "7c6c17c540378c5bf669c834d938262213e58d430b94201fa906e813033fc899"
+    },
+    {
+      "path": "esim-kit/README.md",
+      "sha256": "bdab31f77bd868dcaa095f18d7728ecb8fa466436bf5163c878cbd432255e41f"
+    },
+    {
+      "path": "histor/histor/dataset.py",
+      "sha256": "61c3d42351111e54c00f72714df3b4a42f23c2b5de9e3e63562e5c2f335e6cb8"
+    },
+    {
+      "path": "histor/histor/diffing.py",
+      "sha256": "a842649e3dc5971f4dd5179444470248f3d26dfa6cf07359470e4c89522750f4"
+    },
+    {
+      "path": "histor/histor/mcpclient.py",
+      "sha256": "a16bf5b959ce32cbe16859e0c201f321a478bcb32726306e08a5bdb6b5c0ebfe"
+    },
+    {
+      "path": "histor/histor/security_events.py",
+      "sha256": "e2cff494cb31f75d24d6225b27d19b38498518e95b83df22fc8c8beddcd9fc76"
+    },
+    {
+      "path": "histor/histor/toolcost.py",
+      "sha256": "88b669a8131758e44754cf6d1211f7fc0f7d89c8207c0bfe03e6269487bf7f50"
+    },
+    {
+      "path": "pingblip/README.md",
+      "sha256": "8a8d1fdb113e6b4ca81f554e958a36b3716124760faa5c9556be23dad6a8b9ec"
+    },
+    {
+      "path": "pingblip/web/src/lib/funnel-core.ts",
+      "sha256": "fb10fc90e6ca026091a81ce21dafe70f21feb72edc14e5941467f6934bb54de5"
+    },
+    {
+      "path": "pingblip/web/src/lib/funnel.ts",
+      "sha256": "22148bff7bf3a8de61f19d64d9ec12b210e88c74a618a6066211e6096017760b"
+    },
+    {
+      "path": "scripts/github-io/index.html",
+      "sha256": "e72569fbefc8de54292bbb4460da2275ed199446df77cbb43b65df3f46cd862a"
+    },
+    {
+      "path": "signal-hunt/signal_hunt/service.py",
+      "sha256": "26b7897f6848a40ba5fa1174f7ee3621939dcdde955a270380f1679707b9fab5"
+    },
+    {
+      "path": "warden/src/mcp-client.ts",
+      "sha256": "7c04a8c019ead542387a53ec82be96b50ebe90f12fbee78dbefe456aaed3ef49"
+    },
+    {
+      "path": "web/backend/services/funnel_analytics.py",
+      "sha256": "5b605f3e7d74877627259ada7d381b7acf68f8c412404c271ae8f73e216e30cb"
+    }
+  ],
+  "scope_limits": [
+    "Saved traction snapshots are dated observations, not freshly measured production demand",
+    "No live production database, current revenue audit or public endpoint prevalence study",
+    "Compatibility probe uses in-memory fixtures only"
+  ]
+}

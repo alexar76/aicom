@@ -1,0 +1,95 @@
+{
+  "observedAt": "2026-10-27T17:29:52Z",
+  "scope": "read-only metadata, immutable image identities, public HTTP and MCP discovery; no tool calls",
+  "container": {
+    "name": "histor-histor-1",
+    "imageDigest": "sha256:1221f1bcc8af9081c923b9064301674d5bc4d8d0ce701cca1075a5b1355b3017",
+    "sourceCommit": "4afe0243856d02b6b543b9b9559f2a286fab1a90",
+    "running": true,
+    "health": "healthy",
+    "startedAt": "2026-10-27T17:26:57.595199632Z"
+  },
+  "pinnedApplicationBase": {
+    "imageDigest": "sha256:befe7e54d444d0d9b2658151725b264fc6bb61dbbdb0927caff60f281ba249d6",
+    "baseLayerCount": 18,
+    "imageLayerCount": 21,
+    "baseLayersPreserved": true
+  },
+  "installedPackage": {
+    "name": "@aimarket/warden",
+    "version": "0.22.2",
+    "packageJsonMode": "0644",
+    "runtimeUid": 65532,
+    "packageJsonSha256": "0411601d6ec47d8d14f608a6643a94589e094940dcd93dde36bdcda52a57a34b",
+    "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+    "javascriptFiles": 63
+  },
+  "historApplication": {
+    "version": "0.4.2",
+    "pythonFiles": 43,
+    "sourceSha256": "a24be58d10784e10a1e0bade153d9bd6ac1ccdd5335c063a47b5cb14b0111e41"
+  },
+  "scannerDescribe": {
+    "warden": {
+      "package": "@aimarket/warden@0.22.2",
+      "version": "0.22.2"
+    },
+    "patternSet": {
+      "package": "@aimarket/warden@0.22.2",
+      "version": "16",
+      "digest": "sha256-86y6iNc4R+LM5WmjSVxaCNgSMUEggeNOMQPUzq4L9n8=",
+      "ruleCount": 39
+    },
+    "recordSet": {
+      "package": "@aimarket/warden@0.22.2",
+      "records": 11
+    }
+  },
+  "mcpDiscovery": {
+    "serverInfo": {
+      "name": "warden",
+      "title": "WARDEN MCP security firewall",
+      "version": "0.22.2"
+    },
+    "protocolVersion": "2025-03-26",
+    "toolNames": [
+      "approve_mcp_server",
+      "canonicalize_json",
+      "check_egress_url",
+      "classify_sensitive_tools",
+      "list_scan_rules",
+      "revoke_mcp_server",
+      "static_scan_tools",
+      "status_mcp_server",
+      "vet_mcp_server"
+    ],
+    "toolCalls": 0
+  },
+  "loopback": {
+    "health": {
+      "httpStatus": 200,
+      "historicalInterruptedRunMarker": true,
+      "ok": true,
+      "service": "histor",
+      "version": "0.4.2",
+      "profile": "prod",
+      "store": "postgresql",
+      "tree_size": 1116921,
+      "crawl_running": true
+    },
+    "issuer": {
+      "httpStatus": 200,
+      "warden": "@aimarket/warden@0.22.2",
+      "patternSet": "sha256-SqZPy2BshZv47wem/wNUy5+1hVMzYtwYKKQBu+fxZE0=",
+      "recordSet": "sha256-MDNQbFVgFEIP3amg9eQZZbtPCAeE+nRj/eVWt1C7EA8="
+    }
+  },
+  "qualityBinding": {
+    "imageDigest": "sha256:1221f1bcc8af9081c923b9064301674d5bc4d8d0ce701cca1075a5b1355b3017",
+    "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de"
+  },
+  "acceptedSource": {
+    "imageDigest": "sha256:1221f1bcc8af9081c923b9064301674d5bc4d8d0ce701cca1075a5b1355b3017",
+    "commit": "4afe0243856d02b6b543b9b9559f2a286fab1a90"
+  }
+}

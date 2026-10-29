@@ -1,0 +1,2212 @@
+[
+  {
+    "path": "README.md",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/README.md",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:34.369302+00:00",
+    "status": 200,
+    "bytes": 6983,
+    "sha256": "99fccf0d0a5b9bfbe2e3df8dbde948a41f9ad1cdfa0912e12ffced159590e3f5",
+    "line_count": 158,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 4,
+        "text": "[![Release](https://img.shields.io/github/v/release/Ducarv/mcpmoat)](https://github.com/Ducarv/mcpmoat/releases)"
+      },
+      {
+        "line": 5,
+        "text": "[![Go version](https://img.shields.io/github/go-mod/go-version/Ducarv/mcpmoat)](go.mod)"
+      },
+      {
+        "line": 6,
+        "text": "[![License](https://img.shields.io/github/license/Ducarv/mcpmoat)](LICENSE)"
+      },
+      {
+        "line": 7,
+        "text": ""
+      },
+      {
+        "line": 15,
+        "text": "runs the config checks and the rug-pull check. From the next release (build from `dev` to try it),"
+      },
+      {
+        "line": 16,
+        "text": "`scan` also applies the tool poisoning and shadowing rules to the description and the input schema"
+      },
+      {
+        "line": 17,
+        "text": "of each tool when it connects to the servers. A clean scan (exit code 0) does not mean that the"
+      },
+      {
+        "line": 18,
+        "text": "tools are safe. See [what this does not do](#what-this-does-not-do)."
+      },
+      {
+        "line": 26,
+        "text": "- **Checks the tools** (next release, not in v0.1.0). It flags hidden instructions, invisible"
+      },
+      {
+        "line": 27,
+        "text": "  characters, exfiltration and shadowing in the description and the input schema of each tool."
+      },
+      {
+        "line": 28,
+        "text": "- **Catches rug pulls.** It pins every tool and reports a tool that changes, appears or goes away."
+      },
+      {
+        "line": 29,
+        "text": "- **Built for CI.** Exit code 0, 1 or 2, a `--fail-on` threshold, and one JSON document with `--json`."
+      },
+      {
+        "line": 30,
+        "text": "- **Optional LLM rating** (next release, not in v0.1.0). Off by default. With `--llm`, tool names and"
+      },
+      {
+        "line": 31,
+        "text": "  descriptions leave your machine."
+      },
+      {
+        "line": 32,
+        "text": ""
+      },
+      {
+        "line": 33,
+        "text": "## Install"
+      },
+      {
+        "line": 41,
+        "text": "[docs/install.md](docs/install.md) has all methods. The macOS binaries are not notarized yet, and the"
+      },
+      {
+        "line": 42,
+        "text": "Homebrew tap gets stable releases only. Run `mcpmoat version` to check the install. Here is [how to"
+      },
+      {
+        "line": 43,
+        "text": "verify a download](https://github.com/Ducarv/mcpmoat/blob/HEAD/docs/install.md#verify-a-download)."
+      },
+      {
+        "line": 44,
+        "text": ""
+      },
+      {
+        "line": 92,
+        "text": "**Check for a rug pull.** A `scan` pins the tools of each new server. Later runs show a diff when they"
+      },
+      {
+        "line": 93,
+        "text": "change. Review the diff, then accept it with the digest that `scan` prints. An accept does not make"
+      },
+      {
+        "line": 94,
+        "text": "the new text safe: from the next release, a tool poisoning finding on the new text stays after the"
+      },
+      {
+        "line": 95,
+        "text": "accept. See [docs/pins.md](docs/pins.md)."
+      },
+      {
+        "line": 97,
+        "text": "```sh"
+      },
+      {
+        "line": 98,
+        "text": "mcpmoat pin --accept <server> --expect <digest>"
+      },
+      {
+        "line": 99,
+        "text": "```"
+      },
+      {
+        "line": 100,
+        "text": ""
+      },
+      {
+        "line": 112,
+        "text": "**Rate tools with an LLM** (next release; build from `dev` to try it). This sends tool names and"
+      },
+      {
+        "line": 113,
+        "text": "descriptions to the provider. Set `MCPMOAT_LLM_API_KEY` first. See [docs/llm.md](docs/llm.md)."
+      },
+      {
+        "line": 114,
+        "text": ""
+      },
+      {
+        "line": 115,
+        "text": "```sh"
+      }
+    ]
+  },
+  {
+    "path": "docs/PRD.md",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/PRD.md",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:34.370172+00:00",
+    "status": 200,
+    "bytes": 68799,
+    "sha256": "7ae2667fda78655e10523718c44ac36e699653cb43d2fa5c7d70d171afce7a63",
+    "line_count": 1029,
+    "direct_refs": [
+      {
+        "line": 1004,
+        "text": "| Strong competitors (Snyk Agent Scan, mcpproxy-go, Docker, `alexar76/warden`, `mcp-lock`) | Differentiator: offline, open to contributions, individual-dev focus, path to firewall and data flow. Study them before M4. |"
+      }
+    ],
+    "selected_lines": [
+      {
+        "line": 4,
+        "text": "|---|---|"
+      },
+      {
+        "line": 5,
+        "text": "| Spec version | 0.2 |"
+      },
+      {
+        "line": 6,
+        "text": "| Date | 2026-10-18 |"
+      },
+      {
+        "line": 7,
+        "text": "| Status | All decisions closed. Phase 1 in progress. |"
+      },
+      {
+        "line": 26,
+        "text": "AI coding clients (Claude Code, Cursor, Codex) load MCP servers from configuration files on the"
+      },
+      {
+        "line": 27,
+        "text": "developer's machine. Each server exposes tools whose names, descriptions and input schemas go"
+      },
+      {
+        "line": 28,
+        "text": "straight into the model's context. A malicious or compromised server can:"
+      },
+      {
+        "line": 29,
+        "text": ""
+      },
+      {
+        "line": 30,
+        "text": "- hide instructions for the model inside a tool description or schema (tool poisoning),"
+      },
+      {
+        "line": 31,
+        "text": "- change its tools after the developer has approved them (rug pull),"
+      },
+      {
+        "line": 32,
+        "text": "- try to redefine the behaviour of tools from other, trusted servers (shadowing),"
+      },
+      {
+        "line": 56,
+        "text": "- G4. Detect rug pulls by pinning a hash of every tool and reporting changes with a diff."
+      },
+      {
+        "line": 57,
+        "text": "- G5. Give clear output for humans (coloured terminal) and machines (versioned JSON, exit codes)."
+      },
+      {
+        "line": 58,
+        "text": "- G6. Ship as a single binary (static on Linux) through GitHub Releases, Homebrew and `go install`."
+      },
+      {
+        "line": 59,
+        "text": "- G7. Stay offline, account-free and telemetry-free. Only the opt-in `--llm` check (FR-17) sends"
+      },
+      {
+        "line": 84,
+        "text": "| Phase 1 threat | Malicious or tampered server (tool poisoning, rug pull) | Detectable with rules and hashes. Prompt injection is phase 4. |"
+      },
+      {
+        "line": 85,
+        "text": "| Firewall behaviour | Quarantine new or changed servers; only warn otherwise | Protects without blocking daily use. |"
+      },
+      {
+        "line": 86,
+        "text": "| LLM use | Optional, off by default | Project stays offline and predictable. |"
+      },
+      {
+        "line": 87,
+        "text": "| Language | Go | Single binary and security ecosystem. Cost: learning curve (author comes from JavaScript). |"
+      },
+      {
+        "line": 102,
+        "text": "| Placeholder expansion (#88) | Inspection expands `${...}` placeholders like the client: Claude Code and Cursor syntax, none for Codex. A missing variable is a fixed error that names at most the variable. A server from an untrusted project file reads only the base variables (stdio) or no variable and no workspace folder (remote) | The scan runs what the client runs. Expanded values can be secrets, so they stay masked. Fails closed where Cursor probably uses an empty value. A repository cannot use the untrusted opt-in to get secrets or the user's name. Cost: an untrusted server that needs a secret variable is refused. |"
+      },
+      {
+        "line": 103,
+        "text": "| Client identity and lists (#97) | Send the MCP client name of the client that owns the config. Always send every list request, and warn when an undeclared capability returns items | Makes cloaking harder. Residuals: version, capabilities, timing and User-Agent can still tell mcpmoat apart. A server that never answers an unknown method times out. |"
+      },
+      {
+        "line": 104,
+        "text": "| Work directory and `npx` (#104) | Trusted project servers run in their project directory, like the client. The child environment always gets `npm_config_yes=false` | Same behaviour as the client, and `npx` does not install a missing package without a prompt. Configured `-y`, `--yes` or `npm_config_yes` still win. Other launchers are not covered. |"
+      },
+      {
+        "line": 105,
+        "text": "| DNS answers and proxies (#106) | For a configured DNS name, refuse loopback, unspecified, link-local and multicast answers. Behind a proxy, warn with `dns-pin-unavailable` | Stops a DNS name from pointing the scan at the local machine or a metadata service. Private addresses stay allowed for company servers. A proxy resolves names itself, so the guard cannot apply there. |"
+      },
+      {
+        "line": 139,
+        "text": "|---|---|---|"
+      },
+      {
+        "line": 140,
+        "text": "| T1 | Tool poisoning: hidden instruction in a tool's description or schema | Pattern rules: imperative phrases aimed at the model, mentions of other tools, \"don't tell the user\", invisible characters, very long text, base64, mixed-script words |"
+      },
+      {
+        "line": 141,
+        "text": "| T2 | Rug pull: the description, schema, annotations, `_meta` or icons of a tool change after the pin | Per-tool hash stored in a pins file; differences raise an alert |"
+      },
+      {
+        "line": 142,
+        "text": "| T3 | Shadowing: a tool that tries to redefine another tool's behaviour (\"when using send_email, always...\") | Rule: tool text (description, title, annotations title, or any string value or object key of the input and output schema, except JSON Schema keyword keys, a `format` value that is exactly a registered format name and a `$schema` value that is exactly a standard meta-schema URI) cites the name of a tool from another server |"
+      },
+      {
+        "line": 143,
+        "text": "| T4 | Dangerous config: remote server over `http://` without TLS, plaintext secret in config, unpinned package (`npx package@latest`) | Static config analysis |"
+      },
+      {
+        "line": 144,
+        "text": "| T5 | Basic typosquatting: name very close to a known server | Compare with a short list of popular servers (edit distance: one edit. Two edits when the shorter name has more than 8 characters and either the edits only add or drop characters at the end of the popular name, or the part after the last separator the two names share has 5 or more characters. With no shared separator, that part is the whole shorter name) |"
+      },
+      {
+        "line": 147,
+        "text": "with a model. So it adds four threats to T1: prompt injection against the classifier, untrusted"
+      },
+      {
+        "line": 148,
+        "text": "model output, a name or description that is cut so that the payload is hidden, and data that"
+      },
+      {
+        "line": 149,
+        "text": "leaves the machine. One risk stays: while `--llm` runs, the key is in the environment of the"
+      },
+      {
+        "line": 150,
+        "text": "mcpmoat process, and a stdio server runs as the same user and can read it (for example"
+      },
+      {
+        "line": 158,
+        "text": "  that the model rates `none` or `low`, or whose answer is unusable."
+      },
+      {
+        "line": 159,
+        "text": "- A config that chooses which text is removed: the same rule gives a `medium` finding for a tool"
+      },
+      {
+        "line": 160,
+        "text": "  from whose text mcpmoat removed a credential from the config (the redacted-text rule of FR-17)."
+      },
+      {
+        "line": 161,
+        "text": "  Only values that look like a credential are removed, so a phrase that a config puts under a key"
+      },
+      {
+        "line": 162,
+        "text": "  that does not look secret stays in the text, and the model reads it."
+      },
+      {
+        "line": 163,
+        "text": "- Data that leaves the machine: `--llm` is opt-in, and a warning is printed before any request."
+      },
+      {
+        "line": 198,
+        "text": ""
+      },
+      {
+        "line": 199,
+        "text": "- the client version, which is a fixed value and can differ from the installed release;"
+      },
+      {
+        "line": 200,
+        "text": "- the client capabilities, which are not the same as those of the real client;"
+      },
+      {
+        "line": 201,
+        "text": "- the timing and the order of the requests;"
+      },
+      {
+        "line": 378,
+        "text": "**FR-04: Connect and list.** Connect to each server via MCP and list tools (with their"
+      },
+      {
+        "line": 379,
+        "text": "annotations, `_meta` and `icons`), prompts, resources and resource templates (name, description, schema)."
+      },
+      {
+        "line": 380,
+        "text": ""
+      },
+      {
+        "line": 381,
+        "text": "- Against the benign fixture server, inspection returns its exact tools, prompts, resources and"
+      },
+      {
+        "line": 382,
+        "text": "  resource templates with names, descriptions, input schemas and tool annotations."
+      },
+      {
+        "line": 383,
+        "text": "- Both stdio and HTTP (streamable HTTP and SSE) transports work against fixture servers."
+      },
+      {
+        "line": 384,
+        "text": "- Inspection uses `github.com/modelcontextprotocol/go-sdk`."
+      },
+      {
+        "line": 419,
+        "text": ""
+      },
+      {
+        "line": 420,
+        "text": "**FR-08: Rule schema.** Each built-in rule has `id`, `title`, `severity` (low, medium, high,"
+      },
+      {
+        "line": 421,
+        "text": "critical), `target` (description, schema, config), `match` (regex, word list or native heuristic) and"
+      },
+      {
+        "line": 422,
+        "text": "`references`."
+      },
+      {
+        "line": 423,
+        "text": ""
+      },
+      {
+        "line": 424,
+        "text": "- A rule missing a required field is rejected with a message that names the field."
+      },
+      {
+        "line": 425,
+        "text": "- The loader requires only `id`, `title`, `severity`, `target` and `match`. `references`, `risk`,"
+      },
+      {
+        "line": 426,
+        "text": "  `remediation` and the test cases are required for built-in rules only (NFR-05, NFR-07)."
+      },
+      {
+        "line": 427,
+        "text": "- `severity` and `target` accept only the listed values."
+      },
+      {
+        "line": 428,
+        "text": "- `match` supports at least `any_regex`, `all_regex`, `keywords` and named native heuristics."
+      },
+      {
+        "line": 429,
+        "text": "- Regexes are compiled once at load time with Go's RE2 engine (linear time, no backtracking), and"
+      },
+      {
+        "line": 435,
+        "text": "id: MOAT-T1-003"
+      },
+      {
+        "line": 436,
+        "text": "title: Tool description tells the model to hide actions from the user"
+      },
+      {
+        "line": 437,
+        "text": "severity: high"
+      },
+      {
+        "line": 438,
+        "text": "target: description"
+      },
+      {
+        "line": 439,
+        "text": "match:"
+      },
+      {
+        "line": 440,
+        "text": "  any_regex:"
+      },
+      {
+        "line": 446,
+        "text": ""
+      },
+      {
+        "line": 447,
+        "text": "**FR-09: Initial rule set.** At least 15 rules covering T1 to T5."
+      },
+      {
+        "line": 448,
+        "text": ""
+      },
+      {
+        "line": 449,
+        "text": "- The embedded rule set has at least 15 rules."
+      }
+    ]
+  },
+  {
+    "path": "docs/ARCHITECTURE.md",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/ARCHITECTURE.md",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:34.370493+00:00",
+    "status": 200,
+    "bytes": 124060,
+    "sha256": "a00587abbfd0e9c9ff93094afba82041b91b2fcb4c9e8116529d7825afa57f57",
+    "line_count": 1568,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 5,
+        "text": "> (T4 and T5) and the ignore list. `mcpmoat scan` without `--no-connect` also connects to the"
+      },
+      {
+        "line": 6,
+        "text": "> servers, pins their tools on the first run, and reports new, removed and changed tools on later"
+      },
+      {
+        "line": 7,
+        "text": "> runs (T2). It prints a diff for each new and each changed tool. It also applies the description"
+      },
+      {
+        "line": 8,
+        "text": "> and schema rules (T1 and T3, built-in and from `--rules`) to the tools, with a time limit for"
+      },
+      {
+        "line": 9,
+        "text": "> all servers and a share of it for each server. `mcpmoat pin --accept <server> --expect <digest>`"
+      },
+      {
+        "line": 10,
+        "text": "> accepts the changes. The shadowing check is not applied yet (#200). `mcpmoat scan --json` writes"
+      },
+      {
+        "line": 11,
+        "text": "> the same report as one JSON document (FR-15, see [JSON output](#json-output)). `mcpmoat scan"
+      },
+      {
+        "line": 12,
+        "text": "> --llm` also asks a language model to rate the name and description of each inspected tool, and"
+      },
+      {
+        "line": 13,
+        "text": "> adds advisory findings (FR-17, see"
+      },
+      {
+        "line": 14,
+        "text": "> [The `--llm` classifier](#the---llm-classifier))."
+      },
+      {
+        "line": 15,
+        "text": ""
+      },
+      {
+        "line": 35,
+        "text": "  llm/                  optional --llm classifier (Anthropic or OpenAI-compatible API)"
+      },
+      {
+        "line": 36,
+        "text": "  pincheck/             CI-only check of the tool version pins (package main, not in the binary)"
+      },
+      {
+        "line": 37,
+        "text": "rules/                  built-in rules (go:embed)"
+      },
+      {
+        "line": 38,
+        "text": "testdata/               fixtures for tests and the demo"
+      },
+      {
+        "line": 65,
+        "text": "  `rejectedFailure` and the failure lines), and `scan_llm_rows.go` turns the answers into rows"
+      },
+      {
+        "line": 66,
+        "text": "  (`llmRow`, `invalidRow`, `llmSeverity`). The step calls a `toolClassifier`, a small interface"
+      },
+      {
+        "line": 67,
+        "text": "  that `*llm.Client` implements. The `cli.newClassifier` factory builds it, and tests replace the"
+      },
+      {
+        "line": 68,
+        "text": "  factory with a fake."
+      },
+      {
+        "line": 82,
+        "text": "  package that imports the MCP SDK (see [The `internal/inspect` interface](#the-internalinspect-interface))."
+      },
+      {
+        "line": 83,
+        "text": "- `internal/rules`: loads and checks the YAML rules, applies the description and schema rules to"
+      },
+      {
+        "line": 84,
+        "text": "  one tool at a time (`Analyzer`), runs the config heuristics, and reads `.mcpmoat-ignore` (`scan`"
+      },
+      {
+        "line": 85,
+        "text": "  asks for that only with `--use-ignore-file`). It also holds the shadowing check"
+      },
+      {
+        "line": 87,
+        "text": "- `internal/pins`: computes the canonical hash of each tool (`Canonical`, `Hash`), makes the pins of"
+      },
+      {
+        "line": 88,
+        "text": "  a server (`Snapshot`), keeps the versioned `pins.json` store (`Load`, `LoadLocked`, `Get`, `Set`,"
+      },
+      {
+        "line": 89,
+        "text": "  `Clone`, `Save` and `DefaultPath`), compares the pins with the current tools (`Compare`), and"
+      },
+      {
+        "line": 90,
+        "text": "  makes the digest of a tool set (`Digest`, `ValidDigest`). `Compare` finds changed, new, removed"
+      },
+      {
+        "line": 91,
+        "text": "  and not verified tools. It makes the unified diff of a changed or new tool, and shows the whole"
+      },
+      {
+        "line": 92,
+        "text": "  current text of a pinned tool whose pin cannot be checked. See [Tool hash](#tool-hash),"
+      },
+      {
+        "line": 93,
+        "text": "  [Tool set digest](#tool-set-digest) and [The `pins.json` store](#the-pinsjson-store)."
+      },
+      {
+        "line": 94,
+        "text": "- `internal/report`: writes the terminal output: the servers (`WriteServers`), a summary with one"
+      },
+      {
+        "line": 95,
+        "text": "  line for each server (`WriteSummary`), the findings grouped by severity (`WriteFindings`) and the"
+      },
+      {
+        "line": 96,
+        "text": "  diffs of changed, new and not verified tools (`WriteDiffs`). `Style` (`style.go`) decides the"
+      },
+      {
+        "line": 97,
+        "text": "  colour. See [Terminal report](#terminal-report). It also renders the JSON report of"
+      },
+      {
+        "line": 98,
+        "text": "  `scan --json` (`WriteJSON`), with caps on the text fields. See [JSON output](#json-output)."
+      },
+      {
+        "line": 99,
+        "text": "- `internal/llm`: the optional `--llm` client (FR-17). It sends the name and description of one tool"
+      },
+      {
+        "line": 100,
+        "text": "  to an Anthropic or OpenAI-compatible API and accepts only a fixed verdict. It uses the standard"
+      },
+      {
+        "line": 101,
+        "text": "  library, the module `github.com/cenkalti/backoff/v7` for the waits between retries and, from this"
+      },
+      {
+        "line": 103,
+        "text": "  [The `--llm` classifier](#the---llm-classifier)."
+      },
+      {
+        "line": 104,
+        "text": "- `internal/pincheck`: the CI-only check of the tool version pins in the workflows and in"
+      },
+      {
+        "line": 105,
+        "text": "  `CONTRIBUTING.md`. It is package `main`, and `.github/scripts/check-tool-pins.sh` runs it. It is"
+      },
+      {
+        "line": 106,
+        "text": "  not part of the mcpmoat binary: GoReleaser builds only `./cmd/mcpmoat`. It is under `internal/`,"
+      },
+      {
+        "line": 118,
+        "text": "  its binary. The test starts it. `reporttest` loads the JSON Schema of the current"
+      },
+      {
+        "line": 119,
+        "text": "  `schema_version` and checks output for raw bytes that can act on a terminal."
+      },
+      {
+        "line": 120,
+        "text": ""
+      },
+      {
+        "line": 121,
+        "text": "## Import direction"
+      },
+      {
+        "line": 149,
+        "text": "`internal/llm` does not import `inspect`: `cmd/mcpmoat` gives it only the tool name, the"
+      },
+      {
+        "line": 150,
+        "text": "description and the credential values of the server (`llm.Input`). `internal/llm` imports"
+      },
+      {
+        "line": 151,
+        "text": "`discover` for the `discover.Secret` type of these values and of the API key, for the text"
+      },
+      {
+        "line": 152,
+        "text": "redaction (`discover.NewTextRedactor`), for `discover.Mask` and for"
+      },
+      {
+        "line": 197,
+        "text": "   Last, `rules.NewAnalyzer` compiles the match block of each rule once. It compiles a config rule"
+      },
+      {
+        "line": 198,
+        "text": "   only to check it and drops its matcher, and it keeps the description and schema rules. A rule"
+      },
+      {
+        "line": 199,
+        "text": "   whose regex does not compile gives a load error with the file, the field `match` and the reason."
+      },
+      {
+        "line": 200,
+        "text": "   A bad rule file, an ID problem or a bad regex gives exit code 2, also with `--no-connect`"
+      },
+      {
+        "line": 203,
+        "text": "   `config` (`scan` runs only its built-in config checks), and `toolRulesNoConnectNotice` when a"
+      },
+      {
+        "line": 204,
+        "text": "   rule has the target `description` or `schema` and `--no-connect` is set."
+      },
+      {
+        "line": 205,
+        "text": "3. `scan` does this step after step 4, because it needs the working directory that `loadConfigs`"
+      },
+      {
+        "line": 206,
+        "text": "   returns. Only with `--use-ignore-file`, it reads `.mcpmoat-ignore` with `rules.ReadIgnoreFile`"
+      },
+      {
+        "line": 229,
+        "text": "   from `rules.NewBuiltinTyposquat` gives the T5 finding (MOAT-T5-001). The ignore list drops"
+      },
+      {
+        "line": 230,
+        "text": "   some findings. The rule set gives the severity of each one that is left. `configStep` runs this"
+      },
+      {
+        "line": 231,
+        "text": "   step with `configChecks.findings` (both in `cmd/mcpmoat/scan_findings.go`), and it caps the rows"
+      },
+      {
+        "line": 232,
+        "text": "   (#213):"
+      },
+      {
+        "line": 235,
+        "text": "     scan keeps 10,000 (`configRowsTotal`). Each cut keeps the most severe rows (`cutConfigHits`, a"
+      },
+      {
+        "line": 236,
+        "text": "     stable sort): severity first, then trusted servers before untrusted ones (`configHit.untrusted`,"
+      },
+      {
+        "line": 237,
+        "text": "     so a project file cannot push out the finding of a server that the user set up), then server"
+      },
+      {
+        "line": 238,
+        "text": "     order, then finding order. A severity that is not valid counts as critical (`capRank`). The kept rows of a server stay in their first order."
+      },
+      {
+        "line": 239,
+        "text": "   - A server that lost rows in one or both cuts gets one `MOAT-T4-005` row"
+      },
+      {
+        "line": 240,
+        "text": "     (`rules.RuleConfigFindingCap`, a native rule with no YAML file, see `configCapRow`). Its"
+      },
+      {
+        "line": 241,
+        "text": "     related text is `N more config findings are not listed; limit M` (`configCapText`). M is 100,"
+      },
+      {
+        "line": 242,
+        "text": "     or 10000 when the scan cut rows of that server. Its severity is the highest severity of the"
+      },
+      {
+        "line": 243,
+        "text": "     rows it left out, but never lower than high (`configCapSeverity`), so the row fails closed."
+      },
+      {
+        "line": 244,
+        "text": "     It does not count toward the caps. So the step gives at most 10,000 config rows plus one cap"
+      },
+      {
+        "line": 245,
+        "text": "     row for each cut server."
+      },
+      {
+        "line": 315,
+        "text": "    listed twice`, so that its tools are not skipped. It is high when the identity is pinned, else"
+      },
+      {
+        "line": 316,
+        "text": "    medium (`pinner.unverifiedSeverity`)."
+      },
+      {
+        "line": 317,
+        "text": "  - A server that is in the store goes through `pins.CompareMasked` (`pinner.compare`, see Masked"
+      },
+      {
+        "line": 318,
+        "text": "    diffs in [Tool hash](#tool-hash)). The findings are MOAT-T2-001 (changed tool, high),"
+      }
+    ]
+  },
+  {
+    "path": "docs/README.md",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/README.md",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:34.371541+00:00",
+    "status": 200,
+    "bytes": 2707,
+    "sha256": "f7eeca04505526326428c90a4ce8f5102d16cd725d042de6b5f973944308102e",
+    "line_count": 41,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 9,
+        "text": "| Product pitch and the short install and usage summary | [README.md](../README.md) |"
+      },
+      {
+        "line": 10,
+        "text": "| Install methods and version output | [docs/install.md](install.md) |"
+      },
+      {
+        "line": 11,
+        "text": "| What `scan` prints (terminal and JSON for users) | [docs/scan-output.md](scan-output.md) |"
+      },
+      {
+        "line": 12,
+        "text": "| Pins and rug pulls | [docs/pins.md](pins.md) |"
+      },
+      {
+        "line": 20,
+        "text": "| Package layout and data flow (docs/PRD.md section 8 is the target design) | [docs/ARCHITECTURE.md](ARCHITECTURE.md) |"
+      },
+      {
+        "line": 21,
+        "text": "| JSON output schema and versioning (it links the schema file) | [docs/ARCHITECTURE.md](ARCHITECTURE.md#json-output) |"
+      },
+      {
+        "line": 22,
+        "text": "| Commands (gates) | [CONTRIBUTING.md](../CONTRIBUTING.md#checks) |"
+      },
+      {
+        "line": 23,
+        "text": "| Rule authoring | [docs/writing-rules.md](writing-rules.md) |"
+      },
+      {
+        "line": 38,
+        "text": "- [bug_report.md](../.github/ISSUE_TEMPLATE/bug_report.md) and [new_rule.md](../.github/ISSUE_TEMPLATE/new_rule.md): issue forms."
+      },
+      {
+        "line": 39,
+        "text": "- [.github/pull_request_template.md](../.github/pull_request_template.md): the PR description form."
+      },
+      {
+        "line": 40,
+        "text": "- [.claude/agents/](../.claude/agents/) and [.claude/skills/](../.claude/skills/): agent and skill definitions."
+      },
+      {
+        "line": 41,
+        "text": "  They own no other topic."
+      }
+    ]
+  },
+  {
+    "path": "docs/limits.md",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/limits.md",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:34.930587+00:00",
+    "status": 200,
+    "bytes": 18697,
+    "sha256": "88bd3ad75df4d95f9bfe7aad75f6a20cd2f80f0074c331dedd980df57dede7d9",
+    "line_count": 234,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 14,
+        "text": "  you and can read your files and use the network."
+      },
+      {
+        "line": 15,
+        "text": "- A server can also echo a configured env value into a tool description, and then that text is"
+      },
+      {
+        "line": 16,
+        "text": "  stored in `pins.json` as the server sent it. The report masks the value (see below), but"
+      },
+      {
+        "line": 17,
+        "text": "  `pins.json` (mode `0600`) keeps the raw text."
+      },
+      {
+        "line": 19,
+        "text": "  allows it yet."
+      },
+      {
+        "line": 20,
+        "text": "- The description and schema rules read only the description and the input schema of each tool."
+      },
+      {
+        "line": 21,
+        "text": "  They do not read the output schema, the title or the annotations of a tool, and they do not read"
+      },
+      {
+        "line": 22,
+        "text": "  prompts or resources."
+      },
+      {
+        "line": 24,
+        "text": "  that tool) is not applied yet (#200)."
+      },
+      {
+        "line": 25,
+        "text": "- `scan --no-connect` gets no tools, so it applies no description or schema rule. When `--rules`"
+      },
+      {
+        "line": 26,
+        "text": "  has such a rule, `scan` prints `mcpmoat scan: rules from --rules with target description or"
+      },
+      {
+        "line": 27,
+        "text": "  schema are not applied with --no-connect; these rules need a connection to each server to get"
+      },
+      {
+        "line": 28,
+        "text": "  its tools` on stderr."
+      },
+      {
+        "line": 47,
+        "text": "  [Contributing a rule](writing-rules.md#2-write-the-rule). With a custom rule at critical"
+      },
+      {
+        "line": 48,
+        "text": "  severity and `--fail-on critical`, a text with more than 256 U+009D can hide the payload from"
+      },
+      {
+        "line": 49,
+        "text": "  that rule and only `MOAT-T1-017` or `MOAT-T1-018` (high) fires."
+      },
+      {
+        "line": 50,
+        "text": "- `scan` keeps at most 1000 tool rule findings for each server. The limit counts the findings"
+      },
+      {
+        "line": 51,
+        "text": "  after the ignore list. `scan` keeps the most severe findings, and among findings of the same"
+      },
+      {
+        "line": 52,
+        "text": "  severity the ones of the first tools, so a server cannot push a severe finding out of the report"
+      },
+      {
+        "line": 53,
+        "text": "  with many weak ones. It counts the rest but does not list them, and adds one `MOAT-T1-024`"
+      },
+      {
+        "line": 54,
+        "text": "  finding that says how many it left out. Its severity is the highest severity of the applied rules,"
+      },
+      {
+        "line": 55,
+        "text": "  and never below high. A `.mcpmoat-ignore` file cannot drop it, and only `--ignore MOAT-T1-024`"
+      },
+      {
+        "line": 56,
+        "text": "  can (see [Ignore findings](ignore.md)). The scan stays complete, and the exit code follows"
+      },
+      {
+        "line": 58,
+        "text": "  limit. The number of tools for each server (at most 10,000) bounds the pin findings (at most one"
+      },
+      {
+        "line": 59,
+        "text": "  for each current tool and one for each removed tool, plus one for the server; the pinned tools"
+      },
+      {
+        "line": 60,
+        "text": "  come from an earlier scan, so they are at most 10,000 too), and the LLM tool cap of 500 bounds"
+      },
+      {
+        "line": 61,
+        "text": "  the LLM findings. The number of servers multiplies these bounds."
+      },
+      {
+        "line": 66,
+        "text": "  keeps the 100 most severe findings of each server. When more than 10,000 are left, it keeps the"
+      },
+      {
+        "line": 67,
+        "text": "  10,000 most severe of the whole scan: severity first, then servers from your own files before"
+      },
+      {
+        "line": 68,
+        "text": "  servers from a project file, then the order of the servers, then the order of the findings. A severity that mcpmoat does not know counts as critical. A server that"
+      },
+      {
+        "line": 69,
+        "text": "  lost findings gets one `MOAT-T4-005` finding: `N more config findings are not listed; limit M`"
+      },
+      {
+        "line": 70,
+        "text": "  (M is 100, or 10000 when the limit of the whole scan cut that server). It is high, or higher"
+      },
+      {
+        "line": 100,
+        "text": "- `--llm` does not make a scan complete or reliable. A model can miss a malicious tool, and a"
+      },
+      {
+        "line": 101,
+        "text": "  hostile description can try to influence the model. Its findings are advisory, and with `--llm`"
+      },
+      {
+        "line": 102,
+        "text": "  your tool names and descriptions leave your machine."
+      },
+      {
+        "line": 103,
+        "text": "- `--llm` classifies at most 500 tools in one scan, shared fairly between the servers (see"
+      },
+      {
+        "line": 104,
+        "text": "  [Optional LLM classification](llm.md)). The tools of a server over its share are not"
+      },
+      {
+        "line": 113,
+        "text": "  finding, not a rating. That is below the default `--fail-on high`, so a hostile server that makes"
+      },
+      {
+        "line": 114,
+        "text": "  the provider refuse its tool descriptions can keep their LLM rating from reaching `high`. When"
+      },
+      {
+        "line": 115,
+        "text": "  the provider refuses every tool that it answers, the LLM step fails and the scan exits with 2."
+      },
+      {
+        "line": 116,
+        "text": "- The report on the terminal and the `--json` output show each configured value that a server"
+      },
+      {
+        "line": 130,
+        "text": "  - A value that a server splits over two JSON strings (for example a key and its value) or over"
+      },
+      {
+        "line": 131,
+        "text": "    the tool name and the description is not found."
+      },
+      {
+        "line": 132,
+        "text": "  - The password of the Oracle form `scott/pw@orcl` in an env value, an expanded value or a header"
+      },
+      {
+        "line": 133,
+        "text": "    value is not masked alone. Only the whole value is."
+      },
+      {
+        "line": 154,
+        "text": "    `production` of `NODE_ENV`, or a password under a key that does not look secret."
+      },
+      {
+        "line": 155,
+        "text": "  - A secret in an arg that mcpmoat does not recognise is not removed, for example"
+      },
+      {
+        "line": 156,
+        "text": "    `--db mypassword`, a positional `hunter2`, a short path segment or `-phunter2`. The password"
+      },
+      {
+        "line": 157,
+        "text": "    of a positional `admin:pw` or `scott/pw@orcl` is removed only when the whole value looks like"
+      },
+      {
+        "line": 158,
+        "text": "    a token."
+      },
+      {
+        "line": 159,
+        "text": "  - The check fails closed, so some text that is not secret is removed too: a word of 32 bytes or"
+      },
+      {
+        "line": 160,
+        "text": "    more (also a readable path segment, such as a segment of the macOS `$TMPDIR`), a nix hash, a"
+      },
+      {
+        "line": 161,
+        "text": "    UUID, or a header value that starts with an auth scheme word, such as `Token count`. The model"
+      },
+      {
+        "line": 162,
+        "text": "    then sees `********` in its place, and the message has `\"redacted\": true`."
+      },
+      {
+        "line": 163,
+        "text": "  - A tool whose text had a credential removed gets a `medium` finding at least. A config that you"
+      },
+      {
+        "line": 164,
+        "text": "    do not control can choose which text is removed, for example an env value under a secret-like"
+      },
+      {
+        "line": 165,
+        "text": "    key that equals an injection phrase in a tool description. The finding is `medium`, not"
+      },
+      {
+        "line": 166,
+        "text": "    `high`, so the default `--fail-on high` does not fail on it. A phrase under a key that does"
+      },
+      {
+        "line": 167,
+        "text": "    not look secret is not removed, so the model reads it. The rule findings still read the full"
+      },
+      {
+        "line": 168,
+        "text": "    text."
+      },
+      {
+        "line": 169,
+        "text": "- In the args and inside a config value, mcpmoat reads the value of a pair with a secret-like key"
+      },
+      {
+        "line": 180,
+        "text": "  - The other way, a `NAME=value` arg with a secret-like NAME also gives its first word alone"
+      },
+      {
+        "line": 181,
+        "text": "    (`correct` of `APP_SEED=correct horse`), so that word can be masked or removed too."
+      },
+      {
+        "line": 182,
+        "text": "- When a server fails, mcpmoat removes the configured values and their credential pieces from the"
+      },
+      {
+        "line": 183,
+        "text": "  failure text. A value or piece shorter than 8 bytes is removed only where it stands as a whole"
+      },
+      {
+        "line": 184,
+        "text": "  word (see [Placeholders](stdio-servers.md#placeholders)). The limits:"
+      },
+      {
+        "line": 185,
+        "text": "  - The whole-word rule stops an accidental echo only. A hostile server can glue a letter to a"
+      },
+      {
+        "line": 206,
+        "text": "    are paths, not URLs."
+      },
+      {
+        "line": 207,
+        "text": "- The pins lock (the file `pins.json.lock` in the pins directory) is advisory. mcpmoat v0.1.0 does"
+      },
+      {
+        "line": 208,
+        "text": "  not lock, so a v0.1.0 run in parallel with a newer run can lose an update. A file system that"
+      },
+      {
+        "line": 209,
+        "text": "  cannot lock (some network mounts) and Windows run without the lock, after one warning."
+      }
+    ]
+  },
+  {
+    "path": "docs/pins.md",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/pins.md",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:34.973452+00:00",
+    "status": 200,
+    "bytes": 20990,
+    "sha256": "8d7bf2ba4d671bb8282d9154c62955c0278b933b2a552dd02a980d3711aa9767",
+    "line_count": 237,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 13,
+        "text": "  stderr after the save: `mcpmoat <cmd>: no pins file was found, so a new one was created at"
+      },
+      {
+        "line": 14,
+        "text": "  <path>; if this is not your first run, the old file was removed or moved`. On your first run"
+      },
+      {
+        "line": 15,
+        "text": "  this is expected. On a later run it means that the old file is gone, so every server was pinned"
+      },
+      {
+        "line": 16,
+        "text": "  again with no alert. Find out who removed the file before you trust the new pins. If the pins"
+      },
+      {
+        "line": 17,
+        "text": "  file existed at the first read of the command, before any server starts (or, for `pin --accept`,"
+      },
+      {
+        "line": 18,
+        "text": "  at the read before it shows the diff), but a later read does not find it, the run saves nothing,"
+      },
+      {
+        "line": 19,
+        "text": "  prints `mcpmoat <cmd>: the pins file was removed while this command ran, so no pins were saved;"
+      },
+      {
+        "line": 20,
+        "text": "  run the command again` and exits with code 2. When"
+      },
+      {
+        "line": 21,
+        "text": "  `pin --accept` finds this before it shows the diff, it shows no diff. A real first run does not"
+      },
+      {
+        "line": 66,
+        "text": "- **Later runs:** `scan` compares the tools with the pins. It reports `MOAT-T2-001` (changed tool,"
+      },
+      {
+        "line": 67,
+        "text": "  high), `MOAT-T2-002` (new tool, medium), `MOAT-T2-003` (removed tool, low) and `MOAT-T2-004` (tool"
+      },
+      {
+        "line": 68,
+        "text": "  not verified). A new tool is medium. Read the report, not only the exit code (see [Exit"
+      },
+      {
+        "line": 69,
+        "text": "  codes](exit-codes.md)). A new tool, or a not verified tool with"
+      },
+      {
+        "line": 75,
+        "text": "  medium. For each changed tool, `scan` prints a unified diff of the pinned and the current text"
+      },
+      {
+        "line": 76,
+        "text": "  after the findings. For each new tool, it prints the full text of the tool as added lines,"
+      },
+      {
+        "line": 77,
+        "text": "  under the header `New tool <tool> on server <server>:`, so you can review it before you accept it."
+      },
+      {
+        "line": 78,
+        "text": "  A pinned tool whose pin cannot be checked (another hash version, or a pinned text that does not"
+      },
+      {
+        "line": 79,
+        "text": "  match its hash) gets its full current text too, under `Not verified tool <tool> on server <server>"
+      },
+      {
+        "line": 80,
+        "text": "  (current text):`. An ignored finding gets no diff. If a diff is longer than 64 KiB or 2000 lines,"
+      },
+      {
+        "line": 90,
+        "text": "  secret value from the config, so the diff is hidden`. Like any diff that is only a note, it"
+      },
+      {
+        "line": 91,
+        "text": "  gives a `To accept` line with no command. The hashes, `pins.json` and the digest of `--expect`"
+      },
+      {
+        "line": 92,
+        "text": "  use the raw text, so an echoed secret still changes the hash and gives a `MOAT-T2-001` finding."
+      },
+      {
+        "line": 93,
+        "text": "  The mask uses the values that are configured now. See [What mcpmoat does not do](limits.md) for"
+      },
+      {
+        "line": 95,
+        "text": "- **Accept:** `scan` never changes the pins of a pinned server. Read the diff. If you trust the"
+      },
+      {
+        "line": 96,
+        "text": "  change, run `mcpmoat pin --accept <server> --expect <digest>`. The name must match one server"
+      },
+      {
+        "line": 97,
+        "text": "  exactly. If two clients use it, narrow it with `--config <file>`. If one file uses it in several"
+      },
+      {
+        "line": 98,
+        "text": "  places (`~/.claude.json` has a global section and project sections), `pin` takes the server"
+      },
+      {
+        "line": 103,
+        "text": "  for it only. It prints the diff of each changed, new and not verified tool, then"
+      },
+      {
+        "line": 104,
+        "text": "  `accepted <server>: N new, N changed, N removed`. If the server is not pinned yet, every tool is"
+      },
+      {
+        "line": 105,
+        "text": "  new, so `pin --accept` shows every tool. It prints the same warning when it cuts a diff. If the"
+      },
+      {
+        "line": 106,
+        "text": "  new pins do not fit, see **Full pins file** below."
+      },
+      {
+        "line": 113,
+        "text": "  `scan --config <file>`, the command holds `--config <file>` too. Copy that line and run it. The"
+      },
+      {
+        "line": 114,
+        "text": "  digest (version `pd1`, the full SHA-256) covers the tools that `scan` showed you. `pin --accept --expect`"
+      },
+      {
+        "line": 115,
+        "text": "  saves the pins only if the tools that the server returns now give the same digest. Else it prints"
+      },
+      {
+        "line": 116,
+        "text": "  the diff and `the tools of <server> differ from what scan showed ...; nothing was saved`, saves"
+      },
+      {
+        "line": 117,
+        "text": "  nothing and exits with code 2. Run `scan` again and review the new diff. A hostile server can"
+      },
+      {
+        "line": 118,
+        "text": "  show harmless tools to `scan` and harmful tools to `pin --accept`. The digest stops that attack."
+      },
+      {
+        "line": 119,
+        "text": "  An invalid or empty `--expect` exits with code 2 before any server starts."
+      },
+      {
+        "line": 120,
+        "text": "- Without `--expect`, `pin --accept` works as before, but it trusts the tools that the server"
+      },
+      {
+        "line": 127,
+        "text": "  `cmd.exe` and PowerShell, reads such a word as plain text. Else the line says what to run and"
+      },
+      {
+        "line": 128,
+        "text": "  gives the digest, but no command. The line has no command either when you did not see every"
+      },
+      {
+        "line": 129,
+        "text": "  change (a cut diff, a change that `--ignore` hid, or a diff that is only a note), when the name"
+      },
+      {
+        "line": 130,
+        "text": "  cannot select the server, when a config file has a problem, or when `pins.json` or its project"
+      },
+      {
+        "line": 134,
+        "text": "  changes: run scan without it to review them first)` or `(a change has no diff text: review the"
+      },
+      {
+        "line": 135,
+        "text": "  tool first)`. The digest covers those changes too. When `pins.json` has no room, the line ends"
+      },
+      {
+        "line": 136,
+        "text": "  with `(pins.json has no room for these tools: pin --accept fails until you remove servers you no"
+      },
+      {
+        "line": 137,
+        "text": "  longer use from pins.json)`. When only the project share has no room, the line ends with `(the"
+      },
+      {
+        "line": 139,
+        "text": "  project servers you no longer use from pins.json)`."
+      },
+      {
+        "line": 140,
+        "text": "- `scan --json` gives the same digest in the field `accept` of a pinned server that has a pin"
+      },
+      {
+        "line": 141,
+        "text": "  finding with a `To accept` hint: `{ \"digest\": \"pd1:<64 hex>\", \"command\": \"mcpmoat pin --accept ..."
+      },
+      {
+        "line": 142,
+        "text": "  --expect <digest>\" }`. `command` is there only when the terminal hint prints a command. When the"
+      },
+      {
+        "line": 143,
+        "text": "  terminal prints steps (a cut diff, a change that `--ignore` hid, a diff that is only a note, a"
+      },
+      {
+        "line": 144,
+        "text": "  server name that more than one server uses, a config file problem, a `pins.json` or a project"
+      },
+      {
+        "line": 145,
+        "text": "  share with no room for the tools, or a name or path that is not a plain shell word), the JSON has"
+      },
+      {
+        "line": 146,
+        "text": "  the digest and no command. The JSON never holds the steps. Do not let a CI job accept a change"
+      },
+      {
+        "line": 147,
+        "text": "  from this field: a person must review the diff first."
+      },
+      {
+        "line": 148,
+        "text": "- A server that fails, times out or is refused (an untrusted or turned-off server) shows its status"
+      },
+      {
+        "line": 187,
+        "text": "  Windows has no lock, and the run prints the same warning. mcpmoat v0.1.0 does not lock, so do not"
+      },
+      {
+        "line": 188,
+        "text": "  run it at the same time as a newer version."
+      },
+      {
+        "line": 189,
+        "text": "- **Pins directory changed:** the save writes to the pins directory that the run checked and"
+      },
+      {
+        "line": 190,
+        "text": "  locked. Just before it replaces `pins.json`, it checks that the path still names that directory."
+      },
+      {
+        "line": 191,
+        "text": "  If the directory was moved, removed or replaced while the command ran, the run saves nothing and"
+      },
+      {
+        "line": 192,
+        "text": "  exits with code 2, with the error `the pins directory <dir> was moved, removed or replaced while"
+      },
+      {
+        "line": 193,
+        "text": "  this command ran, and nothing was saved`."
+      },
+      {
+        "line": 194,
+        "text": "- **Full pins file:** `pins.json` has two size limits."
+      },
+      {
+        "line": 219,
+        "text": "    accepted, and a file that is already over the share still loads. For a pinned server whose"
+      },
+      {
+        "line": 220,
+        "text": "    tools grew and do not fit, `scan` still prints the `To accept` line with the digest, but with"
+      },
+      {
+        "line": 221,
+        "text": "    no `pin --accept` command, and with a note that `pins.json` (or its project share) has no room"
+      },
+      {
+        "line": 222,
+        "text": "    (see **Recommended flow**). The limit is first come, first served, and mcpmoat never removes"
+      }
+    ]
+  },
+  {
+    "path": "docs/scan-output.md",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/scan-output.md",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:35.055565+00:00",
+    "status": 200,
+    "bytes": 15807,
+    "sha256": "78b6141e89104cd1e2c7a08f200254db7aaa1dfbabb3a94f2af78b0c45c5fa49",
+    "line_count": 222,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 7,
+        "text": "`scan` prints the server table, then a summary with one line for each server, then the findings"
+      },
+      {
+        "line": 8,
+        "text": "grouped by severity (the worst first). This is a short sample (the table is left out, and the long"
+      },
+      {
+        "line": 9,
+        "text": "risk and fix texts are shortened):"
+      },
+      {
+        "line": 10,
+        "text": ""
+      },
+      {
+        "line": 29,
+        "text": "    Risk: The server starts from a package that is not fixed ..."
+      },
+      {
+        "line": 30,
+        "text": "    Fix: Pin an exact version, for example npx @scope/server@1.4.2 ..."
+      },
+      {
+        "line": 31,
+        "text": "```"
+      },
+      {
+        "line": 32,
+        "text": ""
+      },
+      {
+        "line": 41,
+        "text": "  tool), and a `Risk` and a `Fix` line."
+      },
+      {
+        "line": 42,
+        "text": "- **Tool rule findings:** when `scan` connects to the servers, it applies the description and"
+      },
+      {
+        "line": 43,
+        "text": "  schema rules (T1 and T3, built-in and from `--rules`) to every tool. A finding of these rules has"
+      },
+      {
+        "line": 44,
+        "text": "  a `Tool:` line in place of `Where:`: the tool name, then `(description)` or `(schema)`, the part"
+      },
+      {
+        "line": 45,
+        "text": "  of the tool that matched. A tool name longer than 80 characters (runes) is cut to 80 and ends"
+      },
+      {
+        "line": 46,
+        "text": "  with `...`. The finding never shows the tool text or the pattern."
+      },
+      {
+        "line": 47,
+        "text": "- **Configured values in tool text:** a server gets the env values, the header values and the"
+      },
+      {
+        "line": 48,
+        "text": "  args of its config, and it can echo one of them in a tool name, title, description or schema."
+      },
+      {
+        "line": 49,
+        "text": "  The report shows each such value of 8 bytes or more as `********`: in the `Tool:` line of a tool"
+      },
+      {
+        "line": 50,
+        "text": "  rule finding, a pin finding and an LLM finding, in the tool name and the text of a pin diff, and"
+      },
+      {
+        "line": 62,
+        "text": "  for all of them, for example `mcpmoat scan: warning: the 30s time limit of the rule analysis"
+      },
+      {
+        "line": 63,
+        "text": "  left too little time; 3 servers were not checked`. Its severity and exit code are in"
+      },
+      {
+        "line": 64,
+        "text": "  [Exit codes](exit-codes.md)."
+      },
+      {
+        "line": 65,
+        "text": "- **Finding cap:** a server with more than 1000 tool findings gets one `MOAT-T1-024` summary"
+      },
+      {
+        "line": 66,
+        "text": "  finding. `scan` lists the 1000 most severe findings (the ones of the first tools among findings of"
+      },
+      {
+        "line": 67,
+        "text": "  the same severity) and counts the rest. The scan stays complete, and the"
+      },
+      {
+        "line": 68,
+        "text": "  exit code follows `--fail-on`. The severity is the highest severity among the applied rules and"
+      },
+      {
+        "line": 69,
+        "text": "  never lower than high, so the finding fails closed. Only `--ignore` drops it. A `.mcpmoat-ignore`"
+      },
+      {
+        "line": 70,
+        "text": "  file cannot."
+      },
+      {
+        "line": 86,
+        "text": "HIGH (2)"
+      },
+      {
+        "line": 87,
+        "text": "  MOAT-T1-003  Tool description tells the model to hide actions from the user"
+      },
+      {
+        "line": 88,
+        "text": "    Server: notes (claude-code, global)"
+      },
+      {
+        "line": 89,
+        "text": "    Tool: daily_quote (description)"
+      },
+      {
+        "line": 90,
+        "text": "    Risk: ..."
+      },
+      {
+        "line": 91,
+        "text": "    Fix: ..."
+      },
+      {
+        "line": 95,
+        "text": "    Risk: mcpmoat did not check all the tools of this server ..."
+      },
+      {
+        "line": 96,
+        "text": "    Fix: Do not use this server until you have read its tool descriptions and schemas yourself ..."
+      },
+      {
+        "line": 97,
+        "text": "```"
+      },
+      {
+        "line": 98,
+        "text": ""
+      },
+      {
+        "line": 102,
+        "text": "  `mcpmoat scan --no-color`) or a non-empty `NO_COLOR` environment variable turns it off. Colour"
+      },
+      {
+        "line": 103,
+        "text": "  marks the headings, the severity lines and the status words only. The words carry the meaning, so"
+      },
+      {
+        "line": 104,
+        "text": "  the output is the same without colour. `scan` escapes every config, server and rule text first,"
+      },
+      {
+        "line": 105,
+        "text": "  so terminal escape sequences in a config or from a server do not reach your terminal."
+      },
+      {
+        "line": 133,
+        "text": "  tool that the provider refused (HTTP 400, 413 or 422) alone does not make `complete` `false`: it"
+      },
+      {
+        "line": 134,
+        "text": "  is a `MOAT-LLM-002` finding (or `MOAT-LLM-001` when its text was cut or had a credential removed)."
+      },
+      {
+        "line": 135,
+        "text": "  `complete` does not cover the save of new pins. `scan` saves them after it writes the document,"
+      },
+      {
+        "line": 136,
+        "text": "  on purpose, so that you see the report before the pins are saved. So `\"complete\": true` with exit"
+      },
+      {
+        "line": 137,
+        "text": "  code 2 can mean that the save failed, for example: another process held the pins lock or the"
+      },
+      {
+        "line": 138,
+        "text": "  lock file was unsafe, `pins.json` was removed during the run, a server no longer fit in"
+      },
+      {
+        "line": 139,
+        "text": "  `pins.json`, the pins directory was unsafe or changed, or a signal came before the save. The"
+      },
+      {
+        "line": 140,
+        "text": "  reason is on stderr. Always check the exit code too. A failed write to stdout (for example a"
+      },
+      {
+        "line": 157,
+        "text": "- **`accept`** is an optional field of a server. A pinned server that has a `To accept` hint in the"
+      },
+      {
+        "line": 158,
+        "text": "  terminal has `accept` with `digest` (`pd1:` and 64 hex characters, the same digest as in the"
+      },
+      {
+        "line": 159,
+        "text": "  terminal hint) and, only when the terminal hint prints a command, `command`. It never holds the"
+      },
+      {
+        "line": 160,
+        "text": "  prose steps of a hint without a command. A server whose new tools do not fit in `pins.json` gets"
+      },
+      {
+        "line": 161,
+        "text": "  a hint with no command, because `pin --accept` would fail: its `accept` has the digest only, and"
+      },
+      {
+        "line": 162,
+        "text": "  its terminal line ends with `(pins.json has no room for these tools: pin --accept fails until you"
+      },
+      {
+        "line": 163,
+        "text": "  remove servers you no longer use from pins.json)`. A project server whose new tools do not fit in"
+      },
+      {
+        "line": 164,
+        "text": "  the project share gets the same hint with the digest only, and its terminal line ends with `(the"
+      },
+      {
+        "line": 165,
+        "text": "  project share of pins.json has no room for these tools: pin --accept fails until you remove"
+      },
+      {
+        "line": 166,
+        "text": "  project servers you no longer use from pins.json)`. The `To accept` line itself is not in the JSON. When two"
+      },
+      {
+        "line": 167,
+        "text": "  servers have the same identity (the same client, source, project path and name), `scan` prints one"
+      },
+      {
+        "line": 168,
+        "text": "  `To accept` line, and the JSON gives both servers the same `accept` object, with the same digest."
+      },
+      {
+        "line": 169,
+        "text": "- **`fields_truncated`** is a required boolean. It is `true` when at least one text field was cut at"
+      },
+      {
+        "line": 170,
+        "text": "  its length cap. `scan` cuts names to 512 characters and paths to 4096 characters, and each cut"
+      },
+      {
+        "line": 191,
+        "text": "  kind of finding, and [Size bound](ARCHITECTURE.md#size-bound) for the tests."
+      },
+      {
+        "line": 192,
+        "text": "- A tool rule finding has `\"field\": \"tool\"`, the tool name in `key`, and `description` or `schema`"
+      },
+      {
+        "line": 193,
+        "text": "  in `related`. An LLM finding (`MOAT-LLM-001`, `MOAT-LLM-002`) also has `\"field\": \"tool\"` and"
+      },
+      {
+        "line": 194,
+        "text": "  the tool name in `key`. A pin finding (`MOAT-T2-001` to `MOAT-T2-003`) also has the tool name in"
+      },
+      {
+        "line": 209,
+        "text": "  without `-r` to keep the escapes."
+      },
+      {
+        "line": 210,
+        "text": "- Each finding has a `source`: `rule` for a rule finding, `llm` for an advisory finding of"
+      },
+      {
+        "line": 211,
+        "text": "  `--llm`."
+      },
+      {
+        "line": 212,
+        "text": "- The format has a `schema_version` (now `4`; version 2 added `source`, version 3 added `ignored`,"
+      },
+      {
+        "line": 213,
+        "text": "  `accept` and `fields_truncated`, version 4 added `server_index` to each finding and each diff)."
+      },
+      {
+        "line": 214,
+        "text": "  The schema is [schema/scan-output.v4.json](schema/scan-output.v4.json). Files of version 1, 2 and"
+      },
+      {
+        "line": 215,
+        "text": "  3 stay as they are. See [JSON output](ARCHITECTURE.md#json-output) for the shape and the version"
+      },
+      {
+        "line": 216,
+        "text": "  policy."
+      },
+      {
+        "line": 217,
+        "text": ""
+      }
+    ]
+  },
+  {
+    "path": "go.mod",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/go.mod",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:35.080870+00:00",
+    "status": 200,
+    "bytes": 653,
+    "sha256": "ffd71502903f3433b2808acfadfa31dded1ef42a0aeddf71d5a7cae4a74edc7e",
+    "line_count": 25,
+    "direct_refs": [],
+    "selected_lines": []
+  },
+  {
+    "path": "internal/report/json.go",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/report/json.go",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:35.353403+00:00",
+    "status": 200,
+    "bytes": 17897,
+    "sha256": "3e24d292a896c50a41a690c1da9fcdc511dfc2b87fbb1766aa46c47dbd00b327",
+    "line_count": 486,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 15,
+        "text": ""
+      },
+      {
+        "line": 16,
+        "text": "// SchemaVersion is the version of the JSON report format (FR-15). Bump it,"
+      },
+      {
+        "line": 17,
+        "text": "// and add docs/schema/scan-output.v<N>.json, when a field is added, renamed or"
+      },
+      {
+        "line": 18,
+        "text": "// removed, or changes type or meaning. An added field needs a bump too: every"
+      },
+      {
+        "line": 19,
+        "text": "// object in the schema sets additionalProperties to false."
+      },
+      {
+        "line": 20,
+        "text": "//"
+      },
+      {
+        "line": 21,
+        "text": "// Version 2 adds JSONFinding.Source."
+      },
+      {
+        "line": 22,
+        "text": "//"
+      },
+      {
+        "line": 23,
+        "text": "// Version 3 adds ScanReport.Ignored, ScanReport.FieldsTruncated and"
+      },
+      {
+        "line": 24,
+        "text": "// JSONServer.Accept."
+      },
+      {
+        "line": 25,
+        "text": "//"
+      },
+      {
+        "line": 26,
+        "text": "// Version 4 adds JSONFinding.ServerIndex and JSONDiff.ServerIndex"
+      },
+      {
+        "line": 27,
+        "text": "// (server_index)."
+      },
+      {
+        "line": 28,
+        "text": "const SchemaVersion = 4"
+      },
+      {
+        "line": 29,
+        "text": ""
+      },
+      {
+        "line": 30,
+        "text": "// Mode tells if a scan connected to the servers. It is the type of"
+      },
+      {
+        "line": 64,
+        "text": "type ScanReport struct {"
+      },
+      {
+        "line": 65,
+        "text": "\tSchemaVersion int      `json:\"schema_version\"`"
+      },
+      {
+        "line": 66,
+        "text": "\tTool          ToolInfo `json:\"tool\"`"
+      },
+      {
+        "line": 67,
+        "text": "\tMode          Mode     `json:\"mode\"`"
+      },
+      {
+        "line": 108,
+        "text": "// JSONAccept is the hint that tells how to accept the changes of a server. The"
+      },
+      {
+        "line": 109,
+        "text": "// terminal report shows the same hint. Digest is the pin digest that the"
+      },
+      {
+        "line": 110,
+        "text": "// terminal hint shows. Command is set only when the terminal hint shows a"
+      },
+      {
+        "line": 111,
+        "text": "// command, never when it shows prose steps. WriteJSON never cuts Digest or"
+      },
+      {
+        "line": 112,
+        "text": "// Command."
+      },
+      {
+        "line": 113,
+        "text": "type JSONAccept struct {"
+      },
+      {
+        "line": 114,
+        "text": "\tDigest  string `json:\"digest\"`"
+      },
+      {
+        "line": 115,
+        "text": "\tCommand string `json:\"command,omitempty\"`"
+      },
+      {
+        "line": 116,
+        "text": "}"
+      },
+      {
+        "line": 120,
+        "text": "\tName    string `json:\"name\"`"
+      },
+      {
+        "line": 121,
+        "text": "\tVersion string `json:\"version\"`"
+      },
+      {
+        "line": 122,
+        "text": "}"
+      },
+      {
+        "line": 123,
+        "text": ""
+      },
+      {
+        "line": 153,
+        "text": "\tRuleID   string `json:\"rule_id\"`"
+      },
+      {
+        "line": 154,
+        "text": "\tSeverity string `json:\"severity\"`"
+      },
+      {
+        "line": 155,
+        "text": "\tServer   string `json:\"server\"`"
+      },
+      {
+        "line": 156,
+        "text": "\t// ServerIndex is the position of the server in ScanReport.Servers. A long"
+      },
+      {
+        "line": 162,
+        "text": "\tRelated     string `json:\"related\"`"
+      },
+      {
+        "line": 163,
+        "text": "\t// Source is \"rule\" for a finding from a rule, and \"llm\" for an advisory"
+      },
+      {
+        "line": 164,
+        "text": "\t// finding from the LLM classification (see SourceRule and SourceLLM)."
+      },
+      {
+        "line": 165,
+        "text": "\tSource Source `json:\"source\"`"
+      },
+      {
+        "line": 227,
+        "text": "// (r.Index): the client, the scope, the title and the rule texts of the"
+      },
+      {
+        "line": 228,
+        "text": "// terminal report are not in it (a new field bumps the version)."
+      },
+      {
+        "line": 229,
+        "text": "func NewJSONFinding(r FindingRow) JSONFinding {"
+      },
+      {
+        "line": 230,
+        "text": "\treturn JSONFinding{"
+      },
+      {
+        "line": 231,
+        "text": "\t\tRuleID:      r.RuleID,"
+      },
+      {
+        "line": 232,
+        "text": "\t\tSeverity:    r.Severity,"
+      },
+      {
+        "line": 233,
+        "text": "\t\tServer:      r.Name,"
+      },
+      {
+        "line": 234,
+        "text": "\t\tServerIndex: r.Index,"
+      },
+      {
+        "line": 334,
+        "text": "\ts.raw(\"{\\n\")"
+      },
+      {
+        "line": 335,
+        "text": "\ts.field(\"schema_version\", r.SchemaVersion)"
+      },
+      {
+        "line": 336,
+        "text": "\ts.field(\"tool\", r.Tool)"
+      },
+      {
+        "line": 337,
+        "text": "\ts.field(\"mode\", r.Mode)"
+      }
+    ]
+  },
+  {
+    "path": "internal/report/diff.go",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/report/diff.go",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:35.409298+00:00",
+    "status": 200,
+    "bytes": 7851,
+    "sha256": "23b85a496f402df5dbb39f0f32b047da435a920b2e2ff6ff0886eaa89af3ed49",
+    "line_count": 200,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 10,
+        "text": "// maxDiffLineRunes is the cap for the text of one diff line, in runes of raw"
+      },
+      {
+        "line": 11,
+        "text": "// text, not counting the prefix. A tool description or schema comes from a"
+      },
+      {
+        "line": 12,
+        "text": "// server and has no length limit, and one line of it can be very long. The cap"
+      },
+      {
+        "line": 13,
+        "text": "// stops one line from flooding the terminal. It is larger than the cap of a"
+      },
+      {
+        "line": 14,
+        "text": "// table cell on purpose: a diff is how a reviewer reads what a server changed,"
+      },
+      {
+        "line": 15,
+        "text": "// so a real description line should show in full. A cut line ends with"
+      },
+      {
+        "line": 16,
+        "text": "// [termsafe.CutMarker], so a cut is never silent."
+      },
+      {
+        "line": 17,
+        "text": "const maxDiffLineRunes = 2000"
+      },
+      {
+        "line": 69,
+        "text": "\t// DiffNew is a tool that is new on a pinned server: the server offers it,"
+      },
+      {
+        "line": 70,
+        "text": "\t// but the pins do not hold it. Its Diff has only added lines."
+      },
+      {
+        "line": 71,
+        "text": "\tDiffNew"
+      },
+      {
+        "line": 72,
+        "text": "\t// DiffUnverified is a pinned tool whose pin cannot be checked (see"
+      },
+      {
+        "line": 73,
+        "text": "\t// pins.Change.Diff). Its Diff has only added lines: the whole current"
+      },
+      {
+        "line": 74,
+        "text": "\t// tool."
+      },
+      {
+        "line": 75,
+        "text": "\tDiffUnverified"
+      },
+      {
+        "line": 123,
+        "text": "// The text of a diff comes from untrusted servers: it is the first place where"
+      },
+      {
+        "line": 124,
+        "text": "// a tool description reaches the terminal. Each line is split in two parts. The"
+      },
+      {
+        "line": 125,
+        "text": "// leading unified prefix (\"@@\", \"---\", \"+++\", \"+\", \"-\" or \" \") is written as it"
+      },
+      {
+        "line": 126,
+        "text": "// is, so the diff keeps its shape. The rest of the line goes through"
+      }
+    ]
+  },
+  {
+    "path": "internal/pins/diff.go",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/pins/diff.go",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:35.475705+00:00",
+    "status": 200,
+    "bytes": 8601,
+    "sha256": "12ba998ce4bdb638618ceeef779896880aad4bc3fddf47850ec19253d305165b",
+    "line_count": 240,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 73,
+        "text": "// newToolDiff returns the unified diff from no text to the current tool: every"
+      },
+      {
+        "line": 74,
+        "text": "// content line is an added line. It is the diff of a tool that the pin does"
+      },
+      {
+        "line": 75,
+        "text": "// not have yet. The labels, the caps and the truncated result are those of"
+      },
+      {
+        "line": 76,
+        "text": "// unifiedDiff, and so is mask. The diff is never empty, because a rendered"
+      },
+      {
+        "line": 110,
+        "text": "// end, and keeps keep lines of them on each side. It returns the two middle"
+      },
+      {
+        "line": 111,
+        "text": "// windows and the number of lines it removed at the start. The work is linear"
+      },
+      {
+        "line": 112,
+        "text": "// in the length of the texts."
+      },
+      {
+        "line": 113,
+        "text": "//"
+      }
+    ]
+  },
+  {
+    "path": "internal/rules/set.go",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/rules/set.go",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:35.496397+00:00",
+    "status": 200,
+    "bytes": 8359,
+    "sha256": "78ec5f9b81a17c5146b01c233fec22ff929667cbd9c3ef30968dff5c5e085596",
+    "line_count": 233,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 19,
+        "text": ""
+      },
+      {
+        "line": 20,
+        "text": "// setLabel is the File of the errors that are about the whole rule set and not"
+      },
+      {
+        "line": 21,
+        "text": "// about one rule file."
+      },
+      {
+        "line": 22,
+        "text": "const setLabel = \"rule set\""
+      },
+      {
+        "line": 23,
+        "text": ""
+      },
+      {
+        "line": 24,
+        "text": "// Set is a collection of rules with unique IDs, sorted by ID. Build one with"
+      }
+    ]
+  },
+  {
+    "path": "internal/rules/finding.go",
+    "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/rules/finding.go",
+    "method": "GET",
+    "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+    "retrieved_at_utc": "2026-10-28T14:03:35.782828+00:00",
+    "status": 200,
+    "bytes": 5329,
+    "sha256": "125dde0ecc0d8b4c09e0c379839e8fca81f3d3dd9f8e7ff81c704023f0971777",
+    "line_count": 122,
+    "direct_refs": [],
+    "selected_lines": [
+      {
+        "line": 23,
+        "text": "\t// RuleUnpinnedPackage is the ID of the unpinned package check"
+      },
+      {
+        "line": 24,
+        "text": "\t// (threat T4): a server that runs a package with no fixed version. It also"
+      },
+      {
+        "line": 25,
+        "text": "\t// covers git and GitHub shorthand specs, unless the spec is pinned to a"
+      },
+      {
+        "line": 26,
+        "text": "\t// full 40-hex commit, and tarball, URL and \"pipx run\" script specs, which"
+      },
+      {
+        "line": 82,
+        "text": "// it or put it into a command or a format string. A Finding never holds a"
+      },
+      {
+        "line": 83,
+        "text": "// secret value, a URL or a description text: it names the place of the problem,"
+      },
+      {
+        "line": 84,
+        "text": "// not the content."
+      },
+      {
+        "line": 85,
+        "text": "type Finding struct {"
+      },
+      {
+        "line": 119,
+        "text": "\t// mcpmoat and from the safe fields above, never from a value, a URL or a"
+      },
+      {
+        "line": 120,
+        "text": "\t// description."
+      },
+      {
+        "line": 121,
+        "text": "\tMessage string"
+      },
+      {
+        "line": 122,
+        "text": "}"
+      }
+    ]
+  }
+]

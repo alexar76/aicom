@@ -36,6 +36,9 @@ ecosystem-landing/encyclopedia/
 ecosystem-landing/shared/
 ecosystem-landing/sitemap.xml
 ecosystem-landing/robots.txt
+ecosystem-landing/docs/ecosystem/
+ecosystem-landing/docs/assets/
+ecosystem-landing/docs/document.css
 
 # ── Encyclopedia render output (generated — docs/encyclopedia/scripts/*.mjs) ──
 # Source of truth is content/*.json + assets/; the rendered HTML inlines every
@@ -142,6 +145,8 @@ aimarket-hub/data/
 # Factory output (bind-mounted ./data — huge churn; keeps IDE/git fast)
 data/bugs/
 data/code/
+data/private_product_git/
+private_product_git/
 data/security/
 data/arch/
 data/specs/
@@ -308,3 +313,16 @@ artifacts/quality-audit-2026-10-23/
 artifacts/quality-audit-2026-10-24/
 pingblip/memeforge/artifacts/bag-golem-review/
 pingblip/memeforge/artifacts/map-layout/
+
+# Local audit clones contain complete upstream history, including exposed secrets.
+# Keep the redacted audit reports, never commit the bare Git object caches.
+artifacts/code-security-2026-10-25/public-secrets/objects/
+
+# Local agent state and Git history backups from MCP/research sessions.
+data/knowledge/
+data/traces/
+output/agent-skills-state-2026-before-replacement.bundle
+output/agent-skills-state-2026-before-replacement.git/
+output/agent-skills-state-2026-clean/
+output/agent-skills-state-2026-histor-pr/
+output/histor-pr/

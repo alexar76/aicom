@@ -1,0 +1,35 @@
+{
+  "initialUnit": "histor-warden-metadata-build-ce1dd74ed.service",
+  "initialExecStartUtc": "2026-10-27T16:14:29Z",
+  "initialResult": "exit-code",
+  "initialExitStatus": 1,
+  "nativePython": "3.12.3",
+  "nativeActionsStarted": false,
+  "deploymentStarted": false,
+  "cause": "The filename operator.py shadowed Python's standard-library operator module before main; the ordinary standard-library import failed with a circular import, while Python -I succeeded.",
+  "importCheck": {
+    "ordinaryExitStatus": 1,
+    "isolatedExitStatus": 0,
+    "operatorFilenameInFailure": true,
+    "circularImportInFailure": true
+  },
+  "nativeConfigExpectedValueChecks": {
+    "rootIdentityPathOwner": true,
+    "nativeImport": true,
+    "host": true,
+    "serviceAllowed": true,
+    "testsEnforced": true,
+    "liveMode": true,
+    "branchAllowed": true,
+    "dockerfile": true,
+    "context": true,
+    "composeService": true,
+    "testTarget": true,
+    "testRunner": true,
+    "sourceHostInternal": true,
+    "sourceOwnerPath": true,
+    "forbiddenIdentityAbsent": true
+  },
+  "launchCorrection": "Use the unchanged reviewed helper with native Python -I and systemd-run --no-block; preserve the failed attempt and audit records.",
+  "helperSha256": "5dde9c7e91156615fdba2e2eccc19beea229f5b240a974b537c804b484df7dce"
+}

@@ -35,7 +35,7 @@ AICOM — это **федеративная экономика автономн�
 | **Очаг HESTIA** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [лендинг](https://alexar76.github.io/hestia/) | Изолированный hosted-runtime — не каталог Hub |
 | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [лендинг](https://alexar76.github.io/attested-memory/) | Проверяемая память для ИИ-агентов |
 | **Кит eSIM-оператора** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · [руководства](https://esim.modelmarket.dev/ru/kit) | Travel eSIM для людей и ИИ-агентов; операторы подключаются одной командой |
-| **EMPORION** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · [лендинг](https://alexar76.github.io/emporion/) | Публичные факты для агентов, которые торгуют; продаются через Hub |
+| **SYMMARTYS** | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) · [лендинг](https://symmartys.modelmarket.dev/) | Публичные факты для агентов, которые торгуют; продаются через Hub |
 
 ![Полный граф экосистемы — Alien Monitor в режиме LIVE](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -166,7 +166,7 @@ flowchart TB
     argus["ARGUS-3<br/>Локальный агент · экономика"]
     memory["Attested Memory<br/>проверяемая память агентов"]
     esim["eSIM-операторы<br/>витрина · узел продавца · x402"]
-    emporion["EMPORION<br/>НДС · LEI · реестры · курсы · санкции<br/>OTS · снимки страниц · таймеры"]
+    symmartys["SYMMARTYS<br/>НДС · LEI · реестры · курсы · санкции<br/>OTS · снимки страниц · таймеры"]
   end
 
   subgraph external["Внешние сервисы"]
@@ -189,7 +189,7 @@ flowchart TB
   argus -->|запись · поиск| memory
   argus -->|заказ x402 · возврат| esim
   esim -->|подписанные предложения · квитанции| aicom
-  emporion -->|подписанные публичные факты| aicom
+  symmartys -->|подписанные публичные факты| aicom
   aicom -->|публичная телеметрия| logos
   aicom -->|промпты| llm
   aicom -->|on-chain| chain
@@ -208,7 +208,7 @@ flowchart TB
 | [`gaia/`](https://github.com/alexar76/gaia) | **GAIA физические оракулы** | `:9320` | `gaia` |
 | [`atlas/`](https://github.com/alexar76/atlas) | **ATLAS карта датчиков** | [atlas.modelmarket.dev](https://atlas.modelmarket.dev) | `atlas` |
 | [`esim-kit/`](https://github.com/alexar76/esim-operator-kit) | **Кит eSIM-оператора** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · демо-продавец [modelmarket.dev/providers/esim](https://modelmarket.dev/providers/esim/healthz) | `esim-operator-kit` |
-| [`emporion/`](https://github.com/alexar76/emporion) | **EMPORION: факты для торговли** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · `:9351` · пир хаба [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health) | `emporion` |
+| [`symmartys/`](https://github.com/alexar76/symmartys/blob/main/README.md) | **SYMMARTYS: факты для торговли** | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) · `:9351` · пир хаба [modelmarket.dev/providers/symmartys](https://modelmarket.dev/providers/symmartys/health) | `symmartys` |
 | [`logos/`](https://github.com/alexar76/logos) | **LOGOS · аналитика федерации** | [logos.modelmarket.dev](https://logos.modelmarket.dev) · `:9460` | `logos` |
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS admission** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · шлюз Hub | `themis` |
@@ -303,7 +303,7 @@ flowchart TB
     E1["Витрина для людей · узел продавца /agents<br/>x402 · возвраты · подписанные квитанции о доставке"]
   end
 
-  subgraph EMP["EMPORION · публичные факты"]
+  subgraph SYM["SYMMARTYS · публичные факты"]
     E2["НДС через VIES · GLEIF LEI · курсы ЕЦБ<br/>санкционные списки · OpenTimestamps<br/>реестры компаний · EORI · RDAP · рабочие дни<br/>снимки страниц · таймеры"]
   end
 
@@ -333,7 +333,7 @@ flowchart TB
   MESH -->|"MESH_HUB_URL"| HUB
   CLIENTS --> HUB
   ESIM -->|"подписанные предложения · узел или свой хаб"| HUB
-  EMP -->|"подписанные справки · только через хаб"| HUB
+  SYM -->|"подписанные справки · только через хаб"| HUB
   C1 -->|"заказ x402 · возврат"| E1
   C1 --> MESH
   HUB --> CHAIN
@@ -503,17 +503,19 @@ ARGUS фильтрует discover по `ARGUS_MIN_HUB_TRUST` (по умолча�
 
 **Вживую:** демо-продавец на [esim.modelmarket.dev](https://esim.modelmarket.dev) (живые цены, без продаж). В трёх тестовых окнах 15 октября 2026 года настоящие eSIM были проданы ARGUS и агенту для разработки и возвращены, каждая транзакция в Base ([кейсы](https://esim.modelmarket.dev/ru/kit/cases)). **Спутник:** `esim-kit/` → [alexar76/esim-operator-kit](https://github.com/alexar76/esim-operator-kit).
 
-### 3.6d EMPORION — публичные факты для агентов, которые торгуют
+### 3.6d SYMMARTYS — публичные факты для агентов, которые торгуют
 
-**Роль:** то, что агент проверяет, прежде чем иметь дело с компанией или переводить деньги, — с ответом из самих публичных реестров: действителен ли НДС-номер в ЕС (VIES, с номером консультации, который ЕС выдаёт за проверку), кто стоит за юридическим лицом (GLEIF LEI), какой справочный курс ЕЦБ был на дату (справочный, а не курс сделки), есть ли имя или адрес кошелька в санкционных списках ЕС, OFAC SDN или Великобритании (список Великобритании включает санкции ООН с их номерами), и доказательство метки времени для хеша с привязкой к Биткоину (OpenTimestamps, стандартный `.ots`). Шесть платных функций по $0.001–0.002 — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — и бесплатная `emporion.sources@v1`.
+**Статус развёртывания (2026-10-29):** SYMMARTYS (συμμάρτυς — со-свидетель, подтверждающий свидетель) 0.5.0 работает на [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) с 16 функциями. Ключи, данные и история провайдера сохранены. Обновления GitHub, PyPI, GHCR и MCP Registry ещё не опубликованы.
+
+**Роль:** то, что агент проверяет, прежде чем иметь дело с компанией или переводить деньги, — с ответом из самих публичных реестров: действителен ли НДС-номер в ЕС (VIES, с номером консультации, который ЕС выдаёт за проверку), кто стоит за юридическим лицом (GLEIF LEI), какой справочный курс ЕЦБ был на дату (справочный, а не курс сделки), есть ли имя или адрес кошелька в санкционных списках ЕС, OFAC SDN или Великобритании (список Великобритании включает санкции ООН с их номерами), и доказательство метки времени для хеша с привязкой к Биткоину (OpenTimestamps, стандартный `.ots`). Шесть платных функций по $0.001–0.002 — `symmartys.vat.check@v1`, `symmartys.lei.lookup@v1`, `symmartys.fx.rate@v1`, `symmartys.sanctions.screen@v1`, `symmartys.timestamp.stamp@v1`, `symmartys.timestamp.verify@v1` — и бесплатная `symmartys.sources@v1`.
 
 **Честно по устройству:** каждый ответ подписан Ed25519 вместе с источником, временем получения и SHA-256 того, что вернул источник. Проверка по санкционным спискам — поиск, а не вывод: совпадение — повод присмотреться, отсутствие совпадения — не разрешение. Списки хранятся на диске с исходным временем получения и хешем, поэтому перезапуск или сбой источника никогда тихо не опустошает список, а `/health` называет списки, которые действительно загружены.
 
 **С версии 0.2 — следующие вопросы и два инструмента:** национальные реестры компаний по номеру или названию (Норвегия, Франция, Чехия, Финляндия), номера EORI для таможни ЕС, кто и когда зарегистрировал домен (RDAP, из реестра самой зоны через bootstrap IANA) и рабочие дни примерно в 250 странах и на рынках вроде TARGET2. Две функции выходят за рамки справок: **снимок страницы** фиксирует, что страница ответила в момент запроса, — конечный адрес, переадресации, IP, TLS-сертификат и SHA-256 тела — и привязывает эту запись к Биткоину; **таймер** вызывает https-адрес агента подписанным событием в заданное время или как dead man's switch, когда агент перестаёт отмечаться. Оба ходят только на публичные адреса, соединяясь с тем адресом, который был проверен.
 
-**Продаётся через Hub:** EMPORION работает на `oracle-core` с включённым ценовым шлюзом: платная функция отвечает только на вызов, который подписал доверенный хаб, прямой вызов получает `402` с названием хаба, который её продаёт (§4.3), а каждый вызов записывается в собственный журнал вызовов провайдера.
+**Продаётся через Hub:** SYMMARTYS работает на `oracle-core` с включённым ценовым шлюзом: платная функция отвечает только на вызов, который подписал доверенный хаб, прямой вызов получает `402` с названием хаба, который её продаёт (§4.3), а каждый вызов записывается в собственный журнал вызовов провайдера.
 
-**Где посмотреть:** [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) — лендинг с живой 3D-агорой источников — и пир хаба [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health). **Сателлит:** `emporion/` → [alexar76/emporion](https://github.com/alexar76/emporion).
+**Где посмотреть:** [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) — лендинг с живой 3D-агорой источников — и пир хаба [modelmarket.dev/providers/symmartys](https://modelmarket.dev/providers/symmartys/health). **Сателлит:** `symmartys/` → [symmartys/](https://github.com/alexar76/symmartys/blob/main/README.md).
 
 ### 3.7 ARGUS-3
 
@@ -749,7 +751,7 @@ sequenceDiagram
 
 **Доставки, подтверждённые покупателями.** Продавец, которому платят напрямую (x402 seller-direct), для Hub невидим, поэтому магазин, который берёт деньги и ничего не доставляет, выглядел так же, как тот, что доставляет. Продавцы, которые подписывают квитанции о доставке и возврате (кит eSIM, §3.6c), дают покупателю доказать доставку: `POST /ai-market/v2/reputation/deliveries` проверяет подпись по `provider_pubkey`, опубликованному в листинге, и перевод под собственным nonce EIP-3009 квитанции ончейн, засчитывает его один раз на транзакцию и не хранит в открытом виде ни сумм, ни адресов, ни транзакций. Поиск показывает `deliveries_30d {confirmed, distinct_buyers, refunded}`, а оценка доверия засчитывает один успех на каждого разного покупателя. Кошельки ничего не стоят, поэтому это читается как «покупатели подтвердили, что продавец доставил», а не «продавец хороший».
 
-**Платные вызовы идут через хаб.** Invoke-URL провайдера публичен, поэтому до октября 2026 года вызывающий, который обходил хаб, получал любую платную функцию бесплатно. Провайдеры на `oracle-core` 0.5+ держат ценовой шлюз: платная функция обслуживает только вызов, который подписал хаб, которому доверяет провайдер (хаб пропустил его — оплаченным или в своей бесплатной пробе), или вызывающего, назначенного оператором; все остальные получают `402` с хабом, который её продаёт. На платной команде устройству хаб подписывает ещё и то, кто заплатил, чтобы GAIA могла отдать переключённую розетку в аренду плательщику. Каждый вызов попадает в журнал вызовов провайдера (исход, кто поручился, задержка — никогда не вход и не IP-адрес), и выручкой считаются только вызовы, подписанные хабом. GAIA и EMPORION держат шлюз в режиме enforce с 16 октября 2026 года.
+**Платные вызовы идут через хаб.** Invoke-URL провайдера публичен, поэтому до октября 2026 года вызывающий, который обходил хаб, получал любую платную функцию бесплатно. Провайдеры на `oracle-core` 0.5+ держат ценовой шлюз: платная функция обслуживает только вызов, который подписал хаб, которому доверяет провайдер (хаб пропустил его — оплаченным или в своей бесплатной пробе), или вызывающего, назначенного оператором; все остальные получают `402` с хабом, который её продаёт. На платной команде устройству хаб подписывает ещё и то, кто заплатил, чтобы GAIA могла отдать переключённую розетку в аренду плательщику. Каждый вызов попадает в журнал вызовов провайдера (исход, кто поручился, задержка — никогда не вход и не IP-адрес), и выручкой считаются только вызовы, подписанные хабом. GAIA и SYMMARTYS держат шлюз в режиме enforce с 16 октября 2026 года.
 
 ### 4.4 Цикл оплаты оракулов
 

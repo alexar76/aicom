@@ -1,0 +1,96 @@
+{
+  "checked_at_utc": "2026-10-27T11:04:13.821982+00:00",
+  "scope": "in-memory lifecycle fixtures only",
+  "implementation": "histor/histor/mcpclient.py",
+  "implementation_sha256": "a16bf5b959ce32cbe16859e0c201f321a478bcb32726306e08a5bdb6b5c0ebfe",
+  "specification": "https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning",
+  "cases": [
+    {
+      "fixture": "legacy_only",
+      "status": "ok",
+      "detail": "",
+      "tools_observed": 1,
+      "calls": [
+        {
+          "method": "initialize",
+          "protocol_header": null,
+          "method_header": null
+        },
+        {
+          "method": "notifications/initialized",
+          "protocol_header": "2025-06-18",
+          "method_header": null
+        },
+        {
+          "method": "tools/list",
+          "protocol_header": "2025-06-18",
+          "method_header": null
+        }
+      ]
+    },
+    {
+      "fixture": "dual_era_legacy_branch",
+      "status": "ok",
+      "detail": "",
+      "tools_observed": 1,
+      "calls": [
+        {
+          "method": "initialize",
+          "protocol_header": null,
+          "method_header": null
+        },
+        {
+          "method": "notifications/initialized",
+          "protocol_header": "2025-06-18",
+          "method_header": null
+        },
+        {
+          "method": "tools/list",
+          "protocol_header": "2025-06-18",
+          "method_header": null
+        }
+      ]
+    },
+    {
+      "fixture": "modern_only",
+      "status": "http-400",
+      "detail": "",
+      "tools_observed": 0,
+      "calls": [
+        {
+          "method": "initialize",
+          "protocol_header": null,
+          "method_header": null
+        }
+      ]
+    }
+  ],
+  "modern_request_control": {
+    "http_status": 200,
+    "tools_observed": 1,
+    "calls": [
+      {
+        "method": "tools/list",
+        "protocol_header": "2026-07-28",
+        "method_header": "tools/list"
+      },
+      {
+        "method": "tools/list",
+        "protocol_header": "2026-07-28",
+        "method_header": "tools/list"
+      },
+      {
+        "method": "tools/list",
+        "protocol_header": "2026-07-28",
+        "method_header": "tools/list"
+      }
+    ],
+    "missing_accept_status": 400,
+    "missing_client_capabilities_status": 400
+  },
+  "limitations": [
+    "Does not measure prevalence of modern-only servers or production availability",
+    "Dual-era case exercises its legacy branch only",
+    "The synthetic modern fixture is not a full MCP server or conformance test"
+  ]
+}

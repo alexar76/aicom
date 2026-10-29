@@ -1,0 +1,26 @@
+{
+  "scope": "Read-only production source and Store inspection; no crawl request, provider call, migration or DB write",
+  "productionSourceMatchesReviewedLocal": {
+    "service.py": "b87864e16ae33805d6f10901563061e2d8bdab0a33764a92d52826adef893133",
+    "crawler.py": "f5f0390413f15925ba42a2e2737e360f561e8fa7a4d51d9eb244e23be94c71d6"
+  },
+  "criticalStoreMethodHashesMatchReviewedLocal": {
+    "mark_interrupted_runs": "cf1bd5b149d32e1125101845814552b15bdea1324c65ca70077d4af011a56b5d",
+    "resume_point": "1deb174751624c231dc366cb6d8c4ef4b479ecb994d846e697a8c3b5ae8665f2",
+    "cycle_totals": "d21039f6d0927a5c36063214730525f0fa5447c0f54494ac292a0cb36ae74f34",
+    "crawl_plan": "ddd6a4206371f04b01c4c079f3c88a5f4f0adae39938ca49c977a67774474685"
+  },
+  "activeRunAtInspection": 27097,
+  "cycleStartedAt": "2026-10-27T16:56:37Z",
+  "committedCycleAttempts": 0,
+  "committedPackageAttempts": 0,
+  "classified": 0,
+  "classifierBudget": 0,
+  "packageBudget": 8000,
+  "savedPackagePlanPresent": false,
+  "independentRemotePollingEnabled": true,
+  "schedulerFirstWaitSeconds": 15,
+  "checkpointSeconds": 30,
+  "normalResumeIncludeRemote": false,
+  "limitations": "A restart can repeat unsaved registry-version planning and in-flight work within checkpoint granularity. This evidence makes no stronger refund or exactly-once provider-call guarantee. The current classifier budget is zero; resumption must keep the existing cycle and package budget."
+}

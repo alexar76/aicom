@@ -25,6 +25,11 @@ Constraint 2: Poseidon(inputValue, nullifierSalt) == inputCommitment
 Constraint 3: Poseidon(inputValue, schemaHash)    == nullifier
 ```
 
+The Hub verifier requires exactly three canonical decimal field elements and
+matches them to the signed envelope's commitment, nullifier and schema hash.
+Replay tracking consumes that same circuit nullifier; re-signing metadata or
+swapping proof signals cannot create another replay key.
+
 ## What this does NOT prove
 
 - **Arbitrary JSON-schema validity.** The caller has to encode their

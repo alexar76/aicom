@@ -1,0 +1,151 @@
+{
+  "key": "fanfics-weight",
+  "url": "https://fanfics.me/ftf1508544",
+  "method": "GET",
+  "retrieved_at": "2026-10-28T13:30:52.284783+00:00",
+  "status": 200,
+  "final_url": "https://fanfics.me/ftf1508544",
+  "content_type": "text/html",
+  "bytes": 33847,
+  "sha256": "2d13f31f2f975f46fd671ea7011275ac05d9c087a94c9f77a6e262d9ef0505e2",
+  "title": [
+    "Вес ответа"
+  ],
+  "scripts": [
+    "/jquery_php/jquery-1.7.1.min.js",
+    "/jquery_php/jquery.form.min.js",
+    "/jquery_php/inform.js?580",
+    "https://yandex.ru/ads/system/context.js"
+  ],
+  "forms": [
+    {
+      "name": "autent",
+      "action": "https://fanfics.me/autent.php",
+      "method": "post"
+    },
+    {
+      "id": "ReadedDate_Form"
+    },
+    {
+      "id": "Note_Form",
+      "onkeypress": "return ctrl_enter(event, 'Note_Form');",
+      "onsubmit": "$('.MarksList').hide(); pftake('/section_favorite_post.php?action=note_edit_take&fic_type={fic_type}&fic_id={fic_id}', 'Note_Form'); return false;"
+    },
+    {
+      "id": "new_collection_form",
+      "onsubmit": "pftake('/section_collections_post.php?action=collection_new', 'new_collection_form', 'new_collection_buttons', '<img src=/images/load_2.gif>'); return false;"
+    }
+  ],
+  "inputs": [
+    {
+      "class": "header-search",
+      "id": "header-search",
+      "type": "text",
+      "placeholder": "Поиск"
+    },
+    {
+      "class": "input_3",
+      "type": "text",
+      "name": "name",
+      "id": "name",
+      "value": "",
+      "maxlength": "35"
+    },
+    {
+      "class": "input_3",
+      "type": "password",
+      "name": "pass",
+      "id": "pass",
+      "value": ""
+    },
+    {
+      "type": "checkbox",
+      "name": "nocookie",
+      "id": "nocookie"
+    },
+    {
+      "class": "modern_button",
+      "type": "submit",
+      "value": "Войти"
+    },
+    {
+      "type": "hidden",
+      "name": "fic_id",
+      "id": "fic_id",
+      "value": "{fic_id}"
+    },
+    {
+      "type": "hidden",
+      "name": "fic_type",
+      "id": "fic_type",
+      "value": "{fic_type}"
+    },
+    {
+      "class": "modern_button",
+      "type": "button",
+      "onclick": "$('.MarksList').hide(); pftake('/section_favorite_post.php?action=readed_date_edit_take', 'ReadedDate_Form');",
+      "value": "Сохранить"
+    },
+    {
+      "class": "left modern_button",
+      "type": "submit",
+      "value": "Сохранить заметку"
+    },
+    {
+      "type": "text",
+      "class": "input_3 FullWidth",
+      "name": "title",
+      "style": "margin-bottom:10px;",
+      "maxlength": "200"
+    },
+    {
+      "type": "checkbox",
+      "name": "is_fics"
+    },
+    {
+      "type": "checkbox",
+      "name": "is_ftf"
+    },
+    {
+      "type": "checkbox",
+      "name": "is_fanart"
+    },
+    {
+      "type": "checkbox",
+      "name": "is_messages"
+    },
+    {
+      "type": "submit",
+      "class": "modern_button",
+      "value": "Создать"
+    },
+    {
+      "type": "button",
+      "class": "modern_button_cancel right",
+      "onclick": "$('div#new_collection_container').slideUp('fast');",
+      "value": "Отмена"
+    }
+  ],
+  "exact_links": [
+    "/ftf1508544",
+    "/go.php?url=https://author.today/work/650555",
+    "/go.php?url=https://author.today/work/650555"
+  ],
+  "identifiers": {
+    "alexar76": 0,
+    "modelmarket.dev": 0,
+    "Пантеон": 0,
+    "Вес ответа": 3,
+    "Комментарии": 1,
+    "Отзывы": 0,
+    "Читател": 0,
+    "MCP": 0,
+    "api/": 0
+  },
+  "contexts": [
+    "Вес ответа window.yaContextCb=window.yaContextCb||[] window.yaContextCb.push(()=>{ Ya.Context.AdvManager.render({ type: 'floorAd', blockId: 'R-A-2561497-22' }) }); #php-error {display: none;} (function(m,e,t,r,",
+    "ощи VK ID временно не работает, как войти читайте здесь! Добавление произведения Поиск Произведение Вес ответа Это произведение никто не публиковал подробнее Подписка Прочитано Рекомендовано Скачано Не читать Прочитать позже Жду окончания Понравилось Не понравилось Заметка В коллекции Ссылка https://author.to",
+    "ти Зарегистрироваться 0 Включить тёмную тему Новости фанфиков Рейтинг фанфиков Список пользователей Комментарии Персонажи Каноны LitRPG.ru BooksList.me Ranobe.me О проекте Правила Политика обработки персональных данных Новости сайта Наша группа ВКонтакте 2004-2026 © fanfics.me Добавление фанфика в избранное Ме",
+    "ременно не работает, как войти читайте здесь! Добавление произведения Поиск Произведение Вес ответа Это произведение никто не публиковал подробнее Подписка Прочитано Рекомендовано Скачано Не читать Прочитать позже Жду окончания Понравилось Не понравилось Заметка В коллекции Ссылка https://author.today/work/650555 А"
+  ]
+}

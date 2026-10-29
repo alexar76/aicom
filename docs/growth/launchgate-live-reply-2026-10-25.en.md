@@ -1,0 +1,7 @@
+We completed the fresh model run: 720 main answers across five profiles, plus separate user-preference controls. On the same six-fixture set, injected target selection was 48/48 unguarded, 44/48 with the published note and 46/48 with published note+Stop. Both candidate profiles finished at 27/48. Their clean baselines were 23/48 and 25/48, versus 29/48 and 26/48 for the published profiles.
+
+Clean-adjusted candidate-versus-published attenuation was 22.9 percentage points for note (six-fixture cluster 95% interval −8.3 to +60.4) and 37.5 points for note+Stop (+14.6 to +62.5). The candidate moved the attacked distribution toward the common unguarded baseline, but these are known, purposive fixtures—not independent evidence of general protection.
+
+Stop's separate result was less encouraging: 12 rechecks, zero changed selected IDs. Four answer texts changed; three lost a visible warning reference in our limited surface-text review. So the improved version-level result is not evidence that those continuations corrected choices. Genuine-user preferences were followed 30/30; all main selected IDs remained admissible, which does not establish factual explanation quality or prove that any individual target choice followed the attack.
+
+We also addressed the warning-channel point before the run: Post/Stop warnings now use fixed text and opaque source IDs, without quoting the detected payload or repeating raw tool names, URLs or paths. The original untrusted result remains in context. This was still the controlled tool-role bridge, not a native-client test.

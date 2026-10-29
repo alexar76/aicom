@@ -1,0 +1,78 @@
+{
+  "observed_at_moscow": "2026-10-29 14:04–14:08 MSK",
+  "scope": "Публичные внешние сигналы экосистемы alexar76, изменения относительно среза 28 октября 18:00 МСК и дополнительные находки с установленной датой события.",
+  "external_mutations": false,
+  "github_writes": false,
+  "assessment_ru": "HISTOR/WARDEN продолжают получать предметную обратную связь. Обнаружена внешняя атрибуция одной исторической тестовой покупки. Регулярный коммерческий спрос и новые внедрения за сутки этим проходом не установлены.",
+  "findings": [
+    {
+      "kind": "new_attribution_of_historical_paid_test",
+      "source": "https://usetested.com/v1/review?service=modelmarket.dev",
+      "event_at_moscow": "2026-10-27 06:08 MSK",
+      "summary_ru": "UseTested сообщает об одном успешном платном вызове /x402/histor-check за 0.001 USDC, 2026 мс. Перевод 0.001 USDC от указанного payer на кошелёк экосистемы независимо подтверждён в BaseScan.",
+      "chain_evidence": "https://basescan.org/tx/0x656749e6bab12a3373a2905c0495126bd7a533902de08e3af18d4f47380fd32a",
+      "limits_ru": "Транзакция подтверждает перевод, назначение вызова и успешный ответ устанавливаются только по заявлению UseTested. Источник помечает одиночную проверку not qualified. Это событие 27 октября, не новая покупка 29 октября; повторные покупки и независимость владельца кошелька не установлены.",
+      "evidence": "metrics/usetested-fact.json"
+    },
+    {
+      "kind": "new_external_technical_reply",
+      "source": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6475879932",
+      "author": "Paraphern",
+      "event_at_moscow": "2026-10-28 20:24 MSK",
+      "summary_ru": "Поддерживает сохранение аргументов запуска вместе с точной версией пакета, ссылаясь на cross-check HISTOR и RugSnare: одинаковая версия MongoDB MCP при разных аргументах даёт разный набор инструментов.",
+      "limits_ru": "Предметный внешний отклик на совместную сверку, не официальное принятие изменения командой MCP и не новое внедрение.",
+      "evidence": "responses/current-response-delta.json"
+    },
+    {
+      "kind": "returning_external_commenter",
+      "source": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3jbi8",
+      "author": "Paul Irolla",
+      "event_at_moscow": "2026-10-29 11:40 MSK",
+      "summary_ru": "Прежний собеседник вернулся к стоимости контекста: размер tool list важнее количества подключённых MCP-серверов. DEV: 142 прочитанных комментария в 12 ветках против 140 вчера; прирост — один внешний комментарий и наш ответ.",
+      "limits_ru": "Профиль Paul ссылается на Tokenade. Предложение API HISTOR исходит из нашего ответа; Paul не запрашивал интеграцию и не подтверждал использование API.",
+      "evidence": "community/summary.json"
+    },
+    {
+      "kind": "pending_external_dataset_citation",
+      "source": "https://github.com/basitalisandhu/agent-skills-state-2026/pull/14",
+      "summary_ru": "PR с HISTOR остаётся open, merged=false, без новых комментариев или ревью после вчерашнего среза. Последнее ревью CHANGES_REQUESTED от 28 октября.",
+      "evidence": "responses/skills-pr14.json"
+    },
+    {
+      "kind": "economic_observer_delta",
+      "source": "https://agenteconomy.report/s/modelmarket.dev.json",
+      "summary_ru": "CC/improving; organic paying agents 3→3, raw wallets 12→11, score 10.3→11.6, успешные дневные пробы 50%→57.1%, settlements за 14 дней $0.39→$0.08.",
+      "limits_ru": "Organic — поведенческая классификация кошельков, не установленное число клиентов. Снижение на $0.31 согласуется с выпадением дня 14 октября из окна, но причинность по первичным платежам не проверена. x402-list пока не содержит строки за 29 октября, что не доказывает нулевые платежи.",
+      "evidence": "metrics/summary.json"
+    },
+    {
+      "kind": "pending_external_security_confirmation",
+      "source": "https://github.com/Vulnetix/advisory-database/issues/5",
+      "summary_ru": "После вчерашнего среза в issue появилось только сообщение alexar76 об исправлениях. Нового ответа исследователя нет. В текущих девяти записях 000636–000644 исправленные версии всё ещё не перечислены; дата обновления остаётся 28 октября.",
+      "limits_ru": "Это статус внешнего подтверждения, не повторная проверка кода и не вывод о том, что исправления отсутствуют.",
+      "evidence": "responses/advisory-status.json"
+    },
+    {
+      "kind": "unchanged_channels",
+      "summary_ru": "Новых ответов в прочитанных ветках AgentMesh561, MCP3430, Qiita и HN HISTOR не установлено. На проверенных itch.io страницах новых комментариев нет. HF 111 downloads/0 likes и Zenodo 20 downloads без изменения; просмотры не используются как подтверждение новых пользователей.",
+      "evidence": ["responses/agentmesh561.json", "responses/mcp3430-summary.json", "community/summary.json", "metrics/summary.json"]
+    }
+  ],
+  "limits": [
+    "Точечный публичный поиск не покрывает закрытые обсуждения, весь код и весь интернет. Свежая индексация страницы не означает свежую публикацию.",
+    "Ошибки web-open, DNS sandbox и отдельные HTTP403 не считались отсутствием страницы; подтверждённые пункты прочитаны через успешный публичный GET или browser DOM.",
+    "Собственные публикации, наши ответы, каталожные карточки, синтетические рейтинги и боты не считаются независимыми внедрениями."
+  ],
+  "evidence_sets": [
+    "responses/current-response-delta.json",
+    "responses/mcp3430-summary.json",
+    "responses/advisory-status.json",
+    "metrics/http-index.json",
+    "metrics/summary.json",
+    "metrics/usetested-fact.json",
+    "community/http-index.json",
+    "community/summary.json",
+    "public-mentions/findings.json",
+    "public-mentions/usetested-review.json"
+  ]
+}

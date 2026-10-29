@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "skipped": false,
+  "checks": [
+    {
+      "directory": "frontend",
+      "manifest": "frontend/package.json",
+      "lockfile": "frontend/package-lock.json",
+      "passed": true,
+      "issues": [],
+      "sha256": {
+        "frontend/package-lock.json": "4ae37c951ac06e8157b3469d7bf3cda98da7de3acf6130cd3e3323bced1a2a74",
+        "frontend/package.json": "735825822f4eb440a1ae508228db7e4432197533c5ac2175150bff2c64c8beb1"
+      },
+      "report": {
+        "auditReportVersion": 2,
+        "vulnerabilities": {},
+        "metadata": {
+          "vulnerabilities": {
+            "info": 0,
+            "low": 0,
+            "moderate": 0,
+            "high": 0,
+            "critical": 0,
+            "total": 0
+          },
+          "dependencies": {
+            "prod": 12,
+            "dev": 120,
+            "optional": 54,
+            "peer": 0,
+            "peerOptional": 0,
+            "total": 131
+          }
+        }
+      }
+    }
+  ],
+  "dependency_risks": [],
+  "issues": [],
+  "checked_at": 1793194246.048183,
+  "manifest_sha256": {
+    "frontend/package-lock.json": "4ae37c951ac06e8157b3469d7bf3cda98da7de3acf6130cd3e3323bced1a2a74",
+    "frontend/package.json": "735825822f4eb440a1ae508228db7e4432197533c5ac2175150bff2c64c8beb1"
+  },
+  "command": [
+    "npm",
+    "audit",
+    "--package-lock-only",
+    "--include=dev",
+    "--ignore-scripts",
+    "--audit-level=high",
+    "--json",
+    "--registry=https://registry.npmjs.org",
+    "--fetch-retries=0",
+    "--fetch-timeout=20000"
+  ]
+}

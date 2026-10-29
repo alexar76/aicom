@@ -1,0 +1,36 @@
+{
+  "key": "mcp3430",
+  "url": "https://api.github.com/repos/modelcontextprotocol/modelcontextprotocol/issues/3430/comments?per_page=100",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-29T11:06:20.370146+00:00",
+  "status": 200,
+  "sha256": "3eca9c7f8bcc6e4b31aac9ce6d752ae884d1952c7010e445cf152bebfed1b305",
+  "bytes": 22186,
+  "next_page": null,
+  "rate_remaining": "53",
+  "visible_count": 7,
+  "created_since": [],
+  "updated_since": [],
+  "latest": [
+    {
+      "id": 6428859632,
+      "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430#issuecomment-6428859632",
+      "created_at": "2026-10-26T22:29:47Z",
+      "updated_at": "2026-10-26T22:29:47Z",
+      "submitted_at": null,
+      "state": null,
+      "body": "A separate acceptance case for server-level routing summaries is **mixed-purpose servers**: finding the *right server* must not be confused with selecting an *authorized operation* inside it.\n\nOur first-party Production Desk compatibility probe exposes seven tool declarations in the legacy MCP tool list, ranging from a read-only production diagnosis to creating upload sessions and submitting/updating/deleting a brief. This is an actual observed *tool catalog*, not a test of host routing accuracy or tool execution ([read-only evidence and limits](https://github.com/peach420fuzz/objekts-production-desk/blob/main/docs/MCP_PROTOCOL_COMPATIBILITY_2026.md)).\n\nFor a user asking “evaluate whether this video shot is feasible, without sending any files,” a one-sentence summary of “AI/VFX production planning and brief submission” might correctly retrieve the server but leave two additional questions unanswered: **which tool** and **whether the user authorized side effects**. The [MCP 2025-11-25 tools spec](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) separates `tools/list` from `tools/call`, recommends human oversight, and treats annotations as untrusted unless the server itself is trusted.\n\nA small host-oriented conformance/evaluation matrix could keep these stages independent:\n\n1. **Candidate-server recall:** with deferred tools, does the bounded server description retrieve the relevant MCP server?\n2. **Tool-level precision:** after loading the *actual* `tools/list`, does a read-only intent select a diagnosis tool rather than a submission/upload tool?\n3. **Negative routing / capability boundary:** if the user asks to render finished video, does the host avoid inferring that a preflight-only server can generate media just because its summary mentions “video production”?\n4. **Authorization:** even when the right server and tool are found, is the side-effecting call still blocked pending the applicable approval? Routing metadata should never be treated as that approval.\n\nThis is not a proposal to require a new schema field: a concise positive **and negative** scope in the initial server summary plus host-side testing may be enough. It would distinguish an improvement in semantic discovery from an unintended increase in unsafe calls.\n\nDisclosure: I work on AI/VFX production methodology at **objekts**. No quantitative host-routing result is being claimed here.",
+      "author": "peach420fuzz"
+    },
+    {
+      "id": 6434848509,
+      "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430#issuecomment-6434848509",
+      "created_at": "2026-10-27T05:51:38Z",
+      "updated_at": "2026-10-27T05:51:38Z",
+      "submitted_at": null,
+      "state": null,
+      "body": "A correction to my comment above: 12,422 is the number of changes that edited description text and added or removed no tool, not the number that touched a description. In the same snapshot, 14,164 of the 23,821 changes touched a tool description, and 18,599 touched a tool description or a description inside the input or output schema. So a host that flags every description edit would see a routing change about once per 1,200 to 1,500 flags, not once per thousand. The 12 routing changes and the rest of the comment stand. Both counts come straight from `changes.jsonl.gz`: a change counts when its summary lists a modified tool `description`, or a schema path ending in `description`.\n\nOn @peach420fuzz's point 4: agreed. Routing metadata can tell a host which server to look at, never what it may do there. A separate digest for it, as suggested above, lets a host notice when that pointer changes without touching the approval of any call.\n\nWritten with an AI assistant.",
+      "author": "alexar76"
+    }
+  ]
+}

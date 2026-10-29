@@ -1,0 +1,104 @@
+{
+  "format": "histor.upgrade-brief/v1",
+  "language": "en",
+  "title": "packager current",
+  "watchlistSha256": "sha256:555ee36c1a3c483612d8df6df9fcf39c4219ac0bd653d0fde238cce8ffdc80d8",
+  "analysis": "deterministic-offline",
+  "dependencies": [
+    {
+      "id": "pypi:aimarket-mcp-packager",
+      "status": "unchanged",
+      "comparability": "comparable",
+      "sources": {
+        "before": {
+          "targetId": "pypi:aimarket-mcp-packager",
+          "status": "ok",
+          "observedAt": "2026-10-27T13:13:30.358468Z",
+          "packageVersion": "2.1.2",
+          "serverName": "aimarket-mcp-packager",
+          "serverVersion": "2.1.2",
+          "protocol": "2025-06-18",
+          "path": "snapshots/current-packager-baseline.json",
+          "sha256": "sha256:b17a040ed2b5000c252f6f117b2931fff85ba9c7d609d59265a63f6f01abf78c",
+          "extrasCoverage": "observed",
+          "toolsSha256": "sha256:96a76369c57abe1f505b543890a6271fcda5192b6879e67cc1d65deffa26856c",
+          "launchSha256": "sha256:578d211648a48cc34060018a4e263c389ae6ae48906ebb4d7680e5f6a577b0f1",
+          "transport": "stdio"
+        },
+        "after": {
+          "targetId": "pypi:aimarket-mcp-packager",
+          "status": "ok",
+          "observedAt": "2026-10-27T13:13:30.945247Z",
+          "packageVersion": "2.1.2",
+          "serverName": "aimarket-mcp-packager",
+          "serverVersion": "2.1.2",
+          "protocol": "2025-06-18",
+          "path": "snapshots/current-packager-recheck.json",
+          "sha256": "sha256:3dd2fe323ebd0bc9e3a0a236904c7b1e650e1dd882a516acf3ab21dc9cce1034",
+          "extrasCoverage": "observed",
+          "toolsSha256": "sha256:96a76369c57abe1f505b543890a6271fcda5192b6879e67cc1d65deffa26856c",
+          "launchSha256": "sha256:578d211648a48cc34060018a4e263c389ae6ae48906ebb4d7680e5f6a577b0f1",
+          "transport": "stdio"
+        }
+      },
+      "fieldCoverage": "full",
+      "limitations": [],
+      "provenanceGaps": [],
+      "contextChanges": [],
+      "observedChanges": false,
+      "selectedTools": [
+        {
+          "name": "package_capability",
+          "status": "unchanged",
+          "changes": [],
+          "retest": []
+        }
+      ],
+      "workflows": [
+        {
+          "id": "selected-flow",
+          "description": "Selected workflow",
+          "tools": [
+            "package_capability"
+          ],
+          "status": "no_observed_change",
+          "affectedTools": [],
+          "retest": []
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "before": {
+          "fullList": 8324,
+          "selectedTools": 3072
+        },
+        "after": {
+          "fullList": 8324,
+          "selectedTools": 3072
+        },
+        "delta": {
+          "fullList": 0,
+          "selectedTools": 0
+        }
+      },
+      "toolSet": {
+        "beforeCount": 3,
+        "afterCount": 3,
+        "added": [],
+        "removed": []
+      }
+    }
+  ],
+  "summary": {
+    "changed": 0,
+    "unchanged": 1,
+    "context_changed": 0,
+    "unknown": 0
+  },
+  "limits": [
+    "Only observed definitions are compared, not the server\u2019s runtime behavior.",
+    "A change does not prove breakage; unchanged definitions do not establish safety.",
+    "Workflows are linked through explicitly selected tools, without semantic analysis.",
+    "Compact JSON size in UTF-8 measures bytes, not tokens, money or achieved savings.",
+    "launch is represented only by its hash; launch conditions are not executed and environment secrets are not displayed."
+  ]
+}

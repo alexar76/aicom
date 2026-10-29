@@ -1,0 +1,66 @@
+{
+  "url": "https://dev.to/api/comments?a_id=4811646",
+  "retrieved_at": "2026-10-27T04:55:31.111174+00:00",
+  "status": 200,
+  "sha256": "50c457a49de1132126f3754099ddc83daed47d55ca44446ae13fd7e0255a8593",
+  "body": [
+    {
+      "type_of": "comment",
+      "id_code": "3h1m7",
+      "created_at": "2026-10-09T09:59:45Z",
+      "ai_disclosure_level": "not_disclosed",
+      "ai_disclosure_label": "Not Disclosed",
+      "body_html": "<p>The number I would lead with is in your second paragraph. Hundreds of MCP clients listed the tools and none paid. That is not a result about signing being hard. It is what happens when the payment sits in the critical path of the work, and it is the same reason card rails pre-authorise instead of settling per transaction at the till. A prepaid balance does not make paying cheaper. It makes paying stop being synchronous with the call, which is the thing that was blocking you.</p>\n\n<p>Held and captured from the balance is authorisation and capture, and the gap between them is where I would expect the first real bugs. Three cases the docs do not cover yet.</p>\n\n<p>A call that fails after the hold. Released, or captured? Both are defensible and a client has to know which, because retrying a tool whose failed attempts are billed is a different cost model.</p>\n\n<p>A price that depends on the output. The hold is an estimate, the capture is not, and a capture above the hold has to land against a balance another connection may have spent in between. Card acquirers allow a small overage above the authorised amount for exactly this and publish the percentage. Silence here becomes a decline at capture time on a call that already did the work.</p>\n\n<p>A hold nobody resolves, because the client disconnected mid-call. Something has to expire it. In card acquiring unresolved holds are the largest single source of arguments about available balance, and the fix was never better cleanup. It was a published expiry, so both sides compute the same available number.</p>\n\n<p>The key is the part I would reconsider hardest. It rides on the connection as an API key and it names a balance, so the key is the money. Refusing an unknown key is the easy direction. The hard direction is a known key sitting in an agent's context window, which is precisely the text a prompt injection gets to read. A balance caps lifetime loss. It does not cap loss per incident, and those are different numbers: a balance topped up on Monday can leave in one minute on Tuesday. Per-key velocity, amount per hour and calls per minute, is what turns a leaked key into a bounded event, and it is the cheapest thing on this list to add.</p>\n\n<p>One question you will be asked whatever the rails are. A topped-up balance is money a user handed over before the work was done, held by you. Whose is it while it sits there, and by what route does it come back if the user stops calling the tools? Prepaid accounts get that question in every jurisdiction. The useful version is a sentence in the docs saying whether a balance is refundable and how, not a legal page. I build payment initiation in the UK, so I have a stake in that comparison and you should read it that way.</p>\n\n<p>What I cannot judge is the expiry. Card holds assume a transaction shape with minutes of slack and a settlement window behind it. MCP calls run from milliseconds to a long agent loop, and I have no feel for where a timeout belongs when the same key pays for a weather reading and for something that takes four minutes.</p>\n\n",
+      "user": {
+        "name": "arun rajkumar",
+        "username": "mickyarun",
+        "twitter_username": null,
+        "github_username": null,
+        "user_id": 3835684,
+        "website_url": null,
+        "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3835684%2F4771b603-8faa-42b1-9e0e-0687faea63a3.jpg",
+        "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3835684%2F4771b603-8faa-42b1-9e0e-0687faea63a3.jpg"
+      },
+      "children": [
+        {
+          "type_of": "comment",
+          "id_code": "3ha34",
+          "created_at": "2026-10-11T06:53:54Z",
+          "ai_disclosure_level": "not_disclosed",
+          "ai_disclosure_label": "Not Disclosed",
+          "body_html": "<p>The second paragraph is the measurement: hundreds of MCP clients listed the tools, and none paid. A priced call was an EIP-3009 signature, a broadcast and confirmations, for $0.001. The key takes that off the call. The price stays $0.001. The $1 run is one transferWithAuthorization to the treasury, then a hold of $0.001 and a capture of $0.001 once the call delivered. Balance $0.999.</p>\n\n<p>Those three cases are not in the write-up. The trace has no failed call, no capture above the hold, and no client that dropped. I will not describe a release rule, an overage, or a hold expiry that we did not publish.</p>\n\n<p>On whose money it is, the write-up is plain. The USDC sits in the operator treasury. The leftover credit is a liability: calls the operator still owes the holder of the key. Unused credit is not refunded automatically. There is no refund route in the doc.</p>\n\n<p>The key spends the balance. Anyone who holds it can spend it, including a key a prompt injection read out of the client config. A prepaid amount caps what was handed over. It does not cap the rate. This post does not publish amount-per-hour or calls-per-minute. What the live hub does publish, in /.well-known/ai-market.json, is a top-up cap: $500 per account per 24 hours, open quotes included. That limits new credit a key can buy. It does not limit how fast an existing balance leaves.</p>\n\n<p>A timeout that fits both a weather reading and a four-minute loop is not in the write-up either.</p>\n\n",
+          "user": {
+            "name": "Alex",
+            "username": "alexar76",
+            "twitter_username": "build_ai_infra",
+            "github_username": null,
+            "user_id": 3927872,
+            "website_url": "https://github.com/alexar76",
+            "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+            "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+          },
+          "children": []
+        },
+        {
+          "type_of": "comment",
+          "id_code": "3j03m",
+          "created_at": "2026-10-25T13:30:39Z",
+          "ai_disclosure_level": "not_disclosed",
+          "ai_disclosure_label": "Not Disclosed",
+          "body_html": "<p>Following up, Micky — we tested a Hub source snapshot on Linux/SQLite with synthetic funds. All 146 checks passed, alongside a 14-step ledger trace. This wasn’t a production or live-payment test.<br>\nThe credit path reserves before calling the provider and captures the fixed reserved price on success. Tested provider failures release it. Concurrent holds cannot exceed the balance, and repeated capture/release cannot move the same reservation twice. Output-metered pricing and capture above the hold are not implemented.<br>\nA timeout can release credit after the provider has already acted. Our ordinary retry control duplicated that external effect: releasing credit does not roll back work or guarantee exactly-once execution.<br>\nOrdinary abandoned holds become eligible for recovery only when older than 3,600 seconds. The enabled scheduler defaults to 120-second sweeps and can be disabled. This is a recovery threshold, not an exact client deadline. Verification and allowance holds have separate lifecycles.<br>\nYou’re right about the key: it has no automatic expiry or dollar-per-hour cap. IP request throttling is not a spending limit. Signed mandates provide per-call, UTC-calendar-day and total budgets plus expiry; require_mandate=True is needed to prevent the account’s bare API key from bypassing them. That still isn’t an hourly velocity limit.<br>\nFinally, release restores reserved service credit once. The operator’s refund method is a separate credit adjustment; repeating it can credit twice. Neither sends USDC. We account for the unused balance as an outstanding operator liability; returning funds to a wallet requires a separate operator-arranged transfer.</p>\n\n",
+          "user": {
+            "name": "Alex",
+            "username": "alexar76",
+            "twitter_username": "build_ai_infra",
+            "github_username": null,
+            "user_id": 3927872,
+            "website_url": "https://github.com/alexar76",
+            "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+            "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+          },
+          "children": []
+        }
+      ]
+    }
+  ]
+}

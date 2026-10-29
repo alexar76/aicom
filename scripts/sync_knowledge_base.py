@@ -120,7 +120,7 @@ MIRROR_BLOB_BASE = "https://github.com/alexar76/aicom/blob/main/"
 
 _GENERATED_HEADER = (
     "# GENERATED COPY — do not hand-edit. `scripts/sync_knowledge_base.py --write` mirrors\n"
-    "# scripts/satellite-map.yaml here, minus satellites that are not published on GitHub.\n"
+    "# scripts/satellite-map.yaml here, including explicit local/runtime knowledge entries.\n"
 )
 
 # `  - id: <name>` opens a satellite entry; its body is indented deeper.
@@ -128,17 +128,18 @@ _SAT_ENTRY = re.compile(r"^  - id: (\S+)\s*$")
 
 
 def satellite_map_mirror_text(src_rel: str, text: str) -> str:
-    """The monitor's copy of the map: the source verbatim, minus what GitHub does not have.
+    """The monitor's copy includes explicitly visible local/runtime components.
 
     Same rule as the knowledge bases — a component the reader cannot open is worse than one
     they never heard of, because the agent then hands a stranger a dead link. `github_published:
-    false` entries are therefore dropped here too, while every published one is copied through
-    unchanged (comments and all), so this file can never lag the central map again.
+    false` entries are normally dropped. `knowledge_visible: true` explicitly retains a
+    known runtime/local rename while keeping its publication status unchanged.
     """
     unpublished = {
         s.get("id")
         for s in (yaml.safe_load(text) or {}).get("satellites", [])
         if isinstance(s, dict) and s.get("github_published") is False
+        and s.get("knowledge_visible") is not True
     }
     out: list[str] = [_GENERATED_HEADER]
     skipping = False
@@ -161,7 +162,7 @@ MIRROR_TRANSFORMS = {
 
 DEFAULT_MIRROR_NOTE = "relative links absolutised"
 MIRROR_NOTES = {
-    "scripts/satellite-map.yaml": "satellites not published on GitHub dropped",
+    "scripts/satellite-map.yaml": "knowledge-visible satellites mirrored; publication metadata preserved",
 }
 
 

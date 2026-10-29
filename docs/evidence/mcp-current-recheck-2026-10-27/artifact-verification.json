@@ -1,0 +1,48 @@
+{
+  "artifacts": [
+    {
+      "name": "aimarket-oracle-gateway",
+      "version": "0.3.2",
+      "sha256": "dd2c37eaee567b709565c601bb659c204425f0298b04bcafb71530de15a73303",
+      "tools": 36,
+      "requires": [
+        "mcp<2,>=1.6",
+        "httpx>=0.27",
+        "pydantic>=2",
+        "pytest>=8; extra == \"dev\"",
+        "jsonschema>=4.23; extra == \"dev\""
+      ],
+      "sourceKind": "local-unpublished-wheel",
+      "status": "ok"
+    },
+    {
+      "name": "aimarket-mcp-packager",
+      "version": "2.1.2",
+      "sha256": "661d548c48369fcf0ac171e7cc983f254ca11017c41db0b25cb80cbc514cba98",
+      "tools": 3,
+      "requires": [
+        "aimarket-hub>=3.0.0",
+        "mcp<2,>=1.6",
+        "pytest>=8; extra == \"dev\"",
+        "jsonschema>=4.23; extra == \"dev\""
+      ],
+      "sourceKind": "local-unpublished-wheel",
+      "status": "ok",
+      "evidence": "packager-final-probe.jsonl"
+    }
+  ],
+  "registryManifestsValidated": [
+    "argus/server.json",
+    "warden/server.json",
+    "aimarket-mcp/server.json",
+    "aimarket-hub/server.json",
+    "attested/attested-memory-hub/server.json",
+    "independent/ops/mcp/server.json",
+    "plugins/aimarket-mcp-packager/server.json",
+    "plugins/aimarket-oracle-gateway/server.json",
+    "deploy/mcp-registry/domains/server.json",
+    "deploy/mcp-registry/security/server.json",
+    "deploy/mcp-registry/weather/server.json",
+    "deploy/mcp-registry/emporion/server.json"
+  ]
+}

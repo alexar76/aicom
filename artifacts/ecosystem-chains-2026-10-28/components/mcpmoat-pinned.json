@@ -1,0 +1,61 @@
+{
+  "fact": {
+    "commit_sha": "5b14a435b55cfb55a57c6ad2be49f0c1ccf22884",
+    "pinned_url": "https://github.com/Ducarv/mcpmoat/blob/5b14a435b55cfb55a57c6ad2be49f0c1ccf22884/docs/competitors.md",
+    "blob_sha1": "41d2846ce4d07f11591955c159167e21e1cd84dc",
+    "body_sha256": "6a815d0d11b3b855d29990ef4995bca806a627f4ef4609e22eebfeebc375f638",
+    "retrieved_at_utc": "2026-10-28T13:53:40.880365+00:00",
+    "declared_check_date": "2026-10-23",
+    "scope": "Documentation comparison; explicitly not installed/run; project benchmarks not independently reproduced.",
+    "credited_ideas": [
+      "ruleset version and digest per report",
+      "field-by-field pin diff",
+      "severity separate from blocking",
+      "plain coverage limits",
+      "publish method and held-out test set"
+    ],
+    "not_claimed": [
+      "package integration",
+      "deployed use",
+      "independent benchmark replication"
+    ],
+    "authorship_note": "Issue/PR authored by Ducarv; 11 PR comments all Ducarv and describe AI review panels. Account identity does not establish human-only writing.",
+    "blob_crosscheck": "Explicit contents ref at current dev head has same SHA256 body and returns this Git blob SHA; locally calculated blob field corrected."
+  },
+  "records": [
+    {
+      "url": "https://api.github.com/repos/Ducarv/mcpmoat/commits?sha=dev&path=docs%2Fcompetitors.md&per_page=1",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T13:53:40.248429+00:00",
+      "status": 200,
+      "sha256": "654e5f9827fd4cd69cd052fc084ec538b47a14f975b97a3b1cba7aff4a5ad4e8",
+      "bytes": 3298,
+      "items": [
+        {
+          "sha": "5b14a435b55cfb55a57c6ad2be49f0c1ccf22884",
+          "html_url": "https://github.com/Ducarv/mcpmoat/commit/5b14a435b55cfb55a57c6ad2be49f0c1ccf22884",
+          "author": {
+            "name": "Eduardo Carvalho Silva",
+            "email": "educarvalho009@gmail.com",
+            "date": "2026-10-23T15:11:04Z"
+          },
+          "committer": {
+            "name": "Eduardo Carvalho Silva",
+            "email": "educarvalho009@gmail.com",
+            "date": "2026-10-23T15:11:04Z"
+          },
+          "message": "docs: say that only built-in rules must carry test cases\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+        }
+      ]
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/5b14a435b55cfb55a57c6ad2be49f0c1ccf22884/docs/competitors.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T13:53:40.880365+00:00",
+      "status": 200,
+      "sha256": "6a815d0d11b3b855d29990ef4995bca806a627f4ef4609e22eebfeebc375f638",
+      "bytes": 21438,
+      "git_blob_sha1": "41d2846ce4d07f11591955c159167e21e1cd84dc"
+    }
+  ]
+}

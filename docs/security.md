@@ -92,8 +92,59 @@ There is **no** admin UI action to delete pipeline products; demo protection doe
 | **WebAuthn 2FA** | Passkeys as alternative to TOTP (`mfa_method`: `webauthn` \| `totp`). Env: `AIFACTORY_WEBAUTHN_RP_ID`, `AIFACTORY_WEBAUTHN_ORIGIN`, `AIFACTORY_WEBAUTHN_RP_NAME`. |
 | **CI security benchmark** | `scripts/run_security_benchmark.sh` — pytest subset for CSRF, firewall, audit, sandbox, usage guard, WebAuthn helpers. |
 | **Dependency / SAST CI** | `scripts/run_dependency_audit.sh` — Bandit (fail High), pip-audit, npm audit. Workflow: `.github/workflows/security-scan.yml`. Tracker: [audit-remediation.md](./audit-remediation.md). |
+| **Generated-product npm gate** | Every Security agent run audits the product's actual npm lockfiles, including dev dependencies. High/critical findings, missing or stale locks, and incomplete audits block the default security gate and enter the Developer repair loop. Full evidence, input SHA-256 hashes and the check time are saved in `data/security/<product-id>/security_report.json`. |
 
 ---
+
+## Generated-product npm checks
+
+`web/backend/services/npm_dependency_check.py` discovers npm projects throughout the
+product tree, excluding installed dependencies and build/sandbox directories. It verifies
+manifest/lock dependency declarations and validates the resolved dependency tree with
+`npm ls --package-lock-only --all --json --offline --ignore-scripts --include=dev`
+before the advisory audit. This rejects truncated locks that npm audit alone can report as clean.
+It supports npm lockfile versions 2/3 and workspace members sharing a root lock.
+`npm-shrinkwrap.json` blocks the check until migrated: it overrides package-lock.json during
+installation, so auditing the latter would not establish coverage of the installed tree.
+Each run queries the advisory registry again; a previously clean report is not reused.
+The audit uses temporary copies of manifests and locks, no product `.npmrc`, no credentials
+from the factory environment, and no installation or lifecycle scripts. It includes development
+dependencies and has a 120-second overall audit budget.
+
+The Developer receives affected files, packages, severity and available fix information.
+During a security repair it updates dependency declarations and compatibility code. The
+factory then invokes `npm_dependency_repair.py`: npm generates the matching lockfiles and
+applies compatible advisory fixes itself, including backend and tooling roots without a
+frontend build. It operates on temporary metadata copies, with lifecycle scripts disabled,
+and validates the resolved tree and a fresh audit before copying valid changes back. Major
+upgrades remain the Developer's responsibility; `npm audit fix --force` is never used.
+Malformed target locks can be regenerated from valid manifests. Unrelated npm projects do
+not participate in that repair. Registry package versions and internal local packages are
+supported; dependencies requiring Git/external-source resolution need an isolated build worker.
+The factory saves `data/code/<product-id>/npm_dependency_repair.json`, tracks generated files
+in the code manifest and sends the candidate through QA/build/tests and Security again.
+Repair success alone does not mark the product complete. Registry or
+tooling failures also block the handoff; they require a successful retry, not a declaration
+that dependencies are safe. Non-npm products skip this check. The existing global
+`AIFACTORY_SECURITY_GATE_STRICT=0` override still disables the security pipeline gate;
+keep its default enabled for production.
+
+Auto-recovery also performs a fresh npm check immediately before marking a product complete;
+an earlier clean repair report cannot substitute for checking its current dependency files.
+The recovery verification stores that evidence and stays failed on remaining vulnerabilities,
+unavailable registry/tooling or invalid reports.
+
+The catalog publisher independently audits the staged lockfiles, including dev dependencies,
+before publication and fails closed on unavailable tooling/registry or malformed audit reports.
+The former `AICOM_CATALOG_ALLOW_NPM_HIGH` bypass is no longer supported. These checks
+validate the files being processed; changing local source does not update an already published
+GitHub catalog or deployed application. Publishing and deployment remain separate operator
+actions subject to the workspace's permissions.
+
+Tests: `tests/test_npm_dependency_check.py`, `tests/test_npm_lock_completeness.py`,
+`tests/test_factory_npm_security_integration.py`, `tests/test_npm_dependency_repair.py`,
+`tests/test_developer_npm_repair.py` and `tests/test_product_catalog_npm_gate.py` cover the
+checks, actual dependency-file writes and repair feedback offline.
 
 ## Audit log hash chain
 

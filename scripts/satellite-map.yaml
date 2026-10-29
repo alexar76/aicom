@@ -1,5 +1,5 @@
 # GENERATED COPY — do not hand-edit. `scripts/sync_knowledge_base.py --write` mirrors
-# scripts/satellite-map.yaml here, minus satellites that are not published on GitHub.
+# scripts/satellite-map.yaml here, including explicit local/runtime knowledge entries.
 # Monorepo → GitHub satellite mapping (source of truth for mirror + release scripts).
 # Org defaults to alexar76; override with SATELLITE_GITHUB_ORG env.
 #
@@ -1401,17 +1401,19 @@ satellites:
       (the same docs/landing the service serves at /). The issuer did:key it generates on first start
       belongs in awr/adoption/metrics/own-keys.txt.
 
-  - id: emporion
-    repo: emporion
-    github_published: true
-    description: "EMPORION — public-record facts for agents that trade: EU VAT (VIES), legal entities (GLEIF LEI), company registers, EORI, domains (RDAP), ECB rates, sanctions lists (OFAC with wallets, EU, UK), business days, Bitcoin timestamps, web evidence captures and dead man's switch timers — every answer signed with its source, fetch time and SHA-256."
+  - id: symmartys
+    repo: symmartys
+    github_published: false
+    knowledge_visible: true
+    deployment_status: live
+    description: "SYMMARTYS — public-record facts for agents that trade: EU VAT (VIES), legal entities (GLEIF LEI), company registers, EORI, domains (RDAP), ECB rates, sanctions lists (OFAC with wallets, EU, UK), business days, Bitcoin timestamps, web evidence captures and dead man's switch timers — every answer signed with its source, fetch time and SHA-256."
     description_i18n:
-      ru: "EMPORION — публичные факты для агентов, которые торгуют: НДС-номера ЕС (VIES), юрлица (GLEIF LEI), реестры компаний, EORI, домены (RDAP), курсы ЕЦБ, санкционные списки (OFAC с кошельками, ЕС, Великобритания), рабочие дни, метки времени в Биткоине, снимки страниц как доказательство и таймеры dead man's switch — каждый ответ подписан с источником, временем получения и SHA-256."
-      es: "EMPORION — hechos de registro público para agentes que comercian: IVA de la UE (VIES), entidades jurídicas (GLEIF LEI), registros mercantiles, EORI, dominios (RDAP), tipos del BCE, listas de sanciones (OFAC con monederos, UE, Reino Unido), días hábiles, sellos de tiempo en Bitcoin, capturas web como prueba y temporizadores de hombre muerto — cada respuesta firmada con su fuente, hora y SHA-256."
-      fr: "EMPORION — faits de registre public pour les agents qui commercent : TVA de l’UE (VIES), entités juridiques (GLEIF LEI), registres des sociétés, EORI, domaines (RDAP), taux de la BCE, listes de sanctions (OFAC avec portefeuilles, UE, Royaume-Uni), jours ouvrés, horodatages Bitcoin, captures web comme preuve et minuteurs d’homme mort — chaque réponse signée avec sa source, son heure et son SHA-256."
-      zh: "EMPORION — 面向交易型智能体的公共记录事实：欧盟增值税号（VIES）、法人实体（GLEIF LEI）、公司登记册、EORI、域名（RDAP）、欧洲央行汇率、制裁名单（含钱包的 OFAC、欧盟、英国）、工作日、比特币时间戳、作为证据的网页快照和死人开关定时器——每个答案都连同来源、获取时间和 SHA-256 一起签名。"
-    homepage: https://emporion.modelmarket.dev/
-    console: https://emporion.modelmarket.dev/
+      ru: "SYMMARTYS — публичные факты для агентов, которые торгуют: НДС-номера ЕС (VIES), юрлица (GLEIF LEI), реестры компаний, EORI, домены (RDAP), курсы ЕЦБ, санкционные списки (OFAC с кошельками, ЕС, Великобритания), рабочие дни, метки времени в Биткоине, снимки страниц как доказательство и таймеры dead man's switch — каждый ответ подписан с источником, временем получения и SHA-256."
+      es: "SYMMARTYS — hechos de registro público para agentes que comercian: IVA de la UE (VIES), entidades jurídicas (GLEIF LEI), registros mercantiles, EORI, dominios (RDAP), tipos del BCE, listas de sanciones (OFAC con monederos, UE, Reino Unido), días hábiles, sellos de tiempo en Bitcoin, capturas web como prueba y temporizadores de hombre muerto — cada respuesta firmada con su fuente, hora y SHA-256."
+      fr: "SYMMARTYS — faits de registre public pour les agents qui commercent : TVA de l’UE (VIES), entités juridiques (GLEIF LEI), registres des sociétés, EORI, domaines (RDAP), taux de la BCE, listes de sanctions (OFAC avec portefeuilles, UE, Royaume-Uni), jours ouvrés, horodatages Bitcoin, captures web comme preuve et minuteurs d’homme mort — chaque réponse signée avec sa source, son heure et son SHA-256."
+      zh: "SYMMARTYS — 面向交易型智能体的公共记录事实：欧盟增值税号（VIES）、法人实体（GLEIF LEI）、公司登记册、EORI、域名（RDAP）、欧洲央行汇率、制裁名单（含钱包的 OFAC、欧盟、英国）、工作日、比特币时间戳、作为证据的网页快照和死人开关定时器——每个答案都连同来源、获取时间和 SHA-256 一起签名。"
+    homepage: https://symmartys.modelmarket.dev/
+    console: https://symmartys.modelmarket.dev/
     topics:
       - aimarket
       - aicom
@@ -1432,31 +1434,27 @@ satellites:
     license: mit
     history: live
     paths:
-      - emporion
+      - symmartys
     export_layout:
-      root_from: emporion
+      root_from: symmartys
     exclude_paths:
       - .env
       - data
       - .venv
       - __pycache__
       - .pytest_cache
-    registries:
-      - github-releases
-      - ghcr:emporion
+    registries: []
     ci:
       - pytest
       - docker-build
     notes: >
-      Python satellite on oracle-core (signed manifest, receipts, X-Provider-Signature).
-      Source of truth: emporion/ in the Gitea monorepo; GitHub mirror is on
-      (github_published: true, owner's request 2026-10-16). Fleet: ./scripts/deploy_emporion.sh --remote
-      <host> · port 9351 · its own name since 2026-10-16: https://emporion.modelmarket.dev/ (landing at
-      /, API elsewhere; deploy/nginx/emporion.modelmarket.dev.conf). EMPORION_PUBLIC_URL stays
-      https://modelmarket.dev/providers/emporion, the address the hub federates and sells it under.
-      Its commerce role lives in scripts/ecosystem-runtime.yaml so the knowledge bases describe it.
-      GitHub-ready since 2026-10-16: CI, Pages (docs/landing), Release and GHCR workflows,
-      Dockerfile.standalone; the mirror vendors oracles/core → vendor/oracle-core for them.
+      SYMMARTYS replaced the existing signed public-record provider on 2026-10-29.
+      Source of truth: symmartys/ in this workspace; new GitHub, GHCR, PyPI and MCP Registry
+      publication is pending and must not be claimed. Knowledge remains visible independently
+      of GitHub publication. The active canonical route is /providers/symmartys on modelmarket.dev,
+      port 9351. Existing signing keys, data and operator settings were retained; the former
+      route remains an alias to the same provider. The public landing and API are available
+      at https://symmartys.modelmarket.dev/ with HTTPS and automatic certificate renewal.
 
   - id: escrow-signer
     repo: escrow-signer
@@ -1730,7 +1728,7 @@ satellites:
 
   - id: domain-kit
     # Same shape as esim-kit: monorepo directory domain-kit/, GitHub repo domain-operator-kit.
-    # The kit sells domain registrations. EMPORION RDAP is a separate registry-fact product.
+    # The kit sells domain registrations. SYMMARTYS RDAP is a separate registry-fact product.
     repo: domain-operator-kit
     description: "Independent domain operators: signed domains.*@v1 quotes, fixed markup, registration, renewal and DNS. Openprovider, Porkbun Sandbox or HTTP suppliers; x402 USDC on Base and a buyer-side Vercel connector. Pre-live: both sandbox pilots passed; production payments and Vercel remain unverified."
     description_i18n:

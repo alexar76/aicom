@@ -1,0 +1,25 @@
+{
+  "scope": "Separate post-hoc feedback improvement; no model rerun, frozen study outcomes unchanged.",
+  "run": "run-02",
+  "host": "factory-vps",
+  "wardenTestsPassed": 798,
+  "wardenTestFiles": 24,
+  "gateTestsPassed": 50,
+  "gateTestFiles": 2,
+  "redteamScenarios": 28,
+  "verifiedOutputs": 289,
+  "linuxGeneratedFiles": 276,
+  "replay": {
+    "trajectories": 156,
+    "proposals": 210,
+    "rankingWitnesses": 31,
+    "setWitnesses": 12,
+    "unchangedDecisions": true,
+    "unchangedFinalFrames": 156,
+    "newModelCalls": 0
+  },
+  "newModelCalls": 0,
+  "failedOfflineRunRetained": "run-01: test supplied records instead of reference strings; fixed test, not validator relaxation.",
+  "npmPublished": false,
+  "githubWrites": false
+}

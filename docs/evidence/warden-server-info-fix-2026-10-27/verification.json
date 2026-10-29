@@ -1,0 +1,31 @@
+{
+  "checkedAtUtc": "2026-10-27T12:06:59.398Z",
+  "scope": "local WARDEN fix only",
+  "newRegressionCases": 22,
+  "fullSuite": {
+    "passed": 1382,
+    "failed": 0,
+    "files": 57
+  },
+  "build": "passed",
+  "typecheck": "passed",
+  "advertisedDefinitionsUnchanged": true,
+  "nullAndOmittedCompatibilityPreserved": true,
+  "invalidApprovalPreservesPinsAndRevision": true,
+  "externalPublication": false,
+  "productionDeployment": false,
+  "sources": [
+    {
+      "path": "warden/src/mcp-tools.ts",
+      "sha256": "796999b8ecad60bdad19d8d53b55f57e1293f43666c33ed81d9145a718ffa635"
+    },
+    {
+      "path": "warden/test/server-info-validation.test.ts",
+      "sha256": "9456860fedc557ed8306a920aed503c026f93246cc9558836d823664ec74fc4a"
+    },
+    {
+      "path": "warden/CHANGELOG.md",
+      "sha256": "5b432dd1e629316b232315e7a3e2b855e361a349a31419666045205d8c92b781"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+Traceback (most recent call last):
+  File "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/mcp/server/fastmcp/utilities/func_metadata.py", line 241, in func_metadata
+    sig = inspect.signature(func, eval_str=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/inspect.py", line 3348, in signature
+    return Signature.from_callable(obj, follow_wrapped=follow_wrapped,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/inspect.py", line 3085, in from_callable
+    return _signature_from_callable(obj, sigcls=cls,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/inspect.py", line 2597, in _signature_from_callable
+    return _signature_from_function(sigcls, obj,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/inspect.py", line 2424, in _signature_from_function
+    annotations = get_annotations(func, globals=globals, locals=locals, eval_str=eval_str)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/inspect.py", line 292, in get_annotations
+    value if not isinstance(value, str) else eval(value, globals, locals)
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+NameError: name 'ValuesList' is not defined
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/guarded_launch.py", line 21, in <module>
+    runpy.run_module("aimarket_oracle_gateway.stdio_server", run_name="__main__", alter_sys=True)
+  File "<frozen runpy>", line 226, in run_module
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/artifacts/0.3.1/aimarket_oracle_gateway/stdio_server.py", line 73, in <module>
+    register_extended_tools(mcp, _run)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/oracle-gateway-startup-regression-2026-10-27/releases/artifacts/0.3.1/aimarket_oracle_gateway/mcp_tool_surface.py", line 77, in register_extended_tools
+    @mcp.tool()
+     ^^^^^^^^^^
+  File "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/mcp/server/fastmcp/server.py", line 510, in decorator
+    self.add_tool(
+  File "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/mcp/server/fastmcp/server.py", line 440, in add_tool
+    self._tool_manager.add_tool(
+  File "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/mcp/server/fastmcp/tools/tool_manager.py", line 57, in add_tool
+    tool = Tool.from_function(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/mcp/server/fastmcp/tools/base.py", line 72, in from_function
+    func_arg_metadata = func_metadata(
+                        ^^^^^^^^^^^^^^
+  File "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/mcp/server/fastmcp/utilities/func_metadata.py", line 245, in func_metadata
+    raise InvalidSignature(f"Unable to evaluate type annotations for callable {func.__name__!r}") from e
+mcp.server.fastmcp.exceptions.InvalidSignature: Unable to evaluate type annotations for callable 'aggregate_values'

@@ -1,0 +1,123 @@
+{
+  "info": {
+    "author": "AICOM (alexar76)",
+    "author_email": null,
+    "bugtrack_url": null,
+    "classifiers": [
+      "Development Status :: 3 - Alpha",
+      "License :: OSI Approved :: MIT License",
+      "Programming Language :: Python :: 3.11",
+      "Programming Language :: Python :: 3.12"
+    ],
+    "description": "# SKOPOS \u2014 fleet observability satellite of the AICOM ecosystem\n\n<!-- aicom-readme-badges -->\n<p align=\"center\">\n  <a href=\"https://github.com/alexar76/skopos/actions/workflows/ci.yml\"><img src=\"https://github.com/alexar76/skopos/actions/workflows/ci.yml/badge.svg\" alt=\"CI\" /></a>\n  <a href=\"https://github.com/alexar76/skopos/actions/workflows/pages.yml\"><img src=\"https://github.com/alexar76/skopos/actions/workflows/pages.yml/badge.svg\" alt=\"Pages deploy\" /></a>\n  <a href=\"https://skopos.modelmarket.dev/\"><img src=\"docs/badges/demo.svg\" alt=\"Live demo status\" /></a>\n  <a href=\"https://alexar76.github.io/skopos/\"><img src=\"docs/badges/landing.svg\" alt=\"Cosmic landing\" /></a>\n  <img src=\"docs/badges/python.svg\" alt=\"Python >=3.11\" />\n  <img src=\"docs/badges/tests.svg\" alt=\"tests\" />\n  <img src=\"docs/badges/stack.svg\" alt=\"Streamlit + PostgreSQL\" />\n  <a href=\"docs/badges/coverage.svg\"><img src=\"docs/badges/coverage.svg\" alt=\"Test coverage\" /></a>\n  <a href=\"LICENSE\"><img src=\"docs/badges/license.svg\" alt=\"License: MIT\" /></a>\n</p>\n<!-- /aicom-readme-badges -->\n\n> \ud83c\udf10 **English** \u00b7 [\u0420\u0443\u0441\u0441\u043a\u0438\u0439](docs/README.ru.md) \u00b7 [Espa\u00f1ol](docs/README.es.md) \u00b7 [Fran\u00e7ais](docs/README.fr.md) \u00b7 [\u4e2d\u6587](docs/README.zh.md) \u00b7 [Glossary](https://github.com/alexar76/aicom/blob/main/docs/localization-glossary.md)\n\n> [WARDEN quality cycle: MOMUS \u2192 AI-Factory \u2192 SKOPOS \u2192 shared node agent \u2192 deployment](https://github.com/alexar76/momus/blob/main/docs/quality-cycle.md).\n\n\n\n\n\n\n\n\n> **Self-hosted nginx & Apache analytics and AI security for your server fleet** \u2014 GA-like HTTP dashboards, Security Center with 3D threat map, Prometheus Observability (APM KPIs + 3D service graph), scan history, and an AI agent with voice input. No third-party trackers; data stays on your infrastructure.\n\n<p align=\"center\">\n  <a href=\"https://skopos.modelmarket.dev/app/\">\n    <img src=\"docs/screenshots/readme/hero-banner.png\" alt=\"SKOPOS \u2014 Web Analytics and Security Center with 3D threat map\" width=\"100%\" />\n  </a>\n</p>\n\n<p align=\"center\">\n  <strong><a href=\"https://skopos.modelmarket.dev\">Live demo</a></strong>\n  \u00b7\n  <strong><a href=\"https://alexar76.github.io/skopos/\">Landing</a></strong>\n  \u00b7\n  nine built-in themes\n</p>\n\nIn Greek, **skopos** (\u03c3\u03ba\u03bf\u03c0\u03cc\u03c2) means *watcher* or *scout*. **SKOPOS** is the fleet observability satellite of the [AICOM / AIMarket ecosystem](https://magic-ai-factory.com): nginx traffic over SSH, security posture across factory / metis / oracle hosts, and an LLM analyst in the sidebar.\n\n| | |\n|---|---|\n| **Role** | SSH log collection \u2192 SQLite/PostgreSQL analytics \u2192 Security Center + AI agent |\n| **Live demo** | [skopos.modelmarket.dev](https://skopos.modelmarket.dev) |\n| **Landing (GitHub Pages)** | [alexar76.github.io/skopos](https://alexar76.github.io/skopos/) |\n| **Monitors** | **nginx** access logs (primary), **Apache** combined, CPU/RAM/disk, ports, fail2ban, port knocks |\n| **Charter** | Read-only SSH probes \u00b7 self-hosted data \u00b7 optional dashboard password |\n\n### Features\n\n- **Analytics** \u2014 nginx access logs over SSH, SQLite, Streamlit charts, traffic globe\n- **Security** \u2014 CPU/RAM/disk/network, port audit, firewall, cyberpunk 3D threat map, consolidated **Security Report**\n- **Scan History** \u2014 score timeline, findings trends, snapshot comparison\n- **Auto-scan** \u2014 configurable background security scans (default every 60 min)\n- **AI Agent** \u2014 OpenRouter (default), DeepSeek, OpenAI, Anthropic, Ollama, LM Studio; sidebar chat with voice input\n- **i18n** \u2014 English (default), Russian, Spanish (`locales/`)\n\n### Quick start\n\nSee [docs/quickstart.md](docs/quickstart.md).\n\n```bash\ncp servers.example.yaml servers.yaml\ncp agent.example.yaml agent.yaml\nexport OPENROUTER_API_KEY=sk-or-...\npython skoposctl.py collect\npython skoposctl.py security-scan\nstreamlit run dashboard.py\n```\n\n| Page | URL |\n|------|-----|\n| Analytics | `http://localhost:8501` |\n| Security | sidebar \u2192 **Security** |\n| Scan History | sidebar \u2192 **Scan History** |\n| Settings | sidebar \u2192 **Settings** |\n\n### Security\n\n- **Security Score** (0\u2013100, grade A\u2013F) in sidebar on every page\n- **Threat alerts** banner when critical/high issues exist\n- **Dashboard password** \u2014 set/change/regenerate in the admin panel; only a\n  salted PBKDF2 **hash** is stored in the DB (env `SKOPOS_DASHBOARD_PASSWORD`\n  still supported for bootstrap). A post-deploy modal prompts you to set one, and\n  passwords expire after 90 days with a Telegram reminder. See\n  [configuration \u2192 Dashboard password & rotation](docs/en/guide/configuration.md)\n- **SKOPOS_SSH_STRICT_HOST_KEYS=1** \u2014 verify SSH host keys (recommended)\n- **Login limits** \u2014 5 failures lock one address for 5 minutes; failures from many addresses\n  together (`SKOPOS_LOGIN_GLOBAL_MAX_ATTEMPTS`, 30 per 15 min) slow new addresses down, at most a\n  minute per submitted try. The password is checked after that attempt's own delay even if other\n  addresses keep failing; the login form stays available. An address that logged in within\n  `SKOPOS_LOGIN_KNOWN_DAYS` (30) never waits.\n- **Proxy headers** \u2014 `X-Real-IP` / `X-Forwarded-For` count only from `SKOPOS_TRUSTED_PROXIES`\n  (loopback by default; the compose file adds `gateway`, the host's nginx)\n- **Remediation git push** \u2014 every SSH remote's host key is pinned on first use; only a loopback\n  Gitea may skip it, with `SKOPOS_GIT_SKIP_HOST_KEY_LOOPBACK=1`\n- See [docs/audit-findings.md](docs/audit-findings.md)\n\n### Documentation\n\n| Doc | Description |\n|-----|-------------|\n| **[In-app Documentation](http://localhost:8501/Documentation)** | Guides with screenshots (also in sidebar / top bar) |\n| [Quick Start](docs/quickstart.md) | 5-minute setup |\n| [User Guide](docs/user-guide.md) | Full UI reference |\n| [Use Cases](docs/use-cases.md) | Common workflows |\n| [Security Module](docs/security.md) | Architecture & extension |\n| [Privacy & data handling](docs/privacy.md) | IP anonymisation, retention & GDPR / US-state-law mapping |\n| [nginx scope](docs/en/guide/nginx.md) | **Analytics are nginx-only** \u2014 disclaimer & log format |\n| [CHANGELOG](CHANGELOG.md) | Release notes |\n\n> **Analytics scope:** traffic dashboards parse **nginx access logs** by default. **Apache combined** logs are supported when `apache.enabled: true`. Security probes are stack-agnostic.\n\n### Configure servers\n\nEdit `servers.yaml` \u2014 SSH host, nginx log paths. See `servers.example.yaml`.\n\nFor per-domain analytics, include `$host` in nginx `log_format`.\n\n### AI agent\n\nDefault provider: **OpenRouter** via `OPENROUTER_API_KEY`. Edit `agent.yaml` for DeepSeek, OpenAI, Anthropic, Ollama, or LM Studio.\n\nFor a full prioritized remediation report, open **Security \u2192 Security Report**. The sidebar agent supports follow-up chat (including voice) on every page.\n\n### Docker\n\n```bash\ndocker compose up -d --build\n```\n\nOpen `http://localhost:8501`\n\n### License\n\nMIT \u2014 see [LICENSE](LICENSE).\n\n### Testing & coverage\n\n```bash\npip install -r requirements.txt pytest pytest-cov\nbash scripts/ci_coverage_badge.sh -- tests/ -q --cov=skopos\n```\n\n**227** pytest cases \u00b7 line coverage on `skopos/` tracked in [`docs/badges/coverage.svg`](docs/badges/coverage.svg) (regenerate with `bash scripts/ci_coverage_badge.sh`, verified by [CI](.github/workflows/ci.yml)).\n\n### Screenshots\n\nCaptured from [skopos.modelmarket.dev](https://skopos.modelmarket.dev/app/) \u2014 Analytics dashboards (traffic timeline + country-share donuts) in six themes (sidebar **Theme** picker):\n\n<p align=\"center\">\n  <img src=\"docs/screenshots/themes/analytics-light.png\" alt=\"Light theme\" width=\"48%\" />\n  <img src=\"docs/screenshots/themes/analytics-premium.png\" alt=\"Premium theme\" width=\"48%\" />\n</p>\n<p align=\"center\"><sub>Light \u00b7 Premium</sub></p>\n\n<p align=\"center\">\n  <img src=\"docs/screenshots/themes/analytics-midnight.png\" alt=\"Cosmos theme\" width=\"48%\" />\n  <img src=\"docs/screenshots/themes/analytics-ocean.png\" alt=\"Ocean theme\" width=\"48%\" />\n</p>\n<p align=\"center\"><sub>Cosmos (midnight) \u00b7 Ocean</sub></p>\n\n<p align=\"center\">\n  <img src=\"docs/screenshots/themes/analytics-aurora.png\" alt=\"Aurora theme\" width=\"48%\" />\n  <img src=\"docs/screenshots/themes/analytics-slate.png\" alt=\"Slate theme\" width=\"48%\" />\n</p>\n<p align=\"center\"><sub>Aurora \u00b7 Slate</sub></p>\n\n| View | Screenshot |\n|------|------------|\n| Security \u2014 3D Threat Map | ![3D threat map](docs/screenshots/en/security-3d-map.png) |\n| Sidebar & navigation | ![Sidebar](docs/screenshots/en/sidebar-nav.png) |\n| Floating AI agent | ![Agent](docs/screenshots/en/floating-agent.png) |\n\nRegenerate hero + theme gallery from production:\n\n```bash\nexport SKOPOS_DASHBOARD_PASSWORD='\u2026'\npip install playwright pillow && playwright install chromium\npython scripts/capture_readme_screenshots.py --base-url https://skopos.modelmarket.dev/app/\n```\n",
+    "description_content_type": "text/markdown",
+    "docs_url": null,
+    "download_url": null,
+    "downloads": {
+      "last_day": -1,
+      "last_month": -1,
+      "last_week": -1
+    },
+    "dynamic": [
+      "License-File"
+    ],
+    "home_page": null,
+    "keywords": "nginx, analytics, security, streamlit, aimarket, aicom, fleet, ssh",
+    "license": "MIT",
+    "license_expression": null,
+    "license_files": [
+      "LICENSE"
+    ],
+    "maintainer": null,
+    "maintainer_email": null,
+    "name": "skopos-fleet",
+    "package_url": "https://pypi.org/project/skopos-fleet/",
+    "platform": null,
+    "project_url": "https://pypi.org/project/skopos-fleet/",
+    "project_urls": null,
+    "provides_extra": [
+      "dev",
+      "postgres"
+    ],
+    "release_url": "https://pypi.org/project/skopos-fleet/0.2.3/",
+    "requires_dist": [
+      "streamlit>=1.66.1",
+      "pandas>=2.0",
+      "pillow>=13.0.0",
+      "plotly>=5.18",
+      "pyyaml>=6.0",
+      "paramiko>=5.0.0",
+      "python-dotenv>=1.2.2",
+      "httpx>=0.27",
+      "geoip2>=4.8",
+      "cryptography>=44",
+      "aimarket-oracle-core[pqc]>=0.2",
+      "pytest>=8.0; extra == \"dev\"",
+      "psycopg[binary]>=3.2; extra == \"postgres\""
+    ],
+    "requires_python": ">=3.11",
+    "summary": "SKOPOS (\u03a3\u03ba\u03bf\u03c0\u03cc\u03c2) \u2014 self-hosted nginx analytics and fleet security for the AICOM ecosystem.",
+    "version": "0.2.3",
+    "yanked": false,
+    "yanked_reason": null
+  },
+  "last_serial": 42901780,
+  "ownership": {
+    "organization": null,
+    "roles": [
+      {
+        "role": "Owner",
+        "user": "aleksandr.artamokhov"
+      }
+    ]
+  },
+  "urls": [
+    {
+      "comment_text": null,
+      "core-metadata": {
+        "sha256": "4c8e7533ed92f4fe969cc25631176ad9bdb1a9a07d628d0115d58345c7ca8a2f"
+      },
+      "digests": {
+        "blake2b_256": "f85eea0f8901cbc11f55fc2c9f868b0e37f4c5787038d5c0051152d7dbeff2ea",
+        "md5": "eac7e9f57c99d604d88335efafb66565",
+        "sha256": "2152a10dba9b54188ea24384fb80c8173ae6fc449ade482c79371f5da8e120a8"
+      },
+      "downloads": -1,
+      "filename": "skopos_fleet-0.2.3-py3-none-any.whl",
+      "has_sig": false,
+      "md5_digest": "eac7e9f57c99d604d88335efafb66565",
+      "packagetype": "bdist_wheel",
+      "python_version": "py3",
+      "requires_python": ">=3.11",
+      "size": 568831,
+      "upload_time": "2026-10-29T06:33:46",
+      "upload_time_iso_8601": "2026-10-29T06:33:46.814108Z",
+      "url": "https://files.pythonhosted.org/packages/f8/5e/ea0f8901cbc11f55fc2c9f868b0e37f4c5787038d5c0051152d7dbeff2ea/skopos_fleet-0.2.3-py3-none-any.whl",
+      "yanked": false,
+      "yanked_reason": null
+    },
+    {
+      "comment_text": null,
+      "core-metadata": false,
+      "digests": {
+        "blake2b_256": "3a0596332cd792dc145d9d65ad1a06f58f07c8bea004cc0facca6d60ce9ec680",
+        "md5": "c97743c7be53d842725b3caed9815584",
+        "sha256": "0fafbaddc8ca442e9085afd793af9c14296a89bff3b102a27fcd80d96489b7e2"
+      },
+      "downloads": -1,
+      "filename": "skopos_fleet-0.2.3.tar.gz",
+      "has_sig": false,
+      "md5_digest": "c97743c7be53d842725b3caed9815584",
+      "packagetype": "sdist",
+      "python_version": "source",
+      "requires_python": ">=3.11",
+      "size": 643796,
+      "upload_time": "2026-10-29T06:33:48",
+      "upload_time_iso_8601": "2026-10-29T06:33:48.955740Z",
+      "url": "https://files.pythonhosted.org/packages/3a/05/96332cd792dc145d9d65ad1a06f58f07c8bea004cc0facca6d60ce9ec680/skopos_fleet-0.2.3.tar.gz",
+      "yanked": false,
+      "yanked_reason": null
+    }
+  ],
+  "vulnerabilities": []
+}

@@ -1,0 +1,65 @@
+{
+  "scope": "Correct section 47 handoff and the wording of the twelve-container rollout",
+  "promo_publication": {
+    "local_source_commit": "e125ffe49aa79358b497cdbc55a186ced1a4a693",
+    "gitea_base_commit": "82196af4febd66eb9e38db705dcec11c0fc86520",
+    "gitea_publication_commit": "e219e170772554b9dcf11d35de6f9dcd3c5f66ab",
+    "publication_ref": "refs/heads/codex/vulnetix-followup-corrections-2026-10-29",
+    "gitea_url": "ssh://git@gitea2/alexar76/promomaterials.git",
+    "files": [
+      "outreach/malware-feed-accuracy/vulnetix-reply-2026-10-29.md"
+    ],
+    "draft_sha256": "838cef51382d9a6920bfe8123543dc8110e6dc0aee8f932da3386d338a446642"
+  },
+  "checks": {
+    "draft_matches_publication_commit": true,
+    "csv_records": 100,
+    "csv_labels": {
+      "benign": 97,
+      "malicious": 3
+    },
+    "public_records": 600,
+    "public_malware": 577,
+    "public_vulnerability": 23,
+    "review_and_approval_fields_present": true,
+    "public_package_name_fields_absent": true,
+    "withdrawal_dates_described_as_modified": true,
+    "missing_rater_fields_qualified": true,
+    "incomplete_model_responses_resolved_by_analyst": 2,
+    "issue_reply_and_mcp_registry_marked_complete": true
+  },
+  "rollout": {
+    "patched_service_containers": 12,
+    "complete_oracle_core_0_6_3": [
+      "momus-backend",
+      "momus-treasury",
+      "momus-verifier"
+    ],
+    "targeted_oracle_core_file_replacements": [
+      "oracles-chronos-1",
+      "oracles-oracle-family-1",
+      "emporion",
+      "gaia-gaia-backend-1"
+    ],
+    "other_component_updates": [
+      "logos",
+      "platon-platon-backend",
+      "skopos-remediation",
+      "atlas-atlas-1",
+      "metis-skopos"
+    ],
+    "runtime_evidence": "artifacts/vulnetix-response-check-2026-10-29/live-audit-0642/runtime-checks.json",
+    "observed_version_labels": {
+      "oracles-chronos-1": "0.6.1",
+      "oracles-oracle-family-1": "0.6.1"
+    }
+  },
+  "local_checklist": {
+    "path": "docs/distribution/colleague-tasks.md",
+    "sections": [
+      46,
+      47
+    ],
+    "tracking": "Ignored maintainer checklist; synchronized locally and kept out of Git per .gitignore."
+  }
+}

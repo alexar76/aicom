@@ -1,0 +1,125 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/work[39m
+
+ [32m✓[39m test/wrap.test.ts [2m([22m[2m123 tests[22m[2m)[22m[33m 50089[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=false and 5 MiB response [33m 1076[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=true and 5 MiB response [33m 687[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission withholds unreviewed tools in any language and never creates a TOFU pin [33m 823[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission does not mistake an old automatic pin for operator approval [33m 459[2mms[22m[39m
+     [33m[2m✓[22m[39m persists drift across sessions; TTY reapproval allows the new snapshot [33m 823[2mms[22m[39m
+     [33m[2m✓[22m[39m captures initialize versions through real wrap and TTY approval, without treating metadata as identity or tools [33m 1673[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps a TOFU-reported version while flagging actual tool drift at the same version [33m 591[2mms[22m[39m
+     [33m[2m✓[22m[39m does not overwrite an approval when only the observed version changes during TTY review [33m 376[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins status without TTY, without changing the pin [33m 313[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins approve without TTY, without changing the pin [33m 313[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins revoke without TTY, without changing the pin [33m 389[2mms[22m[39m
+     [33m[2m✓[22m[39m human approval refuses a candidate that changes during review [33m 367[2mms[22m[39m
+     [33m[2m✓[22m[39m revoke persists denial, without silently starting a fresh TOFU [33m 861[2mms[22m[39m
+     [33m[2m✓[22m[39m identity drift blocks before spawning and returns initialize error with exit 3 [33m 709[2mms[22m[39m
+       [33m[2m✓[22m[39m off: the result passes untouched; a clean result always passes byte for byte [33m 454[2mms[22m[39m
+     [33m[2m✓[22m[39m EOF terminates a stubborn child within 10 seconds and reaps it [33m 10109[2mms[22m[39m
+     [33m[2m✓[22m[39m five proxies sharing one state directory establish one intact pin [33m 1097[2mms[22m[39m
+       [33m[2m✓[22m[39m a client that offers only URL elicitation, or --ask refuse, is never asked [33m 429[2mms[22m[39m
+         [33m[2m✓[22m[39m refuses the exact race after the final proxy read but before server comparison, with no raw-click fallback [33m 320[2mms[22m[39m
+         [33m[2m✓[22m[39m cancellation while approving discards the preparation; a late yes never commits [33m 325[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh pixels changes or cannot be read [33m 319[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh error changes or cannot be read [33m 336[2mms[22m[39m
+         [33m[2m✓[22m[39m blocks a second proxy GUI action while the first approval is pending, even without revalidation configured on the second [33m 529[2mms[22m[39m
+         [33m[2m✓[22m[39m honors cancellation during the final observation and releases the unused screen lease [33m 1530[2mms[22m[39m
+         [33m[2m✓[22m[39m retains an uncertain screen lease across proxy restart when the action has no result [33m 472[2mms[22m[39m
+       [33m[2m✓[22m[39m mode strict requires actual approval even for listed navigation [33m 323[2mms[22m[39m
+       [33m[2m✓[22m[39m mode policy requires actual approval even for listed navigation [33m 319[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses coordinate, listed and unknown clicks without an actual approval channel [33m 307[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses both concurrent GUI requests without human approval [33m 307[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses unapproved GUI requests across separate proxy processes sharing the session [33m 465[2mms[22m[39m
+       [33m[2m✓[22m[39m withholds clipboard paste and Send even when a large image precedes screen text [33m 488[2mms[22m[39m
+       [33m[2m✓[22m[39m withholds opaque GUI actions after pixels, unknown layouts and non-English labels before forwarding [33m 357[2mms[22m[39m
+       [33m[2m✓[22m[39m explains coordinates and focused form submission from a snapshot without forwarding either call [33m 302[2mms[22m[39m
+       [33m[2m✓[22m[39m stops every first short-secret fragment across concurrent proxies before server delivery [33m 500[2mms[22m[39m
+       [33m[2m✓[22m[39m reserves an exact public request once across real concurrent proxies [33m 527[2mms[22m[39m
+       [33m[2m✓[22m[39m never forwards tiny or custom-encoded data through send or read-only MCP arguments [33m 357[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses a send after outside text came through, and the refused call never reaches the server [33m 501[2mms[22m[39m
+       [33m[2m✓[22m[39m audit-only logs what the guard would do and forwards the call; without --flow nothing changes [33m 522[2mms[22m[39m
+ [31m❯[39m test/flow-guard.test.ts [2m([22m[2m46 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1398[2mms[22m[39m
+     [32m✓[39m tells network, local and destructive commands apart through prefixes and pipes[32m 7[2mms[22m[39m
+     [32m✓[39m treats shell escapes and edit-in-place as able to do anything[32m 1[2mms[22m[39m
+     [32m✓[39m labels built-in tools, guesses MCP tools only to add caution, and lets the operator decide[32m 13[2mms[22m[39m
+[31m     [31m×[31m recognises credential paths, protected settings and host patterns[39m[32m 12[2mms[22m[39m
+     [32m✓[39m finds a private run of 23+ characters however it is wrapped[32m 6[2mms[22m[39m
+     [32m✓[39m does not fire on short overlaps or unrelated text[32m 42[2mms[22m[39m
+     [32m✓[39m pulls card, passport, account and phone numbers out of text, but not dates or amounts[32m 3[2mms[22m[39m
+     [32m✓[39m names well-known secrets without any fingerprint[32m 1[2mms[22m[39m
+     [32m✓[39m denies a secret leaving after an injected issue, however it is encoded, and asks for other outbound calls[32m 38[2mms[22m[39m
+     [32m✓[39m asks when ordinary private text is about to leave, and denies it in deny mode[32m 8[2mms[22m[39m
+     [32m✓[39m stays silent in a session that never read outside text, and in an ordinary coding session[32m 5[2mms[22m[39m
+     [32m✓[39m lets trusted sources stay clean and allowed destinations pass, but never a secret[32m 9[2mms[22m[39m
+     [32m✓[39m treats a foreign file or a file with injection phrasing as outside text, and the user's own keys as private[32m 9[2mms[22m[39m
+     [32m✓[39m lets a destination the user named go through after outside text, but not one the injection named[32m 39[2mms[22m[39m
+     [32m✓[39m lets a recipient the user named by name through once their address is resolved from the user's own contacts[32m 23[2mms[22m[39m
+     [32m✓[39m does not count a value the user typed as a leak, and lets a call that keeps its destination through only when the operator said which arguments are destinations[32m 11[2mms[22m[39m
+     [32m✓[39m asks before the user's card, passport or account numbers leave, even to someone the user named; private text may go there[32m 19[2mms[22m[39m
+     [32m✓[39m counts a bare number as named only when the user called it an id[32m 4[2mms[22m[39m
+     [32m✓[39m never lets the agent switch the guard off silently[32m 2[2mms[22m[39m
+     [32m✓[39m treats a poisoned MCP server from session start as outside text[32m 4[2mms[22m[39m
+     [32m✓[39m audit mode decides nothing but logs; off mode records nothing[32m 2[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps state consistent when Claude Code runs tool hooks in parallel [33m 824[2mms[22m[39m
+     [32m✓[39m shows the Slack action and channel without inventing channel provenance[32m 3[2mms[22m[39m
+     [32m✓[39m never attributes a fingerprint hit to the last files read[32m 3[2mms[22m[39m
+     [32m✓[39m explains that links in content count even when the previewed recipient was user-named[32m 4[2mms[22m[39m
+     [32m✓[39m redacts credential and personal-data targets and omits URL credentials, paths and queries[32m 5[2mms[22m[39m
+     [32m✓[39m does not echo instructions, control characters or source URL credentials into reasons[32m 2[2mms[22m[39m
+     [32m✓[39m shows nested recipients, bounds previews, and reports an unidentified destination honestly[32m 3[2mms[22m[39m
+     [32m✓[39m distinguishes mode ask / integration hook as approval_requested, without inferring human approval[32m 2[2mms[22m[39m
+     [32m✓[39m distinguishes mode deny / integration hook as refused, without inferring human approval[32m 2[2mms[22m[39m
+     [32m✓[39m distinguishes mode audit / integration hook as audit_only, without inferring human approval[32m 2[2mms[22m[39m
+     [32m✓[39m distinguishes mode ask / integration refuse as refused, without inferring human approval[32m 2[2mms[22m[39m
+     [32m✓[39m distinguishes mode ask / integration audit as audit_only, without inferring human approval[32m 3[2mms[22m[39m
+     [32m✓[39m the plugin runs a byte-identical copy of the compiled guard[32m 4[2mms[22m[39m
+     [32m✓[39m the plugin copy refuses imports other than node: built-ins and its own parts[32m 1[2mms[22m[39m
+     [32m✓[39m registers the guard on every tool, before and after the call[32m 1[2mms[22m[39m
+     [32m✓[39m the package CLI hooks and the plugin scripts give the same answers, and a blocked server still wins[32m 141[2mms[22m[39m
+     [32m✓[39m protects expanded policy paths, custom policy paths and symlink aliases[32m 4[2mms[22m[39m
+     [32m✓[39m never lets destination exemptions authorize shell code, hooks or uploaded files[32m 28[2mms[22m[39m
+     [32m✓[39m does not trust a command shadowed by the project PATH[32m 1[2mms[22m[39m
+     [32m✓[39m checks every recipient and parses URL authority instead of matching its prefix[32m 8[2mms[22m[39m
+     [32m✓[39m does not turn a trusted URL mentioned in an MCP argument into a trusted source[32m 2[2mms[22m[39m
+     [32m✓[39m fails closed at the plugin entry point when existing session state is corrupt[32m 62[2mms[22m[39m
+     [32m✓[39m allows an exact policy mailbox without allowing other mailboxes at its domain[32m 4[2mms[22m[39m
+     [32m✓[39m cannot manufacture contacts from project files, generic private tools or old state[32m 15[2mms[22m[39m
+     [32m✓[39m requires structured full names and rejects ambiguous contact names[32m 10[2mms[22m[39m
+ [32m✓[39m test/flow-guard-gaps.test.ts [2m([22m[2m24 tests[22m[2m)[22m[33m 352[2mms[22m[39m
+ [32m✓[39m test/annotation-review.test.ts [2m([22m[2m23 tests[22m[2m)[22m[33m 3624[2mms[22m[39m
+     [33m[2m✓[22m[39m asks once for the exact annotated tool in a wrapper, and asks again in a new wrapper [33m 516[2mms[22m[39m
+ [32m✓[39m test/flow-guard-credential-boundary.test.ts [2m([22m[2m34 tests[22m[2m)[22m[33m 390[2mms[22m[39m
+ [32m✓[39m test/toxic-flow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m test/flow-guard-answer-review.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 79[2mms[22m[39m
+ [32m✓[39m test/result-screen.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 107[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/flow-guard.test.ts[2m > [22mflow guard: tools[2m > [22mrecognises credential paths, protected settings and host patterns
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m test/flow-guard.test.ts:[2m87:68[22m[39m
+    [90m 85|[39m     for (const p of ['/p/src/env.ts', '/p/README.md', '/p/keys.md']) e…
+    [90m 86|[39m     expect(isProtectedPath('/p/.claude/settings.json', '/p')).toBe(tru…
+    [90m 87|[39m     expect(isProtectedPath(join(homedir(), '.claude.json'), '/p')).toB…
+    [90m   |[39m                                                                    [31m^[39m
+    [90m 88|[39m     [34mexpect[39m([34misProtectedPath[39m([32m'/p/src/settings.json'[39m[33m,[39m [32m'/p'[39m))[33m.[39m[34mtoBe[39m([35mfalse[39m)[33m;[39m
+    [90m 89|[39m     [34mexpect[39m([34mhostMatches[39m([32m'api.github.com'[39m[33m,[39m [[32m'*.github.com'[39m]))[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m7 passed[39m[22m[90m (8)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m265 passed[39m[22m[90m (266)[39m
+[2m   Start at [22m 10:48:46
+[2m   Duration [22m 67.72s[2m (transform 1.59s, setup 85ms, import 2.28s, tests 56.05s, environment 1ms)[22m
+
+JSON report written to /out/vitest.json

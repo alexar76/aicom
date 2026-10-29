@@ -31,13 +31,15 @@ publish_aicom_factory.sh — push factory-only aicom (exclude satellite folders)
 Options:
   --dry-run              Show excludes and rsync plan only
   --no-push              Commit locally in temp clone but do not push
-  --remote URL           Factory git remote (default: origin or AICOM_FACTORY_REMOTE)
+  --remote URL           Override AICOM_FACTORY_REMOTE / auto-detected GitHub remote
   --branch NAME          Target branch (default: main)
   --export-dir PATH      Write export to PATH instead of pushing
   --message TEXT         Commit message
   -h, --help             This help
 
 Excluded paths are read from scripts/satellite-map.yaml (factory exclude + satellites).
+Target: --remote > AICOM_FACTORY_REMOTE > configured GitHub aicom push URL.
+The canonical Gitea origin is never used as a factory target or modified.
 EOF
 }
 
@@ -45,7 +47,9 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN=1; shift ;;
     --no-push) NO_PUSH=1; shift ;;
-    --remote) REMOTE="${2:-}"; shift 2 ;;
+    --remote)
+      [[ $# -ge 2 && -n "$2" ]] || { echo "error: --remote requires a URL" >&2; exit 2; }
+      REMOTE="$2"; shift 2 ;;
     --branch) BRANCH="${2:-}"; shift 2 ;;
     --export-dir) EXPORT_DIR="${2:-}"; shift 2 ;;
     --message) COMMIT_MSG="${2:-}"; shift 2 ;;
@@ -70,45 +74,81 @@ if [[ "$DRY_RUN" -eq 0 && -f "$ROOT/scripts/lib/common.sh" ]]; then
 fi
 
 
-if [[ -z "$REMOTE" ]]; then
-  REMOTE="$(git remote get-url origin 2>/dev/null || true)"
-fi
+# Resolve from local Git configuration only; discovery must never fetch or push.
+# Use push URLs because a remote can fetch from GitHub but push somewhere else.
+# Validate the actual host before the token rewrite below, which assumes GitHub.
+_factory_target="$(python3 - "$ROOT" "$REMOTE" <<'PY'
+import re
+import subprocess
+import sys
+from urllib.parse import urlsplit
+
+root, explicit = sys.argv[1:]
+
+
+def factory_owner(url):
+    if any(ord(char) <= 32 or ord(char) == 127 for char in url):
+        return None
+    scp = re.fullmatch(r"git@github\.com:([A-Za-z0-9][A-Za-z0-9-]*)/aicom(?:\.git)?/?", url)
+    if scp:
+        return scp.group(1).lower()
+    try:
+        parsed = urlsplit(url)
+        if (parsed.scheme not in ("https", "ssh") or parsed.hostname != "github.com"
+                or parsed.query or parsed.fragment):
+            return None
+        # Accessing port also rejects malformed netlocs such as ':not-a-port'.
+        _ = parsed.port
+    except ValueError:
+        return None
+    path = re.fullmatch(r"/([A-Za-z0-9][A-Za-z0-9-]*)/aicom(?:\.git)?/?", parsed.path)
+    return path.group(1).lower() if path else None
+
+
+if explicit:
+    if factory_owner(explicit) is None:
+        sys.exit("ERROR: factory target must be a GitHub '<org>/aicom' HTTPS or SSH URL "
+                 "(--remote / AICOM_FACTORY_REMOTE).")
+    selected = explicit
+else:
+    def git_read(*args):
+        try:
+            return subprocess.check_output(
+                ["git", "-C", root, *args], text=True, stderr=subprocess.DEVNULL,
+            ).splitlines()
+        except subprocess.CalledProcessError:
+            sys.exit("ERROR: cannot read configured Git remotes.")
+
+    candidates = []
+    for name in git_read("remote"):
+        for url in git_read("remote", "get-url", "--push", "--all", name):
+            repo = factory_owner(url)
+            if repo is not None:
+                candidates.append((repo, name, url))
+    if not candidates:
+        sys.exit("ERROR: no configured GitHub push URL for '<org>/aicom'. "
+                 "Set AICOM_FACTORY_REMOTE or pass --remote URL; Gitea origin is unchanged.")
+    if len({repo for repo, _, _ in candidates}) != 1:
+        sys.exit("ERROR: multiple GitHub factory repositories are configured. "
+                 "Select one with AICOM_FACTORY_REMOTE or --remote URL.")
+    # Prefer conventional aliases, while accepting any locally configured name.
+    candidates.sort(key=lambda item: (item[1] not in ("gh", "github"), item[1]))
+    selected = candidates[0][2]
+
+print(selected)
+print(factory_owner(selected))
+PY
+)"
+REMOTE="${_factory_target%$'\n'*}"
+_factory_owner="${_factory_target##*$'\n'}"
 
 TOKEN="${GH_PAT:-${GITHUB_TOKEN:-}}"
 if [[ -z "$TOKEN" && "$REMOTE" =~ https://[^:/]+:([^@]+)@ ]]; then
   TOKEN="${BASH_REMATCH[1]}"
 fi
-if [[ -n "$TOKEN" && "$REMOTE" =~ github\.com[:/]+([^/]+/[^/.]+)(\.git)? ]]; then
-  REMOTE="https://x-access-token:${TOKEN}@github.com/${BASH_REMATCH[1]}.git"
+if [[ -n "$TOKEN" ]]; then
+  REMOTE="https://x-access-token:${TOKEN}@github.com/${_factory_owner}/aicom.git"
 fi
-
-# ── SAFETY GUARD ───────────────────────────────────────────────────────────
-# This script publishes a TRIMMED factory tree (satellites excluded) to GitHub
-# `aicom` with **live** append-only history (same as metis `history: live`):
-# never --force, never orphan. If $REMOTE ever resolved to the canonical
-# monorepo (origin / Gitea), that push would still pollute canon with a trimmed
-# tree. $REMOTE falls back to `git remote get-url origin` when unset — and here
-# origin is Gitea — so refuse anything that is not the public GitHub factory remote.
-_remote_display="${REMOTE#*@}"   # strip any user:token@ prefix before showing
-if [[ -z "$REMOTE" ]]; then
-  echo "ERROR: no publish target." >&2
-  echo "  Set AICOM_FACTORY_REMOTE=https://github.com/<org>/aicom.git (or pass --remote)." >&2
-  exit 1
-fi
-if [[ "$REMOTE" != *github.com/* && "$REMOTE" != *github.com:* ]]; then
-  echo "ERROR: refusing to publish — target is NOT a GitHub remote:" >&2
-  echo "         ${_remote_display}" >&2
-  echo "  This publishes a trimmed factory tree. Pointing it at origin/Gitea would" >&2
-  echo "  pollute the canonical monorepo. Set AICOM_FACTORY_REMOTE=https://github.com/<org>/aicom.git." >&2
-  exit 1
-fi
-if [[ ! "$REMOTE" =~ github\.com[:/]+[^/]+/aicom(\.git)?/?$ ]]; then
-  echo "ERROR: refusing to publish — GitHub target is not a '<org>/aicom' repo:" >&2
-  echo "         ${_remote_display}" >&2
-  echo "  The factory tree must go to the aicom repo. Fix AICOM_FACTORY_REMOTE." >&2
-  exit 1
-fi
-# ───────────────────────────────────────────────────────────────────────────
 
 git_auth() {
   if [[ -n "${TOKEN:-}" ]]; then
@@ -124,8 +164,8 @@ git_auth() {
 
 redact_remote() {
   local url="$1"
-  if [[ "$url" =~ ^https?://[^/@]+@[^/]+ ]]; then
-    echo "$url" | sed -E 's#(https?://)[^:@/]+:[^@]+@#\1***:***@#'
+  if [[ "$url" =~ ^(https?|ssh)://[^/]+@ ]]; then
+    echo "$url" | sed -E 's#^((https?|ssh)://)[^/]+@#\1***@#'
   else
     echo "$url"
   fi
@@ -280,6 +320,34 @@ for p in "${DISTRIBUTION_EXCLUDES[@]}"; do
   RSYNC_EXCLUDE_ARGS+=(--exclude "$p")
 done
 
+# Malware-feed study: the full write-up goes public on one date, after every feed has had its
+# numbers for seven days. Until then the GitHub copy of these paths stays exactly as last
+# published (the stage 1 version of 2026-10-25): the clone sync below puts the published files
+# back and drops new ones, and the commit is refused if anything under them would still change.
+# The date is written into HELD_UNTIL_FILE (YYYY-MM-DD, UTC); with no date there, the hold stays.
+# --export-dir is a local export and is not held.
+HELD_UNTIL_FILE="research/malware-feed-accuracy/publication-date.txt"
+HELD_PATHS=("docs/malware-feed-accuracy*.md" "research/malware-feed-accuracy")
+held_until="$(tr -d '[:space:]' < "$ROOT/$HELD_UNTIL_FILE" 2>/dev/null || true)"
+HOLD_STUDY=1
+if [[ "$held_until" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] && [[ ! "$(date -u +%F)" < "$held_until" ]]; then
+  HOLD_STUDY=0
+fi
+
+hold_published_copy() {
+  local clone="$1"; shift
+  (
+    cd "$clone"
+    for spec in "$@"; do
+      # The index still holds the GitHub tip here: rsync only touched the working tree.
+      if [[ -n "$(git ls-files -- "$spec")" ]]; then
+        git checkout HEAD -- "$spec"
+      fi
+      git clean -fdq -- "$spec"
+    done
+  )
+}
+
 # AIMarket School + academies are satellites only (excluded via satellite-map):
 #   school/   → alexar76/aimarket-school (Colab notebooks)
 #   courses/  → alexar76/aimarket-courses
@@ -299,6 +367,13 @@ echo "Education satellites (not on factory GitHub):"
 echo "  − school/          → alexar76/aimarket-school"
 echo "  − courses/         → alexar76/aimarket-courses"
 echo ""
+if [[ "$HOLD_STUDY" -eq 1 ]]; then
+  echo "Kept as last published on GitHub until ${held_until:-a date is written into $HELD_UNTIL_FILE}:"
+  for p in "${HELD_PATHS[@]}"; do
+    echo "  = $p"
+  done
+  echo ""
+fi
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
   echo "[dry-run] rsync args: ${RSYNC_EXCLUDE_ARGS[*]}"
@@ -452,6 +527,10 @@ for p in "${LOCAL_EXCLUDES[@]}"; do
   rm -rf "$CLONE/$p"
 done
 
+if [[ "$HOLD_STUDY" -eq 1 ]]; then
+  hold_published_copy "$CLONE" "${HELD_PATHS[@]}"
+fi
+
 if [[ -e "$CLONE/independent" ]]; then
   echo "ERROR: independent/ reached the GitHub factory clone — refusing to push." >&2
   exit 1
@@ -531,6 +610,15 @@ done
 [[ -d "$CLONE/.github/ISSUE_TEMPLATE" ]] && git add ".github/ISSUE_TEMPLATE/"
 [[ -f "$CLONE/.github/pull_request_template.md" ]] && git add ".github/pull_request_template.md"
 [[ -f "$CLONE/README.md" ]] && git add "README.md"
+
+# Certify the staged objects too, after every filter and explicit add has run.
+bash "$ROOT/scripts/verify_mirror_secrets.sh" "$CLONE" --git-index
+
+if [[ "$HOLD_STUDY" -eq 1 ]] && ! git diff --cached --quiet HEAD -- "${HELD_PATHS[@]}"; then
+  echo "ERROR: held study paths would change on GitHub before ${held_until:-their publication date} — refusing to push:" >&2
+  git diff --cached --name-status HEAD -- "${HELD_PATHS[@]}" >&2
+  exit 1
+fi
 
 # ── Divergence guard (live mode, same as metis) ───────────────────────────
 # Outbound sync leaves a "chore(factory): sync …" commit at the tip.

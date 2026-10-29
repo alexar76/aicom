@@ -40,6 +40,17 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
   security baseline, and expanded dependency scanning to previously omitted products.
   Regression checks use local fixtures. Changes remain local; released packages and
   running services require their normal release/deployment process.
+- **A reverse proxy on the same host no longer counts as "this machine" (2026-10-26).** Vulnetix noted
+  on GCVE-110-PYPI-2026-018883 that a keyless aimarket-mcp behind a same-host proxy that adds no
+  forwarding header still answers everyone; nginx's default `proxy_pass` is such a proxy (it sends
+  `Host: 127.0.0.1:<port>`), reproduced against 0.6.2 in a container. The keyless "this machine only"
+  rule in aimarket-mcp 0.6.3, metis 0.2.3, aimarket-platon 0.1.5 (both copies) and aimarket-treasury
+  0.1.3 now also requires, on Linux, that the caller's socket belongs to the user the server runs as
+  (`/proc/net/tcp`), so a proxy's workers are refused; a proxy running as that same user, or any proxy
+  on macOS or Windows, still needs a key, as the READMEs say. aimarket-oracle-core 0.6.2 never takes a
+  loopback caller for a trusted payment proxy (every process on the machine shares the address). The
+  hub's `/metrics` keeps its rule (Prometheus usually runs as another user); its docs now say a front
+  that adds no forwarding header makes the page public.
 - **Our own audit for the classes Vulnetix found (2026-10-25).** The same mistakes elsewhere in the
   monorepo, found by searching for each class and fixed with tests:
   - Open without a key (CWE-306, as in aimarket-mcp): metis 0.2.2 (`metis-serve`, `metis-coordinator`,

@@ -1,0 +1,104 @@
+{
+  "passed": false,
+  "skipped": false,
+  "checks": [
+    {
+      "directory": "frontend",
+      "manifest": "frontend/package.json",
+      "lockfile": "frontend/package-lock.json",
+      "passed": false,
+      "issues": [
+        "frontend/package-lock.json: source-map-js 1.0.0 - 1.2.1 (high)"
+      ],
+      "sha256": {
+        "frontend/package-lock.json": "2299130121ea0c63a5b2bdb9dfff9335bc0f128f7aa5284590536412492dc1eb",
+        "frontend/package.json": "eb71830e50b5cd66920eb1e1bb9cdd89f8f0b898118b4843f289e0a06b736f20"
+      },
+      "report": {
+        "auditReportVersion": 2,
+        "vulnerabilities": {
+          "source-map-js": {
+            "name": "source-map-js",
+            "severity": "high",
+            "isDirect": true,
+            "via": [
+              {
+                "source": 1241209,
+                "name": "source-map-js",
+                "dependency": "source-map-js",
+                "title": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+                "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+                "severity": "high",
+                "cwe": [
+                  "CWE-1284"
+                ],
+                "cvss": {
+                  "score": 7.5,
+                  "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+                },
+                "range": ">=1.0.0 <1.2.2"
+              }
+            ],
+            "effects": [],
+            "range": "1.0.0 - 1.2.1",
+            "nodes": [
+              "node_modules/source-map-js"
+            ],
+            "fixAvailable": true
+          }
+        },
+        "metadata": {
+          "vulnerabilities": {
+            "info": 0,
+            "low": 0,
+            "moderate": 0,
+            "high": 1,
+            "critical": 0,
+            "total": 1
+          },
+          "dependencies": {
+            "prod": 2,
+            "dev": 0,
+            "optional": 0,
+            "peer": 0,
+            "peerOptional": 0,
+            "total": 1
+          }
+        }
+      }
+    }
+  ],
+  "dependency_risks": [
+    {
+      "code": "npm_vulnerability",
+      "file": "frontend/package-lock.json",
+      "manifest": "frontend/package.json",
+      "package": "source-map-js",
+      "severity": "high",
+      "issue": "frontend/package-lock.json: source-map-js 1.0.0 - 1.2.1 (high)",
+      "range": "1.0.0 - 1.2.1",
+      "fix_available": true,
+      "recommendation": "Upgrade the affected package or its parent dependency, regenerate package-lock.json, and rerun audit, build and tests. Review major upgrades; never use npm audit fix --force or omit dev dependencies to bypass the gate."
+    }
+  ],
+  "issues": [
+    "frontend/package-lock.json: source-map-js 1.0.0 - 1.2.1 (high)"
+  ],
+  "checked_at": 1793196601.1178508,
+  "manifest_sha256": {
+    "frontend/package-lock.json": "2299130121ea0c63a5b2bdb9dfff9335bc0f128f7aa5284590536412492dc1eb",
+    "frontend/package.json": "eb71830e50b5cd66920eb1e1bb9cdd89f8f0b898118b4843f289e0a06b736f20"
+  },
+  "command": [
+    "npm",
+    "audit",
+    "--package-lock-only",
+    "--include=dev",
+    "--ignore-scripts",
+    "--audit-level=high",
+    "--json",
+    "--registry=https://registry.npmjs.org",
+    "--fetch-retries=0",
+    "--fetch-timeout=20000"
+  ]
+}

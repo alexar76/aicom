@@ -3,8 +3,12 @@
 from __future__ import annotations
 
 import base64
+import contextlib
 import json
 import os
+import stat
+import tempfile
+from pathlib import Path
 from typing import Any
 
 from core.ed25519_keys import load_or_create_ed25519_keypair
@@ -32,6 +36,49 @@ def _truthy(value: str | None) -> bool:
     return (value or "").strip().lower() in ("1", "true", "yes", "on")
 
 
+def _read_pq_identity(path: Path) -> tuple[bytes, bytes]:
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        if not stat.S_ISREG(os.fstat(fd).st_mode):
+            raise ValueError("PQ signing identity must be a regular file")
+        os.fchmod(fd, 0o600)
+        with os.fdopen(fd, "r", closefd=False) as handle:
+            lines = handle.read(20000).splitlines()
+        if len(lines) != 2:
+            raise ValueError("Invalid PQ signing identity; explicit recovery is required")
+        public, private = map(bytes.fromhex, lines)
+        if _MLDSA.pk_from_sk(private) != public:
+            raise ValueError("PQ signing identity public/private key mismatch")
+        return public, private
+    finally:
+        os.close(fd)
+
+
+def _atomic_pq_identity(path: Path) -> tuple[bytes, bytes]:
+    try:
+        return _read_pq_identity(path)
+    except FileNotFoundError:
+        pass
+    public, private = _MLDSA.keygen()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w") as handle:
+            handle.write(f"{public.hex()}\n{private.hex()}\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        with contextlib.suppress(FileExistsError):
+            os.link(temporary, path)
+        directory = os.open(path.parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+        try:
+            os.fsync(directory)
+        finally:
+            os.close(directory)
+        return _read_pq_identity(path)
+    finally:
+        os.unlink(temporary)
+
+
 def _pq_keypair() -> tuple[bytes, bytes] | None:
     """This node's ML-DSA-65 keypair, or None when hybrid signing is off.
 
@@ -53,19 +100,7 @@ def _pq_keypair() -> tuple[bytes, bytes] | None:
         )
     classical = signing_key_path()
     path = classical.with_name(classical.name + "_mldsa")
-    if path.exists():
-        # Two hex lines, pk then sk — the on-disk shape aimarket_hub._load_or_make_pq
-        # already writes, so one convention covers every PQ key in the fleet.
-        pk_hex, sk_hex = path.read_text().split("\n")[:2]
-        return bytes.fromhex(pk_hex), bytes.fromhex(sk_hex)
-    pk, sk = _MLDSA.keygen()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(f"{pk.hex()}\n{sk.hex()}\n")
-    try:
-        os.chmod(path, 0o600)
-    except OSError:
-        pass
-    return pk, sk
+    return _atomic_pq_identity(path)
 
 
 def _pq_fields(canonical: str) -> dict[str, str]:

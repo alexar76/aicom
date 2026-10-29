@@ -1,0 +1,189 @@
+{
+  "date": "2026-10-27",
+  "captures": [
+    {
+      "name": "current-oracle-gateway-baseline",
+      "status": "ok",
+      "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/current-oracle-gateway-baseline.json",
+      "sha256": "c6dcffed0d7bd56ddbadc2a12916350fa0957d3b981c38569c5e264701c7b829",
+      "packageVersion": "0.3.2",
+      "serverVersion": "0.3.2",
+      "protocol": "2025-06-18",
+      "toolCount": 36,
+      "observedExtraFields": [],
+      "sourceMetadataVersionVerified": true,
+      "rawToolsResultMatchesSnapshot": true,
+      "noToolCalls": true
+    },
+    {
+      "name": "current-oracle-gateway-recheck",
+      "status": "ok",
+      "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/current-oracle-gateway-recheck.json",
+      "sha256": "e7e32e4c7d40c0d97e957f1d990700838255f6c628c03c75ff475203a6f3ff12",
+      "packageVersion": "0.3.2",
+      "serverVersion": "0.3.2",
+      "protocol": "2025-06-18",
+      "toolCount": 36,
+      "observedExtraFields": [],
+      "sourceMetadataVersionVerified": true,
+      "rawToolsResultMatchesSnapshot": true,
+      "noToolCalls": true
+    },
+    {
+      "name": "current-packager-baseline",
+      "status": "ok",
+      "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/current-packager-baseline.json",
+      "sha256": "b17a040ed2b5000c252f6f117b2931fff85ba9c7d609d59265a63f6f01abf78c",
+      "packageVersion": "2.1.2",
+      "serverVersion": "2.1.2",
+      "protocol": "2025-06-18",
+      "toolCount": 3,
+      "observedExtraFields": [],
+      "sourceMetadataVersionVerified": true,
+      "rawToolsResultMatchesSnapshot": true,
+      "noToolCalls": true
+    },
+    {
+      "name": "current-packager-recheck",
+      "status": "ok",
+      "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/current-packager-recheck.json",
+      "sha256": "3dd2fe323ebd0bc9e3a0a236904c7b1e650e1dd882a516acf3ab21dc9cce1034",
+      "packageVersion": "2.1.2",
+      "serverVersion": "2.1.2",
+      "protocol": "2025-06-18",
+      "toolCount": 3,
+      "observedExtraFields": [],
+      "sourceMetadataVersionVerified": true,
+      "rawToolsResultMatchesSnapshot": true,
+      "noToolCalls": true
+    },
+    {
+      "name": "upgrade-oracle-gateway-after",
+      "status": "ok",
+      "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/upgrade-oracle-gateway-after.json",
+      "sha256": "0200077801792cc23f5428a76941ee872e44d6952a2965bfba3264f7c45f12eb",
+      "packageVersion": "0.3.2",
+      "serverVersion": "0.3.2",
+      "protocol": "2025-06-18",
+      "toolCount": 36,
+      "observedExtraFields": [],
+      "sourceMetadataVersionVerified": true,
+      "rawToolsResultMatchesSnapshot": true,
+      "noToolCalls": true
+    },
+    {
+      "name": "upgrade-oracle-gateway-before",
+      "status": "failed",
+      "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/upgrade-oracle-gateway-before.json",
+      "sha256": "431d78ba57b3e351ace6a2843ed7ff2c0df955bc5b6bbc1b9b00186a132450a8",
+      "packageVersion": "0.3.1",
+      "serverVersion": null,
+      "protocol": null,
+      "toolCount": 0,
+      "observedExtraFields": [],
+      "sourceMetadataVersionVerified": true,
+      "rawToolsResultMatchesSnapshot": false,
+      "noToolCalls": true
+    },
+    {
+      "name": "upgrade-packager-after",
+      "status": "ok",
+      "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/upgrade-packager-after.json",
+      "sha256": "8635f79ae66ccd5696948117bea2407a5f0c4678bf1dbaddbcaf29371048df38",
+      "packageVersion": "2.1.2",
+      "serverVersion": "2.1.2",
+      "protocol": "2025-06-18",
+      "toolCount": 3,
+      "observedExtraFields": [],
+      "sourceMetadataVersionVerified": true,
+      "rawToolsResultMatchesSnapshot": true,
+      "noToolCalls": true
+    },
+    {
+      "name": "upgrade-packager-before",
+      "status": "ok",
+      "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/upgrade-packager-before.json",
+      "sha256": "905851d689d5f4d6a2e0258306785d5ed259b5df41b906e305892518110623fa",
+      "packageVersion": "2.1.1",
+      "serverVersion": "1.30.0",
+      "protocol": "2025-06-18",
+      "toolCount": 3,
+      "observedExtraFields": [],
+      "sourceMetadataVersionVerified": true,
+      "rawToolsResultMatchesSnapshot": true,
+      "noToolCalls": true
+    }
+  ],
+  "comparisons": [
+    {
+      "name": "oracle-gateway-current",
+      "status": "unchanged",
+      "comparability": "comparable",
+      "fieldCoverage": "full",
+      "limitations": [],
+      "summary": {
+        "changed": 0,
+        "unchanged": 1,
+        "context_changed": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "name": "oracle-gateway-upgrade",
+      "status": "unknown",
+      "comparability": "unknown",
+      "fieldCoverage": "none",
+      "limitations": [
+        "before: successful full observation missing"
+      ],
+      "summary": {
+        "changed": 0,
+        "unchanged": 0,
+        "context_changed": 0,
+        "unknown": 1
+      }
+    },
+    {
+      "name": "packager-current",
+      "status": "unchanged",
+      "comparability": "comparable",
+      "fieldCoverage": "full",
+      "limitations": [],
+      "summary": {
+        "changed": 0,
+        "unchanged": 1,
+        "context_changed": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "name": "packager-upgrade",
+      "status": "unchanged",
+      "comparability": "comparable",
+      "fieldCoverage": "full",
+      "limitations": [],
+      "summary": {
+        "changed": 0,
+        "unchanged": 1,
+        "context_changed": 0,
+        "unknown": 0
+      }
+    }
+  ],
+  "protocol": "2025-06-18",
+  "sdk": "mcp 1.30.0",
+  "toolCalls": 0,
+  "paidCalls": 0,
+  "packageInstalls": 0,
+  "oldWheelDownloads": 2,
+  "allPackageMetadataVerified": true,
+  "allArtifactsHashVerified": true,
+  "allCaptureSourceArchivesVerified": true,
+  "limits": [
+    "Current baseline/recheck pairs measure repeated complete definitions, not upgrades",
+    "Version-pair captures are controlled replays performed now, not reconstruction of original HISTOR history",
+    "Oracle 0.3.1 still fails registration and cannot provide a successful before toolset",
+    "No advertised extra tool keys were present; observed absence is retained rather than synthetic annotations",
+    "Python audit hooks deny DNS/socket connections and child process launch; this is not OS/container isolation"
+  ]
+}

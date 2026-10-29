@@ -1,0 +1,131 @@
+{
+  "containers": {
+    "cna": {
+      "affected": [
+        {
+          "collectionURL": "https://pypi.org",
+          "defaultStatus": "unknown",
+          "modules": [
+            "logos.app",
+            "logos.main"
+          ],
+          "packageName": "aimarket-logos",
+          "product": "aimarket-logos",
+          "programFiles": [
+            "logos/app.py",
+            "logos/main.py"
+          ],
+          "programRoutines": [
+            {
+              "name": "logos.app._from_local_proxy"
+            },
+            {
+              "name": "logos.app._client_key"
+            },
+            {
+              "name": "logos.main.main"
+            }
+          ],
+          "vendor": "pypi",
+          "versions": [
+            {
+              "lessThanOrEqual": "0.2.1",
+              "status": "affected",
+              "version": "0.1.0",
+              "versionType": "python"
+            }
+          ]
+        }
+      ],
+      "configurations": [
+        {
+          "lang": "en",
+          "value": "The app's port is reachable from a private network that hosts or containers you do not control share with it (the logos entry point binds 0.0.0.0)."
+        }
+      ],
+      "descriptions": [
+        {
+          "lang": "en",
+          "value": "If you run aimarket-logos where hosts or containers you do not control share a private network with it, any of them can reset its rate limit with every request and spend your model budget through the language-model backed POST /api/v1/ask and /api/v1/chat routes past LOGOS_RATE_MAX. The logos entry point always binds 0.0.0.0 (logos.main), and the limit is keyed on X-Real-IP, or an X-Forwarded-For entry (app._client_key). 0.2.1 reads those headers only when the TCP peer is a loopback, private or link-local address (app._from_local_proxy). A neighbour on a private network is such a peer, so it still names its own key. In 0.1.0 and 0.2.0 a caller on any network could (GCVE-110-VULN-PYPI-2026-000633). No release limits header trust to your proxy. Affects 0.1.0 through 0.2.1."
+        }
+      ],
+      "metrics": [
+        {
+          "cvssV3_1": {
+            "baseScore": 4.3,
+            "baseSeverity": "MEDIUM",
+            "vectorString": "CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+            "version": "3.1"
+          }
+        }
+      ],
+      "problemTypes": [
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-348",
+              "description": "Use of Less Trusted Source",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        },
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-799",
+              "description": "Improper Control of Interaction Frequency",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "dateUpdated": "2026-10-28T01:49:28Z",
+        "orgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+        "shortName": "Vulnetix"
+      },
+      "references": [
+        {
+          "tags": [
+            "third-party-advisory"
+          ],
+          "url": "https://pypi.org/project/aimarket-logos/"
+        }
+      ],
+      "solutions": [
+        {
+          "lang": "en",
+          "value": "Start the app on loopback, for example uvicorn logos.main:app --host 127.0.0.1 --port <LOGOS_PORT>, instead of the logos entry point, and reach it only through a reverse proxy on the same host."
+        }
+      ],
+      "title": "Logos rate limit key can be forged by hosts on the same private network in aimarket-logos",
+      "workarounds": [
+        {
+          "lang": "en",
+          "value": "Allow only your reverse proxy to reach the app's port (host firewall, a Docker network with no other members, a Kubernetes NetworkPolicy)."
+        },
+        {
+          "lang": "en",
+          "value": "Have the reverse proxy overwrite X-Real-IP and X-Forwarded-For with the client's address, and rate-limit the ask and chat routes at the proxy as well."
+        },
+        {
+          "lang": "en",
+          "value": "Where clients can hold certificates, terminate mTLS at a proxy on the same host, so only certificate holders reach the app."
+        }
+      ],
+      "x_vulnetix_classification": "weakness"
+    }
+  },
+  "cveMetadata": {
+    "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+    "assignerShortName": "Vulnetix",
+    "cveId": "GCVE-110-VULN-PYPI-2026-000638",
+    "datePublished": "2026-10-27T22:42:51Z",
+    "dateUpdated": "2026-10-28T01:49:28Z",
+    "state": "PUBLISHED"
+  },
+  "dataType": "CVE_RECORD",
+  "dataVersion": "5.1"
+}

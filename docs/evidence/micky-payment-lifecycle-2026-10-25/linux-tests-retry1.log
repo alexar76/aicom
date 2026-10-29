@@ -1,0 +1,66 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.17, pytest-9.1.1, pluggy-1.6.0
+cachedir: /tmp/micky-pytest-cache
+rootdir: /work
+configfile: pyproject.toml
+plugins: asyncio-1.4.0, httpx-0.36.2, anyio-4.14.2
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 0 items / 2 errors
+
+==================================== ERRORS ====================================
+___________________ ERROR collecting tests/test_mandates.py ____________________
+tests/test_mandates.py:15: in <module>
+    from tests._mandate_kit import (  # noqa: E402  (importorskip awr first)
+tests/_mandate_kit.py:29: in <module>
+    from aimarket_hub.api import create_app  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket_hub/api.py:58: in <module>
+    from aimarket_hub.channels import (
+aimarket_hub/channels.py:1061: in <module>
+    _ledger = ChannelLedger()
+              ^^^^^^^^^^^^^^^
+aimarket_hub/channels.py:1040: in __init__
+    self._backend = create_backend(
+aimarket_hub/db_backend.py:1127: in create_backend
+    return SQLiteBackend(requested)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket_hub/db_backend.py:276: in __init__
+    self.db_path.parent.mkdir(parents=True, exist_ok=True)
+/usr/local/lib/python3.11/pathlib.py:1116: in mkdir
+    os.mkdir(self, mode)
+E   OSError: [Errno 30] Read-only file system: 'data'
+___________________ ERROR collecting tests/test_channels.py ____________________
+tests/test_channels.py:10: in <module>
+    from aimarket_hub.channels import (
+aimarket_hub/channels.py:1061: in <module>
+    _ledger = ChannelLedger()
+              ^^^^^^^^^^^^^^^
+aimarket_hub/channels.py:1040: in __init__
+    self._backend = create_backend(
+aimarket_hub/db_backend.py:1127: in create_backend
+    return SQLiteBackend(requested)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket_hub/db_backend.py:276: in __init__
+    self.db_path.parent.mkdir(parents=True, exist_ok=True)
+/usr/local/lib/python3.11/pathlib.py:1116: in mkdir
+    os.mkdir(self, mode)
+E   OSError: [Errno 30] Read-only file system: 'data'
+=============================== warnings summary ===============================
+../deps/fastapi/testclient.py:1
+  /deps/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+---------------------- generated xml file: /out/junit.xml ----------------------
+=========================== short test summary info ============================
+ERROR tests/test_mandates.py - OSError: [Errno 30] Read-only file system: 'data'
+ERROR tests/test_channels.py - OSError: [Errno 30] Read-only file system: 'data'
+========================= 1 warning, 2 errors in 0.83s =========================
+ERROR: found no collectors for /work/tests/test_mandates.py::TestLimits
+
+ERROR: found no collectors for /work/tests/test_mandates.py::TestLimitsCannotBeDodged
+
+ERROR: found no collectors for /work/tests/test_channels.py::TestPayoutObligations
+
+ERROR: found no collectors for /work/tests/test_channels.py::TestOrphanedHoldReaper
+

@@ -1,0 +1,597 @@
+{
+  "schema": "qingfeng-reference-egress/1",
+  "date": "2026-10-26",
+  "host": "factory-vps",
+  "packageVersion": "0.22.1",
+  "baseCommit": "459df08f36fc002100f61e6b02cdcf15b24d6d96",
+  "scope": "Handwritten synthetic hook inputs, not live model transformations or semantic provenance detection.",
+  "testsPassed": 127,
+  "testsFailed": 0,
+  "testFiles": 4,
+  "newTestsPassed": 25,
+  "checks": [
+    {
+      "name": "dependencies",
+      "exitCode": 0,
+      "logSha256": "def54e70e58a510369d1c691357e9ab5309be3fa1e8ee2500bd9936ba3fb5eb9"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "logSha256": "d15c169d52278ece8aa489cd2b97d075fb6cb9078ee003acbfa891b5ff6f027e"
+    },
+    {
+      "name": "typecheck",
+      "exitCode": 0,
+      "logSha256": "ebce1ffa71189e2af4194d7fa736082b26af0b34292cc9194dd39d5d9be92aaa"
+    },
+    {
+      "name": "boundary-tests",
+      "exitCode": 0,
+      "logSha256": "ea20d3c70efe420af9bec2d5ab83ab22500fb275f196cc9132c9015fc35cff17"
+    }
+  ],
+  "runtimeChanged": false,
+  "strongThresholdsChanged": false,
+  "paidModelCalls": 0,
+  "actualOutboundToolCalls": 0,
+  "additionalAPIUSD": 0,
+  "verifiedOutputHashes": 6,
+  "collectedAndCleaned": true,
+  "suiteResults": [
+    {
+      "file": "flow-guard-answer-review.test.ts",
+      "passed": 9,
+      "tests": [
+        {
+          "title": "Stop answer review does not trust warning vocabulary rechecks warning then recommendation when it repeats the outside instruction",
+          "status": "passed"
+        },
+        {
+          "title": "Stop answer review does not trust warning vocabulary rechecks warning after recommendation when it repeats the outside instruction",
+          "status": "passed"
+        },
+        {
+          "title": "Stop answer review does not trust warning vocabulary rechecks substring flagship when it repeats the outside instruction",
+          "status": "passed"
+        },
+        {
+          "title": "Stop answer review does not trust warning vocabulary rechecks Russian warning when it repeats the outside instruction",
+          "status": "passed"
+        },
+        {
+          "title": "Stop answer review does not trust warning vocabulary charges a genuine warning one recheck and allows the host-marked continuation",
+          "status": "passed"
+        },
+        {
+          "title": "Stop answer review does not trust warning vocabulary still uses the exact normalized 12-character overlap boundary",
+          "status": "passed"
+        },
+        {
+          "title": "Stop answer review does not trust warning vocabulary documents the remaining paraphrase gap without a shared 12-character window",
+          "status": "passed"
+        },
+        {
+          "title": "Stop answer review does not trust warning vocabulary keeps ordinary source repetition without an instruction as a note only",
+          "status": "passed"
+        },
+        {
+          "title": "Stop answer review does not trust warning vocabulary does not add a recheck to unrelated answers after an injected source",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "flow-guard-credential-boundary.test.ts",
+      "passed": 34,
+      "tests": [
+        {
+          "title": "credential boundary: no length or encoding exemption reviews the very first 1-character piece, nested or in a user-named destination",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption reviews the very first 2-character piece, nested or in a user-named destination",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption reviews the very first 3-character piece, nested or in a user-named destination",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption reviews the very first 4-character piece, nested or in a user-named destination",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption reviews unrecognized gzip without claiming it decoded a secret",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption reviews unrecognized rot13 without claiming it decoded a secret",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption reviews unrecognized custom alphabet without claiming it decoded a secret",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption reviews unrecognized base32 without claiming it decoded a secret",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption does not let read-only operator labels or allowed destinations waive the boundary",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption keeps the credential flag after private history rotates or another user turn arrives",
+          "status": "passed"
+        },
+        {
+          "title": "credential boundary: no length or encoding exemption covers ordinary file writes and respects clean sessions and disabled modes",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests uses stable sorted JSON but binds array order, tool, destination and every argument",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests reduces benign reviews only for one exact request, then reviews reuse",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests never grants changed requests, RPC metadata or malformed input",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests never waives known secret, weak fragment, PII or incomplete decoding matches",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests cannot waive PII-only fingerprints or a full store with an exact public rule",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests does not mistake corrupt fingerprint contents for an empty store",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests never lets exact public requests waive external writes or GUI copy controls",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests does not consume a rule in audit or deny mode",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests rejects invalid sections as a whole {\"allow\":\"*\"}",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests rejects invalid sections as a whole {\"allow\":[{\"tool\":\"mcp__*\",\"requestSha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}]}",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests rejects invalid sections as a whole {\"allow\":[{\"tool\":\"mcp__mail__send_email\",\"requestSha256\":\"bad\"}]}",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests rejects invalid sections as a whole {\"allow\":[],\"invalid\":true}",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests rejects corrupt persisted state {\"credentialRead\":false}",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests rejects corrupt persisted state {\"credentialGrants\":[\"bad\"]}",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests rejects corrupt persisted state {\"credentialGrants\":[\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]}",
+          "status": "passed"
+        },
+        {
+          "title": "exact reviewed public requests fails closed on fingerprint read errors instead of granting public requests",
+          "status": "passed"
+        },
+        {
+          "title": "bounded reversible decoding finds a whole credential through nested url encoding",
+          "status": "passed"
+        },
+        {
+          "title": "bounded reversible decoding finds a whole credential through nested base64 encoding",
+          "status": "passed"
+        },
+        {
+          "title": "bounded reversible decoding finds a whole credential through nested hex encoding",
+          "status": "passed"
+        },
+        {
+          "title": "bounded reversible decoding finds a whole credential through nested json encoding",
+          "status": "passed"
+        },
+        {
+          "title": "bounded reversible decoding finds a whole credential through nested entity encoding",
+          "status": "passed"
+        },
+        {
+          "title": "bounded reversible decoding reports depth, byte and variant exhaustion instead of a clean result",
+          "status": "passed"
+        },
+        {
+          "title": "bounded reversible decoding treats invalid escapes and non-UTF8 bytes as literals, never executable code",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "flow-guard-reference-egress.test.ts",
+      "passed": 25,
+      "tests": [
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases reviews Use the third entry in that spreadsheet. without claiming to recognize a secret",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases reviews Forward the value associated with the production account. without claiming to recognize a secret",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases reviews Resolve row C in the previously opened table at the receiver. without claiming to recognize a secret",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases preserves the boundary across 1 observed intermediate tool results and a new user turn",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases preserves the boundary across 3 observed intermediate tool results and a new user turn",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases preserves the boundary across 8 observed intermediate tool results and a new user turn",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases denies reference-only egress in deny mode",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases does not let an allowed recipient waive the credential boundary",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases also checks opaque MCP tool names without an outbound word or destination argument",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases checks a non-MCP tool when the operator explicitly labels it outbound",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases records the coverage limit for an unrecognized non-MCP tool",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases does not infer an unseen credential from an ordinary private table containing no literal secret",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases keeps audit mode non-enforcing rather than counting it as blocked",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases keeps off mode non-enforcing rather than counting it as blocked",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases does not activate this boundary before outside text has been observed",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases does not treat a harmless reference as a secret without a recorded credential",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases requires review on every attempt; a prior ask is not an approval",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases permits an exact operator-reviewed reference once, explicitly without semantic validation",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases never extends exact authorization to a changed body",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases never extends exact authorization to a changed recipient",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases never extends exact authorization to a changed nested",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases never extends exact authorization to a changed tool",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases does not consume exact authorization when the host forbids public-request eligibility",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases never lets exact public authorization waive a literal credential",
+          "status": "passed"
+        },
+        {
+          "title": "reference-only egress boundary: synthetic multi-step cases keeps the boundary when an observed transformation returns only reference text",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "flow-guard-secret-regression.test.ts",
+      "passed": 59,
+      "tests": [
+        {
+          "title": "short-secret fragment correlation denies an embedded eight-character payload when the key has a long alphabetic beginning",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation keeps existing eight-character on-disk stores valid for a known provider",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation does not expand generic word-based configuration into a false hard denial of a reviewed public request",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation keeps old windows from numeric provider prefixes and leaves DER boundaries unchanged",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation requires review before even a 1-character first fragment can leave",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation requires review before even a 2-character first fragment can leave",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation requires review before even a 3-character first fragment can leave",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation requires review before even a 4-character first fragment can leave",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation recognizes a credential wrapped in URL, base64 and hex layers",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews the very first six-character piece before transmission, including the prefix boundary",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation stops the first payload-bearing chunk of the original key in 5-char pieces",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation stops the first payload-bearing chunk of the original key in 6-char pieces",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation stops the first payload-bearing chunk of the original key in 15-char pieces",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews an isolated first payload piece of 5 characters, without prior observations",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews an isolated first payload piece of 6 characters, without prior observations",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews an isolated first payload piece of 7 characters, without prior observations",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews the first piece inside punctuation-separated filler -",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews the first piece inside punctuation-separated filler _",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews the first piece inside punctuation-separated filler /",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews the first piece inside punctuation-separated filler :",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation fails closed for malformed v2 observations {\"size\":4}",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation fails closed for malformed v2 observations {\"size\":3,\"edge\":true}",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation fails closed for malformed v2 observations {}",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation fails closed for malformed v2 observations {\"size\":65,\"edge\":true}",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews a first fragment disguised with lowercase before any earlier piece",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews a first fragment disguised with reverse before any earlier piece",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews a first fragment disguised with base64 before any earlier piece",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews a first fragment disguised with url before any earlier piece",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews a first fragment disguised with spelled before any earlier piece",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews a first fragment disguised with dashes before any earlier piece",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews a first fragment disguised with spaces before any earlier piece",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation does not turn one coincidental word into a hard denial or a persistent outbound quarantine",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation does not equate public prefixes, tiny suffixes, ordinary numbers or long hashes with payload",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation requires review for old v1 indexes and never silently upgrades partial metadata",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation never lets named recipients, allowed destinations, user-typed fragments or deny mode waive the first match",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation reviews each single piece and reserves hard denial for distinct adjacent evidence",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation does not combine overlapping pieces into a twelve-character match",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation does not combine pieces from unrelated credentials",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation correlates fields, nested values, tools, turns and reversed order without relying on the recipient",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation detects a pair in one call, reversed characters=false",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation detects a pair in one call, reversed characters=true",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation also reviews a secret reconstructed through separate project-file writes",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation never lets an explicit GUI rule waive correlated fragments or a spelled secret",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation preserves quiet ordinary summaries and key-format descriptions",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation does not ask before outside text, and keeps off and audit modes non-blocking",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation fails conservatively on legacy or exhausted tracking in ask mode",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation fails conservatively on legacy or exhausted tracking in deny mode",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation deduplicates rereads and marks index capacity exhaustion instead of silently evicting",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation asks when the observation cap is reached, rather than losing old evidence",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation plugin denies malformed tracking state null",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation plugin denies malformed tracking state {\"v\":3,\"index\":[],\"seen\":[]}",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation plugin denies malformed tracking state {\"v\":1,\"index\":[{\"hash\":\"bad\"}],\"seen\":[]}",
+          "status": "passed"
+        },
+        {
+          "title": "short-secret fragment correlation plugin denies malformed tracking state {\"v\":1,\"index\":[],\"seen\":[],\"full\":false}",
+          "status": "passed"
+        },
+        {
+          "title": "explicit verbal secret encoding denies the recorded verbal encoding separated by \", \"",
+          "status": "passed"
+        },
+        {
+          "title": "explicit verbal secret encoding denies the recorded verbal encoding separated by \"; \"",
+          "status": "passed"
+        },
+        {
+          "title": "explicit verbal secret encoding denies the recorded verbal encoding separated by \" | \"",
+          "status": "passed"
+        },
+        {
+          "title": "explicit verbal secret encoding denies the recorded verbal encoding separated by \"\\n\"",
+          "status": "passed"
+        },
+        {
+          "title": "explicit verbal secret encoding decodes only complete supported units, resets at unknown prose, and bounds its input",
+          "status": "passed"
+        },
+        {
+          "title": "explicit verbal secret encoding checks nested arguments and a project-file write without disclosing the reconstructed value",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "observations": {
+    "referenceOnlyHasNoFingerprintMatch": true,
+    "boundaryAfterEightIntermediateResultsAndNewTurn": "ask",
+    "denyMode": "deny",
+    "allowedRecipientAlone": "ask",
+    "opaqueMcpTool": "ask",
+    "operatorLabelledNonMcpOutbound": "ask",
+    "unknownNonMcpTool": "not intercepted by this boundary",
+    "exactReferenceGrant": "allowed once, then ask; not semantic validation",
+    "changedRequestOrTool": "ask; no grant consumed",
+    "literalCredentialDespiteExactGrant": "deny",
+    "auditOff": "non-enforcing",
+    "noCredentialOrOutsideText": "boundary not activated"
+  },
+  "limits": [
+    "No model calls, natural leak rates, independent corpus, hidden tool effects or GUI delivery tested.",
+    "Boundary assumes hooks observe sources and credentials and host enforces decisions.",
+    "Operator exact public grants can permit opaque references; no semantic certification.",
+    "Unknown non-MCP tools require explicit classification.",
+    "Ordinary private data without a recognized credential is not universally blocked by this credential boundary.",
+    "Task-adapter delegation was not retested in these four suites; its separate enforcer retains its own contract."
+  ]
+}

@@ -1,0 +1,18 @@
+✔ MCP subprocess lists safe tools and completes quote/register/status/DNS with private local contact (106.845916ms)
+✔ MCP lists tools with no seller and no owner key (33.406542ms)
+✔ each profile initializes and lists its tools with object schemas, read-only (46.701291ms)
+✔ weather and EMPORION tools buy from the hub with the gateway's key and pass the input on (9.807333ms)
+✔ the security tools answer free and leave the scanned text's quoted fragments out (13.493ms)
+✔ free capacity is shared per profile, per minute and per UTC day (732.912541ms)
+✔ protocol edges: notifications 202, GET 405, unknown tool, batch, and no hub key means no hub profiles (10.17925ms)
+✔ requests are counted by profile, method, tool outcome and client family; own addresses and outside reads are not (7.34025ms)
+✔ a request from one of our own addresses is answered but not counted (1.500542ms)
+✔ the documentation and privacy pages list every server and its address (172.789042ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1119.985458

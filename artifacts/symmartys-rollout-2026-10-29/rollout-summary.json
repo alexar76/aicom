@@ -1,0 +1,262 @@
+{
+  "date": "2026-10-29",
+  "operation": "Replace existing EMPORION deployment with SYMMARTYS; preserve identity and state",
+  "public_verification": {
+    "provider": {
+      "url": "https://modelmarket.dev/providers/symmartys",
+      "service": "symmartys",
+      "version": "0.5.0",
+      "capabilities": 16
+    },
+    "landing": {
+      "http_status": 200,
+      "canonical_url": "https://modelmarket.dev/providers/symmartys/",
+      "assets_checked": [
+        "assets/hero.js?v=20261029-apex",
+        "assets/landing.js",
+        "fonts/fonts.css"
+      ]
+    },
+    "federation": {
+      "provider_rows": 1,
+      "url": "https://modelmarket.dev/providers/symmartys",
+      "name": "SYMMARTYS — public-record facts for agents that trade",
+      "trusted": true,
+      "trust_score": 0.3469
+    },
+    "legacy_route": {
+      "same_capabilities_and_signing_identity": true,
+      "advertises_canonical_url": true
+    },
+    "alien_monitor": {
+      "live": "healthy",
+      "uni": "healthy",
+      "uni_blockchain_ready": true,
+      "live_provider_id": "symmartys",
+      "live_provider_verdict": "on_map",
+      "frontend_asset": "/assets/index-7WDukKUO.js"
+    },
+    "browser": {
+      "search_query": "symmartys",
+      "search_hit_confirmed": true,
+      "card_capabilities": 16,
+      "screenshot": "alien-live-symmartys.png"
+    },
+    "github_writes": false
+  },
+  "protocol_verification": {
+    "federation": {
+      "url": "https://modelmarket.dev/providers/symmartys",
+      "name": "SYMMARTYS — public-record facts for agents that trade",
+      "trusted": true,
+      "status": "active",
+      "capabilities_count": 16
+    },
+    "hub_free_invoke": {
+      "http_status": 200,
+      "success": true,
+      "receipt_present": true,
+      "source_hub": "https://modelmarket.dev/providers/symmartys",
+      "error": null,
+      "first_attempt_rejected_missing_source": true,
+      "hybrid_receipt_verified": true
+    },
+    "priced_direct_admission": {
+      "http_status": 402,
+      "success": null,
+      "error": "payment_required"
+    }
+  },
+  "provider_preservation": {
+    "same_ed25519_and_mldsa_private_keys": true,
+    "same_call_salt": true,
+    "same_existing_data_volume": true,
+    "original_sqlite_primary_key_sets_retained": true,
+    "existing_runtime_configuration_preserved": true,
+    "private_backup_and_detailed_comparison_stay_on_server": true,
+    "private_server_backup_root": "/root/symmartys-rollout-20261029",
+    "prior_container_retained_stopped": true
+  },
+  "federation": {
+    "date": "2026-10-29",
+    "live": {
+      "peer_rows": 1,
+      "canonical_url": "https://modelmarket.dev/providers/symmartys",
+      "name": "SYMMARTYS — public-record facts for agents that trade",
+      "trusted": true,
+      "capabilities": 16,
+      "legacy_catalogue_rows": 0,
+      "same_provider_ed25519_pin": true,
+      "same_provider_first_seen": true,
+      "historical_tables_preserved": true,
+      "same_hub_keys": true,
+      "other_hub_environment_preserved": true,
+      "env_changed_names": [
+        "AIMARKET_SELLS_FOR",
+        "AIMARKET_PEER_IDENTITY_ALIASES"
+      ],
+      "themis_namespace_repaired": true,
+      "themis_same_image_env_and_data": true,
+      "legacy_alias_same_signer": true,
+      "legacy_alias_advertises_canonical_manifest": true,
+      "hub_same_mounts": true,
+      "initial_environment_cutover_kept_same_image": true,
+      "trust_overlay_files": [
+        "/app/aimarket_hub/trust.py"
+      ],
+      "trust_overlay_base_equals_original_running_image": true,
+      "trust_module_original_equals_git_HEAD": true,
+      "same_provider_ed25519_and_pq_pins": true,
+      "first_seen_restored_from_original_private_backup": true,
+      "first_seen_baseline_is_original_pre_cutover_backup": true,
+      "trust_score": 0.3469,
+      "history_invocations": {
+        "old": 36,
+        "new": 1,
+        "combined": 37
+      },
+      "original_invocation_reputation_delivery_rows_unchanged": true,
+      "same_metrics_for_both_bound_urls": true,
+      "persistent_operator_identity_aliases": true
+    },
+    "uni": {
+      "provider_present_before": false,
+      "index_changed": false,
+      "no_live_provider_imported": true,
+      "same_hub_keys": true,
+      "historical_tables_preserved": true
+    },
+    "github_writes": false,
+    "private_server_backups": "/root/symmartys-rollout-20261029/hub-cutover",
+    "validation": {
+      "trust_regression_tests_passed": 26,
+      "reviewer_trust_replay_honesty_tests_passed": 39,
+      "diff_check_passed": true,
+      "candidate_default_user_import_passed": true
+    }
+  },
+  "alien_monitor_persistence": {
+    "alien-monitor-live": {
+      "environment_unchanged": true,
+      "mounts_unchanged": true,
+      "runtime_policy_unchanged": true,
+      "runtime_user_unchanged": true,
+      "working_directory_unchanged": true,
+      "healthy": true,
+      "mode_unchanged": true,
+      "contracts_unchanged": true,
+      "provider_nodes": [
+        {
+          "id": "symmartys",
+          "canonical_id": "",
+          "label": "SYMMARTYS — public-record facts for agents that trade",
+          "url": "https://modelmarket.dev/providers/symmartys",
+          "group": "oracle"
+        }
+      ]
+    },
+    "alien-monitor": {
+      "environment_unchanged": true,
+      "mounts_unchanged": true,
+      "runtime_policy_unchanged": true,
+      "runtime_user_unchanged": true,
+      "working_directory_unchanged": true,
+      "healthy": true,
+      "mode_unchanged": true,
+      "contracts_unchanged": true,
+      "provider_nodes": []
+    },
+    "uni_persistence": {
+      "stable_files_unchanged": true,
+      "chain_id_unchanged": true,
+      "block_number_not_reset": true,
+      "anvil_state_exists": true,
+      "anvil_state_valid_json": true,
+      "blockchain_ready": true
+    }
+  },
+  "screenshots": [
+    "alien-live-symmartys.png",
+    "landing.png"
+  ],
+  "dedicated_subdomain": {
+    "hostname": "symmartys.modelmarket.dev",
+    "dns_tls_configured": false,
+    "working_alternative": "https://modelmarket.dev/providers/symmartys/"
+  },
+  "github_writes": false,
+  "pypi_uploads": false,
+  "wheels_built_and_installed": [
+    "aimarket_symmartys-0.5.0",
+    "aimarket_oracle_core-0.6.3"
+  ],
+  "landing_verification": {
+    "checks": [
+      {
+        "path": "/",
+        "status": 200,
+        "content_type": "text/html",
+        "bytes": 20645,
+        "title": "SYMMARTYS",
+        "canonical_active": true
+      },
+      {
+        "path": "/assets/hero.js?v=20261029-apex",
+        "status": 200,
+        "content_type": "application/javascript",
+        "bytes": 1669
+      },
+      {
+        "path": "/assets/agora.js?v=20261029-apex",
+        "status": 200,
+        "content_type": "application/javascript",
+        "bytes": 21897
+      },
+      {
+        "path": "/fonts/fonts.css",
+        "status": 200,
+        "content_type": "text/css",
+        "bytes": 5834
+      },
+      {
+        "path": "/fonts/dmsans-rP2Hp2ywxg089UriCZ2IHTWEBlwu8Q.woff2",
+        "status": 200,
+        "content_type": "font/woff2",
+        "bytes": 31312
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "content_type": "application/json",
+        "bytes": 121
+      },
+      {
+        "path": "/.well-known/ai-market.json",
+        "status": 200,
+        "content_type": "application/json",
+        "bytes": 1372
+      },
+      {
+        "path": "/ai-market/v2/manifest",
+        "status": 200,
+        "content_type": "application/json",
+        "bytes": 20917
+      },
+      {
+        "path": "/ops/v1/calls",
+        "status": 404
+      },
+      {
+        "path": "/ai-market/v2/invoke",
+        "capability": "symmartys.sources@v1",
+        "ok": true,
+        "sources_count": 17,
+        "paid_capabilities_called": false
+      }
+    ],
+    "nginx_backup": "/root/symmartys-rollout-20261029/alien-monitor/backups/symmartys-nginx-before-landing.conf",
+    "dns_changes": false,
+    "registry_writes": false,
+    "github_writes": false
+  }
+}

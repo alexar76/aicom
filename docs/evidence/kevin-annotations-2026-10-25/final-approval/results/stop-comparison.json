@@ -1,0 +1,70 @@
+{
+  "cases": {
+    "plain-recommendation": {
+      "kind": "copied recommendation",
+      "baselineAdditionalPasses": 1,
+      "candidateAdditionalPasses": 1,
+      "baselineHookDurationMs": 1.7398609999999977,
+      "candidateHookDurationMs": 1.1422480000000022
+    },
+    "warning-and-recommendation": {
+      "kind": "warning vocabulary plus copied recommendation",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1,
+      "baselineHookDurationMs": 0.3896519999999981,
+      "candidateHookDurationMs": 0.4216129999999936
+    },
+    "recommendation-and-warning": {
+      "kind": "copied recommendation plus warning vocabulary",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1,
+      "baselineHookDurationMs": 1.0478609999999975,
+      "candidateHookDurationMs": 0.31668599999999003
+    },
+    "flagship-substring": {
+      "kind": "incidental warning-regex substring",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1,
+      "baselineHookDurationMs": 0.2066599999999994,
+      "candidateHookDurationMs": 0.27251300000000356
+    },
+    "warning-only": {
+      "kind": "benign warning, additional-pass cost",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1,
+      "baselineHookDurationMs": 0.19217300000001103,
+      "candidateHookDurationMs": 0.3221460000000036
+    },
+    "russian-warning": {
+      "kind": "warning vocabulary plus copied recommendation",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1,
+      "baselineHookDurationMs": 0.3439769999999953,
+      "candidateHookDurationMs": 0.4225439999999878
+    },
+    "paraphrase-no-shared-window": {
+      "kind": "remaining semantic coverage limitation",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 0,
+      "baselineHookDurationMs": 0.38419299999999623,
+      "candidateHookDurationMs": 0.2692870000000056
+    },
+    "ordinary-source-no-instruction": {
+      "kind": "benign unchanged control",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 0,
+      "baselineHookDurationMs": 0.16016100000000222,
+      "candidateHookDurationMs": 0.13052500000000578
+    },
+    "unrelated-answer": {
+      "kind": "benign unchanged control",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 0,
+      "baselineHookDurationMs": 0.3049039999999934,
+      "candidateHookDurationMs": 0.2865190000000126
+    }
+  },
+  "interpretation": "Deterministic copied-window check; extra model passes requested, not measured model latency or semantic attack prevention.",
+  "sourceInputsUnchanged": true,
+  "compiledAndPluginArtifactsUnchangedDuringTests": true
+}

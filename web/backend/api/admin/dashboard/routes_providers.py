@@ -5,6 +5,7 @@ Admin Dashboard API (split module).
 from __future__ import annotations
 
 import asyncio
+import copy
 import json
 import logging
 import math
@@ -51,6 +52,7 @@ from web.backend.core.admin_roles import AdminRole, normalize_role, rank, requir
 from finance_stats import compute_dashboard_revenue
 from llm.bootstrap_providers import ensure_model_providers_file
 from llm.factory_defaults import FACTORY_CONTEXT_WINDOW_DEFAULT, FACTORY_MAX_OUTPUT_TOKENS_HEAVY
+from llm.provider_secrets import resolve_provider_api_key, save_provider_config
 from web.backend.services.catalog_hardening import harden_catalog_products
 from web.backend.services.product_naming import resolve_product_name
 from web.backend.services.policy_audit import sync_sqlite_from_pipeline_json
@@ -246,8 +248,7 @@ async def update_provider_models(provider_name: str, request: Request):
     config["providers"][provider_name]["models"] = models
     
     # Write back
-    with open(providers_file, "w") as f:
-        yaml.dump(config, f, default_flow_style=False)
+    _save_providers_config(config)
     
     # Hot-reload - try to reload LLM router if it exists
     try:
@@ -292,7 +293,7 @@ async def test_provider(provider_name: str, request: Request):
     # Remove trailing /v1 suffix if present (OpenAI-compatible format)
     base_url = pconf.get("base_url", "").replace("/v1", "").rstrip("/")
     _assert_url_safe_for_outbound(base_url)
-    api_key = pconf.get("api_key", "")
+    api_key = _resolve_provider_api_key(pconf)
     chat_endpoint = f"{base_url}/v1/chat/completions"
     
     prompt = custom_prompt or "Reply with exactly three words describing your capabilities:"
@@ -320,7 +321,7 @@ async def test_provider(provider_name: str, request: Request):
                     "status_code": resp.status_code,
                     "latency_ms": latency_ms,
                     "model": model_name,
-                    "error": resp.text[:500],
+                    "error": _redact_provider_echo(resp.text, api_key)[:500],
                 }
             
             data = resp.json()
@@ -333,7 +334,7 @@ async def test_provider(provider_name: str, request: Request):
                 "status_code": resp.status_code,
                 "latency_ms": latency_ms,
                 "model": model_name,
-                "response": response_text[:500],
+                "response": _redact_provider_echo(response_text, api_key)[:500],
                 "prompt": prompt,
             }
     except Exception as e:
@@ -342,7 +343,7 @@ async def test_provider(provider_name: str, request: Request):
             "success": False,
             "latency_ms": latency_ms,
             "model": model_name,
-            "error": str(e),
+            "error": _redact_provider_echo(str(e), api_key),
         }
 
 
@@ -389,14 +390,24 @@ def _assert_url_safe_for_outbound(url: str) -> None:
 
 
 def _resolve_provider_api_key(pconf: dict) -> str:
-    """Direct yaml key or env var value (never returned to clients)."""
-    direct = pconf.get("api_key")
-    if direct:
-        return str(direct).strip()
-    env_name = pconf.get("api_key_env")
-    if env_name:
-        return str(os.environ.get(str(env_name), "") or "").strip()
-    return ""
+    """Resolve the same env/vault/private-file source used by the LLM router."""
+    return resolve_provider_api_key(pconf)
+
+
+def _redact_provider_echo(value: str, api_key: str) -> str:
+    return value.replace(api_key, "[redacted]") if api_key else value
+
+
+def _public_provider_config(pconf: dict) -> dict:
+    # Unknown config fields and extra headers may carry credentials too. Return
+    # only the settings the form edits, never the whole persisted configuration.
+    fields = (
+        "enabled", "provider_type", "base_url", "api_key_env", "models",
+        "capabilities", "health_check_endpoint", "priority",
+    )
+    public = {key: copy.deepcopy(pconf[key]) for key in fields if key in pconf}
+    public["api_key_configured"] = bool(_resolve_provider_api_key(pconf))
+    return public
 
 
 def _provider_models_probe(
@@ -408,6 +419,10 @@ def _provider_models_probe(
     """Fetch model ids from provider health endpoint (best effort)."""
     if not base_url:
         return []
+    from security.compromised_credentials import reject_compromised_credential
+
+    # Keep the check at the transport boundary as well as the config resolver.
+    reject_compromised_credential(api_key)
     root = base_url.rstrip("/")
     if root.endswith("/v1"):
         root = root[:-3]
@@ -435,11 +450,11 @@ def _provider_models_probe(
             return []
         data = resp.json()
         if "data" in data:
-            return [m["id"] for m in data["data"] if isinstance(m, dict) and m.get("id")]
+            return [_redact_provider_echo(m["id"], api_key) for m in data["data"] if isinstance(m, dict) and isinstance(m.get("id"), str) and m["id"]]
         if "models" in data:
-            return [m["name"] for m in data["models"] if isinstance(m, dict) and m.get("name")]
-    except Exception:
-        log_suppressed(logger, "dashboard: provider models probe failed", exc_info=True)
+            return [_redact_provider_echo(m["name"], api_key) for m in data["models"] if isinstance(m, dict) and isinstance(m.get("name"), str) and m["name"]]
+    except Exception as exc:
+        logger.warning("dashboard: provider models probe failed: %s", _redact_provider_echo(str(exc), api_key))
     return []
 
 
@@ -455,12 +470,9 @@ def _load_providers_config() -> dict:
 
 
 def _save_providers_config(config: dict):
-    """Save providers config to YAML file."""
-    import yaml
+    """Save references in YAML, keeping API keys in private files only."""
     providers_file = model_providers_path()
-    providers_file.parent.mkdir(parents=True, exist_ok=True)
-    with open(providers_file, "w") as f:
-        yaml.dump(config, f, default_flow_style=False)
+    save_provider_config(providers_file, config)
 
 
 async def _reload_llm_router(request: Request):
@@ -503,7 +515,7 @@ async def create_provider(request: Request):
     if name in config.get("providers", {}):
         raise HTTPException(status_code=409, detail=f"Provider '{name}' already exists")
     
-    provider_config = dict(DEFAULT_PROVIDER_TEMPLATE)
+    provider_config = copy.deepcopy(DEFAULT_PROVIDER_TEMPLATE)
     provider_config.update({
         k: v for k, v in body.items()
         if k != "name" and k in DEFAULT_PROVIDER_TEMPLATE
@@ -586,7 +598,7 @@ async def update_provider(provider_name: str, request: Request):
     _save_providers_config(config)
     await _reload_llm_router(request)
     
-    return {"message": f"Provider '{provider_name}' updated", "provider": pconf}
+    return {"message": f"Provider '{provider_name}' updated", "provider": _public_provider_config(pconf)}
 
 
 @router.post("/providers/{provider_name}/set-default")
@@ -606,8 +618,7 @@ async def set_default_provider(provider_name: str, request: Request):
         # Set default
         config["default_provider"] = provider_name
         
-        with open(providers_file, "w") as f:
-            yaml.dump(config, f, default_flow_style=False)
+        _save_providers_config(config)
         
         # Hot-reload LLM router
         await _reload_llm_router(request)

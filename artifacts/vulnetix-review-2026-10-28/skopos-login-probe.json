@@ -1,0 +1,21 @@
+{
+  "record": "GCVE-110-VULN-PYPI-2026-000644",
+  "package": "skopos-fleet",
+  "source_version": "0.2.2",
+  "assessment": "partial fix: shared timed refusal remains for a new operator IP",
+  "scope": "local source; no production or published wheel claim",
+  "limitations": [
+    "Failures are recorded through auth_store directly rather than a live browser.",
+    "An ordinary unknown-IP attacker is also stopped during the shared pause.",
+    "Refreshing the pause during its lifetime requires an already-admitted concurrent or exempt source."
+  ],
+  "after_37_distinct_failed_addresses": {
+    "new_operator_own_lockout_seconds": 0,
+    "new_operator_shared_pause_seconds": 60,
+    "known_operator_shared_pause_seconds": 0
+  },
+  "new_operator_gate": "st.stop before password form or verification",
+  "after_59_seconds_pause_remaining": 1,
+  "after_additional_admitted_failure_pause_remaining": 60,
+  "after_quiet_60_seconds_pause_remaining": 0
+}

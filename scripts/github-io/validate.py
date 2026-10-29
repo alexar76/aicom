@@ -4,7 +4,7 @@ import json
 import re
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 from build import CONTENT, LANGUAGES, PROJECTS, ROOT, ASSET_PREFIX, render
 
 class Page(HTMLParser):
@@ -43,3 +43,24 @@ css=(font_root/'fonts.css').read_text()
 for url in re.findall(r'url\([\'\"]?([^\)\'\"]+)',css):
     assert (font_root/url).is_file(), url
 print('PASS: 5 languages; generated content, anchors, local assets, font files, metadata, and project counts.')
+
+# The maintained guides are served locally rather than depending on a GitHub publish.
+for locale in LANGUAGES:
+    name='knowledge-base'+('' if locale=='en' else '-'+locale)
+    for relative in (f'docs/ecosystem/{name}.html', f'docs/ecosystem/whitepaper/{locale}.html'):
+        path=ROOT/relative
+        source=path.read_text()
+        page=Page(source)
+        assert page.lang==locale and page.h1==1, relative
+        assert len(page.ids)==len(set(page.ids)), relative
+        assert path.with_suffix('.md').is_file(), relative
+        assert 'https://symmartys.modelmarket.dev/' in source, relative
+        for link in page.links:
+            if not link.startswith('/'): continue
+            parsed=urlsplit(link)
+            target=ROOT/parsed.path.lstrip('/')
+            if parsed.path.endswith('/'): target=target/'index.html'
+            assert target.is_file(), (relative,link)
+            if parsed.fragment and target.suffix=='.html':
+                assert unquote(parsed.fragment) in Page(target.read_text()).ids, (relative,link)
+print('PASS: 10 hosted guides; local navigation, Markdown downloads, images, anchors and SYMMARTYS links.')

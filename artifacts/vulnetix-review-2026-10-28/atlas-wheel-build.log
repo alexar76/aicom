@@ -1,0 +1,315 @@
+Building wheel...
+running egg_info
+writing aimarket_atlas.egg-info/PKG-INFO
+writing dependency_links to aimarket_atlas.egg-info/dependency_links.txt
+writing entry points to aimarket_atlas.egg-info/entry_points.txt
+writing requirements to aimarket_atlas.egg-info/requires.txt
+writing top-level names to aimarket_atlas.egg-info/top_level.txt
+reading manifest file 'aimarket_atlas.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no files found matching '*.yml' under directory 'atlas/_config'
+warning: no files found matching '*.yml' under directory 'config'
+warning: no previously-included files matching '*.pyc' found anywhere in distribution
+warning: no previously-included files matching '__pycache__' found anywhere in distribution
+warning: no previously-included files matching '.DS_Store' found anywhere in distribution
+adding license file 'LICENSE'
+writing manifest file 'aimarket_atlas.egg-info/SOURCES.txt'
+running bdist_wheel
+running build
+running build_py
+creating build/lib/atlas
+copying atlas/geo.py -> build/lib/atlas
+copying atlas/ai_assistant.py -> build/lib/atlas
+copying atlas/signing.py -> build/lib/atlas
+copying atlas/delivery.py -> build/lib/atlas
+copying atlas/monitor_log.py -> build/lib/atlas
+copying atlas/field_meshes.py -> build/lib/atlas
+copying atlas/map_objects.py -> build/lib/atlas
+copying atlas/ecosystem_context.py -> build/lib/atlas
+copying atlas/water_quality_history.py -> build/lib/atlas
+copying atlas/config.py -> build/lib/atlas
+copying atlas/ai_locale.py -> build/lib/atlas
+copying atlas/formatters.py -> build/lib/atlas
+copying atlas/capability_awareness.py -> build/lib/atlas
+copying atlas/p4_networks.py -> build/lib/atlas
+copying atlas/gnss_index.py -> build/lib/atlas
+copying atlas/fleet.py -> build/lib/atlas
+copying atlas/aggregator.py -> build/lib/atlas
+copying atlas/layer_counts.py -> build/lib/atlas
+copying atlas/market.py -> build/lib/atlas
+copying atlas/payment_gate.py -> build/lib/atlas
+copying atlas/extra_sensors.py -> build/lib/atlas
+copying atlas/federation_context.py -> build/lib/atlas
+copying atlas/llm_providers.py -> build/lib/atlas
+copying atlas/field_math.py -> build/lib/atlas
+copying atlas/watchboxes.py -> build/lib/atlas
+copying atlas/__init__.py -> build/lib/atlas
+copying atlas/serve.py -> build/lib/atlas
+copying atlas/products.py -> build/lib/atlas
+copying atlas/prompt_firewall.py -> build/lib/atlas
+copying atlas/status_archive.py -> build/lib/atlas
+copying atlas/gaia_client.py -> build/lib/atlas
+copying atlas/readings.py -> build/lib/atlas
+copying atlas/field_products.py -> build/lib/atlas
+copying atlas/stations.py -> build/lib/atlas
+copying atlas/topic_scope.py -> build/lib/atlas
+copying atlas/main.py -> build/lib/atlas
+copying atlas/om_mesh.py -> build/lib/atlas
+copying atlas/sc_mesh.py -> build/lib/atlas
+copying atlas/ai_map_actions.py -> build/lib/atlas
+copying atlas/credits.py -> build/lib/atlas
+copying atlas/status_sampler.py -> build/lib/atlas
+creating build/lib/atlas/product_parts
+copying atlas/product_parts/catalog.py -> build/lib/atlas/product_parts
+copying atlas/product_parts/point_products.py -> build/lib/atlas/product_parts
+copying atlas/product_parts/receipts.py -> build/lib/atlas/product_parts
+copying atlas/product_parts/sky_products.py -> build/lib/atlas/product_parts
+copying atlas/product_parts/hazard_products.py -> build/lib/atlas/product_parts
+copying atlas/product_parts/__init__.py -> build/lib/atlas/product_parts
+copying atlas/product_parts/geometry.py -> build/lib/atlas/product_parts
+copying atlas/product_parts/network_products.py -> build/lib/atlas/product_parts
+running egg_info
+writing aimarket_atlas.egg-info/PKG-INFO
+writing dependency_links to aimarket_atlas.egg-info/dependency_links.txt
+writing entry points to aimarket_atlas.egg-info/entry_points.txt
+writing requirements to aimarket_atlas.egg-info/requires.txt
+writing top-level names to aimarket_atlas.egg-info/top_level.txt
+reading manifest file 'aimarket_atlas.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no files found matching '*.yml' under directory 'atlas/_config'
+warning: no files found matching '*.yml' under directory 'config'
+warning: no previously-included files matching '*.pyc' found anywhere in distribution
+warning: no previously-included files matching '__pycache__' found anywhere in distribution
+warning: no previously-included files matching '.DS_Store' found anywhere in distribution
+adding license file 'LICENSE'
+writing manifest file 'aimarket_atlas.egg-info/SOURCES.txt'
+creating build/lib/atlas/_static
+copying atlas/_static/index.html -> build/lib/atlas/_static
+copying atlas/_static/embed.html -> build/lib/atlas/_static
+creating build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1iEq131nj-otFQ.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/syne-8vIH7w4qzmVxm25L9G78HEZnMg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwl9FgsAXHNlYzg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwlRFgsAXHNlYzg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/syne-8vIH7w4qzmVxm2BL9G78HEY.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1iAq131nj-otFQ.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwl5FgsAXHNlYzg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwl1FgsAXHNlYzg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1isq131nj-otFQ.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwlRFgsAXHNlYzg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/syne-8vIH7w4qzmVxm2NL9G78HEZnMg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwl9FgsAXHNlYzg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/syne-8vIS7w4qzmVxsWxjBZRjr0FKM_3fvg6tTY_vDE5YfqXtUw.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/syne-8vIS7w4qzmVxsWxjBZRjr0FKM_3fvg6jTY_vDE5YfqU.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/syne-8vIS7w4qzmVxsWxjBZRjr0FKM_3fvg6gTY_vDE5YfqXtUw.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwl5FgsAXHNlYzg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/fonts.css -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwl1FgsAXHNlYzg.woff2 -> build/lib/atlas/_static/fonts
+copying atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1iIq131nj-otFQ.woff2 -> build/lib/atlas/_static/fonts
+creating build/lib/atlas/_static/assets
+copying atlas/_static/assets/assistant.js -> build/lib/atlas/_static/assets
+copying atlas/_static/assets/map-lib.js -> build/lib/atlas/_static/assets
+copying atlas/_static/assets/theme.js -> build/lib/atlas/_static/assets
+copying atlas/_static/assets/themes.css -> build/lib/atlas/_static/assets
+copying atlas/_static/assets/atlas.js -> build/lib/atlas/_static/assets
+copying atlas/_static/assets/i18n.js -> build/lib/atlas/_static/assets
+copying atlas/_static/assets/atlas.css -> build/lib/atlas/_static/assets
+creating build/lib/atlas/_static/assets/vendor/maplibre-gl
+copying atlas/_static/assets/vendor/maplibre-gl/maplibre-gl.js -> build/lib/atlas/_static/assets/vendor/maplibre-gl
+copying atlas/_static/assets/vendor/maplibre-gl/maplibre-gl.css -> build/lib/atlas/_static/assets/vendor/maplibre-gl
+creating build/lib/atlas/_config
+copying atlas/_config/model_providers.example.yaml -> build/lib/atlas/_config
+installing to build/bdist.macosx-11.0-arm64/wheel
+running install
+running install_lib
+creating build/bdist.macosx-11.0-arm64/wheel
+creating build/bdist.macosx-11.0-arm64/wheel/atlas
+creating build/bdist.macosx-11.0-arm64/wheel/atlas/product_parts
+copying build/lib/atlas/product_parts/catalog.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas/product_parts
+copying build/lib/atlas/product_parts/point_products.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas/product_parts
+copying build/lib/atlas/product_parts/receipts.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas/product_parts
+copying build/lib/atlas/product_parts/sky_products.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas/product_parts
+copying build/lib/atlas/product_parts/hazard_products.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas/product_parts
+copying build/lib/atlas/product_parts/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas/product_parts
+copying build/lib/atlas/product_parts/geometry.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas/product_parts
+copying build/lib/atlas/product_parts/network_products.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas/product_parts
+copying build/lib/atlas/geo.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/ai_assistant.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/signing.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/delivery.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/monitor_log.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/field_meshes.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/map_objects.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/ecosystem_context.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/water_quality_history.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/config.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/ai_locale.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/formatters.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/capability_awareness.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/p4_networks.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/gnss_index.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/fleet.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/aggregator.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/layer_counts.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/market.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/payment_gate.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/extra_sensors.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/federation_context.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/llm_providers.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/field_math.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/watchboxes.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/serve.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+creating build/bdist.macosx-11.0-arm64/wheel/atlas/_static
+copying build/lib/atlas/_static/index.html -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static
+creating build/bdist.macosx-11.0-arm64/wheel/atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1iEq131nj-otFQ.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/syne-8vIH7w4qzmVxm25L9G78HEZnMg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwl9FgsAXHNlYzg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwlRFgsAXHNlYzg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/syne-8vIH7w4qzmVxm2BL9G78HEY.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1iAq131nj-otFQ.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwl5FgsAXHNlYzg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwl1FgsAXHNlYzg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1isq131nj-otFQ.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwlRFgsAXHNlYzg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/syne-8vIH7w4qzmVxm2NL9G78HEZnMg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwl9FgsAXHNlYzg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/syne-8vIS7w4qzmVxsWxjBZRjr0FKM_3fvg6tTY_vDE5YfqXtUw.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/syne-8vIS7w4qzmVxsWxjBZRjr0FKM_3fvg6jTY_vDE5YfqU.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/syne-8vIS7w4qzmVxsWxjBZRjr0FKM_3fvg6gTY_vDE5YfqXtUw.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwl5FgsAXHNlYzg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/fonts.css -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwl1FgsAXHNlYzg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+copying build/lib/atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1iIq131nj-otFQ.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/fonts
+creating build/bdist.macosx-11.0-arm64/wheel/atlas/_static/assets
+copying build/lib/atlas/_static/assets/assistant.js -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/assets
+copying build/lib/atlas/_static/assets/map-lib.js -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/assets
+copying build/lib/atlas/_static/assets/theme.js -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/assets
+copying build/lib/atlas/_static/assets/themes.css -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/assets
+copying build/lib/atlas/_static/assets/atlas.js -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/assets
+copying build/lib/atlas/_static/assets/i18n.js -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/assets
+copying build/lib/atlas/_static/assets/atlas.css -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/assets
+creating build/bdist.macosx-11.0-arm64/wheel/atlas/_static/assets/vendor
+creating build/bdist.macosx-11.0-arm64/wheel/atlas/_static/assets/vendor/maplibre-gl
+copying build/lib/atlas/_static/assets/vendor/maplibre-gl/maplibre-gl.js -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/assets/vendor/maplibre-gl
+copying build/lib/atlas/_static/assets/vendor/maplibre-gl/maplibre-gl.css -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static/assets/vendor/maplibre-gl
+copying build/lib/atlas/_static/embed.html -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_static
+copying build/lib/atlas/products.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/prompt_firewall.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/status_archive.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/gaia_client.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/readings.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/field_products.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/stations.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/topic_scope.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/main.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/om_mesh.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/sc_mesh.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/ai_map_actions.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/credits.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+copying build/lib/atlas/status_sampler.py -> build/bdist.macosx-11.0-arm64/wheel/./atlas
+creating build/bdist.macosx-11.0-arm64/wheel/atlas/_config
+copying build/lib/atlas/_config/model_providers.example.yaml -> build/bdist.macosx-11.0-arm64/wheel/./atlas/_config
+running install_egg_info
+Copying aimarket_atlas.egg-info to build/bdist.macosx-11.0-arm64/wheel/./aimarket_atlas-0.3.3-py3.12.egg-info
+running install_scripts
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_atlas-0.3.3.dist-info/WHEEL
+creating '/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/vulnetix-review-2026-10-28/release-wheels/.tmp-332jkyfr/aimarket_atlas-0.3.3-py3-none-any.whl' and adding 'build/bdist.macosx-11.0-arm64/wheel' to it
+adding 'aimarket_atlas-0.3.3.dist-info/licenses/LICENSE'
+adding 'atlas/__init__.py'
+adding 'atlas/aggregator.py'
+adding 'atlas/ai_assistant.py'
+adding 'atlas/ai_locale.py'
+adding 'atlas/ai_map_actions.py'
+adding 'atlas/capability_awareness.py'
+adding 'atlas/config.py'
+adding 'atlas/credits.py'
+adding 'atlas/delivery.py'
+adding 'atlas/ecosystem_context.py'
+adding 'atlas/extra_sensors.py'
+adding 'atlas/federation_context.py'
+adding 'atlas/field_math.py'
+adding 'atlas/field_meshes.py'
+adding 'atlas/field_products.py'
+adding 'atlas/fleet.py'
+adding 'atlas/formatters.py'
+adding 'atlas/gaia_client.py'
+adding 'atlas/geo.py'
+adding 'atlas/gnss_index.py'
+adding 'atlas/layer_counts.py'
+adding 'atlas/llm_providers.py'
+adding 'atlas/main.py'
+adding 'atlas/map_objects.py'
+adding 'atlas/market.py'
+adding 'atlas/monitor_log.py'
+adding 'atlas/om_mesh.py'
+adding 'atlas/p4_networks.py'
+adding 'atlas/payment_gate.py'
+adding 'atlas/products.py'
+adding 'atlas/prompt_firewall.py'
+adding 'atlas/readings.py'
+adding 'atlas/sc_mesh.py'
+adding 'atlas/serve.py'
+adding 'atlas/signing.py'
+adding 'atlas/stations.py'
+adding 'atlas/status_archive.py'
+adding 'atlas/status_sampler.py'
+adding 'atlas/topic_scope.py'
+adding 'atlas/watchboxes.py'
+adding 'atlas/water_quality_history.py'
+adding 'atlas/_config/model_providers.example.yaml'
+adding 'atlas/_static/embed.html'
+adding 'atlas/_static/index.html'
+adding 'atlas/_static/assets/assistant.js'
+adding 'atlas/_static/assets/atlas.css'
+adding 'atlas/_static/assets/atlas.js'
+adding 'atlas/_static/assets/i18n.js'
+adding 'atlas/_static/assets/map-lib.js'
+adding 'atlas/_static/assets/theme.js'
+adding 'atlas/_static/assets/themes.css'
+adding 'atlas/_static/assets/vendor/maplibre-gl/maplibre-gl.css'
+adding 'atlas/_static/assets/vendor/maplibre-gl/maplibre-gl.js'
+adding 'atlas/_static/fonts/fonts.css'
+adding 'atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1iAq131nj-otFQ.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1iEq131nj-otFQ.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1iIq131nj-otFQ.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F63fjptAgt5VM-kVkqdyU8n1isq131nj-otFQ.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwl1FgsAXHNlYzg.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwl5FgsAXHNlYzg.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwl9FgsAXHNlYzg.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3twJwlRFgsAXHNlYzg.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwl1FgsAXHNlYzg.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwl5FgsAXHNlYzg.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwl9FgsAXHNlYzg.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2'
+adding 'atlas/_static/fonts/ibmplexmono--F6qfjptAgt5VM-kVkqdyU8n3vAOwlRFgsAXHNlYzg.woff2'
+adding 'atlas/_static/fonts/syne-8vIH7w4qzmVxm25L9G78HEZnMg.woff2'
+adding 'atlas/_static/fonts/syne-8vIH7w4qzmVxm2BL9G78HEY.woff2'
+adding 'atlas/_static/fonts/syne-8vIH7w4qzmVxm2NL9G78HEZnMg.woff2'
+adding 'atlas/_static/fonts/syne-8vIS7w4qzmVxsWxjBZRjr0FKM_3fvg6gTY_vDE5YfqXtUw.woff2'
+adding 'atlas/_static/fonts/syne-8vIS7w4qzmVxsWxjBZRjr0FKM_3fvg6jTY_vDE5YfqU.woff2'
+adding 'atlas/_static/fonts/syne-8vIS7w4qzmVxsWxjBZRjr0FKM_3fvg6tTY_vDE5YfqXtUw.woff2'
+adding 'atlas/product_parts/__init__.py'
+adding 'atlas/product_parts/catalog.py'
+adding 'atlas/product_parts/geometry.py'
+adding 'atlas/product_parts/hazard_products.py'
+adding 'atlas/product_parts/network_products.py'
+adding 'atlas/product_parts/point_products.py'
+adding 'atlas/product_parts/receipts.py'
+adding 'atlas/product_parts/sky_products.py'
+adding 'aimarket_atlas-0.3.3.dist-info/METADATA'
+adding 'aimarket_atlas-0.3.3.dist-info/WHEEL'
+adding 'aimarket_atlas-0.3.3.dist-info/entry_points.txt'
+adding 'aimarket_atlas-0.3.3.dist-info/top_level.txt'
+adding 'aimarket_atlas-0.3.3.dist-info/RECORD'
+removing build/bdist.macosx-11.0-arm64/wheel
+Successfully built artifacts/vulnetix-review-2026-10-28/release-wheels/aimarket_atlas-0.3.3-py3-none-any.whl

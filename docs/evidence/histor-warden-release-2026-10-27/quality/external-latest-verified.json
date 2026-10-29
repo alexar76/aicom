@@ -1,0 +1,100 @@
+{
+  "baselineBuildDigest": "a5890becf7f2374b0f3bf13ae3b974da024b19ccf6fc70384a59a147cedacea1",
+  "behaviour": {
+    "cases": 72,
+    "evaluatedAt": 1793112515.3949928,
+    "executed": 72,
+    "falsePositives": 0,
+    "fixturesSha256": "0f94b16bc18b2bb5a6943bcab451dc8a94c59b7d27659bf1522df7499a04b867",
+    "incomplete": 0,
+    "missed": 0,
+    "observerSha256": "fd969fc1816b3a689a34059c70f1aac06b8c736d777cef355a8c1d6a1c8660bf",
+    "passed": true,
+    "seed": "20261027T144703"
+  },
+  "behaviourSmoke": {
+    "cases": 72,
+    "evaluatedAt": 1793112515.3949928,
+    "executed": 72,
+    "falsePositives": 0,
+    "fixturesSha256": "0f94b16bc18b2bb5a6943bcab451dc8a94c59b7d27659bf1522df7499a04b867",
+    "incomplete": 0,
+    "missed": 0,
+    "observerSha256": "fd969fc1816b3a689a34059c70f1aac06b8c736d777cef355a8c1d6a1c8660bf",
+    "passed": true,
+    "seed": "20261027T144703"
+  },
+  "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+  "corpusSha256": "f3333cd9243fc7b9e62cd760609124d1fefc97d103b706cbd67750be291b3add",
+  "discovery": {
+    "candidates": {
+      "allowed": 23,
+      "inconclusive": 0,
+      "total": 31
+    },
+    "generation": {
+      "accepted": 12,
+      "admitted": 12,
+      "capacityRemaining": 15296,
+      "model": "deepseek-flash",
+      "provider": "openai_compat",
+      "rejected": 2,
+      "status": "ok",
+      "unseenTemplates": 4414
+    },
+    "round": "33",
+    "status": "complete"
+  },
+  "evaluatedAt": 1793112423.3316393,
+  "expiresAt": 1793284781.466045,
+  "full": true,
+  "fullEvidence": {
+    "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+    "evaluatedAt": 1793112423.3316393,
+    "holdoutSha256": "e975df064e57ae195a0ab33967d7d70ab83fc1fdf555d5c837f15411a321089a",
+    "status": "passed"
+  },
+  "holdoutSha256": "e975df064e57ae195a0ab33967d7d70ab83fc1fdf555d5c837f15411a321089a",
+  "imageDigest": "sha256:170a2523716bed3101b1a6420cab17eced83a0096053ba4b90e5ed75d51bddc1",
+  "phase": "live",
+  "policy": "zero-regressions-v1",
+  "run": "20261027T144703",
+  "sourceCommit": "0f3be96e391c4d3ac19c21ec7c7fa4aecb860ad9",
+  "status": "passed",
+  "suites": {
+    "candidates": {
+      "counts": {
+        "attacks": 0,
+        "benign": 0,
+        "candidates": 31,
+        "falsePositives": 0,
+        "incomplete": 0,
+        "missed": 0
+      },
+      "passed": true
+    },
+    "development": {
+      "counts": {
+        "attacks": 8244,
+        "benign": 362,
+        "candidates": 0,
+        "falsePositives": 0,
+        "incomplete": 0,
+        "missed": 0
+      },
+      "passed": true
+    },
+    "holdout": {
+      "counts": {
+        "attacks": 24,
+        "benign": 24,
+        "candidates": 0,
+        "falsePositives": 0,
+        "incomplete": 0,
+        "missed": 0
+      },
+      "passed": true
+    }
+  },
+  "type": "momus.release-quality/v1"
+}

@@ -1,0 +1,4315 @@
+[
+  {
+    "url": "https://api.github.com/repos/Ducarv/mcpmoat/branches/dev",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:02:42.296271+00:00",
+    "status": 200,
+    "bytes": 5246,
+    "sha256": "0f78fde4a1896a3bb8da85ccf52ff2df2c7bcdf03a43f23dcdcda39d6171f46a",
+    "rate_remaining": "10",
+    "selected": {
+      "sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+      "name": "dev"
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/Ducarv/mcpmoat/git/trees/fc776bc2eb10376994b6d021a18f6230487bc033?recursive=1",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:02:42.296709+00:00",
+    "status": 200,
+    "bytes": 165917,
+    "sha256": "28f43854924251b7380418698a639535ac3fca772f3626f162385d5a384fcf51",
+    "rate_remaining": "11",
+    "selected": {
+      "truncated": false,
+      "tree": [
+        {
+          "path": ".agents/project.md",
+          "type": "blob",
+          "sha": "33e2572506b93334411572f14027d9ae7d767f2c"
+        },
+        {
+          "path": ".claude/agents/cli-dev.md",
+          "type": "blob",
+          "sha": "bc7f8cf5ada8272770262095d5158d26f087e19e"
+        },
+        {
+          "path": ".claude/agents/cli-test.md",
+          "type": "blob",
+          "sha": "21f970a647a4c61630b655647b46e93dd74b151b"
+        },
+        {
+          "path": ".claude/agents/datastore.md",
+          "type": "blob",
+          "sha": "e5691d8a6a47669a9ddadeec3bfbcc30bfd7ce86"
+        },
+        {
+          "path": ".claude/agents/debugger.md",
+          "type": "blob",
+          "sha": "94cd55c0316b346197ec96c80443421da6d68d49"
+        },
+        {
+          "path": ".claude/agents/e2e-test.md",
+          "type": "blob",
+          "sha": "72fe7fc00cdc3df598209fdf2537afd036ced119"
+        },
+        {
+          "path": ".claude/agents/go-dev.md",
+          "type": "blob",
+          "sha": "401c6d6b1b838e8a717c5ed3716792a74b78fcca"
+        },
+        {
+          "path": ".claude/agents/research.md",
+          "type": "blob",
+          "sha": "eafb85cbf30103f46b1213311a33e810d5cc55b5"
+        },
+        {
+          "path": ".claude/agents/review-logic.md",
+          "type": "blob",
+          "sha": "ac8c23f559d343253a57b1047e3d539bdc19b05d"
+        },
+        {
+          "path": ".claude/agents/review-quality.md",
+          "type": "blob",
+          "sha": "38ef6ee4b3ea878b26d1ecad28147b60a1d9fd07"
+        },
+        {
+          "path": ".claude/agents/review-security.md",
+          "type": "blob",
+          "sha": "249a0e9af5056b72f801a8806e3c03ed35cc4845"
+        },
+        {
+          "path": ".claude/agents/typecheck.md",
+          "type": "blob",
+          "sha": "0b1f175de35e63652243c92dc7fb2b8be5f2f87a"
+        },
+        {
+          "path": ".claude/agents/unit-test.md",
+          "type": "blob",
+          "sha": "a8a51a2d8946c72cd6a231d0e811019858c76721"
+        },
+        {
+          "path": ".claude/skills/commit/SKILL.md",
+          "type": "blob",
+          "sha": "368da11411c538c2ef01748c43d9b2429c83677d"
+        },
+        {
+          "path": ".claude/skills/coordinate/SKILL.md",
+          "type": "blob",
+          "sha": "aa7059ca1c47b1c8904fb0a6b4fa7f6d683a2c39"
+        },
+        {
+          "path": ".claude/skills/deai-writer/SKILL.md",
+          "type": "blob",
+          "sha": "b7e069e3bf1b9eb1b5f923530e5c8e91f24be1be"
+        },
+        {
+          "path": ".claude/skills/deai-writer/references/tropes.md",
+          "type": "blob",
+          "sha": "1eae33de618fc9c4af24bad42f3f61d73c7c5dd7"
+        },
+        {
+          "path": ".claude/skills/issue2pr/SKILL.md",
+          "type": "blob",
+          "sha": "e826f1ddf3506cfbcd69b046e6d2b27bfb92e080"
+        },
+        {
+          "path": ".claude/skills/issue2pr/agents/openai.yaml",
+          "type": "blob",
+          "sha": "20c2d32dc4da95f2d11e130b8138e0718fd64907"
+        },
+        {
+          "path": ".claude/skills/polish-pr/SKILL.md",
+          "type": "blob",
+          "sha": "7da03883db10f2ff3448ba6f270231df7b143068"
+        },
+        {
+          "path": ".claude/skills/pr/SKILL.md",
+          "type": "blob",
+          "sha": "7bcd6a183f7094481d31f3339881a479996efc0d"
+        },
+        {
+          "path": ".claude/skills/review-pr/SKILL.md",
+          "type": "blob",
+          "sha": "7198636d69edb252c7edab74af5a33ee8a50d305"
+        },
+        {
+          "path": ".editorconfig",
+          "type": "blob",
+          "sha": "c53769297e3ff5e3f936eefbe506624848e78773"
+        },
+        {
+          "path": ".gitguardian.yaml",
+          "type": "blob",
+          "sha": "0ac90b91deab7af466d4369610499160a8ed342c"
+        },
+        {
+          "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+          "type": "blob",
+          "sha": "3d0634b5b9cbac5371639591e62694b5b815e7e7"
+        },
+        {
+          "path": ".github/ISSUE_TEMPLATE/new_rule.md",
+          "type": "blob",
+          "sha": "94e93acb4d9dcb45c8b38a0cc52b7d4aaf766c15"
+        },
+        {
+          "path": ".github/dependabot.yml",
+          "type": "blob",
+          "sha": "3ee17bf1f59bed235063eedeb4436d7b0c2730a8"
+        },
+        {
+          "path": ".github/pull_request_template.md",
+          "type": "blob",
+          "sha": "b466a2dd4c888f57c08699fd7713b4dd4c36d808"
+        },
+        {
+          "path": ".github/scripts/check-snapshot-test.sh",
+          "type": "blob",
+          "sha": "0eb594d251b9b2a0bc2154632ee216c465ab31a9"
+        },
+        {
+          "path": ".github/scripts/check-snapshot.sh",
+          "type": "blob",
+          "sha": "27eff07dc7430d2b9fe50cd34e95e888dfe664f3"
+        },
+        {
+          "path": ".github/scripts/check-tool-pins-test.sh",
+          "type": "blob",
+          "sha": "cd7ae11601e6795de03978e9a587e07d78ecfb4a"
+        },
+        {
+          "path": ".github/scripts/check-tool-pins.sh",
+          "type": "blob",
+          "sha": "07220196f9b1ef122954aecb0e8321dd62244120"
+        },
+        {
+          "path": ".github/scripts/notify-failure-test.sh",
+          "type": "blob",
+          "sha": "81b1ab0e2faee8cf9af876598f4f2e100673bdf5"
+        },
+        {
+          "path": ".github/scripts/release-guard-test.sh",
+          "type": "blob",
+          "sha": "65ccd72bfaf1cfdb5044cb3a07aa04432f976511"
+        },
+        {
+          "path": ".github/scripts/run-offline.sh",
+          "type": "blob",
+          "sha": "658aea68fb789281a9266b81af84b468553d7255"
+        },
+        {
+          "path": ".github/scripts/test-harness-test.sh",
+          "type": "blob",
+          "sha": "c812a20520c81c17fe0b26f95c445d12b5fbc46c"
+        },
+        {
+          "path": ".github/scripts/test-harness.sh",
+          "type": "blob",
+          "sha": "e82780f5680a4e9576ad18e1bb4bb1105445fd7b"
+        },
+        {
+          "path": ".github/scripts/verify-and-publish-test.sh",
+          "type": "blob",
+          "sha": "a8020f01d7c0e1b00a94812451e007f5151dd38b"
+        },
+        {
+          "path": ".github/scripts/verify-and-publish.sh",
+          "type": "blob",
+          "sha": "63334f9afa3888be1e6d6c3c5456525a1f6a6a18"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "type": "blob",
+          "sha": "06e4078f9bd48883b71cfed26283d371f78e5d97"
+        },
+        {
+          "path": ".github/workflows/govulncheck.yml",
+          "type": "blob",
+          "sha": "6d533a4b9254f6171f7571ac9a6dfc599d74b268"
+        },
+        {
+          "path": ".github/workflows/release.yml",
+          "type": "blob",
+          "sha": "ca2730c830cf3aa79071ea00648470777f516eed"
+        },
+        {
+          "path": ".gitignore",
+          "type": "blob",
+          "sha": "d9015b9c086eac1f92da54f8741bdb802c0b943a"
+        },
+        {
+          "path": ".golangci.yml",
+          "type": "blob",
+          "sha": "ba54ec957fee2451eb0eaf7a71664ee91b8f5f86"
+        },
+        {
+          "path": ".goreleaser.yaml",
+          "type": "blob",
+          "sha": "07d56fe05c0cb0486b24d56573f246479ea281e1"
+        },
+        {
+          "path": ".pre-commit-hooks.yaml",
+          "type": "blob",
+          "sha": "7ae5969557e13e80c9719cac0a313ed1c1763cb8"
+        },
+        {
+          "path": "CLAUDE.md",
+          "type": "blob",
+          "sha": "c987e38d29e266ed21503b3e063242a68fc942b0"
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "type": "blob",
+          "sha": "5c53b1f7c55954bd2d3487dae3d7ab4b293d43e1"
+        },
+        {
+          "path": "LICENSE",
+          "type": "blob",
+          "sha": "ac82babab495b81872417a1b8a4fa4c4de7bfe53"
+        },
+        {
+          "path": "README.md",
+          "type": "blob",
+          "sha": "dbedc42a5e53452073e29f57e84abb9330b093ab"
+        },
+        {
+          "path": "SECURITY.md",
+          "type": "blob",
+          "sha": "f5e411a1e8116824f9f37110a3200e445a459189"
+        },
+        {
+          "path": "cmd/mcpmoat/accept_hint.go",
+          "type": "blob",
+          "sha": "316d7aeca9ef48a1f5f61a1a4174c52cfa8d6aff"
+        },
+        {
+          "path": "cmd/mcpmoat/accept_hint_test.go",
+          "type": "blob",
+          "sha": "14c8287704e737e4169000d1cb92a90fe789637e"
+        },
+        {
+          "path": "cmd/mcpmoat/argscrub.go",
+          "type": "blob",
+          "sha": "a6a049586340a3bd3ed07871b8089de0d90c6005"
+        },
+        {
+          "path": "cmd/mcpmoat/argscrub_test.go",
+          "type": "blob",
+          "sha": "ade295a039a7c8102c0812c9d212d61b25c0b864"
+        },
+        {
+          "path": "cmd/mcpmoat/cli.go",
+          "type": "blob",
+          "sha": "b5be1c5ea2f0096f8fb4aa41c8fb9bbbf87566de"
+        },
+        {
+          "path": "cmd/mcpmoat/cli_test.go",
+          "type": "blob",
+          "sha": "f54d2b65468fd53dcbfb515ded4d74cf94b357fd"
+        },
+        {
+          "path": "cmd/mcpmoat/commands.go",
+          "type": "blob",
+          "sha": "ef0ced573b2c99c43c0c66bd408d963bd8471581"
+        },
+        {
+          "path": "cmd/mcpmoat/configs.go",
+          "type": "blob",
+          "sha": "2bf8480567d86e7f76b056848986e68e4752f38f"
+        },
+        {
+          "path": "cmd/mcpmoat/e2e_acceptance_test.go",
+          "type": "blob",
+          "sha": "7ed2b1896f4ef0fefab2a9b83810c7270f9e1b84"
+        },
+        {
+          "path": "cmd/mcpmoat/e2e_echo_test.go",
+          "type": "blob",
+          "sha": "fe3b64cd3bcf966895c021274fbd68a38670e9f0"
+        },
+        {
+          "path": "cmd/mcpmoat/e2e_network_test.go",
+          "type": "blob",
+          "sha": "2a148867139170069990e12461e87066ed8ccc56"
+        },
+        {
+          "path": "cmd/mcpmoat/e2e_pins_test.go",
+          "type": "blob",
+          "sha": "25783116aeb37e8f9ae2fe114de7277d34d2be45"
+        },
+        {
+          "path": "cmd/mcpmoat/e2e_test.go",
+          "type": "blob",
+          "sha": "50517da2b9b82e78aafb7110723941bc6428cdab"
+        },
+        {
+          "path": "cmd/mcpmoat/helpers_test.go",
+          "type": "blob",
+          "sha": "35780daa2719a4cb3a285ebda59f821c6f622641"
+        },
+        {
+          "path": "cmd/mcpmoat/llm_fake_provider_test.go",
+          "type": "blob",
+          "sha": "e1c9b97ce3dc0285b229be19ad22002f6d1e5532"
+        },
+        {
+          "path": "cmd/mcpmoat/main.go",
+          "type": "blob",
+          "sha": "3f675e946aafb42dd16cfb64f56ee1e25fc74514"
+        },
+        {
+          "path": "cmd/mcpmoat/network_test.go",
+          "type": "blob",
+          "sha": "29a385396211e6340a88a0b9f5e6b1b4a9af5eac"
+        },
+        {
+          "path": "cmd/mcpmoat/norace_test.go",
+          "type": "blob",
+          "sha": "9b5054b54f2a12b352705d9de9b23cdf30578827"
+        },
+        {
+          "path": "cmd/mcpmoat/pin.go",
+          "type": "blob",
+          "sha": "bb0e5513198e959f2289c6330c7e6b78abeb6b0f"
+        },
+        {
+          "path": "cmd/mcpmoat/pin_echo_secret_test.go",
+          "type": "blob",
+          "sha": "54b527971b9b877ea03c67db7fb46aadefdc68e0"
+        },
+        {
+          "path": "cmd/mcpmoat/pin_expect_test.go",
+          "type": "blob",
+          "sha": "ef7adf098a62fce5a6494161f0fedd07758010a5"
+        },
+        {
+          "path": "cmd/mcpmoat/pin_flow_test.go",
+          "type": "blob",
+          "sha": "ceaf06849554d233d827bc4d510abfbd307e4cae"
+        },
+        {
+          "path": "cmd/mcpmoat/pin_lock_test.go",
+          "type": "blob",
+          "sha": "e92e7d57399a97176005cdc47af58dac40ffc3ab"
+        },
+        {
+          "path": "cmd/mcpmoat/pin_test.go",
+          "type": "blob",
+          "sha": "0137d001d9a71fc2f50a87465442148a70106e1c"
+        },
+        {
+          "path": "cmd/mcpmoat/pins_diff_test.go",
+          "type": "blob",
+          "sha": "f1c3d2f2447b78bbbbd334849423a22a6474c9ff"
+        },
+        {
+          "path": "cmd/mcpmoat/pins_helpers_test.go",
+          "type": "blob",
+          "sha": "07f8f14619b647613748c94f4b6db4ee9cbc221b"
+        },
+        {
+          "path": "cmd/mcpmoat/pins_shared.go",
+          "type": "blob",
+          "sha": "4cdae1a6629788bbe03c75da7e31fa400a48fdd0"
+        },
+        {
+          "path": "cmd/mcpmoat/pins_shared_test.go",
+          "type": "blob",
+          "sha": "25d7c1ba7097161677cc598c2a5e8f89a44b2488"
+        },
+        {
+          "path": "cmd/mcpmoat/race_test.go",
+          "type": "blob",
+          "sha": "7686407239688dd7a08d30641c172e01645baa42"
+        },
+        {
+          "path": "cmd/mcpmoat/scan.go",
+          "type": "blob",
+          "sha": "f6066724d180ff741d1add3199189950affb5689"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_connect_flags_test.go",
+          "type": "blob",
+          "sha": "6d60fbc766a883914dfbc0f45ff1313f92f0c496"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_echo_secret_test.go",
+          "type": "blob",
+          "sha": "5b7fdceeb600b1aaa785b143616b56a578489b0e"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_failon_test.go",
+          "type": "blob",
+          "sha": "c8615f7f58ddd9cc17c41ef9fbaaa9712a2cd17d"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_findings.go",
+          "type": "blob",
+          "sha": "10bebcb2684714a566fba12105874f50a667f782"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_findings_test.go",
+          "type": "blob",
+          "sha": "b1246295db88b5c593b54f0594d80365a23d8b19"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_ignore_test.go",
+          "type": "blob",
+          "sha": "283644290f0a3f04a8a431c2f558748cedd995c9"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_json.go",
+          "type": "blob",
+          "sha": "fe6160a3724900cd738e53d0855228869eecd90f"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_json_bound_test.go",
+          "type": "blob",
+          "sha": "a92771313d39f332ef2e2fbbac357ac4e29e81cc"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_json_save_test.go",
+          "type": "blob",
+          "sha": "6dc5de818fd39ebd0442fce09ab3ccd15b96f356"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_json_test.go",
+          "type": "blob",
+          "sha": "47c914fa95db1f290ae5a76389b6aa6df7758d99"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm.go",
+          "type": "blob",
+          "sha": "98f6708125a5db0c8899a453524adeed0691f654"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_answers_test.go",
+          "type": "blob",
+          "sha": "2afa44a2f87b1caee0da7192f5d7ad5e015830ec"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_client_test.go",
+          "type": "blob",
+          "sha": "9b7b1b3dbd14e0a9f3b934bc85c1938d83544841"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_deadline_test.go",
+          "type": "blob",
+          "sha": "2703db49622fdc8499908aa483bd47bc0b38b537"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_echo_secret_test.go",
+          "type": "blob",
+          "sha": "f4caffbe2f4ceca938039fb108628fe4b9d7750e"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_flags.go",
+          "type": "blob",
+          "sha": "ad57c4a99dc6151c567fde85dd2cdb64c88e383e"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_limits_test.go",
+          "type": "blob",
+          "sha": "af08d9327d482c0ce8e8b5bdfc3724f3aa7302bb"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_plan.go",
+          "type": "blob",
+          "sha": "c084d0f79553d23bf4f1833c432c00cc095e938d"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_rejected_test.go",
+          "type": "blob",
+          "sha": "45877072e1fc77d8af9e28c6fd40f14545b6f054"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_rows.go",
+          "type": "blob",
+          "sha": "9411638cd2197533574082b565121afa1a0a83c5"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_secrets_test.go",
+          "type": "blob",
+          "sha": "696e0fabfb712c1ae6ed7448679d912c2dbf876b"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_llm_test.go",
+          "type": "blob",
+          "sha": "ad1fe5c0b9ef403b8c2c2e1659217a12c1176b86"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_pins.go",
+          "type": "blob",
+          "sha": "800fc8a7404e964b406994a20494547df3ab8839"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_pins_budget_test.go",
+          "type": "blob",
+          "sha": "a8099a4be2a5fba553136f100d13489eeb2d442b"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_pins_key_test.go",
+          "type": "blob",
+          "sha": "5ac71798a94f6e162338ede27fc49a4d3a51efca"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_pins_lock_test.go",
+          "type": "blob",
+          "sha": "fb7ca7e54597ba5aa77f42ca6044206c5b21bba1"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_pins_test.go",
+          "type": "blob",
+          "sha": "e1ef491d4ce88434d61ebcc8bd56a717e031957e"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_report_test.go",
+          "type": "blob",
+          "sha": "c240240a17daffc22088c83b6c99386489b50ff8"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_rules.go",
+          "type": "blob",
+          "sha": "c7b94caa56195a4e6ae75bc4d8e1d5b2f25c78dc"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_rules_test.go",
+          "type": "blob",
+          "sha": "c7c271b562a1208323c88614e1408a76b5770918"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_test.go",
+          "type": "blob",
+          "sha": "7cacc01fac529a2bc011950221de5cc5817d8c7a"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_tools.go",
+          "type": "blob",
+          "sha": "350b8222ef28d5e3f0b3fe8cd5385f9995188c53"
+        },
+        {
+          "path": "cmd/mcpmoat/scan_tools_test.go",
+          "type": "blob",
+          "sha": "cb5e53c872cf0bf360b0ec86839667b7439ab9ed"
+        },
+        {
+          "path": "cmd/mcpmoat/testdata/golden/scan_connect_statuses.golden",
+          "type": "blob",
+          "sha": "d69028e105aa4f293eb3406f640f80193cf12bea"
+        },
+        {
+          "path": "cmd/mcpmoat/testdata/golden/scan_json_no_connect_full.golden",
+          "type": "blob",
+          "sha": "07a2f98f1a5d57f6764899cd1897caeaebd7b38e"
+        },
+        {
+          "path": "cmd/mcpmoat/testdata/golden/scan_json_pins_changed.golden",
+          "type": "blob",
+          "sha": "671f67f2228529cb45de857d68bd1c0180f5aae6"
+        },
+        {
+          "path": "cmd/mcpmoat/testdata/golden/scan_no_connect_full.golden",
+          "type": "blob",
+          "sha": "018b91534fa3ede9c90483244cfb3ee1dd66e9d9"
+        },
+        {
+          "path": "cmd/mcpmoat/testdata/golden/scan_no_connect_full_color.golden",
+          "type": "blob",
+          "sha": "a16af97f7e3829ce3296d552d7e75c667b31ea03"
+        },
+        {
+          "path": "cmd/mcpmoat/testdata/golden/scan_same_name_two_scopes.golden",
+          "type": "blob",
+          "sha": "4c51be4c1b09a99ab8d10df32a35e222408c720d"
+        },
+        {
+          "path": "cmd/mcpmoat/version.go",
+          "type": "blob",
+          "sha": "14da8e06d038506b21730e318b9e1cae35b522ee"
+        },
+        {
+          "path": "cmd/mcpmoat/version_test.go",
+          "type": "blob",
+          "sha": "415baab5aca5bd69a62df0ef8355e30900841a66"
+        },
+        {
+          "path": "docs/ARCHITECTURE.md",
+          "type": "blob",
+          "sha": "b4a3be038d4af1dc362ac1f150af7943c0fce81f"
+        },
+        {
+          "path": "docs/PRD.md",
+          "type": "blob",
+          "sha": "dd10017580ba276b02f573faa744362113b48fc3"
+        },
+        {
+          "path": "docs/README.md",
+          "type": "blob",
+          "sha": "f842cc641ba7ec6725dad9b591e6abf8b5c04ccc"
+        },
+        {
+          "path": "docs/ci.md",
+          "type": "blob",
+          "sha": "b33725ef28ae7c8d706fc948f8adb9f6d6bcbc28"
+        },
+        {
+          "path": "docs/competitors.md",
+          "type": "blob",
+          "sha": "41d2846ce4d07f11591955c159167e21e1cd84dc"
+        },
+        {
+          "path": "docs/exit-codes.md",
+          "type": "blob",
+          "sha": "149326fd34464704a1498c0327104ba85487969d"
+        },
+        {
+          "path": "docs/ignore.md",
+          "type": "blob",
+          "sha": "826f036236e3995a030326ce6d027f084e3c9261"
+        },
+        {
+          "path": "docs/install.md",
+          "type": "blob",
+          "sha": "2d9e0013cbda1cb6282a8963d739acaa5d0bc88d"
+        },
+        {
+          "path": "docs/limits.md",
+          "type": "blob",
+          "sha": "f2c26ef64250b740d8c2cab762f1387f79ec1ba9"
+        },
+        {
+          "path": "docs/llm.md",
+          "type": "blob",
+          "sha": "5156b8c199a8ab776ec2e711eeded82eac51afd7"
+        },
+        {
+          "path": "docs/pins.md",
+          "type": "blob",
+          "sha": "a86b1123ed9a599673418d24be3db30dad4ba0f7"
+        },
+        {
+          "path": "docs/releasing.md",
+          "type": "blob",
+          "sha": "0190f291ccbfea6d3761eb60c18ee3df8507db1b"
+        },
+        {
+          "path": "docs/scan-output.md",
+          "type": "blob",
+          "sha": "81e7f3f0d326bdb219f34b99a846b8dbed260ce3"
+        },
+        {
+          "path": "docs/schema/scan-output.v1.json",
+          "type": "blob",
+          "sha": "b59422c32ffc36d3513d4fb3cf443c9f11b6d897"
+        },
+        {
+          "path": "docs/schema/scan-output.v2.json",
+          "type": "blob",
+          "sha": "7769d13a99451c8020ab6897cde934118e198887"
+        },
+        {
+          "path": "docs/schema/scan-output.v3.json",
+          "type": "blob",
+          "sha": "6c0c911c6e1781c1fe1d6de2344c651b638bee03"
+        },
+        {
+          "path": "docs/schema/scan-output.v4.json",
+          "type": "blob",
+          "sha": "64a848c176381edde32bca89e9699b726b9ea366"
+        },
+        {
+          "path": "docs/stdio-servers.md",
+          "type": "blob",
+          "sha": "cff106d9a9cabde94d3dab24358b0f800ae2f2d5"
+        },
+        {
+          "path": "docs/writing-rules.md",
+          "type": "blob",
+          "sha": "61a444561b85b7f8036a21ec149dbbba5074a014"
+        },
+        {
+          "path": "go.mod",
+          "type": "blob",
+          "sha": "c19f0e9a19ad4e30460d9ddb1e533762c49c7e12"
+        },
+        {
+          "path": "go.sum",
+          "type": "blob",
+          "sha": "549989307b55dcb1e672749b1666387caf16a4ca"
+        },
+        {
+          "path": "internal/discover/arg_credentials_test.go",
+          "type": "blob",
+          "sha": "cae684e2c7bd1ae902a7fdd3947dac31058c61b0"
+        },
+        {
+          "path": "internal/discover/arg_secrets_test.go",
+          "type": "blob",
+          "sha": "1780e9d2a7bb6b02fc22f62fac1f5ceed9f14b9a"
+        },
+        {
+          "path": "internal/discover/args.go",
+          "type": "blob",
+          "sha": "13982b5ca7f127e6fe2232a55eca385c7a79b76c"
+        },
+        {
+          "path": "internal/discover/args_test.go",
+          "type": "blob",
+          "sha": "477bc7db514835bdb843de76ba136eed583a9e44"
+        },
+        {
+          "path": "internal/discover/ascii.go",
+          "type": "blob",
+          "sha": "1ead8f9e633b0113379d6b17c8cfe39e408736b8"
+        },
+        {
+          "path": "internal/discover/claudecode.go",
+          "type": "blob",
+          "sha": "36c97311e61e868b4a950e1a8e782142683daee6"
+        },
+        {
+          "path": "internal/discover/claudecode_test.go",
+          "type": "blob",
+          "sha": "2635b19109103206a1c935c865f3a2c7bc3703ff"
+        },
+        {
+          "path": "internal/discover/claudestate.go",
+          "type": "blob",
+          "sha": "eea281b729eeb0271f987ff2623060e5faab1a42"
+        },
+        {
+          "path": "internal/discover/claudestate_test.go",
+          "type": "blob",
+          "sha": "fe2e092b396449f28dbec8bf3a4ed4136eb0d27c"
+        },
+        {
+          "path": "internal/discover/codex.go",
+          "type": "blob",
+          "sha": "e483f46c92b78d0993626d2e9ff85ed0e1d40ff7"
+        },
+        {
+          "path": "internal/discover/codex_test.go",
+          "type": "blob",
+          "sha": "7497d5b268360c89c19e0a7aee3796ae184e7db2"
+        },
+        {
+          "path": "internal/discover/cursor.go",
+          "type": "blob",
+          "sha": "2fa45099957a1c85ab155ec020ce0c4f0097f60a"
+        },
+        {
+          "path": "internal/discover/cursor_test.go",
+          "type": "blob",
+          "sha": "62064799b7a2c7aaf717d3e8e1cfb8f5cc45076e"
+        },
+        {
+          "path": "internal/discover/detect.go",
+          "type": "blob",
+          "sha": "c7074aa8eb1f882696f4da2dcfc20f1f2c7a7f67"
+        },
+        {
+          "path": "internal/discover/detect_test.go",
+          "type": "blob",
+          "sha": "d38bee2028ddc7c39a0227d6e96c7b3bad29d2b8"
+        },
+        {
+          "path": "internal/discover/discover.go",
+          "type": "blob",
+          "sha": "05e90db6743b223da016754a46badffdc5efc6fd"
+        },
+        {
+          "path": "internal/discover/discover_test.go",
+          "type": "blob",
+          "sha": "a3578399ae536318e7599e1ef80c1e331db81822"
+        },
+        {
+          "path": "internal/discover/discovertest/discovertest.go",
+          "type": "blob",
+          "sha": "e5bda6346eb503a32ff66373e38169f04c5da5d2"
+        },
+        {
+          "path": "internal/discover/discovertest/discovertest_test.go",
+          "type": "blob",
+          "sha": "20055bd4051c251158f6f57df595fad1ab6bfc58"
+        },
+        {
+          "path": "internal/discover/discovertest/fixture.go",
+          "type": "blob",
+          "sha": "ac88b4e196f246d5da079dba2f64d031fbd8812e"
+        },
+        {
+          "path": "internal/discover/discovertest/fixture_test.go",
+          "type": "blob",
+          "sha": "11519a80830f62be107d282676f9f82735535515"
+        },
+        {
+          "path": "internal/discover/doc.go",
+          "type": "blob",
+          "sha": "5f328054f64f921ca55f2cf1a5a7110f40b6d0c1"
+        },
+        {
+          "path": "internal/discover/expand.go",
+          "type": "blob",
+          "sha": "fcdd74cb19001442e98330e68529383b4ed1903a"
+        },
+        {
+          "path": "internal/discover/expand_test.go",
+          "type": "blob",
+          "sha": "86efd63e28fe1116624b774ff3f8113a3cf16107"
+        },
+        {
+          "path": "internal/discover/export_test.go",
+          "type": "blob",
+          "sha": "100d6b8398dc66ba7baec616a97605f6ef00d166"
+        },
+        {
+          "path": "internal/discover/fileerror.go",
+          "type": "blob",
+          "sha": "a4dd16d7435403780011cb6c6ae07fc2d47a2a9a"
+        },
+        {
+          "path": "internal/discover/fileerror_test.go",
+          "type": "blob",
+          "sha": "9cd5b090b15f52d63e474a8987637ab26e6a8912"
+        },
+        {
+          "path": "internal/discover/fuzz_test.go",
+          "type": "blob",
+          "sha": "6f2173c3d60073b73e859cee0d30b93e57cb28ed"
+        },
+        {
+          "path": "internal/discover/helpers_internal_test.go",
+          "type": "blob",
+          "sha": "5ca9b4215d266af50ff73738a47403dd4e93a414"
+        },
+        {
+          "path": "internal/discover/helpers_test.go",
+          "type": "blob",
+          "sha": "c22d1a3d1ba42d4ded04fbd59d74b3559e154326"
+        },
+        {
+          "path": "internal/discover/jsonservers.go",
+          "type": "blob",
+          "sha": "a5752ec5b7ae8866404f1f08a3642ccd4583e9f6"
+        },
+        {
+          "path": "internal/discover/jsonservers_test.go",
+          "type": "blob",
+          "sha": "3a63328135436c1cb91f27ecbd7da52a574fe979"
+        },
+        {
+          "path": "internal/discover/jsonstrings.go",
+          "type": "blob",
+          "sha": "dd6a91ae6f884bff12a747c81b609c0f68b1862c"
+        },
+        {
+          "path": "internal/discover/keys.go",
+          "type": "blob",
+          "sha": "07b91f2a95895b9bc24ca820f531bc884833e391"
+        },
+        {
+          "path": "internal/discover/keys_test.go",
+          "type": "blob",
+          "sha": "21f32630a001bedf6966623ec3d7cfe53afc2d1a"
+        },
+        {
+          "path": "internal/discover/loopback.go",
+          "type": "blob",
+          "sha": "e89c491d8b959fe7a53e0d9d9a3d4b828e411083"
+        },
+        {
+          "path": "internal/discover/loopback_test.go",
+          "type": "blob",
+          "sha": "d9d7a770f79e0d0f88343d22986b4f98f78334a4"
+        },
+        {
+          "path": "internal/discover/readconfig.go",
+          "type": "blob",
+          "sha": "922921abb9aa16210627ee9e04e5441194665e5f"
+        },
+        {
+          "path": "internal/discover/readconfig_test.go",
+          "type": "blob",
+          "sha": "15de04956aeabd29e9f75b5abbb1061ca79d5790"
+        },
+        {
+          "path": "internal/discover/readfile.go",
+          "type": "blob",
+          "sha": "72624529053cdbebf42bc66584d346ffe8543907"
+        },
+        {
+          "path": "internal/discover/readfile_test.go",
+          "type": "blob",
+          "sha": "80e06890779417df9f19fa562b8e6c4f5bbf6344"
+        },
+        {
+          "path": "internal/discover/redact_args.go",
+          "type": "blob",
+          "sha": "f70b72a5268c99965e270f7732d9d3c4e2772a7b"
+        },
+        {
+          "path": "internal/discover/redact_args_test.go",
+          "type": "blob",
+          "sha": "2a87a9c997d539472aff8266095347ed9ec4af28"
+        },
+        {
+          "path": "internal/discover/redact_pairs_internal_test.go",
+          "type": "blob",
+          "sha": "7bf63b2a08a29ca8beb61f115b03a84aa69904a4"
+        },
+        {
+          "path": "internal/discover/redact_text.go",
+          "type": "blob",
+          "sha": "eb55157317a6bd783c20564156b01e0d558783e5"
+        },
+        {
+          "path": "internal/discover/redact_text_test.go",
+          "type": "blob",
+          "sha": "6c03d3e20517b18079e6eadb17bf70c7dbe7eb01"
+        },
+        {
+          "path": "internal/discover/redact_url.go",
+          "type": "blob",
+          "sha": "ee239c59d43ff9470ee9167f859ead2eb5aff749"
+        },
+        {
+          "path": "internal/discover/redact_url_test.go",
+          "type": "blob",
+          "sha": "c3e46a3a45283cef0e93cb16cb62b80d2b0cede5"
+        },
+        {
+          "path": "internal/discover/result.go",
+          "type": "blob",
+          "sha": "8f098b6d1f9e1e1a78b29824b47f9ea3386adb96"
+        },
+        {
+          "path": "internal/discover/secret.go",
+          "type": "blob",
+          "sha": "302fa0a8e3fed28658f13e6d271de8c360c69d11"
+        },
+        {
+          "path": "internal/discover/secret_test.go",
+          "type": "blob",
+          "sha": "65d93db6954c22156a63c2367a9f8a8deda9e75a"
+        },
+        {
+          "path": "internal/discover/secretlike_test.go",
+          "type": "blob",
+          "sha": "d3e3670a8fce1e426abaa51437b2d7b0ac41ee3a"
+        },
+        {
+          "path": "internal/discover/server.go",
+          "type": "blob",
+          "sha": "53d1ce874923cce4abe45e2f7ac340ad93a1102b"
+        },
+        {
+          "path": "internal/discover/server_test.go",
+          "type": "blob",
+          "sha": "2fd9b4e12405093126044c80a4b6b6265fba1ffc"
+        },
+        {
+          "path": "internal/discover/token.go",
+          "type": "blob",
+          "sha": "af8427fa1a2cc385779d02cc25f31ecc2cf9160f"
+        },
+        {
+          "path": "internal/discover/tomlshape.go",
+          "type": "blob",
+          "sha": "49cd1899af85e79fac476541049e3104f92a172b"
+        },
+        {
+          "path": "internal/discover/url.go",
+          "type": "blob",
+          "sha": "cb9baa43945cda6adba4505116a6e1b479a7f1c7"
+        },
+        {
+          "path": "internal/discover/url_test.go",
+          "type": "blob",
+          "sha": "5310561e586284a2bbb822e30786d46c53f98939"
+        },
+        {
+          "path": "internal/inspect/cloaking_test.go",
+          "type": "blob",
+          "sha": "60c498356deba9a4916076d648fe60ea188b570c"
+        },
+        {
+          "path": "internal/inspect/dialer.go",
+          "type": "blob",
+          "sha": "5307bbfec1cdb37086c0a8ea7b5914cf75e00d8d"
+        },
+        {
+          "path": "internal/inspect/dialer_test.go",
+          "type": "blob",
+          "sha": "1e9a3b65c7764e39d8ba05a62a47414877d27034"
+        },
+        {
+          "path": "internal/inspect/dialhook_test.go",
+          "type": "blob",
+          "sha": "ae16e5c0e7f36c1644506b9c0441e7493aa01f75"
+        },
+        {
+          "path": "internal/inspect/doc.go",
+          "type": "blob",
+          "sha": "e62930fd7a309822a623d97c79b8240f2250deb8"
+        },
+        {
+          "path": "internal/inspect/env.go",
+          "type": "blob",
+          "sha": "039e9de876ad7cca51888f21dbf4db54f1dd9ccd"
+        },
+        {
+          "path": "internal/inspect/env_test.go",
+          "type": "blob",
+          "sha": "d770097ac212ca9a4702c34f1d6f9092bcaad19e"
+        },
+        {
+          "path": "internal/inspect/errors.go",
+          "type": "blob",
+          "sha": "7af17fd0fae6cf4e6dddee6f48c8bd05fb7c1d39"
+        },
+        {
+          "path": "internal/inspect/errors_scrub_test.go",
+          "type": "blob",
+          "sha": "8c756ce310759a413bbabe40f101b07a62ce2ca4"
+        },
+        {
+          "path": "internal/inspect/errors_test.go",
+          "type": "blob",
+          "sha": "9478d3cfce34894a41fdf4aee0f6468fa9caf3f7"
+        },
+        {
+          "path": "internal/inspect/export_credentials_test.go",
+          "type": "blob",
+          "sha": "98b33334d9d6d6340598349f45840059c0030377"
+        },
+        {
+          "path": "internal/inspect/export_test.go",
+          "type": "blob",
+          "sha": "71169d086338a910d7f3179901229f070825373c"
+        },
+        {
+          "path": "internal/inspect/fixture_test.go",
+          "type": "blob",
+          "sha": "e4e8505d59433638569115910af914e7e1f05dc9"
+        },
+        {
+          "path": "internal/inspect/gate.go",
+          "type": "blob",
+          "sha": "9abb5f502e6808b7e798017a9aeb555e19e3da0d"
+        },
+        {
+          "path": "internal/inspect/gate_test.go",
+          "type": "blob",
+          "sha": "814c1f92d62d34021c9bf798c3c1a399ff746bbf"
+        },
+        {
+          "path": "internal/inspect/helpermodes_other_test.go",
+          "type": "blob",
+          "sha": "199b91f516318f3b3b72dc2fe95e06a84a4a2876"
+        },
+        {
+          "path": "internal/inspect/helpermodes_unix_test.go",
+          "type": "blob",
+          "sha": "c332163bfde4db3549d9d90cd0d0546f682a5c86"
+        },
+        {
+          "path": "internal/inspect/helperprocess_unix_test.go",
+          "type": "blob",
+          "sha": "fd50fa05c9bafd6207e8fd7845c6e7d4723dfe55"
+        },
+        {
+          "path": "internal/inspect/helpers_external_test.go",
+          "type": "blob",
+          "sha": "69638457ba3b84ab3f6b96ab55b80fe7d47fa2a8"
+        },
+        {
+          "path": "internal/inspect/helpers_test.go",
+          "type": "blob",
+          "sha": "d4d532dcb7f83496e331f7a5fd72fd0aaaba2c7a"
+        },
+        {
+          "path": "internal/inspect/httpclient.go",
+          "type": "blob",
+          "sha": "ac2a9fd1f428ac2fdc13cf76032909e14e1f998e"
+        },
+        {
+          "path": "internal/inspect/httpclient_test.go",
+          "type": "blob",
+          "sha": "10b3e953b320f6329656c38db3d18ab00af4e37d"
+        },
+        {
+          "path": "internal/inspect/httprecord.go",
+          "type": "blob",
+          "sha": "666ef6bb9a15af80e54fa60e9786bfbb161f8531"
+        },
+        {
+          "path": "internal/inspect/httpshape.go",
+          "type": "blob",
+          "sha": "3d646ceb57083b0497ffce877e7a42c560fdefa8"
+        },
+        {
+          "path": "internal/inspect/identity.go",
+          "type": "blob",
+          "sha": "8ce3c33bcb4cf2aaca09e494c87a5f70a8afe892"
+        },
+        {
+          "path": "internal/inspect/identity_test.go",
+          "type": "blob",
+          "sha": "837251904d7ff21f4d7f441c5be667de1930cdc7"
+        },
+        {
+          "path": "internal/inspect/inspect.go",
+          "type": "blob",
+          "sha": "b9021b4319e6dc7ff25d79fb3f667497c82205b4"
+        },
+        {
+          "path": "internal/inspect/inspect_test.go",
+          "type": "blob",
+          "sha": "9c3cd2e7c7b297bbed77cd877cd040a9bf6e43b1"
+        },
+        {
+          "path": "internal/inspect/inspecttest/benign.go",
+          "type": "blob",
+          "sha": "f05d280a63b13dd896798a6e79110c9f490173a4"
+        },
+        {
+          "path": "internal/inspect/inspecttest/benign_test.go",
+          "type": "blob",
+          "sha": "46984d14e016153bf421e41608d46ded063ef026"
+        },
+        {
+          "path": "internal/inspect/inspecttest/fake.go",
+          "type": "blob",
+          "sha": "0c03b84d890a4eb9cf8b72948515917acc0c100b"
+        },
+        {
+          "path": "internal/inspect/inspecttest/fake_test.go",
+          "type": "blob",
+          "sha": "a670733827c9fc4ccdb466caf93bddcc8f17f87b"
+        },
+        {
+          "path": "internal/inspect/inspecttest/fixture.go",
+          "type": "blob",
+          "sha": "31f384d3d78f227e561d3608dad398c6363f639d"
+        },
+        {
+          "path": "internal/inspect/inspecttest/fixture_test.go",
+          "type": "blob",
+          "sha": "e082468e40be68767e0cf98337e8a3b754d8e7ae"
+        },
+        {
+          "path": "internal/inspect/jsonshape.go",
+          "type": "blob",
+          "sha": "b3acdb2b54b95dc36044ff1e7321c0582ed497db"
+        },
+        {
+          "path": "internal/inspect/jsonshape_test.go",
+          "type": "blob",
+          "sha": "833e41854992849fccdaf5487a89f70343d65530"
+        },
+        {
+          "path": "internal/inspect/list.go",
+          "type": "blob",
+          "sha": "0a26fd89ae9d9caaa9a94fe6c12bb0cd82e568ff"
+        },
+        {
+          "path": "internal/inspect/list_test.go",
+          "type": "blob",
+          "sha": "770365188b0f33bd67d168320636e0dd46d3a1b6"
+        },
+        {
+          "path": "internal/inspect/lookpath.go",
+          "type": "blob",
+          "sha": "723c3f43a3b357da0274db9b903282ec9573557f"
+        },
+        {
+          "path": "internal/inspect/lookpath_test.go",
+          "type": "blob",
+          "sha": "d85fb0a636b801ccfa4e1491a2707d56c1e08db9"
+        },
+        {
+          "path": "internal/inspect/main_test.go",
+          "type": "blob",
+          "sha": "9e13772a46e2e404d79b659880c8aa0036f57317"
+        },
+        {
+          "path": "internal/inspect/proctree.go",
+          "type": "blob",
+          "sha": "65bce131afa2d9f81e3263a42f520582c4fa67db"
+        },
+        {
+          "path": "internal/inspect/proctree_other.go",
+          "type": "blob",
+          "sha": "d8f86b75fcd2fcf1e0f6313e90c298e8d45f1ba8"
+        },
+        {
+          "path": "internal/inspect/proctree_stdio_test.go",
+          "type": "blob",
+          "sha": "526abfd6cdd7fb54114365eefe4decb5171df773"
+        },
+        {
+          "path": "internal/inspect/proctree_unix.go",
+          "type": "blob",
+          "sha": "1c6c80605e21c5d9c21f5f66f62e9b65ecec5cd5"
+        },
+        {
+          "path": "internal/inspect/proctree_unix_test.go",
+          "type": "blob",
+          "sha": "69f91359236e3c8515f9030d577093f3bc6b63f3"
+        },
+        {
+          "path": "internal/inspect/rawlimit.go",
+          "type": "blob",
+          "sha": "5001fa9c8372e82b60fa6828eb84ef8ee9cafc9f"
+        },
+        {
+          "path": "internal/inspect/rawlimit_test.go",
+          "type": "blob",
+          "sha": "1c37c89e0b04180b59ffe8f83f8e431d082ee3eb"
+        },
+        {
+          "path": "internal/inspect/remote.go",
+          "type": "blob",
+          "sha": "3c934f4641c0813206257c209173573cecef26cd"
+        },
+        {
+          "path": "internal/inspect/remote_lists_test.go",
+          "type": "blob",
+          "sha": "d2d1831f4d151fce852f90df5fc1e2fcbbe984bd"
+        },
+        {
+          "path": "internal/inspect/remote_records_test.go",
+          "type": "blob",
+          "sha": "c02e8963ad4c4324558713300cfb69412b872918"
+        },
+        {
+          "path": "internal/inspect/remote_shape_test.go",
+          "type": "blob",
+          "sha": "bad18ebda9352823a5950bd5961ce21398a12c91"
+        },
+        {
+          "path": "internal/inspect/remote_test.go",
+          "type": "blob",
+          "sha": "d58943ff8c024e55e0754768e422fa34190ae852"
+        },
+        {
+          "path": "internal/inspect/run.go",
+          "type": "blob",
+          "sha": "91c00775b179fc221c165845f39d0ab273c85a6d"
+        },
+        {
+          "path": "internal/inspect/run_process_unix_test.go",
+          "type": "blob",
+          "sha": "81d8921ece6ccf1302c757e4ec05ce3bf102b3a6"
+        },
+        {
+          "path": "internal/inspect/run_test.go",
+          "type": "blob",
+          "sha": "49e932941ea0d1adaad288d9c63ff1b630694859"
+        },
+        {
+          "path": "internal/inspect/scrub_words.go",
+          "type": "blob",
+          "sha": "206af2b0cf4cecf8a0c507d257f1a7cd7276be18"
+        },
+        {
+          "path": "internal/inspect/sdk.go",
+          "type": "blob",
+          "sha": "3a78957258091260844e86f42551e528b062c11e"
+        },
+        {
+          "path": "internal/inspect/sdk_hidden_test.go",
+          "type": "blob",
+          "sha": "542a3eac7c518b4096131a76431f0b218208c106"
+        },
+        {
+          "path": "internal/inspect/sdk_internal_test.go",
+          "type": "blob",
+          "sha": "f244c620581cf48d190a94c1722a77714e8595e1"
+        },
+        {
+          "path": "internal/inspect/sdk_secrets_test.go",
+          "type": "blob",
+          "sha": "49a69bebfc7ed5419077ead3909f646966832549"
+        },
+        {
+          "path": "internal/inspect/sdk_test.go",
+          "type": "blob",
+          "sha": "0fc013fa8a4e884d6b0f91a28553ebe789811fa6"
+        },
+        {
+          "path": "internal/inspect/secrets.go",
+          "type": "blob",
+          "sha": "c068ee765fc507c862ab5cbf766c53fd5e9ad8d2"
+        },
+        {
+          "path": "internal/inspect/secrets_dedupe_test.go",
+          "type": "blob",
+          "sha": "bf00495a65764974f2575980d70166a87733d83a"
+        },
+        {
+          "path": "internal/inspect/secrets_test.go",
+          "type": "blob",
+          "sha": "dc8958657988f410872787d5f2e009f56b17bc35"
+        },
+        {
+          "path": "internal/inspect/serverreq.go",
+          "type": "blob",
+          "sha": "d1a8ea135a8714f3c74c3b84ff8e6e2fdc25bab3"
+        },
+        {
+          "path": "internal/inspect/serverreq_test.go",
+          "type": "blob",
+          "sha": "d1c23ca3c52fb148d34cddbb4456dfbce9f3477e"
+        },
+        {
+          "path": "internal/inspect/stdio.go",
+          "type": "blob",
+          "sha": "2d1c8f4003748d45c0da6ffae8b27f789428e834"
+        },
+        {
+          "path": "internal/inspect/stdio_process_test.go",
+          "type": "blob",
+          "sha": "e46d6d0f4254a04bcf2fc25ad57c736fa8e67742"
+        },
+        {
+          "path": "internal/inspect/stdio_shape_unix_test.go",
+          "type": "blob",
+          "sha": "51299a30b58f06a67f5bea711fb44cf262db60af"
+        },
+        {
+          "path": "internal/inspect/stdio_test.go",
+          "type": "blob",
+          "sha": "ffbf96ec23c60fc7bceb431e71da0c5e60b34ae7"
+        },
+        {
+          "path": "internal/inspect/stdioproc.go",
+          "type": "blob",
+          "sha": "c06e9ae98a6b0faf794f7ec061fe3193ee46b6ea"
+        },
+        {
+          "path": "internal/inspect/stop_unix_test.go",
+          "type": "blob",
+          "sha": "a5cb7a45be07bfbf6b582d56d9775475a3f7ff2e"
+        },
+        {
+          "path": "internal/inspect/sysproc_other.go",
+          "type": "blob",
+          "sha": "b643bc141719c7dc3295d89d96855607d6b3ec18"
+        },
+        {
+          "path": "internal/inspect/sysproc_pgid_test.go",
+          "type": "blob",
+          "sha": "e306ea4550147e3d5e49383dce63939dc9bb7fd8"
+        },
+        {
+          "path": "internal/inspect/sysproc_unix.go",
+          "type": "blob",
+          "sha": "d7fed20ce4e933733c31a7859cdd4bf8e9647877"
+        },
+        {
+          "path": "internal/inspect/sysproc_unix_test.go",
+          "type": "blob",
+          "sha": "2c41b7db6189cbce9458d6002d1ee446fbfe1ac3"
+        },
+        {
+          "path": "internal/inspect/types.go",
+          "type": "blob",
+          "sha": "9e69843b5f542245f71d61fcdde732699ab2b7f7"
+        },
+        {
+          "path": "internal/inspect/warnings.go",
+          "type": "blob",
+          "sha": "24c6a3cfffeb8c8571dcafda87d894a01de7da45"
+        },
+        {
+          "path": "internal/inspect/warnings_test.go",
+          "type": "blob",
+          "sha": "3fc9654482db7a4d17b8be360b498a64083b43cd"
+        },
+        {
+          "path": "internal/inspect/workdir.go",
+          "type": "blob",
+          "sha": "f5b2362d30cec69ef7db81549861cda55c6d1ceb"
+        },
+        {
+          "path": "internal/inspect/workdir_other.go",
+          "type": "blob",
+          "sha": "c371b5b10177356519122cad31fd24dc5cb94919"
+        },
+        {
+          "path": "internal/inspect/workdir_test.go",
+          "type": "blob",
+          "sha": "8371c465fdfc5910c4db8fc7ffae03496cad3b84"
+        },
+        {
+          "path": "internal/inspect/workdir_unix.go",
+          "type": "blob",
+          "sha": "fd6d2e21c18e54254e47b1313b8e6eb8e175e14e"
+        },
+        {
+          "path": "internal/inspect/workdir_unix_test.go",
+          "type": "blob",
+          "sha": "c356ae5acb850b1e3cb8f8bccce71399c18cba0f"
+        },
+        {
+          "path": "internal/llm/anthropic.go",
+          "type": "blob",
+          "sha": "63f38cc82d00d6fae1398b546dd66a01eafe4924"
+        },
+        {
+          "path": "internal/llm/anthropic_test.go",
+          "type": "blob",
+          "sha": "fdc29ef9486ccd5576b9b957b41837accb2cc10c"
+        },
+        {
+          "path": "internal/llm/client.go",
+          "type": "blob",
+          "sha": "109f2768ca3b4c6a5a067f39c4d361d421af94ec"
+        },
+        {
+          "path": "internal/llm/client_test.go",
+          "type": "blob",
+          "sha": "5a945749f54102c7534bf11fa011a28ad7c6c65e"
+        },
+        {
+          "path": "internal/llm/config.go",
+          "type": "blob",
+          "sha": "4d849cc4441b9313e2b49339b4bf9617819e5fa2"
+        },
+        {
+          "path": "internal/llm/config_test.go",
+          "type": "blob",
+          "sha": "c88ca538bdb564c79e79b450f68584d9afd491db"
+        },
+        {
+          "path": "internal/llm/doc.go",
+          "type": "blob",
+          "sha": "331ffbf4ad170431c8706af6375b92719db6a852"
+        },
+        {
+          "path": "internal/llm/openai.go",
+          "type": "blob",
+          "sha": "076095cb1a0c8ed3585a0e89ff0d25578b853d1e"
+        },
+        {
+          "path": "internal/llm/openai_test.go",
+          "type": "blob",
+          "sha": "9262622a2296fa11df9f786db4209c027685ebc8"
+        },
+        {
+          "path": "internal/llm/prompt.go",
+          "type": "blob",
+          "sha": "51c5e20bc231339ee653161b81dac2f9f1747f09"
+        },
+        {
+          "path": "internal/llm/prompt_test.go",
+          "type": "blob",
+          "sha": "d48339746db5aac2a7fc1f90a5153f709c0aab70"
+        },
+        {
+          "path": "internal/llm/retry.go",
+          "type": "blob",
+          "sha": "4aba8487752e32cc7826c2e6490d71f883b7570c"
+        },
+        {
+          "path": "internal/llm/retry_test.go",
+          "type": "blob",
+          "sha": "8d337d64e560899942a041a05b9b880f41d08d42"
+        },
+        {
+          "path": "internal/llm/verdict.go",
+          "type": "blob",
+          "sha": "cc521bd2050a65cbe786d5ba5453ad7980632f23"
+        },
+        {
+          "path": "internal/llm/verdict_test.go",
+          "type": "blob",
+          "sha": "f92b13bbd73736ececeb5e091283a13150693769"
+        },
+        {
+          "path": "internal/pincheck/goreleaser.go",
+          "type": "blob",
+          "sha": "4e355f3c3f816edb9e8bb6c98b5b152df84346c6"
+        },
+        {
+          "path": "internal/pincheck/goreleaser_test.go",
+          "type": "blob",
+          "sha": "e3958d639524c700c30c814208f26237b03732ab"
+        },
+        {
+          "path": "internal/pincheck/goreleaser_version_test.go",
+          "type": "blob",
+          "sha": "8537192364b9213afebef351eea599139f6ab110"
+        },
+        {
+          "path": "internal/pincheck/govulncheck.go",
+          "type": "blob",
+          "sha": "9b6f1e766d2cf51351be2c760181f77306e816ad"
+        },
+        {
+          "path": "internal/pincheck/govulncheck_test.go",
+          "type": "blob",
+          "sha": "f25f6b52542a360ba2e76d794d81a1a5bc7e2340"
+        },
+        {
+          "path": "internal/pincheck/helpers_test.go",
+          "type": "blob",
+          "sha": "cc3f2ac6a7cf4486086a950083eabf12f844f0a7"
+        },
+        {
+          "path": "internal/pincheck/main.go",
+          "type": "blob",
+          "sha": "f2f07d88ddddf5e974208cc5964f08030bfa5033"
+        },
+        {
+          "path": "internal/pincheck/main_test.go",
+          "type": "blob",
+          "sha": "132db3aa11a37d8dad49cde7e6c7cd4a1c94772b"
+        },
+        {
+          "path": "internal/pincheck/yamlwalk.go",
+          "type": "blob",
+          "sha": "300ffbcd6f44740a64af3237568276984e5e650e"
+        },
+        {
+          "path": "internal/pincheck/yamlwalk_test.go",
+          "type": "blob",
+          "sha": "c98ed0ceaa6ddd6cfe4d57310d6e7c2f0eb7bc7d"
+        },
+        {
+          "path": "internal/pins/acl_darwin.go",
+          "type": "blob",
+          "sha": "56eaa9c2fbe02049f91845377346feee56bc7cd1"
+        },
+        {
+          "path": "internal/pins/acl_darwin_test.go",
+          "type": "blob",
+          "sha": "3a6980ac625ef71af93fd5a152e2d3b7388122f8"
+        },
+        {
+          "path": "internal/pins/acl_other.go",
+          "type": "blob",
+          "sha": "e79eb1ec2333d2e2fafa3001592f1f8de1b9332d"
+        },
+        {
+          "path": "internal/pins/atomic.go",
+          "type": "blob",
+          "sha": "ec1324f85e9d57f3cb03f218387deeb2bed51834"
+        },
+        {
+          "path": "internal/pins/atomic_test.go",
+          "type": "blob",
+          "sha": "d855369ce7c6304bcd805cf0c2c439152b4ea14c"
+        },
+        {
+          "path": "internal/pins/canonical.go",
+          "type": "blob",
+          "sha": "4a1e7ad45c62fdae3aaefe8b4ec4730cbeeabc08"
+        },
+        {
+          "path": "internal/pins/canonical_fuzz_test.go",
+          "type": "blob",
+          "sha": "75b2f7e352b94ef371538d8046ca69b2b0e3731a"
+        },
+        {
+          "path": "internal/pins/canonical_test.go",
+          "type": "blob",
+          "sha": "f5452f5f3857df801bc71af6fd68d29a429dd025"
+        },
+        {
+          "path": "internal/pins/compare.go",
+          "type": "blob",
+          "sha": "468bdcb64e9ae4cb06776f6794caf69d989f87ce"
+        },
+        {
+          "path": "internal/pins/compare_test.go",
+          "type": "blob",
+          "sha": "b219b7147e8feeffedddee3472487f6cfadfb613"
+        },
+        {
+          "path": "internal/pins/diff.go",
+          "type": "blob",
+          "sha": "41383138f9dc81a39e03d36444536da98a8d985d"
+        },
+        {
+          "path": "internal/pins/diff_test.go",
+          "type": "blob",
+          "sha": "84aa90bdab69fd0d93e2aa34fb98e88f8c9a3357"
+        },
+        {
+          "path": "internal/pins/digest.go",
+          "type": "blob",
+          "sha": "d648d1881528c2f33e74a685b124517333bf9c31"
+        },
+        {
+          "path": "internal/pins/digest_test.go",
+          "type": "blob",
+          "sha": "d9a9bae7f9896dbd7201dc0064375658a03bcd6a"
+        },
+        {
+          "path": "internal/pins/doc.go",
+          "type": "blob",
+          "sha": "397a2fd3775813fd10b278136ad2aa0ede44a036"
+        },
+        {
+          "path": "internal/pins/export_share_test.go",
+          "type": "blob",
+          "sha": "b19dd2a890d5d96504c35f1cf6790d6707de07d3"
+        },
+        {
+          "path": "internal/pins/export_test.go",
+          "type": "blob",
+          "sha": "2373d0bd29e763b51f94c8b0102d26b761d93ae1"
+        },
+        {
+          "path": "internal/pins/hash.go",
+          "type": "blob",
+          "sha": "474db129759f23e9d90415f8863e1ea35c55f860"
+        },
+        {
+          "path": "internal/pins/hash_golden_test.go",
+          "type": "blob",
+          "sha": "f5d6c1252bae73ce660a6e61df2371037effa788"
+        },
+        {
+          "path": "internal/pins/hash_test.go",
+          "type": "blob",
+          "sha": "edc3d5a635160ba3248fa7731b16c6db2d171a2e"
+        },
+        {
+          "path": "internal/pins/hashmutate_test.go",
+          "type": "blob",
+          "sha": "e76f4796fa6665f80a040ed1d7b3278cdf6dae25"
+        },
+        {
+          "path": "internal/pins/helpers_test.go",
+          "type": "blob",
+          "sha": "7de42f737abd70c155b0c732b36fad7a1d595a13"
+        },
+        {
+          "path": "internal/pins/jsonshuffle_test.go",
+          "type": "blob",
+          "sha": "fd8cba47ace1841b622ad0fd1ef71d0068868206"
+        },
+        {
+          "path": "internal/pins/lock.go",
+          "type": "blob",
+          "sha": "101bef61416e902f68e94d38b92abcfeaa7a271c"
+        },
+        {
+          "path": "internal/pins/lock_other.go",
+          "type": "blob",
+          "sha": "962e5b8f43e1a088d9a27d50b526c6f389fe7cd3"
+        },
+        {
+          "path": "internal/pins/lock_test.go",
+          "type": "blob",
+          "sha": "deefc2053b123ecb3963bf33bb72232c309c954a"
+        },
+        {
+          "path": "internal/pins/lock_unix.go",
+          "type": "blob",
+          "sha": "94d52fb00f913a4a837eb7b337f63b91610c5bf5"
+        },
+        {
+          "path": "internal/pins/lock_unix_test.go",
+          "type": "blob",
+          "sha": "ae5861fb675aeca798af773af4a28749ec359411"
+        },
+        {
+          "path": "internal/pins/lockfile_unix_test.go",
+          "type": "blob",
+          "sha": "e9916f2aac1649ac381a6a261633541e66dd0e87"
+        },
+        {
+          "path": "internal/pins/masked_test.go",
+          "type": "blob",
+          "sha": "f2efd89b8de60722479d4be8e4ffef734303510b"
+        },
+        {
+          "path": "internal/pins/perm.go",
+          "type": "blob",
+          "sha": "0bd4f023f20ea49185a03389c4238921fca89146"
+        },
+        {
+          "path": "internal/pins/perm_other.go",
+          "type": "blob",
+          "sha": "51237e3a0a26ef06e3b317d0905abffe7d9bf3a7"
+        },
+        {
+          "path": "internal/pins/perm_unix.go",
+          "type": "blob",
+          "sha": "b99115e2c8cf1bce82520d0d5888623704c9270c"
+        },
+        {
+          "path": "internal/pins/perm_unix_test.go",
+          "type": "blob",
+          "sha": "9427c2c2a1f24bca6af5ab4d3a09965a934b959d"
+        },
+        {
+          "path": "internal/pins/render.go",
+          "type": "blob",
+          "sha": "4992ea29f094f793367269ad251dc382e588e3ff"
+        },
+        {
+          "path": "internal/pins/save_root_test.go",
+          "type": "blob",
+          "sha": "71ca6692a87257545addd738894a59229ef65f98"
+        },
+        {
+          "path": "internal/pins/snapshot.go",
+          "type": "blob",
+          "sha": "d9b08212ec6fc4b69115ee96088ff59774b53545"
+        },
+        {
+          "path": "internal/pins/snapshot_test.go",
+          "type": "blob",
+          "sha": "f1459542a604f1b0766678e40ed9e14bb7fb1712"
+        },
+        {
+          "path": "internal/pins/store.go",
+          "type": "blob",
+          "sha": "8596c757ebe7c73f840b6afefae6538f9738e8f4"
+        },
+        {
+          "path": "internal/pins/store_share_test.go",
+          "type": "blob",
+          "sha": "20a6cc7b619bad96a08c2e5b3579a5b68b8c7092"
+        },
+        {
+          "path": "internal/pins/store_test.go",
+          "type": "blob",
+          "sha": "b2c2f572f93af2dab913bbc907ae337d6f2837f3"
+        },
+        {
+          "path": "internal/report/diff.go",
+          "type": "blob",
+          "sha": "73d83190d4f827dcdfca485f4b4f3ec3db02b9e6"
+        },
+        {
+          "path": "internal/report/diff_test.go",
+          "type": "blob",
+          "sha": "c79ef5ba24e0aa747e2944a6289988fc4f09d1f9"
+        },
+        {
+          "path": "internal/report/doc.go",
+          "type": "blob",
+          "sha": "ad92fbbae458d6821e63b0a858150be67e569fc4"
+        },
+        {
+          "path": "internal/report/export_test.go",
+          "type": "blob",
+          "sha": "ab1ba05f6055a29b679251d5982b1d75a923ff20"
+        },
+        {
+          "path": "internal/report/findings.go",
+          "type": "blob",
+          "sha": "2ada4fa3b2a4ce19c780ec8cad6ea40d44ce027c"
+        },
+        {
+          "path": "internal/report/findings_test.go",
+          "type": "blob",
+          "sha": "9ddd97dec8b473c2e1a14ad32602d1feed05625e"
+        },
+        {
+          "path": "internal/report/json.go",
+          "type": "blob",
+          "sha": "a7084289f2c99481aea772c424015dffed2c1176"
+        },
+        {
+          "path": "internal/report/json_bound.go",
+          "type": "blob",
+          "sha": "ac671c3eec9c1032edf5fac3cbcf1d3e9a557173"
+        },
+        {
+          "path": "internal/report/json_bound_test.go",
+          "type": "blob",
+          "sha": "de09594823d20a57bbbea358e85aa31f56faa77e"
+        },
+        {
+          "path": "internal/report/json_schema_test.go",
+          "type": "blob",
+          "sha": "9957c841c1e556cd4ac5e91f7da9c41f744ef0a5"
+        },
+        {
+          "path": "internal/report/json_stream_test.go",
+          "type": "blob",
+          "sha": "3add55f733de0b1e95cb0de0667fdc88b70d1fe6"
+        },
+        {
+          "path": "internal/report/json_test.go",
+          "type": "blob",
+          "sha": "9897d249d13dd26980b0b2872c30236175c27ad3"
+        },
+        {
+          "path": "internal/report/reporttest/reporttest.go",
+          "type": "blob",
+          "sha": "61e475f120e8cc0befdae08fd8235e32040b0fe3"
+        },
+        {
+          "path": "internal/report/reporttest/reporttest_test.go",
+          "type": "blob",
+          "sha": "187210cb48d18cd6191d637bea684811124132f4"
+        },
+        {
+          "path": "internal/report/servers.go",
+          "type": "blob",
+          "sha": "b0e1cc70d34940de96ddbbd44a5b6286fd08c9ac"
+        },
+        {
+          "path": "internal/report/servers_test.go",
+          "type": "blob",
+          "sha": "eb5914594db477340d58d0dfb6b9a119bab41862"
+        },
+        {
+          "path": "internal/report/style.go",
+          "type": "blob",
+          "sha": "7f7b3938c4247b0c717b4e76ef876dc369a261a2"
+        },
+        {
+          "path": "internal/report/style_test.go",
+          "type": "blob",
+          "sha": "8d7d815d188919e2b0a062906a0166a72fc4efb5"
+        },
+        {
+          "path": "internal/report/summary.go",
+          "type": "blob",
+          "sha": "f52740a544a5989a58abdd8cb1bd1c5687449cf6"
+        },
+        {
+          "path": "internal/report/summary_test.go",
+          "type": "blob",
+          "sha": "ca64bbe632bc9e51870e0a27c495d2b9847bc0ca"
+        },
+        {
+          "path": "internal/rules/analyze.go",
+          "type": "blob",
+          "sha": "8d6da48936b1f0affddf3e85b395c27a3556703d"
+        },
+        {
+          "path": "internal/rules/analyze_test.go",
+          "type": "blob",
+          "sha": "6831ab282bdf277cb739c1d61f65f69461cbff92"
+        },
+        {
+          "path": "internal/rules/ansi.go",
+          "type": "blob",
+          "sha": "6107031a1ce5ae55411fd5c74cbebb58daf04479"
+        },
+        {
+          "path": "internal/rules/ansi_test.go",
+          "type": "blob",
+          "sha": "7b59c3d06592882b720420238298bd4594998809"
+        },
+        {
+          "path": "internal/rules/argsecrets.go",
+          "type": "blob",
+          "sha": "2ef7a362ec96bc37f10a1698e70e22c6b57da211"
+        },
+        {
+          "path": "internal/rules/argsecrets_test.go",
+          "type": "blob",
+          "sha": "e33c6d9446884c5deb72172119d8af237afe6aa8"
+        },
+        {
+          "path": "internal/rules/bench_test.go",
+          "type": "blob",
+          "sha": "c561615b5e3d8f03ff0f4026804f909cc9c35c07"
+        },
+        {
+          "path": "internal/rules/builtin_test.go",
+          "type": "blob",
+          "sha": "bb86d89fce8d041aa9c0ace29e577d0222cffa83"
+        },
+        {
+          "path": "internal/rules/cases.go",
+          "type": "blob",
+          "sha": "89b16793e31cee46039d0121efae2d1753cba5c5"
+        },
+        {
+          "path": "internal/rules/cases_test.go",
+          "type": "blob",
+          "sha": "3622bcc4550bd83305aca5df9164d99a95f05aea"
+        },
+        {
+          "path": "internal/rules/compat_test.go",
+          "type": "blob",
+          "sha": "856dd12a99fee68a394cce0e31f0420cbf8744b2"
+        },
+        {
+          "path": "internal/rules/compiler.go",
+          "type": "blob",
+          "sha": "431216418ae9477b69faab4bf5aeceb43f99ff95"
+        },
+        {
+          "path": "internal/rules/config.go",
+          "type": "blob",
+          "sha": "7b39ed51624260feee5238debf5832712886b1c7"
+        },
+        {
+          "path": "internal/rules/config_test.go",
+          "type": "blob",
+          "sha": "0bf47370183b13e5e10703bfdd43e54df3999399"
+        },
+        {
+          "path": "internal/rules/confusables.go",
+          "type": "blob",
+          "sha": "059ef26847bbfb1d455419f6375c709da3b6a557"
+        },
+        {
+          "path": "internal/rules/confusables_test.go",
+          "type": "blob",
+          "sha": "7cfcb9e324b9b5b29bd28aa7291f13a480da4d71"
+        },
+        {
+          "path": "internal/rules/doc.go",
+          "type": "blob",
+          "sha": "258c9cf9b530cdba8a79af2365e8b62206562132"
+        },
+        {
+          "path": "internal/rules/documented.go",
+          "type": "blob",
+          "sha": "acec585342570f19d8402b3f5a43931473fe6d61"
+        },
+        {
+          "path": "internal/rules/exfil_corpus_test.go",
+          "type": "blob",
+          "sha": "62bd798d10333cf343386979820f1244f09c0bd1"
+        },
+        {
+          "path": "internal/rules/export_test.go",
+          "type": "blob",
+          "sha": "bb524abcfd77c45b7ad48191abbab7352b9f88f9"
+        },
+        {
+          "path": "internal/rules/finding.go",
+          "type": "blob",
+          "sha": "253a50cc916c113cc15c2673e044c73460376da2"
+        },
+        {
+          "path": "internal/rules/fixtures_imports_test.go",
+          "type": "blob",
+          "sha": "5117f05f898948f03796a54b8e86a9165b40615e"
+        },
+        {
+          "path": "internal/rules/fixtures_test.go",
+          "type": "blob",
+          "sha": "05a078cf74e1799a180937a917c1868d4cb08cad"
+        },
+        {
+          "path": "internal/rules/fuzz_test.go",
+          "type": "blob",
+          "sha": "2d18dc79861e774255d06134e64c3cf813c10c33"
+        },
+        {
+          "path": "internal/rules/gentables_test.go",
+          "type": "blob",
+          "sha": "8845bb405a8ccdfe7e272f1235255f0b66347612"
+        },
+        {
+          "path": "internal/rules/heuristics.go",
+          "type": "blob",
+          "sha": "4fc87c7e50a9a5e789b5c201083ac0f8797422a4"
+        },
+        {
+          "path": "internal/rules/heuristics_test.go",
+          "type": "blob",
+          "sha": "1c5511b1251657dc4dd539bd1ed18c7fa732027c"
+        },
+        {
+          "path": "internal/rules/ignore.go",
+          "type": "blob",
+          "sha": "c46f40e9f984d025f11d1d64ef2908b5b0b17242"
+        },
+        {
+          "path": "internal/rules/ignore_test.go",
+          "type": "blob",
+          "sha": "e829749e6e465c02f396343e84d60ecc93953682"
+        },
+        {
+          "path": "internal/rules/load.go",
+          "type": "blob",
+          "sha": "34e168bbf92c6a779f0a105e4b1eff7cf37d1dfa"
+        },
+        {
+          "path": "internal/rules/load_test.go",
+          "type": "blob",
+          "sha": "cf43fb69cfe8c9979a27c5c23c5622418adb574e"
+        },
+        {
+          "path": "internal/rules/load_unix_test.go",
+          "type": "blob",
+          "sha": "d9521db267d97c40aa05a509270960a698ffe2f4"
+        },
+        {
+          "path": "internal/rules/loaderror.go",
+          "type": "blob",
+          "sha": "ca722c46a8438b85735129e40e387d3d63a1306a"
+        },
+        {
+          "path": "internal/rules/loaderror_test.go",
+          "type": "blob",
+          "sha": "9a4d8131135874dfa499ef542e0c30263f875aec"
+        },
+        {
+          "path": "internal/rules/main_test.go",
+          "type": "blob",
+          "sha": "4acd061b0f1e5196302094056b84af43ff6b7af0"
+        },
+        {
+          "path": "internal/rules/match.go",
+          "type": "blob",
+          "sha": "7f238fe59d9f785516951a431024450433e72fee"
+        },
+        {
+          "path": "internal/rules/match_test.go",
+          "type": "blob",
+          "sha": "c6c38a16dda6250f6c2c262d51632cbf9d9bfc68"
+        },
+        {
+          "path": "internal/rules/mixedscript.go",
+          "type": "blob",
+          "sha": "2a9fe0bdab733bb6dafcd14dcc2318e9d31dc7aa"
+        },
+        {
+          "path": "internal/rules/mixedscript_test.go",
+          "type": "blob",
+          "sha": "59feb675bf14ad2a73160b959d8f650a74249fe2"
+        },
+        {
+          "path": "internal/rules/nonregistryspec.go",
+          "type": "blob",
+          "sha": "22b490939a50060a3fed2e35affbabcab6bc81e6"
+        },
+        {
+          "path": "internal/rules/nonregistryspec_test.go",
+          "type": "blob",
+          "sha": "1ea5c41dccb4de4b4574706b5bda5fe28f19fec9"
+        },
+        {
+          "path": "internal/rules/normalize.go",
+          "type": "blob",
+          "sha": "c140cb3f763b8e7a3ee36a1b2265673ddacf15b8"
+        },
+        {
+          "path": "internal/rules/normalize_test.go",
+          "type": "blob",
+          "sha": "152eb034c66f2282f05cf72ce7fe69200bfe79d9"
+        },
+        {
+          "path": "internal/rules/npxflags.go",
+          "type": "blob",
+          "sha": "6cbe3d3dd0a69d880d3453cb2907dc2c84267bb0"
+        },
+        {
+          "path": "internal/rules/npxflags_test.go",
+          "type": "blob",
+          "sha": "3f6b766c2a7d9b09027bd26bd2de979a87d97e01"
+        },
+        {
+          "path": "internal/rules/parse.go",
+          "type": "blob",
+          "sha": "59c15fec7b3fbeb1cdb753a4f9c843a0f5b0e6b9"
+        },
+        {
+          "path": "internal/rules/parse_test.go",
+          "type": "blob",
+          "sha": "24fe8a0d2287bea87e99c49efae962766862d60f"
+        },
+        {
+          "path": "internal/rules/pkgspec.go",
+          "type": "blob",
+          "sha": "b5b3b43d30bda5315b4e0d26d3aada7754ae6c91"
+        },
+        {
+          "path": "internal/rules/pkgspec_test.go",
+          "type": "blob",
+          "sha": "f01d519702124cda53c90092f90bcca38d5ef938"
+        },
+        {
+          "path": "internal/rules/prepare.go",
+          "type": "blob",
+          "sha": "d61674cc77c856432854564993d3a059805b3fc0"
+        },
+        {
+          "path": "internal/rules/prepare_test.go",
+          "type": "blob",
+          "sha": "48ce024f31d0f4811bc5f902fa4b32c3e7aaebd8"
+        },
+        {
+          "path": "internal/rules/re2print.go",
+          "type": "blob",
+          "sha": "4fceff54c726e34befc35a5c934cc4be947fd29d"
+        },
+        {
+          "path": "internal/rules/re2print_test.go",
+          "type": "blob",
+          "sha": "79d7748222b6a21fa3a6e13d85cb967b70350308"
+        },
+        {
+          "path": "internal/rules/reserved_test.go",
+          "type": "blob",
+          "sha": "f20422d2c032ea70f16b7e3b6ab00ca0414c5acb"
+        },
+        {
+          "path": "internal/rules/rule.go",
+          "type": "blob",
+          "sha": "061744e65af4e8e7e2ee2f1dc5d1db9edae5f408"
+        },
+        {
+          "path": "internal/rules/schemamatch.go",
+          "type": "blob",
+          "sha": "6de880f75a18fe588f09aad2ed4d3a9889386a55"
+        },
+        {
+          "path": "internal/rules/schemamatch_test.go",
+          "type": "blob",
+          "sha": "dc40afc42d86edfe4f19af6ba937d4a92d1fe001"
+        },
+        {
+          "path": "internal/rules/schematext.go",
+          "type": "blob",
+          "sha": "83d2f250ff630e844d6f16220b26f4ac0a0c96fb"
+        },
+        {
+          "path": "internal/rules/schematext_test.go",
+          "type": "blob",
+          "sha": "d7bcb293c6d54bcbf7f67ab3e27d2ce18d8f7525"
+        },
+        {
+          "path": "internal/rules/set.go",
+          "type": "blob",
+          "sha": "a3b1ec1b5ffe97aec021022d453f2540ed73353d"
+        },
+        {
+          "path": "internal/rules/set_test.go",
+          "type": "blob",
+          "sha": "d6943b6d162942431d06b8a7e44b710ab2e3c1c5"
+        },
+        {
+          "path": "internal/rules/shadowing.go",
+          "type": "blob",
+          "sha": "62688e89f854df50a403366a477d3b671557801a"
+        },
+        {
+          "path": "internal/rules/shadowing_test.go",
+          "type": "blob",
+          "sha": "fdfeb801aacbac308f582e4a8f2f7954b1aee22d"
+        },
+        {
+          "path": "internal/rules/testdata/fuzz/FuzzILTwin/1ac6af9f414fe39c",
+          "type": "blob",
+          "sha": "a4fcc8f9fd1ac3655127937fdcedc5ca04704ab2"
+        },
+        {
+          "path": "internal/rules/testdata/fuzz/FuzzILTwin/beb20baee3b4fede",
+          "type": "blob",
+          "sha": "cd91bec9ce1ed0863fb88f56ae2c2a7081c75c5a"
+        },
+        {
+          "path": "internal/rules/testdata/fuzz/FuzzILTwin/e2f76dd310b29449",
+          "type": "blob",
+          "sha": "bdcfa18e8f4f9032e367a129539868c12794fbd6"
+        },
+        {
+          "path": "internal/rules/textcheck.go",
+          "type": "blob",
+          "sha": "29a27e1bbb26b064f0336158c195590c0f75f2a9"
+        },
+        {
+          "path": "internal/rules/textcheck_test.go",
+          "type": "blob",
+          "sha": "dd1f761cd5c3e297a6baed774563af1fae57cc0a"
+        },
+        {
+          "path": "internal/rules/twin.go",
+          "type": "blob",
+          "sha": "f19245a05575c69f90f360a170d670369f46d249"
+        },
+        {
+          "path": "internal/rules/twin_test.go",
+          "type": "blob",
+          "sha": "b1e42b66804707a1db69b90a68490c39853ad76d"
+        },
+        {
+          "path": "internal/rules/typosquat.go",
+          "type": "blob",
+          "sha": "9dfd1279761ece4124e056932609cea078c0de96"
+        },
+        {
+          "path": "internal/rules/typosquat_corpus_test.go",
+          "type": "blob",
+          "sha": "46c2a0f57d24e9a3377ff87481097997e0e5779b"
+        },
+        {
+          "path": "internal/rules/typosquat_test.go",
+          "type": "blob",
+          "sha": "dc85a06c4859085ae12f4002b4c21394bd3e75a8"
+        },
+        {
+          "path": "internal/rules/validate.go",
+          "type": "blob",
+          "sha": "86c636ba220ec3f5bca233e3938401b2fc63bec1"
+        },
+        {
+          "path": "internal/rules/validate_test.go",
+          "type": "blob",
+          "sha": "93bec7dea638b2d969b731fd751d2c6e57accd4c"
+        },
+        {
+          "path": "internal/safefile/safefile.go",
+          "type": "blob",
+          "sha": "9f02685229441f9b31cfa9e5ef22c5cd47b9b055"
+        },
+        {
+          "path": "internal/safefile/safefile_test.go",
+          "type": "blob",
+          "sha": "89aaa02a3ea53465c322648ddde19858e966ef96"
+        },
+        {
+          "path": "internal/termsafe/termsafe.go",
+          "type": "blob",
+          "sha": "f4deb8f629f56317a294218d756f39fe15a1fe04"
+        },
+        {
+          "path": "internal/termsafe/termsafe_test.go",
+          "type": "blob",
+          "sha": "9c0b1df5a8557fb70f2be79e3d0591f4c503f1d7"
+        },
+        {
+          "path": "rules/.gitkeep",
+          "type": "blob",
+          "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "rules/MOAT-T1-001.yaml",
+          "type": "blob",
+          "sha": "37fe9d5ee43b6c04ee478a666ce871f6747dce8f"
+        },
+        {
+          "path": "rules/MOAT-T1-002.yaml",
+          "type": "blob",
+          "sha": "9ff0f0db6f41fbc25635fe5eb004321ef13e7eec"
+        },
+        {
+          "path": "rules/MOAT-T1-003.yaml",
+          "type": "blob",
+          "sha": "afc0f48c6153105dbc6edf3bfdfb441df7f0c612"
+        },
+        {
+          "path": "rules/MOAT-T1-004.yaml",
+          "type": "blob",
+          "sha": "eb0003e17bd236cbeda7bcd6fd8b3da6b7e45127"
+        },
+        {
+          "path": "rules/MOAT-T1-005.yaml",
+          "type": "blob",
+          "sha": "12e41449d2e6d8282d343f9e83fea70c42bdba1e"
+        },
+        {
+          "path": "rules/MOAT-T1-006.yaml",
+          "type": "blob",
+          "sha": "62ed4505f370a05439a4e3d46ffc1c51742fd24f"
+        },
+        {
+          "path": "rules/MOAT-T1-007.yaml",
+          "type": "blob",
+          "sha": "0930dbbb986615370ae99a4cbe3c97f257da6c04"
+        },
+        {
+          "path": "rules/MOAT-T1-008.yaml",
+          "type": "blob",
+          "sha": "06b4ffac493bea2ba575d887978770a2ecf6c279"
+        },
+        {
+          "path": "rules/MOAT-T1-009.yaml",
+          "type": "blob",
+          "sha": "1ce3d6f2964d51686f17d63dc07bc60ad8db2c18"
+        },
+        {
+          "path": "rules/MOAT-T1-010.yaml",
+          "type": "blob",
+          "sha": "ec6af4146bdb6c6b2d22466f73838da0f49b9bb8"
+        },
+        {
+          "path": "rules/MOAT-T1-011.yaml",
+          "type": "blob",
+          "sha": "561abb8e8084f483cabb3f6a8b32a1e67ec91a55"
+        },
+        {
+          "path": "rules/MOAT-T1-012.yaml",
+          "type": "blob",
+          "sha": "2ddc15d95e0fe64ca52799435a037607c90b8ba4"
+        },
+        {
+          "path": "rules/MOAT-T1-013.yaml",
+          "type": "blob",
+          "sha": "48050f521c92afef5a883fbea564c549bed3f1d7"
+        },
+        {
+          "path": "rules/MOAT-T1-014.yaml",
+          "type": "blob",
+          "sha": "229916fd0f3aad1ddcd45ecd3a201d81ce13bb1f"
+        },
+        {
+          "path": "rules/MOAT-T1-015.yaml",
+          "type": "blob",
+          "sha": "3006093f18ebd10c2d11857215ad59928a905a28"
+        },
+        {
+          "path": "rules/MOAT-T1-016.yaml",
+          "type": "blob",
+          "sha": "30caae1f4e6cf2879e381862817fe69ed1843064"
+        },
+        {
+          "path": "rules/MOAT-T1-017.yaml",
+          "type": "blob",
+          "sha": "a34ec81735bc911fa55da22da690cf34a0a4765c"
+        },
+        {
+          "path": "rules/MOAT-T1-018.yaml",
+          "type": "blob",
+          "sha": "8ef8cc7df166c97b699a09bb061dfb247f3558f4"
+        },
+        {
+          "path": "rules/MOAT-T1-019.yaml",
+          "type": "blob",
+          "sha": "2face9f2a9c71b48c93fcaa1fc0a67b197693f06"
+        },
+        {
+          "path": "rules/MOAT-T1-020.yaml",
+          "type": "blob",
+          "sha": "c28e43c02247bfc0f313c7c6ff3e964b7bd571c1"
+        },
+        {
+          "path": "rules/MOAT-T1-021.yaml",
+          "type": "blob",
+          "sha": "25e3ee79d141ab31be0c6f295153ac5a454cd8c9"
+        },
+        {
+          "path": "rules/MOAT-T1-022.yaml",
+          "type": "blob",
+          "sha": "5424c3dd74dd795854332c464c59030551f097a8"
+        },
+        {
+          "path": "rules/MOAT-T3-001.yaml",
+          "type": "blob",
+          "sha": "0b1aff15b7544cf9d9f6f300cd167b18d3d8f82a"
+        },
+        {
+          "path": "rules/MOAT-T4-001.yaml",
+          "type": "blob",
+          "sha": "afa6f340fcc64438485ceb5dcd5d775111fd3464"
+        },
+        {
+          "path": "rules/MOAT-T4-002.yaml",
+          "type": "blob",
+          "sha": "2928e9c0c5100a5f6ae9904fcb5ffa8f0d262ae1"
+        },
+        {
+          "path": "rules/MOAT-T4-003.yaml",
+          "type": "blob",
+          "sha": "9480139c6dbb42a44fb1de511af186a8a8e0b427"
+        },
+        {
+          "path": "rules/MOAT-T4-004.yaml",
+          "type": "blob",
+          "sha": "1d5fc5684909ec4a1e7c73d2752abd5c2fb5d26b"
+        },
+        {
+          "path": "rules/MOAT-T5-001.yaml",
+          "type": "blob",
+          "sha": "d83d4ed7aeffb1c5b628b54c6d96cf13bcd8fab6"
+        },
+        {
+          "path": "rules/data/popular-servers.txt",
+          "type": "blob",
+          "sha": "e05a4328e91b7aac2448c90f8347192cb74c67f4"
+        },
+        {
+          "path": "rules/embed.go",
+          "type": "blob",
+          "sha": "bf12eef277417bafc5a3ad0ba558b144cf0e88cb"
+        },
+        {
+          "path": "testdata/ci/README.md",
+          "type": "blob",
+          "sha": "86b9195571973f86e4d0e5c84b5ea09fbda3829c"
+        },
+        {
+          "path": "testdata/ci/repo/.mcp.json",
+          "type": "blob",
+          "sha": "fc03099c4e662018d6ff95071d91862965be8b2a"
+        },
+        {
+          "path": "testdata/configs/dangerous/README.md",
+          "type": "blob",
+          "sha": "ede565bb47b7d590280f57e214140bfb9f6695e2"
+        },
+        {
+          "path": "testdata/configs/dangerous/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "c7d9af3c581a8a39901d0e3970457db0a4becd86"
+        },
+        {
+          "path": "testdata/configs/typosquat/README.md",
+          "type": "blob",
+          "sha": "5bb9abac0a2064ef34ed070cd2356b2b3380f1e1"
+        },
+        {
+          "path": "testdata/configs/typosquat/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "3519a2bb305d728bb0a2258b1103a7a9906c6f0f"
+        },
+        {
+          "path": "testdata/discover/all/full/home/.claude.json",
+          "type": "blob",
+          "sha": "f739d027c1387948233c40836d8f72797285c660"
+        },
+        {
+          "path": "testdata/discover/all/full/home/.codex/config.toml",
+          "type": "blob",
+          "sha": "11dbbd5dc8da199e208c1941bc22f8ef476020c5"
+        },
+        {
+          "path": "testdata/discover/all/full/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "b39160c1d8af418d1015dc54679e7a0f35b8c65f"
+        },
+        {
+          "path": "testdata/discover/all/full/work/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "56d12b7d3c8d8d8f00bf30bc6c3b07e87f4a496c"
+        },
+        {
+          "path": "testdata/discover/all/full/work/.mcp.json",
+          "type": "blob",
+          "sha": "4b0ea2e313ba6fe19ca47f9ecb9356d1b8699f81"
+        },
+        {
+          "path": "testdata/discover/all/partial-failure/home/.claude.json",
+          "type": "blob",
+          "sha": "b37b1d61c63ac747ac345433f239a8bc847ceb58"
+        },
+        {
+          "path": "testdata/discover/all/partial-failure/home/.codex/config.toml",
+          "type": "blob",
+          "sha": "11dbbd5dc8da199e208c1941bc22f8ef476020c5"
+        },
+        {
+          "path": "testdata/discover/all/partial-failure/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "b39160c1d8af418d1015dc54679e7a0f35b8c65f"
+        },
+        {
+          "path": "testdata/discover/all/partial-failure/work/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "56d12b7d3c8d8d8f00bf30bc6c3b07e87f4a496c"
+        },
+        {
+          "path": "testdata/discover/all/partial-failure/work/.mcp.json",
+          "type": "blob",
+          "sha": "4b0ea2e313ba6fe19ca47f9ecb9356d1b8699f81"
+        },
+        {
+          "path": "testdata/discover/all/same-home-and-work/home/.claude.json",
+          "type": "blob",
+          "sha": "f14add4d76375cf2f174819f82d8875b8b51c266"
+        },
+        {
+          "path": "testdata/discover/all/same-home-and-work/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "adfc9d11c04078a368cd78854b7c4f5c642d8dde"
+        },
+        {
+          "path": "testdata/discover/all/same-home-and-work/home/.mcp.json",
+          "type": "blob",
+          "sha": "714d34146ce5af45714ba7b1de4c072b6b1853a3"
+        },
+        {
+          "path": "testdata/discover/claude-code/empty/home/.claude.json",
+          "type": "blob",
+          "sha": "9e26dfeeb6e641a33dae4961196235bdb965b21b"
+        },
+        {
+          "path": "testdata/discover/claude-code/empty/work/.mcp.json",
+          "type": "blob",
+          "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "testdata/discover/claude-code/invalid-entries/home/.claude.json",
+          "type": "blob",
+          "sha": "a5c89b3ce481434c876f84994e1505cee87ed3e0"
+        },
+        {
+          "path": "testdata/discover/claude-code/malformed/home/.claude.json",
+          "type": "blob",
+          "sha": "57ae304b972e8db594f071c772bc205f5715d9ae"
+        },
+        {
+          "path": "testdata/discover/claude-code/malformed/work/.mcp.json",
+          "type": "blob",
+          "sha": "1c344eb55dce0f4b9b2438f5b10329ec1b94c442"
+        },
+        {
+          "path": "testdata/discover/claude-code/missing/.gitkeep",
+          "type": "blob",
+          "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "testdata/discover/claude-code/secrets/home/.claude.json",
+          "type": "blob",
+          "sha": "16ac98bf44dbf4050f513b517d053062deaec9ba"
+        },
+        {
+          "path": "testdata/discover/claude-code/secrets/work/.mcp.json",
+          "type": "blob",
+          "sha": "13f98f5a16cad8740f958f112cf4b69e5a2327e7"
+        },
+        {
+          "path": "testdata/discover/claude-code/state/home/.claude.json",
+          "type": "blob",
+          "sha": "827d8e5c5b2f10baa2dfe325fc59d0ab9df47df1"
+        },
+        {
+          "path": "testdata/discover/claude-code/state/home/.claude/settings.json",
+          "type": "blob",
+          "sha": "4968307fad502568d02560954aaa824d50f3f20d"
+        },
+        {
+          "path": "testdata/discover/claude-code/state/work/.claude/settings.local.json",
+          "type": "blob",
+          "sha": "cfca2e4808f0d42fe2ac7ea158bb7e64f3a667e1"
+        },
+        {
+          "path": "testdata/discover/claude-code/state/work/.mcp.json",
+          "type": "blob",
+          "sha": "e547b83bb777f1514f23cc7db25e1babe95168f3"
+        },
+        {
+          "path": "testdata/discover/claude-code/valid/home/.claude.json",
+          "type": "blob",
+          "sha": "ccfdb451cd5f14b74b2d62077e49492316dfc8fb"
+        },
+        {
+          "path": "testdata/discover/claude-code/valid/work/.mcp.json",
+          "type": "blob",
+          "sha": "5f4f52d03fb4dde98f04f18a39785b23674fd5bf"
+        },
+        {
+          "path": "testdata/discover/codex/empty/home/.codex/config.toml",
+          "type": "blob",
+          "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "testdata/discover/codex/invalid-entries/home/.codex/config.toml",
+          "type": "blob",
+          "sha": "fc77f4f385e928cc7647373dd668c425b5775df6"
+        },
+        {
+          "path": "testdata/discover/codex/malformed/home/.codex/config.toml",
+          "type": "blob",
+          "sha": "87eeb51aeaa9767545e509b25eaf7d0e65b8ae76"
+        },
+        {
+          "path": "testdata/discover/codex/missing/.gitkeep",
+          "type": "blob",
+          "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "testdata/discover/codex/secrets/home/.codex/config.toml",
+          "type": "blob",
+          "sha": "e35ebade74beed3967f54e3aafb6c807655a1605"
+        },
+        {
+          "path": "testdata/discover/codex/valid/home/.codex/config.toml",
+          "type": "blob",
+          "sha": "95dd6f560b598ac1807fc661bcf33c51f6da3244"
+        },
+        {
+          "path": "testdata/discover/cursor/empty/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "0967ef424bce6791893e9a57bb952f80fd536e93"
+        },
+        {
+          "path": "testdata/discover/cursor/empty/work/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "testdata/discover/cursor/invalid-entries/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "596cef286960f3ff7b7d2e13caff07c92ca6262b"
+        },
+        {
+          "path": "testdata/discover/cursor/malformed/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "eb9fa34c299eba766dacd4224ae7f1a9ff7b5c8a"
+        },
+        {
+          "path": "testdata/discover/cursor/malformed/work/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "0116604bc2b5dca5f2227bdd8f3130061c93c99c"
+        },
+        {
+          "path": "testdata/discover/cursor/missing/.gitkeep",
+          "type": "blob",
+          "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "testdata/discover/cursor/secrets/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "e06303b3ac5dc5740d6b134b6d70d1bdd906114d"
+        },
+        {
+          "path": "testdata/discover/cursor/secrets/work/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "f5a35db5c3b334c695132b6dafa8c92bacefbfac"
+        },
+        {
+          "path": "testdata/discover/cursor/valid/home/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "709af917aa8bed49f163fd3df3c023301b9ead44"
+        },
+        {
+          "path": "testdata/discover/cursor/valid/work/.cursor/mcp.json",
+          "type": "blob",
+          "sha": "e04566ac570945d82f4f99c236cb0b46a8c2fa7b"
+        },
+        {
+          "path": "testdata/exfil/descriptions.txt",
+          "type": "blob",
+          "sha": "b48f4dfe6355063cd2a505f59a9d460361cf8482"
+        },
+        {
+          "path": "testdata/pins/hash/golden.txt",
+          "type": "blob",
+          "sha": "0f320bcde95e1d41bd79cfd64016f0ba3f46d1ce"
+        },
+        {
+          "path": "testdata/pins/hash/tools.json",
+          "type": "blob",
+          "sha": "cdba1c05b8a15cf966998e16250dc6b1c46a2b7a"
+        },
+        {
+          "path": "testdata/rules/badregex/MOAT-X-002.yaml",
+          "type": "blob",
+          "sha": "822899590de32a1cddf50cc1e240d97532c56832"
+        },
+        {
+          "path": "testdata/rules/badregexconfig/MOAT-X-005.yaml",
+          "type": "blob",
+          "sha": "b2a6c6c5d4cfe5fd839ef646c24e76cd89db9b5f"
+        },
+        {
+          "path": "testdata/rules/collide/MOAT-T1-003.yaml",
+          "type": "blob",
+          "sha": "2874bf7d18fae9a4031b61710129e347cfdcb5dc"
+        },
+        {
+          "path": "testdata/rules/configtarget/MOAT-X-003.yaml",
+          "type": "blob",
+          "sha": "23e8156e19b32950e754e7b5eb7099350adaa103"
+        },
+        {
+          "path": "testdata/rules/extra/MOAT-X-001.yaml",
+          "type": "blob",
+          "sha": "ae68f917823634605bd74cb14384bd5046095a9c"
+        },
+        {
+          "path": "testdata/rules/invalid/bad-severity.yaml",
+          "type": "blob",
+          "sha": "c17b2485529c8ac14d9565b342e5cabfc88839d5"
+        },
+        {
+          "path": "testdata/rules/valid/MOAT-T1-003.yaml",
+          "type": "blob",
+          "sha": "420aee2f256b6082ee553cebe79509ca1669f532"
+        },
+        {
+          "path": "testdata/servers/.gitkeep",
+          "type": "blob",
+          "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "testdata/servers/README.md",
+          "type": "blob",
+          "sha": "47e1c2d0429bdc0b3d9d091596f565d315cb9cd8"
+        },
+        {
+          "path": "testdata/servers/benign/README.md",
+          "type": "blob",
+          "sha": "b04b5ecf684e99c3750770044ef9b5d186adc6fb"
+        },
+        {
+          "path": "testdata/servers/benign/main.go",
+          "type": "blob",
+          "sha": "028219687c93d10984508a2b03025950ae8952c8"
+        },
+        {
+          "path": "testdata/servers/echo/README.md",
+          "type": "blob",
+          "sha": "6ad99ab01ec48354f8cf602b77018a262dad3e95"
+        },
+        {
+          "path": "testdata/servers/echo/main.go",
+          "type": "blob",
+          "sha": "0dc752d2043a43eed8e68e3ca43c14c30006f1ab"
+        },
+        {
+          "path": "testdata/servers/mailer/README.md",
+          "type": "blob",
+          "sha": "618b07b4e61792f47ba49301b673ba642fd9b5dd"
+        },
+        {
+          "path": "testdata/servers/mailer/main.go",
+          "type": "blob",
+          "sha": "fee0d6d070504932db9a17149afbfe2007202b08"
+        },
+        {
+          "path": "testdata/servers/poisoned/README.md",
+          "type": "blob",
+          "sha": "a69b3e695ba4eb5175feaf24eb1189299c9fa67c"
+        },
+        {
+          "path": "testdata/servers/poisoned/main.go",
+          "type": "blob",
+          "sha": "4c9a5a750723f021ad969c170da42b3274470cea"
+        },
+        {
+          "path": "testdata/servers/rugpull/README.md",
+          "type": "blob",
+          "sha": "7d627037c7805389ce7fd6b2c6a6d612d5914ff6"
+        },
+        {
+          "path": "testdata/servers/rugpull/main.go",
+          "type": "blob",
+          "sha": "bc14e69f2d8e1e236cbabeb28d42944a32474471"
+        },
+        {
+          "path": "testdata/servers/shadowing/README.md",
+          "type": "blob",
+          "sha": "193db0b85328a17e8c44134d991e5496d64ba8d4"
+        },
+        {
+          "path": "testdata/servers/shadowing/main.go",
+          "type": "blob",
+          "sha": "816b3442202a05bddc658fda579300e723486e3a"
+        },
+        {
+          "path": "testdata/typosquat/names.txt",
+          "type": "blob",
+          "sha": "a550c227a11b514fa830be98b53a67d7e86b3df7"
+        }
+      ]
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/Ducarv/mcpmoat/issues?state=all&sort=updated&direction=desc&per_page=100",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:02:42.296849+00:00",
+    "status": 200,
+    "bytes": 692270,
+    "sha256": "d9012861af8139f7ebac404f9011df7baa70dacb253dd8ca5e90af7ca62d787f",
+    "rate_remaining": "12",
+    "selected": [
+      {
+        "number": 224,
+        "title": "Share one test harness across the .github/scripts tests",
+        "body": "## Summary\n\nPR 215 adds five test scripts in `.github/scripts/`. The local review found that they copy the same test harness. A change to the output format or to the case runner must be made in every file. This issue tracks the cleanup. It changes no behaviour.\n\n## Items\n\n1. **Share the failure output and the footer.** `fail`, `record_failure` and the final \"N of M cases failed\" block are copied in `notify-failure-test.sh`, `release-guard-test.sh",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/224",
+        "created_at": "2026-10-27T14:32:25Z",
+        "updated_at": "2026-10-28T02:18:10Z",
+        "closed_at": "2026-10-28T02:18:10Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 236,
+        "title": "Read the workflow YAML with a real parser in the tool pin check",
+        "body": "## Summary\n\n`.github/scripts/check-tool-pins.sh` reads workflow YAML with awk, one line at a time. Four review rounds of PR 215 each found new YAML forms that hide a `goreleaser-action` step or a pin from this reader. Every round fixed the forms that were found, and the next round found more. This issue asks for a decision: replace the line reader with a real YAML parser.\n\n## Evidence\n\n- Round 1 to round 4 of the local review of PR 215 found thes",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/236",
+        "created_at": "2026-10-27T18:09:22Z",
+        "updated_at": "2026-10-28T02:18:09Z",
+        "closed_at": "2026-10-28T02:18:09Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 223,
+        "title": "report: tell cut server names apart in scan --json",
+        "body": "## Context\nFR-15, NFR-01. PR 216 (issue 175) cuts long names and paths in `scan --json` to 512 and 4096 characters (`boundReport` in `internal/report/json_bound.go`). A cut ends with `...` and `fields_truncated` is `true`.\n\nThe security review of that PR found a limit. A hostile project `.mcp.json` can add a server whose name has the same first 512 characters as a legitimate long name. After the cut, the `server` field of the findings and of the ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/223",
+        "created_at": "2026-10-27T14:23:20Z",
+        "updated_at": "2026-10-28T02:18:09Z",
+        "closed_at": "2026-10-28T02:18:09Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 251,
+        "title": "fix(ci): parse workflow pins with YAML, add server_index to scan --json",
+        "body": "<!-- Open this PR against `dev`. Only the maintainer's release PR (`dev` into `main`) targets `main`. -->\n\n## Summary\n\nThis PR closes five CI and output issues in one branch.\n\n- **#236: parse the workflow pins with YAML.** The tool pin check is now a Go program,\n  `internal/pincheck`, behind `.github/scripts/check-tool-pins.sh`. It reads the workflows with\n  `go.yaml.in/yaml/v3` v3.0.5. That module is already a direct dependency, so `go.mod` and ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/251",
+        "created_at": "2026-10-27T22:41:32Z",
+        "updated_at": "2026-10-28T02:18:08Z",
+        "closed_at": "2026-10-28T02:18:08Z",
+        "state": "closed",
+        "comments": 12,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/251",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/251",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/251.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/251.patch",
+          "merged_at": "2026-10-28T02:18:08Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 235,
+        "title": "fix(llm): replace only config values that look secret in the tool text, so the redacted floor skips plain words",
+        "body": "## Context\n\nFollow-up from the polish review of PR #233 (branch `feat/184-185-186-188-190-211-llm-hardening`), round 2, finding 1.\n\n`scan --llm` removes the values of `inspect.Result.Secrets` from the tool text that it sends to the provider. That list is wide on purpose (issue #185): it holds every configured env value, every header value and the inner parts of masked args, each of 8 bytes or more. A hostile config can use this to hide text from ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/235",
+        "created_at": "2026-10-27T18:05:23Z",
+        "updated_at": "2026-10-28T01:57:24Z",
+        "closed_at": "2026-10-28T01:57:24Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 231,
+        "title": "perf(llm): keep redactWindow linear for a long periodic secret",
+        "body": "## Context\n\nFollow-up from the review of the branch `feat/184-185-186-188-190-211-llm-hardening`.\n\n`redactWindow` (`internal/llm/prompt.go`) restarts the search at `start+1` after each match. For a long periodic configured secret (for example 4096 times the letter `a`) that the server repeats in a 1 MiB description, the cost is O(n*m). Measured: 0.48 s for each 1 MiB description on an Apple M1.\n\nThe risk is low. A real secret is not periodic, and",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/231",
+        "created_at": "2026-10-27T15:35:59Z",
+        "updated_at": "2026-10-28T01:57:24Z",
+        "closed_at": "2026-10-28T01:57:24Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 229,
+        "title": "chore(llm): replace non-secret header values only when they look secret",
+        "body": "## Context\n\nFollow-up from the review of the branch `feat/184-185-186-188-190-211-llm-hardening`.\n\nFor a remote server, `inspect.Result.Secrets` holds every configured header value of 8 or more bytes. This includes values that are not secret, for example `Content-Type: application/json` or a `User-Agent`. `scan --llm` then replaces those words with `********` in any tool text that contains them, and sets `redacted`. A description that says \"retur",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/229",
+        "created_at": "2026-10-27T15:35:54Z",
+        "updated_at": "2026-10-28T01:57:24Z",
+        "closed_at": "2026-10-28T01:57:24Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 226,
+        "title": "chore(cli): merge the fake LLM provider servers and request decoders in the cmd/mcpmoat tests",
+        "body": "## Context\n\nFollow-up from the review of the branch `feat/184-185-186-188-190-211-llm-hardening` (#184, #185, #186, #188, #190, #211).\n\nThe branch added three fake LLM providers next to `llmAPI` (`cmd/mcpmoat/scan_llm_client_test.go`):\n\n- `llmRejectAPI` in `scan_llm_rejected_test.go`\n- `llmRetryAPI` in `scan_llm_deadline_test.go`\n- `llmSecretAPI` in `scan_llm_secrets_test.go`\n\nEach one has its own handler, its own body decode and its own per-tool",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/226",
+        "created_at": "2026-10-27T15:35:48Z",
+        "updated_at": "2026-10-28T01:57:24Z",
+        "closed_at": "2026-10-28T01:57:24Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 234,
+        "title": "fix(report): hide configured secret values that a server echoes in a tool name",
+        "body": "## Context\n\nFollow-up from the review of PR #233 (branch `feat/184-185-186-188-190-211-llm-hardening`), polish round 1, finding 8. It is not a defect of that PR: the behaviour is older and three docs state it: the FR-17 section of `docs/PRD.md`, `docs/limits.md` and `docs/llm.md`.\n\nA stdio or remote server gets the configured env values, header values and argv. A hostile server can echo one of them into a tool name or description. `inspect.Result",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/234",
+        "created_at": "2026-10-27T17:16:56Z",
+        "updated_at": "2026-10-28T01:57:23Z",
+        "closed_at": "2026-10-28T01:57:23Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 228,
+        "title": "fix(report): do not print a secret that a server echoes in a tool name",
+        "body": "## Context\n\nFollow-up from the review of the branch `feat/184-185-186-188-190-211-llm-hardening`.\n\n`scan --llm` removes the configured secret values (`inspect.Result.Secrets`) from the tool text that it sends to the provider. The local report does not do this. The terminal output and `--json` print tool names and keys as the server sent them.\n\nA server can echo a configured token in a tool name. Then the token is on stdout when any row flags that",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/228",
+        "created_at": "2026-10-27T15:35:52Z",
+        "updated_at": "2026-10-28T01:57:23Z",
+        "closed_at": "2026-10-28T01:57:23Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 180,
+        "title": "fix(inspect): keep short expanded values out of the failure reason on stdout",
+        "body": "## Context\n\n`SDKInspector` removes the configured env values and the expanded variable values of at least 8 bytes from the text of its errors (see `internal/inspect/doc.go`, \"Known limits\"). A shorter expanded value stays in the text. A hostile server can echo it in its error output.\n\nSince PR #179, `scan` prints the failure reason of a server in the SUMMARY on stdout (escaped and cut at 500 runes). Before, the reason went to stderr. stdout is th",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/180",
+        "created_at": "2026-10-25T23:19:11Z",
+        "updated_at": "2026-10-28T01:57:23Z",
+        "closed_at": "2026-10-28T01:57:23Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 258,
+        "title": "fix(report): mask echoed config secrets, send only credentials to --llm",
+        "body": "## Summary\n\nA hostile MCP server can echo a configured env, header or argv value in a tool name, title, description or schema. Before this PR, `scan` and `pin` printed that value, and `scan --llm` removed too much or too little of it. This PR fixes seven issues together.\n\n- **#228, #234 (report mask).** `scan` and `pin` now print a configured value (8 bytes or more) that a server echoes as `********`. This covers the `key` of tool rule rows, pin ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/258",
+        "created_at": "2026-10-27T23:34:30Z",
+        "updated_at": "2026-10-28T01:57:21Z",
+        "closed_at": "2026-10-28T01:57:21Z",
+        "state": "closed",
+        "comments": 6,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/258",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/258",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/258.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/258.patch",
+          "merged_at": "2026-10-28T01:57:21Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 253,
+        "title": "perf(report): search all configured secret values in one pass in the report mask",
+        "body": "## Context\n\nFollow-up from the review of the branch `fix/228-234-180-235-229-231-226-secret-redaction` (issues #228, #234, #180, #235, #229, #231, #226), performance findings.\n\nThe report mask (`discover.TextRedactor`) searches the text once for each configured secret value. The cost is linear in the text for one value (KMP, #231), but it is the number of values times the text size:\n\n- A pin diff calls the mask once for each JSON string and numbe",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/253",
+        "created_at": "2026-10-27T23:29:03Z",
+        "updated_at": "2026-10-28T01:29:02Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 2,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 255,
+        "title": "refactor(discover): share the tokenizers of ArgSecrets and ArgCredentials and analyse each config value once",
+        "body": "## Context\n\nFollow-up from the quality review of the branch `fix/228-234-180-235-229-231-226-secret-redaction` (issues #228, #234, #180, #235, #229, #231, #226), Medium and Low findings. The branch kept these out on purpose: a pure refactor of tested security parsers needs its own full review (the same reason as #232).\n\n`ArgCredentials` must stay a subset of `ArgSecrets`. The branch keeps that rule with parallel copies of the same parsers, so a c",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/255",
+        "created_at": "2026-10-27T23:29:07Z",
+        "updated_at": "2026-10-28T01:03:32Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 260,
+        "title": "feat(pins): do not store a configured value that a server echoes in pins.json",
+        "body": "## Context\n\nFollow-up from polish round 1 of PR #258 (issues #228, #234), security finding, Low. This is not a new behaviour of the PR, and `docs/limits.md` states it.\n\nWhen a hostile server echoes a configured env, header or argv value in a tool description or schema, `pins.json` (mode `0600`) stores that raw text. The report masks the value, but the pin hash is built from the canonical raw tool text (`pins.CompareMasked` uses the raw text on pu",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/260",
+        "created_at": "2026-10-28T01:03:20Z",
+        "updated_at": "2026-10-28T01:03:20Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 259,
+        "title": "fix(report): mask a letter-case variant of a configured value",
+        "body": "## Context\n\nFollow-up from polish round 1 of PR #258 (issues #228, #234), security finding, Low.\n\nThe report mask (`discover.TextRedactor`) finds the exact bytes of a configured value. A server that echoes the value in another letter case shows it in full. Example: the config holds the hex key `deadbeefcafebabe0123456789abcdef`, and the tool name has `DEADBEEFCAFEBABE0123456789ABCDEF`. The text comes back from `TextRedactor.Text` unmasked. This i",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/259",
+        "created_at": "2026-10-28T01:03:19Z",
+        "updated_at": "2026-10-28T01:03:19Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 232,
+        "title": "chore(pins): split checkParentsAs and savePinned into smaller functions",
+        "body": "## Context\n\nFollow-up from the review of the pins hardening PR (#203, #207, #206, #157, #150, #160), quality finding, Minor.\n\nTwo functions got long in that PR. Both are correct and covered by tests, so the PR left them as they are: they hold the checks that were just verified, and a pure refactor of that code would need a new full review.\n\n- `checkParentsAs` in `internal/pins/perm.go` is about 110 lines. It walks the pins path one part at a time",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/232",
+        "created_at": "2026-10-27T15:37:41Z",
+        "updated_at": "2026-10-28T00:45:04Z",
+        "closed_at": "2026-10-28T00:45:04Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 227,
+        "title": "fix(cli): cut the key of the pin rows like the tool rule rows",
+        "body": "## Context\n\nFollow-up from the review of the branch `feat/184-185-186-188-190-211-llm-hardening`. PRD refs: NFR-03, T1, T2.\n\n#211 cuts the `Key` of the LLM rows to 512 runes, as #143 did for the tool rule rows. The pin rows (`pinRow` in `cmd/mcpmoat/scan_pins.go`, rules MOAT-T2-001 to MOAT-T2-003) still put the full tool name in `Key`. A server can send a tool name of up to 1 MiB, so a pin row can make the text and `--json` output very large.\n\nTh",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/227",
+        "created_at": "2026-10-27T15:35:50Z",
+        "updated_at": "2026-10-28T00:45:04Z",
+        "closed_at": "2026-10-28T00:45:04Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 221,
+        "title": "report: scan --json says complete before the pins are saved",
+        "body": "## Context\nFound in the review of the pins hardening PR (older behavior, not changed there).\n\n`writeScanJSON` sets `\"complete\": true` before `savePinned` runs. If the pins lock is held, the pins file was removed during the run, or a server no longer fits at save time, the command exits 2 but the JSON document still says `\"complete\": true`.\n\n## Tasks\n- [ ] Decide what `complete` means (inspection finished, or inspection and pin save finished).\n- [",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/221",
+        "created_at": "2026-10-27T13:43:11Z",
+        "updated_at": "2026-10-28T00:45:03Z",
+        "closed_at": "2026-10-28T00:45:03Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 220,
+        "title": "scan: check the pins budget for a changed server before it prints the accept hint",
+        "body": "## Context\nFollow-up from the review of the pins hardening PR, logic finding, Low.\n\nAt report time the pinner checks the 32 MiB budget only for servers that are pinned for the first time (`firstPin` calls `budget.Set`). For a pinned server whose tools grew, `scan` prints the \"To accept\" line, but `pin --accept` can then be refused with exit 2 because the pins file is full. No pin is lost and the message is clear, but the hint is misleading.\n\nThe ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/220",
+        "created_at": "2026-10-27T13:43:09Z",
+        "updated_at": "2026-10-28T00:45:03Z",
+        "closed_at": "2026-10-28T00:45:03Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 225,
+        "title": "pins: write pins.json through the checked and locked pins directory handle",
+        "body": "## Context\n\nFollow-up from the review of the pins hardening PR (#203, #207, #206, #157, #150, #160), security finding, Low.\n\n`LoadLocked` opens the pins directory once as an `os.Root`, checks it on that handle and takes the `flock` on it. `Save` then writes by path: `writeFileAtomic(s.path, ...)` runs `MkdirAll`, `checkDirPerm`, `os.CreateTemp` and `os.Rename` on the path again (`internal/pins/atomic.go`). If the path names another directory at t",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/225",
+        "created_at": "2026-10-27T14:33:00Z",
+        "updated_at": "2026-10-28T00:45:02Z",
+        "closed_at": "2026-10-28T00:45:02Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 219,
+        "title": "pins: stop servers from a hostile project config from filling the 32 MiB pins file",
+        "body": "## Context\nFollow-up from the review of the pins hardening PR, security finding, Low (denial of service).\n\nA server can use up to 2 MiB of the 32 MiB `pins.json`, so about 16 servers fill it. `scan` pins first-run servers in config order and nothing prunes old entries. A project config (for example from a cloned repository) can declare many remote servers that return large tools. After the first scan, every new legitimate server gets a high MOAT-",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/219",
+        "created_at": "2026-10-27T13:43:07Z",
+        "updated_at": "2026-10-28T00:45:02Z",
+        "closed_at": "2026-10-28T00:45:02Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 218,
+        "title": "pins: stop another local user from holding the pins lock",
+        "body": "## Context\nFollow-up from the review of the pins hardening PR, security finding, Low (availability).\n\n`scan` and `pin --accept` lock the pins directory with `flock`. `flock` needs only a read-only descriptor, and the owner and mode check accepts a pins directory with mode `0755`. So any local user can open that directory and hold the lock for as long as they want. Every scan with a first-run server then exits 2 after the 10 s wait, and `pin --acc",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/218",
+        "created_at": "2026-10-27T13:43:04Z",
+        "updated_at": "2026-10-28T00:45:01Z",
+        "closed_at": "2026-10-28T00:45:01Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 217,
+        "title": "pins: check the ACL of the parent directories on macOS",
+        "body": "## Context\nFollow-up from the review of the pins hardening PR (#203, #207, #206, #157, #150, #160), security finding, Low.\n\nThe parent check reads only the owner and the mode bits of each parent of the pins directory. On macOS, an allow ACL for another user on `~/.config` or `~` (for example `delete_child`, `add_subdirectory` or `writesecurity`) does not show in the mode bits. That user can rename the real `mcpmoat/` directory. The next `scan` th",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/217",
+        "created_at": "2026-10-27T13:43:02Z",
+        "updated_at": "2026-10-28T00:45:01Z",
+        "closed_at": "2026-10-28T00:45:01Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 250,
+        "title": "feat(pins): harden the pins lock, write path and size limits",
+        "body": "## Summary\n\nOne PR for the eight follow-up issues of the pins hardening PR. Seven commits: the `#232` refactor first (no behaviour change), then the pins package, the CLI, the docs, and three commits for review fixes.\n\n- **Parent ACL on macOS (#217).** The walk over the parents of the pins directory now reads the ACL of each parent. An allow entry with a write-class right is refused. The default `everyone deny delete` entry of a home directory st",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/250",
+        "created_at": "2026-10-27T22:04:24Z",
+        "updated_at": "2026-10-28T00:45:00Z",
+        "closed_at": "2026-10-28T00:44:59Z",
+        "state": "closed",
+        "comments": 6,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/250",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/250",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/250.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/250.patch",
+          "merged_at": "2026-10-28T00:44:59Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 257,
+        "title": "chore(inspect): make replaceWords idempotent so the discovered URL scrub runs once",
+        "body": "## Context\n\nFollow-up from the review of the branch `fix/228-234-180-235-229-231-226-secret-redaction` (issue #180), logic finding, Low.\n\nThe failure text scrub removes values of 1 to 7 bytes as whole words (`replaceWords` in `internal/inspect/scrub_words.go`). It is not idempotent. With the values `ab` and `-c`, the text `ab-c` gives `********-c` after one pass and `****************` after two (the mask next to `-c` makes `-c` a whole word).\n\n`s",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/257",
+        "created_at": "2026-10-27T23:29:11Z",
+        "updated_at": "2026-10-27T23:29:11Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 256,
+        "title": "fix(discover): find the Oracle password and other missing pair forms in config values",
+        "body": "## Context\n\nFollow-up from the review of the branch `fix/228-234-180-235-229-231-226-secret-redaction` (issues #229, #235), security findings. The branch finds the password in many config value shapes (`user:pw@host`, libpq `password='a b'`, ADO.NET `Password=\"a;b\"`, JSON `{\"password\":\"a:b\"}`, cookie pairs, URL parts). Some shapes are still missing. They are listed in `docs/limits.md`. A server that echoes only the missing part shows it in the re",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/256",
+        "created_at": "2026-10-27T23:29:09Z",
+        "updated_at": "2026-10-27T23:29:09Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 254,
+        "title": "feat(pins): tell the user when the secret mask hides text of a pin diff",
+        "body": "## Context\n\nFollow-up from the review of the branch `fix/228-234-180-235-229-231-226-secret-redaction` (issues #228, #234), security findings, Low. The owner decided that a row does not say that a value was masked (Q3 of that work). This issue is the follow-up for a signal that is not a row flag.\n\nThe pin diff mask uses the wide `Result.Secrets` list. The list holds every configured env value of 8 bytes or more and the over-matched argv words (`l",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/254",
+        "created_at": "2026-10-27T23:29:05Z",
+        "updated_at": "2026-10-27T23:29:05Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 230,
+        "title": "fix(cli): make TestScanToolsHostileServerBudget stable under full-suite load",
+        "body": "## Context\n\nFollow-up from the review of the branch `feat/184-185-186-188-190-211-llm-hardening`.\n\n`TestScanToolsHostileServerBudget` (from #143, `cmd/mcpmoat/scan_tools_test.go`) checks the wall time of a scan of a hostile server with a 100 ms rule time budget. It failed two times in full `go test -race -shuffle=on ./...` runs on a busy machine:\n\n- \"scan of the hostile server with a 100ms budget took 20.6s, want less than 20s\"\n- a second run tha",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/230",
+        "created_at": "2026-10-27T15:35:56Z",
+        "updated_at": "2026-10-27T22:56:19Z",
+        "closed_at": "2026-10-27T22:56:19Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 214,
+        "title": "test: TestScanToolsHostileServerBudget is flaky under -race load",
+        "body": "## Context\n`TestScanToolsHostileServerBudget` (`cmd/mcpmoat/scan_tools_test.go`) checks that a hostile server finishes in less than `hostileScanBound` (20 s). The check uses wall-clock time. The test runs with `t.Parallel()` next to many other tests that use a lot of CPU. With `go test -race ./...` it failed at least once on a busy machine (45 s and 58 s were seen), and it passed when it ran alone (about 7 s). The failure does not come from a cod",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/214",
+        "created_at": "2026-10-27T12:39:32Z",
+        "updated_at": "2026-10-27T22:56:19Z",
+        "closed_at": "2026-10-27T22:56:19Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 213,
+        "title": "report: cap config findings for each server in scan output",
+        "body": "## Context\nFR-10, FR-15, NFR-01. PR for #170 caps the tool findings of each server (1000, then one `MOAT-T1-024` summary finding) and cuts long names and paths in `scan --json`. The security review of that PR found that the config findings are not capped.\n\n`secretFinding` in `internal/rules/config.go` adds one finding for each env key and one for each header key of a server (rules `MOAT-T4-*` and `MOAT-T5-*`). Nothing limits the number of keys fo",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/213",
+        "created_at": "2026-10-27T12:39:30Z",
+        "updated_at": "2026-10-27T22:56:18Z",
+        "closed_at": "2026-10-27T22:56:18Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 210,
+        "title": "feat(cli): add a total time cap for the tool rule step",
+        "body": "## Context\n\nFollow-up from #143. PRD refs: NFR-03, T1.\n\n#143 gives each inspected server a 5 s time budget for the rule analysis (`toolRulesBudget` in `cmd/mcpmoat/scan_tools.go`). The servers run one after the other. A hostile `--rules` folder can hold costly regexes that never match. Then every inspected server uses its full 5 s, plus about 1 s for one form build that the budget cannot stop and one regex on one form. With 20 servers a scan can ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/210",
+        "created_at": "2026-10-26T22:42:24Z",
+        "updated_at": "2026-10-27T22:56:18Z",
+        "closed_at": "2026-10-27T22:56:18Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 208,
+        "title": "feat(cli): decide what .mcpmoat-ignore may hide for the tool rules",
+        "body": "## Context\n\nFollow-up from #143. PRD refs: FR-10, T1, T3.\n\nBefore #143, no description or schema rule ran in `scan`. `.mcpmoat-ignore` could hide only config findings. #143 applies the T1 and T3 YAML rules to tool text. Now a `.mcpmoat-ignore` file in the working directory can hide them.\n\nThe file can come from a cloned repository. PRD FR-10 says the file must not hide pin findings, because it \"must not silence the rug-pull alarm\". Pin and LLM ru",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/208",
+        "created_at": "2026-10-26T22:42:21Z",
+        "updated_at": "2026-10-27T22:56:17Z",
+        "closed_at": "2026-10-27T22:56:17Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 172,
+        "title": "scan: a flag to turn off .mcpmoat-ignore for CI runs",
+        "body": "## Context\nIn CI, `mcpmoat scan --no-connect --config .mcp.json` reads `.mcpmoat-ignore` from the checked-out pull request. A PR can add an entry to that file and hide a config finding (for example MOAT-T4-001 for a new plain-http server), so the check turns green. docs/ci.md (from #69) tells users to guard the file with CODEOWNERS, but that is a manual control.\n\n## Requirements\n- PRD refs: FR-10, FR-16, T4\n\n## Tasks\n- [ ] Decide the flag name an",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/172",
+        "created_at": "2026-10-25T22:39:14Z",
+        "updated_at": "2026-10-27T22:56:17Z",
+        "closed_at": "2026-10-27T22:56:17Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 138,
+        "title": "Limit what an untrusted .mcpmoat-ignore can hide",
+        "body": "## Context\n\nPR #134 makes the ignore list drop the findings of the config rules. `scan` reads `.mcpmoat-ignore` from the working directory, also in a repository that the user cloned. PRD FR-10 asks for this, and ignored findings do not count for the exit code.\n\nSo an untrusted repository can turn exit code 1 into exit code 0:\n\n1. The repository has a `.mcp.json` server with a plaintext token (MOAT-T4-002, high).\n2. The repository also has `.mcpmo",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/138",
+        "created_at": "2026-10-24T14:28:56Z",
+        "updated_at": "2026-10-27T22:56:16Z",
+        "closed_at": "2026-10-27T22:56:16Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 238,
+        "title": "feat(cli): make .mcpmoat-ignore opt-in and cap scan work",
+        "body": "<!-- Open this PR against `dev`. Only the maintainer's release PR (`dev` into `main`) targets `main`. -->\n\n## Summary\n\nThis PR closes seven issues in one branch, as the owner asked. They share the same code (the ignore list, the scan steps and the hostile budget test) and the same docs.\n\n**`.mcpmoat-ignore` is now opt-in (#138, #172, #208). This is a behaviour change against v0.1.0.**\n\n- `mcpmoat scan` reads `.mcpmoat-ignore` only with the new fl",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/238",
+        "created_at": "2026-10-27T21:40:04Z",
+        "updated_at": "2026-10-27T22:56:15Z",
+        "closed_at": "2026-10-27T22:56:15Z",
+        "state": "closed",
+        "comments": 7,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/238",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/238",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/238.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/238.patch",
+          "merged_at": "2026-10-27T22:56:15Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 252,
+        "title": "pins: do not count trusted local-scope servers toward the project share",
+        "body": "## Problem\n\nThe project share of `pins.json` (16 MiB, `projectShare` in `internal/pins/store.go`) counts every server that has a `ProjectPath`. That includes the servers of the `projects.<path>.mcpServers` key of the user's own `~/.claude.json` (Claude Code local scope). Those servers come from a trusted file, but they share the 16 MiB with the servers of a cloned `.mcp.json` or `.cursor/mcp.json`.\n\nIf the user approves a hostile project config a",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/252",
+        "created_at": "2026-10-27T22:45:36Z",
+        "updated_at": "2026-10-27T22:45:36Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 249,
+        "title": "report: say why accept.command is missing in scan --json",
+        "body": "## Context\n\nFollow-up from the review of the PR that closes #220 (logic finding, Minor).\n\nIn `scan --json`, the `accept` object has no `command` when the hint prints no command. That happens for two different reasons: the hint needs a review first (cut, ignored or no-text changes), or `pins.json` (or its project share) has no room. A consumer cannot tell which.\n\n## Tasks\n- [ ] Decide a small optional field of `accept` (for example `reason` with a",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/249",
+        "created_at": "2026-10-27T22:03:16Z",
+        "updated_at": "2026-10-27T22:03:16Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 248,
+        "title": "test: cut the runtime of the pins budget tests and add a seam for ErrPinsDirChanged in scan --json",
+        "body": "## Context\n\nFollow-up from the review of the PR that closes #220, #221 and #225 (quality finding, Low).\n\nCI runs `go test -race` without `-short` (`.github/workflows/ci.yml`), so slow tests add to the wall-clock time. Measured on a laptop with `-race`:\n- `TestScanBudgetHintStoreFull` about 15 s\n- `TestPinAcceptProjectShareFull` about 8 s\n- `TestScanJSONSaveFailedAfterReport` about 5 s (the near-32 MiB case is most of it)\n- `TestScanBudgetProjectS",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/248",
+        "created_at": "2026-10-27T22:03:14Z",
+        "updated_at": "2026-10-27T22:03:14Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 247,
+        "title": "chore(rules): loadDirWithin is unused when golangci-lint runs for Windows",
+        "body": "## Context\n\nFound while checking the gates of the PR that closes #217 and others. It is on `dev` and not caused by that PR.\n\n`GOOS=windows golangci-lint run ./...` reports `internal/rules/load_test.go:101:6: func loadDirWithin is unused (unused)`. The helper is in a file with no build tag, but its only callers are in `internal/rules/load_unix_test.go` (`//go:build unix`). CI runs lint only for the host OS, so nothing fails today.\n\n## Tasks\n- [ ] ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/247",
+        "created_at": "2026-10-27T22:03:12Z",
+        "updated_at": "2026-10-27T22:03:12Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 246,
+        "title": "pins: report the share error when the file limit and the project share are both full",
+        "body": "## Context\n\nFollow-up from the round 2 review of the PR that closes #219 and #220 (Nit).\n\n`Store.planSet` checks the file limit before the project share. When a project server breaks both limits, `Set` and `CheckSet` return `ErrStoreFull` only. The accept hint then says \"remove other servers\". If the user removes only user-scope servers, the next `pin --accept` fails again, now with the share message.\n\n## Tasks\n- [ ] In `planSet`, for a project s",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/246",
+        "created_at": "2026-10-27T22:03:10Z",
+        "updated_at": "2026-10-27T22:03:10Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 245,
+        "title": "pins: cap the project share for each project path",
+        "body": "## Context\n\nFollow-up from the review of the PR that closes #219 (security finding, Low).\n\nProject servers may use 16 MiB of `pins.json` in total. All projects share that pool, first come, first served, and nothing prunes it. One hostile project (for example through `~/.claude.json` `projects.<path>`) can use the whole share. Then every new server of any other project gets a high MOAT-T2-004 finding and is never pinned. The refusal is not silent ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/245",
+        "created_at": "2026-10-27T22:03:08Z",
+        "updated_at": "2026-10-27T22:03:08Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 244,
+        "title": "pins: add pin --forget to remove a server from pins.json",
+        "body": "## Context\n\nFollow-up from the PR that closes #217, #218, #219, #220, #221, #225, #227 and #232.\n\nProject servers now share at most 16 MiB of `pins.json`, so a hostile project cannot starve user-scope servers. But a user still has no command to free space. The messages say \"remove project servers you no longer use from pins.json\", so the user edits a security file by hand.\n\nDo not prune entries whose `Source` config file is gone. An attacker who ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/244",
+        "created_at": "2026-10-27T22:03:06Z",
+        "updated_at": "2026-10-27T22:03:06Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 243,
+        "title": "perf(rules): bound the memory used before the config findings cap",
+        "body": "## Context\n\nFollow-up from the review of PR #238 (issue #213). PRD refs: NFR-03, T4, T5.\n\nThe config cap bounds the rows and the output. It does not bound the memory used before the cut. `rules.CheckConfig` builds one `Finding` for each env and header key of a server, and `configChecks.findings` builds one `configHit` for each key, before it cuts to 100 for each server and 10,000 for each scan. `TestScanJSONConfigBound` measured about 200 to 250 ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/243",
+        "created_at": "2026-10-27T21:41:03Z",
+        "updated_at": "2026-10-27T21:41:03Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 242,
+        "title": "test: TestScanJSONBound allocation limit fails without -race on go1.27",
+        "body": "## Context\n\nFound while testing PR #238. `TestScanJSONBound` in `cmd/mcpmoat/scan_json_bound_test.go` fails when it runs WITHOUT `-race` on go1.27.3. It allocates about 136.5 MiB (143 MB in another run) and the limit is 139,911,752 bytes (128 MiB budget plus 8 times the output). It fails the same way on the base commit of that PR, so no code change caused it. The test comment says it measured about 65 MiB. The check is skipped under `-race`, so C",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/242",
+        "created_at": "2026-10-27T21:41:01Z",
+        "updated_at": "2026-10-27T21:41:01Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 241,
+        "title": "fix(report): show MOAT-T4-005 with a Reason line like MOAT-T1-024",
+        "body": "## Context\n\nFollow-up from the review of PR #238 (issue #213). PRD refs: FR-15.\n\nThe tool findings `MOAT-T1-023` and `MOAT-T1-024` set `Field: rules.FieldTool` with an empty key. The terminal report prints their text on a `Reason:` line. The new config cap finding `MOAT-T4-005` (`configCapRow` in `cmd/mcpmoat/scan_findings.go`) leaves `Field` empty, so the same kind of whole-server summary prints as `Where: \"N more config findings are not listed;",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/241",
+        "created_at": "2026-10-27T21:41:00Z",
+        "updated_at": "2026-10-27T21:41:00Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 240,
+        "title": "test: split the large scan test files and merge the scanWith helpers",
+        "body": "## Context\n\nFollow-up from the review of PR #238. `cmd/mcpmoat/scan_tools_test.go` has about 2,250 lines and `cmd/mcpmoat/scan_findings_test.go` about 1,600 lines. There are three near-copies of the test helper that runs a scan with limits: `scanWithBudget`, `scanWithLimits` and `scanWithStepBudget`. All three set `toolStepBudget` to one hour.\n\n## Task\n\n- [ ] Move the step budget tests (from `TestScanToolsServerShare` to `TestScanToolsNilAnalyzer",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/240",
+        "created_at": "2026-10-27T21:40:58Z",
+        "updated_at": "2026-10-27T21:40:58Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 239,
+        "title": "refactor(cli): share the cap and ignore helpers between scan steps",
+        "body": "## Context\n\nFollow-up from the review of PR #238 (issues #213 and #210). The config cap in `cmd/mcpmoat/scan_findings.go` copies parts of the tool cap in `cmd/mcpmoat/scan_tools.go`. PRD refs: FR-10, FR-15.\n\n- `cutConfigHits` repeats the top-N steps of `flushTools` (stable sort with `capRank`, keep N, put the rows back in order). A fix to the tie-break in one place can leave the other behind.\n- The `pass` closure in `configChecks.findings` repeat",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/239",
+        "created_at": "2026-10-27T21:40:56Z",
+        "updated_at": "2026-10-27T21:40:56Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 149,
+        "title": "rules: read look-alikes of I and l both ways in the skeleton fold (U+01C0 and the I/l class)",
+        "body": "## Context\n\nFollow-up from the polish review of PR #148 (issues #139 and #140), round 1 finding 3 and round 2 (security review, medium finding).\n\nThe skeleton fold of the regex forms reads each look-alike of \"I\" or \"l\" as exactly one of the two letters. TR39 maps both letters, and every look-alike of them, to \"l\", so the table has to choose. The rules need both readings: \"i\" in \"ignore\", \"l\" in \"all\". The table maps an uppercase look-alike to \"I\"",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/149",
+        "created_at": "2026-10-24T23:38:43Z",
+        "updated_at": "2026-10-27T19:48:20Z",
+        "closed_at": "2026-10-27T19:48:20Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 146,
+        "title": "perf(rules): make the strict OSC regex fast on a run of U+009D",
+        "body": "## Context\n\nFollow-up from #133 (PR #145, polish round 4). PRD refs: NFR-03, T1.\n\nThe OSC part of `ansiSeq` (`oscExpr` in `internal/rules/ansi.go`) lets the text of an OSC hold U+009D, and U+009D also starts an OSC. So in a run of U+009D, each rune starts a match that stays open for up to 256 runes, and the regex engine tracks up to 256 threads for each rune.\n\nMeasured on an Apple M1 Pro, with 128 KiB of U+009D (`BenchmarkOSCStartRun`):\n\n- about ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/146",
+        "created_at": "2026-10-24T18:37:31Z",
+        "updated_at": "2026-10-27T19:48:20Z",
+        "closed_at": "2026-10-27T19:48:19Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 144,
+        "title": "feat(rules): close the remaining sequence-form gaps in the T1 regex rules",
+        "body": "## Context\n\nFollow-up from #133. PRD refs: FR-09, T1.\n\n#133 added match forms that read ANSI sequences as a terminal does (forms 4 to 7, see the `matchForms` doc in `internal/rules/normalize.go` and \"How mcpmoat prepares the text\" in CONTRIBUTING.md). Some texts still defeat every form, and form 5 can make a token that the screen does not show. `invisible_unicode` (MOAT-T1-006, medium) flags each of these texts, but the default `--fail-on high` p",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/144",
+        "created_at": "2026-10-24T17:56:23Z",
+        "updated_at": "2026-10-27T19:48:20Z",
+        "closed_at": "2026-10-27T19:48:20Z",
+        "state": "closed",
+        "comments": 3,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 152,
+        "title": "chore(rules): add a generator or rebuild steps for skeletonTable and edgeLookalikes",
+        "body": "## Context\n\nFollow-up from the polish review of PR #148 (issues #139 and #140), round 2, quality review.\n\nPR #148 adds two hand-checked tables to `internal/rules`:\n\n- `skeletonTable` in `confusables.go`: 562 look-alike letters from Unicode TR39 `confusables.txt` 18.0.0.\n- `edgeLookalikes` in `mixedscript.go`: 68 edge-tier letters from the same file and the Go unicode tables.\n\nTheir comments say: \"When `confusablesVersion` or `scriptTablesVersion`",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/152",
+        "created_at": "2026-10-24T23:56:57Z",
+        "updated_at": "2026-10-27T19:48:19Z",
+        "closed_at": "2026-10-27T19:48:19Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 147,
+        "title": "chore(rules): one description per match form and one home for the ANSI code",
+        "body": "## Context\n\nFollow-up from #133 (PR #145, polish round 5). PR #145 reached the review-loop cap, so these cleanups did not go in, because they would land without a review round. No behaviour change.\n\n## Task\n\n1. **One description of each form.** The seven forms are described in the `matchForms` doc, again on each `formMode` constant, and again in CONTRIBUTING.md (\"How mcpmoat prepares the text\"). Keep the mechanism and the examples on the `formMod",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/147",
+        "created_at": "2026-10-24T18:53:30Z",
+        "updated_at": "2026-10-27T19:48:19Z",
+        "closed_at": "2026-10-27T19:48:19Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 122,
+        "title": "feat(rules): scan other schema strings for T3 shadowing",
+        "body": "## Context\n#115 makes MOAT-T3-001 scan the tool title, the annotations title, and the `description` and `title` strings of `InputSchema` and `OutputSchema`. Clients often pass the whole JSON Schema to the model. A hostile server can still put a mention of another server's tool in other schema strings, and T3 does not see it.\n\nThis came up in the security review of the #115 PR.\n\nExample:\n\n```json\n{\"type\":\"object\",\"properties\":{\"to\":{\"type\":\"string",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/122",
+        "created_at": "2026-10-23T21:42:46Z",
+        "updated_at": "2026-10-27T19:48:19Z",
+        "closed_at": "2026-10-27T19:48:19Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 237,
+        "title": "fix(rules): close six follow-ups of the T1 and T3 rules",
+        "body": "## Summary\n\nThis PR closes six follow-up issues of the T1 and T3 rules in one branch.\n\nCloses #152\nCloses #147\nCloses #149\nCloses #146\nCloses #144\nCloses #122\n\n### Why one PR\n\nCONTRIBUTING.md says \"One change per pull request\". The owner asked for one branch and one PR here. The six issues touch the same files (`normalize.go`, `ansi.go`, `match.go`, `prepare.go`, `doc.go`, `docs/writing-rules.md`), so separate PRs would conflict.\n\nRead the commit",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/237",
+        "created_at": "2026-10-27T19:34:11Z",
+        "updated_at": "2026-10-27T19:48:17Z",
+        "closed_at": "2026-10-27T19:48:17Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/237",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/237",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/237.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/237.patch",
+          "merged_at": "2026-10-27T19:48:17Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 202,
+        "title": "ci: make a failed or paused weekly govulncheck run visible",
+        "body": "## Summary\n\nThe weekly `govulncheck` workflow (added in PR 201, issue 195) can fail or stop without anyone seeing it.\n\n- GitHub sends the notice of a failed scheduled run only to the maintainer who last edited the cron line.\n- GitHub disables a schedule after 60 days with no repository activity.\n\n`docs/releasing.md` (Weekly vulnerability check) documents both facts. Nothing in the workflow makes a failure visible to other people.\n\n## Proposal\n\nAd",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/202",
+        "created_at": "2026-10-26T21:19:26Z",
+        "updated_at": "2026-10-27T19:12:23Z",
+        "closed_at": "2026-10-27T19:12:23Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 181,
+        "title": "Commit tests for the release check scripts",
+        "body": "## Context\nThe release pipeline from #66, #67 and #68 (PR #176) has two shell scripts that guard a release:\n- `.github/scripts/check-snapshot.sh`, which checks the snapshot archives in `release-check`.\n- The \"Verify and publish the release\" step in `.github/workflows/release.yml`, which checks the draft assets, the attestations and the tag, publishes, and checks the published release again.\n\nDuring the PR review, both were tested by hand: negativ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/181",
+        "created_at": "2026-10-26T00:18:15Z",
+        "updated_at": "2026-10-27T19:12:23Z",
+        "closed_at": "2026-10-27T19:12:23Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 215,
+        "title": "ci: guard the release scripts and make a failed weekly scan visible",
+        "body": "## Summary\n\nThis PR does four small release and CI jobs in one branch. All of them are CI, shell scripts and docs. No Go file changed.\n\n- **Failed weekly scan is now visible (#202).** A new job `notify-failure` in `govulncheck.yml` runs when the weekly scan fails. It opens one issue, \"Weekly vulnerability check failed\" (label `security`), or adds a comment to it. The job has `issues: write` only. The scan job still has `contents: read`. It uses t",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/215",
+        "created_at": "2026-10-27T12:48:20Z",
+        "updated_at": "2026-10-27T19:12:21Z",
+        "closed_at": "2026-10-27T19:12:21Z",
+        "state": "closed",
+        "comments": 11,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/215",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/215",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/215.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/215.patch",
+          "merged_at": "2026-10-27T19:12:21Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 188,
+        "title": "feat(llm): retry transient provider errors and bound the whole --llm step",
+        "body": "## Context\n\n`scan --llm` (FR-17) has no retries and no limit for the whole LLM step:\n\n- One transient answer from the provider (429 rate limit, 503, or 529 overloaded) is a provider failure. It cancels the other requests and gives exit 2 with `complete: false`. A key with a low rate limit, with 4 requests at the same time, can hit this on a scan of about 50 tools or more.\n- Each request has a 30 second limit, but the step has none. With a slow pr",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/188",
+        "created_at": "2026-10-26T13:54:15Z",
+        "updated_at": "2026-10-27T19:07:38Z",
+        "closed_at": "2026-10-27T19:07:38Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 185,
+        "title": "fix(llm): keep configured secret values out of the tool descriptions that --llm sends",
+        "body": "## Context\n\n`scan --llm` sends the name and the description of every tool to the LLM provider (FR-17). The description is sent as the server returned it.\n\n`internal/inspect` removes configured env values and expanded variable values from the text of its errors (see `internal/inspect/doc.go`, \"Known limits\"). It does not remove them from tool descriptions. A server that receives a token through its env or headers can put that token into a tool des",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/185",
+        "created_at": "2026-10-26T12:16:26Z",
+        "updated_at": "2026-10-27T19:07:37Z",
+        "closed_at": "2026-10-27T19:07:37Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 184,
+        "title": "feat(llm): keep one rejected tool or one big server from failing the whole --llm scan",
+        "body": "## Context\n\n`scan --llm` (FR-17, PR for #76 and #77) fails closed: a provider failure gives exit 2, cancels the other requests and sets `complete` to false. More than 500 tools in one scan also gives exit 2.\n\nA hostile or just unlucky server can use this to keep `scan --llm` from giving a usable result in CI:\n\n- A server that lists more than 500 tools always sets the cap error. The jobs run in server order, so an early server can take the whole b",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/184",
+        "created_at": "2026-10-26T12:16:24Z",
+        "updated_at": "2026-10-27T19:07:37Z",
+        "closed_at": "2026-10-27T19:07:37Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 190,
+        "title": "fix(cli): hide an --llm-base-url value in the argument errors of every command",
+        "body": "## Context\n\nThe `scan` command now hides the value of `--llm-base-url` (it can hold `user:password`) in every error about its arguments (PR for #76, round 4 of the review). The flag package prints the whole token in some syntax errors. Outside `scan` the same text can still leak the value:\n\n- `mcpmoat ---llm-base-url=https://user:pass@host scan` prints `mcpmoat: bad flag syntax: ---llm-base-url=...` (the global parse in `dispatch`, `cmd/mcpmoat/c",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/190",
+        "created_at": "2026-10-26T14:46:57Z",
+        "updated_at": "2026-10-27T19:07:36Z",
+        "closed_at": "2026-10-27T19:07:36Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 186,
+        "title": "chore(llm): trim the exported surface and tidy the test hooks of internal/llm",
+        "body": "## Context\n\nThe self-review of the `--llm` PR found small items that are not worth more churn in that PR. None of them changes behaviour.\n\n## Requirements\n\n- PRD refs: FR-17, NFR-01\n\n## Tasks\n\n- [ ] `internal/llm` exports names that no caller or doc link needs: `MaxKeyBytes`, `MaxModelBytes`, `MaxBaseURLBytes`, `MaxVerdictBytes`, `VerdictSchemaName`, `DefaultAnthropicBaseURL`, `DefaultOpenAIBaseURL`, `Provider.DefaultBaseURL`, `ErrAuth`, `ErrTran",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/186",
+        "created_at": "2026-10-26T13:08:15Z",
+        "updated_at": "2026-10-27T19:07:36Z",
+        "closed_at": "2026-10-27T19:07:36Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 211,
+        "title": "fix(cli): cut the key of the LLM rows like the tool rule rows",
+        "body": "## Context\n\nFollow-up from #143. PRD refs: NFR-03, T1.\n\n#143 cuts the `Key` of each tool rule row to 512 runes (`toolKey` in `cmd/mcpmoat/scan_tools.go`), so a very long tool name cannot grow the `--json` output. The LLM rows (`llmRow` in `cmd/mcpmoat/scan_llm.go`) still put the full tool name in `Key`. The LLM step cuts the name only in the provider request, not in the report row. A server can send a tool name of up to 1 MiB. The step reads at m",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/211",
+        "created_at": "2026-10-26T22:42:27Z",
+        "updated_at": "2026-10-27T19:07:35Z",
+        "closed_at": "2026-10-27T19:07:35Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 233,
+        "title": "feat(llm): harden scan --llm secrets, refusals and retries",
+        "body": "## Summary\n\nThis PR hardens `scan --llm` (FR-17) and finishes six open issues in one branch. The work is in the same files, so one PR is easier to review than six.\n\n- **#211**: the `key` of the LLM rows is cut to 512 runes, like the tool rule rows.\n- **#190**: every command hides the user info of a URL and the value of `--llm-base-url` in the text of argument errors.\n- **#186**: the exported surface of `internal/llm` is trimmed, the dial types ar",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/233",
+        "created_at": "2026-10-27T15:37:43Z",
+        "updated_at": "2026-10-27T19:07:34Z",
+        "closed_at": "2026-10-27T19:07:34Z",
+        "state": "closed",
+        "comments": 6,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/233",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/233",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/233.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/233.patch",
+          "merged_at": "2026-10-27T19:07:34Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 160,
+        "title": "pins: one large server must not stop the save of pins.json for all servers",
+        "body": "## Problem\n\n`pins.json` has two size limits (`internal/pins/store.go`):\n\n- `maxServerSize`: 2 MiB for the entry of one server.\n- `maxFileSize`: 32 MiB for the whole file.\n\nAbout 16 servers at full size go over the file limit. Then `Store.Save` fails for the whole file. Every first-run pin and every `pin --accept` fails, also for the other servers, and `scan` exits with 2 on each run. This fails closed, but a user can then turn to `--no-connect` a",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/160",
+        "created_at": "2026-10-25T13:33:11Z",
+        "updated_at": "2026-10-27T17:19:13Z",
+        "closed_at": "2026-10-27T17:19:13Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 150,
+        "title": "pins: lock the store against lost updates and report a missing pins file",
+        "body": "## Context\nFollow-up from the security review of #59 (the `pins.json` store in `internal/pins`). The store is not wired into `scan` or `pin` yet. These two gaps need the callers from #60 and #61, so they are not part of #59.\n\n1. **Lost updates.** `Store.Save` writes the whole in-memory store. Two parallel runs lose each other's pins: the last writer wins. A parallel `pin --accept` and `scan` can undo each other, because one writes back a stale co",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/150",
+        "created_at": "2026-10-24T23:41:37Z",
+        "updated_at": "2026-10-27T17:19:13Z",
+        "closed_at": "2026-10-27T17:19:13Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 206,
+        "title": "pins: refuse a pins directory or file with a write ACL on macOS",
+        "body": "## Context\nFollow-up from the review of #154 (PR #205, security finding, Low). The owner and mode check reads the owner and the mode bits only (`checkOwnerAndMode` in `internal/pins/perm_unix.go`). On macOS, an extended ACL (for example `chmod +a \"everyone allow write\"`) is separate from the mode bits. So a pins directory or `pins.json` that others can write through an ACL passes the check. On Linux, a POSIX ACL entry for a named user shows in th",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/206",
+        "created_at": "2026-10-26T21:53:20Z",
+        "updated_at": "2026-10-27T17:19:12Z",
+        "closed_at": "2026-10-27T17:19:12Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 157,
+        "title": "pins: refuse a first run when no directory on the pins path exists",
+        "body": "## Context\nFollow-up from polish round 5 of #151 (the `pins.json` store, #59). That round was the last under the review round cap of 5, so these two small items did not go into #151.\n\n`Load` calls `checkFirstRun` (`internal/pins/store.go`) when `safefile` does not find `pins.json`. `checkFirstRun` walks up the path to the nearest part that exists, and requires it to be a real directory.\n\n1. **No part of the path exists.** At the end of the loop, ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/157",
+        "created_at": "2026-10-25T01:13:22Z",
+        "updated_at": "2026-10-27T17:19:12Z",
+        "closed_at": "2026-10-27T17:19:12Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 207,
+        "title": "pins: check the parent directories of the pins directory",
+        "body": "## Context\nFollow-up from the review of #154 (PR #205, round 2, security finding, Low). The owner and mode check covers the pins directory and `pins.json`, but not the parent directories (`~/.config`, or the `XDG_CONFIG_HOME` base). A user who can write a parent cannot plant their own `mcpmoat/` directory, because the owner check refuses it. But that user can rename or remove the real `mcpmoat/` directory, or swap a symlink at `mcpmoat`. The next",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/207",
+        "created_at": "2026-10-26T22:06:07Z",
+        "updated_at": "2026-10-27T17:19:11Z",
+        "closed_at": "2026-10-27T17:19:11Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 203,
+        "title": "pins: check the pins directory through the opened root, not by path",
+        "body": "## Context\nFollow-up from the review of #154 (security finding, Low). `Load` checks the owner and mode of `pins.json` on the opened file descriptor. It checks the pins directory by path (`os.Stat`) before the read. Then `safefile.OpenRoot` opens the directory by path again. A process that can swap a path component between these two calls can pass the check with a safe directory, and `Load` then reads from another one. The attacker needs write acc",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/203",
+        "created_at": "2026-10-26T21:26:46Z",
+        "updated_at": "2026-10-27T17:19:11Z",
+        "closed_at": "2026-10-27T17:19:11Z",
+        "state": "closed",
+        "comments": 2,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 222,
+        "title": "feat(pins): harden the pins store, add a lock and a size budget",
+        "body": "<!-- Open this PR against `dev`. Only the maintainer's release PR (`dev` into `main`) targets `main`. -->\n\n## Summary\n\nThis PR hardens the `pins.json` store. It closes six related issues on one branch because they change the same code (`internal/pins`, `internal/safefile`, and the pin parts of `scan` and `pin --accept`).\n\n- **#203** The pins directory and `pins.json` are now checked on opened handles. `Load` opens the directory once as an `os.Roo",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/222",
+        "created_at": "2026-10-27T13:59:46Z",
+        "updated_at": "2026-10-27T17:19:09Z",
+        "closed_at": "2026-10-27T17:19:09Z",
+        "state": "closed",
+        "comments": 9,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/222",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/222",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/222.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/222.patch",
+          "merged_at": "2026-10-27T17:19:09Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 175,
+        "title": "report: show ignored counts in scan --json",
+        "body": "## Context\nFR-10 and FR-15. `scan --json` (#64, PR #173) leaves out the ignored counts. The terminal prints them on stderr (\"N findings ignored: ...\"), and the \"using N entries from .mcpmoat-ignore\" notice also goes to stderr. A CI job that reads only stdout cannot see that findings were dropped.\n\nA `.mcpmoat-ignore` file can come from a cloned repository. It cannot ignore the pin rules (MOAT-T2-*), but it can drop config-rule findings. FR-10 say",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/175",
+        "created_at": "2026-10-25T23:00:46Z",
+        "updated_at": "2026-10-27T14:52:03Z",
+        "closed_at": "2026-10-27T14:52:03Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 170,
+        "title": "report: bound the size of scan --json output",
+        "body": "## Context\nFR-15, NFR-07. The terminal table cuts long names, scopes and sources (`cell(..., maxPathRunes)`). `WriteJSON` (`internal/report/json.go`) keeps every string in full and builds the whole document in memory, with two to three copies during the escape pass. A hostile project `.mcp.json` with many large names, or a server with thousands of tools, can give a document of hundreds of MB and a high peak memory. Input limits exist (32 MiB conf",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/170",
+        "created_at": "2026-10-25T22:37:36Z",
+        "updated_at": "2026-10-27T14:52:03Z",
+        "closed_at": "2026-10-27T14:52:03Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 182,
+        "title": "test: use the shared assertServerNames and wrongDigest helpers in the other cmd/mcpmoat tests",
+        "body": "## Problem\n\nIssue #166 added `assertServerNames` (`cmd/mcpmoat/helpers_test.go`) and `wrongDigest` (`cmd/mcpmoat/pins_helpers_test.go`). Only `TestE2EPinAccept` and `TestE2ERugPull` use them, because #166 names only those two tests. Other tests still repeat the same code:\n\n- The server-name check `column(tableRows(t, stdout), 0)` with `slices.Equal`, in `cmd/mcpmoat/e2e_test.go` (other tests), `scan_findings_test.go`, `scan_ignore_test.go` and `s",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/182",
+        "created_at": "2026-10-26T11:22:36Z",
+        "updated_at": "2026-10-27T14:52:02Z",
+        "closed_at": "2026-10-27T14:52:02Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 169,
+        "title": "report: add accept data (digest, accept command) to scan --json",
+        "body": "## Context\nFR-15. `scan --json` (#64) leaves out the \"To accept\" hints that the terminal prints after a pin diff. A CI job sees a pin finding but not the digest it needs for `pin --accept --expect <digest>`.\n\n## Tasks\n- [ ] Add an optional `accept` object per server (or a top-level `accept_hints` array) with the server, the digest and, when the terminal prints one, the accept command.\n- [ ] Share the command-or-steps decision with `writeAcceptHin",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/169",
+        "created_at": "2026-10-25T22:37:34Z",
+        "updated_at": "2026-10-27T14:52:02Z",
+        "closed_at": "2026-10-27T14:52:02Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 191,
+        "title": "chore(cli): split runScan and reportScan into smaller functions",
+        "body": "## Context\n\n`runScan` (`cmd/mcpmoat/scan.go`, about 134 lines) and `reportScan` (about 89 lines) grew with the `--llm` PR. They parse flags, set up the LLM client, merge config, pin and LLM rows, write the report and compute the exit code. The reviews of the `--llm` PR (rounds 1 to 5) named this every round. The PR declined it because a refactor of these two functions, late in a security-sensitive review, would be a large unreviewed change.\n\n## R",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/191",
+        "created_at": "2026-10-26T14:56:43Z",
+        "updated_at": "2026-10-27T14:52:01Z",
+        "closed_at": "2026-10-27T14:52:01Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 216,
+        "title": "feat(report): schema 3 for scan --json with ignored, accept, bounds",
+        "body": "## Summary\n\nThis PR adds schema version 3 to `mcpmoat scan --json`. It also bounds the size of the JSON output and cleans up the code behind `scan`.\n\n- #191, refactor with no behaviour change: `runScan` (34 lines) and `reportScan` (29 lines) are split into `parseScanArgs` and `scanArgs` (like `parsePinArgs`), `buildScanSetup`, `scanStepsResult` and `runScanSteps` (plus a helper `runToolAndLLMSteps`), and `writeScanOutput`.\n- #182: the shared `ass",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/216",
+        "created_at": "2026-10-27T12:52:50Z",
+        "updated_at": "2026-10-27T14:52:00Z",
+        "closed_at": "2026-10-27T14:52:00Z",
+        "state": "closed",
+        "comments": 5,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/216",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/216",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/216.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/216.patch",
+          "merged_at": "2026-10-27T14:52:00Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 143,
+        "title": "feat(rules): apply the rules in scan with shared match forms and a time budget",
+        "body": "## Context\n\nFollow-up from #133. PRD refs: FR-09, NFR-03, T1.\n\n`mcpmoat scan` does not apply the description and schema rules yet (`cmd/mcpmoat/scan_rules.go`, `internal/rules/load.go:279`). Both still say \"issue #35 will use it\", but #35 (the matchers) is closed.\n\n#133 added an unexported `preparedText` (`internal/rules/prepare.go`). It builds the match forms of one text once. `Matcher.Match` builds a new one on each call, so today only the test",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/143",
+        "created_at": "2026-10-24T17:56:21Z",
+        "updated_at": "2026-10-27T11:28:33Z",
+        "closed_at": "2026-10-27T11:28:33Z",
+        "state": "closed",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 212,
+        "title": "feat(rules): apply the rules in scan with shared match forms and a time budget",
+        "body": "## Summary\n\n`mcpmoat scan` now applies the description and schema rules (built-in and from `--rules`) to every tool of each inspected server. Before, scan loaded these rules but never applied them. The forms of each text are built once and shared by all rules. Each server has a 5 s time budget for the rule analysis.\n\nWhat changed, by item of the issue:\n\n1. **Apply the rules in scan.** New `rules.Analyzer`. `NewAnalyzer` compiles each rule once. `",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/212",
+        "created_at": "2026-10-26T22:59:59Z",
+        "updated_at": "2026-10-27T11:28:32Z",
+        "closed_at": "2026-10-27T11:28:32Z",
+        "state": "closed",
+        "comments": 5,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/212",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/212",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/212.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/212.patch",
+          "merged_at": "2026-10-27T11:28:32Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 154,
+        "title": "pins: check the owner and mode of an existing pins directory and file",
+        "body": "## Context\nFollow-up from the polish review of #151 (the `pins.json` store, #59), finding 2. `pins.json` is the trust anchor for rug-pull detection (T2). `Save` creates a new directory with mode `0700`. It does not check or tighten a directory or a file that exists. `Load` accepts a `pins.json` with any owner and any mode.\n\nIf another local user can write to the pins directory or the file, that user can forge pins. Then mcpmoat reports no change ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/154",
+        "created_at": "2026-10-25T00:43:04Z",
+        "updated_at": "2026-10-27T02:25:21Z",
+        "closed_at": "2026-10-27T02:25:21Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 205,
+        "title": "feat(pins): refuse a pins directory or file that others can write",
+        "body": "<!-- Open this PR against `dev`. Only the maintainer's release PR (`dev` into `main`) targets `main`. -->\n\n## Summary\n\n`pins.json` is the trust anchor for rug-pull detection (T2). If another local user can write the pins\ndirectory or the file, that user can forge pins, and mcpmoat then reports no change for a changed\ntool. Before this PR, `Save` created a new directory with mode `0700` but never checked an existing\none, and `Load` accepted any ow",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/205",
+        "created_at": "2026-10-26T21:39:21Z",
+        "updated_at": "2026-10-27T02:25:20Z",
+        "closed_at": "2026-10-27T02:25:20Z",
+        "state": "closed",
+        "comments": 8,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/205",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/205",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/205.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/205.patch",
+          "merged_at": "2026-10-27T02:25:19Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 209,
+        "title": "feat(rules): apply the rules to tool name, title, annotations title and output schema",
+        "body": "## Context\n\nFollow-up from #143. PRD refs: T1, T3, FR-09, FR-11.\n\n`Analyzer.CheckTool` (`internal/rules/analyze.go`) reads only `Tool.Description` and the input schema text. A hostile server controls more tool text than that: the tool name, the title, the annotations title and the output schema. A client can show these to the model. PRD T3 already lists the title, the annotations title and the output schema as tool text. The comment at `internal/",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/209",
+        "created_at": "2026-10-26T22:42:23Z",
+        "updated_at": "2026-10-26T22:42:23Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 195,
+        "title": "ci: run govulncheck on main on a schedule",
+        "body": "After the dev/main split (#192), Dependabot and the dependency graph watch `dev`. The released code on `main` is checked by govulncheck only when a release is cut. Add a scheduled workflow that runs govulncheck with `ref: main`, so a new advisory against the released code shows up soon. Found by the security review of #192.",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/195",
+        "created_at": "2026-10-26T15:49:57Z",
+        "updated_at": "2026-10-26T22:08:49Z",
+        "closed_at": "2026-10-26T22:08:49Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": false
+      },
+      {
+        "number": 201,
+        "title": "ci: run govulncheck on main every week",
+        "body": "## Summary\n\nAfter the `dev`/`main` split (#192), Dependabot and the dependency graph watch `dev`. The released code on `main` was checked by govulncheck only when a release was cut. A new advisory against a released version could go unseen for weeks.\n\n- Add `.github/workflows/govulncheck.yml`. It checks out `main` and runs the pinned govulncheck every Monday at 06:17 UTC. A maintainer can also run it by hand (`workflow_dispatch`). It has `permiss",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/201",
+        "created_at": "2026-10-26T21:10:32Z",
+        "updated_at": "2026-10-26T22:08:48Z",
+        "closed_at": "2026-10-26T22:08:48Z",
+        "state": "closed",
+        "comments": 11,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/201",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/201",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/201.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/201.patch",
+          "merged_at": "2026-10-26T22:08:48Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 204,
+        "title": "ci: tighten the tool pin guard and its CI gates",
+        "body": "## Summary\n\nPR 201 added `.github/scripts/check-tool-pins.sh`. It guards the tool version pins in `ci.yml`, `release.yml`, `govulncheck.yml` and `CONTRIBUTING.md`. The local review found three gaps that need a decision or a wider change than that PR. This issue tracks them.\n\n## Items\n\n1. **The pin check is not required on `dev`.** `CONTRIBUTING.md` (Branches and releases) says `release-check` is a required check only on `main`. GitHub runs the we",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/204",
+        "created_at": "2026-10-26T21:28:12Z",
+        "updated_at": "2026-10-26T22:03:03Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 1,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 199,
+        "title": "Add the T1 to T5 acceptance test",
+        "body": "<!-- Open this PR against `dev`. Only the maintainer's release PR (`dev` into `main`) targets `main`. -->\n\n## Summary\n\nAdds `TestE2EAcceptance`, the end-to-end acceptance test of issue #70. It runs the real `mcpmoat` binary against one fake home that holds all the fixture servers and configs.\n\nWhat the test does:\n\n1. The trusted global config runs five stdio fixture servers: `benign`, `poisoned`, `shadowing`, `mailer` and `rugpull` (clean variant",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/199",
+        "created_at": "2026-10-26T20:19:28Z",
+        "updated_at": "2026-10-26T20:48:12Z",
+        "closed_at": "2026-10-26T20:48:11Z",
+        "state": "closed",
+        "comments": 5,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/199",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/199",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/199.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/199.patch",
+          "merged_at": "2026-10-26T20:48:11Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 200,
+        "title": "feat(rules): call CheckShadowing in scan for cross-server T3 findings",
+        "body": "## Context\n\nFollow-up from #70 (PR #199). PRD refs: T3, FR-09.\n\n`rules.CheckShadowing` is the cross-server shadowing check (T3). It has no caller outside tests. `mcpmoat scan` never calls it, so a tool that cites a tool name from another server is not reported by `scan`. `docs/ARCHITECTURE.md`, data flow step 4, says that `rules` runs \"cross-server checks (T3)\".\n\n#143 applies the YAML description and schema rules in `scan`. It does not wire `Chec",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/200",
+        "created_at": "2026-10-26T20:19:53Z",
+        "updated_at": "2026-10-26T20:19:53Z",
+        "closed_at": null,
+        "state": "open",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 194,
+        "title": "docs: rewrite the README to be short and easy to scan",
+        "body": "## What\n\nRewrite `README.md` to under 150 lines, using [rss-feed-emitter](https://github.com/filipedeschamps/rss-feed-emitter) as the style reference: title, one-line pitch, working badges, short feature list, one-command install, quick start, task-based usage with one small example each, honest limits, docs table, contributing, license.\n\n## Depends on\n\nThe docs split issue: the README links to the new files.\n\n## Rules\n\nEvery claim stays true. De",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/194",
+        "created_at": "2026-10-26T15:45:20Z",
+        "updated_at": "2026-10-26T19:08:09Z",
+        "closed_at": "2026-10-26T19:08:09Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 198,
+        "title": "docs: rewrite the README to be short and easy to scan",
+        "body": "## Summary\n\nRewrite `README.md` to 149 lines (#194), in the style of [rss-feed-emitter](https://github.com/filipedeschamps/rss-feed-emitter): working badges, a short feature list, a two-line install, a quick start with a short sample, one small example for each task, honest limits, and links to the detail pages.\n\n**Stacked on #197.** The README links to the new pages that #197 creates. Merge #197 first. Then change the base of this PR to `dev` (G",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/198",
+        "created_at": "2026-10-26T18:26:15Z",
+        "updated_at": "2026-10-26T19:08:07Z",
+        "closed_at": "2026-10-26T19:08:07Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/198",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/198",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/198.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/198.patch",
+          "merged_at": "2026-10-26T19:08:07Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 193,
+        "title": "docs: split the big docs into small single-purpose files",
+        "body": "## What\n\nOne doc, one job. Split the docs that are too long or do two jobs:\n\n- `README.md` (about 430 lines): move install and verify, pins, ignore, exit codes and scan output to their own files under `docs/`.\n- `CONTRIBUTING.md` (about 545 lines): move \"Contributing a rule\" to `docs/writing-rules.md` and \"Releasing\" to `docs/releasing.md`.\n- `docs/ARCHITECTURE.md` (about 650 lines): propose a split; do it only if each piece stays whole.\n- Not in",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/193",
+        "created_at": "2026-10-26T15:45:18Z",
+        "updated_at": "2026-10-26T19:07:00Z",
+        "closed_at": "2026-10-26T19:07:00Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 197,
+        "title": "docs: split README and CONTRIBUTING into single-purpose pages",
+        "body": "## Summary\n\nOne doc, one job (#193). `README.md` had 556 lines and `CONTRIBUTING.md` had 583. Now they have 110 and 164. The text moved word for word to new pages under `docs/`. A short stub with a link stays in the old place.\n\n| New page | Moved from |\n|---|---|\n| `docs/install.md` | README: Install, Verify a download |\n| `docs/scan-output.md` | README: What `scan` prints, JSON output |\n| `docs/pins.md` | README: Pins and rug pulls |\n| `docs/ign",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/197",
+        "created_at": "2026-10-26T18:19:55Z",
+        "updated_at": "2026-10-26T19:06:59Z",
+        "closed_at": "2026-10-26T19:06:59Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/197",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/197",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/197.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/197.patch",
+          "merged_at": "2026-10-26T19:06:59Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 192,
+        "title": "chore(release): add a dev branch for contributors and keep main for releases",
+        "body": "## What\n\nUse two long-lived branches:\n\n- `dev`: the default branch. Contributors clone it and open PRs to it.\n- `main`: the release branch. The maintainer merges `dev` into `main` with a PR and a merge commit (not squash). Tags go on `main` only.\n- Hotfix: branch from `main`, PR to `main`, then merge `main` back into `dev`.\n\n## Why\n\nRelease tags must come from a reviewed, stable line. Contributors need one obvious branch to start from.\n\n## Scope\n",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/192",
+        "created_at": "2026-10-26T15:45:16Z",
+        "updated_at": "2026-10-26T18:09:04Z",
+        "closed_at": "2026-10-26T18:09:04Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 196,
+        "title": "chore(release): add the dev branch model",
+        "body": "## Summary\n\nAdd the two-branch model (#192):\n\n- `dev` is the default branch. Contributors clone it and open PRs to it.\n- `main` is the release branch. The maintainer merges `dev` into `main` with a merge commit. Tags go on `main` only.\n\nChanges: `ci.yml` also runs on push to `dev`. `.agents/project.md` sets the default PR base to `dev`. `CONTRIBUTING.md` has a new \"Branches and releases\" section and safer \"Cut a release\" steps (tag `origin/main` ",
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/196",
+        "created_at": "2026-10-26T15:50:00Z",
+        "updated_at": "2026-10-26T18:09:03Z",
+        "closed_at": "2026-10-26T18:09:03Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": {
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/196",
+          "html_url": "https://github.com/Ducarv/mcpmoat/pull/196",
+          "diff_url": "https://github.com/Ducarv/mcpmoat/pull/196.diff",
+          "patch_url": "https://github.com/Ducarv/mcpmoat/pull/196.patch",
+          "merged_at": "2026-10-26T18:09:03Z"
+        },
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 8,
+        "title": "Epic: M8 Optional LLM",
+        "body": "## Goal\nAdd an opt-in `--llm` risk classification, and prove that no network call happens without it.\n\n## Requirements\n- PRD refs: FR-17, NFR-01\n\n## Exit criteria (from docs/PRD.md)\n- [ ] `--llm` works behind an explicit opt-in with a warning.\n- [ ] A test proves no network calls happen without it.\n\n## Sub-issues\n- [x] #76\n- [x] #77\n\nTracker only: no `model:*` or `effort:*` label. See [docs/PRD.md](https://github.com/Ducarv/mcpmoat/blob/main/docs",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/8",
+        "created_at": "2026-10-17T18:15:00Z",
+        "updated_at": "2026-10-26T15:44:05Z",
+        "closed_at": "2026-10-26T15:44:05Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 2,
+        "title": "Epic: M2 Discovery (v0.1.0)",
+        "body": "## Goal\nRead Claude Code, Cursor and Codex configs and list the configured MCP servers, with no server execution. Publish `v0.1.0`.\n\n## Requirements\n- PRD refs: FR-01, FR-02, FR-03, FR-05\n\n## Exit criteria (from docs/PRD.md)\n- [ ] `mcpmoat scan --no-connect` lists servers from Claude Code, Cursor and Codex configs with origin, type and command.\n- [ ] Secret values are masked.\n- [ ] Fixtures and table-driven tests exist for each format.\n- [ ] Rele",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/2",
+        "created_at": "2026-10-17T18:14:39Z",
+        "updated_at": "2026-10-26T15:43:52Z",
+        "closed_at": "2026-10-26T15:43:52Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 5,
+        "title": "Epic: M5 Pins",
+        "body": "## Goal\nDetect rug pulls: pin a canonical hash of every tool and report new, removed and changed tools with a diff.\n\n## Requirements\n- PRD refs: FR-11, FR-12, FR-13, T2\n\n## Exit criteria (from docs/PRD.md)\n- [ ] Pins are stored on first run.\n- [ ] The rug-pull fixture is detected with a diff on the second run.\n- [ ] `pin --accept` clears it.\n\n## Sub-issues\n- [x] #58\n- [x] #59\n- [x] #60\n- [x] #61\n- [x] #62\n\nTracker only: no `model:*` or `effort:*` label. See [docs/PRD.md](https://github.com/Ducarv/mcpmoat/blob/main/docs/PRD.md).\n",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/5",
+        "created_at": "2026-10-17T18:14:49Z",
+        "updated_at": "2026-10-26T15:43:43Z",
+        "closed_at": "2026-10-26T15:43:43Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv"
+      },
+      {
+        "number": 6,
+        "title": "Epic: M6 Output & distribution",
+        "body": "## Goal\nGive clear terminal and JSON output with a tested exit-code contract, and ship signed, checksummed static binaries through GitHub Releases and Homebrew.\n\n## Requirements\n- PRD refs: FR-14, FR-15, FR-16, NFR-02, NFR-07\n\n## Exit criteria (from docs/PRD.md)\n- [ ] Terminal and JSON output, with a JSON Schema file.\n- [ ] The exit-code contract is tested.\n- [ ] GoReleaser builds static binaries with checksums and attestation.\n- [ ] The Homebrew",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/6",
+        "created_at": "2026-10-17T18:14:53Z",
+        "updated_at": "2026-10-26T15:43:33Z",
+        "closed_at": "2026-10-26T15:43:33Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 77,
+        "title": "Test that no network calls happen without --llm",
+        "body": "## Context\nNFR-01: no connections besides configured servers and, only with `--llm`, the LLM provider. This must be proven, not assumed.\n\n## Requirements\n- PRD refs: NFR-01, FR-05, FR-17\n\n## Tasks\n- [ ] Run a full scan with an `http.DefaultTransport`/dialer that records and fails unexpected connections.\n- [ ] Run `--no-connect` and assert zero connections and zero child processes.\n- [ ] Add a CI job that runs the binary with network access blocke",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/77",
+        "created_at": "2026-10-17T18:19:01Z",
+        "updated_at": "2026-10-26T15:43:03Z",
+        "closed_at": "2026-10-26T15:43:03Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      },
+      {
+        "number": 76,
+        "title": "--llm risk classification per tool (opt-in, key from env, clear warning)",
+        "body": "## Context\nFR-17: optional LLM classification. It sends data off the machine, so it is off by default and warns clearly (NFR-01).\n\n## Requirements\n- PRD refs: FR-17, NFR-01\n\n## Tasks\n- [ ] Add `--llm` and a provider setting; read the API key from an env var only.\n- [ ] Print a warning that tool descriptions leave the machine, before any request.\n- [ ] Send each description with a fixed prompt; parse a structured risk result.\n- [ ] Report LLM resu",
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/76",
+        "created_at": "2026-10-17T18:18:57Z",
+        "updated_at": "2026-10-26T15:43:02Z",
+        "closed_at": "2026-10-26T15:43:02Z",
+        "state": "closed",
+        "comments": 0,
+        "pull_request": null,
+        "author": "Ducarv",
+        "body_excerpt_only": true
+      }
+    ]
+  }
+]

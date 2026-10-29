@@ -1,0 +1,116 @@
+{
+  "allCapturesNetworkDenied": true,
+  "allCapturesToolsCalls": 0,
+  "comparisons": [
+    {
+      "comparability": "comparable",
+      "comparison": "replay",
+      "fieldCoverage": "full",
+      "protocols": [
+        "2025-03-26",
+        "2025-03-26"
+      ],
+      "selectedTools": [
+        {
+          "changes": [
+            "inputSchema"
+          ],
+          "inputSchemaPaths": [
+            "$.\"properties\".\"server_info\".\"additionalProperties\"",
+            "$.\"properties\".\"server_info\".\"description\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"type\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"type\"",
+            "$.\"properties\".\"server_info\".\"type\""
+          ],
+          "name": "approve_mcp_server",
+          "outputSchemaPaths": null,
+          "requiredAdded": [],
+          "status": "changed"
+        },
+        {
+          "changes": [
+            "inputSchema",
+            "outputSchema"
+          ],
+          "inputSchemaPaths": [
+            "$.\"properties\".\"server_info\".\"additionalProperties\"",
+            "$.\"properties\".\"server_info\".\"description\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"type\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"type\"",
+            "$.\"properties\".\"server_info\".\"type\""
+          ],
+          "name": "status_mcp_server",
+          "outputSchemaPaths": [
+            "$.\"properties\".\"origin\".\"description\"",
+            "$.\"properties\".\"origin\".\"properties\".\"approvedVersion\".\"description\"",
+            "$.\"properties\".\"origin\".\"properties\".\"approvedVersion\".\"type\"[0]",
+            "$.\"properties\".\"origin\".\"properties\".\"approvedVersion\".\"type\"[1]",
+            "$.\"properties\".\"origin\".\"properties\".\"currentVersion\".\"description\"",
+            "$.\"properties\".\"origin\".\"properties\".\"currentVersion\".\"type\"[0]",
+            "$.\"properties\".\"origin\".\"properties\".\"currentVersion\".\"type\"[1]",
+            "$.\"properties\".\"origin\".\"properties\".\"launch\".\"anyOf\"[0].\"type\"",
+            "$.\"properties\".\"origin\".\"properties\".\"launch\".\"anyOf\"[1].\"type\"",
+            "$.\"properties\".\"origin\".\"properties\".\"launch\".\"description\"",
+            "$.\"properties\".\"origin\".\"required\"[0]",
+            "$.\"properties\".\"origin\".\"required\"[1]",
+            "$.\"properties\".\"origin\".\"required\"[2]",
+            "$.\"properties\".\"origin\".\"type\"",
+            "$.\"properties\".\"reviewText\".\"description\""
+          ],
+          "requiredAdded": [],
+          "status": "changed"
+        }
+      ],
+      "status": "changed"
+    },
+    {
+      "comparability": "comparable",
+      "comparison": "stability",
+      "fieldCoverage": "full",
+      "protocols": [
+        "2025-03-26",
+        "2025-03-26"
+      ],
+      "selectedTools": [
+        {
+          "changes": [],
+          "inputSchemaPaths": null,
+          "name": "approve_mcp_server",
+          "outputSchemaPaths": null,
+          "requiredAdded": null,
+          "status": "unchanged"
+        },
+        {
+          "changes": [],
+          "inputSchemaPaths": null,
+          "name": "status_mcp_server",
+          "outputSchemaPaths": null,
+          "requiredAdded": null,
+          "status": "unchanged"
+        }
+      ],
+      "status": "unchanged"
+    }
+  ],
+  "currentToolsIdenticalOnRecheck": true,
+  "historicalCoreDigestChecks": [
+    {
+      "capture": "replay-before",
+      "fullCaptureMtlCoreDigest": "sha256-E6s0oh417i8CZLJYVTuZwy9F51CcSlL9UPpZR7BE2Mk=",
+      "matchesHistoricalCoreDigest": true,
+      "originalRecordedDigest": "sha256-E6s0oh417i8CZLJYVTuZwy9F51CcSlL9UPpZR7BE2Mk="
+    },
+    {
+      "capture": "current-baseline",
+      "fullCaptureMtlCoreDigest": "sha256-oc4ZUKD5KONt5yMkyZbMvboUIcQgK+oZc+qqAQIRov0=",
+      "matchesHistoricalCoreDigest": true,
+      "originalRecordedDigest": "sha256-oc4ZUKD5KONt5yMkyZbMvboUIcQgK+oZc+qqAQIRov0="
+    }
+  ],
+  "historicalOriginalMetadataRecovered": false,
+  "replayedSourceNotPublishedPackage": true
+}

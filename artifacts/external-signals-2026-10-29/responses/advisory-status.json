@@ -1,0 +1,455 @@
+[
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000636",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000636.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-29T11:07:38.225196+00:00",
+    "status": 200,
+    "sha256": "a2fdf52eb81a070959083e86d8e8f724d207d3df1f0017a8f088eb4b741d368f",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000636",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "platon.main"
+        ],
+        "packageName": "aimarket-platon",
+        "product": "aimarket-platon",
+        "programFiles": [
+          "platon/main.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "platon.main._from_local_proxy"
+          },
+          {
+            "name": "platon.main._key_from"
+          },
+          {
+            "name": "platon.main._client_key"
+          },
+          {
+            "name": "platon.main._ws_client_key"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.1.5",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "title": "Platon rate limit key can be forged by hosts on the same private network in aimarket-platon"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000637",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000637.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-29T11:07:38.225588+00:00",
+    "status": 200,
+    "sha256": "cfe2b6fa0b91592e62d3ca0301733a733ebc823f3af1dce6b113006c1e509e81",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000637",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "oracle_core.app",
+          "oracle_core.tiers"
+        ],
+        "packageName": "aimarket-oracle-core",
+        "product": "aimarket-oracle-core",
+        "programFiles": [
+          "oracle_core/app.py",
+          "oracle_core/tiers.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "oracle_core.app.peer_is_local_proxy"
+          },
+          {
+            "name": "oracle_core.app.client_key"
+          },
+          {
+            "name": "oracle_core.tiers.PaidTierPolicy.is_paid"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.6.2",
+            "status": "affected",
+            "version": "0.2.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "title": "Oracle client address and paid tier can be forged by hosts on the same private network in aimarket-oracle-core"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000638",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000638.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-29T11:07:38.225728+00:00",
+    "status": 200,
+    "sha256": "086a72debf26fb4b6c5d3dab801f29a078273596fa35c214e3479a1061d2aad3",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000638",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "logos.app",
+          "logos.main"
+        ],
+        "packageName": "aimarket-logos",
+        "product": "aimarket-logos",
+        "programFiles": [
+          "logos/app.py",
+          "logos/main.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "logos.app._from_local_proxy"
+          },
+          {
+            "name": "logos.app._client_key"
+          },
+          {
+            "name": "logos.main.main"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.2.1",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "title": "Logos rate limit key can be forged by hosts on the same private network in aimarket-logos"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000639",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000639.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-29T11:07:38.800455+00:00",
+    "status": 200,
+    "sha256": "c470c6dfe08dc5590b7269e6f0c45be94913bb0a907dd4d3e754da4f12687521",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000639",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "skopos.remediation.git_push"
+        ],
+        "packageName": "skopos-fleet",
+        "product": "skopos-fleet",
+        "programFiles": [
+          "skopos/remediation/git_push.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "skopos.remediation.git_push.ssh_remote_is_local"
+          },
+          {
+            "name": "skopos.remediation.git_push.GitPusher._git"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.2.1",
+            "status": "affected",
+            "version": "0.2.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "title": "SSH host key not checked when skopos-fleet pushes remediation commits to a single-label remote"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000640",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000640.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-29T11:07:38.806006+00:00",
+    "status": 200,
+    "sha256": "59fb0b47655001cc4ba4f7bcd71ed64c9fc79a49b48d539f8c0a1100e7f31cfd",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000640",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "aimarket_mcp.server"
+        ],
+        "packageName": "aimarket-mcp",
+        "product": "aimarket-mcp",
+        "programFiles": [
+          "aimarket_mcp/server.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "aimarket_mcp.server._auth_ok"
+          },
+          {
+            "name": "aimarket_mcp.server._caller_is_this_user"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.6.3",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "title": "Keyless aimarket-mcp server treats a same-user or non-Linux reverse proxy as a local caller"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000641",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000641.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-29T11:07:38.806161+00:00",
+    "status": 200,
+    "sha256": "de704fd6ebaa2a9ac3ffacc31fb177408ad3be6e2ce91c3b0fac5c2374c4e963",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000641",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "metis.api.auth"
+        ],
+        "packageName": "aimarket-metis",
+        "product": "aimarket-metis",
+        "programFiles": [
+          "metis/api/auth.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "metis.api.auth.verify_api_key"
+          },
+          {
+            "name": "metis.api.auth.local_caller"
+          },
+          {
+            "name": "metis.api.auth._caller_is_this_user"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.2.4",
+            "status": "affected",
+            "version": "0.2.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "title": "Keyless Metis server treats a same-user or non-Linux reverse proxy as a local caller"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000642",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000642.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-29T11:07:39.200453+00:00",
+    "status": 200,
+    "sha256": "ba32537142a7708a2aba88cc8ccd9f636b5a731e1152eddc78a250c2a9d8fad0",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000642",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "treasury.service"
+        ],
+        "packageName": "aimarket-treasury",
+        "product": "aimarket-treasury",
+        "programFiles": [
+          "treasury/service.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "treasury.service._local_caller"
+          },
+          {
+            "name": "treasury.service._caller_is_this_user"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.1.3",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "title": "Keyless Treasury service treats a same-user or non-Linux reverse proxy as a local caller"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000643",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000643.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-29T11:07:39.217694+00:00",
+    "status": 200,
+    "sha256": "677a3ca6ae532b7bf47817f449f74d98d0048724ca5bf76e131b74c33c8c58b5",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000643",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "platon.main"
+        ],
+        "packageName": "aimarket-platon",
+        "product": "aimarket-platon",
+        "programFiles": [
+          "platon/main.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "platon.main._write_authorized"
+          },
+          {
+            "name": "platon.main._local_caller"
+          },
+          {
+            "name": "platon.main._caller_is_this_user"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.1.5",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "title": "Keyless Platon server treats a same-user or non-Linux reverse proxy as a local writer"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000644",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000644.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-29T11:07:39.220601+00:00",
+    "status": 200,
+    "sha256": "877e390015fd05c5ac6741e5a4df69e42bf7099c69f9214b703848a749a194c3",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000644",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "skopos.auth_store"
+        ],
+        "packageName": "skopos-fleet",
+        "product": "skopos-fleet",
+        "programFiles": [
+          "skopos/auth_store.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "skopos.auth_store.register_failed_login"
+          },
+          {
+            "name": "skopos.auth_store.login_lockout_remaining_seconds"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "status": "affected",
+            "version": "0.2.1",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "title": "Anyone who reaches the login page can lock the operator out of the skopos-fleet dashboard"
+  }
+]

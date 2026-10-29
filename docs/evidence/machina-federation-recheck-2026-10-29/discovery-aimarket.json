@@ -1,0 +1,56 @@
+{
+  "url": "https://mach402.dev/.well-known/ai-market.json",
+  "checked_at_utc": "2026-10-29T04:00:59.131418+00:00",
+  "method": "GET",
+  "status": 200,
+  "final_url": "https://mach402.dev/.well-known/ai-market.json",
+  "headers": {
+    "Date": "Thu, 29 Oct 2026 04:00:59 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "554",
+    "Connection": "close",
+    "Server": "cloudflare",
+    "last-modified": "Wed, 28 Oct 2026 22:25:32 GMT",
+    "etag": "\"6ae2765c-22a\"",
+    "Cache-Control": "public, max-age=3600",
+    "Accept-Ranges": "bytes",
+    "cf-cache-status": "DYNAMIC",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=Q893OBmKS%2F6sQrtuwauiX8FOLhXCZPlhlyywHW5votDqFZs%2BtAwgZ5YFdP8WYzyVRdYJ0VsqkCMdr5wvxcIieSPPxYUTcgvL7AkXuibZ38nQJw6YbxS%2FKNobGepzYg%3D%3D\"}]}",
+    "CF-RAY": "a51f46c36becfa7b-AMS",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "body_sha256": "359fbd2b594b9ba8e9ed31c2fbf4d96fc3f3808b6f06e17cc2c61a6fa2237205",
+  "body_truncated": false,
+  "json": {
+    "name": "Machina",
+    "protocol_versions": [
+      "v1",
+      "v2"
+    ],
+    "hub_url": "https://mach402.dev",
+    "manifest_url": "https://mach402.dev/ai-market/v2/manifest",
+    "signer_public_key": "UGIZ0yVMpsAQBS1sLPq782GBjL5HnJZdI7SVrOQ3Xo4=",
+    "payment_configured": true,
+    "payment_rails": {
+      "seller_direct": {
+        "enabled": true,
+        "header": "X-Payment",
+        "also": [
+          "payment-signature"
+        ],
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "payTo": "0x14B21d80bf5776437dD4f1043BDAf31e60B366AD",
+        "note": "x402 exact scheme via CDP Facilitator"
+      }
+    },
+    "supported_chains": [
+      "base"
+    ],
+    "supported_tokens": [
+      "USDC"
+    ],
+    "payment_testnet": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "authentication": "none",
+  "historicalMetadataBackfilled": false,
+  "installedPackageVersionKnown": false,
+  "limits": [
+    "Two current observations test observed contract stability, not the original historical upgrade.",
+    "All extra fields are retained; absent extras are observed absence, not reconstructed history."
+  ],
+  "mode": "fresh-public-baseline-recheck",
+  "sourceHashes": [
+    {
+      "path": "docs/evidence/histor-full-observations-2026-10-27/hub/capture_hub.py",
+      "sha256": "2b3b4342fd797a025d99ffaabd8e4a3a33f8550bac7af0e6ac81bd613296b3f6"
+    },
+    {
+      "path": "histor/histor/mcpclient.py",
+      "sha256": "46abbd51efe7bd2f8a0bd9504b1f8709e562b87b6796e36a1eedabe8d543a9c7"
+    },
+    {
+      "path": "histor/histor/netguard.py",
+      "sha256": "b7281319c51eda60f85257e53134e58ab9ec0b806b7884b4eb7da91256987022"
+    }
+  ],
+  "target": "https://modelmarket.dev/mcp",
+  "toolCalls": 0
+}

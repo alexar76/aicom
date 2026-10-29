@@ -1,0 +1,58 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/work[39m
+
+ [32m✓[39m test/wrap.test.ts [2m([22m[2m123 tests[22m[2m)[22m[33m 43335[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=false and 5 MiB response [33m 571[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=true and 5 MiB response [33m 478[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission withholds unreviewed tools in any language and never creates a TOFU pin [33m 731[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission does not mistake an old automatic pin for operator approval [33m 387[2mms[22m[39m
+     [33m[2m✓[22m[39m persists drift across sessions; TTY reapproval allows the new snapshot [33m 742[2mms[22m[39m
+     [33m[2m✓[22m[39m captures initialize versions through real wrap and TTY approval, without treating metadata as identity or tools [33m 1444[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps a TOFU-reported version while flagging actual tool drift at the same version [33m 498[2mms[22m[39m
+     [33m[2m✓[22m[39m does not overwrite an approval when only the observed version changes during TTY review [33m 308[2mms[22m[39m
+     [33m[2m✓[22m[39m human approval refuses a candidate that changes during review [33m 322[2mms[22m[39m
+     [33m[2m✓[22m[39m revoke persists denial, without silently starting a fresh TOFU [33m 759[2mms[22m[39m
+     [33m[2m✓[22m[39m identity drift blocks before spawning and returns initialize error with exit 3 [33m 634[2mms[22m[39m
+       [33m[2m✓[22m[39m off: the result passes untouched; a clean result always passes byte for byte [33m 419[2mms[22m[39m
+     [33m[2m✓[22m[39m EOF terminates a stubborn child within 10 seconds and reaps it [33m 10116[2mms[22m[39m
+     [33m[2m✓[22m[39m five proxies sharing one state directory establish one intact pin [33m 551[2mms[22m[39m
+       [33m[2m✓[22m[39m a client that offers only URL elicitation, or --ask refuse, is never asked [33m 378[2mms[22m[39m
+         [33m[2m✓[22m[39m honors cancellation during the final observation and releases the unused screen lease [33m 1485[2mms[22m[39m
+         [33m[2m✓[22m[39m retains an uncertain screen lease across proxy restart when the action has no result [33m 428[2mms[22m[39m
+       [33m[2m✓[22m[39m withholds clipboard paste and Send even when a large image precedes screen text [33m 376[2mms[22m[39m
+       [33m[2m✓[22m[39m stops every first short-secret fragment across concurrent proxies before server delivery [33m 307[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses a send after outside text came through, and the refused call never reaches the server [33m 433[2mms[22m[39m
+       [33m[2m✓[22m[39m audit-only logs what the guard would do and forwards the call; without --flow nothing changes [33m 437[2mms[22m[39m
+ [32m✓[39m test/flow-guard.test.ts [2m([22m[2m46 tests[22m[2m)[22m[33m 871[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps state consistent when Claude Code runs tool hooks in parallel [33m 399[2mms[22m[39m
+ [32m✓[39m test/flow-guard-screen.test.ts [2m([22m[2m119 tests[22m[2m)[22m[33m 342[2mms[22m[39m
+ [32m✓[39m test/flow-guard-gaps.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 289[2mms[22m[39m
+ [32m✓[39m test/flow-guard-secret-regression.test.ts [2m([22m[2m59 tests[22m[2m)[22m[33m 913[2mms[22m[39m
+     [33m[2m✓[22m[39m deduplicates rereads and marks index capacity exhaustion instead of silently evicting [33m 322[2mms[22m[39m
+ [32m✓[39m test/annotation-review.test.ts [2m([22m[2m28 tests[22m[2m)[22m[33m 5117[2mms[22m[39m
+     [33m[2m✓[22m[39m asks once for the exact annotated tool in a wrapper, and asks again in a new wrapper [33m 444[2mms[22m[39m
+     [33m[2m✓[22m[39m never reuses an old tools/list already in flight when approval arrives [33m 822[2mms[22m[39m
+ [32m✓[39m test/flow-guard-gui-policy.test.ts [2m([22m[2m97 tests[22m[2m)[22m[32m 276[2mms[22m[39m
+ [32m✓[39m test/review-diff.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+ [32m✓[39m test/flow-guard-credential-boundary.test.ts [2m([22m[2m34 tests[22m[2m)[22m[33m 313[2mms[22m[39m
+ [32m✓[39m test/mcp-client.test.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 790[2mms[22m[39m
+     [33m[2m✓[22m[39m times out a server that never answers, and answers roots/list for one that asks [33m 541[2mms[22m[39m
+ [32m✓[39m test/claude-plugin.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 186[2mms[22m[39m
+ [32m✓[39m test/flow-guard-gautam.test.ts [2m([22m[2m37 tests[22m[2m)[22m[33m 386[2mms[22m[39m
+ [32m✓[39m test/toxic-flow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m test/flow-guard-instructions.test.ts [2m([22m[2m54 tests[22m[2m)[22m[32m 112[2mms[22m[39m
+ [32m✓[39m test/flow-guard-answer-review.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m test/wrap-screen.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m test/action.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 854[2mms[22m[39m
+     [33m[2m✓[22m[39m with the lock committed and stdio allowed, a clean project passes [33m 454[2mms[22m[39m
+ [32m✓[39m test/pin-review-origin.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 447[2mms[22m[39m
+   [33m[2m✓[22m[39m shows the reported versions, the unpinned launch and the added routing hint in one review [33m 445[2mms[22m[39m
+ [32m✓[39m test/flow-guard-home-paths.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 80[2mms[22m[39m
+ [32m✓[39m test/result-screen.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m20 passed[39m[22m[90m (20)[39m
+[2m      Tests [22m [1m[32m711 passed[39m[22m[90m (711)[39m
+[2m   Start at [22m 16:58:49
+[2m   Duration [22m 63.43s[2m (transform 1.17s, setup 198ms, import 2.12s, tests 54.51s, environment 2ms)[22m
+
+JSON report written to /out/vitest.json

@@ -1,0 +1,123 @@
+{
+  "bin": {
+    "warden-mcp": "dist/mcp-server.js"
+  },
+  "bugs": {
+    "url": "https://github.com/alexar76/warden/issues"
+  },
+  "dist": {
+    "shasum": "4b8f46fc96310a1a3dc32c54179ce131b022090c",
+    "tarball": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.22.1.tgz",
+    "fileCount": 340,
+    "integrity": "sha512-2Yt0WiEb6cHZTMgddLGALv43VrVOKjjHdYtJ9YPDM6PaThyQdpYVowV+hXOl3cg074y9ZypUKaOEMPHNogs4Ig==",
+    "signatures": [
+      {
+        "sig": "MEUCICl5OxZT1eop/RANBFIYhAbY1v36/p8vc1LhU5Zu9zwaAiEAyEFRZhOBmPvR8bXcHsJV+380ArP5TEZDynTkWTFKgSs=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "sig": "MEQCIGgChNu9/Moen3euV3RO4Qr4qTzuzIqcpQETwcyE8/tLAiB9hi08QvSINfgP1BE+6IIRGEtzzo9Sw5YnQ8KLrYEyfA==",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 3152799
+  },
+  "main": "./dist/index.js",
+  "name": "@aimarket/warden",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "author": {
+    "url": "alexar76",
+    "name": "AICOM"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./jcs": {
+      "types": "./dist/jcs.d.ts",
+      "import": "./dist/jcs.js",
+      "default": "./dist/jcs.js"
+    },
+    "./atomic-screen": {
+      "types": "./dist/atomic-screen.d.ts",
+      "import": "./dist/atomic-screen.js",
+      "default": "./dist/atomic-screen.js"
+    }
+  },
+  "gitHead": "459df08f36fc002100f61e6b02cdcf15b24d6d96",
+  "license": "MIT",
+  "mcpName": "io.github.alexar76/warden",
+  "scripts": {
+    "mcp": "node dist/mcp-server.js",
+    "test": "vitest run",
+    "build": "tsc -p tsconfig.json && node scripts/sync-flow-guard.mjs",
+    "prepare": "npm run build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "bench:wrap": "npm run build && node scripts/benchmark-wrap.mjs",
+    "test:macos": "node scripts/build-macos.mjs && node scripts/build-macos.mjs --tests && npm run build && vitest run --config vitest.macos.config.ts",
+    "test:watch": "vitest",
+    "build:macos": "node scripts/build-macos.mjs",
+    "test:redteam": "node scripts/redteam/flow-redteam.mjs --check",
+    "check:quality": "node scripts/check-quality-gate.mjs",
+    "check:ruleset": "node scripts/check-published-ruleset.mjs",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build && npm test && npm run test:redteam && npm run check:ruleset && npm run check:quality"
+  },
+  "_npmUser": {
+    "name": "alexar76",
+    "email": "alexar76@rambler.ru"
+  },
+  "homepage": "https://warden.modelmarket.dev/",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "mcp-security",
+    "model-context-protocol",
+    "prompt-injection",
+    "tool-poisoning",
+    "warden",
+    "firewall",
+    "security",
+    "ai-agent",
+    "llm",
+    "aimarket",
+    "aicom"
+  ],
+  "repository": {
+    "url": "git+https://github.com/alexar76/warden.git",
+    "type": "git"
+  },
+  "_npmVersion": "10.9.4",
+  "description": "WARDEN \u2014 MCP security firewall. Stdio wrap proxy, inspection tools and library. Vets definitions before model exposure. Zero runtime dependencies.",
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "alexar76",
+      "email": "alexar76@rambler.ru"
+    }
+  ],
+  "sideEffects": false,
+  "_nodeVersion": "22.22.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "_hasShrinkwrap": false,
+  "devDependencies": {
+    "vitest": "^5.0.5",
+    "typescript": "^7.0.2",
+    "@types/node": "^26.6.4",
+    "@vitest/coverage-v8": "^5.0.5"
+  },
+  "_npmOperationalInternal": {
+    "tmp": "tmp/warden_0.22.1_1793027687954_0.02194810542948633",
+    "host": "s3://npm-registry-packages-npm-production"
+  },
+  "_id": "@aimarket/warden@0.22.1",
+  "version": "0.22.1"
+}

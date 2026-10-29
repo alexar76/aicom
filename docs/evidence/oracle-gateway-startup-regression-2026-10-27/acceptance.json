@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-27",
+  "tests": {
+    "tests": 48,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "oldFailureReproduced": true,
+  "fixedWheelStartupConfirmed": true,
+  "sourceMatchesVerifiedWheel032": true,
+  "sameHarnessRejectsRestoredBug": true,
+  "workspaceProductionCodeChanged": false,
+  "runtime": {
+    "python": "3.12.13",
+    "mcp": "1.30.0"
+  },
+  "currentToolCount": 36,
+  "toolCalls": 0,
+  "networkRequests": 0,
+  "installations": 0,
+  "githubWrites": 0,
+  "newRegression": "real initialize/initialized/paginated tools/list and bounded clean process shutdown",
+  "sources": [
+    {
+      "path": "plugins/aimarket-oracle-gateway/aimarket_oracle_gateway/__init__.py",
+      "sha256": "06d9a75da9c562ac5c1d7f900df95e840681d05eebe53ab7ae1a83ec109f1b0b"
+    },
+    {
+      "path": "plugins/aimarket-oracle-gateway/aimarket_oracle_gateway/gateway_core.py",
+      "sha256": "58374f00dfbf69f0d090065490f3491d985289d6d8688b1037476eccf3ac3a64"
+    },
+    {
+      "path": "plugins/aimarket-oracle-gateway/aimarket_oracle_gateway/mcp_family_tools.py",
+      "sha256": "6d5148dac88250986bca24620d30f0f6f5e65f977271e443f4a1a6a4598696c4"
+    },
+    {
+      "path": "plugins/aimarket-oracle-gateway/aimarket_oracle_gateway/mcp_tool_surface.py",
+      "sha256": "2e36baea74d6e9f3a6f8bc4edf6225750d28441272fd75f258d22a8739a6b757"
+    },
+    {
+      "path": "plugins/aimarket-oracle-gateway/aimarket_oracle_gateway/stdio_server.py",
+      "sha256": "c761fcca1807c12dc8bf840e67b88953e1e0d50fb7d61f86b13109d091a7c193"
+    },
+    {
+      "path": "plugins/aimarket-oracle-gateway/tests/test_stdio_startup.py",
+      "sha256": "a102f184956a0c9959aef8ed35fb54d4c5aee3fc42a4c2686fa1535e62345bd9"
+    },
+    {
+      "path": "plugins/aimarket-oracle-gateway/README.md",
+      "sha256": "580b44f9b3b354f42d527b5307f42dc9370d3231e80bf9363a7e510734a824d8"
+    },
+    {
+      "path": "docs/evidence/oracle-gateway-startup-regression-2026-10-27/check_negative_control.py",
+      "sha256": "f24ba7410e0ff156fc693b5acbc5ace8f2c42fcc87e4d2fb8360ac314ebbe3ed"
+    },
+    {
+      "path": "docs/evidence/oracle-gateway-startup-regression-2026-10-27/pytest.xml",
+      "sha256": "5e18c5bd83051f793a01f2b61373356b027cd5dd643839c0953607ce9c19d88b"
+    },
+    {
+      "path": "docs/evidence/oracle-gateway-startup-regression-2026-10-27/negative-control.json",
+      "sha256": "79fe0dac9cca7b0ce30ef62f3b27308dbb1fe3a73aa53d8041e59e02838dc424"
+    },
+    {
+      "path": "docs/evidence/oracle-gateway-startup-regression-2026-10-27/negative-control-stderr.log",
+      "sha256": "e34375981ee6bc5927418ba5ffaef4f72a40c2bef0735f9bea7c25ca57ddd056"
+    }
+  ]
+}

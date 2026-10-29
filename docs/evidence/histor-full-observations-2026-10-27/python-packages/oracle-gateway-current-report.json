@@ -1,0 +1,104 @@
+{
+  "format": "histor.upgrade-brief/v1",
+  "language": "en",
+  "title": "oracle-gateway current",
+  "watchlistSha256": "sha256:b35cb0da96aa09a719a9ce102f2b768e219ea6bc320d54af0ad7e8c7d9bf8f27",
+  "analysis": "deterministic-offline",
+  "dependencies": [
+    {
+      "id": "pypi:aimarket-oracle-gateway",
+      "status": "unchanged",
+      "comparability": "comparable",
+      "sources": {
+        "before": {
+          "targetId": "pypi:aimarket-oracle-gateway",
+          "status": "ok",
+          "observedAt": "2026-10-27T13:13:30.139903Z",
+          "packageVersion": "0.3.2",
+          "serverName": "aimarket-oracle-gateway",
+          "serverVersion": "0.3.2",
+          "protocol": "2025-06-18",
+          "path": "snapshots/current-oracle-gateway-baseline.json",
+          "sha256": "sha256:c6dcffed0d7bd56ddbadc2a12916350fa0957d3b981c38569c5e264701c7b829",
+          "extrasCoverage": "observed",
+          "toolsSha256": "sha256:822dc2a111a72fb8ef9c10378b253d0ed244dcb83e6029692b7d71b7f40d8ffb",
+          "launchSha256": "sha256:2e1d880917ef62d566bbf1bf4a2bd04c117e8f8b61a5e0a3e437d6ef9629cdc5",
+          "transport": "stdio"
+        },
+        "after": {
+          "targetId": "pypi:aimarket-oracle-gateway",
+          "status": "ok",
+          "observedAt": "2026-10-27T13:13:30.605767Z",
+          "packageVersion": "0.3.2",
+          "serverName": "aimarket-oracle-gateway",
+          "serverVersion": "0.3.2",
+          "protocol": "2025-06-18",
+          "path": "snapshots/current-oracle-gateway-recheck.json",
+          "sha256": "sha256:e7e32e4c7d40c0d97e957f1d990700838255f6c628c03c75ff475203a6f3ff12",
+          "extrasCoverage": "observed",
+          "toolsSha256": "sha256:822dc2a111a72fb8ef9c10378b253d0ed244dcb83e6029692b7d71b7f40d8ffb",
+          "launchSha256": "sha256:2e1d880917ef62d566bbf1bf4a2bd04c117e8f8b61a5e0a3e437d6ef9629cdc5",
+          "transport": "stdio"
+        }
+      },
+      "fieldCoverage": "full",
+      "limitations": [],
+      "provenanceGaps": [],
+      "contextChanges": [],
+      "observedChanges": false,
+      "selectedTools": [
+        {
+          "name": "list_oracle_capabilities",
+          "status": "unchanged",
+          "changes": [],
+          "retest": []
+        }
+      ],
+      "workflows": [
+        {
+          "id": "selected-flow",
+          "description": "Selected workflow",
+          "tools": [
+            "list_oracle_capabilities"
+          ],
+          "status": "no_observed_change",
+          "affectedTools": [],
+          "retest": []
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "before": {
+          "fullList": 35733,
+          "selectedTools": 481
+        },
+        "after": {
+          "fullList": 35733,
+          "selectedTools": 481
+        },
+        "delta": {
+          "fullList": 0,
+          "selectedTools": 0
+        }
+      },
+      "toolSet": {
+        "beforeCount": 36,
+        "afterCount": 36,
+        "added": [],
+        "removed": []
+      }
+    }
+  ],
+  "summary": {
+    "changed": 0,
+    "unchanged": 1,
+    "context_changed": 0,
+    "unknown": 0
+  },
+  "limits": [
+    "Only observed definitions are compared, not the server\u2019s runtime behavior.",
+    "A change does not prove breakage; unchanged definitions do not establish safety.",
+    "Workflows are linked through explicitly selected tools, without semantic analysis.",
+    "Compact JSON size in UTF-8 measures bytes, not tokens, money or achieved savings.",
+    "launch is represented only by its hash; launch conditions are not executed and environment secrets are not displayed."
+  ]
+}

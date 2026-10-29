@@ -89,6 +89,7 @@ class PipelineRequest(BaseModel):
     nodes: list[PipelineNode] = Field(..., min_length=1, max_length=16)
     channel_id: str | None = Field(None, max_length=64)
     channel_secret: str | None = Field(None, max_length=128)
+    continue_on_error: bool = Field(False, strict=True)
 
 
 class InvokeBody(BaseModel):
@@ -273,6 +274,7 @@ async def run_pipeline(
         authorization=authorization,
         llm_router=_get_llm_router(request),
         sandbox_visitor=x_sandbox_visitor,
+        continue_on_error=body.continue_on_error,
     )
 
 

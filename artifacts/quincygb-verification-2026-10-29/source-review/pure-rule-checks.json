@@ -1,0 +1,117 @@
+{
+  "method": "Independent tiny calculation of explicitly reviewed rules; no third-party module imported or executed; no requests or payments. Not a live service reproduction.",
+  "price_display": [
+    {
+      "amount_units": "1000",
+      "exact_usdc": "0.001",
+      "source_format_rule_output": "$0.00"
+    },
+    {
+      "amount_units": "3000",
+      "exact_usdc": "0.003",
+      "source_format_rule_output": "$0.00"
+    },
+    {
+      "amount_units": "5000",
+      "exact_usdc": "0.005",
+      "source_format_rule_output": "$0.01"
+    },
+    {
+      "amount_units": "6000",
+      "exact_usdc": "0.006",
+      "source_format_rule_output": "$0.01"
+    },
+    {
+      "amount_units": "30000",
+      "exact_usdc": "0.03",
+      "source_format_rule_output": "$0.03"
+    },
+    {
+      "amount_units": "50000",
+      "exact_usdc": "0.05",
+      "source_format_rule_output": "$0.05"
+    }
+  ],
+  "fingerprint_scope_cases": [
+    {
+      "changed_field": "input_method",
+      "recheck_monitored_fingerprint_changed": false,
+      "before": {
+        "amount": "1000",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "payTo": "seller",
+        "description_hash": "f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d",
+        "schema_hash": null
+      },
+      "after": {
+        "amount": "1000",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "payTo": "seller",
+        "description_hash": "f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d",
+        "schema_hash": null
+      }
+    },
+    {
+      "changed_field": "standard_bazaar_schema",
+      "recheck_monitored_fingerprint_changed": false,
+      "before": {
+        "amount": "1000",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "payTo": "seller",
+        "description_hash": "f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d",
+        "schema_hash": null
+      },
+      "after": {
+        "amount": "1000",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "payTo": "seller",
+        "description_hash": "f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d",
+        "schema_hash": null
+      }
+    },
+    {
+      "changed_field": "second_accept_amount",
+      "recheck_monitored_fingerprint_changed": false,
+      "before": {
+        "amount": "1000",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "payTo": "seller",
+        "description_hash": "f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d",
+        "schema_hash": null
+      },
+      "after": {
+        "amount": "1000",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "payTo": "seller",
+        "description_hash": "f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d",
+        "schema_hash": null
+      }
+    },
+    {
+      "changed_field": "primary_scheme",
+      "recheck_monitored_fingerprint_changed": false,
+      "before": {
+        "amount": "1000",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "payTo": "seller",
+        "description_hash": "f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d",
+        "schema_hash": null
+      },
+      "after": {
+        "amount": "1000",
+        "asset": "USDC",
+        "network": "eip155:8453",
+        "payTo": "seller",
+        "description_hash": "f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d",
+        "schema_hash": null
+      }
+    }
+  ]
+}

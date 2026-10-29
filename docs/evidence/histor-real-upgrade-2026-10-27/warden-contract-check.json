@@ -1,0 +1,163 @@
+{
+  "format": "histor.warden-contract-check/v1",
+  "checkedAtUtc": "2026-10-27T11:54:35.167Z",
+  "scope": "Local pre-existing compiled WARDEN artifact, status_mcp_server only, synthetic definitions and isolated empty state; no published-package assertion",
+  "runtime": {
+    "node": "v22.22.1",
+    "executable": "/Users/alex/.nvm/versions/node/v22.22.1/bin/node",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "wardenPackageVersion": "0.22.1",
+    "executedModule": "warden/dist/mcp-tools.js",
+    "rebuilt": false,
+    "installed": false
+  },
+  "schemaComparison": "Direct inspection of the exported server_info schema for these three flat objects; no general JSON Schema validator was executed",
+  "advertisedServerInfoSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "name": {
+        "type": "string",
+        "maxLength": 200
+      },
+      "version": {
+        "type": "string",
+        "maxLength": 200
+      }
+    },
+    "description": "Optional: the serverInfo object from the server's initialize result, unmodified ({ name, version }). Shown next to the review as the version the server reports, and stored with an approval; it is the server's own word, so it is never hashed or trusted."
+  },
+  "commonInput": {
+    "server": {
+      "id": "histor-contract-fixture",
+      "name": "Contract Fixture",
+      "transport": "http",
+      "url": "https://fixture.invalid/mcp"
+    },
+    "tools": [
+      {
+        "name": "contract_fixture",
+        "description": "Read synthetic fixture.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    ]
+  },
+  "cases": [
+    {
+      "case": "valid_server_info",
+      "server_info": {
+        "name": "fixture",
+        "version": "1.2.0"
+      },
+      "advertisedSchemaAccepts": true,
+      "runtimeAccepted": true,
+      "result": {
+        "origin": {
+          "approvedVersion": null,
+          "currentVersion": "1.2.0",
+          "launch": null
+        },
+        "previous": null,
+        "previousRevision": null,
+        "currentToolsHash": "06fcd0ff45471d6be670bb78fe4347b8652e746de1fa50bb2e6e946cdd9b6f8c",
+        "currentIdentityHash": "8deda88840c8478fd4fbe99b5e680b2843a615d363b4dcfa05c2e21a5e092661",
+        "mutationsEnabled": false
+      }
+    },
+    {
+      "case": "unknown_server_info_key",
+      "server_info": {
+        "name": "fixture",
+        "version": "1.2.0",
+        "extra": "unadvertised-key"
+      },
+      "advertisedSchemaAccepts": false,
+      "runtimeAccepted": true,
+      "result": {
+        "origin": {
+          "approvedVersion": null,
+          "currentVersion": "1.2.0",
+          "launch": null
+        },
+        "previous": null,
+        "previousRevision": null,
+        "currentToolsHash": "06fcd0ff45471d6be670bb78fe4347b8652e746de1fa50bb2e6e946cdd9b6f8c",
+        "currentIdentityHash": "8deda88840c8478fd4fbe99b5e680b2843a615d363b4dcfa05c2e21a5e092661",
+        "mutationsEnabled": false
+      }
+    },
+    {
+      "case": "numeric_version_control",
+      "server_info": {
+        "name": "fixture",
+        "version": 7
+      },
+      "advertisedSchemaAccepts": false,
+      "runtimeAccepted": false,
+      "error": {
+        "name": "McpToolError",
+        "message": "server_info.version must be a string of at most 200 characters"
+      }
+    }
+  ],
+  "checks": {
+    "validInputAccepted": true,
+    "unknownKeyRejectedByAdvertisedSchema": true,
+    "unknownKeyAcceptedByRuntime": true,
+    "unknownKeyLeavesReturnedReviewMetadataUnchanged": true,
+    "numericVersionRejectedByRuntime": true,
+    "calls": 3,
+    "tool": "status_mcp_server",
+    "approvalCalls": 0,
+    "revokeCalls": 0,
+    "networkAttempts": 0,
+    "stateDirectory": "/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/histor-warden-contract-tqXALq",
+    "defaultStateDirVerified": true,
+    "filesBefore": [],
+    "filesAfter": [],
+    "pinsUnchanged": true
+  },
+  "sources": [
+    {
+      "path": "warden/package.json",
+      "sha256": "c29caa748271f7090b58c05b346ba315cfa42e921cc50da9e42fee837b4ead2f"
+    },
+    {
+      "path": "warden/src/mcp-tools.ts",
+      "sha256": "c71398ae7958d20df8ebecfb1f4177da91618bb8452238502899671fc97a1a65"
+    },
+    {
+      "path": "warden/dist/mcp-tools.js",
+      "sha256": "4ef85696c4d0e99d8aa36c7e68c8b207b8374fe1c2bd114fd6ea825a1e776140"
+    },
+    {
+      "path": "warden/src/mcp-rpc.ts",
+      "sha256": "94914506fa084f423615e4d807b08b82354f2d6222ac9d722737faf9693d2a96"
+    },
+    {
+      "path": "warden/dist/mcp-rpc.js",
+      "sha256": "298fa30b980eb0663e49fce48fd03d0351e2c030699223eeb6d89db48b2b6f38"
+    },
+    {
+      "path": "warden/src/pin-store.ts",
+      "sha256": "1b3e5d0f0b5fb6f42a323540981389bed14f75710cf0fd1bfd53621a6c743800"
+    },
+    {
+      "path": "warden/dist/pin-store.js",
+      "sha256": "cf68fdfe08bb2f85813258dfc1626221d4db4b5b03084e9ecc0dbb3a48cb0018"
+    },
+    {
+      "path": "warden/src/state.ts",
+      "sha256": "4958b0a194ef8c637db04160e0540c71db34fb457e5e594892430be073d89a44"
+    },
+    {
+      "path": "warden/dist/state.js",
+      "sha256": "d18909ba21c114e2692d8034eed4872bb8ac66c93c595257185b8180840520f4"
+    }
+  ],
+  "conclusion": "Confirmed schema/runtime mismatch: server_info.extra is disallowed by additionalProperties:false but ignored by the local runtime; numeric version is rejected."
+}

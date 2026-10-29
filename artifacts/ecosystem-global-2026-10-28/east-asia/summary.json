@@ -1,0 +1,67 @@
+{
+  "checked_date_moscow": "2026-10-28",
+  "completed_at_utc": "2026-10-28T12:40:13.656001+00:00",
+  "web_search_queries": 40,
+  "native_search_queries": 4,
+  "direct_http_requests": 21,
+  "direct_http_status_counts": {
+    "200": 19,
+    "403": 1,
+    "None": 1
+  },
+  "new_to_prior_reports": [
+    {
+      "source": "Paper Vault / 研究库",
+      "type": "automated translated repository catalog",
+      "language": "Chinese",
+      "urls": [
+        "https://papers.ananclaw.com/repo/1286-alexar76-aicom",
+        "https://papers.ananclaw.com/repo/2682-alexar76-aimarket-courses",
+        "https://papers.ananclaw.com/repo/2679-alexar76-aimarket-desktop",
+        "https://papers.ananclaw.com/repo/2680-alexar76-aimarket-school"
+      ],
+      "verified": "All four detail pages returned 200 and link exact canonical GitHub repositories. Native search q=alexar76 returns four repo results.",
+      "dates": "AICOM first/last collected 2026-08-11; Courses/Desktop/School 2026-08-21, last commit 2026-08-20. These are catalog collection dates, not newly published October articles.",
+      "limit": "Source is GitHub Search; footer says maintained daily by five collaborating OpenClaw instances. No customer usage or independent review claimed."
+    },
+    {
+      "source": "Qiita / Skillselion comment",
+      "type": "substantive external account feedback on own Japanese article",
+      "language": "Japanese",
+      "url": "https://qiita.com/qwezzy721/items/4dfe9dc2fbe9d69b1fb7#comment-a71ae02460f429b7606e",
+      "created_at": "2026-10-24T17:10:34+09:00",
+      "verified": "Public comments API 200. Critiques omitted cache creation cost and request spacing/TTL, and notes tool-definition changes invalidate the following prompt prefix. Author replied 2026-10-24T19:23:47+09:00 explaining corrected table and calculator.",
+      "limit": "Not a fresh October28 reaction; already known locally in PromoMaterials/qiita/tool-list-cost/reply-skillselion-2026-10-24.md, absent from checked prior external-presence summaries. Account identity is not independently verified."
+    }
+  ],
+  "known_sources_reconfirmed": [
+    "Hubwiz Chinese editorial compilation, published2026-10-15T21:25:33Z / modified2026-10-22T16:13:47Z; exact HISTOR/alexar76 links, author-measured data caveat",
+    "Qiita qwezzy721 dataset article: own Japanese translation, 1like/0comments, not independent review",
+    "Bittide Chinese awesome-mcp-servers translation/cache, already in October26 report",
+    "billionare.me HISTOR story from own ShowHN, already known",
+    "Claude Skills Hub zh-Hant MCP Gateway catalog, source Official MCP Registry"
+  ],
+  "native_qiita_result": "Exact quoted modelmarket.dev and alexar76 queries each returned two articles, both qwezzy721; HISTOR search returned nine, seven without exact ecosystem markers. User API also returns these two. Token-cost article has two comments (one external, one own); dataset article has zero.",
+  "limitations": [
+    "AI Outline direct GET403; previously search-index-only result still not live-confirmed",
+    "GitHub.itlym.cn certificate expired, no bypass attempted",
+    "Naver blocked by robots.txt in web tool",
+    "Closed communities and unindexed pages not covered; no universal absence claim",
+    "No new attributable Korean-language external mention found in checked results"
+  ],
+  "excluded_candidates": [
+    "Zenn Azure MCP3.0 article has no alexar76/modelmarket/HISTOR/WARDEN link; 12,915 is an unrelated token count",
+    "Note AIMarket account lacks our canonical domains or identity; matching name alone insufficient",
+    "Histor.dev is a different product",
+    "Warden Protocol trading server is a different product",
+    "Chinese AIMarket BIM/rental products unrelated",
+    "PingBlip2012/2004 historic names unrelated"
+  ],
+  "evidence_files": [
+    "search-query-log.json",
+    "http-index.json",
+    "native-api-and-school.json",
+    "ananclaw-native-search.json",
+    "ananclaw-additional-cards.json"
+  ]
+}

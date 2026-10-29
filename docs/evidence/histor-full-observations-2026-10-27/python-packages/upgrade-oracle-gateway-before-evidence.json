@@ -1,0 +1,74 @@
+{
+  "actualArgv": [
+    "/private/tmp/pypi-mcp-releases-20261027/bin/python",
+    "-I",
+    "-B",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/launch_list_only.py",
+    "--module",
+    "aimarket_oracle_gateway.stdio_server",
+    "--overlay",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/active/oracle-gateway"
+  ],
+  "artifact": {
+    "extractedPath": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/artifacts/oracle-gateway-0.3.1",
+    "pythonFiles": [
+      {
+        "path": "aimarket_oracle_gateway/__init__.py",
+        "sha256": "ddefe118c96466edb7dd12a63ae4d83a8d1232c3ddf3d8eb0a75dfb4ef5a30f7"
+      },
+      {
+        "path": "aimarket_oracle_gateway/gateway_core.py",
+        "sha256": "58374f00dfbf69f0d090065490f3491d985289d6d8688b1037476eccf3ac3a64"
+      },
+      {
+        "path": "aimarket_oracle_gateway/mcp_tool_surface.py",
+        "sha256": "c3b8ce969fa3dba0580846bc402e1741c75ea9e0c552384dec8f22613bad54bb"
+      },
+      {
+        "path": "aimarket_oracle_gateway/stdio_server.py",
+        "sha256": "3866122cebf656a6672b0cde626ad3fd56c3165224a45b0b9bcd758d6364fce5"
+      }
+    ],
+    "sha256": "89feba4ff53724754dc29d981c9e013d9080ab4a132a0630df5321caa0af8101",
+    "wheel": "docs/evidence/histor-full-observations-2026-10-27/python-packages/wheels/aimarket_oracle_gateway-0.3.1-py3-none-any.whl"
+  },
+  "error": {
+    "message": "the server exited before answering server/discover (exit code 1)",
+    "type": "SourceError"
+  },
+  "events": [
+    {
+      "direction": "client",
+      "message": {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "server/discover",
+        "params": {
+          "_meta": {
+            "io.modelcontextprotocol/clientCapabilities": {},
+            "io.modelcontextprotocol/clientInfo": {
+              "name": "histor-tool-cost",
+              "version": "0.4.2"
+            },
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28"
+          }
+        }
+      }
+    }
+  ],
+  "label": "upgrade-oracle-gateway-before",
+  "protocol": null,
+  "purpose": "controlled version replay now",
+  "resolvedOverlay": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/artifacts/oracle-gateway-0.3.1",
+  "serverInfo": {},
+  "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/upgrade-oracle-gateway-before.json",
+  "snapshotSha256": "431d78ba57b3e351ace6a2843ed7ff2c0df955bc5b6bbc1b9b00186a132450a8",
+  "sourceFilesSha256": {
+    "capture": "26f7beebb7fdb78b3cbf53dfaec79a68f21c9e7b9d6d4862e1a9de67d1e3252b",
+    "launcher": "d748c343073bd35cc62daf208c5c27bd23244b9beb951f9a6fbef38ce8c93197",
+    "reader": "1f21efca7015e9ce34c11bcbf41e7e27daf4ce4c1e4c99fac0740415ce765fd2"
+  },
+  "stderr": "upgrade-oracle-gateway-before-stderr.log",
+  "toolCalls": 0,
+  "toolCount": 0
+}

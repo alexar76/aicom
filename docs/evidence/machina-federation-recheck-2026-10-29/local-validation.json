@@ -1,0 +1,24 @@
+{
+  "validated_at_utc": "2026-10-29T04:02:51.217337+00:00",
+  "scope": "Offline validation of saved GET responses; no live sandbox probes or production assay reruns",
+  "jsonschema_available": true,
+  "pqc_required_by_local_policy": false,
+  "discovery_schema_errors": [],
+  "manifest_schema_errors": [
+    "'hec8IJcbnoZAY089sCifmMM88EE+q9v9/chGsrAT3nTufZOBB9DN076PQ8cVPiZnbVehKG7j34LZJchh7e4pAg==' is not of type 'object'"
+  ],
+  "signature_shape_problem": "signature is a string, not an object (spec §7.3.1): publish {\"algorithm\": \"ed25519\", \"public_key\": \"<base64>\", \"value\": \"<base64>\"}, with the base64 Ed25519 signature in value",
+  "advertised_public_key_bytes": 32,
+  "raw_signature_bytes": 64,
+  "manifest_signature_valid": false,
+  "raw_signature_valid_for_required_canonical": false,
+  "raw_signature_valid_for_compact_sorted_document": true,
+  "wrapping_only_schema_errors": [],
+  "wrapping_only_signature_valid": false,
+  "required_canonical": "capabilities_count:0|generated_at:2026-10-29T04:01:25.209137+00:00|protocol_version:v2|tools_hash:38c12292cd33ed50639201b13e87fd725b9f0ba25aa95cfd75468ea8fdf6ebc7|by_hub_hash:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "tools_count": 8,
+  "all_tools_have_input_schema": true,
+  "generated_at": "2026-10-29T04:01:25.209137+00:00",
+  "production_dossier_ran_at": "2026-10-28T15:49:23Z",
+  "production_dossier_verdict": "fail"
+}

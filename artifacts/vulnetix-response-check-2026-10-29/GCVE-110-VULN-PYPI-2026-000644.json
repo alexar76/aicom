@@ -1,0 +1,111 @@
+{
+  "containers": {
+    "cna": {
+      "affected": [
+        {
+          "collectionURL": "https://pypi.org",
+          "defaultStatus": "unknown",
+          "modules": [
+            "skopos.auth_store"
+          ],
+          "packageName": "skopos-fleet",
+          "product": "skopos-fleet",
+          "programFiles": [
+            "skopos/auth_store.py"
+          ],
+          "programRoutines": [
+            {
+              "name": "skopos.auth_store.register_failed_login"
+            },
+            {
+              "name": "skopos.auth_store.login_lockout_remaining_seconds"
+            }
+          ],
+          "vendor": "pypi",
+          "versions": [
+            {
+              "status": "affected",
+              "version": "0.2.1",
+              "versionType": "python"
+            }
+          ]
+        }
+      ],
+      "configurations": [
+        {
+          "lang": "en",
+          "value": "The dashboard login page is reachable by people who should not operate it."
+        }
+      ],
+      "descriptions": [
+        {
+          "lang": "en",
+          "value": "If the skopos-fleet 0.2.1 dashboard login is reachable by people who should not operate it, any of them can keep you from signing in. Every failed login also counts against a budget shared by all addresses (auth_store.register_failed_login), and 30 failures within 15 minutes (SKOPOS_LOGIN_GLOBAL_MAX_ATTEMPTS) lock the login for every address for SKOPOS_LOGIN_LOCKOUT_SECONDS (300 by default). Sending 30 wrong passwords every five minutes keeps the login closed, including during an incident the dashboard is meant to help with. A browser that is already signed in and holds a valid session cookie is let in without the login form, so only new sign-ins are refused. The shared budget was added in 0.2.1 to bound password guessing (GCVE-110-PYPI-2026-021896). Affects 0.2.1."
+        }
+      ],
+      "metrics": [
+        {
+          "cvssV3_1": {
+            "baseScore": 5.3,
+            "baseSeverity": "MEDIUM",
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+            "version": "3.1"
+          }
+        }
+      ],
+      "problemTypes": [
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-645",
+              "description": "Overly Restrictive Account Lockout Mechanism",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "dateUpdated": "2026-10-28T01:49:28Z",
+        "orgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+        "shortName": "Vulnetix"
+      },
+      "references": [
+        {
+          "tags": [
+            "third-party-advisory"
+          ],
+          "url": "https://pypi.org/project/skopos-fleet/"
+        }
+      ],
+      "solutions": [
+        {
+          "lang": "en",
+          "value": "No setting removes it in 0.2.1. SKOPOS_LOGIN_GLOBAL_MAX_ATTEMPTS (up to 500) only raises the number of failures an attacker must send, and SKOPOS_LOGIN_LOCKOUT_SECONDS (down to 60) shortens each lockout; with a long random dashboard password, a higher shared budget still leaves guessing impractical."
+        }
+      ],
+      "title": "Anyone who reaches the login page can lock the operator out of the skopos-fleet dashboard",
+      "workarounds": [
+        {
+          "lang": "en",
+          "value": "Expose the dashboard only on a VPN or behind an authenticating proxy (client certificates over mTLS, or single sign-on), so strangers cannot submit failed logins at all."
+        },
+        {
+          "lang": "en",
+          "value": "Keep an operator browser signed in: a valid session cookie is accepted without the login form while the login is locked."
+        }
+      ],
+      "x_vulnetix_classification": "weakness"
+    }
+  },
+  "cveMetadata": {
+    "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+    "assignerShortName": "Vulnetix",
+    "cveId": "GCVE-110-VULN-PYPI-2026-000644",
+    "datePublished": "2026-10-27T22:42:51Z",
+    "dateUpdated": "2026-10-28T01:49:28Z",
+    "state": "PUBLISHED"
+  },
+  "dataType": "CVE_RECORD",
+  "dataVersion": "5.1"
+}

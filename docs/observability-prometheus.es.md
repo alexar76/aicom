@@ -33,6 +33,11 @@ el panel del operador, no una página pública. Por defecto solo responde a quie
 todo lo que llega por el nginx público recibe `404`, porque nginx añade `X-Forwarded-For` /
 `X-Real-IP`.
 
+Eso depende de que el proxy añada la cabecera. El `proxy_pass` de nginx por defecto no añade
+ninguna, así que un frontal que solo dice `proxy_pass` deja `/metrics` legible para cualquiera que
+llegue a él. Añada `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;` (como hace
+`deploy/nginx/*.conf`) o responda a `/metrics` con 404 en el proxy.
+
 | Variable | Por defecto | Efecto |
 |---|---|---|
 | `AIMARKET_METRICS_TOKEN` | sin definir | Un recolector externo lo lee con `Authorization: Bearer <token>`. |

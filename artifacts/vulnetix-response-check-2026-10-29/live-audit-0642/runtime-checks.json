@@ -1,0 +1,33 @@
+{
+  "verified_by": "read-only SSH commands in this audit",
+  "momus": {
+    "momus-backend": {
+      "status": "running",
+      "restart_count": 0,
+      "started_at": "2026-10-29T05:02:10.796867939Z"
+    },
+    "momus-verifier": {
+      "status": "running",
+      "restart_count": 0,
+      "started_at": "2026-10-29T05:56:22.985755493Z",
+      "oracle_core_version": "0.6.3",
+      "internal_health_url": "http://127.0.0.1:9400/health",
+      "internal_health_status": 200,
+      "health_from_backend_url": "http://momus-verifier:9400/health",
+      "health_from_backend_status": 200
+    },
+    "momus-treasury": {
+      "status": "running",
+      "restart_count": 0,
+      "started_at": "2026-10-29T05:02:53.724597751Z"
+    }
+  },
+  "other_oracle_versions": {
+    "oracles-chronos-1": "0.6.1",
+    "oracles-oracle-family-1": "0.6.1"
+  },
+  "version_limitation": "ROLLOUT.md explicitly says targeted app.py/tiers.py replaced while __init__.py was left unchanged, so the package version labels do not imply missing targeted fixes. The pasted all-12-on-oracle-core-0.6.3 claim is stronger than evidence.",
+  "archive_attested_sha256": "e117f283951060cf1c1ba19b8b868830ad84d859010097ca30f0207cf97a3b60",
+  "external_mutations": false,
+  "archive_pingblip_sha256": "e117f283951060cf1c1ba19b8b868830ad84d859010097ca30f0207cf97a3b60"
+}

@@ -1,0 +1,95 @@
+{
+  "observedAt": "2026-10-27T16:46:09Z",
+  "imageDigest": "sha256:04c6683cbf8d36201359baf9322aee49c580b6f00b63ab5f59598881bc232639",
+  "scope": "ephemeral read-only network-none metadata probes; no app start, evaluation or live writes",
+  "defaultUser": {
+    "exitCode": 0,
+    "value": {
+      "uid": 65532,
+      "gid": 65532,
+      "packageJson": {
+        "mode": "0o600",
+        "uid": 0,
+        "gid": 0,
+        "readable": false,
+        "errorClass": "PermissionError",
+        "errno": "EACCES"
+      },
+      "javascript": {
+        "files": 63,
+        "unreadableFiles": 0,
+        "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+        "modes": [
+          "0o644"
+        ]
+      },
+      "historApplication": {
+        "version": "0.4.2",
+        "pythonFiles": 43,
+        "sourceSha256": "a24be58d10784e10a1e0bade153d9bd6ac1ccdd5335c063a47b5cb14b0111e41"
+      }
+    }
+  },
+  "rootReadOnly": {
+    "exitCode": 0,
+    "value": {
+      "uid": 0,
+      "gid": 0,
+      "packageJson": {
+        "mode": "0o600",
+        "uid": 0,
+        "gid": 0,
+        "readable": true,
+        "version": "0.22.2",
+        "name": "@aimarket/warden",
+        "sha256": "0411601d6ec47d8d14f608a6643a94589e094940dcd93dde36bdcda52a57a34b"
+      },
+      "javascript": {
+        "files": 63,
+        "unreadableFiles": 0,
+        "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+        "modes": [
+          "0o644"
+        ]
+      },
+      "historApplication": {
+        "version": "0.4.2",
+        "pythonFiles": 43,
+        "sourceSha256": "a24be58d10784e10a1e0bade153d9bd6ac1ccdd5335c063a47b5cb14b0111e41"
+      }
+    }
+  },
+  "liveDefaultUser": {
+    "exitCode": 0,
+    "value": {
+      "uid": 65532,
+      "gid": 65532,
+      "packageJson": {
+        "mode": "0o644",
+        "uid": 0,
+        "gid": 0,
+        "readable": true,
+        "version": "0.20.0",
+        "name": "@aimarket/warden",
+        "sha256": "b1fac555999e5a5189c566739ebf5231ed163a789eaeaa7c0d21f65e88964f0f"
+      },
+      "javascript": {
+        "files": 63,
+        "unreadableFiles": 0,
+        "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+        "modes": [
+          "0o644"
+        ]
+      },
+      "historApplication": {
+        "version": "0.4.2",
+        "pythonFiles": 43,
+        "sourceSha256": "a24be58d10784e10a1e0bade153d9bd6ac1ccdd5335c063a47b5cb14b0111e41"
+      }
+    }
+  },
+  "imageConfig": {
+    "user": "65532:65532",
+    "sourceCommit": "231c6b0618670b408c460ce63fe8d5b1af287563"
+  }
+}

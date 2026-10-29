@@ -7,7 +7,6 @@ and circuit breaker state aligned with DEEPSEEK_API_KEY.
 
 from __future__ import annotations
 
-import contextlib
 import logging
 import os
 from typing import TYPE_CHECKING, Any
@@ -21,6 +20,8 @@ from llm.factory_defaults import (
     DEEPSEEK_V4_FLASH_CONTEXT_WINDOW,
     DEEPSEEK_V4_PRO_CONTEXT_WINDOW,
 )
+from llm.provider_ids import normalize_llm_provider_id
+from llm.provider_secrets import read_provider_secret, resolve_provider_api_key, save_provider_config, write_provider_secret
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -41,19 +42,19 @@ def _resolve_api_key(explicit: str | None = None) -> str | None:
     env = (os.environ.get("DEEPSEEK_API_KEY") or "").strip()
     if env:
         return env
-    path = data_root() / DEEPSEEK_SECRET_REL
-    if path.is_file():
-        return path.read_text(encoding="utf-8").strip()
-    return None
+    cfg = model_providers_path()
+    if cfg.is_file():
+        config = yaml.safe_load(cfg.read_text(encoding="utf-8")) or {}
+        for name, provider in config.get("providers", {}).items():
+            if normalize_llm_provider_id(str(name)) == DEEPSEEK_PROVIDER_ID and isinstance(provider, dict):
+                key = resolve_provider_api_key(provider)
+                if key:
+                    return key
+    return read_provider_secret("deepseek_api_key")
 
 
 def _write_secret_file(key: str) -> Path:
-    path = data_root() / DEEPSEEK_SECRET_REL
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(key.strip() + "\n", encoding="utf-8")
-    with contextlib.suppress(OSError):
-        path.chmod(0o600)
-    return path
+    return write_provider_secret("deepseek_api_key", key)
 
 
 def _write_active_profile(name: str) -> Path:
@@ -79,15 +80,17 @@ def _merge_deepseek_provider(existing: dict[str, Any] | None, api_key: str) -> d
     if isinstance(ex_caps, dict) and ex_caps:
         base_caps = block["capabilities"]
         out["capabilities"] = {**base_caps, **ex_caps}
-    out["api_key"] = api_key
-    out["api_key_env"] = None
+    out["api_key"] = None
+    out["api_key_env"] = "DEEPSEEK_API_KEY"
+    out["api_key_file"] = "deepseek_api_key"
     return out
 
 
 def _deepseek_provider_block(api_key: str) -> dict[str, Any]:
     return {
-        "api_key": api_key,
-        "api_key_env": None,
+        "api_key": None,
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "api_key_file": "deepseek_api_key",
         "base_url": DEFAULT_BASE_URL,
         "capabilities": {
             "context_window": DEEPSEEK_V4_PRO_CONTEXT_WINDOW,
@@ -118,6 +121,8 @@ def sync_deepseek_provider_config(
 
     Returns a short status dict for logging.
     """
+    cfg_path = model_providers_path()
+    ensure_model_providers_file(cfg_path)
     key = _resolve_api_key(api_key)
     if not key:
         return {"ok": False, "error": "no_deepseek_api_key"}
@@ -125,8 +130,6 @@ def sync_deepseek_provider_config(
     secret_path = _write_secret_file(key)
     os.environ["DEEPSEEK_API_KEY"] = key
 
-    cfg_path = model_providers_path()
-    ensure_model_providers_file(cfg_path)
     try:
         raw = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
     except OSError:
@@ -165,11 +168,7 @@ def sync_deepseek_provider_config(
             if role == "heavy" and rule.get("preferred_provider") not in (None, "auto"):
                 rule["preferred_provider"] = DEEPSEEK_PROVIDER_ID
 
-    cfg_path.parent.mkdir(parents=True, exist_ok=True)
-    cfg_path.write_text(
-        yaml.safe_dump(raw, sort_keys=False, allow_unicode=True, default_flow_style=False),
-        encoding="utf-8",
-    )
+    save_provider_config(cfg_path, raw)
     _write_active_profile("deepseek-all")
 
     circuit_action = None

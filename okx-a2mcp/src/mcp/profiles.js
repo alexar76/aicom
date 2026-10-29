@@ -5,17 +5,17 @@
 // per minute and per day, and the daily one bounds what the gateway's hub credit can spend.
 //
 // Three kinds of tools:
-//   hub      — bought from the hub with the gateway's credit account (weather, EMPORION);
+//   hub      — bought from the hub with the gateway's credit account (weather, SYMMARTYS);
 //   service  — this gateway's own free services (WARDEN scan, HISTOR lookup, tool-list cost);
 //   hearth   — a HESTIA agent on the hearth's shared free budget (x402 check).
 // mcp.tools.diff stays off MCP: its answer quotes injected text back into the caller's model.
 import { readFileSync } from "node:fs";
 import { HUB_TOOLS } from "../hub.js";
 
-const EMPORION = JSON.parse(readFileSync(new URL("./emporion-tools.json", import.meta.url), "utf8"));
+const SYMMARTYS = JSON.parse(readFileSync(new URL("./symmartys-tools.json", import.meta.url), "utf8"));
 
 // The provider's manifest has no titles, and a directory reviewer reads them, so they are named here.
-const EMPORION_TITLES = {
+const SYMMARTYS_TITLES = {
   vat_check: "VAT number check (VIES)",
   sanctions_screen: "Sanctions list screening",
   company_lookup: "Company register lookup",
@@ -57,13 +57,13 @@ export const PROFILES = {
       }, "Nearest live sensors"),
     ],
   },
-  emporion: {
-    title: "Business facts from public registers (EMPORION)",
+  symmartys: {
+    title: "Business facts from public registers (SYMMARTYS)",
     description: "EU VAT and EORI validity, sanctions screening (OFAC, EU, UK, UN), company and LEI lookup, ECB exchange rates, business days and domain registration data — answered from the official public sources, each with a signed receipt. Free, no key.",
     perMinute: 30, perDay: 300,
-    tools: EMPORION.tools.map((t) => ({
-      name: t.name, title: EMPORION_TITLES[t.name] ?? t.name.replace(/_/g, " "), kind: "hub",
-      call: { product_id: t.product_id, capability_id: t.capability_id, source_hub: EMPORION.source_hub },
+    tools: SYMMARTYS.tools.map((t) => ({
+      name: t.name, title: SYMMARTYS_TITLES[t.name] ?? t.name.replace(/_/g, " "), kind: "hub",
+      call: { product_id: t.product_id, capability_id: t.capability_id, source_hub: SYMMARTYS.source_hub },
       build: (p) => (p && typeof p === "object" && !Array.isArray(p) ? p : null),
       need: "send the input the schema describes",
       description: unpaid(t.description), inputSchema: t.input_schema,

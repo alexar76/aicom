@@ -1,0 +1,139 @@
+{
+  "scope": "Public read-only numeric external signals for alexar76; no invoke, payments, messages, publication or GitHub writes.",
+  "observed_at_moscow": "2026-10-29 14:05–14:06 MSK",
+  "baseline": [
+    "docs/growth/external-signals-2026-10-28.ru.md",
+    "docs/growth/external-deep-2026-10-28.ru.md",
+    "artifacts/ecosystem-deep-2026-10-28/citations/zenodo-version.json"
+  ],
+  "agent_economy_report": {
+    "url": "https://agenteconomy.report/s/modelmarket.dev.json",
+    "as_of": "2026-10-29",
+    "current": {
+      "tier": "CC",
+      "tier_raw": "CC",
+      "above_trust_line": false,
+      "trust_line": "BBB",
+      "outlook": "positive",
+      "trend": "improving",
+      "score": 11.6,
+      "uptime": 0.571,
+      "organic_paying_agents": 3,
+      "paying_wallets_raw": 11,
+      "settled_usd_14d": 0.08,
+      "centrality": 0.014
+    },
+    "baseline_2026_10_28": {
+      "tier": "CC",
+      "score": 10.3,
+      "uptime": 0.5,
+      "organic_paying_agents": 3,
+      "paying_wallets_raw": 12,
+      "settled_usd_14d": 0.39,
+      "centrality": 0.014
+    },
+    "verified_history": "https://agenteconomy.report/s/data/ratings-daily.csv.gz",
+    "methodology": "https://agenteconomy.report/s/methodology",
+    "methodology_facts": [
+      "Metrics use a 14-day score window. Organic payers pay more than one service and fewer than 30 distinct wallets in any day of the window. One unpaid probe per resource per day determines uptime.",
+      "Organic labels are behavioral wallet classifications, not identified independent customers. Uptime is the share of daily probes answered, not continuous service uptime."
+    ],
+    "settlement_drop_interpretation": {
+      "status": "Inference, not a verified causal attribution",
+      "text_ru": "Снижение $0.39→$0.08 согласуется с выходом крупного дня из 14-дневного окна: разница $0.31 равна объёму 14 октября в x402-list. Метод AER подтверждает 14-дневное окно. Первичные расчёты AER по отдельным платежам не перепроверены, поэтому точную причину снижения не устанавливаем.",
+      "difference_usd": 0.31,
+      "x402_day_matching_difference": {
+        "date": "2026-10-14",
+        "volume_usd": 0.31,
+        "tx_count": 2
+      }
+    },
+    "interpretation_ru": "Рейтинг CC и три organic payer сохраняются; score10.3→11.6 и доля успешных дневных проб50%→57.1%. Новых установленных клиентов это не подтверждает."
+  },
+  "x402_list": {
+    "volume_url": "https://x402-list.com/api/v1/services/aimarket/volume",
+    "buyers_url": "https://x402-list.com/api/v1/services/aimarket/buyers",
+    "attribution": "Data: x402-list.com (CC BY 4.0)",
+    "latest_volume": {
+      "date": "2026-10-28",
+      "volume_usd": 0,
+      "tx_count": 1
+    },
+    "latest_buyers": {
+      "date": "2026-10-28",
+      "unique_buyers": 1
+    },
+    "no_2026_10_29_row_observed": true,
+    "interpretation_ru": "После вчерашнего чтения в возвращённом ряду не добавилось нового дня. За 28октября UTC виден один settlement и один buyer-адрес; $0.00 округлено и не значит бесплатный вызов. Отсутствие строки29октября не является доказанным нулём платежей.",
+    "caveat": "Conservative undercount: only USDC settlements via facilitators we measure are counted. Operator-level (the full payout address), not pro-rata: do not sum across services that share a payout address. The daily series rolls up hourly, so the latest day can be up to about an hour behind, and briefly after a deploy the whole series can read low until the first rollup finishes (usually within minutes)."
+  },
+  "histor_huggingface": {
+    "url": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+    "downloads": 111,
+    "likes": 0,
+    "baseline_downloads": 111,
+    "baseline_likes": 0,
+    "interpretation_ru": "Без изменения. Downloads не устанавливают число пользователей или независимых исследователей."
+  },
+  "histor_zenodo": {
+    "url": "https://zenodo.org/api/records/23512760",
+    "doi": "10.5281/zenodo.23512760",
+    "current_stats": {
+      "downloads": 20,
+      "unique_downloads": 18,
+      "views": 70,
+      "unique_views": 69,
+      "version_downloads": 20,
+      "version_unique_downloads": 18,
+      "version_unique_views": 69,
+      "version_views": 70
+    },
+    "baseline_stats": {
+      "downloads": 20,
+      "unique_downloads": 18,
+      "views": 64,
+      "unique_views": 63
+    },
+    "interpretation_ru": "Скачивания20/уникальные18 без изменения; просмотры64→70 и unique_views63→69. Собственные проверки могут влиять; это не подтверждение новых читателей или цитирований."
+  },
+  "newruntime_histor_ua": {
+    "url": "https://newruntime.com/readers/histor.json",
+    "current": {
+      "as_of": "2026-10-29T00:01:19.286Z",
+      "window_first_day": "2026-07-23",
+      "window_last_day": "2026-10-29",
+      "observed_days": 99,
+      "note": "Refreshed daily in production from the live aggregates (dated by as_of). For current numbers aggregate live_sources.history agent_days by matching.aliases.",
+      "total_requests": 189,
+      "first_seen": "2026-09-26T11:12:56.808Z",
+      "last_seen": "2026-10-28T18:53:20.911Z",
+      "days_active": 32,
+      "recency": "regular",
+      "categories": [
+        "other_bot"
+      ],
+      "label_variants": 6,
+      "journeys": null
+    },
+    "operator": {
+      "name": "unknown",
+      "url": null
+    },
+    "confidence": "low",
+    "baseline": {
+      "total_requests": 183,
+      "days_active": 32
+    },
+    "interpretation_ru": "183→189 запросов,32активных дня без изменения, последнее наблюдение28октября21:53МСК. Атрибуция к нашему HISTOR не установлена; User-Agent подделываем. Это наблюдение клиента с таким именем, а не установленное внешнее использование нашего пакета."
+  },
+  "evidence_index": "http-index.json",
+  "limitations": [
+    "web.open API endpoints were unavailable; successful direct HTTPS GET captures establish observations.",
+    "GitHub stars/forks were not compared because no suitable fresh baseline was located."
+  ],
+  "usetested_addendum": {
+    "fact_file": "usetested-fact.json",
+    "summary_ru": "Новый для наших сводок внешний тестовый отчёт о HISTOR check от27октября. Реальность указанного микроплатежа независимо подтверждается BaseScan. Одного теста недостаточно для вывода о постоянном спросе, надёжности или платящем клиенте29октября.",
+    "transaction_verification_source": "https://basescan.org/tx/0x656749e6bab12a3373a2905c0495126bd7a533902de08e3af18d4f47380fd32a"
+  }
+}

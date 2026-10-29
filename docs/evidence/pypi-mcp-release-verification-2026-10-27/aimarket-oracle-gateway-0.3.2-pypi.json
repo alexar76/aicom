@@ -1,0 +1,113 @@
+{
+  "info": {
+    "author": null,
+    "author_email": null,
+    "bugtrack_url": null,
+    "classifiers": [],
+    "description": "# aimarket-oracle-gateway \u2014 MCP server\n\n<!-- mcp-name: io.github.alexar76/aimarket-oracle-gateway -->\n\n<!-- aicom-readme-badges -->\n<p align=\"center\">\n  <a href=\"https://github.com/alexar76/aimarket-oracle-gateway/actions/workflows/ci.yml\"><img src=\"https://github.com/alexar76/aimarket-oracle-gateway/actions/workflows/ci.yml/badge.svg\" alt=\"CI\" /></a>\n  <a href=\"https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway\"><img src=\"https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway/badges/score.svg\" alt=\"aimarket-oracle-gateway MCP server\" /></a>\n  <a href=\"docs/badges/coverage.svg\"><img src=\"docs/badges/coverage.svg\" alt=\"Test coverage\" /></a>\n  <a href=\"LICENSE\"><img src=\"docs/badges/license.svg\" alt=\"License: MIT\" /></a>\n</p>\n<!-- /aicom-readme-badges -->\n\n\n\n\n\n\n**One MCP server. Seventeen oracle families. Pay-per-call.**\n\nTransport: **stdio** (`aimarket_oracle_gateway/stdio_server.py`). Built with the official\n**Model Context Protocol** Python SDK ([`mcp`](https://github.com/modelcontextprotocol/python-sdk), `FastMCP`).\nCompatible hosts: Claude Desktop, Cursor, Glama, and any MCP client that supports stdio servers.\n\n| Item | Location |\n|------|----------|\n| MCP entrypoint | `aimarket_oracle_gateway/stdio_server.py` |\n| Tool routing core | [`aimarket_oracle_gateway/gateway_core.py`](aimarket_oracle_gateway/gateway_core.py) |\n| Extended tool surface | [`aimarket_oracle_gateway/mcp_tool_surface.py`](aimarket_oracle_gateway/mcp_tool_surface.py) |\n| Glama / Docker run | [`Dockerfile`](Dockerfile), [`glama.json`](glama.json) |\n\n---\n\nA **passthrough MCP server** \u2014 the discovery + consumption storefront for the entire\n[oracle-as-a-service specs](https://github.com/alexar76/aicom/blob/main/docs/specs/README.md). One server, **35 tools**, every result\n**independently verifiable** (signatures, VDF proofs, classical certificates, deterministic replay).\n\n## Tools (35)\n\n| Category | MCP tool | capabilityId | price |\n|----------|----------|--------------|-------|\n| **Randomness** | `get_random` | `platon.random@v1` | $0.004 |\n| | `get_randomness_beacon` | `platon.beacon@v1` | $0.004 |\n| | `ask_oracle` | `platon.ask@v1` | $0.003 |\n| | `verify_random` | `platon.verify@v1` | $0.001 |\n| **Delay** | `compute_vdf` | `chronos.eval@v1` | $0.01 |\n| | `verify_vdf` | `chronos.verify@v1` | $0.001 |\n| **Reputation** | `get_reputation_scores` | `lumen.reputation@v1` | $0.005 |\n| | `get_agent_trust` | `lumen.score@v1` | $0.003 |\n| | `verify_reputation` | `lumen.verify@v1` | $0.002 |\n| **Consensus** | `aggregate_values` | `murmuration.aggregate@v1` | $0.002 |\n| **Thermodynamics** | `audit_compute_cost` | `landauer.audit@v1` | $0.01 |\n| | `verify_compute_cost` | `landauer.verify@v1` | $0.001 |\n| **Routing** | `compute_least_time_route` | `fermat.route@v1` | $0.01 |\n| | `verify_least_time_route` | `fermat.verify@v1` | $0.001 |\n| **Cascade risk** | `analyze_cascade_risk` | `ablation.cascade@v1` | $0.01 |\n| | `verify_cascade_risk` | `ablation.verify@v1` | $0.001 |\n| **Sampling** | `get_quasirandom_sequence` | `lattice.sequence@v1` | $0.002 |\n| | `get_blue_noise` | `turing.bluenoise@v1` | $0.002 |\n| **Optimization** | `optimize_route` | `colony.optimize@v1` | $0.005 |\n| **Resilience** | `analyze_network_resilience` | `percola.threshold@v1` | $0.01 |\n| | `verify_network_resilience` | `percola.verify@v1` | $0.001 |\n| **Randomness** | `sortes_draw` | `sortes.draw@v1` | $0.006 |\n| | `sortes_verify` | `sortes.verify@v1` | $0.001 |\n| **Learning** | `gauss_field` | `gauss.field@v1` | $0.006 |\n| | `gauss_suggest` | `gauss.suggest@v1` | $0.006 |\n| | `gauss_verify` | `gauss.verify@v1` | $0.001 |\n| **Time-lock** | `aestus_seal` | `aestus.seal@v1` | $0.006 |\n| | `aestus_open` | `aestus.open@v1` | $0.01 |\n| | `aestus_verify` | `aestus.verify@v1` | $0.001 |\n| **Topology** | `betti_homology` | `betti.homology@v1` | $0.008 |\n| | `betti_distance` | `betti.distance@v1` | $0.004 |\n| **Transport** | `kantor_transport` | `kantor.transport@v1` | $0.006 |\n| | `kantor_verify` | `kantor.verify@v1` | $0.001 |\n| **Spectral** | `fourier_spectrum` | `fourier.spectrum@v1` | $0.005 |\n| | `fourier_verify` | `fourier.verify@v1` | $0.001 |\n| **Discovery** | `list_oracle_capabilities` | \u2014 | free |\n\n### Subscription tiers (optional Hub bundles)\n\nHigh-volume tools also advertise monthly bundles in `list_oracle_capabilities`:\n\n| Tool | Starter | Pro |\n|------|---------|-----|\n| `aggregate_values` | 10k calls / $10 | 100k / $50 |\n| `get_reputation_scores` | 5k / $20 | 50k / $100 |\n| `audit_compute_cost` | 10k / $15 | 100k / $75 |\n| `compute_least_time_route` | 10k / $25 | 100k / $120 |\n| `analyze_cascade_risk` | 5k / $50 | 50k / $250 |\n\nPay-per-call remains the default; bundles are Hub-side packaging.\n\n## Configure (env)\n\n| var | meaning |\n|-----|---------|\n| `AIMARKET_HUB_URL` | AIMarket Hub base URL \u2014 **recommended**: metered + paid |\n| `AIMARKET_ORACLE_URL` | direct oracle-family URL (if no hub) \u2014 demo/free path |\n| `AIMARKET_PAYMENT_CHANNEL` | optional pre-opened payment channel id |\n| `AIMARKET_PAYMENT_CHANNEL_SECRET` | per-channel debit secret |\n| `AIMARKET_API_TOKEN` | optional bearer token |\n| `AIMARKET_MAX_PER_CALL_USD` | hard cap per call (default `0.10`) |\n| `AIMARKET_MAX_SPEND_USD` | hard cumulative budget (default `5.0`) |\n| `AIMARKET_PRICE_TOLERANCE` | reject overcharge vs advertised (default `0.10`) |\n\nIf neither URL is set the server fails closed with a clear message.\n\n**Payment safety (spec 03):** spending caps are enforced client-side and cannot be overridden by a\nprompt-injected agent. See [docs/specs/03-mcp-payment-and-security.md](https://github.com/alexar76/aicom/blob/main/docs/specs/03-mcp-payment-and-security.md).\n\n## Run\n\n```bash\npip install -r requirements-mcp.txt && pip install --no-deps -e .\nAIMARKET_HUB_URL=https://modelmarket.dev python -m aimarket_oracle_gateway.stdio_server\n```\n\nClaude Desktop (`mcpServers` entry):\n\n```json\n{ \"mcpServers\": { \"aimarket-oracle-gateway\": {\n  \"command\": \"python\", \"args\": [\"-m\", \"aimarket_oracle_gateway.stdio_server\"],\n  \"env\": { \"AIMARKET_HUB_URL\": \"https://modelmarket.dev\" } } } }\n```\n\n## Publish on Glama\n\n\nListing: **[glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway](https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway)**\n\n## Verifiability\n\n- **Platon** \u2014 Ed25519 signature over `(random_hex \u2016 proof)`\n- **Chronos** \u2014 Wesolowski VDF proof, cheap `verify_vdf`\n- **LUMEN** \u2014 re-derive PageRank from committed graph\n- **Murmuration** \u2014 deterministic re-aggregation from input values\n- **Landauer** \u2014 bit-for-bit erasure count from ops DAG + `circuit_commitment`\n- **Fermat** \u2014 dual certificate `T(v)` checked in O(E)\n- **Ablation** \u2014 sandpile replay, order-independent `topple_total` + `tau`\n- **Lattice / Turing** \u2014 deterministic from `(count, dim, skip)` / `seed`\n- **Colony** \u2014 admissible `lower_bound` + `gap` certificate\n- **Percola** \u2014 recomputable percolation sweep + `f_c`\n- **Sortes** \u2014 ECVRF 80-byte proof, verifiable offline by anyone (RFC 9381)\n- **Gauss** \u2014 deterministic replay of GP posterior + Expected-Improvement suggestion\n- **Aestus** \u2014 RSW time-lock puzzle re-derivable; modulus factorization burned each seal\n- **Betti** \u2014 recomputable Vietoris-Rips persistence diagram + bottleneck distance\n- **Kantor** \u2014 Kantorovich dual potentials checked in O(m*n) without re-solving\n- **Fourier** \u2014 recomputable Laplacian spectrum + Fiedler value `lambda-2`\n\n## Tests\n\n```bash\nPYTHONPATH=. pytest tests/\n```\n",
+    "description_content_type": "text/markdown",
+    "docs_url": null,
+    "download_url": null,
+    "downloads": {
+      "last_day": -1,
+      "last_month": -1,
+      "last_week": -1
+    },
+    "dynamic": [
+      "License-File"
+    ],
+    "home_page": null,
+    "keywords": null,
+    "license": "MIT",
+    "license_expression": null,
+    "license_files": [
+      "LICENSE"
+    ],
+    "maintainer": null,
+    "maintainer_email": null,
+    "name": "aimarket-oracle-gateway",
+    "package_url": "https://pypi.org/project/aimarket-oracle-gateway/",
+    "platform": null,
+    "project_url": "https://pypi.org/project/aimarket-oracle-gateway/",
+    "project_urls": {
+      "Documentation": "https://github.com/alexar76/aicom/wiki/Oracles",
+      "Homepage": "https://github.com/alexar76/aimarket-oracle-gateway",
+      "Repository": "https://github.com/alexar76/aimarket-oracle-gateway"
+    },
+    "provides_extra": [
+      "dev"
+    ],
+    "release_url": "https://pypi.org/project/aimarket-oracle-gateway/0.3.2/",
+    "requires_dist": [
+      "mcp<2,>=1.6",
+      "httpx>=0.27",
+      "pydantic>=2",
+      "pytest>=8; extra == \"dev\"",
+      "jsonschema>=4.23; extra == \"dev\""
+    ],
+    "requires_python": ">=3.10",
+    "summary": "AIMarket Oracle Gateway \u2014 full oracle family (17 oracles, 35 MCP tools) pay-per-call",
+    "version": "0.3.2",
+    "yanked": false,
+    "yanked_reason": null
+  },
+  "last_serial": 42810723,
+  "ownership": {
+    "organization": null,
+    "roles": [
+      {
+        "role": "Owner",
+        "user": "aleksandr.artamokhov"
+      }
+    ]
+  },
+  "urls": [
+    {
+      "comment_text": null,
+      "core-metadata": {
+        "sha256": "3ee3c5882e232c1806da6040e7121cf11b2dded80a59907350c678d7af66ec0f"
+      },
+      "digests": {
+        "blake2b_256": "1bb4a7a0130a29045275d4b13ace3ee421d2d056b836dbefba7481fdc0a5dc58",
+        "md5": "e9f5ae275720b49dd3b5b6a2767189f4",
+        "sha256": "ebb2fb990b4b09dd1c1fbbe9b404ae5859cce8bc6c3caf12d2de393120e33547"
+      },
+      "downloads": -1,
+      "filename": "aimarket_oracle_gateway-0.3.2-py3-none-any.whl",
+      "has_sig": false,
+      "md5_digest": "e9f5ae275720b49dd3b5b6a2767189f4",
+      "packagetype": "bdist_wheel",
+      "python_version": "py3",
+      "requires_python": ">=3.10",
+      "size": 24860,
+      "upload_time": "2026-10-27T10:21:45",
+      "upload_time_iso_8601": "2026-10-27T10:21:45.305009Z",
+      "url": "https://files.pythonhosted.org/packages/1b/b4/a7a0130a29045275d4b13ace3ee421d2d056b836dbefba7481fdc0a5dc58/aimarket_oracle_gateway-0.3.2-py3-none-any.whl",
+      "yanked": false,
+      "yanked_reason": null
+    },
+    {
+      "comment_text": null,
+      "core-metadata": false,
+      "digests": {
+        "blake2b_256": "9284a6bbd9daab2040a14d10374ce0ee5ed516fe4a421be330d57f346acd2411",
+        "md5": "b1e9e8a5242ed34e11254ba7d0f2b7c1",
+        "sha256": "cc346fb08091e8d36abab7234fab21286bce2641b5c89dcaae91ca625e9d1e55"
+      },
+      "downloads": -1,
+      "filename": "aimarket_oracle_gateway-0.3.2.tar.gz",
+      "has_sig": false,
+      "md5_digest": "b1e9e8a5242ed34e11254ba7d0f2b7c1",
+      "packagetype": "sdist",
+      "python_version": "source",
+      "requires_python": ">=3.10",
+      "size": 29178,
+      "upload_time": "2026-10-27T10:21:46",
+      "upload_time_iso_8601": "2026-10-27T10:21:46.331602Z",
+      "url": "https://files.pythonhosted.org/packages/92/84/a6bbd9daab2040a14d10374ce0ee5ed516fe4a421be330d57f346acd2411/aimarket_oracle_gateway-0.3.2.tar.gz",
+      "yanked": false,
+      "yanked_reason": null
+    }
+  ],
+  "vulnerabilities": []
+}

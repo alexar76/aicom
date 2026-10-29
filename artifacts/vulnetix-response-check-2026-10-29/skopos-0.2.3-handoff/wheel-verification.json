@@ -1,0 +1,25 @@
+{
+  "package": "skopos-fleet",
+  "version": "0.2.3",
+  "wheel": "skopos_fleet-0.2.3-py3-none-any.whl",
+  "sha256": "c721cab41adc8b1f757a29ed0945c687ea7d981e094be44b5b2a45ff0e691347",
+  "size": 568832,
+  "python_files_verified_against_workspace": 168,
+  "mismatches": [],
+  "dependencies": [
+    "streamlit>=1.66.1",
+    "pandas>=2.0",
+    "pillow>=13.0.0",
+    "plotly>=5.18",
+    "pyyaml>=6.0",
+    "paramiko>=5.0.0",
+    "python-dotenv>=1.2.2",
+    "httpx>=0.27",
+    "geoip2>=4.8",
+    "cryptography>=44",
+    "aimarket-oracle-core[pqc]>=0.2",
+    "pytest>=8.0; extra == \"dev\"",
+    "psycopg[binary]>=3.2; extra == \"postgres\""
+  ],
+  "packaged_app_auth_sha256": "2b87018f9b65e65f59e783d0e92acea60122f6c0ef760b52d26eb2dbf70ecb56"
+}

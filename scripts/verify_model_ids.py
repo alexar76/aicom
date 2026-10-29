@@ -65,11 +65,14 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
+import stat
 import sys
 import time
 import urllib.error
 import urllib.request
 from typing import Any
+from pathlib import Path
 
 try:
     import yaml
@@ -99,10 +102,66 @@ CONFIG_CANDIDATES = (
 )
 
 
+class _NoCredentialRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def _open_no_redirect(req):
+    return urllib.request.build_opener(_NoCredentialRedirect()).open(req, timeout=TIMEOUT_S)
+
+
 def _get_json(url: str, headers: dict[str, str]) -> Any:
     req = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(req, timeout=TIMEOUT_S) as resp:
-        return json.loads(resp.read().decode("utf-8", "replace"))
+    with _open_no_redirect(req) as resp:
+        return json.loads(_read_bounded(resp).decode("utf-8", "replace"))
+
+
+def _read_bounded(response) -> bytes:
+    raw = response.read(2_097_153)
+    if len(raw) > 2_097_152:
+        raise ValueError("Provider response exceeded limit")
+    return raw
+
+
+def _checked_key(value: str) -> str:
+    # Keep the standalone host checker usable when copied without the package.
+    # In a repository deployment it shares the compromised-key fingerprint guard.
+    root = str(Path(__file__).resolve().parents[1])
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    try:
+        from security.compromised_credentials import reject_compromised_credential
+    except ImportError:
+        return value
+    reject_compromised_credential(value)
+    return value
+
+
+def _read_private_key_at(root: Path, reference: str) -> str:
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", reference):
+        raise ValueError("Invalid provider secret reference")
+    directory = None
+    try:
+        directory = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
+        for component in ("secrets", "llm"):
+            child = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=directory)
+            os.close(directory)
+            directory = child
+        fd = os.open(reference, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
+        with os.fdopen(fd, "rb") as handle:
+            info = os.fstat(handle.fileno())
+            if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1:
+                raise ValueError("Provider secret must be a private regular file")
+            raw = handle.read(65_537)
+            if len(raw) > 65_536:
+                raise ValueError("Provider secret exceeded limit")
+        return _checked_key(raw.decode("utf-8").strip())
+    except FileNotFoundError:
+        return ""
+    finally:
+        if directory is not None:
+            os.close(directory)
 
 
 def _ids_from(payload: Any) -> list[str]:
@@ -130,12 +189,22 @@ def _resolve_key(block: dict[str, Any], provider: str = "") -> str:
     inline = str(block.get("api_key") or "").strip()
     # `sk-keep` is this repo's placeholder for "the real one lives elsewhere".
     if inline and inline != "sk-keep":
-        return inline
+        return _checked_key(inline)
     env_name = block.get("api_key_env")
     if env_name:
         from_env = (os.environ.get(str(env_name)) or "").strip()
         if from_env:
-            return from_env
+            return _checked_key(from_env)
+    roots = (Path(os.environ.get("AIFACTORY_DATA_ROOT", "data")), Path.home() / ".aicom")
+    if block.get("api_key_file"):
+        reference = block["api_key_file"]
+        if not isinstance(reference, str):
+            raise ValueError("Invalid provider secret reference")
+        for root in roots:
+            value = _read_private_key_at(root, reference)
+            if value:
+                return value
+        return ""
     # `data/secrets/llm/<provider>_api_key` is where this repo actually keeps keys on a
     # workstation — `llm/persist_openrouter._resolve_api_key` reads the same place. Without
     # this fallback the publish-time gate is vacuous on a laptop: the key is right there on
@@ -145,17 +214,11 @@ def _resolve_key(block: dict[str, Any], provider: str = "") -> str:
         # `deepseek_api` -> `deepseek_api_key`, matching what persist_openrouter.py writes.
         stem = provider[:-4] if provider.endswith("_api") else provider
         names = (f"{stem}_api_key", f"{provider}_api_key")
-        for base in ("data/secrets/llm", os.path.expanduser("~/.aicom/secrets/llm")):
-            path = next((os.path.join(base, n) for n in names
-                         if os.path.isfile(os.path.join(base, n))), "")
-            if path:
-                try:
-                    with open(path, encoding="utf-8") as fh:
-                        found = fh.read().strip()
-                    if found:
-                        return found
-                except OSError:
-                    pass
+        for root in roots:
+            for name in names:
+                found = _read_private_key_at(root, name)
+                if found:
+                    return found
     return ""
 
 
@@ -174,7 +237,7 @@ def list_models(name: str, block: dict[str, Any]) -> tuple[list[str] | None, str
         headers = {"x-api-key": key, "anthropic-version": "2023-06-01"}
     else:
         # Local runtimes (ollama, lm_studio) legitimately need no key.
-        needs_key = bool(block.get("api_key_env")) or bool(block.get("api_key"))
+        needs_key = bool(block.get("api_key_env") or block.get("api_key") or block.get("api_key_file"))
         if needs_key and not key:
             return None, "no key in env"
         url = f"{base}/models"
@@ -183,7 +246,8 @@ def list_models(name: str, block: dict[str, Any]) -> tuple[list[str] | None, str
             url = f"{base}/api/tags"
 
     try:
-        return _ids_from(_get_json(url, headers)), ""
+        ids = _ids_from(_get_json(url, headers))
+        return [value.replace(key, "[redacted]") if key else value for value in ids], ""
     except urllib.error.HTTPError as exc:
         return None, f"HTTP {exc.code}"
     except Exception as exc:  # noqa: BLE001 - any transport failure is "could not ask"
@@ -284,7 +348,7 @@ def probe_model(block: dict[str, Any], model: str, provider: str = "") -> tuple[
     ptype = str(block.get("provider_type") or "")
     if not base:
         return "unverifiable", "no base_url", ""
-    needs_key = bool(block.get("api_key_env")) or bool(block.get("api_key"))
+    needs_key = bool(block.get("api_key_env") or block.get("api_key") or block.get("api_key_file"))
     if needs_key and not key:
         return "unverifiable", "no key in env", ""
 
@@ -304,14 +368,15 @@ def probe_model(block: dict[str, Any], model: str, provider: str = "") -> tuple[
 
     req = urllib.request.Request(url, data=json.dumps(payload).encode(), headers=headers)
     try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT_S) as resp:
-            body = json.loads(resp.read().decode("utf-8", "replace"))
+        with _open_no_redirect(req) as resp:
+            body = json.loads(_read_bounded(resp).decode("utf-8", "replace"))
     except urllib.error.HTTPError as exc:
         full = ""
         try:
-            full = _error_text(json.loads(exc.read().decode("utf-8", "replace")))
+            full = _error_text(json.loads(_read_bounded(exc).decode("utf-8", "replace")))
         except Exception:
             pass
+        full = full.replace(key, "[redacted]") if key else full
         detail = full[:90]
         # A 4xx is only a DEAD MODEL if the provider's own message is about the model.
         #
@@ -336,6 +401,7 @@ def probe_model(block: dict[str, Any], model: str, provider: str = "") -> tuple[
     # looked past the status line. `ok` must require EVIDENCE OF A COMPLETION, not merely the
     # absence of an HTTP error.
     err = _error_text(body)
+    err = err.replace(key, "[redacted]") if key else err
     if err:
         if _looks_like_the_model(err, model):
             return "dead", f"HTTP 200 with an error: {err[:90]}", ""
@@ -347,6 +413,7 @@ def probe_model(block: dict[str, Any], model: str, provider: str = "") -> tuple[
         return "unverifiable", "200 with no completion in the body", ""
 
     answered = str((body or {}).get("model") or "")
+    answered = answered.replace(key, "[redacted]") if key else answered
     if answered and answered != model:
         return "aliased", f"answered by {answered}", answered
     return "ok", "", answered

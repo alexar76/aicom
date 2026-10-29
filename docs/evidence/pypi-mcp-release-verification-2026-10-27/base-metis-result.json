@@ -1,0 +1,36 @@
+{
+  "phase": "base-metis",
+  "checkedAt": "2026-10-27T10:57:16.130860+00:00",
+  "isolatedPython": true,
+  "environment": "/private/tmp/pypi-mcp-releases-20261027",
+  "packages": [
+    {
+      "distribution": "aimarket-metis",
+      "version": "0.2.4",
+      "modulePath": "/private/tmp/pypi-mcp-releases-20261027/lib/python3.12/site-packages/metis/__init__.py"
+    }
+  ],
+  "mcpSdkInstalled": false,
+  "cli": {
+    "exitCode": 0,
+    "stdout": "usage: metis [-h] [--config CONFIG] [--cluster CLUSTER]\n             [--route {fast,thinking,agent,council}] [--model MODEL]\n             [--url URL] [--json] [--production]\n             [query]\n\nMetis \u2014 multi-agent reasoning orchestrator\n\npositional arguments:\n  query                 User query\n\noptions:\n  -h, --help            show this help message and exit\n  --config CONFIG, -c CONFIG\n                        Path to config YAML\n  --cluster CLUSTER     Path to cluster_config.yaml\n  --route {fast,thinking,agent,council}\n                        Force route mode\n  --model MODEL         Base model name\n  --url URL             API base URL\n  --json                JSON output\n  --production          Production mode (strict security)\n",
+    "stderr": ""
+  },
+  "liveHttp": [
+    {
+      "client": "MCPClient",
+      "url": "https://modelmarket.dev/mcp",
+      "status": "ok",
+      "toolCount": 13,
+      "toolCalls": 0
+    },
+    {
+      "client": "MCPSSEClient",
+      "url": "https://modelmarket.dev/mcp",
+      "status": "ok",
+      "toolCount": 13,
+      "toolCalls": 0
+    }
+  ],
+  "status": "ok"
+}

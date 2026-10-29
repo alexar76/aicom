@@ -1,0 +1,139 @@
+{
+  "containers": {
+    "cna": {
+      "affected": [
+        {
+          "collectionURL": "https://pypi.org",
+          "defaultStatus": "unknown",
+          "modules": [
+            "oracle_core.app",
+            "oracle_core.tiers"
+          ],
+          "packageName": "aimarket-oracle-core",
+          "product": "aimarket-oracle-core",
+          "programFiles": [
+            "oracle_core/app.py",
+            "oracle_core/tiers.py"
+          ],
+          "programRoutines": [
+            {
+              "name": "oracle_core.app.peer_is_local_proxy"
+            },
+            {
+              "name": "oracle_core.app.client_key"
+            },
+            {
+              "name": "oracle_core.tiers.PaidTierPolicy.is_paid"
+            }
+          ],
+          "vendor": "pypi",
+          "versions": [
+            {
+              "lessThanOrEqual": "0.6.2",
+              "status": "affected",
+              "version": "0.2.0",
+              "versionType": "python"
+            }
+          ]
+        }
+      ],
+      "configurations": [
+        {
+          "lang": "en",
+          "value": "The oracle's port is reachable from a private network that hosts or containers you do not control share with it."
+        },
+        {
+          "lang": "en",
+          "value": "For the paid-tier bypass: ORACLE_TRUSTED_PAYMENT_PROXIES is set."
+        }
+      ],
+      "descriptions": [
+        {
+          "lang": "en",
+          "value": "If you run an oracle built on aimarket-oracle-core where hosts or containers you do not control share a private network with it, any of them can reset its rate limit with every request and, when you list the hub in ORACLE_TRUSTED_PAYMENT_PROXIES, claim the paid tier without paying. The rate-limit key and the paid-tier check (tiers.PaidTierPolicy.is_paid) both use app.client_key, which is X-Real-IP, or the right-most X-Forwarded-For entry. 0.6.2 reads those headers only when the TCP peer is a loopback, private or link-local address (app.peer_is_local_proxy). A neighbour container on the same Docker network, which the 0.6.0 source itself names as a direct caller, is such a peer: it can send X-Real-IP with the hub's address and an X-Payment-Channel header and be served as the paying hub. In 0.2.0 through 0.6.0 a caller on any network could (GCVE-110-VULN-PYPI-2026-000632). ORACLE_PAID_TIER_SECRET is not affected. No release limits header trust to your proxy. Affects 0.2.0 through 0.6.2."
+        }
+      ],
+      "metrics": [
+        {
+          "cvssV3_1": {
+            "baseScore": 4.2,
+            "baseSeverity": "MEDIUM",
+            "vectorString": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:L",
+            "version": "3.1"
+          }
+        }
+      ],
+      "problemTypes": [
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-290",
+              "description": "Authentication Bypass by Spoofing",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        },
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-348",
+              "description": "Use of Less Trusted Source",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "dateUpdated": "2026-10-28T01:49:28Z",
+        "orgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+        "shortName": "Vulnetix"
+      },
+      "references": [
+        {
+          "tags": [
+            "third-party-advisory"
+          ],
+          "url": "https://pypi.org/project/aimarket-oracle-core/"
+        }
+      ],
+      "solutions": [
+        {
+          "lang": "en",
+          "value": "If you do not sell the paid tier through a hub, leave ORACLE_TRUSTED_PAYMENT_PROXIES unset: no caller is then lifted above the free ceiling. ORACLE_PAID_TIER_SECRET does not replace it for hub traffic, because aimarket-hub (through 3.16.0) never sends the X-AIMarket-Paid-Tier header."
+        },
+        {
+          "lang": "en",
+          "value": "Bind the oracle to the loopback interface and reach it only through a reverse proxy on the same host."
+        }
+      ],
+      "title": "Oracle client address and paid tier can be forged by hosts on the same private network in aimarket-oracle-core",
+      "workarounds": [
+        {
+          "lang": "en",
+          "value": "Allow only your reverse proxy and the hub to reach the oracle's port (host firewall, a Docker network with no other members, a Kubernetes NetworkPolicy)."
+        },
+        {
+          "lang": "en",
+          "value": "Have the reverse proxy overwrite X-Real-IP and X-Forwarded-For with the client's address."
+        },
+        {
+          "lang": "en",
+          "value": "Terminate mTLS from the hub at a proxy on the oracle's host, so the hub is identified by its certificate and not by an address a neighbour can claim."
+        }
+      ],
+      "x_vulnetix_classification": "weakness"
+    }
+  },
+  "cveMetadata": {
+    "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+    "assignerShortName": "Vulnetix",
+    "cveId": "GCVE-110-VULN-PYPI-2026-000637",
+    "datePublished": "2026-10-27T22:42:51Z",
+    "dateUpdated": "2026-10-28T01:49:28Z",
+    "state": "PUBLISHED"
+  },
+  "dataType": "CVE_RECORD",
+  "dataVersion": "5.1"
+}

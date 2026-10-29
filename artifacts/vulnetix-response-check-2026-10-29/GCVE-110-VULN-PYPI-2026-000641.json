@@ -1,0 +1,133 @@
+{
+  "containers": {
+    "cna": {
+      "affected": [
+        {
+          "collectionURL": "https://pypi.org",
+          "defaultStatus": "unknown",
+          "modules": [
+            "metis.api.auth"
+          ],
+          "packageName": "aimarket-metis",
+          "product": "aimarket-metis",
+          "programFiles": [
+            "metis/api/auth.py"
+          ],
+          "programRoutines": [
+            {
+              "name": "metis.api.auth.verify_api_key"
+            },
+            {
+              "name": "metis.api.auth.local_caller"
+            },
+            {
+              "name": "metis.api.auth._caller_is_this_user"
+            }
+          ],
+          "vendor": "pypi",
+          "versions": [
+            {
+              "lessThanOrEqual": "0.2.4",
+              "status": "affected",
+              "version": "0.2.0",
+              "versionType": "python"
+            }
+          ]
+        }
+      ],
+      "configurations": [
+        {
+          "lang": "en",
+          "value": "METIS_API_KEY is unset and production mode is off."
+        },
+        {
+          "lang": "en",
+          "value": "A reverse proxy, tunnel or port forward relays requests to the server from inside its network namespace, and it runs as the server's user or the host is not Linux."
+        }
+      ],
+      "descriptions": [
+        {
+          "lang": "en",
+          "value": "If you run aimarket-metis without METIS_API_KEY behind a reverse proxy, tunnel or port forward on the same host, and that proxy runs as the same user as the server or the host is not Linux, every caller of the proxy can run verifications (POST /v1/verify, /v1/verify/stream, /aimarket/invoke) that spend your model budget. A keyless server answers only callers it judges local (metis.api.auth.local_caller). The test added in 0.2.3 (metis.api.auth._caller_is_this_user) tells a proxy from a local client only by the owner of its socket in /proc/net/tcp: a proxy running as the server's user passes it, and where /proc/net/tcp does not exist (macOS, Windows) every caller passes it. Earlier versions are exposed to the same proxy as well (GCVE-110-VULN-PYPI-2026-000613). 0.2.4 does not change it. Affects 0.2.0 through 0.2.4."
+        }
+      ],
+      "metrics": [
+        {
+          "cvssV3_1": {
+            "baseScore": 3.7,
+            "baseSeverity": "LOW",
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+            "version": "3.1"
+          }
+        }
+      ],
+      "problemTypes": [
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-306",
+              "description": "Missing Authentication for Critical Function",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        },
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-1188",
+              "description": "Initialization of a Resource with an Insecure Default",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "dateUpdated": "2026-10-28T01:49:28Z",
+        "orgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+        "shortName": "Vulnetix"
+      },
+      "references": [
+        {
+          "tags": [
+            "third-party-advisory"
+          ],
+          "url": "https://pypi.org/project/aimarket-metis/"
+        }
+      ],
+      "solutions": [
+        {
+          "lang": "en",
+          "value": "Set METIS_API_KEY whenever anything relays requests to the server. This is the only control that works in every affected version."
+        }
+      ],
+      "title": "Keyless Metis server treats a same-user or non-Linux reverse proxy as a local caller",
+      "workarounds": [
+        {
+          "lang": "en",
+          "value": "From 0.2.2, run the proxy in a different container or host that does not share the server's network namespace."
+        },
+        {
+          "lang": "en",
+          "value": "From 0.2.3 on Linux, a proxy running as a different user from the server is refused."
+        },
+        {
+          "lang": "en",
+          "value": "Require authentication at the proxy itself (client certificates over mTLS, or an identity-aware proxy)."
+        }
+      ],
+      "x_vulnetix_classification": "weakness"
+    }
+  },
+  "cveMetadata": {
+    "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+    "assignerShortName": "Vulnetix",
+    "cveId": "GCVE-110-VULN-PYPI-2026-000641",
+    "datePublished": "2026-10-27T22:42:51Z",
+    "dateUpdated": "2026-10-28T01:49:28Z",
+    "state": "PUBLISHED"
+  },
+  "dataType": "CVE_RECORD",
+  "dataVersion": "5.1"
+}

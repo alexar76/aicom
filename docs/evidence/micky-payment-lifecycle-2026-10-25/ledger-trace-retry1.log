@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/work/_experiment/trace_ledger.py", line 163, in <module>
+    payload = run_trace()
+              ^^^^^^^^^^^
+  File "/work/_experiment/trace_ledger.py", line 115, in run_trace
+    count = invoke_funding.sweep_stale_credit_holds(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/aimarket_hub/invoke_funding.py", line 447, in sweep_stale_credit_holds
+    from aimarket_hub.channels import UNRESOLVED_SETTLEMENT_STATUSES
+  File "/work/aimarket_hub/channels.py", line 1061, in <module>
+    _ledger = ChannelLedger()
+              ^^^^^^^^^^^^^^^
+  File "/work/aimarket_hub/channels.py", line 1040, in __init__
+    self._backend = create_backend(
+                    ^^^^^^^^^^^^^^^
+  File "/work/aimarket_hub/db_backend.py", line 1127, in create_backend
+    return SQLiteBackend(requested)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/aimarket_hub/db_backend.py", line 276, in __init__
+    self.db_path.parent.mkdir(parents=True, exist_ok=True)
+  File "/usr/local/lib/python3.11/pathlib.py", line 1116, in mkdir
+    os.mkdir(self, mode)
+OSError: [Errno 30] Read-only file system: 'data'

@@ -10,6 +10,114 @@ import { HUB_TOOLS } from "./hub.js";
 
 const BASE_MAINNET = "eip155:8453";
 
+// The JSON Schema of each paid route's 200 answer, so a buyer can validate what it paid for. Every
+// answer is {status: "ok", service, ...}; fields the gateway does not shape itself (a hub capability's
+// result) are typed as far as the gateway guarantees them and left open beyond that.
+const okSchema = (id, properties, required = []) => ({
+  type: "object",
+  properties: { status: { type: "string", const: "ok" }, service: { type: "string", const: id }, ...properties },
+  required: ["status", "service", ...required],
+});
+const NULLABLE_STRING = { type: ["string", "null"] };
+const HISTOR_CHECK_SCHEMA = okSchema("histor-check", {
+  source: { type: "string", description: "the HISTOR instance that answered" },
+  check: {
+    type: "object",
+    description: "HISTOR's signed answer, histor.check/v1 (https://github.com/alexar76/histor/blob/main/docs/api.md)",
+    properties: {
+      type: { type: "string", const: "histor.check/v1" },
+      checkedAt: { type: "string", description: "ISO 8601 UTC" },
+      issuer: { type: "string", description: "did:key of the log" },
+      query: { type: "object" },
+      target: { type: ["object", "null"], description: "the server HISTOR knows by this endpoint or name" },
+      observed: { type: ["object", "null"], description: "HISTOR's latest observation of its tool set" },
+      match: { type: "string", enum: ["same", "different", "previously-observed", "not-observed", "not-listed", "no-digest"] },
+      note: { type: "string" },
+      patternScan: { type: "object", properties: { status: { type: "string" } } },
+      log: { type: "object", description: "the signed tree head the answer was given under" },
+      signature: { type: "object" },
+    },
+    required: ["type", "checkedAt", "match"],
+  },
+}, ["source", "check"]);
+const WARDEN_SCAN_SCHEMA = okSchema("warden-scan", {
+  engine: {
+    type: "object",
+    properties: { package: { type: "string" }, ruleset: { type: "object", properties: { version: { type: "string" }, digest: { type: "string" } } } },
+    required: ["package"],
+  },
+  verdict: {
+    type: "object",
+    properties: {
+      allow: { type: "boolean" },
+      score: { type: "number", minimum: 0, maximum: 1 },
+      decidedBy: NULLABLE_STRING,
+      blockedTools: { type: "array", items: { type: "string" } },
+      allowedTools: { type: "array", items: { type: "string" } },
+      findings: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            gate: { type: "string" }, code: { type: "string" }, severity: { type: "string" }, tool: NULLABLE_STRING,
+            advisory: { type: "boolean" }, message: { type: "string" },
+          },
+          required: ["gate", "code", "severity", "message"],
+        },
+      },
+    },
+    required: ["allow", "score", "findings"],
+  },
+  scope: { type: "string" },
+}, ["engine", "verdict"]);
+const SIGNAL = {
+  type: "object",
+  properties: { severity: { type: "string" }, kind: { type: "string" }, tool: NULLABLE_STRING, where: { type: "string" }, evidence: { type: "string" } },
+  required: ["severity", "kind"],
+};
+/** The HESTIA agents' own answers (hestia-agents/agents/<name>/handler.py), under result. */
+const HEARTH_RESULT_SCHEMAS = {
+  "x402-check": {
+    type: "object",
+    properties: {
+      verdict: { type: "string", enum: ["valid", "invalid"] },
+      failed: { type: "array", items: { type: "string" } },
+      // ok is null for a check the input leaves undecided; only false counts as failed.
+      checks: { type: "array", items: { type: "object", properties: { check: { type: "string" }, ok: { type: ["boolean", "null"] }, detail: {} }, required: ["check", "ok"] } },
+      signer: NULLABLE_STRING,
+      primary_type: NULLABLE_STRING,
+      authorization: { type: "object" },
+      domain: { type: "object" },
+      digest: NULLABLE_STRING,
+    },
+    required: ["verdict"],
+  },
+  "mcp-diff": {
+    type: "object",
+    properties: {
+      verdict: { type: "string", enum: ["unchanged", "changed", "review", "suspicious"] },
+      summary: {
+        type: "object",
+        properties: {
+          added: { type: "array", items: { type: "string" } },
+          removed: { type: "array", items: { type: "string" } },
+          modified: { type: "array", items: { type: "string" } },
+          unchanged: { type: "integer" },
+        },
+      },
+      signals: { type: "array", items: SIGNAL },
+      new_addresses: { type: "array", items: { type: "object", properties: { address: { type: "string" }, kind: { type: "string" } }, required: ["address"] } },
+      changes: { type: "array", items: { type: "object" } },
+      digests: { type: "object", properties: { old: NULLABLE_STRING, new: NULLABLE_STRING } },
+    },
+    required: ["verdict"],
+  },
+};
+const HEARTH_RESULT_EXAMPLES = {
+  "x402-check": { verdict: "valid", failed: [], checks: [{ check: "signature recovers to from", ok: true, detail: null }] },
+  "mcp-diff": { verdict: "unchanged", summary: { added: [], removed: [], modified: [], unchanged: 3 }, signals: [], new_addresses: [], changes: [] },
+};
+
 /** Bazaar metadata per service: what an agent sees before it pays. */
 const LISTING = {
   "histor-check": {
@@ -25,7 +133,9 @@ const LISTING = {
         name: { type: "string", description: "registry name, e.g. io.github.owner/server (send this or endpoint)" },
       },
     },
-    output: { status: "ok", service: "histor-check", check: { type: "histor.check/v1", match: "no-digest", target: { name: "cloud.redu/mcp" } } },
+    output: { status: "ok", service: "histor-check", source: "https://histor.modelmarket.dev",
+              check: { type: "histor.check/v1", checkedAt: "2026-10-25T18:18:52Z", match: "no-digest", target: { name: "cloud.redu/mcp" } } },
+    outputSchema: HISTOR_CHECK_SCHEMA,
   },
   "warden-scan": {
     description:
@@ -45,11 +155,39 @@ const LISTING = {
       },
       required: ["tools"],
     },
-    output: { status: "ok", service: "warden-scan", verdict: { allow: true, score: 1, findings: [] } },
+    output: { status: "ok", service: "warden-scan", engine: { package: "@aimarket/warden@0.21.0", ruleset: { version: "16" } },
+              verdict: { allow: true, score: 1, findings: [] } },
+    outputSchema: WARDEN_SCAN_SCHEMA,
   },
-  // The hub's direct capabilities, each at the hub's own price (src/hub.js), and two HESTIA
-  // agents at their own price (src/hearth.js).
-  ...Object.fromEntries([...Object.entries(HUB_TOOLS), ...Object.entries(HEARTH_TOOLS)].map(([id, t]) => [id, {
+  // The hub's direct capabilities, each at the hub's own price (src/hub.js): the capability's output
+  // as the source hub returns it, and the hub's signed receipt.
+  ...Object.fromEntries(Object.entries(HUB_TOOLS).map(([id, t]) => [id, {
+    ...toolListing(t),
+    output: { status: "ok", service: id, capability_id: t.capability_id, result: {}, receipt: {} },
+    outputSchema: okSchema(id, {
+      capability_id: { type: "string", const: t.capability_id },
+      result: { type: "object", description: "the capability's output as the source hub returns it" },
+      receipt: { type: ["object", "null"], description: "the hub's signed receipt for the call" },
+    }, ["capability_id", "result"]),
+  }])),
+  // Two HESTIA agents at their own price (src/hearth.js): the agent's answer and its own Ed25519
+  // signature over it.
+  ...Object.fromEntries(Object.entries(HEARTH_TOOLS).map(([id, t]) => [id, {
+    ...toolListing(t),
+    output: { status: "ok", service: id, capability_id: t.capability_id, result: HEARTH_RESULT_EXAMPLES[id] ?? {},
+              provider_pubkey: "ed25519 public key", signature: "signature over the result" },
+    outputSchema: okSchema(id, {
+      capability_id: { type: "string", const: t.capability_id },
+      result: HEARTH_RESULT_SCHEMAS[id] ?? { type: "object" },
+      provider_pubkey: { ...NULLABLE_STRING, description: "the agent's Ed25519 public key" },
+      signature: { ...NULLABLE_STRING, description: "the agent's signature over result, checkable with signature.verify" },
+    }, ["capability_id", "result"]),
+  }])),
+};
+
+/** The parts of a hub or hearth tool's listing that come from its own definition. */
+function toolListing(t) {
+  return {
     description: t.description,
     tags: t.tags,
     icon: "https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png",
@@ -60,9 +198,31 @@ const LISTING = {
       properties: Object.fromEntries(t.fields.map((f) => [f.name, { type: f.type, description: f.description }])),
       ...(t.fields.some((f) => f.required) ? { required: t.fields.filter((f) => f.required).map((f) => f.name) } : {}),
     },
-    output: { status: "ok", service: id, capability_id: t.capability_id, result: {}, receipt: {} },
-  }])),
-};
+  };
+}
+
+/** A route's listing as data, for tests and the discovery extension. */
+export const listingOf = (id) => LISTING[id];
+
+/**
+ * The Bazaar discovery extension for one route. The SDK types the answer under the extension's
+ * schema (output.example); the same JSON Schema also goes into info.output.schema, where graders
+ * such as RouteVerdict look for it.
+ */
+export function discoveryExtension(declareDiscoveryExtension, id) {
+  const l = LISTING[id];
+  const ext = declareDiscoveryExtension({
+    method: "POST",
+    bodyType: "json",
+    input: l.input,
+    inputSchema: l.inputSchema,
+    output: { example: l.output, schema: l.outputSchema },
+  });
+  for (const value of Object.values(ext)) {
+    if (value?.info?.output && typeof value.info.output === "object") value.info.output.schema = l.outputSchema;
+  }
+  return ext;
+}
 
 /**
  * OpenAPI 3.1 for the paid routes, built from the same listing the Bazaar reads, so the two
@@ -87,7 +247,7 @@ export function openapiDocument({ publicUrl, payTo, serviceIds, network = BASE_M
         security: [],
         requestBody: { required: true, content: { "application/json": { schema: l.inputSchema, example: l.input } } },
         responses: {
-          200: { description: "The result (paid).", content: { "application/json": { example: l.output } } },
+          200: { description: "The result (paid).", content: { "application/json": { schema: l.outputSchema, example: l.output } } },
           400: { description: "Missing or invalid input. Not settled: the buyer pays nothing." },
           402: { description: "Payment required: the x402 V2 terms are in the PAYMENT-REQUIRED header.",
                  headers: { "PAYMENT-REQUIRED": { schema: { type: "string" }, description: "base64 JSON x402 payment terms" } } },
@@ -155,15 +315,7 @@ export async function buildPaywall({ keyFile, payTo, price = "$0.001", publicUrl
       serviceName: "AIMarket",
       tags: l.tags,
       iconUrl: l.icon,
-      extensions: {
-        ...declareDiscoveryExtension({
-          method: "POST",
-          bodyType: "json",
-          input: l.input,
-          inputSchema: l.inputSchema,
-          output: { example: l.output },
-        }),
-      },
+      extensions: { ...discoveryExtension(declareDiscoveryExtension, id) },
     };
   }
   const server = await createX402Server({

@@ -1,0 +1,183 @@
+{
+  "url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/pull/49.diff",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T14:10:43.020909+00:00",
+  "purpose": "Read-only PR source binding check",
+  "status": 200,
+  "sha256": "19649470c781e2aae14afa7c9fb6aa2750e4365bb6fd2a6409018c6fd14477b5",
+  "bytes": 5175,
+  "files": [
+    "gateway/README.md",
+    "gateway/aimarket-federation.mjs"
+  ],
+  "urls": [
+    "https://x402-gateway-production-1f21.up.railway.app",
+    "https://x402-mcp-gateway-production.up.railway.app/mcp"
+  ],
+  "selected_lines": [
+    {
+      "line": 15,
+      "text": "-- `POST /metadata` → `industrial_platform/web-metadata-intelligence`"
+    },
+    {
+      "line": 16,
+      "text": "-- `POST /change` → `industrial_platform/web-change-intelligence`"
+    },
+    {
+      "line": 17,
+      "text": "-- `GET /.well-known/x402`"
+    },
+    {
+      "line": 18,
+      "text": "-- `GET /openapi.json`"
+    },
+    {
+      "line": 19,
+      "text": "-- `GET /health`"
+    },
+    {
+      "line": 20,
+      "text": "+- Gateway: https://x402-gateway-production-1f21.up.railway.app"
+    },
+    {
+      "line": 21,
+      "text": "+- MCP: https://x402-mcp-gateway-production.up.railway.app/mcp"
+    },
+    {
+      "line": 22,
+      "text": "+- HTTP discovery: `/.well-known/x402`, `/openapi.json`, `/pricing.json`, `/.well-known/agent.json`, `/llms.txt`"
+    },
+    {
+      "line": 23,
+      "text": "+- Public liveness: `GET /health`"
+    },
+    {
+      "line": 24,
+      "text": "+- AIMarket federation adapter: `/.well-known/ai-market.json`, `/ai-market/v2/health`, `/ai-market/v2/manifest`, `/ai-market/v2/search`, and `POST /ai-market/v2/invoke` (the federation invoke currently returns only its published free Sentinel install bundle, **not** a paid agent-service router)"
+    },
+    {
+      "line": 25,
+      "text": " "
+    },
+    {
+      "line": 26,
+      "text": "-The proxy forwards the buyer's `PAYMENT-SIGNATURE` header to Apify and relays Apify's `402 Payment Required` response and payment headers unchanged. The gateway does not hold buyer funds, seller funds, or an Apify API token."
+    },
+    {
+      "line": 27,
+      "text": "+## Useful paid task families"
+    },
+    {
+      "line": 54,
+      "text": "-Set `PORT` if required by the host."
+    },
+    {
+      "line": 55,
+      "text": "+Keep AI inference disabled unless commercial model-provider permissions, pre-funded upstream capacity and positive per-request contribution are proven. Avoid exposing payment-signing credentials in code, public docs or observability logs."
+    },
+    {
+      "line": 56,
+      "text": "diff --git a/gateway/aimarket-federation.mjs b/gateway/aimarket-federation.mjs"
+    },
+    {
+      "line": 57,
+      "text": "index cf1c856..4f0a833 100644"
+    },
+    {
+      "line": 58,
+      "text": "--- a/gateway/aimarket-federation.mjs"
+    },
+    {
+      "line": 59,
+      "text": "+++ b/gateway/aimarket-federation.mjs"
+    },
+    {
+      "line": 60,
+      "text": "@@ -241,6 +241,21 @@ export function registerAIMarketFederation(app,{origin}) {"
+    },
+    {
+      "line": 61,
+      "text": "     res.set('Cache-Control','no-store').json(wellKnown(origin,identity));"
+    },
+    {
+      "line": 62,
+      "text": "   });"
+    },
+    {
+      "line": 63,
+      "text": " "
+    },
+    {
+      "line": 64,
+      "text": "+  // A read-only liveness endpoint required by current AIMarket Hub discovery clients."
+    },
+    {
+      "line": 65,
+      "text": "+  // This only confirms this federation adapter is online; it does not assert"
+    },
+    {
+      "line": 66,
+      "text": "+  // payment-channel, custody, reputation or upstream-service readiness."
+    },
+    {
+      "line": 67,
+      "text": "+  app.get('/ai-market/v2/health',(_req,res)=>{"
+    },
+    {
+      "line": 68,
+      "text": "+    res.set('Cache-Control','no-store').json({"
+    },
+    {
+      "line": 69,
+      "text": "+      status:'ok',"
+    },
+    {
+      "line": 70,
+      "text": "+      healthy:true,"
+    },
+    {
+      "line": 71,
+      "text": "+      protocol_version:'v2',"
+    },
+    {
+      "line": 72,
+      "text": "+      service:'industrial-platform-federation-adapter',"
+    },
+    {
+      "line": 73,
+      "text": "+      federation:'provider',"
+    },
+    {
+      "line": 74,
+      "text": "+      capabilities:{manifest:true,search:true,invoke_free_install:true},"
+    },
+    {
+      "line": 75,
+      "text": "+      x402_payment_readiness:'independent_gateway'"
+    },
+    {
+      "line": 76,
+      "text": "+    });"
+    },
+    {
+      "line": 77,
+      "text": "+  });"
+    },
+    {
+      "line": 78,
+      "text": "+"
+    },
+    {
+      "line": 79,
+      "text": "   app.get(['/ai-market/v2/manifest','/ai-market/manifest'],(_req,res)=>{"
+    },
+    {
+      "line": 80,
+      "text": "     res.set('Cache-Control','no-store').json(signedManifest(origin,identity));"
+    },
+    {
+      "line": 81,
+      "text": "   });"
+    }
+  ]
+}

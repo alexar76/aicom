@@ -1,0 +1,681 @@
+{
+  "url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+  "checked_at_utc": "2026-10-29T04:00:59.133841+00:00",
+  "method": "GET",
+  "status": 200,
+  "final_url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+  "headers": {
+    "Server": "nginx/1.24.0 (Ubuntu)",
+    "Date": "Thu, 29 Oct 2026 04:00:59 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "18420",
+    "Connection": "close",
+    "vary": "Origin",
+    "x-content-type-options": "nosniff",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "x-frame-options": "DENY",
+    "content-security-policy": "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
+    "strict-transport-security": "max-age=31536000"
+  },
+  "body_sha256": "43d1c0cb28daaada3de5b74953470d2aa4b7dd8ea54600261a9ee0838d191810",
+  "body_truncated": false,
+  "json": {
+    "peers": [
+      {
+        "url": "https://oracles.modelmarket.dev/family",
+        "name": "AIMarket Oracle Family",
+        "capabilities_count": 42,
+        "last_crawl": "2026-10-29T03:32:29Z",
+        "trust_score": 0.5082,
+        "depth": 0,
+        "categories": [
+          "oracle",
+          "randomness-beacon",
+          "verifiable-delay",
+          "consensus",
+          "reputation",
+          "optimization",
+          "sampling",
+          "percolation",
+          "routing",
+          "cascade-risk",
+          "thermodynamics",
+          "agent-tooling"
+        ],
+        "well_known_url": "https://oracles.modelmarket.dev/family/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "YkAOwWNbRFti2cqEzD6zfuI4OTLsGUoObpCmlwZqaTQ=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "oracle_family",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "Unified endpoint for the AIMarket oracle family — verifiable randomness, delay (VDF), robust consensus, reputation, optimization, structured sampling, percolation resilience, least-time routing, cascade risk, and thermodynamic audit. One manifest, every oracle's capabilities; each result is Ed25519-signed with a per-call receipt.",
+          "hub_version": "0.1.0",
+          "id": "prod-oracle-family",
+          "mcp_endpoint": "https://oracles.modelmarket.dev/family/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://iot.modelmarket.dev",
+        "name": "GAIA — physical-world oracle gateway",
+        "capabilities_count": 56,
+        "last_crawl": "2026-10-29T03:32:29Z",
+        "trust_score": 0.4904,
+        "depth": 0,
+        "categories": [
+          "iot",
+          "sensors",
+          "physical-data",
+          "verification",
+          "weather",
+          "air-quality",
+          "energy",
+          "seismic",
+          "tides",
+          "fire",
+          "radiation",
+          "gnss",
+          "traffic",
+          "space-weather",
+          "lightning",
+          "alerts",
+          "ocean",
+          "geomagnetism",
+          "flood",
+          "volcano",
+          "cyclone",
+          "adsb",
+          "aviation",
+          "road",
+          "rail",
+          "drought",
+          "reservoir",
+          "uv",
+          "geocoding",
+          "electricity-prices",
+          "actuation",
+          "satellite-imagery"
+        ],
+        "well_known_url": "https://iot.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "nXqEvIbWv+rA8TASY0GqGWZi/OPazT0HM1LQTrRXemg=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "gaia",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "Virtual IoT devices (weather ×2, air quality, energy) plus live public-API relays (Open-Meteo, NWS, UK carbon, USGS, NOAA tides/rivers/marine, NASA FIRMS/EONET, SWPC, GOES GLM, NWS CAP, Safecast, CyberNews, Sensor.Community, CWOP, Argo, MET Norway, USGS geomag, Copernicus EFFIS, optional own-edge ADS-B/AIS/IoT feeders, NHC cyclones, public ADS-B) sold as signed AIMarket capabilities, with a Metis-envelope statistical verifier for Pay-on-Verified escrow.",
+          "hub_version": "0.1.0",
+          "id": "gaia.gateway",
+          "mcp_endpoint": "https://iot.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://atlas.modelmarket.dev",
+        "name": "ATLAS — planetary sensor map & composite briefs",
+        "capabilities_count": 15,
+        "last_crawl": "2026-10-29T03:32:30Z",
+        "trust_score": 0.4805,
+        "depth": 0,
+        "categories": [
+          "iot",
+          "sensors",
+          "physical-data",
+          "geospatial",
+          "risk-brief",
+          "wildfire",
+          "watchbox",
+          "gnss-integrity"
+        ],
+        "well_known_url": "https://atlas.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "p4dibtrb4RSgFvm8lF7xH6csSdpDp01XVVfhuiKfeBk=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "atlas",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "Planetary MapLibre sensor map over GAIA relays, plus composite Hub SKUs: watchbox check, wildfire+weather desk note, cross-layer situation briefs, nearest LIVE pin by lat/lon, and exact reads for every clickable point_id. GNSS integrity fields answer point, bbox and route queries with explicit inventory/derived/reported-interference claim classes. LIVE only with provenance; refuse when coverage is empty.",
+          "hub_version": "0.3.2",
+          "id": "atlas.map",
+          "mcp_endpoint": "https://atlas.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://hestia.modelmarket.dev",
+        "name": "HESTIA",
+        "capabilities_count": 19,
+        "last_crawl": "2026-10-29T03:32:36Z",
+        "trust_score": 0.449,
+        "depth": 1,
+        "categories": [],
+        "well_known_url": "https://hestia.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "03+uskACJ/N7VBRL5Ohw8ZUAoF4q5BVAO9oeI9+MAyI=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "",
+          "hub_version": "",
+          "id": "",
+          "mcp_endpoint": "https://hestia.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://momus.modelmarket.dev",
+        "name": "MOMUS — adversarial-audit satellite",
+        "capabilities_count": 7,
+        "last_crawl": "2026-10-29T03:32:30Z",
+        "trust_score": 0.44,
+        "depth": 0,
+        "categories": [
+          "security",
+          "red-team",
+          "audit",
+          "conformance",
+          "verification",
+          "adversarial"
+        ],
+        "well_known_url": "https://momus.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "TmeHyNcvEC6/NKo4X8AvZEXFPXL+rJESvmii9iFvklA=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "momus",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "Autonomous red team for the AI-economy: safe, read-only conformance and adversarial probes against the ecosystem's own components (oracle free-tier ceilings, manifest/receipt signatures, settlement gates, prompt-injection surfaces), emitted as Ed25519-signed findings. MOMUS finds and signs; a separate Treasury role — its own key — is the only thing that can pay a bounty, and only on independent verification. The offensive complement to ARGUS's defensive WARDEN.",
+          "hub_version": "0.2.0",
+          "id": "momus.redteam",
+          "mcp_endpoint": "https://momus.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://logos.modelmarket.dev",
+        "name": "LOGOS Federation Analytics",
+        "capabilities_count": 1,
+        "last_crawl": "2026-10-29T03:32:32Z",
+        "trust_score": 0.44,
+        "depth": 0,
+        "categories": [
+          "analytics",
+          "federation",
+          "observability"
+        ],
+        "well_known_url": "https://logos.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "rZXZIN+e+APx5g/eolhvOZ98c+aEzNj/ixrGPoyygs8=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "logos",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "Cross-hub analytics for the AIMarket federation: catalogue size, hub health and open audit findings, computed from LOGOS's own observations.",
+          "hub_version": "0.2.1",
+          "id": "prod-logos",
+          "mcp_endpoint": "https://logos.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://x402-gateway-production-1f21.up.railway.app",
+        "name": "Industrial Platform Sentinel",
+        "capabilities_count": 4,
+        "last_crawl": "2026-10-29T03:32:34Z",
+        "trust_score": 0.44,
+        "depth": 1,
+        "categories": [
+          "agent-tooling",
+          "treasury",
+          "wallet",
+          "payments",
+          "monitoring",
+          "x402"
+        ],
+        "well_known_url": "https://x402-gateway-production-1f21.up.railway.app/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "8yIANrnT9NIgJMV2YmiVlYx0MjElvJpRNFP50DbIf30=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "Install-once autonomous treasury and payment monitoring for authorized funded agents. AIMarket capabilities bootstrap Sentinel; recurring paid work settles directly through Industrial Platform x402 routes.",
+          "hub_version": "sentinel-federation-1.0.0",
+          "id": "industrial-sentinel",
+          "mcp_endpoint": ""
+        }
+      },
+      {
+        "url": "https://hub.attestedmemory.net",
+        "name": "Attested Memory Hub",
+        "capabilities_count": 21,
+        "last_crawl": "2026-10-29T03:32:37Z",
+        "trust_score": 0.44,
+        "depth": 1,
+        "categories": [],
+        "well_known_url": "https://hub.attestedmemory.net/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "in5+KyyoSexzkUuh2FHfCMwcLhdmLzkvL+B6CMOncwU=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "",
+          "hub_version": "3.16.0",
+          "id": "",
+          "mcp_endpoint": "https://hub.attestedmemory.net/ai-market/mcp"
+        }
+      },
+      {
+        "url": "https://histor.modelmarket.dev",
+        "name": "HISTOR",
+        "capabilities_count": 3,
+        "last_crawl": "2026-10-29T03:32:39Z",
+        "trust_score": 0.44,
+        "depth": 1,
+        "categories": [
+          "mcp-security",
+          "transparency-log",
+          "tool-definitions",
+          "awr",
+          "mtl"
+        ],
+        "well_known_url": "https://histor.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "jNOrGJkp5BTAwJ+TA3syWjbYOBR5nKeZgS91kk8LKVk=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "",
+          "hub_version": "",
+          "id": "",
+          "mcp_endpoint": "https://histor.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://independentai.network/hub",
+        "name": "Independent AI Hub",
+        "capabilities_count": 33,
+        "last_crawl": "2026-10-29T03:32:39Z",
+        "trust_score": 0.44,
+        "depth": 1,
+        "categories": [],
+        "well_known_url": "https://independentai.network/hub/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "op8JQ5j0SBKjq3nmbiIjHjr3OwRgF9rKeDhRyRqRKaI=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "",
+          "hub_version": "3.16.0",
+          "id": "",
+          "mcp_endpoint": "https://independentai.network/hub/ai-market/mcp"
+        }
+      },
+      {
+        "url": "https://domains.modelmarket.dev",
+        "name": "modelmarket.dev demo domain seller",
+        "capabilities_count": 1,
+        "last_crawl": "2026-10-29T03:32:41Z",
+        "trust_score": 0.44,
+        "depth": 1,
+        "categories": [],
+        "well_known_url": "https://domains.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "safTQQ68Di+yyzZaknbra2FnN63xg536loS+GWLwK3c=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "DEMO SELLER: real availability (registry RDAP), illustrative prices; orders are refused with demo_mode. Domain registration quotes; direct seller orders and private owner management.",
+          "hub_version": "",
+          "id": "",
+          "mcp_endpoint": "https://domains.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://esim.modelmarket.dev",
+        "name": "modelmarket.dev demo eSIM seller",
+        "capabilities_count": 1,
+        "last_crawl": "2026-10-29T03:32:41Z",
+        "trust_score": 0.44,
+        "depth": 1,
+        "categories": [],
+        "well_known_url": "https://esim.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "bisc+mMkwi7R9UYwnR4a4Xpfrrqf0HJlO+CFcLF2ofA=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "Demo seller of the eSIM operator kit: live travel eSIM offers for 205 countries; orders are refused with demo_mode. To sell, run the kit: https://esim.modelmarket.dev",
+          "hub_version": "",
+          "id": "",
+          "mcp_endpoint": "https://esim.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://modelmarket.dev/providers/emporion",
+        "name": "EMPORION — public-record facts for agents that trade",
+        "capabilities_count": 16,
+        "last_crawl": "2026-10-29T03:32:41Z",
+        "trust_score": 0.3424,
+        "depth": 1,
+        "categories": [
+          "commerce",
+          "compliance",
+          "kyb",
+          "vat",
+          "lei",
+          "fx",
+          "sanctions",
+          "timestamping",
+          "notary",
+          "bitcoin",
+          "eori",
+          "rdap",
+          "company-registry",
+          "business-days",
+          "web-capture",
+          "scheduling"
+        ],
+        "well_known_url": "https://modelmarket.dev/providers/emporion/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "RxFtZIsxHnja47wBSREBKWa8n8lOh03f1+WKGTBZAyk=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "EU VAT validity (VIES), legal entities (GLEIF LEI), national company registers, EORI numbers, domain registrations (RDAP), ECB reference rates, sanctions-list lookups (OFAC SDN with wallet addresses, EU, UK with UN designations), business-day calendars, Bitcoin-anchored timestamps (OpenTimestamps), web pages captured as evidence, and timers with a dead man's switch — each answer signed, with the source, fetch time and SHA-256 of what the source returned.",
+          "hub_version": "0.4.2",
+          "id": "emporion",
+          "mcp_endpoint": "https://modelmarket.dev/providers/emporion/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://themis.modelmarket.dev",
+        "name": "THEMIS",
+        "capabilities_count": 1,
+        "last_crawl": "2026-10-28T16:50:26Z",
+        "trust_score": 0.2652,
+        "depth": 0,
+        "categories": [
+          "security",
+          "procurement",
+          "supply-chain",
+          "admission"
+        ],
+        "well_known_url": "https://themis.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "/IpNx3KmIITuEC9WefwqRqwWAhCQ3bxhhXKZ3zI/UBQ=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "themis",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "Evidence-based procurement review for AI-agent manifests, declared permissions, cost, and verification posture",
+          "hub_version": "0.1.0",
+          "id": "themis",
+          "mcp_endpoint": "https://themis.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://basanos.modelmarket.dev",
+        "name": "BASANOS",
+        "capabilities_count": 1,
+        "last_crawl": "2026-10-29T03:32:30Z",
+        "trust_score": 0.265,
+        "depth": 0,
+        "categories": [
+          "security",
+          "solidity",
+          "assurance"
+        ],
+        "well_known_url": "https://basanos.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "TcxndOG1DPUTR+MkUf4ZiYrspBlDcI0fUkIX8Rfvph4=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "basanos",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "Signed Solidity assurance packs for AICOM ecosystem contracts. Technical layer only — not AgentAuditPool insurance, not MOMUS runtime probes, not THEMIS admission.",
+          "hub_version": "0.1.0",
+          "id": "basanos",
+          "mcp_endpoint": "https://basanos.modelmarket.dev/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://magic-ai-factory.com",
+        "name": "Magic AI-Factory AI Market",
+        "capabilities_count": 13,
+        "last_crawl": "2026-10-29T03:32:31Z",
+        "trust_score": 0.265,
+        "depth": 0,
+        "categories": [],
+        "well_known_url": "https://magic-ai-factory.com/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "4UT6zTeaE6JjZiAnvs9EaiLjlV7iEvy1lOf9Z_TdpKw",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "factory",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "",
+          "hub_version": "2.0.0",
+          "id": "",
+          "mcp_endpoint": "https://magic-ai-factory.com/ai-market/mcp"
+        }
+      },
+      {
+        "url": "https://skopos.modelmarket.dev",
+        "name": "SKOPOS Fleet Intelligence",
+        "capabilities_count": 4,
+        "last_crawl": "2026-10-29T03:32:31Z",
+        "trust_score": 0.265,
+        "depth": 0,
+        "categories": [
+          "observability",
+          "security",
+          "fleet"
+        ],
+        "well_known_url": "https://skopos.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "GW1q2KZl+xz29RausX5uKbfkYz+4EBtHhQE2SSAFWjc=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "skopos",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "Self-hosted nginx analytics & security posture — billable fleet telemetry for AI agents.",
+          "hub_version": "",
+          "id": "skopos.fleet",
+          "mcp_endpoint": "https://skopos.modelmarket.dev/aimarket/invoke"
+        }
+      },
+      {
+        "url": "https://hunt.modelmarket.dev",
+        "name": "Signal Hunt Hub",
+        "capabilities_count": 6,
+        "last_crawl": "2026-10-29T03:32:33Z",
+        "trust_score": 0.265,
+        "depth": 0,
+        "categories": [],
+        "well_known_url": "https://hunt.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "r6+J7JEt/ZUNjMtueDJmLjFz7aBr1wH4bQZqulLvMSI=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "signal_hunt_hub",
+        "identity_key_matches": true,
+        "declared": {
+          "description": "",
+          "hub_version": "3.16.0",
+          "id": "",
+          "mcp_endpoint": "https://hunt.modelmarket.dev/ai-market/mcp"
+        }
+      },
+      {
+        "url": "https://hub.modelmarket.dev",
+        "name": "Competing Lab Hub",
+        "capabilities_count": 1,
+        "last_crawl": "2026-10-29T03:32:35Z",
+        "trust_score": 0.265,
+        "depth": 1,
+        "categories": [],
+        "well_known_url": "https://hub.modelmarket.dev/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "553K9ALuHZx4pdGhhcMW9fPk33ke2sfH0zmRn+2fAXo=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "",
+          "hub_version": "3.16.0",
+          "id": "",
+          "mcp_endpoint": "https://hub.modelmarket.dev/ai-market/mcp"
+        }
+      },
+      {
+        "url": "https://charon.independentai.network",
+        "name": "CHARON — liquidation risk for the side that borrows",
+        "capabilities_count": 3,
+        "last_crawl": "2026-10-29T03:32:38Z",
+        "trust_score": 0.265,
+        "depth": 1,
+        "categories": [
+          "defi",
+          "risk",
+          "lending",
+          "liquidation",
+          "oracle-integrity",
+          "monitoring",
+          "onchain-data"
+        ],
+        "well_known_url": "https://charon.independentai.network/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "m9Y9bHf7Q28dRwlF9iypvdU6eDmzJFNbLExFIp+F7xo=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "Liquidation risk read from the liquidator's own machinery, pointed at the borrower. Exact integer kill prices across Aave-family, Compound-family and Morpho Blue; a real route quote for the collateral a liquidator would actually have to sell; and the one nobody else answers - which contracts your collateral price is read out of, and how often anyone writes to them. Answers about a position or market you name; publishes no ranking of who is cheapest to break.",
+          "hub_version": "0.1.0",
+          "id": "charon.risk",
+          "mcp_endpoint": "https://charon.independentai.network/ai-market/v2/invoke"
+        }
+      },
+      {
+        "url": "https://agent-exec.448c.org",
+        "name": "agent-exec",
+        "capabilities_count": 0,
+        "last_crawl": "2026-10-29T03:32:41Z",
+        "trust_score": 0.265,
+        "depth": 1,
+        "categories": [],
+        "well_known_url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "dvoENalt1FhzSO54A6sF4c54fd0zwyZiP3ljGlYOlsU=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "",
+          "hub_version": "",
+          "id": "",
+          "mcp_endpoint": ""
+        }
+      }
+    ],
+    "count": 21,
+    "pending": [
+      {
+        "url": "https://mach402.dev",
+        "name": "Machina",
+        "first_seen": "2026-10-19T17:39:28Z",
+        "last_crawl": "2026-10-29T03:32:34Z",
+        "discoverer": "announce:open",
+        "well_known_url": "https://mach402.dev/.well-known/ai-market.json",
+        "categories": [],
+        "trusted": false,
+        "status": "pending",
+        "preview_capabilities": 0,
+        "declared_capabilities": 0,
+        "assay_verdict": "fail",
+        "assay_ran_at": "2026-10-28T15:49:23Z",
+        "assay_blockers": [
+          {
+            "id": "well_known_schema",
+            "detail": "fetch failed: Client error '404 Not Found' for url 'https://172.67.134.217/.well-known/ai-market.json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+          },
+          {
+            "id": "advertised_key",
+            "detail": "signer_public_key missing"
+          },
+          {
+            "id": "manifest_schema",
+            "detail": "fetch failed: Client error '404 Not Found' for url 'https://172.67.134.217/ai-market/manifest'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+          },
+          {
+            "id": "manifest_signed",
+            "detail": "the peer advertises no signing key"
+          },
+          {
+            "id": "manifest_fresh",
+            "detail": ""
+          },
+          {
+            "id": "sandbox_probe",
+            "detail": "no publicly offered capability to probe, free or priced"
+          }
+        ],
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "",
+          "hub_version": "",
+          "id": "",
+          "mcp_endpoint": ""
+        }
+      }
+    ],
+    "pending_count": 1,
+    "open_federation": true,
+    "observation_gossip": true
+  }
+}

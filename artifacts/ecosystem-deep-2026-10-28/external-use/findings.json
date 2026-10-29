@@ -1,0 +1,97 @@
+{
+  "written_at_utc": "2026-10-28T13:36:48.918927+00:00",
+  "scope": "Additional external code/data use of alexar76 ecosystem; unauthenticated public GET only.",
+  "query_counts": {
+    "web_search_queries": 19,
+    "github_repository_search_queries": 9,
+    "web_queries_with_saved_full_results": 16,
+    "first_web_batch_summary_only": 3,
+    "web_api_documentation_lookup_included": 1
+  },
+  "new_external_adoption_confirmed": false,
+  "findings": [
+    {
+      "subject": "WARDEN npm reverse dependency",
+      "result": "deps.dev 0.8.2: directCount=1, only @alexar76/argus3@0.3.3. npm metadata confirms repo alexar76/argus and exact dependency @aimarket/warden=0.8.2, published2026-10-11T17:36:02.366Z. Internal ecosystem use, not external adoption.",
+      "sources": [
+        "https://api.deps.dev/v3alpha/systems/npm/packages/%40aimarket%2Fwarden/versions/0.8.2:dependents",
+        "https://deps.dev/_/s/npm/p/%40aimarket%2Fwarden/v/0.8.2/dependents",
+        "https://registry.npmjs.org/%40alexar76%2Fargus3"
+      ],
+      "evidence_files": [
+        "dependents-check.json",
+        "final-metadata.json",
+        "dependent-provenance.json"
+      ]
+    },
+    {
+      "subject": "aimarket-agent PyPI reverse dependency",
+      "result": "deps.dev2.6.0: directCount=1, only aimarket-bridges0.1.0. PyPI metadata repo is alexar76/aimarket-bridges;0.1.0 uploaded2026-07-30. Latest0.2.0 uploaded2026-10-16 and depends on aimarket-agent<3,>=2.2. Internal ecosystem use.",
+      "sources": [
+        "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-agent/versions/2.6.0:dependents",
+        "https://deps.dev/_/s/pypi/p/aimarket-agent/v/2.6.0/dependents",
+        "https://pypi.org/pypi/aimarket-bridges/json"
+      ],
+      "evidence_files": [
+        "pypi-dependent-names.json",
+        "dependent-provenance.json"
+      ]
+    },
+    {
+      "subject": "GitHub exact README search",
+      "result": "alexar76 in:readme -user:alexar76 remains11 known repositories; histor-mcp-tool-definitions1=Paraphern/rugsnare. @aimarket/warden, histor.modelmarket.dev, aimarket-protocol exact external README searches returned0, incomplete_results=false.",
+      "evidence_files": [
+        "github-repository-search.json",
+        "http-index.json"
+      ]
+    },
+    {
+      "subject": "Two aimarket-agent search candidates",
+      "result": "sep163/aimarket-agents is Telegram lead/marketing analytics. bracha55555-hue/aimarket uses aimarket-997u.onrender.com and io.github.bracha55555-hue/aimarket namespace. Neither checked README/requirements links to alexar76/modelmarket.dev or depends on our package. Excluded as unconfirmed homonyms, not external use.",
+      "sources": [
+        "https://github.com/sep163/aimarket-agents",
+        "https://github.com/bracha55555-hue/aimarket"
+      ],
+      "evidence_files": [
+        "candidate-details.json",
+        "final-metadata.json"
+      ]
+    },
+    {
+      "subject": "HLIDO freshness",
+      "result": "Selected scorecard still score60/FADING, confidence low, run_at2026-08-05. Next review due2026-11-05; evidence screenshot URL HEAD verification at2026-10-08 is not a new review. Repository pushed27Oct does not change reviewed_at.",
+      "blob_sha": "442e808f765d9ee058f99be8f16b412b026419c0",
+      "sources": [
+        "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/scorecards/alexar76-aimarket-plugins.json"
+      ],
+      "evidence_files": [
+        "hlido-selected.json",
+        "final-metadata.json"
+      ]
+    },
+    {
+      "subject": "Fork freshness",
+      "result": "Public forks lists: aicom4 same known forks, newest enterprise-factory Sep24/pushedOct14; metis,warden,histor0. Fork counts alone not usage.",
+      "evidence_files": [
+        "github-forks.json"
+      ]
+    }
+  ],
+  "limits": [
+    "Repository README search is not authenticated GitHub code search; no claim that package manifests everywhere were searched.",
+    "deps.dev describes its counts as public, computed graph counts and only indicative, not precise adoption. Counts are version-specific.",
+    "WARDEN0.22.2 and HISTOR0.5.0 currently404 in deps.dev; do not read404 as0 users. WARDEN0.15.0, npm agent0.3.0, HISTOR0.3.0 returned0 for those indexed versions.",
+    "Official npm dependent browse returned403; indexed older npm page3 dependents is not3 external clients. Only named records above were verified.",
+    "PyPI aimarket-protocol metadata404; protocol repository name is not evidence of a PyPI distribution.",
+    "@aimarket-skill/refactoring-helper1.0.0 by cooper112 has no repo/homepage/dependencies in npm metadata. Namespace/name coincidence alone does not establish relation; excluded.",
+    "No source code executed, packages installed, account authentication changed, or GitHub write requested."
+  ],
+  "http_records": 48,
+  "main_evidence": [
+    "querylog.json",
+    "http-index-all.json",
+    "dependent-provenance.json",
+    "candidate-details.json",
+    "github-repository-search.json"
+  ]
+}

@@ -1,5 +1,7 @@
 # Paliers gratuit et payant — ce que l'écosystème donne, et pourquoi
 
+> Le fournisseur de données se nomme désormais SYMMARTYS. Les mesures datées conservent les identifiants originaux utilisés dans ces requêtes.
+
 *Également disponible en [English](free-and-paid-tiers.md) · [Русский](free-and-paid-tiers.ru.md) · [Español](free-and-paid-tiers.es.md) · [中文](free-and-paid-tiers.zh.md)*
 
 Presque toutes les capacités de `modelmarket.dev` sont gratuites aujourd'hui — sans
@@ -255,7 +257,7 @@ qu'à un appelant que l'opérateur a explicitement désigné.
 | variable | signification |
 |---|---|
 | `ORACLE_PAID_TIER_SECRET` | Un secret partagé envoyé dans `X-AIMarket-Paid-Tier`. Comparé en temps constant. Indépendant de la topologie réseau — **à préférer**. |
-| `ORACLE_TRUSTED_PAYMENT_PROXIES` | IP/CIDR séparés par des virgules. Une requête venant de l'un d'eux et portant un `X-Payment-Channel` non vide compte comme payée, au motif que le Hub a pris une réservation avant de la transmettre. Fait confiance au proxy inverse pour fixer `X-Real-IP` — la même confiance que le limiteur accorde déjà. |
+| `ORACLE_TRUSTED_PAYMENT_PROXIES` | IP/CIDR séparés par des virgules. Une requête venant de l'un d'eux et portant un `X-Payment-Channel` non vide compte comme payée, au motif que le Hub a pris une réservation avant de la transmettre. Fait confiance au proxy inverse pour fixer `X-Real-IP` — la même confiance que le limiteur accorde déjà. Un appel depuis loopback ne compte jamais, quoi que dise la liste : tous les processus de la machine partagent cette adresse, y compris un proxy inverse qui ne transmet pas `X-Real-IP` (le `proxy_pass` de nginx par défaut). Un Hub sur la même machine utilise le secret. |
 
 Avec **aucune des deux** définie — l'état livré — *aucun appel n'est jamais levé*, y
 compris les appels venant du Hub. Le plafond gratuit s'applique à tous. C'est le

@@ -1,0 +1,768 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/lets-order-some-fries/trovark/73f44c42a17e0cafedea31650d6b218db2d34d9e/README.md",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:08:33.878781+00:00",
+    "commit": "73f44c42a17e0cafedea31650d6b218db2d34d9e",
+    "path": "README.md",
+    "status": 200,
+    "sha256": "73a0a23cb64b23dec35f3e4acfd8b13454faf29d50c5220c54f7a6116334d2ff",
+    "bytes": 10546,
+    "line_count": 193,
+    "selected_lines": [
+      {
+        "line": 8,
+        "text": ""
+      },
+      {
+        "line": 9,
+        "text": "trovark grades any MCP server 0–100 (A–F) from **static, public signals only** —"
+      },
+      {
+        "line": 10,
+        "text": "maintenance health, spec conformance, security hygiene, and tool-surface size."
+      },
+      {
+        "line": 11,
+        "text": "It never executes the server's code. Every finding links to its evidence."
+      },
+      {
+        "line": 12,
+        "text": ""
+      },
+      {
+        "line": 13,
+        "text": "## Usage"
+      },
+      {
+        "line": 19,
+        "text": ""
+      },
+      {
+        "line": 20,
+        "text": "A bare package name that exists on both npm and PyPI is rejected as ambiguous — disambiguate with the `npm:<name>` or `pypi:<name>` prefix (e.g. `npx trovark pypi:mcp-server-fetch`)."
+      },
+      {
+        "line": 21,
+        "text": ""
+      },
+      {
+        "line": 22,
+        "text": "### About `GITHUB_TOKEN`"
+      },
+      {
+        "line": 54,
+        "text": ""
+      },
+      {
+        "line": 55,
+        "text": "The first two are errors either way: nothing was measured. The last two are correct,"
+      },
+      {
+        "line": 56,
+        "text": "successful answers — there is genuinely no grade to give — so they only fail once a"
+      },
+      {
+        "line": 57,
+        "text": "threshold demands one."
+      },
+      {
+        "line": 89,
+        "text": "scan and publishes changes as a neutral drift feed — the only public index that"
+      },
+      {
+        "line": 90,
+        "text": "remembers what every server's tool surface looked like last month. Snapshots"
+      },
+      {
+        "line": 91,
+        "text": "store hashes, not content; drift events carry zero findings and zero score"
+      },
+      {
+        "line": 92,
+        "text": "impact. Details and honest scope limits:"
+      },
+      {
+        "line": 124,
+        "text": "  a file path or URL — check it yourself, trovark never asks you to take a finding on faith."
+      },
+      {
+        "line": 125,
+        "text": "- **`Metadata Integrity`** — a static scan of tool metadata and fetched files for hidden Unicode"
+      },
+      {
+        "line": 126,
+        "text": "  payloads (invisible characters that can smuggle instructions). \"0 findings across N files\" is"
+      },
+      {
+        "line": 127,
+        "text": "  a clean scan, not an unset one; a separate `not checked — no files fetched` line means the"
+      },
+      {
+        "line": 128,
+        "text": "  scan never ran because no files were retrieved."
+      },
+      {
+        "line": 129,
+        "text": "- **`Notes`** (printed only when relevant) — plain-language reasons a signal was missing, a"
+      },
+      {
+        "line": 134,
+        "text": ""
+      },
+      {
+        "line": 135,
+        "text": "- **`Trust Score: INSUFFICIENT DATA`** — the grade is withheld rather than computed from partial"
+      },
+      {
+        "line": 136,
+        "text": "  signals. This happens when the tool surface can't be statically determined, or two or more"
+      },
+      {
+        "line": 137,
+        "text": "  whole dimensions have zero collectible signals; `Notes` explains why."
+      },
+      {
+        "line": 138,
+        "text": "- **`LIBRARY — not an MCP server`** — the ref is an SDK, proxy, or distribution stub with no"
+      },
+      {
+        "line": 142,
+        "text": "- **`DYNAMIC TOOL SURFACE`** — the ref is a gateway, proxy or registry that assembles its"
+      },
+      {
+        "line": 143,
+        "text": "  tools at runtime from servers it federates, so there is no static surface to read. Grading"
+      },
+      {
+        "line": 144,
+        "text": "  what such a repo declares about itself would measure the wrong thing. No score is computed,"
+      },
+      {
+        "line": 145,
+        "text": "  and `--json` carries `notServerReason: \"dynamic\"`."
+      },
+      {
+        "line": 157,
+        "text": "**not the published version**: the package name resolves the repository, and the files are then"
+      },
+      {
+        "line": 158,
+        "text": "read from that repository's default branch, which for most packages has moved past the commit"
+      },
+      {
+        "line": 159,
+        "text": "the release was cut from. `resolved.npmVersion` records the version that *would* be installed,"
+      },
+      {
+        "line": 160,
+        "text": "and when npm publishes a `gitHead` for it and that commit differs from the branch tip, the card"
+      },
+      {
+        "line": 167,
+        "text": ""
+      },
+      {
+        "line": 168,
+        "text": "Abridged, from a real run of `npx trovark github/github-mcp-server --json`:"
+      },
+      {
+        "line": 169,
+        "text": ""
+      },
+      {
+        "line": 170,
+        "text": "    {"
+      },
+      {
+        "line": 189,
+        "text": ""
+      },
+      {
+        "line": 190,
+        "text": "- It does not run or sandbox servers (static analysis only — v1)."
+      },
+      {
+        "line": 191,
+        "text": "- Findings are *surfaces and heuristics with evidence links*, not claimed exploits."
+      },
+      {
+        "line": 192,
+        "text": ""
+      }
+    ]
+  },
+  {
+    "url": "https://raw.githubusercontent.com/lets-order-some-fries/trovark/73f44c42a17e0cafedea31650d6b218db2d34d9e/src/derive/schema.ts",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:08:34.305110+00:00",
+    "commit": "73f44c42a17e0cafedea31650d6b218db2d34d9e",
+    "path": "src/derive/schema.ts",
+    "status": 200,
+    "sha256": "81308405f056e7ddecb9f719e4798becf2ba9e18eed289b875b416b86f1895d6",
+    "bytes": 100755,
+    "line_count": 1844,
+    "selected_lines": [
+      {
+        "line": 9,
+        "text": "  extracted: boolean"
+      },
+      {
+        "line": 10,
+        "text": "  // D1 (integrity-v1, trap #6): evidence (the source file each tool was"
+      },
+      {
+        "line": 11,
+        "text": "  // extracted from) is retained here — D1 (src/derive/integrity.ts) cites it"
+      },
+      {
+        "line": 12,
+        "text": "  // so a tool-surface hit can point at the file it came from. It must NOT"
+      },
+      {
+        "line": 19,
+        "text": "  // W5 (coverage-v1.5, wave2-spec §2.3): true when the full repo tree"
+      },
+      {
+        "line": 20,
+        "text": "  // contains MORE tool-fanout-shaped files than were actually sampled (e.g."
+      },
+      {
+        "line": 21,
+        "text": "  // figwright's 133 one-tool-per-file modules vs. ~20 reachable under a"
+      },
+      {
+        "line": 22,
+        "text": "  // 24-file cap). assemble.ts reads this and leaves toolCount/"
+      },
+      {
+        "line": 23,
+        "text": "  // schemaTokenEstimate undefined rather than publishing a count derived"
+      },
+      {
+        "line": 24,
+        "text": "  // from a provably incomplete sample — see assemble.ts for the security-"
+      },
+      {
+        "line": 25,
+        "text": "  // stays-graded reasoning (max-risk classification is monotone under"
+      },
+      {
+        "line": 26,
+        "text": "  // sampling, so it is safe to keep grading security on the partial sample)."
+      },
+      {
+        "line": 27,
+        "text": "  surfacePartial: boolean"
+      },
+      {
+        "line": 28,
+        "text": "  // W6 (Task W6 Part A): true when `tools` came from the LAST-rung README"
+      },
+      {
+        "line": 29,
+        "text": "  // catalog extractor (fromReadmeCatalog) rather than any code/manifest/spec"
+      },
+      {
+        "line": 30,
+        "text": "  // source. assemble.ts reads this to keep reliability's schema-parseable"
+      },
+      {
+        "line": 32,
+        "text": "  // was technically extracted — README prose can drift from the shipped"
+      },
+      {
+        "line": 33,
+        "text": "  // surface in a way a parsed manifest/source file cannot (wave2-spec §3"
+      },
+      {
+        "line": 34,
+        "text": "  // R6). Also used to attach a transparency finding pointing at the README."
+      },
+      {
+        "line": 35,
+        "text": "  readmeSourced: boolean"
+      },
+      {
+        "line": 80,
+        "text": "const LOW_TOKENS = new Set(["
+      },
+      {
+        "line": 81,
+        "text": "  'fetch', 'http', 'request', 'url', 'download', 'get', 'read', 'list',"
+      },
+      {
+        "line": 82,
+        "text": "  'search', 'query',"
+      },
+      {
+        "line": 83,
+        "text": "])"
+      },
+      {
+        "line": 136,
+        "text": "// code-STRUCTURE property keys (the handler/callback the tool is registered"
+      },
+      {
+        "line": 137,
+        "text": "// with) — not just user-meaningful content. FastMCP's `Tool` shape mandates"
+      },
+      {
+        "line": 138,
+        "text": "// an `execute:` key on every single tool, so `execute` (itself a"
+      },
+      {
+        "line": 139,
+        "text": "// STRONG_EXEC_TOKENS member) tokenized out of that key and flagged EVERY"
+      },
+      {
+        "line": 140,
+        "text": "// tool in a FastMCP-shaped server (e.g. cswkim/discogs-mcp-server) 'high'"
+      },
+      {
+        "line": 141,
+        "text": "// regardless of what the tool actually does. Fixed by stripping these"
+      },
+      {
+        "line": 142,
+        "text": "// structural/handler key positions (each only when immediately followed by"
+      },
+      {
+        "line": 274,
+        "text": "// Fix 5: paths that aren't part of the shipped server — test fixtures, example"
+      },
+      {
+        "line": 275,
+        "text": "// snippets, and docs source — commonly define fake/sample \"tools\" that would"
+      },
+      {
+        "line": 276,
+        "text": "// otherwise fabricate cost/security signals for framework and SDK repos."
+      },
+      {
+        "line": 277,
+        "text": "// V2 (coverage-spec §3.1/§4): added `samples` — csharp-sdk ships its example"
+      },
+      {
+        "line": 278,
+        "text": "// servers under samples/** rather than examples/**; without this, signal #2"
+      },
+      {
+        "line": 279,
+        "text": "// (idiom-only-in-excluded-paths) would misread csharp-sdk's example-only"
+      },
+      {
+        "line": 280,
+        "text": "// registrations as real tools instead of the library signal they are."
+      },
+      {
+        "line": 281,
+        "text": "const NON_SERVER_DIR = /(^|\\/)(tests|__tests__|examples|docs|docs_src|samples)\\//"
+      },
+      {
+        "line": 282,
+        "text": "const NON_SERVER_FILE = /(?:^|\\/)[^/]*(?:_test\\.[^/]+|\\.test\\.[^/]+)$/"
+      },
+      {
+        "line": 283,
+        "text": "// Exported for src/derive/classify.ts (V2): classifyLibrary's idiom-only-in-"
+      },
+      {
+        "line": 510,
+        "text": "// The stack of unmatched `{` at `pos` is exactly the ancestor chain of the"
+      },
+      {
+        "line": 511,
+        "text": "// last `{` before `pos` that is still open there — so: find the last `{`"
+      },
+      {
+        "line": 512,
+        "text": "// before pos, then walk up parents past any that closed before pos. A `{`"
+      },
+      {
+        "line": 513,
+        "text": "// with no matching `}` yields undefined, as the two-pass version did."
+      },
+      {
+        "line": 514,
+        "text": "function enclosingObjectSpan(index: BraceIndex, pos: number): [number, number] | undefined {"
+      },
+      {
+        "line": 554,
+        "text": "// V5 (coverage-spec §3.5): per-.json-file dispatch, tried in order from most"
+      },
+      {
+        "line": 555,
+        "text": "// to least specific — an OpenAPI/Swagger spec, then a bare toolDefinitions"
+      },
+      {
+        "line": 556,
+        "text": "// array, then the {tools:[...]} manifest shape. Only reached for files whose"
+      },
+      {
+        "line": 557,
+        "text": "// basename is in TOOL_JSON_BASENAME_RE (see extractSchema below); package.json"
+      },
+      {
+        "line": 568,
+        "text": "// the legacy `server.tool(\"name\", \"description\", ...)` form. V4 (coverage-"
+      },
+      {
+        "line": 569,
+        "text": "// spec §3.4 TS #1): also match fastmcp's `.addTool(\"name\", ...)` — same"
+      },
+      {
+        "line": 570,
+        "text": "// quoted-first-arg method-call shape, so it flows through the existing"
+      },
+      {
+        "line": 571,
+        "text": "// config-object description fallback below for free."
+      },
+      {
+        "line": 582,
+        "text": ""
+      },
+      {
+        "line": 583,
+        "text": "// V4 #2 (coverage-spec §3.4 TS): object-literal FIRST arg — fastmcp"
+      },
+      {
+        "line": 584,
+        "text": "// `server.addTool({name,...})`, sentry `defineTool({name:...})`. Distinct"
+      },
+      {
+        "line": 585,
+        "text": "// from JS_TOOL_CALL_RE's config-object fallback (which fires on the SECOND"
+      },
+      {
+        "line": 603,
+        "text": "const CLASS_TOOL_RE = /class\\s+\\w+\\s+extends\\s+[\\w.]*Tool[\\w.]*Base\\b[^{]*\\{/g"
+      },
+      {
+        "line": 604,
+        "text": "const CLASS_NAME_FIELD_RE = /(?:static\\s+)?(?:toolName|name)\\s*=\\s*[\"'`]([\\w-]+)[\"'`]/"
+      },
+      {
+        "line": 605,
+        "text": "const CLASS_DESC_FIELD_RE = /(?:public\\s+)?description\\s*=\\s*[\"'`]([^\"'`]*)[\"'`]/"
+      },
+      {
+        "line": 606,
+        "text": ""
+      },
+      {
+        "line": 612,
+        "text": "// USES of an already-registered tool (`.callTool(`, `.getTool(`,"
+      },
+      {
+        "line": 613,
+        "text": "// `.removeTool(`, `.hasTool(`) — reviewer verified"
+      },
+      {
+        "line": 614,
+        "text": "// `client.callTool(TOOL_REQUEST, {cursor:1})` published a fake tool named"
+      },
+      {
+        "line": 615,
+        "text": "// `TOOL_REQUEST`. The regex still matches the general `*Tool(` shape (it"
+      },
+      {
+        "line": 623,
+        "text": "const WRAPPER_TOOL_CALL_RE = /\\.(\\w*[Tt]ool)\\(\\s*([A-Za-z_$][\\w.$]*)\\s*,\\s*\\{/g"
+      },
+      {
+        "line": 624,
+        "text": "const WRAPPER_EXCLUDED_METHODS = new Set(['callTool', 'getTool', 'removeTool', 'hasTool', 'listTools'])"
+      },
+      {
+        "line": 625,
+        "text": ""
+      },
+      {
+        "line": 626,
+        "text": "// V4 #7 (coverage-spec §3.4 TS): the ListToolsRequestSchema sibling-check"
+      },
+      {
+        "line": 627,
+        "text": "// scan below is also the right shape for discogs-style FastMCP object"
+      },
+      {
+        "line": 628,
+        "text": "// literals that never funnel through a single quoted-name call site (a"
+      },
+      {
+        "line": 629,
+        "text": "// `tools = [{name, parameters, ...}]` array iterated into `.addTool(t)`)."
+      },
+      {
+        "line": 630,
+        "text": "// Trigger the scan whenever the file imports fastmcp too, not only when"
+      },
+      {
+        "line": 631,
+        "text": "// ListToolsRequestSchema is present."
+      },
+      {
+        "line": 632,
+        "text": "const FASTMCP_IMPORT_RE = /['\"]fastmcp['\"]/"
+      },
+      {
+        "line": 633,
+        "text": ""
+      },
+      {
+        "line": 634,
+        "text": "// Coverage-v1.3 review (idiom 7 rewrite): the three POSITIVE containment"
+      },
+      {
+        "line": 636,
+        "text": "// of balanced [start, end] spans (via captureBalanced); a candidate is"
+      },
+      {
+        "line": 637,
+        "text": "// accepted only if its `name:` match falls inside at least one span from at"
+      },
+      {
+        "line": 638,
+        "text": "// least one of the three."
+      },
+      {
+        "line": 639,
+        "text": "//"
+      },
+      {
+        "line": 640,
+        "text": "// (a) a tool-registration CALL's argument span: `.addTool(`, `.registerTool(`,"
+      },
+      {
+        "line": 660,
+        "text": "// file (browserbase ships one `const actSchema: ToolSchema<...> = {...}` per"
+      },
+      {
+        "line": 661,
+        "text": "// file; the call that registers it lives elsewhere and is never sampled)."
+      },
+      {
+        "line": 662,
+        "text": "// Accepted iff tokenize(ident) includes 'tool'/'tools' OR the type"
+      },
+      {
+        "line": 663,
+        "text": "// annotation matches /\\bTool\\b|\\bTool[A-Z<]/ — the type half is load-bearing:"
+      },
+      {
+        "line": 687,
+        "text": "// (a, extended) Live spot-check regression: discogs-mcp-server (a real"
+      },
+      {
+        "line": 688,
+        "text": "// fastmcp flagship server, not a synthetic test case) never passes an object"
+      },
+      {
+        "line": 689,
+        "text": "// literal to `.addTool(` at all — every tool is a top-level named const"
+      },
+      {
+        "line": 690,
+        "text": "// (`export const searchTool: Tool<...> = { name: 'search', ... }`) registered"
+      },
+      {
+        "line": 897,
+        "text": "// live on figwright: PING_TOOL_NAME->\"ping\", get-node->\"get_node\","
+      },
+      {
+        "line": 898,
+        "text": "// add-page->\"add_page\", clone-node->\"clone_node\"."
+      },
+      {
+        "line": 899,
+        "text": "function resolveScalarConst(content: string, ident: string): string | undefined {"
+      },
+      {
+        "line": 900,
+        "text": "  const re = new RegExp("
+      },
+      {
+        "line": 1031,
+        "text": "  // {...})`, resolved via a sibling const map. I6: excludes USE verbs"
+      },
+      {
+        "line": 1032,
+        "text": "  // (callTool/getTool/removeTool/hasTool/listTools — see"
+      },
+      {
+        "line": 1033,
+        "text": "  // WRAPPER_EXCLUDED_METHODS) and emits no tool at all when the identifier"
+      },
+      {
+        "line": 1034,
+        "text": "  // can't be resolved (see resolveWrapperName)."
+      },
+      {
+        "line": 1048,
+        "text": "  // ListToolsRequestSchema precondition: the same scan now also runs when"
+      },
+      {
+        "line": 1049,
+        "text": "  // the file imports fastmcp or calls `.addTool(`, so discogs-shaped"
+      },
+      {
+        "line": 1050,
+        "text": "  // FastMCP tool-array object literals are picked up even without an"
+      },
+      {
+        "line": 1051,
+        "text": "  // explicit ListToolsRequestSchema handler; the sibling set is broadened to"
+      },
+      {
+        "line": 1052,
+        "text": "  // include `parameters:` (fastmcp/zod-style schemas use that key instead of"
+      },
+      {
+        "line": 1053,
+        "text": "  // `inputSchema:`)."
+      },
+      {
+        "line": 1054,
+        "text": "  // Fix (coverage-v1.3 review): the prior version of this scan rejected a"
+      },
+      {
+        "line": 1071,
+        "text": "  // W3 (R5b): entry gate widened. It used to require one of"
+      },
+      {
+        "line": 1072,
+        "text": "  // ListToolsRequestSchema / a fastmcp import / a literal '.addTool(' before"
+      },
+      {
+        "line": 1073,
+        "text": "  // even computing acceptedSpans — olostep's `.registerTool(` (and, more"
+      },
+      {
+        "line": 1074,
+        "text": "  // generally, any file whose ONLY tool evidence is an R1 object-const or an"
+      },
+      {
+        "line": 1085,
+        "text": "    content.includes('ListToolsRequestSchema') ||"
+      },
+      {
+        "line": 1086,
+        "text": "    FASTMCP_IMPORT_RE.test(content) ||"
+      },
+      {
+        "line": 1087,
+        "text": "    content.includes('.addTool(') ||"
+      },
+      {
+        "line": 1088,
+        "text": "    content.includes('.registerTool(') ||"
+      },
+      {
+        "line": 1145,
+        "text": "// V5 (coverage-spec §3.4 Python #1): serena's class-subclass idiom —"
+      },
+      {
+        "line": 1146,
+        "text": "// `class ReadFileTool(Tool):` / `class DeleteLinesTool(EditingTool):`."
+      },
+      {
+        "line": 1147,
+        "text": "// GUARD (high-FP rule, per plan Global Constraints): the class name must"
+      },
+      {
+        "line": 1148,
+        "text": "// end in `Tool` AND the base-class list must mention Tool/EditingTool*/"
+      },
+      {
+        "line": 1159,
+        "text": "// trailing `Tool` suffix and converting CamelCase -> snake_case:"
+      },
+      {
+        "line": 1160,
+        "text": "// ReadFileTool -> ReadFile -> read_file; DeleteLinesTool -> DeleteLines -> delete_lines."
+      },
+      {
+        "line": 1161,
+        "text": "function camelToSnake(s: string): string {"
+      },
+      {
+        "line": 1162,
+        "text": "  return s.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase()"
+      },
+      {
+        "line": 1186,
+        "text": "// function object rather than decorating a `def` in place; the tool name is"
+      },
+      {
+        "line": 1187,
+        "text": "// the last dotted segment of the referenced identifier."
+      },
+      {
+        "line": 1188,
+        "text": "// W4 (coverage-v1.4, R2): widened beyond a bare `mcp.` receiver — FastMCP"
+      },
+      {
+        "line": 1189,
+        "text": "// subclasses call this on `self`/`server`/`app`/`_mcp` too (e.g. qdrant's"
+      },
+      {
+        "line": 1190,
+        "text": "// `self.tool()(self.find)`), and none of these receivers change the shape"
+      },
+      {
+        "line": 1206,
+        "text": "// the idioms above (the @mcp.tool()-decorated / mcp.tool()(...)-registered"
+      },
+      {
+        "line": 1207,
+        "text": "// functions can live in a sibling module that wasn't sampled). This must"
+      },
+      {
+        "line": 1208,
+        "text": "// NEVER fabricate a ToolInfo — fromPySource does not call it — it is"
+      },
+      {
+        "line": 1209,
+        "text": "// exported solely for src/derive/classify.ts (V2) to treat as an"
+      },
+      {
+        "line": 1214,
+        "text": "// shape to any `register_`/`setup_`/`add_`-prefixed function whose name"
+      },
+      {
+        "line": 1215,
+        "text": "// tokenizes to tool(s) — FastMCP subclasses commonly register in a"
+      },
+      {
+        "line": 1216,
+        "text": "// `setup_tools()` method instead. Still just a boolean \"is MCP-related\""
+      },
+      {
+        "line": 1217,
+        "text": "// signal; it deliberately does not require a specific argument shape."
+      },
+      {
+        "line": 1250,
+        "text": ""
+      },
+      {
+        "line": 1251,
+        "text": "// Fix 6: an arbitrary-shell-exec server whose tool schema didn't extract"
+      },
+      {
+        "line": 1252,
+        "text": "// (unsupported framework, obfuscated registration, etc.) must not fall through"
+      },
+      {
+        "line": 1253,
+        "text": "// to `toolSurfaceRisk: undefined` and let security renormalize onto secrets"
+      },
+      {
+        "line": 1254,
+        "text": "// alone. Any fetched file importing a process-execution API floors the risk"
+      }
+    ]
+  }
+]

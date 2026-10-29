@@ -31,6 +31,7 @@ from .cost_guard import get_cost_guard
 from .local_ollama import LocalOllamaProvider
 from .openai_compatible import OpenAICompatibleProvider
 from .provider import GenerationConfig, LLMProvider, ProviderStatus
+from .provider_secrets import resolve_provider_api_key
 from .usage_guard import get_usage_guard
 
 logger = logging.getLogger(__name__)
@@ -98,7 +99,7 @@ class LLMRouter:
 
             for name, pconf in providers_config.items():
                 if pconf.get("enabled", False):
-                    api_key_val = pconf.get("api_key")
+                    api_key_val = resolve_provider_api_key(pconf)
                     has_env = pconf.get("api_key_env")
                     logger.debug(
                         f"Provider '{name}': api_key_configured={bool(api_key_val)}, api_key_env={has_env!r}"
@@ -123,7 +124,7 @@ class LLMRouter:
                         name=name,
                         config=pconf,
                         base_url=pconf.get("base_url", "https://api.anthropic.com/v1"),
-                        api_key=pconf.get("api_key"),
+                        api_key=resolve_provider_api_key(pconf),
                         api_key_env=pconf.get("api_key_env", "ANTHROPIC_API_KEY"),
                         model=pconf.get("models", {}).get("heavy", "claude-3-5-sonnet-latest"),
                     )
@@ -132,7 +133,7 @@ class LLMRouter:
                         name=name,
                         config=pconf,
                         base_url=pconf.get("base_url", ""),
-                        api_key=pconf.get("api_key"),
+                        api_key=resolve_provider_api_key(pconf),
                         api_key_env=pconf.get("api_key_env"),
                         model=pconf.get("models", {}).get("heavy", "deepseek-chat"),
                         fallback_model=pconf.get("models", {}).get("light"),
@@ -144,7 +145,7 @@ class LLMRouter:
         except FileNotFoundError:
             logger.warning(f"Config file {self.config_path} not found, using defaults")
         except Exception as e:
-            logger.error(f"Failed to load provider config: {e}")
+            logger.error("Failed to load provider config (%s)", type(e).__name__)
 
     def _circuit_allows(self, name: str) -> bool:
         allowed, _reason = self._circuit.allow_request(name)
@@ -479,17 +480,17 @@ class LLMRouter:
         """True if provider ``name`` has an API key wired (or needs none).
 
         Local providers (Ollama) require no key. For everyone else we require a
-        literal ``api_key`` or a populated ``api_key_env`` — so escalation never
+        resolvable credential (legacy inline, env/vault, or private file) so escalation never
         targets a keyless cloud provider the user hasn't actually configured.
         """
         pconf = self._provider_configs.get(name) or {}
         ptype = str(pconf.get("provider_type", "openai_compatible"))
         if ptype in ("local_ollama", "ollama"):
             return True
-        if pconf.get("api_key"):
-            return True
-        env = pconf.get("api_key_env")
-        return bool(env and os.environ.get(env))
+        try:
+            return bool(resolve_provider_api_key(pconf))
+        except (ValueError, OSError):
+            return False
 
     def _critical_escalation_target(self, task_type: str, tried: set[str]) -> str | None:
         """Strongest untried, healthy, credentialed provider for a critical task.

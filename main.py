@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 
 from core.paths import config_path, data_root, git_repos_dir, logs_dir, pipeline_db_path, pipeline_json_path
-from core.config_merge import load_merged_config
+from core.config_merge import ConfigLoadError, load_merged_config
 from web.backend.api.metrics import PrometheusMetrics
 from core.logging_utils import log_suppressed
 
@@ -63,18 +63,31 @@ class AIFactory:
     def __init__(self, config_path_value: str | None = None):
         self.config_path = config_path_value or str(config_path())
         self.config: dict = {}
+        self.director_settings: dict = {}
         self._running = False
         self._components: dict[str, any] = {}
         self._load_config()
 
     def _load_config(self):
-        """Load configuration (fragments + primary overlay)."""
+        """Load configuration (fragments + primary overlay) or refuse to start.
+
+        A config file that exists but does not parse, or Director settings of the wrong type,
+        stop the process here: running on defaults would apply auto actions the operator did
+        not choose. A missing file or key is not an error; its default is the safe one
+        (Director auto actions off).
+        """
+        from director.decision_engine import director_settings
+
         try:
-            self.config = load_merged_config(self.config_path)
+            self.config = load_merged_config(self.config_path, strict=True)
+            self.director_settings = director_settings(self.config.get("director"))
+        except ConfigLoadError as e:
+            logger.critical(f"Refusing to start: {e}")
+            raise
+        if not self.config:
+            logger.warning(f"No configuration found at {self.config_path}; using defaults")
+        else:
             logger.info("Configuration loaded successfully")
-        except Exception as e:
-            logger.error(f"Failed to load config: {e}")
-            self.config = {}
 
     async def initialize(self):
         """Initialize all components."""
@@ -218,8 +231,8 @@ class AIFactory:
         self._components["metrics_collector"] = MetricsCollector()
         self._components["analyzer"] = DirectorAnalyzer()
         self._components["decision_engine"] = DecisionEngine(
-            auto_actions_enabled=self.config.get("director", {}).get("auto_actions_enabled", True),
-            allowed_actions=self.config.get("director", {}).get("allowed_auto_actions", []),
+            auto_actions_enabled=self.director_settings["auto_actions_enabled"],
+            allowed_actions=self.director_settings["allowed_auto_actions"],
         )
         self._components["report_generator"] = ReportGenerator()
         self._components["inspector"] = InspectorAgent()
@@ -231,7 +244,7 @@ class AIFactory:
             await self._update_pipeline_metrics()
         
         self._components["scheduler"] = DirectorScheduler(
-            analysis_interval_hours=self.config.get("director", {}).get("analysis_interval_hours", 4),
+            analysis_interval_hours=self.director_settings["analysis_interval_hours"],
             on_analysis_complete=on_analysis,
         )
 
@@ -388,8 +401,10 @@ class AIFactory:
             "running": self._running,
             "components": list(self._components.keys()),
             "config": {
-                "director_interval_hours": self.config.get("director", {}).get("analysis_interval_hours", 4),
-                "auto_actions": self.config.get("director", {}).get("auto_actions_enabled", False),
+                "director_interval_hours": self.director_settings.get("analysis_interval_hours", 4),
+                "auto_actions": self._components["decision_engine"].auto_actions_enabled
+                if "decision_engine" in self._components
+                else self.director_settings.get("auto_actions_enabled", False),
             },
         }
 

@@ -1,0 +1,23 @@
+{
+  "status": "local draft only; not published",
+  "publication_order": "show clean reply to owner first; no article write performed",
+  "article_id": 4904350,
+  "article_url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l",
+  "author": "alexar76",
+  "source_snapshot": "docs/evidence/kevin-annotations-2026-10-25/firewall-article.json",
+  "source_snapshot_sha256": "80b8ccd9a877e70d53182b04e0ca40633445e650569e4cd2d1f8aeb1259c55a3",
+  "source_body_sha256": "c563c8c8444370d9050169c9792d89946049474508639aaa84b8a2336b4c3e13",
+  "proposed_body_sha256": "a6c437b755b186afafd94463d6f48f2b959eb20342f14f3b24a1b79b04d418cd",
+  "preserved": [
+    "all six official AgentDojo scores",
+    "historical tool-attack and corpus-count tables",
+    "original published article unchanged"
+  ],
+  "changes": [
+    "qualify DeepSeek recommendation claims to visible saved text and 18 complete plus 2 capped answers",
+    "record individual AI-assisted annotation provenance separately from official score",
+    "explain full future answer capture and offline capture-regression test scope",
+    "distinguish 45 labelled clean controls from unlabelled field and package samples",
+    "do not combine two possibly overlapping 1000-package samples into 2000 verified-benign packages"
+  ]
+}

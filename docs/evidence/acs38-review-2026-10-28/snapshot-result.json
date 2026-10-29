@@ -1,0 +1,80 @@
+{
+  "snapshotCreatedAt": "2026-10-20T15:39:49Z",
+  "changesFrom": "2026-09-24T10:53:44Z",
+  "changesUntil": "2026-10-20T00:31:28Z",
+  "hashes": {
+    "servers.jsonl.gz": {
+      "sha256": "7e96f47212faac4a25dcdeb13a2920c20d548ae0f5b2df823f604117cf5b8b0b",
+      "md5": "67440b27c7992d8460a2fbc715edffe6",
+      "manifestMatches": true
+    },
+    "changes.jsonl.gz": {
+      "sha256": "8df3d75824a2505014422c63583f1b2d987c21509e218a662c4ece26e6147a6f",
+      "md5": "650d85e85c7c6990bcb18373bc2a2306",
+      "manifestMatches": true
+    },
+    "toolsets.jsonl.gz": {
+      "sha256": "9d5f8493910741c084a4e8315375d6bba918d5a0fad8d7bbc02f1e216773e2a2",
+      "md5": "e86f15f6ae8469e193bf16266ab57bc4",
+      "manifestMatches": true
+    }
+  },
+  "registryRows": 185821,
+  "registryNames": 51654,
+  "allChanges": 23821,
+  "allDetail": {
+    "full": 21902,
+    "names-only": 1919
+  },
+  "remoteServersChanged": 7942,
+  "remoteDetail": {
+    "full": 19768,
+    "names-only": 1775
+  },
+  "counts": {
+    "remoteChanges": 21543,
+    "judged": 21351,
+    "noPublication": 17409,
+    "publishedInInterval": 3942,
+    "nameNotInRegistry": 191,
+    "noFirstPinned": 1
+  },
+  "sameServers": 6929,
+  "sameDetail": {
+    "full": 15936,
+    "names-only": 1473
+  },
+  "descriptionOnlyAtSameVersion": 4831,
+  "lagSensitivity": {
+    "0": 17409,
+    "1": 14499,
+    "7": 10584,
+    "30": 3662
+  },
+  "largestNamespaces": [
+    [
+      "io.github.pipeworx-io",
+      3507
+    ],
+    [
+      "io.github.sadri-dridi",
+      2317
+    ]
+  ],
+  "excludingLargestTwo": {
+    "same": 11585,
+    "judged": 14777
+  },
+  "negativeIntervals": [],
+  "zeroIntervals": [
+    4479,
+    7616,
+    15732
+  ],
+  "notes": [
+    "Intervals are (previous change timestamp or firstPinned, current change timestamp], not (last successful observation, current observation].",
+    "Names are matched to all versions in a registry export taken 28 October; versions removed before that export may be missing.",
+    "No-publication classification does not prove which registry version or runtime deployment was active.",
+    "Description-only means only among retained/digested fields."
+  ]
+}

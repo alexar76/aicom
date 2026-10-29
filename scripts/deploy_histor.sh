@@ -71,8 +71,13 @@ IMAGE="histor-histor"
 # batch, and it is restarted below instead of waiting an hour for the scheduler's retry.
 was_crawling=0
 curl -sf --max-time 3 http://127.0.0.1:9490/health 2>/dev/null | grep -q '"crawl_running":true' && was_crawling=1
-# Keep the running image as :prev, so a build that does not come up can be put back.
-docker image inspect "${IMAGE}:latest" >/dev/null 2>&1 && docker image tag "${IMAGE}:latest" "${IMAGE}:prev"
+# Keep the actual running image: :latest may belong to an earlier rejected build.
+live_image="$(docker inspect --format '{{.Image}}' histor-histor-1 2>/dev/null || true)"
+if [[ -n "$live_image" ]]; then
+  docker image tag "$live_image" "${IMAGE}:prev"
+elif docker image inspect "${IMAGE}:latest" >/dev/null 2>&1; then
+  docker image tag "${IMAGE}:latest" "${IMAGE}:prev"
+fi
 
 wait_healthy() {
   for _ in $(seq 1 90); do
@@ -83,7 +88,24 @@ wait_healthy() {
 }
 
 echo "=== HISTOR → https://${DOMAIN} (Postgres, profile prod) ==="
-"${COMPOSE[@]}" build histor
+if [[ -n "$live_image" && -f /var/lib/momus-quality/live-image.json ]]; then
+  # Native remediation can advance WARDEN beyond the repository's vendored tarball.
+  # Preserve that accepted scanner (including dependencies) for a HISTOR-only deploy.
+  # The signed exact-build release gate below remains mandatory.
+  python3 - "$live_image" <<'PY'
+import json, pathlib, re, sys
+image = sys.argv[1]
+binding = json.loads(pathlib.Path('/var/lib/momus-quality/live-image.json').read_text())
+if not re.fullmatch(r'sha256:[0-9a-f]{64}', image) or binding.get('imageDigest') != image:
+    raise SystemExit('Running HISTOR image does not match the accepted WARDEN binding')
+PY
+  scanner_image="histor:scanner-${live_image#sha256:}"
+  docker image tag "$live_image" "$scanner_image"
+  docker build --target with-live-scanner --build-arg "HISTOR_SCANNER_IMAGE=$scanner_image" \
+    -t "${IMAGE}:latest" .
+else
+  "${COMPOSE[@]}" build histor
+fi
 # Validate the exact vendored WARDEN in the newly built image before replacing production.
 # A missing/stale/failed receipt leaves the running container untouched.
 docker run --rm --entrypoint node "${IMAGE}:latest" \
@@ -157,8 +179,12 @@ systemctl daemon-reload
 systemctl enable --now histor-backup.timer >/dev/null
 [[ -n "$(ls -A /var/backups/histor 2>/dev/null)" ]] || /usr/local/sbin/histor-backup
 
-# Monthly open-data snapshot, served at /datasets/ (histor/dataset.py, deploy/export_dataset.sh).
+# Weekly open-data snapshot, served at /datasets/ (histor/dataset.py, deploy/export_dataset.sh); the month's
+# first one is archived on Zenodo by hand, and histor-notify / histor-zenodo-reminder say so on Telegram
+# once /etc/histor-notify.env holds the alerter's bot token and chat.
 install -m 0755 "$DEST/deploy/export_dataset.sh" /usr/local/sbin/histor-export-dataset
+install -m 0755 "$DEST/deploy/notify_telegram.sh" /usr/local/sbin/histor-notify
+install -m 0755 "$DEST/deploy/zenodo_reminder.sh" /usr/local/sbin/histor-zenodo-reminder
 install -m 0755 "$DEST/deploy/upload_hf.sh" /usr/local/sbin/histor-upload-hf  # active once /etc/histor-hf holds repo + token
 install -d -m 0755 /usr/local/lib/histor-dataset
 install -m 0644 "$DEST/histor/dataset.py" /usr/local/lib/histor-dataset/dataset.py
@@ -166,8 +192,11 @@ install -m 0644 "$DEST/histor/dataset_index.py" /usr/local/lib/histor-dataset/da
 # The units come from deploy/ (the timer tries every 10 minutes; the service leaves a gap after each crawl cycle).
 install -m 0644 "$DEST/deploy/histor-export-dataset.service" /etc/systemd/system/histor-export-dataset.service
 install -m 0644 "$DEST/deploy/histor-export-dataset.timer" /etc/systemd/system/histor-export-dataset.timer
+install -m 0644 "$DEST/deploy/histor-zenodo-reminder.service" /etc/systemd/system/histor-zenodo-reminder.service
+install -m 0644 "$DEST/deploy/histor-zenodo-reminder.timer" /etc/systemd/system/histor-zenodo-reminder.timer
 systemctl daemon-reload
 systemctl enable --now histor-export-dataset.timer >/dev/null
+systemctl enable --now histor-zenodo-reminder.timer >/dev/null
 
 mkdir -p /var/www/certbot
 AVAIL="/etc/nginx/sites-available/${DOMAIN}"

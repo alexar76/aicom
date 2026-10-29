@@ -1,0 +1,34 @@
+{
+  "completed_at_utc": "2026-10-28T07:14:28.433127+00:00",
+  "goal": 6,
+  "package": "aimarket-hub",
+  "version": "3.16.1",
+  "status": "fixed_in_source_release_preparation_follows",
+  "changes": [
+    "Exact-endpoint secret_env mapping; no global fallback.",
+    "Grant only after positive channel/credit hold or verified x402; federation sales/resales only, never routing fees.",
+    "No grant for free/sandbox calls; buyer header stripped.",
+    "HTTPS default, per-endpoint HTTP opt-in; rewrites require two explicit mappings to the same secret.",
+    "No redirect following or ambient proxy discovery on credential-bearing requests."
+  ],
+  "tests": {
+    "passed": 335,
+    "failed": 0,
+    "skipped": 0,
+    "new_security_tests": 44,
+    "logs": [
+      "hub-tier-tests.log",
+      "hub-tier-pin-test.log"
+    ],
+    "selection": "oracle_paid_tier, provider_request_auth, provider_channel_ref, outbound_pinning, federated_invoke, provider_payer_statement, invoke_host_gateway, capability_internal_token, subcontract_example, cross_company_example, cross_company_direct, outbound_capped_post, credits_invoke, credit_hold_recovery",
+    "notes": "334 selected cases plus one additional pin/Host/SNI/grant transport case. Repeated exploratory runs not counted. Local HTTP sockets allowed for existing subcontract integration test."
+  },
+  "checks": {
+    "ruff_changed_code": "passed",
+    "ruff_money_gate": "passed",
+    "uv_lock_check_offline": "passed",
+    "diff_check": "passed"
+  },
+  "deployment_required": "Configure a per-oracle secret on both sides after installing 3.16.1. No live deployment performed.",
+  "uploads_performed": 0
+}

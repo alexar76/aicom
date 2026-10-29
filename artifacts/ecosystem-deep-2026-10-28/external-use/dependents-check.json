@@ -1,0 +1,70 @@
+[
+  {
+    "system": "npm",
+    "name": "@aimarket/warden",
+    "version": "0.8.2",
+    "result": {
+      "dependentCount": 1,
+      "directDependentCount": 1,
+      "indirectDependentCount": 0
+    },
+    "request": {
+      "method": "GET",
+      "url": "https://api.deps.dev/v3alpha/systems/npm/packages/%40aimarket%2Fwarden/versions/0.8.2:dependents",
+      "retrieved_at": "2026-10-28T13:34:09.378636+00:00",
+      "status": 200,
+      "bytes": 72,
+      "sha256": "1834bfa4f136dbf7b04febc05bb7d7c0b07ae7cabdc8e1e8593fb4718fc06e2d"
+    }
+  },
+  {
+    "system": "npm",
+    "name": "@aimarket/warden",
+    "version": "0.15.0",
+    "result": {
+      "dependentCount": 0,
+      "directDependentCount": 0,
+      "indirectDependentCount": 0
+    },
+    "request": {
+      "method": "GET",
+      "url": "https://api.deps.dev/v3alpha/systems/npm/packages/%40aimarket%2Fwarden/versions/0.15.0:dependents",
+      "retrieved_at": "2026-10-28T13:34:09.748727+00:00",
+      "status": 200,
+      "bytes": 72,
+      "sha256": "f6b30ac2fd9273c6f77662e4c34596115517a2e5663285af3da4ffeefea72a1c"
+    }
+  },
+  {
+    "system": "pypi",
+    "name": "aimarket-protocol",
+    "version": "0.1.0",
+    "result": null,
+    "request": {
+      "method": "GET",
+      "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-protocol/versions/0.1.0:dependents",
+      "retrieved_at": "2026-10-28T13:34:09.977085+00:00",
+      "status": 404,
+      "bytes": 20,
+      "sha256": "076cb8618eef86300acb57c70030bf17b14c447a7efa2e0e34fc1dbc7f73fa10"
+    }
+  },
+  {
+    "system": "pypi",
+    "name": "aimarket-histor",
+    "version": "0.3.0",
+    "result": {
+      "dependentCount": 0,
+      "directDependentCount": 0,
+      "indirectDependentCount": 0
+    },
+    "request": {
+      "method": "GET",
+      "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-histor/versions/0.3.0:dependents",
+      "retrieved_at": "2026-10-28T13:34:10.209305+00:00",
+      "status": 200,
+      "bytes": 72,
+      "sha256": "f6b30ac2fd9273c6f77662e4c34596115517a2e5663285af3da4ffeefea72a1c"
+    }
+  }
+]

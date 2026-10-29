@@ -26,7 +26,6 @@ from web.backend.services.ai_market_protocol import signing as factory_signing
 sys.path.insert(0, "aimarket-hub")
 from aimarket_hub.signing import Signer  # noqa: E402
 
-
 MANIFEST = {
     "capabilities_count": 2,
     "generated_at": "2026-09-16T10:00:00Z",
@@ -91,3 +90,33 @@ def test_the_flag_on_without_the_library_refuses_to_downgrade(factory_key, monke
     monkeypatch.setattr(factory_signing, "_PQ_LIB", False)
     with pytest.raises(factory_signing.PQCMisconfigured):
         factory_signing.manifest_signature(MANIFEST)
+
+
+def test_pq_first_start_adopts_one_complete_private_identity(factory_key, monkeypatch):
+    import stat
+    import threading
+    from concurrent.futures import ThreadPoolExecutor
+
+    barrier = threading.Barrier(4)
+    generate = factory_signing._MLDSA.keygen
+
+    def first_start():
+        pair = generate()
+        barrier.wait(timeout=10)
+        return pair
+
+    monkeypatch.setattr(factory_signing._MLDSA, "keygen", first_start)
+    with ThreadPoolExecutor(max_workers=4) as workers:
+        pairs = list(workers.map(lambda _: factory_signing._pq_keypair(), range(4)))
+    assert len(set(pairs)) == 1
+    path = factory_key.with_name(factory_key.name + "_mldsa")
+    assert stat.S_IMODE(path.stat().st_mode) == 0o600
+    assert factory_signing._MLDSA.pk_from_sk(pairs[0][1]) == pairs[0][0]
+
+
+def test_pq_corrupt_identity_is_not_silently_replaced(factory_key):
+    path = factory_key.with_name(factory_key.name + "_mldsa")
+    path.write_text("invalid-identity")
+    with pytest.raises(ValueError, match="PQ signing identity"):
+        factory_signing._pq_keypair()
+    assert path.read_text() == "invalid-identity"

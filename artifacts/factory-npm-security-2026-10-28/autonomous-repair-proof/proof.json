@@ -1,0 +1,18 @@
+{
+  "factory_entrypoint": "DeveloperAgent._dev_repair_npm",
+  "actual_npm_commands": true,
+  "llm_called": false,
+  "old_version": "1.2.1",
+  "new_version": "1.2.2",
+  "before_audit_passed": false,
+  "after_audit_passed": true,
+  "changed_files": [
+    "frontend/package-lock.json"
+  ],
+  "agent_tracked_files": [
+    "frontend/package-lock.json"
+  ],
+  "requires_qa": true,
+  "scope": "isolated local proof product; Sentinel and Relay source trees were not manually edited",
+  "deployed": false
+}

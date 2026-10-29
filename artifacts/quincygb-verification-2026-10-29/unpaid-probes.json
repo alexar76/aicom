@@ -1,0 +1,1957 @@
+[
+  {
+    "key": "route-check-unpaid",
+    "url": "https://route-verdict-production.up.railway.app/v1/check",
+    "method": "POST",
+    "request": {
+      "resource_url": "https://modelmarket.dev/x402/histor-check"
+    },
+    "payment_attached": false,
+    "at_utc": "2026-10-29T11:42:04.324094+00:00",
+    "status": 402,
+    "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "bytes": 2,
+    "headers": {
+      "Content-Type": "application/json",
+      "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQYXltZW50IHJlcXVpcmVkIiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cHM6Ly9yb3V0ZS12ZXJkaWN0LXByb2R1Y3Rpb24udXAucmFpbHdheS5hcHAvdjEvY2hlY2siLCJkZXNjcmlwdGlvbiI6IlNlbmQgYW55IHg0MDIgcmVzb3VyY2UgVVJMLCBnZXQgYSB0cnVzdCB2ZXJkaWN0IG9uIHRoZSBlbmRwb2ludCBpdHNlbGYuIFJldHVybnMgVFJVU1RFRCAvIENBVVRJT04gLyBBVk9JRCB3aXRoIGEgMC0xMDAgc2NvcmUgZnJvbSBhbiBvYnNlcnZhdGlvbi1vbmx5IGxpdmUgcHJvYmUgKG5ldmVyIHBheXMgdGhlIHRhcmdldCk6IHBheW1lbnQgdGVybXMsIEJhemFhciBkaXNjb3Zlcnktc2NoZW1hIHF1YWxpdHksIENEUCBCYXphYXIgYW5kIFBheUFJIGNhdGFsb2cgcHJlc2VuY2UsIHBsdXMgYSBkaWZmIGFnYWluc3QgdGhlIHByZXZpb3VzIGNoZWNrLiBVc2UgdGhpcyB3aGVuIGFuIGFnZW50IGlzIGFib3V0IHRvIHBheSBhbiB1bmZhbWlsaWFyIHg0MDIgZW5kcG9pbnQgYW5kIG5lZWRzIHRvIGtub3cgaXQgaXMgYWxpdmUsIGhvbmVzdGx5IGRlc2NyaWJlZCwgYW5kIHVuY2hhbmdlZCBmaXJzdC4iLCJtaW1lVHlwZSI6ImFwcGxpY2F0aW9uL2pzb24iLCJzZXJ2aWNlTmFtZSI6InJvdXRlLXZlcmRpY3QiLCJ0YWdzIjpbIng0MDIiLCJ0cnVzdCIsImxpdmVuZXNzIiwibW9uaXRvcmluZyIsInZlcmlmaWNhdGlvbiIsImFnZW50cyJdfSwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMiLCJhc3NldCI6IjB4ODMzNTg5ZkNENmVEYjZFMDhmNGM3QzMyRDRmNzFiNTRiZEEwMjkxMyIsImFtb3VudCI6IjUwMDAwIiwicGF5VG8iOiIweDA5N2Y5Njg1RDFlMDc1MmJGOEIwMmQ2MUU1Q2U5YmU3ZUEwRkJBN0YiLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiVVNEIENvaW4iLCJ2ZXJzaW9uIjoiMiJ9fV0sImV4dGVuc2lvbnMiOnsiYmF6YWFyIjp7ImluZm8iOnsiaW5wdXQiOnsidHlwZSI6Imh0dHAiLCJtZXRob2QiOiJQT1NUIiwiYm9keVR5cGUiOiJqc29uIiwiYm9keSI6eyJyZXNvdXJjZV91cmwiOiJodHRwczovL3Rva2VuLXZlcmRpY3QtcHJvZHVjdGlvbi51cC5yYWlsd2F5LmFwcC92MS92ZXJkaWN0In19LCJvdXRwdXQiOnsidHlwZSI6Impzb24iLCJleGFtcGxlIjp7InJlc291cmNlX3VybCI6Imh0dHBzOi8vdG9rZW4tdmVyZGljdC1wcm9kdWN0aW9uLnVwLnJhaWx3YXkuYXBwL3YxL3ZlcmRpY3QiLCJjaGVja2VkX2F0IjoiMjAyNi0xMC0yMVQyMDowMDowMCswMDowMCIsInZlcmRpY3QiOiJUUlVTVEVEIiwic2NvcmUiOjg1LjAsInJlYXNvbnMiOlt7Im5hbWUiOiJub3QgbGlzdGVkIGluIENEUCBCYXphYXIiLCJkZWR1Y3Rpb24iOjEwLCJkZXRhaWwiOiJwYXlUbyB3YWxsZXQgaGFzIDAgQ0RQIEJhemFhciByZXNvdXJjZXM7IHRoaXMgVVJMIGlzIG5vdCBhbW9uZyB0aGVtLiJ9LHsibmFtZSI6Im5vdCBsaXN0ZWQgaW4gUGF5QUkgaW5kZXgiLCJkZWR1Y3Rpb24iOjUsImRldGFpbCI6IlBheUFJIHJlcG9ydHMgbm8gY2F0YWxvZyByb3cgZm9yIHRoaXMgcmVzb3VyY2UgKGl0IGNhdGFsb2dzIG9ubHkgaXRzIG93biBmYWNpbGl0YXRvcidzIHNldHRsZW1lbnRzKS4ifV0sImxpdmVuZXNzIjp7ImFsaXZlIjp0cnVlLCJodHRwX3N0YXR1cyI6NDAyLCJsYXRlbmN5X21zIjozMTIsIm1ldGhvZCI6IkdFVCIsIng0MDJfdmFsaWQiOnRydWUsInBhcnNlX2Vycm9yIjpudWxsfSwidGVybXMiOnsiZm91bmQiOnRydWUsInByaWNlX3VzZGMiOiIkMC4wMiIsImFtb3VudF91bml0cyI6IjIwMDAwIiwibmV0d29yayI6ImVpcDE1NTo4NDUzIiwiYXNzZXQiOiIweDgzMzU4OWZDRDZlRGI2RTA4ZjRjN0MzMkQ0ZjcxYjU0YmRBMDI5MTMiLCJwYXlfdG8iOiIweDA5N2Y5Njg1RDFlMDc1MmJGOEIwMmQ2MUU1Q2U5YmU3ZUEwRkJBN0YiLCJzY2hlbWUiOiJleGFjdCIsIng0MDJfdmVyc2lvbiI6Mn0sInNjaGVtYV9xdWFsaXR5Ijp7ImV4dGVuc2lvbl9wcmVzZW50Ijp0cnVlLCJob2xsb3ciOmZhbHNlLCJzY29yZSI6MTAwLCJkZWR1Y3Rpb25zIjpbXX0sImNhdGFsb2ciOnsiY2RwX2JhemFhciI6eyJzdGF0dXMiOiJub3RfbGlzdGVkIiwidW5pcXVlX3BheWVyc18zMGQiOm51bGwsInRvdGFsX2NhbGxzXzMwZCI6bnVsbCwibGFzdF9jYWxsZWRfYXQiOm51bGwsImRldGFpbCI6InBheVRvIHdhbGxldCBoYXMgMCBDRFAgQmF6YWFyIHJlc291cmNlczsgdGhpcyBVUkwgaXMgbm90IGFtb25nIHRoZW0uIn0sInBheWFpIjp7InN0YXR1cyI6Im5vdF9saXN0ZWQiLCJ1bmlxdWVfcGF5ZXJzXzMwZCI6bnVsbCwidG90YWxfY2FsbHNfMzBkIjpudWxsLCJsYXN0X2NhbGxlZF9hdCI6bnVsbCwiZGV0YWlsIjoiUGF5QUkgcmVwb3J0cyBubyBjYXRhbG9nIHJvdyBmb3IgdGhpcyByZXNvdXJjZS4ifX0sImRpZmYiOnsicHJpb3JfY2hlY2siOmZhbHNlLCJwcmlvcl9jaGVja2VkX2F0IjpudWxsLCJjaGFuZ2VzIjpbXSwic3VtbWFyeSI6Im5vIHByaW9yIGNoZWNrIG9uIHJlY29yZCJ9fSwic2NoZW1hIjp7InR5cGUiOiJvYmplY3QiLCJyZXF1aXJlZCI6WyJyZXNvdXJjZV91cmwiLCJjaGVja2VkX2F0IiwidmVyZGljdCIsInNjb3JlIiwicmVhc29ucyIsImxpdmVuZXNzIiwidGVybXMiLCJzY2hlbWFfcXVhbGl0eSIsImNhdGFsb2ciLCJkaWZmIl0sInByb3BlcnRpZXMiOnsicmVzb3VyY2VfdXJsIjp7InR5cGUiOiJzdHJpbmcifSwiY2hlY2tlZF9hdCI6eyJ0eXBlIjoic3RyaW5nIiwiZGVzY3JpcHRpb24iOiJJU08tODYwMSB0aW1lc3RhbXAgb2YgdGhlIHByb2JlIn0sInZlcmRpY3QiOnsidHlwZSI6InN0cmluZyIsImVudW0iOlsiVFJVU1RFRCIsIkNBVVRJT04iLCJBVk9JRCJdfSwic2NvcmUiOnsidHlwZSI6Im51bWJlciIsIm1pbmltdW0iOjAsIm1heGltdW0iOjEwMCwiZGVzY3JpcHRpb24iOiJUcnVzdCBzY29yZTogMTAwIChmdWxseSB0cnVzdGVkKSB0byAwLCBmcm9tIHRoZSBpdGVtaXplZCBkZWR1Y3Rpb25zIGluIHJlYXNvbnMifSwicmVhc29ucyI6eyJ0eXBlIjoiYXJyYXkiLCJpdGVtcyI6eyJ0eXBlIjoib2JqZWN0IiwicmVxdWlyZWQiOlsibmFtZSIsImRlZHVjdGlvbiIsImRldGFpbCJdLCJwcm9wZXJ0aWVzIjp7Im5hbWUiOnsidHlwZSI6InN0cmluZyJ9LCJkZWR1Y3Rpb24iOnsidHlwZSI6ImludGVnZXIiLCJtaW5pbXVtIjowfSwiZGV0YWlsIjp7InR5cGUiOiJzdHJpbmcifX19fSwibGl2ZW5lc3MiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbImFsaXZlIiwiaHR0cF9zdGF0dXMiLCJsYXRlbmN5X21zIiwibWV0aG9kIiwieDQwMl92YWxpZCIsInBhcnNlX2Vycm9yIl0sInByb3BlcnRpZXMiOnsiYWxpdmUiOnsidHlwZSI6ImJvb2xlYW4iLCJkZXNjcmlwdGlvbiI6IlRoZSBlbmRwb2ludCByZXR1cm5lZCBhbiBIVFRQIHJlc3BvbnNlIGF0IGFsbCJ9LCJodHRwX3N0YXR1cyI6eyJ0eXBlIjpbImludGVnZXIiLCJudWxsIl19LCJsYXRlbmN5X21zIjp7InR5cGUiOlsiaW50ZWdlciIsIm51bGwiXX0sIm1ldGhvZCI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXSwiZW51bSI6WyJHRVQiLCJQT1NUIixudWxsXX0sIng0MDJfdmFsaWQiOnsidHlwZSI6ImJvb2xlYW4iLCJkZXNjcmlwdGlvbiI6IlRoZSByZXNwb25zZSBwYXJzZXMgYXMgYSB2YWxpZCB4NDAyIGNoYWxsZW5nZSJ9LCJwYXJzZV9lcnJvciI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX19fSwidGVybXMiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbImZvdW5kIiwicHJpY2VfdXNkYyIsImFtb3VudF91bml0cyIsIm5ldHdvcmsiLCJhc3NldCIsInBheV90byIsInNjaGVtZSIsIng0MDJfdmVyc2lvbiJdLCJwcm9wZXJ0aWVzIjp7ImZvdW5kIjp7InR5cGUiOiJib29sZWFuIn0sInByaWNlX3VzZGMiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl0sImRlc2NyaXB0aW9uIjoiRm9ybWF0dGVkIHByaWNlIGxpa2UgJDAuMDIgZm9yIGtub3duIGFzc2V0czsgbnVsbCB3aGVuIGFzc2V0IGRlY2ltYWxzIGFyZSB1bmtub3duIn0sImFtb3VudF91bml0cyI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXSwiZGVzY3JpcHRpb24iOiJQcmljZSBpbiBhc3NldCBzbWFsbGVzdCB1bml0cywgZXhhY3RseSBhcyBwdWJsaXNoZWQifSwibmV0d29yayI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sImFzc2V0Ijp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwicGF5X3RvIjp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwic2NoZW1lIjp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwieDQwMl92ZXJzaW9uIjp7InR5cGUiOlsiaW50ZWdlciIsIm51bGwiXX19fSwic2NoZW1hX3F1YWxpdHkiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbImV4dGVuc2lvbl9wcmVzZW50IiwiaG9sbG93Iiwic2NvcmUiLCJkZWR1Y3Rpb25zIl0sInByb3BlcnRpZXMiOnsiZXh0ZW5zaW9uX3ByZXNlbnQiOnsidHlwZSI6ImJvb2xlYW4ifSwiaG9sbG93Ijp7InR5cGUiOlsiYm9vbGVhbiIsIm51bGwiXSwiZGVzY3JpcHRpb24iOiJUcnVlIHdoZW4gdGhlIG91dHB1dCBpcyBleGFtcGxlLW9ubHkvdW50eXBlZDsgbnVsbCB3aGVuIG5vIGV4dGVuc2lvbiBleGlzdHMifSwic2NvcmUiOnsidHlwZSI6WyJpbnRlZ2VyIiwibnVsbCJdLCJkZXNjcmlwdGlvbiI6IjAtMTAwOyBudWxsIHdoZW4gbm8gZXh0ZW5zaW9uIGV4aXN0cyJ9LCJkZWR1Y3Rpb25zIjp7InR5cGUiOiJhcnJheSIsIml0ZW1zIjp7InR5cGUiOiJvYmplY3QiLCJyZXF1aXJlZCI6WyJuYW1lIiwicG9pbnRzIiwiZGV0YWlsIl0sInByb3BlcnRpZXMiOnsibmFtZSI6eyJ0eXBlIjoic3RyaW5nIn0sInBvaW50cyI6eyJ0eXBlIjoiaW50ZWdlciIsIm1pbmltdW0iOjB9LCJkZXRhaWwiOnsidHlwZSI6InN0cmluZyJ9fX19fX0sImNhdGFsb2ciOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbImNkcF9iYXphYXIiLCJwYXlhaSJdLCJwcm9wZXJ0aWVzIjp7ImNkcF9iYXphYXIiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbInN0YXR1cyIsInVuaXF1ZV9wYXllcnNfMzBkIiwidG90YWxfY2FsbHNfMzBkIiwibGFzdF9jYWxsZWRfYXQiLCJkZXRhaWwiXSwicHJvcGVydGllcyI6eyJzdGF0dXMiOnsidHlwZSI6InN0cmluZyIsImVudW0iOlsibGlzdGVkIiwibm90X2xpc3RlZCIsInVua25vd24iXX0sInVuaXF1ZV9wYXllcnNfMzBkIjp7InR5cGUiOlsiaW50ZWdlciIsIm51bGwiXX0sInRvdGFsX2NhbGxzXzMwZCI6eyJ0eXBlIjpbImludGVnZXIiLCJudWxsIl19LCJsYXN0X2NhbGxlZF9hdCI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sImRldGFpbCI6eyJ0eXBlIjoic3RyaW5nIn19fSwicGF5YWkiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbInN0YXR1cyIsInVuaXF1ZV9wYXllcnNfMzBkIiwidG90YWxfY2FsbHNfMzBkIiwibGFzdF9jYWxsZWRfYXQiLCJkZXRhaWwiXSwicHJvcGVydGllcyI6eyJzdGF0dXMiOnsidHlwZSI6InN0cmluZyIsImVudW0iOlsibGlzdGVkIiwibm90X2xpc3RlZCIsInVua25vd24iXX0sInVuaXF1ZV9wYXllcnNfMzBkIjp7InR5cGUiOlsiaW50ZWdlciIsIm51bGwiXX0sInRvdGFsX2NhbGxzXzMwZCI6eyJ0eXBlIjpbImludGVnZXIiLCJudWxsIl19LCJsYXN0X2NhbGxlZF9hdCI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sImRldGFpbCI6eyJ0eXBlIjoic3RyaW5nIn19fX19LCJkaWZmIjp7InR5cGUiOiJvYmplY3QiLCJyZXF1aXJlZCI6WyJwcmlvcl9jaGVjayIsInByaW9yX2NoZWNrZWRfYXQiLCJjaGFuZ2VzIiwic3VtbWFyeSJdLCJwcm9wZXJ0aWVzIjp7InByaW9yX2NoZWNrIjp7InR5cGUiOiJib29sZWFuIn0sInByaW9yX2NoZWNrZWRfYXQiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl19LCJjaGFuZ2VzIjp7InR5cGUiOiJhcnJheSIsIml0ZW1zIjp7InR5cGUiOiJvYmplY3QiLCJyZXF1aXJlZCI6WyJmaWVsZCIsImJlZm9yZSIsImFmdGVyIiwiZGV0YWlsIl0sInByb3BlcnRpZXMiOnsiZmllbGQiOnsidHlwZSI6InN0cmluZyJ9LCJiZWZvcmUiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl19LCJhZnRlciI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sImRldGFpbCI6eyJ0eXBlIjoic3RyaW5nIn19fX0sInN1bW1hcnkiOnsidHlwZSI6InN0cmluZyJ9fX19fX19LCJzY2hlbWEiOnsiJHNjaGVtYSI6Imh0dHBzOi8vanNvbi1zY2hlbWEub3JnL2RyYWZ0LzIwMjAtMTIvc2NoZW1hIiwidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiaW5wdXQiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsidHlwZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJodHRwIn0sIm1ldGhvZCI6eyJ0eXBlIjoic3RyaW5nIiwiZW51bSI6WyJQT1NUIiwiUFVUIiwiUEFUQ0giXX0sImJvZHlUeXBlIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbImpzb24iLCJmb3JtLWRhdGEiLCJ0ZXh0Il19LCJib2R5Ijp7InR5cGUiOiJvYmplY3QiLCJyZXF1aXJlZCI6WyJyZXNvdXJjZV91cmwiXSwicHJvcGVydGllcyI6eyJyZXNvdXJjZV91cmwiOnsidHlwZSI6InN0cmluZyIsImRlc2NyaXB0aW9uIjoiRnVsbCBVUkwgb2YgdGhlIHg0MDIgcmVzb3VyY2UgdG8gYXVkaXQsIGUuZy4gaHR0cHM6Ly9zZXJ2aWNlLmV4YW1wbGUuY29tL3YxL2VuZHBvaW50In19fX0sInJlcXVpcmVkIjpbInR5cGUiLCJtZXRob2QiLCJib2R5VHlwZSIsImJvZHkiXSwiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlfSwib3V0cHV0Ijp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7InR5cGUiOnsidHlwZSI6InN0cmluZyJ9LCJleGFtcGxlIjp7InR5cGUiOiJvYmplY3QiLCJyZXF1aXJlZCI6WyJyZXNvdXJjZV91cmwiLCJjaGVja2VkX2F0IiwidmVyZGljdCIsInNjb3JlIiwicmVhc29ucyIsImxpdmVuZXNzIiwidGVybXMiLCJzY2hlbWFfcXVhbGl0eSIsImNhdGFsb2ciLCJkaWZmIl0sInByb3BlcnRpZXMiOnsicmVzb3VyY2VfdXJsIjp7InR5cGUiOiJzdHJpbmcifSwiY2hlY2tlZF9hdCI6eyJ0eXBlIjoic3RyaW5nIiwiZGVzY3JpcHRpb24iOiJJU08tODYwMSB0aW1lc3RhbXAgb2YgdGhlIHByb2JlIn0sInZlcmRpY3QiOnsidHlwZSI6InN0cmluZyIsImVudW0iOlsiVFJVU1RFRCIsIkNBVVRJT04iLCJBVk9JRCJdfSwic2NvcmUiOnsidHlwZSI6Im51bWJlciIsIm1pbmltdW0iOjAsIm1heGltdW0iOjEwMCwiZGVzY3JpcHRpb24iOiJUcnVzdCBzY29yZTogMTAwIChmdWxseSB0cnVzdGVkKSB0byAwLCBmcm9tIHRoZSBpdGVtaXplZCBkZWR1Y3Rpb25zIGluIHJlYXNvbnMifSwicmVhc29ucyI6eyJ0eXBlIjoiYXJyYXkiLCJpdGVtcyI6eyJ0eXBlIjoib2JqZWN0IiwicmVxdWlyZWQiOlsibmFtZSIsImRlZHVjdGlvbiIsImRldGFpbCJdLCJwcm9wZXJ0aWVzIjp7Im5hbWUiOnsidHlwZSI6InN0cmluZyJ9LCJkZWR1Y3Rpb24iOnsidHlwZSI6ImludGVnZXIiLCJtaW5pbXVtIjowfSwiZGV0YWlsIjp7InR5cGUiOiJzdHJpbmcifX19fSwibGl2ZW5lc3MiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbImFsaXZlIiwiaHR0cF9zdGF0dXMiLCJsYXRlbmN5X21zIiwibWV0aG9kIiwieDQwMl92YWxpZCIsInBhcnNlX2Vycm9yIl0sInByb3BlcnRpZXMiOnsiYWxpdmUiOnsidHlwZSI6ImJvb2xlYW4iLCJkZXNjcmlwdGlvbiI6IlRoZSBlbmRwb2ludCByZXR1cm5lZCBhbiBIVFRQIHJlc3BvbnNlIGF0IGFsbCJ9LCJodHRwX3N0YXR1cyI6eyJ0eXBlIjpbImludGVnZXIiLCJudWxsIl19LCJsYXRlbmN5X21zIjp7InR5cGUiOlsiaW50ZWdlciIsIm51bGwiXX0sIm1ldGhvZCI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXSwiZW51bSI6WyJHRVQiLCJQT1NUIixudWxsXX0sIng0MDJfdmFsaWQiOnsidHlwZSI6ImJvb2xlYW4iLCJkZXNjcmlwdGlvbiI6IlRoZSByZXNwb25zZSBwYXJzZXMgYXMgYSB2YWxpZCB4NDAyIGNoYWxsZW5nZSJ9LCJwYXJzZV9lcnJvciI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX19fSwidGVybXMiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbImZvdW5kIiwicHJpY2VfdXNkYyIsImFtb3VudF91bml0cyIsIm5ldHdvcmsiLCJhc3NldCIsInBheV90byIsInNjaGVtZSIsIng0MDJfdmVyc2lvbiJdLCJwcm9wZXJ0aWVzIjp7ImZvdW5kIjp7InR5cGUiOiJib29sZWFuIn0sInByaWNlX3VzZGMiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl0sImRlc2NyaXB0aW9uIjoiRm9ybWF0dGVkIHByaWNlIGxpa2UgJDAuMDIgZm9yIGtub3duIGFzc2V0czsgbnVsbCB3aGVuIGFzc2V0IGRlY2ltYWxzIGFyZSB1bmtub3duIn0sImFtb3VudF91bml0cyI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXSwiZGVzY3JpcHRpb24iOiJQcmljZSBpbiBhc3NldCBzbWFsbGVzdCB1bml0cywgZXhhY3RseSBhcyBwdWJsaXNoZWQifSwibmV0d29yayI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sImFzc2V0Ijp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwicGF5X3RvIjp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwic2NoZW1lIjp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwieDQwMl92ZXJzaW9uIjp7InR5cGUiOlsiaW50ZWdlciIsIm51bGwiXX19fSwic2NoZW1hX3F1YWxpdHkiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbImV4dGVuc2lvbl9wcmVzZW50IiwiaG9sbG93Iiwic2NvcmUiLCJkZWR1Y3Rpb25zIl0sInByb3BlcnRpZXMiOnsiZXh0ZW5zaW9uX3ByZXNlbnQiOnsidHlwZSI6ImJvb2xlYW4ifSwiaG9sbG93Ijp7InR5cGUiOlsiYm9vbGVhbiIsIm51bGwiXSwiZGVzY3JpcHRpb24iOiJUcnVlIHdoZW4gdGhlIG91dHB1dCBpcyBleGFtcGxlLW9ubHkvdW50eXBlZDsgbnVsbCB3aGVuIG5vIGV4dGVuc2lvbiBleGlzdHMifSwic2NvcmUiOnsidHlwZSI6WyJpbnRlZ2VyIiwibnVsbCJdLCJkZXNjcmlwdGlvbiI6IjAtMTAwOyBudWxsIHdoZW4gbm8gZXh0ZW5zaW9uIGV4aXN0cyJ9LCJkZWR1Y3Rpb25zIjp7InR5cGUiOiJhcnJheSIsIml0ZW1zIjp7InR5cGUiOiJvYmplY3QiLCJyZXF1aXJlZCI6WyJuYW1lIiwicG9pbnRzIiwiZGV0YWlsIl0sInByb3BlcnRpZXMiOnsibmFtZSI6eyJ0eXBlIjoic3RyaW5nIn0sInBvaW50cyI6eyJ0eXBlIjoiaW50ZWdlciIsIm1pbmltdW0iOjB9LCJkZXRhaWwiOnsidHlwZSI6InN0cmluZyJ9fX19fX0sImNhdGFsb2ciOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbImNkcF9iYXphYXIiLCJwYXlhaSJdLCJwcm9wZXJ0aWVzIjp7ImNkcF9iYXphYXIiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbInN0YXR1cyIsInVuaXF1ZV9wYXllcnNfMzBkIiwidG90YWxfY2FsbHNfMzBkIiwibGFzdF9jYWxsZWRfYXQiLCJkZXRhaWwiXSwicHJvcGVydGllcyI6eyJzdGF0dXMiOnsidHlwZSI6InN0cmluZyIsImVudW0iOlsibGlzdGVkIiwibm90X2xpc3RlZCIsInVua25vd24iXX0sInVuaXF1ZV9wYXllcnNfMzBkIjp7InR5cGUiOlsiaW50ZWdlciIsIm51bGwiXX0sInRvdGFsX2NhbGxzXzMwZCI6eyJ0eXBlIjpbImludGVnZXIiLCJudWxsIl19LCJsYXN0X2NhbGxlZF9hdCI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sImRldGFpbCI6eyJ0eXBlIjoic3RyaW5nIn19fSwicGF5YWkiOnsidHlwZSI6Im9iamVjdCIsInJlcXVpcmVkIjpbInN0YXR1cyIsInVuaXF1ZV9wYXllcnNfMzBkIiwidG90YWxfY2FsbHNfMzBkIiwibGFzdF9jYWxsZWRfYXQiLCJkZXRhaWwiXSwicHJvcGVydGllcyI6eyJzdGF0dXMiOnsidHlwZSI6InN0cmluZyIsImVudW0iOlsibGlzdGVkIiwibm90X2xpc3RlZCIsInVua25vd24iXX0sInVuaXF1ZV9wYXllcnNfMzBkIjp7InR5cGUiOlsiaW50ZWdlciIsIm51bGwiXX0sInRvdGFsX2NhbGxzXzMwZCI6eyJ0eXBlIjpbImludGVnZXIiLCJudWxsIl19LCJsYXN0X2NhbGxlZF9hdCI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sImRldGFpbCI6eyJ0eXBlIjoic3RyaW5nIn19fX19LCJkaWZmIjp7InR5cGUiOiJvYmplY3QiLCJyZXF1aXJlZCI6WyJwcmlvcl9jaGVjayIsInByaW9yX2NoZWNrZWRfYXQiLCJjaGFuZ2VzIiwic3VtbWFyeSJdLCJwcm9wZXJ0aWVzIjp7InByaW9yX2NoZWNrIjp7InR5cGUiOiJib29sZWFuIn0sInByaW9yX2NoZWNrZWRfYXQiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl19LCJjaGFuZ2VzIjp7InR5cGUiOiJhcnJheSIsIml0ZW1zIjp7InR5cGUiOiJvYmplY3QiLCJyZXF1aXJlZCI6WyJmaWVsZCIsImJlZm9yZSIsImFmdGVyIiwiZGV0YWlsIl0sInByb3BlcnRpZXMiOnsiZmllbGQiOnsidHlwZSI6InN0cmluZyJ9LCJiZWZvcmUiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl19LCJhZnRlciI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sImRldGFpbCI6eyJ0eXBlIjoic3RyaW5nIn19fX0sInN1bW1hcnkiOnsidHlwZSI6InN0cmluZyJ9fX19fSwic2NoZW1hIjp7InR5cGUiOiJvYmplY3QifX0sInJlcXVpcmVkIjpbInR5cGUiXX19LCJyZXF1aXJlZCI6WyJpbnB1dCJdfX19fQ=="
+    },
+    "body": {},
+    "payment_required_decoded": {
+      "x402Version": 2,
+      "error": "Payment required",
+      "resource": {
+        "url": "https://route-verdict-production.up.railway.app/v1/check",
+        "description": "Send any x402 resource URL, get a trust verdict on the endpoint itself. Returns TRUSTED / CAUTION / AVOID with a 0-100 score from an observation-only live probe (never pays the target): payment terms, Bazaar discovery-schema quality, CDP Bazaar and PayAI catalog presence, plus a diff against the previous check. Use this when an agent is about to pay an unfamiliar x402 endpoint and needs to know it is alive, honestly described, and unchanged first.",
+        "mimeType": "application/json",
+        "serviceName": "route-verdict",
+        "tags": [
+          "x402",
+          "trust",
+          "liveness",
+          "monitoring",
+          "verification",
+          "agents"
+        ]
+      },
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "amount": "50000",
+          "payTo": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "extensions": {
+        "bazaar": {
+          "info": {
+            "input": {
+              "type": "http",
+              "method": "POST",
+              "bodyType": "json",
+              "body": {
+                "resource_url": "https://token-verdict-production.up.railway.app/v1/verdict"
+              }
+            },
+            "output": {
+              "type": "json",
+              "example": {
+                "resource_url": "https://token-verdict-production.up.railway.app/v1/verdict",
+                "checked_at": "2026-10-21T20:00:00+00:00",
+                "verdict": "TRUSTED",
+                "score": 85.0,
+                "reasons": [
+                  {
+                    "name": "not listed in CDP Bazaar",
+                    "deduction": 10,
+                    "detail": "payTo wallet has 0 CDP Bazaar resources; this URL is not among them."
+                  },
+                  {
+                    "name": "not listed in PayAI index",
+                    "deduction": 5,
+                    "detail": "PayAI reports no catalog row for this resource (it catalogs only its own facilitator's settlements)."
+                  }
+                ],
+                "liveness": {
+                  "alive": true,
+                  "http_status": 402,
+                  "latency_ms": 312,
+                  "method": "GET",
+                  "x402_valid": true,
+                  "parse_error": null
+                },
+                "terms": {
+                  "found": true,
+                  "price_usdc": "$0.02",
+                  "amount_units": "20000",
+                  "network": "eip155:8453",
+                  "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                  "pay_to": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+                  "scheme": "exact",
+                  "x402_version": 2
+                },
+                "schema_quality": {
+                  "extension_present": true,
+                  "hollow": false,
+                  "score": 100,
+                  "deductions": []
+                },
+                "catalog": {
+                  "cdp_bazaar": {
+                    "status": "not_listed",
+                    "unique_payers_30d": null,
+                    "total_calls_30d": null,
+                    "last_called_at": null,
+                    "detail": "payTo wallet has 0 CDP Bazaar resources; this URL is not among them."
+                  },
+                  "payai": {
+                    "status": "not_listed",
+                    "unique_payers_30d": null,
+                    "total_calls_30d": null,
+                    "last_called_at": null,
+                    "detail": "PayAI reports no catalog row for this resource."
+                  }
+                },
+                "diff": {
+                  "prior_check": false,
+                  "prior_checked_at": null,
+                  "changes": [],
+                  "summary": "no prior check on record"
+                }
+              },
+              "schema": {
+                "type": "object",
+                "required": [
+                  "resource_url",
+                  "checked_at",
+                  "verdict",
+                  "score",
+                  "reasons",
+                  "liveness",
+                  "terms",
+                  "schema_quality",
+                  "catalog",
+                  "diff"
+                ],
+                "properties": {
+                  "resource_url": {
+                    "type": "string"
+                  },
+                  "checked_at": {
+                    "type": "string",
+                    "description": "ISO-8601 timestamp of the probe"
+                  },
+                  "verdict": {
+                    "type": "string",
+                    "enum": [
+                      "TRUSTED",
+                      "CAUTION",
+                      "AVOID"
+                    ]
+                  },
+                  "score": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "Trust score: 100 (fully trusted) to 0, from the itemized deductions in reasons"
+                  },
+                  "reasons": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "deduction",
+                        "detail"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "deduction": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "detail": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "liveness": {
+                    "type": "object",
+                    "required": [
+                      "alive",
+                      "http_status",
+                      "latency_ms",
+                      "method",
+                      "x402_valid",
+                      "parse_error"
+                    ],
+                    "properties": {
+                      "alive": {
+                        "type": "boolean",
+                        "description": "The endpoint returned an HTTP response at all"
+                      },
+                      "http_status": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      },
+                      "latency_ms": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      },
+                      "method": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "enum": [
+                          "GET",
+                          "POST",
+                          null
+                        ]
+                      },
+                      "x402_valid": {
+                        "type": "boolean",
+                        "description": "The response parses as a valid x402 challenge"
+                      },
+                      "parse_error": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    }
+                  },
+                  "terms": {
+                    "type": "object",
+                    "required": [
+                      "found",
+                      "price_usdc",
+                      "amount_units",
+                      "network",
+                      "asset",
+                      "pay_to",
+                      "scheme",
+                      "x402_version"
+                    ],
+                    "properties": {
+                      "found": {
+                        "type": "boolean"
+                      },
+                      "price_usdc": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "Formatted price like $0.02 for known assets; null when asset decimals are unknown"
+                      },
+                      "amount_units": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "Price in asset smallest units, exactly as published"
+                      },
+                      "network": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "asset": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "pay_to": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "scheme": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "x402_version": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      }
+                    }
+                  },
+                  "schema_quality": {
+                    "type": "object",
+                    "required": [
+                      "extension_present",
+                      "hollow",
+                      "score",
+                      "deductions"
+                    ],
+                    "properties": {
+                      "extension_present": {
+                        "type": "boolean"
+                      },
+                      "hollow": {
+                        "type": [
+                          "boolean",
+                          "null"
+                        ],
+                        "description": "True when the output is example-only/untyped; null when no extension exists"
+                      },
+                      "score": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ],
+                        "description": "0-100; null when no extension exists"
+                      },
+                      "deductions": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "name",
+                            "points",
+                            "detail"
+                          ],
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "points": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "detail": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "catalog": {
+                    "type": "object",
+                    "required": [
+                      "cdp_bazaar",
+                      "payai"
+                    ],
+                    "properties": {
+                      "cdp_bazaar": {
+                        "type": "object",
+                        "required": [
+                          "status",
+                          "unique_payers_30d",
+                          "total_calls_30d",
+                          "last_called_at",
+                          "detail"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "listed",
+                              "not_listed",
+                              "unknown"
+                            ]
+                          },
+                          "unique_payers_30d": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ]
+                          },
+                          "total_calls_30d": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ]
+                          },
+                          "last_called_at": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "detail": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "payai": {
+                        "type": "object",
+                        "required": [
+                          "status",
+                          "unique_payers_30d",
+                          "total_calls_30d",
+                          "last_called_at",
+                          "detail"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "listed",
+                              "not_listed",
+                              "unknown"
+                            ]
+                          },
+                          "unique_payers_30d": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ]
+                          },
+                          "total_calls_30d": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ]
+                          },
+                          "last_called_at": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "detail": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "diff": {
+                    "type": "object",
+                    "required": [
+                      "prior_check",
+                      "prior_checked_at",
+                      "changes",
+                      "summary"
+                    ],
+                    "properties": {
+                      "prior_check": {
+                        "type": "boolean"
+                      },
+                      "prior_checked_at": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "changes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "field",
+                            "before",
+                            "after",
+                            "detail"
+                          ],
+                          "properties": {
+                            "field": {
+                              "type": "string"
+                            },
+                            "before": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "after": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "detail": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "summary": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "schema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "input": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "http"
+                  },
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "POST",
+                      "PUT",
+                      "PATCH"
+                    ]
+                  },
+                  "bodyType": {
+                    "type": "string",
+                    "enum": [
+                      "json",
+                      "form-data",
+                      "text"
+                    ]
+                  },
+                  "body": {
+                    "type": "object",
+                    "required": [
+                      "resource_url"
+                    ],
+                    "properties": {
+                      "resource_url": {
+                        "type": "string",
+                        "description": "Full URL of the x402 resource to audit, e.g. https://service.example.com/v1/endpoint"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "method",
+                  "bodyType",
+                  "body"
+                ],
+                "additionalProperties": false
+              },
+              "output": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "type": "object",
+                    "required": [
+                      "resource_url",
+                      "checked_at",
+                      "verdict",
+                      "score",
+                      "reasons",
+                      "liveness",
+                      "terms",
+                      "schema_quality",
+                      "catalog",
+                      "diff"
+                    ],
+                    "properties": {
+                      "resource_url": {
+                        "type": "string"
+                      },
+                      "checked_at": {
+                        "type": "string",
+                        "description": "ISO-8601 timestamp of the probe"
+                      },
+                      "verdict": {
+                        "type": "string",
+                        "enum": [
+                          "TRUSTED",
+                          "CAUTION",
+                          "AVOID"
+                        ]
+                      },
+                      "score": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100,
+                        "description": "Trust score: 100 (fully trusted) to 0, from the itemized deductions in reasons"
+                      },
+                      "reasons": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "name",
+                            "deduction",
+                            "detail"
+                          ],
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "deduction": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "detail": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "liveness": {
+                        "type": "object",
+                        "required": [
+                          "alive",
+                          "http_status",
+                          "latency_ms",
+                          "method",
+                          "x402_valid",
+                          "parse_error"
+                        ],
+                        "properties": {
+                          "alive": {
+                            "type": "boolean",
+                            "description": "The endpoint returned an HTTP response at all"
+                          },
+                          "http_status": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ]
+                          },
+                          "latency_ms": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ]
+                          },
+                          "method": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "GET",
+                              "POST",
+                              null
+                            ]
+                          },
+                          "x402_valid": {
+                            "type": "boolean",
+                            "description": "The response parses as a valid x402 challenge"
+                          },
+                          "parse_error": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        }
+                      },
+                      "terms": {
+                        "type": "object",
+                        "required": [
+                          "found",
+                          "price_usdc",
+                          "amount_units",
+                          "network",
+                          "asset",
+                          "pay_to",
+                          "scheme",
+                          "x402_version"
+                        ],
+                        "properties": {
+                          "found": {
+                            "type": "boolean"
+                          },
+                          "price_usdc": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "description": "Formatted price like $0.02 for known assets; null when asset decimals are unknown"
+                          },
+                          "amount_units": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "description": "Price in asset smallest units, exactly as published"
+                          },
+                          "network": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "asset": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "pay_to": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "scheme": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "x402_version": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ]
+                          }
+                        }
+                      },
+                      "schema_quality": {
+                        "type": "object",
+                        "required": [
+                          "extension_present",
+                          "hollow",
+                          "score",
+                          "deductions"
+                        ],
+                        "properties": {
+                          "extension_present": {
+                            "type": "boolean"
+                          },
+                          "hollow": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ],
+                            "description": "True when the output is example-only/untyped; null when no extension exists"
+                          },
+                          "score": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ],
+                            "description": "0-100; null when no extension exists"
+                          },
+                          "deductions": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "name",
+                                "points",
+                                "detail"
+                              ],
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "points": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "detail": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "catalog": {
+                        "type": "object",
+                        "required": [
+                          "cdp_bazaar",
+                          "payai"
+                        ],
+                        "properties": {
+                          "cdp_bazaar": {
+                            "type": "object",
+                            "required": [
+                              "status",
+                              "unique_payers_30d",
+                              "total_calls_30d",
+                              "last_called_at",
+                              "detail"
+                            ],
+                            "properties": {
+                              "status": {
+                                "type": "string",
+                                "enum": [
+                                  "listed",
+                                  "not_listed",
+                                  "unknown"
+                                ]
+                              },
+                              "unique_payers_30d": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "total_calls_30d": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "last_called_at": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "detail": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "payai": {
+                            "type": "object",
+                            "required": [
+                              "status",
+                              "unique_payers_30d",
+                              "total_calls_30d",
+                              "last_called_at",
+                              "detail"
+                            ],
+                            "properties": {
+                              "status": {
+                                "type": "string",
+                                "enum": [
+                                  "listed",
+                                  "not_listed",
+                                  "unknown"
+                                ]
+                              },
+                              "unique_payers_30d": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "total_calls_30d": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "last_called_at": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "detail": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "diff": {
+                        "type": "object",
+                        "required": [
+                          "prior_check",
+                          "prior_checked_at",
+                          "changes",
+                          "summary"
+                        ],
+                        "properties": {
+                          "prior_check": {
+                            "type": "boolean"
+                          },
+                          "prior_checked_at": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "changes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "field",
+                                "before",
+                                "after",
+                                "detail"
+                              ],
+                              "properties": {
+                                "field": {
+                                  "type": "string"
+                                },
+                                "before": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "after": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "detail": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "summary": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "schema": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              }
+            },
+            "required": [
+              "input"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": "recheck-unpaid",
+    "url": "https://stall-row-production.up.railway.app/v1/recheck",
+    "method": "POST",
+    "request": {
+      "url": "https://modelmarket.dev/x402/histor-check",
+      "watch_id": "aimarket-independent-review-2026-10-29"
+    },
+    "payment_attached": false,
+    "at_utc": "2026-10-29T11:42:04.325713+00:00",
+    "status": 402,
+    "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "bytes": 2,
+    "headers": {
+      "Content-Type": "application/json",
+      "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQYXltZW50IHJlcXVpcmVkIiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cHM6Ly9zdGFsbC1yb3ctcHJvZHVjdGlvbi51cC5yYWlsd2F5LmFwcC92MS9yZWNoZWNrIiwiZGVzY3JpcHRpb24iOiJQcm9iZSBvbmUgeDQwMiByZXNvdXJjZSBvciBwYWdlIFdJVEhPVVQgcGF5aW5nIGl0OiBCQVNFTElORSAvIFVOQ0hBTkdFRCAvIENIQU5HRUQgd2l0aCBhIGRpZmYgKHByaWNlLCBhc3NldCwgcGF5VG8sIHNjaGVtYSwgYm9keSkgdnMgdGhlIGxhc3QgY2hlY2suIFVzZSB0aGlzIHdoZW4gYSBzY2hlZHVsZWQgYWdlbnQgbXVzdCBrbm93IHdoYXQgY2hhbmdlZCBmaXJzdC4gV2F0Y2ggYW5kIHBhY2sgc3RhdGUgcGVyc2lzdCBhY3Jvc3MgcmVkZXBsb3lzIG9uIHRoZSBzZXJ2aWNlIHZvbHVtZS4gQ2hlY2tpbmcgdGhlIHNhbWUgZW5kcG9pbnQgb24gYSBzY2hlZHVsZT8gQnV5IHRoZSBwYWNrIGluc3RlYWQg4oCUIFBPU1QgL3YxL3JlY2hlY2svcGFjayBpcyAkMSBmb3IgMjUwIGNoZWNrcyAoOTAgZGF5cykgYW5kIHRoaXMgcm91dGUgc3BlbmRzIHBhY2sgY3JlZGl0cyB3aGVuIHlvdSBzZW5kIHBhY2tfaWQsIHNvIGEgbG9vcCBtYWtlcyBvbmUgcGF5bWVudCwgbm90IGh1bmRyZWRzLiIsIm1pbWVUeXBlIjoiYXBwbGljYXRpb24vanNvbiIsInNlcnZpY2VOYW1lIjoic3RhbGwtcm93IiwidGFncyI6WyJtb25pdG9yaW5nIiwieDQwMiIsImNoYW5nZS1kZXRlY3Rpb24iLCJkaWZmIiwiYWdlbnRzIl19LCJhY2NlcHRzIjpbeyJzY2hlbWUiOiJleGFjdCIsIm5ldHdvcmsiOiJlaXAxNTU6ODQ1MyIsImFzc2V0IjoiMHg4MzM1ODlmQ0Q2ZURiNkUwOGY0YzdDMzJENGY3MWI1NGJkQTAyOTEzIiwiYW1vdW50IjoiNTAwMCIsInBheVRvIjoiMHgwOTdmOTY4NUQxZTA3NTJiRjhCMDJkNjFFNUNlOWJlN2VBMEZCQTdGIiwibWF4VGltZW91dFNlY29uZHMiOjMwMCwiZXh0cmEiOnsibmFtZSI6IlVTRCBDb2luIiwidmVyc2lvbiI6IjIifX1dLCJleHRlbnNpb25zIjp7ImJhemFhciI6eyJpbmZvIjp7ImlucHV0Ijp7InR5cGUiOiJodHRwIiwibWV0aG9kIjoiUE9TVCIsImJvZHlUeXBlIjoianNvbiIsImJvZHkiOnsidXJsIjoiaHR0cHM6Ly90b2tlbi12ZXJkaWN0LXByb2R1Y3Rpb24udXAucmFpbHdheS5hcHAvdjEvdmVyZGljdCIsIndhdGNoX2lkIjoidG9rZW4tdmVyZGljdC1tYWluIn19LCJvdXRwdXQiOnsidHlwZSI6Impzb24iLCJleGFtcGxlIjp7IndhdGNoX2lkIjoidG9rZW4tdmVyZGljdC1tYWluIiwidXJsIjoiaHR0cHM6Ly90b2tlbi12ZXJkaWN0LXByb2R1Y3Rpb24udXAucmFpbHdheS5hcHAvdjEvdmVyZGljdCIsImtpbmQiOiJ4NDAyIiwic3RhdHVzIjoiQ0hBTkdFRCIsImNoYW5nZXMiOlt7ImZpZWxkIjoiYW1vdW50IiwiYmVmb3JlIjoiMjAwMDAiLCJhZnRlciI6IjI1MDAwIn1dLCJjdXJyZW50Ijp7InN0YXR1c19jb2RlIjo0MDIsImFtb3VudCI6IjI1MDAwIiwiYXNzZXQiOiIweDgzMzU4OWZDRDZlRGI2RTA4ZjRjN0MzMkQ0ZjcxYjU0YmRBMDI5MTMiLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMiLCJwYXlUbyI6IjB4MDk3Zjk2ODVEMWUwNzUyYkY4QjAyZDYxRTVDZTliZTdlQTBGQkE3RiIsImRlc2NyaXB0aW9uX2hhc2giOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic2NoZW1hX2hhc2giOiJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiIn0sImNoZWNrZWRfYXQiOiIyMDI2LTEwLTI0VDE2OjAwOjAwWiIsInN1bW1hcnkiOiJDaGFuZ2VkIHNpbmNlIHRoZSBwcmV2aW91cyBjaGVjazogYW1vdW50LiJ9LCJzY2hlbWEiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsid2F0Y2hfaWQiOnsidHlwZSI6InN0cmluZyJ9LCJ1cmwiOnsidHlwZSI6InN0cmluZyJ9LCJraW5kIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbIng0MDIiLCJ3ZWIiXX0sInN0YXR1cyI6eyJ0eXBlIjoic3RyaW5nIiwiZW51bSI6WyJCQVNFTElORSIsIlVOQ0hBTkdFRCIsIkNIQU5HRUQiXX0sImNoYW5nZXMiOnsidHlwZSI6ImFycmF5IiwiaXRlbXMiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiZmllbGQiOnsidHlwZSI6InN0cmluZyJ9LCJiZWZvcmUiOnsidHlwZSI6WyJzdHJpbmciLCJpbnRlZ2VyIiwibnVsbCJdfSwiYWZ0ZXIiOnsidHlwZSI6WyJzdHJpbmciLCJpbnRlZ2VyIiwibnVsbCJdfX0sInJlcXVpcmVkIjpbImZpZWxkIiwiYmVmb3JlIiwiYWZ0ZXIiXX19LCJjdXJyZW50Ijp7InR5cGUiOiJvYmplY3QifSwiY2hlY2tlZF9hdCI6eyJ0eXBlIjoic3RyaW5nIn0sInN1bW1hcnkiOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsid2F0Y2hfaWQiLCJ1cmwiLCJraW5kIiwic3RhdHVzIiwiY2hhbmdlcyIsImN1cnJlbnQiLCJjaGVja2VkX2F0Iiwic3VtbWFyeSJdfX19LCJzY2hlbWEiOnsiJHNjaGVtYSI6Imh0dHBzOi8vanNvbi1zY2hlbWEub3JnL2RyYWZ0LzIwMjAtMTIvc2NoZW1hIiwidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiaW5wdXQiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsidHlwZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJodHRwIn0sIm1ldGhvZCI6eyJ0eXBlIjoic3RyaW5nIiwiZW51bSI6WyJQT1NUIiwiUFVUIiwiUEFUQ0giXX0sImJvZHlUeXBlIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbImpzb24iLCJmb3JtLWRhdGEiLCJ0ZXh0Il19LCJib2R5Ijp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7InVybCI6eyJ0eXBlIjoic3RyaW5nIn0sIndhdGNoX2lkIjp7InR5cGUiOiJzdHJpbmcifSwicGFja19pZCI6eyJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJ1cmwiXX19LCJyZXF1aXJlZCI6WyJ0eXBlIiwibWV0aG9kIiwiYm9keVR5cGUiLCJib2R5Il0sImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZX0sIm91dHB1dCI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJ0eXBlIjp7InR5cGUiOiJzdHJpbmcifSwiZXhhbXBsZSI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJ3YXRjaF9pZCI6eyJ0eXBlIjoic3RyaW5nIn0sInVybCI6eyJ0eXBlIjoic3RyaW5nIn0sImtpbmQiOnsidHlwZSI6InN0cmluZyIsImVudW0iOlsieDQwMiIsIndlYiJdfSwic3RhdHVzIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbIkJBU0VMSU5FIiwiVU5DSEFOR0VEIiwiQ0hBTkdFRCJdfSwiY2hhbmdlcyI6eyJ0eXBlIjoiYXJyYXkiLCJpdGVtcyI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJmaWVsZCI6eyJ0eXBlIjoic3RyaW5nIn0sImJlZm9yZSI6eyJ0eXBlIjpbInN0cmluZyIsImludGVnZXIiLCJudWxsIl19LCJhZnRlciI6eyJ0eXBlIjpbInN0cmluZyIsImludGVnZXIiLCJudWxsIl19fSwicmVxdWlyZWQiOlsiZmllbGQiLCJiZWZvcmUiLCJhZnRlciJdfX0sImN1cnJlbnQiOnsidHlwZSI6Im9iamVjdCJ9LCJjaGVja2VkX2F0Ijp7InR5cGUiOiJzdHJpbmcifSwic3VtbWFyeSI6eyJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJ3YXRjaF9pZCIsInVybCIsImtpbmQiLCJzdGF0dXMiLCJjaGFuZ2VzIiwiY3VycmVudCIsImNoZWNrZWRfYXQiLCJzdW1tYXJ5Il19LCJzY2hlbWEiOnsidHlwZSI6Im9iamVjdCJ9fSwicmVxdWlyZWQiOlsidHlwZSJdfX0sInJlcXVpcmVkIjpbImlucHV0Il19fX19"
+    },
+    "body": {},
+    "payment_required_decoded": {
+      "x402Version": 2,
+      "error": "Payment required",
+      "resource": {
+        "url": "https://stall-row-production.up.railway.app/v1/recheck",
+        "description": "Probe one x402 resource or page WITHOUT paying it: BASELINE / UNCHANGED / CHANGED with a diff (price, asset, payTo, schema, body) vs the last check. Use this when a scheduled agent must know what changed first. Watch and pack state persist across redeploys on the service volume. Checking the same endpoint on a schedule? Buy the pack instead — POST /v1/recheck/pack is $1 for 250 checks (90 days) and this route spends pack credits when you send pack_id, so a loop makes one payment, not hundreds.",
+        "mimeType": "application/json",
+        "serviceName": "stall-row",
+        "tags": [
+          "monitoring",
+          "x402",
+          "change-detection",
+          "diff",
+          "agents"
+        ]
+      },
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "amount": "5000",
+          "payTo": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "extensions": {
+        "bazaar": {
+          "info": {
+            "input": {
+              "type": "http",
+              "method": "POST",
+              "bodyType": "json",
+              "body": {
+                "url": "https://token-verdict-production.up.railway.app/v1/verdict",
+                "watch_id": "token-verdict-main"
+              }
+            },
+            "output": {
+              "type": "json",
+              "example": {
+                "watch_id": "token-verdict-main",
+                "url": "https://token-verdict-production.up.railway.app/v1/verdict",
+                "kind": "x402",
+                "status": "CHANGED",
+                "changes": [
+                  {
+                    "field": "amount",
+                    "before": "20000",
+                    "after": "25000"
+                  }
+                ],
+                "current": {
+                  "status_code": 402,
+                  "amount": "25000",
+                  "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                  "network": "eip155:8453",
+                  "payTo": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+                  "description_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "schema_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                },
+                "checked_at": "2026-10-24T16:00:00Z",
+                "summary": "Changed since the previous check: amount."
+              },
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "watch_id": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "x402",
+                      "web"
+                    ]
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "BASELINE",
+                      "UNCHANGED",
+                      "CHANGED"
+                    ]
+                  },
+                  "changes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string"
+                        },
+                        "before": {
+                          "type": [
+                            "string",
+                            "integer",
+                            "null"
+                          ]
+                        },
+                        "after": {
+                          "type": [
+                            "string",
+                            "integer",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "before",
+                        "after"
+                      ]
+                    }
+                  },
+                  "current": {
+                    "type": "object"
+                  },
+                  "checked_at": {
+                    "type": "string"
+                  },
+                  "summary": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "watch_id",
+                  "url",
+                  "kind",
+                  "status",
+                  "changes",
+                  "current",
+                  "checked_at",
+                  "summary"
+                ]
+              }
+            }
+          },
+          "schema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "input": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "http"
+                  },
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "POST",
+                      "PUT",
+                      "PATCH"
+                    ]
+                  },
+                  "bodyType": {
+                    "type": "string",
+                    "enum": [
+                      "json",
+                      "form-data",
+                      "text"
+                    ]
+                  },
+                  "body": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "watch_id": {
+                        "type": "string"
+                      },
+                      "pack_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "url"
+                    ]
+                  }
+                },
+                "required": [
+                  "type",
+                  "method",
+                  "bodyType",
+                  "body"
+                ],
+                "additionalProperties": false
+              },
+              "output": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "type": "object",
+                    "properties": {
+                      "watch_id": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "x402",
+                          "web"
+                        ]
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "BASELINE",
+                          "UNCHANGED",
+                          "CHANGED"
+                        ]
+                      },
+                      "changes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "field": {
+                              "type": "string"
+                            },
+                            "before": {
+                              "type": [
+                                "string",
+                                "integer",
+                                "null"
+                              ]
+                            },
+                            "after": {
+                              "type": [
+                                "string",
+                                "integer",
+                                "null"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "field",
+                            "before",
+                            "after"
+                          ]
+                        }
+                      },
+                      "current": {
+                        "type": "object"
+                      },
+                      "checked_at": {
+                        "type": "string"
+                      },
+                      "summary": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "watch_id",
+                      "url",
+                      "kind",
+                      "status",
+                      "changes",
+                      "current",
+                      "checked_at",
+                      "summary"
+                    ]
+                  },
+                  "schema": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              }
+            },
+            "required": [
+              "input"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": "target-unpaid",
+    "url": "https://modelmarket.dev/x402/histor-check",
+    "method": "POST",
+    "request": {
+      "name": "io.github.alexar76/warden"
+    },
+    "payment_attached": false,
+    "at_utc": "2026-10-29T11:42:04.326284+00:00",
+    "status": 402,
+    "sha256": "619285a01a5926b2b38e2108fb95d74364346bddb96b237e870d9cf7bd1f0ef8",
+    "bytes": 4759,
+    "headers": {
+      "Content-Type": "application/json; charset=utf-8",
+      "PAYMENT-REQUIRED": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQYXltZW50IHJlcXVpcmVkIiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYveDQwMi9oaXN0b3ItY2hlY2siLCJkZXNjcmlwdGlvbiI6IkhJU1RPUiBwcmUtZmxpZ2h0IGZvciBhbiBNQ1Agc2VydmVyOiBpdHMgc2lnbmVkIHJlY29yZCBpbiB0aGUgSElTVE9SIHRyYW5zcGFyZW5jeSBsb2cg4oCUIHdoZW4gdGhlIHRvb2wgc2V0IHdhcyBmaXJzdCBzZWVuLCB3aGV0aGVyIGl0IGNoYW5nZWQsIHdoYXQgdGhlIHBhdHRlcm4gc2NhbiBmb3VuZC4gTmV2ZXIgY29udGFjdHMgdGhlIHNlcnZlciBhc2tlZCBhYm91dC4iLCJtaW1lVHlwZSI6ImFwcGxpY2F0aW9uL2pzb24iLCJzZXJ2aWNlTmFtZSI6IkFJTWFya2V0IiwidGFncyI6WyJtY3AiLCJzZWN1cml0eSIsInRyYW5zcGFyZW5jeS1sb2ciLCJ0cnVzdCJdLCJpY29uVXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYvLndlbGwta25vd24vZXJjLTgwMDQvaGlzdG9yLnBuZyJ9LCJhY2NlcHRzIjpbeyJzY2hlbWUiOiJleGFjdCIsIm5ldHdvcmsiOiJlaXAxNTU6ODQ1MyIsImFtb3VudCI6IjEwMDAiLCJhc3NldCI6IjB4ODMzNTg5ZkNENmVEYjZFMDhmNGM3QzMyRDRmNzFiNTRiZEEwMjkxMyIsInBheVRvIjoiMHgxMjE4ZmYzNkM1ZDJlM0I2QTU2NUNkQjFBOEIxQWNDRmM2MDZBZDBhIiwibWF4VGltZW91dFNlY29uZHMiOjMwMCwiZXh0cmEiOnsibmFtZSI6IlVTRCBDb2luIiwidmVyc2lvbiI6IjIifX1dLCJleHRlbnNpb25zIjp7ImVpcDI2MTJHYXNTcG9uc29yaW5nIjp7fSwiZXJjMjBBcHByb3ZhbEdhc1Nwb25zb3JpbmciOnt9LCJiYXphYXIiOnsiaW5mbyI6eyJpbnB1dCI6eyJ0eXBlIjoiaHR0cCIsIm1ldGhvZCI6IlBPU1QiLCJib2R5VHlwZSI6Impzb24iLCJib2R5Ijp7ImVuZHBvaW50IjoiaHR0cHM6Ly9tY3AucmVkdS5jbG91ZC9tY3AifX0sIm91dHB1dCI6eyJ0eXBlIjoianNvbiIsImV4YW1wbGUiOnsic3RhdHVzIjoib2siLCJzZXJ2aWNlIjoiaGlzdG9yLWNoZWNrIiwic291cmNlIjoiaHR0cHM6Ly9oaXN0b3IubW9kZWxtYXJrZXQuZGV2IiwiY2hlY2siOnsidHlwZSI6Imhpc3Rvci5jaGVjay92MSIsImNoZWNrZWRBdCI6IjIwMjYtMTAtMjVUMTg6MTg6NTJaIiwibWF0Y2giOiJuby1kaWdlc3QiLCJ0YXJnZXQiOnsibmFtZSI6ImNsb3VkLnJlZHUvbWNwIn19fSwic2NoZW1hIjp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7InN0YXR1cyI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJvayJ9LCJzZXJ2aWNlIjp7InR5cGUiOiJzdHJpbmciLCJjb25zdCI6Imhpc3Rvci1jaGVjayJ9LCJzb3VyY2UiOnsidHlwZSI6InN0cmluZyIsImRlc2NyaXB0aW9uIjoidGhlIEhJU1RPUiBpbnN0YW5jZSB0aGF0IGFuc3dlcmVkIn0sImNoZWNrIjp7InR5cGUiOiJvYmplY3QiLCJkZXNjcmlwdGlvbiI6IkhJU1RPUidzIHNpZ25lZCBhbnN3ZXIsIGhpc3Rvci5jaGVjay92MSAoaHR0cHM6Ly9naXRodWIuY29tL2FsZXhhcjc2L2hpc3Rvci9ibG9iL21haW4vZG9jcy9hcGkubWQpIiwicHJvcGVydGllcyI6eyJ0eXBlIjp7InR5cGUiOiJzdHJpbmciLCJjb25zdCI6Imhpc3Rvci5jaGVjay92MSJ9LCJjaGVja2VkQXQiOnsidHlwZSI6InN0cmluZyIsImRlc2NyaXB0aW9uIjoiSVNPIDg2MDEgVVRDIn0sImlzc3VlciI6eyJ0eXBlIjoic3RyaW5nIiwiZGVzY3JpcHRpb24iOiJkaWQ6a2V5IG9mIHRoZSBsb2cifSwicXVlcnkiOnsidHlwZSI6Im9iamVjdCJ9LCJ0YXJnZXQiOnsidHlwZSI6WyJvYmplY3QiLCJudWxsIl0sImRlc2NyaXB0aW9uIjoidGhlIHNlcnZlciBISVNUT1Iga25vd3MgYnkgdGhpcyBlbmRwb2ludCBvciBuYW1lIn0sIm9ic2VydmVkIjp7InR5cGUiOlsib2JqZWN0IiwibnVsbCJdLCJkZXNjcmlwdGlvbiI6IkhJU1RPUidzIGxhdGVzdCBvYnNlcnZhdGlvbiBvZiBpdHMgdG9vbCBzZXQifSwibWF0Y2giOnsidHlwZSI6InN0cmluZyIsImVudW0iOlsic2FtZSIsImRpZmZlcmVudCIsInByZXZpb3VzbHktb2JzZXJ2ZWQiLCJub3Qtb2JzZXJ2ZWQiLCJub3QtbGlzdGVkIiwibm8tZGlnZXN0Il19LCJub3RlIjp7InR5cGUiOiJzdHJpbmcifSwicGF0dGVyblNjYW4iOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsic3RhdHVzIjp7InR5cGUiOiJzdHJpbmcifX19LCJsb2ciOnsidHlwZSI6Im9iamVjdCIsImRlc2NyaXB0aW9uIjoidGhlIHNpZ25lZCB0cmVlIGhlYWQgdGhlIGFuc3dlciB3YXMgZ2l2ZW4gdW5kZXIifSwic2lnbmF0dXJlIjp7InR5cGUiOiJvYmplY3QifX0sInJlcXVpcmVkIjpbInR5cGUiLCJjaGVja2VkQXQiLCJtYXRjaCJdfX0sInJlcXVpcmVkIjpbInN0YXR1cyIsInNlcnZpY2UiLCJzb3VyY2UiLCJjaGVjayJdfX19LCJzY2hlbWEiOnsiJHNjaGVtYSI6Imh0dHBzOi8vanNvbi1zY2hlbWEub3JnL2RyYWZ0LzIwMjAtMTIvc2NoZW1hIiwidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiaW5wdXQiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsidHlwZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJodHRwIn0sIm1ldGhvZCI6eyJ0eXBlIjoic3RyaW5nIiwiZW51bSI6WyJQT1NUIl19LCJib2R5VHlwZSI6eyJ0eXBlIjoic3RyaW5nIiwiZW51bSI6WyJqc29uIiwiZm9ybS1kYXRhIiwidGV4dCJdfSwiYm9keSI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJlbmRwb2ludCI6eyJ0eXBlIjoic3RyaW5nIiwiZGVzY3JpcHRpb24iOiJodHRwcyBVUkwgb2YgdGhlIE1DUCBzZXJ2ZXIgKHNlbmQgdGhpcyBvciBuYW1lKSJ9LCJuYW1lIjp7InR5cGUiOiJzdHJpbmciLCJkZXNjcmlwdGlvbiI6InJlZ2lzdHJ5IG5hbWUsIGUuZy4gaW8uZ2l0aHViLm93bmVyL3NlcnZlciAoc2VuZCB0aGlzIG9yIGVuZHBvaW50KSJ9fX19LCJyZXF1aXJlZCI6WyJ0eXBlIiwibWV0aG9kIiwiYm9keVR5cGUiLCJib2R5Il0sImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZX0sIm91dHB1dCI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJ0eXBlIjp7InR5cGUiOiJzdHJpbmcifSwiZXhhbXBsZSI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJzdGF0dXMiOnsidHlwZSI6InN0cmluZyIsImNvbnN0Ijoib2sifSwic2VydmljZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJoaXN0b3ItY2hlY2sifSwic291cmNlIjp7InR5cGUiOiJzdHJpbmciLCJkZXNjcmlwdGlvbiI6InRoZSBISVNUT1IgaW5zdGFuY2UgdGhhdCBhbnN3ZXJlZCJ9LCJjaGVjayI6eyJ0eXBlIjoib2JqZWN0IiwiZGVzY3JpcHRpb24iOiJISVNUT1IncyBzaWduZWQgYW5zd2VyLCBoaXN0b3IuY2hlY2svdjEgKGh0dHBzOi8vZ2l0aHViLmNvbS9hbGV4YXI3Ni9oaXN0b3IvYmxvYi9tYWluL2RvY3MvYXBpLm1kKSIsInByb3BlcnRpZXMiOnsidHlwZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJoaXN0b3IuY2hlY2svdjEifSwiY2hlY2tlZEF0Ijp7InR5cGUiOiJzdHJpbmciLCJkZXNjcmlwdGlvbiI6IklTTyA4NjAxIFVUQyJ9LCJpc3N1ZXIiOnsidHlwZSI6InN0cmluZyIsImRlc2NyaXB0aW9uIjoiZGlkOmtleSBvZiB0aGUgbG9nIn0sInF1ZXJ5Ijp7InR5cGUiOiJvYmplY3QifSwidGFyZ2V0Ijp7InR5cGUiOlsib2JqZWN0IiwibnVsbCJdLCJkZXNjcmlwdGlvbiI6InRoZSBzZXJ2ZXIgSElTVE9SIGtub3dzIGJ5IHRoaXMgZW5kcG9pbnQgb3IgbmFtZSJ9LCJvYnNlcnZlZCI6eyJ0eXBlIjpbIm9iamVjdCIsIm51bGwiXSwiZGVzY3JpcHRpb24iOiJISVNUT1IncyBsYXRlc3Qgb2JzZXJ2YXRpb24gb2YgaXRzIHRvb2wgc2V0In0sIm1hdGNoIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbInNhbWUiLCJkaWZmZXJlbnQiLCJwcmV2aW91c2x5LW9ic2VydmVkIiwibm90LW9ic2VydmVkIiwibm90LWxpc3RlZCIsIm5vLWRpZ2VzdCJdfSwibm90ZSI6eyJ0eXBlIjoic3RyaW5nIn0sInBhdHRlcm5TY2FuIjp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7InN0YXR1cyI6eyJ0eXBlIjoic3RyaW5nIn19fSwibG9nIjp7InR5cGUiOiJvYmplY3QiLCJkZXNjcmlwdGlvbiI6InRoZSBzaWduZWQgdHJlZSBoZWFkIHRoZSBhbnN3ZXIgd2FzIGdpdmVuIHVuZGVyIn0sInNpZ25hdHVyZSI6eyJ0eXBlIjoib2JqZWN0In19LCJyZXF1aXJlZCI6WyJ0eXBlIiwiY2hlY2tlZEF0IiwibWF0Y2giXX19LCJyZXF1aXJlZCI6WyJzdGF0dXMiLCJzZXJ2aWNlIiwic291cmNlIiwiY2hlY2siXX19LCJyZXF1aXJlZCI6WyJ0eXBlIl19fSwicmVxdWlyZWQiOlsiaW5wdXQiXX19LCJidWlsZGVyLWNvZGUiOnsiaW5mbyI6eyJzIjpbImNkcF9zZGtfc2VydmVyIl19LCJzY2hlbWEiOnsiJHNjaGVtYSI6Imh0dHBzOi8vanNvbi1zY2hlbWEub3JnL2RyYWZ0LzIwMjAtMTIvc2NoZW1hIiwidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiYSI6eyJ0eXBlIjoic3RyaW5nIiwicGF0dGVybiI6Il5bYS16MC05X117MSwzMn0kIiwiZGVzY3JpcHRpb24iOiJBcHAgYnVpbGRlciBjb2RlIn0sInciOnsidHlwZSI6InN0cmluZyIsInBhdHRlcm4iOiJeW2EtejAtOV9dezEsMzJ9JCIsImRlc2NyaXB0aW9uIjoiV2FsbGV0IGJ1aWxkZXIgY29kZSJ9LCJzIjp7InR5cGUiOiJhcnJheSIsIm1heEl0ZW1zIjoxMSwiaXRlbXMiOnsidHlwZSI6InN0cmluZyIsInBhdHRlcm4iOiJeW2EtejAtOV9dezEsMzJ9JCJ9LCJkZXNjcmlwdGlvbiI6IlNlcnZpY2UgYnVpbGRlciBjb2RlcyJ9fSwiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlfX19fQ=="
+    },
+    "body": {
+      "x402Version": 2,
+      "error": "Payment required",
+      "resource": {
+        "url": "https://modelmarket.dev/x402/histor-check",
+        "description": "HISTOR pre-flight for an MCP server: its signed record in the HISTOR transparency log — when the tool set was first seen, whether it changed, what the pattern scan found. Never contacts the server asked about.",
+        "mimeType": "application/json",
+        "serviceName": "AIMarket",
+        "tags": [
+          "mcp",
+          "security",
+          "transparency-log",
+          "trust"
+        ],
+        "iconUrl": "https://modelmarket.dev/.well-known/erc-8004/histor.png"
+      },
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "extensions": {
+        "eip2612GasSponsoring": {},
+        "erc20ApprovalGasSponsoring": {},
+        "bazaar": {
+          "info": {
+            "input": {
+              "type": "http",
+              "method": "POST",
+              "bodyType": "json",
+              "body": {
+                "endpoint": "https://mcp.redu.cloud/mcp"
+              }
+            },
+            "output": {
+              "type": "json",
+              "example": {
+                "status": "ok",
+                "service": "histor-check",
+                "source": "https://histor.modelmarket.dev",
+                "check": {
+                  "type": "histor.check/v1",
+                  "checkedAt": "2026-10-25T18:18:52Z",
+                  "match": "no-digest",
+                  "target": {
+                    "name": "cloud.redu/mcp"
+                  }
+                }
+              },
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "const": "ok"
+                  },
+                  "service": {
+                    "type": "string",
+                    "const": "histor-check"
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "the HISTOR instance that answered"
+                  },
+                  "check": {
+                    "type": "object",
+                    "description": "HISTOR's signed answer, histor.check/v1 (https://github.com/alexar76/histor/blob/main/docs/api.md)",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "histor.check/v1"
+                      },
+                      "checkedAt": {
+                        "type": "string",
+                        "description": "ISO 8601 UTC"
+                      },
+                      "issuer": {
+                        "type": "string",
+                        "description": "did:key of the log"
+                      },
+                      "query": {
+                        "type": "object"
+                      },
+                      "target": {
+                        "type": [
+                          "object",
+                          "null"
+                        ],
+                        "description": "the server HISTOR knows by this endpoint or name"
+                      },
+                      "observed": {
+                        "type": [
+                          "object",
+                          "null"
+                        ],
+                        "description": "HISTOR's latest observation of its tool set"
+                      },
+                      "match": {
+                        "type": "string",
+                        "enum": [
+                          "same",
+                          "different",
+                          "previously-observed",
+                          "not-observed",
+                          "not-listed",
+                          "no-digest"
+                        ]
+                      },
+                      "note": {
+                        "type": "string"
+                      },
+                      "patternScan": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "log": {
+                        "type": "object",
+                        "description": "the signed tree head the answer was given under"
+                      },
+                      "signature": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "checkedAt",
+                      "match"
+                    ]
+                  }
+                },
+                "required": [
+                  "status",
+                  "service",
+                  "source",
+                  "check"
+                ]
+              }
+            }
+          },
+          "schema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "input": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "http"
+                  },
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "POST"
+                    ]
+                  },
+                  "bodyType": {
+                    "type": "string",
+                    "enum": [
+                      "json",
+                      "form-data",
+                      "text"
+                    ]
+                  },
+                  "body": {
+                    "type": "object",
+                    "properties": {
+                      "endpoint": {
+                        "type": "string",
+                        "description": "https URL of the MCP server (send this or name)"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "registry name, e.g. io.github.owner/server (send this or endpoint)"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "method",
+                  "bodyType",
+                  "body"
+                ],
+                "additionalProperties": false
+              },
+              "output": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "const": "ok"
+                      },
+                      "service": {
+                        "type": "string",
+                        "const": "histor-check"
+                      },
+                      "source": {
+                        "type": "string",
+                        "description": "the HISTOR instance that answered"
+                      },
+                      "check": {
+                        "type": "object",
+                        "description": "HISTOR's signed answer, histor.check/v1 (https://github.com/alexar76/histor/blob/main/docs/api.md)",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "const": "histor.check/v1"
+                          },
+                          "checkedAt": {
+                            "type": "string",
+                            "description": "ISO 8601 UTC"
+                          },
+                          "issuer": {
+                            "type": "string",
+                            "description": "did:key of the log"
+                          },
+                          "query": {
+                            "type": "object"
+                          },
+                          "target": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "description": "the server HISTOR knows by this endpoint or name"
+                          },
+                          "observed": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "description": "HISTOR's latest observation of its tool set"
+                          },
+                          "match": {
+                            "type": "string",
+                            "enum": [
+                              "same",
+                              "different",
+                              "previously-observed",
+                              "not-observed",
+                              "not-listed",
+                              "no-digest"
+                            ]
+                          },
+                          "note": {
+                            "type": "string"
+                          },
+                          "patternScan": {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "log": {
+                            "type": "object",
+                            "description": "the signed tree head the answer was given under"
+                          },
+                          "signature": {
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "checkedAt",
+                          "match"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "service",
+                      "source",
+                      "check"
+                    ]
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              }
+            },
+            "required": [
+              "input"
+            ]
+          }
+        },
+        "builder-code": {
+          "info": {
+            "s": [
+              "cdp_sdk_server"
+            ]
+          },
+          "schema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "a": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]{1,32}$",
+                "description": "App builder code"
+              },
+              "w": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]{1,32}$",
+                "description": "Wallet builder code"
+              },
+              "s": {
+                "type": "array",
+                "maxItems": 11,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]{1,32}$"
+                },
+                "description": "Service builder codes"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "payment_required_decoded": {
+      "x402Version": 2,
+      "error": "Payment required",
+      "resource": {
+        "url": "https://modelmarket.dev/x402/histor-check",
+        "description": "HISTOR pre-flight for an MCP server: its signed record in the HISTOR transparency log — when the tool set was first seen, whether it changed, what the pattern scan found. Never contacts the server asked about.",
+        "mimeType": "application/json",
+        "serviceName": "AIMarket",
+        "tags": [
+          "mcp",
+          "security",
+          "transparency-log",
+          "trust"
+        ],
+        "iconUrl": "https://modelmarket.dev/.well-known/erc-8004/histor.png"
+      },
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "extensions": {
+        "eip2612GasSponsoring": {},
+        "erc20ApprovalGasSponsoring": {},
+        "bazaar": {
+          "info": {
+            "input": {
+              "type": "http",
+              "method": "POST",
+              "bodyType": "json",
+              "body": {
+                "endpoint": "https://mcp.redu.cloud/mcp"
+              }
+            },
+            "output": {
+              "type": "json",
+              "example": {
+                "status": "ok",
+                "service": "histor-check",
+                "source": "https://histor.modelmarket.dev",
+                "check": {
+                  "type": "histor.check/v1",
+                  "checkedAt": "2026-10-25T18:18:52Z",
+                  "match": "no-digest",
+                  "target": {
+                    "name": "cloud.redu/mcp"
+                  }
+                }
+              },
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "const": "ok"
+                  },
+                  "service": {
+                    "type": "string",
+                    "const": "histor-check"
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "the HISTOR instance that answered"
+                  },
+                  "check": {
+                    "type": "object",
+                    "description": "HISTOR's signed answer, histor.check/v1 (https://github.com/alexar76/histor/blob/main/docs/api.md)",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "histor.check/v1"
+                      },
+                      "checkedAt": {
+                        "type": "string",
+                        "description": "ISO 8601 UTC"
+                      },
+                      "issuer": {
+                        "type": "string",
+                        "description": "did:key of the log"
+                      },
+                      "query": {
+                        "type": "object"
+                      },
+                      "target": {
+                        "type": [
+                          "object",
+                          "null"
+                        ],
+                        "description": "the server HISTOR knows by this endpoint or name"
+                      },
+                      "observed": {
+                        "type": [
+                          "object",
+                          "null"
+                        ],
+                        "description": "HISTOR's latest observation of its tool set"
+                      },
+                      "match": {
+                        "type": "string",
+                        "enum": [
+                          "same",
+                          "different",
+                          "previously-observed",
+                          "not-observed",
+                          "not-listed",
+                          "no-digest"
+                        ]
+                      },
+                      "note": {
+                        "type": "string"
+                      },
+                      "patternScan": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "log": {
+                        "type": "object",
+                        "description": "the signed tree head the answer was given under"
+                      },
+                      "signature": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "checkedAt",
+                      "match"
+                    ]
+                  }
+                },
+                "required": [
+                  "status",
+                  "service",
+                  "source",
+                  "check"
+                ]
+              }
+            }
+          },
+          "schema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "input": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "http"
+                  },
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "POST"
+                    ]
+                  },
+                  "bodyType": {
+                    "type": "string",
+                    "enum": [
+                      "json",
+                      "form-data",
+                      "text"
+                    ]
+                  },
+                  "body": {
+                    "type": "object",
+                    "properties": {
+                      "endpoint": {
+                        "type": "string",
+                        "description": "https URL of the MCP server (send this or name)"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "registry name, e.g. io.github.owner/server (send this or endpoint)"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "method",
+                  "bodyType",
+                  "body"
+                ],
+                "additionalProperties": false
+              },
+              "output": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "const": "ok"
+                      },
+                      "service": {
+                        "type": "string",
+                        "const": "histor-check"
+                      },
+                      "source": {
+                        "type": "string",
+                        "description": "the HISTOR instance that answered"
+                      },
+                      "check": {
+                        "type": "object",
+                        "description": "HISTOR's signed answer, histor.check/v1 (https://github.com/alexar76/histor/blob/main/docs/api.md)",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "const": "histor.check/v1"
+                          },
+                          "checkedAt": {
+                            "type": "string",
+                            "description": "ISO 8601 UTC"
+                          },
+                          "issuer": {
+                            "type": "string",
+                            "description": "did:key of the log"
+                          },
+                          "query": {
+                            "type": "object"
+                          },
+                          "target": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "description": "the server HISTOR knows by this endpoint or name"
+                          },
+                          "observed": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "description": "HISTOR's latest observation of its tool set"
+                          },
+                          "match": {
+                            "type": "string",
+                            "enum": [
+                              "same",
+                              "different",
+                              "previously-observed",
+                              "not-observed",
+                              "not-listed",
+                              "no-digest"
+                            ]
+                          },
+                          "note": {
+                            "type": "string"
+                          },
+                          "patternScan": {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "log": {
+                            "type": "object",
+                            "description": "the signed tree head the answer was given under"
+                          },
+                          "signature": {
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "checkedAt",
+                          "match"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "service",
+                      "source",
+                      "check"
+                    ]
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              }
+            },
+            "required": [
+              "input"
+            ]
+          }
+        },
+        "builder-code": {
+          "info": {
+            "s": [
+              "cdp_sdk_server"
+            ]
+          },
+          "schema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "a": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]{1,32}$",
+                "description": "App builder code"
+              },
+              "w": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]{1,32}$",
+                "description": "Wallet builder code"
+              },
+              "s": {
+                "type": "array",
+                "maxItems": 11,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]{1,32}$"
+                },
+                "description": "Service builder codes"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  }
+]

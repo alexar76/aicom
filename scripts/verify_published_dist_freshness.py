@@ -32,6 +32,8 @@ on PyPI yet is a pre-publication blocker: it is listed, loudly, but does not fai
 because nothing is broken for anyone until the second one is published. Needs network; a
 distribution that is not on PyPI, or whose tree version is unpublished, is reported and
 does NOT fail the run — the point is drift at an identical version, not release status.
+Exit code 2 if no first-party pyproject.toml was found at all: that is broken discovery,
+never a pass.
 """
 from __future__ import annotations
 
@@ -48,7 +50,8 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKIP_PARTS = ("node_modules", ".upstreams", ".venv", ".git", ".claude", "site-packages")
+SKIP_PARTS = ("node_modules", ".upstreams", ".venv", "venv", ".git", ".claude",
+              "site-packages", ".cache", "uv-cache", "build", "dist", "output")
 _NAME = re.compile(r'^\s*name\s*=\s*"([^"]+)"', re.M)
 _VERSION = re.compile(r'^\s*version\s*=\s*"([^"]+)"', re.M)
 TIMEOUT = 40
@@ -58,15 +61,25 @@ GREEN, RED, YELLOW, DIM, OFF = "\033[32m", "\033[31m", "\033[33m", "\033[2m", "\
 
 def _first_party_pyprojects() -> list[Path]:
     out = subprocess.run(
-        ["git", "ls-files", "*pyproject.toml"], cwd=ROOT, capture_output=True, text=True
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "*pyproject.toml"],
+        cwd=ROOT, capture_output=True, text=True
     )
     paths = []
     for rel in out.stdout.split():
-        p = ROOT / rel
-        if any(part in SKIP_PARTS for part in p.parts):
+        # Tracked release-source snapshots remain useful evidence, but they are
+        # not another first-party project. Judge only the path BELOW this root:
+        # an artifacts/ ancestor of the checkout must not hide its real sources.
+        if Path(rel).parts[0] == "artifacts":
             continue
-        paths.append(p)
-    return sorted(paths)
+        # Judged on the path BELOW the repo root, never the absolute one. Agent sessions
+        # work in checkouts under `.claude/worktrees/<name>/`; testing the absolute parts
+        # skipped every pyproject there, so the run printed an empty table and exited 0 —
+        # a clean bill of health for every distribution in the tree, none of them looked at.
+        if any(part in SKIP_PARTS for part in Path(rel).parts):
+            continue
+        if (ROOT / rel).is_file():
+            paths.append(ROOT / rel)
+    return sorted(set(paths))
 
 
 def _declared(proj: Path) -> tuple[str, str] | None:
@@ -123,8 +136,10 @@ def _import_names(proj: Path) -> set[str]:
     return {
         d.name
         for d in proj.parent.iterdir()
+        # Only the child's own name: its parents already passed _first_party_pyprojects(),
+        # and the absolute parts include wherever the checkout happens to live.
         if d.is_dir() and (d / "__init__.py").is_file() and d.name != "tests"
-        and not any(part in SKIP_PARTS for part in d.parts)
+        and d.name not in SKIP_PARTS
     }
 
 
@@ -145,8 +160,16 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--json", action="store_true", help="emit findings as JSON")
     args = ap.parse_args(argv)
 
+    projects = _first_party_pyprojects()
+    if not projects:
+        # The monorepo always has pyprojects; finding none means discovery is broken, and
+        # an empty table followed by "every published distribution matches" is a lie.
+        print(f"{RED}No first-party pyproject.toml found under {ROOT} — nothing was checked.{OFF}",
+              file=sys.stderr)
+        return 2
+
     rows = []
-    for proj in _first_party_pyprojects():
+    for proj in projects:
         rel = proj.relative_to(ROOT).as_posix()
         if args.trees and not any(rel == t or rel.startswith(t.rstrip("/") + "/") for t in args.trees):
             continue

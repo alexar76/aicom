@@ -1,0 +1,184 @@
+{
+  "dependents": [
+    {
+      "system": "npm",
+      "name": "@aimarket/warden",
+      "version": "0.8.2",
+      "result": {
+        "dependentCount": 1,
+        "directDependentCount": 1,
+        "indirectDependentCount": 0
+      },
+      "request": {
+        "method": "GET",
+        "url": "https://api.deps.dev/v3alpha/systems/npm/packages/%40aimarket%2Fwarden/versions/0.8.2:dependents",
+        "retrieved_at": "2026-10-28T13:34:09.378636+00:00",
+        "status": 200,
+        "bytes": 72,
+        "sha256": "1834bfa4f136dbf7b04febc05bb7d7c0b07ae7cabdc8e1e8593fb4718fc06e2d"
+      }
+    },
+    {
+      "system": "npm",
+      "name": "@aimarket/warden",
+      "version": "0.15.0",
+      "result": {
+        "dependentCount": 0,
+        "directDependentCount": 0,
+        "indirectDependentCount": 0
+      },
+      "request": {
+        "method": "GET",
+        "url": "https://api.deps.dev/v3alpha/systems/npm/packages/%40aimarket%2Fwarden/versions/0.15.0:dependents",
+        "retrieved_at": "2026-10-28T13:34:09.748727+00:00",
+        "status": 200,
+        "bytes": 72,
+        "sha256": "f6b30ac2fd9273c6f77662e4c34596115517a2e5663285af3da4ffeefea72a1c"
+      }
+    },
+    {
+      "system": "pypi",
+      "name": "aimarket-protocol",
+      "version": "0.1.0",
+      "result": null,
+      "request": {
+        "method": "GET",
+        "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-protocol/versions/0.1.0:dependents",
+        "retrieved_at": "2026-10-28T13:34:09.977085+00:00",
+        "status": 404,
+        "bytes": 20,
+        "sha256": "076cb8618eef86300acb57c70030bf17b14c447a7efa2e0e34fc1dbc7f73fa10"
+      }
+    },
+    {
+      "system": "pypi",
+      "name": "aimarket-histor",
+      "version": "0.3.0",
+      "result": {
+        "dependentCount": 0,
+        "directDependentCount": 0,
+        "indirectDependentCount": 0
+      },
+      "request": {
+        "method": "GET",
+        "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-histor/versions/0.3.0:dependents",
+        "retrieved_at": "2026-10-28T13:34:10.209305+00:00",
+        "status": 200,
+        "bytes": 72,
+        "sha256": "f6b30ac2fd9273c6f77662e4c34596115517a2e5663285af3da4ffeefea72a1c"
+      }
+    }
+  ],
+  "hlido": [
+    {
+      "json_path": "/items/830",
+      "value": {
+        "slug": "alexar76-aimarket-plugins",
+        "name": "AICOM (AIMarket)",
+        "category": "Infrastructure",
+        "score": 60,
+        "tier": null,
+        "summary": "An ambitious self-hosted agent economy — 13 pipeline agents, 17 signed oracles, a federated marketplace — whose most trustworthy feature is that it labels its own cryptography as prototype.",
+        "review_url": "https://hlido.eu/reviews/alexar76-aimarket-plugins/",
+        "youtube_url": null,
+        "reviewed_at": "2026-08-05"
+      }
+    },
+    {
+      "blob_sha": "3d3bab45439b2c6363d8b331a030f5bc0644a595",
+      "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/review-registry-public.json"
+    }
+  ],
+  "paths": {
+    "scorecards": [
+      {
+        "name": "alexar76-aimarket-plugins.json",
+        "type": "file",
+        "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/scorecards/alexar76-aimarket-plugins.json",
+        "sha": "442e808f765d9ee058f99be8f16b412b026419c0"
+      }
+    ],
+    "v1": [
+      {
+        "name": "openapi.json",
+        "type": "file",
+        "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/v1/openapi.json",
+        "sha": "4c25d86ea4e6c6e56817412b2f8c7d9955c1319c"
+      }
+    ],
+    "api": [
+      {
+        "name": "index.html",
+        "type": "file",
+        "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/api/index.html",
+        "sha": "f9967ec0c2df727e56d7503d878350c7df36181f"
+      }
+    ]
+  },
+  "http_statuses": [
+    {
+      "method": "GET",
+      "url": "https://api.deps.dev/v3alpha/systems/npm/packages/%40aimarket%2Fwarden/versions/0.8.2:dependents",
+      "retrieved_at": "2026-10-28T13:34:09.378636+00:00",
+      "status": 200,
+      "bytes": 72,
+      "sha256": "1834bfa4f136dbf7b04febc05bb7d7c0b07ae7cabdc8e1e8593fb4718fc06e2d"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.deps.dev/v3alpha/systems/npm/packages/%40aimarket%2Fwarden/versions/0.15.0:dependents",
+      "retrieved_at": "2026-10-28T13:34:09.748727+00:00",
+      "status": 200,
+      "bytes": 72,
+      "sha256": "f6b30ac2fd9273c6f77662e4c34596115517a2e5663285af3da4ffeefea72a1c"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-protocol/versions/0.1.0:dependents",
+      "retrieved_at": "2026-10-28T13:34:09.977085+00:00",
+      "status": 404,
+      "bytes": 20,
+      "sha256": "076cb8618eef86300acb57c70030bf17b14c447a7efa2e0e34fc1dbc7f73fa10"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-histor/versions/0.3.0:dependents",
+      "retrieved_at": "2026-10-28T13:34:10.209305+00:00",
+      "status": 200,
+      "bytes": 72,
+      "sha256": "f6b30ac2fd9273c6f77662e4c34596115517a2e5663285af3da4ffeefea72a1c"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.github.com/repos/ankitkapur1992-hlido/hlido-public/contents/review-registry-public.json",
+      "retrieved_at": "2026-10-28T13:34:10.454929+00:00",
+      "status": 200,
+      "bytes": 566359,
+      "sha256": "0e81212053bcd33c3f16b2a6e6ff1218be40cbbdad3aa67c50b390ed549ee3cd"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.github.com/repos/ankitkapur1992-hlido/hlido-public/contents/scorecards",
+      "retrieved_at": "2026-10-28T13:34:11.405900+00:00",
+      "status": 200,
+      "bytes": 982979,
+      "sha256": "238bc330452c0f55709a4477db695c71c40b64d41a83010de8fd501c095ae7f1"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.github.com/repos/ankitkapur1992-hlido/hlido-public/contents/v1",
+      "retrieved_at": "2026-10-28T13:34:12.425440+00:00",
+      "status": 200,
+      "bytes": 882,
+      "sha256": "db702ffa9c9ea5a6b259120ca66ac8e3521b965626ead1e42c3ca40090a1c8c7"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.github.com/repos/ankitkapur1992-hlido/hlido-public/contents/api",
+      "retrieved_at": "2026-10-28T13:34:12.866779+00:00",
+      "status": 200,
+      "bytes": 874,
+      "sha256": "4a9dc7b24e162a2bc969c3d2f87b6425bd2a0d21597a75e0208bc7ca9893606f"
+    }
+  ]
+}

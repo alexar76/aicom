@@ -1,0 +1,68 @@
+{
+ "verdict": "invalid",
+ "failed": [
+  "signer"
+ ],
+ "checks": [
+  {
+   "check": "v",
+   "ok": true,
+   "detail": "v = 27"
+  },
+  {
+   "check": "low_s",
+   "ok": true,
+   "detail": "s is in the lower half"
+  },
+  {
+   "check": "signer",
+   "ok": false,
+   "detail": "not valid for this token: from signed this with the domain name 'USDC'; the token checks it against name 'USD Coin', version '2', chain 8453 — re-sign with those"
+  },
+  {
+   "check": "domain",
+   "ok": true,
+   "detail": "matches USDC on Base"
+  },
+  {
+   "check": "window",
+   "ok": null,
+   "detail": "send 'now' (unix seconds) to check the window: valid after 0 and before 1893456000"
+  }
+ ],
+ "signer": "0x443bb6875492B9D4Be5DE5347E9fF9E455cE7A27",
+ "primary_type": "TransferWithAuthorization",
+ "authorization": {
+  "from": "0x9993C13EBBC4B98441E38585eA47fe17625f04f3",
+  "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "value": "3000",
+  "validAfter": 0,
+  "validBefore": 1893456000,
+  "nonce": "0x52293a780cf1f48ea8a555187c01b15124c41cfef04114b44f3e5463ce8b30eb"
+ },
+ "domain": {
+  "name": "USD Coin",
+  "version": "2",
+  "chainId": 8453,
+  "verifyingContract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+ },
+ "domain_separator": "0x02fa7265e7c5d81118673727957699e4d68f74cd74b7db77da710fe8a2c7834f",
+ "digest": "0x792fea5f20c83b4b530d51291720d1705b99e5c7b4572add916a681317aab842",
+ "not_checked": [
+  "the nonce is unused on chain (authorizationState)",
+  "the balance of from covers the value",
+  "submission happens before validBefore"
+ ],
+ "diagnosis": {
+  "signed_for": {
+   "primary_type": "TransferWithAuthorization",
+   "name": "USDC",
+   "version": "2",
+   "chainId": 8453,
+   "verifyingContract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+  },
+  "explains": "from signed this with the domain name 'USDC'; the token checks it against name 'USD Coin', version '2', chain 8453 — re-sign with those"
+ },
+ "token": "USDC on Base",
+ "value_usdc": "0.003"
+}

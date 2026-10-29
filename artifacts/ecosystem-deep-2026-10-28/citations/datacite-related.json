@@ -1,0 +1,42 @@
+{
+  "key": "datacite-related",
+  "url": "https://api.datacite.org/dois?query=relatedIdentifiers.relatedIdentifier%3A%2210.5281%2Fzenodo.23512760%22&page%5Bsize%5D=100",
+  "retrieved_at_utc": "2026-10-28T13:30:29.876588+00:00",
+  "method": "GET",
+  "status": 200,
+  "sha256": "0c224242abee251cd2bc89c83fdf87b41a1a2e5c047b9758741e2de771b9148f",
+  "bytes": 3373,
+  "final_url": "https://api.datacite.org/dois?query=relatedIdentifiers.relatedIdentifier%3A%2210.5281%2Fzenodo.23512760%22&page%5Bsize%5D=100",
+  "selected_metadata": {
+    "meta": {
+      "total": 1,
+      "totalPages": 1,
+      "page": 1
+    },
+    "items": [
+      {
+        "id": "10.5281/zenodo.23512759",
+        "attributes": {
+          "doi": "10.5281/zenodo.23512759",
+          "titles": [
+            {
+              "title": "HISTOR snapshot 2026-10-20: MCP tool definitions and how they change"
+            }
+          ],
+          "relatedIdentifiers": [
+            {
+              "relationType": "HasVersion",
+              "relatedIdentifier": "10.5281/zenodo.23512760",
+              "relatedIdentifierType": "DOI"
+            }
+          ],
+          "citationCount": 0,
+          "viewCount": 0,
+          "downloadCount": 0,
+          "url": "https://zenodo.org/doi/10.5281/zenodo.23512759",
+          "published": null
+        }
+      }
+    ]
+  }
+}

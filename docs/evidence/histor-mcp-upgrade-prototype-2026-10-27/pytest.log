@@ -1,0 +1,22 @@
+.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s..s.s. [  6%]
+s.s.s.s.s.s.s..s.s.s.s.s.s.s.s.s.s.s.s.................s.s.s.s.s.s...... [ 13%]
+.....s..........s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s. [ 20%]
+........s.s.s.s.s.s.s.s.s..............................s.s.s............ [ 27%]
+...........s.s.s.s.s.s.s.s.s..ss.............................s.s.s.s.... [ 34%]
+...s.s.s.s.s.s..................s.s.s.s.s......s.s.s.s.................. [ 41%]
+......ssss.s............................................................ [ 48%]
+.........................................s.s.s.s.s.s.s.s................ [ 55%]
+........................................................................ [ 62%]
+................................................................s......s [ 68%]
+.s.s.s.s.s..ss...s.s.....s.............................s.s.s......ssssss [ 75%]
+.s.s.s.s.s.s.s.s.s.s.......s.s.s..ss..ss.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s.s [ 82%]
+.s.s.s.s..........s.......s.s.s.s.s.s.s.s.s.s........................... [ 89%]
+....s....s.s............................................................ [ 96%]
+....................................                                     [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+828 passed, 216 skipped, 12 deselected, 1 warning in 45.00s

@@ -54,17 +54,19 @@ accidental GitHub target; the normal Gitea#2 path is transparent.
 
 ## 3. Publish `aicom` to GitHub (public factory, live history)
 
-Always pass the GitHub target explicitly and a token:
+The factory script selects `--remote URL`, then `AICOM_FACTORY_REMOTE`, then a
+configured GitHub push URL for `<org>/aicom` (for example the existing `gh` remote).
+It leaves the canonical Gitea `origin` unchanged. Preview the selected target:
 
 ```bash
-GH_PAT=<token> \
-AICOM_FACTORY_REMOTE=https://github.com/alexar76/aicom.git \
-./scripts/publish_aicom_factory.sh --dry-run   # confirm: "Cloning …github.com/alexar76/aicom"
+./scripts/publish_aicom_factory.sh --dry-run   # confirm: "Remote: …github.com…alexar76/aicom"
 ```
 
 Run without `--dry-run` only once the output shows **github.com/alexar76/aicom**.
-If `AICOM_FACTORY_REMOTE` is omitted the script now **aborts** (the guard) instead of
-falling back to the Gitea `origin`.
+The script stops if no matching GitHub push URL exists or multiple GitHub factory
+repositories are configured. In that case select one explicitly with
+`AICOM_FACTORY_REMOTE` or `--remote`; an invalid explicit target is rejected.
+Authentication still uses the configured SSH identity or `GH_PAT` / `GITHUB_TOKEN`.
 
 Factory GitHub is **live** (same as `metis`): append-only, **no `--force`**, **PRs accepted**.
 Before each factory publish, import any merged PRs:

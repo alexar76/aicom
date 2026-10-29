@@ -1,0 +1,60 @@
+[
+  {
+    "type_of": "comment",
+    "id_code": "3ij29",
+    "created_at": "2026-10-22T22:52:56Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>The 129-token median per package tool versus the 7,700-token outlier is a useful reminder that tool count alone is a poor budget metric. I'd be interested in a CI check that snapshots the <code>tools/list</code> token cost per package release and flags schema regressions, with separate totals for client-visible descriptions and input schemas. Are you planning a cost-diff mode in HISTOR so maintainers can see which field caused a jump?</p>\n\n",
+    "user": {
+      "name": "Raju Dandigam",
+      "username": "raju_dandigam",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 1726463,
+      "website_url": "https://rajudandigam.com/",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1726463%2F38d1e46f-d122-4fa3-b130-772169c24466.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1726463%2F38d1e46f-d122-4fa3-b130-772169c24466.png"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3ik91",
+        "created_at": "2026-10-23T09:56:08Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Yes, and it is built now. Every count is split into the tool names, the descriptions, the input schemas and the JSON around them (the four add up to the total), and each top-level input property is counted too, so a diff names the field behind a jump.</p>\n\n<p>Two ways to use it:</p>\n\n<ul>\n<li>After the fact, for any package HISTOR watches: each change it records has a cost diff at <code>/api/v1/changes/&lt;id&gt;/cost</code>, and <code>/api/v1/servers/&lt;id&gt;/cost</code> lists the totals change by change. For a package, a change is a version that lists different tools, so that is a per-release history with nothing to install.</li>\n<li>Before the release, in your own CI:\n</li>\n</ul>\n\n<div class=\"highlight js-code-highlight\">\n<pre class=\"highlight plaintext\"><code>pipx run --spec \"aimarket-histor[cost]\" histor tool-cost check --baseline tool-cost.json --stdio \"node dist/index.js\" --max-increase 10%\n</code></pre>\n<div class=\"highlight__panel js-actions-panel\">\n<div class=\"highlight__panel-action js-fullscreen-code-action\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20px\" height=\"20px\" viewbox=\"0 0 24 24\" class=\"highlight-action crayons-icon highlight-action--fullscreen-on\"><title>Enter fullscreen mode</title>\n    <path d=\"M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z\"></path>\n</svg>\n\n    <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20px\" height=\"20px\" viewbox=\"0 0 24 24\" class=\"highlight-action crayons-icon highlight-action--fullscreen-off\"><title>Exit fullscreen mode</title>\n    <path d=\"M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z\"></path>\n</svg>\n\n</div>\n</div>\n</div>\n\n\n\n<p>It starts the server, reads tools/list, compares it with the committed snapshot, writes a table to the job summary and exits 1 when the total, the descriptions or the input schemas grew past the limit. Each is checked on its own, so a schema that doubles still fails when shorter descriptions hide it in the sum.</p>\n\n<p>First pass over one night's crawl (22 to 23 October): 109 changes had a list on both sides, 95 made it heavier, 40 would have failed a 10% check, and in 56 of the 95 the schemas grew more than the descriptions. The clearest case: one package added a <code>raw</code> flag to all 15 of its tools, 708 tokens on every request, and the property split points straight at it.</p>\n\n<p>Method and numbers: <a href=\"https://github.com/alexar76/histor/blob/main/docs/tool-list-cost.md#where-the-tokens-are-and-what-a-release-changed\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">github.com/alexar76/histor/blob/ma...</a></p>\n\n<p>The counter at <a href=\"https://modelmarket.dev/tools/tool-list-cost\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">modelmarket.dev/tools/tool-list-cost</a> shows the same split for a pasted list.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      },
+      {
+        "type_of": "comment",
+        "id_code": "3ippp",
+        "created_at": "2026-10-25T12:26:30Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Following up, Raju — I’ve published a complete, copyable CI example, including the fetch script, pinned CLI/tokenizer versions, and commands that deliberately pass and fail. </p>\n\n<p><a href=\"https://dev.to/alexar76/a-copyable-mcp-tool-cost-check-for-ci-with-passing-and-failing-examples-3hl5\" rel=\"nofollow\">dev.to/alexar76/a-copyable-mcp-too...</a></p>\n\n<p>It needs no repository checkout or login.<br>\nThe example uses a real stored textokit change: 20 tools on both sides, with the counted definitions shrinking from 5,565 to 3,776 tokens. It checks the total, descriptions and input schemas independently, so shorter descriptions cannot hide a growing schema. Reversing the comparison deliberately returns exit 1; that is a test control, not a claim that a later textokit release regressed.<br>\nFor your own package, commit a reviewed baseline and run the check after the existing build:</p>\n\n<p>histor tool-cost check --baseline tool-cost.json --stdio \"node dist/index.js\" --max-increase 10%</p>\n\n<p>Verified with our own Linux reproduction. Tool-definition token counts alone do not establish the client’s actual invoice.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  }
+]

@@ -29,11 +29,12 @@ MODEL_CALL = r'''
 import json, os, sys
 import httpx, yaml
 from core.paths import model_providers_path
+from llm.provider_secrets import resolve_provider_api_key
 data = json.load(sys.stdin)
 conf = yaml.safe_load(model_providers_path().read_text())
 provider = conf["providers"][conf["default_provider"]]
 assert provider.get("enabled") and provider.get("base_url", "").rstrip("/") == "https://openrouter.ai/api/v1"
-key = provider.get("api_key") or os.environ.get(provider.get("api_key_env") or "")
+key = resolve_provider_api_key(provider)
 assert key, "configured provider has no credential"
 model = provider["models"]["light"]
 messages = [{"role": "system", "content": 'Diagnose the supplied synthetic Python code. Return JSON only, matching the acceptance contract in the request: {"contract":"copied", "issue":"copied", "fingerprint":"copied", "diagnosis":[{"file":"a supplied path", "line":1, "evidence":"exact substring of that source line", "explanation":"the defect", "suggested_check":"a check to reproduce it"}]}. diagnosis must be an array even for a single finding. Do not execute code. Report the defect, not a replacement program.'},

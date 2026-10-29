@@ -1,0 +1,89 @@
+{
+  "checked_at_utc": "2026-10-29T06:41:05.158799+00:00",
+  "comment_updated_at": "2026-10-29T06:35:21Z",
+  "registry": {
+    "server": {
+      "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+      "name": "io.github.alexar76/aimarket-mcp",
+      "description": "Stdio + HTTP MCP gateway: SSRF-hardened web_fetch, web_search, metis_verify, market_search.",
+      "title": "AIMarket MCP Gateway",
+      "repository": {
+        "url": "https://github.com/alexar76/aimarket-mcp",
+        "source": "github"
+      },
+      "version": "0.6.4",
+      "packages": [
+        {
+          "registryType": "pypi",
+          "registryBaseUrl": "https://pypi.org",
+          "identifier": "aimarket-mcp",
+          "version": "0.6.4",
+          "transport": {
+            "type": "stdio"
+          },
+          "environmentVariables": [
+            {
+              "description": "Metis verify API base URL",
+              "name": "AIMARKET_METIS_URL"
+            },
+            {
+              "description": "Optional bearer token for Metis verify",
+              "isSecret": true,
+              "name": "AIMARKET_METIS_KEY"
+            },
+            {
+              "description": "DuckDuckGo HTML search endpoint override",
+              "name": "AIMARKET_SEARCH_URL"
+            },
+            {
+              "description": "Optional key from https://modelmarket.dev/start: pays priced market_invoke calls from a prepaid USDC balance once the free trial is spent",
+              "isSecret": true,
+              "name": "AIMARKET_API_KEY"
+            }
+          ]
+        }
+      ],
+      "remotes": [
+        {
+          "type": "streamable-http",
+          "url": "https://{aimarket_host}/mcp",
+          "headers": [
+            {
+              "description": "Bearer token matching AIMARKET_MCP_KEY when auth is enabled",
+              "isSecret": true,
+              "name": "Authorization"
+            }
+          ],
+          "variables": {
+            "aimarket_host": {
+              "description": "Host[:port] of YOUR OWN aimarket-mcp deployment (no scheme). For the hosted marketplace with no install, use the io.github.alexar76/aimarket-hub server instead.",
+              "default": "127.0.0.1:9090"
+            }
+          }
+        }
+      ]
+    },
+    "_meta": {
+      "io.modelcontextprotocol.registry/official": {
+        "status": "active",
+        "statusChangedAt": "2026-10-29T05:58:23.077261Z",
+        "publishedAt": "2026-10-29T05:58:23.077261Z",
+        "updatedAt": "2026-10-29T05:58:23.077261Z",
+        "isLatest": true
+      }
+    }
+  },
+  "local_sha256": "c721cab41adc8b1f757a29ed0945c687ea7d981e094be44b5b2a45ff0e691347",
+  "published_sha256": "2152a10dba9b54188ea24384fb80c8173ae6fc449ade482c79371f5da8e120a8",
+  "pypi_sha256": "2152a10dba9b54188ea24384fb80c8173ae6fc449ade482c79371f5da8e120a8",
+  "download_matches_pypi": true,
+  "archive_only_local": [],
+  "archive_only_published": [],
+  "changed_members": [
+    "skopos_fleet-0.2.3.dist-info/RECORD",
+    "skopos_fleet-0.2.3.dist-info/WHEEL"
+  ],
+  "python_source_files": 168,
+  "python_source_all_same": true,
+  "external_mutations": false
+}

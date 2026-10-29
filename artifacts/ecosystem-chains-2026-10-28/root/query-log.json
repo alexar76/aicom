@@ -1,0 +1,87 @@
+{
+  "web_query_count": 16,
+  "queries": [
+    {
+      "query": "\"modelmarket.dev\" site:lobste.rs OR site:lemmy.world OR site:discuss.tchncs.de OR site:kbin.earth",
+      "origin": "web search",
+      "result_file": "social-discussion-paths.json"
+    },
+    {
+      "query": "\"alexar76\" site:stackoverflow.com OR site:stackexchange.com OR site:news.ycombinator.com -site:github.com",
+      "origin": "web search",
+      "result_file": "social-discussion-paths.json"
+    },
+    {
+      "query": "\"HISTOR\" \"MCP\" \"Substack\" -site:dev.to -site:github.com -site:modelmarket.dev",
+      "origin": "web search",
+      "result_file": "social-discussion-paths.json"
+    },
+    {
+      "query": "\"WARDEN\" \"AIMarket\" site:medium.com OR site:reddit.com OR site:news.ycombinator.com",
+      "origin": "web search",
+      "result_file": "social-discussion-paths.json"
+    },
+    {
+      "query": "\"alexar76\" site:toolidx.dev",
+      "origin": "web search",
+      "result_file": "runtime-catalog-and-distinctive-measurements.json"
+    },
+    {
+      "query": "\"alexar76\" site:enterprisedna.co/directories/mcp",
+      "origin": "web search",
+      "result_file": "runtime-catalog-and-distinctive-measurements.json"
+    },
+    {
+      "query": "\"14 of 17\" \"WARDEN\" -site:dev.to -site:github.com -site:modelmarket.dev -site:news.ycombinator.com",
+      "origin": "web search",
+      "result_file": "runtime-catalog-and-distinctive-measurements.json"
+    },
+    {
+      "query": "\"34,374\" \"MCP\" \"tokens\" -site:dev.to -site:github.com -site:modelmarket.dev -site:qiita.com -site:glama.ai",
+      "origin": "web search",
+      "result_file": "runtime-catalog-and-distinctive-measurements.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" \"论坛\" -site:github.com -site:dev.to -site:modelmarket.dev -site:glama.ai",
+      "origin": "web search",
+      "result_file": "regional-discussion-terms.json"
+    },
+    {
+      "query": "\"WARDEN\" \"MCP\" \"обсуждение\" -site:modelmarket.dev -site:github.com -site:dev.to",
+      "origin": "web search",
+      "result_file": "regional-discussion-terms.json"
+    },
+    {
+      "query": "\"alexar76\" \"discuss\" -site:github.com -site:dev.to -site:modelmarket.dev -site:huggingface.co",
+      "origin": "web search",
+      "result_file": "regional-discussion-terms.json"
+    },
+    {
+      "query": "\"HISTOR\" \"MCP\" \"게시\" -site:github.com -site:dev.to -site:modelmarket.dev",
+      "origin": "web search",
+      "result_file": "regional-discussion-terms.json"
+    },
+    {
+      "query": "\"alexar76\" \"Auten\" -site:dev.to -site:github.com/alexar76",
+      "origin": "web search",
+      "result_file": "external-replier-crosslinks.json"
+    },
+    {
+      "query": "\"alexar76\" \"textokit\" -site:dev.to -site:github.com/alexar76",
+      "origin": "web search",
+      "result_file": "external-replier-crosslinks.json"
+    },
+    {
+      "query": "\"Launch Gate\" \"WARDEN\" -site:dev.to -site:github.com -site:modelmarket.dev",
+      "origin": "web search",
+      "result_file": "external-replier-crosslinks.json"
+    },
+    {
+      "query": "\"histor.modelmarket.dev\" \"forum\" -site:dev.to -site:github.com -site:modelmarket.dev",
+      "origin": "web search",
+      "result_file": "external-replier-crosslinks.json"
+    }
+  ],
+  "native_api_searches": 17,
+  "note": "16 HN text queries plus one author filter; one story control GET is not a search."
+}

@@ -1,0 +1,37 @@
+{
+  "refreshed_at_utc": "2026-10-28T06:42:07.092981+00:00",
+  "source_commit": "3fccad781ec89f31deaaf6b289a0285df849bdbd",
+  "new_change": "Treasury ASGI fixture reapplies missing-proc patch after reloading service, fixing Linux test execution.",
+  "package_runtime_code_changed": false,
+  "source_paths_changed": [
+    "treasury/tests/test_treasury_service.py"
+  ],
+  "checks": [
+    {
+      "selection": "Treasury full suite",
+      "passed": 21,
+      "log": "treasury-refresh-tests.log"
+    },
+    {
+      "selection": "Cross-package keyless security and handoff tools",
+      "passed": 175,
+      "log": "refresh-tests.log"
+    }
+  ],
+  "passed": 196,
+  "skipped": 0,
+  "wheels_rebuilt": 8,
+  "packaged_python_sources_compared_to_git_commit": 387,
+  "uploads_performed": 0,
+  "portable_archive_tests": {
+    "passed": 15,
+    "network": "mocked",
+    "real_uploads": 0
+  },
+  "distribution_secret_gates": {
+    "wheels_checked": 8,
+    "findings": 0
+  },
+  "critical_python_static_checks": "passed",
+  "diff_whitespace": "passed"
+}

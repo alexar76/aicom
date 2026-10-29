@@ -1,0 +1,597 @@
+diff --git a/skopos/CHANGELOG.md b/skopos/CHANGELOG.md
+index a2f06650b..d32311277 100644
+--- a/skopos/CHANGELOG.md
++++ b/skopos/CHANGELOG.md
+@@ -3,6 +3,23 @@
+ All notable changes to SKOPOS (self-hosted nginx analytics & AI security) are documented here.
+ 
+ 
++## [0.2.3] — 2026-10-29
++
++### Security
++- **Dashboard login addresses could still be forged on Streamlit 1.66.1** (remaining exposure in
++  Vulnetix GCVE-110-PYPI-2026-021896). The dashboard read the old Tornado session client's
++  `request.remote_ip`, which the current Starlette session client does not expose. With no peer
++  found, the dashboard accepted `X-Real-IP` / `X-Forwarded-For`
++  without verifying `SKOPOS_TRUSTED_PROXIES`. A caller reaching the dashboard directly, or through
++  a proxy that preserved those headers, could choose a per-address login bucket and claim a known
++  address's pacing exemption. The dashboard now reads the actual socket peer from Uvicorn's
++  transport and applies the configured proxy allowlist. It does not use Streamlit's context IP:
++  Uvicorn may already have rewritten that value from forwarded headers. This also preserves an
++  empty `SKOPOS_TRUSTED_PROXIES` or `SKOPOS_TRUSTED_PROXY_HOPS=0`. An unavailable or invalid peer uses the shared
++  `unknown` bucket and never grants authority to address headers. The existing signed-session-cookie
++  recovery, per-address lockout and bounded all-addresses login delay remain in place.
++
++
+ ## [0.2.2] — 2026-10-28
+ 
+ ### Security
+diff --git a/skopos/pyproject.toml b/skopos/pyproject.toml
+index ca94b4cb5..34b08d078 100644
+--- a/skopos/pyproject.toml
++++ b/skopos/pyproject.toml
+@@ -4,10 +4,8 @@ build-backend = "setuptools.build_meta"
+ 
+ [project]
+ name = "skopos-fleet"
+-# Bumped because the tree diverged from the published 0.1.5 wheel: `pip install
+-# skopos-fleet==0.1.5` served code this tree had already moved past, at the same version
+-# string, so every fix in it was unpublishable and unreachable.
+-version = "0.2.2"
++# Dashboard socket-peer enforcement, including Streamlit's Starlette server.
++version = "0.2.3"
+ description = "SKOPOS (Σκοπός) — self-hosted nginx analytics and fleet security for the AICOM ecosystem."
+ readme = "README.md"
+ license = { text = "MIT" }
+diff --git a/skopos/skopos/app_auth.py b/skopos/skopos/app_auth.py
+index 45e507a99..a5875784a 100644
+--- a/skopos/skopos/app_auth.py
++++ b/skopos/skopos/app_auth.py
+@@ -2,6 +2,7 @@ from __future__ import annotations
+ 
+ import hashlib
+ import hmac
++import ipaddress
+ import json
+ import os
+ import time
+@@ -44,10 +45,13 @@ def dashboard_auth_required() -> bool:
+ 
+ 
+ def _websocket_peer() -> str | None:
+-    """The TCP peer of this session's websocket (tornado's remote_ip), or None.
++    """The websocket's socket peer, before any forwarded-header middleware.
+ 
+-    Streamlit 1.37 has no public API for it; this reads the session manager and gives up
+-    quietly when that changes, falling back to the headers.
++    Streamlit's Starlette client keeps Uvicorn's bound ASGI receive method. Its
++    transport retains the actual peer even when Uvicorn has replaced scope["client"]
++    from X-Forwarded-For. Neither st.context.ip_address nor client_context.remote_ip
++    can establish proxy trust. If the server adapter changes, fail closed rather
++    than recovering an address from client-supplied headers.
+     """
+     try:
+         from streamlit import runtime
+@@ -56,50 +60,41 @@ def _websocket_peer() -> str | None:
+         ctx = get_script_run_ctx()
+         if ctx is None or not runtime.exists():
+             return None
+-        info = runtime.get_instance()._session_mgr.get_session_info(ctx.session_id)
+-        request = getattr(getattr(info, "client", None), "request", None)
+-        peer = getattr(request, "remote_ip", None)
+-        return str(peer) if peer else None
++        client = runtime.get_instance().get_client(ctx.session_id)
++        websocket = getattr(client, "_websocket", None)
++        receive = getattr(websocket, "_receive", None)
++        protocol = getattr(receive, "__self__", None)
++        transport = getattr(protocol, "transport", None)
++        peer = transport.get_extra_info("peername") if transport is not None else None
++        if not isinstance(peer, tuple) or not peer or not isinstance(peer[0], str):
++            return None
++        return str(ipaddress.ip_address(peer[0]))
+     except Exception:
+         return None
+ 
+ 
+ def _client_ip() -> str:
+-    """The login-lockout key. See skopos/client_ip.py for why it is not the left XFF hop.
++    """Key login budgets by the socket peer, or by its trusted proxy's headers.
+ 
+-    Streamlit gives no direct peer address, so the header path is taken unconditionally here
+-    — but X-Real-IP is preferred and X-Forwarded-For is counted from the RIGHT, which is the
+-    hop our own nginx appended. Reading the left-most value let an attacker put every
+-    password guess in a fresh bucket and never trip the 5-attempt lockout.
++    Unknown peers share one bucket; headers cannot establish their identity or
++    claim a recently successful address's exemption from login pacing.
+     """
+-    from skopos.client_ip import resolve, trusted_proxy_hops
++    from skopos.client_ip import resolve
+ 
++    peer = _websocket_peer()
++    if not peer:
++        return "unknown"
+     try:
+         headers = getattr(getattr(st, "context", None), "headers", None)
+-        if headers is None:
+-            return "unknown"
+ 
+         def _h(name: str):
+-            return headers.get(name) or headers.get(name.lower())
+-
+-        # The websocket's own peer, when Streamlit lets us see it: then the headers count only
+-        # if that peer is our proxy (skopos/client_ip.py). Taking X-Real-IP unconditionally let
+-        # anyone who reached Streamlit directly name a fresh address per guess (Vulnetix
+-        # GCVE-110-PYPI-2026-021896). The all-addresses budget in auth_store bounds that too.
+-        peer = _websocket_peer()
+-        if peer:
+-            return resolve(peer, _h) or "unknown"
+-        real = _h("X-Real-IP")
+-        if real:
+-            return str(real).strip()[:64] or "unknown"
+-        xff = _h("X-Forwarded-For") or ""
+-        hops = [h.strip() for h in str(xff).split(",") if h.strip()]
+-        if hops:
+-            want = trusted_proxy_hops() or 1
+-            return (hops[-want] if len(hops) >= want else hops[-1])[:64] or "unknown"
++            if headers is not None:
++                return headers.get(name) or headers.get(name.lower())
++            return None
++
++        return resolve(peer, _h)
+     except Exception:
+-        pass
+-    return "unknown"
++        return peer
+ 
+ 
+ def _token_secret() -> bytes:
+diff --git a/skopos/tests/test_client_ip_trust.py b/skopos/tests/test_client_ip_trust.py
+index d25a7b439..cb930fe44 100644
+--- a/skopos/tests/test_client_ip_trust.py
++++ b/skopos/tests/test_client_ip_trust.py
+@@ -34,9 +34,10 @@ class _Ctx:
+ 
+ # --- the Streamlit dashboard login lockout key ---------------------------------------
+ 
+-def _client_ip_with(monkeypatch, headers):
++def _client_ip_with(monkeypatch, headers, *, peer="127.0.0.1"):
+     from skopos import app_auth
+ 
++    monkeypatch.setattr(app_auth, "_websocket_peer", lambda: peer)
+     monkeypatch.setattr(app_auth.st, "context", _Ctx(headers), raising=False)
+     return app_auth._client_ip()
+ 
+@@ -126,25 +127,17 @@ def test_a_direct_caller_cannot_forge_headers_when_it_is_not_the_local_proxy():
+ # --- GCVE-110-PYPI-2026-021896: X-Real-IP was taken from anyone who reached Streamlit ----
+ 
+ def test_a_direct_peer_cannot_name_its_own_lockout_address(monkeypatch):
+-    from skopos import app_auth
+-
+-    # A public address: Python's ipaddress counts the documentation ranges (203.0.113.0/24 …)
+-    # as private, and client_ip treats a private peer as our own proxy.
+-    monkeypatch.setattr(app_auth, "_websocket_peer", lambda: "93.184.216.34")
+-    keys = {_client_ip_with(monkeypatch, {"X-Real-IP": f"198.51.100.{n}"}) for n in range(1, 20)}
++    keys = {_client_ip_with(monkeypatch, {"X-Real-IP": f"198.51.100.{n}"}, peer="93.184.216.34")
++            for n in range(1, 20)}
+     assert keys == {"93.184.216.34"}, f"a direct caller partitioned the lockout into {keys}"
+ 
+ 
+ def test_behind_our_proxy_the_real_ip_header_still_counts(monkeypatch):
+-    from skopos import app_auth
+-
+-    monkeypatch.setattr(app_auth, "_websocket_peer", lambda: "127.0.0.1")
+     assert _client_ip_with(monkeypatch, {"X-Real-IP": "198.51.100.7"}) == "198.51.100.7"
+ 
+ 
+-def test_the_websocket_peer_comes_from_the_streamlit_session(monkeypatch):
+-    """Streamlit 1.37 has no public API for it: runtime -> session manager -> session info ->
+-    the tornado websocket handler's request.remote_ip. Pinned with stand-ins of those names."""
++def test_an_unsupported_streamlit_session_does_not_restore_header_trust(monkeypatch):
++    """An older server adapter cannot silently re-enable the unsafe fallback."""
+     from types import SimpleNamespace
+ 
+     import streamlit.runtime as st_runtime
+@@ -153,15 +146,17 @@ def test_the_websocket_peer_comes_from_the_streamlit_session(monkeypatch):
+     from skopos import app_auth
+ 
+     handler = SimpleNamespace(request=SimpleNamespace(remote_ip="203.0.113.51"))
+-    mgr = SimpleNamespace(get_session_info=lambda sid: SimpleNamespace(client=handler)
+-                          if sid == "s1" else None)
+     monkeypatch.setattr(st_runtime, "exists", lambda: True)
+-    monkeypatch.setattr(st_runtime, "get_instance", lambda: SimpleNamespace(_session_mgr=mgr))
++    monkeypatch.setattr(st_runtime, "get_instance", lambda: SimpleNamespace(
++        get_client=lambda sid: handler if sid == "s1" else None))
+     monkeypatch.setattr(scriptrunner, "get_script_run_ctx",
+                         lambda *a, **k: SimpleNamespace(session_id="s1"))
+-    assert app_auth._websocket_peer() == "203.0.113.51"
++    monkeypatch.setattr(app_auth.st, "context", _Ctx({"X-Real-IP": "198.51.100.7"}), raising=False)
++    assert app_auth._websocket_peer() is None
++    assert app_auth._client_ip() == "unknown"
+     monkeypatch.setattr(st_runtime, "get_instance", lambda: SimpleNamespace())
+-    assert app_auth._websocket_peer() is None          # internals changed: header fallback
++    assert app_auth._websocket_peer() is None
++    assert app_auth._client_ip() == "unknown"
+ 
+ 
+ def test_failures_from_many_addresses_slow_logins_down_and_lock_no_one(tmp_path, monkeypatch):
+--- /dev/null
++++ b/skopos/tests/test_dashboard_peer_trust.py
+@@ -0,0 +1,232 @@
++"""Dashboard login budgets must use the connection, not caller-chosen headers.
++
++Exercise Streamlit's real Starlette session client: the former Tornado-shaped
++test double hid the missing ``client.request`` on supported Streamlit versions.
++"""
++
++from __future__ import annotations
++
++import asyncio
++from types import SimpleNamespace
++
++import pytest
++import streamlit.runtime as runtime
++import streamlit.runtime.scriptrunner as scriptrunner
++from starlette.websockets import WebSocket
++from streamlit.runtime.context import StreamlitHeaders
++from streamlit.web.server.starlette.starlette_websocket import StarletteSessionClient
++
++from skopos import app_auth, auth_store
++
++
++@pytest.fixture(autouse=True)
++def proxy_defaults(monkeypatch):
++    monkeypatch.delenv("SKOPOS_TRUSTED_PROXIES", raising=False)
++    monkeypatch.delenv("SKOPOS_TRUSTED_PROXY_HOPS", raising=False)
++
++
++def _connection_key(monkeypatch, peer, headers, *, expose_headers=True,
++                    transport_available=True, peername_override=...,
++                    bound_receive=True, transport_error=False):
++    """Exercise the Streamlit adapter with a raw transport and rewritten ASGI IP.
++
++    The bound receive method models Uvicorn's protocol/transport boundary. ASGI's
++    client address is deliberately different: middleware may have rewritten it
++    from a caller-controlled forwarded header before Streamlit sees the scope.
++    """
++    async def run():
++        class Transport:
++            def get_extra_info(self, name):
++                assert name == "peername"
++                if transport_error:
++                    raise RuntimeError("transport unavailable")
++                if peername_override is not ...:
++                    return peername_override
++                return (peer, 12345) if peer is not None else None
++
++        class Protocol:
++            def __init__(self):
++                if transport_available:
++                    self.transport = Transport()
++
++            async def receive(self):
++                return {"type": "websocket.disconnect"}
++
++        async def send(message):
++            pass
++
++        async def unbound_receive():
++            return {"type": "websocket.disconnect"}
++
++        websocket = WebSocket(
++            {
++                "type": "websocket",
++                "client": ("198.18.0.250", 12345),
++                "headers": [(key.lower().encode(), value.encode())
++                            for key, value in headers.items()],
++            },
++            Protocol().receive if bound_receive else unbound_receive,
++            send,
++        )
++        client = StarletteSessionClient(websocket)
++        monkeypatch.setattr(runtime, "exists", lambda: True)
++        monkeypatch.setattr(runtime, "get_instance", lambda: SimpleNamespace(
++            get_client=lambda session_id: client
++        ))
++        monkeypatch.setattr(scriptrunner, "get_script_run_ctx",
++                            lambda *args, **kwargs: SimpleNamespace(session_id="test-session"))
++        context = SimpleNamespace(
++            headers=StreamlitHeaders(client.client_context.headers) if expose_headers else None
++        )
++        monkeypatch.setattr(app_auth, "st", SimpleNamespace(context=context))
++        try:
++            return app_auth._websocket_peer(), app_auth._client_ip()
++        finally:
++            await client.aclose()
++
++    return asyncio.run(run())
++
++
++@pytest.mark.parametrize("peer", ["93.184.216.34", "172.18.0.7", "2606:4700:4700::1111"])
++def test_real_streamlit_client_keeps_direct_callers_in_their_own_bucket(monkeypatch, peer):
++    results = {
++        _connection_key(monkeypatch, peer, {
++            "X-Real-IP": f"198.51.100.{number}",
++            "X-Forwarded-For": f"192.0.2.{number}",
++        })
++        for number in range(1, 4)
++    }
++    assert results == {(peer, peer)}
++
++
++@pytest.mark.parametrize("peer", ["127.0.0.1", "::1"])
++def test_real_streamlit_loopback_proxy_uses_forwarded_address(monkeypatch, peer):
++    assert _connection_key(monkeypatch, peer, {
++        "X-Real-IP": "198.51.100.8",
++        "X-Forwarded-For": "192.0.2.9, 198.51.100.8",
++    }) == (peer, "198.51.100.8")
++
++
++def test_real_streamlit_client_respects_explicit_proxy_allowlist(monkeypatch):
++    monkeypatch.setenv("SKOPOS_TRUSTED_PROXIES", "172.18.0.5")
++    assert _connection_key(monkeypatch, "172.18.0.5", {
++        "X-Forwarded-For": "192.0.2.1, 198.51.100.8",
++    }) == ("172.18.0.5", "198.51.100.8")
++    assert _connection_key(monkeypatch, "127.0.0.1", {
++        "X-Real-IP": "198.51.100.8",
++    }) == ("127.0.0.1", "127.0.0.1")
++
++
++def test_disabled_header_trust_keeps_proxy_connection_address(monkeypatch):
++    monkeypatch.setenv("SKOPOS_TRUSTED_PROXY_HOPS", "0")
++    assert _connection_key(monkeypatch, "127.0.0.1", {
++        "X-Real-IP": "198.51.100.8",
++    }) == ("127.0.0.1", "127.0.0.1")
++
++
++def test_ipv6_transport_peername_uses_address_without_port_or_scope_fields(monkeypatch):
++    assert _connection_key(monkeypatch, None, {"X-Real-IP": "198.51.100.8"},
++                           peername_override=("2606:4700:4700::1111", 12345, 0, 0)) == (
++        "2606:4700:4700::1111", "2606:4700:4700::1111"
++    )
++
++
++def test_ipv4_mapped_loopback_retains_trusted_proxy_behavior(monkeypatch):
++    peer, key = _connection_key(monkeypatch, None, {"X-Real-IP": "198.51.100.8"},
++                                peername_override=("::ffff:127.0.0.1", 12345, 0, 0))
++    # Python versions render mapped IPv4 addresses in dotted or hexadecimal form.
++    assert peer in {"::ffff:127.0.0.1", "::ffff:7f00:1"}
++    assert key == "198.51.100.8"
++
++
++@pytest.mark.parametrize("peer", [None, "", "not-an-ip", "127.0.0.1,93.184.216.34"])
++def test_unknown_or_invalid_connection_never_adopts_address_headers(monkeypatch, peer):
++    assert _connection_key(monkeypatch, peer, {
++        "X-Real-IP": "198.51.100.8",
++        "X-Forwarded-For": "198.51.100.9",
++    }) == (None, "unknown")
++
++
++@pytest.mark.parametrize("peer", ["93.184.216.34", "127.0.0.1"])
++def test_connection_address_survives_missing_header_view(monkeypatch, peer):
++    assert _connection_key(monkeypatch, peer, {}, expose_headers=False) == (peer, peer)
++
++
++def test_missing_transport_does_not_adopt_scope_or_address_headers(monkeypatch):
++    assert _connection_key(monkeypatch, "93.184.216.34", {
++        "X-Real-IP": "198.51.100.8", "X-Forwarded-For": "198.51.100.9",
++    }, transport_available=False) == (None, "unknown")
++
++
++@pytest.mark.parametrize("options", [{"bound_receive": False}, {"transport_error": True}])
++def test_unavailable_transport_adapter_never_uses_scope_or_headers(monkeypatch, options):
++    assert _connection_key(monkeypatch, "93.184.216.34", {
++        "X-Real-IP": "198.51.100.8",
++    }, **options) == (None, "unknown")
++
++
++@pytest.mark.parametrize("peername", [None, (), "127.0.0.1", (None, 12345), (12345, 12345)])
++def test_malformed_transport_peer_does_not_adopt_scope_or_headers(monkeypatch, peername):
++    assert _connection_key(monkeypatch, "93.184.216.34", {
++        "X-Real-IP": "198.51.100.8",
++    }, peername_override=peername) == (None, "unknown")
++
++
++@pytest.mark.parametrize("failure", ["no-runtime", "no-script-context", "runtime-error"])
++def test_unavailable_session_does_not_fall_back_to_headers(monkeypatch, failure):
++    monkeypatch.setattr(app_auth, "st", SimpleNamespace(context=SimpleNamespace(headers={
++        "X-Real-IP": "198.51.100.8", "X-Forwarded-For": "198.51.100.9",
++    })))
++    monkeypatch.setattr(runtime, "exists", lambda: failure != "no-runtime")
++    monkeypatch.setattr(scriptrunner, "get_script_run_ctx", lambda *args, **kwargs: (
++        None if failure == "no-script-context" else SimpleNamespace(session_id="test-session")
++    ))
++
++    def broken_runtime():
++        raise RuntimeError("session lookup unavailable")
++
++    monkeypatch.setattr(runtime, "get_instance", broken_runtime)
++    assert app_auth._websocket_peer() is None
++    assert app_auth._client_ip() == "unknown"
++
++
++@pytest.mark.parametrize("peer", ["93.184.216.34", "127.0.0.1"])
++@pytest.mark.parametrize("failure", ["header-access", "header-lookup"])
++def test_header_errors_preserve_the_verified_connection_key(monkeypatch, peer, failure):
++    class BrokenHeaders:
++        def get(self, name):
++            raise RuntimeError("header lookup unavailable")
++
++    class Context:
++        @property
++        def headers(self):
++            if failure == "header-access":
++                raise RuntimeError("context headers unavailable")
++            return BrokenHeaders()
++
++    monkeypatch.setattr(app_auth, "_websocket_peer", lambda: peer)
++    monkeypatch.setattr(app_auth, "st", SimpleNamespace(context=Context()))
++    assert app_auth._client_ip() == peer
++
++
++def test_spoofed_known_ip_cannot_avoid_pacing_or_switch_lockout_bucket(monkeypatch, tmp_path):
++    database = str(tmp_path / "auth.sqlite")
++    monkeypatch.setenv("SKOPOS_LOGIN_GLOBAL_MAX_ATTEMPTS", "12")
++    monkeypatch.setenv("SKOPOS_LOGIN_MAX_ATTEMPTS", "5")
++    monkeypatch.setenv("SKOPOS_LOGIN_LOCKOUT_SECONDS", "300")
++    monkeypatch.setenv("SKOPOS_LOGIN_KNOWN_DAYS", "30")
++    known_ip = "198.51.100.8"
++    peer = "93.184.216.34"
++    auth_store.clear_login_lockout(known_ip, db_target=database)
++    for number in range(45):
++        auth_store.register_failed_login(f"192.0.2.{number + 1}", db_target=database)
++
++    _, key = _connection_key(monkeypatch, peer, {"X-Real-IP": known_ip})
++    assert auth_store.login_pace_seconds(known_ip, db_target=database) == 0
++    assert auth_store.login_pace_seconds(key, db_target=database) > 0
++
++    for number in range(5):
++        _, key = _connection_key(monkeypatch, peer, {"X-Real-IP": f"198.51.100.{number + 10}"})
++        auth_store.register_failed_login(key, db_target=database)
++    assert auth_store.login_lockout_remaining_seconds(peer, db_target=database) > 0
++
+--- /dev/null
++++ b/skopos/tests/test_dashboard_peer_transport.py
+@@ -0,0 +1,143 @@
++"""Exercise dashboard IP trust through real Uvicorn WebSocket connections.
++
++Streamlit's client context takes its IP from the ASGI scope. Uvicorn can already
++rewrite that scope from X-Forwarded-For before SKOPOS sees it. The socket peer
++must therefore come from the transport, and an unavailable transport must never
++enable the header fallback.
++"""
++
++from __future__ import annotations
++
++import asyncio
++import json
++import socket
++from types import SimpleNamespace
++
++import pytest
++import streamlit.runtime as st_runtime
++import streamlit.runtime.scriptrunner as scriptrunner
++import uvicorn
++from starlette.applications import Starlette
++from starlette.routing import WebSocketRoute
++from starlette.websockets import WebSocket
++from streamlit.runtime.context import StreamlitHeaders
++from streamlit.web.server.starlette.starlette_websocket import StarletteSessionClient
++from websockets.asyncio.client import connect
++
++from skopos import app_auth
++
++
++@pytest.mark.parametrize("protocol", ["websockets", "websockets-sansio"])
++@pytest.mark.parametrize(
++    ("trusted_proxies", "proxy_hops", "wrap_receive", "expected_key"),
++    [
++        ("", "1", False, "127.0.0.1"),
++        ("127.0.0.1", "0", False, "127.0.0.1"),
++        ("127.0.0.1", "1", False, "198.51.100.9"),
++        ("127.0.0.1", "1", True, "unknown"),
++    ],
++    ids=["no-trusted-proxies", "header-trust-disabled", "trusted-proxy", "unknown-transport"],
++)
++def test_dashboard_uses_transport_peer_after_uvicorn_rewrites_client(
++    monkeypatch, protocol, trusted_proxies, proxy_hops, wrap_receive, expected_key
++):
++    monkeypatch.setenv("SKOPOS_TRUSTED_PROXIES", trusted_proxies)
++    monkeypatch.setenv("SKOPOS_TRUSTED_PROXY_HOPS", proxy_hops)
++
++    async def run():
++        async def endpoint(websocket: WebSocket):
++            await websocket.accept()
++            client = StarletteSessionClient(websocket)
++            try:
++                with monkeypatch.context() as patch:
++                    patch.setattr(st_runtime, "exists", lambda: True)
++                    patch.setattr(
++                        st_runtime,
++                        "get_instance",
++                        lambda: SimpleNamespace(get_client=lambda session_id: client),
++                    )
++                    patch.setattr(
++                        scriptrunner,
++                        "get_script_run_ctx",
++                        lambda: SimpleNamespace(session_id="transport-test"),
++                    )
++                    patch.setattr(
++                        app_auth,
++                        "st",
++                        SimpleNamespace(context=SimpleNamespace(
++                            headers=StreamlitHeaders(client.client_context.headers)
++                        )),
++                    )
++                    result = {
++                        "scope_ip": client.client_context.remote_ip,
++                        "transport_peer": app_auth._websocket_peer(),
++                        "lockout_key": app_auth._client_ip(),
++                    }
++                await websocket.send_text(json.dumps(result))
++                await websocket.close()
++            finally:
++                await client.aclose()
++
++        app = Starlette(routes=[WebSocketRoute("/peer", endpoint)])
++
++        async def wrapped_app(scope, receive, send):
++            # A future ASGI middleware may wrap receive and hide the protocol.
++            # Losing that implementation detail must fail closed, rather than
++            # trusting Streamlit's already rewritten context IP or headers.
++            async def wrapped_receive():
++                return await receive()
++
++            await app(scope, wrapped_receive if wrap_receive else receive, send)
++
++        listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
++        try:
++            listener.bind(("127.0.0.1", 0))
++        except OSError:
++            listener.close()
++            raise
++        listener.listen()
++        listener.setblocking(False)
++        port = listener.getsockname()[1]
++        server = uvicorn.Server(uvicorn.Config(
++            wrapped_app,
++            host="127.0.0.1",
++            port=port,
++            ws=protocol,
++            proxy_headers=True,
++            forwarded_allow_ips="*",
++            lifespan="off",
++            log_config=None,
++            log_level="error",
++        ))
++        task = asyncio.create_task(server.serve(sockets=[listener]))
++        try:
++            async def wait_until_started():
++                while not server.started:
++                    if task.done():
++                        await task
++                    await asyncio.sleep(0.01)
++
++            await asyncio.wait_for(wait_until_started(), timeout=5)
++            async with connect(
++                f"ws://127.0.0.1:{port}/peer",
++                additional_headers={
++                    "X-Forwarded-For": "198.51.100.99",
++                    "X-Real-IP": "198.51.100.9",
++                },
++                proxy=None,
++            ) as websocket:
++                result = json.loads(await asyncio.wait_for(websocket.recv(), timeout=5))
++            # Prove that the actual middleware rewrote the connection context.
++            assert result["scope_ip"] == "198.51.100.99"
++            assert result["transport_peer"] == (None if wrap_receive else "127.0.0.1")
++            assert result["lockout_key"] == expected_key
++        finally:
++            server.should_exit = True
++            try:
++                await asyncio.wait_for(task, timeout=5)
++            finally:
++                if not task.done():
++                    task.cancel()
++                listener.close()
++
++    asyncio.run(run())

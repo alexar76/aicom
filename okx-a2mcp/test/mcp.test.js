@@ -63,7 +63,7 @@ test("each profile initializes and lists its tools with object schemas, read-onl
   } finally { await s.close(); }
 });
 
-test("weather and EMPORION tools buy from the hub with the gateway's key and pass the input on", async () => {
+test("weather and SYMMARTYS tools buy from the hub with the gateway's key and pass the input on", async () => {
   const s = await serve();
   try {
     const w = await s.rpc("weather", "tools/call", { name: "weather_now", arguments: { city: "Tokyo" } });
@@ -72,9 +72,9 @@ test("weather and EMPORION tools buy from the hub with the gateway's key and pas
     const hubCall = s.u.calls.find((c) => c.url === "https://hub.test/ai-market/v2/invoke");
     assert.equal(hubCall.headers["x-api-key"], "hk");
     assert.equal(hubCall.body.source_hub, "https://iot.modelmarket.dev");
-    const vat = await s.rpc("emporion", "tools/call", { name: "vat_check", arguments: { vat: "NL004495445B01" } });
-    assert.equal(vat.body.result.structuredContent.result.cap, "emporion.vat.check@v1");
-    assert.equal(s.u.calls.at(-1).body.source_hub, "https://modelmarket.dev/providers/emporion");
+    const vat = await s.rpc("symmartys", "tools/call", { name: "vat_check", arguments: { vat: "NL004495445B01" } });
+    assert.equal(vat.body.result.structuredContent.result.cap, "symmartys.vat.check@v1");
+    assert.equal(s.u.calls.at(-1).body.source_hub, "https://modelmarket.dev/providers/symmartys");
     const dq = await s.rpc("domains", "tools/call", { name: "domain_quote", arguments: { domain: " Example.COM " } });
     assert.deepEqual(dq.body.result.structuredContent.result, { echo: { domain: "example.com" }, cap: "domains.quote@v1" });
     assert.equal(s.u.calls.at(-1).body.source_hub, "https://domains.modelmarket.dev");
@@ -110,7 +110,7 @@ test("free capacity is shared per profile, per minute and per UTC day", async ()
     assert.match(minute.structuredContent.message, /per-minute/);
     assert.match(minute.structuredContent.message, /x402 at https:\/\/modelmarket\.dev\/x402\/air-quality-now/);
     // Another profile has its own budget.
-    assert.equal((await s.rpc("emporion", "tools/call", { name: "fx_rate", arguments: { base: "USD", quote: "JPY" } })).body.result.isError, false);
+    assert.equal((await s.rpc("symmartys", "tools/call", { name: "fx_rate", arguments: { base: "USD", quote: "JPY" } })).body.result.isError, false);
     // Drain the day minute by minute; the next UTC day starts again.
     let used = PROFILES.weather.perMinute;
     while (used < PROFILES.weather.perDay) {

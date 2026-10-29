@@ -1,0 +1,149 @@
+{
+  "reviewedAt": "2026-10-27T17:26:55.541802+00:00",
+  "reviewedAtMoscow": "2026-10-27T20:26:55.541802+03:00",
+  "reviewType": "read-only local source and operator-helper safety audit",
+  "helper": "../native/run-native-release-resume.py",
+  "helperSha256": "15fddc27fda0223005fb8a4519503084385396f8276dd3ab5bc247c70e2635a3",
+  "sourceCommit": "4afe0243856d02b6b543b9b9559f2a286fab1a90",
+  "decision": "approved-for-deploy-phase",
+  "deploymentCondition": "Deploy only approved image1221f1bc built from source4afe02438 through the unchanged enrolled signed executor. Preserve and verify the existing crawl cycle after restart or rollback; verify live image/runtime metadata, native journal, health and pinned signed MOMUS receipt. Rejected04c6683c image remains forbidden.",
+  "guardsReviewed": [
+    "Existing enrolled NodeAgentConfig and AgentStateStore; no policy/allowlist/recipe overrides",
+    "Conductor-signed BuildOrder; exact allowed branch tip and source commit",
+    "Enforced component test suite and existing full candidate quality hook",
+    "Exact recipe SHA256, WARDEN package.json SHA256/version and 63-file JS build digest",
+    "Dynamically discovered HISTOR application files preserved against live image",
+    "Real MOMUS QualityTarget candidate retest; signed image-bound FixVerdict",
+    "Conductor-signed exact-image DeployOrder; native build journal; latest candidate authorization",
+    "Previous image and trusted remediation base unchanged before promotion",
+    "Post-deploy image, package metadata, HISTOR health/version/log size and native journal checks",
+    "Signed native rollback for failed deploy/postchecks, including compose-error and image-mismatch results",
+    "Automatic rollback recognition; restored image/health/human-needed state retained",
+    "Immediate public aggregate receipts archived for later independent signature verification",
+    "Output/evidence restricted to safe projections; no settings, repository userinfo, raw exceptions or native log tails",
+    "Public package metadata mode normalized to0644; final Docker build reads/parses it under inherited runtime USER without a USER override"
+  ],
+  "requiredRepairsBeforeApproval": [
+    "Moved executor call and false deployment result into rollback-protected try block",
+    "Retained safe rollback health/restored-image/human-needed flags",
+    "Replaced arbitrary last_crawl_error text with a boolean",
+    "Replaced hardcoded Python library path with installed histor.__file__ application root",
+    "Rechecked previous image/base before promotion and archived exact-image receipts"
+  ],
+  "remainingBlockers": [],
+  "proofLimit": "Saved order/verdict projections explicitly cannot be independently signature-verified; native executors enforce those signatures. Public MOMUS receipt archives retain full signatures.",
+  "remoteActionsByReviewer": false,
+  "credentialOrSettingsReadsByReviewer": false,
+  "sourceChangesByReviewer": false,
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-10-27T16:12:21.076338+00:00",
+      "reviewedAtMoscow": "2026-10-27T19:12:21.076338+03:00",
+      "helper": "../native/operator.py",
+      "helperSha256": "5dde9c7e91156615fdba2e2eccc19beea229f5b240a974b537c804b484df7dce",
+      "sourceCommit": "ce1dd74edc30e7d5775c7583079cc4f9ed5d656f",
+      "decision": "approved-for-build-phase"
+    },
+    {
+      "reviewedAt": "2026-10-27T16:37:09.571009+00:00",
+      "reviewedAtMoscow": "2026-10-27T19:37:09.571009+03:00",
+      "helper": "../native/run-native-release.py",
+      "helperSha256": "fef0ace9141f58157b72e87c6d45c3d4b38fb15ca892bbe6d680e08de6cbc1f0",
+      "sourceCommit": "231c6b0618670b408c460ce63fe8d5b1af287563",
+      "sourceBranch": "momus/fix-warden-0.22.2-metadata-231c6b061",
+      "recipeSha256": "74a4ade4589ce9ff79f0ae4281a8bd84eb6043c8fe67319eea375070c8e055cf",
+      "decision": "approved-for-build-phase",
+      "deploymentCondition": "Image 04c6683c from source231c6b061 is rejected for runtime EACCES despite passing JS checks. Pin a new source containing the approved metadata-permission fix; require new native build and default-UID metadata plus signed MOMUS acceptance before deployment.",
+      "followupReview": {
+        "helperChanges": "Only COMMIT, BRANCH, FINDING, ROOT and RECIPE_SHA constants changed; all reviewed control flow and safety guards are byte-identical.",
+        "sourceChanges": [
+          ".dockerignore",
+          "warden/deploy/Dockerfile.histor",
+          "warden/deploy/Dockerfile.histor.dockerignore"
+        ],
+        "purpose": "Include exactly seven existing public cross-repository documentation references in the Docker component-test stage and its context allowlists.",
+        "finalRuntimeStageByteIdentical": true,
+        "componentAssertionsWeakened": false,
+        "sourceRuntimeChanges": false,
+        "launchRequirement": "Use native Python -I, as recorded in launcher-preflight.json, to exclude the evidence-directory operator.py name from standard-library import lookup.",
+        "priorAttempt": "The ce1 component build was blocked by the missing documentation fixture; production deployment did not start. Parent reported 1381/1382 passing tests.",
+        "decision": "approved-for-build-phase; deployment still requires parent acceptance of exact candidate image, enforced tests and signed MOMUS candidate receipt"
+      }
+    },
+    {
+      "reviewedAt": "2026-10-27T16:54:07.656665+00:00",
+      "reviewedAtMoscow": "2026-10-27T19:54:07.656665+03:00",
+      "helper": "../native/run-native-release.py",
+      "helperSha256": "dc765b88c37c8621e50642a28263807dbbbfea2998f6d9bb5999bcc26d65a397",
+      "sourceCommit": "4afe0243856d02b6b543b9b9559f2a286fab1a90",
+      "sourceBranch": "momus/fix-warden-0.22.2-metadata-4afe02438",
+      "recipeSha256": "d4e40dd761cb6898d11fc5336a9d507caf7b4614ec1c0012ff2b2dcd0c4ff4d2",
+      "decision": "approved-for-build-phase",
+      "deploymentCondition": "Image 04c6683c from source231c6b061 remains rejected for runtime EACCES. For new source4afe02438, require a fresh native build, enforced component tests, default-UID65532 package/describe/MCP metadata readability and exact0.22.2 identity, and independently verified signed exact-image MOMUS candidate evidence before deployment.",
+      "followupReview": {
+        "helperChanges": "Only COMMIT, BRANCH, FINDING, ROOT and RECIPE_SHA constants changed versus archived fef0ace9 helper; signature, rollback, logging, restrictive artifact umask and validation control flow are byte-identical.",
+        "sourceChanges": [
+          "warden/deploy/Dockerfile.histor"
+        ],
+        "purpose": "Normalize only public package metadata to0644 in the test/build stage; require final Node JSON metadata read under the inherited unprivileged runtime USER.",
+        "publicMetadataBytesChanged": false,
+        "compiledJsBytesChanged": false,
+        "finalCopyPathsChanged": false,
+        "runtimeUserOverridden": false,
+        "componentAssertionsWeakened": false,
+        "permissionFixReview": "permission-fix-review.json",
+        "launchRequirement": "Use the native Python -I launcher already recorded in launcher-preflight.json.",
+        "priorCandidateRejected": "sha256:04c6683cbf8d36201359baf9322aee49c580b6f00b63ab5f59598881bc232639",
+        "decision": "approved-for-build-phase; deployment requires new candidate acceptance"
+      }
+    },
+    {
+      "reviewedAt": "2026-10-27T17:24:17.056694+00:00",
+      "reviewedAtMoscow": "2026-10-27T20:24:17.056694+03:00",
+      "helper": "../native/run-native-release-resume.py",
+      "helperSha256": "7b1fa4db85603f77598dd0a15c4149bbf92c16a697098268ab03f3f31a21c200",
+      "sourceCommit": "4afe0243856d02b6b543b9b9559f2a286fab1a90",
+      "decision": "approved-for-deploy-phase",
+      "deploymentCondition": "Deploy only approved image1221f1bc built from source4afe02438 through the unchanged enrolled signed executor. Preserve and verify the existing crawl cycle after restart or rollback; verify live image/runtime metadata, native journal, health and pinned signed MOMUS receipt. Rejected04c6683c image remains forbidden."
+    }
+  ],
+  "sourceBranch": "momus/fix-warden-0.22.2-metadata-4afe02438",
+  "recipeSha256": "d4e40dd761cb6898d11fc5336a9d507caf7b4614ec1c0012ff2b2dcd0c4ff4d2",
+  "followupReview": {
+    "helperChanges": "Only COMMIT, BRANCH, FINDING, ROOT and RECIPE_SHA constants changed versus archived fef0ace9 helper; signature, rollback, logging, restrictive artifact umask and validation control flow are byte-identical.",
+    "sourceChanges": [
+      "warden/deploy/Dockerfile.histor"
+    ],
+    "purpose": "Normalize only public package metadata to0644 in the test/build stage; require final Node JSON metadata read under the inherited unprivileged runtime USER.",
+    "publicMetadataBytesChanged": false,
+    "compiledJsBytesChanged": false,
+    "finalCopyPathsChanged": false,
+    "runtimeUserOverridden": false,
+    "componentAssertionsWeakened": false,
+    "permissionFixReview": "permission-fix-review.json",
+    "launchRequirement": "Use the native Python -I launcher already recorded in launcher-preflight.json.",
+    "priorCandidateRejected": "sha256:04c6683cbf8d36201359baf9322aee49c580b6f00b63ab5f59598881bc232639",
+    "decision": "approved-for-build-phase; deployment requires new candidate acceptance"
+  },
+  "candidateRejections": [
+    {
+      "imageDigest": "sha256:04c6683cbf8d36201359baf9322aee49c580b6f00b63ab5f59598881bc232639",
+      "sourceCommit": "231c6b0618670b408c460ce63fe8d5b1af287563",
+      "componentTestsPassedAndEnforced": true,
+      "runtimeUid": 65532,
+      "publicPackageMetadataMode": "0o600",
+      "ownerUid": 0,
+      "runtimeReadable": false,
+      "errorClass": "PermissionError",
+      "errno": "EACCES",
+      "rootReadVersion": "0.22.2",
+      "status": "rejected-before-production-deployment",
+      "evidence": "../verification/candidate-diagnosis.json",
+      "qualityLimit": "Passing component/MOMUS JS checks cannot override failed runtime metadata access."
+    }
+  ],
+  "permissionFixReview": "permission-fix-review.json",
+  "approvedCandidateImage": "sha256:1221f1bcc8af9081c923b9064301674d5bc4d8d0ce701cca1075a5b1355b3017",
+  "resumeHelperReview": "resume-helper-review.json",
+  "resumeCompletionReview": "Current15fddc27 helper explicitly separates completed-run ancestry from prospective resume eligibility; all three actual-function completion fixtures passed. Earlier7b review remains in history."
+}

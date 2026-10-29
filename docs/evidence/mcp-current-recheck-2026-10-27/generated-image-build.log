@@ -1,0 +1,135 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            BuildKit is currently disabled; enable it by removing the DOCKER_BUILDKIT=0
+            environment-variable.
+
+Sending build context to Docker daemon  4.096kB
+Step 1/8 : FROM python:3.12-slim
+ ---> a6e34c598f24
+Step 2/8 : WORKDIR /app
+ ---> Running in 64c4e32334f9
+ ---> Removed intermediate container 64c4e32334f9
+ ---> 2d24937edb55
+Step 3/8 : RUN pip install --no-cache-dir 'aimarket-mcp>=0.6.3,<0.7' 'jsonschema>=4.23,<5'
+ ---> Running in cbdd240f1b7f
+Collecting aimarket-mcp<0.7,>=0.6.3
+  Downloading aimarket_mcp-0.6.3-py3-none-any.whl.metadata (11 kB)
+Collecting jsonschema<5,>=4.23
+  Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+Collecting mcp<2,>=1.10 (from aimarket-mcp<0.7,>=0.6.3)
+  Downloading mcp-1.30.0-py3-none-any.whl.metadata (9.3 kB)
+Collecting httpx<1,>=0.27 (from aimarket-mcp<0.7,>=0.6.3)
+  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting pydantic<3,>=2.7.2 (from aimarket-mcp<0.7,>=0.6.3)
+  Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+Collecting starlette<2,>=0.37 (from aimarket-mcp<0.7,>=0.6.3)
+  Downloading starlette-1.10.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting uvicorn<1,>=0.30 (from aimarket-mcp<0.7,>=0.6.3)
+  Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting attrs>=22.2.0 (from jsonschema<5,>=4.23)
+  Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+Collecting jsonschema-specifications>=2023.03.6 (from jsonschema<5,>=4.23)
+  Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting referencing>=0.28.4 (from jsonschema<5,>=4.23)
+  Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+Collecting rpds-py>=0.25.0 (from jsonschema<5,>=4.23)
+  Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+Collecting anyio (from httpx<1,>=0.27->aimarket-mcp<0.7,>=0.6.3)
+  Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting certifi (from httpx<1,>=0.27->aimarket-mcp<0.7,>=0.6.3)
+  Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+Collecting httpcore==1.* (from httpx<1,>=0.27->aimarket-mcp<0.7,>=0.6.3)
+  Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting idna (from httpx<1,>=0.27->aimarket-mcp<0.7,>=0.6.3)
+  Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting h11>=0.16 (from httpcore==1.*->httpx<1,>=0.27->aimarket-mcp<0.7,>=0.6.3)
+  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting httpx-sse>=0.4 (from mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+Collecting pydantic-settings>=2.5.2 (from mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading pydantic_settings-2.16.1-py3-none-any.whl.metadata (4.0 kB)
+Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading pyjwt-2.15.1-py3-none-any.whl.metadata (3.5 kB)
+Collecting python-multipart>=0.0.9 (from mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+Collecting sse-starlette>=1.6.1 (from mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading sse_starlette-3.6.0-py3-none-any.whl.metadata (15 kB)
+Collecting typing-extensions>=4.9.0 (from mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting typing-inspection>=0.4.1 (from mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+Collecting annotated-types>=0.6.0 (from pydantic<3,>=2.7.2->aimarket-mcp<0.7,>=0.6.3)
+  Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.50.1 (from pydantic<3,>=2.7.2->aimarket-mcp<0.7,>=0.6.3)
+  Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+Collecting click>=7.0 (from uvicorn<1,>=0.30->aimarket-mcp<0.7,>=0.6.3)
+  Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting python-dotenv>=1.2.2 (from pydantic-settings>=2.5.2->mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.4 kB)
+Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp<2,>=1.10->aimarket-mcp<0.7,>=0.6.3)
+  Downloading pycparser-3.12-py3-none-any.whl.metadata (9.7 kB)
+Downloading aimarket_mcp-0.6.3-py3-none-any.whl (31 kB)
+Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+Downloading mcp-1.30.0-py3-none-any.whl (234 kB)
+Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 152.9 MB/s eta 0:00:00
+Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (371 kB)
+Downloading starlette-1.10.0-py3-none-any.whl (80 kB)
+Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+Downloading click-8.5.0-py3-none-any.whl (125 kB)
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+Downloading idna-3.20-py3-none-any.whl (69 kB)
+Downloading pydantic_settings-2.16.1-py3-none-any.whl (80 kB)
+Downloading pyjwt-2.15.1-py3-none-any.whl (33 kB)
+Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+Downloading sse_starlette-3.6.0-py3-none-any.whl (17 kB)
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (4.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 108.4 MB/s eta 0:00:00
+Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)
+Downloading pycparser-3.12-py3-none-any.whl (62 kB)
+Installing collected packages: typing-extensions, rpds-py, python-multipart, python-dotenv, pyjwt, pycparser, idna, httpx-sse, h11, click, certifi, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, httpcore, cffi, anyio, starlette, pydantic, jsonschema-specifications, httpx, cryptography, sse-starlette, pydantic-settings, jsonschema, mcp, aimarket-mcp
+Successfully installed aimarket-mcp-0.6.3 annotated-types-0.8.0 anyio-4.15.1 attrs-26.1.0 certifi-2026.10.23 cffi-2.1.1 click-8.5.0 cryptography-50.0.2 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.20 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 mcp-1.30.0 pycparser-3.12 pydantic-2.14.1 pydantic-core-2.50.1 pydantic-settings-2.16.1 pyjwt-2.15.1 python-dotenv-1.2.4 python-multipart-0.0.32 referencing-0.37.0 rpds-py-2026.9.1 sse-starlette-3.6.0 starlette-1.10.0 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.54.0
+[91mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+[0m[91m
+[notice] A new release of pip is available: 25.0.1 -> 26.2.2
+[notice] To update, run: pip install --upgrade pip
+[0m ---> Removed intermediate container cbdd240f1b7f
+ ---> 7efe5bbdbedd
+Step 4/8 : RUN python -c "import base64,pathlib; pathlib.Path('/app/mcp_server.py').write_bytes(base64.b64decode('aW1wb3J0IGFzeW5jaW8KaW1wb3J0IGJhc2U2NAppbXBvcnQganNvbgppbXBvcnQgb3MKCmZyb20ganNvbnNjaGVtYSBpbXBvcnQgRHJhZnQyMDIwMTJWYWxpZGF0b3IKZnJvbSBtY3Auc2VydmVyLmxvd2xldmVsIGltcG9ydCBTZXJ2ZXIKZnJvbSBtY3Auc2VydmVyLnN0ZGlvIGltcG9ydCBzdGRpb19zZXJ2ZXIKZnJvbSBtY3AudHlwZXMgaW1wb3J0IFRleHRDb250ZW50LCBUb29sCmZyb20gYWltYXJrZXRfbWNwLnRvb2xzIGltcG9ydCBtYXJrZXRfaW52b2tlCgpDT05GSUcgPSBqc29uLmxvYWRzKGJhc2U2NC5iNjRkZWNvZGUoImV5SnVZVzFsSWpvZ0ltRjFaR2wwTFdWamFHOGlMQ0FpWTJGd1lXSnBiR2wwZVY5cFpDSTZJQ0psWTJodlFIWXhJaXdnSW5CeWIyUjFZM1JmYVdRaU9pQWljSEp2WkMxbFkyaHZJaXdnSW5SdmIyd2lPaUI3SW01aGJXVWlPaUFpWldOb2J5MTJNU0lzSUNKa1pYTmpjbWx3ZEdsdmJpSTZJQ0pCZFdScGRDQnZibXg1SWl3Z0ltbHVjSFYwVTJOb1pXMWhJam9nZXlKMGVYQmxJam9nSW05aWFtVmpkQ0lzSUNKd2NtOXdaWEowYVdWeklqb2dleUowWlhoMElqb2dleUowZVhCbElqb2dJbk4wY21sdVp5SjlmU3dnSW5KbGNYVnBjbVZrSWpvZ1d5SjBaWGgwSWwxOWZYMD0iKSkKc2VydmVyID0gU2VydmVyKENPTkZJR1sibmFtZSJdLCB2ZXJzaW9uPSIyLjEuMiIpCnZhbGlkYXRvciA9IERyYWZ0MjAyMDEyVmFsaWRhdG9yKENPTkZJR1sidG9vbCJdWyJpbnB1dFNjaGVtYSJdKQoKCkBzZXJ2ZXIubGlzdF90b29scygpCmFzeW5jIGRlZiBsaXN0X3Rvb2xzKCk6CiAgICByZXR1cm4gW1Rvb2wubW9kZWxfdmFsaWRhdGUoQ09ORklHWyJ0b29sIl0pXQoKCkBzZXJ2ZXIuY2FsbF90b29sKCkKYXN5bmMgZGVmIGNhbGxfdG9vbChuYW1lLCBhcmd1bWVudHMpOgogICAgaWYgbmFtZSAhPSBDT05GSUdbInRvb2wiXVsibmFtZSJdOgogICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoIlVua25vd24gdG9vbCIpCiAgICB2YWxpZGF0b3IudmFsaWRhdGUoYXJndW1lbnRzKQogICAgcmVzdWx0ID0gYXdhaXQgbWFya2V0X2ludm9rZSh7CiAgICAgICAgImNhcGFiaWxpdHlfaWQiOiBDT05GSUdbImNhcGFiaWxpdHlfaWQiXSwKICAgICAgICAicHJvZHVjdF9pZCI6IENPTkZJR1sicHJvZHVjdF9pZCJdLAogICAgICAgICJzb3VyY2VfaHViIjogb3MuZW52aXJvbi5nZXQoIkFJTUFSS0VUX1NPVVJDRV9IVUIiLCAiIiksCiAgICAgICAgImlucHV0IjogYXJndW1lbnRzLAogICAgfSkKICAgIHJldHVybiBbVGV4dENvbnRlbnQodHlwZT0idGV4dCIsIHRleHQ9cmVzdWx0KV0KCgphc3luYyBkZWYgbWFpbigpOgogICAgYXN5bmMgd2l0aCBzdGRpb19zZXJ2ZXIoKSBhcyAocmVhZGVyLCB3cml0ZXIpOgogICAgICAgIGF3YWl0IHNlcnZlci5ydW4ocmVhZGVyLCB3cml0ZXIsIHNlcnZlci5jcmVhdGVfaW5pdGlhbGl6YXRpb25fb3B0aW9ucygpKQoKCmlmIF9fbmFtZV9fID09ICJfX21haW5fXyI6CiAgICBhc3luY2lvLnJ1bihtYWluKCkpCg=='))"
+ ---> Running in 58371f378df6
+ ---> Removed intermediate container 58371f378df6
+ ---> 783d1ef9e700
+Step 5/8 : ENV MCP_SERVER_NAME=audit-echo
+ ---> Running in 6c05d8423aa5
+ ---> Removed intermediate container 6c05d8423aa5
+ ---> a4e1f91151fa
+Step 6/8 : ENV HOME=/tmp PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+ ---> Running in c8abeec52e42
+ ---> Removed intermediate container c8abeec52e42
+ ---> 47c217d6e716
+Step 7/8 : USER 10001:10001
+ ---> Running in c63f34cb7905
+ ---> Removed intermediate container c63f34cb7905
+ ---> 5cd2e8b542ac
+Step 8/8 : ENTRYPOINT ["python", "/app/mcp_server.py"]
+ ---> Running in ee06b8eecdcd
+ ---> Removed intermediate container ee06b8eecdcd
+ ---> 7c9eeefcba77
+Successfully built 7c9eeefcba77
+Successfully tagged histor-generated-mcp-audit:20261027

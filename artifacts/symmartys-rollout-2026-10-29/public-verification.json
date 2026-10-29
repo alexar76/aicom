@@ -1,0 +1,23 @@
+{
+  "federation": {
+    "url": "https://modelmarket.dev/providers/symmartys",
+    "name": "SYMMARTYS — public-record facts for agents that trade",
+    "trusted": true,
+    "status": "active",
+    "capabilities_count": 16
+  },
+  "hub_free_invoke": {
+    "http_status": 200,
+    "success": true,
+    "receipt_present": true,
+    "source_hub": "https://modelmarket.dev/providers/symmartys",
+    "error": null,
+    "first_attempt_rejected_missing_source": true,
+    "hybrid_receipt_verified": true
+  },
+  "priced_direct_admission": {
+    "http_status": 402,
+    "success": null,
+    "error": "payment_required"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "attempted": true,
+  "passed": true,
+  "changed_files": [
+    "frontend/package-lock.json"
+  ],
+  "issues": [],
+  "checks": [
+    {
+      "directory": "frontend",
+      "passed": true,
+      "changed_files": [
+        "frontend/package-lock.json"
+      ],
+      "issues": [],
+      "audit": {
+        "auditReportVersion": 2,
+        "vulnerabilities": {},
+        "metadata": {
+          "vulnerabilities": {
+            "info": 0,
+            "low": 0,
+            "moderate": 0,
+            "high": 0,
+            "critical": 0,
+            "total": 0
+          },
+          "dependencies": {
+            "prod": 2,
+            "dev": 0,
+            "optional": 0,
+            "peer": 0,
+            "peerOptional": 0,
+            "total": 1
+          }
+        }
+      },
+      "sha256": {
+        "frontend/package-lock.json": "9cd27bb7811cdefdd48a8d6256ae2adc33218cde873a68d793afba8ac0917d47"
+      }
+    }
+  ],
+  "requires_qa": true,
+  "repaired_at": 1793196658.380563
+}

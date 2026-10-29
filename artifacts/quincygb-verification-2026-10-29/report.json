@@ -1,0 +1,116 @@
+{
+  "completed_at_utc": "2026-10-29T11:55:46.992480+00:00",
+  "task": "Verify QuincyGB RouteVerdict/Recheck offer and prepare a reply in this chat.",
+  "issue_url": "https://github.com/alexar76/aicom/issues/13",
+  "communication_sent": false,
+  "github_writes": false,
+  "user_authorization": {
+    "budget_usdc": "0.06",
+    "payer_role": "deployer",
+    "user_answer": "делай с кошелька деплоера"
+  },
+  "payment": {
+    "verified_at_utc": "2026-10-29T11:51:41.066Z",
+    "payer": "0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+    "payee": "0x097f9685d1e0752bf8b02d61e5ce9be7ea0fba7f",
+    "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "total_usdc": "0.06",
+    "total_atomic": "60000",
+    "records": [
+      {
+        "call_id": "review-1",
+        "transaction": "0x4e90d18b9fd68ccf9b43e10f4716ffea6d55382ec7ccb2052beb6d34cb8fbdbb",
+        "status": "success",
+        "block_number": "53242645",
+        "value_atomic": "50000",
+        "transfer_matches_approved_payment": true,
+        "authorization_nonce_matches": true,
+        "verified": true
+      },
+      {
+        "call_id": "review-2",
+        "transaction": "0xa7b54c90d0044fc51426fe1082b2dd67a6805448e0016b00a04499404047a022",
+        "status": "success",
+        "block_number": "53242648",
+        "value_atomic": "5000",
+        "transfer_matches_approved_payment": true,
+        "authorization_nonce_matches": true,
+        "verified": true
+      },
+      {
+        "call_id": "review-3",
+        "transaction": "0x12f358fb77214c2aef33be44d8ef2731269417423a9777c880a70403f08957fe",
+        "status": "success",
+        "block_number": "53242649",
+        "value_atomic": "5000",
+        "transfer_matches_approved_payment": true,
+        "authorization_nonce_matches": true,
+        "verified": true
+      }
+    ]
+  },
+  "paid_test": {
+    "target": "https://modelmarket.dev/x402/histor-check",
+    "calls": 3,
+    "http_statuses": [
+      200,
+      200,
+      200
+    ],
+    "routeverdict": {
+      "verdict": "TRUSTED",
+      "score": 95.0,
+      "raw_payment_terms_match_ground_truth": true,
+      "reported_price": "$0.00",
+      "correct_price_usdc": "0.001",
+      "amount_units": "1000"
+    },
+    "recheck": {
+      "statuses": [
+        "BASELINE",
+        "UNCHANGED"
+      ],
+      "same_watch_id": true,
+      "fingerprints_identical": true
+    },
+    "schemas_validated": true,
+    "cdp_listing_independently_confirmed": true,
+    "payai_lookup_result": "structured Listing status not found",
+    "limits": [
+      "One target only; two Rechecks three seconds apart.",
+      "No live CHANGED, outage, restart persistence or comprehensive security test.",
+      "TRUSTED/95 is RouteVerdict’s metadata rubric, not a verification of the target paid payload."
+    ]
+  },
+  "findings": [
+    {
+      "id": "live-subcent-price-display",
+      "level": "confirmed in paid production response",
+      "detail": "1000 USDC units correctly retained, formatted price_usdc shows $0.00 instead of $0.001. Display precision loss; no overcharge established."
+    },
+    {
+      "id": "schema-score-versus-contract",
+      "level": "reproduced in reviewed pure functions from pinned public source",
+      "routeverdict_commit": "9b4377b7f9cdcaf6a6f4657e4b2eecda0d9592d9",
+      "detail": "string→number output type change; quality100→100; compute_diff has no changes. README describes schema-score diff, so scope clarification or digest is the appropriate request.",
+      "positive_control": "Recheck’s pure output-schema fingerprint catches the same change."
+    }
+  ],
+  "execution_note": "Initial wrapper sent an unsigned GET because it used the wrong local plan shape. HTTP405, no signature or spend. Preserved in initial-wrapper-get-probe.jsonl; adapter corrected and exact POST/URL/body assertions added before paid calls.",
+  "evidence": [
+    "paid-test-plan.json",
+    "unpaid-probes.json",
+    "buyer-compatibility.json",
+    "paid-results.jsonl",
+    "payment-authorizations.jsonl",
+    "receipt-verification.json",
+    "chain-verification.json",
+    "review-1-response.body",
+    "review-2-response.body",
+    "review-3-response.body",
+    "independent/paid-response-review.json",
+    "source-review/source-pure-function-reproduction.json",
+    "source-review/summary.json"
+  ],
+  "reply_draft_en": "Thanks, Quincy. We ran three paid checks against https://modelmarket.dev/x402/histor-check today: one RouteVerdict and two Rechecks with a fresh watch_id. All returned HTTP 200; all three USDC transfers were independently verified on Base, totalling $0.06.\n\nRouteVerdict returned TRUSTED/95 and matched the target’s raw payment terms. Recheck returned BASELINE, then UNCHANGED, with matching fingerprints.\n\nOne issue is confirmed in the paid RouteVerdict response: amount_units is correctly \"1000\", but price_usdc is \"$0.00\" for a $0.001 USDC endpoint. Please preserve sub-cent precision in the formatted price.\n\nSeparately, in the pinned public RouteVerdict source, changing an output field from string to number leaves both schema scores at 100 and compute_diff reports no changes. Recheck’s pure fingerprint function does catch that same output-schema change. Could RouteVerdict distinguish schema-score stability from contract stability, or state that boundary explicitly?\n\nThe schema-change finding is a local reproduction of the reviewed pure functions; the paid Recheck test covered a stable repeat, not a live CHANGED case or restart persistence. These were requested review purchases from our deployer wallet; please label them as tests rather than organic demand.\n\nReceipts:\nRouteVerdict: https://basescan.org/tx/0x4e90d18b9fd68ccf9b43e10f4716ffea6d55382ec7ccb2052beb6d34cb8fbdbb\nRecheck baseline: https://basescan.org/tx/0xa7b54c90d0044fc51426fe1082b2dd67a6805448e0016b00a04499404047a022\nRecheck repeat: https://basescan.org/tx/0x12f358fb77214c2aef33be44d8ef2731269417423a9777c880a70403f08957fe"
+}

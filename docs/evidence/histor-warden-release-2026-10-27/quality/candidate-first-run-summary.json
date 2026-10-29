@@ -1,0 +1,29 @@
+{
+  "source": "Aggregate fields from root-owned completed native evaluator report; no private fixtures or provider rows copied",
+  "signedEnvelopeArchived": false,
+  "envelopeArchiveNote": "The single public candidate channel had already been replaced by a later candidate when completion was inspected.",
+  "unit": "warden-release-quality-0222-20261027.service",
+  "unitResult": "success",
+  "unitExecMainStatus": 0,
+  "run": "20261027T143941",
+  "status": "passed",
+  "phase": "candidate",
+  "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+  "imageDigest": "sha256:0f0c4f35da115e7d602701aebae9bff1781d33ce395a700a81e48869da3bdd33",
+  "evaluatedAt": 1793111981.466045,
+  "expiresAt": 1793284781.4660451,
+  "fullEvidence": {
+    "status": "passed",
+    "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+    "evaluatedAt": 1793111981.466045,
+    "holdoutSha256": "e975df064e57ae195a0ab33967d7d70ab83fc1fdf555d5c837f15411a321089a"
+  },
+  "suites": {
+    "development": {"passed": true, "counts": {"attacks": 8244, "benign": 362, "candidates": 0, "missed": 0, "falsePositives": 0, "incomplete": 0}},
+    "holdout": {"passed": true, "counts": {"attacks": 24, "benign": 24, "candidates": 0, "missed": 0, "falsePositives": 0, "incomplete": 0}},
+    "candidates": {"passed": true, "counts": {"attacks": 0, "benign": 0, "candidates": 31, "missed": 0, "falsePositives": 0, "incomplete": 0}}
+  },
+  "behaviour": {"passed": true, "cases": 72, "executed": 72, "missed": 0, "falsePositives": 0, "incomplete": 0},
+  "discovery": {"status": "complete", "candidates": {"allowed": 20, "inconclusive": 0, "total": 31}, "generation": {"status": "ok", "accepted": 12, "admitted": 12, "rejected": 2}},
+  "deployed": false
+}

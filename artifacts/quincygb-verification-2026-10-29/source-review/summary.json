@@ -1,0 +1,90 @@
+{
+  "scope": "Independent review of selected public source files plus isolated pure-function reproductions. No service started, no paid call, no publication or messaging.",
+  "pinned_sources": {
+    "route_verdict": "9b4377b7f9cdcaf6a6f4657e4b2eecda0d9592d9",
+    "stall_row": "c8bead1520ce5824da356939faa011fc3d65f26f"
+  },
+  "products": {
+    "route_verdict": {
+      "endpoint": "https://route-verdict-production.up.railway.app/v1/check",
+      "method": "POST",
+      "body": {
+        "resource_url": "https://modelmarket.dev/x402/histor-check"
+      },
+      "source_default_price_usdc": "0.05",
+      "behavior_ru": "Читает target без оплаты: GET, затем POST {} если первый ответ не 402. Разбирает challenge, оценивает schema metadata, читает CDP/PayAI catalogs, сопоставляет с последним общим check того же URL. Платный payload target не покупает и его качество не проверяет.",
+      "cache_ru": "В прочитанном run_check нет кэша результатов: выполняется новый probe и catalog lookups. Shared httpx client — пул соединений. SQLite хранит baseline для diff.",
+      "source": "https://github.com/QuincyGB/route-verdict/blob/9b4377b7f9cdcaf6a6f4657e4b2eecda0d9592d9/app/checker.py#L264"
+    },
+    "recheck": {
+      "endpoint": "https://stall-row-production.up.railway.app/v1/recheck",
+      "method": "POST",
+      "body": {
+        "url": "https://modelmarket.dev/x402/histor-check",
+        "watch_id": "choose-a-unique-UUID-for-this-check"
+      },
+      "source_default_price_usdc": "0.005",
+      "behavior_ru": "Один неоплаченный probe target на вызов; первый успешный снимок BASELINE, затем CHANGED/UNCHANGED. При неуспешном probe baseline не перезаписывается. Для проверки повторения нужны минимум 2 вызова, то есть 0.01 USDC. RouteVerdict плюс 2 Recheck — 0.06 USDC по опубликованным ценам.",
+      "fingerprint_ru": "Для x402: HTTP status, первый accept amount/asset/network/payTo, hash resource.description и hash extensions.bazaar.info.output.schema. Для web: HTTP status и hash нормализованного body.",
+      "source": "https://github.com/QuincyGB/stall-row/blob/c8bead1520ce5824da356939faa011fc3d65f26f/app/services/recheck.py#L2262"
+    }
+  },
+  "findings": [
+    {
+      "id": "microprice-display-rounding",
+      "classification": "reproduced_source_level_display_defect",
+      "source": "https://github.com/QuincyGB/route-verdict/blob/9b4377b7f9cdcaf6a6f4657e4b2eecda0d9592d9/app/parsers.py#L127",
+      "summary_ru": "format_price форматирует известный Base USDC до двух десятичных знаков. 1000 units = 0.001 USDC превращаются в $0.00, 5000 units = 0.005 USDC в $0.01. amount_units при этом сохраняется. Это ошибка представления микроцены, не установленное неправильное списание.",
+      "reproduction": "source-pure-function-reproduction.json",
+      "suggestion_ru": "Сохранять точную десятичную цену до 6 знаков USDC, например 0.001, не округлять её до центов."
+    },
+    {
+      "id": "routeverdict-diff-tracks-score-not-contract",
+      "classification": "reproduced_source_level_diff_scope_limitation",
+      "source": "https://github.com/QuincyGB/route-verdict/blob/9b4377b7f9cdcaf6a6f4657e4b2eecda0d9592d9/app/checker.py#L161",
+      "summary_ru": "RouteVerdict сравнивает schema_quality.score, а не schema/hash. Изменение output property value.type: string → number имеет score 100 с обеих сторон и возвращает changes=[] / no changes. Область сравнения в README названа schema score; это не утверждение о нарушении всех заявленных функций.",
+      "reproduction": "source-pure-function-reproduction.json",
+      "positive_control_ru": "Тот же сдвиг output schema в Recheck даёт schema_hash diff. Нельзя выдать это сужение RouteVerdict за отсутствие schema-change detection у Recheck.",
+      "suggestion_ru": "В ответе RouteVerdict явно указать список отслеживаемых полей или добавить digest контракта, чтобы no changes не читалось как неизменность всего контракта."
+    },
+    {
+      "id": "recheck-partial-fingerprint",
+      "classification": "reproduced_source_level_monitoring_scope_limitation",
+      "source": "https://github.com/QuincyGB/stall-row/blob/c8bead1520ce5824da356939faa011fc3d65f26f/app/services/recheck.py#L2206",
+      "summary_ru": "В Recheck fingerprint нет input method/input contract, отдельного extensions.bazaar.schema, scheme и прочих accepts. Pure-function проверка показала пустой diff при каждом из четырёх изменений: input method, standard Bazaar schema, second accept amount, primary scheme.",
+      "official_spec_reference": "https://github.com/x402-foundation/x402/blob/main/specs/extensions/bazaar.md",
+      "reproduction": "source-pure-function-reproduction.json",
+      "limits_ru": "Не live paid результат. README перечисляет отслеживаемый subset; полезно уточнить как product scope, не выдавать за полную проверку неизменности всех payment terms и discovery contract."
+    },
+    {
+      "id": "baseline-scope",
+      "classification": "source_confirmed_state_scope",
+      "sources": [
+        "https://github.com/QuincyGB/route-verdict/blob/9b4377b7f9cdcaf6a6f4657e4b2eecda0d9592d9/app/store.py#L71",
+        "https://github.com/QuincyGB/stall-row/blob/c8bead1520ce5824da356939faa011fc3d65f26f/app/services/recheck.py#L2274"
+      ],
+      "summary_ru": "RouteVerdict baseline общий по URL, payer в ключ не входит. Recheck key = watch_id + newline + URL, default watch_id детерминирован от URL. Для изолированного контрольного повтора нужен новый случайный watch_id. Подписанной buyer-owned history в этой логике нет; это scope, не проверенная эксплуатация."
+    }
+  ],
+  "positive_notes_ru": [
+    "В источниках чётко раскрыто, что проверяемый target не покупается и платный payload не оценивается.",
+    "Catalog lookup failures передаются unknown, а не подставленным not_listed.",
+    "Recheck сохраняет последний успешный baseline при probe error; первое состояние называет BASELINE, не UNCHANGED.",
+    "Recheck typed-output-schema change внутри объявленного поля обнаруживает — positive control пройден."
+  ],
+  "limits": [
+    "Deployment identity to source commit is not attested; these conclusions concern pinned public source snapshots.",
+    "Paid fulfillment, settlement, refund behavior and actual production outputs were not tested by this subagent.",
+    "Reviewed tests were read, not executed. Only 9 reviewed pure functions were extracted with AST and executed in memory under parent authorization; no third-party imports, service initialization, network or DB execution."
+  ],
+  "evidence": [
+    "index.json",
+    "source-pure-function-reproduction.json",
+    "reproduce_pure_rules.py",
+    "pure-rule-checks.json"
+  ],
+  "primary_findings_for_reply": [
+    "microprice-display-rounding",
+    "routeverdict-diff-tracks-score-not-contract"
+  ]
+}

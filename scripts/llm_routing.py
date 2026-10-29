@@ -13,7 +13,6 @@ import argparse
 import json
 import os
 import re
-import shutil
 import subprocess
 import sys
 from copy import deepcopy
@@ -24,6 +23,11 @@ from typing import Any
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from core.json_state import write_text_atomic
+
 FLEET_YAML = Path(__file__).with_name("llm_fleet.yaml")
 
 DEEPSEEK_BASE = "https://api.deepseek.com/v1"
@@ -110,7 +114,7 @@ def _ts() -> str:
 
 def _backup(path: Path) -> Path:
     dest = path.with_suffix(path.suffix + f".bak-{_ts()}")
-    shutil.copy2(path, dest)
+    write_text_atomic(dest, path.read_text(encoding="utf-8"), mode=0o600)
     return dest
 
 
@@ -269,8 +273,7 @@ def _upsert_env(env_path: Path, updates: dict[str, str], *, marker: str) -> None
         else:
             lines.append(f"{k}={v}")
     lines.append(f"# profile applied {_ts()}")
-    env_path.parent.mkdir(parents=True, exist_ok=True)
-    env_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    write_text_atomic(env_path, "\n".join(lines) + "\n", mode=0o600)
 
 
 def apply_metis_profile(prod_yaml: str, mode: str, *, restart: bool = True) -> dict[str, Any]:
@@ -279,9 +282,7 @@ def apply_metis_profile(prod_yaml: str, mode: str, *, restart: bool = True) -> d
     data = yaml.safe_load(prod.read_text(encoding="utf-8")) or {}
     bak = _backup(prod)
     patched = patcher(data if isinstance(data, dict) else {})
-    tmp = Path("/tmp") / f"metis-profile-{_ts()}.yaml"
-    tmp.write_text(yaml.safe_dump(patched, sort_keys=False, allow_unicode=True), encoding="utf-8")
-    shutil.move(str(tmp), str(prod))
+    write_text_atomic(prod, yaml.safe_dump(patched, sort_keys=False, allow_unicode=True), mode=0o600)
     if restart:
         subprocess.run(["docker", "restart", "metis"], check=False)
     return {"backup": str(bak), "mode": mode, "base_model": patched.get("base_model")}

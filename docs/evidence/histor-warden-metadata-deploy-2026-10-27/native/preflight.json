@@ -1,0 +1,35 @@
+{
+  "scope": "Read-only native operator preflight; no deployment mutation executed",
+  "host": "admin-vps",
+  "sourceCommit": "ce1dd74edc30e7d5775c7583079cc4f9ed5d656f",
+  "allowedBranch": "momus/fix-warden-0.22.2-metadata-ce1dd74ed",
+  "live": {
+    "imageDigest": "sha256:170a2523716bed3101b1a6420cab17eced83a0096053ba4b90e5ed75d51bddc1",
+    "sourceCommit": "0f3be96e391c4d3ac19c21ec7c7fa4aecb860ad9",
+    "health": "healthy",
+    "historVersion": "0.4.2",
+    "profile": "prod",
+    "store": "postgresql",
+    "treeSize": 1115909,
+    "crawlRunning": false,
+    "wardenMetadataVersion": "0.20.0",
+    "wardenJsFiles": 63,
+    "wardenBuildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de"
+  },
+  "trustedBaseDigest": "sha256:befe7e54d444d0d9b2658151725b264fc6bb61dbbdb0927caff60f281ba249d6",
+  "operatorLock": "free",
+  "runningQualityOrOperatorUnits": [],
+  "nativeExecutor": {
+    "unit": "skopos-deploy-hand.service",
+    "requireTests": true,
+    "serviceAllowlist": ["canary", "warden"],
+    "allowedBranchPrefixes": ["momus/fix-"],
+    "stateDirectory": "/var/lib/skopos-deploy-hand/canary",
+    "repository": {"scheme": "http", "hostname": "localhost", "path": "/alexar76/aicom.git"}
+  },
+  "rollback": {
+    "previousImage": "sha256:170a2523716bed3101b1a6420cab17eced83a0096053ba4b90e5ed75d51bddc1",
+    "owner": "Existing signed shared executor journal and rollback orders",
+    "manualComposeDeploy": false
+  }
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<base href="/">
+<title>HISTOR — transparency log for MCP tool definitions</title>
+<meta name="description" content="HISTOR reads what the remote MCP endpoints in the official registry advertise, signs what it saw as MTL/1 labels, and appends every label to a Merkle log. It tells you when a server's tool definitions changed — and never calls a server safe."/>
+<link rel="canonical" href="https://histor.modelmarket.dev/"/>
+<link rel="alternate" hreflang="en" href="https://histor.modelmarket.dev/?lang=en"/>
+<link rel="alternate" hreflang="ru" href="https://histor.modelmarket.dev/?lang=ru"/>
+<link rel="alternate" hreflang="es" href="https://histor.modelmarket.dev/?lang=es"/>
+<link rel="alternate" hreflang="fr" href="https://histor.modelmarket.dev/?lang=fr"/>
+<link rel="alternate" hreflang="zh" href="https://histor.modelmarket.dev/?lang=zh"/>
+<link rel="alternate" hreflang="x-default" href="https://histor.modelmarket.dev/"/>
+<link rel="alternate" type="application/atom+xml" title="HISTOR — tool-definition changes" href="https://histor.modelmarket.dev/feed.xml"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="HISTOR — MCP tool definitions, on the record"/>
+<meta property="og:description" content="Signed labels over what every remote MCP endpoint in the official registry advertised, a diff when it changes, and a Merkle log anyone can audit."/>
+<meta property="og:url" content="https://histor.modelmarket.dev/"/>
+<meta property="og:image" content="https://histor.modelmarket.dev/assets/og.png"/>
+<meta property="og:image:width" content="1280"/>
+<meta property="og:image:height" content="640"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="theme-color" content="#05080d"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305080d'/%3E%3Cpath d='M16 6v6M16 12l-6 6M16 12l6 6M10 18l-3 6M10 18l3 6M22 18l-3 6M22 18l3 6' stroke='%235fe3ff' stroke-width='1.6' fill='none'/%3E%3Ccircle cx='16' cy='6' r='2.6' fill='%23ffd58a'/%3E%3C/svg%3E"/>
+<link href="assets/fonts/fonts.css" rel="stylesheet"/>
+<link href="assets/histor.css" rel="stylesheet"/>
+<!-- three@0.185.0 is vendored under assets/vendor/three and imported by relative path: the page makes
+     no third-party request and carries no inline script, so CSP script-src 'self' holds. -->
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="wrap row">
+    <a class="brand" href="./" data-route="/"><span class="pip" aria-hidden="true"></span>HISTOR</a>
+    <div class="nav-links">
+      <a href="servers" data-route="/servers" data-i="nav_servers">Servers</a>
+      <a href="changes" data-route="/changes" data-i="nav_changes">Changes</a>
+      <a href="log" data-route="/log" data-i="nav_log">Log</a>
+      <a href="check" data-route="/check" data-i="nav_check">Check</a>
+      <a href="#why" data-i="nav_why">Why</a>
+      <a href="#how" data-i="nav_how">How it works</a>
+      <a href="https://github.com/alexar76/histor" data-i="nav_code">GitHub</a>
+    </div>
+    <div class="langs langs-bar" role="group" aria-label="Language">
+      <button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="zh">ZH</button>
+    </div>
+    <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+</nav>
+<div class="drawer" id="drawer">
+  <a href="servers" data-route="/servers" data-i="nav_servers">Servers</a>
+  <a href="changes" data-route="/changes" data-i="nav_changes">Changes</a>
+  <a href="log" data-route="/log" data-i="nav_log">Log</a>
+  <a href="check" data-route="/check" data-i="nav_check">Check</a>
+  <a href="#why" data-i="nav_why">Why</a>
+      <a href="#how" data-i="nav_how">How it works</a>
+  <a href="https://github.com/alexar76/histor" data-i="nav_code">GitHub</a>
+  <div class="langs" role="group" aria-label="Language">
+    <button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="zh">ZH</button>
+  </div>
+</div>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kicker" data-i="kicker">Transparency log · MCP tool definitions</p>
+      <h1 data-i="h1">Every MCP server's tools, <em>on the record</em>.</h1>
+      <p class="lead" data-i="lead">Your AI client trusts the tool descriptions an MCP server sends it — and a server can change them after you approved it. HISTOR keeps a public, signed record of what every remote MCP server in the official registry advertised, and tells you the day it changed.</p>
+      <p class="sublead" data-i="sublead">Remote endpoints: it lists tools and never calls one. Registry packages: bounded canary calls run inside the isolated sandbox. It never says a server is safe — it tells you what was said, and when.</p>
+      <form class="lookup" id="lookup" role="search">
+        <input id="lookup-q" type="search" autocomplete="off" data-i-ph="lookup_ph" placeholder="Server name or endpoint URL" aria-label="Server name or endpoint URL"/>
+        <button class="btn btn-primary" type="submit" data-i="lookup_go">Look up</button>
+      </form>
+      <div class="cta">
+        <a class="btn btn-ghost" href="check" data-route="/check" data-i="cta_check">Check your tool set</a>
+        <a class="btn btn-ghost" href="changes" data-route="/changes" data-i="cta_changes">Recent changes</a>
+        <a class="btn btn-ghost" href="#how" data-i="cta_how">How the log works</a>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <canvas id="loom" aria-label="The log: labels arrive as leaves, their hashes climb the Merkle tree, finished blocks freeze into a stack, and the root is sealed by a signed tree head"></canvas>
+      <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+      <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+      <div class="legend" aria-hidden="true">
+        <span><i style="background:var(--obs)"></i><span data-i="lg_obs">observation</span></span>
+        <span><i style="background:var(--scan)"></i><span data-i="lg_scan">pattern scan</span></span>
+        <span><i style="background:var(--pass)"></i><span data-i="lg_pass">unchanged</span></span>
+        <span><i style="background:var(--fail)"></i><span data-i="lg_fail">changed</span></span>
+        <span><i style="background:var(--name)"></i><span data-i="lg_name">name check</span></span>
+      </div>
+      <div class="hint" data-i="stage_hint">DRAG TO ORBIT</div>
+      <div class="hud" aria-live="polite">
+        <div class="mode SIM" id="hud-mode"><span class="dot" aria-hidden="true"></span><span id="hud-mode-l">SIM</span></div>
+        <div class="mid">
+          <div class="phase" id="hud-phase">—</div>
+          <div class="msg" id="hud-msg"></div>
+        </div>
+      </div>
+      <div class="fallback"><p data-i="stage_fallback">WebGL is unavailable here. The picture is the log itself: each label is a leaf, leaf hashes climb a Merkle tree, and a signed tree head seals the root.</p></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="metrics rv" id="metrics">
+      <div class="metric"><div class="v" id="m-endpoints">—</div><div class="k" data-i="m_endpoints">Registry endpoints</div><div class="w" data-i="m_w_run">last crawl</div></div>
+      <div class="metric"><div class="v" id="m-pinned">—</div><div class="k" data-i="m_pinned">Tool sets pinned</div><div class="w" data-i="m_w_now">current</div></div>
+      <div class="metric"><div class="v" id="m-changes">—</div><div class="k" data-i="m_changes">Changes</div><div class="w" data-i="m_w_7d">last 7 days</div></div>
+      <div class="metric"><div class="v" id="m-tree">—</div><div class="k" data-i="m_tree">Labels in the log</div><div class="w" data-i="m_w_all">all time</div></div>
+      <div class="metric"><div class="v" id="m-sth">—</div><div class="k" data-i="m_sth">Last signed tree head</div><div class="w" data-i="m_w_utc">UTC</div></div>
+    </div>
+    <p class="crawl-note" id="crawl-note" role="status" hidden></p>
+  </div>
+</section>
+
+<section class="section wrap why" id="why">
+  <p class="eyebrow rv" data-i="why_eye">What HISTOR is for</p>
+  <h2 class="rv" data-i="why_h">Tool descriptions are instructions. They should not change behind your back.</h2>
+  <div class="why-grid rv">
+    <article class="why-card"><div class="why-k" data-i="w1k">The problem</div><h3 data-i="w1t">A server can change what your model reads</h3><p data-i="w1p">When you connect an MCP server, its tool descriptions go straight to the model as instructions. A server can pass your review with harmless descriptions and change them next week — one added sentence is all a prompt injection needs, and most clients never ask you again.</p></article>
+    <article class="why-card"><div class="why-k" data-i="w2k">What HISTOR does</div><h3 data-i="w2t">It keeps the public record</h3><p data-i="w2p">Every day HISTOR reads what each remote (streamable-HTTP) endpoint in the official MCP registry advertises, fingerprints it, signs what it saw and appends it to a log that can only grow. When a server's definitions change, the change gets a date and a diff.</p></article>
+    <article class="why-card"><div class="why-k" data-i="w3k">What you get</div><h3 data-i="w3t">A second pair of eyes you can check</h3><p data-i="w3p">Look up any server before you trust it. Paste what your client received and learn whether everyone else sees the same thing. Follow changes in a feed, or put a badge in your README. Every answer is signed, so you can verify it instead of believing it.</p></article>
+  </div>
+  <h3 class="block-h rv" data-i="who_h">Who it is for</h3>
+  <div class="who rv">
+    <div class="who-item"><b data-i="who1t">People who use MCP servers</b><span data-i="who1p">in Claude, Cursor or any client — check a server before you connect it, and again when it changes.</span></div>
+    <div class="who-item"><b data-i="who2t">Agent builders</b><span data-i="who2p">whose agents connect to servers on their own — call /check before trusting a tool set.</span></div>
+    <div class="who-item"><b data-i="who3t">Registries and directories</b><span data-i="who3p">that want more than stars and download counts — show when a listing's tools last changed.</span></div>
+    <div class="who-item"><b data-i="who4t">Server authors</b><span data-i="who4p">who want to show a stable, documented history — add the badge, and every change you ship is dated in public.</span></div>
+  </div>
+  <h3 class="block-h rv" data-i="terms_h">Four words used on this page</h3>
+  <dl class="terms rv">
+    <div><dt data-i="t1t">Tool definitions</dt><dd data-i="t1p">The name, description and input schema of each tool a server offers — the text your model reads.</dd></div>
+    <div><dt data-i="t2t">Pinned</dt><dd data-i="t2p">HISTOR has recorded a fingerprint (digest) of the exact definitions it saw, so any later change is detectable.</dd></div>
+    <div><dt data-i="t3t">Label</dt><dd data-i="t3p">One signed statement about one observation: what was seen, what matched, whether it changed. Anyone can verify it offline.</dd></div>
+    <div><dt data-i="t4t">Signed tree head</dt><dd data-i="t4p">The log's signed summary after each crawl. Comparing two of them proves nothing was deleted or rewritten in between.</dd></div>
+  </dl>
+</section>
+
+<section class="desk wrap" id="desk">
+  <div class="tabs" role="tablist">
+    <a href="servers" data-route="/servers" data-i="nav_servers">Servers</a>
+    <a href="changes" data-route="/changes" data-i="nav_changes">Changes</a>
+    <a href="log" data-route="/log" data-i="nav_log">Log</a>
+    <a href="check" data-route="/check" data-i="nav_check">Check</a>
+    <a href="stats" data-route="/stats" data-i="nav_stats">State of MCP</a>
+  </div>
+  <div id="view" aria-live="polite"></div>
+</section>
+
+<section class="section wrap" id="how">
+  <p class="eyebrow rv" data-i="how_eye">Read → digest → label → append → sign → compare</p>
+  <h2 class="rv" data-i="how_h">How the log works</h2>
+  <p class="lede rv" data-i="how_p">Six steps, every one of them checkable by someone who does not trust HISTOR. The only thing you have to take on faith is that the observation happened when the label says it did — and the log makes it impossible to change that story afterwards.</p>
+  <div class="steps rv">
+    <article class="step"><div class="n">01</div><h3 data-i="s1t">Read</h3><p data-i="s1p">Remote endpoints in the official MCP registry: initialize, then tools/list, drained across every page; no tool is called, and private addresses are refused before the connection opens. npm and PyPI packages: installed and started in the sandbox described below, with no route out.</p></article>
+    <article class="step"><div class="n">02</div><h3 data-i="s2t">Digest</h3><p data-i="s2p">The tool set is reduced to name, description, input and output schema, sorted by UTF-16 code units and hashed over its RFC 8785 canonical form. Anyone holding the same tools gets the same digest — which is what makes a comparison possible.</p></article>
+    <article class="step"><div class="n">03</div><h3 data-i="s3t">Label</h3><p data-i="s3p">Four MTL/1 methods, one signed AWR/2 document each: what was observed, what the WARDEN pattern set matched, whether the definitions changed since the last label, and whether the name is on a threat list. No score, ever.</p></article>
+    <article class="step"><div class="n">04</div><h3 data-i="s4t">Append</h3><p data-i="s4p">Every label becomes a leaf of an RFC 9162 Merkle tree: leaf hash = SHA-256(0x00 ‖ JCS(label)). The label you download is the leaf input, so you can recompute its hash yourself.</p></article>
+    <article class="step"><div class="n">05</div><h3 data-i="s5t">Sign</h3><p data-i="s5p">After each crawl HISTOR signs a tree head: the size and the root. Keep yesterday's head; ask for a consistency proof to today's; if anything was removed or rewritten, the proof fails.</p></article>
+    <article class="step"><div class="n">06</div><h3 data-i="s6t">Compare</h3><p data-i="s6p">Each day a continuity label compares the new digest with the last one. Equal: "unchanged since". Different: a change, with the date and a per-tool diff. A client that checks what it received adds the view no crawler has.</p></article>
+  </div>
+</section>
+
+<section class="section wrap" id="conditions">
+  <p class="eyebrow rv" data-i="cond_eye">Where an npm or PyPI package is run</p>
+  <h2 class="rv" data-i="cond_h">Test conditions</h2>
+  <p class="lede rv" data-i="cond_p">A package observation is true for these conditions, and no others. Every package page names the exact image it ran in and any configuration it was given.</p>
+  <div class="cards rv">
+    <article class="card"><h3 data-i="c1t">System</h3><p data-i="c1p">Linux x86_64, inside gVisor (runsc): the package talks to a kernel written for sandboxing, not to the host's. An unprivileged user, no capabilities, a read-only root.</p></article>
+    <article class="card"><h3 data-i="c2t">Runtimes</h3><p data-i="c2p">npm packages in histor-node:22, PyPI packages in histor-python:3.12: the official node:22-bookworm-slim and python:3.12-slim images plus bash, git, Python 3 or Node 22 and a Java 21 runtime — never Docker — built when a sandbox host is installed. A package whose Requires-Python excludes 3.12 runs on histor-python:3.13 or 3.14; one that requires a newer Node runs again on histor-node:24. The exact image a package ran in is on its page.</p></article>
+    <article class="card"><h3 data-i="c3t">Install</h3><p data-i="c3p">npm with --ignore-scripts, then the install scripts in a traced stage of their own. PyPI: wheels only — a package that ships only source is reported, never built.</p></article>
+    <article class="card"><h3 data-i="c4t">Network</h3><p data-i="c4p">No route out. Every name the package looks up resolves to HISTOR's own traps, which record what was sent and forward nothing. A server that needs the internet to start shows that here.</p></article>
+    <article class="card"><h3 data-i="c5t">Secrets</h3><p data-i="c5p">None are real. Decoy credentials sit in HOME and a decoy .env in the working directory. A variable the package says it needs gets a placeholder; where the placeholder was sent is recorded.</p></article>
+    <article class="card"><h3 data-i="c6t">Limits</h3><p data-i="c6p">512 MB of memory, one CPU, 64 MB of /tmp. 360 s to install, 150 s to start and answer; up to 15 tools called once each with canary arguments, 8 s per call.</p></article>
+    <article class="card"><h3 data-i="c7t">Configuration</h3><p data-i="c7p">Only names: required variables its registry entry declares or that it printed when it exited, and a start argument such as serve when its usage text offers one. Never a value from anyone else.</p></article>
+  </div>
+</section>
+
+<section class="section wrap" id="not">
+  <h2 class="rv" data-i="not_h">What a label does not say</h2>
+  <p class="lede rv" data-i="not_p">The profile HISTOR implements forbids the words safe, secure, audited, certified, approved and trusted. Here is why, in the terms of what the log can and cannot show.</p>
+  <div class="cards rv">
+    <article class="card"><h3 data-i="n1t">Not a safety rating</h3><p data-i="n1p">A pattern match is a reason to read a definition, not a finding. Three of the four methods can never return fail. There is no score to rank by, because no score HISTOR could compute would mean what a reader takes it to mean.</p></article>
+    <article class="card"><h3 data-i="n2t">Not the code</h3><p data-i="n2p">Labels are about advertised text. A remote endpoint's source is never read and its tools are never invoked; a package runs only in the sandbox, against nothing real. A server can keep identical definitions and behave differently for real users; the log cannot see that, and says so inside every label.</p></article>
+    <article class="card"><h3 data-i="n3t">A change is not an accusation</h3><p data-i="n3p">A version bump changes definitions too. A change is shown as a date and a diff, in amber, never red. What you do with it is yours: re-read, re-approve, or pin the old digest.</p></article>
+    <article class="card"><h3 data-i="n4t">A package as run here, not on your machine</h3><p data-i="n4p">An npm or PyPI server is observed under the test conditions above: Linux, no internet, placeholder keys. One that needs Windows, a real account or the network may show fewer tools or none; its page says why it exited.</p></article>
+    <article class="card"><h3 data-i="n5t">One operator, one key</h3><p data-i="n5p">Today one party runs the log. A second observer on another network is the next step, and any AIMarket hub can run one. Until then, what the key proves is who said it — not that it is true.</p></article>
+    <article class="card"><h3 data-i="n6t">Behind a login, unseen</h3><p data-i="n6p">Endpoints that require authentication answer 401 to everyone without a key, including HISTOR. They are counted and listed as not observed, never dropped from the numbers.</p></article>
+  </div>
+</section>
+
+<section class="section wrap" id="integrate">
+  <p class="eyebrow rv" data-i="int_eye">For clients, registries and server authors</p>
+  <h2 class="rv" data-i="int_h">Use it</h2>
+  <p class="lede rv" data-i="int_p">Before your agent trusts a server, send the tools it received. The answer is signed by the log's did:key and names the tree head it was given under.</p>
+  <pre class="rv">curl -sS https://histor.modelmarket.dev/api/v1/check \
+  -H 'Content-Type: application/json' \
+  -d '{"endpoint":"https://example.com/mcp","tools":[ …tools/list result… ],"contribute":true}'
+# -&gt; {"type":"histor.check/v1","match":"same"|"different"|"previously-observed"|…,
+#     "observed":{"unchangedSince":"…","changes":0}, "patternScan":{…}, "signature":{…}}
+
+# README badge for your server
+[![MCP tool defs](https://histor.modelmarket.dev/badge/&lt;id&gt;.svg)](https://histor.modelmarket.dev/s/&lt;id&gt;)
+
+# Atom feed of every observed change
+https://histor.modelmarket.dev/feed.xml</pre>
+  <div class="rail rv" aria-label="Where HISTOR sits">
+    <div class="rail-step"><strong>WARDEN</strong><span data-i="ly_1">checks definitions at connect</span></div>
+    <div class="rail-step me"><strong>HISTOR</strong><span data-i="ly_2">remembers what was advertised</span></div>
+    <div class="rail-step"><strong>THEMIS</strong><span data-i="ly_3">admits at publish</span></div>
+    <div class="rail-step"><strong>Hub</strong><span data-i="ly_4">lists histor.check@v1</span></div>
+    <div class="rail-step"><strong>AWR</strong><span data-i="ly_5">the signed format</span></div>
+  </div>
+</section>
+<section class="section wrap" id="faq">
+  <h2 class="rv" data-i="faq_h">Questions</h2>
+  <div class="faq rv">
+    <details><summary data-i="q1">Is this a marketplace listing?</summary><p data-i="a1">No. The server list is the log's index: every remote endpoint in the official MCP registry, with what HISTOR could observe about it. Nothing here is for sale and nothing is ranked by quality.</p></details>
+    <details><summary data-i="q2">Does HISTOR tell me a server is safe?</summary><p data-i="a2">No, and it never will. It tells you what a server advertised, whether that changed, and which published patterns matched the text. Whether to trust the server is your decision — HISTOR makes sure you decide on the same facts as everyone else.</p></details>
+    <details><summary data-i="q3">Why are so many servers "not observed"?</summary><p data-i="a3">Most remote MCP endpoints require a login (they answer 401 to anyone without a key), some use the legacy SSE transport or need per-user values in the URL, and some are simply down. They stay on the list with the reason, so the numbers never hide them.</p></details>
+    <details><summary data-i="q4">How do I check a server I already use?</summary><p data-i="a4">Open the Check tab, paste the server's endpoint and the tools/list result your client received, and press Check. You get back, signed, whether HISTOR observed the same definitions — or different ones, or an older set.</p></details>
+    <details><summary data-i="q5">How do I get a badge for my server?</summary><p data-i="a5">Find your endpoint on the Servers tab, open it, and copy the Markdown snippet under the facts. The badge shows the date your definitions were pinned or last changed, and links to the full history.</p></details>
+    <details><summary data-i="q6">Why should I trust HISTOR itself?</summary><p data-i="a6">You do not have to. Every label and every tree head is signed with one published key; the Log tab proves in your browser that the log only grew; and the command-line auditor does the same from any machine. What remains is that one operator runs it today — a second, independent observer is the next step.</p></details>
+    <details><summary data-i="q7">What does it cost?</summary><p data-i="a7">Looking things up, the badges, the feed and /check are free. HISTOR also offers histor.check@v1 to the AIMarket Hub, so agents can reach it through the market.</p></details>
+    <details id="crawler"><summary data-i="q8">I run an MCP server. What does HISTOR send it, and how do I opt out?</summary><p data-i="a8">Once a day: initialize, notifications/initialized and tools/list — never a tool call, never a redirect followed, at most two connections per host, from a User-Agent that starts with histor/. To be left out, open an issue on the histor repository with your endpoint or host; it is then listed as not observed (operator-opt-out), with the reason, rather than silently dropped. Labels already in the log stay: the log only grows.</p></details>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="fbrand">HISTOR</div>
+        <p data-i="foot_blurb">ἵστωρ — the one who knows because they saw. A public, append-only record of what MCP servers advertised, and when it changed.</p>
+      </div>
+      <div>
+        <h5 data-i="foot_docs">Docs</h5>
+        <a href="https://github.com/alexar76/histor#readme" data-i="foot_readme">README</a>
+        <a href="https://github.com/alexar76/histor/blob/main/docs/labels.md" data-i="foot_labels">What a label says</a>
+        <a href="https://github.com/alexar76/histor/blob/main/docs/log.md" data-i="foot_log">Auditing the log</a>
+        <a href="https://github.com/alexar76/histor/blob/main/docs/api.md" data-i="foot_api">API</a>
+      </div>
+      <div>
+        <h5 data-i="foot_net">Network</h5>
+        <a href="https://modelmarket.dev">Hub · modelmarket.dev</a>
+        <a href="https://warden.modelmarket.dev">WARDEN</a>
+        <a href="https://monitor.modelmarket.dev/?node=histor">Alien Monitor</a>
+        <a href="https://github.com/alexar76/histor">GitHub</a>
+      </div>
+    </div>
+    <div class="fbot"><span data-i="foot">HISTOR · MIT · part of the AIMarket ecosystem</span><span class="mono" id="foot-did"></span></div>
+  </div>
+</footer>
+
+<script type="module" src="assets/desk.js"></script>
+</body>
+</html>

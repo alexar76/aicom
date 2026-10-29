@@ -1,0 +1,28 @@
+{
+  "method": "GET",
+  "url": "https://deps.dev/_/s/pypi/p/aimarket-agent/v/2.6.0/dependents",
+  "retrieved_at": "2026-10-28T13:35:25.418380+00:00",
+  "status": 200,
+  "bytes": 231,
+  "sha256": "8858e3b2024162b48ac0f7912b436117ae74f061004227bde57a7638dc06a6c4",
+  "result": {
+    "package": {
+      "system": "PYPI",
+      "name": "aimarket-agent"
+    },
+    "version": "2.6.0",
+    "totalCount": 1,
+    "directCount": 1,
+    "indirectCount": 0,
+    "directSample": [
+      {
+        "package": {
+          "system": "PYPI",
+          "name": "aimarket-bridges"
+        },
+        "version": "0.1.0"
+      }
+    ],
+    "indirectSample": []
+  }
+}

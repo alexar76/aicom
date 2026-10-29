@@ -1,0 +1,97 @@
+{
+  "key": "hubwiz-sourceaware",
+  "url": "https://www.hubwiz.com/blog/source-aware-verification-for-mcp-agents/",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T13:52:15.423253+00:00",
+  "status": 200,
+  "final_url": "https://www.hubwiz.com/blog/source-aware-verification-for-mcp-agents/",
+  "bytes": 48779,
+  "sha256": "27af4328ea173b516780d617da97fd934fc50b907a180b5ef692672f7184dcf7",
+  "identifiers": {
+    "alexar76": 0,
+    "modelmarket.dev": 0,
+    "HISTOR": 0,
+    "WARDEN": 0,
+    "AICOM": 0,
+    "1932": 0,
+    "1,932": 0,
+    "25 微秒": 0
+  },
+  "contexts": {
+    "来源": [
+      "不是\"有没有依据\"，而是\"依据来自哪个源\"：MCP Agent 的来源感知验证 Software 2.0 首页 AI编程 Agent/MCP 本地大模型 工业AI 登录 订阅 MCP 不是\"有没有依据\"，而是\"依据来自哪个源\"：MCP Agent 的来源感知验证 传统的忠实度检查（RAGAS / MiniCheck / AlignScore / SummaC）只问\"证据池里有没有支撑\"；但 MCP Agent 会把搜索、病历、数据库、元数据的输出混在一起，于是\"事实没错、来源错配\"的 cross-source conflation 能轻松过关。ProvenanceGuard 保留来源身份贯穿整条流水线：专家判定应拦截的 139 条断言它拦下 138 条，来源选择准确率约 86%，在一项\"来源调包\"测试里 50 次全部检出",
+      "感知验证 Software 2.0 首页 AI编程 Agent/MCP 本地大模型 工业AI 登录 订阅 MCP 不是\"有没有依据\"，而是\"依据来自哪个源\"：MCP Agent 的来源感知验证 传统的忠实度检查（RAGAS / MiniCheck / AlignScore / SummaC）只问\"证据池里有没有支撑\"；但 MCP Agent 会把搜索、病历、数据库、元数据的输出混在一起，于是\"事实没错、来源错配\"的 cross-source conflation 能轻松过关。ProvenanceGuard 保留来源身份贯穿整条流水线：专家判定应拦截的 139 条断言它拦下 138 条，来源选择准确率约 86%，在一项\"来源调包\"测试里 50 次全部检出。 admin 15 10月 2026 — 阅读时间 12 分钟 分享 一句话结论 ：当 Agent 从\"读一段检索结果\"变成\"通过 MCP 调多个工具\"之后，事实性问题变得 更微妙 ",
+      " MiniCheck / AlignScore / SummaC）只问\"证据池里有没有支撑\"；但 MCP Agent 会把搜索、病历、数据库、元数据的输出混在一起，于是\"事实没错、来源错配\"的 cross-source conflation 能轻松过关。ProvenanceGuard 保留来源身份贯穿整条流水线：专家判定应拦截的 139 条断言它拦下 138 条，来源选择准确率约 86%，在一项\"来源调包\"测试里 50 次全部检出。 admin 15 10月 2026 — 阅读时间 12 分钟 分享 一句话结论 ：当 Agent 从\"读一段检索结果\"变成\"通过 MCP 调多个工具\"之后，事实性问题变得 更微妙 ：一个断言 在证据池里确实为真 ，却被 归到了错误的来源 上——Multiverse Computing 把它称为 cross-source conflation（跨来源混淆） 。传统的忠实度/支撑度检查器把证据 汇总（poo"
+    ]
+  },
+  "meta": [
+    {
+      "name": "description",
+      "content": "多工具 MCP Agent 会犯一种更隐蔽的错：结论在证据里确实为真，却被归到了错误的来源上（cross-source conflation）。Multiverse Computing 的 ProvenanceGuard 在答案生成后逐条拆解断言、路由到最相关来源、用 NLI 校验支撑、核对答案声称的来源，再输出逐条来源判定与整体放行/拦截。本文完整编译其方法、281 条真实轨迹与 361 条人工标注断言的实测，以及 50 次来源调包的检出结果。"
+    },
+    {
+      "property": "og:type",
+      "content": "article"
+    },
+    {
+      "property": "og:title",
+      "content": "不是\"有没有依据\"，而是\"依据来自哪个源\"：MCP Agent 的来源感知验证"
+    },
+    {
+      "property": "og:description",
+      "content": "传统的忠实度检查（RAGAS / MiniCheck / AlignScore / SummaC）只问\"证据池里有没有支撑\"；但 MCP Agent 会把搜索、病历、数据库、元数据的输出混在一起，于是\"事实没错、来源错配\"的 cross-source conflation 能轻松过关。ProvenanceGuard 保留来源身份贯穿整条流水线：专家判定应拦截的 139 条断言它拦下 138 条，来源选择准确率约 86%，在一项\"来源调包\"测试里 50 次全部检出。"
+    },
+    {
+      "property": "article:published_time",
+      "content": "2026-10-15T09:39:12.000Z"
+    },
+    {
+      "property": "article:modified_time",
+      "content": "2026-10-15T09:39:12.000Z"
+    },
+    {
+      "name": "twitter:title",
+      "content": "不是\"有没有依据\"，而是\"依据来自哪个源\"：MCP Agent 的来源感知验证"
+    },
+    {
+      "name": "twitter:description",
+      "content": "传统的忠实度检查（RAGAS / MiniCheck / AlignScore / SummaC）只问\"证据池里有没有支撑\"；但 MCP Agent 会把搜索、病历、数据库、元数据的输出混在一起，于是\"事实没错、来源错配\"的 cross-source conflation 能轻松过关。ProvenanceGuard 保留来源身份贯穿整条流水线：专家判定应拦截的 139 条断言它拦下 138 条，来源选择准确率约 86%，在一项\"来源调包\"测试里 50 次全部检出。"
+    }
+  ],
+  "source_links": [
+    "https://www.hubwiz.com/blog",
+    "https://www.hubwiz.com/blog/",
+    "https://www.hubwiz.com/blog/vibe-coding-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/local-llm-stack/",
+    "https://www.hubwiz.com/blog/ai-industrial-stack/",
+    "https://www.hubwiz.com/blog/tag/mcp/",
+    "https://github.com/explodinggradients/ragas?ref=hubwiz.com",
+    "https://huggingface.co/papers/2606.18037?ref=hubwiz.com",
+    "https://arxiv.org/abs/2606.18037?ref=hubwiz.com",
+    "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2?ref=hubwiz.com",
+    "https://huggingface.co/MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli?ref=hubwiz.com",
+    "https://arxiv.org/abs/2210.08726?ref=hubwiz.com",
+    "https://github.com/NVIDIA/nvflow/pull/9?ref=hubwiz.com",
+    "https://github.com/aalvsz/provenanceguard/blob/main/poster/ProvenanceGuard_Agentic_AI_Summit_2026_Berkeley.pdf?ref=hubwiz.com",
+    "https://huggingface.co/blog/MultiverseComputingCAI/getting-the-source-right-not-just-the-fact-source?ref=hubwiz.com",
+    "https://arxiv.org/abs/2606.18037?ref=hubwiz.com",
+    "https://huggingface.co/papers/2606.18037?ref=hubwiz.com",
+    "https://arxiv.org/abs/2210.08726?ref=hubwiz.com",
+    "https://github.com/NVIDIA/nvflow/pull/9?ref=hubwiz.com",
+    "https://github.com/aalvsz/provenanceguard?ref=hubwiz.com",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/what-is-mcp-model-context-protocol/",
+    "https://www.hubwiz.com/blog/ai-agent-s-verifier/",
+    "https://www.hubwiz.com/blog/agent-said-done-database-disagreed/",
+    "https://www.hubwiz.com/blog/rag-data-stack/",
+    "https://www.hubwiz.com/blog/6-steps-to-reduce-rag-hallucination-rate-to-1-percent/",
+    "https://www.hubwiz.com/blog/rag-data-stack/",
+    "https://www.hubwiz.com/blog/generative-media-stack/",
+    "https://www.hubwiz.com/blog/ai-infra-stack/",
+    "https://www.hubwiz.com/blog/ai-tools/",
+    "https://www.hubwiz.com/blog/about/",
+    "https://www.hubwiz.com/blog/contribute/",
+    "https://www.hubwiz.com/blog/privacy/"
+  ]
+}

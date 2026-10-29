@@ -1,0 +1,55 @@
+{
+  "url": "https://api.github.com/repos/lets-order-some-fries/trovark/issues/22/comments?per_page=100",
+  "status": 200,
+  "sha256": "4a63b58972be3f4e867c545b5b23950854d20177d59c03ccd569dcdb00b75763",
+  "retrieved_at": "2026-10-27T08:37:00.937687+00:00",
+  "body": [
+    {
+      "url": "https://api.github.com/repos/lets-order-some-fries/trovark/issues/comments/5682361982",
+      "html_url": "https://github.com/lets-order-some-fries/trovark/issues/22#issuecomment-5682361982",
+      "issue_url": "https://api.github.com/repos/lets-order-some-fries/trovark/issues/22",
+      "id": 5682361982,
+      "node_id": "IC_kwDOTphPns8AAAABUrH2fg",
+      "user": {
+        "login": "lets-order-some-fries",
+        "id": 34904987,
+        "node_id": "MDQ6VXNlcjM0OTA0OTg3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/34904987?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/lets-order-some-fries",
+        "html_url": "https://github.com/lets-order-some-fries",
+        "followers_url": "https://api.github.com/users/lets-order-some-fries/followers",
+        "following_url": "https://api.github.com/users/lets-order-some-fries/following{/other_user}",
+        "gists_url": "https://api.github.com/users/lets-order-some-fries/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/lets-order-some-fries/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/lets-order-some-fries/subscriptions",
+        "organizations_url": "https://api.github.com/users/lets-order-some-fries/orgs",
+        "repos_url": "https://api.github.com/users/lets-order-some-fries/repos",
+        "events_url": "https://api.github.com/users/lets-order-some-fries/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/lets-order-some-fries/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "created_at": "2026-09-15T14:49:23Z",
+      "updated_at": "2026-09-15T14:49:23Z",
+      "body": "## Measured: the blast radius, and a correction to this issue's own numbers\n\nImplemented on [`fix/tool-surface-partiality`](https://github.com/lets-order-some-fries/trovark/tree/fix/tool-surface-partiality)\nand measured across the whole published index — 381 of the 400 refs (19 repos 404 today,\nrenamed or deleted since the 2026-08-15 scan). Every flip was hand-checked against a clone,\nand each before/after was re-run through the real CLI on both branches within the same hour,\nso the numbers isolate the fix from repo drift.\n\n| | |\n|---|---|\n| Flip to `surfacePartial` | **5** of 381 |\n| Published grades that change | **4** |\n| Grades newly withheld (INSUFFICIENT DATA) | **1** (`alexar76/aimarket-plugins`, B- 72) |\n| Graded cards | **310 → 309** |\n| Refs where the existing `tools/` guard stopped firing | **0** |\n\nThe five: `github/github-mcp-server`, `alexar76/aimarket-plugins`, `gupta-kush/spotify-mcp`,\n`Octodamus/octodamus-core`, `smart-mcp-proxy/mcpproxy-go`.\n\n### This issue's ground truth was wrong\n\nI said \"125 tools, 34 destructive\". Counted at HEAD `7d13a7a`: **121** distinct tool names\n(121 golden files in `pkg/github/__toolsnaps__/`), **61** annotated `readOnlyHint: false`, and\n**14** hard create/delete/push/merge/fork verbs. The shape of the problem is unchanged — 4 tools\nread of 121 — but the numbers should be quoted correctly.\n\n### Withholding a number is not grade-neutral\n\nCost carries weight 0.15, so withholding a *below-average* cost score **raises** the weighted\nmean of what remains. Two of the five move up: `gupta-kush/spotify-mcp` goes C- 55 → C 61. That\nis worth a changelog line, because \"we declined to answer\" reading as \"better grade\" is\nsurprising.\n\n### One false positive was found and fixed\n\n`daedalusdevelopmentgroup/ddg-agent-payable-services` flipped because a 25-line package\n`__init__.py` — docstring, `__version__`, a lazy `__getattr__`, zero tool declarations — went\nunread beside the two files that declare all 43 of its tools. Its surface was complete, and the\npunishment was a reward: B 79 → A- 86. Files that cannot declare a tool are now excluded from\nthe candidate set. Re-derived over all 400 cached decision inputs: flips 6 → 5, that ref is the\nonly one suppressed, all five true positives survive.\n\n### Why this should not close the issue\n\n**`github/github-mcp-server` still publishes A+ 96 after the fix.** It gains the partial-read\nnote and loses a cost number it did not need — cost was 100/100 and the other three dimensions\nalready averaged 96. Security stays **85**, computed from a `toolSurfaceRisk` of `low` inferred\nfrom four read-only getters out of 121 tools, 61 of them non-read-only, because `assemble.ts`\ndrops the risk only when it is exactly `none`.\n\nSo the partiality detection is right and worth landing, but the headline harm this issue was\nfiled about — the README's flagship example grading A+ on a 4-of-121 read — survives it. The\nquestion that actually moves that card is whether **security should be withheld on a partial\nsurface at all**, which is a rubric-shaped decision rather than a detection bug.\n\nSuggest landing this branch as the detection half and keeping the issue open for that.\n",
+      "author_association": "OWNER",
+      "pin": null,
+      "reactions": {
+        "url": "https://api.github.com/repos/lets-order-some-fries/trovark/issues/comments/5682361982/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "performed_via_github_app": null,
+      "minimized": null
+    }
+  ]
+}

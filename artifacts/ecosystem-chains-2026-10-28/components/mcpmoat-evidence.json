@@ -1,0 +1,599 @@
+[
+  {
+    "url": "https://api.github.com/repos/Ducarv/mcpmoat/contents/docs/competitors.md",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:52:30.312085+00:00",
+    "status": 200,
+    "sha256": "edf922ce66eea5cfa470cf8cbb7aa9ac1119b2b2f4ec3a095678b2b532a2e332",
+    "bytes": 30339,
+    "blob_sha": "41d2846ce4d07f11591955c159167e21e1cd84dc",
+    "html_url": "https://github.com/Ducarv/mcpmoat/blob/dev/docs/competitors.md",
+    "text": "# Competitors\n\nThis page compares mcpmoat with five tools that overlap with it. It helps us pick ideas to adopt and\nideas to avoid. It answers issue #32 and the risk \"Strong competitors\" in\n[PRD section 13](PRD.md).\n\nChecked on 2026-10-23. Tools change fast. Check the linked source before you rely on a row.\n\nHow to read this page:\n\n- Every fact has a link to its source. A fact without a link was removed.\n- \"Unknown\" means we found no source. We did not guess.\n- The licence is the one that GitHub and the repository `LICENSE` file report. We state it as a fact\n  and do not judge it.\n- We read the READMEs and docs of each project. We did not install or run any of these tools. Test\n  results in this page are claims by the project, not by us.\n\n## Comparison table\n\n| Tool | Scope | Offline? | Licence | Detection approach | Rule format | Pins / rug pull | Source |\n|---|---|---|---|---|---|---|---|\n| Snyk Agent Scan | Scans agents, MCP servers and skills on the machine ([README](https://github.com/snyk/agent-scan#readme)) | No. `scan` needs a `SNYK_TOKEN` and sends tool names, descriptions and server signatures to the Snyk API ([CLI reference](https://github.com/snyk/agent-scan/blob/main/docs/cli-reference.md), [README](https://github.com/snyk/agent-scan#analysis-and-validation)) | Apache-2.0 ([LICENSE](https://github.com/snyk/agent-scan/blob/main/LICENSE)) | Local checks plus remote analysis. Reports scored risks such as `prompt_injection_tool_desc` ([risks](https://github.com/snyk/agent-scan/blob/main/docs/risks.md)) | Not public. The analysis runs in the Snyk API ([README](https://github.com/snyk/agent-scan#analysis-and-validation)) | Not described in the current README or docs we read. The 2025 MCP-Scan post describes tool pinning with hashes ([post](https://invariantlabs.ai/blog/introducing-mcp-scan)) | [repo](https://github.com/snyk/agent-scan) |\n| mcpproxy-go | Proxy that federates MCP servers and holds new servers in quarantine ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#why-mcpproxy)) | Yes for the core binary and the offline scan ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#why-mcpproxy)) | MIT ([LICENSE](https://github.com/smart-mcp-proxy/mcpproxy-go/blob/main/LICENSE)) | Offline detect engine with seven checks, for example `unicode.hidden` and `phrase.injection`. Optional Docker-based scanners ([quarantine docs](https://docs.mcpproxy.app/features/security-quarantine/), [scanner plugins](https://docs.mcpproxy.app/features/security-scanner-plugins/)) | No schema in the pages we read. The docs name a signature file, `scanner-bundle.json` ([quarantine docs](https://docs.mcpproxy.app/features/security-quarantine/)) | Yes. Hashes each tool and holds a changed tool for review ([quarantine docs](https://docs.mcpproxy.app/features/security-quarantine/)) | [repo](https://github.com/smart-mcp-proxy/mcpproxy-go) |\n| Docker MCP tooling (we studied the Docker MCP Gateway, `docker/mcp-gateway`, and the MCP Toolkit) | Runs MCP servers in containers behind one gateway ([README](https://github.com/docker/mcp-gateway#readme)) | Not stated as offline. Catalogs and images come from OCI registries ([README](https://github.com/docker/mcp-gateway#catalog-management)) | MIT ([README](https://github.com/docker/mcp-gateway#license)) | Isolation and policy, not tool-description analysis: signature checks on `mcp/` images, secret-pattern blocking, name collision checks ([security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md)) | Unknown. No detection rules found. Catalog entries use a server spec ([docs](https://github.com/docker/mcp-gateway/blob/main/docs/server-entry-spec.md)) | Not described for tool definitions in the pages we read ([Toolkit docs](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/), [security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md)) | [repo](https://github.com/docker/mcp-gateway), [Toolkit docs](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/) |\n| `alexar76/warden` | Scans MCP configs of several clients and can wrap a stdio server as a firewall ([README](https://github.com/alexar76/warden#readme)) | Mostly. The README says the only network traffic is to the servers in your config. Opt-in features (`--histor`, a signed feed, a classifier) use the network ([README](https://github.com/alexar76/warden#scan-every-server-your-clients-start)) | MIT ([README](https://github.com/alexar76/warden#readme)) | 36 static regex rules, a threat feed, an origin gate and a pinning gate ([gates](https://github.com/alexar76/warden/blob/main/docs/gates.md)) | Regex table. `staticScanRuleset()` returns each rule with its regex source and flags ([gates](https://github.com/alexar76/warden/blob/main/docs/gates.md)) | Yes. A sha256 hash of the tool definitions is compared with the approved pin. A change raises `TOOL_DEF_DRIFT` ([gates](https://github.com/alexar76/warden/blob/main/docs/gates.md)) | [repo](https://github.com/alexar76/warden) |\n| `mcp-lock` (we studied `dragoscv/mcp-lock`; the name is ambiguous, see below) | Lockfile for MCP tools, with a CI check and a runtime proxy ([README](https://github.com/dragoscv/mcp-lock#readme)) | Not stated. It connects to the servers in your config ([README](https://github.com/dragoscv/mcp-lock#config)) | MIT ([package.json](https://github.com/dragoscv/mcp-lock/blob/main/package.json)) | The README describes only hash comparison, no content analysis ([README](https://github.com/dragoscv/mcp-lock#what-is-hashed)) | None. It writes `mcp-lock.json` ([README](https://github.com/dragoscv/mcp-lock#readme)) | Yes. This is its main feature: it hashes description, schema and annotations apart ([README](https://github.com/dragoscv/mcp-lock#what-is-hashed)) | [repo](https://github.com/dragoscv/mcp-lock) |\n\n## Tool notes\n\n### Snyk Agent Scan\n\n- The repository `invariantlabs-ai/mcp-scan` now redirects to `snyk/agent-scan`\n  ([GitHub API](https://api.github.com/repos/invariantlabs-ai/mcp-scan)). It is Python. The\n  [README](https://github.com/snyk/agent-scan#readme) lists `uvx` and a standalone binary as install\n  methods. The repository was active on 2026-10-23.\n- It finds Claude Code, Cursor, Codex and other clients, and also scans agent skills\n  ([README](https://github.com/snyk/agent-scan#supported-agents-and-capabilities)).\n- It starts stdio servers and connects to remote ones to read tool descriptions. It asks for consent\n  for each server in interactive runs ([README](https://github.com/snyk/agent-scan#interactive-consent-for-mcp-servers)).\n- `inspect` shows components without the analysis step\n  ([README](https://github.com/snyk/agent-scan#cli-parameters)).\n- The README says the CLI output is experimental and can change without notice\n  ([README](https://github.com/snyk/agent-scan#readme)).\n- It does not accept outside contributions\n  ([README](https://github.com/snyk/agent-scan#agent-scan-is-closed-to-contributions)).\n- The Invariant Labs tool poisoning post is the base of this work\n  ([post](https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks)).\n\n### mcpproxy-go\n\n- Repository: [smart-mcp-proxy/mcpproxy-go](https://github.com/smart-mcp-proxy/mcpproxy-go). It is\n  written in Go and was active on 2026-10-23.\n- New servers are quarantined. The user reviews and approves them\n  ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#3-add-your-first-server-and-approve-it)).\n- Trust modes are `manual` (default), `scan` and `auto`. The docs say `auto` carries \"rug-pull risk\"\n  ([quarantine docs](https://docs.mcpproxy.app/features/security-quarantine/)).\n- The README lists exceptions to the review hold, for example input-schema-only edits outside `scan`\n  mode ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#why-mcpproxy)).\n- The README says a clean scan does not prove a server is safe\n  ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#3-add-your-first-server-and-approve-it)).\n- Note: the README and the docs page word the `manual` mode a little differently (the README lists\n  exceptions, the docs page says every change is held). We cite both and do not decide between them.\n\n### Docker MCP tooling\n\n\"Docker MCP tooling\" is not one product. We studied two parts that fit the issue best:\n\n- The [Docker MCP Gateway](https://github.com/docker/mcp-gateway) (the `docker-mcp` CLI plugin). It\n  is Go, MIT, and was active on 2026-10-23.\n- The [MCP Toolkit](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/) in Docker Desktop,\n  which uses the gateway and the Docker MCP Catalog.\n\nWe did not study the [Docker MCP Catalog](https://hub.docker.com/mcp) build and review process. Docker\nsays it is separate from the gateway repository\n([security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md)).\n\nFacts from the [security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md):\n\n- Signature verification is on by default for images in the `mcp/` namespace.\n- Server containers get no host environment by default. They run with `no-new-privileges` and CPU and\n  memory limits.\n- `--block-secrets` scans tool-call arguments and text responses for secret-like values.\n- The gateway rejects tool names that collide with another enabled server.\n- Remote URLs must be public HTTPS by default. Loopback, private and cloud-metadata addresses are\n  refused.\n\nThe gateway also has OpenTelemetry instrumentation\n([telemetry docs](https://github.com/docker/mcp-gateway/blob/main/docs/telemetry/README.md)). We did\nnot check where, or if, it sends data by default.\n\n### alexar76/warden\n\n- Repository: [alexar76/warden](https://github.com/alexar76/warden). It is TypeScript with no npm\n  runtime dependencies, MIT, created on 2026-08-24, and was active on 2026-10-23\n  ([README](https://github.com/alexar76/warden#readme)). The README names the npm package\n  `@aimarket/warden`.\n- `warden scan` reads the MCP configs of Claude Code, Claude Desktop, Cursor, VS Code and Windsurf,\n  connects to the servers, and prints a table, JSON, SARIF or Markdown\n  ([README](https://github.com/alexar76/warden#scan-every-server-your-clients-start)).\n- A `warden.lock.json` file turns a change in tool definitions into a reviewable diff\n  ([README](https://github.com/alexar76/warden#scan-every-server-your-clients-start)).\n- `wrap` puts Warden in front of one stdio server. First contact creates a pin. A later change needs\n  a human to run `pins approve` in a terminal\n  ([README](https://github.com/alexar76/warden#protect-claude-desktop-or-cursor-with-one-wrapper)).\n- Each verdict records the rule set version and a digest of the rules\n  ([README](https://github.com/alexar76/warden#the-verdict-is-meant-to-be-recorded)).\n- The README states what it does not do: it is not a sandbox, not a model, and the regex scan misses\n  paraphrases no rule covers ([README](https://github.com/alexar76/warden#what-this-is-not)).\n- The README publishes benchmark numbers and a method\n  ([scanner comparison](https://github.com/alexar76/warden/blob/main/docs/scanner-comparison.md)).\n  These numbers come from the project. We did not reproduce them.\n- Warden is the closest tool to mcpmoat in this list.\n\n### mcp-lock\n\nThe name `mcp-lock` points to several projects. No source ties the issue text to one of them. We\nsearched GitHub repository search, the npm registry, PyPI and crates.io on 2026-10-23.\n\n| Candidate | What it is | Source |\n|---|---|---|\n| `dragoscv/mcp-lock` (studied) | Pins tool descriptions and schemas in `mcp-lock.json`. Has `lock`, `check` and a stdio `proxy`. npm name `@codai/mcp-lock`. MIT. Version 0.2, API may change before 1.0. | [README](https://github.com/dragoscv/mcp-lock#readme), [package.json](https://github.com/dragoscv/mcp-lock/blob/main/package.json) |\n| `blestlabs/mcp-lock` | \"package-lock.json for your MCP servers\": `pin`, `diff`, `scan`, `ci`. Apache-2.0. Last push 2026-02-10. | [README](https://github.com/blestlabs/mcp-lock#readme) |\n| `mcpguards/mcp-lock` | Records the version and tarball hash of each MCP server package. It pins packages, not tool definitions. MIT. | [README](https://github.com/mcpguards/mcp-lock#readme) |\n| `StevieHeyes/MCP-Lock` | A local control plane that starts and stops servers and gates write access. Not a scanner. Apache-2.0. | [README](https://github.com/StevieHeyes/MCP-Lock#readme) |\n| npm package `mcp-lock` | An unrelated placeholder (version 0.0.1, \"part of HLOS ecosystem\"). | [npm registry](https://registry.npmjs.org/mcp-lock) |\n| PyPI and crates.io `mcp-lock` | No package found. | [PyPI](https://pypi.org/pypi/mcp-lock/json), [crates.io](https://crates.io/api/v1/crates/mcp-lock) |\n\nWe picked `dragoscv/mcp-lock` because its name is exact and its purpose (pin tool definitions, detect\ndrift) matches the issue. This is our choice, not a fact from a source. If the issue author meant\nanother project, the row must change. We read only the README and `package.json` of each repository.\nSeveral other lockfile-style tools exist under other names. We did not study them.\n\n## Ideas to adopt\n\nEach idea names the tool that gave it to us.\n\n1. Hash description, schema and annotations as separate parts. A review then shows what kind of\n   change happened. Hash canonical JSON with sorted keys, so a key reorder is not a false alarm.\n   Credit: [mcp-lock](https://github.com/dragoscv/mcp-lock#what-is-hashed). mcpproxy-go also\n   re-baselines key-order-only changes without a hold\n   ([docs](https://docs.mcpproxy.app/features/security-quarantine/)).\n2. Record the rule set version and a digest of the rules in every report. Without them, a changed\n   result cannot be told from a changed server. Credit:\n   [Warden](https://github.com/alexar76/warden#the-verdict-is-meant-to-be-recorded).\n3. Show a pin change field by field, with words added and removed in the description. Credit:\n   [Warden](https://github.com/alexar76/warden#protect-claude-desktop-or-cursor-with-one-wrapper).\n4. Keep severity and blocking as two separate axes. An advisory finding is reported and never\n   blocks. Credit: [Warden](https://github.com/alexar76/warden#the-gate-chain).\n5. Split checks into hard checks (fail) and soft checks (ask a human to review). Credit:\n   [mcpproxy-go](https://docs.mcpproxy.app/features/security-quarantine/).\n6. Ask for consent before mcpmoat starts each server. Show the command or URL, with env values and\n   headers redacted. Credit:\n   [Snyk Agent Scan](https://github.com/snyk/agent-scan#interactive-consent-for-mcp-servers).\n7. Refuse remote destinations in link-local and cloud-metadata ranges, and do not follow redirects.\n   Credit: [Snyk Agent Scan](https://github.com/snyk/agent-scan#security-warning) and the\n   [Docker MCP Gateway](https://github.com/docker/mcp-gateway/blob/main/docs/security.md).\n8. Flag a tool name that collides with a tool from another server. This helps with shadowing (T3).\n   Credit: [Docker MCP Gateway](https://github.com/docker/mcp-gateway/blob/main/docs/security.md).\n9. Write down the limits in plain words: what the tool does not cover. Credit:\n   [mcpproxy-go](https://github.com/smart-mcp-proxy/mcpproxy-go#why-mcpproxy) and\n   [Warden](https://github.com/alexar76/warden#what-this-is-not).\n10. Publish the method behind any detection numbers, with a held-out test set. Credit:\n    [Warden](https://github.com/alexar76/warden/blob/main/docs/scanner-comparison.md).\n11. For later phases: verify image signatures and run servers with a small environment and limits.\n    Credit: [Docker MCP Gateway](https://github.com/docker/mcp-gateway/blob/main/docs/security.md).\n\n## Ideas to avoid\n\n1. Do not need an account or send tool text to a remote service for the default scan. Snyk Agent\n   Scan does this ([README](https://github.com/snyk/agent-scan#analysis-and-validation)). It breaks\n   the offline goal (G7 in the PRD).\n2. Do not change the output format without a version. Snyk Agent Scan states its output is\n   experimental ([README](https://github.com/snyk/agent-scan#readme)). mcpmoat promises versioned\n   JSON.\n3. Do not offer a mode that trusts tool changes without a hold. mcpproxy-go has `auto` mode, which\n   its docs link to rug-pull risk ([docs](https://docs.mcpproxy.app/features/security-quarantine/)).\n4. Do not add a runtime proxy in phase 1. mcpproxy-go, Warden `wrap` and `mcp-lock proxy` sit in the\n   message path ([mcp-lock](https://github.com/dragoscv/mcp-lock#runtime-proxy),\n   [Warden](https://github.com/alexar76/warden#protect-claude-desktop-or-cursor-with-one-wrapper)).\n   That is the firewall scope of a later phase.\n5. Do not add optional network features to the scanner in phase 1. Warden has `--histor`, a signed\n   feed and a classifier that use the network\n   ([README](https://github.com/alexar76/warden#scan-every-server-your-clients-start)). The only\n   opt-in network call in mcpmoat is the `--llm` flag.\n6. Do not add telemetry. The Docker MCP Gateway has OpenTelemetry instrumentation\n   ([docs](https://github.com/docker/mcp-gateway/blob/main/docs/telemetry/README.md)). mcpmoat has\n   none.\n7. Do not rely on a hash-only check. `mcp-lock` as described in its\n   [README](https://github.com/dragoscv/mcp-lock#what-is-hashed) finds changes, not bad content, so a\n   tool that is already bad when you first pin it stays pinned. mcpmoat pins and also applies rules\n   (T1, T3).\n\n## How mcpmoat differs\n\nThese points come from the [PRD](PRD.md) and the facts above.\n\n- **Offline by design.** mcpmoat has no account and no telemetry. It makes no network call except to\n  the MCP servers you configured and, only with `--llm`, to the LLM provider you choose (PRD\n  section 1.1 and NFR-01).\n- **One person, one machine.** The target user is an individual developer on macOS or Linux. The PRD\n  lists SSO, RBAC and a central dashboard as non-goals (section 2.2).\n- **Rules plus pins in one scan.** mcpmoat applies YAML rules and native heuristics to detect T1 to\n  T5. It pins a hash of every tool to detect rug pulls (T2). Each built-in rule is one YAML file\n  with positive and negative tests (NFR-05).\n- **Open rule files.** Rules are YAML files in the repository (`rules/`), embedded in the binary.\n  Snyk Agent Scan keeps its rules in a remote service\n  ([README](https://github.com/snyk/agent-scan#analysis-and-validation)). Warden keeps rules as a\n  regex table ([gates](https://github.com/alexar76/warden/blob/main/docs/gates.md)).\n- **Go, one static binary.** mcpmoat ships as a single binary through GitHub Releases, Homebrew and\n  `go install`. Warden needs Node 20 or newer\n  ([README](https://github.com/alexar76/warden#readme)). `mcp-lock` is a Node package\n  ([package.json](https://github.com/dragoscv/mcp-lock/blob/main/package.json)).\n- **Scanner first, no proxy in phase 1.** mcpmoat reads and reports. It does not sit in the message\n  path in phase 1.\n- **Closest overlap.** Warden also scans local configs, connects to servers, and pins tool\n  definitions. The difference is the language, the YAML rule model with required tests, and the\n  choice to keep optional network features out of phase 1.\n\n## Sources\n\nResearch for this page:\n\n- Snyk Agent Scan: [repo](https://github.com/snyk/agent-scan),\n  [README](https://github.com/snyk/agent-scan#readme),\n  [CLI reference](https://github.com/snyk/agent-scan/blob/main/docs/cli-reference.md),\n  [scanning](https://github.com/snyk/agent-scan/blob/main/docs/scanning.md),\n  [risks](https://github.com/snyk/agent-scan/blob/main/docs/risks.md),\n  [LICENSE](https://github.com/snyk/agent-scan/blob/main/LICENSE),\n  [Introducing MCP-Scan](https://invariantlabs.ai/blog/introducing-mcp-scan)\n- mcpproxy-go: [repo](https://github.com/smart-mcp-proxy/mcpproxy-go),\n  [LICENSE](https://github.com/smart-mcp-proxy/mcpproxy-go/blob/main/LICENSE),\n  [security quarantine](https://docs.mcpproxy.app/features/security-quarantine/),\n  [security scanner plugins](https://docs.mcpproxy.app/features/security-scanner-plugins/)\n- Docker: [docker/mcp-gateway](https://github.com/docker/mcp-gateway),\n  [security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md),\n  [telemetry](https://github.com/docker/mcp-gateway/blob/main/docs/telemetry/README.md),\n  [server entry spec](https://github.com/docker/mcp-gateway/blob/main/docs/server-entry-spec.md),\n  [MCP Toolkit docs](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/)\n- Warden: [repo](https://github.com/alexar76/warden),\n  [gates](https://github.com/alexar76/warden/blob/main/docs/gates.md),\n  [scanner comparison](https://github.com/alexar76/warden/blob/main/docs/scanner-comparison.md)\n- mcp-lock: [dragoscv/mcp-lock](https://github.com/dragoscv/mcp-lock),\n  [blestlabs/mcp-lock](https://github.com/blestlabs/mcp-lock),\n  [mcpguards/mcp-lock](https://github.com/mcpguards/mcp-lock),\n  [StevieHeyes/MCP-Lock](https://github.com/StevieHeyes/MCP-Lock),\n  [npm registry](https://registry.npmjs.org/mcp-lock),\n  [PyPI](https://pypi.org/pypi/mcp-lock/json),\n  [crates.io](https://crates.io/api/v1/crates/mcp-lock)\n- Repository metadata (licence, last push, redirect) came from the GitHub API on 2026-10-23, for\n  example [snyk/agent-scan](https://api.github.com/repos/snyk/agent-scan).\n\nThreat model references:\n\n- Invariant Labs, [MCP security notification: tool poisoning attacks](https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks)\n- [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/)\n"
+  },
+  {
+    "url": "https://api.github.com/repos/Ducarv/mcpmoat/issues/32",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:52:30.797517+00:00",
+    "status": 200,
+    "sha256": "65fbae749cf7b8ef8cc690f0dfd1446e87413653a2202d5572e7a788a19a60a0",
+    "bytes": 6844,
+    "selected": {
+      "html_url": "https://github.com/Ducarv/mcpmoat/issues/32",
+      "title": "Study competitors and write docs/competitors.md",
+      "state": "closed",
+      "merged": null,
+      "merged_at": null,
+      "created_at": "2026-10-17T18:16:23Z",
+      "updated_at": "2026-10-23T15:49:08Z",
+      "closed_at": "2026-10-23T15:49:08Z",
+      "body": "## Context\nPRD section 13 says: study competitors before M4 to sharpen the differentiator and avoid copying.\n\n## Requirements\n- PRD refs: PRD section 13 (risks)\n\n## Tasks\n- [ ] Review Snyk Agent Scan, mcpproxy-go, Docker MCP tooling, `alexar76/warden`, `mcp-lock`.\n- [ ] For each: scope, offline or not, license, detection approach, rule format, pins/rug-pull support.\n- [ ] List ideas to adopt and ideas to avoid, with credit.\n\n## Acceptance criteria\n- [ ] `docs/competitors.md` covers all five tools with a comparison table.\n- [ ] Every claim links a source.\n- [ ] A short section states how mcpmoat differs.\n\n## Notes\nInvariant Labs, tool poisoning: https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks\nOWASP MCP Top 10: https://owasp.org/www-project-mcp-top-10/\n\nPick up with the model in the `model:*` label at high effort (see CLAUDE.md).\n",
+      "comments": 0,
+      "user": "Ducarv"
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/111",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:52:31.332830+00:00",
+    "status": 200,
+    "sha256": "fb92dacbf72df3338f1a56b74bdf80bad5f8b84c99c149b2510593d9c3f0db4d",
+    "bytes": 25402,
+    "selected": {
+      "html_url": "https://github.com/Ducarv/mcpmoat/pull/111",
+      "title": "feat(rules): rule schema, YAML loader, --rules and test harness",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-23T15:49:05Z",
+      "created_at": "2026-10-23T14:23:21Z",
+      "updated_at": "2026-10-23T15:49:06Z",
+      "closed_at": "2026-10-23T15:49:06Z",
+      "body": "## Summary\n\nThis PR builds the core of the rule engine for milestone M4. It loads rules from YAML, checks them, embeds the built-in rules in the binary, and adds `mcpmoat scan --rules <dir>` for extra rules. It also adds the test harness that makes `go test` fail when a built-in rule has no tests.\n\nRules are loaded and checked. They are not applied to scan results yet. The scan output is the same as before, and the \"no rules applied\" notice stays.\n\n- **#33 Rule schema and YAML loader.** New package `internal/rules` with `Rule`, `Match`, `Case`, `LoadError`, `Validate`, `Parse` and `Set`. Decoding is strict. It adds one module, `go.yaml.in/yaml/v3` v3.0.5. The repo owner approved this module before it was added.\n- **#34 Embedded rules and `--rules`.** Built-in rules are embedded with `go:embed` from a small root package, `rules/`. `rules/MOAT-T1-003.yaml` is the first built-in rule. The other rule issues add more. `mcpmoat scan --rules <dir>` adds extra `*.yaml` and `*.yml` files.\n- **#41 Test harness.** `go test` fails when a built-in rule has no `should_match` case, no `should_not_match` case, no risk text or no remediation text. `CONTRIBUTING.md` documents the final format.\n- **#32 `docs/competitors.md`.** Five tools, with a source link for every claim. `alexar76/warden` exists and is the closest competitor. The `mcp-lock` row is a best guess, because several repositories use that name. The document lists the other candidates.\n\nDecisions the repo owner confirmed: the loader is lenient and the built-in harness is strict, test cases live inline in the rule YAML, and the competitor research uses the web.\n\nNot in this PR on purpose:\n\n- Regex compilation and matchers (#35).\n- Native heuristics (#36).\n- The ignore list (#40).\n- More rules.\n- Applying rules to scan results.\n\nThe place where matchers will plug in is `Matcher` and `Compiler` in `internal/rules/seam.go`. `TestBuiltinRulesCases` is skipped on purpose until #35 provides a compiler. Then two small changes are needed: return the compiler from `builtinCompiler()` in `builtin_test.go`, and pass `WithCompiler(...)` in `cmd/mcpmoat/scan_rules.go`.\n\nCloses #33\nCloses #34\nCloses #41\nCloses #32\n\n## PRD references\n\nFR-07, FR-08, FR-09 (schema part), NFR-05, NFR-07, and PRD section 13 (competitors).\n\n## Security\n\nRule files are untrusted input. A cloned repo or a `--rules` folder can ship them. What this PR does about it:\n\n- **Hard limits.** 64 KiB per file, 1000 files, 5000 rules, and caps on list sizes and text sizes.\n- **Error caps.** At most 20 errors per file, 100 per folder and 100 per rule set. Each cap ends with one summary line.\n- **YAML bombs.** Anchors, aliases, deep nesting and huge node counts are rejected before any field is decoded.\n- **No silent drops.** A null item in any list is an error. Before the fix, `should_match: [~]` loaded and lost the case without a message.\n- **Reference URLs.** ASCII `http` or `https` only. They are never fetched.\n- **Terminal safety.** All rule-derived text goes through `termsafe` before it reaches the terminal. This covers control characters, C1 controls, bidi controls and format characters.\n- **Folder access.** `os.OpenRoot` confines reads to the folder. Symlinks and non-regular files are refused.\n- **No side effects.** The new code makes no network call, starts no process and writes no file.\n\nTwo security reviews and a three-agent review (security, logic, quality) ran on this branch. Every Critical and Should-fix finding was fixed:\n\n- A hostile rules folder made `scan --rules` use 2.2 GB of memory and 47 seconds, and print about 10 million stderr lines. Fixed with the error caps.\n- Null list items were dropped silently.\n- Reference URLs accepted invisible and bidi characters.\n- `params` without `heuristic` and a blank `heuristic` passed validation.\n- `NewSet` printed one error for every clashing rule, which bypassed the folder cap.\n\n## Known limits and follow-ups\n\nThese Minor and Nit findings are known and not fixed here.\n\nSecurity-tagged:\n\n- A FIFO swapped in between the directory listing and the open can block `--rules`. The attacker needs write access to the rules folder. The cheapest fix is `O_NONBLOCK` through `root.OpenFile`.\n- `Match.Params` has no type or size caps. This belongs to #36.\n- `ReadDir` lists every entry before the 1000-file cap applies.\n- Ignored files such as `x.YAML`, and an empty rules folder, give no notice.\n- Lookalike ASCII rule IDs are allowed, for example `moat-t1-003` next to `MOAT-T1-003`.\n- The regex compiler is not wired into `--rules` yet. A bad regex does not exit 2 until #35.\n- When `LoadDir` reports errors, `NewSet` does not run. An ID clash shows only after the file errors are fixed.\n- `RunCases` does not recover a panicking `Matcher`.\n\nCorrectness and polish:\n\n- In the folder-cap summary, \"N files not checked\" can be off by one when the cut file is the last one, and it reads \"1 files\".\n- `Validate` errors are not sorted in file order.\n- A decode error inside `match` names `match`, not the key.\n- The risk text check misses `\\v` and `\\f`.\n\nQuality follow-ups, not blocking:\n\n- The error-cap bookkeeping in `parse.go` (`errList`, `mergeByPosition`) could be one stable sort.\n- The terminal-safety test helper is copied in six test files.\n- The in-process and end-to-end `--rules` tests overlap.\n- `show` and `displayText`, and `maxDocumentedRiskRunes` and `maxRiskRunes`, are duplicates.\n- `Option` and `WithCompiler` are machinery for a single option.\n\nNot caused by this PR: `govulncheck` reports GO-2026-6809 in the Go toolchain (`crypto/x509`, fixed in go1.27.3). It is reached through `internal/inspect/httpclient.go`. `go.mod` still says `toolchain go1.27.2`, so the `govulncheck` step in CI will fail until the toolchain line is bumped in a separate change.\n\n## Go notes for the reader\n\n- **`go:embed` from a root package.** `go:embed` cannot use `..` in a path. So `internal/rules` cannot embed the repo-root `rules/` folder. The small package `rules/embed.go` embeds `*.yaml` and exports it as `FS`. `internal/rules` imports it with the alias `builtinrules`.\n- **`os.OpenRoot`.** `LoadDir` opens the folder with `os.OpenRoot` and reads through `root.FS()`. Reads cannot leave the folder, even through a symlink.\n- **Fixed sentinel errors and `errors.Is`.** Messages that reach the user come from fixed error values and typed `Reason` constants, not from library error text. Tests use `errors.Is` to check the cause.\n- **`yaml.Node` first pass.** `Parse` decodes into `yaml.Node` first. A node knows its line and column. That is how errors say `file:4:11`. Fields are then decoded one by one, so a type error names the field and not a Go type.\n- **Functional option `WithCompiler`.** `Builtin(opts ...Option)` and `LoadDir(dir, opts ...Option)` accept options. `WithCompiler` is the only one. It is the hook for #35.\n- **Table tests and fuzzing.** Tests are table-driven. `FuzzParse` feeds random input to `Parse` and checks fixed rules: no panic, errors are bounded, and error text is safe.\n\n## Testing\n\n- [x] `go test ./...` (run as `go test -race -shuffle=on -count=1 ./...`: all packages pass; one expected skip, `TestBuiltinRulesCases`, issue #35)\n- [x] `go vet ./...`\n- [x] `golangci-lint run` (0 issues)\n- [x] `gofmt -l .` prints nothing\n- [x] `go mod tidy -diff` prints nothing, and `go mod verify` passes\n- [x] `go test -fuzz=FuzzParse -fuzztime=30s ./internal/rules/` found no crash\n- [x] Mutation checks: removing the error caps, the null-item checks, the ASCII reference check and the blank-heuristic check each make tests fail\n- [x] Manual run: `scan --no-connect --rules testdata/rules/invalid` exits 2 and prints `testdata/rules/invalid/bad-severity.yaml:4:11: field severity: invalid value: ...`\n- [ ] `govulncheck ./...` reports the known toolchain finding GO-2026-6809 (see above). It reports nothing else.\n\n## Checklist\n\n- [x] New rules have `should_match` and `should_not_match` cases\n- [x] No new network calls or telemetry. One new module, `go.yaml.in/yaml/v3`, approved by the repo owner\n- [x] No secrets in output, logs, fixtures or test data\n- [x] Docs updated if behaviour or flags changed (`CONTRIBUTING.md`, `docs/competitors.md`)\n\n## Release Notes\n\n- **`mcpmoat scan --rules <dir>`** (new flag): loads extra rule files (`*.yaml` and `*.yml`) from a folder, in addition to the built-in rules. It does not look in subfolders. A rule file that is not valid stops the scan with exit code 2. The message names the file, the line and the field. A rule ID that is the same as a built-in rule ID is also an error.\n- **Rule `MOAT-T1-003`** (hidden actions): it is now built into the binary. Rules are not applied to scan results yet, so scan output does not change in this release.\n- Internal: new `internal/rules` package with the rule format, loader and test harness. Built-in rules are embedded from `rules/`. The rule file format is documented in `CONTRIBUTING.md`. New `docs/competitors.md`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+      "comments": 11,
+      "user": "Ducarv"
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/Ducarv/mcpmoat/issues/111/comments?per_page=100",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:52:32.019355+00:00",
+    "status": 200,
+    "sha256": "6d0c6fccfad06dd9a76579c6ec09f732b0bd4e78552d79d66fbb587d06229c4c",
+    "bytes": 64980,
+    "items": [
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6367485851",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T14:40:33Z",
+        "updated_at": "2026-10-23T14:40:33Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 3,
+            "context": "\nReviewed commit: 2a6b751. Method: panel, three specialist agents (security, logic, quality). Tier: full (auto, 8321 changed lines). All three agents ran on the deep tier.\n"
+          },
+          {
+            "line": 25,
+            "context": "17. **[Q]** CONTRIBUTING makes `references` optional while PRD FR-08 lists it (`CONTRIBUTING.md:83`).\n18. **[Q]** `docs/competitors.md` has a research-log line (97) and a possible typo `--histor`.\n19. **[Q]** Wall-clock guards of 5 s in scan tests can flake under `-race` (`e2e_test.go:731`)."
+          }
+        ]
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6367486472",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T14:40:35Z",
+        "updated_at": "2026-10-23T14:40:35Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 28,
+            "context": "| 17 | Q | Minor | `references` optional vs FR-08 | fixed | `6a6cebd`. FR-08 says the loader requires only `id`, `title`, `severity`, `target`, `match`. |\n| 18 | Q | Minor | competitors.md | fixed | `6a6cebd` removed line 97. `--histor` is the real Warden flag name (checked in the Warden README), so there is no typo. |\n| 19 | Q | Minor | wall-clock guards | fixed | `bc33573`. `floodGuard` is 30 s. The line counts prove the early stop. |"
+          }
+        ]
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6367756665",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T14:53:51Z",
+        "updated_at": "2026-10-23T14:53:51Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 3,
+            "context": "\nReviewed commit: d5e5dd2. Method: panel, three fresh specialist agents (security, logic, quality) on the whole branch. Tier: full (auto, 8000+ changed lines). All three ran on the deep tier.\n"
+          }
+        ]
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6367757218",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T14:53:53Z",
+        "updated_at": "2026-10-23T14:53:53Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": []
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6368112751",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T15:11:32Z",
+        "updated_at": "2026-10-23T15:11:32Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 3,
+            "context": "\nReviewed commit: 6883918. Method: panel, three fresh specialist agents (security, logic, quality) on the whole branch. Tier: full (auto). All three ran on the deep tier.\n"
+          },
+          {
+            "line": 25,
+            "context": "15. **[Q]** Issue numbers in production comments will go stale (`load.go:282`).\n16. **[Q]** `docs/competitors.md` is out of scope for this PR, and says every rule needs tests (`:203`).\n17. **[S]** A race between the `os.Stat` and the `os.OpenRoot` on the `--rules` path (`load.go:113`)."
+          }
+        ]
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6368113236",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T15:11:33Z",
+        "updated_at": "2026-10-23T15:11:33Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 26,
+            "context": "| 15 | Q | Minor | issue numbers go stale | declined | See reason B. |\n| 16 | Q | Minor | competitors.md | fixed | `5b14a43` fixes the claim about tests (only built-in rules need them). The scope part is declined, as in round 2 finding 31: the PR body states it on purpose. |\n| 17 | S | Minor | race between `Stat` and `OpenRoot` | declined | Accepted in round 2 and written in a code comment. It needs write access to the parent folder of the `--rules` path. The `/dev/fd` option is not portable to Windows and is more code than the risk. |"
+          }
+        ]
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6368336901",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T15:22:30Z",
+        "updated_at": "2026-10-23T15:22:30Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 3,
+            "context": "\nReviewed commit: 5b14a43. Method: panel, three fresh specialist agents (security, logic, quality) on the whole branch. Tier: full (auto). All three ran on the deep tier.\n"
+          },
+          {
+            "line": 28,
+            "context": "18. **[Q]** The case test for the only built-in rule is always skipped until #35 (`builtin_test.go:14`).\n19. **[Q]** `docs/competitors.md` is unrelated to this PR (`:1`).\n"
+          }
+        ]
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6368337478",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T15:22:32Z",
+        "updated_at": "2026-10-23T15:22:32Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 28,
+            "context": "| 18 | Q | Minor | built-in case test skipped | fixed | `58b237d`. The comment names #35 as the change that makes the test run. |\n| 19 | Q | Minor | competitors.md scope | declined | Same as round 2 finding 31. |\n| 20 | S | Nit | control characters in free text | declined | Same as round 1 finding 3. |"
+          }
+        ]
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6368603513",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T15:35:48Z",
+        "updated_at": "2026-10-23T15:35:48Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 3,
+            "context": "\nReviewed commit: 3b6ac08. Method: panel, three fresh specialist agents (security, logic, quality) on the whole branch. Tier: full (auto). All three ran on the deep tier.\n"
+          },
+          {
+            "line": 20,
+            "context": "12. **[Q]** `CLAUDE.md:54` and `.agents/project.md:79` still say every rule needs test cases, but only built-in rules do.\n13. **[Q]** `docs/competitors.md` is unrelated to this PR; CONTRIBUTING.md copies the full built-in rule; the new module has no visible approval (`go.mod:10`).\n"
+          }
+        ]
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6368603997",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T15:35:49Z",
+        "updated_at": "2026-10-23T15:35:49Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 22,
+            "context": "| 12 | Q | Minor | CLAUDE.md and `.agents/project.md` wording | declined | These are your instruction files, and the review criterion steers the review agents. I do not edit them in a polish loop. Suggested change: \"every built-in rule (in `rules/`)\". |\n| 13 | Q | Minor | competitors.md, rule copy in CONTRIBUTING, module approval | declined or non-issue | competitors.md: same as round 2 finding 31. The copy: same as round 3 finding 31. The module: the PR body records the approval. |\n| 14 | L | Nit | non-string key without a field name | fixed | `4628eba`. The field is `match` or `match.params`. |"
+          }
+        ]
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111#issuecomment-6368604720",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T15:35:52Z",
+        "updated_at": "2026-10-23T15:35:52Z",
+        "filename": null,
+        "status": null,
+        "patch": null,
+        "selected_contexts": [
+          {
+            "line": 3,
+            "context": "\n**Branch head: `4bc01f4`.** The last full panel reviewed `3b6ac08`. The three commits after it (`4628eba`, `d1506b2`, `4bc01f4`) fix the round 5 findings and are checked by the gates and by new tests, but a fresh panel has not reviewed them. The loop stopped at the cap of 5 rounds. I did not merge and I did not approve anything.\n"
+          },
+          {
+            "line": 31,
+            "context": "- The structure of the error caps, the field table, the unsafe-rune helpers, the near-copy rule builders and the mapping loop were not merged. The reasons are in the comments.\n- `docs/competitors.md` stays in this PR, because the PR body says so.\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/111/files?per_page=100",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:52:32.595803+00:00",
+    "status": 200,
+    "sha256": "eec90f941fba831e36e6ad63880a7277a4957b3064719f6cc3d08200ec969d8b",
+    "bytes": 427510,
+    "items": [
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "CONTRIBUTING.md",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "cmd/mcpmoat/cli.go",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "cmd/mcpmoat/cli_test.go",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "cmd/mcpmoat/e2e_test.go",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "cmd/mcpmoat/helpers_test.go",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "cmd/mcpmoat/scan.go",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "cmd/mcpmoat/scan_connect_flags_test.go",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "cmd/mcpmoat/scan_rules.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "cmd/mcpmoat/scan_rules_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "cmd/mcpmoat/scan_test.go",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "docs/PRD.md",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "docs/competitors.md",
+        "status": "added",
+        "patch": "@@ -0,0 +1,255 @@\n+# Competitors\n+\n+This page compares mcpmoat with five tools that overlap with it. It helps us pick ideas to adopt and\n+ideas to avoid. It answers issue #32 and the risk \"Strong competitors\" in\n+[PRD section 13](PRD.md).\n+\n+Checked on 2026-10-23. Tools change fast. Check the linked source before you rely on a row.\n+\n+How to read this page:\n+\n+- Every fact has a link to its source. A fact without a link was removed.\n+- \"Unknown\" means we found no source. We did not guess.\n+- The licence is the one that GitHub and the repository `LICENSE` file report. We state it as a fact\n+  and do not judge it.\n+- We read the READMEs and docs of each project. We did not install or run any of these tools. Test\n+  results in this page are claims by the project, not by us.\n+\n+## Comparison table\n+\n+| Tool | Scope | Offline? | Licence | Detection approach | Rule format | Pins / rug pull | Source |\n+|---|---|---|---|---|---|---|---|\n+| Snyk Agent Scan | Scans agents, MCP servers and skills on the machine ([README](https://github.com/snyk/agent-scan#readme)) | No. `scan` needs a `SNYK_TOKEN` and sends tool names, descriptions and server signatures to the Snyk API ([CLI reference](https://github.com/snyk/agent-scan/blob/main/docs/cli-reference.md), [README](https://github.com/snyk/agent-scan#analysis-and-validation)) | Apache-2.0 ([LICENSE](https://github.com/snyk/agent-scan/blob/main/LICENSE)) | Local checks plus remote analysis. Reports scored risks such as `prompt_injection_tool_desc` ([risks](https://github.com/snyk/agent-scan/blob/main/docs/risks.md)) | Not public. The analysis runs in the Snyk API ([README](https://github.com/snyk/agent-scan#analysis-and-validation)) | Not described in the current README or docs we read. The 2025 MCP-Scan post describes tool pinning with hashes ([post](https://invariantlabs.ai/blog/introducing-mcp-scan)) | [repo](https://github.com/snyk/agent-scan) |\n+| mcpproxy-go | Proxy that federates MCP servers and holds new servers in quarantine ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#why-mcpproxy)) | Yes for the core binary and the offline scan ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#why-mcpproxy)) | MIT ([LICENSE](https://github.com/smart-mcp-proxy/mcpproxy-go/blob/main/LICENSE)) | Offline detect engine with seven checks, for example `unicode.hidden` and `phrase.injection`. Optional Docker-based scanners ([quarantine docs](https://docs.mcpproxy.app/features/security-quarantine/), [scanner plugins](https://docs.mcpproxy.app/features/security-scanner-plugins/)) | No schema in the pages we read. The docs name a signature file, `scanner-bundle.json` ([quarantine docs](https://docs.mcpproxy.app/features/security-quarantine/)) | Yes. Hashes each tool and holds a changed tool for review ([quarantine docs](https://docs.mcpproxy.app/features/security-quarantine/)) | [repo](https://github.com/smart-mcp-proxy/mcpproxy-go) |\n+| Docker MCP tooling (we studied the Docker MCP Gateway, `docker/mcp-gateway`, and the MCP Toolkit) | Runs MCP servers in containers behind one gateway ([README](https://github.com/docker/mcp-gateway#readme)) | Not stated as offline. Catalogs and images come from OCI registries ([README](https://github.com/docker/mcp-gateway#catalog-management)) | MIT ([README](https://github.com/docker/mcp-gateway#license)) | Isolation and policy, not tool-description analysis: signature checks on `mcp/` images, secret-pattern blocking, name collision checks ([security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md)) | Unknown. No detection rules found. Catalog entries use a server spec ([docs](https://github.com/docker/mcp-gateway/blob/main/docs/server-entry-spec.md)) | Not described for tool definitions in the pages we read ([Toolkit docs](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/), [security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md)) | [repo](https://github.com/docker/mcp-gateway), [Toolkit docs](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/) |\n+| `alexar76/warden` | Scans MCP configs of several clients and can wrap a stdio server as a firewall ([README](https://github.com/alexar76/warden#readme)) | Mostly. The README says the only network traffic is to the servers in your config. Opt-in features (`--histor`, a signed feed, a classifier) use the network ([README](https://github.com/alexar76/warden#scan-every-server-your-clients-start)) | MIT ([README](https://github.com/alexar76/warden#readme)) | 36 static regex rules, a threat feed, an origin gate and a pinning gate ([gates](https://github.com/alexar76/warden/blob/main/docs/gates.md)) | Regex table. `staticScanRuleset()` returns each rule with its regex source and flags ([gates](https://github.com/alexar76/warden/blob/main/docs/gates.md)) | Yes. A sha256 hash of the tool definitions is compared with the approved pin. A change raises `TOOL_DEF_DRIFT` ([gates](https://github.com/alexar76/warden/blob/main/docs/gates.md)) | [repo](https://github.com/alexar76/warden) |\n+| `mcp-lock` (we studied `dragoscv/mcp-lock`; the name is ambiguous, see below) | Lockfile for MCP tools, with a CI check and a runtime proxy ([README](https://github.com/dragoscv/mcp-lock#readme)) | Not stated. It connects to the servers in your config ([README](https://github.com/dragoscv/mcp-lock#config)) | MIT ([package.json](https://github.com/dragoscv/mcp-lock/blob/main/package.json)) | The README describes only hash comparison, no content analysis ([README](https://github.com/dragoscv/mcp-lock#what-is-hashed)) | None. It writes `mcp-lock.json` ([README](https://github.com/dragoscv/mcp-lock#readme)) | Yes. This is its main feature: it hashes description, schema and annotations apart ([README](https://github.com/dragoscv/mcp-lock#what-is-hashed)) | [repo](https://github.com/dragoscv/mcp-lock) |\n+\n+## Tool notes\n+\n+### Snyk Agent Scan\n+\n+- The repository `invariantlabs-ai/mcp-scan` now redirects to `snyk/agent-scan`\n+  ([GitHub API](https://api.github.com/repos/invariantlabs-ai/mcp-scan)). It is Python. The\n+  [README](https://github.com/snyk/agent-scan#readme) lists `uvx` and a standalone binary as install\n+  methods. The repository was active on 2026-10-23.\n+- It finds Claude Code, Cursor, Codex and other clients, and also scans agent skills\n+  ([README](https://github.com/snyk/agent-scan#supported-agents-and-capabilities)).\n+- It starts stdio servers and connects to remote ones to read tool descriptions. It asks for consent\n+  for each server in interactive runs ([README](https://github.com/snyk/agent-scan#interactive-consent-for-mcp-servers)).\n+- `inspect` shows components without the analysis step\n+  ([README](https://github.com/snyk/agent-scan#cli-parameters)).\n+- The README says the CLI output is experimental and can change without notice\n+  ([README](https://github.com/snyk/agent-scan#readme)).\n+- It does not accept outside contributions\n+  ([README](https://github.com/snyk/agent-scan#agent-scan-is-closed-to-contributions)).\n+- The Invariant Labs tool poisoning post is the base of this work\n+  ([post](https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks)).\n+\n+### mcpproxy-go\n+\n+- Repository: [smart-mcp-proxy/mcpproxy-go](https://github.com/smart-mcp-proxy/mcpproxy-go). It is\n+  written in Go and was active on 2026-10-23.\n+- New servers are quarantined. The user reviews and approves them\n+  ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#3-add-your-first-server-and-approve-it)).\n+- Trust modes are `manual` (default), `scan` and `auto`. The docs say `auto` carries \"rug-pull risk\"\n+  ([quarantine docs](https://docs.mcpproxy.app/features/security-quarantine/)).\n+- The README lists exceptions to the review hold, for example input-schema-only edits outside `scan`\n+  mode ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#why-mcpproxy)).\n+- The README says a clean scan does not prove a server is safe\n+  ([README](https://github.com/smart-mcp-proxy/mcpproxy-go#3-add-your-first-server-and-approve-it)).\n+- Note: the README and the docs page word the `manual` mode a little differently (the README lists\n+  exceptions, the docs page says every change is held). We cite both and do not decide between them.\n+\n+### Docker MCP tooling\n+\n+\"Docker MCP tooling\" is not one product. We studied two parts that fit the issue best:\n+\n+- The [Docker MCP Gateway](https://github.com/docker/mcp-gateway) (the `docker-mcp` CLI plugin). It\n+  is Go, MIT, and was active on 2026-10-23.\n+- The [MCP Toolkit](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/) in Docker Desktop,\n+  which uses the gateway and the Docker MCP Catalog.\n+\n+We did not study the [Docker MCP Catalog](https://hub.docker.com/mcp) build and review process. Docker\n+says it is separate from the gateway repository\n+([security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md)).\n+\n+Facts from the [security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md):\n+\n+- Signature verification is on by default for images in the `mcp/` namespace.\n+- Server containers get no host environment by default. They run with `no-new-privileges` and CPU and\n+  memory limits.\n+- `--block-secrets` scans tool-call arguments and text responses for secret-like values.\n+- The gateway rejects tool names that collide with another enabled server.\n+- Remote URLs must be public HTTPS by default. Loopback, private and cloud-metadata addresses are\n+  refused.\n+\n+The gateway also has OpenTelemetry instrumentation\n+([telemetry docs](https://github.com/docker/mcp-gateway/blob/main/docs/telemetry/README.md)). We did\n+not check where, or if, it sends data by default.\n+\n+### alexar76/warden\n+\n+- Repository: [alexar76/warden](https://github.com/alexar76/warden). It is TypeScript with no npm\n+  runtime dependencies, MIT, created on 2026-08-24, and was active on 2026-10-23\n+  ([README](https://github.com/alexar76/warden#readme)). The README names the npm package\n+  `@aimarket/warden`.\n+- `warden scan` reads the MCP configs of Claude Code, Claude Desktop, Cursor, VS Code and Windsurf,\n+  connects to the servers, and prints a table, JSON, SARIF or Markdown\n+  ([README](https://github.com/alexar76/warden#scan-every-server-your-clients-start)).\n+- A `warden.lock.json` file turns a change in tool definitions into a reviewable diff\n+  ([README](https://github.com/alexar76/warden#scan-every-server-your-clients-start)).\n+- `wrap` puts Warden in front of one stdio server. First contact creates a pin. A later change needs\n+  a human to run `pins approve` in a terminal\n+  ([README](https://github.com/alexar76/warden#protect-claude-desktop-or-cursor-with-one-wrapper)).\n+- Each verdict records the rule set version and a digest of the rules\n+  ([README](https://github.com/alexar76/warden#the-verdict-is-meant-to-be-recorded)).\n+- The README states what it does not do: it is not a sandbox, not a model, and the regex scan misses\n+  paraphrases no rule covers ([README](https://github.com/alexar76/warden#what-this-is-not)).\n+- The README publishes benchmark numbers and a method\n+  ([scanner comparison](https://github.com/alexar76/warden/blob/main/docs/scanner-comparison.md)).\n+  These numbers come from the project. We did not reproduce them.\n+- Warden is the closest tool to mcpmoat in this list.\n+\n+### mcp-lock\n+\n+The name `mcp-lock` points to several projects. No source ties the issue text to one of them. We\n+searched GitHub repository search, the npm registry, PyPI and crates.io on 2026-10-23.\n+\n+| Candidate | What it is | Source |\n+|---|---|---|\n+| `dragoscv/mcp-lock` (studied) | Pins tool descriptions and schemas in `mcp-lock.json`. Has `lock`, `check` and a stdio `proxy`. npm name `@codai/mcp-lock`. MIT. Version 0.2, API may change before 1.0. | [README](https://github.com/dragoscv/mcp-lock#readme), [package.json](https://github.com/dragoscv/mcp-lock/blob/main/package.json) |\n+| `blestlabs/mcp-lock` | \"package-lock.json for your MCP servers\": `pin`, `diff`, `scan`, `ci`. Apache-2.0. Last push 2026-02-10. | [README](https://github.com/blestlabs/mcp-lock#readme) |\n+| `mcpguards/mcp-lock` | Records the version and tarball hash of each MCP server package. It pins packages, not tool definitions. MIT. | [README](https://github.com/mcpguards/mcp-lock#readme) |\n+| `StevieHeyes/MCP-Lock` | A local control plane that starts and stops servers and gates write access. Not a scanner. Apache-2.0. | [README](https://github.com/StevieHeyes/MCP-Lock#readme) |\n+| npm package `mcp-lock` | An unrelated placeholder (version 0.0.1, \"part of HLOS ecosystem\"). | [npm registry](https://registry.npmjs.org/mcp-lock) |\n+| PyPI and crates.io `mcp-lock` | No package found. | [PyPI](https://pypi.org/pypi/mcp-lock/json), [crates.io](https://crates.io/api/v1/crates/mcp-lock) |\n+\n+We picked `dragoscv/mcp-lock` because its name is exact and its purpose (pin tool definitions, detect\n+drift) matches the issue. This is our choice, not a fact from a source. If the issue author meant\n+another project, the row must change. We read only the README and `package.json` of each repository.\n+Several other lockfile-style tools exist under other names. We did not study them.\n+\n+## Ideas to adopt\n+\n+Each idea names the tool that gave it to us.\n+\n+1. Hash description, schema and annotations as separate parts. A review then shows what kind of\n+   change happened. Hash canonical JSON with sorted keys, so a key reorder is not a false alarm.\n+   Credit: [mcp-lock](https://github.com/dragoscv/mcp-lock#what-is-hashed). mcpproxy-go also\n+   re-baselines key-order-only changes without a hold\n+   ([docs](https://docs.mcpproxy.app/features/security-quarantine/)).\n+2. Record the rule set version and a digest of the rules in every report. Without them, a changed\n+   result cannot be told from a changed server. Credit:\n+   [Warden](https://github.com/alexar76/warden#the-verdict-is-meant-to-be-recorded).\n+3. Show a pin change field by field, with words added and removed in the description. Credit:\n+   [Warden](https://github.com/alexar76/warden#protect-claude-desktop-or-cursor-with-one-wrapper).\n+4. Keep severity and blocking as two separate axes. An advisory finding is reported and never\n+   blocks. Credit: [Warden](https://github.com/alexar76/warden#the-gate-chain).\n+5. Split checks into hard checks (fail) and soft checks (ask a human to review). Credit:\n+   [mcpproxy-go](https://docs.mcpproxy.app/features/security-quarantine/).\n+6. Ask for consent before mcpmoat starts each server. Show the command or URL, with env values and\n+   headers redacted. Credit:\n+   [Snyk Agent Scan](https://github.com/snyk/agent-scan#interactive-consent-for-mcp-servers).\n+7. Refuse remote destinations in link-local and cloud-metadata ranges, and do not follow redirects.\n+   Credit: [Snyk Agent Scan](https://github.com/snyk/agent-scan#security-warning) and the\n+   [Docker MCP Gateway](https://github.com/docker/mcp-gateway/blob/main/docs/security.md).\n+8. Flag a tool name that collides with a tool from another server. This helps with shadowing (T3).\n+   Credit: [Docker MCP Gateway](https://github.com/docker/mcp-gateway/blob/main/docs/security.md).\n+9. Write down the limits in plain words: what the tool does not cover. Credit:\n+   [mcpproxy-go](https://github.com/smart-mcp-proxy/mcpproxy-go#why-mcpproxy) and\n+   [Warden](https://github.com/alexar76/warden#what-this-is-not).\n+10. Publish the method behind any detection numbers, with a held-out test set. Credit:\n+    [Warden](https://github.com/alexar76/warden/blob/main/docs/scanner-comparison.md).\n+11. For later phases: verify image signatures and run servers with a small environment and limits.\n+    Credit: [Docker MCP Gateway](https://github.com/docker/mcp-gateway/blob/main/docs/security.md).\n+\n+## Ideas to avoid\n+\n+1. Do not need an account or send tool text to a remote service for the default scan. Snyk Agent\n+   Scan does this ([README](https://github.com/snyk/agent-scan#analysis-and-validation)). It breaks\n+   the offline goal (G7 in the PRD).\n+2. Do not change the output format without a version. Snyk Agent Scan states its output is\n+   experimental ([README](https://github.com/snyk/agent-scan#readme)). mcpmoat promises versioned\n+   JSON.\n+3. Do not offer a mode that trusts tool changes without a hold. mcpproxy-go has `auto` mode, which\n+   its docs link to rug-pull risk ([docs](https://docs.mcpproxy.app/features/security-quarantine/)).\n+4. Do not add a runtime proxy in phase 1. mcpproxy-go, Warden `wrap` and `mcp-lock proxy` sit in the\n+   message path ([mcp-lock](https://github.com/dragoscv/mcp-lock#runtime-proxy),\n+   [Warden](https://github.com/alexar76/warden#protect-claude-desktop-or-cursor-with-one-wrapper)).\n+   That is the firewall scope of a later phase.\n+5. Do not add optional network features to the scanner in phase 1. Warden has `--histor`, a signed\n+   feed and a classifier that use the network\n+   ([README](https://github.com/alexar76/warden#scan-every-server-your-clients-start)). The only\n+   opt-in network call in mcpmoat is the `--llm` flag.\n+6. Do not add telemetry. The Docker MCP Gateway has OpenTelemetry instrumentation\n+   ([docs](https://github.com/docker/mcp-gateway/blob/main/docs/telemetry/README.md)). mcpmoat has\n+   none.\n+7. Do not rely on a hash-only check. `mcp-lock` as described in its\n+   [README](https://github.com/dragoscv/mcp-lock#what-is-hashed) finds changes, not bad content, so a\n+   tool that is already bad when you first pin it stays pinned. mcpmoat pins and also applies rules\n+   (T1, T3).\n+\n+## How mcpmoat differs\n+\n+These points come from the [PRD](PRD.md) and the facts above.\n+\n+- **Offline by design.** mcpmoat has no account and no telemetry. It makes no network call except to\n+  the MCP servers you configured and, only with `--llm`, to the LLM provider you choose (PRD\n+  section 1.1 and NFR-01).\n+- **One person, one machine.** The target user is an individual developer on macOS or Linux. The PRD\n+  lists SSO, RBAC and a central dashboard as non-goals (section 2.2).\n+- **Rules plus pins in one scan.** mcpmoat applies YAML rules and native heuristics to detect T1 to\n+  T5. It pins a hash of every tool to detect rug pulls (T2). Each built-in rule is one YAML file\n+  with positive and negative tests (NFR-05).\n+- **Open rule files.** Rules are YAML files in the repository (`rules/`), embedded in the binary.\n+  Snyk Agent Scan keeps its rules in a remote service\n+  ([README](https://github.com/snyk/agent-scan#analysis-and-validation)). Warden keeps rules as a\n+  regex table ([gates](https://github.com/alexar76/warden/blob/main/docs/gates.md)).\n+- **Go, one static binary.** mcpmoat ships as a single binary through GitHub Releases, Homebrew and\n+  `go install`. Warden needs Node 20 or newer\n+  ([README](https://github.com/alexar76/warden#readme)). `mcp-lock` is a Node package\n+  ([package.json](https://github.com/dragoscv/mcp-lock/blob/main/package.json)).\n+- **Scanner first, no proxy in phase 1.** mcpmoat reads and reports. It does not sit in the message\n+  path in phase 1.\n+- **Closest overlap.** Warden also scans local configs, connects to servers, and pins tool\n+  definitions. The difference is the language, the YAML rule model with required tests, and the\n+  choice to keep optional network features out of phase 1.\n+\n+## Sources\n+\n+Research for this page:\n+\n+- Snyk Agent Scan: [repo](https://github.com/snyk/agent-scan),\n+  [README](https://github.com/snyk/agent-scan#readme),\n+  [CLI reference](https://github.com/snyk/agent-scan/blob/main/docs/cli-reference.md),\n+  [scanning](https://github.com/snyk/agent-scan/blob/main/docs/scanning.md),\n+  [risks](https://github.com/snyk/agent-scan/blob/main/docs/risks.md),\n+  [LICENSE](https://github.com/snyk/agent-scan/blob/main/LICENSE),\n+  [Introducing MCP-Scan](https://invariantlabs.ai/blog/introducing-mcp-scan)\n+- mcpproxy-go: [repo](https://github.com/smart-mcp-proxy/mcpproxy-go),\n+  [LICENSE](https://github.com/smart-mcp-proxy/mcpproxy-go/blob/main/LICENSE),\n+  [security quarantine](https://docs.mcpproxy.app/features/security-quarantine/),\n+  [security scanner plugins](https://docs.mcpproxy.app/features/security-scanner-plugins/)\n+- Docker: [docker/mcp-gateway](https://github.com/docker/mcp-gateway),\n+  [security model](https://github.com/docker/mcp-gateway/blob/main/docs/security.md),\n+  [telemetry](https://github.com/docker/mcp-gateway/blob/main/docs/telemetry/README.md),\n+  [server entry spec](https://github.com/docker/mcp-gateway/blob/main/docs/server-entry-spec.md),\n+  [MCP Toolkit docs](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/)\n+- Warden: [repo](https://github.com/alexar76/warden),\n+  [gates](https://github.com/alexar76/warden/blob/main/docs/gates.md),\n+  [scanner comparison](https://github.com/alexar76/warden/blob/main/docs/scanner-comparison.md)\n+- mcp-lock: [dragoscv/mcp-lock](https://github.com/dragoscv/mcp-lock),\n+  [blestlabs/mcp-lock](https://github.com/blestlabs/mcp-lock),\n+  [mcpguards/mcp-lock](https://github.com/mcpguards/mcp-lock),\n+  [StevieHeyes/MCP-Lock](https://github.com/StevieHeyes/MCP-Lock),\n+  [npm registry](https://registry.npmjs.org/mcp-lock),\n+  [PyPI](https://pypi.org/pypi/mcp-lock/json),\n+  [crates.io](https://crates.io/api/v1/crates/mcp-lock)\n+- Repository metadata (licence, last push, redirect) came from the GitHub API on 2026-10-23, for\n+  example [snyk/agent-scan](https://api.github.com/repos/snyk/agent-scan).\n+\n+Threat model references:\n+\n+- Invariant Labs, [MCP security notification: tool poisoning attacks](https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks)\n+- [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/)"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "go.mod",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "go.sum",
+        "status": "modified"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/builtin_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/cases.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/cases_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/compiler.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/documented.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/fuzz_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/load.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/load_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/load_unix_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/loaderror.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/loaderror_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/parse.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/parse_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/rule.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/set.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/set_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/validate.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "internal/rules/validate_test.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "rules/MOAT-T1-003.yaml",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "rules/embed.go",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "testdata/rules/collide/MOAT-T1-003.yaml",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "testdata/rules/extra/MOAT-X-001.yaml",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "testdata/rules/invalid/bad-severity.yaml",
+        "status": "added"
+      },
+      {
+        "html_url": null,
+        "user": null,
+        "created_at": null,
+        "updated_at": null,
+        "body": null,
+        "filename": "testdata/rules/valid/MOAT-T1-003.yaml",
+        "status": "added"
+      }
+    ],
+    "selection_note": "All filenames/status retained; irrelevant code patches removed from selected evidence."
+  }
+]

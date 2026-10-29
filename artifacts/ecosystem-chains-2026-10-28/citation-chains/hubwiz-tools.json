@@ -1,0 +1,87 @@
+{
+  "key": "hubwiz-tools",
+  "url": "https://www.hubwiz.com/blog/mcp-tool-count-1932-runs-measured/",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T13:51:05.583995+00:00",
+  "status": 200,
+  "final_url": "https://www.hubwiz.com/blog/mcp-tool-count-1932-runs-measured/",
+  "bytes": 48677,
+  "sha256": "44b5bdfd688709dcd89a1a620f292ea4bbbbb54a8c1592cd75ec1251658dd56c",
+  "identifiers": {
+    "alexar76": 0,
+    "modelmarket.dev": 0,
+    "HISTOR": 0,
+    "WARDEN": 0,
+    "AICOM": 0,
+    "1932": 0,
+    "1,932": 4,
+    "25 微秒": 0
+  },
+  "contexts": {
+    "来源": [
+      "个领域；只测了 3 个前沿模型；任务不涉及长推理；模糊命名只搭配了好描述；token 数包含客户端自身开销；部分规模没跑满；这只是一 个时间点（2026 年 10 月） 的快照。 来源 @yahhi（Moein）, How many tools should an MCP server have? I measured 5 to 100 in Claude Code, Codex and Gemini （dev.to，2026-10-14）：https://dev.to/yahhi/how-many-tools-should-an-mcp-server-have-i-measured-5-to-100-in-claude-code-codex-and-gemini-3hap 原始数据与工具：https://github.com/worklore/worklore-mcp/tree/main/research/tools-count ",
+      "-the-server-does-3ibo 延伸阅读（本站） MCP 是什么？为什么它成了 AI 工具连接的标准 不是\"有没有依据\"，而是\"依据来自哪个源\"：MCP Agent 的来源感知验证 子代理、fork 与上下文折叠：Agent 交接的三种做法 专题：Agent / MCP / 自动化完全指南 本文由 汇智网 · Software 2.0 编译整理，转载请注明出处。 想系统了解 Agent / MCP 的上下文工程、评测与成本控制，见 Agent / MCP / 自动化完全指南 。 这是「Agent / MCP」专题的一部分。 完整地图见： Agent / MCP / 自动化完全指南 阅读更多 AI 算力不是堆芯片：Google 的 token 产能每半年翻一倍 10 万张卡跑一个训练，一小时可能挂几次。Google 的答案不是买更多卡：提高 goodput，让每瓦交付更多有用 token。 By admin 28 10月 "
+    ],
+    "Tools": [
+      "并工具\"变体上。真正被工具数量改变的是 成本 ——而成本的大小，取决于 客户端怎么把工具装进上下文 ，而不是模型本身。 本文完整编译 dev.to @yahhi《How many tools should an MCP server have? I measured 5 to 100 in Claude Code, Codex and Gemini》（2026-10-14），并合入 @zerokdevops《MCP at 90+ tools: the catalog breaks before the server does》（2026-10-04）中的平台化设计部分，做中文整理。 一、先说行业里没人测过的那部分 作者先做了一次文献调查：把 91 份 资料每一篇都读完—— 21 份官方文档、28 篇厂商博客、20 篇独立博客、2 个论坛帖、20 篇论文 。结论是\"少而精\"几乎是唯一建议： 38 份 建议\"精挑细选、少给工具\"； 22 份 ",
+      "asured 5 to 100 in Claude Code, Codex and Gemini》（2026-10-14），并合入 @zerokdevops《MCP at 90+ tools: the catalog breaks before the server does》（2026-10-04）中的平台化设计部分，做中文整理。 一、先说行业里没人测过的那部分 作者先做了一次文献调查：把 91 份 资料每一篇都读完—— 21 份官方文档、28 篇厂商博客、20 篇独立博客、2 个论坛帖、20 篇论文 。结论是\"少而精\"几乎是唯一建议： 38 份 建议\"精挑细选、少给工具\"； 22 份 建议\"通过搜索或延迟加载把可见工具集合压小\"； 8 份 推荐 code mode（用一两个工具去执行代码）； 没有任何一份 建议把所有工具都暴露给模型。 其中 20 份 给出了具体数字： 5–8 （Workato）、 5–15 （Phil Schmid）",
+      "y 所有原始数据（报告、 results.csv 、每次运行的原始日志）都公开在 GitHub： worklore/worklore-mcp/tree/main/research/tools-count 。 三、5 到 100 个工具，准确率没有下降 在 5 到 100 个工具的所有运行里，每个客户端、每种模式下，准确率都是 100% ——包括全部歧义任务，也包括 75–100 个工具时那 50 个多出来的近似工具。换句话说：在 Opus 5.5、GPT-6.1-sol、Gemini 3.1 Pro（2026 年 10 月）上，\"工具越少越准\" 在这个区间里没有出现 ——这与文献调查里的提醒一致： 性能退化高度依赖模型 ，小模型和旧模型才是需要警惕的地方。 作者还观察了 Claude Code 默认开启的 tool search ： 每一次运行都恰好先做一次 ToolSearch 调用 ，然后按 精确名字 选工具——模型在读到任何 sch"
+    ]
+  },
+  "meta": [
+    {
+      "name": "description",
+      "content": "MCP 工具从 5 个加到 100 个，准确率会掉吗？1,932 次实测（3 个客户端、18 个任务）显示前沿模型上准确率全程 100%，唯一一次 89% 出在 Gemini 的分组工具；真正的差异在成本——取决于客户端如何装载工具。附模糊命名实验、64 字符命名预算与 90+ 工具的平台化清单。"
+    },
+    {
+      "property": "og:type",
+      "content": "article"
+    },
+    {
+      "property": "og:title",
+      "content": "MCP 工具该给几个？1,932 次实测：准确率不降，成本看客户端"
+    },
+    {
+      "property": "og:description",
+      "content": "MCP 工具该给几个？1,932 次实测：5→100 个准确率一次没掉，唯一 89% 出在 Gemini 的分组工具；成本上，装载方式比数量更关键。"
+    },
+    {
+      "property": "article:published_time",
+      "content": "2026-10-15T17:27:45.000Z"
+    },
+    {
+      "property": "article:modified_time",
+      "content": "2026-10-15T17:28:39.000Z"
+    },
+    {
+      "name": "twitter:title",
+      "content": "MCP 工具该给几个？1,932 次实测：准确率不降，成本看客户端"
+    },
+    {
+      "name": "twitter:description",
+      "content": "MCP 工具该给几个？1,932 次实测：5→100 个准确率一次没掉，唯一 89% 出在 Gemini 的分组工具；成本上，装载方式比数量更关键。"
+    }
+  ],
+  "source_links": [
+    "https://www.hubwiz.com/blog",
+    "https://www.hubwiz.com/blog/",
+    "https://www.hubwiz.com/blog/vibe-coding-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/local-llm-stack/",
+    "https://www.hubwiz.com/blog/ai-industrial-stack/",
+    "https://www.hubwiz.com/blog/tag/mcp/",
+    "https://www.hubwiz.com/blog/what-is-mcp-model-context-protocol/",
+    "https://www.hubwiz.com/blog/source-aware-verification-for-mcp-agents/",
+    "https://www.hubwiz.com/blog/subagent-fork-fold-context-handoff/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/rag-data-stack/",
+    "https://www.hubwiz.com/blog/generative-media-stack/",
+    "https://www.hubwiz.com/blog/ai-infra-stack/",
+    "https://www.hubwiz.com/blog/ai-tools/",
+    "https://www.hubwiz.com/blog/about/",
+    "https://www.hubwiz.com/blog/contribute/",
+    "https://www.hubwiz.com/blog/privacy/"
+  ]
+}

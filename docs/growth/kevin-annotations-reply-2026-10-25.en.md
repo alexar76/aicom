@@ -1,0 +1,9 @@
+Thanks, Kevin. I added an opt-in `annotationReview: "first-use"` policy for `wrap --flow`. It asks before first use of an unlabelled tool advertising those hints, including `readOnlyHint: true`; none of the hints grants permission or proves a call is free.
+
+The acknowledgement is limited to the exact launch identity and tool snapshot in the running wrapper. After acceptance, the proxy requests a new `tools/list`, even if an older list was already in flight, and rechecks shared credential/taint state before forwarding. A changed definition, newly discovered risk, decline or missing approval UI stops the call. A new wrapper asks again. Existing every-call guards still apply. These are fresh checks, not an atomic transaction across proxies; the changes are local and unreleased.
+
+Your answer-only point remains a real gap: a poisoned record can change which rows are reported without any outbound action. I also found and fixed a narrower Stop-hook issue: warning words such as “ignored” could exempt a sentence that still repeated the injected recommendation. That exemption is gone. A matching normalized 12-character window can now request one additional check, even for an honest warning; we have not measured its model latency.
+
+There is a conservative edge case with exact one-use public-request rules: the first precheck can consume the rule, and the post-approval check then refuses; the rule stays spent. That cost is documented rather than counted as a harmless automatic pass.
+
+All 273 checks in the selected Linux suite passed, including 28 annotation cases and 9 Stop cases. Paraphrases and silent row-selection poisoning remain outside the overlap check; a source note or recheck is not evidence that they were prevented. These are deterministic fixtures, not a new model evaluation.

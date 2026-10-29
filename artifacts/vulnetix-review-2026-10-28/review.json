@@ -1,0 +1,241 @@
+{
+  "created_at_utc": "2026-10-28T05:50:05.599317+00:00",
+  "workspace_commit": "85db7deea2338e43a3ce01b7c70ab938aa7c99b8",
+  "result": "Not fully closed: 4 of 9 remaining advisories fixed locally; 5 partially fixed. Eight newer local package versions absent from PyPI latest.",
+  "scope": "Local code review, tests, public registry/wheel reads; no implementation edits, deployments, publications or GitHub writes.",
+  "records": [
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000630",
+      "package": "aimarket-platon",
+      "status": "original_fix_present",
+      "detail": "Remote keyless writes gated; remaining relay case tracked in 000643."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000631",
+      "package": "aimarket-mcp",
+      "status": "original_fix_present",
+      "detail": "Checked-IP pin, Host/SNI, per-redirect validation. Published security.py identical."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000632",
+      "package": "aimarket-oracle-core",
+      "status": "original_fix_present",
+      "detail": "Paid tiers and forwarded address controls present. Full tier tests pass; private proxy residual tracked in 000637."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000633",
+      "package": "aimarket-logos",
+      "status": "original_fix_present",
+      "detail": "Token gate and unauthenticated global budget present. Private proxy residual tracked in 000638."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000634",
+      "package": "aimarket-atlas",
+      "status": "original_fix_present",
+      "detail": "Delivery checks public DNS, pins checked IP with Host/SNI on every retry. Published delivery.py identical."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000635",
+      "package": "aimarket-hestia",
+      "status": "original_fix_present",
+      "detail": "Domain key proof with public IP pin, no redirects, bounded response. Published domains.py identical."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000636",
+      "package": "aimarket-platon",
+      "status": "fixed_locally_unreleased",
+      "detail": "Explicit trusted proxy list defaults to loopback."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000637",
+      "package": "aimarket-oracle-core",
+      "status": "fixed_locally_unreleased",
+      "detail": "Explicit trusted proxy list defaults to loopback."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000638",
+      "package": "aimarket-logos",
+      "status": "fixed_locally_unreleased",
+      "detail": "Explicit trusted proxy list defaults to loopback; LOGOS_HOST defaults 127.0.0.1."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000639",
+      "package": "skopos-fleet",
+      "status": "fixed_locally_unreleased",
+      "detail": "Single-label SSH uses accept-new/persistent known_hosts; bypass explicit and loopback only."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000640",
+      "package": "aimarket-mcp",
+      "status": "partial_unreleased",
+      "detail": "Missing proc denied; multiprocess same-UID relay still allowed."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000641",
+      "package": "aimarket-metis",
+      "status": "partial_unreleased",
+      "detail": "Missing proc denied; multiprocess same-UID relay still allowed."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000642",
+      "package": "aimarket-treasury",
+      "status": "partial_unreleased",
+      "detail": "Missing proc denied; multiprocess same-UID relay still allowed."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000643",
+      "package": "aimarket-platon",
+      "status": "partial_unreleased",
+      "detail": "Missing proc denied; multiprocess same-UID relay still allowed."
+    },
+    {
+      "id": "GCVE-110-VULN-PYPI-2026-000644",
+      "package": "skopos-fleet",
+      "status": "partial_unreleased",
+      "detail": "Shared timed refusal remains before password form for new operator IP. Known recent IP exempt; continuously extending pause requires already-admitted concurrent or exempt failures."
+    }
+  ],
+  "versions": [
+    {
+      "package": "aimarket-mcp",
+      "local_version": "0.6.4",
+      "pypi_version": "0.6.3",
+      "same_version": false
+    },
+    {
+      "package": "skopos-fleet",
+      "local_version": "0.2.2",
+      "pypi_version": "0.2.1",
+      "same_version": false
+    },
+    {
+      "package": "aimarket-platon",
+      "local_version": "0.1.6",
+      "pypi_version": "0.1.5",
+      "same_version": false
+    },
+    {
+      "package": "aimarket-oracle-core",
+      "local_version": "0.6.3",
+      "pypi_version": "0.6.2",
+      "same_version": false
+    },
+    {
+      "package": "aimarket-logos",
+      "local_version": "0.2.2",
+      "pypi_version": "0.2.1",
+      "same_version": false
+    },
+    {
+      "package": "aimarket-metis",
+      "local_version": "0.2.5",
+      "pypi_version": "0.2.4",
+      "same_version": false
+    },
+    {
+      "package": "aimarket-treasury",
+      "local_version": "0.1.4",
+      "pypi_version": "0.1.3",
+      "same_version": false
+    },
+    {
+      "package": "aimarket-atlas",
+      "local_version": "0.3.3",
+      "pypi_version": "0.3.2",
+      "same_version": false
+    },
+    {
+      "package": "aimarket-hestia",
+      "local_version": "0.1.3",
+      "pypi_version": "0.1.3",
+      "same_version": true
+    }
+  ],
+  "verification": [
+    {
+      "selection": "MCP gateway + SSRF pinning",
+      "passed": 42,
+      "skipped": 2
+    },
+    {
+      "selection": "LOGOS full test_app",
+      "passed": 32,
+      "skipped": 0
+    },
+    {
+      "selection": "oracle-core full test_tiers",
+      "passed": 62,
+      "skipped": 0
+    },
+    {
+      "selection": "HESTIA full test_domains, local stub sockets permitted",
+      "passed": 42,
+      "skipped": 0
+    },
+    {
+      "selection": "ATLAS webhook private DNS/pin/rebinding",
+      "passed": 3,
+      "skipped": 0
+    },
+    {
+      "selection": "SKOPOS auth_store + git_push_hostkeys + client_ip_trust + ssh_hostkeys",
+      "passed": 59,
+      "skipped": 0
+    },
+    {
+      "selection": "Metis keyless/local_caller",
+      "passed": 18,
+      "skipped": 0
+    },
+    {
+      "selection": "Treasury tokenless",
+      "passed": 9,
+      "skipped": 0
+    },
+    {
+      "selection": "Platon tokenless",
+      "passed": 13,
+      "skipped": 0
+    },
+    {
+      "selection": "Platon explicit trusted proxy configuration",
+      "passed": 1,
+      "skipped": 0
+    }
+  ],
+  "probes": [
+    "keyless_proc_probe.py",
+    "keyless_proc_probe.jsonl",
+    "skopos_login_probe.py",
+    "skopos-login-probe.json"
+  ],
+  "release_evidence": [
+    "registry-summary.json",
+    "wheel-verification.json",
+    "vulnetix-comment.json"
+  ],
+  "limitations": [
+    "Native Linux relay end-to-end not executed: macOS host, two Linux-only tests skipped. Relay proof uses original source functions with synthetic Linux proc data.",
+    "No live deployment configuration verified.",
+    "Test selections overlap and must not be summed as independent tests.",
+    "Metis focused test used public-IP METIS_WEB_SEARCH_URL to avoid unrelated sandbox DNS validation; Treasury used local oracle-core/momus PYTHONPATH.",
+    "Initial six advisories assessed against listed fixes and targeted code/tests; their remaining split weaknesses are explicitly kept open."
+  ],
+  "source_sha256": {
+    "aimarket-mcp/aimarket_mcp/server.py": "7b837443bd4833cddf0d4f34aacfdc58e479fc01d0cb16aa49a32b6721b499ad",
+    "aimarket-mcp/aimarket_mcp/security.py": "a20646f9aae48fde7c6d932c05323ca2ae298d8801aadf26f346747f36372ddf",
+    "metis/metis/api/auth.py": "102495e5f8bf60ef7b3beddfcc0c788c17f7152d86799730b2da691d791b9eec",
+    "treasury/treasury/service.py": "104ecab8413344abbc498344110aae1e6ca1df2c08172dcb27ee55a17f9b6f12",
+    "platon/backend/platon/main.py": "cfe39e0ad0441ec3179e0924125376cbd954f23aa0e4128a9c41c52ccb492438",
+    "oracles/oracles/platon/backend/oracle_platon/main.py": "e72cc2170b0e8c4188220174dc7823a2775d82f1765bf528ee8fe2895c2c0103",
+    "oracles/core/oracle_core/app.py": "ba17272775e04d3537a70d16b03799141e2525b7913b3010dc8688f1618da1d8",
+    "logos/logos/app.py": "1622890736fe445e2f56fdeac06e45a4172655e6eb37c716112060bbb9e3cfec",
+    "logos/logos/main.py": "6bb6cae79a5fe46c997520278847c04d1d8eee6a51ffe9631059d97745291b7d",
+    "skopos/skopos/auth_store.py": "c115f3f732ccc1133611e12225be966a28ae0a19014011ddfccf28b0fabdd761",
+    "skopos/skopos/app_auth.py": "df7ebc38da63d1049b9355beb612e02abbf88ce3380b586455b01fa2994de3e2",
+    "skopos/skopos/remediation/git_push.py": "a09bd9e417287450fe844a991157575b4499281ba0ed432724597c6e08fb343a",
+    "atlas/atlas/delivery.py": "03ee3a179f14434986bcea4afa5da2b5cb4e41d13a58d701edcb4b1bac2527a0",
+    "hestia/hestia/domains.py": "d6398211649fae40c63dcde29abce01879ace338801a42de39662a63415925df",
+    "hestia/hestia/app_routes/owners.py": "67139549cfbbf54814efe1e5abb867a0855650fe904a64993c21493bd5646331"
+  }
+}

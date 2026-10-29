@@ -1,0 +1,63 @@
+{
+  "url": "https://modelmarket.dev/.well-known/ai-market.json",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T15:04:50.088430+00:00",
+  "purpose": "Enumerate externally advertised public peer origins to identify candidate research paths; no calls to providers.",
+  "status": 200,
+  "sha256": "8413978434297bfb8ea2e5f5b20a321dde87b69cbc9bad9876f30da3d59e23ba",
+  "bytes": 26570,
+  "peers_total": 20,
+  "external_peers": [
+    {
+      "url": "https://hub.attestedmemory.net",
+      "name": "Attested Memory Hub",
+      "capabilities_count": 21,
+      "last_crawl": "2026-10-28T14:48:21Z",
+      "categories": []
+    },
+    {
+      "url": "https://independentai.network/hub",
+      "name": "Independent AI Hub",
+      "capabilities_count": 33,
+      "last_crawl": "2026-10-28T14:48:23Z",
+      "categories": []
+    },
+    {
+      "url": "https://x402-gateway-production-1f21.up.railway.app",
+      "name": "Industrial Platform Sentinel",
+      "capabilities_count": 4,
+      "last_crawl": "2026-10-28T14:48:27Z",
+      "categories": [
+        "agent-tooling",
+        "treasury",
+        "wallet",
+        "payments",
+        "monitoring",
+        "x402"
+      ]
+    },
+    {
+      "url": "https://magic-ai-factory.com",
+      "name": "Magic AI-Factory AI Market",
+      "capabilities_count": 13,
+      "last_crawl": "2026-10-28T14:48:15Z",
+      "categories": []
+    },
+    {
+      "url": "https://charon.independentai.network",
+      "name": "CHARON — liquidation risk for the side that borrows",
+      "capabilities_count": 3,
+      "last_crawl": "2026-10-28T14:48:26Z",
+      "categories": [
+        "defi",
+        "risk",
+        "lending",
+        "liquidation",
+        "oracle-integrity",
+        "monitoring",
+        "onchain-data"
+      ]
+    }
+  ],
+  "scope_note": "external_peers means hostnames outside modelmarket.dev, not independent operators. Attested Memory, Independent AI/CHARON and magic-ai-factory.com are known parts of the same alexar76 ecosystem. Do not count them as external clients."
+}

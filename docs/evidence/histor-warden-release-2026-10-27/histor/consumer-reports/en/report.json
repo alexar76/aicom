@@ -1,0 +1,413 @@
+{
+  "analysis": "deterministic-offline",
+  "dependencies": [
+    {
+      "comparability": "bounded",
+      "contextChanges": [
+        "protocol"
+      ],
+      "fieldCoverage": "full",
+      "id": "demo:migration",
+      "limitations": [],
+      "observedChanges": false,
+      "provenanceGaps": [
+        "before: packageVersion missing; not inferred",
+        "after: packageVersion missing; not inferred"
+      ],
+      "selectedTools": [
+        {
+          "changes": [],
+          "name": "read_status",
+          "retest": [],
+          "status": "unchanged"
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "after": {
+          "fullList": 94,
+          "selectedTools": 94
+        },
+        "before": {
+          "fullList": 94,
+          "selectedTools": 94
+        },
+        "delta": {
+          "fullList": 0,
+          "selectedTools": 0
+        }
+      },
+      "sources": {
+        "after": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-27T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/migration-after.json",
+          "protocol": "2026-07-28",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "2",
+          "sha256": "sha256:80a04b3ec2e35f3b0330bd643d3ff8a7297c34e74288e6f91ecbed1290177e98",
+          "status": "ok",
+          "targetId": "demo:migration",
+          "toolsSha256": "sha256:5325c115abb0aa1d4febda77fd2bf9ba6d3ad87de4233604fab23b704174d082",
+          "transport": "streamable-http"
+        },
+        "before": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-26T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/migration-before.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1",
+          "sha256": "sha256:aae66bbd278f22d34ff079b78b6a2c449043920db192aa710b916bc609006e4d",
+          "status": "ok",
+          "targetId": "demo:migration",
+          "toolsSha256": "sha256:5325c115abb0aa1d4febda77fd2bf9ba6d3ad87de4233604fab23b704174d082",
+          "transport": "streamable-http"
+        }
+      },
+      "status": "context_changed",
+      "toolSet": {
+        "added": [],
+        "afterCount": 1,
+        "beforeCount": 1,
+        "removed": []
+      },
+      "workflows": [
+        {
+          "affectedTools": [],
+          "description": "Check service status after MCP migration",
+          "id": "status-check",
+          "retest": [
+            {
+              "check": "Check protocol, launcher and access conditions; repeat both snapshots in the same context.",
+              "tool": null
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "read_status"
+          ]
+        }
+      ]
+    },
+    {
+      "comparability": "unknown",
+      "contextChanges": [],
+      "fieldCoverage": "none",
+      "id": "demo:offline",
+      "limitations": [
+        "after: successful full observation missing"
+      ],
+      "observedChanges": null,
+      "provenanceGaps": [],
+      "selectedTools": [
+        {
+          "changes": [],
+          "name": "read_status",
+          "retest": [
+            "Obtain two complete successful observations in comparable environments."
+          ],
+          "status": "unknown"
+        }
+      ],
+      "serializedUtf8Bytes": null,
+      "sources": {
+        "after": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-27T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/offline-after.json",
+          "protocol": null,
+          "serverName": "synthetic-fixture",
+          "serverVersion": null,
+          "sha256": "sha256:66727987e9474aba873aec44d9f5567fcc3f9678fbdeab69717dcfb269effa63",
+          "status": "failed",
+          "targetId": "demo:offline",
+          "toolsSha256": null,
+          "transport": "streamable-http"
+        },
+        "before": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-26T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/offline-before.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1",
+          "sha256": "sha256:8d1528bbe8087c1cbceeaa0f4cbac46469e27eed3ff3ca9f50a56b714bb4e59c",
+          "status": "ok",
+          "targetId": "demo:offline",
+          "toolsSha256": "sha256:5325c115abb0aa1d4febda77fd2bf9ba6d3ad87de4233604fab23b704174d082",
+          "transport": "streamable-http"
+        }
+      },
+      "status": "unknown",
+      "workflows": [
+        {
+          "affectedTools": [
+            "read_status"
+          ],
+          "description": "Get the external service daily status",
+          "id": "daily-status",
+          "retest": [
+            {
+              "check": "Check protocol, launcher and access conditions; repeat both snapshots in the same context.",
+              "tool": null
+            },
+            {
+              "check": "Obtain two complete successful observations in comparable environments.",
+              "tool": "read_status"
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "read_status"
+          ]
+        }
+      ]
+    },
+    {
+      "comparability": "comparable",
+      "contextChanges": [],
+      "fieldCoverage": "full",
+      "id": "demo:research",
+      "limitations": [],
+      "observedChanges": true,
+      "provenanceGaps": [],
+      "selectedTools": [
+        {
+          "changes": [
+            "extras"
+          ],
+          "extras": {
+            "annotationFieldsChanged": [
+              "destructiveHint",
+              "readOnlyHint"
+            ],
+            "annotationHints": {
+              "destructiveHint": [
+                false,
+                true
+              ],
+              "readOnlyHint": [
+                true,
+                false
+              ]
+            },
+            "annotationsPresenceChanged": false,
+            "escalation": true,
+            "members": {}
+          },
+          "name": "export_brief",
+          "retest": [
+            "Check action confirmations, permissions and advertised prices; annotations are claims made by the server."
+          ],
+          "status": "changed"
+        },
+        {
+          "changes": [
+            "removed"
+          ],
+          "name": "legacy_fetch",
+          "retest": [
+            "Check a replacement or pin the previous package; do not run the workflow without review."
+          ],
+          "status": "removed"
+        },
+        {
+          "changes": [
+            "description",
+            "inputSchema",
+            "outputSchema"
+          ],
+          "descriptionDiff": [
+            {
+              "operation": "=",
+              "text": "Search documents ",
+              "truncated": false
+            },
+            {
+              "operation": "-",
+              "text": "using",
+              "truncated": false
+            },
+            {
+              "operation": "+",
+              "text": "in",
+              "truncated": false
+            },
+            {
+              "operation": "=",
+              "text": " the ",
+              "truncated": false
+            },
+            {
+              "operation": "-",
+              "text": "query.",
+              "truncated": false
+            },
+            {
+              "operation": "+",
+              "text": "selected workspace. Include source links in the result.",
+              "truncated": false
+            }
+          ],
+          "descriptionDiffTruncated": false,
+          "inputSchemaPaths": [
+            "$.\"properties\".\"limit\".\"type\"",
+            "$.\"properties\".\"workspace\".\"type\"",
+            "$.\"required\"[1]"
+          ],
+          "inputTypeChangedPaths": [
+            "$/properties/limit",
+            "$/properties/workspace"
+          ],
+          "name": "search_docs",
+          "outputSchemaPaths": [
+            "$.\"properties\".\"items\".\"type\"",
+            "$.\"properties\".\"results\".\"type\""
+          ],
+          "requiredAdded": [
+            "workspace"
+          ],
+          "requiredRemoved": [],
+          "retest": [
+            "Read the changed instructions; replay a typical request and check tool selection.",
+            "Check saved inputs, required fields and types; add a boundary case.",
+            "Replay result handling: check the fields and types read by the workflow."
+          ],
+          "status": "changed"
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "after": {
+          "fullList": 627,
+          "selectedTools": 451
+        },
+        "before": {
+          "fullList": 534,
+          "selectedTools": 534
+        },
+        "delta": {
+          "fullList": 93,
+          "selectedTools": -83
+        }
+      },
+      "sources": {
+        "after": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:4141d0b7749dfa4a869dbfd86253df4bad05f120eef54100eac6be218f6c133d",
+          "observedAt": "2026-10-27T09:00:00Z",
+          "packageVersion": "1.1.0",
+          "path": "snapshots/research-after.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1.1.0",
+          "sha256": "sha256:57194207461aaed52fd64ce50ed29039245f7b89d680b86f835158882721bc8f",
+          "status": "ok",
+          "targetId": "demo:research",
+          "toolsSha256": "sha256:5a83f60a71f582963de07d6f322767866d2f8a3e2a53e482ab74f4c71f944ab6",
+          "transport": "stdio"
+        },
+        "before": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:4141d0b7749dfa4a869dbfd86253df4bad05f120eef54100eac6be218f6c133d",
+          "observedAt": "2026-10-26T09:00:00Z",
+          "packageVersion": "1.0.0",
+          "path": "snapshots/research-before.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1.0.0",
+          "sha256": "sha256:f0d61f85b2ce2de63595690bd528b70994f329e3db903ac4d59950fb3b8263da",
+          "status": "ok",
+          "targetId": "demo:research",
+          "toolsSha256": "sha256:a158a85b17112f520008bb6101be9ce04cbfdc6232c7793659b1e4e2e8ca997b",
+          "transport": "stdio"
+        }
+      },
+      "status": "changed",
+      "toolSet": {
+        "added": [
+          "fetch_document"
+        ],
+        "afterCount": 3,
+        "beforeCount": 3,
+        "removed": [
+          "legacy_fetch"
+        ]
+      },
+      "workflows": [
+        {
+          "affectedTools": [
+            "legacy_fetch"
+          ],
+          "description": "Read archived documents",
+          "id": "archive-import",
+          "retest": [
+            {
+              "check": "Check a replacement or pin the previous package; do not run the workflow without review.",
+              "tool": "legacy_fetch"
+            }
+          ],
+          "status": "retest",
+          "tools": [
+            "legacy_fetch"
+          ]
+        },
+        {
+          "affectedTools": [
+            "export_brief",
+            "search_docs"
+          ],
+          "description": "Prepare the weekly document review",
+          "id": "weekly-review",
+          "retest": [
+            {
+              "check": "Check action confirmations, permissions and advertised prices; annotations are claims made by the server.",
+              "tool": "export_brief"
+            },
+            {
+              "check": "Read the changed instructions; replay a typical request and check tool selection.",
+              "tool": "search_docs"
+            },
+            {
+              "check": "Check saved inputs, required fields and types; add a boundary case.",
+              "tool": "search_docs"
+            },
+            {
+              "check": "Replay result handling: check the fields and types read by the workflow.",
+              "tool": "search_docs"
+            }
+          ],
+          "status": "retest",
+          "tools": [
+            "export_brief",
+            "search_docs"
+          ]
+        }
+      ]
+    }
+  ],
+  "format": "histor.upgrade-brief/v1",
+  "language": "en",
+  "limits": [
+    "Only observed definitions are compared, not the server\u2019s runtime behavior.",
+    "A change does not prove breakage; unchanged definitions do not establish safety.",
+    "Workflows are linked through explicitly selected tools, without semantic analysis.",
+    "Compact JSON size in UTF-8 measures bytes, not tokens, money or achieved savings.",
+    "launch is represented only by its hash; launch conditions are not executed and environment secrets are not displayed."
+  ],
+  "summary": {
+    "changed": 1,
+    "context_changed": 1,
+    "unchanged": 0,
+    "unknown": 1
+  },
+  "title": "Weekly research workflow \u2014 synthetic example",
+  "watchlistSha256": "sha256:0876494f4c77303cda37bc4359c1809b6c9ea82e05bd2dfd8c4f46a8767108e1"
+}

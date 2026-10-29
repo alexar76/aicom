@@ -1,0 +1,126 @@
+{
+  "query_count": 24,
+  "queries": [
+    {
+      "batch": "initial-scientific-queries",
+      "query": "\"10.5281/zenodo.23512760\" -site:zenodo.org -site:github.com -site:dev.to -site:modelmarket.dev -site:qiita.com -site:skillget.dev",
+      "result_file": "initial-scientific-queries.json"
+    },
+    {
+      "batch": "initial-scientific-queries",
+      "query": "\"histor-mcp-tool-definitions\" -site:huggingface.co -site:github.com -site:dev.to -site:modelmarket.dev -site:skillget.dev",
+      "result_file": "initial-scientific-queries.json"
+    },
+    {
+      "batch": "initial-scientific-queries",
+      "query": "\"10.5281/zenodo.23512759\"",
+      "result_file": "initial-scientific-queries.json"
+    },
+    {
+      "batch": "initial-scientific-queries",
+      "query": "\"HISTOR\" \"MCP\" dataset citation paper",
+      "result_file": "initial-scientific-queries.json"
+    },
+    {
+      "batch": "exact-citation-paths",
+      "query": "\"23512760\" HISTOR -site:zenodo.org -site:github.com -site:dev.to -site:qiita.com -site:skillget.dev",
+      "result_file": "exact-citation-paths.json"
+    },
+    {
+      "batch": "exact-citation-paths",
+      "query": "\"23512759\" HISTOR -site:zenodo.org -site:github.com",
+      "result_file": "exact-citation-paths.json"
+    },
+    {
+      "batch": "exact-citation-paths",
+      "query": "\"histor-mcp-tool-definitions\" notebook -site:huggingface.co -site:github.com",
+      "result_file": "exact-citation-paths.json"
+    },
+    {
+      "batch": "exact-citation-paths",
+      "query": "\"histor.modelmarket.dev/datasets\" -site:modelmarket.dev -site:dev.to -site:github.com -site:qiita.com -site:glama.ai",
+      "result_file": "exact-citation-paths.json"
+    },
+    {
+      "batch": "scientific-national",
+      "query": "\"HISTOR\" \"MCP\" (论文 OR 数据集 OR 引用) -site:github.com -site:dev.to -site:modelmarket.dev",
+      "result_file": "scientific-national.json"
+    },
+    {
+      "batch": "scientific-national",
+      "query": "\"HISTOR\" \"MCP\" (論文 OR データセット) -site:github.com -site:dev.to -site:modelmarket.dev -site:qiita.com",
+      "result_file": "scientific-national.json"
+    },
+    {
+      "batch": "scientific-national",
+      "query": "\"HISTOR\" \"MCP\" (датасет OR исследование) -site:github.com -site:dev.to -site:modelmarket.dev",
+      "result_file": "scientific-national.json"
+    },
+    {
+      "batch": "scientific-national",
+      "query": "\"HISTOR\" \"MCP\" site:arxiv.org",
+      "result_file": "scientific-national.json"
+    },
+    {
+      "batch": "exact-title-files",
+      "query": "\"HISTOR snapshot 2026-10-20\" -site:zenodo.org -site:modelmarket.dev -site:github.com -site:dev.to -site:qiita.com -site:skillget.dev",
+      "result_file": "exact-title-files.json"
+    },
+    {
+      "batch": "exact-title-files",
+      "query": "\"alexar76/histor-mcp-tool-definitions\" -site:huggingface.co -site:dev.to -site:github.com -site:qiita.com -site:skillget.dev",
+      "result_file": "exact-title-files.json"
+    },
+    {
+      "batch": "exact-title-files",
+      "query": "\"histor\" \"servers.jsonl.gz\" -site:modelmarket.dev -site:huggingface.co -site:github.com",
+      "result_file": "exact-title-files.json"
+    },
+    {
+      "batch": "exact-title-files",
+      "query": "\"histor\" \"toolsets.jsonl.gz\" -site:modelmarket.dev -site:huggingface.co -site:github.com",
+      "result_file": "exact-title-files.json"
+    },
+    {
+      "batch": "research-portals",
+      "query": "\"histor\" \"MCP\" site:hal.science",
+      "result_file": "research-portals.json"
+    },
+    {
+      "batch": "research-portals",
+      "query": "\"histor\" \"MCP\" site:jstage.jst.go.jp OR site:cir.nii.ac.jp",
+      "result_file": "research-portals.json"
+    },
+    {
+      "batch": "research-portals",
+      "query": "\"histor\" \"MCP\" site:cnki.net OR site:arxiv.org OR site:paperswithcode.com",
+      "result_file": "research-portals.json"
+    },
+    {
+      "batch": "research-portals",
+      "query": "\"histor-mcp-tool-definitions\" kaggle OR colab OR notebook OR dataset",
+      "result_file": "research-portals.json"
+    },
+    {
+      "batch": "research-reuse-multilingual",
+      "query": "\"histor-mcp-tool-definitions\" (引用 OR 인용 OR citação OR cita OR citation) -site:huggingface.co -site:github.com -site:dev.to -site:qiita.com -site:skillget.dev",
+      "result_file": "research-reuse-multilingual.json"
+    },
+    {
+      "batch": "research-reuse-multilingual",
+      "query": "\"10.5281/zenodo.23512760\" (paper OR notebook OR analysis OR dataset) -site:zenodo.org -site:dev.to -site:qiita.com -site:modelmarket.dev",
+      "result_file": "research-reuse-multilingual.json"
+    },
+    {
+      "batch": "research-reuse-multilingual",
+      "query": "\"HISTOR\" \"MCP\" site:kaggle.com OR site:colab.research.google.com OR site:gitlab.com",
+      "result_file": "research-reuse-multilingual.json"
+    },
+    {
+      "batch": "research-reuse-multilingual",
+      "query": "\"HISTOR\" \"MCP\" (site:elibrary.ru OR site:cyberleninka.ru OR site:scielo.org OR site:scienceon.kisti.re.kr)",
+      "result_file": "research-reuse-multilingual.json"
+    }
+  ],
+  "limitation": "Search engines sometimes broadened exact/site queries; results were checked for explicit target identifiers, false-positive numeric IDs and unrelated Histor products excluded."
+}

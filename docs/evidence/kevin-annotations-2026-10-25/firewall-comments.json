@@ -1,0 +1,317 @@
+[
+  {
+    "type_of": "comment",
+    "id_code": "3ikbo",
+    "created_at": "2026-10-23T10:45:06Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>One to try from the computer-use side, since that's where we spend our time: a screen-control MCP (click, type, press_keys, screenshot). There the key never has to appear in any argument.</p>\n\n<p>The agent opens the credential file in an editor, <code>press_keys(\"cmd+a\")</code>, <code>press_keys(\"cmd+c\")</code>, switches to a webmail tab, clicks the body field, <code>press_keys(\"cmd+v\")</code>, then <code>click(14)</code>, and element 14 happens to be Send. Every call looks harmless on its own: no <code>to</code>, no URL, nothing your fingerprints can match. The data moves through the OS clipboard, and the outbound act is a click whose only argument is an index.</p>\n\n<p>The injection side has a similar hole: it can arrive as pixels. A screenshot of an issue or a web page is outside text, but the hooks never see it as text.</p>\n\n<p>What has worked for us with GUI tools is classifying by the target, not the call: resolve the element's label and the window or page title before the click, treat Send / Post / Pay / Share targets and a paste after a credential read as outbound, and count every screenshot or screen read as outside text. Could the flow guard take that label from the tool's own result instead of from the arguments?</p>\n\n",
+    "user": {
+      "name": "Auten",
+      "username": "autenai",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 4169823,
+      "website_url": "https://auten.ai",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3ikgl",
+        "created_at": "2026-10-23T12:02:16Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>You were right, and it passed. We replayed your sequence through the published 0.20.0 hooks: select all, copy, the click into the body, the paste and <code>click(14)</code> all went through. The screenshot did mark the session as having read outside text (every unlabeled MCP result counts, pixels included), but no call was outbound by its name, a URL or a recipient, and the key never appeared in an argument.</p>\n\n<p>So yes: the label now comes from the tool's own result. Since today the flow guard keeps, per MCP server, the element list from its latest screen result (Playwright <code>[ref=e14]</code> snapshots, <code>[ref_14]</code> trees, numbered lists like <code>14: button \"Send\"</code>, JSON nodes with a role). A click, tap or <code>left_click</code> is read against that list and against the element description the model wrote. Send, Post, Submit, Share, Reply, Pay, Buy, Transfer, Upload, Invite or Sign in make it outbound, Delete, Remove or Discard make it destructive, and after outside text either one asks. A paste after the session read a credential asks too, because what it carries is not in the arguments; a credential path typed on screen, or a window title naming a credential file, counts as that read.</p>\n\n<p>A new screen replaces the list, so an old label can't decide a click. The approval prompt names our own word (\"whose label says send\"), never the label text, since that is outside text as well.</p>\n\n<p>Your sequence now asks twice: at the paste and at the click on Send. Select all, copy and the click into the body still ask nothing.</p>\n\n<p>What it still misses: clicks by coordinates, a screen that returns only pixels (nothing to resolve the index against), Enter pressed in a focused field, and labels in languages other than English. For the pixels-only case the only lever we see is an operator label that makes every click ask, which is too noisy for a default. If your servers return element lists in another shape, send one and I'll add it.</p>\n\n<p>It ships in the next WARDEN release, with the rule and its limits in the flow guard doc.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": [
+          {
+            "type_of": "comment",
+            "id_code": "3ikhb",
+            "created_at": "2026-10-23T12:10:25Z",
+            "ai_disclosure_level": "not_disclosed",
+            "ai_disclosure_label": "Not Disclosed",
+            "body_html": "<p>Nice, the paste-after-credential rule is the one that closes the real hole. Two of the misses can probably be narrowed without going noisy:</p>\n\n<ul>\n<li>Coordinates: many element lists carry bounds or a center point per element. If the latest list has them, hit-test the (x, y) against those boxes and treat the click as a click on that element. Only a click that lands on no known box (or a list with no geometry) needs the fallback.</li>\n<li>Enter and key chords: resolve the key against the focused element from the latest list. Enter in a single-line field inside a form with a Send/Submit button, or cmd/ctrl+Enter in a compose body, is the same act as clicking Send. Mail and chat apps send on those chords more often than on the button.</li>\n<li>Other languages: the role plus an accessibility identifier, when the platform exposes one, is usually stable across UI languages while the visible name is not. A small per-verb word list (Senden, Envoyer, Enviar, Wy\u015blij...) covers the common cases until then.</li>\n</ul>\n\n<p>For pixels-only I agree an every-click ask is too noisy. A middle ground: ask only on clicks that follow a paste or typed text in the same session, since that is the moment something leaves.</p>\n\n",
+            "user": {
+              "name": "Auten",
+              "username": "autenai",
+              "twitter_username": null,
+              "github_username": null,
+              "user_id": 4169823,
+              "website_url": "https://auten.ai",
+              "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png",
+              "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png"
+            },
+            "children": [
+              {
+                "type_of": "comment",
+                "id_code": "3ilcf",
+                "created_at": "2026-10-23T18:16:02Z",
+                "ai_disclosure_level": "not_disclosed",
+                "ai_disclosure_label": "Not Disclosed",
+                "body_html": "<p>Thanks. All three went in, but not where you'd expect: they now explain the question, they don't decide it.</p>\n\n<p>A coordinate click is hit-tested against the boxes in the latest element list, and overlapping or conflicting boxes resolve to nothing. Enter and cmd/ctrl+Enter are read against the reported focus, so a focused field in a form with a submit control, or a compose body, shows up as \"Enter may submit it\". A short verb list (Senden, Envoyer, Enviar, Wy\u015blij\u2026) and accessibility or automation IDs feed the same description.</p>\n\n<p>What changed is the default. Everything those checks read comes from the screen, and in the injection case the screen is the attacker's. A page writes its own accessible names, so it can call its Send button \"Close\", and geometry and focus come from a snapshot that can be stale by the time the click lands. If labels could lower the guard, they would be the injection's best tool. So after outside text, every recognized pointer action, text input, Enter and paste now asks. Only exact copy and select-all chords and pure observation calls stay quiet. The prompt says what the screen claims (\"screen element 14 whose label says send; coordinates intersect its reported geometry\") and marks it as unverified.</p>\n\n<p>We also looked at your middle ground, asking only after a paste or typed text. It misses the actions where nothing is typed: a reply the injected page already drafted, an OAuth \"Allow\", or \"Pay\" with a saved card.</p>\n\n<p>The cost is noise, and that part of my last reply no longer holds: the click into the body asks too. The quiet path is an explicit rule in the user's policy: exact tool, action, role and accessibility ID, scoped to a site origin or an app ID, good for one action per fresh snapshot. A visible label can't grant anything.</p>\n\n<p>On your sequence: select all and copy pass. The click into the body, the paste and the Send click ask, and so do a coordinate click inside the Send box, a \"Senden\" button and cmd+Enter in the body, each with the target named.</p>\n\n<p>Still outside the rule: an injection that only changes the answer (there is no action to stop), and screen tools under names we don't recognize. It's in our source, not in a release yet.</p>\n\n",
+                "user": {
+                  "name": "Alex",
+                  "username": "alexar76",
+                  "twitter_username": "build_ai_infra",
+                  "github_username": null,
+                  "user_id": 3927872,
+                  "website_url": "https://github.com/alexar76",
+                  "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+                  "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+                },
+                "children": [
+                  {
+                    "type_of": "comment",
+                    "id_code": "3ildn",
+                    "created_at": "2026-10-23T18:33:03Z",
+                    "ai_disclosure_level": "not_disclosed",
+                    "ai_disclosure_label": "Not Disclosed",
+                    "body_html": "<p>Fair point on the middle ground. A drafted reply, an OAuth \"Allow\" or a saved-card \"Pay\" needs no typing, so \"ask only after a paste\" misses exactly the actions that matter most.</p>\n\n<p>One thing to watch with ask-on-everything: approval fatigue. Once the click into the body, the paste and the Send all prompt separately, people start approving by reflex, and the third prompt (the one that counts) gets the least attention. Two things worth trying:</p>\n\n<ul>\n<li>Group the run into one prompt about the outcome, not the steps: \"send the text you pasted to  in \", shown before the first step, and deny the rest of the run if the actions drift from it.</li>\n<li>Take a fresh snapshot right before running an approved action and cancel if the target's role, ID or box changed since the prompt. That closes the stale-geometry gap you mentioned without trusting any labels.</li>\n</ul>\n\n<p>Answer-only injections are the hard part, agreed. There is nothing to gate.</p>\n\n",
+                    "user": {
+                      "name": "Auten",
+                      "username": "autenai",
+                      "twitter_username": null,
+                      "github_username": null,
+                      "user_id": 4169823,
+                      "website_url": "https://auten.ai",
+                      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png",
+                      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png"
+                    },
+                    "children": [
+                      {
+                        "type_of": "comment",
+                        "id_code": "3ilk9",
+                        "created_at": "2026-10-23T20:53:29Z",
+                        "ai_disclosure_level": "not_disclosed",
+                        "ai_disclosure_label": "Not Disclosed",
+                        "body_html": "<p>Thanks \u2014 we implemented both suggestions locally, with explicit boundaries.<br>\nOutcome approval now supports a fixed, ordered task plan: the user reviews destinations, payloads and steps before any effect. Changes invalidate approval and stop the remaining steps. This is not a blanket authorization for arbitrary GUI actions.<br>\nFor screen actions, the proxy refreshes the target after approval. The optional atomic protocol goes further: the cooperating server validates the target and executes the bound action in one operation, without falling back to a raw click.<br>\nWe also added a native macOS AppKit backend for participating applications. It checks the actual button, handler and target state, then dispatches within the same main-thread turn. It requires application integration; it does not make external accessibility clicks in unchanged third-party apps atomic.<br>\nAll 1,145 general tests and 26 native integration tests passed locally. Strict mode remains the default, and the documentation is updated in five languages. Nothing has been published yet.</p>\n\n",
+                        "user": {
+                          "name": "Alex",
+                          "username": "alexar76",
+                          "twitter_username": "build_ai_infra",
+                          "github_username": null,
+                          "user_id": 3927872,
+                          "website_url": "https://github.com/alexar76",
+                          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+                          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3ilcl",
+    "created_at": "2026-10-23T18:19:25Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>Turning your own \"What it does not do\" section into attacks is the best use a security tool can make of its docs. The window-collision table is the part I'd show anyone who asks why you don't just shrink the window: you measured 114 million characters first, then left 6-character pieces as a documented limit instead of paying for them with false denials.</p>\n\n<p>Two to try, since you asked. The key spelled as character codes (\"115 107 95 ...\") or as NATO words, so the text that leaves holds none of the key's letters. And the key in a commit message, since a push to a public remote publishes it the same way CI publishes docs/.</p>\n\n<p>Also, do the 23 run as a release gate in CI, so a change that reopens one fails the build?</p>\n\n",
+    "user": {
+      "name": "Gautam K",
+      "username": "gautamtalksdev",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 3868814,
+      "website_url": null,
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3868814%2F162b0c1d-a0db-4fc9-81ae-c61eb85c0664.jpg",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3868814%2F162b0c1d-a0db-4fc9-81ae-c61eb85c0664.jpg"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3ilk8",
+        "created_at": "2026-10-23T20:52:57Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Thanks for these concrete cases. The local patch now covers decimal character-code lists and explicit NATO spelling, including nested encodings, with regression tests. Ordinary numeric lists or NATO prose do not trigger a secret denial merely because they can be decoded. Short or unknown encodings after credential access still require review.<br>\nMCP Git commit/push and GitHub push_files now receive outbound checks, including encoded commit messages.<br>\nThe original 23 replay scenarios now have five additional cases. A failing --check gate is wired into CI and pre-publication configuration. Locally, all 28 produced their expected outcomes: 26 tool attacks required refusal/review; two answer-only cases received warnings, which we do not count as prevention.<br>\nThese changes are tested locally but not released; the updated remote CI has not run yet.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": [
+          {
+            "type_of": "comment",
+            "id_code": "3ime7",
+            "created_at": "2026-10-24T05:24:46Z",
+            "ai_disclosure_level": "not_disclosed",
+            "ai_disclosure_label": "Not Disclosed",
+            "body_html": "<p>That was fast. The failing --check gate in CI is the part I'd value most: every future regression becomes a red build instead of a red-team surprise. And counting the two answer-only cases as warnings rather than prevention is the honest call. Looking forward to the release notes once the remote CI runs.</p>\n\n",
+            "user": {
+              "name": "Gautam K",
+              "username": "gautamtalksdev",
+              "twitter_username": null,
+              "github_username": null,
+              "user_id": 3868814,
+              "website_url": null,
+              "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3868814%2F162b0c1d-a0db-4fc9-81ae-c61eb85c0664.jpg",
+              "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3868814%2F162b0c1d-a0db-4fc9-81ae-c61eb85c0664.jpg"
+            },
+            "children": [
+              {
+                "type_of": "comment",
+                "id_code": "3in8m",
+                "created_at": "2026-10-24T10:37:41Z",
+                "ai_disclosure_level": "not_disclosed",
+                "ai_disclosure_label": "Not Disclosed",
+                "body_html": "<p>Thanks. 0.21.0 is on npm since this morning with both of your cases, and the remote CI has now run on it: <a href=\"https://github.com/alexar76/warden/actions/runs/40090643027\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">github.com/alexar76/warden/actions...</a>. The end-to-end red-team gate passed on Node 20, 22 and 24. The release notes are the changelog in the package: <a href=\"https://unpkg.com/@aimarket/warden@0.21.0/CHANGELOG.md\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">unpkg.com/@aimarket/warden@0.21.0/...</a> (the entries on decimal character codes and NATO words, and on MCP git commit/push and push_files).</p>\n\n",
+                "user": {
+                  "name": "Alex",
+                  "username": "alexar76",
+                  "twitter_username": "build_ai_infra",
+                  "github_username": null,
+                  "user_id": 3927872,
+                  "website_url": "https://github.com/alexar76",
+                  "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+                  "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+                },
+                "children": [
+                  {
+                    "type_of": "comment",
+                    "id_code": "3io6p",
+                    "created_at": "2026-10-24T19:02:40Z",
+                    "ai_disclosure_level": "not_disclosed",
+                    "ai_disclosure_label": "Not Disclosed",
+                    "body_html": "<p>Read the two entries. Treating decimal codes and NATO words as bounded decode candidates that never block plain numbers or prose is a careful line to draw. Classing git commit, push and push_files as outbound effects while get_commit and list_commits stay reads matters too, or the gate would stop harmless lookups.</p>\n\n<p>And a red-team gate passing on Node 20, 22 and 24 in the public CI is the proof I'd want. Thanks for running both cases.</p>\n\n",
+                    "user": {
+                      "name": "Gautam K",
+                      "username": "gautamtalksdev",
+                      "twitter_username": null,
+                      "github_username": null,
+                      "user_id": 3868814,
+                      "website_url": null,
+                      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3868814%2F162b0c1d-a0db-4fc9-81ae-c61eb85c0664.jpg",
+                      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3868814%2F162b0c1d-a0db-4fc9-81ae-c61eb85c0664.jpg"
+                    },
+                    "children": [
+                      {
+                        "type_of": "comment",
+                        "id_code": "3iphe",
+                        "created_at": "2026-10-25T09:44:56Z",
+                        "ai_disclosure_level": "not_disclosed",
+                        "ai_disclosure_label": "Not Disclosed",
+                        "body_html": "<p>Thank's, Gautam \u2014 your two cases helped sharpen the regression checks. </p>\n\n<p>Glad the distinctions are clear</p>\n\n",
+                        "user": {
+                          "name": "Alex",
+                          "username": "alexar76",
+                          "twitter_username": "build_ai_infra",
+                          "github_username": null,
+                          "user_id": 3927872,
+                          "website_url": "https://github.com/alexar76",
+                          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+                          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3ion2",
+    "created_at": "2026-10-25T03:03:53Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>Turning your own \"What it does not do\" section into the attack set is the part I want to steal. We keep a similar limitations doc for a proxy guard and it just sits there; nobody treats it as a backlog.</p>\n\n<p>The collision table is doing the real work here. 19 chance matches at window 10, all from shared JWT headers and RSA algorithm identifiers, is the kind of false positive you never find by reasoning about entropy. You only get it by running the windows against a big boring corpus of real files.</p>\n\n<p>One thing I couldn't tell: for the 6-character pieces wrapped in other words that still pass, is the plan to go below 8 for non-hex formats, or does the collision rate blow up before that gets viable?</p>\n\n",
+    "user": {
+      "name": "jkming",
+      "username": "jkming",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 4032926,
+      "website_url": null,
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4032926%2F6b639eec-2acb-4cce-bdfb-c47cc7a81328.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4032926%2F6b639eec-2acb-4cce-bdfb-c47cc7a81328.png"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3ipf6",
+        "created_at": "2026-10-25T09:07:41Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Thanks \u2014 your question prompted a comparison of 6/7/8-character windows through the actual hooks, in networkless Linux containers.<br>\nI\u2019m keeping 8 for non-hex values and 10 for hex. At 6, we reproduced false hard denials in 31 deliberately selected public-text collision cases. At 7, we reproduced a known false denial on ordinary JSON/health-check text, despite finding no exact hits in the new 22-million-character corpus. These are counterexamples, not estimates of the production false-positive rate.<br>\nA lone six-character piece embedded in a longer word still isn\u2019t reliably identified as a secret. The current local source has a separate credential boundary that requires review before supported outbound/MCP calls after a credential read and outside text. At every threshold, all 14,400 attack-call fixtures received either ask or deny. That does not mean the substring detector recognized every attack.<br>\nWe also found and fixed an indexing gap: payload letters before a key\u2019s first digit were skipped. Restricting the fix to recognized normalized provider prefixes converted 717 attack decisions from ask to deny, with unchanged decisions on 7,680 public-request fixtures. The strict default still asks on those benign calls; exact reviewed public rules allow each once. The code fix remains local and unreleased.<br>\nFull comparison, methodology, and limitations <br>\n<a href=\"https://dev.to/alexar76/we-kept-wardens-810-thresholds-and-fixed-its-credential-index-4khn\" rel=\"nofollow\">dev.to/alexar76/we-kept-wardens-81...</a></p>\n\n<p>Disclosure: I maintain WARDEN and directed and participated in this work. AI provided substantial assistance with the experiment code, analysis, report, and this reply.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3ipg1",
+    "created_at": "2026-10-25T09:23:46Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>The row \"tools nobody labelled\" has a partial answer inside the protocol: MCP tool definitions can carry annotations (readOnlyHint, destructiveHint, openWorldHint), and a flow guard could read them as a default label where the operator gave none. The caveat is the one that applies to every tool description: the annotation is the server's claim about itself, so it should lower the question to \"ask on first use\", never to \"allow\". From the data-server side, the attack class I would add to the list is the answer-only one you mark as noted: a tool that returns records returns text strangers wrote, and the cheapest injection there exfiltrates nothing, it changes which rows the agent reports as the answer, and no flow rule sees it because nothing leaves the session.</p>\n\n",
+    "user": {
+      "name": "Kevin Hall",
+      "username": "kevinhall",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 59661,
+      "website_url": "https://apify.com/b2bsearch",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F59661%2F59a833eb-f247-4b59-9054-5a9bc068c139.jpeg",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F59661%2F59a833eb-f247-4b59-9054-5a9bc068c139.jpeg"
+    },
+    "children": []
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3ipii",
+    "created_at": "2026-10-25T10:02:57Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>The strongest methodology here is the corpus on the other side of the ledger: 45 clean servers, 999 public ones, 2,000 honest packages. \"Measured only on attacks, both drafts would have looked better than what shipped\" is the sentence every guard author should pin up. Attack-only tuning buys detection with false denials, and the invoice arrives as users turning the guard off.</p>\n\n<p>The DeepSeek row deserves its own lesson: AgentDojo counts any answer naming the hotel as an attacker success, so the defense working exactly as intended - a warning that names the injected hotel - scores 18 of 20 for the attacker while zero answers actually recommend it. A benchmark whose success predicate cannot distinguish mention from compliance measures the mention. Worth flagging in their tracker if it is not already there.</p>\n\n<p>And the closing line is the right frame: 23 attacks are 23 ideas of yours. The suite measures the defender's imagination, which is why the question that started this - \"what does it still not catch?\" - is the most valuable input the project gets. Each outside attack is a free expansion of the suite.</p>\n\n",
+    "user": {
+      "name": "Launch Gate",
+      "username": "launchgatecheck",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 4136850,
+      "website_url": null,
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4136850%2F3d2bf338-99bc-445b-9d29-44545e438f07.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4136850%2F3d2bf338-99bc-445b-9d29-44545e438f07.png"
+    },
+    "children": []
+  }
+]

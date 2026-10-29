@@ -1,0 +1,33 @@
+{
+  "date_msk": "2026-10-29",
+  "scope": "Public external mentions and discoverability, compared with the five external-*.ru.md reports from 2026-10-28 identified by parent",
+  "strongest_new_attribution": "usetested-review.json",
+  "search_scope": [
+    "Exact alexar76 identity and GitHub URLs with third-party-only and recent-date variants",
+    "histor.modelmarket.dev, modelmarket.dev, histor-mcp-tool-definitions, @aimarket/warden, aimarket-protocol",
+    "Exact titles of the two most recent DEV publications",
+    "X, Reddit, Bluesky and GitLab-specific queries"
+  ],
+  "findings": [{
+    "url": "https://usetested.com/v1/review?service=modelmarket.dev",
+    "kind": "Independent paid test attribution",
+    "date_utc": "2026-10-27T03:08:02Z",
+    "summary": "UseTested reports one successful paid HISTOR check for 0.001 USDC, with exact Base transaction, payer and endpoint. This reveals a probable purpose/source for an existing buyer's transaction rather than a new transaction on October 29.",
+    "verification": "Public JSON visibly rendered through IAB; source's declared receipt was not independently checked on chain by this subagent."
+  }],
+  "weak_discovery_candidates": [
+    {"url":"https://sanka.com/research/apps/dataset/", "finding":"Search snapshot contains the known HISTOR Show HN title", "limits":"Direct web open failed; parent reports did not name Sanka, but the listing is a derivative of own HN submission, not independent research use."},
+    {"url":"https://mcplist.eu/categories/business/", "finding":"Search snapshot contains AIMarket live agent marketplace", "limits":"Derivative registry card only; not a new adoption signal. Not pursued further."}
+  ],
+  "not_new": [
+    "ProtocolProbe mcp-security, AI Outline, Qiita, Glama, Enterprise DNA, AgentSearch, Awesome Agentic Atlas, Tracevero, MCPRepository and Odel are already covered in previous reports.",
+    "RugSnare README still visibly cites HISTOR; no fresh change was established by the web snapshot. Parent independently checks discussions."
+  ],
+  "limits": [
+    "Targeted public search is not exhaustive. No new independent deployment or whole-ecosystem review was established in this subagent's search sample.",
+    "DEV direct public API GET returned 403 Forbidden Bots; web open returned inaccessible/cache miss. These failures were not counted as zero comments.",
+    "UseTested shell GET returned 403 and web card GET cache miss; read-only IAB successfully displayed the public JSON. No login, payment, messaging or external mutation was performed."
+  ],
+  "external_mutations": false,
+  "github_writes": false
+}

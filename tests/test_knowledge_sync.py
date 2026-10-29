@@ -230,7 +230,7 @@ def test_an_unpublished_satellite_reaches_no_knowledge_base():
     guarantees the unpublished ones are NOT, which is the half that was missing.
     """
     unpublished = [s for s in ecosystem_knowledge.load_satellites()
-                   if not ecosystem_knowledge.is_github_published(s)]
+                   if not ecosystem_knowledge.is_knowledge_visible(s)]
     assert unpublished, "nothing is marked unpublished — did the key get dropped from the map?"
     ids = {c["id"] for c in ecosystem_knowledge.components()}
     for sat in unpublished:
@@ -269,6 +269,7 @@ def test_factory_satellite_map_drops_unpublished_entries():
         str(s["id"])
         for s in (yaml.safe_load(src) or {}).get("satellites", [])
         if isinstance(s, dict) and s.get("github_published") is False
+        and s.get("knowledge_visible") is not True
     ]
     assert unpublished
     for sid in unpublished:
@@ -282,3 +283,18 @@ def test_factory_satellite_map_drops_unpublished_entries():
     assert published
     for sid in published[:8]:
         assert f"  - id: {sid}" in out, sid
+
+
+def test_local_rename_stays_known_without_claiming_github_publication():
+    rows = ecosystem_knowledge.components()
+    row = next(r for r in rows if r["id"] == "symmartys")
+    assert row["github_published"] is False
+    block = ecosystem_knowledge.render_block([row])
+    assert "symmartys" in block and "local source" in block
+    assert "github.com/alexar76/symmartys" not in block
+    src = (ROOT / "scripts/satellite-map.yaml").read_text()
+    mirror = sync.satellite_map_mirror_text("scripts/satellite-map.yaml", src)
+    assert "  - id: symmartys\n" in mirror
+    assert ecosystem_knowledge.is_knowledge_visible({"github_published": False}) is False
+    assert ecosystem_knowledge.is_knowledge_visible({"github_published": False, "knowledge_visible": True}) is True
+    assert ecosystem_knowledge.is_knowledge_visible({"github_published": False, "knowledge_visible": "yes"}) is False

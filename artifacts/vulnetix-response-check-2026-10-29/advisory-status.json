@@ -1,0 +1,229 @@
+[
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000636",
+    "updated_at": "2026-10-28T01:49:28Z",
+    "affected": [
+      {
+        "package": "aimarket-platon",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.1.5",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Bind the server to the loopback interface (PLATON_HOST=127.0.0.1) and reach it only through a reverse proxy on the same host."
+      }
+    ],
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000636.json"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000637",
+    "updated_at": "2026-10-28T01:49:28Z",
+    "affected": [
+      {
+        "package": "aimarket-oracle-core",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.6.2",
+            "status": "affected",
+            "version": "0.2.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "If you do not sell the paid tier through a hub, leave ORACLE_TRUSTED_PAYMENT_PROXIES unset: no caller is then lifted above the free ceiling. ORACLE_PAID_TIER_SECRET does not replace it for hub traffic, because aimarket-hub (through 3.16.0) never sends the X-AIMarket-Paid-Tier header."
+      },
+      {
+        "lang": "en",
+        "value": "Bind the oracle to the loopback interface and reach it only through a reverse proxy on the same host."
+      }
+    ],
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000637.json"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000638",
+    "updated_at": "2026-10-28T01:49:28Z",
+    "affected": [
+      {
+        "package": "aimarket-logos",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.2.1",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Start the app on loopback, for example uvicorn logos.main:app --host 127.0.0.1 --port <LOGOS_PORT>, instead of the logos entry point, and reach it only through a reverse proxy on the same host."
+      }
+    ],
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000638.json"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000639",
+    "updated_at": "2026-10-28T01:49:28Z",
+    "affected": [
+      {
+        "package": "skopos-fleet",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.2.1",
+            "status": "affected",
+            "version": "0.2.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Name the git server by a fully qualified name in SKOPOS_AGENT_REPO_URL, and add its host key, checked out of band, to SKOPOS's known_hosts (SKOPOS_KNOWN_HOSTS): in 0.2.1 such a remote is verified."
+      },
+      {
+        "lang": "en",
+        "value": "Or push over HTTPS: an https:// SKOPOS_AGENT_REPO_URL with SKOPOS_GIT_TOKEN set and SKOPOS_GIT_SSH_KEY unset."
+      },
+      {
+        "lang": "en",
+        "value": "Where SKOPOS runs on the host itself, a loopback remote such as a Gitea port published on 127.0.0.1 is not reachable by a neighbour."
+      }
+    ],
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000639.json"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000640",
+    "updated_at": "2026-10-28T01:49:28Z",
+    "affected": [
+      {
+        "package": "aimarket-mcp",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.6.3",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Set AIMARKET_MCP_KEY to a long random value whenever anything relays requests to the HTTP server. This is the only control that works in every affected version."
+      }
+    ],
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000640.json"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000641",
+    "updated_at": "2026-10-28T01:49:28Z",
+    "affected": [
+      {
+        "package": "aimarket-metis",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.2.4",
+            "status": "affected",
+            "version": "0.2.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Set METIS_API_KEY whenever anything relays requests to the server. This is the only control that works in every affected version."
+      }
+    ],
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000641.json"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000642",
+    "updated_at": "2026-10-28T01:49:28Z",
+    "affected": [
+      {
+        "package": "aimarket-treasury",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.1.3",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Set TREASURY_CLIENT_TOKEN on every deployment, and have every client send it as X-Treasury-Client. This is the only control that works in every affected version."
+      }
+    ],
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000642.json"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000643",
+    "updated_at": "2026-10-28T01:49:28Z",
+    "affected": [
+      {
+        "package": "aimarket-platon",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.1.5",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Set PLATON_STEER_TOKEN whenever anything relays requests to the server, and send it as X-Platon-Token from the clients allowed to write. This is the only control that works in every affected version."
+      }
+    ],
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000643.json"
+  },
+  {
+    "record": "GCVE-110-VULN-PYPI-2026-000644",
+    "updated_at": "2026-10-28T01:49:28Z",
+    "affected": [
+      {
+        "package": "skopos-fleet",
+        "versions": [
+          {
+            "status": "affected",
+            "version": "0.2.1",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "No setting removes it in 0.2.1. SKOPOS_LOGIN_GLOBAL_MAX_ATTEMPTS (up to 500) only raises the number of failures an attacker must send, and SKOPOS_LOGIN_LOCKOUT_SECONDS (down to 60) shortens each lockout; with a long random dashboard password, a higher shared budget still leaves guessing impractical."
+      }
+    ],
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000644.json"
+  }
+]

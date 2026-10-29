@@ -1,0 +1,5 @@
+[aimarket.plugins]
+mcp-packager = aimarket_mcp_packager.plugin:MCPPlugin
+
+[console_scripts]
+aimarket-mcp-packager-mcp = aimarket_mcp_packager.stdio_server:main

@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-29",
+  "homepage": "https://symmartys.modelmarket.dev/",
+  "certificate_chain_and_hostname_verified": true,
+  "certificate_expires": "Jan 27 07:39:13 2027 GMT",
+  "public_checks": {
+    "home": {
+      "status": 200,
+      "url": "https://symmartys.modelmarket.dev/"
+    },
+    "health": {
+      "status": 200,
+      "url": "https://symmartys.modelmarket.dev/health"
+    },
+    "manifest": {
+      "status": 200,
+      "url": "https://symmartys.modelmarket.dev/ai-market/v2/manifest"
+    },
+    "canonical_manifest": {
+      "status": 200,
+      "url": "https://modelmarket.dev/providers/symmartys/ai-market/v2/manifest"
+    },
+    "peers": {
+      "status": 200,
+      "url": "https://modelmarket.dev/ai-market/v2/federation/peers"
+    },
+    "ecosystem": {
+      "status": 200,
+      "url": "https://ecosystem.modelmarket.dev/ru/"
+    },
+    "whitepaper": {
+      "status": 200,
+      "url": "https://ecosystem.modelmarket.dev/docs/ecosystem/whitepaper/ru.html"
+    },
+    "knowledge": {
+      "status": 200,
+      "url": "https://ecosystem.modelmarket.dev/docs/ecosystem/knowledge-base-ru.html"
+    },
+    "live": {
+      "status": 200,
+      "url": "https://monitor.modelmarket.dev/api/health"
+    },
+    "uni": {
+      "status": 200,
+      "url": "https://monitor-uni.modelmarket.dev/api/health"
+    },
+    "redirect": {
+      "status": 200,
+      "url": "https://symmartys.modelmarket.dev/"
+    }
+  },
+  "capabilities": 16,
+  "same_ed25519_and_mldsa_identity_on_both_addresses": true,
+  "federation_provider_rows": 1,
+  "federation_canonical_url": "https://modelmarket.dev/providers/symmartys",
+  "ops_public_status": 404,
+  "package_new_homepage_verified": true,
+  "github_writes": false,
+  "pypi_uploads": false
+}

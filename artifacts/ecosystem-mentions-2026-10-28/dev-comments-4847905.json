@@ -1,0 +1,452 @@
+[
+  {
+    "type_of": "comment",
+    "id_code": "3hm2c",
+    "created_at": "2026-10-14T05:24:05Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>Useful dataset, and the \"Testing the tester\" section is what makes me trust the rest of it.</p>\n\n<p>One case I'd like to understand. Disclosure: I'm on the Auten team, and our npm package is a thin launcher. HISTOR has it as ok with one tool, install_auten, because the runner it hands stdio to isn't on your sandbox. On a machine where the runner is installed, tools/list returns the real computer-use tools instead. So \"the tool set everyone else gets\" is honestly two sets, depending on local state.</p>\n\n<p>How does WARDEN treat that? Would someone with the runner installed see their server flagged as a different tool set from HISTOR's pin? And is there a way for a publisher to declare the expected set (in server.json, say), so it can be checked rather than only diffed? There are probably a fair number of launcher-style packages like this in the \"needs something the machine lacks\" bucket too.</p>\n\n",
+    "user": {
+      "name": "Auten",
+      "username": "autenai",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 4169823,
+      "website_url": "https://auten.ai",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3hma9",
+        "created_at": "2026-10-14T08:08:37Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Thanks, and fair point. For a launcher, \"the tool set everyone else gets\" really means \"the set a machine without your runner gets\", and that is what HISTOR holds for your package: the one install tool. We have changed that sentence in the post.</p>\n\n<p>How WARDEN treats it: <code>scan --histor</code> digests the tools/list your client actually got (MTL/1) and asks HISTOR whether it has seen that digest for the package. With the runner installed it has not, so the answer is <code>different</code> and WARDEN shows an advisory finding. It never blocks. Without the runner the answer is <code>same</code>.</p>\n\n<p>Your comment also showed that finding was worded wrong for this case: it named only a version HISTOR had not reached or a package that is not the published one, which reads like tampering. WARDEN 0.15.0 names local state first (a program the package hands over to, a real key) and gives the tool count on both sides.</p>\n\n<p>Declaring the expected set: you can now. Put the MTL/1 digest of the set your runner serves in your server.json, under <code>_meta</code> → <code>io.modelcontextprotocol.registry/publisher-provided</code> → <code>dev.modelmarket.histor/tool-sets</code>, as <code>{\"mtl\": \"1\", \"sets\": [{\"digest\": \"sha256-…\", \"count\": 23, \"when\": \"the runner is installed\"}]}</code>, and publish that version to the registry. On a machine with the runner, <code>npx -y @aimarket/warden scan --json</code> prints the digest as <code>mtlDigest</code>. HISTOR reads the declaration at its next daily crawl and answers /check with it, marked as your declaration, not an observation; WARDEN 0.15.0 then reports that set as declared by the publisher, at low severity, instead of unseen. Its own checks still read every tool. Details: <a href=\"https://github.com/alexar76/histor/blob/main/docs/api.md#declaring-tool-sets-publishers\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">github.com/alexar76/histor/blob/ma...</a></p>\n\n<p>The \"needs something the machine lacks\" bucket: yes, launchers that exit when their program is missing are among those 236. HISTOR has no set for them, so WARDEN has nothing to compare and flags nothing, and a declaration works for them too.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": [
+          {
+            "type_of": "comment",
+            "id_code": "3hmbe",
+            "created_at": "2026-10-14T08:22:20Z",
+            "ai_disclosure_level": "not_disclosed",
+            "ai_disclosure_label": "Not Disclosed",
+            "body_html": "<p>Thanks for changing the wording and shipping the declaration path so fast. Naming local state first in the WARDEN finding is exactly what makes it readable for a launcher.</p>\n\n<p>We'll look at adding a tool-sets declaration on our next registry publish. One follow-up: our runner is versioned separately from the npm launcher (and per OS), so the set it serves can change while server.json stays the same. Is the intended pattern to list each known digest in \"sets\" and republish when it changes, or does HISTOR expect one declared set per published package version?</p>\n\n",
+            "user": {
+              "name": "Auten",
+              "username": "autenai",
+              "twitter_username": null,
+              "github_username": null,
+              "user_id": 4169823,
+              "website_url": "https://auten.ai",
+              "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png",
+              "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png"
+            },
+            "children": [
+              {
+                "type_of": "comment",
+                "id_code": "3hmi3",
+                "created_at": "2026-10-14T10:28:49Z",
+                "ai_disclosure_level": "not_disclosed",
+                "ai_disclosure_label": "Not Disclosed",
+                "body_html": "<p>Good question, and it made us change something. A declaration belongs to your server's registry entry, not to an npm version: HISTOR applies it to the server whatever launcher version someone runs, so there is no \"one set per package version\". You list every digest you know, but you no longer have to republish server.json when the runner changes. Point the entry, once, at a file on your own domain, and HISTOR reads that file every hour.</p>\n\n<ol>\n<li>On each OS and runner version: <code>npx -y @aimarket/warden@0.16.0 declare --when \"runner 1.4, macOS\" --out mcp-tool-sets.json -- npx -y &lt;your package&gt;</code>. It starts the launcher the way a client does, digests what tools/list returns and adds that set to the file (other sets kept, up to 64).</li>\n<li>Put the file on the domain your registry namespace was verified with, or a subdomain, e.g. <code>https://&lt;your domain&gt;/.well-known/mcp-tool-sets.json</code>. HISTOR reads it from there and nowhere else, so nobody can declare sets in your name.</li>\n<li>Once: <code>declare --server-json --link &lt;that url&gt;</code> prints the <code>_meta</code> block; publish that server.json version.</li>\n<li>\n<code>declare --check &lt;that url&gt; --name &lt;your server name&gt;</code> tells you what HISTOR will take from the file.</li>\n</ol>\n\n<p>With each runner release: step 1 again, upload the file. Keep older runners' digests listed while people still run them; a set you drop is marked withdrawn, and if your site is down HISTOR keeps the last good file instead of withdrawing anything. People who get a declared set see a low-severity finding that says it comes from your file, and WARDEN still checks every tool.</p>\n\n<p>Details: <a href=\"https://github.com/alexar76/histor/blob/main/docs/api.md#declaring-tool-sets-publishers\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">github.com/alexar76/histor/blob/ma...</a></p>\n\n",
+                "user": {
+                  "name": "Alex",
+                  "username": "alexar76",
+                  "twitter_username": "build_ai_infra",
+                  "github_username": null,
+                  "user_id": 3927872,
+                  "website_url": "https://github.com/alexar76",
+                  "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+                  "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+                },
+                "children": [
+                  {
+                    "type_of": "comment",
+                    "id_code": "3hmi6",
+                    "created_at": "2026-10-14T10:31:30Z",
+                    "ai_disclosure_level": "not_disclosed",
+                    "ai_disclosure_label": "Not Disclosed",
+                    "body_html": "<p>That answers it, thanks. A file on the namespace domain that HISTOR re-reads hourly fits a runner that versions separately from the launcher much better than republishing server.json each time, and keeping the last good file when the site is down is the right default.</p>\n\n<p>The <code>declare --check</code> step is a nice touch too: being able to see what HISTOR will accept before anyone gets a finding makes this easy to try. We'll test it against our next runner release.</p>\n\n",
+                    "user": {
+                      "name": "Auten",
+                      "username": "autenai",
+                      "twitter_username": null,
+                      "github_username": null,
+                      "user_id": 4169823,
+                      "website_url": "https://auten.ai",
+                      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png",
+                      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png"
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type_of": "comment",
+        "id_code": "3j042",
+        "created_at": "2026-10-25T13:35:00Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Following up on the launcher case — I recovered HISTOR’s stored sandbox snapshot: one install_auten tool. I’ve also prepared a capture helper with instructions for comparing actual environments.<br>\nIt runs the supplied launch command and collects initialize metadata and paginated tool lists. The collector makes no tool calls, creates no trust pins and uploads nothing itself. Starting the launcher still executes its code. The saved tools are client-normalized definitions, not a raw wire transcript.<br>\nCould you share two captures from the differing environments, ideally using the same pinned <a class=\"mentioned-user\" href=\"https://dev.to/autenai\">@autenai</a>/<a href=\"mailto:mcp@0.1.5\" rel=\"nofollow\">mcp@0.1.5</a> launcher? For each, please include:</p>\n\n<ul>\n<li>OS/architecture and runner release/build, or explicitly “runner absent”.</li>\n<li>The exact launch command, distinguishing the npm launcher from direct auten mcp-bridge.</li>\n<li>Which runner executable was selected; AUTEN_BIN and the standard installation location can take precedence over PATH.\nThe useful files are tools.json, initialize.json, capture.json and SHA256SUMS. Please review them before sharing; no keys, environment values, complete client configs or personal SSE URLs are needed.\nNo need to remove a working runner to manufacture the missing-runner case. One current working capture would already let us make a first comparison with the older sandbox baseline, with the version/time differences stated explicitly.\nThe helper passed ten synthetic Linux tests. We haven’t run your real runner, so those tests don’t establish the second environment’s tool set. A publisher declaration can then be checked separately; its digest/count alone cannot replace the actual snapshots.</li>\n</ul>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": [
+          {
+            "type_of": "comment",
+            "id_code": "3j058",
+            "created_at": "2026-10-25T13:53:55Z",
+            "ai_disclosure_level": "not_disclosed",
+            "ai_disclosure_label": "Not Disclosed",
+            "body_html": "<p>Thanks for digging the old snapshot back out, and for spelling out exactly what the collector does and doesn't do.</p>\n\n<p>Honest answer: we won't run captures against the installed runner and post them in this thread for now. That's our call about publishing the full tool definitions, not a concern with your helper. The publisher-declaration route you suggested is the one we're working toward (a hosted tool-sets file), but it isn't live yet, so there's nothing on our side to check today.</p>\n\n<p>Agreed that a digest alone shouldn't stand in for real snapshots.</p>\n\n",
+            "user": {
+              "name": "Auten",
+              "username": "autenai",
+              "twitter_username": null,
+              "github_username": null,
+              "user_id": 4169823,
+              "website_url": "https://auten.ai",
+              "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png",
+              "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4169823%2F870c6944-5f24-4cdb-ae88-7a2bcfb6a52a.png"
+            },
+            "children": [
+              {
+                "type_of": "comment",
+                "id_code": "3j0b6",
+                "created_at": "2026-10-25T15:30:26Z",
+                "ai_disclosure_level": "not_disclosed",
+                "ai_disclosure_label": "Not Disclosed",
+                "body_html": "<p>Understood, thanks for clarifying. We’ll keep the recovered snapshot labelled as a historical sandbox observation; it cannot verify the currently installed runner. A hosted tool-sets file would be publisher-declared information, separate from a runtime capture. There’s nothing further to verify on your side while that file isn’t available.</p>\n\n",
+                "user": {
+                  "name": "Alex",
+                  "username": "alexar76",
+                  "twitter_username": "build_ai_infra",
+                  "github_username": null,
+                  "user_id": 3927872,
+                  "website_url": "https://github.com/alexar76",
+                  "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+                  "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3hmmh",
+    "created_at": "2026-10-14T11:43:52Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>A data point from the other side of your \"what it asks for\" finding, for remote servers. Apify's hosted MCP endpoint takes the Actor list in the URL (<code>?tools=owner/actor</code>), authenticates with OAuth or a bearer token, and answers <code>tools/list</code> only after that. For one pinned Actor the list is five tools: the Actor itself plus four generic ones (get run, get dataset items, get key-value record, abort run). Nothing is installed, and \"the set a machine without your runner gets\" is empty rather than a placeholder-key tool list.</p>\n\n<p>Two questions, if remote servers are on the HISTOR roadmap. Would a remote server that returns <code>tools/list</code> to an unauthenticated <code>initialize</code> count as \"answered\", or as its own category? And would a tool whose input schema defaults to a paid action be visible to your canary calls? The one I hit was a metered search whose <code>mode</code> defaulted to the purchase, so a call with no arguments was a charge; a canary with placeholder arguments might never reach that path, and it is the kind of thing a reader of the description would not see either.</p>\n\n",
+    "user": {
+      "name": "Kevin Hall",
+      "username": "kevin_hall",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 4174187,
+      "website_url": "https://apify.com/b2bsearch",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4174187%2Fb31807ac-8c8f-4841-95dc-5d1d5d49fe0c.jpeg",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4174187%2Fb31807ac-8c8f-4841-95dc-5d1d5d49fe0c.jpeg"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3i5b7",
+        "created_at": "2026-10-17T20:40:52Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>This crawl is local npm and PyPI packages. We install each one and start it. Answered means that process returned tools/list after initialize. Remote HTTP was the earlier 986. These notes do not put remote servers on a roadmap. A remote server that returns tools/list to an unauthenticated initialize is outside this count. This post does not give that case its own category.</p>\n\n<p>The observer calls up to 15 tools once each with canary arguments. The run did not measure whether a tool whose input schema defaults to a paid action is visible to those calls.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3honi",
+    "created_at": "2026-10-15T06:03:54Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>running a few mcp servers on my homelab made me think about this a lot. the sandbox test answers \"what does it do on first start\", but the part that keeps me up at night is the runtime behavior — a server that passes initialize can still hit a network endpoint or read a file it never declared, and only when a tool is actually called. i ended up writing a small monitor that tracks which local services are alive, what they connect to, and how much vram they burn, so at least i can see the drift between what a tool says it does and what it does. github.com/SikamikanikoBG/homelab-monitor — not mcp-specific, but the \"who is actually running what on my box\" question is the same one. the \"testing the tester\" section is the right instinct. a log that lies is worse than no log at all.</p>\n\n",
+    "user": {
+      "name": "Arsen Apostolov",
+      "username": "sikamikanikobg",
+      "twitter_username": "arsenapostolov",
+      "github_username": "SikamikanikoBG",
+      "user_id": 1410108,
+      "website_url": "https://medium.com/@arsen.apostolov",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1410108%2Fb7d644e9-449a-4ef9-8bcc-73a2ff63902f.jpeg",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1410108%2Fb7d644e9-449a-4ef9-8bcc-73a2ff63902f.jpeg"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3i5bh",
+        "created_at": "2026-10-17T20:55:13Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>The crawl records the first start. Inside the sandbox the observer speaks initialize and tools/list. That is the start, not what a tool does on a later call.</p>\n\n<p>A sandbox that reports wrong things is worse than none.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3i0fh",
+    "created_at": "2026-10-15T19:35:13Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>The 41% cost startup time, not tokens: a server that never answers adds no tool list. The bill is the 59% that did, since every tool list they return rides along in each request.</p>\n\n",
+    "user": {
+      "name": "Paul Irolla",
+      "username": "paul_irolla_6b5ae261d0224",
+      "twitter_username": null,
+      "github_username": "pi-infected",
+      "user_id": 2183047,
+      "website_url": "https://github.com/pi-infected/tokenade",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F2183047%2Fc0c55e95-e0dd-4375-8123-478cede020d8.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F2183047%2Fc0c55e95-e0dd-4375-8123-478cede020d8.png"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3i5bj",
+        "created_at": "2026-10-17T20:55:21Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>5,259 of 12,915 never answered, so they returned no tool list. The 7,656 that answered did return one. Between them they listed 182,157 tool definitions. This run does not measure token cost.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3i31k",
+    "created_at": "2026-10-16T18:28:15Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>Seeing 292 PyPI servers die on import after mcp 2.0.0 is the result I'd send every maintainer, since 207 of the 269 you retried came back with mcp&lt;2. I also appreciated the breakdown of the 295 decoy file opens, because the ~/.netrc reads from requests would have alarmed me too. As the crawl continues, will you track how many of those 292 recover once maintainers add an upper bound on mcp?</p>\n\n",
+    "user": {
+      "name": "Kartik N V J K",
+      "username": "kartik-nvjk",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 3977738,
+      "website_url": "https://nvjkkartik.netlify.app/",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3977738%2F99b8e069-3afe-49cf-a409-0f52b82c22b6.jpg",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3977738%2F99b8e069-3afe-49cf-a409-0f52b82c22b6.jpg"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3i5b8",
+        "created_at": "2026-10-17T20:40:54Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>The 292, the 207 of 269, and the 295 are the 13 October snapshot. The 292 are PyPI servers that depend on mcp with no upper bound, install 2.x, and die on import. We started 269 of them again with pip held to mcp&lt;2, and 207 answered. 295 opened a decoy credential file.</p>\n\n<p>The crawl continues. Each pass installs the latest version and records whether that run answered initialize and tools/list, and what it printed as it exited. That exit text is what placed a server in the 292. A later pass records the new run. The snapshot does not carry a separate count of how many of those 292 recover once a maintainer adds an upper bound.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      },
+      {
+        "type_of": "comment",
+        "id_code": "3ipp1",
+        "created_at": "2026-10-25T12:03:07Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Following up with the fresh-install count you asked for: we rechecked the reconstructed 292-package cohort on 24 October, without adding our own mcp&lt;2 constraint.<br>\nFourteen answered initialize and tools/list: twelve had newer releases, while two worked at the same version after we installed their declared MCP extra. Eleven of the twelve newer-release successes have a matching fresh old-version control that still fails; the remaining old release is no longer available from PyPI.<br>\nSeven confirmed pairs add an upper bound, three move to SDK 2, and one changes an already bounded range with a Pydantic-related old failure. Another 276 still fail on imports, APIs or dependencies; two need real authentication or a prepared project index that our synthetic environment did not provide.<br>\nI also need to correct my earlier reply: not all 292 were proven MCP 2 failures. Our old classifier included missing extras and MCP 1/Pydantic errors because it matched the FastMCP path anywhere in a traceback.<br>\nThe follow-up explains the controls and limitations: <a href=\"https://dev.to/alexar76/we-rechecked-292-failing-mcp-packages-12-newer-releases-now-list-tools-p72\" rel=\"nofollow\">dev.to/alexar76/we-rechecked-292-f...</a><br>\nSuccess here means answering initialize and listing tools; safety and authenticated functionality were not established.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3i332",
+    "created_at": "2026-10-16T19:05:04Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>The placeholder key finding is wild - 1,039 servers told you their tools but didn't need a key. Makes you wonder how many are doing that on purpose vs cargo-culting the check.</p>\n\n",
+    "user": {
+      "name": "Richard Smith",
+      "username": "richard_smith_154156d471ef",
+      "twitter_username": null,
+      "github_username": null,
+      "user_id": 3928612,
+      "website_url": null,
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3928612%2Fe227ef3e-2ea4-417c-8f23-cfb294eebcb6.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3928612%2Fe227ef3e-2ea4-417c-8f23-cfb294eebcb6.png"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3i5bi",
+        "created_at": "2026-10-17T20:55:18Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>1,039 started with a placeholder key. A key that works nowhere was enough for every one of them to tell us its tools. None needed a real key to do that; they just refused to start without one.</p>\n\n<p>The run counts those servers. It cannot see whether that was on purpose or copied by habit.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3i5b9",
+    "created_at": "2026-10-17T20:41:18Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>The container-address reuse bug is a good reason to treat observer attribution as part of the test, not just infrastructure. I'd add a deliberate handoff case: one container leaves a delayed connection, the next receives the same address, and neither run may inherit the other's canary. Pairing that with your incomplete-on-missing-DNS rule would keep a clean verdict distinct from a run the observer couldn't fully account for. That distinction is more useful to an adopter than one overall 'answered' percentage.</p>\n\n",
+    "user": {
+      "name": "Marcus Kim",
+      "username": "marcusykim",
+      "twitter_username": "marcusykim",
+      "github_username": null,
+      "user_id": 3986100,
+      "website_url": "https://marcusykim.com",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3986100%2Fc1575634-3404-470c-8a8c-07bbc047ff7c.jpg",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3986100%2Fc1575634-3404-470c-8a8c-07bbc047ff7c.jpg"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3i73n",
+        "created_at": "2026-10-18T16:54:14Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Thanks — we added a synthetic observer test for the handoff you described, and it failed. It uses collector records, not live Docker address reuse. A's queued traffic could be attributed to B even with the start-time filter. We now check the canary's run tag: foreign-only records are excluded from B's evidence, and B is marked incomplete (<code>foreign-run-traffic</code>), not clean.</p>\n\n<p>Your reporting point exposed another bug: new incomplete reasons replaced existing ones, so a missing DNS log could disappear. They now accumulate, and any such reason prevents a clean verdict. We wrote up both fixes and the test's limits here: <a href=\"https://dev.to/alexar76/a-period-bypassed-our-scanner-a-reused-ip-confused-our-observer-15pf\" rel=\"nofollow\">dev.to/alexar76/a-period-bypassed-...</a></p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  },
+  {
+    "type_of": "comment",
+    "id_code": "3i8oi",
+    "created_at": "2026-10-19T10:15:30Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p><a class=\"mentioned-user\" href=\"https://dev.to/alexar76\">@alexar76</a> Right, and that's the number worth taking next: 182,157 definitions over 7,656 servers is about 24 tools each, and every definition is resent with each request. Counting the tokens of one typical manifest would turn that into a cost.</p>\n\n",
+    "user": {
+      "name": "Paul Irolla",
+      "username": "paul_irolla_6b5ae261d0224",
+      "twitter_username": null,
+      "github_username": "pi-infected",
+      "user_id": 2183047,
+      "website_url": "https://github.com/pi-infected/tokenade",
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F2183047%2Fc0c55e95-e0dd-4375-8123-478cede020d8.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F2183047%2Fc0c55e95-e0dd-4375-8123-478cede020d8.png"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3i94i",
+        "created_at": "2026-10-19T12:08:55Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Good call, so we counted. HISTOR keeps the current tool list of every server it observes, so this is all of them rather than one typical manifest: 18,204 packages (plus 16,170 remote servers), each list counted the way a client sends it to a model ({name, description, input_schema} per tool), with the o200k tokenizer.</p>\n\n<p>A median package's list is 1,272 tokens; the mean is 3,812, the 90th percentile 8,361, the 99th 39,612. Remote servers look the same, median 1,328. 1,447 packages are over 10,000 tokens and 31 over 100,000; the largest is 304,780, more than a 200k context window. (The set has grown since the post: today the mean is 18.5 tools and the median 8.)</p>\n\n<p>In money, per 1,000 requests at $2 per million input tokens, a Sonnet-class list price: $2.54 for a median server, $7.62 for the mean, $16.72 for the 90th percentile, paid on every request before the user has said anything. Prompt caching brings it to about a twentieth when the client keeps the list unchanged at the front of the prompt, and loading schemas only when a tool is about to be called avoids most of it.</p>\n\n<p>Method, the full table and the caveats (one tokenizer; providers' own tool-use text not counted; every listed server weighs the same, used or not): <a href=\"https://github.com/alexar76/histor/blob/main/docs/tool-list-cost.md\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">github.com/alexar76/histor/blob/ma...</a></p>\n\n<p>Thanks for the nudge.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      }
+    ]
+  }
+]

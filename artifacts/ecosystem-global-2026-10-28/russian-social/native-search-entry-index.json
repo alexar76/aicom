@@ -1,0 +1,62 @@
+[
+  {
+    "key": "habr-native-entry",
+    "url": "https://habr.com/ru/search/",
+    "method": "GET",
+    "checked_at_utc": "2026-10-28T12:37:46.624660+00:00",
+    "status": 200,
+    "sha256": "b325155842a08990d424022de0b69c43652ccff69e3990d0d9d562fedc7d5c67",
+    "bytes": 36746,
+    "search_controls": [
+      {
+        "tag": "form",
+        "action": "/ru/search/",
+        "class": "search",
+        "method": "GET",
+        "data-v-51b6d69a": null
+      },
+      {
+        "tag": "input",
+        "autofocus": null,
+        "class": "input tm-input-text-decorated__input",
+        "name": "q",
+        "placeholder": "Поиск",
+        "value": null
+      },
+      {
+        "tag": "input",
+        "name": "target_type",
+        "type": "hidden",
+        "value": "posts",
+        "data-v-51b6d69a": null
+      },
+      {
+        "tag": "input",
+        "hidden": null,
+        "type": "submit",
+        "data-v-51b6d69a": null
+      }
+    ],
+    "title": [
+      "Результаты поиска по запросу «» &#x2F; Хабр",
+      "Хабр",
+      "Поиск",
+      "Редактировать",
+      "Настройки",
+      "Обновить",
+      "Поиск",
+      "VK",
+      "Telegram",
+      "Youtube",
+      "Яндекс Дзен"
+    ]
+  },
+  {
+    "key": "vc-native-entry",
+    "url": "https://vc.ru/search",
+    "method": "GET",
+    "checked_at_utc": "2026-10-28T12:37:47.386601+00:00",
+    "status": 404,
+    "error": "HTTP Error 404: Not Found"
+  }
+]

@@ -1,0 +1,59 @@
+
+ RUN  v5.0.5 /Users/alex/Desktop/ai_tests/aicompany/aicom/warden
+
+ ❯ test/macos/desktop.integration.ts (55 tests | 3 failed) 10668ms
+   ❯ native AppKit target-side integration (real macOS window; no global input) (55)
+     × rechecks the revision after an overridable native hit-test changes application semantics 141ms
+     × refuses handler changes during native hit-test even without an invalidation callback 143ms
+     × refuses sheet changes during native hit-test even without an invalidation callback 148ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/macos/desktop.integration.ts > native AppKit target-side integration (real macOS window; no global input) > rechecks the revision after an overridable native hit-test changes application semantics
+AssertionError: expected { count: +0, …(5) } to match object { hitRaceTriggered: true, count: +0 }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "count": 0,
+-   "hitRaceTriggered": true,
++   "hitRaceTriggered": false,
+  }
+
+ ❯ test/macos/desktop.integration.ts:112:88
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/macos/desktop.integration.ts > native AppKit target-side integration (real macOS window; no global input) > refuses handler changes during native hit-test even without an invalidation callback
+ FAIL  test/macos/desktop.integration.ts > native AppKit target-side integration (real macOS window; no global input) > refuses sheet changes during native hit-test even without an invalidation callback
+AssertionError: expected { count: +0, …(5) } to match object { hitRaceTriggered: true, count: +0 }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "count": 0,
+-   "hitRaceTriggered": true,
++   "hitRaceTriggered": false,
+  }
+
+ ❯ test/macos/desktop.integration.ts:119:28
+    117|     const r = await commit(c, p);
+    118|     expect(r.error).toBeUndefined(); expect(r.result.status).toBe('ref…
+    119|     expect(await stats(c)).toMatchObject({ hitRaceTriggered: true, cou…
+       |                            ^
+    120|     expect((await commit(c, p)).result.reason).toBe('unknown');
+    121|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 52 passed (55)
+   Start at  17:37:40
+   Duration  10.76s (tests 100%)
+

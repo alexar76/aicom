@@ -191,6 +191,33 @@ def try_auto_recovery_after_qa_failure(
             )
             return False
 
+        # QA recovery must not jump past the dependency repair's Security
+        # handoff. Check the current files afresh even if an earlier repair or
+        # security report was clean; partial compatible fixes can leave high
+        # findings which only a parent/major upgrade will resolve.
+        from core.paths import code_dir as resolve_code_dir
+        from web.backend.services.npm_dependency_check import run_npm_dependency_check
+
+        try:
+            npm_audit = run_npm_dependency_check(resolve_code_dir(pid, data_root=data_root))
+            if not isinstance(npm_audit, dict):
+                raise ValueError("npm dependency check returned invalid evidence")
+        except Exception as exc:
+            npm_audit = {
+                "passed": False, "skipped": False, "checked_at": time.time(),
+                "issues": [f"npm_dependency_audit_incomplete:{type(exc).__name__}:{str(exc)[:400]}"],
+            }
+        recovery_verification = dict(verify)
+        recovery_verification["npm_dependency_audit"] = npm_audit
+        recovery_verification["passed"] = bool(verify.get("passed")) and npm_audit.get("passed") is True
+        product["auto_recovery_verification"] = recovery_verification
+        if npm_audit.get("passed") is not True:
+            logger.info(
+                "Auto-recovery skip %s (repair %s): current npm dependency audit failed (%s)",
+                pid, repair_round, "; ".join(str(i)[:160] for i in (npm_audit.get("issues") or [])[:3]),
+            )
+            return False
+
         apply_product_completed_locked(
             product,
             task_queue,

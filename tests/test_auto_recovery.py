@@ -30,7 +30,7 @@ def test_auto_recovery_skips_when_operator_locked(monkeypatch):
     assert not try_auto_recovery_after_qa_failure(product, [], repair_round=10)
 
 
-def test_auto_recovery_completes_on_verify_and_storefront(monkeypatch):
+def test_auto_recovery_completes_on_verify_and_storefront(monkeypatch, tmp_path):
     monkeypatch.setenv("AIFACTORY_AUTO_RECOVERY_ENABLED", "1")
     monkeypatch.setenv("AIFACTORY_AUTO_RECOVERY_MIN_REPAIR_ROUND", "3")
 
@@ -54,7 +54,8 @@ def test_auto_recovery_completes_on_verify_and_storefront(monkeypatch):
         lambda pid, **kw: {"ok": True, "release_score": 86, "demo_score": 100},
     )
 
-    assert try_auto_recovery_after_qa_failure(product, task_queue, repair_round=4, data_root="/tmp")
+    (tmp_path / "code" / "p-recover").mkdir(parents=True)
+    assert try_auto_recovery_after_qa_failure(product, task_queue, repair_round=4, data_root=str(tmp_path))
     assert product["state"] == "COMPLETED"
     assert product["operator_locked"] is True
     assert product["policy_audit_eligible"] is True

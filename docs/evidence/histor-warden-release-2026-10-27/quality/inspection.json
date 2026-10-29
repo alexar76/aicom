@@ -1,0 +1,24 @@
+{
+  "inspectedAt": "2026-10-27T14:35:04Z",
+  "release": "@aimarket/warden@0.22.2",
+  "expectedBuildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+  "liveBuildDigest": "a5890becf7f2374b0f3bf13ae3b974da024b19ccf6fc70384a59a147cedacea1",
+  "liveImageDigest": "sha256:befe7e54d444d0d9b2658151725b264fc6bb61dbbdb0927caff60f281ba249d6",
+  "trustedBaseDigest": "sha256:befe7e54d444d0d9b2658151725b264fc6bb61dbbdb0927caff60f281ba249d6",
+  "nativeHook": {
+    "path": "/usr/local/sbin/skopos-warden-quality",
+    "sha256": "02428d910b5d4826b9011ddebfa7f8eedf9e86f19f583b20df52a06bbe0ede41"
+  },
+  "launcher": {
+    "path": "/opt/momus-quality/quality-launch.py",
+    "sha256": "45435091029c312576afbd69782526d498020a16d4661f287fa13d715fa33a26"
+  },
+  "gate": {
+    "receiptUrl": "https://histor.modelmarket.dev/security-quality/latest.json",
+    "candidateUrlOverrideAvailable": false,
+    "candidateReceiptUrl": "https://histor.modelmarket.dev/security-quality/candidate.json",
+    "candidateSignatureCanBeVerifiedByExportedCheckEvidence": true,
+    "candidateReceiptAloneSatisfiesPrepublish": false
+  },
+  "scope": "Isolated native full candidate evaluation only; no live promotion, deployment, evaluator edits, signing-key access, holdout access, or gate bypass."
+}

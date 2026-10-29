@@ -1,0 +1,17 @@
+{
+  "url": "https://freestartuplisting.org/",
+  "retrieved_at": "2026-10-27T05:30:42.531738+00:00",
+  "status": 200,
+  "sha256_of_bytes_read": "893c5e37348a8e32cc7cc509bd7477a5f87758451f54ecfd149486837d1b1791",
+  "api_base": [
+    "'/api/fsl'"
+  ],
+  "get_fetch_excerpts": [
+    "  fetch(API_BASE + '/startups')\r",
+    "  fetch(API_BASE + '/startups/' + id + '/upvote', {method:'POST'})\r",
+    "  fetch(API_BASE + '/startups/' + id, {\r",
+    "  fetch(API_BASE + '/startups/' + id + '/edit', {\r",
+    "  fetch(API_BASE + '/startups/' + id + '/edit', {\r",
+    "  fetch(API_BASE + '/startups', {\r"
+  ]
+}

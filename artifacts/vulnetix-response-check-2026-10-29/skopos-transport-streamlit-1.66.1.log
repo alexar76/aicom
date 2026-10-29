@@ -1,0 +1,19 @@
+........                                                                 [100%]
+=============================== warnings summary ===============================
+tests/test_dashboard_peer_transport.py::test_dashboard_uses_transport_peer_after_uvicorn_rewrites_client[no-trusted-proxies-websockets]
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+tests/test_dashboard_peer_transport.py::test_dashboard_uses_transport_peer_after_uvicorn_rewrites_client[no-trusted-proxies-websockets]
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/uvicorn/protocols/websockets/websockets_impl.py:41: UvicornDeprecationWarning: The `websockets` implementation is deprecated, and `--ws websockets` will point at the `websockets-sansio` implementation in a future release. Use `--ws websockets-sansio` or `--ws auto` to switch now.
+    warnings.warn(
+
+tests/test_dashboard_peer_transport.py::test_dashboard_uses_transport_peer_after_uvicorn_rewrites_client[no-trusted-proxies-websockets]
+tests/test_dashboard_peer_transport.py::test_dashboard_uses_transport_peer_after_uvicorn_rewrites_client[header-trust-disabled-websockets]
+tests/test_dashboard_peer_transport.py::test_dashboard_uses_transport_peer_after_uvicorn_rewrites_client[trusted-proxy-websockets]
+tests/test_dashboard_peer_transport.py::test_dashboard_uses_transport_peer_after_uvicorn_rewrites_client[unknown-transport-websockets]
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/websockets/legacy/server.py:1168: DeprecationWarning: remove second argument of ws_handler
+    warnings.warn("remove second argument of ws_handler", DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+8 passed, 6 warnings in 2.14s

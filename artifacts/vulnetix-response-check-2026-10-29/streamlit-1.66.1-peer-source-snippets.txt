@@ -1,0 +1,96 @@
+## streamlit/web/server/server.py:85-95
+
+85:         """Start the server.
+86: 
+87:         When this returns, Streamlit is ready to accept new sessions.
+88:         """
+89:         _LOGGER.debug("Starting server...")
+90: 
+91:         from streamlit.web.server.starlette import UvicornServer
+92: 
+93:         self._starlette_server = UvicornServer(self._runtime)
+94:         await self._starlette_server.start()
+95: 
+
+## streamlit/web/server/starlette/starlette_websocket.py:283-333
+
+283: class StarletteClientContext(ClientContext):
+284:     """Starlette-specific implementation of ClientContext.
+285: 
+286:     Captures headers, cookies, and client info from the initial WebSocket handshake.
+287:     Values are cached at construction time since they represent the initial request
+288:     context and should not change during the connection lifetime.
+289:     """
+290: 
+291:     def __init__(self, websocket: WebSocket) -> None:
+292:         self._headers: list[tuple[str, str]] = list(websocket.headers.items())
+293:         self._cookies: dict[str, str] = dict(websocket.cookies)
+294:         client = websocket.client
+295:         self._remote_ip: str | None = client.host if client else None
+296: 
+297:     @property
+298:     def headers(self) -> Iterable[tuple[str, str]]:
+299:         """All headers as (name, value) tuples."""
+300:         return self._headers
+301: 
+302:     @property
+303:     def cookies(self) -> Mapping[str, str]:
+304:         """Cookies as a name-to-value mapping."""
+305:         return self._cookies
+306: 
+307:     @property
+308:     def remote_ip(self) -> str | None:
+309:         """The client's remote IP address."""
+310:         return self._remote_ip
+311: 
+312: 
+313: class StarletteSessionClient(SessionClient):
+314:     """WebSocket client for Starlette that implements the SessionClient interface.
+315: 
+316:     This class bridges the synchronous `write_forward_msg` calls from the Streamlit
+317:     runtime to the asynchronous WebSocket send operations. It uses an internal
+318:     queue and a background sender task to avoid blocking the calling thread.
+319: 
+320:     Parameters
+321:     ----------
+322:     websocket
+323:         The Starlette WebSocket connection to send messages through.
+324:     """
+325: 
+326:     def __init__(self, websocket: WebSocket) -> None:
+327:         self._websocket = websocket
+328:         self._client_context = StarletteClientContext(websocket)
+329:         # The queue bridges sync write_forward_msg calls to async WebSocket sends.
+330:         # Overwhelmed clients get disconnected via SessionClientDisconnectedError.
+331:         self._send_queue: asyncio.Queue[bytes] = asyncio.Queue(
+332:             maxsize=WEBSOCKET_MAX_SEND_QUEUE_SIZE
+333:         )
+
+## streamlit/web/server/starlette/starlette_websocket.py:388-395
+
+388:             raise SessionClientDisconnectedError from exc
+389: 
+390:     @property
+391:     def client_context(self) -> ClientContext:
+392:         """The client's connection context."""
+393:         return self._client_context
+394: 
+395:     async def aclose(self) -> None:
+
+## streamlit/runtime/context.py:210-223
+
+210:         >>> import streamlit as st
+211:         >>>
+212:         >>> st.context.headers.get_all("pragma")
+213: 
+214:         """
+215:         # We have a docstring in line above as one-liner, to have a correct docstring
+216:         # in the st.write(st,context) call.
+217:         client_context = _get_client_context()
+218: 
+219:         if client_context is None:
+220:             return StreamlitHeaders({})
+221: 
+222:         return StreamlitHeaders(client_context.headers)
+223: 
+

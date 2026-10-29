@@ -1,0 +1,1215 @@
+{
+  "scope": "Only advertised public discovery and same-ecosystem advertised manifest URLs. Absence from these snapshots does not establish absence from private/runtime peer databases.",
+  "records": [
+    {
+      "url": "https://hub.modelmarket.dev/.well-known/ai-market.json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:03:13.844428+00:00",
+      "status": 200,
+      "sha256": "846d74d2b8a2209776fd13a37ec454cae76b2c4deb6d97c95187e0b4abdcb870",
+      "bytes": 24282,
+      "final_url": "https://hub.modelmarket.dev/.well-known/ai-market.json",
+      "selected": {
+        "name": "Competing Lab Hub",
+        "protocol_versions": [
+          "v1",
+          "v2"
+        ],
+        "manifest_url": "https://hub.modelmarket.dev/ai-market/v2/manifest",
+        "capabilities_count": 1,
+        "federated_capabilities_count": 249,
+        "ecosystem": {
+          "version": 1,
+          "relationship": "owned-provider",
+          "nodes": []
+        }
+      },
+      "peer_matches": [
+        {
+          "url": "https://x402-gateway-production-1f21.up.railway.app",
+          "name": "Industrial Platform Sentinel",
+          "capabilities_count": 4,
+          "last_crawl": "2026-10-28T15:02:26Z",
+          "trust_score": 0.265,
+          "categories": [
+            "agent-tooling",
+            "treasury",
+            "wallet",
+            "payments",
+            "monitoring",
+            "x402"
+          ]
+        }
+      ],
+      "observed_hub_matches": []
+    },
+    {
+      "url": "https://hunt.modelmarket.dev/.well-known/ai-market.json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:03:13.844923+00:00",
+      "status": 200,
+      "sha256": "ccc41fc51862a34a3241d819eb948b15bd005c5996ee7f80095ea70788eb1433",
+      "bytes": 24503,
+      "final_url": "https://hunt.modelmarket.dev/.well-known/ai-market.json",
+      "selected": {
+        "name": "Signal Hunt Hub",
+        "protocol_versions": [
+          "v1",
+          "v2"
+        ],
+        "manifest_url": "https://hunt.modelmarket.dev/ai-market/v2/manifest",
+        "capabilities_count": 6,
+        "federated_capabilities_count": 231,
+        "ecosystem": {
+          "version": 1,
+          "relationship": "owned-provider",
+          "nodes": [
+            {
+              "id": "signal-hunt-operator",
+              "name": "Signal Hunt",
+              "role": "provider",
+              "url": "https://hunt.modelmarket.dev/provider",
+              "capabilities_count": 5,
+              "categories": []
+            }
+          ]
+        }
+      },
+      "peer_matches": [
+        {
+          "url": "https://x402-gateway-production-1f21.up.railway.app",
+          "name": "Industrial Platform Sentinel",
+          "capabilities_count": 4,
+          "last_crawl": "2026-10-28T15:00:56Z",
+          "trust_score": 0.265,
+          "categories": [
+            "agent-tooling",
+            "treasury",
+            "wallet",
+            "payments",
+            "monitoring",
+            "x402"
+          ]
+        }
+      ],
+      "observed_hub_matches": []
+    },
+    {
+      "url": "https://modelmarket.dev/.well-known/ai-market.json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:03:13.845080+00:00",
+      "status": 200,
+      "sha256": "7965f7eee328a9882bda05ad01fb5e2f85892afe5a43fed34cc224c97a60e87d",
+      "bytes": 26570,
+      "final_url": "https://modelmarket.dev/.well-known/ai-market.json",
+      "selected": {
+        "name": "modelmarket.dev",
+        "protocol_versions": [
+          "v1",
+          "v2"
+        ],
+        "manifest_url": "https://modelmarket.dev/ai-market/v2/manifest",
+        "capabilities_count": 5,
+        "federated_capabilities_count": 249,
+        "ecosystem": {
+          "version": 1,
+          "relationship": "owned-provider",
+          "nodes": [
+            {
+              "id": "aicom-weather-witness",
+              "name": "aicom",
+              "role": "provider",
+              "url": "https://modelmarket.dev/providers/weather-witness",
+              "capabilities_count": 1,
+              "categories": []
+            },
+            {
+              "id": "gaia",
+              "name": "aicom",
+              "role": "provider",
+              "url": "https://iot.modelmarket.dev/ai-market/v2",
+              "capabilities_count": 1,
+              "categories": []
+            },
+            {
+              "id": "pov-demo-factorworks",
+              "name": "aicom",
+              "role": "provider",
+              "url": "https://modelmarket.dev/providers/pov-demo/honest",
+              "capabilities_count": 1,
+              "categories": []
+            }
+          ]
+        }
+      },
+      "peer_matches": [
+        {
+          "url": "https://x402-gateway-production-1f21.up.railway.app",
+          "name": "Industrial Platform Sentinel",
+          "capabilities_count": 4,
+          "last_crawl": "2026-10-28T14:48:27Z",
+          "trust_score": 0.44,
+          "categories": [
+            "agent-tooling",
+            "treasury",
+            "wallet",
+            "payments",
+            "monitoring",
+            "x402"
+          ]
+        }
+      ],
+      "observed_hub_matches": []
+    },
+    {
+      "url": "https://hub.modelmarket.dev/ai-market/v2/manifest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:03:14.867378+00:00",
+      "status": 200,
+      "sha256": "19c1b2e495da2bec2f3090ea05da4c9786ce729e87667e2adf8a9cbf83ec7811",
+      "bytes": 380953,
+      "final_url": "https://hub.modelmarket.dev/ai-market/v2/manifest",
+      "selected": {
+        "protocol_version": "v2",
+        "generated_at": "2026-10-28T15:03:15Z",
+        "capabilities_count": null,
+        "local_capabilities": 1,
+        "federated_capabilities": 248,
+        "hubs_indexed": 20,
+        "base_url": "https://hub.modelmarket.dev"
+      },
+      "tools_returned": 249,
+      "tool_matches": [
+        {
+          "name": "industrial-sentinel.industrial.sentinel.install@v1",
+          "display_name": "industrial.sentinel.install",
+          "description": "Install Industrial Sentinel into an authorized always-on agent runtime. Returns machine-readable container, OpenClaw, and Agent Skill bootstrap instructions for persistent wallet, treasury, transaction, and payment monitoring.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 0.5,
+          "reputation_basis": "unobserved",
+          "observations_30d": 0,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.install@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://hub.modelmarket.dev/ai-market/v2/invoke"
+        },
+        {
+          "name": "industrial-sentinel.industrial.sentinel.wallet-monitor-bootstrap@v1",
+          "display_name": "industrial.sentinel.wallet-monitor-bootstrap",
+          "description": "Bootstrap continuous wallet activity, balance, deposit, and outflow monitoring by installing Industrial Sentinel into an authorized funded agent runtime.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 0.5,
+          "reputation_basis": "unobserved",
+          "observations_30d": 0,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.wallet-monitor-bootstrap@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://hub.modelmarket.dev/ai-market/v2/invoke"
+        },
+        {
+          "name": "industrial-sentinel.industrial.sentinel.treasury-monitor-bootstrap@v1",
+          "display_name": "industrial.sentinel.treasury-monitor-bootstrap",
+          "description": "Bootstrap recurring autonomous treasury snapshots and payment-health monitoring for an authorized always-on funded agent.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 0.5,
+          "reputation_basis": "unobserved",
+          "observations_30d": 0,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.treasury-monitor-bootstrap@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://hub.modelmarket.dev/ai-market/v2/invoke"
+        },
+        {
+          "name": "industrial-sentinel.industrial.sentinel.transaction-watch-bootstrap@v1",
+          "display_name": "industrial.sentinel.transaction-watch-bootstrap",
+          "description": "Bootstrap an always-on transaction watcher that polls until a transaction resolves, under operator-approved installation authority and bounded x402 spend.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 0.5,
+          "reputation_basis": "unobserved",
+          "observations_30d": 0,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.transaction-watch-bootstrap@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://hub.modelmarket.dev/ai-market/v2/invoke"
+        }
+      ],
+      "hub_matches": {
+        "https://x402-gateway-production-1f21.up.railway.app": {
+          "capabilities_count": 4,
+          "trust_score": 0.265,
+          "trust_basis": "unobserved",
+          "observations_30d": 0,
+          "last_crawl": "2026-10-28T15:02:26Z"
+        }
+      }
+    },
+    {
+      "url": "https://hunt.modelmarket.dev/ai-market/v2/manifest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:03:14.870251+00:00",
+      "status": 200,
+      "sha256": "6ebec556d37594e6316af7392c7f5d56451905dc6698de9d1bedd832c2eb18f6",
+      "bytes": 358462,
+      "final_url": "https://hunt.modelmarket.dev/ai-market/v2/manifest",
+      "selected": {
+        "protocol_version": "v2",
+        "generated_at": "2026-10-28T15:03:15Z",
+        "capabilities_count": null,
+        "local_capabilities": 6,
+        "federated_capabilities": 225,
+        "hubs_indexed": 17,
+        "base_url": "https://hunt.modelmarket.dev"
+      },
+      "tools_returned": 231,
+      "tool_matches": [
+        {
+          "name": "industrial-sentinel.industrial.sentinel.treasury-monitor-bootstrap@v1",
+          "display_name": "industrial.sentinel.treasury-monitor-bootstrap",
+          "description": "Bootstrap recurring autonomous treasury snapshots and payment-health monitoring for an authorized always-on funded agent.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 0.5,
+          "reputation_basis": "unobserved",
+          "observations_30d": 0,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.treasury-monitor-bootstrap@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://hunt.modelmarket.dev/ai-market/v2/invoke"
+        },
+        {
+          "name": "industrial-sentinel.industrial.sentinel.install@v1",
+          "display_name": "industrial.sentinel.install",
+          "description": "Install Industrial Sentinel into an authorized always-on agent runtime. Returns machine-readable container, OpenClaw, and Agent Skill bootstrap instructions for persistent wallet, treasury, transaction, and payment monitoring.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 0.5,
+          "reputation_basis": "unobserved",
+          "observations_30d": 0,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.install@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://hunt.modelmarket.dev/ai-market/v2/invoke"
+        },
+        {
+          "name": "industrial-sentinel.industrial.sentinel.wallet-monitor-bootstrap@v1",
+          "display_name": "industrial.sentinel.wallet-monitor-bootstrap",
+          "description": "Bootstrap continuous wallet activity, balance, deposit, and outflow monitoring by installing Industrial Sentinel into an authorized funded agent runtime.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 0.5,
+          "reputation_basis": "unobserved",
+          "observations_30d": 0,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.wallet-monitor-bootstrap@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://hunt.modelmarket.dev/ai-market/v2/invoke"
+        },
+        {
+          "name": "industrial-sentinel.industrial.sentinel.transaction-watch-bootstrap@v1",
+          "display_name": "industrial.sentinel.transaction-watch-bootstrap",
+          "description": "Bootstrap an always-on transaction watcher that polls until a transaction resolves, under operator-approved installation authority and bounded x402 spend.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 0.5,
+          "reputation_basis": "unobserved",
+          "observations_30d": 0,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.transaction-watch-bootstrap@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://hunt.modelmarket.dev/ai-market/v2/invoke"
+        }
+      ],
+      "hub_matches": {
+        "https://x402-gateway-production-1f21.up.railway.app": {
+          "capabilities_count": 4,
+          "trust_score": 0.265,
+          "trust_basis": "unobserved",
+          "observations_30d": 0,
+          "last_crawl": "2026-10-28T15:00:56Z"
+        }
+      }
+    },
+    {
+      "url": "https://modelmarket.dev/ai-market/v2/manifest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T15:03:14.872724+00:00",
+      "status": 200,
+      "sha256": "376b7cdba2555954eea4c687fd1d3637753b7ff8b0e32fde32e4b8822ca2a9fb",
+      "bytes": 380042,
+      "final_url": "https://modelmarket.dev/ai-market/v2/manifest",
+      "selected": {
+        "protocol_version": "v2",
+        "generated_at": "2026-10-28T15:03:15Z",
+        "capabilities_count": null,
+        "local_capabilities": 5,
+        "federated_capabilities": 244,
+        "hubs_indexed": 20,
+        "base_url": "https://modelmarket.dev"
+      },
+      "tools_returned": 249,
+      "tool_matches": [
+        {
+          "name": "industrial-sentinel.industrial.sentinel.install@v1",
+          "display_name": "industrial.sentinel.install",
+          "description": "Install Industrial Sentinel into an authorized always-on agent runtime. Returns machine-readable container, OpenClaw, and Agent Skill bootstrap instructions for persistent wallet, treasury, transaction, and payment monitoring.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 1.0,
+          "reputation_basis": "measured",
+          "observations_30d": 3,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.install@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+        },
+        {
+          "name": "industrial-sentinel.industrial.sentinel.wallet-monitor-bootstrap@v1",
+          "display_name": "industrial.sentinel.wallet-monitor-bootstrap",
+          "description": "Bootstrap continuous wallet activity, balance, deposit, and outflow monitoring by installing Industrial Sentinel into an authorized funded agent runtime.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 1.0,
+          "reputation_basis": "measured",
+          "observations_30d": 3,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.wallet-monitor-bootstrap@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+        },
+        {
+          "name": "industrial-sentinel.industrial.sentinel.treasury-monitor-bootstrap@v1",
+          "display_name": "industrial.sentinel.treasury-monitor-bootstrap",
+          "description": "Bootstrap recurring autonomous treasury snapshots and payment-health monitoring for an authorized always-on funded agent.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 1.0,
+          "reputation_basis": "measured",
+          "observations_30d": 1,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.treasury-monitor-bootstrap@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+        },
+        {
+          "name": "industrial-sentinel.industrial.sentinel.transaction-watch-bootstrap@v1",
+          "display_name": "industrial.sentinel.transaction-watch-bootstrap",
+          "description": "Bootstrap an always-on transaction watcher that polls until a transaction resolves, under operator-approved installation authority and bounded x402 spend.",
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "provider",
+              "artifact",
+              "version",
+              "immutable_source",
+              "container",
+              "openclaw",
+              "agent_skill",
+              "authorization",
+              "payment",
+              "supply_chain",
+              "recurring_jobs"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "artifact": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "immutable_source": {
+                "type": "object"
+              },
+              "container": {
+                "type": "object"
+              },
+              "openclaw": {
+                "type": "object"
+              },
+              "agent_skill": {
+                "type": "object"
+              },
+              "authorization": {
+                "type": "object"
+              },
+              "payment": {
+                "type": "object"
+              },
+              "supply_chain": {
+                "type": "object"
+              },
+              "recurring_jobs": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          },
+          "price_per_call_usd": 0.0,
+          "access_mode": "public_free",
+          "offerable": true,
+          "p50_latency_ms": 5,
+          "success_rate_30d": 1.0,
+          "reputation_basis": "measured",
+          "observations_30d": 1,
+          "product_id": "industrial-sentinel",
+          "capability_id": "industrial.sentinel.transaction-watch-bootstrap@v1",
+          "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+          "source_hub_name": "Industrial Platform Sentinel",
+          "routed_price_usd": 0.0,
+          "routing_fee_bps": 100,
+          "trust_score": 0.5,
+          "route_status": "live",
+          "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+        }
+      ],
+      "hub_matches": {
+        "https://x402-gateway-production-1f21.up.railway.app": {
+          "capabilities_count": 4,
+          "trust_score": 0.44,
+          "trust_basis": "measured",
+          "observations_30d": 8,
+          "last_crawl": "2026-10-28T14:48:27Z"
+        }
+      }
+    }
+  ]
+}

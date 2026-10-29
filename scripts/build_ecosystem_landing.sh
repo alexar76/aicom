@@ -12,6 +12,11 @@ cd "$ROOT"
 
 export SEO_BASE_URL="${SEO_BASE_URL:-https://modeldev.modelmarket.dev}"
 
+if ! python3 -c 'import markdown_it' >/dev/null 2>&1; then
+  echo "FAIL: install build dependencies with python3 -m pip install -r scripts/github-io/requirements.txt" >&2
+  exit 1
+fi
+
 echo "=== Build ecosystem landing (base=${SEO_BASE_URL}) ==="
 
 # Encyclopedia locale HTML is generated (gitignored) — same gate as

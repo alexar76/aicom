@@ -1,0 +1,518 @@
+{
+  "url": "https://mach402.dev/openapi.json",
+  "checked_at_utc": "2026-10-29T04:00:59.133141+00:00",
+  "method": "GET",
+  "status": 200,
+  "final_url": "https://mach402.dev/openapi.json",
+  "headers": {
+    "Date": "Thu, 29 Oct 2026 04:00:59 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "7220",
+    "Connection": "close",
+    "Server": "cloudflare",
+    "vary": "Origin",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY",
+    "cf-cache-status": "DYNAMIC",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=IV3mniNtfKUdks4pJVwtLXqqVoMdVLfm60Jk5s4JpqZ7kGYrlpD%2BBw0rwfUtfK14VG%2BgZscNrv%2BIOarnX4HMJtG7GWluB67%2FhJWBzy8gtiF02irhkTWiliefxfwPUQ%3D%3D\"}]}",
+    "CF-RAY": "a51f46c36d309fab-AMS",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "body_sha256": "e4cdb2fc7ce6fece8529b4327fb8ada6e1432888b5d3ddcde9c41277b0b3e579",
+  "body_truncated": false,
+  "json": {
+    "openapi": "3.1.0",
+    "info": {
+      "title": "Machina Agent Services",
+      "description": "x402-powered API services for AI agents",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/.well-known/x402": {
+        "get": {
+          "summary": "Well Known X402",
+          "description": "Machine-readable discovery document for x402 services.\nIncludes seller address, network, and buyer guidance link.",
+          "operationId": "well_known_x402__well_known_x402_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/WellKnownX402"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/health": {
+        "get": {
+          "summary": "Health",
+          "operationId": "health_health_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/scan/python": {
+        "post": {
+          "summary": "Scan Python",
+          "operationId": "scan_python_scan_python_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CodeScanRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/validate/email": {
+        "post": {
+          "summary": "Validate Email",
+          "operationId": "validate_email_validate_email_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailValidateRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/validate/email/bulk": {
+        "post": {
+          "summary": "Validate Email Bulk",
+          "operationId": "validate_email_bulk_validate_email_bulk_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailBulkRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/domain/intel": {
+        "post": {
+          "summary": "Domain Intel",
+          "operationId": "domain_intel_domain_intel_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainIntelRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/pdf/inspect": {
+        "post": {
+          "summary": "Pdf Inspect",
+          "description": "FREE pre-check: returns page count + metadata without extracting text.\nAccepts raw PDF bytes as body (Content-Type: application/pdf).",
+          "operationId": "pdf_inspect_pdf_inspect_post",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/pdf/extract": {
+        "post": {
+          "summary": "Pdf Extract",
+          "description": "Extract PDF (≤50 pages) as Markdown.\nSend raw PDF bytes as body (Content-Type: application/pdf).",
+          "operationId": "pdf_extract_pdf_extract_post",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/pdf/extract/large": {
+        "post": {
+          "summary": "Pdf Extract Large",
+          "description": "Extract PDF (≤200 pages) as Markdown.\nSend raw PDF bytes as body (Content-Type: application/pdf).",
+          "operationId": "pdf_extract_large_pdf_extract_large_post",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/url/extract": {
+        "post": {
+          "summary": "Url Extract",
+          "operationId": "url_extract_url_extract_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlExtractRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/debug/headers": {
+        "post": {
+          "summary": "Debug Headers",
+          "description": "Temporary: dump all request headers for debugging.",
+          "operationId": "debug_headers_debug_headers_post",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "CodeScanRequest": {
+          "properties": {
+            "code": {
+              "type": "string",
+              "title": "Code",
+              "description": "Python source code to scan"
+            },
+            "filename": {
+              "type": "string",
+              "title": "Filename",
+              "description": "Original filename (for context)",
+              "default": "upload.py"
+            }
+          },
+          "type": "object",
+          "required": [
+            "code"
+          ],
+          "title": "CodeScanRequest"
+        },
+        "DomainIntelRequest": {
+          "properties": {
+            "domain": {
+              "type": "string",
+              "title": "Domain",
+              "description": "Domain name (e.g. example.com)"
+            }
+          },
+          "type": "object",
+          "required": [
+            "domain"
+          ],
+          "title": "DomainIntelRequest"
+        },
+        "EmailBulkRequest": {
+          "properties": {
+            "emails": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Emails",
+              "description": "List of email addresses (max 100)"
+            },
+            "smtp_probe": {
+              "type": "boolean",
+              "title": "Smtp Probe",
+              "description": "SMTP probe disabled by default for speed",
+              "default": false
+            }
+          },
+          "type": "object",
+          "required": [
+            "emails"
+          ],
+          "title": "EmailBulkRequest"
+        },
+        "EmailValidateRequest": {
+          "properties": {
+            "email": {
+              "type": "string",
+              "title": "Email",
+              "description": "Email address to validate"
+            },
+            "smtp_probe": {
+              "type": "boolean",
+              "title": "Smtp Probe",
+              "description": "Attempt SMTP probe (best-effort)",
+              "default": true
+            }
+          },
+          "type": "object",
+          "required": [
+            "email"
+          ],
+          "title": "EmailValidateRequest"
+        },
+        "HTTPValidationError": {
+          "properties": {
+            "detail": {
+              "items": {
+                "$ref": "#/components/schemas/ValidationError"
+              },
+              "type": "array",
+              "title": "Detail"
+            }
+          },
+          "type": "object",
+          "title": "HTTPValidationError"
+        },
+        "UrlExtractRequest": {
+          "properties": {
+            "url": {
+              "type": "string",
+              "title": "Url",
+              "description": "URL to extract content from"
+            }
+          },
+          "type": "object",
+          "required": [
+            "url"
+          ],
+          "title": "UrlExtractRequest"
+        },
+        "ValidationError": {
+          "properties": {
+            "loc": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "type": "array",
+              "title": "Location"
+            },
+            "msg": {
+              "type": "string",
+              "title": "Message"
+            },
+            "type": {
+              "type": "string",
+              "title": "Error Type"
+            },
+            "input": {
+              "title": "Input"
+            },
+            "ctx": {
+              "type": "object",
+              "title": "Context"
+            }
+          },
+          "type": "object",
+          "required": [
+            "loc",
+            "msg",
+            "type"
+          ],
+          "title": "ValidationError"
+        },
+        "WellKnownX402": {
+          "properties": {
+            "endpoints": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Endpoints",
+              "description": "List of available x402 endpoints"
+            },
+            "seller_address": {
+              "type": "string",
+              "title": "Seller Address",
+              "description": "Receiving wallet address (USDC)"
+            },
+            "network": {
+              "type": "string",
+              "title": "Network",
+              "description": "CAIP-2 chain identifier"
+            },
+            "facilitator": {
+              "type": "string",
+              "title": "Facilitator",
+              "description": "Payment facilitator",
+              "default": "Coinbase CDP"
+            },
+            "payment_token": {
+              "type": "string",
+              "title": "Payment Token",
+              "description": "Accepted payment token",
+              "default": "USDC"
+            },
+            "payment_token_contract": {
+              "type": "string",
+              "title": "Payment Token Contract",
+              "description": "USDC contract address on Base",
+              "default": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+            },
+            "documentation": {
+              "type": "string",
+              "title": "Documentation",
+              "description": "Buyer integration guide",
+              "default": "https://mach402.dev/docs/buyer-guide"
+            }
+          },
+          "type": "object",
+          "required": [
+            "endpoints",
+            "seller_address",
+            "network"
+          ],
+          "title": "WellKnownX402"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "pinned_url": "https://github.com/Ducarv/mcpmoat/blob/fc776bc2eb10376994b6d021a18f6230487bc033/docs/competitors.md",
+  "commit_sha": "fc776bc2eb10376994b6d021a18f6230487bc033",
+  "body_sha256": "6a815d0d11b3b855d29990ef4995bca806a627f4ef4609e22eebfeebc375f638",
+  "source": "Contents body crosschecked at explicit commit ref; same body as first contents GET.",
+  "selected_lines": [
+    {
+      "line": 7,
+      "text": "Checked on 2026-10-23. Tools change fast. Check the linked source before you rely on a row."
+    },
+    {
+      "line": 15,
+      "text": "- We read the READMEs and docs of each project. We did not install or run any of these tools. Test"
+    },
+    {
+      "line": 16,
+      "text": "  results in this page are claims by the project, not by us."
+    },
+    {
+      "line": 112,
+      "text": "- Warden is the closest tool to mcpmoat in this list."
+    },
+    {
+      "line": 142,
+      "text": "2. Record the rule set version and a digest of the rules in every report. Without them, a changed"
+    },
+    {
+      "line": 143,
+      "text": "   result cannot be told from a changed server. Credit:"
+    },
+    {
+      "line": 144,
+      "text": "   [Warden](https://github.com/alexar76/warden#the-verdict-is-meant-to-be-recorded)."
+    },
+    {
+      "line": 145,
+      "text": "3. Show a pin change field by field, with words added and removed in the description. Credit:"
+    },
+    {
+      "line": 146,
+      "text": "   [Warden](https://github.com/alexar76/warden#protect-claude-desktop-or-cursor-with-one-wrapper)."
+    },
+    {
+      "line": 147,
+      "text": "4. Keep severity and blocking as two separate axes. An advisory finding is reported and never"
+    },
+    {
+      "line": 148,
+      "text": "   blocks. Credit: [Warden](https://github.com/alexar76/warden#the-gate-chain)."
+    },
+    {
+      "line": 159,
+      "text": "9. Write down the limits in plain words: what the tool does not cover. Credit:"
+    },
+    {
+      "line": 160,
+      "text": "   [mcpproxy-go](https://github.com/smart-mcp-proxy/mcpproxy-go#why-mcpproxy) and"
+    },
+    {
+      "line": 161,
+      "text": "   [Warden](https://github.com/alexar76/warden#what-this-is-not)."
+    },
+    {
+      "line": 162,
+      "text": "10. Publish the method behind any detection numbers, with a held-out test set. Credit:"
+    },
+    {
+      "line": 163,
+      "text": "    [Warden](https://github.com/alexar76/warden/blob/main/docs/scanner-comparison.md)."
+    },
+    {
+      "line": 215,
+      "text": "- **Closest overlap.** Warden also scans local configs, connects to servers, and pins tool"
+    },
+    {
+      "line": 216,
+      "text": "  definitions. The difference is the language, the YAML rule model with required tests, and the"
+    },
+    {
+      "line": 217,
+      "text": "  choice to keep optional network features out of phase 1."
+    }
+  ]
+}

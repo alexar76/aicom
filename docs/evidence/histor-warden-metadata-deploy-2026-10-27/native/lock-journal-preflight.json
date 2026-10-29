@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-27T16:08:34.551087+00:00",
+  "locks": {
+    "/run/lock/histor-warden-operator.lock": "free",
+    "/var/lib/momus-quality/native.lock": "free",
+    "/var/lib/momus-quality/cycle.lock": "free"
+  },
+  "lastWardenBuild": {
+    "commit": "446c2135f9e897b2617313b443a4f6e4280c4b58",
+    "imageDigest": "sha256:983294f0810475156722c5194046b9264e759b80a92a97254ecb66d9d1d747d9",
+    "orderId": "build-operator-warden-native-446c2135f-1792816450"
+  },
+  "noJournalEntryForCurrentImageObserved": true,
+  "note": "The new native executor will record the actual running previous image before promotion; no journal was edited or reconstructed."
+}

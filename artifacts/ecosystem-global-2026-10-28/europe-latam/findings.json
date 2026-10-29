@@ -1,0 +1,79 @@
+{
+  "checked_date_moscow": "2026-10-28",
+  "scope": "Bounded public search over Spanish, Portuguese, French, German, Italian, Polish, Czech and Turkish language/platform signals",
+  "queries": 44,
+  "direct_gets": 6,
+  "http_200": 5,
+  "http_502": 1,
+  "new_independent_local_publications_confirmed": 0,
+  "findings": [
+    {
+      "url": "https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/",
+      "language": "Czech",
+      "classification": "known external secondary news summary",
+      "new_relative_to_prior_reports": false,
+      "verified_http": 200,
+      "publication_date": "2026-10-22",
+      "finding_ru": "Чешская заметка о датасете HISTOR доступна, содержит прямую ссылку на histor.modelmarket.dev/datasets/. Уже была в отчётах24–27окт. Не является новым обзором или независимым воспроизведением измерений."
+    },
+    {
+      "url": "https://legit.show/s/histor-modelmarket-dev",
+      "language": "English",
+      "classification": "known automated public-surface benchmark, first successful direct GET in this pass",
+      "new_relative_to_prior_reports": false,
+      "verified_http": 200,
+      "benchmark_date": "2026-10-22",
+      "finding_ru": "Прямым GET подтверждена прежняя поисковая карточка73/100: 7из7frames; performance28,accessibility89,security100,privacy25,reliability92,standards92,discoverability85. Дата измерения22окт, не сегодняшняя. Это измерение публичной поверхности; security100 не означает аудит приложения, privacy25 не является юридическим выводом. В24окт прямое чтение завершилосьTLS timeout."
+    },
+    {
+      "url": "https://forgeregistry.com/es/registry/%40aimarket%2Fwarden",
+      "language": "Spanish UI with English package text",
+      "classification": "known automatic registry translation",
+      "new_relative_to_prior_reports": false,
+      "verified_http": 200,
+      "finding_ru": "Испанская интерфейсная карточка WARDEN подтверждена; ссылкиalexar76/warden. Уже известна; не испанский пользовательский отзыв."
+    },
+    {
+      "url": "https://mcp-servers.fr/server/server%20implementations-alexar76-argus",
+      "language": "generic English HTML shell on .fr",
+      "classification": "unconfirmed candidate",
+      "verified_http": 200,
+      "finding_ru": "Возвращает только2328байт generic HTML; alexar76/ARGUS отсутствуют в видимом содержимом. Не включать в подтверждённые карточки и не считать французским сообществом по домену."
+    },
+    {
+      "url": "https://ccn.web.tr/web-api/iframe-proxy?url=http%3A%2F%2Fgithub.com%2Ftopics%2Ftransaction-signing",
+      "language": "English GitHub search copy on Turkish-domain proxy",
+      "classification": "unconfirmed mirror, false geography signal",
+      "verified_http": 502,
+      "finding_ru": "Поисковая копия показывает alexar76/escrow-signer; прямойGET502. Если учитывать, только как неподтверждённый прокси GitHub, не турецкое освещение."
+    }
+  ],
+  "negative_coverage": [
+    "TabNews",
+    "LinuxFR",
+    "Developpez",
+    "Heise",
+    "Golem",
+    "ComputerBase",
+    "Punto Informatico",
+    "HTML.it",
+    "Tomshw.it",
+    "Wykop",
+    "Technopat",
+    "Eksisozluk",
+    "DonanimHaber",
+    "Meneame",
+    "Forocoches",
+    "HTCMania",
+    "Frandroid",
+    "Journal du Hacker",
+    "Korben"
+  ],
+  "limits": [
+    "Public search index does not comprehensively cover national web or private communities.",
+    "Language markers often returned English listings; these were not relabelled as local coverage.",
+    "No new reader review of Pantheon/Trace of Refusal/PingBlip was attributable in this bounded pass.",
+    "Similar book titles, generic HISTOR/Metis/Emberline names, histor.dev and unrelated MCP abbreviations were excluded.",
+    "No publications, messages, logins, account changes, paid queries or GitHub writes."
+  ]
+}

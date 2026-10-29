@@ -658,15 +658,15 @@ Added with the kit's landing and example desk (`domain-kit/docs/landing/`, EN ·
 | demo mode / demo seller | демо-режим / демо-продавец | modo demo / vendedor de demostración | mode démo / vendeur de démonstration | 演示模式 / 演示卖家 | Real availability, illustrative prices, orders refused with `demo_mode`. |
 | example desk | пример деска | tienda de ejemplo | boutique d'exemple | 示例店铺 | The kit's storefront at `/desk/`. RU keeps the owner's word «деск»; ES/FR/ZH reuse the eSIM kit's «example shop». Not Cite Desks (RU «столы»). |
 
-## Places, power prices, imagery, device control and EMPORION (2026-10-16)
+## Places, power prices, imagery, device control and SYMMARTYS (2026-10-28)
 
 Added with GAIA's [`PLACES.md`](https://github.com/alexar76/gaia/blob/main/docs/PLACES.md),
 [`POWER-PRICES.md`](https://github.com/alexar76/gaia/blob/main/docs/POWER-PRICES.md),
 [`IMAGERY.md`](https://github.com/alexar76/gaia/blob/main/docs/IMAGERY.md),
-[`ACTUATION.md`](https://github.com/alexar76/gaia/blob/main/docs/ACTUATION.md) and EMPORION's
-`emporion/README.md` in the monorepo (each EN · RU · ES · FR · ZH). Identifiers stay Latin:
+[`ACTUATION.md`](https://github.com/alexar76/gaia/blob/main/docs/ACTUATION.md) and SYMMARTYS's
+`symmartys/README.md` in the monorepo (each EN · RU · ES · FR · ZH). Identifiers stay Latin:
 `gaia.place.resolve@v1`, `gaia.power.price.read@v1`, `gaia.power.window@v1`, `gaia.imagery.read@v1`,
-`gaia.actuator.list@v1`, `gaia.actuate@v1`, `emporion.*@v1`, `Pay-on-Verified`, `PulseTime`, `SCL`,
+`gaia.actuator.list@v1`, `gaia.actuate@v1`, `symmartys.*@v1`, `Pay-on-Verified`, `PulseTime`, `SCL`,
 `NDVI` / `NDWI` / `NBR` / `NDMI`, `LEI`, `VIES`, `SDN`, `.ots`, `ok:false`.
 
 | EN | RU | ES | FR | ZH | Notes |
@@ -721,10 +721,11 @@ the outcome values (`ok`, `failed`, `payment_required`, …), the caller kinds (
 | pseudonymisation | псевдонимизация | seudonimización | pseudonymisation | 假名化 | GDPR Art. 4(5). A salted client hash is pseudonymised, **not** anonymous: never «анонимизация» / «anonimización» / «anonymisation» / 匿名化 for it. Web-verified. |
 | retention period | срок хранения | plazo de conservación | durée de conservation | 保存期限 | GDPR Art. 5(1)(e) vocabulary. Web-verified. |
 | price gate | ценовой шлюз | compuerta de precio | barrière de prix | 价格闸门 | `oracle_core.price_gate`: a priced capability answers only a call a trusted hub signed (or an operator-nominated caller); anyone else gets `402`. Modes `off` / `report` / `enforce` stay Latin. The renderings already used in `docs/free-and-paid-tiers.*.md`. |
-| public-record facts | публичные факты | hechos de registro público | faits de registre public | 公共记录事实 | EMPORION's own description (VAT, LEI, ECB rates, sanctions lists, timestamps). Product wording, one calque per locale. |
-| web capture | снимок страницы | captura web | capture web | 网页快照 | `emporion.web.capture@v1`: what a page answered, recorded and anchored in Bitcoin. |
-| dead man's switch | dead man's switch | interruptor de hombre muerto | interrupteur d'homme mort | 死人开关 | `emporion.timer.set@v1` with `deadman_seconds`: fires when the agent stops checking in. RU keeps the English term, as RU engineering usage does. |
-| business day | рабочий день | día hábil | jour ouvré | 工作日 | `emporion.calendar.check@v1`. |
+| SYMMARTYS | SYMMARTYS | SYMMARTYS | SYMMARTYS | SYMMARTYS | Product brand stays Latin in every locale. Greek συμμάρτυς: a corroborating or fellow witness. Namespace: `symmartys.*@v1`. |
+| public-record facts | публичные факты | hechos de registro público | faits de registre public | 公共记录事实 | SYMMARTYS's own description (VAT, LEI, ECB rates, sanctions lists, timestamps). Product wording, one calque per locale. |
+| web capture | снимок страницы | captura web | capture web | 网页快照 | `symmartys.web.capture@v1`: what a page answered, recorded and anchored in Bitcoin. |
+| dead man's switch | dead man's switch | interruptor de hombre muerto | interrupteur d'homme mort | 死人开关 | `symmartys.timer.set@v1` with `deadman_seconds`: fires when the agent stops checking in. RU keeps the English term, as RU engineering usage does. |
+| business day | рабочий день | día hábil | jour ouvré | 工作日 | `symmartys.calendar.check@v1`. |
 
 ## Sources (web-verified renderings)
 

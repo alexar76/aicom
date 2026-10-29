@@ -1,0 +1,60 @@
+{
+  "archive": "aimarket-warden-0.22.2.tgz",
+  "sha256": "0256dad4208f750b56ba7c803dc5fe62c927f7930d621536381c653804751a57",
+  "version": "0.22.2",
+  "offline_install": true,
+  "install_scripts_disabled": true,
+  "runtime_dependencies": 0,
+  "library_import": true,
+  "cli_scan": {
+    "tool": "warden-scan",
+    "version": "0.22.2",
+    "scannedAt": "2026-10-27T14:39:24.320Z",
+    "ruleset": {
+      "version": "16",
+      "digest": "sha256-86y6iNc4R+LM5WmjSVxaCNgSMUEggeNOMQPUzq4L9n8="
+    },
+    "policy": {
+      "blockAtSeverity": "high",
+      "sensitiveToolPatterns": [],
+      "allowUnknownServers": true,
+      "pinToolDefs": true
+    },
+    "launch": false,
+    "sources": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/build/warden-clean-consumer-MUFUQs/mcp-empty.json",
+        "client": "file",
+        "scope": "project",
+        "servers": 0
+      }
+    ],
+    "servers": [],
+    "flows": [],
+    "summary": {
+      "servers": 0,
+      "scanned": 0,
+      "allowed": 0,
+      "blocked": 0,
+      "errors": 0,
+      "skipped": 0,
+      "launchOnly": 0
+    }
+  },
+  "protocol": "2025-03-26",
+  "tool_count": 9,
+  "compatible_server_info_shapes": [
+    "omitted",
+    "null",
+    "empty",
+    "name",
+    "version",
+    "full"
+  ],
+  "rejected_unknown_keys": [
+    "extra",
+    "__proto__",
+    "constructor"
+  ],
+  "state_unchanged": true
+}

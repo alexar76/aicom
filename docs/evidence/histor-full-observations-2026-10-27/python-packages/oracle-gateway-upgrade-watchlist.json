@@ -1,0 +1,23 @@
+{
+  "format": "histor.upgrade-watchlist/v1",
+  "title": "oracle-gateway upgrade",
+  "dependencies": [
+    {
+      "id": "pypi:aimarket-oracle-gateway",
+      "before": "snapshots/upgrade-oracle-gateway-before.json",
+      "after": "snapshots/upgrade-oracle-gateway-after.json",
+      "tools": [
+        "list_oracle_capabilities"
+      ],
+      "workflows": [
+        {
+          "id": "selected-flow",
+          "description": "Selected workflow",
+          "tools": [
+            "list_oracle_capabilities"
+          ]
+        }
+      ]
+    }
+  ]
+}

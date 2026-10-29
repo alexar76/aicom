@@ -1,0 +1,296 @@
+{
+  "schema": "final-witness-analysis/1",
+  "scope": "Final fresh comparison on all five previously held contexts/four fixtures; selected known failures, not a new holdout or general security result.",
+  "contexts": 5,
+  "distinctFixtures": 4,
+  "freshModelCalls": 120,
+  "groups": [
+    {
+      "population": "failure",
+      "arm": "old",
+      "calls": 40,
+      "valid": 6,
+      "withheld": 34,
+      "delivered": 6,
+      "codes": {
+        "not-optimal": 34,
+        "verified": 6
+      }
+    },
+    {
+      "population": "failure",
+      "arm": "witness",
+      "calls": 40,
+      "valid": 40,
+      "delivered": 40,
+      "codes": {
+        "verified": 40
+      }
+    },
+    {
+      "population": "valid-control",
+      "arm": "old",
+      "calls": 20,
+      "valid": 20,
+      "delivered": 20,
+      "codes": {
+        "verified": 20
+      }
+    },
+    {
+      "population": "valid-control",
+      "arm": "witness",
+      "calls": 20,
+      "valid": 20,
+      "delivered": 20,
+      "codes": {
+        "verified": 20
+      }
+    }
+  ],
+  "byContext": [
+    {
+      "context_id": "087ba638b3b95f5306fee25603a3215f",
+      "origin": "natural",
+      "case_id": "case-12f14454212e032e",
+      "population": "failure",
+      "arm": "old",
+      "calls": 8,
+      "valid": 5
+    },
+    {
+      "context_id": "087ba638b3b95f5306fee25603a3215f",
+      "origin": "natural",
+      "case_id": "case-12f14454212e032e",
+      "population": "failure",
+      "arm": "witness",
+      "calls": 8,
+      "valid": 8
+    },
+    {
+      "context_id": "087ba638b3b95f5306fee25603a3215f",
+      "origin": "natural",
+      "case_id": "case-12f14454212e032e",
+      "population": "valid-control",
+      "arm": "old",
+      "calls": 4,
+      "valid": 4
+    },
+    {
+      "context_id": "087ba638b3b95f5306fee25603a3215f",
+      "origin": "natural",
+      "case_id": "case-12f14454212e032e",
+      "population": "valid-control",
+      "arm": "witness",
+      "calls": 4,
+      "valid": 4
+    },
+    {
+      "context_id": "38b4a504618c0cb6577d678270b4f55d",
+      "origin": "controlled",
+      "case_id": "case-5482c65b7ea5e85d",
+      "population": "failure",
+      "arm": "old",
+      "calls": 8,
+      "valid": 0
+    },
+    {
+      "context_id": "38b4a504618c0cb6577d678270b4f55d",
+      "origin": "controlled",
+      "case_id": "case-5482c65b7ea5e85d",
+      "population": "failure",
+      "arm": "witness",
+      "calls": 8,
+      "valid": 8
+    },
+    {
+      "context_id": "38b4a504618c0cb6577d678270b4f55d",
+      "origin": "controlled",
+      "case_id": "case-5482c65b7ea5e85d",
+      "population": "valid-control",
+      "arm": "old",
+      "calls": 4,
+      "valid": 4
+    },
+    {
+      "context_id": "38b4a504618c0cb6577d678270b4f55d",
+      "origin": "controlled",
+      "case_id": "case-5482c65b7ea5e85d",
+      "population": "valid-control",
+      "arm": "witness",
+      "calls": 4,
+      "valid": 4
+    },
+    {
+      "context_id": "3a4750fc0db6e6e3d4151d68aab811e8",
+      "origin": "natural",
+      "case_id": "case-5482c65b7ea5e85d",
+      "population": "failure",
+      "arm": "old",
+      "calls": 8,
+      "valid": 0
+    },
+    {
+      "context_id": "3a4750fc0db6e6e3d4151d68aab811e8",
+      "origin": "natural",
+      "case_id": "case-5482c65b7ea5e85d",
+      "population": "failure",
+      "arm": "witness",
+      "calls": 8,
+      "valid": 8
+    },
+    {
+      "context_id": "3a4750fc0db6e6e3d4151d68aab811e8",
+      "origin": "natural",
+      "case_id": "case-5482c65b7ea5e85d",
+      "population": "valid-control",
+      "arm": "old",
+      "calls": 4,
+      "valid": 4
+    },
+    {
+      "context_id": "3a4750fc0db6e6e3d4151d68aab811e8",
+      "origin": "natural",
+      "case_id": "case-5482c65b7ea5e85d",
+      "population": "valid-control",
+      "arm": "witness",
+      "calls": 4,
+      "valid": 4
+    },
+    {
+      "context_id": "a3a474151d13b48a2f5ec7546d924327",
+      "origin": "controlled",
+      "case_id": "case-b6ad60d8212d0bc3",
+      "population": "failure",
+      "arm": "old",
+      "calls": 8,
+      "valid": 1
+    },
+    {
+      "context_id": "a3a474151d13b48a2f5ec7546d924327",
+      "origin": "controlled",
+      "case_id": "case-b6ad60d8212d0bc3",
+      "population": "failure",
+      "arm": "witness",
+      "calls": 8,
+      "valid": 8
+    },
+    {
+      "context_id": "a3a474151d13b48a2f5ec7546d924327",
+      "origin": "controlled",
+      "case_id": "case-b6ad60d8212d0bc3",
+      "population": "valid-control",
+      "arm": "old",
+      "calls": 4,
+      "valid": 4
+    },
+    {
+      "context_id": "a3a474151d13b48a2f5ec7546d924327",
+      "origin": "controlled",
+      "case_id": "case-b6ad60d8212d0bc3",
+      "population": "valid-control",
+      "arm": "witness",
+      "calls": 4,
+      "valid": 4
+    },
+    {
+      "context_id": "da1309dc19a4af5830401ba87fb1f5ac",
+      "origin": "controlled",
+      "case_id": "case-1b57bf048dd92ce9",
+      "population": "failure",
+      "arm": "old",
+      "calls": 8,
+      "valid": 0
+    },
+    {
+      "context_id": "da1309dc19a4af5830401ba87fb1f5ac",
+      "origin": "controlled",
+      "case_id": "case-1b57bf048dd92ce9",
+      "population": "failure",
+      "arm": "witness",
+      "calls": 8,
+      "valid": 8
+    },
+    {
+      "context_id": "da1309dc19a4af5830401ba87fb1f5ac",
+      "origin": "controlled",
+      "case_id": "case-1b57bf048dd92ce9",
+      "population": "valid-control",
+      "arm": "old",
+      "calls": 4,
+      "valid": 4
+    },
+    {
+      "context_id": "da1309dc19a4af5830401ba87fb1f5ac",
+      "origin": "controlled",
+      "case_id": "case-1b57bf048dd92ce9",
+      "population": "valid-control",
+      "arm": "witness",
+      "calls": 4,
+      "valid": 4
+    }
+  ],
+  "paired": {
+    "failure": {
+      "witnessOnlyValid": 34,
+      "bothValid": 6
+    },
+    "valid-control": {
+      "bothValid": 20
+    }
+  },
+  "failureDifferenceCount": 34,
+  "failureDifferencePercentagePoints": 85.0,
+  "predictions": {
+    "witnessAtLeast32of40": {
+      "observed": 40,
+      "threshold": 32,
+      "met": true
+    },
+    "witnessImprovementAtLeast8of40": {
+      "observed": 34,
+      "threshold": 8,
+      "met": true
+    },
+    "validControl_old": {
+      "observed": 20,
+      "threshold": 19,
+      "met": true
+    },
+    "validControl_witness": {
+      "observed": 20,
+      "threshold": 19,
+      "met": true
+    }
+  },
+  "hostNoticeFrames": 120,
+  "unverifiedCandidatesForwarded": 0,
+  "apiErrors": [],
+  "reportedModels": {
+    "deepseek-flash": 120
+  },
+  "usage": {
+    "prompt_tokens": 172704,
+    "prompt_cache_hit_tokens": 148224,
+    "completion_tokens": 13773
+  },
+  "usageCostAtPublishedTimeWindowUSD": 0.012380472,
+  "accountingUSDPeakUpper": 0.024760944,
+  "combinedWithPriorHoldoutPeakUSD": 0.08262981,
+  "combinedWithPriorHoldoutTimeWindowUSD": 0.041314905,
+  "additionalBudgetUSD": 0.08,
+  "combinedStatedBudgetUSD": 0.15,
+  "unambiguouslyOffPeakCalls": 120,
+  "providerInvoiceVerified": false,
+  "verifiedOutputs": 253,
+  "productCodeChangedDuringComparison": false,
+  "seriesComplete": true,
+  "limitations": [
+    "Five selected known failures spanning four fixtures; not independent holdout or deployment sample.",
+    "One additional research continuation; production two-repair ceiling unchanged.",
+    "Positive controls are constructed valid answers and have identical nominal-arm prompts.",
+    "Effect belongs to the complete changed feedback, not an isolated phrase or newly supplied raw record facts.",
+    "Values were in the catalog in both arms; no internal-cause inference.",
+    "Same-author AI-assisted unblinded preparation/audit; captured frames, not native GUI."
+  ]
+}

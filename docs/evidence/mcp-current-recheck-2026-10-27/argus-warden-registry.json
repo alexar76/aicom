@@ -1,0 +1,112 @@
+{
+  "bin": {
+    "argus": "dist/index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/alexar76/argus/issues"
+  },
+  "dist": {
+    "shasum": "9ee1b16e94596028cf89a94703ea8d303568e52d",
+    "tarball": "https://registry.npmjs.org/argus-warden/-/argus-warden-0.3.1.tgz",
+    "fileCount": 370,
+    "integrity": "sha512-Y7Ecug/luQNaYZxm+ZDNdy14MyH6cFV6POwJbi5Ve5GNarYFkgMIO615w4p3PW/x96IrHyx7LpExxArCxl372g==",
+    "signatures": [
+      {
+        "sig": "MEUCIQDi4Q0CoATSnSGAyTTyXurFpq8hv64p4tKJlurxJTPjtAIgMPYEzNIUiXOMNVXJhF1bc67RgehlqdTf42yPw81/l8k=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 1052993
+  },
+  "main": "./dist/index.js",
+  "name": "argus-warden",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "author": {
+    "url": "alexar76",
+    "name": "AICOM"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "gitHead": "d103634e3f087836da18cd3ec19599216b57e399",
+  "license": "MIT",
+  "mcpName": "io.github.alexar76/argus3",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "test": "vitest run",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "_npmUser": {
+    "name": "alexar76",
+    "email": "alexar76@rambler.ru"
+  },
+  "homepage": "https://magic-ai-factory.com/argus/",
+  "keywords": [
+    "mcp",
+    "mcp-security",
+    "prompt-injection",
+    "warden",
+    "firewall",
+    "ai-agent",
+    "llm",
+    "aicom",
+    "aimarket",
+    "agent-economy",
+    "multi-provider",
+    "telegram-bot",
+    "argus-warden"
+  ],
+  "repository": {
+    "url": "git+https://github.com/alexar76/argus.git",
+    "type": "git"
+  },
+  "_npmVersion": "10.9.4",
+  "description": "WARDEN MCP firewall \u2014 blocks poisoned MCP servers before any tool runs. ARGUS-3 agent CLI (argus); wallet and crypto optional.",
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "alexar76",
+      "email": "alexar76@rambler.ru"
+    }
+  ],
+  "_nodeVersion": "22.22.1",
+  "dependencies": {
+    "zod": "^3.24.1",
+    "viem": "^2.21.55",
+    "@aimarket/warden": "0.4.0",
+    "@noble/post-quantum": "^0.6.1",
+    "@modelcontextprotocol/sdk": "^1.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "_hasShrinkwrap": false,
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "vitest": "^2.1.8",
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2",
+    "@aimarket/agent": "^0.1.0",
+    "@vitest/coverage-v8": "^2.1.9"
+  },
+  "peerDependencies": {
+    "@aimarket/agent": "^0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@aimarket/agent": {
+      "optional": true
+    }
+  },
+  "_npmOperationalInternal": {
+    "tmp": "tmp/argus-warden_0.3.1_1787572577297_0.5402532265550657",
+    "host": "s3://npm-registry-packages-npm-production"
+  },
+  "_id": "argus-warden@0.3.1",
+  "version": "0.3.1"
+}

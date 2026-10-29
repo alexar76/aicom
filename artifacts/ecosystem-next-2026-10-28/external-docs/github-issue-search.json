@@ -1,0 +1,327 @@
+[
+  {
+    "url": "https://api.github.com/search/issues?q=%22alexar76%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:04:10.292376+00:00",
+    "query": "\"alexar76\" in:body -user:alexar76 -author:alexar76",
+    "status": 200,
+    "sha256": "82c6458b1a0b7602a469b83eda19ca12c6053db13faee98611cba49737c69627",
+    "bytes": 22009,
+    "total_count": 3,
+    "incomplete_results": false,
+    "items": [
+      {
+        "url": "https://github.com/Ducarv/mcpmoat/issues/32",
+        "title": "Study competitors and write docs/competitors.md",
+        "user": "Ducarv",
+        "created_at": "2026-10-17T18:16:23Z",
+        "updated_at": "2026-10-23T15:49:08Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## Context\nPRD section 13 says: study competitors before M4 to sharpen the differentiator and avoid copying.\n\n## Requirements\n- PRD refs: PRD section 13 (risks)\n\n## Tasks\n- [ ] Review Snyk Agent Scan, mcpproxy-go, Docker MCP tooling, `alexar76/warden`, `mcp-lock`.\n- [ ] For each: scope, offline or not, license, detection approach, rule format, pins/rug-pull support.\n- [ ] List ideas to adopt and ideas to avoid, with credit.\n\n## Acceptance criteria\n- [ ] `docs/competitors.md` covers all five tools with a comparison table.\n- [ ] Every claim links a source.\n- [ ] A short section states how mcpmoat differs.\n\n## Notes\nInvariant Labs, tool poisoning: https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks\nOWASP MCP Top 10: https://owasp.org/www-project-mcp-top-10/\n\nPick up with the model in the `model:*` label at high effort (see CLAUDE.md).\n"
+      },
+      {
+        "url": "https://github.com/Ducarv/mcpmoat/pull/111",
+        "title": "feat(rules): rule schema, YAML loader, --rules and test harness",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T14:23:21Z",
+        "updated_at": "2026-10-23T15:49:06Z",
+        "state": "closed",
+        "comments": 11,
+        "body_excerpt": "## Summary\n\nThis PR builds the core of the rule engine for milestone M4. It loads rules from YAML, checks them, embeds the built-in rules in the binary, and adds `mcpmoat scan --rules <dir>` for extra rules. It also adds the test harness that makes `go test` fail when a built-in rule has no tests.\n\nRules are loaded and checked. They are not applied to scan results yet. The scan output is the same as before, and the \"no rules applied\" notice stays.\n\n- **#33 Rule schema and YAML loader.** New package `internal/rules` with `Rule`, `Match`, `Case`, `LoadError`, `Validate`, `Parse` and `Set`. Decoding is strict. It adds one module, `go.yaml.in/yaml/v3` v3.0.5. The repo owner approved this module before it was added.\n- **#34 Embedded rules and `--rules`.** Built-in rules are embedded with `go:embed` from a small root package, `rules/`. `rules/MOAT-T1-003.yaml` is the first built-in rule. The other rule issues add more. `mcpmoat scan --rules <dir>` adds extra `*.yaml` and `*.yml` files.\n- **#41 Test harness.** `go test` fails when a built-in rule has no `should_match` case, no `should_not_match` case, no risk text or no remediation text. `CONTRIBUTING.md` documents the final format.\n- **#32 `docs/competitors.md`.** Five tools, with a source link for every claim. `alexar76/warden` exists and is the closest competitor. The `mcp-lock` row is a best guess, because several repositories use that name. The document lists the other candidates.\n\nDecisions the repo owner confirmed: the loader is lenient and the built-in harness is strict, test cases live inline in the rule YAML, and the competitor research uses the web.\n\nNot in this PR on purpose:\n\n- Regex compilation and matchers (#35).\n- Native heuristics (#36).\n- The ignore list (#40).\n- More rules.\n- Applying rules to scan results.\n"
+      },
+      {
+        "url": "https://github.com/punkpeye/awesome-mcp-servers/pull/8422",
+        "title": "Add aimarket-oracle-gateway (verifiable oracle MCP server)",
+        "user": "alexart2025",
+        "created_at": "2026-06-20T20:12:08Z",
+        "updated_at": "2026-07-11T14:27:28Z",
+        "state": "closed",
+        "comments": 2,
+        "body_excerpt": "## Summary\n\nAdds **alexar76/aimarket-oracle-gateway** to the **Security** section — a separate MCP server from our existing **Aggregators** entry (`aimarket-plugins` / mcp-packager).\n\nMIT · Python · stdio MCP server exposing verifiable oracle tools for AI agents:\n- **Platon VRF** — Ed25519-signed unbiasable randomness (`get_random`, `get_randomness_beacon`, `ask_oracle`)\n- **Chronos VDF** — verifiable delay / proof-of-elapsed-time (`compute_vdf`, `verify_vdf`)\n- **LUMEN reputation** — PageRank/EigenTrust trust scores (`get_reputation_scores`)\n- `list_oracle_capabilities`\n\nPay-per-call over the [AIMarket Protocol v2](https://github.com/alexar76/aimarket-protocol); every result is independently verifiable. Fail-closed spend caps.\n\n- Repo: https://github.com/alexar76/aimarket-oracle-gateway\n- Glama: https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway\n\n## Test plan\n\n- [x] Alphabetical placement in Security (after `alexfleetcommander`, before `alberthild`)\n- [x] Distinct from existing `alexar76/aimarket-plugins` Aggregators entry (different repo, different purpose)"
+      }
+    ]
+  },
+  {
+    "url": "https://api.github.com/search/issues?q=%22histor-mcp-tool-definitions%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:04:10.292878+00:00",
+    "query": "\"histor-mcp-tool-definitions\" in:body -user:alexar76 -author:alexar76",
+    "status": 200,
+    "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+    "bytes": 79,
+    "total_count": 0,
+    "incomplete_results": false,
+    "items": []
+  },
+  {
+    "url": "https://api.github.com/search/issues?q=%22alexar76%2Fwarden%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:04:11.020669+00:00",
+    "query": "\"alexar76/warden\" in:body -user:alexar76 -author:alexar76",
+    "status": 200,
+    "sha256": "871365c3a57ed5154d8c502742a726ac2430c0880272c6518401eaa1c6f744bb",
+    "bytes": 17554,
+    "total_count": 2,
+    "incomplete_results": false,
+    "items": [
+      {
+        "url": "https://github.com/Ducarv/mcpmoat/issues/32",
+        "title": "Study competitors and write docs/competitors.md",
+        "user": "Ducarv",
+        "created_at": "2026-10-17T18:16:23Z",
+        "updated_at": "2026-10-23T15:49:08Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## Context\nPRD section 13 says: study competitors before M4 to sharpen the differentiator and avoid copying.\n\n## Requirements\n- PRD refs: PRD section 13 (risks)\n\n## Tasks\n- [ ] Review Snyk Agent Scan, mcpproxy-go, Docker MCP tooling, `alexar76/warden`, `mcp-lock`.\n- [ ] For each: scope, offline or not, license, detection approach, rule format, pins/rug-pull support.\n- [ ] List ideas to adopt and ideas to avoid, with credit.\n\n## Acceptance criteria\n- [ ] `docs/competitors.md` covers all five tools with a comparison table.\n- [ ] Every claim links a source.\n- [ ] A short section states how mcpmoat differs.\n\n## Notes\nInvariant Labs, tool poisoning: https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks\nOWASP MCP Top 10: https://owasp.org/www-project-mcp-top-10/\n\nPick up with the model in the `model:*` label at high effort (see CLAUDE.md).\n"
+      },
+      {
+        "url": "https://github.com/Ducarv/mcpmoat/pull/111",
+        "title": "feat(rules): rule schema, YAML loader, --rules and test harness",
+        "user": "Ducarv",
+        "created_at": "2026-10-23T14:23:21Z",
+        "updated_at": "2026-10-23T15:49:06Z",
+        "state": "closed",
+        "comments": 11,
+        "body_excerpt": "## Summary\n\nThis PR builds the core of the rule engine for milestone M4. It loads rules from YAML, checks them, embeds the built-in rules in the binary, and adds `mcpmoat scan --rules <dir>` for extra rules. It also adds the test harness that makes `go test` fail when a built-in rule has no tests.\n\nRules are loaded and checked. They are not applied to scan results yet. The scan output is the same as before, and the \"no rules applied\" notice stays.\n\n- **#33 Rule schema and YAML loader.** New package `internal/rules` with `Rule`, `Match`, `Case`, `LoadError`, `Validate`, `Parse` and `Set`. Decoding is strict. It adds one module, `go.yaml.in/yaml/v3` v3.0.5. The repo owner approved this module before it was added.\n- **#34 Embedded rules and `--rules`.** Built-in rules are embedded with `go:embed` from a small root package, `rules/`. `rules/MOAT-T1-003.yaml` is the first built-in rule. The other rule issues add more. `mcpmoat scan --rules <dir>` adds extra `*.yaml` and `*.yml` files.\n- **#41 Test harness.** `go test` fails when a built-in rule has no `should_match` case, no `should_not_match` case, no risk text or no remediation text. `CONTRIBUTING.md` documents the final format.\n- **#32 `docs/competitors.md`.** Five tools, with a source link for every claim. `alexar76/warden` exists and is the closest competitor. The `mcp-lock` row is a best guess, because several repositories use that name. The document lists the other candidates.\n\nDecisions the repo owner confirmed: the loader is lenient and the built-in harness is strict, test cases live inline in the rule YAML, and the competitor research uses the web.\n\nNot in this PR on purpose:\n\n- Regex compilation and matchers (#35).\n- Native heuristics (#36).\n- The ignore list (#40).\n- More rules.\n- Applying rules to scan results.\n"
+      }
+    ]
+  },
+  {
+    "url": "https://api.github.com/search/issues?q=%22%40alexar76%2Fargus3%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:04:11.287500+00:00",
+    "query": "\"@alexar76/argus3\" -user:alexar76 -author:alexar76",
+    "status": 200,
+    "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+    "bytes": 79,
+    "total_count": 0,
+    "incomplete_results": false,
+    "items": []
+  },
+  {
+    "url": "https://api.github.com/search/issues?q=%22aimarket-agent%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:04:11.795700+00:00",
+    "query": "\"aimarket-agent\" in:body -user:alexar76 -author:alexar76",
+    "status": 200,
+    "sha256": "bbacc6caa9c21d2872cf16d26a5da65e7c01866232d9837e895bc66557559367",
+    "bytes": 96535,
+    "total_count": 20,
+    "incomplete_results": false,
+    "items": [
+      {
+        "url": "https://github.com/bracha55555-hue/aimarket/issues/14",
+        "title": "Calling founding AI agent builders: try free MCP discovery and genuine buyer matching",
+        "user": "bracha55555-hue",
+        "created_at": "2026-10-27T16:32:53Z",
+        "updated_at": "2026-10-27T16:32:53Z",
+        "state": "open",
+        "comments": 0,
+        "body_excerpt": "## Invitation to builders of real autonomous AI agents\n\nWe are looking for the first independent agent developers to try **AI Market**, a free-to-discover agent services directory. No agent registration is required to browse, and there are no listing fees.\n\n### 60-second technical trial (no payments)\n1. Open the [live market snapshot](https://aimarket-997u.onrender.com/api/agent/now) to see real online providers and actual public buyer requests. It may be empty.\n2. Try the [read-only MCP endpoint](https://aimarket-997u.onrender.com/mcp) in your agent host; list tools and call `market_in_one_call`.\n3. Read [onboarding](https://aimarket-997u.onrender.com/api/onboarding) for a signed, persistent WebSocket connection or install the optional [AI Market Agent Skill](https://github.com/bracha55555-hue/aimarket/tree/main/.agents/skills/ai-market).\n4. Advertise **only a capability your agent genuinely provides**. Use `AIMARKET_SERVICES` JSON for the local Python client, and watch matching, identity-signed buyer requests.\n\n### Who this is for\nMCP tool creators, coding assistants, research/writing agents, translation/extraction automations, and independent agent builders who want to discover collaborators or evaluate a marketplace for agent-to-agent services.\n\n### Helpful feedback\nReply here with your **public agent project or documentation link** (never a key or private log), whether `initialize`/`tools/list` worked, which advertised capability you want to test, and which errors you saw. Reports of empty markets or missing features are welcome.\n\n### Costs and trust boundaries\nBrowsing, API discovery, service registration and buyer-interest requests are free. The platform states a 2% commission on applicable verified cryptocurrency payments; ordinary network fees still apply. **Th"
+      },
+      {
+        "url": "https://github.com/hoang0650/ai-marketplace-app/pull/8",
+        "title": "feat: continue-on-phone handoff, connected devices, builder live sync (v1.2.0)",
+        "user": "hoang0650",
+        "created_at": "2026-10-15T07:21:44Z",
+        "updated_at": "2026-10-15T07:21:54Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "- `app/handoff/scan` (expo-camera QR + manual code), `app/handoff/[code]` (deep link aimarkets://handoff/CODE → claim → builder/agent screen).\n- `app/account/devices` list/revoke (Profile → Thiết bị đã kết nối).\n- Per-install device id + headers; long-poll sync feed (foreground only, cursor resume, stops on DEVICE_REVOKED).\n- Builder screen refetches when another device updates the project; 'generating on another device' banner.\n- Version 1.2.0, expo-camera plugin with VI permission string, RELEASE_CHECKLIST updated. Needs a new native build. Not submitted.\n- `tsc --noEmit` clean."
+      },
+      {
+        "url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/pull/49",
+        "title": "Repair observed AIMarket federation health checks and correct gateway payment documentation",
+        "user": "industrial-platform",
+        "created_at": "2026-10-13T22:46:08Z",
+        "updated_at": "2026-10-13T22:46:08Z",
+        "state": "open",
+        "comments": 0,
+        "body_excerpt": "## Observed blocker\nProduction HTTP logs on Oct 13 repeatedly show GET /ai-market/v2/health -> 404 from AIMarket discovery agents while /.well-known/ai-market.json and the manifest return 200. This PR adds a minimal, read-only, scoped health response to eliminate that compatibility error. No paid routes, payment policy, receipts, or credentials change.\n\n## Documentation\nThe gateway README still described a deprecated Apify header-relay service. Replace with current direct x402/MCP surfaces, discovery paths, and safe Coinbase Base USDC recipient-verification instructions. Do not claim bot audits are customer revenue.\n\n## Verification plan\nRun npm run check; deploy only when CI/test results are green. Verify GET /ai-market/v2/health returns HTTP 200 in production, and paid route schemas and x402 challenge economics remain unchanged. Track whether independent funded buyer conversion changes rather than treating crawler hits as revenue.\n\n## Spend\n$0 discretionary acquisition spend; no self-purchases or third-party wallet signing."
+      },
+      {
+        "url": "https://github.com/microsoft/agentic-journeys/pull/9",
+        "title": "Journeys: simpler READMEs, concept images, and validated agentic steps (Waves 1 and 2)",
+        "user": "DanWahlin",
+        "created_at": "2026-09-26T20:34:42Z",
+        "updated_at": "2026-10-07T06:53:51Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## Summary\n\nTwo waves of improvements to the WeatherView, Grafana, n8n, Superset, and AIMarket journeys. SmartTodo is in #8.\n\n- **Wave 1: less text, more visuals.** No prompt changes. See the first commit.\n- **Wave 2: new agentic steps and real payoffs.** Each journey was validated end to end with a real run, including Azure deployment and cleanup.\n\n## Wave 2: what each journey now teaches\n\n| Journey | New agentic practice | Payoff |\n| --- | --- | --- |\n| WeatherView | Workspace script, **plan mode** with an `@PLAN.md` mention before the first build, `/diff` after each build step, a `/rewind` exercise (Conversation + files), `/model`, `/usage`, `/compact` | Same deployed five-day forecast, now built step by step with undo |\n| Grafana | Read-only **plan and cost**, generate + `azd provision --preview`, **you run `azd up`** | Copilot writes a script that creates a \"Hello from Azure\" dashboard through the Grafana API |\n| n8n | Plan and cost, preview, you run `azd up`, and **work in parallel**: Copilot builds a workflow while the deployment runs | The workflow is imported, activated, and called through its production webhook (proves `WEBHOOK_URL`) |\n| Superset | **Cost review before a ~$200/month deploy**, preview, you run `azd up`, `/fork` a Container Apps what-if while AKS provisions | Deployed BI platform with verified PostgreSQL wiring |\n| AIMarket | Workspace script, **hand the shopping assistant to the cloud agent and build semantic search at the same time**, `gh pr ready`, **Copilot code review** on the agent's PR, merge and agent-resolved rebase conflicts, lean sessions | Both AI features land on `main` and pass the deployed verifier |\n\nAlso:\n\n- `.github/scripts/create-workspace.mjs` replaces the 16-line workspace prompts.\n- The root README has an **Agentic practice"
+      },
+      {
+        "url": "https://github.com/microsoft/agentic-journeys/pull/15",
+        "title": "Infrastructure gates, cross-platform checks, lessons, primer, and maintenance",
+        "user": "DanWahlin",
+        "created_at": "2026-09-29T20:44:35Z",
+        "updated_at": "2026-10-07T06:53:49Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## What's in this PR\n\n**Infrastructure gates for AIMarket and Superset.** Following SmartTodo's pattern, the learner has the agent write a check script from a spec *before* any infrastructure exists (red), then generates until it passes (green), with a diff check proving the agent didn't edit the gate. Every rule is a real failure that `azd provision --preview` missed and `azd up` hit in a validation run.\n- AIMarket: `Infrastructure Gate` section in `PLAN-phase4-azure.md`; README Phase 4 is now gate → generate → review → deploy → verify, plus a prompt for fixing a wrong gate as a new red commit.\n- Superset: `.github/skills/superset-azure/config/infrastructure-gate.md`; README Step 3 writes the checks first.\n- Validated with real runs: red before infrastructure, green after, deliberately broken rules caught (`ai-` prefix, `resourceId()` misuse, unquoted Helm setting, one-node cluster), and both deployments passed their unmodified verifiers.\n\n**Cross-platform checks in GitHub.** New `portable-scripts` workflow runs `.github/scripts/test-portable-scripts.mjs` on ubuntu, windows, and macos runners (no Azure or Copilot credentials). Its first Windows run found a real bug in SmartTodo's checkpoint gate (fixed here).\n\n**Lessons from validation runs** in Grafana, n8n, Superset, WeatherView, and AIMarket, like SmartTodo's.\n\n**Agentic fundamentals primer** (`docs/agentic-fundamentals.md`): each technique, what it's for, and where to practice it, plus six habits from the runs. Linked from the root README.\n\n**Journey problem issue form**, linked from \"Getting help\" and every journey's \"When something fails\" block.\n\n**Maintenance**\n- Dependabot skips the SmartTodo checkpoint snapshots (they caused the failing security-update runs).\n- gh-aw updated to v0.89.21 and the harness recompi"
+      },
+      {
+        "url": "https://github.com/microsoft/agentic-journeys/pull/13",
+        "title": "journey-runner v2: full rerun of all six journeys, runner helpers, and fixes",
+        "user": "DanWahlin",
+        "created_at": "2026-09-28T06:47:09Z",
+        "updated_at": "2026-10-07T06:53:46Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "Reran all six journeys end to end with the journey-runner skill (disposable repos and Azure environments, all cleaned up) and folded what the runs taught into the runner, the skills, and the journeys.\n\n## Results\n\n| Journey | Result |\n| --- | --- |\n| Grafana | PASS first try; dashboard created through the API |\n| n8n | PASS first try; workflow built during `azd up`, webhook returned GitHub Zen |\n| WeatherView | PASS after 4 prompt fixes; `/rewind` validated in a real session; deployed browser check caught a CSP bug |\n| Superset | PASS after 2 failed deploys (skill fixes below); `/fork` validated |\n| AIMarket | PASS; cloud agent PR, Copilot review, rebase conflicts, `/review` fixes; Phase 4 blocked by `715-123420` until the root cause was found |\n| SmartTodo | PASS Phases 0-4 with a disposable repo; stacked PRs merged once from the top; cloud agent PR verified on Azure and macOS |\n\n## Runner (journey-runner skill)\n\n- New helpers: `extract-prompts.mjs` (README prompts word for word), `run-command.mjs` (lifecycle commands with timing), `summarize-run.mjs` (report tables with credits per session).\n- `run-copilot-prompt.mjs`: `--agent`, `--mode`, `--resume-from`/`--session-out`, `--record`, `--allow-skill-dirs`, `--timeout-minutes`, `--usage-output-file` credits, `--secret-env-vars`, `--max-ai-credits`. Keeps Azure MCP on: under `-p` it serves `@azure/mcp` in `--mode all` with the 11 namespaces the journeys use, because the plugin's namespace mode needs MCP sampling, which prompt mode doesn't answer (github/copilot-cli#2882). Turns off `computer-use` (it drove the host's Safari). Sets `COPILOT_TASK_WAIT_TIMEOUT_SECONDS=3600` so an agent-run `azd up` isn't abandoned at 600 s.\n- `capture-screenshot.mjs --password-env`; `check-prerequisites.mjs` accepts `xcodebuild`.\n- SKILL.md"
+      },
+      {
+        "url": "https://github.com/DanWahlin/aimarket-factory-journey-lab/pull/29",
+        "title": "fix(factory): assign Copilot to existing issues",
+        "user": "DanWahlin",
+        "created_at": "2026-08-23T19:03:52Z",
+        "updated_at": "2026-08-24T02:03:36Z",
+        "state": "closed",
+        "comments": 1,
+        "body_excerpt": "## Summary\n\n- Replaces `create-agent-session` with `assign-to-agent` for existing approved factory issues.\n- Restricts assignment to Copilot, one issue, and `main` as the PR base.\n- Keeps dependency, WIP, issue-state, scope, and human-merge validation in the dispatcher prompt.\n- Regenerates the lock file from the `.md` source with gh-aw v0.86.2.\n\n## Why\n\nGitHub’s public-preview agent-tasks endpoint returned HTTP 403 for a validated fine-grained PAT. Assigning Copilot to an existing issue uses the work order that already carries the factory contract and is the narrower authorization path.\n\n## Verification\n\n- `gh aw compile aimarket-factory-dispatch --validate --no-emit` — PASS, zero warnings\n- `node scripts/verify-aimarket-factory-repo.mjs .` — PASS\n- `node scripts/verify-aimarket-factory-local.mjs` — PASS, 18 policy fixtures\n- Generated lock metadata reports compiler v0.86.2 and exposes `assign_to_agent`, not `create_agent_session`.\n\n## Scope\n\nChanged only:\n\n- `.github/workflows/aimarket-factory-dispatch.md`\n- `.github/workflows/aimarket-factory-dispatch.lock.yml`\n\nNo Azure resources or credentials were accessed.\n\nCloses #28"
+      },
+      {
+        "url": "https://github.com/DanWahlin/aimarket-factory-journey-lab/issues/27",
+        "title": "[aw] Failed jobs: AIMarket Factory dependency-aware dispatch",
+        "user": "github-actions[bot]",
+        "created_at": "2026-08-23T18:57:03Z",
+        "updated_at": "2026-08-23T18:57:03Z",
+        "state": "open",
+        "comments": 0,
+        "body_excerpt": "### Failed Jobs in Workflow Run\n\n**Workflow:** [AIMarket Factory dependency-aware dispatch](https://github.com/DanWahlin/aimarket-factory-journey-lab/blob/main/.github/workflows/aimarket-factory-dispatch.md)  \n**Run:** https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32659329977\n\nThe following jobs failed in this workflow run:\n\n- [`safe_outputs`](https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32659329977/job/97243681508)\n\n\n<!-- gh-aw-agentic-workflow: AIMarket Factory dependency-aware dispatch, id: 32659329977, run: https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32659329977 -->\n> - [x] expires <!-- gh-aw-expires: 2026-08-30T18:57:03.276Z --> on Aug 30, 2026, 6:57 PM UTC"
+      },
+      {
+        "url": "https://github.com/DanWahlin/aimarket-factory-journey-lab/issues/26",
+        "title": "[aw] Failed jobs: AIMarket Factory dependency-aware dispatch",
+        "user": "github-actions[bot]",
+        "created_at": "2026-08-23T08:58:13Z",
+        "updated_at": "2026-08-23T08:58:13Z",
+        "state": "open",
+        "comments": 0,
+        "body_excerpt": "### Failed Jobs in Workflow Run\n\n**Workflow:** [AIMarket Factory dependency-aware dispatch](https://github.com/DanWahlin/aimarket-factory-journey-lab/blob/main/.github/workflows/aimarket-factory-dispatch.md)  \n**Run:** https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32629455621\n\nThe following jobs failed in this workflow run:\n\n- [`safe_outputs`](https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32629455621/job/97170371773)\n\n\n<!-- gh-aw-agentic-workflow: AIMarket Factory dependency-aware dispatch, id: 32629455621, run: https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32629455621 -->\n> - [x] expires <!-- gh-aw-expires: 2026-08-30T08:58:12.938Z --> on Aug 30, 2026, 8:58 AM UTC"
+      },
+      {
+        "url": "https://github.com/DanWahlin/aimarket-factory-journey-lab/issues/24",
+        "title": "[aw] Failed jobs: AIMarket Factory dependency-aware dispatch",
+        "user": "github-actions[bot]",
+        "created_at": "2026-08-23T03:48:12Z",
+        "updated_at": "2026-08-23T03:48:12Z",
+        "state": "open",
+        "comments": 0,
+        "body_excerpt": "### Failed Jobs in Workflow Run\n\n**Workflow:** [AIMarket Factory dependency-aware dispatch](https://github.com/DanWahlin/aimarket-factory-journey-lab/blob/main/.github/workflows/aimarket-factory-dispatch.md)  \n**Run:** https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32616024083\n\nThe following jobs failed in this workflow run:\n\n- [`safe_outputs`](https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32616024083/job/97137344301)\n\n\n<!-- gh-aw-agentic-workflow: AIMarket Factory dependency-aware dispatch, id: 32616024083, run: https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32616024083 -->\n> - [x] expires <!-- gh-aw-expires: 2026-08-30T03:48:12.306Z --> on Aug 30, 2026, 3:48 AM UTC"
+      },
+      {
+        "url": "https://github.com/DanWahlin/aimarket-factory-journey-lab/issues/21",
+        "title": "[aw] AIMarket Factory dependency-aware dispatch is missing required data",
+        "user": "github-actions[bot]",
+        "created_at": "2026-08-23T02:08:44Z",
+        "updated_at": "2026-08-23T02:08:44Z",
+        "state": "open",
+        "comments": 0,
+        "body_excerpt": "### Workflow Failure\n\n**Workflow:** [AIMarket Factory dependency-aware dispatch](https://github.com/DanWahlin/aimarket-factory-journey-lab/blob/main/.github/workflows/aimarket-factory-dispatch.md)  \n**Branch:** main  \n**Run:** https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32611850162\n\n\n> [!WARNING]\n> **Missing Data Reported**: The agent reported missing data during execution.\n\n**Missing Data:**\n- **workflow\\_dispatch issue\\_number input**: Dispatch requires acting on a specific maintainer-selected issue; the issue\\_number input/event payload was not accessible in this run context, so no issue could be identified to re-check labels, dependencies, or lock state.\n  - *Context*: GITHUB\\_EVENT\\_PATH pointed to a non-existent file and github-context block showed issue-number: #false for this workflow\\_dispatch trigger.\n  - *Alternatives*: Re-trigger the workflow ensuring the issue\\_number input is passed and the event payload file is present/readable.\n\n\n\n### Action Required\n\n**Assign this issue to an agent** to debug and fix the issue.\n\n\n<details>\n<summary>Debug with any coding agent</summary>\n\nUse this prompt with any coding agent (GitHub Copilot, Claude, Gemini, etc.):\n\n````\nDebug the agentic workflow failure using https://raw.githubusercontent.com/github/gh-aw/main/debug.md\n\nThe failed workflow run is at https://github.com/DanWahlin/aimarket-factory-journey-lab/actions/runs/32611850162\n````\n\n</details>\n\n<details>\n<summary>Manually invoke the agent</summary>\n\nDebug this workflow failure using your favorite Agent CLI and the `agentic-workflows` prompt.\n\n- Start your agent\n- Load the `agentic-workflows` skill from `.github/skills/agentic-workflows/SKILL.md` or <https://github.com/github/gh-aw/blob/main/.github/skills/agentic-workflows/SKILL.md>\n- Type"
+      },
+      {
+        "url": "https://github.com/microsoft/agentic-journeys/pull/4",
+        "title": "Split SmartTodo plan into focused phase specs",
+        "user": "DanWahlin",
+        "created_at": "2026-08-09T06:35:37Z",
+        "updated_at": "2026-08-09T06:35:47Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "Match the AIMarket linked-spec pattern so agents load only the API, iOS, or Azure contract needed for the current phase, and update README prompts to reference those phase plans."
+      },
+      {
+        "url": "https://github.com/e2b-dev/awesome-ai-sdks/pull/217",
+        "title": "Add AIMarket Agent and AIMarket SDKs (protocol v2)",
+        "user": "alexart2025",
+        "created_at": "2026-05-31T14:54:11Z",
+        "updated_at": "2026-07-29T19:37:46Z",
+        "state": "closed",
+        "comments": 3,
+        "body_excerpt": "## Summary\nAdds two related SDKs for [AIMarket Protocol v2](https://github.com/alexar76/aimarket-protocol) — federated discovery, HTTP 402 payment channels, safety-gated invoke, and settlement with signed receipts.\n\n| Project | Role |\n|---------|------|\n| [aimarket-agent](https://github.com/alexar76/aimarket-agent) | Python SDK + CLI (`pip install aimarket-agent`) |\n| [aimarket-sdks](https://github.com/alexar76/aimarket-sdks) | Dart (alpha), TypeScript/Rust clients |\n\nReference hub: https://modelmarket.dev\n\n## Why this list\nThese are client libraries for building autonomous agents that discover and pay for capabilities across a federation — aligned with “SDKs for creating and deploying AI agents.”\n\nNot affiliated with e2b; independent open-source (MIT)."
+      },
+      {
+        "url": "https://github.com/sev7n4/aimarket/pull/283",
+        "title": "feat(web): agent 双栏下 Dock 对齐到左对话栏底部",
+        "user": "sev7n4",
+        "created_at": "2026-07-05T14:33:46Z",
+        "updated_at": "2026-07-05T14:57:55Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## 背景\n承接 #282（agent 车道双栏外壳）。让底部创作 Dock 在 agent 双栏时对齐到左对话栏,形成\"左侧对话式输入 + 右侧纯产物\"的观感。\n\n## 实现（低风险,不重排布局归属）\n- `design-canvas.tsx`:新增 `onConversationPaneActiveChange`,在双栏实际渲染(agent+桌面+scroll)时上报激活状态;右产物栏底部内边距改为 `pb-6`,避免与浮动 Dock 无关的空白。\n- `studio-workspace.tsx`:接收该状态,给 `StudioDock` 传 `alignLeft`。\n- `studio-dock.tsx`:新增 `alignLeft` —— 浮动 Dock 由整宽居中改为对齐左栏宽度(`lg:w-[340px] xl:w-[380px]`,`justify-start`),focus 收起态同样左对齐。\n\n保持 Dock 由 studio-workspace 单一挂载(浮层),不重复渲染、无 lane 状态下沉;移动端 / 图片视频 / infinite 维持整宽居中,零回归。\n\n## 行为\n- agent 车道 + 桌面 + scroll -> Dock 浮于左对话栏底部,右产物栏满高滚动。\n- 其他场景 -> Dock 整宽居中(现状)。\n\n## 不在本 PR\n- 将 Dock 真正内嵌进左栏(非浮动、挤压内容)。\n- 图片/视频车道的对话式 agent。\n\n## 测试\n- `pnpm --filter @aimarket/web typecheck` 全绿;lint 无新增告警。\n- Dock 仍单一 `aria-label=创作 Dock`,E2E 选择器不受影响;CI 跑 Integration + E2E。\n\nMade with [Cursor](https://cursor.com)"
+      },
+      {
+        "url": "https://github.com/sev7n4/aimarket/pull/139",
+        "title": "fix(deploy): 修正 sudo deploy-remote 调用",
+        "user": "sev7n4",
+        "created_at": "2026-06-06T15:41:10Z",
+        "updated_at": "2026-06-06T15:41:16Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## Summary\n- deploy 步骤  未匹配 NOPASSWD 规则导致要密码\n- 改为 BUNDLE_PATH=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/bundle\nBUN_INSTALL_CACHE_DIR=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/bun\nCARGO_TARGET_DIR=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/cargo-target\nCCACHE_DIR=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/ccache\nCOMMAND_MODE=unix2003\nCOMPOSER_HOME=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/composer\nCONDA_PKGS_DIRS=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/conda\nCP_HOME_DIR=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/cocoapods\nCURSOR_AGENT=1\nCURSOR_LAYOUT=glass\nCURSOR_WORKSPACE_LABEL=aimarket\nCYPRESS_CACHE_FOLDER=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/cypress\nFORCE_COLOR=0\nGEM_SPEC_CACHE=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/gem-specs\nGOCACHE=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/go-build\nGOMODCACHE=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/go-mod\nGRADLE_USER_HOME=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/gradle\nHOME=/Users/4seven\nHOMEBREW_CACHE=/var/folders/5y/psjxn57j0yd07lrg5y3yhjp40000gn/T/cursor-sandbox-cache/42349739287a07a57fed17444d5b01c4/h"
+      },
+      {
+        "url": "https://github.com/sev7n4/aimarket/pull/105",
+        "title": "feat(agent): P3.1 Checkpointer 与 API 重启续跑",
+        "user": "sev7n4",
+        "created_at": "2026-06-01T11:12:11Z",
+        "updated_at": "2026-06-01T12:40:53Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## Summary\n\n- **Sqlite checkpointer**：`AGENT_CHECKPOINTER=sqlite` 时使用 `@langchain/langgraph-checkpoint-sqlite`（需 `better-sqlite3` 构建）；失败回退 memory。\n- **DB fallback**：`resumeAgentRunFromDb` — API 重启后 Memory/Sqlite checkpoint 丢失 interrupt 时，用 `agent_runs` + `state_json` 合并 Job 结果并推进下一步（含 VLM observe 重试逻辑）。\n- **Runner 重构**：`graph-instance` + 启动时 `initAgentCheckpointer()`；`rowToInitialState` 恢复 `observations` / `stepRetries`。\n\n## 配置\n\n```bash\nAGENT_CHECKPOINTER=memory   # 默认\n# AGENT_CHECKPOINTER=sqlite\n# AGENT_CHECKPOINT_SQLITE_PATH=./data/agent-checkpoints.sqlite\n```\n\n## Test plan\n\n- [x] `pnpm --filter @aimarket/agent-core build`\n- [x] `pnpm --filter @aimarket/api typecheck`\n- [ ] CI + Integration + E2E\n- [ ] 本地：创建 Agent Run → 重启 API → 待 Job 完成后应仍能 `completed`（DB fallback）\n\n## 后续\n\n- P3.2：Redis checkpointer（多实例）、Skill 步骤 VLM 选 hero\n\n\nMade with [Cursor](https://cursor.com)"
+      },
+      {
+        "url": "https://github.com/sev7n4/aimarket/pull/104",
+        "title": "feat(agent): P3 VLM observe 与步骤质检重试",
+        "user": "sev7n4",
+        "created_at": "2026-06-01T10:12:11Z",
+        "updated_at": "2026-06-01T10:22:13Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## Summary\n\n- **VLM Provider**（`apps/api/src/providers/vlm`）：`mock` + 可选 `qwen-vl`（DashScope 多模态）；`AGENT_VLM_ENABLED=true` 时生效。\n- **LangGraph `observe` 节点**：调用 `observeAgentStep`；质检失败且未超重试上限 → 回到 `execute_step` 重跑当前步；否则 `advance`。\n- **Runner**：注入 `observeStep` / `maxStepRetries`；`state_json` 持久化 `stepRetries`。\n- 文档：P2.6 ✅；P3 进行中；P3.1 预留 Redis checkpointer。\n\n## 配置\n\n```bash\nAGENT_VLM_ENABLED=true\nAGENT_VLM_PROVIDER=auto   # mock | qwen\nAGENT_VLM_MAX_STEP_RETRIES=1\n# Claude：AGENT_LLM_ALLOW_OVERSEAS=true 且 FALLBACKS 含 claude（已有 router）\n```\n\n## Test plan\n\n- [x] `pnpm --filter @aimarket/agent-core build`\n- [x] `pnpm --filter @aimarket/api typecheck`\n- [ ] CI + Integration + E2E\n- [ ] 本地开启 VLM 后跑多步 Agent Run，观察失败重试（可用 `AGENT_VLM_MOCK_FAIL_ONCE=true`）\n\n## 后续（未在本 PR）\n\n- P3.1：Redis / SQLite LangGraph checkpointer\n- Skill 步骤 VLM 选 hero（可复用 `runVlmQualityCheck`）\n\n\nMade with [Cursor](https://cursor.com)"
+      },
+      {
+        "url": "https://github.com/sev7n4/aimarket/pull/103",
+        "title": "feat(agent): P2.6 Skill Job 完成事件驱动续跑",
+        "user": "sev7n4",
+        "created_at": "2026-06-01T09:49:50Z",
+        "updated_at": "2026-06-01T09:59:25Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## Summary\n\n- `executeSkillRun` / `startSkillRunStep` 只创建当前步 Job 并置为 `waiting_job`，不再在 API 进程内 `waitForJob` 轮询。\n- `notifyAgentJobCompleted` 增加 `resumeSkillRunOnJobCompleted`，在 Job 成功/失败后合并输出并启动下一步或标记 `completed`/`failed`。\n- 抽出 `job-observation.ts`，避免 `job-events` ↔ `skill-executor` 循环依赖。\n- 文档：P2.5 标 ✅，新增 P2.6 阶段说明。\n\n## 为何现在做\n\n#102 合并后 Skill 已可端到端跑通；本 PR 为 Inngest worker 与非阻塞 API 打基础（worker 不必占住连接等 3 步全部完成）。\n\n## Test plan\n\n- [x] `pnpm --filter @aimarket/api typecheck`\n- [x] 本地 `node scripts/test-agent-skill.mjs` — 6/6\n- [ ] CI + Integration + E2E\n\n## 后续\n\n- **P3**：VLM 质检 observe、Redis checkpointer、Claude fallback\n\n\nMade with [Cursor](https://cursor.com)"
+      },
+      {
+        "url": "https://github.com/sev7n4/aimarket/pull/99",
+        "title": "feat(web): 创作台接入 Agent Run 编排 (P1.5)",
+        "user": "sev7n4",
+        "created_at": "2026-06-01T08:23:32Z",
+        "updated_at": "2026-06-01T08:34:01Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "## Summary\n\n- 新增 `AgentRunPanel` + `useAgentRun`：计划预览（debounce `/agent/plan`）、Run 状态轮询、步骤高亮。\n- Studio 创作台 `CreationPanel` 启用 `agentOrchestration`：提交创建 `/agent/runs`，待确认时展示「确认执行」，Job 通过现有 SSE 联动。\n- API Client：`createAgentRun` / `fetchAgentRun` / `confirmAgentRun` / `cancelAgentRun`。\n- 圈选工具、焦点编辑、视频模型仍走原有直接提交路径。\n\n## Test plan\n\n- [x] `pnpm --filter @aimarket/web typecheck`\n- [ ] Studio：输入 prompt 见 Agent 计划预览\n- [ ] 提交后多步任务进度与画布刷新\n- [ ] 高积分计划出现「确认执行」流程\n\n\nMade with [Cursor](https://cursor.com)"
+      },
+      {
+        "url": "https://github.com/kdcllc/AI-Driven-Dev-Env/pull/28",
+        "title": "Add repo summary: DanWahlin/github-azure-agentic-journeys",
+        "user": "Copilot",
+        "created_at": "2026-04-29T21:33:30Z",
+        "updated_at": "2026-04-29T23:48:18Z",
+        "state": "closed",
+        "comments": 0,
+        "body_excerpt": "Adds a repository summary for [`github-azure-agentic-journeys`](https://github.com/DanWahlin/github-azure-agentic-journeys) — a collection of end-to-end guided journeys for building and deploying applications to Azure using GitHub Copilot agents, Microsoft Foundry, and Bicep-generated infrastructure.\n\n### Changes\n\n- **`repos/DanWahlin-github-azure-agentic-journeys.md`** — New summary covering the 5 agentic journeys (AIMarket, n8n, Grafana, Apache Superset, SmartTodo), multi-language stack support (Node.js, Python, .NET, Java, Swift), and the Copilot agent → Foundry → Azure deployment workflow.\n- **`repos/index.md`** — New entry under **Agent Frameworks & Design** linking to the summary with a short description and date."
+      }
+    ]
+  },
+  {
+    "url": "https://api.github.com/search/issues?q=%22histor.modelmarket.dev%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T14:04:11.870294+00:00",
+    "query": "\"histor.modelmarket.dev\" in:body -user:alexar76 -author:alexar76",
+    "status": 200,
+    "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+    "bytes": 79,
+    "total_count": 0,
+    "incomplete_results": false,
+    "items": []
+  }
+]

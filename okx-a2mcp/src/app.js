@@ -60,7 +60,7 @@ function challengeInBody(middleware) {
 export function createApp({
   historUrl = "https://histor.modelmarket.dev",
   fetchImpl = globalThis.fetch,
-  timeoutMs = 10_000,
+  timeoutMs = 12_000, // per attempt; histor-check tries twice (src/services.js)
   perMinute = 30,
   publicUrl = "",
   // nginx reaches a published container through docker-proxy, so the peer is the bridge gateway

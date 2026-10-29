@@ -22,6 +22,7 @@ def build(output: Path, base_url: str) -> None:
         destination = output / ('' if locale == 'en' else locale)
         destination.mkdir(exist_ok=True)
         (destination / 'index.html').write_text(atlas.render(locale, copy))
+    document_paths = atlas.build_documentation(output)
     for folder in ['assets', 'fonts']:
         shutil.copytree(source / folder, output / 'ecosystem-atlas' / folder, dirs_exist_ok=True)
     # Keep encyclopedia, courses and all other existing sitemap entries.
@@ -35,8 +36,8 @@ def build(output: Path, base_url: str) -> None:
     else:
         tree = ET.ElementTree(ET.Element(f'{{{namespace}}}urlset'))
     urls = {node.text for node in tree.findall(f'.//{{{namespace}}}loc')}
-    for locale in atlas.LANGUAGES:
-        url = base_url.rstrip('/') + atlas.route(locale)
+    for path in [*(atlas.route(locale) for locale in atlas.LANGUAGES), *document_paths]:
+        url = base_url.rstrip('/') + path
         if url not in urls:
             entry = ET.SubElement(tree.getroot(), f'{{{namespace}}}url')
             ET.SubElement(entry, f'{{{namespace}}}loc').text = url

@@ -1,0 +1,28 @@
+{
+  "checked_at_utc": "2026-10-28T14:13:58.141810+00:00",
+  "source_url": "https://x402-gateway-production-1f21.up.railway.app/ai-market/v2/manifest",
+  "source_retrieved_at_utc": "2026-10-28T14:11:32.585350+00:00",
+  "source_response_sha256": "c58bf3cba9a55b6f38283caeb035fb326867b04793574725b733e930b2285a72",
+  "provider_name": "Industrial Platform Sentinel",
+  "provider_node_id": "industrial-sentinel",
+  "provider_relationship_self_declared": "independent-provider",
+  "origin": "https://x402-gateway-production-1f21.up.railway.app",
+  "signature_algorithm": "ed25519",
+  "self_declared_public_key_base64": "8yIANrnT9NIgJMV2YmiVlYx0MjElvJpRNFP50DbIf30=",
+  "canonical_form_fields": [
+    "capabilities_count",
+    "generated_at",
+    "protocol_version",
+    "tools_hash",
+    "by_hub_hash"
+  ],
+  "canonical_value": "capabilities_count:4|generated_at:2026-10-28T14:11:33Z|protocol_version:v2|tools_hash:0e4e5b620935b4385751c82f204f302237c398144f4acba3f30c2992c1bc5911|by_hub_hash:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "local_canonical_source": "web/backend/services/ai_market_protocol/signing.py",
+  "local_canonical_function_source_sha256": "bf5ad19a91d05673a30ff8ff7d62d5cf625fe569b1e2ef0bab1985fa701c47fe",
+  "canonical_sha256": "4f74cb5d7a788954783093033b633ae6fec5fc91138329fc0750f2d5878c6f63",
+  "manifest_signature_verifies_with_our_canonical": true,
+  "changed_first_tool_price_signature_rejected": true,
+  "capabilities_count": 4,
+  "free_capabilities": 4,
+  "limits": "Compatibility of this captured signed manifest under its self-declared key; no identity attestation, invoke, installation, payment, customer use or complete protocol conformance is established."
+}

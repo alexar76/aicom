@@ -12,6 +12,7 @@ Delivery mode (web vs Python CLI) is inferred from admin_instructions and valida
 
 from __future__ import annotations
 
+import asyncio
 import contextlib
 import json
 import logging
@@ -459,6 +460,7 @@ class DeveloperAgent(BaseAgent):
             if code_data is None:
                 raise RuntimeError("Developer agent finished without code_data")
 
+            await self._dev_repair_npm(agent_input, rnd, code_data)
             self._dev_save_manifest(task, rnd, code_data)
             self._dev_finish_web_tree(task)
             return self._dev_output(agent_input, task, rnd, code_data, start_time)
@@ -1320,6 +1322,66 @@ class DeveloperAgent(BaseAgent):
         )
         return last_error
 
+    async def _dev_repair_npm(self, agent_input: AgentInput, rnd: _DevRound, code_data: dict) -> None:
+        """Let npm produce repaired manifests/locks after the accepted source repair.
+
+        A developer response can change dependency declarations and compatibility
+        code; it must never fabricate lockfile integrity hashes. The factory's
+        trusted tool performs that work for every affected npm root, independently
+        of whether QA happens to find a frontend build script there.
+        """
+        feedback = agent_input.data.get("security_gate_feedback")
+        audit = feedback.get("npm_dependency_audit") if isinstance(feedback, dict) else None
+        if not isinstance(audit, dict) or audit.get("passed") is not False:
+            return
+
+        from web.backend.services.npm_dependency_repair import repair_npm_dependencies
+
+        try:
+            repair = await asyncio.to_thread(repair_npm_dependencies, rnd.code_root, audit)
+        except Exception as exc:
+            repair = {
+                "attempted": False, "passed": False, "changed_files": [], "checks": [],
+                "issues": [f"npm_dependency_repair_failed:{type(exc).__name__}:{str(exc)[:400]}"],
+                "requires_qa": True,
+            }
+        # Tool success only establishes a repaired dependency candidate. The
+        # ordinary Developer → QA → Security flow still decides release readiness.
+        repair["requires_qa"] = True
+        code_data["npm_dependency_repair"] = repair
+        for rel in repair.get("changed_files") or []:
+            if not isinstance(rel, str):
+                continue
+            path = _resolve_safe_code_path(rnd.code_root, rel)
+            if path is None or path.name not in {"package.json", "package-lock.json"} or not path.is_file():
+                repair["passed"] = False
+                repair.setdefault("issues", []).append(f"npm_repair_output_invalid:{rel}")
+                continue
+            content = path.read_text(encoding="utf-8")
+            # A developer may delete a stale lock to ask npm to regenerate it.
+            # Once npm wrote its replacement, the handoff must describe it as
+            # saved rather than simultaneously saved and deleted.
+            deleted_paths = getattr(rnd, "deleted_paths", [])
+            if rel in deleted_paths:
+                deleted_paths.remove(rel)
+            if rel not in rnd.saved_relative_paths:
+                rnd.saved_relative_paths.append(rel)
+            entry = next((item for item in rnd.saved_files if item.get("path") == rel), None)
+            if entry is None:
+                entry = {"path": rel}
+                rnd.saved_files.append(entry)
+            entry.update(full_path=str(path), content=content[:5000], generated_by="npm_dependency_repair")
+
+        self._save_artifact(
+            agent_input.product_id, "code", repair, filename="npm_dependency_repair.json"
+        )
+        self._log(
+            "INFO" if repair.get("passed") else "WARNING",
+            f"Factory npm repair for {agent_input.product_id}: "
+            f"{len(repair.get('changed_files') or [])} changed file(s); "
+            "handing candidate to QA and Security",
+        )
+
     def _dev_save_manifest(self, task: _DevTask, rnd: _DevRound, code_data: dict) -> None:
         product_id, mode, patch_mode = task.product_id, task.mode, task.patch_mode
         admin_instructions, implementation_plan = task.admin_instructions, task.implementation_plan
@@ -1378,6 +1440,8 @@ class DeveloperAgent(BaseAgent):
             "documentation": code_data.get("documentation", ""),
             "created_at": time.time(),
             "agent": "developer",
+            **({"npm_dependency_repair": code_data["npm_dependency_repair"]}
+               if "npm_dependency_repair" in code_data else {}),
         }, "code_manifest.json")
 
     def _dev_finish_web_tree(self, task: _DevTask) -> None:
@@ -1433,6 +1497,8 @@ class DeveloperAgent(BaseAgent):
                     "blockers": [],
                     "notes": "Developer implementation completed; handoff to hardening/QA.",
                 },
+                **({"npm_dependency_repair": code_data["npm_dependency_repair"]}
+                   if "npm_dependency_repair" in code_data else {}),
             },
             timestamp=time.time(),
             metrics={

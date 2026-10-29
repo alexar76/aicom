@@ -1,0 +1,98 @@
+{
+  "tool": "warden-scan",
+  "version": "0.22.2",
+  "scannedAt": "2026-10-27T18:27:40.690Z",
+  "ruleset": {
+    "version": "16",
+    "digest": "sha256-86y6iNc4R+LM5WmjSVxaCNgSMUEggeNOMQPUzq4L9n8="
+  },
+  "policy": {
+    "blockAtSeverity": "high",
+    "sensitiveToolPatterns": [],
+    "allowUnknownServers": true,
+    "pinToolDefs": true
+  },
+  "launch": true,
+  "sources": [
+    {
+      "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/.mcp.json",
+      "client": "claude-code",
+      "scope": "project",
+      "servers": 1
+    }
+  ],
+  "servers": [
+    {
+      "id": "notes",
+      "key": "notes",
+      "client": "claude-code",
+      "source": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/.mcp.json",
+      "scope": "project",
+      "transport": "stdio",
+      "wrapped": false,
+      "launch": "/Users/alex/.nvm/versions/node/v22.22.1/bin/node /Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/server.mjs",
+      "status": "scanned",
+      "allow": true,
+      "findings": [],
+      "allowedTools": [
+        "get_note"
+      ],
+      "blockedTools": [],
+      "score": 1,
+      "toolCount": 1,
+      "serverInfo": {
+        "name": "console-hn-synthetic-notes",
+        "version": "1.0.0"
+      },
+      "mtlDigest": "sha256-GwO7wfbf8rB1K+S/FWa49sbhrsorgxzxGGFkZiyOURI=",
+      "lock": {
+        "state": "match"
+      }
+    }
+  ],
+  "lock": {
+    "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/warden.lock.json",
+    "stale": [],
+    "written": false
+  },
+  "flows": [
+    {
+      "client": "claude-code",
+      "certainty": "possible",
+      "unknown": [
+        {
+          "server": "notes",
+          "tool": "get_note"
+        }
+      ],
+      "private": [
+        {
+          "server": "notes",
+          "tool": "get_note"
+        }
+      ],
+      "untrusted": [
+        {
+          "server": "notes",
+          "tool": "get_note"
+        }
+      ],
+      "outbound": [
+        {
+          "server": "notes",
+          "tool": "get_note"
+        }
+      ],
+      "servers": 1
+    }
+  ],
+  "summary": {
+    "servers": 1,
+    "scanned": 1,
+    "allowed": 1,
+    "blocked": 0,
+    "errors": 0,
+    "skipped": 0,
+    "launchOnly": 0
+  }
+}

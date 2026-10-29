@@ -1,0 +1,82 @@
+{
+  "checkedAtUtc": "2026-10-27T11:56:31.525311+00:00",
+  "dependencyCount": 4,
+  "realCorePairs": 2,
+  "contentAddressesVerified": 5,
+  "overallComparability": "unknown for all four; no release-readiness claim",
+  "prototypeTests": {
+    "passed": 61,
+    "log": "pytest.log"
+  },
+  "ruff": "passed",
+  "externalMutations": [],
+  "publicCollection": "GET HISTOR JSON only",
+  "localContractCheck": {
+    "handlerCalls": 3,
+    "productionCalls": 0,
+    "pinWrites": 0,
+    "networkAttempts": 0
+  },
+  "dependencies": [
+    {
+      "id": "https://modelmarket.dev/mcp",
+      "status": "unknown",
+      "observedCoreChanges": true,
+      "fieldCoverage": "core-only",
+      "workflows": [
+        "hub-search-relevance",
+        "hub-search-to-invoke"
+      ]
+    },
+    {
+      "id": "npm:@aimarket/warden",
+      "status": "unknown",
+      "observedCoreChanges": true,
+      "fieldCoverage": "core-only",
+      "workflows": [
+        "warden-origin-review",
+        "warden-review-to-approval"
+      ]
+    },
+    {
+      "id": "pypi:aimarket-mcp-packager",
+      "status": "unknown",
+      "observedCoreChanges": null,
+      "fieldCoverage": "none",
+      "workflows": [
+        "metis-package-capability"
+      ]
+    },
+    {
+      "id": "pypi:aimarket-oracle-gateway",
+      "status": "unknown",
+      "observedCoreChanges": null,
+      "fieldCoverage": "none",
+      "workflows": [
+        "metis-oracle-catalog"
+      ]
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "histor/histor/upgrade_brief.py",
+      "sha256": "bc9735f7044cdcfc5bbecc7d562c4f1efb1b650f482232c02aa20c59acd0a553"
+    },
+    {
+      "path": "histor/histor/upgrade_capture.py",
+      "sha256": "ee138e078ec77cce0f26e7888108f37bce59e92323e2c87bfee23b9cccd77416"
+    },
+    {
+      "path": "histor/tests/test_upgrade_brief.py",
+      "sha256": "39535a540041986f41b0d9d9bef4f00488e1a280099335c5aafed0ba48484610"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.ru.md",
+      "sha256": "cec0d442b525f6f7505f2b72044af1042eaaad256991934b06e7fe53d845a7a2"
+    },
+    {
+      "path": "docs/evidence/histor-real-upgrade-2026-10-27/build_bundle.py",
+      "sha256": "efdd1fbea991ae12f47725ff476d5b55c51e784cbfb2a7bc5c33db10ef36d533"
+    }
+  ]
+}

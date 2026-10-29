@@ -142,6 +142,7 @@ from .sandbox_parts.git import (  # noqa: F401 - re-exported
     _product_has_html_files,
     _validate_git_ref_name,
 )
+from core.product_git import has_product_git
 
 logger = logging.getLogger(__name__)
 
@@ -952,8 +953,7 @@ async def git_init(
     if not product_code_dir.exists():
         raise HTTPException(status_code=404, detail="No code directory found for this product")
 
-    repo_dir = product_code_dir / ".git"
-    if repo_dir.exists():
+    if has_product_git(product_code_dir):
         return {"status": "already_initialized", "product_id": product_id}
 
     return await asyncio.to_thread(_git_init_blocking, product_code_dir, product_id, safe_remote)
@@ -970,8 +970,7 @@ async def git_push(
     remote = _validate_git_ref_name(remote, "remote")
     branch = _validate_git_ref_name(branch, "branch")
     product_code_dir = resolve_product_code_dir(product_id)
-    repo_dir = product_code_dir / ".git"
-    if not repo_dir.exists():
+    if not has_product_git(product_code_dir):
         raise HTTPException(status_code=400, detail="Git repository not initialized. Call git/init first.")
 
     return await asyncio.to_thread(_git_push_blocking, product_code_dir, product_id, remote, branch)
@@ -981,8 +980,7 @@ async def git_push(
 async def git_status(product_id: str, _admin: dict = Depends(require_admin_with_rbac)):
     """Get git status for a product's codebase (admin only; remotes sanitized)."""
     product_code_dir = resolve_product_code_dir(product_id)
-    repo_dir = product_code_dir / ".git"
-    if not repo_dir.exists():
+    if not has_product_git(product_code_dir):
         return {"status": "not_initialized", "product_id": product_id}
 
     return await asyncio.to_thread(_git_status_blocking, product_code_dir, product_id)
@@ -1016,8 +1014,7 @@ async def list_sandboxable_products():
         for d in sorted(code_base.iterdir()):
             if d.is_dir():
                 pid = d.name
-                repo_dir = d / ".git"
-                git_status = "initialized" if repo_dir.exists() else "not_initialized"
+                git_status = "initialized" if has_product_git(d) else "not_initialized"
 
                 # Check if product has actual code files
                 has_code = _product_has_code(pid)

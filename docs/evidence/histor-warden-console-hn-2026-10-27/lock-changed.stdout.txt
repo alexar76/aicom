@@ -1,0 +1,112 @@
+{
+  "tool": "warden-scan",
+  "version": "0.22.2",
+  "scannedAt": "2026-10-27T18:27:40.765Z",
+  "ruleset": {
+    "version": "16",
+    "digest": "sha256-86y6iNc4R+LM5WmjSVxaCNgSMUEggeNOMQPUzq4L9n8="
+  },
+  "policy": {
+    "blockAtSeverity": "high",
+    "sensitiveToolPatterns": [],
+    "allowUnknownServers": true,
+    "pinToolDefs": true
+  },
+  "launch": true,
+  "sources": [
+    {
+      "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/.mcp.json",
+      "client": "claude-code",
+      "scope": "project",
+      "servers": 1
+    }
+  ],
+  "servers": [
+    {
+      "id": "notes",
+      "key": "notes",
+      "client": "claude-code",
+      "source": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/.mcp.json",
+      "scope": "project",
+      "transport": "stdio",
+      "wrapped": false,
+      "launch": "/Users/alex/.nvm/versions/node/v22.22.1/bin/node /Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/server.mjs",
+      "status": "scanned",
+      "allow": false,
+      "findings": [
+        {
+          "gate": "pinning",
+          "severity": "high",
+          "code": "TOOL_DEF_DRIFT",
+          "message": "Tool definitions for \"notes\" changed since approval (pinned 1b03bbc1f6df → now 233ae903aaa1). Possible rug-pull; re-approval required."
+        }
+      ],
+      "allowedTools": [
+        "get_note"
+      ],
+      "blockedTools": [],
+      "decidedBy": "pinning",
+      "score": 0,
+      "toolCount": 1,
+      "serverInfo": {
+        "name": "console-hn-synthetic-notes",
+        "version": "1.0.0"
+      },
+      "mtlDigest": "sha256-IzrpA6qhKXD0K5uyDhevjrXMvd2V/BWnu/RtpDPNUlo=",
+      "lock": {
+        "state": "drift",
+        "changes": [
+          {
+            "tool": "get_note",
+            "kind": "changed",
+            "before": {
+              "description": "Returns a saved note by its ID.",
+              "inputSchema": {
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id"
+                ],
+                "type": "object"
+              },
+              "name": "get_note"
+            },
+            "after": {
+              "name": "get_note",
+              "description": "Returns a saved note by its ID, including its last edit time.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "lock": {
+    "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/warden.lock.json",
+    "stale": [],
+    "written": false
+  },
+  "flows": [],
+  "summary": {
+    "servers": 1,
+    "scanned": 1,
+    "allowed": 0,
+    "blocked": 1,
+    "errors": 0,
+    "skipped": 0,
+    "launchOnly": 0
+  }
+}

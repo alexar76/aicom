@@ -1,0 +1,59 @@
+{
+  "key": "pin-commit",
+  "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/commits/0266b6d59355acdebec6e76036e2451396d2799f",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T15:00:05.782945+00:00",
+  "status": 200,
+  "sha256": "b746ae794e6952751f7bedf970ed6b34b4243125004d398cbc1b0f6ece596010",
+  "bytes": 8330,
+  "rate_remaining": "57",
+  "commit": {
+    "sha": "0266b6d59355acdebec6e76036e2451396d2799f",
+    "html_url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/commit/0266b6d59355acdebec6e76036e2451396d2799f",
+    "parents": [
+      {
+        "sha": "e8f654c6e9825a23b885a8d92a414ea6a29109d9",
+        "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/commits/e8f654c6e9825a23b885a8d92a414ea6a29109d9",
+        "html_url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/commit/e8f654c6e9825a23b885a8d92a414ea6a29109d9"
+      }
+    ],
+    "metadata": {
+      "author": {
+        "name": "Gavin Coates",
+        "email": "art@naturalist.gallery",
+        "date": "2026-10-05T23:05:37Z"
+      },
+      "committer": {
+        "name": "Gavin Coates",
+        "email": "art@naturalist.gallery",
+        "date": "2026-10-05T23:05:37Z"
+      },
+      "message": "Pin Sentinel federation bootstrap artifacts",
+      "tree": {
+        "sha": "9e6fb4ce43ec9c90423ca92780465e34f7b03ae5",
+        "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/git/trees/9e6fb4ce43ec9c90423ca92780465e34f7b03ae5"
+      },
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/git/commits/0266b6d59355acdebec6e76036e2451396d2799f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    }
+  },
+  "files": [
+    {
+      "filename": "gateway/aimarket-federation.mjs",
+      "status": "modified",
+      "sha": "cf1c856cf47bf82cdeaed582bc944eeb1c776f58",
+      "raw_url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/raw/0266b6d59355acdebec6e76036e2451396d2799f/gateway%2Faimarket-federation.mjs",
+      "blob_url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/blob/0266b6d59355acdebec6e76036e2451396d2799f/gateway%2Faimarket-federation.mjs",
+      "additions": 32,
+      "deletions": 9,
+      "patch": "@@ -27,26 +27,47 @@ const INSTALL_BUNDLE = {\n   provider:'Industrial Platform',\n   artifact:'Industrial Sentinel',\n   version:'0.2.0',\n-  purpose:'Install-once recurring wallet, treasury, transaction, and payment monitoring for authorized funded agents.',\n-  container:'ghcr.io/industrial-platform-ai/industrial-sentinel-runtime:latest',\n+  purpose:'Immutable bootstrap metadata for authorized installation of recurring wallet, treasury, transaction, and payment monitoring.',\n+  immutable_source:{\n+    repository:'https://github.com/industrial-platform-ai/industrial-platform-agent-tools',\n+    commit:'5a400bd4b2d82c495ccb54e0aea007a02cb9f60a',\n+    skill_path:'skills/industrial-sentinel',\n+    plugin_path:'industrial-sentinel',\n+    portable_plugin_path:'plugins/industrial-sentinel'\n+  },\n+  container:{\n+    image:'ghcr.io/industrial-platform-ai/industrial-sentinel-runtime',\n+    digest:'sha256:555d20e6ac94b261a1858db5c2f880646408224975217265f77fda44be25b56b',\n+    immutable_ref:'ghcr.io/industrial-platform-ai/industrial-sentinel-runtime@sha256:555d20e6ac94b261a1858db5c2f880646408224975217265f77fda44be25b56b'\n+  },\n   openclaw:{\n-    command:'openclaw plugins install industrial-sentinel --marketplace industrial-platform-ai/industrial-platform-agent-tools'\n+    plugin_id:'industrial-sentinel',\n+    version:'0.2.0',\n+    marketplace_repository:'industrial-platform-ai/industrial-platform-agent-tools',\n+    source_commit:'5a400bd4b2d82c495ccb54e0aea007a02cb9f60a'\n   },\n   agent_skill:{\n+    id:'industrial-platform-ai/industrial-platform-agent-tools/industrial-sentinel',\n     repository:'https://github.com/industrial-platform-ai/industrial-platform-agent-tools',\n     path:'skills/industrial-sentinel',\n-    install_command:'npx skills add https://github.com/industrial-platform-ai/industrial-platform-agent-tools --skill industrial-sentinel -y'\n+    source_commit:'5a400bd4b2d82c495ccb54e0aea007a02cb9f60a',\n+    catalog:'https://www.skills.sh/industrial-platform-ai/industrial-platform-agent-tools/industrial-sentinel'\n   },\n   authorization:{\n-    requires_operator_install_authority:true,\n-    requires_operator_owned_funded_base_wallet_for_paid_cycles:true,\n+    installation_requires_operator_authority:true,\n+    wallet_configuration_is_separate:true,\n+    payment_authorization_granted_by_this_capability:false,\n     never_bypass_permission_controls:true\n   },\n   payment:{\n     protocol:'x402',\n     network:'Base',\n     asset:'USDC',\n-    daily_cap_env:'SENTINEL_MAX_DAILY_USD'\n+    note:'The bootstrap never receives or authorizes a wallet. A separately authorized installed runtime may be configured by its operator for bounded paid cycles.'\n+  },\n+  supply_chain:{\n+    immutable_refs_only:true,\n+    unpinned_remote_install_commands:false\n   },\n   recurring_jobs:[\n     {kind:'wallet-monitor',route:'/agent/wallet-monitor',max_usd:0.005},\n@@ -58,17 +79,19 @@ const INSTALL_BUNDLE = {\n \n const OUTPUT_SCHEMA = {\n   type:'object',\n-  required:['provider','artifact','version','container','openclaw','agent_skill','authorization','payment','recurring_jobs'],\n+  required:['provider','artifact','version','immutable_source','container','openclaw','agent_skill','authorization','payment','supply_chain','recurring_jobs'],\n   properties:{\n     provider:{type:'string'},\n     artifact:{type:'string'},\n     version:{type:'string'},\n     purpose:{type:'string'},\n-    container:{type:'string'},\n+    immutable_source:{type:'object'},\n+    container:{type:'object'},\n     openclaw:{type:'object'},\n     agent_skill:{type:'object'},\n     authorization:{type:'object'},\n     payment:{type:'object'},\n+    supply_chain:{type:'object'},\n     recurring_jobs:{type:'array'}\n   },\n   additionalProperties:true"
+    }
+  ]
+}

@@ -30,7 +30,7 @@ Use an isolated worker or the hardened Docker/Compose execution paths. A host-ba
 
 ## Disposable private development
 
-Only a private development host may explicitly set `AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE=1`. This permits generated code to read/write files and access processes/sockets with the developer's privileges; environment scrubbing does not prevent that. The flag is refused whenever `AIFACTORY_PROD`, `AIFACTORY_PRODUCTION`, `AIFACTORY_ENV=production|prod|live`, `AIFACTORY_DEMO_READONLY` or `AIFACTORY_SANDBOX_REQUIRE_CONTAINER` identifies a protected deployment. Customer pipeline creation is refused while this unsafe host flag is active, even if a deployment omitted its production marker.
+Only a private development host may explicitly set `AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE=1`. This permits generated code to read/write files and access processes/sockets with the developer's privileges; environment scrubbing does not prevent that. The flag is refused whenever `AIFACTORY_PROD`, `AIFACTORY_PRODUCTION`, `AIFACTORY_ENV=production|prod|live`, `AIFACTORY_DEMO_READONLY` or `AIFACTORY_SANDBOX_REQUIRE_CONTAINER` identifies a protected deployment. Public customer and guest pipeline creation is refused and support auto-repair is disabled while this unsafe host flag is active, even if a deployment omitted its production marker.
 
 ## Hardening checklist (production)
 
@@ -43,3 +43,30 @@ Only a private development host may explicitly set `AIFACTORY_UNSAFE_ALLOW_HOST_
 
 Related: `core/child_env.py`, `web/backend/services/sandbox_preview_env.py`,
 `core/generated_code_execution.py`, `web/backend/services/sandbox_compose_preview.py`, `security/sandbox_isolation.py`.
+
+## Git metadata for generated products
+
+Factory Git operations use a persistent private repository under
+`AIFACTORY_DATA_ROOT/private_product_git/<canonical-product-path-hash>/repo`,
+outside the generated product's writable mount. The store and its per-product
+directories have mode 0700. The factory serializes each multi-command operation
+with a private process lock. Never mount this store into generated workloads.
+
+On first use, an existing ordinary `.git` directory is imported through anchored
+directory descriptors and no-follow file reads. Links, shared files, alternates,
+worktree indirection and executable Git configuration are refused. The private
+copy is checked after copying. Every Git command uses that private copy;
+concurrent changes to the product's original `.git` cannot install a filter,
+hook or other executable policy between validation and execution.
+
+The private repository becomes authoritative after import. Existing history,
+branches and safe remote configuration are preserved; subsequent edits or local
+CLI commits to the original product `.git` are not imported automatically. New
+repositories need no `.git` inside the product tree. Init/status/commit and the
+admin API's initialization checks use the private repository. To work with it
+manually, a trusted operator must explicitly supply its `--git-dir` and the
+product's `--work-tree`; do not expose that directory to generated code.
+
+Private Git history and indexes may contain generated secrets. The runtime store
+is excluded from source control and public rsync exports. These controls permit
+local Git operations; they do not authorize publishing a product or this workspace.

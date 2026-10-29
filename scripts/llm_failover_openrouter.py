@@ -14,7 +14,7 @@ import argparse
 import json
 import os
 import re
-import shutil
+import shlex
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -26,6 +26,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
+from core.json_state import write_text_atomic
 
 OPENROUTER_BASE = "https://openrouter.ai/api/v1"
 MINIMAX_MODEL = "minimax/minimax-m3"
@@ -68,7 +70,7 @@ def _ts() -> str:
 
 def _backup(path: Path) -> Path:
     dest = path.with_suffix(path.suffix + f".bak-{_ts()}")
-    shutil.copy2(path, dest)
+    write_text_atomic(dest, path.read_text(encoding="utf-8"), mode=0o600)
     return dest
 
 
@@ -99,7 +101,7 @@ def _read_env_key_from_remote(ssh_target: str, env_path: str, key: str) -> str:
         raise RuntimeError(f"{key} not found in {ssh_target}:{env_path}")
     line = proc.stdout.strip()
     if "=" not in line:
-        raise RuntimeError(f"malformed env line: {line[:20]}...")
+        raise RuntimeError("malformed remote secret response")
     return line.split("=", 1)[1].strip().strip('"').strip("'")
 
 
@@ -122,8 +124,7 @@ def _upsert_env_lines(env_path: Path, updates: dict[str, str]) -> None:
         lines.append(f"{key}={val}")
         seen.add(key)
     lines.append(f"# applied {_ts()}")
-    env_path.parent.mkdir(parents=True, exist_ok=True)
-    env_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    write_text_atomic(env_path, "\n".join(lines) + "\n", mode=0o600)
 
 
 def _openrouter_module(model: str, *, temperature: float | None = None) -> dict[str, Any]:
@@ -193,12 +194,11 @@ def apply_metis_local(prod_yaml: str, api_key: str, *, restart: bool) -> dict[st
     data = yaml.safe_load(prod.read_text(encoding="utf-8")) or {}
     bak = _backup(prod)
     patched = patch_metis_prod_yaml(data if isinstance(data, dict) else {})
-    tmp = Path("/tmp") / f"metis-prod-failover-{_ts()}.yaml"
-    tmp.write_text(
+    write_text_atomic(
+        prod,
         yaml.safe_dump(patched, sort_keys=False, allow_unicode=True),
-        encoding="utf-8",
+        mode=0o600,
     )
-    shutil.move(str(tmp), str(prod))
     envp = Path("/opt/metis/.env")
     if envp.is_file():
         _upsert_env_lines(envp, {"OPENROUTER_API_KEY": api_key})
@@ -209,11 +209,24 @@ def apply_metis_local(prod_yaml: str, api_key: str, *, restart: bool) -> dict[st
 
 def apply_metis_remote(ssh_target: str, prod_yaml: str, api_key: str, *, restart: bool) -> dict[str, Any]:
     remote_py = r"""
-import json, sys, yaml
+import json, os, sys, tempfile, yaml
 from pathlib import Path
 
+def private_write(path, text):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix="." + path.name + ".", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            os.fchmod(handle.fileno(), 0o600)
+            handle.write(text)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary): os.unlink(temporary)
+
 prod = Path(sys.argv[1])
-api_key = sys.argv[2]
+api_key = json.loads(sys.stdin.read())["api_key"]
 data = yaml.safe_load(prod.read_text(encoding="utf-8")) or {}
 
 MINIMAX = "minimax/minimax-m3"
@@ -242,8 +255,8 @@ for name, slot in list(modules.items()):
     modules[name] = mod(model, t if isinstance(t, (int, float)) else None)
 data["modules"] = modules
 bak = prod.with_suffix(prod.suffix + ".bak-" + __import__("datetime").datetime.utcnow().strftime("%Y%m%dT%H%M%SZ"))
-bak.write_bytes(prod.read_bytes())
-prod.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
+private_write(bak, prod.read_text(encoding="utf-8"))
+private_write(prod, yaml.safe_dump(data, sort_keys=False, allow_unicode=True))
 envp = Path("/opt/metis/.env")
 lines = envp.read_text(encoding="utf-8").splitlines() if envp.is_file() else []
 out, seen = [], False
@@ -255,7 +268,7 @@ for line in lines:
         out.append(line)
 if not seen:
     out.append("OPENROUTER_API_KEY=" + api_key)
-envp.write_text("\n".join(out) + "\n", encoding="utf-8")
+private_write(envp, "\n".join(out) + "\n")
 print(json.dumps({"backup": str(bak), "prod": str(prod), "env": str(envp)}))
 """
     cmd = [
@@ -263,15 +276,14 @@ print(json.dumps({"backup": str(bak), "prod": str(prod), "env": str(envp)}))
         "-o",
         "BatchMode=yes",
         ssh_target,
-        "python3",
-        "-c",
-        remote_py,
-        prod_yaml,
-        api_key,
+        shlex.join(["python3", "-c", remote_py, prod_yaml]),
     ]
-    proc = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    proc = subprocess.run(
+        cmd, input=json.dumps({"api_key": api_key}), capture_output=True, text=True, check=False,
+    )
     if proc.returncode != 0:
-        raise RuntimeError(proc.stderr or proc.stdout or "metis remote patch failed")
+        error = proc.stderr or proc.stdout or "metis remote patch failed"
+        raise RuntimeError(error.replace(api_key, "[redacted]") if api_key else error)
     result = json.loads(proc.stdout.strip().splitlines()[-1])
     if restart:
         subprocess.run(

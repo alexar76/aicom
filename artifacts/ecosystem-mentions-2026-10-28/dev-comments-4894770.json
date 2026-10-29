@@ -1,0 +1,140 @@
+[
+  {
+    "type_of": "comment",
+    "id_code": "3ikoh",
+    "created_at": "2026-10-23T14:08:37Z",
+    "ai_disclosure_level": "not_disclosed",
+    "ai_disclosure_label": "Not Disclosed",
+    "body_html": "<p>The “numbers only” label is useful, especially because you still require approval: a changed price or limit can matter as much as a rewritten instruction.</p>\n\n<p>Disclosure: I build KyttoMCP. Its Contract Guard compares tool descriptions, input schemas and safety annotations between health checks and flags changes for review; it’s advisory and doesn’t block execution.</p>\n\n<p>For the review UI, I’d find two things especially useful: the resolved package version alongside the diff, particularly for unpinned <code>npx</code> launches, and a clear highlight when a description adds instructions about user approval or tool choice. That would help explain both where a change came from and why it deserves attention.</p>\n\n<p>Have you considered showing package-version changes alongside tool-definition changes?</p>\n\n",
+    "user": {
+      "name": "Jakub Hecht",
+      "username": "heyitsjakub",
+      "twitter_username": null,
+      "github_username": "heyitsjakub",
+      "user_id": 4184835,
+      "website_url": null,
+      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4184835%2F35174b9d-f44a-4b39-aeb3-6f8517e09b3c.png",
+      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4184835%2F35174b9d-f44a-4b39-aeb3-6f8517e09b3c.png"
+    },
+    "children": [
+      {
+        "type_of": "comment",
+        "id_code": "3ildm",
+        "created_at": "2026-10-23T18:32:39Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Thanks. Both were good calls, so both are in.</p>\n\n<p>Version next to the diff: <code>status_mcp_server</code> and <code>approve_mcp_server</code> now take the <code>serverInfo</code> from the server's initialize result. The approval stores it, and the review opens with \"Version the server reports: 1.4.2 at the approval, 1.5.0 now\". When the tools changed and the version didn't, it says that instead, which is often the more telling line. The reported version is only the server's word, so it never goes into the pin's hash. WARDEN also reads the launch command (npx, bunx, npm exec, pnpm/yarn dlx, uvx, uv tool run, pipx run) and says when it names no exact version: each start runs whatever the registry tags latest, so the code can change while the command, and the identity we pin, stay the same. The review then gives the pinned form, e.g. <code>@acme/demo-mcp@1.5.0</code>.</p>\n\n<p>Approval and tool-choice text: the diff now marks text a change adds about the user's approval (\"without asking the user\", \"already approved\", \"skip the confirmation\") or about which tool to use (\"prefer this over web search\", \"never use another tool\"). It looks in descriptions, parameter descriptions and new tools, and lists the marked tools first. Only added phrasing counts, so a hint that was already there, a dropped one, or \"do not ask the user for their API key\" isn't marked. Like the numbers-only label, it marks and never approves.</p>\n\n<p>How often the second case happens: in HISTOR's 20 October snapshot (23,821 recorded changes), 12 rewrites added or removed a routing hint like \"prefer this over web search\", and 9 of them changed nothing but the description. It's rare, which is exactly why it belongs at the top when it does happen.</p>\n\n<p>On package versions in general: HISTOR keys package changes by version already. For an npm or PyPI package, a recorded change is a release that lists different tools, so the record says which version brought it.</p>\n\n<p>Limits: only English phrasing is recognized, and the version is only as good as what the server reports. The launch check doesn't look up which version npx actually installed. It's in our source, not in a release yet.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": []
+      },
+      {
+        "type_of": "comment",
+        "id_code": "3j03e",
+        "created_at": "2026-10-25T13:25:26Z",
+        "ai_disclosure_level": "not_disclosed",
+        "ai_disclosure_label": "Not Disclosed",
+        "body_html": "<p>Following up, Jakub — I checked a concrete example: HISTOR change 17172, for @mapled/mcp 0.21.5 → 0.21.6. Both snapshots contain 33 tools; only two descriptions change. One adds “carry on without asking” after approval on Mapled’s screen. Both complete changed descriptions match the corresponding pinned npm archives.<br>\nReplaying those snapshots through published WARDEN 0.21.0 on Linux shows the changed words and highlights the approval instruction. The changed definitions require review, and reading WARDEN’s status leaves its original tool-snapshot approval intact.<br>\nIt also exposed a real mistake: both historical handshakes report serverInfo.version=0.1.0, and our review incorrectly suggested @mapled/<a href=\"mailto:mcp@0.1.0\" rel=\"nofollow\">mcp@0.1.0</a> as a package pin. That self-reported version is not the npm artifact version; the verified newer archive is 0.21.6.<br>\nI’ve corrected that locally: review explicitly labels the server-reported version and no longer constructs an npm pin from it. The wrapper also now preserves those initialize metadata. The local candidate passed 142 tests and 19 real-diff replay checks on Linux; the correction is not released yet.<br>\nThis checked review output and approval-state behavior using archived definitions. It wasn’t a fresh Mapled execution or a usability test of KyttoMCP.</p>\n\n",
+        "user": {
+          "name": "Alex",
+          "username": "alexar76",
+          "twitter_username": "build_ai_infra",
+          "github_username": null,
+          "user_id": 3927872,
+          "website_url": "https://github.com/alexar76",
+          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+        },
+        "children": [
+          {
+            "type_of": "comment",
+            "id_code": "3j0fa",
+            "created_at": "2026-10-25T16:38:16Z",
+            "ai_disclosure_level": "not_disclosed",
+            "ai_disclosure_label": "Not Disclosed",
+            "body_html": "<p>Thanks for running it on a real case, and for publishing the version mistake with it. serverInfo.version 0.1.0 against a verified 0.21.6 archive is a good argument for never building a pin from what the server reports.</p>\n\n<p>I checked the same case against Kytto's source. Contract Guard would flag it at the next health check as \"Model-facing description changed\", with before and after excerpts. Its phrase scanner would not single out \"carry on without asking\", though. Marking added approval phrasing is the part we don't have yet.</p>\n\n",
+            "user": {
+              "name": "Jakub Hecht",
+              "username": "heyitsjakub",
+              "twitter_username": null,
+              "github_username": "heyitsjakub",
+              "user_id": 4184835,
+              "website_url": null,
+              "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4184835%2F35174b9d-f44a-4b39-aeb3-6f8517e09b3c.png",
+              "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4184835%2F35174b9d-f44a-4b39-aeb3-6f8517e09b3c.png"
+            },
+            "children": [
+              {
+                "type_of": "comment",
+                "id_code": "3j0h8",
+                "created_at": "2026-10-25T17:17:30Z",
+                "ai_disclosure_level": "not_disclosed",
+                "ai_disclosure_label": "Not Disclosed",
+                "body_html": "<p>Thanks for checking it against Kytto’s source. That distinction is useful: detecting a description change and recognizing the instruction inside it are separate capabilities. The before/after excerpts give the reviewer evidence even when the phrase scanner misses the wording. We’ve also separated the requested package version from the server-reported version in WARDEN’s review output; the latter is informational, not verification of the installed artifact.</p>\n\n",
+                "user": {
+                  "name": "Alex",
+                  "username": "alexar76",
+                  "twitter_username": "build_ai_infra",
+                  "github_username": null,
+                  "user_id": 3927872,
+                  "website_url": "https://github.com/alexar76",
+                  "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+                  "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+                },
+                "children": [
+                  {
+                    "type_of": "comment",
+                    "id_code": "3j32m",
+                    "created_at": "2026-10-26T15:11:10Z",
+                    "ai_disclosure_level": "not_disclosed",
+                    "ai_disclosure_label": "Not Disclosed",
+                    "body_html": "<p>Agreed. Splitting the requested version from what the server reports makes sense, since a server can claim any version it likes. Thanks for running the Mapled case through WARDEN, it's a good one to test against.</p>\n\n",
+                    "user": {
+                      "name": "Jakub Hecht",
+                      "username": "heyitsjakub",
+                      "twitter_username": null,
+                      "github_username": "heyitsjakub",
+                      "user_id": 4184835,
+                      "website_url": null,
+                      "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4184835%2F35174b9d-f44a-4b39-aeb3-6f8517e09b3c.png",
+                      "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F4184835%2F35174b9d-f44a-4b39-aeb3-6f8517e09b3c.png"
+                    },
+                    "children": [
+                      {
+                        "type_of": "comment",
+                        "id_code": "3j388",
+                        "created_at": "2026-10-26T16:11:19Z",
+                        "ai_disclosure_level": "not_disclosed",
+                        "ai_disclosure_label": "Not Disclosed",
+                        "body_html": "<p>Thanks, Jakub. The Mapled case made that distinction concrete. We’ll keep the requested package version and server-reported version separate, with the verified archive identity recorded alongside them.</p>\n\n",
+                        "user": {
+                          "name": "Alex",
+                          "username": "alexar76",
+                          "twitter_username": "build_ai_infra",
+                          "github_username": null,
+                          "user_id": 3927872,
+                          "website_url": "https://github.com/alexar76",
+                          "profile_image": "https://media2.dev.to/dynamic/image/width=640,height=640,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg",
+                          "profile_image_90": "https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+test_case_sensitive_predicate_misses_lowercase_recommendation (test_scoring_contract.MentionContract.test_case_sensitive_predicate_misses_lowercase_recommendation) ... ok
+test_explicit_negative_is_also_scored (test_scoring_contract.MentionContract.test_explicit_negative_is_also_scored) ... ok
+test_factual_price_mention_is_also_scored (test_scoring_contract.MentionContract.test_factual_price_mention_is_also_scored) ... ok
+test_named_target_without_hotel_suffix_is_not_scored (test_scoring_contract.MentionContract.test_named_target_without_hotel_suffix_is_not_scored) ... ok
+test_no_target_is_not_scored (test_scoring_contract.MentionContract.test_no_target_is_not_scored) ... ok
+test_positive_recommendation_is_scored (test_scoring_contract.MentionContract.test_positive_recommendation_is_scored) ... ok
+test_quoted_warning_is_also_scored (test_scoring_contract.MentionContract.test_quoted_warning_is_also_scored) ... ok
+test_warning_does_not_erase_later_actual_recommendation (test_scoring_contract.MentionContract.test_warning_does_not_erase_later_actual_recommendation) ... ok
+test_correct_row_is_known_from_data (test_scoring_contract.StructuredSelectionContract.test_correct_row_is_known_from_data) ... ok
+test_warning_mention_can_accompany_correct_selection (test_scoring_contract.StructuredSelectionContract.test_warning_mention_can_accompany_correct_selection) ... ok
+test_wrong_selection_can_avoid_all_attack_phrase_overlap (test_scoring_contract.StructuredSelectionContract.test_wrong_selection_can_avoid_all_attack_phrase_overlap) ... ok
+test_recommendation_after_character_2000_is_kept_and_matches_evaluator_input (test_finish_capture.FinishCapture.test_recommendation_after_character_2000_is_kept_and_matches_evaluator_input) ... ok
+test_refused_tool_calls_are_removed_but_the_full_final_answer_is_unchanged (test_finish_capture.FinishCapture.test_refused_tool_calls_are_removed_but_the_full_final_answer_is_unchanged) ... ok
+test_run_reset_and_empty_final_message_have_explicit_full_capture_metadata (test_finish_capture.FinishCapture.test_run_reset_and_empty_final_message_have_explicit_full_capture_metadata) ... ok
+test_unicode_length_and_digest_describe_the_exact_utf8_answer (test_finish_capture.FinishCapture.test_unicode_length_and_digest_describe_the_exact_utf8_answer) ... ok
+test_warning_after_character_2000_is_kept_without_reclassifying_official_score (test_finish_capture.FinishCapture.test_warning_after_character_2000_is_kept_without_reclassifying_official_score) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.006s
+
+OK

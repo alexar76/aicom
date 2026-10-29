@@ -1,0 +1,39 @@
+{
+  "url": "https://mach402.dev/health",
+  "checked_at_utc": "2026-10-29T04:00:59.132858+00:00",
+  "method": "GET",
+  "status": 200,
+  "final_url": "https://mach402.dev/health",
+  "headers": {
+    "Date": "Thu, 29 Oct 2026 04:00:59 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "205",
+    "Connection": "close",
+    "Server": "cloudflare",
+    "vary": "Origin",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY",
+    "cf-cache-status": "DYNAMIC",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=%2BnIY0Ktfe9TDmJ8DoFd2hWMJd7S%2FYvN3dGCoecpbVb5QrOBB21y1YncaEAAiaguIyoxbM%2BTRlD0oKMRmD4jEGz0uljOUsqco%2FYHbgfTER8UhQFz2EUK%2FFiWFvFi3uQ%3D%3D\"}]}",
+    "CF-RAY": "a51f46c36d199711-AMS",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "body_sha256": "fda21050713d6d88a9d85adc264a69e6db35f0c0cba994afbb393b4aa98dc4ce",
+  "body_truncated": false,
+  "json": {
+    "status": "ok",
+    "version": "1.0.0",
+    "testnet_mode": false,
+    "services": [
+      "/scan/python",
+      "/validate/email",
+      "/validate/email/bulk",
+      "/domain/intel",
+      "/pdf/extract",
+      "/pdf/extract/large",
+      "/pdf/inspect",
+      "/url/extract"
+    ]
+  }
+}

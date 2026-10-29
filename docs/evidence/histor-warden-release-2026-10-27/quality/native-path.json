@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-10-27T14:42:48Z",
+  "host": "admin-vps",
+  "agentUnit": "skopos-deploy-hand.service",
+  "wardenAllowed": true,
+  "requireTests": true,
+  "dryRun": false,
+  "allowedBranchPrefixes": ["momus/fix-"],
+  "source": {"scheme": "http", "hostname": "localhost", "path": "/alexar76/aicom.git"},
+  "wardenRecipe": {
+    "dockerfile": "warden/deploy/Dockerfile.histor",
+    "context": ".",
+    "image_ref": "histor-histor",
+    "compose_service": "histor",
+    "compose_file": "/opt/histor/docker-compose.yml,/opt/histor/docker-compose.postgres.yml",
+    "test_target": "test",
+    "test_runner": "npm"
+  },
+  "credentialPresence": {"agentToken": true, "conductorPublicKey": true, "momusPublicKey": true},
+  "requiredNativeSequence": [
+    "Authorized release source commit must be reachable in internal Gitea on a host-allowed branch.",
+    "SKOPOS signs BuildOrder; the shared node agent builds via its fixed recipe, runs component tests and full candidate quality, and journals the immutable image.",
+    "MOMUS validates candidate evidence and signs a FixVerdict bound to the immutable image.",
+    "SKOPOS signs DeployOrder; the shared node agent checks the signed chain, build journal and latest candidate receipt.",
+    "Only with explicit production deployment authorization, promote the image, verify health and actual running image, invoke native live quality hook; roll back on failure.",
+    "Re-run unchanged npm check:quality against production latest.json for the exact packed JavaScript digest."
+  ],
+  "executed": "Only isolated candidate image construction and full native candidate evaluation. No deployment sequence executed."
+}

@@ -1,0 +1,47 @@
+{
+  "key": "announce-success-jobs",
+  "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/actions/runs/37386350807/jobs",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T15:02:14.328368+00:00",
+  "status": 200,
+  "sha256": "b9c83866f4e257b92f0e018e4dbbbab2b7c2318b3caab9e1644a10a10158d7df",
+  "bytes": 1585,
+  "rate_remaining": "44",
+  "jobs": [
+    {
+      "id": 112020466553,
+      "name": "announce",
+      "html_url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/actions/runs/37386350807/job/112020466553",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-05T23:04:27Z",
+      "completed_at": "2026-10-05T23:04:33Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-05T23:04:27Z",
+          "completed_at": "2026-10-05T23:04:27Z"
+        },
+        {
+          "name": "Verify Sentinel peer and announce through federation ingress",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-05T23:04:27Z",
+          "completed_at": "2026-10-05T23:04:31Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-05T23:04:31Z",
+          "completed_at": "2026-10-05T23:04:31Z"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,276 @@
+{
+  "method": "Unauthenticated public GitHub GET only. No clone, code execution, authentication, writes or contacts. Raw JSON bodies hashed then discarded; public metadata projected below.",
+  "sources": {
+    "repository": {
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory",
+      "fetched_at_utc": "2026-10-26T19:03:42.757226+00:00",
+      "status": 200,
+      "sha256": "689c39be0fce304c0091b677dbe561d6d9c28e2e5d0cab89dc8935b400135181"
+    },
+    "parent_branch": {
+      "url": "https://api.github.com/repos/alexar76/aicom/branches/main",
+      "fetched_at_utc": "2026-10-26T19:03:42.803213+00:00",
+      "status": 200,
+      "sha256": "36ac5a97579eca9011a23568082bf8013cc7c738e403d2c287a9433a7546f47f"
+    },
+    "fork_branch": {
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/branches/main",
+      "fetched_at_utc": "2026-10-26T19:03:42.820678+00:00",
+      "status": 200,
+      "sha256": "e4db6a43909c3bfaa2bb97c9e982ddf155f0726b2287bc6c2ad4145d2466e5a1"
+    },
+    "compare": {
+      "url": "https://api.github.com/repos/alexar76/aicom/compare/main...th3artfuldodger:main",
+      "fetched_at_utc": "2026-10-26T19:03:42.838159+00:00",
+      "status": 200,
+      "sha256": "4638fad234a52210a949bc3969d460dc8bd267427c7ab0bdf61d854b7238f4b9"
+    }
+  },
+  "repository": {
+    "full_name": "th3artfuldodger/enterprise-factory",
+    "html_url": "https://github.com/th3artfuldodger/enterprise-factory",
+    "description": "Family Enterprise - autonomous AI research, product development, funding intelligence, and business operations factory.",
+    "fork": true,
+    "parent": "alexar76/aicom",
+    "source": "alexar76/aicom",
+    "created_at": "2026-09-24T21:50:30Z",
+    "pushed_at": "2026-10-14T20:06:17Z",
+    "default_branch": "main"
+  },
+  "branches": {
+    "parent": {
+      "name": "main",
+      "head_sha": "77ceae90552f0fa8a256a9277b2c91a3ddfaff37"
+    },
+    "fork": {
+      "name": "main",
+      "head_sha": "ef124a40d592bf149fab93fb632a4aaf688a04fa"
+    }
+  },
+  "comparison": {
+    "html_url": "https://github.com/alexar76/aicom/compare/main...th3artfuldodger:main",
+    "status": "diverged",
+    "ahead_by": 19,
+    "behind_by": 102,
+    "total_commits": 19,
+    "base_sha": "77ceae90552f0fa8a256a9277b2c91a3ddfaff37",
+    "merge_base_sha": "d506b12ef31dd7a5edc80c04b94627d41ecf3122"
+  },
+  "commits": [
+    {
+      "sha": "77f9b4a554e0658e2ce50d8fa9295843e3fa22a8",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/77f9b4a554e0658e2ce50d8fa9295843e3fa22a8",
+      "subject": "Fix Docker runtime permissions and self-host frontend fonts",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-09-25T03:52:58Z"
+    },
+    {
+      "sha": "881d7e79e31a49a92ee06c15076bda30c16860ce",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/881d7e79e31a49a92ee06c15076bda30c16860ce",
+      "subject": "Improve new product completion workflow",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-09-25T03:52:58Z"
+    },
+    {
+      "sha": "eb6a0350d04ab143ef1c62d57fab4ad4b470b7e9",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/eb6a0350d04ab143ef1c62d57fab4ad4b470b7e9",
+      "subject": "security: harden runtime auth uploads and CI",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-09-28T11:57:28Z"
+    },
+    {
+      "sha": "0467399980262928f5503988b1742ba3ee35acc9",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/0467399980262928f5503988b1742ba3ee35acc9",
+      "subject": "security: complete pre-launch checklist hardening",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-09-28T12:38:51Z"
+    },
+    {
+      "sha": "b2abfb43ad323d7998b4195ba4b7d09a218bb09b",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/b2abfb43ad323d7998b4195ba4b7d09a218bb09b",
+      "subject": "security: harden secrets and private session storage",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-09-30T09:54:10Z"
+    },
+    {
+      "sha": "035888b1edb04a0106c25f68e0544cdd8193cde5",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/035888b1edb04a0106c25f68e0544cdd8193cde5",
+      "subject": "feat: certify Empire 2 core vertical slice",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-02T22:15:25Z"
+    },
+    {
+      "sha": "af0e8dbef930df4f854c381ea87f561fae1c913d",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/af0e8dbef930df4f854c381ea87f561fae1c913d",
+      "subject": "fix: honor manager-delegated analyst directives",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-02T23:44:25Z"
+    },
+    {
+      "sha": "395b4e85f125357bb13603b4911666313bbe0c1a",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/395b4e85f125357bb13603b4911666313bbe0c1a",
+      "subject": "feat: add owner command center and mission replay",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-03T03:11:10Z"
+    },
+    {
+      "sha": "fb224511b137ab3c701f3043a77a7050f3180885",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/fb224511b137ab3c701f3043a77a7050f3180885",
+      "subject": "feat: add owner command center and mission replay",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-03T03:13:32Z"
+    },
+    {
+      "sha": "8138784572efe9c335b24aaf245b9945d34768ac",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/8138784572efe9c335b24aaf245b9945d34768ac",
+      "subject": "fix: patch Next.js critical runtime vulnerability",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-04T16:06:29Z"
+    },
+    {
+      "sha": "f6aefe72181a9296f9d4f8f380f178fc21fbde06",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/f6aefe72181a9296f9d4f8f380f178fc21fbde06",
+      "subject": "feat: add Factory health recovery and game operations",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-04T17:39:13Z"
+    },
+    {
+      "sha": "f99a3a74a6883cc21e557fc1365e3d54def7c7e6",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/f99a3a74a6883cc21e557fc1365e3d54def7c7e6",
+      "subject": "feat: establish governed customer Factory operations",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-04T18:19:40Z"
+    },
+    {
+      "sha": "621e19400ea92a9d1fc5bfa99f1305da12fd4ade",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/621e19400ea92a9d1fc5bfa99f1305da12fd4ade",
+      "subject": "test: exercise full synthetic Factory canary journey",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-04T18:23:41Z"
+    },
+    {
+      "sha": "1c7960e92243d21ae6d74b8b5a6f5410ba6102f1",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/1c7960e92243d21ae6d74b8b5a6f5410ba6102f1",
+      "subject": "feat: harden production readiness and observability",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-04T19:36:57Z"
+    },
+    {
+      "sha": "5c29996a0889d244c91042187ed11187afd86919",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/5c29996a0889d244c91042187ed11187afd86919",
+      "subject": "ci: refresh coverage badge [skip ci]",
+      "author_name": "github-actions[bot]",
+      "author_login": "github-actions[bot]",
+      "authored_at": "2026-10-05T18:44:40Z"
+    },
+    {
+      "sha": "a847827e5537c8e896c206f84aa5685769d960da",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/a847827e5537c8e896c206f84aa5685769d960da",
+      "subject": "feat: complete pre-aesthetics launch hardening",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-06T01:07:14Z"
+    },
+    {
+      "sha": "e7692fb0972faf9e2aefa0352b401e2cffca76e7",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/e7692fb0972faf9e2aefa0352b401e2cffca76e7",
+      "subject": "security: patch newly disclosed dependency advisories",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-06T01:20:38Z"
+    },
+    {
+      "sha": "aa7ed6a8e51a597faf8f6cb8741dd41347ee7e56",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/aa7ed6a8e51a597faf8f6cb8741dd41347ee7e56",
+      "subject": "Add durable Factory project memory",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-14T20:05:36Z"
+    },
+    {
+      "sha": "ef124a40d592bf149fab93fb632a4aaf688a04fa",
+      "url": "https://github.com/th3artfuldodger/enterprise-factory/commit/ef124a40d592bf149fab93fb632a4aaf688a04fa",
+      "subject": "Document Factory project memory",
+      "author_name": "Everett Trimble",
+      "author_login": null,
+      "authored_at": "2026-10-14T20:06:07Z"
+    }
+  ],
+  "changed_paths_sample": [
+    {
+      "path": "agents/analyst.py",
+      "status": "modified",
+      "additions": 77,
+      "deletions": 18
+    },
+    {
+      "path": "core/security_redaction.py",
+      "status": "added",
+      "additions": 118,
+      "deletions": 0
+    },
+    {
+      "path": "director/discovery_pipeline.py",
+      "status": "modified",
+      "additions": 71,
+      "deletions": 19
+    },
+    {
+      "path": "docs/factory-memory/PROJECT_STATE.md",
+      "status": "added",
+      "additions": 65,
+      "deletions": 0
+    },
+    {
+      "path": "docs/factory-memory/SESSION_LOG.md",
+      "status": "added",
+      "additions": 53,
+      "deletions": 0
+    },
+    {
+      "path": "tenant_worker_supervisor.py",
+      "status": "added",
+      "additions": 171,
+      "deletions": 0
+    },
+    {
+      "path": "web/backend/services/factory_floor.py",
+      "status": "modified",
+      "additions": 804,
+      "deletions": 9
+    },
+    {
+      "path": "web/backend/services/funding_utility.py",
+      "status": "added",
+      "additions": 1064,
+      "deletions": 0
+    },
+    {
+      "path": "web/backend/services/ultron_oversight.py",
+      "status": "added",
+      "additions": 127,
+      "deletions": 0
+    },
+    {
+      "path": "web/frontend/components/admin/tabs/FactoryFloorTab.tsx",
+      "status": "modified",
+      "additions": 1756,
+      "deletions": 58
+    }
+  ],
+  "interpretation": "At this snapshot the fork has 19 commits not reachable from parent main, including code, tests and documentation changes. 18 author fields name Everett Trimble with no linked GitHub login, one names github-actions[bot]. Commit author strings are self-reported metadata. This supports a separately modified derivative project, not a verified human identity, running deployment, customer, revenue or successful tests."
+}

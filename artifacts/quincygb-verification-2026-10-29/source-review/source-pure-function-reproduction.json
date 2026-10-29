@@ -1,0 +1,153 @@
+{
+  "method": "Source-level in-memory execution of only reviewed pure FunctionDef AST nodes. Imports, module initialization, IO, network, database and service execution excluded. Exact functions listed in provenance. No live paid calls.",
+  "function_provenance": [
+    {
+      "file": "route-verdict/app/parsers.py",
+      "function": "format_price",
+      "start_line": 127,
+      "end_line": 138
+    },
+    {
+      "file": "route-verdict/app/schema_quality.py",
+      "function": "_schema_types_real_fields",
+      "start_line": 15,
+      "end_line": 32
+    },
+    {
+      "file": "route-verdict/app/schema_quality.py",
+      "function": "_untyped_property_count",
+      "start_line": 35,
+      "end_line": 49
+    },
+    {
+      "file": "route-verdict/app/schema_quality.py",
+      "function": "evaluate_schema_quality",
+      "start_line": 52,
+      "end_line": 125
+    },
+    {
+      "file": "route-verdict/app/checker.py",
+      "function": "_comparables",
+      "start_line": 161,
+      "end_line": 177
+    },
+    {
+      "file": "route-verdict/app/checker.py",
+      "function": "compute_diff",
+      "start_line": 180,
+      "end_line": 215
+    },
+    {
+      "file": "stall-row/app/services/recheck.py",
+      "function": "_hash_text",
+      "start_line": 146,
+      "end_line": 147
+    },
+    {
+      "file": "stall-row/app/services/recheck.py",
+      "function": "_x402_fingerprint",
+      "start_line": 2206,
+      "end_line": 2223
+    },
+    {
+      "file": "stall-row/app/services/recheck.py",
+      "function": "_diff",
+      "start_line": 2253,
+      "end_line": 2259
+    }
+  ],
+  "price_formatting": [
+    {
+      "amount_units": "1000",
+      "exact_usdc": "0.001",
+      "actual_format_price_output": "$0.00"
+    },
+    {
+      "amount_units": "3000",
+      "exact_usdc": "0.003",
+      "actual_format_price_output": "$0.00"
+    },
+    {
+      "amount_units": "5000",
+      "exact_usdc": "0.005",
+      "actual_format_price_output": "$0.01"
+    },
+    {
+      "amount_units": "6000",
+      "exact_usdc": "0.006",
+      "actual_format_price_output": "$0.01"
+    },
+    {
+      "amount_units": "30000",
+      "exact_usdc": "0.03",
+      "actual_format_price_output": "$0.03"
+    },
+    {
+      "amount_units": "50000",
+      "exact_usdc": "0.05",
+      "actual_format_price_output": "$0.05"
+    }
+  ],
+  "routeverdict_schema_only_change": {
+    "before_schema": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "after_schema": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "quality_before": {
+      "extension_present": true,
+      "hollow": false,
+      "score": 100,
+      "deductions": []
+    },
+    "quality_after": {
+      "extension_present": true,
+      "hollow": false,
+      "score": 100,
+      "deductions": []
+    },
+    "actual_compute_diff": {
+      "prior_check": true,
+      "prior_checked_at": "2026-10-29T11:00:00Z",
+      "changes": [],
+      "summary": "no changes since 2026-10-29T11:00:00Z"
+    }
+  },
+  "recheck_positive_control_same_schema_change": [
+    {
+      "field": "schema_hash",
+      "before": "bf5fd73b36b64ed3ac4f62109b653f3876ca4e58dc8ec4c6ef9cd6cfeb6b4862",
+      "after": "873826050fecba535a60b72dc40a5b30b4f03bec47947e4121938a519a4f896e"
+    }
+  ],
+  "recheck_not_monitored_cases": [
+    {
+      "change": "input_method",
+      "diff": []
+    },
+    {
+      "change": "standard_bazaar_schema",
+      "diff": []
+    },
+    {
+      "change": "second_accept_amount",
+      "diff": []
+    },
+    {
+      "change": "primary_scheme",
+      "diff": []
+    }
+  ],
+  "assertions_passed": true
+}

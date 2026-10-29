@@ -1,0 +1,81 @@
+[
+  {
+    "name": "glama-oracle-page",
+    "url": "https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway",
+    "status": 200,
+    "headers": {
+      "Date": "Tue, 27 Oct 2026 11:02:58 GMT"
+    },
+    "file": "glama-oracle-page.html",
+    "checkedAt": "2026-10-27T11:02:59.408730+00:00",
+    "relevantLinks": [
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/schema",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/ask_oracle",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/compute_vdf",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/get_agent_trust",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/get_random",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/get_randomness_beacon",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/get_reputation_scores",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/list_oracle_capabilities",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/verify_random",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/verify_reputation",
+      "/mcp/servers/alexar76/aimarket-oracle-gateway/tools/verify_vdf"
+    ],
+    "versionMentions": []
+  },
+  {
+    "name": "glama-packager-page",
+    "url": "https://glama.ai/mcp/servers/alexar76/aimarket-plugins",
+    "status": 200,
+    "headers": {
+      "Date": "Tue, 27 Oct 2026 11:02:58 GMT"
+    },
+    "file": "glama-packager-page.html",
+    "checkedAt": "2026-10-27T11:02:59.274132+00:00",
+    "relevantLinks": [
+      "/mcp/servers/alexar76/aimarket-plugins/schema",
+      "/mcp/servers/alexar76/aimarket-plugins/tools/generate_claude_desktop_config",
+      "/mcp/servers/alexar76/aimarket-plugins/tools/generate_dockerfile",
+      "/mcp/servers/alexar76/aimarket-plugins/tools/package_capability"
+    ],
+    "versionMentions": []
+  },
+  {
+    "name": "github-oracle-server",
+    "url": "https://raw.githubusercontent.com/alexar76/aimarket-oracle-gateway/main/server.json",
+    "status": 200,
+    "headers": {
+      "Cache-Control": "max-age=300",
+      "ETag": "\"ebd4d7579887854e81d9c6e193dbbba59973bd91fc6189d9d444e2b7c39fcd50\"",
+      "Date": "Tue, 27 Oct 2026 11:02:58 GMT"
+    },
+    "file": "github-oracle-server.json",
+    "checkedAt": "2026-10-27T11:02:58.472201+00:00",
+    "version": "0.3.2",
+    "packages": [
+      {
+        "identifier": "aimarket-oracle-gateway",
+        "version": "0.3.2"
+      }
+    ]
+  },
+  {
+    "name": "github-packager-server",
+    "url": "https://raw.githubusercontent.com/alexar76/aimarket-plugins/main/server.json",
+    "status": 200,
+    "headers": {
+      "Cache-Control": "max-age=300",
+      "ETag": "\"9f90cd5c8814833502d8beff48e5b873678185a996e60ec04ebed224a84e469a\"",
+      "Date": "Tue, 27 Oct 2026 11:02:58 GMT"
+    },
+    "file": "github-packager-server.json",
+    "checkedAt": "2026-10-27T11:02:58.406799+00:00",
+    "version": "2.1.2",
+    "packages": [
+      {
+        "identifier": "aimarket-mcp-packager",
+        "version": "2.1.2"
+      }
+    ]
+  }
+]

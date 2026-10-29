@@ -1,0 +1,62 @@
+[
+  {
+    "url": "https://api.github.com/repos/datafund/swarm_connect/issues/467",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:28.631258+00:00",
+    "status": 200,
+    "sha256": "afb79356e0c6864c0605274638477ae00a66f2f5fd62956a6a50ac952348671d",
+    "bytes": 6777,
+    "records": [
+      {
+        "html_url": "https://github.com/datafund/swarm_connect/issues/467",
+        "user": "crtahlin",
+        "created_at": "2026-09-29T14:10:21Z",
+        "updated_at": "2026-10-22T11:19:45Z",
+        "body": "**Problem.** `app/x402/middleware.py` (the `USDC_TOKEN_METADATA` table, around lines 57-66 on `dev`) advertises `extra.name = \"USDC\"`, version \"2\", for network `base`. The Base mainnet USDC contract's EIP-712 `name()` is `\"USD Coin\"`. `\"USDC\"` is correct only on Base Sepolia.\n\n**Impact.** Clients and facilitators build the EIP-3009 signing and verification domain from `extra`. On `X402_NETWORK=base`, signatures made against the advertised domain don't match the on-chain `DOMAIN_SEPARATOR`, so every mainnet payment fails verification. Nothing is lost, because it fails closed, but mainnet payments can't work. Startup validation (#407) doesn't check this value.\n\n**Evidence.** Read-only calls to Base mainnet USDC:\n- `name()` returns `\"USD Coin\"`, `version()` returns `\"2\"`, and `DOMAIN_SEPARATOR` is `0x02fa72…834f`.\n- The separator computed with `\"USDC\"` on chain 8453 doesn't match it; the one computed with `\"USD Coin\"` does.\n\nFound by the 2026-09 client audits. The CLI has the same bug on its side (swarm_provenance_CLI audit, CLI-001), and both must be fixed together.\n\n**Fix (minimal).**\n- Set `name: \"USD Coin\"` for `base`.\n- Add a test pinning both networks' domain separators to the recorded on-chain values.\n- Optionally, at startup on mainnet, compare the configured domain against the chain.\n\n**Acceptance criteria**\n- [ ] The `base` metadata uses `\"USD Coin\"`.\n- [ ] A test pins the Base and Base Sepolia separators."
+      }
+    ]
+  },
+  {
+    "url": "https://api.github.com/repos/datafund/swarm_connect/issues/467/comments?per_page=100",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:29.149435+00:00",
+    "status": 200,
+    "sha256": "2c43f05abf19a32ab8c8b0b87eaf9c27deb1b398332505e7548811e6edbfd72b",
+    "bytes": 9891,
+    "records": [
+      {
+        "html_url": "https://github.com/datafund/swarm_connect/issues/467#issuecomment-5999297180",
+        "user": "alexar76",
+        "created_at": "2026-10-05T17:08:19Z",
+        "updated_at": "2026-10-05T17:08:19Z",
+        "body": "Agreed — on Base mainnet the USDC contract (0x8335…2913) answers `name() = \"USD Coin\"`, `version() = \"2\"`; \"USDC\" is Base Sepolia's name (0x036C…CF7e). A cheap guard against it coming back: build the domain separator from your table and compare it with the token's `DOMAIN_SEPARATOR()` in a test, per network. Disclosure: we run an offline checker for exactly this class of failure — give it the X-PAYMENT header (or authorization + signature + network) and it says whether USDC will accept the signature and, if not, which domain it was actually made for. Free via MCP (`x402_check` at https://modelmarket.dev/mcp) or $0.003 via x402 at https://modelmarket.dev/x402/x402-check."
+      }
+    ]
+  },
+  {
+    "url": "https://api.github.com/repos/Nikolife2016/pulsefeed-x402/issues/3/comments?per_page=100&page=1",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:30.554254+00:00",
+    "status": 200,
+    "sha256": "228c3404fc79c480f7a0ad59ebf2dfdfc4fbaaa38bd51a7a0f6c4e158e85052c",
+    "bytes": 929907,
+    "records": [
+      {
+        "html_url": "https://github.com/Nikolife2016/pulsefeed-x402/issues/3#issuecomment-6367002208",
+        "user": "github-actions[bot]",
+        "created_at": "2026-10-23T14:17:06Z",
+        "updated_at": "2026-10-23T14:17:06Z",
+        "selected_context": " данные по названному эндпоинту: api.lumitrades.io: 17 листинг(ов) в Bazaar, оплаченных вызовов за 30 дней 73, уникальных плательщиков 2\n- **[Vulnetix/advisory-database#5](https://github.com/Vulnetix/advisory-database/issues/5)** — False positive: six aimarket-* PyPI packages (GCVE-110-PYPI-2026-004375, -018883, -020712, -020949, -021807, - · @alexar76\n  у нас есть данные по названному эндпоинту: modelmarket.dev: 8 листинг(ов) в Bazaar, оплаченных вызовов за 30 дней 31, уникальных плательщиков 5\n- **[chatmcp/mcpso#5860](https://github.com/chatmcp/mcpso/issues/5860)** — Submit Remote MCP Server: WebExtract (dev.webextract/extract) · @nyx464664816-stack\n  у нас есть данные по названному эндпоинту: api.webextract.dev: 1 листинг(ов) в Bazaar, оплаченных вызовов за 30 дней 3, уникальных плательщиков 2\n\n_⛔ Отсечено как рассылки: 27 — @vdineshk ×9, @SCDOLAB ×8, @paranormalen2 ×4, @imokokok ×2, "
+      }
+    ]
+  },
+  {
+    "url": "https://api.github.com/repos/Nikolife2016/pulsefeed-x402/issues/3/comments?per_page=100&page=2",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:32.317236+00:00",
+    "status": 200,
+    "sha256": "663a4f834e7f9424196b6dca1760b89a69bc4cd3c13cfd2bb40dba62346d2ddc",
+    "bytes": 8666,
+    "records": []
+  }
+]

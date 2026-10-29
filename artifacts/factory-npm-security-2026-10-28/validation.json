@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-28",
+  "implementation_status": "local_only_not_deployed",
+  "github_writes": false,
+  "validation": {
+    "pytest_passed": 115,
+    "pytest_seconds": 16.42,
+    "pytest_command": ".venv/bin/python -m pytest -q tests/test_npm_dependency_check.py tests/test_npm_lock_completeness.py tests/test_factory_npm_security_integration.py tests/test_product_catalog_npm_gate.py tests/test_security_report_loader.py tests/test_qa_repair_policy.py tests/test_factory_oss_prompts.py tests/test_product_catalog_publish.py tests/test_factory_catalog_export.py tests/test_product_catalog_secret_gate.py tests/test_state_machine_transitions.py",
+    "shell_syntax": "passed",
+    "ruff_bug_rules": "passed",
+    "diff_whitespace": "passed"
+  },
+  "real_registry_checks": [
+    {
+      "product": "prod-bdb1634806de",
+      "report": "artifacts/factory-npm-security-2026-10-28/prod-bdb1634806de-audit.json",
+      "passed": true,
+      "vulnerabilities": [
+        {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        }
+      ]
+    },
+    {
+      "product": "prod-e1a3b0abf16a",
+      "report": "artifacts/factory-npm-security-2026-10-28/prod-e1a3b0abf16a-audit.json",
+      "passed": true,
+      "vulnerabilities": [
+        {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        }
+      ]
+    }
+  ],
+  "policy": "Default security gate blocks high/critical npm findings and incomplete checks. Developer receives repair feedback. Catalog gate uses same checker. No installation/scripts during checks; current registry queried each time; lock completeness validated offline. Existing global strict-gate override retained."
+}

@@ -124,9 +124,10 @@ components:
       verdict. Live data only — no seeded anomalies.
 
   # ── commerce: public-record facts agents trade on ─────────────────────────
-  emporion:
+  symmartys:
+    deployment_status: live
     group: commerce
-    url: https://emporion.modelmarket.dev
+    url: https://symmartys.modelmarket.dev/
     port: 9351
     role: >-
       Public-record facts and tools for agents that trade: EU VAT validity (VIES) with the
@@ -137,5 +138,7 @@ components:
       on markets, Bitcoin-anchored timestamps
       (OpenTimestamps), web pages captured as evidence, and timers that call an agent back
       with a signed event — at a time or as a dead man's switch. Each answer is signed with its
-      source, fetch time and SHA-256. The hub sells it at
-      https://modelmarket.dev/providers/emporion.
+      source, fetch time and SHA-256. Replaced the legacy runtime on 2026-10-29 at
+      https://modelmarket.dev/providers/symmartys with the existing signing identity and data.
+      The public landing and API are at https://symmartys.modelmarket.dev/ with HTTPS and
+      automatic certificate renewal; the existing federation route remains canonical.

@@ -1,0 +1,743 @@
+{
+  "info": {
+    "author": null,
+    "author_email": "alexar76 <publish@alexar76.dev>",
+    "bugtrack_url": null,
+    "classifiers": [],
+    "description": "# aimarket-mcp \u2014 ecosystem MCP gateway\n\n<!-- mcp-name: io.github.alexar76/aimarket-mcp -->\n\n<!-- aicom-readme-badges -->\n<p align=\"center\">\n  <a href=\"https://github.com/alexar76/aimarket-mcp/actions/workflows/ci.yml\"><img src=\"https://github.com/alexar76/aimarket-mcp/actions/workflows/ci.yml/badge.svg\" alt=\"CI\" /></a>\n  <a href=\"https://glama.ai/mcp/servers/alexar76/aimarket-mcp\"><img src=\"https://glama.ai/mcp/servers/alexar76/aimarket-mcp/badges/score.svg\" alt=\"aimarket-mcp MCP server\" /></a>\n  <img src=\"https://raw.githubusercontent.com/alexar76/aimarket-mcp/refs/heads/main/docs/badges/mcp.svg\" alt=\"MCP gateway\" />\n  <img src=\"https://raw.githubusercontent.com/alexar76/aimarket-mcp/refs/heads/main/docs/badges/transport.svg\" alt=\"stdio + HTTP\" />\n  <img src=\"https://raw.githubusercontent.com/alexar76/aimarket-mcp/refs/heads/main/docs/badges/tests.svg\" alt=\"60 tests passing\" />\n  <a href=\"https://raw.githubusercontent.com/alexar76/aimarket-mcp/refs/heads/main/docs/badges/coverage.svg\"><img src=\"https://raw.githubusercontent.com/alexar76/aimarket-mcp/refs/heads/main/docs/badges/coverage.svg\" alt=\"Test coverage\" /></a>\n  <a href=\"https://github.com/alexar76/aimarket-mcp/blob/main/LICENSE\"><img src=\"https://raw.githubusercontent.com/alexar76/aimarket-mcp/refs/heads/main/docs/badges/license.svg\" alt=\"License: MIT\" /></a>\n</p>\n<!-- /aicom-readme-badges -->\n\n> \ud83c\udf10 **English** \u00b7 [\u0420\u0443\u0441\u0441\u043a\u0438\u0439](https://github.com/alexar76/aimarket-mcp/blob/main/docs/README.ru.md) \u00b7 [Espa\u00f1ol](https://github.com/alexar76/aimarket-mcp/blob/main/docs/README.es.md) \u00b7 [Fran\u00e7ais](https://github.com/alexar76/aimarket-mcp/blob/main/docs/README.fr.md) \u00b7 [\u4e2d\u6587](https://github.com/alexar76/aimarket-mcp/blob/main/docs/README.zh.md) \u00b7 [Glossary](https://github.com/alexar76/aicom/blob/main/docs/localization-glossary.md)\n\n\n\n\n> ### \ud83d\udfe2 Just want to try the marketplace? Install nothing.\n> Paste **`https://modelmarket.dev/mcp`** into your MCP client and you have `market_search`\n> and `market_invoke` against the live hub, with a few free trial invokes per caller and a\n> signed receipt for each \u2014 no wallet, no key, no install.\n> \u2192 [`docs/hosted-mcp-endpoint.md`](https://github.com/alexar76/aicom/blob/main/docs/hosted-mcp-endpoint.md)\n>\n> Install **this** package when you want the other three tools (`web_fetch`, `web_search`,\n> `metis_verify`), or want to point the market tools at a hub of your own.\n\n**One MCP gateway. Five hardened tools. Shared by Metis, ARGUS, and the ecosystem.**\n\nTransport: **stdio** (`aimarket_mcp/stdio_server.py`) for Glama / Claude Desktop / Cursor, built with the\nofficial **Model Context Protocol** Python SDK ([`mcp`](https://github.com/modelcontextprotocol/python-sdk), `FastMCP`).\nAlso ships **Streamable-HTTP** on `:9090` for self-hosted deployments (`aimarket-mcp-http`, Docker Compose).\n\n| Item | Location |\n|------|----------|\n| MCP entrypoint (stdio) | `aimarket_mcp/stdio_server.py` |\n| MCP gateway (HTTP) | [`aimarket_mcp/server.py`](aimarket_mcp/server.py) |\n| Tool handlers + security | [`aimarket_mcp/tools.py`](aimarket_mcp/tools.py), [`aimarket_mcp/security.py`](aimarket_mcp/security.py) |\n| Glama / Docker (stdio) | [`Dockerfile`](Dockerfile), [`glama.json`](glama.json) |\n| Self-host HTTP | [`Dockerfile.http`](Dockerfile.http), [`docker-compose.yml`](docker-compose.yml) |\n\nCompatible hosts: Claude Desktop, Cursor, Glama, and any MCP client that supports stdio or Streamable-HTTP.\n\n## Tools\n\n| Tool | What it does | Hardening |\n|------|--------------|-----------|\n| `web_fetch` | Fetch a URL, return main text (readability-lite) | SSRF-guarded; output sanitized + `<untrusted>`-wrapped |\n| `web_search` | Live DuckDuckGo search \u2192 top snippets | output sanitized + `<untrusted>` |\n| `metis_verify` | Metis cognition + verification envelope | returns answer + `verify_score` / `verified` gate |\n| `market_search` | Discover priced capabilities on an AIMarket hub | free; no wallet, key or channel; the hub lists only what it can execute |\n| `market_invoke` | Run one on the hub's free trial tier | returns the signed receipt nonce; reports the hub's 402 verbatim when the allowance is spent |\n| `market_status` | Show the free trial invokes and prepaid balance left | read-only; the hub's health, this installation's remaining trial in the current window, and the `AIMARKET_API_KEY` balance when set (never the key) |\n\n### Example \u2014 buy a GAIA Open-Meteo reading\n\n```text\nmarket_search_tool(intent=\"gaia weather open-meteo\")\nmarket_invoke_tool(\n  capability_id=\"gaia.weather.read@v1\",\n  product_id=\"gaia.gateway\",\n  source_hub=\"https://iot.modelmarket.dev\",\n  # input JSON with device_id om-wx-01 \u2014 see tool schema / hub docs\n)\n```\n\nOr the same HTTP the tool wraps:\n\n```bash\ncurl -s -X POST \"${AIMARKET_HUB_URL:-https://modelmarket.dev}/ai-market/v2/invoke\" \\\n  -H 'Content-Type: application/json' \\\n  -H 'X-AIMarket-Sandbox-Visitor: vis_mcp_om_wx' \\\n  -d '{\"capability_id\":\"gaia.weather.read@v1\",\"product_id\":\"gaia.gateway\",\n       \"source_hub\":\"https://iot.modelmarket.dev\",\"input\":{\"device_id\":\"om-wx-01\"}}'\n```\n\nThat is the **easy** path (trial/sandbox). Proving an **external wallet** paid on-chain\nis a separate escrow flow (`openChannel` \u2192 DebitAuthorization \u2192 hub debit/settle) \u2014\nsee [`docs/onchain-journal.md`](https://github.com/alexar76/aicom/blob/main/docs/onchain-journal.md) \u00a73l\u2013\u00a73m and\n[`gaia/docs/LIVE-RELAYS.md`](https://github.com/alexar76/gaia/blob/main/docs/LIVE-RELAYS.md).\n\nWhy a gateway (not per-agent tools): generic capabilities are written **once**; the security core lives in one audited place. Ecosystem-specific capabilities live in their own MCP servers (`aimarket-oracle-gateway`, `aimarket-plugins`).\n\n## Configure (env)\n\n| var | meaning |\n|-----|---------|\n| `AIMARKET_METIS_URL` | Metis verify API base (default `https://metis.modelmarket.dev`) |\n| `AIMARKET_METIS_KEY` | optional bearer for Metis verify |\n| `AIMARKET_SEARCH_URL` | DuckDuckGo HTML endpoint override |\n| `AIMARKET_HUB_URL` | AIMarket hub for `market_search` / `market_invoke` (default `https://modelmarket.dev`) |\n| `AIMARKET_API_KEY` | Credit-account key from the hub's `/start` page (`https://modelmarket.dev/start`): priced `market_invoke` calls are paid from its prepaid balance; while it is short the free trial still applies. In HTTP mode it pays for every caller of that server |\n| `AIMARKET_SANDBOX_VISITOR` | Trial identity for `market_invoke`; random per install, set it to keep an allowance across reinstalls |\n| `AIMARKET_MCP_KEY` | HTTP only \u2014 bearer auth key. Without one the server answers only this machine's user: a loopback packet with a loopback `Host`, no forwarding headers, no cross-site browser `Origin`, and on Linux a socket owned by the user the server runs as. That last check is what refuses a reverse proxy on the same machine whose workers run as their own user: nginx's default `proxy_pass` sends a loopback `Host` and no forwarding header. **Behind any reverse proxy, set a key** anyway: a proxy running as the server's own user, or any proxy on macOS or Windows, still looks local. In the HTTP Docker image (callers arrive from the bridge) every keyless call gets 401: set a key or `AIMARKET_MCP_PUBLIC=1` |\n| `AIMARKET_MCP_PUBLIC` | HTTP only \u2014 `1` answers anonymous callers from anywhere, without a key (an explicit choice for a public endpoint) |\n| `AIMARKET_MCP_HOST` | HTTP only \u2014 listen address (default `127.0.0.1`; the HTTP image sets `0.0.0.0`) |\n| `AIMARKET_MCP_PRODUCTION` | HTTP only \u2014 `1` requires `AIMARKET_MCP_KEY` (fail-closed) |\n| `AIMARKET_MCP_RATE` | HTTP only \u2014 requests/min per key/IP (default 120) |\n| `AIMARKET_MCP_PORT` | HTTP only \u2014 listen port (default 9090) |\n\n## Run (stdio \u2014 Glama / Claude Desktop)\n\nClaude Desktop (`mcpServers` entry) \u2014 no clone, no working directory to get wrong:\n\n```json\n{\n  \"mcpServers\": {\n    \"aimarket-mcp\": {\n      \"command\": \"uvx\",\n      \"args\": [\"aimarket-mcp\"]\n    }\n  }\n}\n```\n\n`uvx` fetches the published package and runs its `aimarket-mcp` console script, which is\nthe stdio server. With the package already installed, `\"command\": \"aimarket-mcp\"` and no\nargs does the same thing.\n\nFrom a checkout, for development:\n\n```bash\npip install -e .\npython -m aimarket_mcp.stdio_server\n```\n\n## Run (HTTP \u2014 self-host)\n\n```bash\npip install -e .\nAIMARKET_MCP_KEY=sk-... AIMARKET_MCP_PRODUCTION=1 aimarket-mcp-http   # :9090\n# or: docker compose up -d   (uses Dockerfile.http)\n```\n\n### Cursor / Claude (Streamable HTTP)\n\n```json\n{\n  \"mcpServers\": {\n    \"aimarket-web\": {\n      \"type\": \"streamable-http\",\n      \"url\": \"http://127.0.0.1:9090/mcp\",\n      \"headers\": {\n        \"Authorization\": \"Bearer YOUR_AIMARKET_MCP_KEY\"\n      }\n    }\n  }\n}\n```\n\n## Publish on Glama\n\nListing: [aimarket-mcp](https://glama.ai/mcp/servers/alexar76/aimarket-mcp).\nGlama generates a container from the build settings in its admin panel:\n\n| Field | Value |\n|-------|-------|\n| Build steps | `[\"bash scripts/glama_install.sh\"]` |\n| CMD arguments | `[\"mcp-proxy\", \"--\", \".venv/bin/python\", \"-m\", \"aimarket_mcp.stdio_server\"]` |\n| Placeholder parameters | `{}` |\n| Pinned commit SHA | empty (latest synced commit) |\n\nBuild, inspect, and publish a release after syncing source changes. A repository\nsync alone does not refresh the deployed tool catalog or its quality evaluation.\nThe catalog should contain all six tools listed above.\nSee [Glama build and release instructions](https://github.com/alexar76/aimarket-mcp/blob/main/docs/GLAMA.md).\n\n## Consumers\n\n- Connected successfully? Share your host, configuration, and one working tool using\n  the [Show and tell template](https://github.com/alexar76/aimarket-mcp/blob/main/docs/show-and-tell-template.md).\n- **Metis** \u2014 enable the preset:\n  ```yaml\n  enable_mcp_tools: true\n  mcp_ecosystem_presets: [aimarket-web]\n  ```\n- **ARGUS** \u2014 add the server to `argus.config.json` `mcpServers` (see that repo).\n\n## Test\n\n```bash\npip install -e '.[dev]' && pytest -q\n```\n\n## Registries\n\nSee the [directory submission checklist and current status](https://github.com/alexar76/aimarket-mcp/blob/main/docs/REGISTRIES.md)\nbefore submitting or refreshing a listing.\n\n| Registry | Listing |\n|----------|---------|\n| **Glama** | [glama.ai/mcp/servers/alexar76/aimarket-mcp](https://glama.ai/mcp/servers/alexar76/aimarket-mcp) |\n| **Official MCP Registry** | `io.github.alexar76/aimarket-mcp` \u2014 `server.json` + GitHub Actions |\n| **PyPI** | `pip install aimarket-mcp` |\n| **GitHub Releases** | [github.com/alexar76/aimarket-mcp/releases](https://github.com/alexar76/aimarket-mcp/releases) |\n",
+    "description_content_type": "text/markdown",
+    "docs_url": null,
+    "download_url": null,
+    "downloads": {
+      "last_day": -1,
+      "last_month": -1,
+      "last_week": -1
+    },
+    "dynamic": [
+      "License-File"
+    ],
+    "home_page": null,
+    "keywords": "mcp, aimarket, web-fetch, web-search, metis, stdio",
+    "license": "MIT",
+    "license_expression": null,
+    "license_files": [
+      "LICENSE"
+    ],
+    "maintainer": null,
+    "maintainer_email": null,
+    "name": "aimarket-mcp",
+    "package_url": "https://pypi.org/project/aimarket-mcp/",
+    "platform": null,
+    "project_url": "https://pypi.org/project/aimarket-mcp/",
+    "project_urls": {
+      "Documentation": "https://github.com/alexar76/aimarket-mcp#readme",
+      "Homepage": "https://glama.ai/mcp/servers/alexar76/aimarket-mcp",
+      "Issues": "https://github.com/alexar76/aimarket-mcp/issues",
+      "Repository": "https://github.com/alexar76/aimarket-mcp"
+    },
+    "provides_extra": [
+      "dev"
+    ],
+    "release_url": "https://pypi.org/project/aimarket-mcp/0.6.3/",
+    "requires_dist": [
+      "mcp<2,>=1.10",
+      "httpx<1,>=0.27",
+      "pydantic<3,>=2.7.2",
+      "starlette<2,>=0.37",
+      "uvicorn<1,>=0.30",
+      "pytest>=8; extra == \"dev\"",
+      "pytest-asyncio>=0.23; extra == \"dev\"",
+      "pytest-cov>=5; extra == \"dev\""
+    ],
+    "requires_python": ">=3.10",
+    "summary": "alexar76 ecosystem MCP gateway \u2014 SSRF-hardened web fetch/search + Metis verify (stdio + HTTP)",
+    "version": "0.6.3",
+    "yanked": false,
+    "yanked_reason": null
+  },
+  "last_serial": 42749403,
+  "ownership": {
+    "organization": null,
+    "roles": [
+      {
+        "role": "Owner",
+        "user": "aleksandr.artamokhov"
+      }
+    ]
+  },
+  "releases": {
+    "0.1.0": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "6af20b6a4ae531f4c351e11767f649a849c4f9a88975805cb5a9d84a6100a198"
+        },
+        "digests": {
+          "blake2b_256": "fb52a47df36ee71f5c36e525b200edb37c0039e5df6e44658138d09c3cec9b1e",
+          "md5": "ac8d9cca39fb6b607ae7990d8f3e1d3d",
+          "sha256": "2225bf610c6a8f23b8d643402ca440b26ccfaac0ea8a95e4da86c3039b1b5dea"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.1.0-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "ac8d9cca39fb6b607ae7990d8f3e1d3d",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 8178,
+        "upload_time": "2026-07-12T07:21:57",
+        "upload_time_iso_8601": "2026-07-12T07:21:57.760621Z",
+        "url": "https://files.pythonhosted.org/packages/fb/52/a47df36ee71f5c36e525b200edb37c0039e5df6e44658138d09c3cec9b1e/aimarket_mcp-0.1.0-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "46fddb8b64f3c93735c16ea89e5aa420bce3844ba2a538a21b5645136e99d287",
+          "md5": "f8de1401924b75ac42741d9039163419",
+          "sha256": "bb08faf6bfc857272880dd320f608260af7b79f9e8417371565348d9fefd1b76"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.1.0.tar.gz",
+        "has_sig": false,
+        "md5_digest": "f8de1401924b75ac42741d9039163419",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 9626,
+        "upload_time": "2026-07-12T07:21:58",
+        "upload_time_iso_8601": "2026-07-12T07:21:58.848395Z",
+        "url": "https://files.pythonhosted.org/packages/46/fd/db8b64f3c93735c16ea89e5aa420bce3844ba2a538a21b5645136e99d287/aimarket_mcp-0.1.0.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.1.4": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "cf69c80d9d362b6b4e7630e7d93bd290b04a9e50ff5e08d991166e62e96fa8ce"
+        },
+        "digests": {
+          "blake2b_256": "8498b7fa21a08c23a9f693597f30330a0ae63aa1b850c8e5346f39aa17b75298",
+          "md5": "161f5ef9ee7a7d8a901ff2bda086e05b",
+          "sha256": "7765397acb9416ba3d80c79d2f2adebca69e47b7bab17a4f595056b0d38c05b5"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.1.4-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "161f5ef9ee7a7d8a901ff2bda086e05b",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 14007,
+        "upload_time": "2026-07-19T15:31:09",
+        "upload_time_iso_8601": "2026-07-19T15:31:09.689122Z",
+        "url": "https://files.pythonhosted.org/packages/84/98/b7fa21a08c23a9f693597f30330a0ae63aa1b850c8e5346f39aa17b75298/aimarket_mcp-0.1.4-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "b4fa408a6aa2cf67e80b3c41ccd986923089bb980dd335d771fd1e014e74bede",
+          "md5": "a986c0e94fa27ee4e252705c14ec7629",
+          "sha256": "55b54a49fb938d892f5dcc7fe350b23f29c0c6e32a318075d35816810ab2e7d8"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.1.4.tar.gz",
+        "has_sig": false,
+        "md5_digest": "a986c0e94fa27ee4e252705c14ec7629",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 15633,
+        "upload_time": "2026-07-19T15:31:10",
+        "upload_time_iso_8601": "2026-07-19T15:31:10.632154Z",
+        "url": "https://files.pythonhosted.org/packages/b4/fa/408a6aa2cf67e80b3c41ccd986923089bb980dd335d771fd1e014e74bede/aimarket_mcp-0.1.4.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.2.0": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "aeb67f7110f60ec0affca22d60c6c9150ac1dc952e0a2cbd6887bcdcad8691a1"
+        },
+        "digests": {
+          "blake2b_256": "b16dcd8b9f3c86dcd2cecf64d4c7f14c457f44325c222af128eb922595362486",
+          "md5": "6d0ecf5b82790d1d6c3ddd63d6213753",
+          "sha256": "e30ffb726dc5935438a9edcb5e8b9db83456e4573abb4832fac88e0ad43c99f1"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.2.0-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "6d0ecf5b82790d1d6c3ddd63d6213753",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 17682,
+        "upload_time": "2026-07-28T08:13:06",
+        "upload_time_iso_8601": "2026-07-28T08:13:06.046652Z",
+        "url": "https://files.pythonhosted.org/packages/b1/6d/cd8b9f3c86dcd2cecf64d4c7f14c457f44325c222af128eb922595362486/aimarket_mcp-0.2.0-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "f4ba5dfc25e37ee6041b5145294a05e51db1a8d8ece443b1b35a6976b26484fd",
+          "md5": "69351db52d42a1d0bec238de825f1c78",
+          "sha256": "74ed852e49ccd26737e323a3412f19730f473492e0cee26b214613999056eca5"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.2.0.tar.gz",
+        "has_sig": false,
+        "md5_digest": "69351db52d42a1d0bec238de825f1c78",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 19051,
+        "upload_time": "2026-07-28T08:13:07",
+        "upload_time_iso_8601": "2026-07-28T08:13:07.029346Z",
+        "url": "https://files.pythonhosted.org/packages/f4/ba/5dfc25e37ee6041b5145294a05e51db1a8d8ece443b1b35a6976b26484fd/aimarket_mcp-0.2.0.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.2.1": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "2a31903726da61827562b132f03e45d9730c480df223c2f99cc2411c30be85e2"
+        },
+        "digests": {
+          "blake2b_256": "6b2a74fa9e2d118b4018368a946069188f06244f7ef23c7d5fbf918b615d83b9",
+          "md5": "1c47d0b2fb7c385b0e88528b6251bd5b",
+          "sha256": "43c3fd778c8e0f9ba217c18e32e5274a27f06fcfb52160e9831354de06238e78"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.2.1-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "1c47d0b2fb7c385b0e88528b6251bd5b",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 17908,
+        "upload_time": "2026-07-28T09:08:21",
+        "upload_time_iso_8601": "2026-07-28T09:08:21.311911Z",
+        "url": "https://files.pythonhosted.org/packages/6b/2a/74fa9e2d118b4018368a946069188f06244f7ef23c7d5fbf918b615d83b9/aimarket_mcp-0.2.1-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "1a2632f4b862b657cc1f484a43836395876d56d2aa5a4339911bfeefc3e937d6",
+          "md5": "b9da8b4722205a970041abd752b14a3d",
+          "sha256": "84ccd656abbe1ecd8653f904600fc83c491da2d146aa8f4d59960474c649bd66"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.2.1.tar.gz",
+        "has_sig": false,
+        "md5_digest": "b9da8b4722205a970041abd752b14a3d",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 19262,
+        "upload_time": "2026-07-28T09:08:22",
+        "upload_time_iso_8601": "2026-07-28T09:08:22.354319Z",
+        "url": "https://files.pythonhosted.org/packages/1a/26/32f4b862b657cc1f484a43836395876d56d2aa5a4339911bfeefc3e937d6/aimarket_mcp-0.2.1.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.2.2": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "3e28d76133e4d090f8ff384756ba41615d543837482a19a02afa9fa7ff52a620"
+        },
+        "digests": {
+          "blake2b_256": "3d484e26c400da0bc09b7a059e08b16d76acad58cbc082d90d25a7578b0f6281",
+          "md5": "06b79a0530fcd84f5c7e2cffcbd59733",
+          "sha256": "ae58e51dee0b35a314cba73360841915b67ce7f1ac981e6f4a7efa2334a023fb"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.2.2-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "06b79a0530fcd84f5c7e2cffcbd59733",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 18724,
+        "upload_time": "2026-07-28T17:03:46",
+        "upload_time_iso_8601": "2026-07-28T17:03:46.694009Z",
+        "url": "https://files.pythonhosted.org/packages/3d/48/4e26c400da0bc09b7a059e08b16d76acad58cbc082d90d25a7578b0f6281/aimarket_mcp-0.2.2-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "b1e33c618e89d1ce41db1b630fa5cea8dd066d98bf158817dd86c2b33490173f",
+          "md5": "b9d960032cb2a4a25521853c37463b84",
+          "sha256": "398f0684d9b9e4d1003ecc701e7cd3d7efc8ba0c291651045c010ed8c3a3a9a9"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.2.2.tar.gz",
+        "has_sig": false,
+        "md5_digest": "b9d960032cb2a4a25521853c37463b84",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 20002,
+        "upload_time": "2026-07-28T17:03:47",
+        "upload_time_iso_8601": "2026-07-28T17:03:47.820655Z",
+        "url": "https://files.pythonhosted.org/packages/b1/e3/3c618e89d1ce41db1b630fa5cea8dd066d98bf158817dd86c2b33490173f/aimarket_mcp-0.2.2.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.2.3": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "b0b8f887b89acbdb209b5f3d2595c3cdc81f035efcaadce67e412980e6d01a24"
+        },
+        "digests": {
+          "blake2b_256": "2b62b769f36af5657cd589c61ca184b25def7880ccc31a71566327e95840a73c",
+          "md5": "fb6f068f11b42def7bdf85f752ce2f74",
+          "sha256": "3ffd631c740eb5d49653c36ad5a84a3bca23a72bb0c2cf78edece61d55ca4eca"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.2.3-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "fb6f068f11b42def7bdf85f752ce2f74",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 18734,
+        "upload_time": "2026-07-28T17:27:27",
+        "upload_time_iso_8601": "2026-07-28T17:27:27.869707Z",
+        "url": "https://files.pythonhosted.org/packages/2b/62/b769f36af5657cd589c61ca184b25def7880ccc31a71566327e95840a73c/aimarket_mcp-0.2.3-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "be8d2ae2e33e50b3abdc8937e4fae09ccc0e07be272eb9d0e5d69dcd5a09b484",
+          "md5": "7860f4de256e8f99518177d64f3f09d1",
+          "sha256": "f294baf58fac34987d6a67a9c15e68a1f58492cb3f3efd555a4ce2eaffacced6"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.2.3.tar.gz",
+        "has_sig": false,
+        "md5_digest": "7860f4de256e8f99518177d64f3f09d1",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 20363,
+        "upload_time": "2026-07-28T17:27:28",
+        "upload_time_iso_8601": "2026-07-28T17:27:28.869277Z",
+        "url": "https://files.pythonhosted.org/packages/be/8d/2ae2e33e50b3abdc8937e4fae09ccc0e07be272eb9d0e5d69dcd5a09b484/aimarket_mcp-0.2.3.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.3.0": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "1cdd1ca3ef99ac587dbcab9deec29dd88a8f4fb88f49b87050f1520c22d75d7d"
+        },
+        "digests": {
+          "blake2b_256": "9741a6d19c6fcc42844ee6ab17f8b4f6e0af744e13eb1b89e23b84ea16061706",
+          "md5": "fec95b0cc47211674ca1f2642e13a814",
+          "sha256": "4fe9c764259dfb096ba10baeb9c911b3809e1f37ac057d3b829360f9a65b7691"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.3.0-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "fec95b0cc47211674ca1f2642e13a814",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 18743,
+        "upload_time": "2026-07-31T07:06:04",
+        "upload_time_iso_8601": "2026-07-31T07:06:04.018372Z",
+        "url": "https://files.pythonhosted.org/packages/97/41/a6d19c6fcc42844ee6ab17f8b4f6e0af744e13eb1b89e23b84ea16061706/aimarket_mcp-0.3.0-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "1fc475adf21b992847f2c5a8eaf7920d05c95e3974ad7fbf45b8b2d3b20e36ca",
+          "md5": "c25d2e141fef51a5f4380484b70449b9",
+          "sha256": "9c5fc4ca09d8ffc9019bfff249bf4e7357fd9fa727dc275142a486586b7d302a"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.3.0.tar.gz",
+        "has_sig": false,
+        "md5_digest": "c25d2e141fef51a5f4380484b70449b9",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 20613,
+        "upload_time": "2026-07-31T07:06:05",
+        "upload_time_iso_8601": "2026-07-31T07:06:05.008338Z",
+        "url": "https://files.pythonhosted.org/packages/1f/c4/75adf21b992847f2c5a8eaf7920d05c95e3974ad7fbf45b8b2d3b20e36ca/aimarket_mcp-0.3.0.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.4.0": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "31e6120cea0e71c14c3431a6c065438bcef35e8d86ffa7f4abb2a85626ca7e1b"
+        },
+        "digests": {
+          "blake2b_256": "8d82c22f480d7434d818fbc56ce162029bae7bf0da1876456b674c56e1b9b717",
+          "md5": "b8bb71c1007a1990b97c460e5a056e36",
+          "sha256": "e8c40ef056920209ef8c0e46090356e60c472db38d035ef68320a86224d98957"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.4.0-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "b8bb71c1007a1990b97c460e5a056e36",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 24784,
+        "upload_time": "2026-10-07T08:17:44",
+        "upload_time_iso_8601": "2026-10-07T08:17:44.179635Z",
+        "url": "https://files.pythonhosted.org/packages/8d/82/c22f480d7434d818fbc56ce162029bae7bf0da1876456b674c56e1b9b717/aimarket_mcp-0.4.0-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "53162862b5bcb1cb87d7cd5cfb10db57e35f0385bb0321401292bc1e38a14046",
+          "md5": "b6324bfe31d82c9c1b96de92843353da",
+          "sha256": "92973797d74cdd6e3ef24dc02075b58d3e10b7b40ae159d6b5997d12c3c9855e"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.4.0.tar.gz",
+        "has_sig": false,
+        "md5_digest": "b6324bfe31d82c9c1b96de92843353da",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 34011,
+        "upload_time": "2026-10-07T08:17:45",
+        "upload_time_iso_8601": "2026-10-07T08:17:45.153565Z",
+        "url": "https://files.pythonhosted.org/packages/53/16/2862b5bcb1cb87d7cd5cfb10db57e35f0385bb0321401292bc1e38a14046/aimarket_mcp-0.4.0.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.5.0": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "7e5050c7c45e1f3e0ef78ba97743aaed14c408d240bb780ac8f2f5a0f859aa27"
+        },
+        "digests": {
+          "blake2b_256": "cc8a2d863c2928fbe2646a782dd4433d5d99f315fd82b065e28d410a7786b8dc",
+          "md5": "e36d9239550e0ae7e6c8b0706752add2",
+          "sha256": "1f1594286db014dc15468157e457f71386bace47387059ef122ff934de61d014"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.5.0-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "e36d9239550e0ae7e6c8b0706752add2",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 27023,
+        "upload_time": "2026-10-21T03:37:28",
+        "upload_time_iso_8601": "2026-10-21T03:37:28.318655Z",
+        "url": "https://files.pythonhosted.org/packages/cc/8a/2d863c2928fbe2646a782dd4433d5d99f315fd82b065e28d410a7786b8dc/aimarket_mcp-0.5.0-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "0752cd9363c11b3e8a697f2658f4fede91d5e6e57b39c2a3a0be2f403193dc51",
+          "md5": "fd82cfa6df0e19d2760890cd42671b6d",
+          "sha256": "c16c6d60b4f425446a5b7b9db3907f958b563abc892a19547083f8f7cbf02d4c"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.5.0.tar.gz",
+        "has_sig": false,
+        "md5_digest": "fd82cfa6df0e19d2760890cd42671b6d",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 37984,
+        "upload_time": "2026-10-21T03:37:29",
+        "upload_time_iso_8601": "2026-10-21T03:37:29.488746Z",
+        "url": "https://files.pythonhosted.org/packages/07/52/cd9363c11b3e8a697f2658f4fede91d5e6e57b39c2a3a0be2f403193dc51/aimarket_mcp-0.5.0.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.6.0": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "3dd304265acd62222bab9b1771ad7d7be8416423999415daeb1e698c3f4b5191"
+        },
+        "digests": {
+          "blake2b_256": "7e0af4687bb97ac7d20c3eca34bf9a7ab29da81823df6820c5b044f5f9e9d743",
+          "md5": "4e94acd69fdb0a3e393e70589a1e3ec5",
+          "sha256": "3a87d8f63ebac4661cf96b43f82c78b277484642b2ad6b618914bb6658ba914b"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.6.0-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "4e94acd69fdb0a3e393e70589a1e3ec5",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 27103,
+        "upload_time": "2026-10-22T04:17:21",
+        "upload_time_iso_8601": "2026-10-22T04:17:21.051174Z",
+        "url": "https://files.pythonhosted.org/packages/7e/0a/f4687bb97ac7d20c3eca34bf9a7ab29da81823df6820c5b044f5f9e9d743/aimarket_mcp-0.6.0-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "b7747c6e545ece4c7e7d22fed90ab48cc39cfffb29539cc700e3b04f75d88949",
+          "md5": "9fb923c8dd710e5f5bde28b5b7fc1ccd",
+          "sha256": "d14740c8017a657aa9828febc24a70b8e63cb4a2997dd303dc85b83275ea9227"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.6.0.tar.gz",
+        "has_sig": false,
+        "md5_digest": "9fb923c8dd710e5f5bde28b5b7fc1ccd",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 38168,
+        "upload_time": "2026-10-22T04:17:22",
+        "upload_time_iso_8601": "2026-10-22T04:17:22.428200Z",
+        "url": "https://files.pythonhosted.org/packages/b7/74/7c6e545ece4c7e7d22fed90ab48cc39cfffb29539cc700e3b04f75d88949/aimarket_mcp-0.6.0.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.6.1": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "d40c927467e8cc8df8b51c693118f610e65efffca39256361425f09628ba3e8a"
+        },
+        "digests": {
+          "blake2b_256": "6710f4429e65f6f897ea9cce26688a6ed5b84a4fab501d64e9f9d8d7e92229cf",
+          "md5": "4971c9cc6151abd3927c09c08af55af7",
+          "sha256": "1515e830bef8a8a1a46175d4f8e4990233b09eeca2540d3703e0c7a1b6bb7495"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.6.1-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "4971c9cc6151abd3927c09c08af55af7",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 28258,
+        "upload_time": "2026-10-24T17:51:32",
+        "upload_time_iso_8601": "2026-10-24T17:51:32.840661Z",
+        "url": "https://files.pythonhosted.org/packages/67/10/f4429e65f6f897ea9cce26688a6ed5b84a4fab501d64e9f9d8d7e92229cf/aimarket_mcp-0.6.1-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "3e3d480372e7fcfacd61bf8aa3520de04a5b23dcd2c737b7e06cc9c343beb77f",
+          "md5": "5e709ba880635775380a193c63442728",
+          "sha256": "0d863fe2edbd4629751043da456b411d149474e48a345d78bb38efeb1a241f3b"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.6.1.tar.gz",
+        "has_sig": false,
+        "md5_digest": "5e709ba880635775380a193c63442728",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 40138,
+        "upload_time": "2026-10-24T17:51:34",
+        "upload_time_iso_8601": "2026-10-24T17:51:34.041584Z",
+        "url": "https://files.pythonhosted.org/packages/3e/3d/480372e7fcfacd61bf8aa3520de04a5b23dcd2c737b7e06cc9c343beb77f/aimarket_mcp-0.6.1.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.6.2": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "92f608d19de431fc008dd50bf41d533d2632b37376c7a93a2a3e68343c8cf3f5"
+        },
+        "digests": {
+          "blake2b_256": "1d591ccf52b269bafbd4b5c582d8792aa7951f0e43937d11d46feca793761551",
+          "md5": "44fe1da27367da5ba6079bc963939d3a",
+          "sha256": "260cc13c1a7f679193a2a4b2977f335563bb0e780ba2b507058bb1c500fcb2b0"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.6.2-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "44fe1da27367da5ba6079bc963939d3a",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 30203,
+        "upload_time": "2026-10-25T17:04:11",
+        "upload_time_iso_8601": "2026-10-25T17:04:11.597818Z",
+        "url": "https://files.pythonhosted.org/packages/1d/59/1ccf52b269bafbd4b5c582d8792aa7951f0e43937d11d46feca793761551/aimarket_mcp-0.6.2-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "42d9f9642e016f4259ff3a296fbb982f73461a7fc6697bd4c4fb86e29ed33c91",
+          "md5": "282c1b9fa1709acb0951de7b73152009",
+          "sha256": "7e18c6d6e469a39125fd5d4549d435b67e753c801f21e84fdd90a407c0bbc954"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.6.2.tar.gz",
+        "has_sig": false,
+        "md5_digest": "282c1b9fa1709acb0951de7b73152009",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 43674,
+        "upload_time": "2026-10-25T17:04:12",
+        "upload_time_iso_8601": "2026-10-25T17:04:12.784461Z",
+        "url": "https://files.pythonhosted.org/packages/42/d9/f9642e016f4259ff3a296fbb982f73461a7fc6697bd4c4fb86e29ed33c91/aimarket_mcp-0.6.2.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ],
+    "0.6.3": [
+      {
+        "comment_text": null,
+        "core-metadata": {
+          "sha256": "cfead67f5f202aedcffe87af2c7077c51a34e010880f1b5d45759c87701df99c"
+        },
+        "digests": {
+          "blake2b_256": "c6c87b6b8bae4a7d8be9b2fd950888514cc9ce95e1048e53a4f6ab52e4a5809a",
+          "md5": "dbadd63675e5b4d92ef8ac330f474a47",
+          "sha256": "12e2c24860aef76d5df5017487939ae1aaac8a6bc76c582d3b707d4a90530623"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.6.3-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "dbadd63675e5b4d92ef8ac330f474a47",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 31300,
+        "upload_time": "2026-10-26T07:06:44",
+        "upload_time_iso_8601": "2026-10-26T07:06:44.455315Z",
+        "url": "https://files.pythonhosted.org/packages/c6/c8/7b6b8bae4a7d8be9b2fd950888514cc9ce95e1048e53a4f6ab52e4a5809a/aimarket_mcp-0.6.3-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": null,
+        "core-metadata": false,
+        "digests": {
+          "blake2b_256": "4a2b60580b12270290049da03000dcaaba4b9c42ee0f331f487b88015477da27",
+          "md5": "3aa8a39ff42cd2585188be709d0c5d11",
+          "sha256": "febc5bfa83e1fe80833fc6ed77418b543ece85e617df7d5304f93110e5d349bc"
+        },
+        "downloads": -1,
+        "filename": "aimarket_mcp-0.6.3.tar.gz",
+        "has_sig": false,
+        "md5_digest": "3aa8a39ff42cd2585188be709d0c5d11",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.10",
+        "size": 45929,
+        "upload_time": "2026-10-26T07:06:45",
+        "upload_time_iso_8601": "2026-10-26T07:06:45.789329Z",
+        "url": "https://files.pythonhosted.org/packages/4a/2b/60580b12270290049da03000dcaaba4b9c42ee0f331f487b88015477da27/aimarket_mcp-0.6.3.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
+    ]
+  },
+  "urls": [
+    {
+      "comment_text": null,
+      "core-metadata": {
+        "sha256": "cfead67f5f202aedcffe87af2c7077c51a34e010880f1b5d45759c87701df99c"
+      },
+      "digests": {
+        "blake2b_256": "c6c87b6b8bae4a7d8be9b2fd950888514cc9ce95e1048e53a4f6ab52e4a5809a",
+        "md5": "dbadd63675e5b4d92ef8ac330f474a47",
+        "sha256": "12e2c24860aef76d5df5017487939ae1aaac8a6bc76c582d3b707d4a90530623"
+      },
+      "downloads": -1,
+      "filename": "aimarket_mcp-0.6.3-py3-none-any.whl",
+      "has_sig": false,
+      "md5_digest": "dbadd63675e5b4d92ef8ac330f474a47",
+      "packagetype": "bdist_wheel",
+      "python_version": "py3",
+      "requires_python": ">=3.10",
+      "size": 31300,
+      "upload_time": "2026-10-26T07:06:44",
+      "upload_time_iso_8601": "2026-10-26T07:06:44.455315Z",
+      "url": "https://files.pythonhosted.org/packages/c6/c8/7b6b8bae4a7d8be9b2fd950888514cc9ce95e1048e53a4f6ab52e4a5809a/aimarket_mcp-0.6.3-py3-none-any.whl",
+      "yanked": false,
+      "yanked_reason": null
+    },
+    {
+      "comment_text": null,
+      "core-metadata": false,
+      "digests": {
+        "blake2b_256": "4a2b60580b12270290049da03000dcaaba4b9c42ee0f331f487b88015477da27",
+        "md5": "3aa8a39ff42cd2585188be709d0c5d11",
+        "sha256": "febc5bfa83e1fe80833fc6ed77418b543ece85e617df7d5304f93110e5d349bc"
+      },
+      "downloads": -1,
+      "filename": "aimarket_mcp-0.6.3.tar.gz",
+      "has_sig": false,
+      "md5_digest": "3aa8a39ff42cd2585188be709d0c5d11",
+      "packagetype": "sdist",
+      "python_version": "source",
+      "requires_python": ">=3.10",
+      "size": 45929,
+      "upload_time": "2026-10-26T07:06:45",
+      "upload_time_iso_8601": "2026-10-26T07:06:45.789329Z",
+      "url": "https://files.pythonhosted.org/packages/4a/2b/60580b12270290049da03000dcaaba4b9c42ee0f331f487b88015477da27/aimarket_mcp-0.6.3.tar.gz",
+      "yanked": false,
+      "yanked_reason": null
+    }
+  ],
+  "vulnerabilities": []
+}

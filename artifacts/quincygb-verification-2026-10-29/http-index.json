@@ -1,0 +1,86 @@
+[
+  {
+    "key": "route-root",
+    "url": "https://route-verdict-production.up.railway.app/",
+    "method": "GET",
+    "at_utc": "2026-10-29T11:40:17.307594+00:00",
+    "status": 200,
+    "final_url": "https://route-verdict-production.up.railway.app/",
+    "content_type": "text/html; charset=utf-8",
+    "bytes": 5035,
+    "sha256": "0cd5e505d59196f0e56f89c8a7ac4bd0dd6e179cc565fb176907c91dabe4ea34",
+    "preview": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>RouteVerdict — trust &amp; liveness checks for x402 endpoints</title>\n<meta name=\"description\" content=\"Before an agent pays an unfamiliar x402 endpoint, it pays $0.05 to ask RouteVerdict: is it alive, what does it charge, is its discovery schema real, is it cataloged — and has anything changed since last time?\">\n<style>\n  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;\n         max-width: 760px; margin: 40px auto; padding: 0 20px 60px;\n         line-height: 1.55; color: #16202a; background: #fbfcfd; }\n  h1 { font-size: 2rem; margin-bottom: .2em; }\n  .tag { font-size: 1.1rem; color: #33475b; margin-top: 0; }\n  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }\n  pre { background: #0f1b26; color: #dcebf5; padding: 14px 16px;\n        border-radius: 8px; overflow-x: auto; font-size: .85rem; }\n  table { border-collapse: collapse; width: 100%; margin: 1em 0; }\n  td, th { border-bottom: 1px solid #dde5ec; padding: 6px 8px;\n           text-align: left; vertical-align: top; }\n  .pill { display: inline-block; background: #e7f0e9; color: #1d5c33;\n          border-radius: 999px; padding: 2px 10px; font-size: .85rem; }\n  a { color: #0b5cad; }\n  .limits { background: #fdf6e5; border: 1px solid #ecd9a0;\n            border-radius: 8px; padding: 10px 14px; }\n</style>\n</head>\n<body>\n<h1>RouteVerdict</h1>\n"
+  },
+  {
+    "key": "route-health",
+    "url": "https://route-verdict-production.up.railway.app/health",
+    "method": "GET",
+    "at_utc": "2026-10-29T11:40:17.309354+00:00",
+    "status": 200,
+    "final_url": "https://route-verdict-production.up.railway.app/health",
+    "content_type": "application/json",
+    "bytes": 37,
+    "sha256": "ab91e8aafbe77bbf5d5cdaeeaf8853fb3a92dca38911ce7cee43cdbcd5d0fe52",
+    "preview": "{\"ok\":true,\"service\":\"route-verdict\"}"
+  },
+  {
+    "key": "route-quote",
+    "url": "https://route-verdict-production.up.railway.app/quote",
+    "method": "GET",
+    "at_utc": "2026-10-29T11:40:17.310127+00:00",
+    "status": 200,
+    "final_url": "https://route-verdict-production.up.railway.app/quote",
+    "content_type": "application/json",
+    "bytes": 194,
+    "sha256": "0268a1a8fe72309e6f78c7cad9d1608aca82a2bab45d650bb8b40fe52e735a01",
+    "preview": "{\"service\":\"route-verdict\",\"endpoint\":\"/v1/check\",\"price\":\"$0.05\",\"asset\":\"USDC\",\"network\":\"eip155:8453\",\"payTo\":\"0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F\",\"protocol\":\"x402 v2 (exact scheme)\"}"
+  },
+  {
+    "key": "route-manifest",
+    "url": "https://route-verdict-production.up.railway.app/.well-known/x402",
+    "method": "GET",
+    "at_utc": "2026-10-29T11:40:17.884708+00:00",
+    "status": 200,
+    "final_url": "https://route-verdict-production.up.railway.app/.well-known/x402",
+    "content_type": "application/json",
+    "bytes": 5560,
+    "sha256": "c1152d7b0111d0304a55f0bfa08a00f83be1e053adb1e4f803025dd84b0e1d76",
+    "preview": "{\"x402Version\":2,\"service\":\"route-verdict\",\"description\":\"Trust checks for x402 endpoints: send any paid resource URL, get a TRUSTED / CAUTION / AVOID verdict with a 0-100 score, an itemized deduction list, catalog presence in the CDP Bazaar and PayAI indexes, and a diff against the last check. No API key, no signup, $0.05 USDC per check. Use this when an agent, monitor, or inspector needs to verify an x402 route before paying it or relying on it.\",\"network\":\"eip155:8453\",\"payTo\":\"0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F\",\"ownershipProofs\":[\"0x8c2ed7029c8144956320b45dc4deb1ad0eccbd23cb7ee02ce0851b8ebea592386af46d9687b85f62424f96374763d3419b48a3107f0a54f4c70c36ba19ba518c1c\"],\"extensions\":{\"nudge\":{\"endpoint\":\"https://route-verdict-production.up.railway.app/v1/nudge\",\"accepts\":[\"fleet-health/v1\"],\"spec\":\"https://github.com/QuincyGB/x402-loop-kits/blob/main/nudge-inbox.md\"}},\"resources\":[{\"resource\":\"https://route-verdict-production.up.railway.app/v1/check\",\"method\":\"POST\",\"price\":\"$0.05\",\"scheme\":\"exact\",\"mimeType\":\"application/json\",\"description\":\"Trust & liveness check for one x402 resource URL: live 402 probe (never pays the target), terms, discovery-schema quality, catalog presence, diff. Use this when auditing an unfamiliar x402 endpoint before paying or relying on it.\",\"tags\":[\"x402\",\"trust\",\"liveness\",\"monitoring\",\"verification\",\"agents\"],\"accepts\":[{\"scheme\":\"exact\",\"network\":\"eip155:8453\",\"amount\":\"50000\",\"asset\":\"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913\",\"payTo\":\""
+  },
+  {
+    "key": "route-openapi",
+    "url": "https://route-verdict-production.up.railway.app/openapi.json",
+    "method": "GET",
+    "at_utc": "2026-10-29T11:40:17.899954+00:00",
+    "status": 200,
+    "final_url": "https://route-verdict-production.up.railway.app/openapi.json",
+    "content_type": "application/json",
+    "bytes": 5003,
+    "sha256": "d81896937374ff83156f3e76065907075d45078eaa0b4bec0f398987a3a75c7f",
+    "preview": "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"route-verdict\",\"version\":\"1.0.0\"},\"paths\":{\"/\":{\"get\":{\"summary\":\"Landing\",\"operationId\":\"landing__get\",\"responses\":{\"200\":{\"description\":\"Successful Response\",\"content\":{\"text/html\":{\"schema\":{\"type\":\"string\"}}}}}}},\"/health\":{\"get\":{\"summary\":\"Health\",\"operationId\":\"health_health_get\",\"responses\":{\"200\":{\"description\":\"Successful Response\",\"content\":{\"application/json\":{\"schema\":{}}}}}}},\"/quote\":{\"get\":{\"summary\":\"Quote\",\"description\":\"Free: what the paid endpoint costs and where it settles.\",\"operationId\":\"quote_quote_get\",\"responses\":{\"200\":{\"description\":\"Successful Response\",\"content\":{\"application/json\":{\"schema\":{}}}}}}},\"/.well-known/x402\":{\"get\":{\"summary\":\"Well Known\",\"operationId\":\"well_known__well_known_x402_get\",\"responses\":{\"200\":{\"description\":\"Successful Response\",\"content\":{\"application/json\":{\"schema\":{}}}}}}},\"/skill.md\":{\"get\":{\"summary\":\"Skill\",\"operationId\":\"skill_skill_md_get\",\"responses\":{\"200\":{\"description\":\"Successful Response\",\"content\":{\"text/plain\":{\"schema\":{\"type\":\"string\"}}}}}}},\"/llms.txt\":{\"get\":{\"summary\":\"Llms\",\"operationId\":\"llms_llms_txt_get\",\"responses\":{\"200\":{\"description\":\"Successful Response\",\"content\":{\"text/plain\":{\"schema\":{\"type\":\"string\"}}}}}}},\"/v1/internal/check\":{\"post\":{\"summary\":\"Check Internal\",\"description\":\"Fleet-internal unpaid path for StallRow's /v1/orchestrate.\\nSecret discipline mirrors Token Verdict's RapidAPI route:\\nFLEET_INTERNAL_SECRET unset = 404, wrong secret = 403. Abse"
+  },
+  {
+    "key": "route-skill",
+    "url": "https://route-verdict-production.up.railway.app/skill.md",
+    "method": "GET",
+    "at_utc": "2026-10-29T11:40:17.906084+00:00",
+    "status": 200,
+    "final_url": "https://route-verdict-production.up.railway.app/skill.md",
+    "content_type": "text/plain; charset=utf-8",
+    "bytes": 1958,
+    "sha256": "db59c552b290e4a5c86a094c4b6152517ed82616f52596516e3aae7ef68252af",
+    "preview": "# route-verdict — trust & liveness checks for x402 endpoints (x402)\n\nSend any x402 resource URL, get a trust verdict on the endpoint itself.\nPay $0.05 USDC per call on Base (`eip155:8453`) via the\nx402 protocol — no API key needed.\n\n## Paid endpoint\n\n`POST https://route-verdict-production.up.railway.app/v1/check`\n\nBody (JSON):\n- `resource_url` (required): full URL of the x402 resource to audit,\n  e.g. `https://token-verdict-production.up.railway.app/v1/verdict`\n\nThe check is observation-only: RouteVerdict requests the target WITHOUT\npaying it, parses its 402 challenge, and never sends it money. Returns:\n\n- `verdict` (TRUSTED / CAUTION / AVOID) and `score` (0-100 trust score)\n- `reasons` — every deduction that produced the score, itemized\n- `liveness` — alive?, HTTP status, latency, whether the 402 parses as x402\n- `terms` — price, network, asset, payTo from the live challenge\n- `schema_quality` — is the Bazaar discovery schema real and typed, or\n  hollow ({\"type\", \"example\"} only)? Scored 0-100 with named deductions\n- `catalog` — is the resource listed in the CDP Bazaar / PayAI index?\n  (`unknown` means the lookup failed — never a fabricated \"not listed\")\n- `diff` — what changed since the previous check of the same URL (price,\n  payTo, schema score, listing presence, liveness); a first check says\n  \"no prior check on record\"\n\n## Free endpoints\n\n- `GET https://route-verdict-production.up.railway.app/quote` — price, network, payTo\n- `GET https://route-verdict-production.up.rail"
+  },
+  {
+    "key": "stall-readme",
+    "url": "https://raw.githubusercontent.com/QuincyGB/stall-row/master/README.md",
+    "method": "GET",
+    "at_utc": "2026-10-29T11:40:18.389603+00:00",
+    "status": 200,
+    "final_url": "https://raw.githubusercontent.com/QuincyGB/stall-row/master/README.md",
+    "content_type": "text/plain; charset=utf-8",
+    "bytes": 9956,
+    "sha256": "ce3f435f22c69dc8ef62a1fda4012cdaa39a552437e33e6a684c3be179a01588",
+    "preview": "# StallRow — a row of x402 micro-services in one deployment\n\nThirteen small paid endpoints under one roof, one facilitator\nconfiguration, one Railway service. The strategy is a portfolio: many\nreal stalls, each independently priced, listed, and settled, expecting\none or two to hit — instead of betting the season on a single route.\nSiblings: [Token Verdict](https://github.com/QuincyGB/token-verdict)\n(token-risk verdicts), [RouteVerdict](https://github.com/QuincyGB/route-verdict)\n(trust & liveness checks), [ListSmith](https://github.com/QuincyGB/list-smith)\n(listing grade & repair). No accounts, no API keys: **payment is the\nauthentication** (x402 v2, exact scheme, USDC on Base).\n\n## The row\n\n| Route | Price | What it does |\n|---|---|---|\n| `POST /v1/wallet-snapshot` | $0.005 | Base wallet: ETH balance, top token holdings, first/last activity, nonce |\n| `POST /v1/allowance-audit` | $0.005 | ERC-20 approvals vs a curated spender list; unlimited approvals flagged |\n| `POST /v1/tx-decoder` | $0.002 | One Base tx → plain English: method, value, ERC-20 transfers, summary |\n| `POST /v1/gas-oracle` | $0.001 | Gas price + base-fee trend over the last ~20 blocks + cheap-window hint |\n| `POST /v1/wallet-verdict` | $0.02 | SAFE/CAUTION/AVOID: OFAC match, wallet age, activity, poisoning scan |\n| `POST /v1/tube-search` | $0.01 | YouTube search results as JSON (public page scrape, no API key) |\n| `POST /v1/page-to-markdown` | $0.01 | One page → clean Markdown (SSRF-guarded) |\n| `POST /v1/rep"
+  }
+]

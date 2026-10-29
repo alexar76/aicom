@@ -1,0 +1,37 @@
+{
+  "verified_at_utc": "2026-10-28T07:19:25.587355+00:00",
+  "source_commit": "5f775c3a960b34cb28ed5c401a9fa51988a92714",
+  "package": "aimarket-hub",
+  "version": "3.16.1",
+  "source_tests": {
+    "passed": 335,
+    "failed": 0,
+    "skipped": 0
+  },
+  "extracted_wheel_tests": {
+    "passed": 44,
+    "note": "Repeat of the new security tests against imported modules from the extracted wheel; not additional unique cases."
+  },
+  "handoff_tool_tests": {
+    "passed": 15,
+    "network_and_uploads": "simulated only"
+  },
+  "packaged_python_files_identical_to_commit": 176,
+  "local_verification": [
+    {
+      "package": "aimarket-hub",
+      "version": "3.16.1",
+      "status": "local_verified",
+      "python_files_verified": 176,
+      "record_entries_verified": 207,
+      "all_required_fix_modules_present": true,
+      "identical_to_audited_build": true
+    }
+  ],
+  "ruff_money_gate": "passed",
+  "ruff_changed_code": "passed",
+  "uv_lock_offline": "passed",
+  "publication": "not performed",
+  "deployment": "not performed; per-oracle secrets required on both sides",
+  "prior_eight_package_handoff": "unchanged"
+}

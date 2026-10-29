@@ -1,0 +1,55 @@
+{
+  "checked_at_utc": "2026-10-26T20:23:36.008200+00:00",
+  "records": {
+    "branches": {
+      "url": "https://api.github.com/repos/alexar76/agent-skills-state-2026/branches?per_page=100",
+      "status": 200,
+      "sha256": "a58e9b2719e3876602089f9f5a855a03949517835d383bb0dfa6a90344ac01c5",
+      "has_next_page": false,
+      "items": [
+        {
+          "name": "main",
+          "sha": "8c0f67dcb61c19b353cc653bbc4fbf16feb9db3e"
+        },
+        {
+          "name": "related-dataset-histor",
+          "sha": "c91e7f596423fb4d682a9e4d78788370ccaacaac"
+        }
+      ]
+    },
+    "tags": {
+      "url": "https://api.github.com/repos/alexar76/agent-skills-state-2026/tags?per_page=100",
+      "status": 200,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "has_next_page": false,
+      "items": []
+    },
+    "main_commits": {
+      "url": "https://api.github.com/repos/alexar76/agent-skills-state-2026/commits?sha=main&per_page=100",
+      "status": 200,
+      "sha256": "bd76d59a96c4047a8e89f637df8ca9db46073f3c4b2e88413fc73144c9f2ce5d",
+      "has_next_page": false,
+      "items": [
+        {
+          "sha": "8c0f67dcb61c19b353cc653bbc4fbf16feb9db3e",
+          "html_url": "https://github.com/alexar76/agent-skills-state-2026/commit/8c0f67dcb61c19b353cc653bbc4fbf16feb9db3e",
+          "author": {
+            "name": "aleksandr.artamokhov",
+            "email": "alexar76@rambler.ru",
+            "date": "2026-10-26T20:08:43Z"
+          },
+          "committer": {
+            "name": "aleksandr.artamokhov",
+            "email": "alexar76@rambler.ru",
+            "date": "2026-10-26T20:08:43Z"
+          },
+          "message": "Import licensed agent skills study snapshot\n\nStart fresh local history from the upstream snapshot. Preserve original author attribution, licenses and dataset provenance in IMPORT-ORIGIN.json.",
+          "parents": []
+        }
+      ]
+    }
+  },
+  "main_has_one_root_commit_without_bot_attribution": true,
+  "tags_empty": true,
+  "remaining_old_branch": "related-dataset-histor (pending user decision because of open upstream PR #13)"
+}

@@ -1,0 +1,564 @@
+[
+  {
+    "url": "https://newruntime.com/readers/histor.json",
+    "checked_at": "2026-10-28T11:32:25.335940+00:00",
+    "status": 200,
+    "bytes": 3106,
+    "sha256": "d5637c2be8780b1dd6b81930e322ba9fbc292896d0c88eea9e0011ac698868cb",
+    "dossier": {
+      "schema_version": "newruntime-reader-dossiers-v1",
+      "type": "reader_dossier",
+      "id": "reader:histor",
+      "slug": "histor",
+      "name": "histor",
+      "kind": "agentic_registry",
+      "kind_label": "Agentic web & MCP registries",
+      "operator": {
+        "name": "unknown",
+        "url": null
+      },
+      "docs_url": null,
+      "robots_tokens": [],
+      "purpose": "Self-described in its user-agent as \"histor/0.1.0\" making read-only MCP probes (initialize + tools/list only). No operator page or public documentation could be found as of 2026-10-23.",
+      "feeds": [
+        "monitoring"
+      ],
+      "respects_robots": "unknown",
+      "robots_note": "A site histor.dev ('The evidence layer for autonomous AI', HTTPS receipts for agents) exists, but no page found ties it to this UA; not attributed.",
+      "verification": {
+        "method": "unknown",
+        "url": null
+      },
+      "why_it_matters": {
+        "text": "Read-only MCP handshake probe; shows something is cataloguing or witnessing our tool list.",
+        "kind": "new_runtime_interpretation"
+      },
+      "confidence": "low",
+      "researched_at": "2026-10-23",
+      "sources": [
+        "https://histor.dev/"
+      ],
+      "icon_url": null,
+      "matching": {
+        "aliases": [
+          "histor"
+        ],
+        "rule": "Reduce each agent_days label to a token: for labels starting with Mozilla/ take the product after 'compatible;', else a versioned crawler token such as 'FooBot/1.0' (a truncated 'Mozilla/5.0 (Linux; Android 7.0;) AppleWebKit/537.36 (KHTML, like Gecko) Mobile' prefix logged before 23 Oct 2026 is PetalBot; anything else is unidentified-android, unidentified-linux-chrome or unidentified-browser); otherwise take the text before the first '/', '(' or ';' and drop a trailing ' token probe'. Lowercase it. A dossier owns the tokens in its aliases."
+      },
+      "observed_baseline": {
+        "as_of": "2026-10-28T10:01:18.935Z",
+        "window_first_day": "2026-07-23",
+        "window_last_day": "2026-10-28",
+        "observed_days": 98,
+        "note": "Refreshed daily in production from the live aggregates (dated by as_of). For current numbers aggregate live_sources.history agent_days by matching.aliases.",
+        "total_requests": 183,
+        "first_seen": "2026-09-26T11:12:56.808Z",
+        "last_seen": "2026-10-28T06:52:45.098Z",
+        "days_active": 32,
+        "recency": "regular",
+        "categories": [
+          "other_bot"
+        ],
+        "label_variants": 6,
+        "journeys": null
+      },
+      "identity_note": "A family name is what a client claims in its user agent. It is verified only when its request came from the operator's published IP ranges or passed forward-confirmed reverse DNS, as reported per family in /crawler-journeys.json. Anyone can claim any name.",
+      "privacy": {
+        "scope": "family-level aggregates only",
+        "ip_addresses": "not_output",
+        "raw_user_agents": "not_output (labels are sanitized; URLs inside them are redacted)",
+        "visitor_ids": "not_output",
+        "query_strings": "not_output"
+      },
+      "live_sources": {
+        "history": "https://newruntime.com/bot-traffic-history.json",
+        "latest": "https://newruntime.com/bot-traffic-latest.json",
+        "machine_consumption": "https://newruntime.com/machine-consumption.json",
+        "crawler_journeys": "https://newruntime.com/crawler-journeys.json"
+      },
+      "routes": {
+        "html": "https://newruntime.com/readers/histor/",
+        "markdown": "https://newruntime.com/readers/histor.md",
+        "json": "https://newruntime.com/readers/histor.json",
+        "index": "https://newruntime.com/readers.json",
+        "index_html": "https://newruntime.com/readers/"
+      }
+    }
+  },
+  {
+    "url": "https://newruntime.com/bot-traffic-history.json",
+    "checked_at": "2026-10-28T11:32:25.336456+00:00",
+    "status": 200,
+    "bytes": 3018745,
+    "sha256": "65ba23ad8feb69c361b9aeb08c34cc8c1c46329e1e3a02849916a40e50c081b8",
+    "generated_at": "2026-10-28T11:31:05.892Z",
+    "history_window": {
+      "first_seen": "2026-07-23T08:38:50.603Z",
+      "last_seen": "2026-10-28T11:30:06.160Z",
+      "observed_days": 98,
+      "snapshot_count": 4949,
+      "updated_days": [
+        "2026-10-27",
+        "2026-10-28"
+      ],
+      "coverage_counts": {
+        "complete": 81,
+        "partial": 1,
+        "in_progress": 1,
+        "unknown": 15
+      },
+      "incomplete_days": [
+        "2026-07-23",
+        "2026-07-24",
+        "2026-07-25",
+        "2026-07-26",
+        "2026-07-27",
+        "2026-07-28",
+        "2026-07-29",
+        "2026-07-30",
+        "2026-07-31",
+        "2026-08-01",
+        "2026-08-02",
+        "2026-08-03",
+        "2026-08-04",
+        "2026-08-05",
+        "2026-08-06",
+        "2026-08-07",
+        "2026-10-28"
+      ],
+      "coverage_rule": "A day bucket is replaced only by a report whose log window covers more of that UTC day; a closed day never shrinks. complete = the log window spans the whole UTC day; in_progress = the day has not ended; partial = log rotation cut the day; unknown = legacy bucket written before coverage tracking."
+    },
+    "privacy": {
+      "ip_addresses": "not_output",
+      "visitor_ids": "not_output",
+      "query_strings": "not_output",
+      "raw_user_agents": "not_output",
+      "raw_log_lines": "not_output",
+      "storage": "daily sanitized aggregate buckets"
+    },
+    "notes": [
+      "Generated from sanitized aggregate traffic reports, not raw logs.",
+      "History keeps daily count buckets and agent first-seen dates only.",
+      "New Runtime monitoring checks and generic utility clients stay separated from public bot totals.",
+      "Scanner noise is shown as named scanner families when available, otherwise grouped by probe type.",
+      "Each bucket carries coverage: the part of its UTC day the source access logs spanned. Only complete buckets are full-day counts."
+    ],
+    "histor_records": [
+      {
+        "path": "/top/first_seen_agents/9",
+        "category": "other_bot",
+        "label": "histor/0.4.2 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 12,
+        "first_seen": "2026-10-27T12:48:50.569Z",
+        "last_seen": "2026-10-28T06:52:45.098Z"
+      },
+      {
+        "path": "/top/first_seen_agents/19",
+        "category": "other_bot",
+        "label": "histor/0.4.1 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 18,
+        "first_seen": "2026-10-25T18:40:00.463Z",
+        "last_seen": "2026-10-27T00:44:38.421Z"
+      },
+      {
+        "path": "/agent_days/1268",
+        "day": "2026-09-26",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-09-26T11:12:56.808Z",
+        "last_seen": "2026-09-26T11:12:56.895Z"
+      },
+      {
+        "path": "/agent_days/1310",
+        "day": "2026-09-27",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-09-27T11:16:43.655Z",
+        "last_seen": "2026-09-27T11:16:43.727Z"
+      },
+      {
+        "path": "/agent_days/1360",
+        "day": "2026-09-28",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-09-28T11:41:19.650Z",
+        "last_seen": "2026-09-28T11:41:19.722Z"
+      },
+      {
+        "path": "/agent_days/1398",
+        "day": "2026-09-29",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-09-29T11:51:46.781Z",
+        "last_seen": "2026-09-29T11:51:46.849Z"
+      },
+      {
+        "path": "/agent_days/1442",
+        "day": "2026-09-30",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-09-30T12:30:52.092Z",
+        "last_seen": "2026-09-30T12:30:52.185Z"
+      },
+      {
+        "path": "/agent_days/1483",
+        "day": "2026-10-01",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 6,
+        "first_seen": "2026-10-01T12:23:33.715Z",
+        "last_seen": "2026-10-01T18:52:06.144Z"
+      },
+      {
+        "path": "/agent_days/1526",
+        "day": "2026-10-02",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 6,
+        "first_seen": "2026-10-02T06:10:20.886Z",
+        "last_seen": "2026-10-02T08:27:10.617Z"
+      },
+      {
+        "path": "/agent_days/1579",
+        "day": "2026-10-03",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-03T08:30:15.776Z",
+        "last_seen": "2026-10-03T08:30:15.859Z"
+      },
+      {
+        "path": "/agent_days/1631",
+        "day": "2026-10-04",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-04T08:31:07.157Z",
+        "last_seen": "2026-10-04T08:31:07.235Z"
+      },
+      {
+        "path": "/agent_days/1686",
+        "day": "2026-10-05",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-05T09:26:00.512Z",
+        "last_seen": "2026-10-05T09:26:00.590Z"
+      },
+      {
+        "path": "/agent_days/1739",
+        "day": "2026-10-06",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-06T08:38:43.506Z",
+        "last_seen": "2026-10-06T08:38:43.582Z"
+      },
+      {
+        "path": "/agent_days/1796",
+        "day": "2026-10-07",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-07T08:42:28.665Z",
+        "last_seen": "2026-10-07T08:42:28.764Z"
+      },
+      {
+        "path": "/agent_days/1850",
+        "day": "2026-10-08",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-08T08:51:34.728Z",
+        "last_seen": "2026-10-08T08:51:34.797Z"
+      },
+      {
+        "path": "/agent_days/1911",
+        "day": "2026-10-09",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-09T08:30:38.354Z",
+        "last_seen": "2026-10-09T08:30:38.429Z"
+      },
+      {
+        "path": "/agent_days/1952",
+        "day": "2026-10-10",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 15,
+        "first_seen": "2026-10-10T08:33:53.407Z",
+        "last_seen": "2026-10-10T19:29:18.585Z"
+      },
+      {
+        "path": "/agent_days/2005",
+        "day": "2026-10-11",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 15,
+        "first_seen": "2026-10-11T05:47:38.640Z",
+        "last_seen": "2026-10-11T11:37:51.955Z"
+      },
+      {
+        "path": "/agent_days/2064",
+        "day": "2026-10-12",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 12,
+        "first_seen": "2026-10-12T16:36:01.298Z",
+        "last_seen": "2026-10-12T22:33:26.235Z"
+      },
+      {
+        "path": "/agent_days/2127",
+        "day": "2026-10-13",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 15,
+        "first_seen": "2026-10-13T11:52:44.770Z",
+        "last_seen": "2026-10-13T23:38:04.236Z"
+      },
+      {
+        "path": "/agent_days/2210",
+        "day": "2026-10-14",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 9,
+        "first_seen": "2026-10-14T04:47:59.543Z",
+        "last_seen": "2026-10-14T10:25:33.406Z"
+      },
+      {
+        "path": "/agent_days/2279",
+        "day": "2026-10-15",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-15T10:55:21.102Z",
+        "last_seen": "2026-10-15T10:55:21.176Z"
+      },
+      {
+        "path": "/agent_days/2341",
+        "day": "2026-10-16",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-16T11:41:01.220Z",
+        "last_seen": "2026-10-16T11:41:01.381Z"
+      },
+      {
+        "path": "/agent_days/2400",
+        "day": "2026-10-17",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-17T10:49:45.235Z",
+        "last_seen": "2026-10-17T10:49:45.307Z"
+      },
+      {
+        "path": "/agent_days/2457",
+        "day": "2026-10-18",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 6,
+        "first_seen": "2026-10-18T12:06:34.183Z",
+        "last_seen": "2026-10-18T21:47:42.341Z"
+      },
+      {
+        "path": "/agent_days/2534",
+        "day": "2026-10-19",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-19T21:42:56.866Z",
+        "last_seen": "2026-10-19T21:42:56.933Z"
+      },
+      {
+        "path": "/agent_days/2603",
+        "day": "2026-10-20",
+        "category": "other_bot",
+        "label": "histor/0.1.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-20T21:44:24.803Z",
+        "last_seen": "2026-10-20T21:44:24.884Z"
+      },
+      {
+        "path": "/agent_days/2746",
+        "day": "2026-10-22",
+        "category": "other_bot",
+        "label": "histor/0.2.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-22T18:54:48.175Z",
+        "last_seen": "2026-10-22T18:54:48.241Z"
+      },
+      {
+        "path": "/agent_days/2816",
+        "day": "2026-10-23",
+        "category": "other_bot",
+        "label": "histor/0.3.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-23T18:35:28.480Z",
+        "last_seen": "2026-10-23T18:35:28.556Z"
+      },
+      {
+        "path": "/agent_days/2885",
+        "day": "2026-10-24",
+        "category": "other_bot",
+        "label": "histor/0.4.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-24T18:30:28.009Z",
+        "last_seen": "2026-10-24T18:30:28.079Z"
+      },
+      {
+        "path": "/agent_days/2954",
+        "day": "2026-10-25",
+        "category": "other_bot",
+        "label": "histor/0.4.0 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 9,
+        "first_seen": "2026-10-25T00:31:14.025Z",
+        "last_seen": "2026-10-25T12:33:45.872Z"
+      },
+      {
+        "path": "/agent_days/2967",
+        "day": "2026-10-25",
+        "category": "other_bot",
+        "label": "histor/0.4.1 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-25T18:40:00.463Z",
+        "last_seen": "2026-10-25T18:40:00.543Z"
+      },
+      {
+        "path": "/agent_days/3026",
+        "day": "2026-10-26",
+        "category": "other_bot",
+        "label": "histor/0.4.1 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 12,
+        "first_seen": "2026-10-26T00:40:02.998Z",
+        "last_seen": "2026-10-26T18:44:22.687Z"
+      },
+      {
+        "path": "/agent_days/3118",
+        "day": "2026-10-27",
+        "category": "other_bot",
+        "label": "histor/0.4.2 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 6,
+        "first_seen": "2026-10-27T12:48:50.569Z",
+        "last_seen": "2026-10-27T18:51:33.152Z"
+      },
+      {
+        "path": "/agent_days/3132",
+        "day": "2026-10-27",
+        "category": "other_bot",
+        "label": "histor/0.4.1 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 3,
+        "first_seen": "2026-10-27T00:44:38.252Z",
+        "last_seen": "2026-10-27T00:44:38.421Z"
+      },
+      {
+        "path": "/agent_days/3202",
+        "day": "2026-10-28",
+        "category": "other_bot",
+        "label": "histor/0.4.2 (+public-url-redacted read-only: initialize + tools/list)",
+        "count": 6,
+        "first_seen": "2026-10-28T00:52:17.283Z",
+        "last_seen": "2026-10-28T06:52:45.098Z"
+      }
+    ]
+  },
+  {
+    "url": "https://newruntime.com/privacy/",
+    "checked_at": "2026-10-28T11:32:25.336599+00:00",
+    "status": 200,
+    "bytes": 40535,
+    "sha256": "a24774f7e83bb96cc1b4b68270d1f20c0d73ece95cd3ffe4c9aa519f14a92e61",
+    "method_extracts": [
+      "Privacy - New Runtime | NEW RUNTIME",
+      "◒ | Privacy | =",
+      "Public data boundary | Privacy | How New Runtime handles public content, operational traffic data, analytics choices, and links to external services.",
+      "Operational telemetry | The hosting stack may process ordinary request metadata needed to deliver the site, defend it from abuse, and produce aggregate reliability and discovery measurements. Public telemetry reports never publish IP addresses, visitor identifiers, raw User-Agent strings, raw log lines, query strings, or individual session paths. | Crawler names are treated as claims until they can be checked against a supported provider verification method. A request, fetch, or crawler label is not treated as proof of a human reader, indexing, model training, recommendation, or intent.",
+      "The hosting stack may process ordinary request metadata needed to deliver the site, defend it from abuse, and produce aggregate reliability and discovery measurements. Public telemetry reports never publish IP addresses, visitor identifiers, raw User-Agent strings, raw log lines, query strings, or individual session paths. | Crawler names are treated as claims until they can be checked against a supported provider verification method. A request, fetch, or crawler label is not treated as proof of a human reader, indexing, model training, recommendation, or intent. | 03",
+      "Optional browser analytics can be disabled for this site by opening any page with ?nr_analytics=off or ?nr_noanalytics. The preference is stored locally in the browser and as a first-party opt-out cookie. Use ?nr_analytics=on to remove that preference. | The public traffic panels are aggregate operational views. They are deliberately separated into AI clients, search crawlers, other automation, scanners, and human-like page requests so that automated probes are not presented as audience. | Machine Discovery Lab",
+      "Machine Discovery Lab | Methodology and privacy-safe crawler aggregates. | Visitor dossiers",
+      "State of Machine Readership | October 2026 research report built from these aggregates. | Contact",
+      "Who read this page? | Machine requests, hidden until opened | +",
+      "+ | Loading the privacy-safe route aggregate… | Open the JSON contract",
+      "Who reads New Runtime | Machine and human reads, from sanitized access-log aggregates. | 24h",
+      "Reach of the graph | verified crawlers · 24h | First time here"
+    ],
+    "links": [
+      "/about/",
+      "/readers/",
+      "/privacy/",
+      "/research/state-of-machine-readership-2026-10/",
+      "/page-readership/privacy.json"
+    ]
+  },
+  {
+    "url": "https://newruntime.com/readers/",
+    "checked_at": "2026-10-28T11:32:25.336751+00:00",
+    "status": 200,
+    "bytes": 259448,
+    "sha256": "dd94f9f5587109bdace216dd2a54793ec9f41c02ba8b9b76ec9deb07f875e352",
+    "method_extracts": [
+      "◒ | Privacy | =",
+      "Who reads New Runtime by machine | Most of this site's readers are software. Here is a dossier on each one: who runs it, what it is built to do, whether it follows robots.txt, how to tell the real one from an impostor, and what it did on New Runtime. | Families profiled",
+      "93 | Requests in window | 325,171",
+      "— | Baseline 2026-10-28, 98-day window. Loading live numbers… | /readers.json",
+      "Sort | Most requests | Last seen",
+      "Perplexity | PerplexityBot surfaces and links websites in Perplexity search results and is not used to crawl content for AI foundation models. The separate Perplexity-User fetcher opens pages on user request to answer a question and link the page. | search index",
+      "Parallel Web Systems | Parallel Web Systems' crawler; it collects publicly available web content to build and maintain Parallel's search index (Parallel sells web search/research APIs for AI agents). A separate Shap-User agent handles user-triggered fetches and does not crawl automatically. | search index",
+      "Keenable | Builds and maintains the Keenable search index, which answers queries from AI agents and applications and cites source pages with links. A separate Keenable-User agent fetches single pages on behalf of a person or their agent. | search index",
+      "xAI (unconfirmed; UA claims x.ai) | User agents that claim to be xAI (GrokBot/1.0, xAI-SearchBot/1.0 with +https://x.ai). Third-party directories describe xAI-SearchBot as fetching/indexing pages for Grok search and answers; GrokBot's purpose is undisclosed. xAI publishes no crawler documentation. | unknown",
+      "Google | Google crawler that performs crawls requested by site owners to build Vertex AI Agents; Google says it has no effect on Google Search or other products. | research",
+      "Meta | Fetches individual links at a user's request, including for agentic AI tasks in Meta AI products. | live answer fetch",
+      "14 | Collect pages for model training or open web datasets, plus the robots.txt control tokens that govern that use. | Meta-ExternalAgent",
+      "Reflection AI | Reflection AI's web crawler. It visits publicly available web pages to help build and improve the company's (open) AI models; it is currently the only user agent Reflection AI crawls with. | model training",
+      "Amazon | Amazon crawler used to improve Amazon products and services; Amazon states its data may be used to train Amazon AI models. Related agents: Amzn-SearchBot (search, e.g. Alexa; no AI training) and Amzn-User (live user-request fetches). | model training",
+      "Google | Not a crawler: a standalone robots.txt product token that lets publishers control whether content crawled by Google may be used to train future Gemini models and for grounding in Gemini Apps and Vertex AI. It has no separate HTTP user-agent string; crawling uses existing Google user agents. | model training",
+      "ByteDance | ByteDance crawler described by secondary sources as an AI data scraper, allegedly used to build training data for ByteDance LLMs such as Doubao. No operator documentation was opened. | model training",
+      "Apple | Secondary user agent that does not crawl; it only governs whether data already crawled by Applebot may be used to train Apple's foundation models. | model training",
+      "Huawei (Petal Search) | Huawei's crawler for the Petal Search engine; directories also say it supplies content recommendations for Huawei Assistant and other Huawei AI services. It crawls mostly with a mobile user agent that looks like Chrome on Android 7.0 and names itself only at the end ('compatible; PetalBot'). Official page (webmaster.petalsearch.com/site/petalbot) is JS-only and could not be read. | search index",
+      "LohiSoft s.r.o. | Builds LohiSoft's own search index from page titles, meta descriptions, h1-h3 headings, URLs and inbound link text (not page bodies), at most 20 pages per site. The operator states it does not collect AI training data or republish content. | search index",
+      "rokmcp-collector | Operator unknown | Self-described in its user-agent as \"rokmcp-collector/0.2\", an MCP-related collector; rokmcp.com exists but returned HTTP 503 and no description could be retrieved. No operator page or public documentation could be found as of 2026-10-23.",
+      "Operator unknown | Self-described in its user-agent as \"rokmcp-collector/0.2\", an MCP-related collector; rokmcp.com exists but returned HTTP 503 and no description could be retrieved. No operator page or public documentation could be found as of 2026-10-23. | registry / directory",
+      "Ora | Ora's on-demand scanner that scores how ready a website is for AI agents. When someone requests a score for a domain it fetches robots.txt, llms.txt, OpenAPI specs, MCP manifests, structured data and /.well-known/poppy.json in a bounded burst; during a scan it also requests the homepage under other crawlers' UAs (GPTBot, ClaudeBot, PerplexityBot). | monitoring",
+      "WellknownBot | Operator unknown | Self-described in its user-agent as \"WellknownBot/0.1\" with listing and claim URLs, i.e. a directory crawler that creates a listing for the site and offers a claim link. No operator page or public documentation could be found as of 2026-10-23.",
+      "Operator unknown | Self-described in its user-agent as \"WellknownBot/0.1\" with listing and claim URLs, i.e. a directory crawler that creates a listing for the site and offers a claim link. No operator page or public documentation could be found as of 2026-10-23. | registry / directory"
+    ],
+    "links": [
+      "/about/",
+      "/readers/",
+      "/privacy/",
+      "/readers.json",
+      "/readers.md",
+      "/readers/perplexitybot/",
+      "/readers/oai-searchbot/",
+      "/readers/exa/",
+      "/readers/sofyabot/",
+      "/readers/chatgpt-user/",
+      "/readers/shapbot/",
+      "/readers/keenablebot/",
+      "/readers/claude-user/",
+      "/readers/claude-searchbot/",
+      "/readers/kimi-moonshot/",
+      "/readers/xai-grok/",
+      "/readers/youbot/",
+      "/readers/duckassistbot/",
+      "/readers/google-cloudvertexbot/",
+      "/readers/cohere-ai/",
+      "/readers/meta-externalfetcher/",
+      "/readers/meta-externalagent/",
+      "/readers/claudebot/",
+      "/readers/reflectionbot/",
+      "/readers/amazonbot/",
+      "/readers/gptbot/",
+      "/readers/google-extended/",
+      "/readers/bytespider/",
+      "/readers/ccbot/",
+      "/readers/deepseekbot/"
+    ]
+  }
+]

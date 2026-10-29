@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-28",
+  "implementation_status": "local_only_not_deployed",
+  "github_writes": false,
+  "pytest": {
+    "passed": 197,
+    "seconds": 15.25,
+    "junit_report": "artifacts/factory-npm-security-2026-10-28/autonomous-repair-tests.xml"
+  },
+  "real_factory_agent_proof": {
+    "factory_entrypoint": "DeveloperAgent._dev_repair_npm",
+    "actual_npm_commands": true,
+    "llm_called": false,
+    "old_version": "1.2.1",
+    "new_version": "1.2.2",
+    "before_audit_passed": false,
+    "after_audit_passed": true,
+    "changed_files": [
+      "frontend/package-lock.json"
+    ],
+    "agent_tracked_files": [
+      "frontend/package-lock.json"
+    ],
+    "requires_qa": true,
+    "scope": "isolated local proof product; Sentinel and Relay source trees were not manually edited",
+    "deployed": false
+  },
+  "flow": [
+    "Security detects actual npm findings",
+    "Developer changes package declarations and compatibility code",
+    "Factory npm tool generates real lockfiles and applies compatible fixes",
+    "QA and fresh Security scan gate the candidate",
+    "Auto-recovery performs fresh npm audit before completion"
+  ],
+  "files": [
+    "agents/dev.py",
+    "web/backend/services/npm_dependency_repair.py",
+    "orchestrator/auto_recovery.py"
+  ],
+  "limitations": [
+    "Existing production factory has not been updated or restarted",
+    "Major upgrades require Developer code/configuration adaptation; npm --force is never used",
+    "Proof exercised actual npm metadata commands in a local example; no production Sentinel/Relay trees were edited"
+  ]
+}

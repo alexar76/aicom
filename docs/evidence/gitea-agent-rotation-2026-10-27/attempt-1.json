@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-27T18:32:22+00:00",
+  "helperSha256": "7fe61a4388d716b5f494bf8e287f9a437cacd38855fe23ae719ee76a1318f75d",
+  "failedPhase": "switch-agent-to-protected-token",
+  "errorType": "KeyError",
+  "tokenCreated": true,
+  "passwordChanged": false,
+  "independentRecoveryChecks": {
+    "envAndOriginExactlyRestored": true,
+    "processLoadedOldUrl": true,
+    "agentActive": true,
+    "oldAccountPasswordStatus": 200,
+    "pendingNewPasswordStatus": 401,
+    "replacementTokenRepositoryStatus": 200,
+    "credentialStoreMode": "0600"
+  },
+  "nextAction": "Bounded process environment readiness check and explicit resume reusing the saved PAT and password"
+}

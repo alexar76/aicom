@@ -55,7 +55,7 @@ PATH_TO_ID: dict[str, str] = {
     "create-aimarket-agent": "create-aimarket-agent",
     "skopos": "skopos",
     "gaia": "gaia",
-    "emporion": "emporion",
+    "symmartys": "symmartys",
     "histor": "histor",
     "esim-kit": "esim-kit",
     ".": "aicom",
@@ -116,6 +116,10 @@ def badge_block(sat: dict[str, Any], *, use_raw_coverage: bool = False) -> str:
     workflow = sat.get("workflow", "ci.yml")
     license_name = sat.get("license", "MIT")
     factory_embedded = bool(sat.get("factory_embedded"))
+    if sat.get("github_published") is False:
+        # A local rename has no new repository, Actions status, or raw asset URL.
+        # Preserve the fence without inventing public links or static passing CI.
+        return f"{MARKER_START}\n{MARKER_END}"
     if factory_embedded:
         # Monorepo subrepo (e.g. hephaestus/) — no alexar76/<repo> satellite mirror.
         # Badge assets live beside this README under docs/badges/.

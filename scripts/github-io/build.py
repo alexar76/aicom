@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build the five dependency-free GitHub Pages entry points from localized content."""
+import importlib.util
 import json
 import os
 from html import escape as e
@@ -22,17 +23,26 @@ PROJECTS = [
     ('GAIA', 'data', 'https://github.com/alexar76/gaia'),
     ('LOGOS', 'data', 'https://logos.modelmarket.dev/'),
     ('eSIM operator kit', 'trade', 'https://esim.modelmarket.dev/'),
-    ('EMPORION', 'data', 'https://emporion.modelmarket.dev/'),
+    ('SYMMARTYS', 'data', 'https://symmartys.modelmarket.dev/'),
 ]
 CATEGORIES = ['all', 'build', 'trade', 'trust', 'data']
-DOCS = 'https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md'
+DOCS = '/docs/ecosystem/knowledge-base.html'
+WHITEPAPER_LABELS = {'en': 'Whitepaper', 'ru': 'Whitepaper', 'es': 'Libro blanco', 'fr': 'Livre blanc', 'zh': '白皮书'}
+
+
+def build_documentation(output):
+    spec = importlib.util.spec_from_file_location('ecosystem_public_docs', ROOT / 'public_docs.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.build_documents(output, SITE_URL, ASSET_PREFIX)
 
 def route(locale):
     return '/' if locale == 'en' else f'/{locale}/'
 
 def render(locale, c):
     url = SITE_URL + route(locale)
-    docs = DOCS if locale == 'en' else DOCS.replace('knowledge-base.md', f'knowledge-base-{locale}.md')
+    docs = DOCS if locale == 'en' else DOCS.replace('knowledge-base.html', f'knowledge-base-{locale}.html')
+    whitepaper = f'/docs/ecosystem/whitepaper/{locale}.html'
     alternates = ''.join(f'<link rel="alternate" hreflang="{l}" href="{SITE_URL}{route(l)}">' for l in LANGUAGES)
     lang_links = ''.join(f'<a href="{route(l)}" lang="{l}" hreflang="{l}" {"aria-current=page" if l == locale else ""}>{name}</a>' for l, name in LANGUAGES.items())
     factory_entry = PROJECTS[0][2] + f"?lang={locale}"
@@ -53,13 +63,14 @@ def render(locale, c):
 <section id="exchange" class="exchange"><div class="wrap"><p class="eyebrow">01 / {e(c['nav'][1])}</p><div class="section-heading"><h2>{e(c['flowTitle'])}</h2><p>{e(c['flowIntro'])}</p></div><div class="case-brief"><span class="mono">{e(c['briefLabel'])}</span><h3>{e(c['brief'])}</h3></div><div class="steps">{steps}</div><p class="case-outcome">{e(c['outcome'])}</p><p class="limit">{e(c['limit'])}</p><details class="case-proof"><summary>{e(c['proofTitle'])}</summary><p>{e(c['proof'])}</p></details><a class="text-link case-link" href="{FACTORY_LANDING}{route(locale)}#specialists">{e(c['factoryCase'])} ↗</a></div></section>
 <section id="explore" class="directory wrap"><p class="eyebrow">02 / {e(c['nav'][0])}</p><div class="section-heading"><h2>{e(c['directory'])}</h2><p>{e(c['directoryIntro'])}</p></div><div class="filter-bar"><div class="filters" role="group" aria-label="{e(c['nav'][0])}">{filters}</div><span class="count mono" aria-live="polite"><span id="project-count">{len(PROJECTS)}</span> {e(c['projectLabel'])}</span></div><div class="projects">{projects}</div></section>
 <section class="closing wrap"><span class="closing-star" aria-hidden="true">✳</span><h2>{e(c['endTitle']).replace(chr(10), '<br>')}</h2><p>{e(c['endText'])}</p><div class="actions"><a class="button" href="{factory_entry}">{e(c['endCta'])}<span>↗</span></a><a class="text-link" href="{PROJECTS[1][2]}">{e(c['endSecond'])} ↗</a></div><p><a class="text-link" href="https://edu.modelmarket.dev{route(locale)}ai-pays-ai/">{e(c['firstExchange'])} ↗</a></p></section></main>
-<footer class="wrap"><div class="footer-brand">AICOM ECOSYSTEM<p>{e(c['footer'])}</p></div><a href="{docs}">{e(c['docs'])} ↗</a><a href="https://github.com/alexar76/alexar76.github.io">GitHub ↗</a><span class="mono">OPEN / CONNECTED</span></footer></body></html>'''
+<footer class="wrap"><div class="footer-brand">AICOM ECOSYSTEM<p>{e(c['footer'])}</p></div><a href="{docs}">{e(c['docs'])} ↗</a><a href="{whitepaper}">{WHITEPAPER_LABELS[locale]} ↗</a><a href="https://github.com/alexar76/alexar76.github.io">GitHub ↗</a><span class="mono">OPEN / CONNECTED</span></footer></body></html>'''
 
 if __name__ == '__main__':
     for locale, content in CONTENT.items():
         destination = ROOT / ('' if locale == 'en' else locale)
         destination.mkdir(exist_ok=True)
         (destination / 'index.html').write_text(render(locale, content))
-    (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{SITE_URL}{route(l)}</loc></url>' for l in LANGUAGES) + '</urlset>')
+    document_paths = build_documentation(ROOT)
+    (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{SITE_URL}{path}</loc></url>' for path in [*(route(l) for l in LANGUAGES), *document_paths]) + '</urlset>')
     (ROOT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n')
     print('Built five localized ecosystem pages.')

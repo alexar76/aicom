@@ -1,0 +1,46 @@
+Usage: warden-mcp scan [CONFIG...] [options]
+
+Reads MCP client configs, connects to every server they start, and vets the
+tool definitions before a model sees them. Exit 0 = nothing blocked,
+1 = a server was blocked (or, with --fail-on-error, could not be checked),
+2 = usage or config error.
+
+Where to look (default: every known client file that exists)
+  CONFIG...              client config files (.mcp.json, claude_desktop_config.json, mcp.json …)
+  --project              only project files in --cwd (.mcp.json, .cursor/mcp.json, .vscode/mcp.json)
+  --client NAME          only this client: claude-code, claude-desktop, cursor, vscode, windsurf (repeatable)
+  --cwd DIR              project directory (default: current directory)
+
+How to connect
+  --no-launch            do not start stdio servers; vet their launch line only
+  --public-only          refuse remote servers that resolve to private/loopback/link-local addresses
+  --timeout MS           per server (default 30000)
+  --concurrency N        servers checked at once (default 4)
+
+Verdicts
+  --fail-on SEVERITY     block at this severity: info|low|medium|high|critical (default high)
+  --policy FILE          strict JSON policy, as for wrap
+  --require-approval     require an explicit operator pin/lock covering every field and identity
+  --lock FILE            compare with reviewed definitions; a server missing from the lock is blocked
+  --update-lock          write what the servers advertise now into --lock (refuses blocked servers)
+  --state-dir DIR        where wrap keeps pins (read only here)
+  --feed URL --feed-key HEX   signed threat feed, as for wrap
+  --histor               ask the HISTOR log whether your servers serve you what they serve everyone
+                         (remote: endpoint + digest; npm/PyPI stdio: package name + digest)
+                         (sends the endpoint without query or credentials, and a digest; never tool text)
+  --histor-url URL       default https://histor.modelmarket.dev
+  --classifier-url URL --classifier-model NAME
+                         also ask a model you choose (OpenAI-compatible: Ollama, vLLM, a hosted API)
+                         whether each tool's text directs the model. Sends tool definitions to that URL.
+                         Key, if any, from WARDEN_CLASSIFIER_API_KEY. Advisory unless --classifier-blocks.
+  --classifier-blocks    enforce model verdicts; incomplete/error/uncertain inspection also refuses admission
+  --classifier-reasoning-effort none|low|medium|high
+                         optional provider-supported budget; omitted uses the provider default
+
+Output
+  --json                 JSON report on stdout instead of a table
+  --sarif FILE           also write SARIF 2.1.0 (GitHub code scanning)
+  --markdown FILE        also write a Markdown report (e.g. $GITHUB_STEP_SUMMARY)
+  --json-file FILE       also write the JSON report to FILE
+  --fail-on-error        a server that could not be checked fails the run too
+  --no-color

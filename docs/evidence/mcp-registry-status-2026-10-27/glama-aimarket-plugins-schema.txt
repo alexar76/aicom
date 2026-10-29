@@ -1,0 +1,219 @@
+Schema | aimarket-mcp-packager | Glama
+Skip to main content
+Glama
+Servers
+Connectors
+Tools
+Clients
+Inspector
+New Chat
+Sign Up
+Glama
+MCP
+Servers
+aimarket-mcp-packager
+Favorite
+Developer Tools
+AI & Machine Learning
+by
+alexar76
+Overview
+Schema
+Source
+Related Servers
+Discussions
+Admin
+Python
+Hybrid
+Server Configuration
+Describes the environment variables required to run the server.
+Name
+Required
+Description
+Default
+No arguments
+Instructions
+Guidance the server publishes about itself, which clients place ahead of the tool catalog so the model reads it before choosing anything.
+This server publishes no instructions, or was last inspected before Glama recorded them.
+Capabilities
+Features and capabilities supported by this server
+Protocol revision
+2025-11-25
+Capability
+Details
+tools
+{
+  "listChanged": false
+}
+prompts
+{
+  "listChanged": false
+}
+resources
+{
+  "subscribe": false,
+  "listChanged": false
+}
+experimental
+{}
+Tools
+Functions exposed to the LLM to take actions
+Name
+Description
+package_capability
+A
+Build a complete self-hosted MCP server package for an AIMarket capability.
+Use this first. It assembles everything needed to ship the capability as a
+standalone MCP server: the Docker image name, the MCP manifest (server +
+tool definition), subscription/pricing tiers, and a connection string.
+Returns:
+    A JSON object (string) with keys:
+      -
+docker_image
+: the image name to build/run.
+      -
+mcp_manifest
+: the full MCP manifest (server metadata + tools).
+      -
+subscription_tiers
+: pricing tiers derived for the capability.
+      -
+connection_string
+: how a client connects to the running server.
+Example:
+    package_capability(
+        capability_id="translate.multi@v2",
+        product_id="prod-translate",
+        name="Lyra Translator",
+        description="Translate text into multiple languages.",
+        input_schema={"type": "object",
+                      "properties": {"text": {"type": "string"}},
+                      "required": ["text"]},
+    )
+generate_dockerfile
+A
+Generate a ready-to-build Dockerfile for the packaged MCP server.
+Takes the same capability inputs as
+package_capability
+and returns the
+Dockerfile text that builds the self-hosted MCP server image for it.
+Returns:
+    The Dockerfile contents as plain text — write it to
+Dockerfile
+and
+    run
+docker build
+to produce the image named in
+package_capability
+'s
+docker_image
+field.
+Example:
+    generate_dockerfile(
+        capability_id="translate.multi@v2",
+        product_id="prod-translate",
+        name="Lyra Translator",
+    )
+generate_claude_desktop_config
+A
+Generate a claude_desktop_config.json snippet for the packaged MCP server.
+Takes the same capability inputs as
+package_capability
+and returns the
+mcpServers
+entry that registers the docker-run MCP server with Claude
+Desktop (or any MCP host that reads this config format).
+Returns:
+    A JSON object (string) containing an
+mcpServers
+block — merge it into
+    the user's existing
+claude_desktop_config.json
+and restart the host.
+Example:
+    generate_claude_desktop_config(
+        capability_id="translate.multi@v2",
+        product_id="prod-translate",
+        name="Lyra Translator",
+    )
+Prompts
+Interactive templates invoked by user choice
+Name
+Description
+No prompts
+Resources
+Contextual data attached and managed by the client
+Name
+Description
+No resources
+Try in Browser
+Deploy Server
+Deploy Server
+Shareable, User-Owned Context Backend
+People, applications, and agents read, write, and coordinate together in one context lake. Reach it over MCP, a CLI, a Python SDK, or REST.
+fulcradynamics.com
+Ad
+TDQS
+A
+4.2
+/5.0
+Scored
+2026-06-18 03:55
+across
+3
+tools
+Disambiguation
+5
+/5
+Each tool has a clearly distinct purpose: package_capability builds the package, generate_dockerfile produces the Dockerfile, and generate_claude_desktop_config outputs the config snippet. There is no overlap in functionality.
+Naming Consistency
+5
+/5
+All tool names follow a consistent verb_noun pattern (package_capability, generate_dockerfile, generate_claude_desktop_config), making them predictable and easy to understand.
+Tool Count
+4
+/5
+With 3 tools, the server is slightly small but well-scoped for its packaging purpose. Each tool serves a necessary step, and adding more would risk bloat.
+Completeness
+4
+/5
+The tool set covers the core packaging workflow: build the package, generate Dockerfile, and generate config. Minor gaps exist, such as lacking a validation or listing tool, but the main path is complete.
+Maintenance
+Activity
+Maintained
+Responsiveness
+Unresponsive
+Resources
+GitHub Repository
+Need Help?
+Report Issue
+Related Servers
+Was this helpful?
+Yes
+No
+MCP
+MCP Servers
+MCP Connectors
+MCP Clients
+MCP Tools
+Best MCP Servers
+Products
+Chat
+MCP Directory API
+MCP Gateway
+MCP Hosting
+MCP Inspector
+Policies
+Terms of Service
+Privacy Policy
+VDP
+Resources
+Support
+Careers
+Blog
+Newsletter
+Advertise
+Glama
+– all-in-one AI workspace.
+All systems online
+Help

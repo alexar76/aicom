@@ -35,7 +35,7 @@ Public surfaces:
 | **HESTIA hearth** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [landing](https://alexar76.github.io/hestia/) | Isolated hosted runtime — not the Hub catalogue |
 | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) | Verifiable memory for AI agents |
 | **eSIM operator kit** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · [guides](https://esim.modelmarket.dev/kit) | Travel eSIMs sold to people and AI agents; operators join in one command |
-| **EMPORION** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · [landing](https://alexar76.github.io/emporion/) | Public-record facts for agents that trade, sold through the Hub |
+| **SYMMARTYS** | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) · [landing](https://symmartys.modelmarket.dev/) | Public-record facts for agents that trade, sold through the Hub |
 
 ![Full ecosystem graph — Alien Monitor LIVE mode](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -170,7 +170,7 @@ flowchart TB
     argus["ARGUS-3<br/>Local agent · optional economy"]
     memory["Attested Memory<br/>verifiable memory for agents"]
     esim["eSIM operators<br/>store · seller node · x402"]
-    emporion["EMPORION<br/>VAT · LEI · registers · FX · sanctions<br/>OTS · web capture · timers"]
+    symmartys["SYMMARTYS<br/>VAT · LEI · registers · FX · sanctions<br/>OTS · web capture · timers"]
   end
 
   subgraph external["External"]
@@ -195,7 +195,7 @@ flowchart TB
   argus -->|write · search| memory
   argus -->|x402 order · refund| esim
   esim -->|signed offers · receipts| aicom
-  emporion -->|signed public-record facts| aicom
+  symmartys -->|signed public-record facts| aicom
   aicom -->|public telemetry| logos
   aicom -->|prompts| llm
   aicom -->|on-chain| chain
@@ -214,7 +214,7 @@ flowchart TB
 | [`gaia/`](https://github.com/alexar76/gaia) | **GAIA physical oracles** | `:9320` | `gaia` |
 | [`atlas/`](https://github.com/alexar76/atlas) | **ATLAS sensor map** | [atlas.modelmarket.dev](https://atlas.modelmarket.dev) | `atlas` |
 | [`esim-kit/`](https://github.com/alexar76/esim-operator-kit) | **eSIM operator kit** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · demo seller [modelmarket.dev/providers/esim](https://modelmarket.dev/providers/esim/healthz) | `esim-operator-kit` |
-| [`emporion/`](https://github.com/alexar76/emporion) | **EMPORION commerce facts** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · `:9351` · hub peer [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health) | `emporion` |
+| [`symmartys/`](https://github.com/alexar76/symmartys/blob/main/README.md) | **SYMMARTYS commerce facts** | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) · `:9351` · hub peer [modelmarket.dev/providers/symmartys](https://modelmarket.dev/providers/symmartys/health) | `symmartys` |
 | [`logos/`](https://github.com/alexar76/logos) | **LOGOS federation analytics** | [logos.modelmarket.dev](https://logos.modelmarket.dev) · `:9460` | `logos` |
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS admission** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · Hub gate | `themis` |
@@ -323,7 +323,7 @@ flowchart TB
     E1["Store for people · seller node /agents<br/>x402 · refunds · signed delivery receipts"]
   end
 
-  subgraph EMP["EMPORION · public-record facts"]
+  subgraph SYM["SYMMARTYS · public-record facts"]
     E2["VIES VAT · GLEIF LEI · ECB rates<br/>sanctions lists · OpenTimestamps<br/>company registers · EORI · RDAP · business days<br/>web capture · timers"]
   end
 
@@ -358,7 +358,7 @@ flowchart TB
   MESH -->|"MESH_HUB_URL"| HUB
   CLIENTS --> HUB
   ESIM -->|"signed offers · node or own hub"| HUB
-  EMP -->|"signed lookups · sold only via a hub"| HUB
+  SYM -->|"signed lookups · sold only via a hub"| HUB
   C1 -->|"x402 order · refund"| E1
   C1 --> MESH
   HUB --> CHAIN
@@ -536,17 +536,19 @@ Shared **`oracle-core`** library. Each oracle emits Ed25519-signed, verifiable a
 
 **Live:** demo seller at [esim.modelmarket.dev](https://esim.modelmarket.dev) (live prices, no sales). Three test windows on 15 October 2026 sold real eSIMs to ARGUS and to a coding agent and refunded them, every transaction on Base ([cases](https://esim.modelmarket.dev/kit/cases)). **Satellite:** `esim-kit/` → [alexar76/esim-operator-kit](https://github.com/alexar76/esim-operator-kit).
 
-### 3.6d EMPORION — public-record facts for agents that trade
+### 3.6d SYMMARTYS — public-record facts for agents that trade
 
-**Role:** What an agent checks before it deals with a company or moves money, answered from the public records themselves: whether an EU VAT number is valid (VIES, with the consultation number the EU issues for the check), who a legal entity is (GLEIF LEI), the ECB reference rate on a date (a reference, not a dealing rate), whether a name or a wallet address is on the EU, OFAC SDN or UK sanctions lists (the UK list carries the UN designations with their UN numbers), and a Bitcoin-anchored timestamp proof for a digest (OpenTimestamps, standard `.ots`). Six priced capabilities at $0.001–0.002 — `emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1` — and the free `emporion.sources@v1`.
+**Deployment status (2026-10-29):** SYMMARTYS (συμμάρτυς, a corroborating or fellow witness) 0.5.0 is live at [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) with 16 capabilities. Existing keys, data and provider history are preserved. Updates to GitHub, PyPI, GHCR and MCP Registry remain unpublished.
+
+**Role:** What an agent checks before it deals with a company or moves money, answered from the public records themselves: whether an EU VAT number is valid (VIES, with the consultation number the EU issues for the check), who a legal entity is (GLEIF LEI), the ECB reference rate on a date (a reference, not a dealing rate), whether a name or a wallet address is on the EU, OFAC SDN or UK sanctions lists (the UK list carries the UN designations with their UN numbers), and a Bitcoin-anchored timestamp proof for a digest (OpenTimestamps, standard `.ots`). Six priced capabilities at $0.001–0.002 — `symmartys.vat.check@v1`, `symmartys.lei.lookup@v1`, `symmartys.fx.rate@v1`, `symmartys.sanctions.screen@v1`, `symmartys.timestamp.stamp@v1`, `symmartys.timestamp.verify@v1` — and the free `symmartys.sources@v1`.
 
 **Honest by construction:** every answer is Ed25519-signed together with its source, the time it was fetched and the SHA-256 of what the source returned. A sanctions screen is a lookup, not a determination: a match is a reason to look closer, and no match is not a clearance. The lists are kept on disk with their original fetch time and hash, so a restart or an upstream outage never empties one silently, and `/health` names the lists actually loaded.
 
 **Since 0.2 — the next questions, and two tools:** national company registers by number or name (Norway, France, Czech Republic, Finland), EU EORI numbers for customs, who registered a domain and when (RDAP, from the TLD's own registry via IANA's bootstrap), and business days in ~250 countries and on markets such as TARGET2. Two capabilities go beyond lookups: a **web capture** records what a page answered at a moment — final URL, redirects, IP, TLS certificate and the SHA-256 of the body — and anchors that record in Bitcoin; a **timer** calls an agent's https callback with a signed event at a time, or as a dead man's switch when the agent stops checking in. Both reach public addresses only, pinned to the address that was checked.
 
-**Sold through the Hub:** EMPORION runs on `oracle-core` with the price gate on: a priced capability answers only a call a trusted hub signed, a direct call gets `402` naming the hub that sells it (§4.3), and every call is written to the provider's own call log.
+**Sold through the Hub:** SYMMARTYS runs on `oracle-core` with the price gate on: a priced capability answers only a call a trusted hub signed, a direct call gets `402` naming the hub that sells it (§4.3), and every call is written to the provider's own call log.
 
-**Live:** [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) — a landing with a live 3D agora of its sources — and the hub peer at [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health). **Satellite:** `emporion/` → [alexar76/emporion](https://github.com/alexar76/emporion).
+**Live:** [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) — a landing with a live 3D agora of its sources — and the hub peer at [modelmarket.dev/providers/symmartys](https://modelmarket.dev/providers/symmartys/health). **Satellite:** `symmartys/` → [symmartys/](https://github.com/alexar76/symmartys/blob/main/README.md).
 
 ### 3.7 ARGUS-3
 
@@ -781,7 +783,7 @@ Full economics: [`docs/aimarket-whitepaper.md`](../../aimarket-whitepaper.md) §
 
 **Buyer-confirmed deliveries.** A seller paid directly (x402 seller-direct) is invisible to the Hub, so a shop that takes the money and delivers nothing looked like one that delivers. Sellers that sign delivery and refund receipts (the eSIM kit does, §3.6c) let a buyer prove a delivery: `POST /ai-market/v2/reputation/deliveries` checks the signature against the `provider_pubkey` the listing published and the transfer under the receipt's own EIP-3009 nonce on chain, counts it once per transaction, and keeps no amount, address or transaction in the clear. Search shows `deliveries_30d {confirmed, distinct_buyers, refunded}`, and the trust score counts one success per distinct buyer. Wallets are cheap, so it reads "buyers confirmed this seller delivered", not "this seller is good".
 
-**Priced calls go through a hub.** A provider's invoke URL is public, so until October 2026 a caller who skipped the hub got every priced capability for free. Providers on `oracle-core` 0.5+ run a price gate: a priced capability is served only to a call a hub the provider trusts has signed — the hub admitted it, paid or as its free trial — or to a caller the operator nominated; anyone else gets `402` with the hub that sells it. On a paid device command the hub also signs who paid, so GAIA can lease the switched plug to its payer. Every call lands in the provider's call log (outcome, who vouched, latency — never the input or an IP address), and only hub-signed calls count as revenue. GAIA and EMPORION enforce the gate since 16 October 2026.
+**Priced calls go through a hub.** A provider's invoke URL is public, so until October 2026 a caller who skipped the hub got every priced capability for free. Providers on `oracle-core` 0.5+ run a price gate: a priced capability is served only to a call a hub the provider trusts has signed — the hub admitted it, paid or as its free trial — or to a caller the operator nominated; anyone else gets `402` with the hub that sells it. On a paid device command the hub also signs who paid, so GAIA can lease the switched plug to its payer. Every call lands in the provider's call log (outcome, who vouched, latency — never the input or an IP address), and only hub-signed calls count as revenue. GAIA and SYMMARTYS enforce the gate since 16 October 2026.
 
 ### 4.4 Oracle payment loop
 

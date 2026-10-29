@@ -1,0 +1,29 @@
+{
+  "assetSourceCommit": "adea1f8a197d4e9badfed559b960518bd1449cf4",
+  "metadataSourceCommit": "27dd35d785935a1938f18d375eb56214ee6e3aad",
+  "target": "Gitea alexar76/aicom main",
+  "services": [
+    "forge",
+    "pingblip",
+    "world"
+  ],
+  "productionOrigins": [
+    "https://forge.pingblip.com",
+    "https://pingblip.com",
+    "https://world.pingblip.com"
+  ],
+  "sourceSync": "exact committed archive; production env, data, dependency/build dirs excluded",
+  "metadataSyncedBeforeServiceBuilds": [
+    "pingblip",
+    "world"
+  ],
+  "dependencyScan": {
+    "packages": 527,
+    "result": "OSV reports no known vulnerability for any pinned dependency"
+  },
+  "localAssetCheck": {
+    "rosterModels": 80,
+    "eyeVariants": 6,
+    "modelAndPreviewManifests": "consistent"
+  }
+}

@@ -1,0 +1,350 @@
+[
+  {
+    "name": "aimarket-metis",
+    "request": {
+      "url": "https://pypi.org/pypi/aimarket-metis/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:36.963970+00:00",
+      "status": 200,
+      "sha256": "ca1e211ce7f1e26d5962bdb8a244883414dbedffdaf5375011e579eccc4d8ddf",
+      "bytes": 24805
+    },
+    "metadata": {
+      "name": "aimarket-metis",
+      "version": "0.2.5",
+      "project_urls": {
+        "Changelog": "https://github.com/alexar76/metis/blob/main/CHANGELOG.md",
+        "Documentation": "https://github.com/alexar76/metis",
+        "Homepage": "https://alexar76.github.io/metis/",
+        "Issues": "https://github.com/alexar76/metis/issues",
+        "Repository": "https://github.com/alexar76/metis"
+      },
+      "home_page": null,
+      "requires_dist": [
+        "pydantic>=2.0",
+        "pydantic-settings>=2.0",
+        "httpx>=0.27.0",
+        "pyyaml>=6.0",
+        "hypothesis>=6.0; extra == \"dev\"",
+        "pytest-asyncio>=0.23; extra == \"dev\"",
+        "pytest-cov>=5.0; extra == \"dev\"",
+        "pytest>=8.0; extra == \"dev\"",
+        "fastapi>=0.100; extra == \"distributed\"",
+        "uvicorn[standard]>=0.23; extra == \"distributed\""
+      ]
+    },
+    "attributed_to_ecosystem": true,
+    "selected_versions": [
+      {
+        "version": "0.2.0",
+        "selection": "earliest release with a file",
+        "first_upload": "2026-07-12T07:32:58.961317Z"
+      },
+      {
+        "version": "0.2.5",
+        "selection": "current PyPI version",
+        "first_upload": "2026-10-28T11:23:48.346077Z"
+      }
+    ]
+  },
+  {
+    "name": "aimarket-logos",
+    "request": {
+      "url": "https://pypi.org/pypi/aimarket-logos/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:36.964387+00:00",
+      "status": 200,
+      "sha256": "572c806ee40a799fca96372418ab194687510de62f68554fdcad52a8e5f9bf23",
+      "bytes": 22449
+    },
+    "metadata": {
+      "name": "aimarket-logos",
+      "version": "0.2.2",
+      "project_urls": null,
+      "home_page": null,
+      "requires_dist": [
+        "aimarket-oracle-core>=0.2",
+        "fastapi>=0.100",
+        "httpx>=0.27.0",
+        "psycopg2-binary>=2.9",
+        "pydantic>=2.0",
+        "uvicorn[standard]>=0.23",
+        "httpx>=0.27.0; extra == \"dev\"",
+        "pytest-asyncio>=0.24.0; extra == \"dev\"",
+        "pytest-cov>=5.0.0; extra == \"dev\"",
+        "pytest>=8.3.0; extra == \"dev\""
+      ]
+    },
+    "attributed_to_ecosystem": false,
+    "selected_versions": [
+      {
+        "version": "0.1.0",
+        "selection": "earliest release with a file",
+        "first_upload": "2026-08-12T05:05:50.819704Z"
+      },
+      {
+        "version": "0.2.2",
+        "selection": "current PyPI version",
+        "first_upload": "2026-10-28T09:56:29.681548Z"
+      }
+    ]
+  },
+  {
+    "name": "aimarket-oracle-core",
+    "request": {
+      "url": "https://pypi.org/pypi/aimarket-oracle-core/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:36.964538+00:00",
+      "status": 200,
+      "sha256": "847ce43b62bb5e6ee1b811bae38df85b5af0635d3cce35b1884ae26ad26f311f",
+      "bytes": 20846
+    },
+    "metadata": {
+      "name": "aimarket-oracle-core",
+      "version": "0.6.3",
+      "project_urls": null,
+      "home_page": null,
+      "requires_dist": [
+        "cryptography>=44.0.0",
+        "fastapi>=0.115.0",
+        "httpx>=0.27.0",
+        "pydantic>=2.9.0",
+        "uvicorn[standard]>=0.32.0",
+        "httpx>=0.27.0; extra == \"dev\"",
+        "pytest-asyncio>=0.24.0; extra == \"dev\"",
+        "pytest>=8.3.0; extra == \"dev\"",
+        "psycopg[binary]>=3.1; extra == \"postgres\"",
+        "dilithium-py>=1.4.0; extra == \"pqc\""
+      ]
+    },
+    "attributed_to_ecosystem": false,
+    "selected_versions": [
+      {
+        "version": "0.2.0",
+        "selection": "earliest release with a file",
+        "first_upload": "2026-07-28T21:48:22.236085Z"
+      },
+      {
+        "version": "0.6.3",
+        "selection": "current PyPI version",
+        "first_upload": "2026-10-28T07:54:42.353714Z"
+      }
+    ]
+  },
+  {
+    "name": "aimarket-hestia",
+    "request": {
+      "url": "https://pypi.org/pypi/aimarket-hestia/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:36.964711+00:00",
+      "status": 200,
+      "sha256": "c14a9f623878c7d38c03625c67660031e7bdc4b66dea62b439726af4d80e3ec0",
+      "bytes": 37405
+    },
+    "metadata": {
+      "name": "aimarket-hestia",
+      "version": "0.1.3",
+      "project_urls": {
+        "Documentation": "https://github.com/alexar76/hestia#readme",
+        "Homepage": "https://alexar76.github.io/hestia/",
+        "Issues": "https://github.com/alexar76/hestia/issues",
+        "Repository": "https://github.com/alexar76/hestia"
+      },
+      "home_page": null,
+      "requires_dist": [
+        "cryptography>=44",
+        "fastapi>=0.115",
+        "httpx>=0.27",
+        "pydantic>=2.10",
+        "uvicorn>=0.34",
+        "dilithium-py>=1.4.0; extra == \"dev\"",
+        "psycopg[binary,pool]<4,>=3.2; extra == \"dev\"",
+        "pytest-asyncio>=0.24; extra == \"dev\"",
+        "pytest-cov>=5; extra == \"dev\"",
+        "pytest>=8; extra == \"dev\"",
+        "ruff<1,>=0.12; extra == \"dev\"",
+        "psycopg[binary,pool]<4,>=3.2; extra == \"postgres\"",
+        "dilithium-py>=1.4.0; extra == \"pqc\"",
+        "wasmtime==49.0.0; extra == \"wasm\""
+      ]
+    },
+    "attributed_to_ecosystem": true,
+    "selected_versions": [
+      {
+        "version": "0.1.0",
+        "selection": "earliest release with a file",
+        "first_upload": "2026-10-14T08:03:40.409039Z"
+      },
+      {
+        "version": "0.1.3",
+        "selection": "current PyPI version",
+        "first_upload": "2026-10-26T03:47:05.073169Z"
+      }
+    ]
+  },
+  {
+    "name": "helios-broadcast",
+    "request": {
+      "url": "https://pypi.org/pypi/helios-broadcast/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.320397+00:00",
+      "status": 200,
+      "sha256": "98787f04000d28ed4d7d7c72d7fb4508785000c0795c354dbb0321bfe4ee37d8",
+      "bytes": 18348
+    },
+    "metadata": {
+      "name": "helios-broadcast",
+      "version": "0.2.1",
+      "project_urls": null,
+      "home_page": null,
+      "requires_dist": [
+        "typer>=0.12",
+        "pyyaml>=6.0",
+        "httpx>=0.27",
+        "google-api-python-client>=2.100",
+        "google-auth-oauthlib>=1.2",
+        "google-auth-httplib2>=0.2",
+        "pillow>=10.0",
+        "edge-tts>=6.1",
+        "pytest>=8.0; extra == \"dev\"",
+        "pytest-cov>=5.0; extra == \"dev\""
+      ]
+    },
+    "attributed_to_ecosystem": false,
+    "selected_versions": [
+      {
+        "version": "0.1.0",
+        "selection": "earliest release with a file",
+        "first_upload": "2026-07-08T17:35:20.513748Z"
+      },
+      {
+        "version": "0.2.1",
+        "selection": "current PyPI version",
+        "first_upload": "2026-10-25T13:59:21.277762Z"
+      }
+    ]
+  },
+  {
+    "name": "skopos-fleet",
+    "request": {
+      "url": "https://pypi.org/pypi/skopos-fleet/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.323220+00:00",
+      "status": 200,
+      "sha256": "ac8be0348d7d9464b4780d698fc73dde2ab70a523226bd772eb2bcdb270e5461",
+      "bytes": 22378
+    },
+    "metadata": {
+      "name": "skopos-fleet",
+      "version": "0.2.1",
+      "project_urls": null,
+      "home_page": null,
+      "requires_dist": [
+        "streamlit>=1.66.1",
+        "pandas>=2.0",
+        "pillow>=13.0.0",
+        "plotly>=5.18",
+        "pyyaml>=6.0",
+        "paramiko>=5.0.0",
+        "python-dotenv>=1.2.2",
+        "httpx>=0.27",
+        "geoip2>=4.8",
+        "cryptography>=44",
+        "aimarket-oracle-core[pqc]>=0.2",
+        "pytest>=8.0; extra == \"dev\"",
+        "psycopg[binary]>=3.2; extra == \"postgres\""
+      ]
+    },
+    "attributed_to_ecosystem": false,
+    "selected_versions": [
+      {
+        "version": "0.1.0",
+        "selection": "earliest release with a file",
+        "first_upload": "2026-07-15T16:31:49.731487Z"
+      },
+      {
+        "version": "0.2.1",
+        "selection": "current PyPI version",
+        "first_upload": "2026-10-25T14:47:08.439214Z"
+      }
+    ]
+  },
+  {
+    "name": "aimarket-emporion",
+    "request": {
+      "url": "https://pypi.org/pypi/aimarket-emporion/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.327457+00:00",
+      "status": 200,
+      "sha256": "2c1602c7fa432d0e6d5b8d7a0a5768b5b8eb27a23415ed97cadef34ce555fd4c",
+      "bytes": 31814
+    },
+    "metadata": {
+      "name": "aimarket-emporion",
+      "version": "0.4.2",
+      "project_urls": {
+        "Changelog": "https://github.com/alexar76/emporion/blob/main/CHANGELOG.md",
+        "Homepage": "https://emporion.modelmarket.dev/",
+        "Landing on GitHub Pages": "https://alexar76.github.io/emporion/",
+        "Source": "https://github.com/alexar76/emporion"
+      },
+      "home_page": null,
+      "requires_dist": [
+        "aimarket-oracle-core>=0.4",
+        "defusedxml>=0.7.1",
+        "fastapi>=0.115",
+        "holidays<1,>=0.106",
+        "httpx>=0.27",
+        "opentimestamps<0.5,>=0.4.5",
+        "uvicorn>=0.34",
+        "jsonschema>=4.23; extra == \"dev\"",
+        "prometheus-client>=0.21; extra == \"dev\"",
+        "pytest-asyncio>=0.24; extra == \"dev\"",
+        "pytest>=8.3; extra == \"dev\""
+      ]
+    },
+    "attributed_to_ecosystem": true,
+    "selected_versions": [
+      {
+        "version": "0.1.0",
+        "selection": "earliest release with a file",
+        "first_upload": "2026-10-16T20:27:00.289462Z"
+      },
+      {
+        "version": "0.4.2",
+        "selection": "current PyPI version",
+        "first_upload": "2026-10-25T20:13:47.536199Z"
+      }
+    ]
+  },
+  {
+    "name": "aimarket-basanos",
+    "request": {
+      "url": "https://pypi.org/pypi/aimarket-basanos/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.475811+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    }
+  },
+  {
+    "name": "aimarket-dolos",
+    "request": {
+      "url": "https://pypi.org/pypi/aimarket-dolos/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.695790+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    }
+  },
+  {
+    "name": "aimarket-themis",
+    "request": {
+      "url": "https://pypi.org/pypi/aimarket-themis/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.701084+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    }
+  }
+]

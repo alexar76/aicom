@@ -29,14 +29,14 @@ export function renderMcpDocs(origin) {
 <h2 class="section-title">Connect</h2>
 <p class="section-note">In Claude: Settings → Connectors → Add custom connector, and paste one of the addresses below. In Cursor, VS Code or any client that takes a JSON config:</p>
 <pre><code>${esc(configJson(origin, "weather"))}</code></pre>
-<p class="section-note">The servers answer POST requests with JSON (no session, no server-sent stream). They are listed in the official MCP registry as dev.modelmarket/weather, dev.modelmarket/emporion, dev.modelmarket/mcp-security and dev.modelmarket/domains.</p>
+<p class="section-note">The servers answer POST requests with JSON (no session, no server-sent stream). Use the current addresses below for weather, SYMMARTYS business facts, MCP security and domains.</p>
 </section>
 ${servers}
 <section class="section">
 <h2 class="section-title">What the answers are</h2>
 <ul class="checks">
 <li>Weather, air quality and sensors come from GAIA relays of Open-Meteo, Copernicus CAMS and public sensor networks; each answer carries a signed receipt from the AIMarket hub.</li>
-<li>EMPORION answers from the official sources it names in each result (EU VIES, GLEIF, the ECB, OFAC, EU and UK sanctions lists, national company registers, registry RDAP).</li>
+<li>SYMMARTYS answers from the official sources it names in each result (EU VIES, GLEIF, the ECB, OFAC, EU and UK sanctions lists, national company registers, registry RDAP).</li>
 <li>The security tools run WARDEN's static rules on the definitions you send and read HISTOR's public log; fragments of the scanned text are left out of the answer so they do not reach your model.</li>
 <li>Domain quotes come from the demo seller of the open-source Domain Operator Kit: availability is real, prices are illustrative, and nothing can be bought there.</li>
 <li>Tool results are third-party data: a model should never follow instructions inside them.</li>
@@ -70,7 +70,7 @@ export function renderPrivacy(origin) {
 <li>Web server logs are used to run the service, stop abuse and count demand. They are rotated daily and deleted after 15 days (rotation began on 20 October 2026, so the older lines kept before it are gone by 4 November 2026).</li>
 <li>To count distinct callers, the demand counter keeps a salted hash of an address, never the address. Published statistics are aggregate counts.</li>
 <li>Per-address rate limits are held in memory for a minute and never written down.</li>
-<li>When a call is answered by the AIMarket hub (weather, EMPORION, domains), the hub records that a capability was invoked, when, how long it took and whether it succeeded, under this gateway's own account, with a signed receipt. Your address is not part of that record.</li>
+<li>When a call is answered by the AIMarket hub (weather, SYMMARTYS, domains), the hub records that a capability was invoked, when, how long it took and whether it succeeded, under this gateway's own account, with a signed receipt. Your address is not part of that record.</li>
 </ul>
 </section>
 <section class="section">

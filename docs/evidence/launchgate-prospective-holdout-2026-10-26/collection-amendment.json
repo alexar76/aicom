@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-26T12:40:17.644207+00:00",
+  "scope": "Collection-only repair after model completion; no API rerun, no fixture/runtime/prompt/result change.",
+  "cause": "A string replacement inserted local freeze validation inside the remote packager string, causing an IndentationError. The server data was retained; no archive was collected/deleted.",
+  "repair": "Remove those two misplaced lines from the remote string, retain main-path freeze checks, and parse the remote program before sending. Use --recover to collect only.",
+  "modelSupervisorCompleted": true,
+  "apiCallsAlreadyCompleted": 158,
+  "conservativeAccountingUSDAlreadyReported": 0.057868866,
+  "collectorSha256": "161161592633a0ff07a88585200fbd36523dbfa16c0afbfc4accade2c8a36928",
+  "originalPayloadManifestSha256": "8d095f74de2f3d3535afa5a12ac1fec7b96c06f58e6e02a96cb109270e1fa5c7"
+}

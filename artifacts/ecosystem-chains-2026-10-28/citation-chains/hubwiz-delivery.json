@@ -1,0 +1,89 @@
+{
+  "key": "hubwiz-delivery",
+  "url": "https://www.hubwiz.com/blog/agent-delivery-verification-gates/",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T13:51:05.585107+00:00",
+  "status": 200,
+  "final_url": "https://www.hubwiz.com/blog/agent-delivery-verification-gates/",
+  "bytes": 53240,
+  "sha256": "2c689b0bd8c68f21eb5a25798b3e29f3dd5f2676638aaa597bed391fd9837c08",
+  "identifiers": {
+    "alexar76": 0,
+    "modelmarket.dev": 0,
+    "HISTOR": 0,
+    "WARDEN": 0,
+    "AICOM": 0,
+    "1932": 0,
+    "1,932": 0,
+    "25 微秒": 0
+  },
+  "contexts": {
+    "来源": [
+      "里最贵的一条经验： 验证系统本身也会出错，而且往往错得更隐蔽 （重试缺失、超时无裁决、合并结果没落库、回滚树编译失败）。三道门都需要\"拿不准就停下\"的默认值，而不是\"默认放行\"。 来源 @dannwaneri（Daniel Nwaneri）, I built a lie detector for AI coding agents. Then I read the rules. （dev.to，2026-10-15）：https://dev.to/dannwaneri/i-built-a-lie-detector-for-ai-coding-agents-then-i-read-the-rules-1hhb claimcheck 项目（MIT，v1.0.0）：https://github.com/dannwaneri/claimcheck Finley Zhou（@datacpp_8185）, Revert the Fix, Keep"
+    ],
+    "启发": [
+      "读提交进仓库的 JSON，不读模型的意见 。 作者也把适用边界写全了：回滚源码后 ablated 树可能 编译失败 ，此时只能记 inconclusive ；测试路径靠 grep 启发式判断，仓库布局特殊会误分类并抬高 fix-blind ；三倍运行成本对 15 分钟以上的套件不划算；纯测试补丁在这个门里天然\"空转\"；套件不确定就整张表失真。他还给了一条诚实的备注： 先拿最近五个 Agent 补丁手工跑一遍、记录判定分布再改规则 ——他自己的分布里 pre-existing-green 最多，而这反映的更像是\"测试套件在 Agent 写代码之前就搭好了\"。 三、第三道门：交付包里必须有能复核的东西 前两道门管的是\"改动\"，第三道门管\"交付\"。@patilrb 的观察是：一句\"修好了，测过了\"，把最难的部分全丢给了评审—— 改了哪儿、跑了哪个检查、截图和补丁是不是同一个版本 ，都得重新拼。他建议的最小交付包只有四件东西： 测试结果 ："
+    ],
+    "复盘": [
+      "2 委托、无限授权） 延伸阅读（本站） AGENTS.md 该写什么：1,866 个项目的说明书实测 Agent 说\"完成\"，数据库不同意：一次批准率 87% 的 Agent 评测复盘 子代理派活与上下文折叠：compaction、subagent、fold 三种交接实测 专题：AI 编程 / Vibe Coding 完全指南 本文由 汇智网 · Software 2.0 编译整理，转载请注明出处。 想系统了解 Agent 的上下文、工具与工程化，见 Agent / MCP / 自动化完全指南 。 这是「AI 编程 / Vibe Coding」专题的一部分。 完整地图见： AI 编程 / Vibe Coding 完全指南 阅读更多 AI 算力不是堆芯片：Google 的 token 产能每半年翻一倍 10 万张卡跑一个训练，一小时可能挂几次。Google 的答案不是买更多卡：提高 goodput，让每瓦交付更多有用 token。 B"
+    ]
+  },
+  "meta": [
+    {
+      "name": "description",
+      "content": "\"fixed and tested\"是声明不是证据。claimcheck 用 5 条规则对账声明与真实 diff（28 Agent × 5 轮：11 个不实被拒、0 个诚实被误伤）；三树差分把\"绿\"分成 7 类，只有 sensitive 算数；交付包要命令、输出、变更、截图与已知限制。"
+    },
+    {
+      "property": "og:type",
+      "content": "article"
+    },
+    {
+      "property": "og:title",
+      "content": "Agent 说\"做完了\"，证据呢：三道交付验证门"
+    },
+    {
+      "property": "og:description",
+      "content": "\"fixed and tested\"不是证据。三道门——声明核对、三树差分、证据包——把 Agent 的自述变成可复核的事实。"
+    },
+    {
+      "property": "article:published_time",
+      "content": "2026-10-15T20:18:41.000Z"
+    },
+    {
+      "property": "article:modified_time",
+      "content": "2026-10-15T20:19:54.000Z"
+    },
+    {
+      "name": "twitter:title",
+      "content": "Agent 说\"做完了\"，证据呢：三道交付验证门"
+    },
+    {
+      "name": "twitter:description",
+      "content": "\"fixed and tested\"不是证据。三道门——声明核对、三树差分、证据包——把 Agent 的自述变成可复核的事实。"
+    }
+  ],
+  "source_links": [
+    "https://www.hubwiz.com/blog",
+    "https://www.hubwiz.com/blog/",
+    "https://www.hubwiz.com/blog/vibe-coding-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/local-llm-stack/",
+    "https://www.hubwiz.com/blog/ai-industrial-stack/",
+    "https://www.hubwiz.com/blog/tag/ai-agent/",
+    "https://bimant.com/blog/cad-step-mesh-topology-acceptance/?ref=hubwiz.com",
+    "https://defiplot.com/blog/onchain-verification-checklist-receipt-wallet-approval/?ref=hubwiz.com",
+    "https://www.hubwiz.com/blog/agents-md-instruction-quality-1866-projects/",
+    "https://www.hubwiz.com/blog/agent-said-done-database-disagreed/",
+    "https://www.hubwiz.com/blog/subagent-fork-fold-context-handoff/",
+    "https://www.hubwiz.com/blog/vibe-coding-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/vibe-coding-stack/",
+    "https://www.hubwiz.com/blog/rag-data-stack/",
+    "https://www.hubwiz.com/blog/generative-media-stack/",
+    "https://www.hubwiz.com/blog/ai-infra-stack/",
+    "https://www.hubwiz.com/blog/ai-tools/",
+    "https://www.hubwiz.com/blog/about/",
+    "https://www.hubwiz.com/blog/contribute/",
+    "https://www.hubwiz.com/blog/privacy/"
+  ]
+}

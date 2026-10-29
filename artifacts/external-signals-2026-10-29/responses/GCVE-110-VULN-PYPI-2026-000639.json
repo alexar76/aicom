@@ -1,0 +1,120 @@
+{
+  "containers": {
+    "cna": {
+      "affected": [
+        {
+          "collectionURL": "https://pypi.org",
+          "defaultStatus": "unknown",
+          "modules": [
+            "skopos.remediation.git_push"
+          ],
+          "packageName": "skopos-fleet",
+          "product": "skopos-fleet",
+          "programFiles": [
+            "skopos/remediation/git_push.py"
+          ],
+          "programRoutines": [
+            {
+              "name": "skopos.remediation.git_push.ssh_remote_is_local"
+            },
+            {
+              "name": "skopos.remediation.git_push.GitPusher._git"
+            }
+          ],
+          "vendor": "pypi",
+          "versions": [
+            {
+              "lessThanOrEqual": "0.2.1",
+              "status": "affected",
+              "version": "0.2.0",
+              "versionType": "python"
+            }
+          ]
+        }
+      ],
+      "configurations": [
+        {
+          "lang": "en",
+          "value": "SKOPOS_AGENT_REPO_URL is an SSH URL whose host has no dot in its name, and an SSH key is configured for the push (SKOPOS_GIT_SSH_KEY)."
+        }
+      ],
+      "descriptions": [
+        {
+          "lang": "en",
+          "value": "If your skopos-fleet remediation remote (SKOPOS_AGENT_REPO_URL) is an SSH URL whose host is a single-label name, such as a Gitea container called gitea, SKOPOS pushes to it with StrictHostKeyChecking=no and UserKnownHostsFile=/dev/null and accepts any host key (remediation.git_push.GitPusher._git). Whoever can answer for that name can receive the pushed remediation commits and serve its own on fetch: a single-label name can be completed by the resolver's search domains to a host on another network, and on a Docker bridge any neighbour container, which has CAP_NET_RAW by default, can take over the git server's address by ARP spoofing. 0.2.1 checks the host key for other remotes but treats every single-label name as a container on this host (remediation.git_push.ssh_remote_is_local). In 0.2.0 no remote was checked (GCVE-110-VULN-PYPI-2026-000616). Affects 0.2.0 and 0.2.1."
+        }
+      ],
+      "metrics": [
+        {
+          "cvssV3_1": {
+            "baseScore": 4.2,
+            "baseSeverity": "MEDIUM",
+            "vectorString": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N",
+            "version": "3.1"
+          }
+        }
+      ],
+      "problemTypes": [
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-295",
+              "description": "Improper Certificate Validation",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "dateUpdated": "2026-10-28T01:49:28Z",
+        "orgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+        "shortName": "Vulnetix"
+      },
+      "references": [
+        {
+          "tags": [
+            "third-party-advisory"
+          ],
+          "url": "https://pypi.org/project/skopos-fleet/"
+        }
+      ],
+      "solutions": [
+        {
+          "lang": "en",
+          "value": "Name the git server by a fully qualified name in SKOPOS_AGENT_REPO_URL, and add its host key, checked out of band, to SKOPOS's known_hosts (SKOPOS_KNOWN_HOSTS): in 0.2.1 such a remote is verified."
+        },
+        {
+          "lang": "en",
+          "value": "Or push over HTTPS: an https:// SKOPOS_AGENT_REPO_URL with SKOPOS_GIT_TOKEN set and SKOPOS_GIT_SSH_KEY unset."
+        },
+        {
+          "lang": "en",
+          "value": "Where SKOPOS runs on the host itself, a loopback remote such as a Gitea port published on 127.0.0.1 is not reachable by a neighbour."
+        }
+      ],
+      "title": "SSH host key not checked when skopos-fleet pushes remediation commits to a single-label remote",
+      "workarounds": [
+        {
+          "lang": "en",
+          "value": "Put SKOPOS and the git server on a Docker network with no other containers, and drop CAP_NET_RAW from every container that shares it."
+        },
+        {
+          "lang": "en",
+          "value": "Sign the git server's host key with an SSH certificate authority you control and trust that CA with a @cert-authority line in SKOPOS's known_hosts, once the remote is a name SKOPOS verifies."
+        }
+      ],
+      "x_vulnetix_classification": "weakness"
+    }
+  },
+  "cveMetadata": {
+    "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+    "assignerShortName": "Vulnetix",
+    "cveId": "GCVE-110-VULN-PYPI-2026-000639",
+    "datePublished": "2026-10-27T22:42:51Z",
+    "dateUpdated": "2026-10-28T01:49:28Z",
+    "state": "PUBLISHED"
+  },
+  "dataType": "CVE_RECORD",
+  "dataVersion": "5.1"
+}

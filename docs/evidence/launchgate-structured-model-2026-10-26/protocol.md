@@ -1,0 +1,29 @@
+# Frozen protocol: live structured proposals and bounded corrections
+
+26 October 2026. User authorized the experiment. API accounting ceiling USD 0.15, conservative current peak prices, max 416 actual dispatches. No automatic transport retry or repeat of a completed study. Linux factory-vps; model credential remains outside the keyless network-disabled runner. No GitHub/npm publication or comment posting.
+
+## Population and two separate denominators
+
+Freeze the existing twelve exact saved initial contexts (four contradicted explanations, eight supported), all from the prior known-case study. Eight repetitions each = **96 natural schema-transition trajectories**. Keep each complete original tool conversation and original prose answer; append a new user request to replace it entirely with the frozen structured catalog/schema. The original source instruction remains in context. This is a change of output contract, not a blind holdout or isolated format-only ablation. Record every fresh first proposal before any checker feedback; a correct first proposal is not evidence that repair helped.
+
+Separately, for the four previously contradicted contexts, construct two deliberately invalid structured initial seeds: complete true eligible set plus C (price 190 > 150), or plus D (distance 2.5 > 1). Eight repetitions each = **64 controlled-repair trajectories** (32 C, 32 D). The initial seed is synthetic, not a newly generated model error. The first repair and any second repair are real model calls. Report this population separately; never pool its success rate with natural first-proposal correctness.
+
+All 160 trajectories use the actual frozen `createAnswerGate` build previously validated on Linux. Default initial proposal plus at most two corrections. In the controlled population, the deterministic seed consumes the initial proposal and leaves at most two fresh model repair calls. Maximum fresh calls: 96*3 + 64*2 = 416. Unique session/turn per trajectory, one final host emission; no tools or external actions. Rules and catalog derive from the fixture user contract/captured records. Safe aliases/field handles are used in new catalogs and feedback; original source history is retained, not claimed sanitized.
+
+The model adapter sends a fixed base history, the new schema instruction/catalog, and (on repair) the immediately preceding candidate plus the gate's full-constraint feedback. It never edits a candidate into a passing answer. Older repair outputs are retained as evidence but are not accumulated in the next request. Each new proposal replaces the prior one. Use deepseek-flash, temperature .3, thinking disabled, max_tokens 700, JSON object mode. No provider-enforced JSON schema. Accept reported model `deepseek-flash` or `deepseek-v4.1-flash-1017`; stop on another model. Three consecutive API failures or a budget refusal stop the study; do not refill automatically.
+
+## Outcomes, frozen before calls
+
+Primary natural result: complete valid first proposals /96, with an explicit subgroup for the four formerly contradicted contexts /32. Among natural invalid first proposals, report corrections after one and two rounds, unresolved/unknown, C/D admission, format/duplicate/extra-field errors, and C→D substitution. If every natural first proposal is valid, the natural repair denominator is zero; do not manufacture headroom.
+
+Primary controlled result: verified final delivery /64, C and D separately /32, and unresolved withholding. Keep the first and second repair results separate. Record whether invalid alternatives remain in a syntactically structured list, whether errors substitute, or whether the model tries to reintroduce prose/extra or duplicate fields. The schema represents one eligible set; it has no separate model-authored price/exclusion fields, so do not claim to measure every form of addendum behavior inside it.
+
+Predictions: natural first-proposal validity >=80/96; controlled valid final delivery >=48/64. These are testable expectations, not acceptance criteria for reporting. Publish failed predictions in the local report. Independently require no invalid candidate at the final boundary and a host-owned notice in every emitted final frame; a withheld frame is not a correct task answer. Audit final structured values independently against the host facts after collecting outputs. No inference about internal reasoning from text, no causal superiority over the old noncontemporaneous prose study, no independent holdout claim, no native-client GUI rendering claim.
+
+## Custody and cost
+
+Save protocol, price assumptions, exact runtime/source hashes, cases and randomized slot schedule before the first call. Fsync intent and reservation before dispatch; retain complete requests, provider outputs, decisions and final frames, including errors and unsuccessful attempts. Use the existing tested relay with persisted USD reservation/settlement accounting. Only the official DeepSeek endpoint has network access. The runner has no key or network. Verify output archive and every member locally before deleting the owned server temporary directory; `--recover` collects only and never dispatches calls.
+
+Price check on 26 October 2026: https://api-docs.deepseek.com/quick_start/pricing/ — per million tokens Flash peak input miss .30, hit .006, output 1.20; off-peak half. Ledger uses peak upper accounting, not an invoice/balance statement. Uncertain transport holds the entire USD .01 reservation. Expected spend USD .05–.10; stop at USD .15, even if this leaves the planned population incomplete. Server uses existing capacity; no new rental purchase.
+
+Instrument tests (SDK loop, exact request construction, candidate diagnostics, relay budget, and archive collection safety) must pass on Linux before API dispatch. Preparation and evaluation are AI-assisted and unblinded; no independent human review is claimed. Runtime and outcome definitions remain frozen during this run.

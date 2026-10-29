@@ -1,0 +1,167 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/work[39m
+
+ [32m✓[39m test/wrap.test.ts [2m([22m[2m123 tests[22m[2m)[22m[33m 79522[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=false and 5 MiB response [33m 1278[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=true and 5 MiB response [33m 1159[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission withholds unreviewed tools in any language and never creates a TOFU pin [33m 1582[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission does not mistake an old automatic pin for operator approval [33m 823[2mms[22m[39m
+     [33m[2m✓[22m[39m poisoned descriptions never reach the client or receive calls; verdict contains ruleset [33m 396[2mms[22m[39m
+     [33m[2m✓[22m[39m strips poisoned initialize instructions, preserves other capabilities [33m 445[2mms[22m[39m
+     [33m[2m✓[22m[39m audit-only logs every verdict, exposes poisoned tools/instructions and forwards unknown calls [33m 423[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects names not exposed to the model [33m 376[2mms[22m[39m
+     [33m[2m✓[22m[39m persists drift across sessions; TTY reapproval allows the new snapshot [33m 1509[2mms[22m[39m
+     [33m[2m✓[22m[39m captures initialize versions through real wrap and TTY approval, without treating metadata as identity or tools [33m 3026[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps a TOFU-reported version while flagging actual tool drift at the same version [33m 1159[2mms[22m[39m
+     [33m[2m✓[22m[39m does not overwrite an approval when only the observed version changes during TTY review [33m 722[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins status without TTY, without changing the pin [33m 628[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins approve without TTY, without changing the pin [33m 607[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins revoke without TTY, without changing the pin [33m 591[2mms[22m[39m
+     [33m[2m✓[22m[39m human approval refuses a candidate that changes during review [33m 681[2mms[22m[39m
+     [33m[2m✓[22m[39m revoke persists denial, without silently starting a fresh TOFU [33m 1570[2mms[22m[39m
+     [33m[2m✓[22m[39m identity drift blocks before spawning and returns initialize error with exit 3 [33m 1374[2mms[22m[39m
+     [33m[2m✓[22m[39m quarantines poisoned list_changed without forwarding its notification [33m 418[2mms[22m[39m
+     [33m[2m✓[22m[39m notifies clean changes only after vetting when pinning is explicitly disabled; old visible definitions still block [33m 446[2mms[22m[39m
+     [33m[2m✓[22m[39m default pinning blocks even clean changed definitions until human reapproval [33m 470[2mms[22m[39m
+       [33m[2m✓[22m[39m warn (default): the result goes through with a notice first, and the finding is recorded [33m 428[2mms[22m[39m
+       [33m[2m✓[22m[39m block: the result is withheld, saying the tool already ran [33m 463[2mms[22m[39m
+       [33m[2m✓[22m[39m off: the result passes untouched; a clean result always passes byte for byte [33m 829[2mms[22m[39m
+       [33m[2m✓[22m[39m audit-only records the finding and changes nothing [33m 431[2mms[22m[39m
+     [33m[2m✓[22m[39m drops child responses to requests the client never sent it, so a forged tools/list reply cannot reach the client [33m 420[2mms[22m[39m
+     [33m[2m✓[22m[39m a pre-call check that failed to run is retried by the next call, not held until the client re-lists [33m 418[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses a JSON-RPC batch request by request and keeps the session [33m 395[2mms[22m[39m
+     [33m[2m✓[22m[39m wraps and pins a server whose schemas carry fractional numbers [33m 458[2mms[22m[39m
+     [33m[2m✓[22m[39m revoking a pin that has no wrap observation still blocks the next wrap [33m 515[2mms[22m[39m
+     [33m[2m✓[22m[39m catches a silent change on the next call, without sending that call [33m 439[2mms[22m[39m
+     [33m[2m✓[22m[39m a notification during pre-call verification prevents dispatch [33m 406[2mms[22m[39m
+     [33m[2m✓[22m[39m withholds a response when definitions change during execution [33m 410[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces tool list bounds {"count":300} [33m 412[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces tool list bounds {"cycle":true} [33m 389[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces tool list bounds {"duplicate":true} [33m 387[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces tool list bounds {"bigList":true} [33m 411[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces tool list bounds {"badSchema":true} [33m 401[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces tool list bounds {"pages":true} [33m 426[2mms[22m[39m
+     [33m[2m✓[22m[39m server requests and out-of-order client replies pass in both directions [33m 528[2mms[22m[39m
+     [33m[2m✓[22m[39m sanitizes child stderr [33m 394[2mms[22m[39m
+     [33m[2m✓[22m[39m propagates child exit code [33m 379[2mms[22m[39m
+     [33m[2m✓[22m[39m EOF terminates a stubborn child within 10 seconds and reaps it [33m 10292[2mms[22m[39m
+     [33m[2m✓[22m[39m five proxies sharing one state directory establish one intact pin [33m 1174[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses a sensitive call the client cannot be asked about; the server never receives it [33m 406[2mms[22m[39m
+       [33m[2m✓[22m[39m asks through the client form; only a ticked, accepted answer lets that one call through [33m 461[2mms[22m[39m
+       [33m[2m✓[22m[39m a client that offers only URL elicitation, or --ask refuse, is never asked [33m 802[2mms[22m[39m
+       [33m[2m✓[22m[39m audit-only forwards the call and logs that it would ask [33m 402[2mms[22m[39m
+       [33m[2m✓[22m[39m a call the client cancels while the person decides is never sent and gets no reply; a late yes changes nothing [33m 457[2mms[22m[39m
+       [33m[2m✓[22m[39m definitions that change while the person decides block the approved call [33m 429[2mms[22m[39m
+         [33m[2m✓[22m[39m commits exactly once through the server CAS and returns only the tool result, not the ticket/receipt [33m 510[2mms[22m[39m
+         [33m[2m✓[22m[39m refuses the exact race after the final proxy read but before server comparison, with no raw-click fallback [33m 592[2mms[22m[39m
+         [33m[2m✓[22m[39m rejects invisible handler/ABA revision changes even if both snapshots have identical role/ID/bounds [33m 531[2mms[22m[39m
+         [33m[2m✓[22m[39m refuses a server without the protocol before asking, rather than sending an ordinary click [33m 481[2mms[22m[39m
+         [33m[2m✓[22m[39m refuses malformed prepared protocol before approval [33m 480[2mms[22m[39m
+         [33m[2m✓[22m[39m refuses malformed prepared stamp before approval [33m 504[2mms[22m[39m
+         [33m[2m✓[22m[39m refuses malformed prepared ticket before approval [33m 508[2mms[22m[39m
+         [33m[2m✓[22m[39m rejects extra RPC metadata and oversized arguments without a truncated approval [33m 456[2mms[22m[39m
+         [33m[2m✓[22m[39m decline and cancel never commit; internal server methods are inaccessible to client requests [33m 538[2mms[22m[39m
+         [33m[2m✓[22m[39m cancellation while approving discards the preparation; a late yes never commits [33m 610[2mms[22m[39m
+         [33m[2m✓[22m[39m a malformed committed receipt stamp never triggers a retry and leaves an uncertain lease [33m 509[2mms[22m[39m
+         [33m[2m✓[22m[39m a malformed committed receipt protocol never triggers a retry and leaves an uncertain lease [33m 506[2mms[22m[39m
+         [33m[2m✓[22m[39m a malformed committed receipt extra never triggers a retry and leaves an uncertain lease [33m 541[2mms[22m[39m
+         [33m[2m✓[22m[39m an error after the server effect remains uncertain and cannot be replayed automatically [33m 590[2mms[22m[39m
+         [33m[2m✓[22m[39m runs the documented server-owned virtual surface through a real stdio proxy [33m 588[2mms[22m[39m
+         [33m[2m✓[22m[39m reads before the question and after approval, then forwards exactly one unchanged action [33m 494[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh role changes or cannot be read [33m 532[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh identity changes or cannot be read [33m 502[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh box changes or cannot be read [33m 489[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh reference changes or cannot be read [33m 488[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh label changes or cannot be read [33m 492[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh origin changes or cannot be read [33m 511[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh missing changes or cannot be read [33m 515[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh pixels changes or cannot be read [33m 524[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh error changes or cannot be read [33m 521[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels approved execution when the fresh duplicate changes or cannot be read [33m 493[2mms[22m[39m
+         [33m[2m✓[22m[39m does not read again or execute when approval is declined [33m 455[2mms[22m[39m
+         [33m[2m✓[22m[39m refuses an action with no comparable baseline before showing a misleading approval form [33m 476[2mms[22m[39m
+         [33m[2m✓[22m[39m rechecks definitions even if the server forgot its change notification [33m 533[2mms[22m[39m
+         [33m[2m✓[22m[39m cancels a clipboard action when a credential read changes its approval basis, despite identical geometry [33m 517[2mms[22m[39m
+         [33m[2m✓[22m[39m blocks a second proxy GUI action while the first approval is pending, even without revalidation configured on the second [33m 622[2mms[22m[39m
+         [33m[2m✓[22m[39m honors cancellation during the final observation and releases the unused screen lease [33m 1787[2mms[22m[39m
+         [33m[2m✓[22m[39m retains an uncertain screen lease across proxy restart when the action has no result [33m 906[2mms[22m[39m
+       [33m[2m✓[22m[39m mode strict requires actual approval even for listed navigation [33m 570[2mms[22m[39m
+       [33m[2m✓[22m[39m mode policy requires actual approval even for listed navigation [33m 595[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses coordinate, listed and unknown clicks without an actual approval channel [33m 516[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses both concurrent GUI requests without human approval [33m 489[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses unapproved GUI requests across separate proxy processes sharing the session [33m 533[2mms[22m[39m
+       [33m[2m✓[22m[39m lets policy mode use the normal approval form for an unlisted target [33m 505[2mms[22m[39m
+       [33m[2m✓[22m[39m invalidates policy permission when a subsequent screen read returns a JSON-RPC error [33m 486[2mms[22m[39m
+       [33m[2m✓[22m[39m keeps paste and post-input clicks gated even with a refreshed matching navigation snapshot [33m 527[2mms[22m[39m
+       [33m[2m✓[22m[39m withholds clipboard paste and Send even when a large image precedes screen text [33m 787[2mms[22m[39m
+       [33m[2m✓[22m[39m uses a numbered screen from the last click and never forwards an unapproved Send [33m 530[2mms[22m[39m
+       [33m[2m✓[22m[39m withholds opaque GUI actions after pixels, unknown layouts and non-English labels before forwarding [33m 579[2mms[22m[39m
+       [33m[2m✓[22m[39m requires a separate human approval for each opaque GUI action [33m 478[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses opaque GUI actions in deny mode without offering approval or contacting the server [33m 481[2mms[22m[39m
+       [33m[2m✓[22m[39m explains coordinates and focused form submission from a snapshot without forwarding either call [33m 451[2mms[22m[39m
+       [33m[2m✓[22m[39m stops every first short-secret fragment across concurrent proxies before server delivery [33m 614[2mms[22m[39m
+       [33m[2m✓[22m[39m first-fragment form decline never becomes permission for a later call [33m 461[2mms[22m[39m
+       [33m[2m✓[22m[39m first-fragment form cancel never becomes permission for a later call [33m 443[2mms[22m[39m
+       [33m[2m✓[22m[39m first-fragment form accept never becomes permission for a later call [33m 461[2mms[22m[39m
+       [33m[2m✓[22m[39m reserves an exact public request once across real concurrent proxies [33m 548[2mms[22m[39m
+       [33m[2m✓[22m[39m does not let extra RPC metadata or malformed arguments reuse an exact public grant [33m 527[2mms[22m[39m
+       [33m[2m✓[22m[39m never forwards ignored duplicate JSON fields under an exact public grant [33m 470[2mms[22m[39m
+       [33m[2m✓[22m[39m never forwards tiny or custom-encoded data through send or read-only MCP arguments [33m 585[2mms[22m[39m
+       [33m[2m✓[22m[39m records JSON-RPC error text before delivery and refuses the following send [33m 470[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses a send after outside text came through, and the refused call never reaches the server [33m 895[2mms[22m[39m
+       [33m[2m✓[22m[39m asks through the client form when the client offers one, and records the answer [33m 477[2mms[22m[39m
+       [33m[2m✓[22m[39m audit-only logs what the guard would do and forwards the call; without --flow nothing changes [33m 952[2mms[22m[39m
+ [32m✓[39m test/flow-guard.test.ts [2m([22m[2m46 tests[22m[2m)[22m[33m 1826[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps state consistent when Claude Code runs tool hooks in parallel [33m 853[2mms[22m[39m
+ [32m✓[39m test/flow-guard-screen.test.ts [2m([22m[2m119 tests[22m[2m)[22m[33m 707[2mms[22m[39m
+ [32m✓[39m test/flow-guard-gaps.test.ts [2m([22m[2m24 tests[22m[2m)[22m[33m 581[2mms[22m[39m
+ [32m✓[39m test/flow-guard-secret-regression.test.ts [2m([22m[2m59 tests[22m[2m)[22m[33m 1690[2mms[22m[39m
+     [33m[2m✓[22m[39m deduplicates rereads and marks index capacity exhaustion instead of silently evicting [33m 484[2mms[22m[39m
+ [32m✓[39m test/annotation-review.test.ts [2m([22m[2m28 tests[22m[2m)[22m[33m 10045[2mms[22m[39m
+     [33m[2m✓[22m[39m asks once for the exact annotated tool in a wrapper, and asks again in a new wrapper [33m 987[2mms[22m[39m
+     [33m[2m✓[22m[39m does not record a decline as review and does not forward the refused call [33m 474[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps no-UI calls working when review is disabled or auditing: {"flow":false} [33m 400[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"annotationReview":"off"}} [33m 489[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"mode":"off"}} [33m 446[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"mode":"audit"}} [33m 465[2mms[22m[39m
+     [33m[2m✓[22m[39m fails closed without consent only under the enabled policy: {"flags":[]} [33m 442[2mms[22m[39m
+     [33m[2m✓[22m[39m fails closed without consent only under the enabled policy: {"flags":["--ask","refuse"]} [33m 442[2mms[22m[39m
+     [33m[2m✓[22m[39m fails closed without consent only under the enabled policy: {"flowPolicy":{"mode":"deny"}} [33m 434[2mms[22m[39m
+     [33m[2m✓[22m[39m freshly lists after a yes and refuses silent definition drift without remembering that approval [33m 493[2mms[22m[39m
+     [33m[2m✓[22m[39m never reuses an old tools/list already in flight when approval arrives [33m 1066[2mms[22m[39m
+     [33m[2m✓[22m[39m rechecks shared credential/taint state after annotation approval, literal secret=true [33m 529[2mms[22m[39m
+     [33m[2m✓[22m[39m rechecks shared credential/taint state after annotation approval, literal secret=false [33m 514[2mms[22m[39m
+     [33m[2m✓[22m[39m accepts the same unchanged flow-ask basis instead of asking indefinitely [33m 495[2mms[22m[39m
+     [33m[2m✓[22m[39m documents conservative refusal when the first precheck already consumed an exact public grant [33m 455[2mms[22m[39m
+     [33m[2m✓[22m[39m never waives repeated sensitive-tool approval after annotation review [33m 500[2mms[22m[39m
+     [33m[2m✓[22m[39m does not read annotation claims from model-controlled call arguments [33m 480[2mms[22m[39m
+     [33m[2m✓[22m[39m does not let forged read-only arguments waive review of the advertised tool [33m 425[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the credential guard above reassuring annotations and allowed destinations after review [33m 472[2mms[22m[39m
+ [32m✓[39m test/flow-guard-gui-policy.test.ts [2m([22m[2m97 tests[22m[2m)[22m[33m 504[2mms[22m[39m
+ [32m✓[39m test/review-diff.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 89[2mms[22m[39m
+ [32m✓[39m test/flow-guard-constraints.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 110[2mms[22m[39m
+ [32m✓[39m test/flow-guard-credential-boundary.test.ts [2m([22m[2m34 tests[22m[2m)[22m[33m 608[2mms[22m[39m
+ [32m✓[39m test/mcp-client.test.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 1048[2mms[22m[39m
+     [33m[2m✓[22m[39m times out a server that never answers, and answers roots/list for one that asks [33m 598[2mms[22m[39m
+ [32m✓[39m test/claude-plugin.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 415[2mms[22m[39m
+     [33m[2m✓[22m[39m session-start records verdicts; pre-tool-use (package and plugin script) denies the blocked server [33m 393[2mms[22m[39m
+ [32m✓[39m test/flow-guard-gautam.test.ts [2m([22m[2m37 tests[22m[2m)[22m[33m 761[2mms[22m[39m
+ [32m✓[39m test/flow-guard-instructions.test.ts [2m([22m[2m57 tests[22m[2m)[22m[32m 202[2mms[22m[39m
+ [32m✓[39m test/toxic-flow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m test/flow-guard-answer-review.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 92[2mms[22m[39m
+ [32m✓[39m test/wrap-screen.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m test/action.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 1805[2mms[22m[39m
+     [33m[2m✓[22m[39m on a pull request: starts nothing, vets launch lines, writes SARIF, summary and outputs [33m 423[2mms[22m[39m
+     [33m[2m✓[22m[39m with the lock committed and stdio allowed, a clean project passes [33m 966[2mms[22m[39m
+     [33m[2m✓[22m[39m takes explicit config files one per line, names with spaces included [33m 396[2mms[22m[39m
+ [32m✓[39m test/pin-review-origin.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 976[2mms[22m[39m
+   [33m[2m✓[22m[39m shows the reported versions, the unpinned launch and the added routing hint in one review [33m 967[2mms[22m[39m
+ [32m✓[39m test/flow-guard-home-paths.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 197[2mms[22m[39m
+ [32m✓[39m test/result-screen.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 171[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m21 passed[39m[22m[90m (21)[39m
+[2m      Tests [22m [1m[32m743 passed[39m[22m[90m (743)[39m
+[2m   Start at [22m 03:40:55
+[2m   Duration [22m 119.66s[2m (transform 1.78s, setup 520ms, import 4.14s, tests 101.41s, environment 7ms)[22m
+
+JSON report written to /out/vitest.json

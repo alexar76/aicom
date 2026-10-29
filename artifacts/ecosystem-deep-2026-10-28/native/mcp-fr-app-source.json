@@ -1,0 +1,23 @@
+{
+  "url": "https://mcp-servers.fr/assets/index-D_0axFL9.js",
+  "method": "GET",
+  "retrieved_at": "2026-10-28T13:31:35.667578+00:00",
+  "status": 200,
+  "bytes": 567611,
+  "sha256": "2918d2927d7f2d9a9224becd0ac49f7423c0e2dca134bd1945784464258f9ff6",
+  "marker_counts": {
+    "alexar76": 0,
+    "argus": 0,
+    "supabase": 0,
+    "fetch(": 10,
+    "/api/": 1,
+    ".json": 15
+  },
+  "exact_contexts": [],
+  "observed_data_paths": [],
+  "json_data_contexts": [
+    ".com\"))return null;try{const t=e.split(\"/\");if(t.length<5)return null;const r=t[3],n=t[4],s=[\"schema.json\",\"openapi.json\",\"swagger.json\"];let o=null;for(const l of s)try{const c=await fetch(`https://raw.githubusercontent.com/${r}/${n}/main/${l}`)",
+    "ull;try{const t=e.split(\"/\");if(t.length<5)return null;const r=t[3],n=t[4],s=[\"schema.json\",\"openapi.json\",\"swagger.json\"];let o=null;for(const l of s)try{const c=await fetch(`https://raw.githubusercontent.com/${r}/${n}/main/${l}`);if(c.ok){o=awa",
+    "=e.split(\"/\");if(t.length<5)return null;const r=t[3],n=t[4],s=[\"schema.json\",\"openapi.json\",\"swagger.json\"];let o=null;for(const l of s)try{const c=await fetch(`https://raw.githubusercontent.com/${r}/${n}/main/${l}`);if(c.ok){o=await c.json();bre"
+  ]
+}

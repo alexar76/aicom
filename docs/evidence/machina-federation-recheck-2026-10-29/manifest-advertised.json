@@ -1,0 +1,171 @@
+{
+  "url": "https://mach402.dev/ai-market/v2/manifest",
+  "checked_at_utc": "2026-10-29T04:01:24.913951+00:00",
+  "method": "GET",
+  "status": 200,
+  "final_url": "https://mach402.dev/ai-market/v2/manifest",
+  "headers": {
+    "Date": "Thu, 29 Oct 2026 04:01:25 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "3217",
+    "Connection": "close",
+    "Server": "cloudflare",
+    "vary": "Origin",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY",
+    "cf-cache-status": "DYNAMIC",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=SN7F93NkV3I54kxEf1v1k0vewgKMZO7GwSitORHUN350ovHf6v2eyz4rt5wdCsMRiNUbXJ7ol4raFeUi%2F83OPZd%2BRYVP4dR31B5WGO0w8g%2F6ysYAlqgrJZB9FPyKHw%3D%3D\"}]}",
+    "CF-RAY": "a51f4763ede8ff2d-AMS",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "body_sha256": "e30040ef0d474c2910fbefad4ed1b08f6b15d87618411e1e49f92ccb68a7e97f",
+  "body_truncated": false,
+  "json": {
+    "protocol_version": "v2",
+    "generated_at": "2026-10-29T04:01:25.209137+00:00",
+    "hub": "https://mach402.dev",
+    "signer_public_key": "UGIZ0yVMpsAQBS1sLPq782GBjL5HnJZdI7SVrOQ3Xo4=",
+    "tools": [
+      {
+        "name": "scan_python",
+        "description": "POST /scan/python -- Scan Python for security issues: secrets, eval, shell injection, insecure SSL, CVE deps. Price $0.020/call (max 10K lines). x402 USDC Base.",
+        "endpoint": "https://mach402.dev/scan/python",
+        "method": "POST",
+        "price_usd": 0.02,
+        "payment": "x402/seller_direct",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code"
+          ]
+        }
+      },
+      {
+        "name": "validate_email",
+        "description": "POST /validate/email -- Validate one email: syntax, MX, disposable, role-address. Price $0.007/call. x402 USDC Base.",
+        "endpoint": "https://mach402.dev/validate/email",
+        "method": "POST",
+        "price_usd": 0.007,
+        "payment": "x402/seller_direct",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "email"
+          ]
+        }
+      },
+      {
+        "name": "validate_email_bulk",
+        "description": "POST /validate/email/bulk -- Validate up to 100 emails. Price $0.500/call. x402 USDC Base.",
+        "endpoint": "https://mach402.dev/validate/email/bulk",
+        "method": "POST",
+        "price_usd": 0.5,
+        "payment": "x402/seller_direct",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "emails": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 100
+            }
+          },
+          "required": [
+            "emails"
+          ]
+        }
+      },
+      {
+        "name": "domain_intel",
+        "description": "POST /domain/intel -- DNS, WHOIS, SSL, HTTP headers, tech stack, MX, domain age. Price $0.050/call. x402 USDC Base.",
+        "endpoint": "https://mach402.dev/domain/intel",
+        "method": "POST",
+        "price_usd": 0.05,
+        "payment": "x402/seller_direct",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "domain": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "domain"
+          ]
+        }
+      },
+      {
+        "name": "pdf_extract",
+        "description": "POST /pdf/extract -- PDF to Markdown up to 50 pages. Send raw PDF bytes, Content-Type: application/pdf. Price $0.050/call. x402 USDC Base.",
+        "endpoint": "https://mach402.dev/pdf/extract",
+        "method": "POST",
+        "price_usd": 0.05,
+        "payment": "x402/seller_direct",
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
+      },
+      {
+        "name": "pdf_extract_large",
+        "description": "POST /pdf/extract/large -- PDF to Markdown up to 200 pages. Send raw PDF bytes, Content-Type: application/pdf. Price $0.180/call. x402 USDC Base.",
+        "endpoint": "https://mach402.dev/pdf/extract/large",
+        "method": "POST",
+        "price_usd": 0.18,
+        "payment": "x402/seller_direct",
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
+      },
+      {
+        "name": "pdf_inspect",
+        "description": "POST /pdf/inspect -- FREE. Returns PDF metadata (page count, size, title, author). Send raw PDF bytes, Content-Type: application/pdf. No payment required.",
+        "endpoint": "https://mach402.dev/pdf/inspect",
+        "method": "POST",
+        "price_usd": 0.0,
+        "payment": "free",
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
+      },
+      {
+        "name": "url_extract",
+        "description": "POST /url/extract -- Fetch URL, return Markdown up to 100K chars. Price $0.005/call. x402 USDC Base.",
+        "endpoint": "https://mach402.dev/url/extract",
+        "method": "POST",
+        "price_usd": 0.005,
+        "payment": "x402/seller_direct",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "url"
+          ]
+        }
+      }
+    ],
+    "signature": "hec8IJcbnoZAY089sCifmMM88EE+q9v9/chGsrAT3nTufZOBB9DN076PQ8cVPiZnbVehKG7j34LZJchh7e4pAg=="
+  }
+}

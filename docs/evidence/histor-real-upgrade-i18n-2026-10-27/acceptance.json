@@ -1,0 +1,242 @@
+{
+  "date": "2026-10-27",
+  "defaultLanguage": "en",
+  "python": "3.12.13",
+  "tests": {
+    "tests": 103,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "i18nTests": 42,
+  "syntheticCliRuns": 12,
+  "realDataCliRuns": 12,
+  "cliHelpEnglish": true,
+  "defaultEqualsExplicitEnglish": true,
+  "docs": {
+    "files": 12,
+    "localLinks": 126,
+    "validatedJsonBlocks": 10
+  },
+  "commands": [
+    {
+      "command": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_upgrade_brief.py",
+        "tests/test_upgrade_capture.py",
+        "tests/test_upgrade_rendering.py",
+        "tests/test_upgrade_i18n.py",
+        "-q",
+        "--junitxml=/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-real-upgrade-i18n-2026-10-27/pytest.xml"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor",
+      "exitCode": 0,
+      "log": "pytest.log"
+    },
+    {
+      "command": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/bin/python",
+        "-S",
+        "-B",
+        "examples/upgrade-brief/verify.py",
+        "--out-dir",
+        "../output/histor-upgrade-brief-example"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor",
+      "exitCode": 0,
+      "log": "synthetic-example.log"
+    },
+    {
+      "command": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/bin/python",
+        "-B",
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-real-upgrade-i18n-2026-10-27/verify_real.py"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom",
+      "exitCode": 0,
+      "log": "real-example.log"
+    },
+    {
+      "command": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/bin/ruff",
+        "check",
+        "histor/upgrade_brief.py",
+        "histor/upgrade_brief_i18n.py",
+        "histor/upgrade_brief_cli.py",
+        "tests/test_upgrade_i18n.py",
+        "tests/test_upgrade_brief.py",
+        "examples/upgrade-brief/verify.py"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor",
+      "exitCode": 0,
+      "log": "ruff-histor.log"
+    },
+    {
+      "command": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/bin/ruff",
+        "check",
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-real-upgrade-i18n-2026-10-27/verify_real.py"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom",
+      "exitCode": 0,
+      "log": "ruff-evidence.log"
+    },
+    {
+      "command": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/bin/python",
+        "-S",
+        "-B",
+        "-m",
+        "histor",
+        "upgrade-brief",
+        "--help"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom/histor",
+      "exitCode": 0,
+      "log": "cli-help.log"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom",
+      "exitCode": 0,
+      "log": "diff-check.log"
+    }
+  ],
+  "sources": [
+    {
+      "path": "histor/docs/upgrade-brief.md",
+      "sha256": "0514dc4a422c16b06ce358288e0e181541bdfc869d5fdd387bee2fe6d44f9d14"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.ru.md",
+      "sha256": "e9149c22222de4211775ef96a728deb7b8db3d7215613ec525a4902fb63e6489"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.es.md",
+      "sha256": "849aff40b345375566afbcc40187799f14f3c9576446d822b01ad8ebc6a0d0e9"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.fr.md",
+      "sha256": "c945ecbcc9f9ba791c43850001de9a169a05f4e4a96210021df1287f7c339a11"
+    },
+    {
+      "path": "histor/docs/upgrade-brief.zh.md",
+      "sha256": "afaefe5a38a123910be0c812c27b145238fc87a3bd22c35e579d27368957ffb4"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.md",
+      "sha256": "33416120cb64a657d39e3ee228d850ec6c8916b5664e04a465c85bc1720a4705"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.ru.md",
+      "sha256": "c6a723e6a512a15859bc5c7e5d2869679417925e5485ed933dc315c5d1d060a1"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.es.md",
+      "sha256": "e21fab38c1748a4b72d8a4668a3fd1b894264d49faed8f9e8419b50b71ee10d0"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.fr.md",
+      "sha256": "ae87b87eb429287421b953ead0e431709059f446126f0c33f3b34c608ba9df91"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/README.zh.md",
+      "sha256": "5c83d035c07672095245fbf3e4c5be94bf6fd2a4be92921c225b3f0b32f9631f"
+    },
+    {
+      "path": "histor/README.md",
+      "sha256": "345f5abef5d2004c006f01bba7cd77c499afa5b134a301d0014f814081da0e5c"
+    },
+    {
+      "path": "histor/README.ru.md",
+      "sha256": "5ce54177ff8e0ffc9876a5806033e4e9b1588f9d84d9e76b79a821886f63a9a8"
+    },
+    {
+      "path": "histor/README.es.md",
+      "sha256": "82b28fbced5fa52247085e8ccbfb05c612874c12e10f0d5cd15a749ae6aefa27"
+    },
+    {
+      "path": "histor/README.fr.md",
+      "sha256": "94b5f6d6c93254790f86591fa345229c7a31fdc885080523de217b3d58b51c21"
+    },
+    {
+      "path": "histor/README.zh.md",
+      "sha256": "d14434b8f47198a3e8e411828ae4fac779fd9bd3e78c05c3d8f691046e01df42"
+    },
+    {
+      "path": "histor/CHANGELOG.md",
+      "sha256": "a86840abc021ae870897e48016019d561c05106b8d7bbb2066b8e4b1129d65cc"
+    },
+    {
+      "path": "histor/histor/upgrade_brief.py",
+      "sha256": "506e99478f0e4fffc6074691ab443904763f81adc3944a66f67332f4023f537a"
+    },
+    {
+      "path": "histor/histor/upgrade_brief_cli.py",
+      "sha256": "f0dcf7867f6e14e7402cf5c6fa3d070e953d9616be1d754f759a2fb11cff4d1d"
+    },
+    {
+      "path": "histor/histor/upgrade_brief_i18n.py",
+      "sha256": "12f32bd6e970b87996d68979a948ad76a57a3863993acc7930606f12c53a8dbe"
+    },
+    {
+      "path": "histor/tests/test_upgrade_brief.py",
+      "sha256": "2a1da382032eab4de2296291d698d4819a155384b75f4165518178c9d532b4e9"
+    },
+    {
+      "path": "histor/tests/test_upgrade_rendering.py",
+      "sha256": "116133e113b5e3087e4d3a694e1ef2e6647d2220c9cd43f83cd87a62f9242178"
+    },
+    {
+      "path": "histor/tests/test_upgrade_i18n.py",
+      "sha256": "008fec324986e59d660bcf545435955232ec243aecd4c73cc96babcb06f9fb88"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.en.json",
+      "sha256": "0876494f4c77303cda37bc4359c1809b6c9ea82e05bd2dfd8c4f46a8767108e1"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.es.json",
+      "sha256": "deefad6a79adfd546e4f07c5715d68cf445a063f74f390e4e1623271ffe8e167"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.fr.json",
+      "sha256": "4344ced92bcff8f3518c095a736a56a687ee24a6f42e15ab40ef0baef2094882"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.json",
+      "sha256": "0876494f4c77303cda37bc4359c1809b6c9ea82e05bd2dfd8c4f46a8767108e1"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.ru.json",
+      "sha256": "e02b2ccd26fe814d1ed3a3c8080a6e54176e85260f6fbd6f935ca9f11624bbcb"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/watchlist.zh.json",
+      "sha256": "ed2c44c23337bbe06715a9f5319a193bb2320dfae0042b5edd1cfb8764228477"
+    },
+    {
+      "path": "histor/examples/upgrade-brief/verify.py",
+      "sha256": "61dfa44f935b0f15decc4a4a8e7227cc1bea7c70b7f5acf79513c92dffc82bcb"
+    },
+    {
+      "path": "docs/evidence/histor-real-upgrade-i18n-2026-10-27/verify_real.py",
+      "sha256": "8c0ae12dd249ea0b3dca66ee22fc5b1f8b1be8bb8076f073a46b8f8d0a9f82d7"
+    },
+    {
+      "path": "docs/evidence/histor-real-upgrade-i18n-2026-10-27/labels.json",
+      "sha256": "fb99b4f8e2c714396adeb6e41c9af766edb3eec0a97d677c78f1965108d3722f"
+    },
+    {
+      "path": "docs/evidence/histor-real-upgrade-i18n-2026-10-27/expected.json",
+      "sha256": "6dd3939be16c5b5cdada5fd19978d5376b74350f90f2d79c6934fc477544813d"
+    }
+  ],
+  "scope": "All local; saved public HISTOR evidence only; no network, MCP tool execution, deployment or GitHub publishing."
+}

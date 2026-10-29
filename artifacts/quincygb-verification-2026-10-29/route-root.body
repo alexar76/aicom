@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RouteVerdict — trust &amp; liveness checks for x402 endpoints</title>
+<meta name="description" content="Before an agent pays an unfamiliar x402 endpoint, it pays $0.05 to ask RouteVerdict: is it alive, what does it charge, is its discovery schema real, is it cataloged — and has anything changed since last time?">
+<style>
+  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+         max-width: 760px; margin: 40px auto; padding: 0 20px 60px;
+         line-height: 1.55; color: #16202a; background: #fbfcfd; }
+  h1 { font-size: 2rem; margin-bottom: .2em; }
+  .tag { font-size: 1.1rem; color: #33475b; margin-top: 0; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  pre { background: #0f1b26; color: #dcebf5; padding: 14px 16px;
+        border-radius: 8px; overflow-x: auto; font-size: .85rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  td, th { border-bottom: 1px solid #dde5ec; padding: 6px 8px;
+           text-align: left; vertical-align: top; }
+  .pill { display: inline-block; background: #e7f0e9; color: #1d5c33;
+          border-radius: 999px; padding: 2px 10px; font-size: .85rem; }
+  a { color: #0b5cad; }
+  .limits { background: #fdf6e5; border: 1px solid #ecd9a0;
+            border-radius: 8px; padding: 10px 14px; }
+</style>
+</head>
+<body>
+<h1>RouteVerdict</h1>
+<p class="tag">The trust layer for x402 itself. Before an agent pays an
+unfamiliar x402 endpoint, it pays <strong>$0.05</strong> to ask RouteVerdict
+first: is it alive, what does it charge, is its discovery schema real, is it
+cataloged — and has anything changed since last time? No accounts, no API
+keys: <em>payment is the authentication.</em></p>
+
+<p><span class="pill">Live on Base mainnet</span>
+<span class="pill">x402 v2 · exact scheme</span>
+<span class="pill">$0.05 USDC / check</span>
+<span class="pill">Observation only — never pays the target</span></p>
+
+<h2>What a check returns</h2>
+<p>One <code>POST /v1/check</code> with a resource URL returns:</p>
+<ul>
+  <li>a verdict — <strong>TRUSTED</strong>, <strong>CAUTION</strong>, or
+      <strong>AVOID</strong> — with a 0-100 trust score and every deduction
+      itemized</li>
+  <li><strong>liveness</strong> — the endpoint probed live, unpaid: HTTP
+      status, latency, whether its 402 parses as valid x402</li>
+  <li><strong>terms</strong> — price, network, asset and payTo from the
+      live challenge</li>
+  <li><strong>schema quality</strong> — whether the Bazaar discovery output
+      schema types real fields or is hollow (<code>{"type", "example"}</code>
+      only — the shape 87.8% of listings ship)</li>
+  <li><strong>catalog presence</strong> — listed in the CDP Bazaar? In the
+      PayAI index? (a failed lookup reports <code>unknown</code>, never a
+      fabricated "not listed")</li>
+  <li><strong>diff</strong> — what changed since the previous check of the
+      same URL: price, payTo, schema score, listing presence, liveness</li>
+</ul>
+
+<h2>How to call it</h2>
+<pre>curl -X POST https://route-verdict-production.up.railway.app/v1/check \
+  -H 'content-type: application/json' \
+  -d '{"resource_url":"https://some-service.example.com/v1/endpoint"}'</pre>
+<p>Unpaid calls return an HTTP 402 x402 challenge. Pay $0.05 USDC on Base
+with any x402 v2 client, retry with the payment header, and the report
+comes back. There is no signup and no key to manage — the settlement is
+the credential.</p>
+
+<h2>Endpoints</h2>
+<table>
+  <tr><th>Route</th><th>Price</th><th>Purpose</th></tr>
+  <tr><td><code>POST /v1/check</code></td><td>$0.05</td>
+      <td>Trust &amp; liveness check for one x402 resource URL (paid, x402)</td></tr>
+  <tr><td><code>GET /quote</code></td><td>free</td>
+      <td>Price, asset, network, pay-to wallet</td></tr>
+  <tr><td><code>GET /.well-known/x402</code></td><td>free</td>
+      <td>Machine-readable service manifest</td></tr>
+  <tr><td><code>GET /skill.md</code></td><td>free</td>
+      <td>Documentation written for agents</td></tr>
+  <tr><td><code>GET /llms.txt</code></td><td>free</td>
+      <td>Compact agent index</td></tr>
+  <tr><td><code>GET /health</code></td><td>free</td><td>Liveness</td></tr>
+</table>
+<p>Source code:
+<a href="https://github.com/QuincyGB/route-verdict">github.com/QuincyGB/route-verdict</a>
+(public source — the scoring is deterministic and fully inspectable, and
+the test suite ships with it). Sibling service:
+<a href="https://github.com/QuincyGB/token-verdict">Token Verdict</a>,
+risk verdicts for token contracts.</p>
+
+<div class="limits">
+<strong>Honest limits:</strong> RouteVerdict reads what an endpoint
+publishes and what the public catalogs hold. It never settles a test
+payment to the target, does not grade the paid payload's quality, and
+cannot see inside the target's wallet — the diff flags payTo changes,
+it does not explain them.
+</div>
+</body>
+</html>

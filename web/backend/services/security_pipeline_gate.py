@@ -32,6 +32,15 @@ def security_scan_passes_pipeline_gate(scan: dict[str, Any]) -> tuple[bool, list
 
     reasons: list[str] = []
 
+    # An unavailable/failed npm audit is not evidence of safe dependencies. Keep
+    # this independent of the optional heuristic dependency-risk switch.
+    if "npm_dependency_audit" in scan:
+        npm_audit = scan["npm_dependency_audit"]
+        if not isinstance(npm_audit, dict):
+            reasons.append("npm_dependency_audit_invalid_payload")
+        elif npm_audit.get("passed") is not True:
+            reasons.append("npm_dependency_audit_failed")
+
     try:
         min_score = int(os.environ.get("AIFACTORY_SECURITY_MIN_SCORE", "55"))
     except ValueError:
@@ -89,7 +98,7 @@ def build_security_gate_feedback(scan: dict[str, Any], reasons: list[str]) -> di
         )
 
     sorted_v = sorted([v for v in vulns if isinstance(v, dict)], key=_sort_key)
-    return {
+    feedback = {
         "passed": False,
         "gate_reasons": list(reasons),
         "security_score": scan.get("security_score"),
@@ -98,4 +107,62 @@ def build_security_gate_feedback(scan: dict[str, Any], reasons: list[str]) -> di
         "vulnerabilities": sorted_v[:50],
         "secrets_found": (scan.get("secrets_found") or [])[:20],
         "dependency_risks": (scan.get("dependency_risks") or [])[:30],
+    }
+    if "npm_dependency_audit" in scan:
+        feedback["npm_dependency_audit"] = _npm_audit_feedback(scan["npm_dependency_audit"])
+    return feedback
+
+
+def _npm_audit_feedback(report: Any) -> dict[str, Any]:
+    """Keep actionable audit evidence without embedding unbounded registry JSON."""
+    if not isinstance(report, dict):
+        return {"passed": False, "issues": ["npm_dependency_audit_invalid_payload"]}
+
+    def bounded(value: Any, *, depth: int = 0) -> Any:
+        if isinstance(value, str):
+            return value[:1200]
+        if value is None or isinstance(value, (bool, int, float)):
+            return value
+        if depth >= 3:
+            return str(value)[:1200]
+        if isinstance(value, list):
+            return [bounded(item, depth=depth + 1) for item in value[:20]]
+        if isinstance(value, dict):
+            return {
+                str(key)[:120]: bounded(item, depth=depth + 1)
+                for key, item in list(value.items())[:20]
+            }
+        return str(value)[:1200]
+
+    check_fields = (
+        "file", "path", "directory", "manifest", "lockfile", "passed", "skipped",
+        "reason", "code", "error", "issues", "vulnerabilities", "manifest_sha256",
+        "lockfile_sha256", "sha256",
+    )
+    risk_fields = (
+        "file", "package", "severity", "issue", "recommendation", "code", "version",
+        "installed_version", "range", "fix_available", "fixAvailable", "fixed_version",
+    )
+    return {
+        "passed": report.get("passed") is True,
+        "skipped": report.get("skipped") is True,
+        "checked_at": report.get("checked_at"),
+        "manifest_sha256": bounded(report.get("manifest_sha256")),
+        "issues": bounded(report.get("issues") or []),
+        "checks": [
+            {key: bounded(check[key]) for key in check_fields if key in check}
+            for check in (report.get("checks") or [])[:20]
+            if isinstance(check, dict)
+        ],
+        "dependency_risks": [
+            {key: bounded(risk[key]) for key in risk_fields if key in risk}
+            for risk in (report.get("dependency_risks") or [])[:30]
+            if isinstance(risk, dict)
+        ],
+        "repair_instruction": (
+            "Update affected package.json declarations and regenerate their lockfiles with "
+            "compatible patched versions. Keep development dependencies in the audit. "
+            "Re-run QA/build/tests and the npm audit on the changed files; do not suppress "
+            "findings or treat an unavailable registry as a clean result."
+        ),
     }

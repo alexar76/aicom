@@ -1,0 +1,205 @@
+Metadata-Version: 2.4
+Name: aimarket-mcp-packager
+Version: 2.1.2
+Summary: Package products as ready-to-run MCP servers for Claude Desktop
+License: MIT
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aimarket-hub>=3.0.0
+Requires-Dist: mcp<2,>=1.6
+Provides-Extra: mcp
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: jsonschema>=4.23; extra == "dev"
+Dynamic: license-file
+
+# aimarket-mcp-packager — MCP server
+
+<!-- mcp-name: io.github.alexar76/aimarket-plugins -->
+
+<!-- aicom-readme-badges -->
+<p align="center">
+  <a href="https://github.com/alexar76/aimarket-plugins/actions/workflows/ci.yml"><img src="https://github.com/alexar76/aimarket-plugins/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://glama.ai/mcp/servers/alexar76/aimarket-plugins"><img src="https://glama.ai/mcp/servers/alexar76/aimarket-plugins/badges/score.svg" alt="aimarket-plugins MCP server" /></a>
+  <a href="docs/badges/coverage.svg"><img src="docs/badges/coverage.svg" alt="Test coverage" /></a>
+  <a href="LICENSE"><img src="docs/badges/license.svg" alt="License: Apache-2.0" /></a>
+</p>
+<!-- /aicom-readme-badges -->
+
+Quality score: **[glama.ai/mcp/servers/alexar76/aimarket-plugins/score](https://glama.ai/mcp/servers/alexar76/aimarket-plugins/score)** ·
+[![alexar76/aimarket-plugins MCP server](https://glama.ai/mcp/servers/alexar76/aimarket-plugins/badges/score.svg)](https://glama.ai/mcp/servers/alexar76/aimarket-plugins)
+
+**This repository ships a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server** that packages AIMarket capabilities into self-hosted MCP server products (Docker image metadata, MCP manifest, Claude Desktop config).
+
+Transport: **stdio** (`aimarket_mcp_packager/stdio_server.py`). Built with the official **[MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)** (`mcp` package, `FastMCP`).
+
+Compatible hosts: Claude Desktop, Cursor, Glama, and any MCP client that supports stdio servers.
+
+---
+
+## MCP server in this repo
+
+| Item | Location |
+|------|----------|
+| MCP entrypoint | `aimarket_mcp_packager/stdio_server.py` |
+| MCP SDK dependency | Installed by default — `mcp>=1.6,<2` |
+| Glama / Docker run | [`Dockerfile`](Dockerfile), [`glama.json`](glama.json), [docs/GLAMA.md](docs/GLAMA.md) |
+| Tool implementation | [`aimarket_mcp_packager/packager_core.py`](aimarket_mcp_packager/packager_core.py) |
+
+Run locally:
+
+```bash
+pip install -r requirements-mcp.txt
+pip install -e .
+python -m aimarket_mcp_packager.stdio_server
+```
+
+Or with Docker (stdio MCP server):
+
+```bash
+docker build -t aimarket-mcp-packager .
+docker run --rm -i aimarket-mcp-packager
+```
+
+---
+
+## MCP tools
+
+The server exposes **3 tools** (no MCP resources or prompts):
+
+| Tool | Description |
+|------|-------------|
+| `package_capability` | Build an MCP server package: Docker image name, `mcp_manifest`, subscription tiers, connection string |
+| `generate_dockerfile` | Generate a self-contained Dockerfile with a working stdio capability relay |
+| `generate_claude_desktop_config` | Generate a `claude_desktop_config.json` snippet (`mcpServers`) for docker-run MCP |
+
+Example tool call (conceptual):
+
+```json
+{
+  "name": "package_capability",
+  "arguments": {
+    "capability_id": "translate.multi@v2",
+    "product_id": "prod-001",
+    "name": "Lyra",
+    "description": "Multilingual translator",
+    "input_schema": { "type": "object", "properties": { "text": { "type": "string" } }, "required": ["text"] }
+  }
+}
+```
+
+> `input_schema` takes a JSON Schema **object** (a JSON string is also tolerated for backward compatibility). Every tool parameter is documented in the server's tool schema for MCP clients.
+
+The generated Dockerfile includes the server source and installs its runtime; build it
+with the image tag returned by `package_capability`. Both client-config generators use
+attached `docker run --rm -i` so MCP messages travel over stdio. Set `AIMARKET_HUB_URL`
+and, for capabilities on another provider, `AIMARKET_SOURCE_HUB`. An optional
+`AIMARKET_API_KEY` pays calls through the Hub; these environment variables are forwarded
+at runtime and are never embedded in the image. The example subscription tiers are
+metadata only: this relay does not implement subscription billing or license checks.
+
+---
+
+## MCP resources
+
+This server does **not** register MCP resources or prompts — only the tools above. Output is JSON text returned from each tool call.
+
+---
+
+## Client configuration
+
+### Claude Desktop
+
+```json
+{
+  "mcpServers": {
+    "aimarket-mcp-packager": {
+      "command": "python",
+      "args": ["-m", "aimarket_mcp_packager.stdio_server"]
+    }
+  }
+}
+```
+
+Compat path (what Glama's admin form historically used — keep the shim file):
+
+```json
+{
+  "mcpServers": {
+    "aimarket-mcp-packager": {
+      "command": "python",
+      "args": ["plugins/aimarket-mcp-packager/mcp_stdio_server.py"]
+    }
+  }
+}
+```
+
+Docker variant (see `generate_claude_desktop_config` tool output):
+
+```json
+{
+  "mcpServers": {
+    "aimarket-mcp-packager": {
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "aimarket-mcp-packager:latest"]
+    }
+  }
+}
+```
+
+### Cursor
+
+Add the same stdio server under **Settings → MCP** (command + args pointing at `aimarket_mcp_packager/stdio_server.py` or the Docker image above).
+
+---
+
+## Python library (optional)
+
+The same packaging logic is available as a library and as an AIMarket Hub plugin (PyPI package coming soon — for now `pip install -e .` from this directory, or use the AIMarket Hub Docker image). Hub HTTP routes are optional; **the MCP server runs standalone** via `aimarket_mcp_packager/stdio_server.py`.
+
+```python
+from aimarket_mcp_packager.mcp_packager import MCPPackager
+
+packager = MCPPackager()
+pkg = packager.package(
+    capability_id="translate.multi@v2",
+    product_id="prod-001",
+    name="Lyra",
+    description="Multilingual translator",
+    input_schema={"type": "object", "properties": {"text": {"type": "string"}}},
+    price_per_call_usd=0.40,
+)
+
+print(pkg.docker_image)
+print(pkg.mcp_manifest)
+print(packager.generate_claude_desktop_config(pkg))
+```
+
+---
+
+## When to use
+
+- Distribute AI capabilities as self-hosted MCP servers (Docker + manifest)
+- Generate Claude Desktop / Cursor MCP client configs
+- Enterprise on-prem deployment with subscription tiers
+
+## Subscription tiers (packaged products)
+
+| Tier | Calls/month | Price |
+|------|------------|-------|
+| Starter | 100 | $9.99 |
+| Pro | 1,000 | $49.99 |
+| Enterprise | 10,000 | $299.99 |
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [User guide](docs/user-guide.md) | Install, Hub plugin, verify loaded |
+| [User cases](docs/user-cases.md) | Personas and cross-plugin workflows |
+| [SDK integration](docs/sdk-integration.md) | Code examples and hook behavior |
+
+## License
+
+MIT · Maintained by AI-Factory

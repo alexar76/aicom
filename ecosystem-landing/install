@@ -127,7 +127,7 @@ install_argus_cli() {
     (cd "$src" && npm install && npm run build && npm link)
     return 0
   fi
-  die "Could not install ARGUS. Publish argus-warden to npm or clone github.com/alexar76/argus"
+  die "Could not install ${ARGUS_NPM_PACKAGE}@${ARGUS_NPM_TAG}. Check npm access or build a local github.com/alexar76/argus checkout."
 }
 
 write_default_config() {

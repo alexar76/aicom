@@ -1,0 +1,79 @@
+{
+  "key": "feinterview-tools",
+  "url": "https://feinterview.poetries.top/ai-monitor/news/how-many-tools-should-an-mcp-server-have-i-measured-5-to-100-in-claude-code-codex-and",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T13:51:08.211760+00:00",
+  "status": 200,
+  "final_url": "https://feinterview.poetries.top/ai-monitor/news/how-many-tools-should-an-mcp-server-have-i-measured-5-to-100-in-claude-code-codex-and",
+  "bytes": 172416,
+  "sha256": "0b5fa03c7f858d6dc77e8bfc77db2dd89f32ac168e935db3fa012a165bf2760e",
+  "identifiers": {
+    "alexar76": 0,
+    "modelmarket.dev": 0,
+    "HISTOR": 0,
+    "WARDEN": 0,
+    "AICOM": 0,
+    "1932": 1,
+    "1,932": 1,
+    "25 微秒": 0
+  },
+  "contexts": {
+    "来源": [
+      "结果，还是根据别人的建议来决定工具数量和名称的？你测了什么？ 如需进一步采取行动，你可以考虑屏蔽此人和／或举报滥用行为。 Original source 本文由 AI 翻译整理 ，来源 dev.to · AI ，原文版权归原作者所有。 阅读原文 上一篇 Copilot更新HydraFusion并新增Max 下一篇 Apigee 支持在自有集群运行 MCP 工具 资讯速览 dev.to · AI · 2026-10-15 03:54 AI 评分 8.0 / 10 相关标签 # MCP # 工具调用 # 成本优化 继续阅读 AI 代码上线前先排查这些安全漏洞 Copilot更新HydraFusion并新增Max Apigee 支持在自有集群运行 MCP 工具 编程 Agent 源码研究：架构比功能清单耐用 把 GPU 内核调优变成夜间并行搜索"
+    ],
+    "Tools": [
+      "内并没有出现。这也符合资料调研中的限定结论：性能是否下降，很大程度上取决于模型。 Claude Code 的 tool search 从未隐藏正确的工具。每次运行都恰好调用了一次 ToolSearch，而且都是第一步操作，随后通过精确名称选择工具。模型一开始就能看到所有工具名称，在读取任何 schema 之前，仅凭名称就在相似工具之间做出了选择。 MCP 工具在 Claude Code、Codex 和 Gemini 中的实际成本 输入 token 数量按每个单元格的 36 次运行取平均值（18 项任务 × 2 次）。这些运行全部正确，因此表格展示的只是成本。 在 Claude Code 中，真正起作用的开关是 tool search。它默认开启：只有工具名称进入 prompt，模型通过一次 ToolSearch 调用加载所需的 schema。这次额外调用使它在工具少于约 19 个时，比一次性加载所有工具更贵；超过这个数量后，则更省：工具达",
+      "。这些运行全部正确，因此表格展示的只是成本。 在 Claude Code 中，真正起作用的开关是 tool search。它默认开启：只有工具名称进入 prompt，模型通过一次 ToolSearch 调用加载所需的 schema。这次额外调用使它在工具少于约 19 个时，比一次性加载所有工具更贵；超过这个数量后，则更省：工具达到 100 个时，每次运行的输入量减少了 59%。在通过代理使用、使用 Azure Foundry、使用较旧模型、设置 ENABLE_TOOL_SEARCH=false，或使用 --tools \"\" 时，tool search 会关闭。不过，token 更少并不意味着每次运行更便宜：工具为 100 个时，按标价计算，开启搜索的一次运行成本为 $0.047，关闭搜索则为 $0.038，因为缓存输入很便宜，而搜索会增加一次调用。搜索节省的是上下文，不是钱。 我踩过一个坑：用于隔离测试的参数关闭了 Claude Code",
+      " 100 个时，每次运行的输入量减少了 59%。在通过代理使用、使用 Azure Foundry、使用较旧模型、设置 ENABLE_TOOL_SEARCH=false，或使用 --tools \"\" 时，tool search 会关闭。不过，token 更少并不意味着每次运行更便宜：工具为 100 个时，按标价计算，开启搜索的一次运行成本为 $0.047，关闭搜索则为 $0.038，因为缓存输入很便宜，而搜索会增加一次调用。搜索节省的是上下文，不是钱。 我踩过一个坑：用于隔离测试的参数关闭了 Claude Code 的 tool search，导致我最初把“关闭搜索”的数据当作正常情况发布。仅仅一个参数，就让首次调用的成本相差 4 倍。 MCP 工具分组：在一个客户端里更便宜，在另一个里表现更差 在加载全部 schema 的情况下（Claude Code，关闭搜索），7 个分组工具的成本相当于 14 个独立工具，准确率为 100%。开启 t"
+    ]
+  },
+  "meta": [
+    {
+      "name": "description",
+      "content": "作者在 Claude Code、Codex 和 Gemini 上完成了1932次测试，将工具数量从5个扩展到100个，未观察到准确率变化。测试指出，成本差异主要取决于客户端的工具加载方式，默认隐藏多数工具也改变了命名的作用。"
+    },
+    {
+      "name": "author",
+      "content": "程序员 Poetry"
+    },
+    {
+      "name": "publisher",
+      "content": "程序员 Poetry"
+    },
+    {
+      "name": "apple-mobile-web-app-title",
+      "content": "前端进阶之旅"
+    },
+    {
+      "property": "og:title",
+      "content": "MCP工具数量实测：准确率之外更要看成本"
+    },
+    {
+      "property": "og:description",
+      "content": "作者在 Claude Code、Codex 和 Gemini 上完成了1932次测试，将工具数量从5个扩展到100个，未观察到准确率变化。测试指出，成本差异主要取决于客户端的工具加载方式，默认隐藏多数工具也改变了命名的作用。"
+    },
+    {
+      "property": "og:type",
+      "content": "article"
+    },
+    {
+      "property": "article:published_time",
+      "content": "2026-10-15 04:15:30"
+    },
+    {
+      "property": "article:modified_time",
+      "content": "2026-10-15 04:20:47"
+    },
+    {
+      "name": "twitter:title",
+      "content": "MCP工具数量实测：准确率之外更要看成本"
+    },
+    {
+      "name": "twitter:description",
+      "content": "作者在 Claude Code、Codex 和 Gemini 上完成了1932次测试，将工具数量从5个扩展到100个，未观察到准确率变化。测试指出，成本差异主要取决于客户端的工具加载方式，默认隐藏多数工具也改变了命名的作用。"
+    }
+  ],
+  "source_links": [
+    "https://dev.to/yahhi/how-many-tools-should-an-mcp-server-have-i-measured-5-to-100-in-claude-code-codex-and-gemini-3hap"
+  ]
+}

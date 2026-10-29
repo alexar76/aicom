@@ -1,0 +1,73 @@
+{
+ "type": "histor.check/v1",
+ "checkedAt": "2026-10-25T18:22:47Z",
+ "issuer": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+ "query": {
+  "endpoint": "https://mcp.redu.cloud/mcp"
+ },
+ "target": {
+  "id": "a1956a07e85b0809",
+  "name": "cloud.redu/mcp",
+  "endpoint": "https://mcp.redu.cloud/mcp",
+  "page": "https://histor.modelmarket.dev/s/a1956a07e85b0809",
+  "badge": "https://histor.modelmarket.dev/badge/a1956a07e85b0809.svg",
+  "lastStatus": "blocked-address",
+  "listed": true
+ },
+ "observed": {
+  "toolSetDigest": "sha256-wkEr8NMRsZkAeGyFM9xPDyD4IIQ7o3kzoyBfWTrIXdA=",
+  "subjectDigest": "sha256-tNnFlfHHBfOspZaTVEBGJ5pnv7Ebxc7X8SliWbMYmNw=",
+  "toolCount": 94,
+  "firstPinned": "2026-09-23T10:56:35Z",
+  "unchangedSince": "2026-10-25T16:06:27Z",
+  "lastObserved": "2026-10-25T17:37:03Z",
+  "observations": 93,
+  "changes": 9
+ },
+ "match": "no-digest",
+ "note": "No tool set was sent, so only HISTOR's own observations are reported. HISTOR's latest attempt at this endpoint produced no tool set (blocked-address); the comparison is with its last successful observation.",
+ "patternScan": {
+  "status": "scanned",
+  "toolSetDigest": "sha256-wkEr8NMRsZkAeGyFM9xPDyD4IIQ7o3kzoyBfWTrIXdA=",
+  "patternSet": "sha256-8eWHCssjjVeTApgB9jBnkdEXKgVhGCHx/P8rAB20Bm0=",
+  "block": 2,
+  "advise": 69,
+  "matches": [
+   {
+    "code": "TOOL_DEF_CREDENTIAL_PARAM",
+    "severity": "low",
+    "tier": "advise",
+    "tool": "check_agent_prerequisites",
+    "where": "description",
+    "span": "API key"
+   },
+   {
+    "code": "TOOL_DEF_CREDENTIAL_PARAM",
+    "severity": "low",
+    "tier": "advise",
+    "tool": "check_agent_prerequisites",
+    "where": "inputSchema",
+    "span": "Access Token"
+   },
+   {
+    "code": "TOOL_DEF_ENV_REFERENCE",
+    "severity": "medium",
+    "tier": "advise",
+    "tool": "check_deploy_prerequisites",
+    "where": "description",
+    "span": "-.env"
+   }
+  ],
+  "note": "A match is a reason to read the definition, not a finding of fact. Advise-tier matches never block in WARDEN."
+ },
+ "log": {
+  "treeSize": 1033971,
+  "rootHash": "578182e72afcdea9f47884aa66211c9ef9e0e3a7a485b6d1691611d43e3df40a",
+  "timestamp": "2026-10-25T18:22:45Z"
+ },
+ "signature": {
+  "alg": "Ed25519",
+  "verificationMethod": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9#z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+  "value": "_K7zNPDjlSQ7U9kotu7f4eaugw__We1ILtIGLm-P070racU9VA_fZ4gCqCZz6-s24pn0BsvXyKy2vVSXv8onBQ"
+ }
+}

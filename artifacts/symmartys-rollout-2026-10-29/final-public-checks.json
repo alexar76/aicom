@@ -1,0 +1,43 @@
+{
+  "provider": {
+    "url": "https://modelmarket.dev/providers/symmartys",
+    "service": "symmartys",
+    "version": "0.5.0",
+    "capabilities": 16
+  },
+  "landing": {
+    "http_status": 200,
+    "canonical_url": "https://modelmarket.dev/providers/symmartys/",
+    "assets_checked": [
+      "assets/hero.js?v=20261029-apex",
+      "assets/landing.js",
+      "fonts/fonts.css"
+    ]
+  },
+  "federation": {
+    "provider_rows": 1,
+    "url": "https://modelmarket.dev/providers/symmartys",
+    "name": "SYMMARTYS — public-record facts for agents that trade",
+    "trusted": true,
+    "trust_score": 0.3469
+  },
+  "legacy_route": {
+    "same_capabilities_and_signing_identity": true,
+    "advertises_canonical_url": true
+  },
+  "alien_monitor": {
+    "live": "healthy",
+    "uni": "healthy",
+    "uni_blockchain_ready": true,
+    "live_provider_id": "symmartys",
+    "live_provider_verdict": "on_map",
+    "frontend_asset": "/assets/index-7WDukKUO.js"
+  },
+  "browser": {
+    "search_query": "symmartys",
+    "search_hit_confirmed": true,
+    "card_capabilities": 16,
+    "screenshot": "alien-live-symmartys.png"
+  },
+  "github_writes": false
+}

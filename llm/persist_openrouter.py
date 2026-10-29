@@ -7,7 +7,6 @@ model_providers.yaml, secrets file, and circuit breaker aligned with OPENROUTER_
 
 from __future__ import annotations
 
-import contextlib
 import logging
 import os
 from typing import TYPE_CHECKING, Any
@@ -17,6 +16,7 @@ import yaml
 from core.paths import data_root, model_providers_path
 from llm.bootstrap_providers import ensure_model_providers_file
 from llm.circuit_breaker import get_circuit_store
+from llm.provider_secrets import read_provider_secret, resolve_provider_api_key, save_provider_config, write_provider_secret
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -38,25 +38,26 @@ def _resolve_api_key(explicit: str | None = None) -> str | None:
     env = (os.environ.get("OPENROUTER_API_KEY") or "").strip()
     if env:
         return env
-    path = data_root() / OPENROUTER_SECRET_REL
-    if path.is_file():
-        return path.read_text(encoding="utf-8").strip()
-    return None
+    cfg = model_providers_path()
+    if cfg.is_file():
+        config = yaml.safe_load(cfg.read_text(encoding="utf-8")) or {}
+        provider = config.get("providers", {}).get(OPENROUTER_PROVIDER_ID)
+        if isinstance(provider, dict):
+            key = resolve_provider_api_key(provider)
+            if key:
+                return key
+    return read_provider_secret("openrouter_api_key")
 
 
 def _write_secret_file(key: str) -> Path:
-    path = data_root() / OPENROUTER_SECRET_REL
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(key.strip() + "\n", encoding="utf-8")
-    with contextlib.suppress(OSError):
-        path.chmod(0o600)
-    return path
+    return write_provider_secret("openrouter_api_key", key)
 
 
 def _openrouter_provider_block(api_key: str) -> dict[str, Any]:
     return {
-        "api_key": api_key,
-        "api_key_env": None,
+        "api_key": None,
+        "api_key_env": "OPENROUTER_API_KEY",
+        "api_key_file": "openrouter_api_key",
         "base_url": OPENROUTER_BASE_URL,
         "capabilities": {
             "context_window": DEFAULT_CONTEXT_WINDOW,
@@ -94,8 +95,9 @@ def _merge_openrouter_provider(existing: dict[str, Any] | None, api_key: str) ->
     ex_caps = existing.get("capabilities")
     if isinstance(ex_caps, dict) and ex_caps:
         out["capabilities"] = {**block["capabilities"], **ex_caps}
-    out["api_key"] = api_key
-    out["api_key_env"] = None
+    out["api_key"] = None
+    out["api_key_env"] = "OPENROUTER_API_KEY"
+    out["api_key_file"] = "openrouter_api_key"
     return out
 
 
@@ -114,6 +116,8 @@ def sync_openrouter_provider_config(
     rewrite_routing: bool = True,
 ) -> dict[str, Any]:
     """Merge OpenRouter into model_providers.yaml, persist key, export env."""
+    cfg_path = model_providers_path()
+    ensure_model_providers_file(cfg_path)
     key = _resolve_api_key(api_key)
     if not key:
         return {"ok": False, "error": "no_openrouter_api_key"}
@@ -121,8 +125,6 @@ def sync_openrouter_provider_config(
     secret_path = _write_secret_file(key)
     os.environ["OPENROUTER_API_KEY"] = key
 
-    cfg_path = model_providers_path()
-    ensure_model_providers_file(cfg_path)
     try:
         raw = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
     except OSError:
@@ -160,11 +162,7 @@ def sync_openrouter_provider_config(
                 if fb and fb not in ("auto", OPENROUTER_PROVIDER_ID):
                     rule["fallback_provider"] = OPENROUTER_PROVIDER_ID
 
-    cfg_path.parent.mkdir(parents=True, exist_ok=True)
-    cfg_path.write_text(
-        yaml.safe_dump(raw, sort_keys=False, allow_unicode=True, default_flow_style=False),
-        encoding="utf-8",
-    )
+    save_provider_config(cfg_path, raw)
 
     circuit_action = None
     if reset_circuit:

@@ -1,0 +1,34 @@
+{
+  "validatedCommit": "86366e0265f8fb8ecbf939f8be81b7eaf9d52714",
+  "branch": "main",
+  "secretCheck": {
+    "filesChecked": 12,
+    "newSecretsAndFragmentsAbsent": true,
+    "credentialUrlsAbsent": true,
+    "passed": true
+  },
+  "localChecks": {
+    "regressionTestsPassed": 3,
+    "ruffPassed": true,
+    "jsonParsePassed": true,
+    "diffWhitespacePassed": true,
+    "independentReviewPassed": true
+  },
+  "files": {
+    "docs/evidence/gitea-agent-rotation-2026-10-27/README.md": "7668a4a458f1516bfa7da4241245674b9bad412a2894b20578b8e975bc002a29",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/agent-switched.json": "4f95a50d384573bdddb8cd691383310ac5526909c38a60ff0d3a1c03c3c22aaa",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/attempt-1.json": "b9c3c4bae8e7c271da27a95cb6a10e574e23c16754e03ca62550e215801fb396",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/final-readback.json": "0458b8ea87daef149bf66d50316db9d05a888cfee68b626f2dca57af0e54a29c",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/password-rotated.json": "e316e0defee5077efc05906ed750e78a7693fedf8fa48a2016d15cfa01cd7fc7",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/preflight.json": "76ca1df80ed06625a2d268ef6183caed770e71b782cb79238e77c69a065b8b80",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/resume-preflight.json": "887e3ffddd2bf4a2e5ac2a5e9419b702df18a65301678fe2c04602129927a5f9",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/rotate_remote.py": "eb0855502565db18d6665080cfa518383e29f6d55d58c5e78c272a3ec752457a",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/test_rotate_remote.py": "b8f9d857381029b451adbab055b4615228b1371e739dba013394f24bfe4e88a7",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/token-created.json": "0133f3c58207c7b440bbc38946a389439e08d97e76a887d29362472c79e01c7e",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/token-intent.json": "774db38f77c8175fcf0a4466c5ae535869a5f8a18d597af29dea6c9a26dca97f",
+    "docs/evidence/gitea-agent-rotation-2026-10-27/verified.json": "01c2def33c6dbce77573d19125b033e2b8cb42672597baac2806040f542aaa60"
+  },
+  "credentialsDeliveredOutsideGit": true,
+  "gitPushPerformedByThisTask": false,
+  "githubWritePerformedByThisTask": false
+}

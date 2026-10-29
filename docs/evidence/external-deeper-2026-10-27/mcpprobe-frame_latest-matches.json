@@ -1,0 +1,179 @@
+{
+  "url": "https://raw.githubusercontent.com/Ahmad-Faraj/mcp-conformance/47265b2bb09f5fedece4e1168fcd5e4afb9d530f/data/release/frame_latest.jsonl",
+  "status": 200,
+  "retrieved_at": "2026-10-27T08:40:58.934876+00:00",
+  "sha256": "ff37296baeeb7bda7373c7b16130d2ff3a92c36bcc3eef11a1ec743bf1615f5a",
+  "bytes": 15859045,
+  "totalRows": 17432,
+  "matches": [
+    {
+      "line": 7323,
+      "record": {
+        "server": {
+          "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+          "name": "io.github.alexar76/aimarket-mcp",
+          "description": "Streamable-HTTP MCP gateway: web_fetch, web_search, metis_verify (SSRF-hardened).",
+          "title": "AIMarket MCP Gateway",
+          "repository": {
+            "url": "https://github.com/alexar76/aimarket-mcp",
+            "source": "github"
+          },
+          "version": "0.1.0",
+          "remotes": [
+            {
+              "type": "streamable-http",
+              "url": "https://{aimarket_host}/mcp",
+              "headers": [
+                {
+                  "description": "Bearer token matching AIMARKET_MCP_KEY when auth is enabled",
+                  "isSecret": true,
+                  "name": "Authorization"
+                }
+              ],
+              "variables": {
+                "aimarket_host": {
+                  "description": "Host[:port] of your aimarket-mcp deployment (no scheme). Default: local Docker.",
+                  "default": "127.0.0.1:9090"
+                }
+              }
+            }
+          ]
+        },
+        "meta": {
+          "status": "active",
+          "statusChangedAt": "2026-07-12T07:26:21.533013Z",
+          "publishedAt": "2026-07-12T07:26:21.533013Z",
+          "updatedAt": "2026-07-12T07:26:21.533013Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "line": 7324,
+      "record": {
+        "server": {
+          "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+          "name": "io.github.alexar76/aimarket-oracle-gateway",
+          "description": "Stdio MCP: 17 verifiable AIMarket oracles, 35 pay-per-call tools for AI agents.",
+          "title": "AIMarket Oracle Gateway",
+          "repository": {
+            "url": "https://github.com/alexar76/aimarket-oracle-gateway",
+            "source": "github"
+          },
+          "version": "0.2.0",
+          "packages": [
+            {
+              "registryType": "pypi",
+              "registryBaseUrl": "https://pypi.org",
+              "identifier": "aimarket-oracle-gateway",
+              "version": "0.2.0",
+              "transport": {
+                "type": "stdio"
+              },
+              "environmentVariables": [
+                {
+                  "description": "AIMarket Hub base URL (recommended metered path)",
+                  "name": "AIMARKET_HUB_URL"
+                },
+                {
+                  "description": "Direct oracle-family URL (demo/free path if no hub)",
+                  "name": "AIMARKET_ORACLE_URL"
+                },
+                {
+                  "description": "Hard cap per call in USD (default 0.10)",
+                  "name": "AIMARKET_MAX_PER_CALL_USD"
+                },
+                {
+                  "description": "Hard cumulative budget for this process (default 5.0)",
+                  "name": "AIMARKET_MAX_SPEND_USD"
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "status": "active",
+          "statusChangedAt": "2026-07-07T17:39:25.06867Z",
+          "publishedAt": "2026-07-07T17:39:25.06867Z",
+          "updatedAt": "2026-07-07T17:39:25.06867Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "line": 7325,
+      "record": {
+        "server": {
+          "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+          "name": "io.github.alexar76/aimarket-plugins",
+          "description": "Stdio MCP packager: AIMarket hub plugins into self-hosted MCP server products.",
+          "title": "AIMarket MCP Packager",
+          "repository": {
+            "url": "https://github.com/alexar76/aimarket-plugins",
+            "source": "github"
+          },
+          "version": "2.0.1",
+          "packages": [
+            {
+              "registryType": "pypi",
+              "registryBaseUrl": "https://pypi.org",
+              "identifier": "aimarket-mcp-packager",
+              "version": "2.0.1",
+              "transport": {
+                "type": "stdio"
+              },
+              "environmentVariables": [
+                {
+                  "description": "AIMarket Hub base URL",
+                  "name": "AIMARKET_HUB_URL"
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "status": "active",
+          "statusChangedAt": "2026-07-07T17:53:12.739341Z",
+          "publishedAt": "2026-07-07T17:53:12.739341Z",
+          "updatedAt": "2026-07-07T17:53:12.739341Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "line": 7326,
+      "record": {
+        "server": {
+          "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+          "name": "io.github.alexar76/argus3",
+          "description": "ARGUS-3 stdio MCP (argus_ask, argus_status). WARDEN firewall blocks poisoned MCP servers.",
+          "title": "ARGUS-3 MCP Server",
+          "repository": {
+            "url": "https://github.com/alexar76/argus",
+            "source": "github"
+          },
+          "version": "0.2.4",
+          "packages": [
+            {
+              "registryType": "npm",
+              "registryBaseUrl": "https://registry.npmjs.org",
+              "identifier": "@alexar76/argus3",
+              "version": "0.2.4",
+              "transport": {
+                "type": "stdio"
+              }
+            }
+          ]
+        },
+        "meta": {
+          "status": "active",
+          "statusChangedAt": "2026-07-07T17:51:34.121873Z",
+          "publishedAt": "2026-07-07T17:51:34.121873Z",
+          "updatedAt": "2026-07-07T17:51:34.121873Z",
+          "isLatest": true
+        }
+      }
+    }
+  ],
+  "note": "Only ecosystem-matching records retained. SHA256 covers complete source response."
+}

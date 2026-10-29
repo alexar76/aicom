@@ -1,0 +1,10 @@
+# Evaluation artifact only. The base is the enrolled live HISTOR image.
+# This does not start or promote a HISTOR container.
+FROM sha256:befe7e54d444d0d9b2658151725b264fc6bb61dbbdb0927caff60f281ba249d6
+USER 0:0
+RUN rm -rf /app/scanner/node_modules/@aimarket/warden
+COPY --chown=65532:65532 package/ /app/scanner/node_modules/@aimarket/warden/
+LABEL org.aimarket.release.candidate="warden-0.22.2" \
+      org.aimarket.release.scope="isolated-quality-evaluation" \
+      org.aimarket.release.warden-build="3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de"
+USER 65532:65532

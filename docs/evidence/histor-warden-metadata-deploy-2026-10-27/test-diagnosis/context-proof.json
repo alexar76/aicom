@@ -1,0 +1,29 @@
+{
+  "kind": "static-context-closure-proof",
+  "documentsChecked": 45,
+  "checkedLinks": 718,
+  "missingBefore": 22,
+  "missingWithRequiredTestInputs": 0,
+  "requiredWorkspaceFiles": [
+    "docs/growth/kevin-annotations-answer-review-2026-10-25.ru.md",
+    "docs/growth/launchgate-methodology-2026-10-25.ru.md",
+    "docs/growth/launchgate-selection-2026-10-25.en.md",
+    "docs/growth/launchgate-selection-2026-10-25.ru.md",
+    "docs/growth/launchgate-tie-selection-2026-10-25.en.md",
+    "docs/growth/launchgate-tie-selection-2026-10-25.ru.md",
+    "docs/growth/warden-thresholds-2026-10-25.ru.md"
+  ],
+  "ignoreFiles": [
+    ".dockerignore",
+    "warden/deploy/Dockerfile.histor.dockerignore"
+  ],
+  "recipeSha256": "74a4ade4589ce9ff79f0ae4281a8bd84eb6043c8fe67319eea375070c8e055cf",
+  "finalStageCopies": [
+    "/warden/dist /app/scanner/node_modules/@aimarket/warden/dist",
+    "/warden/package.json /app/scanner/node_modules/@aimarket/warden/package.json",
+    "/warden/src /opt/warden-source/src"
+  ],
+  "finalImageReferenceDocuments": 0,
+  "assertionsChanged": false,
+  "runtimeChanged": false
+}

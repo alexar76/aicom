@@ -1,0 +1,66 @@
+
+> @aimarket/warden@0.22.2 test:macos
+> node scripts/build-macos.mjs && node scripts/build-macos.mjs --tests && npm run build && vitest run --config vitest.macos.config.ts
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/warden/native/macos/.build/warden-desktop
+/Users/alex/Desktop/ai_tests/aicompany/aicom/warden/native/macos/.build/warden-desktop-test
+
+> @aimarket/warden@0.22.2 build
+> tsc -p tsconfig.json && node scripts/sync-flow-guard.mjs
+
+claude-plugin/scripts: flow-guard-answer.mjs, flow-guard-classify.mjs, flow-guard-constraints.mjs, flow-guard-decode.mjs, flow-guard-destinations.mjs, flow-guard-fingerprints.mjs, flow-guard-fragments.mjs, flow-guard-instructions.mjs, flow-guard-labels.mjs, flow-guard-leak.mjs, flow-guard-paths.mjs, flow-guard-policy.mjs, flow-guard-post.mjs, flow-guard-pre.mjs, flow-guard-screen.mjs, flow-guard-state.mjs, flow-guard-text.mjs, flow-guard-types.mjs, flow-guard.mjs updated
+
+ RUN  v5.0.5 /Users/alex/Desktop/ai_tests/aicompany/aicom/warden
+
+ ❯ test/macos/desktop.integration.ts (55 tests | 2 failed) 10765ms
+   ❯ native AppKit target-side integration (real macOS window; no global input) (55)
+     × passes multilingual native labels through the same cross-language target stamp 136ms
+     × refuses sheet changes during native hit-test even without an invalidation callback 119ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/macos/desktop.integration.ts > native AppKit target-side integration (real macOS window; no global input) > passes multilingual native labels through the same cross-language target stamp
+AssertionError: expected 'refused' to be 'committed' // Object.is equality
+
+Expected: "committed"
+Received: "refused"
+
+ ❯ test/macos/desktop.integration.ts:107:76
+    105|   it('passes multilingual native labels through the same cross-languag…
+    106|     const c = client(); await c.initialize(); await c.request('test/ch…
+    107|     const p = await prepare(c); expect((await commit(c, p)).result.sta…
+       |                                                                            ^
+    108|   });
+    109|   it('rechecks the revision after an overridable native hit-test chang…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/macos/desktop.integration.ts > native AppKit target-side integration (real macOS window; no global input) > refuses sheet changes during native hit-test even without an invalidation callback
+AssertionError: expected { count: +0, …(5) } to match object { hitRaceTriggered: true, count: +0 }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "count": 0,
+-   "hitRaceTriggered": true,
++   "hitRaceTriggered": false,
+  }
+
+ ❯ test/macos/desktop.integration.ts:119:28
+    117|     const r = await commit(c, p);
+    118|     expect(r.error).toBeUndefined(); expect(r.result.status).toBe('ref…
+    119|     expect(await stats(c)).toMatchObject({ hitRaceTriggered: true, cou…
+       |                            ^
+    120|     expect((await commit(c, p)).result.reason).toBe('unknown');
+    121|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 53 passed (55)
+   Start at  17:36:22
+   Duration  10.94s (tests 99%, transform 1%)
+

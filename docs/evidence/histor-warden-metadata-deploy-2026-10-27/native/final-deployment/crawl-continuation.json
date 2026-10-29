@@ -1,0 +1,91 @@
+{
+  "required": true,
+  "sameCycle": true,
+  "completed": false,
+  "before": {
+    "running": true,
+    "run": {
+      "id": 27097,
+      "startedAt": "2026-10-27T16:56:37Z",
+      "finishedAt": null,
+      "cycle": "2026-10-27T16:56:37Z",
+      "resumedFrom": null,
+      "classified": 0,
+      "interrupted": false,
+      "errorPresent": false,
+      "skippedAlreadyAttempted": null
+    },
+    "reference": {
+      "id": 27097,
+      "startedAt": "2026-10-27T16:56:37Z",
+      "finishedAt": null,
+      "cycle": "2026-10-27T16:56:37Z",
+      "resumedFrom": null,
+      "classified": 0,
+      "interrupted": false,
+      "errorPresent": false,
+      "skippedAlreadyAttempted": null
+    },
+    "attemptedCount": 0,
+    "packageAttempts": 0,
+    "planHash": null,
+    "planDueCount": null,
+    "resume": null,
+    "ancestry": null,
+    "classifierBudget": 0,
+    "packageBudget": 8000,
+    "remotePollingEnabled": true,
+    "checkpointSeconds": 30
+  },
+  "after": {
+    "running": true,
+    "run": {
+      "id": 27185,
+      "startedAt": "2026-10-27T17:27:14Z",
+      "finishedAt": null,
+      "cycle": "2026-10-27T16:56:37Z",
+      "resumedFrom": 27097,
+      "classified": 0,
+      "interrupted": false,
+      "errorPresent": false,
+      "skippedAlreadyAttempted": null
+    },
+    "reference": {
+      "id": 27097,
+      "startedAt": "2026-10-27T16:56:37Z",
+      "finishedAt": "2026-10-27T17:26:58Z",
+      "cycle": "2026-10-27T16:56:37Z",
+      "resumedFrom": null,
+      "classified": 0,
+      "interrupted": true,
+      "errorPresent": true,
+      "skippedAlreadyAttempted": null
+    },
+    "attemptedCount": 0,
+    "packageAttempts": 0,
+    "planHash": null,
+    "planDueCount": null,
+    "resume": {
+      "run_id": 27097,
+      "cycle_started_at": "2026-10-27T16:56:37Z",
+      "runs": [
+        27097
+      ],
+      "classified": 0
+    },
+    "ancestry": {
+      "run_id": 27097,
+      "cycle_started_at": "2026-10-27T16:56:37Z",
+      "runs": [
+        27097
+      ],
+      "classified": 0
+    },
+    "classifierBudget": 0,
+    "packageBudget": 8000,
+    "remotePollingEnabled": true,
+    "checkpointSeconds": 30
+  },
+  "planningMayRepeatUnsavedRegistryLookups": true,
+  "checkpointGranularitySeconds": 30
+}

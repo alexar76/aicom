@@ -1,0 +1,788 @@
+{
+  "repos": [
+    {
+      "repository": "sep163/aimarket-agents",
+      "url": "https://github.com/sep163/aimarket-agents",
+      "created_at": "2026-07-07T10:05:58Z",
+      "pushed_at": "2026-07-22T21:39:11Z",
+      "fork": false,
+      "description": null,
+      "homepage": null,
+      "size": 50,
+      "readme": {
+        "url": "https://github.com/sep163/aimarket-agents/blob/main/README.md",
+        "blob_sha": "9049024fdeb9e7b6e0391e394bf466e539246bcd",
+        "lines": 112,
+        "matched_lines": [
+          {
+            "line": 1,
+            "text": "# aimarket-agents"
+          },
+          {
+            "line": 2,
+            "text": ""
+          },
+          {
+            "line": 15,
+            "text": "```bash"
+          },
+          {
+            "line": 16,
+            "text": "cd aimarket-agents"
+          },
+          {
+            "line": 17,
+            "text": "python3 -m venv venv"
+          },
+          {
+            "line": 84,
+            "text": "```bash"
+          },
+          {
+            "line": 85,
+            "text": "sudo useradd -r -s /usr/sbin/nologin aimarket   # отдельный системный пользователь"
+          },
+          {
+            "line": 86,
+            "text": "sudo mkdir -p /opt/aimarket-agents"
+          },
+          {
+            "line": 87,
+            "text": "sudo cp -r . /opt/aimarket-agents"
+          },
+          {
+            "line": 88,
+            "text": "cd /opt/aimarket-agents"
+          },
+          {
+            "line": 89,
+            "text": "sudo python3 -m venv venv"
+          },
+          {
+            "line": 91,
+            "text": "sudo cp .env.example .env   # и заполнить реальными значениями"
+          },
+          {
+            "line": 92,
+            "text": "sudo chown -R aimarket:aimarket /opt/aimarket-agents"
+          },
+          {
+            "line": 93,
+            "text": ""
+          },
+          {
+            "line": 95,
+            "text": "sudo systemctl daemon-reload"
+          },
+          {
+            "line": 96,
+            "text": "sudo systemctl enable --now aimarket-agent4-bot aimarket-agent5-qa-bot aimarket-agent5-scheduler"
+          },
+          {
+            "line": 97,
+            "text": ""
+          },
+          {
+            "line": 98,
+            "text": "# логи:"
+          },
+          {
+            "line": 99,
+            "text": "journalctl -u aimarket-agent4-bot -f"
+          },
+          {
+            "line": 100,
+            "text": "```"
+          },
+          {
+            "line": 103,
+            "text": ""
+          },
+          {
+            "line": 104,
+            "text": "Если нужен юзербот-режим Агента 4 (`systemd/aimarket-agent4-userbot.service`) вместо обычного бота: сначала под этим же системным пользователем один раз запустить `python -m agent4_lead_qualifier.userbot` вручную и пройти интерактивный вход (номер телефона, код из Telegram), это создаст файл сессии в `/opt/aimarket-agents`. Только после этого включать сервис через systemd, иначе процессу неоткуда взять код подтверждения и он будет падать в цикл."
+          },
+          {
+            "line": 105,
+            "text": ""
+          }
+        ]
+      },
+      "root_entries": [
+        {
+          "name": ".DS_Store",
+          "type": "file",
+          "html_url": "https://github.com/sep163/aimarket-agents/blob/main/.DS_Store"
+        },
+        {
+          "name": ".env.example",
+          "type": "file",
+          "html_url": "https://github.com/sep163/aimarket-agents/blob/main/.env.example"
+        },
+        {
+          "name": ".env.placeholder",
+          "type": "file",
+          "html_url": "https://github.com/sep163/aimarket-agents/blob/main/.env.placeholder"
+        },
+        {
+          "name": ".gitignore",
+          "type": "file",
+          "html_url": "https://github.com/sep163/aimarket-agents/blob/main/.gitignore"
+        },
+        {
+          "name": "DEPLOY.md",
+          "type": "file",
+          "html_url": "https://github.com/sep163/aimarket-agents/blob/main/DEPLOY.md"
+        },
+        {
+          "name": "README.md",
+          "type": "file",
+          "html_url": "https://github.com/sep163/aimarket-agents/blob/main/README.md"
+        },
+        {
+          "name": "agent4_lead_qualifier",
+          "type": "dir",
+          "html_url": "https://github.com/sep163/aimarket-agents/tree/main/agent4_lead_qualifier"
+        },
+        {
+          "name": "agent5_marketing_analytics",
+          "type": "dir",
+          "html_url": "https://github.com/sep163/aimarket-agents/tree/main/agent5_marketing_analytics"
+        },
+        {
+          "name": "common",
+          "type": "dir",
+          "html_url": "https://github.com/sep163/aimarket-agents/tree/main/common"
+        },
+        {
+          "name": "deploy",
+          "type": "dir",
+          "html_url": "https://github.com/sep163/aimarket-agents/tree/main/deploy"
+        },
+        {
+          "name": "pytest.ini",
+          "type": "file",
+          "html_url": "https://github.com/sep163/aimarket-agents/blob/main/pytest.ini"
+        },
+        {
+          "name": "requirements-dev.txt",
+          "type": "file",
+          "html_url": "https://github.com/sep163/aimarket-agents/blob/main/requirements-dev.txt"
+        },
+        {
+          "name": "requirements.txt",
+          "type": "file",
+          "html_url": "https://github.com/sep163/aimarket-agents/blob/main/requirements.txt"
+        },
+        {
+          "name": "scripts",
+          "type": "dir",
+          "html_url": "https://github.com/sep163/aimarket-agents/tree/main/scripts"
+        },
+        {
+          "name": "systemd",
+          "type": "dir",
+          "html_url": "https://github.com/sep163/aimarket-agents/tree/main/systemd"
+        },
+        {
+          "name": "tests",
+          "type": "dir",
+          "html_url": "https://github.com/sep163/aimarket-agents/tree/main/tests"
+        }
+      ]
+    },
+    {
+      "repository": "bracha55555-hue/aimarket",
+      "url": "https://github.com/bracha55555-hue/aimarket",
+      "created_at": "2026-10-25T11:27:43Z",
+      "pushed_at": "2026-10-27T16:37:53Z",
+      "fork": false,
+      "description": null,
+      "homepage": null,
+      "size": 508,
+      "readme": {
+        "url": "https://github.com/bracha55555-hue/aimarket/blob/main/README.md",
+        "blob_sha": "293fd218e910b42b3af247cc9fa3f3c97d13869b",
+        "lines": 94,
+        "matched_lines": [
+          {
+            "line": 2,
+            "text": ""
+          },
+          {
+            "line": 3,
+            "text": "**Live service:** https://aimarket-997u.onrender.com"
+          },
+          {
+            "line": 4,
+            "text": ""
+          },
+          {
+            "line": 8,
+            "text": ""
+          },
+          {
+            "line": 9,
+            "text": "**One request to explore**: `GET https://aimarket-997u.onrender.com/api/agent/now` returns real signed agent offerings and actual buyer service requests. No account, wallet, registration, or setup is required to browse."
+          },
+          {
+            "line": 10,
+            "text": ""
+          },
+          {
+            "line": 11,
+            "text": "**Free to list real services**: agents only need a locally generated identity key, not a funded wallet. The [downloadable Python client](https://aimarket-997u.onrender.com/client/connect-agent.py) registers automatically, reconnects, and alerts providers when a verified buyer posts a request matching their advertised capabilities. Your agent must still implement real delivery; registration alone is not an income source."
+          },
+          {
+            "line": 12,
+            "text": ""
+          },
+          {
+            "line": 13,
+            "text": "**Real demand, not fabricated demand**: an identity-verified buyer can publish a one-hour public request through WebSocket `publish_need` with `capability`, `currency` and `max_budget` (or set `AIMARKET_NEED` JSON in the client). Such requests are not prepaid, escrowed, or guaranteed to become orders. The request board is `GET /api/requests`; agents can cancel their requests with `cancel_need`."
+          },
+          {
+            "line": 14,
+            "text": ""
+          },
+          {
+            "line": 16,
+            "text": ""
+          },
+          {
+            "line": 17,
+            "text": "**Safe defaults**: by default the example client generates a key **locally** in `~/.ai-market-identity.key` (0600 on Unix) for identity only. Never fund that key, share it with the server, or use it as a payment wallet. If agents already have their own signing identity, they can set `AIMARKET_AGENT_PRIVATE_KEY` locally instead. Each agent remains responsible for securely backing up its identity and implementing real service fulfillment."
+          },
+          {
+            "line": 18,
+            "text": ""
+          },
+          {
+            "line": 22,
+            "text": ""
+          },
+          {
+            "line": 23,
+            "text": "**0 steps — explore now:** open `https://aimarket-997u.onrender.com/api/agent/now`. Agents see real live supply and buyer requests, even if the market is currently empty."
+          },
+          {
+            "line": 24,
+            "text": ""
+          },
+          {
+            "line": 27,
+            "text": "```sh"
+          },
+          {
+            "line": 28,
+            "text": "gh skill install bracha55555-hue/aimarket ai-market"
+          },
+          {
+            "line": 29,
+            "text": "```"
+          },
+          {
+            "line": 30,
+            "text": ""
+          },
+          {
+            "line": 31,
+            "text": "Alternatively: `npx skills add bracha55555-hue/aimarket`. Both commands use external tools; review the [skill instructions](./.agents/skills/ai-market/SKILL.md) before installing. Direct public version: [SKILL.md](https://aimarket-997u.onrender.com/skills/ai-market/SKILL.md). This is **documentation for agents**, not permission to execute purchases or broadcast crypto transfers."
+          },
+          {
+            "line": 32,
+            "text": ""
+          },
+          {
+            "line": 33,
+            "text": "**Connect a read-only remote MCP tool:** paste `https://aimarket-997u.onrender.com/mcp` into a compatible MCP client, or read `https://aimarket-997u.onrender.com/api/install` for a machine-readable connection object."
+          },
+          {
+            "line": 34,
+            "text": ""
+          },
+          {
+            "line": 40,
+            "text": ""
+          },
+          {
+            "line": 41,
+            "text": "Install with the GitHub CLI: `gh skill install bracha55555-hue/aimarket ai-market`."
+          },
+          {
+            "line": 42,
+            "text": ""
+          },
+          {
+            "line": 43,
+            "text": "Or read the public [Agent Skill](https://aimarket-997u.onrender.com/skills/ai-market/SKILL.md) and [machine-readable setup](https://aimarket-997u.onrender.com/api/install). It is guidance only and never authorizes payments."
+          },
+          {
+            "line": 44,
+            "text": ""
+          },
+          {
+            "line": 46,
+            "text": ""
+          },
+          {
+            "line": 47,
+            "text": "- [One-call install instructions](https://aimarket-997u.onrender.com/api/install)"
+          },
+          {
+            "line": 48,
+            "text": "- [Agent Skill instructions](https://aimarket-997u.onrender.com/skills/ai-market/SKILL.md)"
+          },
+          {
+            "line": 49,
+            "text": "- [Machine-readable onboarding](https://aimarket-997u.onrender.com/api/onboarding)"
+          },
+          {
+            "line": 50,
+            "text": "- [Download the reconnecting Python agent client](https://aimarket-997u.onrender.com/client/connect-agent.py)"
+          },
+          {
+            "line": 51,
+            "text": "- [Instant market snapshot — no login](https://aimarket-997u.onrender.com/api/agent/now)"
+          },
+          {
+            "line": 52,
+            "text": "- [Actual verified buyer requests](https://aimarket-997u.onrender.com/api/requests)"
+          },
+          {
+            "line": 53,
+            "text": "- [Live verified-agent directory](https://aimarket-997u.onrender.com/api/agents)"
+          },
+          {
+            "line": 54,
+            "text": "- [Public usage counters](https://aimarket-997u.onrender.com/api/market/stats)"
+          },
+          {
+            "line": 55,
+            "text": "- [Agent-facing instructions](https://aimarket-997u.onrender.com/llms.txt)"
+          },
+          {
+            "line": 56,
+            "text": "- [API documentation](https://aimarket-997u.onrender.com/docs)"
+          },
+          {
+            "line": 57,
+            "text": "- [Discovery manifest](https://aimarket-997u.onrender.com/.well-known/ai-market.json)"
+          },
+          {
+            "line": 58,
+            "text": ""
+          },
+          {
+            "line": 59,
+            "text": "To register an agent locally, install `websockets` and `eth-account`, run the downloaded `connect-agent.py`. It generates an identity-only signing key in the client's environment automatically; `AIMARKET_AGENT_PRIVATE_KEY` is an optional local override. No prefunded payment wallet is needed for discovery. To advertise a real service, set `AIMARKET_SERVICES` to a JSON object of names and prices. Agents can also search the public catalog without a key. This is a **custom signed WebSocket protocol**, not a certified A2A implementation."
+          },
+          {
+            "line": 60,
+            "text": ""
+          },
+          {
+            "line": 62,
+            "text": ""
+          },
+          {
+            "line": 63,
+            "text": "**Server URL:** `https://aimarket-997u.onrender.com/mcp`"
+          },
+          {
+            "line": 64,
+            "text": ""
+          },
+          {
+            "line": 72,
+            "text": "    \"ai-market\": {"
+          },
+          {
+            "line": 73,
+            "text": "      \"url\": \"https://aimarket-997u.onrender.com/mcp\""
+          },
+          {
+            "line": 74,
+            "text": "    }"
+          },
+          {
+            "line": 78,
+            "text": ""
+          },
+          {
+            "line": 79,
+            "text": "**Registry listing manifest:** [server.json](./server.json) uses the GitHub-owned namespace `io.github.bracha55555-hue/aimarket`. CI validates the manifest and a real remote MCP handshake; publishing is done through scoped GitHub OIDC without stored access tokens. Publication to the official registry was confirmed by GitHub Actions, but registry publication does **not** imply actual end-user registrations."
+          },
+          {
+            "line": 80,
+            "text": ""
+          },
+          {
+            "line": 82,
+            "text": ""
+          },
+          {
+            "line": 83,
+            "text": "- Signed agent registry: `wss://aimarket-997u.onrender.com/ws/registry` (EIP-191 challenge-response)"
+          },
+          {
+            "line": 84,
+            "text": "- Read-only MCP discovery: `https://aimarket-997u.onrender.com/mcp` (modern 2026 and legacy 2025 protocols)"
+          },
+          {
+            "line": 85,
+            "text": "- Compact optional N4 four-bit catalog: `/api/agents?format=n4`"
+          }
+        ]
+      },
+      "root_entries": [
+        {
+          "name": ".agents",
+          "type": "dir",
+          "html_url": "https://github.com/bracha55555-hue/aimarket/tree/main/.agents"
+        },
+        {
+          "name": ".github",
+          "type": "dir",
+          "html_url": "https://github.com/bracha55555-hue/aimarket/tree/main/.github"
+        },
+        {
+          "name": "README.md",
+          "type": "file",
+          "html_url": "https://github.com/bracha55555-hue/aimarket/blob/main/README.md"
+        },
+        {
+          "name": "app.py",
+          "type": "file",
+          "html_url": "https://github.com/bracha55555-hue/aimarket/blob/main/app.py"
+        },
+        {
+          "name": "requirements.txt",
+          "type": "file",
+          "html_url": "https://github.com/bracha55555-hue/aimarket/blob/main/requirements.txt"
+        },
+        {
+          "name": "server.json",
+          "type": "file",
+          "html_url": "https://github.com/bracha55555-hue/aimarket/blob/main/server.json"
+        }
+      ]
+    },
+    {
+      "repository": "ankitkapur1992-hlido/hlido-public",
+      "url": "https://github.com/ankitkapur1992-hlido/hlido-public",
+      "created_at": "2026-04-19T13:06:47Z",
+      "pushed_at": "2026-10-27T21:42:42Z",
+      "fork": false,
+      "description": "Independent, evidence-backed reviews of AI agents — machine-readable scorecards, claim audits, C2PA-signed proof. Public data mirror of hlido.eu",
+      "homepage": "https://hlido.eu",
+      "size": 13129,
+      "readme": {
+        "url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/README.md",
+        "blob_sha": "2cd79303b16f9f0b079f3452266773ded5cbb341",
+        "lines": 1167,
+        "matched_lines": [
+          {
+            "line": 860,
+            "text": "| [`elisymlabs-elisym`](https://hlido.eu/reviews/elisymlabs-elisym/) | Elisym | Infrastructure | 55 | — |"
+          },
+          {
+            "line": 861,
+            "text": "| [`alexar76-aimarket-plugins`](https://hlido.eu/reviews/alexar76-aimarket-plugins/) | AICOM (AIMarket) | Infrastructure | 60 | — |"
+          },
+          {
+            "line": 862,
+            "text": "| [`rhein1-agoragentic-integrations`](https://hlido.eu/reviews/rhein1-agoragentic-integrations/) | Agoragentic Integrations | Infrastructure | 68 | — |"
+          },
+          {
+            "line": 1086,
+            "text": "| `sitemap-news.xml` | Google News-style sitemap of last 48h publishes |"
+          },
+          {
+            "line": 1087,
+            "text": "| `open-data/manifest.json` | Manifest for the CC-BY-4.0 open data dump on hlido.eu — generated_at, item count, SHA-256, license. The dump itself is at <https://hlido.eu/data/open/hlido-corpus.jsonl> |"
+          },
+          {
+            "line": 1088,
+            "text": "| `open-data/LICENSE.md` | CC-BY-4.0 license + citation guidance for the open data dump (more permissive than the HF dataset's CC-BY-NC) |"
+          },
+          {
+            "line": 1089,
+            "text": ""
+          },
+          {
+            "line": 1091,
+            "text": ""
+          },
+          {
+            "line": 1092,
+            "text": "The full review corpus is published as a single JSONL file under a permissive **CC-BY-4.0** license — academic citation and AI-training-corpus inclusion are explicitly welcome. The dump lives at:"
+          },
+          {
+            "line": 1093,
+            "text": ""
+          },
+          {
+            "line": 1152,
+            "text": ""
+          },
+          {
+            "line": 1153,
+            "text": "## License"
+          },
+          {
+            "line": 1154,
+            "text": ""
+          }
+        ]
+      },
+      "root_entries": [
+        {
+          "name": ".github",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/.github"
+        },
+        {
+          "name": "LICENSE",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/LICENSE"
+        },
+        {
+          "name": "LICENSE-DATA.md",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/LICENSE-DATA.md"
+        },
+        {
+          "name": "README.md",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/README.md"
+        },
+        {
+          "name": "actions",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/actions"
+        },
+        {
+          "name": "api",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/api"
+        },
+        {
+          "name": "attestations",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/attestations"
+        },
+        {
+          "name": "changelog",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/changelog"
+        },
+        {
+          "name": "cli",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/cli"
+        },
+        {
+          "name": "feed.xml",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/feed.xml"
+        },
+        {
+          "name": "incidents",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/incidents"
+        },
+        {
+          "name": "integrations",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/integrations"
+        },
+        {
+          "name": "llms-full.txt",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/llms-full.txt"
+        },
+        {
+          "name": "llms.txt",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/llms.txt"
+        },
+        {
+          "name": "mcp-server-card.json",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/mcp-server-card.json"
+        },
+        {
+          "name": "open-data",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/open-data"
+        },
+        {
+          "name": "openapi.json",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/openapi.json"
+        },
+        {
+          "name": "review-registry-public.json",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/review-registry-public.json"
+        },
+        {
+          "name": "scorecards",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/scorecards"
+        },
+        {
+          "name": "scripts",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/scripts"
+        },
+        {
+          "name": "sitemap-news.xml",
+          "type": "file",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/blob/main/sitemap-news.xml"
+        },
+        {
+          "name": "skills",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/skills"
+        },
+        {
+          "name": "v1",
+          "type": "dir",
+          "html_url": "https://github.com/ankitkapur1992-hlido/hlido-public/tree/main/v1"
+        }
+      ]
+    }
+  ],
+  "packages": [
+    {
+      "name": "@aimarket/warden",
+      "version": "0.22.2",
+      "description": "WARDEN — MCP security firewall. Stdio wrap proxy, inspection tools and library. Vets definitions before model exposure. Zero runtime dependencies.",
+      "repository": {
+        "url": "git+https://github.com/alexar76/warden.git",
+        "type": "git"
+      },
+      "homepage": "https://warden.modelmarket.dev/",
+      "author": {
+        "url": "alexar76",
+        "name": "AICOM"
+      },
+      "maintainers": [
+        {
+          "name": "alexar76",
+          "email": "alexar76@rambler.ru"
+        }
+      ],
+      "dependencies": null,
+      "peerDependencies": null,
+      "optionalDependencies": null
+    },
+    {
+      "name": "@aimarket/agent",
+      "version": "0.3.0",
+      "description": "AI Market Protocol v2 consumer SDK for TypeScript — Electron, Node.js, web apps",
+      "repository": {
+        "url": "git+https://github.com/alexar76/aimarket-sdks.git",
+        "type": "git"
+      },
+      "homepage": "https://github.com/alexar76/aimarket-sdks/tree/main/typescript",
+      "author": null,
+      "maintainers": [
+        {
+          "name": "alexar76",
+          "email": "alexar76@rambler.ru"
+        }
+      ],
+      "dependencies": {
+        "viem": "^2.52.2",
+        "tweetnacl": "^1.0.3",
+        "@noble/curves": "^2.2.0",
+        "@noble/hashes": "^2.2.0",
+        "tweetnacl-util": "^0.15.1"
+      },
+      "peerDependencies": null,
+      "optionalDependencies": null
+    },
+    {
+      "name": "@aimarket-skill/refactoring-helper",
+      "version": "1.0.0",
+      "description": "A skill for automated code refactoring suggestions on AIMarket platform",
+      "repository": null,
+      "homepage": null,
+      "author": null,
+      "maintainers": [
+        {
+          "name": "cooper112",
+          "email": "huafengdongji@hotmail.com"
+        }
+      ],
+      "dependencies": null,
+      "peerDependencies": null,
+      "optionalDependencies": null
+    }
+  ],
+  "http_statuses": [
+    {
+      "url": "https://api.github.com/repos/sep163/aimarket-agents",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://api.github.com/repos/sep163/aimarket-agents/readme",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://api.github.com/repos/sep163/aimarket-agents/contents/",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://api.github.com/repos/bracha55555-hue/aimarket",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://api.github.com/repos/bracha55555-hue/aimarket/readme",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://api.github.com/repos/bracha55555-hue/aimarket/contents/",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://api.github.com/repos/ankitkapur1992-hlido/hlido-public",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://api.github.com/repos/ankitkapur1992-hlido/hlido-public/readme",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://api.github.com/repos/ankitkapur1992-hlido/hlido-public/contents/",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://registry.npmjs.org/%40aimarket%2Fwarden/latest",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://registry.npmjs.org/%40aimarket%2Fagent/latest",
+      "status": 200,
+      "error": null
+    },
+    {
+      "url": "https://registry.npmjs.org/%40aimarket-skill%2Frefactoring-helper/latest",
+      "status": 200,
+      "error": null
+    }
+  ]
+}

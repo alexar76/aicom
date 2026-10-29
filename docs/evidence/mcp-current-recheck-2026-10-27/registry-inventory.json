@@ -1,0 +1,128 @@
+[
+  {
+    "registry": "npm",
+    "name": "@alexar76/argus3",
+    "version": "0.3.3",
+    "bin": {
+      "argus": "dist/index.js"
+    },
+    "requires": null,
+    "url": "https://registry.npmjs.org/%40alexar76%2Fargus3/latest"
+  },
+  {
+    "registry": "npm",
+    "name": "argus-warden",
+    "version": "0.3.1",
+    "bin": {
+      "argus": "dist/index.js"
+    },
+    "requires": null,
+    "url": "https://registry.npmjs.org/argus-warden/latest"
+  },
+  {
+    "registry": "npm",
+    "name": "@aimarket/warden",
+    "version": "0.22.1",
+    "bin": {
+      "warden-mcp": "dist/mcp-server.js"
+    },
+    "requires": null,
+    "url": "https://registry.npmjs.org/%40aimarket%2Fwarden/latest"
+  },
+  {
+    "registry": "pypi",
+    "name": "aimarket-mcp",
+    "version": "0.6.3",
+    "bin": null,
+    "requires": [
+      "mcp<2,>=1.10",
+      "httpx<1,>=0.27",
+      "pydantic<3,>=2.7.2",
+      "starlette<2,>=0.37",
+      "uvicorn<1,>=0.30",
+      "pytest>=8; extra == \"dev\"",
+      "pytest-asyncio>=0.23; extra == \"dev\"",
+      "pytest-cov>=5; extra == \"dev\""
+    ],
+    "url": "https://pypi.org/pypi/aimarket-mcp/json"
+  },
+  {
+    "registry": "pypi",
+    "name": "aimarket-hub",
+    "version": "3.16.0",
+    "bin": null,
+    "requires": [
+      "httpx>=0.28",
+      "fastapi>=0.115",
+      "uvicorn>=0.34",
+      "pydantic>=2.10",
+      "cryptography>=44",
+      "jsonschema>=4.23",
+      "prometheus_client>=0.21",
+      "awr<3,>=2.0",
+      "dilithium-py>=1.4.0",
+      "aimarket-hub[escrow,pqc]; extra == \"client\"",
+      "pytest>=8; extra == \"dev\"",
+      "pytest-asyncio>=0.25; extra == \"dev\"",
+      "pytest-httpx>=0.35; extra == \"dev\"",
+      "eth-utils>=5; extra == \"escrow\"",
+      "eth-account>=0.13; extra == \"escrow\"",
+      "dilithium-py>=1.4.0; extra == \"pqc\"",
+      "psycopg[binary,pool]<4,>=3.2; extra == \"postgres\"",
+      "aimarket-safety>=2.0; extra == \"plugins\"",
+      "aimarket-reputation>=2.0; extra == \"plugins\"",
+      "aimarket-channels>=2.0; extra == \"plugins\"",
+      "aimarket-tee>=2.0; extra == \"plugins\"",
+      "aimarket-mcp-packager>=2.0; extra == \"plugins\"",
+      "aimarket-hub[dev,escrow,plugins,postgres,pqc]; extra == \"all\""
+    ],
+    "url": "https://pypi.org/pypi/aimarket-hub/json"
+  },
+  {
+    "registry": "pypi",
+    "name": "aimarket-histor",
+    "version": "0.4.2",
+    "bin": null,
+    "requires": [
+      "awr<3,>=2.0",
+      "cryptography>=44",
+      "fastapi>=0.115",
+      "httpx>=0.27",
+      "uvicorn>=0.34",
+      "tiktoken<1,>=0.12; extra == \"cost\"",
+      "dilithium-py>=1.4.0; extra == \"dev\"",
+      "psycopg[binary,pool]<4,>=3.2; extra == \"dev\"",
+      "pytest-cov>=5; extra == \"dev\"",
+      "pytest>=8; extra == \"dev\"",
+      "ruff<1,>=0.12; extra == \"dev\"",
+      "tiktoken<1,>=0.12; extra == \"dev\"",
+      "psycopg[binary,pool]<4,>=3.2; extra == \"postgres\"",
+      "dilithium-py>=1.4.0; extra == \"pqc\""
+    ],
+    "url": "https://pypi.org/pypi/aimarket-histor/json"
+  },
+  {
+    "registry": "pypi",
+    "name": "aimarket-mcp-packager",
+    "version": "2.1.1",
+    "bin": null,
+    "requires": [
+      "aimarket-hub>=3.0.0",
+      "mcp<2,>=1.6; extra == \"mcp\"",
+      "pytest>=8; extra == \"dev\""
+    ],
+    "url": "https://pypi.org/pypi/aimarket-mcp-packager/json"
+  },
+  {
+    "registry": "pypi",
+    "name": "aimarket-oracle-gateway",
+    "version": "0.3.1",
+    "bin": null,
+    "requires": [
+      "mcp<2,>=1.6",
+      "httpx>=0.27",
+      "pydantic>=2"
+    ],
+    "url": "https://pypi.org/pypi/aimarket-oracle-gateway/json"
+  }
+]

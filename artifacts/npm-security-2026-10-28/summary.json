@@ -1,0 +1,101 @@
+{
+  "checked_date": "2026-10-28",
+  "run_url": "https://github.com/alexar76/aicom-products/actions/runs/40692951346",
+  "run_created_at": "2026-10-28T13:03:08Z",
+  "run_event": "schedule",
+  "run_head_sha": "2524c1146cd063b3982c84cbdb927bedf5f03f75",
+  "conclusion": "Scheduled GitHub audit checked stale dependencies. Existing local fixes pass the identical audit command today; no additional dependency edits are needed.",
+  "audit_command": "npm audit --package-lock-only --include=dev --ignore-scripts --audit-level=high --json",
+  "node": "v22.22.1",
+  "npm": "10.9.4",
+  "products": [
+    {
+      "id": "prod-bdb1634806de",
+      "name": "Sentinel",
+      "run_report": "artifacts/npm-security-2026-10-28/run-40692951346/npm-audit-0/npm-audit-report.json",
+      "github_run_vulnerable_package_counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 4,
+        "high": 4,
+        "critical": 2,
+        "total": 10
+      },
+      "failed_high_critical_packages": {
+        "axios": "high",
+        "follow-redirects": "high",
+        "source-map-js": "high",
+        "tinypool": "critical",
+        "vite": "high",
+        "vitest": "critical"
+      },
+      "fixed_report": "artifacts/npm-security-2026-10-28/sentinel-existing-fix-audit.json",
+      "fixed_vulnerable_package_counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "fixed_source": "docs/distribution/product-npm-fixes-2026-10-21/prod-bdb1634806de/frontend",
+      "fixed_copy": "artifacts/npm-security-2026-10-28/fixed/products/prod-bdb1634806de/frontend",
+      "sha256": {
+        "package.json": "a1013499aef0ec38864df79d4d68dcb385cc6ef4b9efbff9d185ee53f1a1fdbc",
+        "package-lock.json": "2dad5ccce601ed8950017eba98482cc3f31a745c35d476866acf432640b5d6f1"
+      },
+      "verified_manifest_lock_root_match": true,
+      "relevant_fixed_versions": {
+        "axios": "1.20.0",
+        "follow-redirects": "1.16.1",
+        "source-map-js": "1.2.2",
+        "vite": "6.4.5",
+        "vitest": "4.1.12",
+        "react-router-dom": "7.18.4",
+        "esbuild": "0.25.12"
+      }
+    },
+    {
+      "id": "prod-e1a3b0abf16a",
+      "name": "Relay",
+      "run_report": "artifacts/npm-security-2026-10-28/run-40692951346/npm-audit-1/npm-audit-report.json",
+      "github_run_vulnerable_package_counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 3,
+        "high": 2,
+        "critical": 0,
+        "total": 5
+      },
+      "failed_high_critical_packages": {
+        "source-map-js": "high",
+        "vite": "high"
+      },
+      "fixed_report": "artifacts/npm-security-2026-10-28/relay-existing-fix-audit.json",
+      "fixed_vulnerable_package_counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "fixed_source": "docs/distribution/product-npm-fixes-2026-10-21/prod-e1a3b0abf16a/frontend",
+      "fixed_copy": "artifacts/npm-security-2026-10-28/fixed/products/prod-e1a3b0abf16a/frontend",
+      "sha256": {
+        "package.json": "735825822f4eb440a1ae508228db7e4432197533c5ac2175150bff2c64c8beb1",
+        "package-lock.json": "4ae37c951ac06e8157b3469d7bf3cda98da7de3acf6130cd3e3323bced1a2a74"
+      },
+      "verified_manifest_lock_root_match": true,
+      "relevant_fixed_versions": {
+        "source-map-js": "1.2.2",
+        "vite": "6.4.5",
+        "react-router-dom": "7.18.4",
+        "esbuild": "0.25.12"
+      }
+    }
+  ],
+  "github_writes_performed": false,
+  "validation_scope": "Fresh lockfile vulnerability audit and manifest/lock consistency only. Product sources are absent locally; no build or application tests were run.",
+  "remaining_external_state": "GitHub catalog remains on old dependency files. Publishing is prohibited by current user workspace rules."
+}

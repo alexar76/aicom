@@ -1,0 +1,32 @@
+{
+  "dependencies": [
+    {
+      "after": "current-baseline.json",
+      "before": "replay-before.json",
+      "id": "npm:@aimarket/warden",
+      "tools": [
+        "status_mcp_server",
+        "approve_mcp_server"
+      ],
+      "workflows": [
+        {
+          "description": "Review server origin and reported versions",
+          "id": "warden-origin-review",
+          "tools": [
+            "status_mcp_server"
+          ]
+        },
+        {
+          "description": "Preserve reviewed hashes and revision during approval",
+          "id": "warden-review-to-approval",
+          "tools": [
+            "status_mcp_server",
+            "approve_mcp_server"
+          ]
+        }
+      ]
+    }
+  ],
+  "format": "histor.upgrade-watchlist/v1",
+  "title": "WARDEN complete local source observations"
+}

@@ -1,44 +1,130 @@
 [
-  {
-    "x402Version": 2,
-    "resource": "https://tienda.textokit.store/api/x402-ping",
-    "type": "http",
-    "serviceName": "Textokit",
-    "description": "Smallest end-to-end test of an x402 client on Base: one call with no required parameters returns server time (ISO 8601 and Unix ms), a request id, the seller payTo, chain id and an echo of your optional text, only after a real settlement. Use this when an agent needs to prove its payment flow works, measure round-trip latency or run a cheap scheduled canary against a live seller. No upstream, no model inference; paid round trip 1 to 2 s (settlement first). Free sample at /api/x402-ping/sample.",
-    "tags": [
-      "x402",
-      "ping",
-      "test",
-      "timestamp",
-      "canary"
-    ],
-    "accepts": [
-      {
-        "scheme": "exact",
-        "network": "eip155:8453",
-        "amount": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "payTo": "0x6b5aF9924f4CD35643c11a9fd1C983f77261A6E1",
-        "maxTimeoutSeconds": 300,
-        "extra": {
-          "name": "USD Coin",
-          "version": "2"
-        }
-      }
-    ],
-    "extensions": {
-      "bazaar": {
-        "info": {
-          "input": {
-            "type": "http",
-            "method": "POST",
-            "bodyType": "json",
-            "body": {
-              "echo": "hello"
-            }
-          }
-        }
-      }
+ {
+  "x402Version": 2,
+  "resource": "https://tienda.textokit.store/api/x402-ping",
+  "type": "http",
+  "serviceName": "Textokit",
+  "description": "Smallest end-to-end test of an x402 client on Base: one call with no required parameters returns server time (ISO 8601 and Unix ms), a request id, the seller payTo, chain id and an echo of your optional text, only after a real settlement. Use this when an agent needs to prove its payment flow works, measure round-trip latency or run a cheap scheduled canary against a live seller. No upstream, no model inference; paid round trip 1 to 2 s (settlement first). Free sample at /api/x402-ping/sample.",
+  "tags": [
+   "x402",
+   "ping",
+   "test",
+   "timestamp",
+   "canary"
+  ],
+  "accepts": [
+   {
+    "scheme": "exact",
+    "network": "eip155:8453",
+    "amount": "1000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payTo": "0x6b5aF9924f4CD35643c11a9fd1C983f77261A6E1",
+    "maxTimeoutSeconds": 300,
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
     }
+   }
+  ],
+  "extensions": {
+   "bazaar": {
+    "info": {
+     "input": {
+      "type": "http",
+      "method": "POST",
+      "bodyType": "json",
+      "body": {
+       "echo": "hello"
+      }
+     }
+    }
+   }
   }
+ },
+ {
+  "x402Version": 2,
+  "resource": "https://route-verdict-production.up.railway.app/v1/check",
+  "type": "http",
+  "serviceName": "RouteVerdict (Verdict Row)",
+  "description": "Trust & liveness check for one x402 resource URL: live 402 probe (never pays the target), terms, discovery-schema quality, catalog presence, diff. Use this when auditing an unfamiliar x402 endpoint before paying or relying on it.",
+  "tags": [
+   "x402",
+   "trust",
+   "liveness",
+   "monitoring",
+   "verification",
+   "agents"
+  ],
+  "accepts": [
+   {
+    "scheme": "exact",
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "amount": "50000",
+    "payTo": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+    "maxTimeoutSeconds": 300,
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    }
+   }
+  ],
+  "extensions": {
+   "bazaar": {
+    "info": {
+     "input": {
+      "type": "http",
+      "method": "POST",
+      "bodyType": "json",
+      "body": {
+       "resource_url": "https://modelmarket.dev/x402/histor-check"
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "x402Version": 2,
+  "resource": "https://stall-row-production.up.railway.app/v1/recheck",
+  "type": "http",
+  "serviceName": "StallRow Recheck (Verdict Row)",
+  "description": "Change detection for anything with a URL, built for monitoring loops: probe one x402 resource or web page WITHOUT paying it and answer BASELINE, UNCHANGED, or CHANGED with a field-by-field diff (price, asset, payTo, schema, page body) against the last check for that watch. Use this when an agent runs on a schedule and needs to know what changed before spending money or attention. Watch and pack state persist across redeploys on the service volume. Packs: $1 for 250 checks on one endpoint.",
+  "tags": [
+   "monitoring",
+   "x402",
+   "change-detection",
+   "diff",
+   "agents"
+  ],
+  "accepts": [
+   {
+    "scheme": "exact",
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "amount": "5000",
+    "payTo": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+    "maxTimeoutSeconds": 300,
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    }
+   }
+  ],
+  "extensions": {
+   "bazaar": {
+    "info": {
+     "input": {
+      "type": "http",
+      "method": "POST",
+      "bodyType": "json",
+      "body": {
+       "url": "https://modelmarket.dev/x402/histor-check",
+       "watch_id": "modelmarket-survey"
+      }
+     }
+    }
+   }
+  }
+ }
 ]

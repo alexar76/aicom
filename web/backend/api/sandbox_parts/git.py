@@ -6,11 +6,13 @@ from __future__ import annotations
 
 import logging
 import re
+import subprocess
 from pathlib import Path
 
 from fastapi import HTTPException
 
 from core.logging_utils import log_suppressed
+from core.product_git import ProductGit, UnsafeProductGit
 from web.backend.services.sandbox_preview_auth import sanitize_git_remote_line
 from web.backend.services.url_safety import validate_git_remote_url
 
@@ -39,41 +41,20 @@ def _validate_git_ref_name(value: str, label: str = "ref") -> str:
 def _git_init_blocking(product_code_dir: Path, product_id: str, safe_remote: str) -> dict:
     """Blocking git init body — run via ``asyncio.to_thread`` to keep the event loop free."""
     try:
-        import subprocess
-        result = subprocess.run(
-            ["git", "init"],
-            cwd=str(product_code_dir),
-            capture_output=True, text=True, timeout=10
-        )
-        if result.returncode != 0:
-            raise HTTPException(status_code=500, detail=f"git init failed: {result.stderr}")
-
-        # Configure basic git user
-        subprocess.run(
-            ["git", "config", "user.email", "ai-factory@aicom.local"],
-            cwd=str(product_code_dir), capture_output=True, timeout=5
-        )
-        subprocess.run(
-            ["git", "config", "user.name", "AI-Factory"],
-            cwd=str(product_code_dir), capture_output=True, timeout=5
-        )
-
-        # Initial commit of existing code
-        subprocess.run(
-            ["git", "add", "-A"],
-            cwd=str(product_code_dir), capture_output=True, timeout=10
-        )
-        subprocess.run(
-            ["git", "commit", "-m", "Initial commit - AI-Factory generated code"],
-            cwd=str(product_code_dir), capture_output=True, timeout=10
-        )
-
-        # Set remote if provided
         if safe_remote:
-            subprocess.run(
-                ["git", "remote", "add", "origin", safe_remote],
-                cwd=str(product_code_dir), capture_output=True, timeout=5
-            )
+            safe_remote = validate_git_remote_url(safe_remote)
+        with ProductGit(product_code_dir) as git:
+            result = git.init()
+            if result.returncode != 0:
+                raise HTTPException(status_code=500, detail="git init failed")
+            git.run(["config", "user.email", "ai-factory@aicom.local"], timeout=5)
+            git.run(["config", "user.name", "AI-Factory"], timeout=5)
+            staged = git.run(["add", "-A"])
+            if staged.returncode:
+                raise HTTPException(status_code=500, detail="git add failed")
+            git.run(["commit", "-m", "Initial commit - AI-Factory generated code"])
+            if safe_remote:
+                git.run(["remote", "add", "origin", safe_remote], timeout=5)
 
         logger.info(f"Git repository initialized for product {product_id}")
         return {
@@ -86,47 +67,36 @@ def _git_init_blocking(product_code_dir: Path, product_id: str, safe_remote: str
         raise HTTPException(status_code=500, detail="git init timed out")
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="git executable not found in container")
+    except (UnsafeProductGit, ValueError, OSError) as exc:
+        raise HTTPException(status_code=400, detail="Unsafe product Git metadata; manual review required") from exc
 
 
 def _git_push_blocking(product_code_dir: Path, product_id: str, remote: str, branch: str) -> dict:
     """Blocking git push body — run via ``asyncio.to_thread`` so a slow remote never blocks the loop."""
     try:
-        import subprocess
-
-        # Check if remote is configured
-        remote_check = subprocess.run(
-            ["git", "remote", "get-url", remote],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
-        if remote_check.returncode != 0:
-            raise HTTPException(status_code=400, detail=f"Remote '{remote}' not configured. Set a remote URL first.")
-        configured_url = (remote_check.stdout or "").strip()
-        try:
-            validate_git_remote_url(configured_url)
-        except ValueError as exc:
-            raise HTTPException(status_code=400, detail=f"Unsafe git remote: {exc}") from exc
-
-        # Add all changes
-        subprocess.run(["git", "add", "-A"], cwd=str(product_code_dir), capture_output=True, timeout=10)
-
-        # Commit if there are changes
-        status = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
-        if status.stdout.strip():
-            subprocess.run(
-                ["git", "commit", "-m", f"Auto-commit: AI-Factory update"],
-                cwd=str(product_code_dir), capture_output=True, timeout=10
-            )
-
-        # Push to remote
-        push_result = subprocess.run(
-            ["git", "push", remote, branch],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=30
-        )
-        if push_result.returncode != 0:
-            raise HTTPException(status_code=500, detail=f"git push failed: {push_result.stderr}")
+        remote = _validate_git_ref_name(remote, "remote")
+        branch = _validate_git_ref_name(branch, "branch")
+        with ProductGit(product_code_dir) as git:
+            # Validate every push URL, including pushurl overrides; no URL
+            # rewrites, transport helpers or inherited credentials are accepted.
+            remote_check = git.run(["remote", "get-url", "--push", "--all", remote], timeout=5)
+            if remote_check.returncode != 0:
+                raise HTTPException(status_code=400, detail="Remote not configured")
+            for configured_url in remote_check.stdout.splitlines():
+                validate_git_remote_url(configured_url)
+            staged = git.run(["add", "-A"])
+            if staged.returncode:
+                raise HTTPException(status_code=500, detail="git add failed")
+            status = git.run(["status", "--porcelain"], timeout=5)
+            if status.returncode:
+                raise HTTPException(status_code=500, detail="git status failed")
+            if status.stdout.strip():
+                committed = git.run(["commit", "-m", "Auto-commit: AI-Factory update"])
+                if committed.returncode:
+                    raise HTTPException(status_code=500, detail="git commit failed")
+            push_result = git.run(["push", "--", remote, branch], timeout=30)
+            if push_result.returncode != 0:
+                raise HTTPException(status_code=500, detail="git push failed")
 
         return {
             "status": "pushed",
@@ -138,43 +108,28 @@ def _git_push_blocking(product_code_dir: Path, product_id: str, remote: str, bra
         raise HTTPException(status_code=500, detail="git operation timed out")
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="git executable not found in container")
+    except (UnsafeProductGit, ValueError, OSError) as exc:
+        raise HTTPException(status_code=400, detail="Unsafe product Git metadata; manual review required") from exc
 
 
 def _git_status_blocking(product_code_dir: Path, product_id: str) -> dict:
     """Blocking git status body — run via ``asyncio.to_thread`` to keep the event loop free."""
     try:
-        import subprocess
-
-        # Check remote
-        remote_result = subprocess.run(
-            ["git", "remote", "-v"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
+        with ProductGit(product_code_dir) as git:
+            remote_result = git.run(["remote", "-v"], timeout=5)
+            branch_result = git.run(["branch", "--show-current"], timeout=5)
+            status_result = git.run(["status", "--porcelain"], timeout=5)
+            log_result = git.run(["log", "--oneline", "-10"], timeout=5)
+        if status_result.returncode:
+            raise HTTPException(status_code=400, detail="Git repository cannot be read safely")
         remotes = [
             sanitize_git_remote_line(line)
             for line in remote_result.stdout.strip().split("\n")
             if line.strip()
         ]
 
-        # Check branch
-        branch_result = subprocess.run(
-            ["git", "branch", "--show-current"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
         branch = branch_result.stdout.strip()
-
-        # Check status
-        status_result = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
         changes = status_result.stdout.strip().split("\n") if status_result.stdout.strip() else []
-
-        # Check log
-        log_result = subprocess.run(
-            ["git", "log", "--oneline", "-10"],
-            cwd=str(product_code_dir), capture_output=True, text=True, timeout=5
-        )
         commits = log_result.stdout.strip().split("\n") if log_result.stdout.strip() else []
 
         return {
@@ -188,6 +143,10 @@ def _git_status_blocking(product_code_dir: Path, product_id: str) -> dict:
         }
     except FileNotFoundError:
         return {"status": "error", "detail": "git executable not found"}
+    except subprocess.TimeoutExpired as exc:
+        raise HTTPException(status_code=500, detail="git status timed out") from exc
+    except (UnsafeProductGit, ValueError, OSError) as exc:
+        raise HTTPException(status_code=400, detail="Unsafe product Git metadata; manual review required") from exc
 
 
 # ── Helpers to check product code readiness ─────────────────────────────────

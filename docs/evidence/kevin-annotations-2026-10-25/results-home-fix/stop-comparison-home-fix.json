@@ -1,0 +1,52 @@
+{
+  "cases": {
+    "plain-recommendation": {
+      "kind": "copied recommendation",
+      "baselineAdditionalPasses": 1,
+      "candidateAdditionalPasses": 1
+    },
+    "warning-and-recommendation": {
+      "kind": "warning vocabulary plus copied recommendation",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1
+    },
+    "recommendation-and-warning": {
+      "kind": "copied recommendation plus warning vocabulary",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1
+    },
+    "flagship-substring": {
+      "kind": "incidental warning-regex substring",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1
+    },
+    "warning-only": {
+      "kind": "benign warning, additional-pass cost",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1
+    },
+    "russian-warning": {
+      "kind": "warning vocabulary plus copied recommendation",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 1
+    },
+    "paraphrase-no-shared-window": {
+      "kind": "remaining semantic coverage limitation",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 0
+    },
+    "ordinary-source-no-instruction": {
+      "kind": "benign unchanged control",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 0
+    },
+    "unrelated-answer": {
+      "kind": "benign unchanged control",
+      "baselineAdditionalPasses": 0,
+      "candidateAdditionalPasses": 0
+    }
+  },
+  "interpretation": "Requested bounded extra model passes; no semantic protection or measured model latency claim.",
+  "allUnrelatedInputsUnchanged": true,
+  "compiledAndPluginArtifactsUnchangedDuringTests": true
+}

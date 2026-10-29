@@ -57,9 +57,8 @@ d=$(mk_tree pem)
 printf -- '-----BEGIN %s-----\nMC4CAQ\n-----END %s-----\n' 'PRIVATE KEY' 'PRIVATE KEY' > "$d/server.pem"
 bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a PEM private key (pre-existing check)"
 
-# The flow-guard unit test plants a placeholder access-key shape and a fake PEM
-# to assert the guard. That one file is excepted. The same shapes anywhere else
-# must still fail. Markers are assembled here so this script does not carry them.
+# Fixture paths cannot exempt complete credentials. Markers are assembled here
+# so this script does not itself carry a complete credential shape.
 plant_flow_fixture() {
   local dest="$1"
   printf -- '-----BEGIN OPENSSH %s-----\nplaceholder\n-----END OPENSSH %s-----\n' 'PRIVATE KEY' 'PRIVATE KEY' > "$dest"
@@ -67,12 +66,50 @@ plant_flow_fixture() {
 }
 d=$(mk_tree flowfix); mkdir -p "$d/test"
 plant_flow_fixture "$d/test/flow-guard.test.ts"
-bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows the flow-guard test fixture path only"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "refuses credential shapes even in the flow-guard fixture path"
 d=$(mk_tree flowother); mkdir -p "$d/test" "$d/warden/test"
 plant_flow_fixture "$d/test/other.test.ts"
 bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses the same shapes outside the flow-guard fixture"
 plant_flow_fixture "$d/warden/test/flow-guard.test.ts"
 bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses the shapes when another file in the tree carries them"
+
+# Frozen acex ZK sigma-proof fixtures. The mirror clone is rooted at acex/, so
+# these paths have no acex/ prefix. Exact files and sizes only. The same bytes
+# elsewhere, another file in legacy-zk/, or a key-sized blob at the fixture
+# path must still fail. Markers are not embedded here; the fixtures are copied.
+zk_src="$ROOT/acex/contracts/solana/programs/acex-capital/tests/fixtures/legacy-zk"
+zk_rel="contracts/solana/programs/acex-capital/tests/fixtures/legacy-zk"
+d=$(mk_tree zkproof)
+mkdir -p "$d/$zk_rel"
+cp "$zk_src/pubkey_validity.proof" "$zk_src/zero_ciphertext.proof" "$d/$zk_rel/"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows the two frozen acex ZK proof fixtures"
+d=$(mk_tree zkother)
+mkdir -p "$d/fixtures/legacy-zk"
+cp "$zk_src/pubkey_validity.proof" "$zk_src/zero_ciphertext.proof" "$d/fixtures/legacy-zk/"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses the same proof bytes outside the two fixture paths"
+d=$(mk_tree zkdir)
+mkdir -p "$d/$zk_rel"
+cp "$zk_src/pubkey_validity.proof" "$zk_src/zero_ciphertext.proof" "$d/$zk_rel/"
+python3 - > "$d/$zk_rel/seed.bin" <<'SEED'
+import sys
+sys.stdout.buffer.write(bytes((i * 37 + 3) % 256 or 1 for i in range(64)))
+SEED
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a real key inside legacy-zk next to the proof fixtures"
+d=$(mk_tree zksize)
+mkdir -p "$d/$zk_rel"
+python3 - > "$d/$zk_rel/pubkey_validity.proof" <<'SEED'
+import sys
+sys.stdout.buffer.write(bytes((i * 37 + 3) % 256 or 1 for i in range(64)))
+SEED
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a key-sized blob at the proof fixture path"
+d=$(mk_tree zkandkey)
+mkdir -p "$d/$zk_rel" "$d/data"
+cp "$zk_src/pubkey_validity.proof" "$zk_src/zero_ciphertext.proof" "$d/$zk_rel/"
+python3 - > "$d/data/innocuous_blob" <<'SEED'
+import sys
+sys.stdout.buffer.write(bytes((i * 37 + 3) % 256 or 1 for i in range(64)))
+SEED
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a real key elsewhere when the ZK proof fixtures are present"
 
 # The treasury vendor tree ships momus/targets/quality-public-key.pem, a tracked
 # verify pin. The name is *.pem, so the guard must read the header: a public key
@@ -88,6 +125,89 @@ bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses quality-p
 d=$(mk_tree pubelsewhere); mkdir -p "$d/secrets"
 printf -- '-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA\n-----END PUBLIC KEY-----\n' > "$d/secrets/quality-public-key.pem"
 bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a public PEM outside the known quality-pin paths"
+
+# Oracle signing-key storage module. The mirror clone is rooted at the
+# satellite. Confirmed scanner paths:
+#   vendor/oracle-core/oracle_core/_signing_key_storage.py
+#   core/oracle_core/_signing_key_storage.py
+#   oracles/platon/backend/oracle_platon/_signing_key_storage.py
+#   backend/platon/_signing_key_storage.py
+# The real module is code. Raw key bytes, a PEM, a tiny file, a lookalike,
+# and the same filename on any other path must still fail. Not a
+# *signing_key* whitelist.
+storage_src="$ROOT/oracles/core/oracle_core/_signing_key_storage.py"
+storage_rel="vendor/oracle-core/oracle_core/_signing_key_storage.py"
+plant_raw_seed() {
+  python3 - "$1" <<'SEED'
+import sys
+open(sys.argv[1], "wb").write(bytes((i * 37 + 3) % 256 or 1 for i in range(64)))
+SEED
+}
+d=$(mk_tree storageok)
+mkdir -p "$d/vendor/oracle-core/oracle_core"
+cp "$storage_src" "$d/$storage_rel"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows the vendored oracle-core signing-key storage module"
+d=$(mk_tree storagebytes)
+mkdir -p "$d/vendor/oracle-core/oracle_core"
+plant_raw_seed "$d/$storage_rel"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses raw key bytes named _signing_key_storage.py"
+d=$(mk_tree storagepem)
+mkdir -p "$d/vendor/oracle-core/oracle_core"
+printf -- '-----BEGIN %s-----\nMC4CAQ\n-----END %s-----\n' 'PRIVATE KEY' 'PRIVATE KEY' > "$d/$storage_rel"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a PEM private key at the storage-module path"
+d=$(mk_tree storagelookalike)
+mkdir -p "$d/vendor/oracle-core/oracle_core"
+python3 -c 'import pathlib,sys; p=pathlib.Path(sys.argv[1]); p.write_text("# not the storage module\n" * 80)' "$d/$storage_rel"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a text file that only borrows the storage-module name"
+d=$(mk_tree storageandkey)
+mkdir -p "$d/vendor/oracle-core/oracle_core" "$d/data"
+cp "$storage_src" "$d/$storage_rel"
+plant_raw_seed "$d/vendor/oracle-core/oracle_core/_signing_key"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a real key with a similar name next to the storage module"
+d=$(mk_tree storagehub)
+mkdir -p "$d/aimarket_hub"
+cp "$storage_src" "$d/aimarket_hub/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows the exact trusted storage implementation in another package"
+d=$(mk_tree storageoracle)
+mkdir -p "$d/core/oracle_core"
+cp "$storage_src" "$d/core/oracle_core/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows the storage module at the oracles core mirror path"
+d=$(mk_tree storageoracleplaton)
+mkdir -p "$d/oracles/platon/backend/oracle_platon"
+cp "$storage_src" "$d/oracles/platon/backend/oracle_platon/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows the storage module at the oracles platon mirror path"
+d=$(mk_tree storageplaton)
+mkdir -p "$d/backend/platon"
+cp "$storage_src" "$d/backend/platon/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows the storage module at the platon mirror path"
+d=$(mk_tree storageoracleprefix)
+mkdir -p "$d/oracles/core/oracle_core"
+cp "$storage_src" "$d/oracles/core/oracle_core/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows exact trusted storage code below a catalog prefix"
+d=$(mk_tree storagewrongplaton)
+mkdir -p "$d/backend/oracle_platon"
+cp "$storage_src" "$d/backend/oracle_platon/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows exact trusted storage code at another package root"
+d=$(mk_tree storageplatonprefix)
+mkdir -p "$d/platon/backend/platon"
+cp "$storage_src" "$d/platon/backend/platon/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; ok $? "allows exact trusted storage code with a satellite prefix"
+d=$(mk_tree storagetiny)
+mkdir -p "$d/core/oracle_core"
+printf '%s\n' '# tiny stand-in' > "$d/core/oracle_core/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a tiny file at the oracles core mirror path"
+d=$(mk_tree storageoraclepem)
+mkdir -p "$d/oracles/platon/backend/oracle_platon"
+printf -- '-----BEGIN %s-----\nMC4CAQ\n-----END %s-----\n' 'PRIVATE KEY' 'PRIVATE KEY' > "$d/oracles/platon/backend/oracle_platon/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a PEM private key at the oracles platon mirror path"
+d=$(mk_tree storageplatonpem)
+mkdir -p "$d/backend/platon"
+printf -- '-----BEGIN %s-----\nMC4CAQ\n-----END %s-----\n' 'PRIVATE KEY' 'PRIVATE KEY' > "$d/backend/platon/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a PEM private key at the platon mirror path"
+d=$(mk_tree storageplatontiny)
+mkdir -p "$d/backend/platon"
+printf '%s\n' 'def load_or_create_ed25519_keypair():' > "$d/backend/platon/_signing_key_storage.py"
+bash "$GUARD" "$d" >/dev/null 2>&1; [ $? -ne 0 ]; ok $? "still refuses a tiny file at the platon mirror path"
 
 # ── and it must ACCEPT a clean tree, or it blocks every publish ──────────────
 d=$(mk_tree clean); mkdir -p "$d/docs/badges" "$d/src"

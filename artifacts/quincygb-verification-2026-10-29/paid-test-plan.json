@@ -1,0 +1,57 @@
+{
+  "status": "prepared_not_executed",
+  "target": "https://modelmarket.dev/x402/histor-check",
+  "payee": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+  "network": "eip155:8453",
+  "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "max_total_atomic": "60000",
+  "max_total_usdc": "0.06",
+  "authorization_type": "exact EIP-3009 only; no approvals or Permit2",
+  "calls": [
+    {
+      "url": "https://route-verdict-production.up.railway.app/v1/check",
+      "method": "POST",
+      "body": {
+        "resource_url": "https://modelmarket.dev/x402/histor-check"
+      },
+      "max_amount_atomic": "50000"
+    },
+    {
+      "url": "https://stall-row-production.up.railway.app/v1/recheck",
+      "method": "POST",
+      "body": {
+        "url": "https://modelmarket.dev/x402/histor-check",
+        "watch_id": "alexar76-independent-2026-10-29-6ef0db13d7144daa97e039a07209587f"
+      },
+      "max_amount_atomic": "5000",
+      "expected": "BASELINE"
+    },
+    {
+      "url": "https://stall-row-production.up.railway.app/v1/recheck",
+      "method": "POST",
+      "body": {
+        "url": "https://modelmarket.dev/x402/histor-check",
+        "watch_id": "alexar76-independent-2026-10-29-6ef0db13d7144daa97e039a07209587f"
+      },
+      "max_amount_atomic": "5000",
+      "expected": "UNCHANGED if target fingerprint stable"
+    }
+  ],
+  "evidence_required": [
+    "exact request/response bytes and SHA256",
+    "payment-response receipt if supplied",
+    "independent USDC authorizationState/transaction confirmation",
+    "comparison to simultaneously captured target HTTP402"
+  ],
+  "scope_limits": [
+    "Two stable Recheck calls do not test CHANGED. Controlled public fixture and additional authorized calls needed for that.",
+    "No fixture deployment or production target mutation authorized or performed.",
+    "No signer configured in the checked workspace/environment. Budget and wallet clarification pending."
+  ],
+  "created_at_utc": "2026-10-29T11:46:18.191933+00:00",
+  "user_authorization": {
+    "answer": "делай с кошелька деплоера",
+    "budget_usdc": "0.06",
+    "scope": "the three review calls only"
+  }
+}

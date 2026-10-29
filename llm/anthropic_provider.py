@@ -8,11 +8,13 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 import time
 from typing import TYPE_CHECKING
 
 import httpx
+
+from llm.provider_secrets import resolve_provider_api_key
+from llm.credential_redaction import CredentialStreamRedactor, redact_credential
 
 from .provider import (
     GenerationConfig,
@@ -40,9 +42,12 @@ class AnthropicProvider(LLMProvider):
     ):
         super().__init__(name, config or {})
         self.base_url = base_url.rstrip("/")
-        if api_key_env and not api_key:
-            api_key = os.environ.get(api_key_env, "")
-        self.api_key = api_key or ""
+        key_config = dict(config or {})
+        if api_key:
+            key_config["api_key"] = api_key
+        if api_key_env:
+            key_config["api_key_env"] = api_key_env
+        self.api_key = resolve_provider_api_key(key_config)
         self.model = model
 
         headers = {
@@ -101,12 +106,12 @@ class AnthropicProvider(LLMProvider):
             response = await self._client.post("/messages", json=payload, timeout=cfg.timeout_sec)
             response.raise_for_status()
             result = response.json()
-            text = self._extract_text(result)
+            text = redact_credential(self._extract_text(result), self.api_key)
             # Same signal, this API's spelling. A reply that stopped at `max_tokens` is cut off,
             # and returning it as a finished answer is how a half-written file reaches a build.
-            cfg.finish_reason = str((result or {}).get("stop_reason") or "") if isinstance(result, dict) else ""
+            cfg.finish_reason = redact_credential(str((result or {}).get("stop_reason") or ""), self.api_key) if isinstance(result, dict) else ""
             if not text:
-                cfg.finish_reason = self._no_text_reason(result)
+                cfg.finish_reason = redact_credential(self._no_text_reason(result), self.api_key)
                 logger.warning("%s: returned no text (%s)",
                                cfg.model_override or self.model, cfg.finish_reason)
             if cfg.was_truncated:
@@ -130,7 +135,7 @@ class AnthropicProvider(LLMProvider):
             # Book spend so Anthropic calls count against the daily/monthly USD
             # cost caps and budget-tier downgrade (previously unrecorded).
             self._log_llm_call(
-                prompt, text, latency, True,
+                redact_credential(prompt, self.api_key), text, latency, True,
                 tokens_used=tokens,
                 prompt_tokens=prompt_tokens,
                 completion_tokens=completion_tokens,
@@ -142,18 +147,19 @@ class AnthropicProvider(LLMProvider):
             )
             return text
         except Exception as e:
+            error = redact_credential(str(e), self.api_key)
             latency = (time.time() - start) * 1000
             self._update_metrics(0, latency)
-            self._record_failure(str(e))
+            self._record_failure(error)
             self._log_llm_call(
-                prompt, str(e), latency, False, error=str(e),
+                redact_credential(prompt, self.api_key), error, latency, False, error=error,
                 model=active_model,
                 task_type=cfg.task_type,
                 agent_type=cfg.agent_type,
                 model_role=getattr(cfg, "model_role", None),
                 product_id=getattr(cfg, "product_id", None),
             )
-            raise RuntimeError(f"Generation failed for {self.name}: {e}") from e
+            raise RuntimeError(f"Generation failed for {self.name}: {error}") from None
 
     async def stream(self, prompt: str, config: GenerationConfig | None = None) -> AsyncGenerator[str, None]:
         cfg = config or GenerationConfig(stream=True)
@@ -170,6 +176,7 @@ class AnthropicProvider(LLMProvider):
         if cfg.stop_sequences:
             payload["stop_sequences"] = cfg.stop_sequences
 
+        redactor = CredentialStreamRedactor(self.api_key)
         try:
             async with self._client.stream("POST", "/messages", json=payload, timeout=cfg.timeout_sec) as response:
                 response.raise_for_status()
@@ -190,7 +197,7 @@ class AnthropicProvider(LLMProvider):
                         # that finished.
                         reason = (data.get("delta") or {}).get("stop_reason")
                         if reason:
-                            cfg.finish_reason = str(reason)
+                            cfg.finish_reason = redact_credential(str(reason), self.api_key)
                         continue
                     if kind == "error":
                         # An error FRAME mid-stream is not an exception: the response is a 200
@@ -198,31 +205,37 @@ class AnthropicProvider(LLMProvider):
                         # reported as a complete answer.
                         err = (data.get("error") or {}).get("message") or "stream error"
                         cfg.finish_reason = "error"
-                        raise RuntimeError(f"{self.name} stream error: {err}")
+                        raise RuntimeError(f"{self.name} stream error: {redact_credential(str(err), self.api_key)}")
                     if kind == "content_block_delta":
                         delta = data.get("delta") or {}
                         text = delta.get("text", "")
                         if text:
                             out_tokens += 1
-                            yield text
+                            safe_text = redactor.feed(text)
+                            if safe_text:
+                                yield safe_text
+            remaining = redactor.finish()
+            if remaining:
+                yield remaining
         except Exception as e:
+            error = redact_credential(str(e), self.api_key)
             latency = (time.time() - start) * 1000
             self._update_metrics(out_tokens, latency)
-            self._record_failure(str(e))
+            self._record_failure(error)
             self._log_llm_call(
-                prompt, str(e), latency, False, error=str(e),
+                redact_credential(prompt, self.api_key), error, latency, False, error=error,
                 tokens_used=out_tokens, model=active_model,
                 task_type=cfg.task_type, agent_type=cfg.agent_type,
                 model_role=getattr(cfg, "model_role", None),
                 product_id=getattr(cfg, "product_id", None),
             )
-            raise RuntimeError(f"Streaming failed for {self.name}: {e}") from e
+            raise RuntimeError(f"Streaming failed for {self.name}: {error}") from None
 
         latency = (time.time() - start) * 1000
         self._update_metrics(out_tokens, latency)
         self._record_success()
         self._log_llm_call(
-            prompt, "", latency, True,
+            redact_credential(prompt, self.api_key), "", latency, True,
             tokens_used=out_tokens,
             completion_tokens=out_tokens,
             model=active_model,
@@ -249,7 +262,7 @@ class AnthropicProvider(LLMProvider):
                 self.health.error_message = f"Unexpected status: {response.status_code}"
         except httpx.HTTPError as e:
             self.health.status = ProviderStatus.UNAVAILABLE
-            self.health.error_message = str(e)
+            self.health.error_message = redact_credential(str(e), self.api_key)
             self.health.consecutive_failures += 1
         self.health.last_check = time.time()
         return self.health

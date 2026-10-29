@@ -1,0 +1,132 @@
+{
+  "key": "hf-dataset",
+  "url": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+  "retrieved_at_utc": "2026-10-28T13:30:29.882364+00:00",
+  "method": "GET",
+  "status": 200,
+  "sha256": "125f27ec41e0a518f39616d6fb5328d137c389cdff6b0fa50e66ecbd43e6abd8",
+  "bytes": 2547,
+  "final_url": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+  "selected_metadata": {
+    "id": "alexar76/histor-mcp-tool-definitions",
+    "author": "alexar76",
+    "createdAt": "2026-10-20T20:39:21.000Z",
+    "lastModified": "2026-10-26T13:52:53.000Z",
+    "downloads": 111,
+    "downloadsAllTime": null,
+    "likes": 0,
+    "tags": [
+      "language:en",
+      "license:cc-by-4.0",
+      "size_categories:100K<n<1M",
+      "format:json",
+      "modality:tabular",
+      "modality:text",
+      "library:datasets",
+      "library:pandas",
+      "library:polars",
+      "library:mlcroissant",
+      "region:us",
+      "mcp",
+      "model-context-protocol",
+      "ai-security",
+      "prompt-injection",
+      "tool-poisoning",
+      "transparency-log"
+    ],
+    "cardData": {
+      "license": "cc-by-4.0",
+      "pretty_name": "HISTOR — MCP tool definitions and how they change",
+      "language": [
+        "en"
+      ],
+      "tags": [
+        "mcp",
+        "model-context-protocol",
+        "ai-security",
+        "prompt-injection",
+        "tool-poisoning",
+        "transparency-log"
+      ],
+      "size_categories": [
+        "10K<n<100K"
+      ],
+      "configs": [
+        {
+          "config_name": "servers",
+          "data_files": "servers.jsonl.gz"
+        },
+        {
+          "config_name": "toolsets",
+          "data_files": "toolsets.jsonl.gz"
+        },
+        {
+          "config_name": "changes",
+          "data_files": "changes.jsonl.gz"
+        },
+        {
+          "config_name": "scans",
+          "data_files": "scans.jsonl.gz"
+        },
+        {
+          "config_name": "classifications",
+          "data_files": "classifications.jsonl.gz"
+        },
+        {
+          "config_name": "tool_extras",
+          "data_files": "tool_extras.jsonl.gz"
+        },
+        {
+          "config_name": "extras_changes",
+          "data_files": "extras_changes.jsonl.gz"
+        },
+        {
+          "config_name": "package_observations",
+          "data_files": "package_observations.jsonl.gz"
+        }
+      ]
+    },
+    "siblings": [
+      {
+        "rfilename": ".gitattributes"
+      },
+      {
+        "rfilename": "README.md"
+      },
+      {
+        "rfilename": "changes.jsonl.gz"
+      },
+      {
+        "rfilename": "classifications.jsonl.gz"
+      },
+      {
+        "rfilename": "extras_changes.jsonl.gz"
+      },
+      {
+        "rfilename": "manifest.json"
+      },
+      {
+        "rfilename": "package_observations.jsonl.gz"
+      },
+      {
+        "rfilename": "pattern-set.json"
+      },
+      {
+        "rfilename": "record-set.json"
+      },
+      {
+        "rfilename": "scans.jsonl.gz"
+      },
+      {
+        "rfilename": "servers.jsonl.gz"
+      },
+      {
+        "rfilename": "tool_extras.jsonl.gz"
+      },
+      {
+        "rfilename": "toolsets.jsonl.gz"
+      }
+    ],
+    "usedBy": null
+  }
+}

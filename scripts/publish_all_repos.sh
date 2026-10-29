@@ -18,7 +18,7 @@
 # Environment:
 #   GH_PAT / GITHUB_TOKEN       Auth for satellite pushes
 #   SATELLITE_GITHUB_ORG        Default: alexar76
-#   AICOM_FACTORY_REMOTE        Factory remote (default: git origin)
+#   AICOM_FACTORY_REMOTE        Override configured GitHub aicom push URL detection
 # =============================================================================
 set -euo pipefail
 

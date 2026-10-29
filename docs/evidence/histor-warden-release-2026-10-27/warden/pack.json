@@ -1,0 +1,1741 @@
+[
+  {
+    "id": "@aimarket/warden@0.22.2",
+    "name": "@aimarket/warden",
+    "version": "0.22.2",
+    "size": 936594,
+    "unpackedSize": 3173780,
+    "shasum": "f31ef1c06b28a34ea333c6c8dddeaa4f5d6db969",
+    "integrity": "sha512-qB9RKZUfkFebnqeCFwHwhgvwwbhAbrE6/EdAa7UVoytcDdrQQ8Nt1VdPhvCBZ+wKqCOfXSkj7fDGie0GJVWg0w==",
+    "filename": "aimarket-warden-0.22.2.tgz",
+    "files": [
+      {
+        "path": "CHANGELOG.md",
+        "size": 87298,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE",
+        "size": 1073,
+        "mode": 420
+      },
+      {
+        "path": "README-es.md",
+        "size": 29931,
+        "mode": 420
+      },
+      {
+        "path": "README-fr.md",
+        "size": 30711,
+        "mode": 420
+      },
+      {
+        "path": "README-ru.md",
+        "size": 43605,
+        "mode": 420
+      },
+      {
+        "path": "README-zh.md",
+        "size": 27601,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 28980,
+        "mode": 420
+      },
+      {
+        "path": "dist/annotation-review.d.ts",
+        "size": 652,
+        "mode": 420
+      },
+      {
+        "path": "dist/annotation-review.d.ts.map",
+        "size": 536,
+        "mode": 420
+      },
+      {
+        "path": "dist/annotation-review.js",
+        "size": 2053,
+        "mode": 420
+      },
+      {
+        "path": "dist/annotation-review.js.map",
+        "size": 1791,
+        "mode": 420
+      },
+      {
+        "path": "dist/answer-gate.d.ts",
+        "size": 3727,
+        "mode": 420
+      },
+      {
+        "path": "dist/answer-gate.d.ts.map",
+        "size": 3060,
+        "mode": 420
+      },
+      {
+        "path": "dist/answer-gate.js",
+        "size": 15404,
+        "mode": 420
+      },
+      {
+        "path": "dist/answer-gate.js.map",
+        "size": 16891,
+        "mode": 420
+      },
+      {
+        "path": "dist/atomic-screen.d.ts",
+        "size": 2469,
+        "mode": 420
+      },
+      {
+        "path": "dist/atomic-screen.d.ts.map",
+        "size": 2054,
+        "mode": 420
+      },
+      {
+        "path": "dist/atomic-screen.js",
+        "size": 9644,
+        "mode": 420
+      },
+      {
+        "path": "dist/atomic-screen.js.map",
+        "size": 9279,
+        "mode": 420
+      },
+      {
+        "path": "dist/classifier.d.ts",
+        "size": 4677,
+        "mode": 420
+      },
+      {
+        "path": "dist/classifier.d.ts.map",
+        "size": 2458,
+        "mode": 420
+      },
+      {
+        "path": "dist/classifier.js",
+        "size": 24305,
+        "mode": 420
+      },
+      {
+        "path": "dist/classifier.js.map",
+        "size": 21095,
+        "mode": 420
+      },
+      {
+        "path": "dist/claude-hook.d.ts",
+        "size": 3252,
+        "mode": 420
+      },
+      {
+        "path": "dist/claude-hook.d.ts.map",
+        "size": 1752,
+        "mode": 420
+      },
+      {
+        "path": "dist/claude-hook.js",
+        "size": 11515,
+        "mode": 420
+      },
+      {
+        "path": "dist/claude-hook.js.map",
+        "size": 10810,
+        "mode": 420
+      },
+      {
+        "path": "dist/declare.d.ts",
+        "size": 5358,
+        "mode": 420
+      },
+      {
+        "path": "dist/declare.d.ts.map",
+        "size": 2640,
+        "mode": 420
+      },
+      {
+        "path": "dist/declare.js",
+        "size": 19913,
+        "mode": 420
+      },
+      {
+        "path": "dist/declare.js.map",
+        "size": 17683,
+        "mode": 420
+      },
+      {
+        "path": "dist/encoded-text.d.ts",
+        "size": 359,
+        "mode": 420
+      },
+      {
+        "path": "dist/encoded-text.d.ts.map",
+        "size": 184,
+        "mode": 420
+      },
+      {
+        "path": "dist/encoded-text.js",
+        "size": 3017,
+        "mode": 420
+      },
+      {
+        "path": "dist/encoded-text.js.map",
+        "size": 3092,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-answer.d.ts",
+        "size": 2129,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-answer.d.ts.map",
+        "size": 787,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-answer.js",
+        "size": 13460,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-answer.js.map",
+        "size": 10820,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-classify.d.ts",
+        "size": 716,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-classify.d.ts.map",
+        "size": 817,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-classify.js",
+        "size": 13712,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-classify.js.map",
+        "size": 14031,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-constraints.d.ts",
+        "size": 1399,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-constraints.d.ts.map",
+        "size": 1204,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-constraints.js",
+        "size": 5451,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-constraints.js.map",
+        "size": 6409,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-decode.d.ts",
+        "size": 1315,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-decode.d.ts.map",
+        "size": 570,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-decode.js",
+        "size": 6590,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-decode.js.map",
+        "size": 7380,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-destinations.d.ts",
+        "size": 1780,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-destinations.d.ts.map",
+        "size": 1218,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-destinations.js",
+        "size": 9414,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-destinations.js.map",
+        "size": 9166,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-fingerprints.d.ts",
+        "size": 2195,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-fingerprints.d.ts.map",
+        "size": 1076,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-fingerprints.js",
+        "size": 8054,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-fingerprints.js.map",
+        "size": 7270,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-fragments.d.ts",
+        "size": 1165,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-fragments.d.ts.map",
+        "size": 705,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-fragments.js",
+        "size": 6765,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-fragments.js.map",
+        "size": 7097,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-instructions.d.ts",
+        "size": 366,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-instructions.d.ts.map",
+        "size": 417,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-instructions.js",
+        "size": 3505,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-instructions.js.map",
+        "size": 1571,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-labels.d.ts",
+        "size": 555,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-labels.d.ts.map",
+        "size": 428,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-labels.js",
+        "size": 2655,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-labels.js.map",
+        "size": 2637,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-leak.d.ts",
+        "size": 1370,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-leak.d.ts.map",
+        "size": 1118,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-leak.js",
+        "size": 5762,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-leak.js.map",
+        "size": 6247,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-paths.d.ts",
+        "size": 966,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-paths.d.ts.map",
+        "size": 897,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-paths.js",
+        "size": 3938,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-paths.js.map",
+        "size": 4009,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-policy.d.ts",
+        "size": 1366,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-policy.d.ts.map",
+        "size": 889,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-policy.js",
+        "size": 9313,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-policy.js.map",
+        "size": 10552,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-post.d.ts",
+        "size": 260,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-post.d.ts.map",
+        "size": 332,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-post.js",
+        "size": 8195,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-post.js.map",
+        "size": 8272,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-pre.d.ts",
+        "size": 864,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-pre.d.ts.map",
+        "size": 707,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-pre.js",
+        "size": 25048,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-pre.js.map",
+        "size": 20709,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-screen.d.ts",
+        "size": 4571,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-screen.d.ts.map",
+        "size": 3343,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-screen.js",
+        "size": 33967,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-screen.js.map",
+        "size": 39113,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-state.d.ts",
+        "size": 841,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-state.d.ts.map",
+        "size": 812,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-state.js",
+        "size": 6081,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-state.js.map",
+        "size": 6884,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-text.d.ts",
+        "size": 446,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-text.d.ts.map",
+        "size": 453,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-text.js",
+        "size": 1980,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-text.js.map",
+        "size": 1937,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-types.d.ts",
+        "size": 7023,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-types.d.ts.map",
+        "size": 3997,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-types.js",
+        "size": 55,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard-types.js.map",
+        "size": 124,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard.d.ts",
+        "size": 2548,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard.d.ts.map",
+        "size": 1887,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard.js",
+        "size": 5888,
+        "mode": 420
+      },
+      {
+        "path": "dist/flow-guard.js.map",
+        "size": 3643,
+        "mode": 420
+      },
+      {
+        "path": "dist/fold.d.ts",
+        "size": 2170,
+        "mode": 420
+      },
+      {
+        "path": "dist/fold.d.ts.map",
+        "size": 240,
+        "mode": 420
+      },
+      {
+        "path": "dist/fold.js",
+        "size": 5419,
+        "mode": 420
+      },
+      {
+        "path": "dist/fold.js.map",
+        "size": 3265,
+        "mode": 420
+      },
+      {
+        "path": "dist/glob.d.ts",
+        "size": 4546,
+        "mode": 420
+      },
+      {
+        "path": "dist/glob.d.ts.map",
+        "size": 487,
+        "mode": 420
+      },
+      {
+        "path": "dist/glob.js",
+        "size": 7871,
+        "mode": 420
+      },
+      {
+        "path": "dist/glob.js.map",
+        "size": 3660,
+        "mode": 420
+      },
+      {
+        "path": "dist/histor.d.ts",
+        "size": 6378,
+        "mode": 420
+      },
+      {
+        "path": "dist/histor.d.ts.map",
+        "size": 3978,
+        "mode": 420
+      },
+      {
+        "path": "dist/histor.js",
+        "size": 3904,
+        "mode": 420
+      },
+      {
+        "path": "dist/histor.js.map",
+        "size": 2919,
+        "mode": 420
+      },
+      {
+        "path": "dist/index.d.ts",
+        "size": 6727,
+        "mode": 420
+      },
+      {
+        "path": "dist/index.d.ts.map",
+        "size": 2684,
+        "mode": 420
+      },
+      {
+        "path": "dist/index.js",
+        "size": 11108,
+        "mode": 420
+      },
+      {
+        "path": "dist/index.js.map",
+        "size": 7793,
+        "mode": 420
+      },
+      {
+        "path": "dist/jcs.d.ts",
+        "size": 4871,
+        "mode": 420
+      },
+      {
+        "path": "dist/jcs.d.ts.map",
+        "size": 705,
+        "mode": 420
+      },
+      {
+        "path": "dist/jcs.js",
+        "size": 13364,
+        "mode": 420
+      },
+      {
+        "path": "dist/jcs.js.map",
+        "size": 8487,
+        "mode": 420
+      },
+      {
+        "path": "dist/logger.d.ts",
+        "size": 430,
+        "mode": 420
+      },
+      {
+        "path": "dist/logger.d.ts.map",
+        "size": 199,
+        "mode": 420
+      },
+      {
+        "path": "dist/logger.js",
+        "size": 541,
+        "mode": 420
+      },
+      {
+        "path": "dist/logger.js.map",
+        "size": 363,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-client.d.ts",
+        "size": 2444,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-client.d.ts.map",
+        "size": 1699,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-client.js",
+        "size": 20413,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-client.js.map",
+        "size": 22911,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-rpc.d.ts",
+        "size": 1143,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-rpc.d.ts.map",
+        "size": 848,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-rpc.js",
+        "size": 5788,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-rpc.js.map",
+        "size": 6259,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-server.d.ts",
+        "size": 637,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-server.d.ts.map",
+        "size": 134,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-server.js",
+        "size": 5002,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-server.js.map",
+        "size": 5156,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-tools.d.ts",
+        "size": 1101,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-tools.d.ts.map",
+        "size": 1065,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-tools.js",
+        "size": 55530,
+        "mode": 420
+      },
+      {
+        "path": "dist/mcp-tools.js.map",
+        "size": 29140,
+        "mode": 420
+      },
+      {
+        "path": "dist/mtl.d.ts",
+        "size": 1593,
+        "mode": 420
+      },
+      {
+        "path": "dist/mtl.d.ts.map",
+        "size": 565,
+        "mode": 420
+      },
+      {
+        "path": "dist/mtl.js",
+        "size": 3731,
+        "mode": 420
+      },
+      {
+        "path": "dist/mtl.js.map",
+        "size": 2774,
+        "mode": 420
+      },
+      {
+        "path": "dist/origin.d.ts",
+        "size": 1361,
+        "mode": 420
+      },
+      {
+        "path": "dist/origin.d.ts.map",
+        "size": 324,
+        "mode": 420
+      },
+      {
+        "path": "dist/origin.js",
+        "size": 2638,
+        "mode": 420
+      },
+      {
+        "path": "dist/origin.js.map",
+        "size": 1073,
+        "mode": 420
+      },
+      {
+        "path": "dist/pin-store.d.ts",
+        "size": 683,
+        "mode": 420
+      },
+      {
+        "path": "dist/pin-store.d.ts.map",
+        "size": 625,
+        "mode": 420
+      },
+      {
+        "path": "dist/pin-store.js",
+        "size": 2209,
+        "mode": 420
+      },
+      {
+        "path": "dist/pin-store.js.map",
+        "size": 2348,
+        "mode": 420
+      },
+      {
+        "path": "dist/pinning.d.ts",
+        "size": 6050,
+        "mode": 420
+      },
+      {
+        "path": "dist/pinning.d.ts.map",
+        "size": 1112,
+        "mode": 420
+      },
+      {
+        "path": "dist/pinning.js",
+        "size": 13082,
+        "mode": 420
+      },
+      {
+        "path": "dist/pinning.js.map",
+        "size": 7104,
+        "mode": 420
+      },
+      {
+        "path": "dist/public-address.d.ts",
+        "size": 201,
+        "mode": 420
+      },
+      {
+        "path": "dist/public-address.d.ts.map",
+        "size": 190,
+        "mode": 420
+      },
+      {
+        "path": "dist/public-address.js",
+        "size": 2911,
+        "mode": 420
+      },
+      {
+        "path": "dist/public-address.js.map",
+        "size": 3789,
+        "mode": 420
+      },
+      {
+        "path": "dist/result-screen.d.ts",
+        "size": 1155,
+        "mode": 420
+      },
+      {
+        "path": "dist/result-screen.d.ts.map",
+        "size": 960,
+        "mode": 420
+      },
+      {
+        "path": "dist/result-screen.js",
+        "size": 4585,
+        "mode": 420
+      },
+      {
+        "path": "dist/result-screen.js.map",
+        "size": 3648,
+        "mode": 420
+      },
+      {
+        "path": "dist/review-diff.d.ts",
+        "size": 5004,
+        "mode": 420
+      },
+      {
+        "path": "dist/review-diff.d.ts.map",
+        "size": 2079,
+        "mode": 420
+      },
+      {
+        "path": "dist/review-diff.js",
+        "size": 20100,
+        "mode": 420
+      },
+      {
+        "path": "dist/review-diff.js.map",
+        "size": 21982,
+        "mode": 420
+      },
+      {
+        "path": "dist/sandbox.d.ts",
+        "size": 1673,
+        "mode": 420
+      },
+      {
+        "path": "dist/sandbox.d.ts.map",
+        "size": 632,
+        "mode": 420
+      },
+      {
+        "path": "dist/sandbox.js",
+        "size": 3188,
+        "mode": 420
+      },
+      {
+        "path": "dist/sandbox.js.map",
+        "size": 1944,
+        "mode": 420
+      },
+      {
+        "path": "dist/sanitize.d.ts",
+        "size": 1973,
+        "mode": 420
+      },
+      {
+        "path": "dist/sanitize.d.ts.map",
+        "size": 280,
+        "mode": 420
+      },
+      {
+        "path": "dist/sanitize.js",
+        "size": 2862,
+        "mode": 420
+      },
+      {
+        "path": "dist/sanitize.js.map",
+        "size": 980,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-cli.d.ts",
+        "size": 171,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-cli.d.ts.map",
+        "size": 196,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-cli.js",
+        "size": 1491,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-cli.js.map",
+        "size": 1810,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-config.d.ts",
+        "size": 3297,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-config.d.ts.map",
+        "size": 1829,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-config.js",
+        "size": 10739,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-config.js.map",
+        "size": 12438,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-lock.d.ts",
+        "size": 2334,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-lock.d.ts.map",
+        "size": 1428,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-lock.js",
+        "size": 5270,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-lock.js.map",
+        "size": 5512,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-report.d.ts",
+        "size": 1332,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-report.d.ts.map",
+        "size": 835,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-report.js",
+        "size": 16577,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan-report.js.map",
+        "size": 19118,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan.d.ts",
+        "size": 6682,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan.d.ts.map",
+        "size": 5147,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan.js",
+        "size": 49230,
+        "mode": 420
+      },
+      {
+        "path": "dist/scan.js.map",
+        "size": 46811,
+        "mode": 420
+      },
+      {
+        "path": "dist/state.d.ts",
+        "size": 506,
+        "mode": 420
+      },
+      {
+        "path": "dist/state.d.ts.map",
+        "size": 456,
+        "mode": 420
+      },
+      {
+        "path": "dist/state.js",
+        "size": 1897,
+        "mode": 420
+      },
+      {
+        "path": "dist/state.js.map",
+        "size": 2167,
+        "mode": 420
+      },
+      {
+        "path": "dist/static-scan.d.ts",
+        "size": 6998,
+        "mode": 420
+      },
+      {
+        "path": "dist/static-scan.d.ts.map",
+        "size": 1290,
+        "mode": 420
+      },
+      {
+        "path": "dist/static-scan.js",
+        "size": 86388,
+        "mode": 420
+      },
+      {
+        "path": "dist/static-scan.js.map",
+        "size": 48560,
+        "mode": 420
+      },
+      {
+        "path": "dist/task-adapter.d.ts",
+        "size": 1861,
+        "mode": 420
+      },
+      {
+        "path": "dist/task-adapter.d.ts.map",
+        "size": 1525,
+        "mode": 420
+      },
+      {
+        "path": "dist/task-adapter.js",
+        "size": 21240,
+        "mode": 420
+      },
+      {
+        "path": "dist/task-adapter.js.map",
+        "size": 22784,
+        "mode": 420
+      },
+      {
+        "path": "dist/task-cli.d.ts",
+        "size": 185,
+        "mode": 420
+      },
+      {
+        "path": "dist/task-cli.d.ts.map",
+        "size": 196,
+        "mode": 420
+      },
+      {
+        "path": "dist/task-cli.js",
+        "size": 8031,
+        "mode": 420
+      },
+      {
+        "path": "dist/task-cli.js.map",
+        "size": 8659,
+        "mode": 420
+      },
+      {
+        "path": "dist/threat-feed.d.ts",
+        "size": 7327,
+        "mode": 420
+      },
+      {
+        "path": "dist/threat-feed.d.ts.map",
+        "size": 1579,
+        "mode": 420
+      },
+      {
+        "path": "dist/threat-feed.js",
+        "size": 26972,
+        "mode": 420
+      },
+      {
+        "path": "dist/threat-feed.js.map",
+        "size": 14964,
+        "mode": 420
+      },
+      {
+        "path": "dist/tool-list.d.ts",
+        "size": 1658,
+        "mode": 420
+      },
+      {
+        "path": "dist/tool-list.d.ts.map",
+        "size": 702,
+        "mode": 420
+      },
+      {
+        "path": "dist/tool-list.js",
+        "size": 3372,
+        "mode": 420
+      },
+      {
+        "path": "dist/tool-list.js.map",
+        "size": 2702,
+        "mode": 420
+      },
+      {
+        "path": "dist/toxic-flow.d.ts",
+        "size": 1595,
+        "mode": 420
+      },
+      {
+        "path": "dist/toxic-flow.d.ts.map",
+        "size": 1301,
+        "mode": 420
+      },
+      {
+        "path": "dist/toxic-flow.js",
+        "size": 8029,
+        "mode": 420
+      },
+      {
+        "path": "dist/toxic-flow.js.map",
+        "size": 7867,
+        "mode": 420
+      },
+      {
+        "path": "dist/types.d.ts",
+        "size": 8495,
+        "mode": 420
+      },
+      {
+        "path": "dist/types.d.ts.map",
+        "size": 3808,
+        "mode": 420
+      },
+      {
+        "path": "dist/types.js",
+        "size": 969,
+        "mode": 420
+      },
+      {
+        "path": "dist/types.js.map",
+        "size": 214,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-cli.d.ts",
+        "size": 1963,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-cli.d.ts.map",
+        "size": 1299,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-cli.js",
+        "size": 11519,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-cli.js.map",
+        "size": 10671,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-screen.d.ts",
+        "size": 263,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-screen.d.ts.map",
+        "size": 242,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-screen.js",
+        "size": 902,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-screen.js.map",
+        "size": 927,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-state.d.ts",
+        "size": 1797,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-state.d.ts.map",
+        "size": 1446,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-state.js",
+        "size": 5360,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-state.js.map",
+        "size": 5411,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-wire.d.ts",
+        "size": 606,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-wire.d.ts.map",
+        "size": 638,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-wire.js",
+        "size": 3244,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap-wire.js.map",
+        "size": 3500,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap.d.ts",
+        "size": 153,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap.d.ts.map",
+        "size": 218,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap.js",
+        "size": 45009,
+        "mode": 420
+      },
+      {
+        "path": "dist/wrap.js.map",
+        "size": 37582,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-answer-gate.es.md",
+        "size": 7226,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-answer-gate.fr.md",
+        "size": 7410,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-answer-gate.md",
+        "size": 8448,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-answer-gate.ru.md",
+        "size": 11821,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-answer-gate.zh.md",
+        "size": 6521,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-constraint-evidence.es.md",
+        "size": 6356,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-constraint-evidence.fr.md",
+        "size": 6535,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-constraint-evidence.md",
+        "size": 7086,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-constraint-evidence.ru.md",
+        "size": 11222,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-constraint-evidence.zh.md",
+        "size": 5584,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-final-witness-2026-10-26.es.md",
+        "size": 3135,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-final-witness-2026-10-26.fr.md",
+        "size": 3174,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-final-witness-2026-10-26.md",
+        "size": 3498,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-final-witness-2026-10-26.ru.md",
+        "size": 5418,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-final-witness-2026-10-26.zh.md",
+        "size": 2946,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-fresh-rechecks-2026-10-26.es.md",
+        "size": 5152,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-fresh-rechecks-2026-10-26.fr.md",
+        "size": 5276,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-fresh-rechecks-2026-10-26.md",
+        "size": 6077,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-fresh-rechecks-2026-10-26.ru.md",
+        "size": 9256,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-fresh-rechecks-2026-10-26.zh.md",
+        "size": 4608,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-model-comparison-2026-10-25.es.md",
+        "size": 13440,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-model-comparison-2026-10-25.fr.md",
+        "size": 14012,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-model-comparison-2026-10-25.md",
+        "size": 12402,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-model-comparison-2026-10-25.ru.md",
+        "size": 20199,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-model-comparison-2026-10-25.zh.md",
+        "size": 11644,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-prospective-holdout-2026-10-26.es.md",
+        "size": 5137,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-prospective-holdout-2026-10-26.fr.md",
+        "size": 5208,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-prospective-holdout-2026-10-26.md",
+        "size": 6776,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-prospective-holdout-2026-10-26.ru.md",
+        "size": 11272,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-prospective-holdout-2026-10-26.zh.md",
+        "size": 4744,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-reference-egress.es.md",
+        "size": 3096,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-reference-egress.fr.md",
+        "size": 3271,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-reference-egress.md",
+        "size": 3200,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-reference-egress.ru.md",
+        "size": 5477,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-reference-egress.zh.md",
+        "size": 2846,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-review-factors-2026-10-26.es.md",
+        "size": 4637,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-review-factors-2026-10-26.fr.md",
+        "size": 4702,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-review-factors-2026-10-26.md",
+        "size": 5814,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-review-factors-2026-10-26.ru.md",
+        "size": 8884,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-review-factors-2026-10-26.zh.md",
+        "size": 4099,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-structured-model-2026-10-26.es.md",
+        "size": 5016,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-structured-model-2026-10-26.fr.md",
+        "size": 5156,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-structured-model-2026-10-26.md",
+        "size": 5661,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-structured-model-2026-10-26.ru.md",
+        "size": 9371,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard-structured-model-2026-10-26.zh.md",
+        "size": 4570,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard.es.md",
+        "size": 77862,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard.fr.md",
+        "size": 81547,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard.md",
+        "size": 78705,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard.ru.md",
+        "size": 130329,
+        "mode": 420
+      },
+      {
+        "path": "docs/flow-guard.zh.md",
+        "size": 69617,
+        "mode": 420
+      },
+      {
+        "path": "docs/gates.es.md",
+        "size": 26296,
+        "mode": 420
+      },
+      {
+        "path": "docs/gates.fr.md",
+        "size": 27242,
+        "mode": 420
+      },
+      {
+        "path": "docs/gates.md",
+        "size": 24172,
+        "mode": 420
+      },
+      {
+        "path": "docs/gates.ru.md",
+        "size": 39132,
+        "mode": 420
+      },
+      {
+        "path": "docs/gates.zh.md",
+        "size": 24564,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan-limits.es.md",
+        "size": 7355,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan-limits.fr.md",
+        "size": 7736,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan-limits.md",
+        "size": 6544,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan-limits.ru.md",
+        "size": 11061,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan-limits.zh.md",
+        "size": 6216,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan.es.md",
+        "size": 24544,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan.fr.md",
+        "size": 25539,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan.md",
+        "size": 22407,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan.ru.md",
+        "size": 36403,
+        "mode": 420
+      },
+      {
+        "path": "docs/scan.zh.md",
+        "size": 22838,
+        "mode": 420
+      },
+      {
+        "path": "docs/scanner-comparison.es.md",
+        "size": 27281,
+        "mode": 420
+      },
+      {
+        "path": "docs/scanner-comparison.fr.md",
+        "size": 28526,
+        "mode": 420
+      },
+      {
+        "path": "docs/scanner-comparison.md",
+        "size": 23999,
+        "mode": 420
+      },
+      {
+        "path": "docs/scanner-comparison.ru.md",
+        "size": 40926,
+        "mode": 420
+      },
+      {
+        "path": "docs/scanner-comparison.zh.md",
+        "size": 25238,
+        "mode": 420
+      },
+      {
+        "path": "docs/security-hardening-language-boundary.md",
+        "size": 17467,
+        "mode": 420
+      },
+      {
+        "path": "docs/security-hardening.es.md",
+        "size": 7308,
+        "mode": 420
+      },
+      {
+        "path": "docs/security-hardening.fr.md",
+        "size": 7552,
+        "mode": 420
+      },
+      {
+        "path": "docs/security-hardening.md",
+        "size": 7191,
+        "mode": 420
+      },
+      {
+        "path": "docs/security-hardening.ru.md",
+        "size": 11977,
+        "mode": 420
+      },
+      {
+        "path": "docs/security-hardening.zh.md",
+        "size": 6466,
+        "mode": 420
+      },
+      {
+        "path": "examples/answer-gate-host.mjs",
+        "size": 1910,
+        "mode": 420
+      },
+      {
+        "path": "examples/atomic-screen-server.mjs",
+        "size": 3262,
+        "mode": 420
+      },
+      {
+        "path": "native/macos/Package.swift",
+        "size": 412,
+        "mode": 420
+      },
+      {
+        "path": "native/macos/Sources/WardenDesktop/NativeSurface.swift",
+        "size": 19337,
+        "mode": 420
+      },
+      {
+        "path": "native/macos/Sources/WardenDesktop/StandardIO.swift",
+        "size": 8631,
+        "mode": 420
+      },
+      {
+        "path": "native/macos/Sources/WardenDesktopHost/Main.swift",
+        "size": 11746,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 3024,
+        "mode": 420
+      },
+      {
+        "path": "scripts/build-macos.mjs",
+        "size": 1556,
+        "mode": 420
+      },
+      {
+        "path": "scripts/check-quality-gate.mjs",
+        "size": 4180,
+        "mode": 420
+      },
+      {
+        "path": "scripts/quality-public-key.pem",
+        "size": 113,
+        "mode": 420
+      }
+    ],
+    "entryCount": 345,
+    "bundled": []
+  }
+]

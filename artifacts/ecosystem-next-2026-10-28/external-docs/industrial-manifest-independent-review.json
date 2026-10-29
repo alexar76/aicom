@@ -1,0 +1,25 @@
+{
+  "scope": "Independent local read-only review of captured public data. No network or provider code execution.",
+  "source_capture": "industrial-federation-source-live.json",
+  "source_response_sha256": "c58bf3cba9a55b6f38283caeb035fb326867b04793574725b733e930b2285a72",
+  "local_canonical_source": "web/backend/services/ai_market_protocol/signing.py:150",
+  "method": "Extracted only our manifest_canonical function AST into a namespace containing typing.Any and json; verified Ed25519 with cryptography against the captured manifest's self-declared public key. No backend module import or foreign code execution.",
+  "positive_verifies": true,
+  "canonical_sha256": "4f74cb5d7a788954783093033b633ae6fec5fc91138329fc0750f2d5878c6f63",
+  "tamper_rejected": {
+    "first_tool_price_changed_to_0_01": true,
+    "by_hub_changed": true,
+    "capabilities_count_changed": true,
+    "generated_at_changed": true,
+    "protocol_version_changed": true
+  },
+  "manifest_and_discovery_declared_keys_match": true,
+  "supported_claim": "This captured endpoint manifest is correctly signed under its self-declared key using the same five-field canonical as our AIMarket manifest protocol.",
+  "limits": [
+    "A self-declared public key does not attest a real-world operator, a trusted partner or federation registration.",
+    "Four capabilities are advertised; their invoke endpoints, installations, paid calls and customer use were not tested.",
+    "This checks one captured manifest, not complete protocol conformance or canonicalization compatibility for all Unicode and numeric edge cases.",
+    "The discovery object signature was not independently verified by this review.",
+    "Remote success_rate_30d=1 alongside observations_30d=0 must not be presented as measured availability."
+  ]
+}

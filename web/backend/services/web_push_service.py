@@ -6,6 +6,7 @@ import base64
 import json
 import logging
 import os
+import stat
 import threading
 import time
 import uuid
@@ -25,7 +26,7 @@ _MAX_SUBS = 500
 
 def _vapid_path() -> Path:
     p = factory_data_root() / "secrets" / "web_push_vapid.json"
-    p.parent.mkdir(parents=True, exist_ok=True)
+    p.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     return p
 
 
@@ -43,15 +44,21 @@ def _public_b64url_from_vapid(v: Any) -> str:
 def get_or_create_vapid_material() -> dict[str, str]:
     """Return dict with publicKey (urlsafe b64), privateKeyPem (utf-8 string)."""
     path = _vapid_path()
-    if path.is_file():
+    if path.exists() or path.is_symlink():
         try:
-            d = json.loads(path.read_text(encoding="utf-8"))
+            fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+            with os.fdopen(fd, "r", encoding="utf-8") as handle:
+                if not stat.S_ISREG(os.fstat(handle.fileno()).st_mode):
+                    raise ValueError("VAPID material must be a regular file")
+                os.fchmod(handle.fileno(), 0o600)
+                d = json.load(handle)
             pub = str(d.get("publicKey") or "")
             priv = str(d.get("privateKeyPem") or "")
             if pub and priv:
                 return {"publicKey": pub, "privateKeyPem": priv}
-        except Exception as e:
-            logger.warning("web_push: bad vapid file: %s", e)
+        except (OSError, ValueError) as exc:
+            raise ValueError("Invalid or unsafe existing VAPID material") from exc
+        raise ValueError("Incomplete existing VAPID material; explicit recovery required")
     try:
         from pywebpush import Vapid
 
@@ -62,7 +69,7 @@ def get_or_create_vapid_material() -> dict[str, str]:
     except Exception as e:
         logger.error("web_push: could not generate VAPID keys: %s", e)
         raise
-    write_text_atomic(path, json.dumps({"publicKey": pub_b64, "privateKeyPem": priv_pem}, indent=2))
+    write_text_atomic(path, json.dumps({"publicKey": pub_b64, "privateKeyPem": priv_pem}, indent=2), mode=0o600)
     return {"publicKey": pub_b64, "privateKeyPem": priv_pem}
 
 

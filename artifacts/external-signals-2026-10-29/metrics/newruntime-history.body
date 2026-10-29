@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "contract_version": "newruntime-page-readership-v1",
+  "type": "page_machine_readership",
+  "canonical_path": "/readers/histor/",
+  "canonical_url": "https://newruntime.com/readers/histor/",
+  "generated_at": "2026-10-29T11:00:58.816Z",
+  "refresh_hint": "30m",
+  "schema_url": "https://newruntime.com/page-readership-schema.json",
+  "methodology_url": "https://newruntime.com/machine-consumption/",
+  "privacy": {
+    "ip_addresses": "not_output",
+    "visitor_ids": "not_output",
+    "query_strings": "not_output",
+    "raw_user_agents": "not_output",
+    "raw_log_lines": "not_output",
+    "session_identifiers": "not_output",
+    "human_identity": "not_collected_for_this_contract"
+  },
+  "summary": {
+    "requests_last_24h": 2,
+    "requests_observed": 3,
+    "named_automations_observed": 3,
+    "verified_automations_observed": 1
+  },
+  "windows": {
+    "last_24h": {
+      "first_seen": "2026-10-28T11:00:51.751Z",
+      "last_seen": "2026-10-29T11:00:03.949Z",
+      "requests": 2,
+      "formats": [
+        {
+          "format": "html",
+          "count": 2
+        }
+      ],
+      "agents": [
+        {
+          "family": "Mozilla/5.0 (compatible; Barkrowler/0.9; +public-url-redacted",
+          "count": 1,
+          "category": "other_bot",
+          "first_seen": "2026-10-28T16:21:10.138Z",
+          "last_seen": "2026-10-28T16:21:10.138Z",
+          "identity_status": "not_verifiable"
+        },
+        {
+          "family": "PerplexityBot",
+          "count": 1,
+          "category": "ai_crawler",
+          "first_seen": "2026-10-29T02:34:16.051Z",
+          "last_seen": "2026-10-29T02:34:16.051Z",
+          "identity_status": "verified"
+        }
+      ]
+    },
+    "observed": {
+      "first_seen": "2026-10-27T23:09:35.830Z",
+      "last_seen": "2026-10-29T11:00:03.949Z",
+      "requests": 3,
+      "formats": [
+        {
+          "format": "html",
+          "count": 3
+        }
+      ],
+      "agents": [
+        {
+          "family": "Mozilla/5.0 (compatible; Barkrowler/0.9; +public-url-redacted",
+          "count": 1,
+          "category": "other_bot",
+          "first_seen": "2026-10-28T16:21:10.138Z",
+          "last_seen": "2026-10-28T16:21:10.138Z",
+          "identity_status": "not_verifiable"
+        },
+        {
+          "family": "Mozilla/5.0 (compatible; DataForSeoBot/1.0; +public-url-redacted",
+          "count": 1,
+          "category": "other_bot",
+          "first_seen": "2026-10-28T03:03:07.512Z",
+          "last_seen": "2026-10-28T03:03:07.512Z",
+          "identity_status": "not_verifiable"
+        },
+        {
+          "family": "PerplexityBot",
+          "count": 1,
+          "category": "ai_crawler",
+          "first_seen": "2026-10-29T02:34:16.051Z",
+          "last_seen": "2026-10-29T02:34:16.051Z",
+          "identity_status": "verified"
+        }
+      ]
+    }
+  },
+  "interpretation": {
+    "unit": "Successful requests from named automation, not unique people.",
+    "identity": "Identity status is the strongest observed family-level evidence in the identity aggregate, not verification of every page request.",
+    "causality": "A request does not prove indexing, citation, model training, understanding, or referral.",
+    "representations": "HTML, JSON, and Markdown twins are grouped under the canonical page."
+  }
+}

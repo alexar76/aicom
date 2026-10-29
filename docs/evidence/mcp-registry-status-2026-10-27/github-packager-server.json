@@ -1,0 +1,30 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.alexar76/aimarket-plugins",
+  "title": "AIMarket MCP Packager",
+  "description": "Stdio MCP packager: AIMarket hub plugins into self-hosted MCP server products.",
+  "repository": {
+    "url": "https://github.com/alexar76/aimarket-plugins",
+    "source": "github"
+  },
+  "version": "2.1.2",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "aimarket-mcp-packager",
+      "version": "2.1.2",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AIMARKET_HUB_URL",
+          "description": "AIMarket Hub base URL",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

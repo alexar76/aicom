@@ -1,0 +1,26 @@
+{
+  "runtime": {
+    "python": "3.12.13",
+    "mcp": "1.30.0"
+  },
+  "healthy": {
+    "source": "plugins/aimarket-oracle-gateway",
+    "serverVersion": "0.3.2",
+    "protocol": "2025-06-18",
+    "tools": 36,
+    "passed": true
+  },
+  "negativeControl": {
+    "mutation": "Add only future annotations after mcp_tool_surface.py module docstring in a copied package",
+    "caughtBySameStartupHarness": true,
+    "failedBeforeInitialize": true,
+    "cause": "ValuesList NameError wrapped as aggregate_values InvalidSignature",
+    "mutatedModuleSha256": "92127359b330c3e7dad7205157256c83526b53022226db16cf9d4b0ec0cc8216"
+  },
+  "workspaceSourceUnchanged": true,
+  "sourceSha256": "2e36baea74d6e9f3a6f8bc4edf6225750d28441272fd75f258d22a8739a6b757",
+  "testSha256": "a102f184956a0c9959aef8ed35fb54d4c5aee3fc42a4c2686fa1535e62345bd9",
+  "networkRequests": 0,
+  "toolCalls": 0,
+  "temporaryCopyRemoved": true
+}

@@ -1,0 +1,722 @@
+[
+  {
+    "file": "new-vulnetix-000636.json",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000636.json",
+    "checked_at_utc": "2026-10-28T11:31:15.381219+00:00",
+    "status": 200,
+    "sha256": "a2fdf52eb81a070959083e86d8e8f724d207d3df1f0017a8f088eb4b741d368f",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000636",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "title": "Platon rate limit key can be forged by hosts on the same private network in aimarket-platon",
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "platon.main"
+        ],
+        "packageName": "aimarket-platon",
+        "product": "aimarket-platon",
+        "programFiles": [
+          "platon/main.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "platon.main._from_local_proxy"
+          },
+          {
+            "name": "platon.main._key_from"
+          },
+          {
+            "name": "platon.main._client_key"
+          },
+          {
+            "name": "platon.main._ws_client_key"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.1.5",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Bind the server to the loopback interface (PLATON_HOST=127.0.0.1) and reach it only through a reverse proxy on the same host."
+      }
+    ]
+  },
+  {
+    "file": "new-vulnetix-000637.json",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000637.json",
+    "checked_at_utc": "2026-10-28T11:31:15.381822+00:00",
+    "status": 200,
+    "sha256": "cfe2b6fa0b91592e62d3ca0301733a733ebc823f3af1dce6b113006c1e509e81",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000637",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "title": "Oracle client address and paid tier can be forged by hosts on the same private network in aimarket-oracle-core",
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "oracle_core.app",
+          "oracle_core.tiers"
+        ],
+        "packageName": "aimarket-oracle-core",
+        "product": "aimarket-oracle-core",
+        "programFiles": [
+          "oracle_core/app.py",
+          "oracle_core/tiers.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "oracle_core.app.peer_is_local_proxy"
+          },
+          {
+            "name": "oracle_core.app.client_key"
+          },
+          {
+            "name": "oracle_core.tiers.PaidTierPolicy.is_paid"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.6.2",
+            "status": "affected",
+            "version": "0.2.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "If you do not sell the paid tier through a hub, leave ORACLE_TRUSTED_PAYMENT_PROXIES unset: no caller is then lifted above the free ceiling. ORACLE_PAID_TIER_SECRET does not replace it for hub traffic, because aimarket-hub (through 3.16.0) never sends the X-AIMarket-Paid-Tier header."
+      },
+      {
+        "lang": "en",
+        "value": "Bind the oracle to the loopback interface and reach it only through a reverse proxy on the same host."
+      }
+    ]
+  },
+  {
+    "file": "new-vulnetix-000638.json",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000638.json",
+    "checked_at_utc": "2026-10-28T11:31:15.381980+00:00",
+    "status": 200,
+    "sha256": "086a72debf26fb4b6c5d3dab801f29a078273596fa35c214e3479a1061d2aad3",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000638",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "title": "Logos rate limit key can be forged by hosts on the same private network in aimarket-logos",
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "logos.app",
+          "logos.main"
+        ],
+        "packageName": "aimarket-logos",
+        "product": "aimarket-logos",
+        "programFiles": [
+          "logos/app.py",
+          "logos/main.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "logos.app._from_local_proxy"
+          },
+          {
+            "name": "logos.app._client_key"
+          },
+          {
+            "name": "logos.main.main"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.2.1",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Start the app on loopback, for example uvicorn logos.main:app --host 127.0.0.1 --port <LOGOS_PORT>, instead of the logos entry point, and reach it only through a reverse proxy on the same host."
+      }
+    ]
+  },
+  {
+    "file": "new-vulnetix-000639.json",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000639.json",
+    "checked_at_utc": "2026-10-28T11:31:15.382109+00:00",
+    "status": 200,
+    "sha256": "c470c6dfe08dc5590b7269e6f0c45be94913bb0a907dd4d3e754da4f12687521",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000639",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "title": "SSH host key not checked when skopos-fleet pushes remediation commits to a single-label remote",
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "skopos.remediation.git_push"
+        ],
+        "packageName": "skopos-fleet",
+        "product": "skopos-fleet",
+        "programFiles": [
+          "skopos/remediation/git_push.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "skopos.remediation.git_push.ssh_remote_is_local"
+          },
+          {
+            "name": "skopos.remediation.git_push.GitPusher._git"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.2.1",
+            "status": "affected",
+            "version": "0.2.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Name the git server by a fully qualified name in SKOPOS_AGENT_REPO_URL, and add its host key, checked out of band, to SKOPOS's known_hosts (SKOPOS_KNOWN_HOSTS): in 0.2.1 such a remote is verified."
+      },
+      {
+        "lang": "en",
+        "value": "Or push over HTTPS: an https:// SKOPOS_AGENT_REPO_URL with SKOPOS_GIT_TOKEN set and SKOPOS_GIT_SSH_KEY unset."
+      },
+      {
+        "lang": "en",
+        "value": "Where SKOPOS runs on the host itself, a loopback remote such as a Gitea port published on 127.0.0.1 is not reachable by a neighbour."
+      }
+    ]
+  },
+  {
+    "file": "new-vulnetix-000640.json",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000640.json",
+    "checked_at_utc": "2026-10-28T11:31:15.382234+00:00",
+    "status": 200,
+    "sha256": "59fb0b47655001cc4ba4f7bcd71ed64c9fc79a49b48d539f8c0a1100e7f31cfd",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000640",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "title": "Keyless aimarket-mcp server treats a same-user or non-Linux reverse proxy as a local caller",
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "aimarket_mcp.server"
+        ],
+        "packageName": "aimarket-mcp",
+        "product": "aimarket-mcp",
+        "programFiles": [
+          "aimarket_mcp/server.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "aimarket_mcp.server._auth_ok"
+          },
+          {
+            "name": "aimarket_mcp.server._caller_is_this_user"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.6.3",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Set AIMARKET_MCP_KEY to a long random value whenever anything relays requests to the HTTP server. This is the only control that works in every affected version."
+      }
+    ]
+  },
+  {
+    "file": "new-vulnetix-000641.json",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000641.json",
+    "checked_at_utc": "2026-10-28T11:31:15.860997+00:00",
+    "status": 200,
+    "sha256": "de704fd6ebaa2a9ac3ffacc31fb177408ad3be6e2ce91c3b0fac5c2374c4e963",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000641",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "title": "Keyless Metis server treats a same-user or non-Linux reverse proxy as a local caller",
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "metis.api.auth"
+        ],
+        "packageName": "aimarket-metis",
+        "product": "aimarket-metis",
+        "programFiles": [
+          "metis/api/auth.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "metis.api.auth.verify_api_key"
+          },
+          {
+            "name": "metis.api.auth.local_caller"
+          },
+          {
+            "name": "metis.api.auth._caller_is_this_user"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.2.4",
+            "status": "affected",
+            "version": "0.2.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Set METIS_API_KEY whenever anything relays requests to the server. This is the only control that works in every affected version."
+      }
+    ]
+  },
+  {
+    "file": "new-vulnetix-000642.json",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000642.json",
+    "checked_at_utc": "2026-10-28T11:31:15.865998+00:00",
+    "status": 200,
+    "sha256": "ba32537142a7708a2aba88cc8ccd9f636b5a731e1152eddc78a250c2a9d8fad0",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000642",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "title": "Keyless Treasury service treats a same-user or non-Linux reverse proxy as a local caller",
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "treasury.service"
+        ],
+        "packageName": "aimarket-treasury",
+        "product": "aimarket-treasury",
+        "programFiles": [
+          "treasury/service.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "treasury.service._local_caller"
+          },
+          {
+            "name": "treasury.service._caller_is_this_user"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.1.3",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Set TREASURY_CLIENT_TOKEN on every deployment, and have every client send it as X-Treasury-Client. This is the only control that works in every affected version."
+      }
+    ]
+  },
+  {
+    "file": "new-vulnetix-000643.json",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000643.json",
+    "checked_at_utc": "2026-10-28T11:31:15.869241+00:00",
+    "status": 200,
+    "sha256": "677a3ca6ae532b7bf47817f449f74d98d0048724ca5bf76e131b74c33c8c58b5",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000643",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "title": "Keyless Platon server treats a same-user or non-Linux reverse proxy as a local writer",
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "platon.main"
+        ],
+        "packageName": "aimarket-platon",
+        "product": "aimarket-platon",
+        "programFiles": [
+          "platon/main.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "platon.main._write_authorized"
+          },
+          {
+            "name": "platon.main._local_caller"
+          },
+          {
+            "name": "platon.main._caller_is_this_user"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "lessThanOrEqual": "0.1.5",
+            "status": "affected",
+            "version": "0.1.0",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "Set PLATON_STEER_TOKEN whenever anything relays requests to the server, and send it as X-Platon-Token from the clients allowed to write. This is the only control that works in every affected version."
+      }
+    ]
+  },
+  {
+    "file": "new-vulnetix-000644.json",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000644.json",
+    "checked_at_utc": "2026-10-28T11:31:15.871249+00:00",
+    "status": 200,
+    "sha256": "877e390015fd05c5ac6741e5a4df69e42bf7099c69f9214b703848a749a194c3",
+    "metadata": {
+      "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+      "assignerShortName": "Vulnetix",
+      "cveId": "GCVE-110-VULN-PYPI-2026-000644",
+      "datePublished": "2026-10-27T22:42:51Z",
+      "dateUpdated": "2026-10-28T01:49:28Z",
+      "state": "PUBLISHED"
+    },
+    "title": "Anyone who reaches the login page can lock the operator out of the skopos-fleet dashboard",
+    "affected": [
+      {
+        "collectionURL": "https://pypi.org",
+        "defaultStatus": "unknown",
+        "modules": [
+          "skopos.auth_store"
+        ],
+        "packageName": "skopos-fleet",
+        "product": "skopos-fleet",
+        "programFiles": [
+          "skopos/auth_store.py"
+        ],
+        "programRoutines": [
+          {
+            "name": "skopos.auth_store.register_failed_login"
+          },
+          {
+            "name": "skopos.auth_store.login_lockout_remaining_seconds"
+          }
+        ],
+        "vendor": "pypi",
+        "versions": [
+          {
+            "status": "affected",
+            "version": "0.2.1",
+            "versionType": "python"
+          }
+        ]
+      }
+    ],
+    "solutions": [
+      {
+        "lang": "en",
+        "value": "No setting removes it in 0.2.1. SKOPOS_LOGIN_GLOBAL_MAX_ATTEMPTS (up to 500) only raises the number of failures an attacker must send, and SKOPOS_LOGIN_LOCKOUT_SECONDS (down to 60) shortens each lockout; with a long random dashboard password, a higher shared budget still leaves guessing impractical."
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-aimarket-platon.json",
+    "url": "https://pypi.org/pypi/aimarket-platon/json",
+    "checked_at_utc": "2026-10-28T11:31:15.875391+00:00",
+    "status": 200,
+    "sha256": "1aa28169d10f7a51c4f637b5d3be9f7a5dce9864d51acc5b1d4a6356ceecbb20",
+    "package": "aimarket-platon",
+    "current_version": "0.1.5",
+    "files": [
+      {
+        "filename": "aimarket_platon-0.1.5-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-26T13:03:16.862755Z",
+        "sha256": "4318199f64fa68f2e71f4fde21941358cbb4c54d409debdb0a23e3da8083fe91"
+      },
+      {
+        "filename": "aimarket_platon-0.1.5.tar.gz",
+        "upload_time_iso_8601": "2026-10-26T13:03:17.994892Z",
+        "sha256": "24d6af2d9e06e867864b0a66f6cdf8364a1c01bd97a74010b4b97c4e481dd49e"
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-aimarket-oracle-core.json",
+    "url": "https://pypi.org/pypi/aimarket-oracle-core/json",
+    "checked_at_utc": "2026-10-28T11:31:16.156593+00:00",
+    "status": 200,
+    "sha256": "847ce43b62bb5e6ee1b811bae38df85b5af0635d3cce35b1884ae26ad26f311f",
+    "package": "aimarket-oracle-core",
+    "current_version": "0.6.3",
+    "files": [
+      {
+        "filename": "aimarket_oracle_core-0.6.3-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-28T07:54:42.353714Z",
+        "sha256": "17aa02dd2706354847e091d862a7682e502c9dff0ab58a4778607aaa07d68c49"
+      },
+      {
+        "filename": "aimarket_oracle_core-0.6.3.tar.gz",
+        "upload_time_iso_8601": "2026-10-28T07:54:43.589200Z",
+        "sha256": "9406e60513915690eebc017751ebc8a1462c8fe77c53082bb502650e11c50ac7"
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-aimarket-logos.json",
+    "url": "https://pypi.org/pypi/aimarket-logos/json",
+    "checked_at_utc": "2026-10-28T11:31:16.270138+00:00",
+    "status": 200,
+    "sha256": "572c806ee40a799fca96372418ab194687510de62f68554fdcad52a8e5f9bf23",
+    "package": "aimarket-logos",
+    "current_version": "0.2.2",
+    "files": [
+      {
+        "filename": "aimarket_logos-0.2.2-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-28T09:56:29.681548Z",
+        "sha256": "b28a3546cbbefa7802af66a5b5a86cddf8f5119d512cc75db74ccf2a562a84bb"
+      },
+      {
+        "filename": "aimarket_logos-0.2.2.tar.gz",
+        "upload_time_iso_8601": "2026-10-28T09:56:30.853810Z",
+        "sha256": "c9e851966ec0e54f894bae687d5653239f4bd7401034545f6287bed52b9e701b"
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-aimarket-mcp.json",
+    "url": "https://pypi.org/pypi/aimarket-mcp/json",
+    "checked_at_utc": "2026-10-28T11:31:16.293260+00:00",
+    "status": 200,
+    "sha256": "a9a1b8b1dba411798785bb32edfbf31f1556680fe3bd59261d98a57b771b5541",
+    "package": "aimarket-mcp",
+    "current_version": "0.6.4",
+    "files": [
+      {
+        "filename": "aimarket_mcp-0.6.4-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-28T10:38:15.333052Z",
+        "sha256": "82d2c541d4ebda896c3a86c9fd48687d1de07c4033b0728f0b14b33c9d11bbf2"
+      },
+      {
+        "filename": "aimarket_mcp-0.6.4.tar.gz",
+        "upload_time_iso_8601": "2026-10-28T10:38:16.495223Z",
+        "sha256": "cdd00473ff92e4081e0d95d09f7f6ed3bd62fcc19ef05c30fe9273dc850d6770"
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-aimarket-metis.json",
+    "url": "https://pypi.org/pypi/aimarket-metis/json",
+    "checked_at_utc": "2026-10-28T11:31:16.297611+00:00",
+    "status": 200,
+    "sha256": "ca1e211ce7f1e26d5962bdb8a244883414dbedffdaf5375011e579eccc4d8ddf",
+    "package": "aimarket-metis",
+    "current_version": "0.2.5",
+    "files": [
+      {
+        "filename": "aimarket_metis-0.2.5-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-28T11:23:48.346077Z",
+        "sha256": "40d336107423736291f76067c15a3001045b69fd89c40dc5ad10201eb8be4ef7"
+      },
+      {
+        "filename": "aimarket_metis-0.2.5.tar.gz",
+        "upload_time_iso_8601": "2026-10-28T11:23:49.623003Z",
+        "sha256": "8ae8c7f9e56f223821d93b7165a1362e3029b1e9a6da52d162fcc819df15e694"
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-aimarket-treasury.json",
+    "url": "https://pypi.org/pypi/aimarket-treasury/json",
+    "checked_at_utc": "2026-10-28T11:31:16.323538+00:00",
+    "status": 200,
+    "sha256": "433295da609dbde63cb9988ca913237c0b4453d3eee5678113c7d8a41d5c2a78",
+    "package": "aimarket-treasury",
+    "current_version": "0.1.3",
+    "files": [
+      {
+        "filename": "aimarket_treasury-0.1.3-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-26T17:34:31.314304Z",
+        "sha256": "198d9b84f0a13b73dc238f85f92d0c79a16c38a7a9a505510981723508a5c59e"
+      },
+      {
+        "filename": "aimarket_treasury-0.1.3.tar.gz",
+        "upload_time_iso_8601": "2026-10-26T17:34:32.750495Z",
+        "sha256": "4b181382528e18a2aa41096ab240d8d63cdc51c6e59cc13c67c2ca3a47ee440b"
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-skopos-fleet.json",
+    "url": "https://pypi.org/pypi/skopos-fleet/json",
+    "checked_at_utc": "2026-10-28T11:31:16.384081+00:00",
+    "status": 200,
+    "sha256": "ac8be0348d7d9464b4780d698fc73dde2ab70a523226bd772eb2bcdb270e5461",
+    "package": "skopos-fleet",
+    "current_version": "0.2.1",
+    "files": [
+      {
+        "filename": "skopos_fleet-0.2.1-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-25T14:47:08.439214Z",
+        "sha256": "bbcdab54a9a01b5cd5ec3833ee112154e12c39f457ef4f4ceb280692e35fb6e4"
+      },
+      {
+        "filename": "skopos_fleet-0.2.1.tar.gz",
+        "upload_time_iso_8601": "2026-10-25T14:47:10.394854Z",
+        "sha256": "071a7e97c942c886a5f7f5d26d3bc3b36f5806ace28ef33cd1c815eb4931f305"
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-aimarket-atlas.json",
+    "url": "https://pypi.org/pypi/aimarket-atlas/json",
+    "checked_at_utc": "2026-10-28T11:31:16.604865+00:00",
+    "status": 200,
+    "sha256": "fc1b9ece57b2cfe48a98a0c25587fe2ba48d9f55c1709f7278495473e62c582a",
+    "package": "aimarket-atlas",
+    "current_version": "0.3.3",
+    "files": [
+      {
+        "filename": "aimarket_atlas-0.3.3-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-28T08:12:21.511325Z",
+        "sha256": "951a4ea8f67aad97f9b385a1a778e38a7288014ddb6102ff09e69f99066ce153"
+      },
+      {
+        "filename": "aimarket_atlas-0.3.3.tar.gz",
+        "upload_time_iso_8601": "2026-10-28T08:12:31.483341Z",
+        "sha256": "e95b0811484ba6a5ca6074a09e84ab6ce1e80841ba6e0ecc118a383835bd2919"
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-aimarket-hestia.json",
+    "url": "https://pypi.org/pypi/aimarket-hestia/json",
+    "checked_at_utc": "2026-10-28T11:31:16.617805+00:00",
+    "status": 200,
+    "sha256": "c14a9f623878c7d38c03625c67660031e7bdc4b66dea62b439726af4d80e3ec0",
+    "package": "aimarket-hestia",
+    "current_version": "0.1.3",
+    "files": [
+      {
+        "filename": "aimarket_hestia-0.1.3-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-26T03:47:05.073169Z",
+        "sha256": "c158032ddb0a59e0792de83566bda9d7a05a70b8c24251ab7b781ac549819170"
+      },
+      {
+        "filename": "aimarket_hestia-0.1.3.tar.gz",
+        "upload_time_iso_8601": "2026-10-26T03:47:08.390320Z",
+        "sha256": "a14856c8869b01963a996803517d0782e472cdd38fc9c25010c06b376b537ea6"
+      }
+    ]
+  },
+  {
+    "file": "current-pypi-aimarket-hub.json",
+    "url": "https://pypi.org/pypi/aimarket-hub/json",
+    "checked_at_utc": "2026-10-28T11:31:16.622704+00:00",
+    "status": 200,
+    "sha256": "3c99441f51ea81ecd5c0e304916b419d12168a1e91ebb63bce19ad5c7ab59881",
+    "package": "aimarket-hub",
+    "current_version": "3.16.0",
+    "files": [
+      {
+        "filename": "aimarket_hub-3.16.0-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-10-22T04:14:19.772850Z",
+        "sha256": "05744938e91ba696326b5be8db855ba33be354c7c57bdb0d20ec7989daf8eb01"
+      },
+      {
+        "filename": "aimarket_hub-3.16.0.tar.gz",
+        "upload_time_iso_8601": "2026-10-22T04:14:21.915863Z",
+        "sha256": "36f6e181e494f57dc14781dbda2babb7bdcb3a2b82bb6e37c18ac7101a17f914"
+      }
+    ]
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "sourceCommit": "ce1dd74edc30e7d5775c7583079cc4f9ed5d656f",
+  "testImageDigest": "sha256:5527cf401e8da1277df27827b177dd5d2361dede086079da03f91a112f5a8dd1",
+  "returncode": 1,
+  "network": "none",
+  "memory": "1g",
+  "maxWorkers": 2,
+  "reporter": "json",
+  "nativeAssertionPolicyUnchanged": true,
+  "summary": {
+    "numTotalTests": 1382,
+    "numPassedTests": 1381,
+    "numFailedTests": 1,
+    "numPendingTests": 0,
+    "numTotalTestSuites": 205,
+    "numPassedTestSuites": 203,
+    "numFailedTestSuites": 2,
+    "success": false
+  },
+  "failures": [
+    {
+      "suite": "test/docs.test.ts",
+      "name": "documentation set resolves every relative link",
+      "messages": [
+        "AssertionError: expected [ \u2026(22) ] to deeply equal []\n    at /warden/test/docs.test.ts:134:20\n    at file:///warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:1632:35\n    at file:///warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:2801:26\n    at file:///warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:3338:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:3333:10)\n    at file:///warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:3318:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:3276:10)\n    at file:///warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:3904:64"
+      ]
+    }
+  ]
+}

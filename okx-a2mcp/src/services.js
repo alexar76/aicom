@@ -22,6 +22,8 @@ const NAME_RE = /^[A-Za-z0-9][A-Za-z0-9._\-/]{0,199}$/;
 // HISTOR answers only from its own observations; it never fetches the URL it is asked about,
 // so this service sends nothing to the address a caller supplies.
 
+const HISTOR_ATTEMPTS = 2;
+
 function historCheck({ historUrl, fetchImpl, timeoutMs, freePerMinute = 200, now = () => Date.now() }) {
   // HISTOR caps a routing hub at 300 checks a minute from one address, free and paid alike. Free
   // calls get a shared budget below that, so a crowd of free callers cannot starve the paid route.
@@ -62,24 +64,31 @@ function historCheck({ historUrl, fetchImpl, timeoutMs, freePerMinute = 200, now
     if (!ctx.paid && !freeAllowed()) {
       return [429, failure(service, "free_capacity", "free checks are at capacity this minute; retry shortly, or use the paid x402 route")];
     }
+    // HISTOR's host loses packets at times (2026-10-25: 4-7 of 25 TCP connects from our other hosts
+    // waited on a resent SYN). A lost connection is retried once before the caller is told HISTOR is
+    // unreachable; an answer HISTOR did give, whatever its status, is never retried. A check is read-only,
+    // so asking twice cannot change anything.
     let res;
-    try {
-      res = await fetchImpl(`${historUrl}/api/v1/check`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "user-agent": "okx-a2mcp/0.1 (+https://modelmarket.dev)",
-          // HISTOR gives a routing hub ten per-caller buckets under one address, keyed on an
-          // opaque buyer id: an HMAC of the caller's address under a secret HISTOR never sees.
-          "x-aimarket-routing-hub": "okx-a2mcp",
-          "x-aimarket-buyer": ctx.callerId,
-        },
-        body: JSON.stringify(query),
-        signal: AbortSignal.timeout(timeoutMs),
-      });
-    } catch {
-      return [502, failure(service, "upstream_unreachable", "HISTOR did not answer; try again")];
+    for (let attempt = 1; attempt <= HISTOR_ATTEMPTS && !res; attempt++) {
+      try {
+        res = await fetchImpl(`${historUrl}/api/v1/check`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            "user-agent": "okx-a2mcp/0.1 (+https://modelmarket.dev)",
+            // HISTOR gives a routing hub ten per-caller buckets under one address, keyed on an
+            // opaque buyer id: an HMAC of the caller's address under a secret HISTOR never sees.
+            "x-aimarket-routing-hub": "okx-a2mcp",
+            "x-aimarket-buyer": ctx.callerId,
+          },
+          body: JSON.stringify(query),
+          signal: AbortSignal.timeout(timeoutMs),
+        });
+      } catch {
+        res = null;
+      }
     }
+    if (!res) return [502, failure(service, "upstream_unreachable", "HISTOR did not answer; try again")];
     if (res.status === 429) return [429, failure(service, "rate_limited", "too many checks; slow down")];
     let body;
     try { body = await res.json(); } catch { body = null; }

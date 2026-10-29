@@ -1,0 +1,233 @@
+{
+  "url": "https://raw.githubusercontent.com/Ahmad-Faraj/mcp-conformance/47265b2bb09f5fedece4e1168fcd5e4afb9d530f/data/release/probe_census_sept.jsonl",
+  "status": 200,
+  "retrieved_at": "2026-10-27T08:40:52.065714+00:00",
+  "sha256": "d86fd4c76718d0668b052f8dd0ee31db4768f88cc73e5920670b3e47d79b57f7",
+  "bytes": 13266843,
+  "totalRows": 6106,
+  "matches": [
+    {
+      "line": 462,
+      "record": {
+        "cmd": [
+          "docker",
+          "run",
+          "--rm",
+          "-i",
+          "--init",
+          "--memory",
+          "768m",
+          "--cpus",
+          "1",
+          "--pids-limit",
+          "256",
+          "--security-opt",
+          "no-new-privileges",
+          "--cap-drop",
+          "ALL",
+          "node:22-slim",
+          "npx",
+          "-y",
+          "@alexar76/argus3@0.2.4"
+        ],
+        "started": true,
+        "handshake_ok": false,
+        "negotiated_version": null,
+        "server_info": null,
+        "capabilities": null,
+        "tools_count": null,
+        "checks": [
+          {
+            "id": "server-initialize",
+            "verdict": "fail",
+            "detail": "no valid initialize result: {'_probe': 'eof'}"
+          }
+        ],
+        "stdout_noise": [
+          "ARGUS \u2014 wallet-native, security-hardened personal agent",
+          "Usage:",
+          "  argus setup                        interactive setup (wallet seed \u2192 provider/keys) \u2014 start here",
+          "  argus keystore create              create an encrypted wallet vault (new seed or --import)",
+          "  argus keystore address             print the vaulted wallet's public address"
+        ],
+        "stderr_tail": [
+          "npm notice",
+          "npm notice New major version of npm available! 10.9.9 -> 12.1.0",
+          "npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.1.0",
+          "npm notice To update run: npm install -g npm@12.1.0",
+          "npm notice"
+        ],
+        "exit_code": 0,
+        "duration_s": 21.25,
+        "failure_class": "exit-silent",
+        "server_name": "io.github.alexar76/argus3",
+        "server_version": "0.2.4",
+        "registry_type": "npm",
+        "identifier": "@alexar76/argus3",
+        "primed": null,
+        "harness_commit": "299df62",
+        "probe_condition": "single-phase",
+        "request_timeout_s": 90.0,
+        "max_frame_chars": 0,
+        "image_digests": {
+          "node:22-slim": "node@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c",
+          "ghcr.io/astral-sh/uv:python3.12-bookworm-slim": "ghcr.io/astral-sh/uv@sha256:e5b65587bce7de595f299855d7385fe7fca39b8a74baa261ba1b7147afa78e58"
+        },
+        "run_started_at": "2026-09-26T14:02:25.379917+00:00",
+        "probed_at": "2026-09-26T14:37:01.238875+00:00",
+        "publisher_id": "f334ac75d428",
+        "rerun_break_cause": null,
+        "version_unchanged": true
+      }
+    },
+    {
+      "line": 3422,
+      "record": {
+        "cmd": [
+          "docker",
+          "run",
+          "--rm",
+          "-i",
+          "--init",
+          "--memory",
+          "768m",
+          "--cpus",
+          "1",
+          "--pids-limit",
+          "256",
+          "--security-opt",
+          "no-new-privileges",
+          "--cap-drop",
+          "ALL",
+          "ghcr.io/astral-sh/uv:python3.12-bookworm-slim",
+          "uvx",
+          "--from",
+          "aimarket-mcp-packager==2.0.1",
+          "aimarket-mcp-packager-mcp"
+        ],
+        "started": true,
+        "handshake_ok": false,
+        "negotiated_version": null,
+        "server_info": null,
+        "capabilities": null,
+        "tools_count": null,
+        "checks": [
+          {
+            "id": "server-initialize",
+            "verdict": "fail",
+            "detail": "no valid initialize result: {'_probe': 'eof'}"
+          }
+        ],
+        "stdout_noise": [],
+        "stderr_tail": [
+          "Downloading cryptography (4.5MiB)",
+          "Downloading pydantic-core (2.0MiB)",
+          " Downloaded pydantic-core",
+          " Downloaded cryptography",
+          "Installed 26 packages in 37ms",
+          "Traceback (most recent call last):",
+          "  File \"/root/.cache/uv/archive-v0/SSseNVb2ASzK4N3Qk3_M4/bin/aimarket-mcp-packager-mcp\", line 6, in <module>",
+          "    from mcp_stdio_server import main",
+          "ModuleNotFoundError: No module named 'mcp_stdio_server'"
+        ],
+        "exit_code": 1,
+        "duration_s": 2.29,
+        "failure_class": "crash-python-exception",
+        "entrypoint_mismatch": true,
+        "entrypoint_resolved": "aimarket-mcp-packager-mcp",
+        "naive_handshake_ok": false,
+        "server_name": "io.github.alexar76/aimarket-plugins",
+        "server_version": "2.0.1",
+        "registry_type": "pypi",
+        "identifier": "aimarket-mcp-packager",
+        "primed": null,
+        "harness_commit": "299df62",
+        "probe_condition": "single-phase",
+        "request_timeout_s": 90.0,
+        "max_frame_chars": 0,
+        "image_digests": {
+          "node:22-slim": "node@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c",
+          "ghcr.io/astral-sh/uv:python3.12-bookworm-slim": "ghcr.io/astral-sh/uv@sha256:e5b65587bce7de595f299855d7385fe7fca39b8a74baa261ba1b7147afa78e58"
+        },
+        "run_started_at": "2026-09-26T14:02:25.379917+00:00",
+        "probed_at": "2026-09-26T18:31:03.118246+00:00",
+        "publisher_id": "f334ac75d428",
+        "rerun_break_cause": null,
+        "version_unchanged": true
+      }
+    },
+    {
+      "line": 4838,
+      "record": {
+        "cmd": [
+          "docker",
+          "run",
+          "--rm",
+          "-i",
+          "--init",
+          "--memory",
+          "768m",
+          "--cpus",
+          "1",
+          "--pids-limit",
+          "256",
+          "--security-opt",
+          "no-new-privileges",
+          "--cap-drop",
+          "ALL",
+          "ghcr.io/astral-sh/uv:python3.12-bookworm-slim",
+          "uvx",
+          "aimarket-oracle-gateway==0.2.0"
+        ],
+        "started": true,
+        "handshake_ok": false,
+        "negotiated_version": null,
+        "server_info": null,
+        "capabilities": null,
+        "tools_count": null,
+        "checks": [
+          {
+            "id": "server-initialize",
+            "verdict": "fail",
+            "detail": "no valid initialize result: {'_probe': 'eof'}"
+          }
+        ],
+        "stdout_noise": [],
+        "stderr_tail": [
+          " Downloaded cryptography",
+          "Installed 32 packages in 119ms",
+          "Traceback (most recent call last):",
+          "  File \"/root/.cache/uv/archive-v0/zSomWLlf63bnMR-N72llO/bin/aimarket-oracle-gateway\", line 6, in <module>",
+          "    from mcp_stdio_server import main",
+          "  File \"/root/.cache/uv/archive-v0/zSomWLlf63bnMR-N72llO/lib/python3.12/site-packages/mcp_stdio_server.py\", line 34, in <module>",
+          "    from mcp.server.fastmcp import FastMCP",
+          "  File \"/root/.cache/uv/archive-v0/zSomWLlf63bnMR-N72llO/lib/python3.12/site-packages/mcp/server/fastmcp.py\", line 16, in <module>",
+          "    raise ModuleNotFoundError(_MESSAGE, name=__name__)",
+          "ModuleNotFoundError: No module named 'mcp.server.fastmcp'. This is mcp 2.x, where FastMCP was renamed to MCPServer (from mcp.server.mcpserver import MCPServer) and other APIs changed; see the migration guide at https://py.sdk.modelcontextprotocol.io/v2/migration/#fastmcp-renamed-to-mcpserver or pin 'mcp<2' to keep running v1 code."
+        ],
+        "exit_code": 1,
+        "duration_s": 5.32,
+        "failure_class": "crash-python-exception",
+        "server_name": "io.github.alexar76/aimarket-oracle-gateway",
+        "server_version": "0.2.0",
+        "registry_type": "pypi",
+        "identifier": "aimarket-oracle-gateway",
+        "primed": null,
+        "harness_commit": "299df62",
+        "probe_condition": "single-phase",
+        "request_timeout_s": 90.0,
+        "max_frame_chars": 0,
+        "image_digests": {
+          "node:22-slim": "node@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c",
+          "ghcr.io/astral-sh/uv:python3.12-bookworm-slim": "ghcr.io/astral-sh/uv@sha256:e5b65587bce7de595f299855d7385fe7fca39b8a74baa261ba1b7147afa78e58"
+        },
+        "run_started_at": "2026-09-26T14:02:25.379917+00:00",
+        "probed_at": "2026-09-26T20:24:14.008414+00:00",
+        "publisher_id": "f334ac75d428",
+        "rerun_break_cause": "python-sdk-2",
+        "version_unchanged": true
+      }
+    }
+  ],
+  "note": "Only ecosystem-matching records retained. SHA256 covers complete source response."
+}

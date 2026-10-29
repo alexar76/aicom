@@ -1,0 +1,567 @@
+{
+  "analysis": "deterministic-offline",
+  "dependencies": [
+    {
+      "comparability": "unknown",
+      "contextChanges": [],
+      "fieldCoverage": "core-only",
+      "id": "https://modelmarket.dev/mcp",
+      "limitations": [
+        "extras: coverage unknown; only core definitions compared",
+        "protocol: comparison context missing",
+        "launch: comparison context missing"
+      ],
+      "observedChanges": true,
+      "provenanceGaps": [
+        "before: packageVersion missing; not inferred",
+        "after: packageVersion missing; not inferred"
+      ],
+      "selectedTools": [
+        {
+          "changes": [],
+          "extrasCompared": false,
+          "name": "market_invoke",
+          "retest": [
+            "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435."
+          ],
+          "status": "unknown"
+        },
+        {
+          "changes": [
+            "description"
+          ],
+          "descriptionDiff": [
+            {
+              "operation": "=",
+              "text": "Search this hub's catalogue of live data and computation by what you need, in plain words. Each match gives the product_id, capability_id and source_hub to pass to market_invoke, its price, ",
+              "truncated": false
+            },
+            {
+              "operation": "-",
+              "text": "and",
+              "truncated": false
+            },
+            {
+              "operation": "+",
+              "text": "`input`",
+              "truncated": false
+            },
+            {
+              "operation": "=",
+              "text": " ",
+              "truncated": false
+            },
+            {
+              "operation": "-",
+              "text": "`input`: the",
+              "truncated": false
+            },
+            {
+              "operation": "+",
+              "text": "(the",
+              "truncated": false
+            },
+            {
+              "operation": "=",
+              "text": " fields its input object ",
+              "truncated": false
+            },
+            {
+              "operation": "-",
+              "text": "takes.",
+              "truncated": false
+            },
+            {
+              "operation": "+",
+              "text": "takes) and `relevance` from 0 to 1; a `note` says when nothing matched well.",
+              "truncated": false
+            }
+          ],
+          "descriptionDiffTruncated": false,
+          "extrasCompared": false,
+          "name": "market_search",
+          "retest": [
+            "\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c \u0438\u0437\u043c\u0435\u043d\u0451\u043d\u043d\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u044b\u0447\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441 \u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u044b\u0431\u043e\u0440 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0430.",
+            "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435."
+          ],
+          "status": "changed"
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "after": {
+          "fullList": 12231,
+          "selectedTools": 2884
+        },
+        "before": {
+          "fullList": 12165,
+          "selectedTools": 2818
+        },
+        "delta": {
+          "fullList": 66,
+          "selectedTools": 66
+        }
+      },
+      "sources": {
+        "after": {
+          "extrasCoverage": "unknown",
+          "launchSha256": null,
+          "observedAt": "2026-10-27T02:27:17Z",
+          "packageVersion": null,
+          "path": "snapshots/hub-after.json",
+          "protocol": null,
+          "serverName": "aimarket-hub-mcp",
+          "serverVersion": "1.2.0",
+          "sha256": "sha256:b114f4935d9c012ea7f8fc62f371955661c9247753a07fa03f987264a0a46d14",
+          "status": "ok",
+          "targetId": "https://modelmarket.dev/mcp",
+          "toolsSha256": "sha256:213166da09362ae1e0af0d3cb2ab84c6cac649d670dbfc56b07014f3efd85516"
+        },
+        "before": {
+          "extrasCoverage": "unknown",
+          "launchSha256": null,
+          "observedAt": "2026-10-07T08:51:11Z",
+          "packageVersion": null,
+          "path": "snapshots/hub-before.json",
+          "protocol": null,
+          "serverName": "aimarket-hub-mcp",
+          "serverVersion": "1.2.0",
+          "sha256": "sha256:a7622f57824701b5a7994b1946e40c143f1b9fc0f9c08388a936348ba45f55c1",
+          "status": "ok",
+          "targetId": "https://modelmarket.dev/mcp",
+          "toolsSha256": "sha256:1884ebe32978fd82456acd45ff3e8b28c10cf6bc9c1ab7ccc54bd909a810c18b"
+        }
+      },
+      "status": "unknown",
+      "toolSet": {
+        "added": [],
+        "afterCount": 13,
+        "beforeCount": 13,
+        "removed": []
+      },
+      "workflows": [
+        {
+          "affectedTools": [
+            "market_search"
+          ],
+          "description": "\u0412\u044b\u0431\u0440\u0430\u0442\u044c \u043f\u043e\u0434\u0445\u043e\u0434\u044f\u0449\u0443\u044e capability \u043f\u043e \u043f\u043e\u0438\u0441\u043a\u0443 Hub \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c relevance \u0438 note",
+          "id": "hub-search-relevance",
+          "retest": [
+            {
+              "check": "\u0421\u0432\u0435\u0440\u0438\u0442\u044c protocol, launcher \u0438 \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u0434\u043e\u0441\u0442\u0443\u043f\u0430; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0430 \u0441\u043d\u0438\u043c\u043a\u0430 \u0432 \u043e\u0434\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u0435.",
+              "tool": null
+            },
+            {
+              "check": "\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c \u0438\u0437\u043c\u0435\u043d\u0451\u043d\u043d\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u044b\u0447\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441 \u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u044b\u0431\u043e\u0440 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0430.",
+              "tool": "market_search"
+            },
+            {
+              "check": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435.",
+              "tool": "market_search"
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "market_search"
+          ]
+        },
+        {
+          "affectedTools": [
+            "market_invoke",
+            "market_search"
+          ],
+          "description": "\u041f\u0435\u0440\u0435\u0434\u0430\u0442\u044c \u0442\u043e\u0447\u043d\u044b\u0435 product_id, capability_id \u0438 source_hub \u0438\u0437 \u043f\u043e\u0438\u0441\u043a\u0430 \u0432 \u0432\u044b\u0437\u043e\u0432",
+          "id": "hub-search-to-invoke",
+          "retest": [
+            {
+              "check": "\u0421\u0432\u0435\u0440\u0438\u0442\u044c protocol, launcher \u0438 \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u0434\u043e\u0441\u0442\u0443\u043f\u0430; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0430 \u0441\u043d\u0438\u043c\u043a\u0430 \u0432 \u043e\u0434\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u0435.",
+              "tool": null
+            },
+            {
+              "check": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435.",
+              "tool": "market_invoke"
+            },
+            {
+              "check": "\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c \u0438\u0437\u043c\u0435\u043d\u0451\u043d\u043d\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u044b\u0447\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441 \u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u044b\u0431\u043e\u0440 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0430.",
+              "tool": "market_search"
+            },
+            {
+              "check": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435.",
+              "tool": "market_search"
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "market_invoke",
+            "market_search"
+          ]
+        }
+      ]
+    },
+    {
+      "comparability": "unknown",
+      "contextChanges": [],
+      "fieldCoverage": "core-only",
+      "id": "npm:@aimarket/warden",
+      "limitations": [
+        "extras: coverage unknown; only core definitions compared",
+        "protocol: comparison context missing",
+        "launch: comparison context missing"
+      ],
+      "observedChanges": true,
+      "provenanceGaps": [
+        "before: packageVersion missing; not inferred"
+      ],
+      "selectedTools": [
+        {
+          "changes": [
+            "inputSchema"
+          ],
+          "extrasCompared": false,
+          "inputSchemaPaths": [
+            "$.\"properties\".\"server_info\".\"additionalProperties\"",
+            "$.\"properties\".\"server_info\".\"description\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"type\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"type\"",
+            "$.\"properties\".\"server_info\".\"type\""
+          ],
+          "inputTypeChangedPaths": [
+            "$/properties/server_info",
+            "$/properties/server_info/properties/name",
+            "$/properties/server_info/properties/version"
+          ],
+          "name": "approve_mcp_server",
+          "requiredAdded": [],
+          "requiredRemoved": [],
+          "retest": [
+            "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u0432\u0445\u043e\u0434\u044b, \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b; \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0433\u0440\u0430\u043d\u0438\u0447\u043d\u044b\u0439 \u043f\u0440\u0438\u043c\u0435\u0440.",
+            "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435."
+          ],
+          "status": "changed"
+        },
+        {
+          "changes": [
+            "inputSchema",
+            "outputSchema"
+          ],
+          "extrasCompared": false,
+          "inputSchemaPaths": [
+            "$.\"properties\".\"server_info\".\"additionalProperties\"",
+            "$.\"properties\".\"server_info\".\"description\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"type\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"type\"",
+            "$.\"properties\".\"server_info\".\"type\""
+          ],
+          "inputTypeChangedPaths": [
+            "$/properties/server_info",
+            "$/properties/server_info/properties/name",
+            "$/properties/server_info/properties/version"
+          ],
+          "name": "status_mcp_server",
+          "outputSchemaPaths": [
+            "$.\"properties\".\"origin\".\"description\"",
+            "$.\"properties\".\"origin\".\"properties\".\"approvedVersion\".\"description\"",
+            "$.\"properties\".\"origin\".\"properties\".\"approvedVersion\".\"type\"[0]",
+            "$.\"properties\".\"origin\".\"properties\".\"approvedVersion\".\"type\"[1]",
+            "$.\"properties\".\"origin\".\"properties\".\"currentVersion\".\"description\"",
+            "$.\"properties\".\"origin\".\"properties\".\"currentVersion\".\"type\"[0]",
+            "$.\"properties\".\"origin\".\"properties\".\"currentVersion\".\"type\"[1]",
+            "$.\"properties\".\"origin\".\"properties\".\"launch\".\"anyOf\"[0].\"type\"",
+            "$.\"properties\".\"origin\".\"properties\".\"launch\".\"anyOf\"[1].\"type\"",
+            "$.\"properties\".\"origin\".\"properties\".\"launch\".\"description\"",
+            "$.\"properties\".\"origin\".\"required\"[0]",
+            "$.\"properties\".\"origin\".\"required\"[1]",
+            "$.\"properties\".\"origin\".\"required\"[2]",
+            "$.\"properties\".\"origin\".\"type\"",
+            "$.\"properties\".\"reviewText\".\"description\""
+          ],
+          "requiredAdded": [],
+          "requiredRemoved": [],
+          "retest": [
+            "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u0432\u0445\u043e\u0434\u044b, \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b; \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0433\u0440\u0430\u043d\u0438\u0447\u043d\u044b\u0439 \u043f\u0440\u0438\u043c\u0435\u0440.",
+            "\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0443 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0430: \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0447\u0438\u0442\u0430\u0435\u0442 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439.",
+            "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435."
+          ],
+          "status": "changed"
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "after": {
+          "fullList": 29231,
+          "selectedTools": 10167
+        },
+        "before": {
+          "fullList": 28371,
+          "selectedTools": 9307
+        },
+        "delta": {
+          "fullList": 860,
+          "selectedTools": 860
+        }
+      },
+      "sources": {
+        "after": {
+          "extrasCoverage": "unknown",
+          "launchSha256": "sha256:72a0ebc55904ded277a89fbd1c5ea66bf1e997fd9cc927e5b77a5b3529eb66eb",
+          "observedAt": "2026-10-26T20:59:44Z",
+          "packageVersion": "0.22.1",
+          "path": "snapshots/warden-after.json",
+          "protocol": null,
+          "serverName": "warden",
+          "serverVersion": "0.22.1",
+          "sha256": "sha256:90c0b47201aeaf445a882eeb616918746f4033132b71514f33e3fd8d95b829b4",
+          "status": "ok",
+          "targetId": "npm:@aimarket/warden",
+          "toolsSha256": "sha256:a1ce1950a0f928e36de72324c996ccbdba1421c4202bea1973eaaa010211a2fd"
+        },
+        "before": {
+          "extrasCoverage": "unknown",
+          "launchSha256": null,
+          "observedAt": "2026-10-21T10:54:02Z",
+          "packageVersion": null,
+          "path": "snapshots/warden-before.json",
+          "protocol": null,
+          "serverName": "warden",
+          "serverVersion": "0.18.0",
+          "sha256": "sha256:8429a659d5733c74d235cdf1a930c126bb24b99c5b005dbbfe4914cd1a153b57",
+          "status": "ok",
+          "targetId": "npm:@aimarket/warden",
+          "toolsSha256": "sha256:13ab34a21e35ee2f0264b258553b99c32f45e7509c4a52fd50fa5947b044d8c9"
+        }
+      },
+      "status": "unknown",
+      "toolSet": {
+        "added": [],
+        "afterCount": 9,
+        "beforeCount": 9,
+        "removed": []
+      },
+      "workflows": [
+        {
+          "affectedTools": [
+            "status_mcp_server"
+          ],
+          "description": "\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u043e\u043f\u0435\u0440\u0430\u0442\u043e\u0440\u0443 server_info \u0438 \u0431\u043b\u043e\u043a origin \u043f\u0435\u0440\u0435\u0434 \u043f\u0435\u0440\u0435\u0441\u043c\u043e\u0442\u0440\u043e\u043c approval",
+          "id": "warden-origin-review",
+          "retest": [
+            {
+              "check": "\u0421\u0432\u0435\u0440\u0438\u0442\u044c protocol, launcher \u0438 \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u0434\u043e\u0441\u0442\u0443\u043f\u0430; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0430 \u0441\u043d\u0438\u043c\u043a\u0430 \u0432 \u043e\u0434\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u0435.",
+              "tool": null
+            },
+            {
+              "check": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u0432\u0445\u043e\u0434\u044b, \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b; \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0433\u0440\u0430\u043d\u0438\u0447\u043d\u044b\u0439 \u043f\u0440\u0438\u043c\u0435\u0440.",
+              "tool": "status_mcp_server"
+            },
+            {
+              "check": "\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0443 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0430: \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0447\u0438\u0442\u0430\u0435\u0442 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439.",
+              "tool": "status_mcp_server"
+            },
+            {
+              "check": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435.",
+              "tool": "status_mcp_server"
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "status_mcp_server"
+          ]
+        },
+        {
+          "affectedTools": [
+            "approve_mcp_server",
+            "status_mcp_server"
+          ],
+          "description": "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c reviewed hashes \u0438 previousRevision \u043f\u0440\u0438 \u043f\u0435\u0440\u0435\u0434\u0430\u0447\u0435 review \u0432 approval",
+          "id": "warden-review-to-approval",
+          "retest": [
+            {
+              "check": "\u0421\u0432\u0435\u0440\u0438\u0442\u044c protocol, launcher \u0438 \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u0434\u043e\u0441\u0442\u0443\u043f\u0430; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0430 \u0441\u043d\u0438\u043c\u043a\u0430 \u0432 \u043e\u0434\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u0435.",
+              "tool": null
+            },
+            {
+              "check": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u0432\u0445\u043e\u0434\u044b, \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b; \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0433\u0440\u0430\u043d\u0438\u0447\u043d\u044b\u0439 \u043f\u0440\u0438\u043c\u0435\u0440.",
+              "tool": "approve_mcp_server"
+            },
+            {
+              "check": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435.",
+              "tool": "approve_mcp_server"
+            },
+            {
+              "check": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u0432\u0445\u043e\u0434\u044b, \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b; \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0433\u0440\u0430\u043d\u0438\u0447\u043d\u044b\u0439 \u043f\u0440\u0438\u043c\u0435\u0440.",
+              "tool": "status_mcp_server"
+            },
+            {
+              "check": "\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0443 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0430: \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0447\u0438\u0442\u0430\u0435\u0442 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439.",
+              "tool": "status_mcp_server"
+            },
+            {
+              "check": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043e\u0431\u043e\u0438\u043c\u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f\u043c\u0438 annotations \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 extras; \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u044f\u044e\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0435.",
+              "tool": "status_mcp_server"
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "approve_mcp_server",
+            "status_mcp_server"
+          ]
+        }
+      ]
+    },
+    {
+      "comparability": "unknown",
+      "contextChanges": [],
+      "fieldCoverage": "none",
+      "id": "pypi:aimarket-mcp-packager",
+      "limitations": [
+        "after: successful full observation missing"
+      ],
+      "observedChanges": null,
+      "provenanceGaps": [],
+      "selectedTools": [
+        {
+          "changes": [],
+          "name": "package_capability",
+          "retest": [
+            "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043e\u0431\u0430 \u043f\u043e\u043b\u043d\u044b\u0445 \u0443\u0441\u043f\u0435\u0448\u043d\u044b\u0445 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f \u0432 \u0441\u043e\u043f\u043e\u0441\u0442\u0430\u0432\u0438\u043c\u043e\u043c \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0438."
+          ],
+          "status": "unknown"
+        }
+      ],
+      "serializedUtf8Bytes": null,
+      "sources": {
+        "after": {
+          "extrasCoverage": "unknown",
+          "path": null,
+          "sha256": null,
+          "status": "missing"
+        },
+        "before": {
+          "extrasCoverage": "unknown",
+          "launchSha256": "sha256:af2ffe3d630ef7a9652ee372a21b99e392b20830c33c46025eabf473b614a9dd",
+          "observedAt": "2026-10-17T14:27:29Z",
+          "packageVersion": "2.1.1",
+          "path": "snapshots/packager-pinned-baseline.json",
+          "protocol": null,
+          "serverName": null,
+          "serverVersion": null,
+          "sha256": "sha256:7aa5bc97d54ba9a44dc8e41963b8ac46368b288014e03b699308ddffa2a5469d",
+          "status": "ok",
+          "targetId": "pypi:aimarket-mcp-packager",
+          "toolsSha256": "sha256:f1ea6de51d421dd98414b61a1731e6f3f6239d2571d352c24bef295d1bcc8adc"
+        }
+      },
+      "status": "unknown",
+      "workflows": [
+        {
+          "affectedTools": [
+            "package_capability"
+          ],
+          "description": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c manifest \u0438 \u0438\u043d\u0442\u0435\u0440\u0430\u043a\u0442\u0438\u0432\u043d\u0443\u044e Docker connection string \u0438\u0437 capability specification",
+          "id": "metis-package-capability",
+          "retest": [
+            {
+              "check": "\u0421\u0432\u0435\u0440\u0438\u0442\u044c protocol, launcher \u0438 \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u0434\u043e\u0441\u0442\u0443\u043f\u0430; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0430 \u0441\u043d\u0438\u043c\u043a\u0430 \u0432 \u043e\u0434\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u0435.",
+              "tool": null
+            },
+            {
+              "check": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043e\u0431\u0430 \u043f\u043e\u043b\u043d\u044b\u0445 \u0443\u0441\u043f\u0435\u0448\u043d\u044b\u0445 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f \u0432 \u0441\u043e\u043f\u043e\u0441\u0442\u0430\u0432\u0438\u043c\u043e\u043c \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0438.",
+              "tool": "package_capability"
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "package_capability"
+          ]
+        }
+      ]
+    },
+    {
+      "comparability": "unknown",
+      "contextChanges": [],
+      "fieldCoverage": "none",
+      "id": "pypi:aimarket-oracle-gateway",
+      "limitations": [
+        "before: successful full observation missing",
+        "after: successful full observation missing"
+      ],
+      "observedChanges": null,
+      "provenanceGaps": [],
+      "selectedTools": [
+        {
+          "changes": [],
+          "name": "list_oracle_capabilities",
+          "retest": [
+            "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043e\u0431\u0430 \u043f\u043e\u043b\u043d\u044b\u0445 \u0443\u0441\u043f\u0435\u0448\u043d\u044b\u0445 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f \u0432 \u0441\u043e\u043f\u043e\u0441\u0442\u0430\u0432\u0438\u043c\u043e\u043c \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0438."
+          ],
+          "status": "unknown"
+        }
+      ],
+      "serializedUtf8Bytes": null,
+      "sources": {
+        "after": {
+          "extrasCoverage": "unknown",
+          "launchSha256": null,
+          "observedAt": "2026-10-19T13:37:41Z",
+          "packageVersion": null,
+          "path": "snapshots/oracle-gateway-last-failed.json",
+          "protocol": null,
+          "serverName": null,
+          "serverVersion": null,
+          "sha256": "sha256:e494171f1149882131ae59b6df5cb5339ac4c4d7eec972cf7f67d85eb20899f9",
+          "status": "failed",
+          "targetId": "pypi:aimarket-oracle-gateway",
+          "toolsSha256": null
+        },
+        "before": {
+          "extrasCoverage": "unknown",
+          "path": null,
+          "sha256": null,
+          "status": "missing"
+        }
+      },
+      "status": "unknown",
+      "workflows": [
+        {
+          "affectedTools": [
+            "list_oracle_capabilities"
+          ],
+          "description": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043a\u0430\u0442\u0430\u043b\u043e\u0433 oracle capabilities \u0447\u0435\u0440\u0435\u0437 Metis \u043f\u0435\u0440\u0435\u0434 \u0432\u044b\u0431\u043e\u0440\u043e\u043c \u043f\u043b\u0430\u0442\u043d\u043e\u0433\u043e \u043e\u0440\u0430\u043a\u0443\u043b\u0430",
+          "id": "metis-oracle-catalog",
+          "retest": [
+            {
+              "check": "\u0421\u0432\u0435\u0440\u0438\u0442\u044c protocol, launcher \u0438 \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u0434\u043e\u0441\u0442\u0443\u043f\u0430; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0430 \u0441\u043d\u0438\u043c\u043a\u0430 \u0432 \u043e\u0434\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u0435.",
+              "tool": null
+            },
+            {
+              "check": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043e\u0431\u0430 \u043f\u043e\u043b\u043d\u044b\u0445 \u0443\u0441\u043f\u0435\u0448\u043d\u044b\u0445 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f \u0432 \u0441\u043e\u043f\u043e\u0441\u0442\u0430\u0432\u0438\u043c\u043e\u043c \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0438.",
+              "tool": "list_oracle_capabilities"
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "list_oracle_capabilities"
+          ]
+        }
+      ]
+    }
+  ],
+  "format": "histor.upgrade-brief/v1",
+  "limits": [
+    "\u0421\u0440\u0430\u0432\u043d\u0438\u0432\u0430\u044e\u0442\u0441\u044f \u043d\u0430\u0431\u043b\u044e\u0434\u0430\u0432\u0448\u0438\u0435\u0441\u044f \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0435\u043d\u0438\u044f, \u043d\u0435 \u0444\u0430\u043a\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u043f\u043e\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0441\u0435\u0440\u0432\u0435\u0440\u0430.",
+    "\u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043f\u043e\u043b\u043e\u043c\u043a\u0443; \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0439 \u043d\u0435 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0430\u0435\u0442 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u044c.",
+    "\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0438 \u0441\u0432\u044f\u0437\u0430\u043d\u044b \u043f\u043e \u044f\u0432\u043d\u043e \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u043c \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0430\u043c, \u0431\u0435\u0437 \u0441\u0435\u043c\u0430\u043d\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0433\u043e \u0430\u043d\u0430\u043b\u0438\u0437\u0430.",
+    "\u0420\u0430\u0437\u043c\u0435\u0440 \u043a\u043e\u043c\u043f\u0430\u043a\u0442\u043d\u043e\u0433\u043e JSON \u0432 UTF-8 \u2014 \u0431\u0430\u0439\u0442\u044b, \u043d\u0435 \u0442\u043e\u043a\u0435\u043d\u044b, \u0434\u0435\u043d\u044c\u0433\u0438 \u0438\u043b\u0438 \u0444\u0430\u043a\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u044d\u043a\u043e\u043d\u043e\u043c\u0438\u044f.",
+    "launch \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0445\u0435\u0448\u0435\u043c; \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u043d\u0435 \u0438\u0441\u043f\u043e\u043b\u043d\u044f\u044e\u0442\u0441\u044f \u0438 \u0441\u0435\u043a\u0440\u0435\u0442\u044b \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u044f \u043d\u0435 \u0432\u044b\u0432\u043e\u0434\u044f\u0442\u0441\u044f."
+  ],
+  "summary": {
+    "changed": 0,
+    "context_changed": 0,
+    "unchanged": 0,
+    "unknown": 4
+  },
+  "title": "MCP \u044d\u043a\u043e\u0441\u0438\u0441\u0442\u0435\u043c\u044b alexar76 \u2014 \u0440\u0435\u0430\u043b\u044c\u043d\u044b\u0435 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f HISTOR",
+  "watchlistSha256": "sha256:e5a4c63d2c016d940cd61fdcdd19a6bf05b2aa255111deb0e6cbedd72c14fbbf"
+}

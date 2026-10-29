@@ -81,6 +81,7 @@ fi
 
 cd "$WORKDIR/repo"
 git add -A
+bash "$ROOT/scripts/verify_mirror_secrets.sh" "$WORKDIR/repo" --git-index
 if git diff --cached --quiet; then
   echo "  ✓ already in sync"
 else

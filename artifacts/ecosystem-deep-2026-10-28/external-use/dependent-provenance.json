@@ -1,0 +1,87 @@
+[
+  {
+    "method": "GET",
+    "url": "https://registry.npmjs.org/%40alexar76%2Fargus3",
+    "retrieved_at": "2026-10-28T13:35:55.815128+00:00",
+    "status": 200,
+    "bytes": 43534,
+    "sha256": "7a5276c6ce402c4e63e9b53c3c5ba2c21f4115c3706f83d1dc3cb320a741fb89",
+    "selected_metadata": {
+      "name": "@alexar76/argus3",
+      "version": "0.3.3",
+      "description": "ARGUS-3 — WARDEN MCP firewall blocks poisoned servers before any tool runs. Frugal personal AI agent; wallet and on-chain economy optional; crypto OFF by default.",
+      "repository": {
+        "url": "git+https://github.com/alexar76/argus.git",
+        "type": "git"
+      },
+      "homepage": "https://magic-ai-factory.com/argus/",
+      "dependencies": {
+        "zod": "^3.24.1",
+        "viem": "^2.21.55",
+        "@aimarket/warden": "0.8.2",
+        "@noble/post-quantum": "^0.6.1",
+        "@modelcontextprotocol/sdk": "^1.12.0"
+      }
+    },
+    "published_at": "2026-10-11T17:36:02.366Z",
+    "package_modified_at": "2026-10-11T17:36:02.566Z"
+  },
+  {
+    "method": "GET",
+    "url": "https://pypi.org/pypi/aimarket-bridges/json",
+    "retrieved_at": "2026-10-28T13:35:56.932615+00:00",
+    "status": 200,
+    "bytes": 12574,
+    "sha256": "54058251cdc7a6ea1fe88fd0a82bd0db929ca31384f8414dacd01ba6794da0d6",
+    "selected_metadata": {
+      "name": "aimarket-bridges",
+      "version": "0.2.0",
+      "summary": "Use AIMarket capabilities as native tools in LangChain/LangGraph, CrewAI and AutoGen",
+      "project_urls": {
+        "Homepage": "https://modelmarket.dev",
+        "Repository": "https://github.com/alexar76/aimarket-bridges"
+      },
+      "requires_dist": [
+        "aimarket-agent<3,>=2.2",
+        "httpx<1,>=0.27",
+        "pydantic<3,>=2.7.2",
+        "agent-framework-core<2,>=1; extra == \"agent-framework\"",
+        "autogen-agentchat<1,>=0.7; extra == \"autogen\"",
+        "autogen-core<1,>=0.7; extra == \"autogen\"",
+        "crewai<2,>=1.0; extra == \"crewai\"",
+        "jsonschema>=4; extra == \"dev\"",
+        "pytest-asyncio>=0.24; extra == \"dev\"",
+        "pytest>=8; extra == \"dev\"",
+        "langchain-core<2,>=1.0; extra == \"langchain\"",
+        "langchain-core<2,>=1.0; extra == \"langgraph\"",
+        "langgraph<2,>=1.0; extra == \"langgraph\""
+      ]
+    },
+    "releases": {
+      "0.1.0": [
+        {
+          "filename": "aimarket_bridges-0.1.0-py3-none-any.whl",
+          "upload_time_iso_8601": "2026-07-30T21:14:47.415885Z",
+          "sha256": "a1f93878b50c7cc29a98890a854689808571e191185025f5b68d6512331d9d00"
+        },
+        {
+          "filename": "aimarket_bridges-0.1.0.tar.gz",
+          "upload_time_iso_8601": "2026-07-30T21:14:49.096399Z",
+          "sha256": "2c37712a056872e54c3aedfff67cc49b0a3583f7de68a9f12cb7505b95a3aa0c"
+        }
+      ],
+      "0.2.0": [
+        {
+          "filename": "aimarket_bridges-0.2.0-py3-none-any.whl",
+          "upload_time_iso_8601": "2026-10-16T10:39:02.977749Z",
+          "sha256": "71a0e601074eb293ea1790c0b4321cdee4b2d393f7c880cc879355ca0d0bf928"
+        },
+        {
+          "filename": "aimarket_bridges-0.2.0.tar.gz",
+          "upload_time_iso_8601": "2026-10-16T10:39:04.958662Z",
+          "sha256": "e555e43112dad0d41d1e8bbcb2017fe7816669a0d06bfbe628da96fa7cfa87ae"
+        }
+      ]
+    }
+  }
+]

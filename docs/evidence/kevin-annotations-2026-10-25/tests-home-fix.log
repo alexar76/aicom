@@ -1,0 +1,56 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/work[39m
+
+ [32m✓[39m test/flow-guard.test.ts [2m([22m[2m46 tests[22m[2m)[22m[33m 1401[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps state consistent when Claude Code runs tool hooks in parallel [33m 849[2mms[22m[39m
+ [32m✓[39m test/wrap.test.ts [2m([22m[2m123 tests[22m[2m)[22m[33m 50512[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=false and 5 MiB response [33m 967[2mms[22m[39m
+     [33m[2m✓[22m[39m clean server, raw results, framing lsp=true and 5 MiB response [33m 1040[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission withholds unreviewed tools in any language and never creates a TOFU pin [33m 971[2mms[22m[39m
+     [33m[2m✓[22m[39m strict admission does not mistake an old automatic pin for operator approval [33m 561[2mms[22m[39m
+     [33m[2m✓[22m[39m persists drift across sessions; TTY reapproval allows the new snapshot [33m 914[2mms[22m[39m
+     [33m[2m✓[22m[39m captures initialize versions through real wrap and TTY approval, without treating metadata as identity or tools [33m 1760[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps a TOFU-reported version while flagging actual tool drift at the same version [33m 628[2mms[22m[39m
+     [33m[2m✓[22m[39m does not overwrite an approval when only the observed version changes during TTY review [33m 388[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins status without TTY, without changing the pin [33m 413[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins approve without TTY, without changing the pin [33m 346[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses pins revoke without TTY, without changing the pin [33m 315[2mms[22m[39m
+     [33m[2m✓[22m[39m human approval refuses a candidate that changes during review [33m 377[2mms[22m[39m
+     [33m[2m✓[22m[39m revoke persists denial, without silently starting a fresh TOFU [33m 863[2mms[22m[39m
+     [33m[2m✓[22m[39m identity drift blocks before spawning and returns initialize error with exit 3 [33m 716[2mms[22m[39m
+       [33m[2m✓[22m[39m off: the result passes untouched; a clean result always passes byte for byte [33m 510[2mms[22m[39m
+     [33m[2m✓[22m[39m EOF terminates a stubborn child within 10 seconds and reaps it [33m 10110[2mms[22m[39m
+     [33m[2m✓[22m[39m five proxies sharing one state directory establish one intact pin [33m 1174[2mms[22m[39m
+       [33m[2m✓[22m[39m a client that offers only URL elicitation, or --ask refuse, is never asked [33m 445[2mms[22m[39m
+         [33m[2m✓[22m[39m refuses the exact race after the final proxy read but before server comparison, with no raw-click fallback [33m 314[2mms[22m[39m
+         [33m[2m✓[22m[39m cancellation while approving discards the preparation; a late yes never commits [33m 311[2mms[22m[39m
+         [33m[2m✓[22m[39m a malformed committed receipt stamp never triggers a retry and leaves an uncertain lease [33m 323[2mms[22m[39m
+         [33m[2m✓[22m[39m runs the documented server-owned virtual surface through a real stdio proxy [33m 317[2mms[22m[39m
+         [33m[2m✓[22m[39m blocks a second proxy GUI action while the first approval is pending, even without revalidation configured on the second [33m 566[2mms[22m[39m
+         [33m[2m✓[22m[39m honors cancellation during the final observation and releases the unused screen lease [33m 1512[2mms[22m[39m
+         [33m[2m✓[22m[39m retains an uncertain screen lease across proxy restart when the action has no result [33m 465[2mms[22m[39m
+       [33m[2m✓[22m[39m mode strict requires actual approval even for listed navigation [33m 308[2mms[22m[39m
+       [33m[2m✓[22m[39m mode policy requires actual approval even for listed navigation [33m 364[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses unapproved GUI requests across separate proxy processes sharing the session [33m 485[2mms[22m[39m
+       [33m[2m✓[22m[39m withholds clipboard paste and Send even when a large image precedes screen text [33m 499[2mms[22m[39m
+       [33m[2m✓[22m[39m withholds opaque GUI actions after pixels, unknown layouts and non-English labels before forwarding [33m 350[2mms[22m[39m
+       [33m[2m✓[22m[39m stops every first short-secret fragment across concurrent proxies before server delivery [33m 484[2mms[22m[39m
+       [33m[2m✓[22m[39m reserves an exact public request once across real concurrent proxies [33m 483[2mms[22m[39m
+       [33m[2m✓[22m[39m never forwards tiny or custom-encoded data through send or read-only MCP arguments [33m 344[2mms[22m[39m
+       [33m[2m✓[22m[39m refuses a send after outside text came through, and the refused call never reaches the server [33m 480[2mms[22m[39m
+       [33m[2m✓[22m[39m audit-only logs what the guard would do and forwards the call; without --flow nothing changes [33m 472[2mms[22m[39m
+ [32m✓[39m test/annotation-review.test.ts [2m([22m[2m23 tests[22m[2m)[22m[33m 3632[2mms[22m[39m
+     [33m[2m✓[22m[39m asks once for the exact annotated tool in a wrapper, and asks again in a new wrapper [33m 496[2mms[22m[39m
+ [32m✓[39m test/flow-guard-credential-boundary.test.ts [2m([22m[2m34 tests[22m[2m)[22m[33m 387[2mms[22m[39m
+ [32m✓[39m test/flow-guard-gaps.test.ts [2m([22m[2m24 tests[22m[2m)[22m[33m 389[2mms[22m[39m
+ [32m✓[39m test/flow-guard-answer-review.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 71[2mms[22m[39m
+ [32m✓[39m test/toxic-flow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m test/flow-guard-home-paths.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 87[2mms[22m[39m
+ [32m✓[39m test/result-screen.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 113[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m9 passed[39m[22m[90m (9)[39m
+[2m      Tests [22m [1m[32m268 passed[39m[22m[90m (268)[39m
+[2m   Start at [22m 10:59:26
+[2m   Duration [22m 68.90s[2m (transform 2.05s, setup 88ms, import 2.77s, tests 56.60s, environment 1ms)[22m
+
+JSON report written to /out/vitest-home-fix.json

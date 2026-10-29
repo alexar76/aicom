@@ -1,0 +1,418 @@
+Building wheel...
+/Users/alex/.cache/uv/builds-v0/.tmpfX9ALn/lib/python3.12/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running egg_info
+writing aimarket_metis.egg-info/PKG-INFO
+writing dependency_links to aimarket_metis.egg-info/dependency_links.txt
+writing entry points to aimarket_metis.egg-info/entry_points.txt
+writing requirements to aimarket_metis.egg-info/requires.txt
+writing top-level names to aimarket_metis.egg-info/top_level.txt
+reading manifest file 'aimarket_metis.egg-info/SOURCES.txt'
+writing manifest file 'aimarket_metis.egg-info/SOURCES.txt'
+/Users/alex/.cache/uv/builds-v0/.tmpfX9ALn/lib/python3.12/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running bdist_wheel
+running build
+running build_py
+creating build/lib/metis
+copying metis/config.py -> build/lib/metis
+copying metis/env_compat.py -> build/lib/metis
+copying metis/__init__.py -> build/lib/metis
+copying metis/serve.py -> build/lib/metis
+copying metis/cli.py -> build/lib/metis
+copying metis/coordinator_server.py -> build/lib/metis
+copying metis/exoskeleton.py -> build/lib/metis
+creating build/lib/metis/gates
+copying metis/gates/__init__.py -> build/lib/metis/gates
+creating build/lib/metis/pipeline
+copying metis/pipeline/agreement.py -> build/lib/metis/pipeline
+copying metis/pipeline/__init__.py -> build/lib/metis/pipeline
+copying metis/pipeline/escalation.py -> build/lib/metis/pipeline
+copying metis/pipeline/depth.py -> build/lib/metis/pipeline
+creating build/lib/metis/economy
+copying metis/economy/config.py -> build/lib/metis/economy
+copying metis/economy/meter.py -> build/lib/metis/economy
+copying metis/economy/bridge.py -> build/lib/metis/economy
+copying metis/economy/__init__.py -> build/lib/metis/economy
+copying metis/economy/cost.py -> build/lib/metis/economy
+copying metis/economy/tracked.py -> build/lib/metis/economy
+creating build/lib/metis/tools
+copying metis/tools/registry.py -> build/lib/metis/tools
+copying metis/tools/__init__.py -> build/lib/metis/tools
+copying metis/tools/sandbox.py -> build/lib/metis/tools
+copying metis/tools/aimarket.py -> build/lib/metis/tools
+creating build/lib/metis/memory
+copying metis/memory/store.py -> build/lib/metis/memory
+copying metis/memory/__init__.py -> build/lib/metis/memory
+creating build/lib/metis/verify
+copying metis/verify/jury.py -> build/lib/metis/verify
+copying metis/verify/grounded.py -> build/lib/metis/verify
+copying metis/verify/__init__.py -> build/lib/metis/verify
+copying metis/verify/critic.py -> build/lib/metis/verify
+copying metis/verify/calibration.py -> build/lib/metis/verify
+creating build/lib/metis/distributed
+copying metis/distributed/coordinator.py -> build/lib/metis/distributed
+copying metis/distributed/server.py -> build/lib/metis/distributed
+copying metis/distributed/registry.py -> build/lib/metis/distributed
+copying metis/distributed/protocol.py -> build/lib/metis/distributed
+copying metis/distributed/security.py -> build/lib/metis/distributed
+copying metis/distributed/__init__.py -> build/lib/metis/distributed
+copying metis/distributed/cli.py -> build/lib/metis/distributed
+copying metis/distributed/remote_provider.py -> build/lib/metis/distributed
+copying metis/distributed/node.py -> build/lib/metis/distributed
+creating build/lib/metis/security
+copying metis/security/injection.py -> build/lib/metis/security
+copying metis/security/media.py -> build/lib/metis/security
+copying metis/security/audit.py -> build/lib/metis/security
+copying metis/security/code_execution.py -> build/lib/metis/security
+copying metis/security/__init__.py -> build/lib/metis/security
+copying metis/security/ratelimit.py -> build/lib/metis/security
+copying metis/security/child_env.py -> build/lib/metis/security
+copying metis/security/ssrf.py -> build/lib/metis/security
+creating build/lib/metis/training
+copying metis/training/__init__.py -> build/lib/metis/training
+copying metis/training/pipelines.py -> build/lib/metis/training
+creating build/lib/metis/agents
+copying metis/agents/council.py -> build/lib/metis/agents
+copying metis/agents/__init__.py -> build/lib/metis/agents
+copying metis/agents/capability.py -> build/lib/metis/agents
+copying metis/agents/loop.py -> build/lib/metis/agents
+copying metis/agents/moa.py -> build/lib/metis/agents
+copying metis/agents/diversity.py -> build/lib/metis/agents
+creating build/lib/metis/mcp
+copying metis/mcp/config.py -> build/lib/metis/mcp
+copying metis/mcp/discovery.py -> build/lib/metis/mcp
+copying metis/mcp/registry.py -> build/lib/metis/mcp
+copying metis/mcp/client.py -> build/lib/metis/mcp
+copying metis/mcp/__init__.py -> build/lib/metis/mcp
+copying metis/mcp/sse.py -> build/lib/metis/mcp
+creating build/lib/metis/models
+copying metis/models/provider.py -> build/lib/metis/models
+copying metis/models/__init__.py -> build/lib/metis/models
+copying metis/models/anthropic.py -> build/lib/metis/models
+creating build/lib/metis/observability
+copying metis/observability/config.py -> build/lib/metis/observability
+copying metis/observability/__init__.py -> build/lib/metis/observability
+copying metis/observability/cli.py -> build/lib/metis/observability
+copying metis/observability/trace_store.py -> build/lib/metis/observability
+creating build/lib/metis/rag
+copying metis/rag/agentic.py -> build/lib/metis/rag
+copying metis/rag/__init__.py -> build/lib/metis/rag
+creating build/lib/metis/schemas
+copying metis/schemas/__init__.py -> build/lib/metis/schemas
+copying metis/schemas/task_spec.py -> build/lib/metis/schemas
+creating build/lib/metis/thinking
+copying metis/thinking/extended.py -> build/lib/metis/thinking
+copying metis/thinking/__init__.py -> build/lib/metis/thinking
+creating build/lib/metis/knowledge
+copying metis/knowledge/store.py -> build/lib/metis/knowledge
+copying metis/knowledge/config.py -> build/lib/metis/knowledge
+copying metis/knowledge/experience.py -> build/lib/metis/knowledge
+copying metis/knowledge/__init__.py -> build/lib/metis/knowledge
+copying metis/knowledge/failures.py -> build/lib/metis/knowledge
+copying metis/knowledge/cli.py -> build/lib/metis/knowledge
+creating build/lib/metis/api
+copying metis/api/auth.py -> build/lib/metis/api
+copying metis/api/bridge.py -> build/lib/metis/api
+copying metis/api/__init__.py -> build/lib/metis/api
+copying metis/api/schemas.py -> build/lib/metis/api
+copying metis/api/openai_compat.py -> build/lib/metis/api
+copying metis/api/rate_limit.py -> build/lib/metis/api
+copying metis/api/app.py -> build/lib/metis/api
+copying metis/api/ecosystem.py -> build/lib/metis/api
+copying metis/api/observability_routes.py -> build/lib/metis/api
+creating build/lib/metis/modules
+copying metis/modules/registry.py -> build/lib/metis/modules
+copying metis/modules/__init__.py -> build/lib/metis/modules
+creating build/lib/metis/validation
+copying metis/validation/__init__.py -> build/lib/metis/validation
+creating build/lib/metis/router
+copying metis/router/classifier.py -> build/lib/metis/router
+copying metis/router/__init__.py -> build/lib/metis/router
+creating build/lib/metis/observability/reliability
+copying metis/observability/reliability/detector.py -> build/lib/metis/observability/reliability
+copying metis/observability/reliability/__init__.py -> build/lib/metis/observability/reliability
+copying metis/observability/reliability/retry.py -> build/lib/metis/observability/reliability
+copying metis/observability/reliability/circuit_breaker.py -> build/lib/metis/observability/reliability
+creating build/lib/metis/observability/logging
+copying metis/observability/logging/module_logger.py -> build/lib/metis/observability/logging
+copying metis/observability/logging/audit.py -> build/lib/metis/observability/logging
+copying metis/observability/logging/__init__.py -> build/lib/metis/observability/logging
+copying metis/observability/logging/pipeline_events.py -> build/lib/metis/observability/logging
+copying metis/observability/logging/tracer.py -> build/lib/metis/observability/logging
+running egg_info
+writing aimarket_metis.egg-info/PKG-INFO
+writing dependency_links to aimarket_metis.egg-info/dependency_links.txt
+writing entry points to aimarket_metis.egg-info/entry_points.txt
+writing requirements to aimarket_metis.egg-info/requires.txt
+writing top-level names to aimarket_metis.egg-info/top_level.txt
+reading manifest file 'aimarket_metis.egg-info/SOURCES.txt'
+writing manifest file 'aimarket_metis.egg-info/SOURCES.txt'
+installing to build/bdist.macosx-11.0-arm64/wheel
+running install
+running install_lib
+creating build/bdist.macosx-11.0-arm64/wheel
+creating build/bdist.macosx-11.0-arm64/wheel/metis
+creating build/bdist.macosx-11.0-arm64/wheel/metis/gates
+copying build/lib/metis/gates/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/gates
+creating build/bdist.macosx-11.0-arm64/wheel/metis/pipeline
+copying build/lib/metis/pipeline/agreement.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/pipeline
+copying build/lib/metis/pipeline/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/pipeline
+copying build/lib/metis/pipeline/escalation.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/pipeline
+copying build/lib/metis/pipeline/depth.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/pipeline
+creating build/bdist.macosx-11.0-arm64/wheel/metis/economy
+copying build/lib/metis/economy/config.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/economy
+copying build/lib/metis/economy/meter.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/economy
+copying build/lib/metis/economy/bridge.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/economy
+copying build/lib/metis/economy/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/economy
+copying build/lib/metis/economy/cost.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/economy
+copying build/lib/metis/economy/tracked.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/economy
+creating build/bdist.macosx-11.0-arm64/wheel/metis/tools
+copying build/lib/metis/tools/registry.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/tools
+copying build/lib/metis/tools/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/tools
+copying build/lib/metis/tools/sandbox.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/tools
+copying build/lib/metis/tools/aimarket.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/tools
+copying build/lib/metis/config.py -> build/bdist.macosx-11.0-arm64/wheel/./metis
+creating build/bdist.macosx-11.0-arm64/wheel/metis/memory
+copying build/lib/metis/memory/store.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/memory
+copying build/lib/metis/memory/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/memory
+creating build/bdist.macosx-11.0-arm64/wheel/metis/verify
+copying build/lib/metis/verify/jury.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/verify
+copying build/lib/metis/verify/grounded.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/verify
+copying build/lib/metis/verify/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/verify
+copying build/lib/metis/verify/critic.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/verify
+copying build/lib/metis/verify/calibration.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/verify
+creating build/bdist.macosx-11.0-arm64/wheel/metis/distributed
+copying build/lib/metis/distributed/coordinator.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/distributed
+copying build/lib/metis/distributed/server.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/distributed
+copying build/lib/metis/distributed/registry.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/distributed
+copying build/lib/metis/distributed/protocol.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/distributed
+copying build/lib/metis/distributed/security.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/distributed
+copying build/lib/metis/distributed/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/distributed
+copying build/lib/metis/distributed/cli.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/distributed
+copying build/lib/metis/distributed/remote_provider.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/distributed
+copying build/lib/metis/distributed/node.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/distributed
+creating build/bdist.macosx-11.0-arm64/wheel/metis/security
+copying build/lib/metis/security/injection.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/security
+copying build/lib/metis/security/media.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/security
+copying build/lib/metis/security/audit.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/security
+copying build/lib/metis/security/code_execution.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/security
+copying build/lib/metis/security/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/security
+copying build/lib/metis/security/ratelimit.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/security
+copying build/lib/metis/security/child_env.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/security
+copying build/lib/metis/security/ssrf.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/security
+creating build/bdist.macosx-11.0-arm64/wheel/metis/training
+copying build/lib/metis/training/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/training
+copying build/lib/metis/training/pipelines.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/training
+copying build/lib/metis/env_compat.py -> build/bdist.macosx-11.0-arm64/wheel/./metis
+copying build/lib/metis/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis
+copying build/lib/metis/serve.py -> build/bdist.macosx-11.0-arm64/wheel/./metis
+creating build/bdist.macosx-11.0-arm64/wheel/metis/agents
+copying build/lib/metis/agents/council.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/agents
+copying build/lib/metis/agents/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/agents
+copying build/lib/metis/agents/capability.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/agents
+copying build/lib/metis/agents/loop.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/agents
+copying build/lib/metis/agents/moa.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/agents
+copying build/lib/metis/agents/diversity.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/agents
+creating build/bdist.macosx-11.0-arm64/wheel/metis/mcp
+copying build/lib/metis/mcp/config.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/mcp
+copying build/lib/metis/mcp/discovery.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/mcp
+copying build/lib/metis/mcp/registry.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/mcp
+copying build/lib/metis/mcp/client.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/mcp
+copying build/lib/metis/mcp/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/mcp
+copying build/lib/metis/mcp/sse.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/mcp
+creating build/bdist.macosx-11.0-arm64/wheel/metis/models
+copying build/lib/metis/models/provider.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/models
+copying build/lib/metis/models/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/models
+copying build/lib/metis/models/anthropic.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/models
+creating build/bdist.macosx-11.0-arm64/wheel/metis/observability
+copying build/lib/metis/observability/config.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability
+copying build/lib/metis/observability/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability
+copying build/lib/metis/observability/cli.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability
+creating build/bdist.macosx-11.0-arm64/wheel/metis/observability/reliability
+copying build/lib/metis/observability/reliability/detector.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability/reliability
+copying build/lib/metis/observability/reliability/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability/reliability
+copying build/lib/metis/observability/reliability/retry.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability/reliability
+copying build/lib/metis/observability/reliability/circuit_breaker.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability/reliability
+copying build/lib/metis/observability/trace_store.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability
+creating build/bdist.macosx-11.0-arm64/wheel/metis/observability/logging
+copying build/lib/metis/observability/logging/module_logger.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability/logging
+copying build/lib/metis/observability/logging/audit.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability/logging
+copying build/lib/metis/observability/logging/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability/logging
+copying build/lib/metis/observability/logging/pipeline_events.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability/logging
+copying build/lib/metis/observability/logging/tracer.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/observability/logging
+creating build/bdist.macosx-11.0-arm64/wheel/metis/rag
+copying build/lib/metis/rag/agentic.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/rag
+copying build/lib/metis/rag/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/rag
+creating build/bdist.macosx-11.0-arm64/wheel/metis/schemas
+copying build/lib/metis/schemas/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/schemas
+copying build/lib/metis/schemas/task_spec.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/schemas
+copying build/lib/metis/cli.py -> build/bdist.macosx-11.0-arm64/wheel/./metis
+creating build/bdist.macosx-11.0-arm64/wheel/metis/thinking
+copying build/lib/metis/thinking/extended.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/thinking
+copying build/lib/metis/thinking/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/thinking
+creating build/bdist.macosx-11.0-arm64/wheel/metis/knowledge
+copying build/lib/metis/knowledge/store.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/knowledge
+copying build/lib/metis/knowledge/config.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/knowledge
+copying build/lib/metis/knowledge/experience.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/knowledge
+copying build/lib/metis/knowledge/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/knowledge
+copying build/lib/metis/knowledge/failures.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/knowledge
+copying build/lib/metis/knowledge/cli.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/knowledge
+copying build/lib/metis/coordinator_server.py -> build/bdist.macosx-11.0-arm64/wheel/./metis
+creating build/bdist.macosx-11.0-arm64/wheel/metis/api
+copying build/lib/metis/api/auth.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/api
+copying build/lib/metis/api/bridge.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/api
+copying build/lib/metis/api/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/api
+copying build/lib/metis/api/schemas.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/api
+copying build/lib/metis/api/openai_compat.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/api
+copying build/lib/metis/api/rate_limit.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/api
+copying build/lib/metis/api/app.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/api
+copying build/lib/metis/api/ecosystem.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/api
+copying build/lib/metis/api/observability_routes.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/api
+creating build/bdist.macosx-11.0-arm64/wheel/metis/modules
+copying build/lib/metis/modules/registry.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/modules
+copying build/lib/metis/modules/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/modules
+copying build/lib/metis/exoskeleton.py -> build/bdist.macosx-11.0-arm64/wheel/./metis
+creating build/bdist.macosx-11.0-arm64/wheel/metis/validation
+copying build/lib/metis/validation/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/validation
+creating build/bdist.macosx-11.0-arm64/wheel/metis/router
+copying build/lib/metis/router/classifier.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/router
+copying build/lib/metis/router/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./metis/router
+running install_egg_info
+Copying aimarket_metis.egg-info to build/bdist.macosx-11.0-arm64/wheel/./aimarket_metis-0.2.5-py3.12.egg-info
+running install_scripts
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_metis-0.2.5.dist-info/WHEEL
+creating '/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/vulnetix-review-2026-10-28/release-wheels/.tmp-4skhx6kz/aimarket_metis-0.2.5-py3-none-any.whl' and adding 'build/bdist.macosx-11.0-arm64/wheel' to it
+adding 'metis/__init__.py'
+adding 'metis/cli.py'
+adding 'metis/config.py'
+adding 'metis/coordinator_server.py'
+adding 'metis/env_compat.py'
+adding 'metis/exoskeleton.py'
+adding 'metis/serve.py'
+adding 'metis/agents/__init__.py'
+adding 'metis/agents/capability.py'
+adding 'metis/agents/council.py'
+adding 'metis/agents/diversity.py'
+adding 'metis/agents/loop.py'
+adding 'metis/agents/moa.py'
+adding 'metis/api/__init__.py'
+adding 'metis/api/app.py'
+adding 'metis/api/auth.py'
+adding 'metis/api/bridge.py'
+adding 'metis/api/ecosystem.py'
+adding 'metis/api/observability_routes.py'
+adding 'metis/api/openai_compat.py'
+adding 'metis/api/rate_limit.py'
+adding 'metis/api/schemas.py'
+adding 'metis/distributed/__init__.py'
+adding 'metis/distributed/cli.py'
+adding 'metis/distributed/coordinator.py'
+adding 'metis/distributed/node.py'
+adding 'metis/distributed/protocol.py'
+adding 'metis/distributed/registry.py'
+adding 'metis/distributed/remote_provider.py'
+adding 'metis/distributed/security.py'
+adding 'metis/distributed/server.py'
+adding 'metis/economy/__init__.py'
+adding 'metis/economy/bridge.py'
+adding 'metis/economy/config.py'
+adding 'metis/economy/cost.py'
+adding 'metis/economy/meter.py'
+adding 'metis/economy/tracked.py'
+adding 'metis/gates/__init__.py'
+adding 'metis/knowledge/__init__.py'
+adding 'metis/knowledge/cli.py'
+adding 'metis/knowledge/config.py'
+adding 'metis/knowledge/experience.py'
+adding 'metis/knowledge/failures.py'
+adding 'metis/knowledge/store.py'
+adding 'metis/mcp/__init__.py'
+adding 'metis/mcp/client.py'
+adding 'metis/mcp/config.py'
+adding 'metis/mcp/discovery.py'
+adding 'metis/mcp/registry.py'
+adding 'metis/mcp/sse.py'
+adding 'metis/memory/__init__.py'
+adding 'metis/memory/store.py'
+adding 'metis/models/__init__.py'
+adding 'metis/models/anthropic.py'
+adding 'metis/models/provider.py'
+adding 'metis/modules/__init__.py'
+adding 'metis/modules/registry.py'
+adding 'metis/observability/__init__.py'
+adding 'metis/observability/cli.py'
+adding 'metis/observability/config.py'
+adding 'metis/observability/trace_store.py'
+adding 'metis/observability/logging/__init__.py'
+adding 'metis/observability/logging/audit.py'
+adding 'metis/observability/logging/module_logger.py'
+adding 'metis/observability/logging/pipeline_events.py'
+adding 'metis/observability/logging/tracer.py'
+adding 'metis/observability/reliability/__init__.py'
+adding 'metis/observability/reliability/circuit_breaker.py'
+adding 'metis/observability/reliability/detector.py'
+adding 'metis/observability/reliability/retry.py'
+adding 'metis/pipeline/__init__.py'
+adding 'metis/pipeline/agreement.py'
+adding 'metis/pipeline/depth.py'
+adding 'metis/pipeline/escalation.py'
+adding 'metis/rag/__init__.py'
+adding 'metis/rag/agentic.py'
+adding 'metis/router/__init__.py'
+adding 'metis/router/classifier.py'
+adding 'metis/schemas/__init__.py'
+adding 'metis/schemas/task_spec.py'
+adding 'metis/security/__init__.py'
+adding 'metis/security/audit.py'
+adding 'metis/security/child_env.py'
+adding 'metis/security/code_execution.py'
+adding 'metis/security/injection.py'
+adding 'metis/security/media.py'
+adding 'metis/security/ratelimit.py'
+adding 'metis/security/ssrf.py'
+adding 'metis/thinking/__init__.py'
+adding 'metis/thinking/extended.py'
+adding 'metis/tools/__init__.py'
+adding 'metis/tools/aimarket.py'
+adding 'metis/tools/registry.py'
+adding 'metis/tools/sandbox.py'
+adding 'metis/training/__init__.py'
+adding 'metis/training/pipelines.py'
+adding 'metis/validation/__init__.py'
+adding 'metis/verify/__init__.py'
+adding 'metis/verify/calibration.py'
+adding 'metis/verify/critic.py'
+adding 'metis/verify/grounded.py'
+adding 'metis/verify/jury.py'
+adding 'aimarket_metis-0.2.5.dist-info/METADATA'
+adding 'aimarket_metis-0.2.5.dist-info/WHEEL'
+adding 'aimarket_metis-0.2.5.dist-info/entry_points.txt'
+adding 'aimarket_metis-0.2.5.dist-info/top_level.txt'
+adding 'aimarket_metis-0.2.5.dist-info/RECORD'
+removing build/bdist.macosx-11.0-arm64/wheel
+Successfully built artifacts/vulnetix-review-2026-10-28/release-wheels/aimarket_metis-0.2.5-py3-none-any.whl

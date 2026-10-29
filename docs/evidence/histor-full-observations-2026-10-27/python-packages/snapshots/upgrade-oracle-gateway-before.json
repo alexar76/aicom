@@ -1,0 +1,46 @@
+{
+  "extrasCoverage": "observed",
+  "format": "histor.upgrade-observation/v1",
+  "launch": {
+    "argv": [
+      "/private/tmp/pypi-mcp-releases-20261027/bin/python",
+      "-I",
+      "-B",
+      "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/launch_list_only.py",
+      "--module",
+      "aimarket_oracle_gateway.stdio_server",
+      "--overlay",
+      "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/active/oracle-gateway"
+    ],
+    "cwd": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/run-state/oracle-gateway",
+    "dependencyProfile": {
+      "environmentLockSha256": "sha256:7f99fa2f57de4ded1762f1975bcccc1050363ce549f8f1fdc54a366032bac489",
+      "mcp": "1.30.0"
+    },
+    "entrypoint": "aimarket_oracle_gateway.stdio_server",
+    "environment": {
+      "credentials": "absent",
+      "names": [
+        "PATH"
+      ],
+      "policy": "allowlist"
+    },
+    "guard": {
+      "network": "Python audit hook denies DNS and socket connections",
+      "osSandbox": false,
+      "subprocess": "Python audit hook denies child processes"
+    },
+    "runtime": {
+      "interpreterSha256": "a395f264e5612a2819662ed3e37fd30d39ed61179b98e5f86c3c783a008d8623",
+      "python": "3.12.13"
+    },
+    "transport": "stdio"
+  },
+  "observedAt": "2026-10-27T13:13:31.168359Z",
+  "packageVersion": "0.3.1",
+  "protocol": null,
+  "serverName": null,
+  "serverVersion": null,
+  "status": "failed",
+  "targetId": "pypi:aimarket-oracle-gateway"
+}

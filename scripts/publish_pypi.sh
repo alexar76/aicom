@@ -6,7 +6,7 @@
 #   ./scripts/publish_pypi.sh aimarket-agent --dry-run
 #   ./scripts/publish_pypi.sh aimarket-agent --testpypi
 #
-# Requires: python3 -m pip install build twine
+# Requires: python3 -m pip install build twine cryptography==50.0.0
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -26,8 +26,9 @@ resolve_package_dir() {
   fi
   case "$arg" in
     aimarket-gaia-gateway|gaia-gateway) PKG="gaia"; return 0 ;;
-    # Canonical publish tree (real modules). plugins/aimarket-provenance/ is a monorepo
-    # re-export shim that also declares name = "aimarket-provenance" — do not publish it.
+    # The only tree. A plugins/aimarket-provenance/ re-export shim (1.1.0, no code) also
+    # declared this name until 2026-10-15; it is gone, and the aimarket-plugins mirror
+    # builds its plugins/aimarket-provenance/ from here. Named so it never depends on find.
     aimarket-provenance) PKG="aimarket-hub/plugins/aimarket-provenance"; return 0 ;;
   esac
   # Every match, then refuse ambiguity — never "the first one find happened to hand back".
@@ -40,6 +41,16 @@ resolve_package_dir() {
   # That is luck, not a control. Worktrees are excluded, and if two live trees ever claim
   # one name the script says so instead of guessing — that collision is a real
   # pre-publication blocker (see verify_published_dist_freshness.py).
+  #
+  # The excluded directories are pruned by NAME, which find tests only on what it finds
+  # below $ROOT. A `-not -path '*/.claude/*'` test saw the whole path instead, and an agent
+  # session's checkout is itself under .claude/worktrees/<name>/, so there it excluded
+  # every package and only the aliases above resolved. Pruning also stops find walking
+  # the worktree copies at all. The root artifacts/ tree contains release-source
+  # snapshots and uv sdist caches with the SAME project metadata as live packages;
+  # those are evidence/build inputs, never additional first-party source projects.
+  # Match that tree against this ROOT exactly so an artifacts/ ancestor outside
+  # the checkout cannot hide every package, either.
   local f name dir
   local -a matches=()
   while IFS= read -r -d '' f; do
@@ -49,14 +60,12 @@ resolve_package_dir() {
       matches+=("${dir#"$ROOT"/}")
     fi
   done < <(
-    find "$ROOT" -name pyproject.toml \
-      -not -path '*/.venv/*' \
-      -not -path '*/node_modules/*' \
-      -not -path '*/.claude/*' \
-      -not -path '*/.upstreams/*' \
-      -not -path '*/site-packages/*' \
+    find "$ROOT" -mindepth 1 \
+      \( -path "$ROOT/artifacts" -o -name .git -o -name .venv -o -name venv \
+         -o -name node_modules -o -name .claude -o -name .upstreams -o -name site-packages \
+         -o -name .cache -o -name uv-cache -o -name build -o -name dist \) -prune -o \
+      -name pyproject.toml \
       -not -path '*/create-aimarket-agent/src/*' \
-      -not -path "$ROOT/plugins/aimarket-provenance/pyproject.toml" \
       -print0
   )
   if [[ ${#matches[@]} -eq 1 ]]; then
@@ -140,9 +149,13 @@ if [[ "${SKIP_FRESHNESS_GATE:-0}" != "1" ]]; then
   echo "== Freshness gate ($_tree) =="
   if ! python3 "$ROOT/scripts/verify_published_dist_freshness.py" "$_tree"; then
     echo "" >&2
-    echo "refusing to publish: this version already exists on PyPI with different bytes." >&2
-    echo "Bump 'version' in $PKG/pyproject.toml, or set SKIP_FRESHNESS_GATE=1 if you" >&2
-    echo "really mean to re-upload (PyPI will reject a duplicate filename anyway)." >&2
+    # The gate checks the whole $_tree tree, so the DIVERGED distribution can be another one in it
+    # (2026-10-28: publishing aimarket-hub 3.16.1 stopped on aimarket-provenance 2.3.0, and the old
+    # text told the publisher to bump the hub, which was already ahead).
+    echo "refusing to publish: a distribution in the $_tree tree (marked DIVERGED above) is on PyPI" >&2
+    echo "at its current version with different bytes. Bump 'version' in THAT distribution's" >&2
+    echo "pyproject.toml (and a plugin class version that must match), not necessarily $PKG's." >&2
+    echo "SKIP_FRESHNESS_GATE=1 only for a deliberate re-upload of identical bytes." >&2
     exit 1
   fi
 fi
@@ -195,6 +208,12 @@ echo "== Secret gate =="
 gate_hits=""
 for archive in dist/*.tar.gz dist/*.whl; do
   [[ -e "$archive" ]] || continue
+  secret_python="$ROOT/.venv/bin/python"
+  [[ -x "$secret_python" ]] || secret_python="python3"
+  if ! "$secret_python" -I "$ROOT/scripts/verify_distribution_secrets.py" "$archive"; then
+    echo "error: distribution contents failed the secret gate — nothing uploaded" >&2
+    exit 4
+  fi
   if [[ "$archive" == *.tar.gz ]]; then
     listing="$(tar -tzf "$archive")"
   else
@@ -206,6 +225,10 @@ for archive in dist/*.tar.gz dist/*.whl; do
   # `.env.example` is the one dotenv filename that is meant to ship (scaffold templates).
   # Real secrets live in `.env`, `.env.local`, `.env.production`, etc.
   bad="$(printf '%s\n' "$listing" | grep -Ei '(^|/)(data)/|_signing_key|signing_key$|(^|/)\.env$|(^|/)\.env\.(local|prod|production|development|dev|secret|private)($|\.)|\.pem$|\.key$|(^|/)id_rsa|\.sqlite3?$' || true)"
+  # The independently shipped storage helper is source. Only its exact basename
+  # may bypass the name rule; runtime data/ remains forbidden. Contents are checked
+  # above, including keys disguised as Python modules.
+  bad="$(printf '%s\n' "$bad" | awk '$0 ~ /(^|\/)_signing_key_storage\.py$/ && tolower($0) !~ /(^|\/)data\// {next} {print}')"
   # A `.pem` holding nothing but PUBLIC KEY blocks is a verification key, shipped on purpose:
   # histor's scanner checks the signed WARDEN quality receipt with
   # scanner/quality/quality-public-key.pem, and an sdist without it cannot build that scanner

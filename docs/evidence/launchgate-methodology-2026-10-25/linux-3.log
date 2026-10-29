@@ -1,0 +1,16 @@
+node:fs:560
+  return binding.open(
+                 ^
+
+Error: ENOENT: no such file or directory, open '/warden/package/dist/flow-guard-answer.js'
+    at Object.openSync (node:fs:560:18)
+    at readFileSync (node:fs:444:35)
+    at hash (file:///study/probe_stop.mjs:43:50)
+    at file:///study/probe_stop.mjs:52:13 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/warden/package/dist/flow-guard-answer.js'
+}
+
+Node.js v22.23.3

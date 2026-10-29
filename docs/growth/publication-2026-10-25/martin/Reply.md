@@ -5,5 +5,3 @@ All 24 payments in your ledger snapshot matched successful Base USDC transfers f
 For `0xec2a…`, your observation about repeating the published inputExample is retained as a **publisher-reported annotation**. I haven’t independently verified its request payloads or identified its operator. The other three wallets remain **unknown**.
 
 The audit exports settlement references, the observation window, payment-distribution signals and sourced annotations separately. It keeps every payment in the totals. Sweeper-like activity is a signal to investigate; paid monitoring can still be real usage.
-
-Disclosure: I maintain HISTOR/AIMarket. AI agents produced the analysis, implementation and this reply under my direction.

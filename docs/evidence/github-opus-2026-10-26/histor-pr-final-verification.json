@@ -1,0 +1,22 @@
+{
+  "url": "https://github.com/basitalisandhu/agent-skills-state-2026/pull/14",
+  "state": "open",
+  "commit_count": 1,
+  "author": "alexar76",
+  "committer": "alexar76",
+  "commit_message": "README: add HISTOR MCP tool-definition history",
+  "commit_sha": "1e21f133476c4cdfe0533bd2a5dc1a07f50ca900",
+  "files": [
+    {
+      "filename": "README.md",
+      "additions": 1,
+      "deletions": 0,
+      "patch": "@@ -190,6 +190,7 @@ For the follow-up reports:\n ## Related datasets\n \n - [RugSnare drift-watch corpus](https://github.com/Paraphern/rugsnare/blob/main/tools/drift-watch-corpus.json) (Paraphern, Apache-2.0): a public, machine-readable record of how the tool contracts of 28 npm-distributed MCP servers and two skills collections changed across released versions, with a [page per server](https://github.com/Paraphern/rugsnare/tree/main/docs/servers) giving the version window and a repro command. It measures what a pinned version later serves, which this study does not.\n+- [HISTOR MCP tool-definition history](https://histor.modelmarket.dev/datasets/) (alexar76, CC BY 4.0): daily snapshots and field-level changes in remote MCP tool definitions, plus sandboxed observations of npm/PyPI MCP package versions. It complements release-based corpora by tracking what remote servers serve over time, where a package version pin cannot fix the deployed tool list.\n \n ## Related tools\n "
+    }
+  ],
+  "clean_main_sha": "8c0f67dcb61c19b353cc653bbc4fbf16feb9db3e",
+  "checks": {
+    "total_count": 0,
+    "check_runs": []
+  }
+}

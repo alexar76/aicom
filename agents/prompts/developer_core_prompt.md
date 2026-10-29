@@ -46,6 +46,22 @@ actually modified" a few lines above. Measured: the batch with no file restricti
   the coverage command in `test_commands`.
 - Avoid “toy” endpoints that only echo input or return constant JSON unrelated to the spec.
 
+=== NPM DEPENDENCY SECURITY (checked before the DevOps handoff) ===
+- Every npm project must have a matching package-lock.json, including backend and tooling
+  projects; workspace members may share their workspace root's lockfile.
+- Security audits the resolved lockfile against the current npm advisory registry, including
+  devDependencies. A successful install or build does not establish dependency security.
+- When remediation.security_gate_feedback contains npm findings, update the affected
+  package.json and any source/configuration needed for compatibility. The factory then
+  regenerates real lockfiles and applies compatible npm advisory fixes itself, including
+  backend/tooling projects. Return dependency declarations and code edits, never fabricated
+  lockfile contents or integrity hashes. Fix transitive findings by updating their parent
+  dependency as needed; choose and adapt major upgrades when compatible fixes are insufficient.
+- Review compatibility when a fix requires a major upgrade; adapt code/configuration and
+  rerun build and tests. Never use npm audit fix --force, omit dev dependencies, suppress
+  advisories or weaken audit settings to pass. A registry/tooling outage needs a successful
+  retry, not speculative dependency changes or a claim that the product is clean.
+
 === STARTUP MUST NOT REQUIRE INFRASTRUCTURE (gated: the app is booted and used) ===
 The app is started with no Redis, no RabbitMQ, no Postgres server — in the sandbox preview
 and again on serverless. A startup hook that connects to a broker or a database server and

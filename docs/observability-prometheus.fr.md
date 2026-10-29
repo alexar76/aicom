@@ -33,6 +33,11 @@ connecte **directement** depuis une adresse de loopback ou privée (127.0.0.0/8,
 des conteneurs passe ; tout ce qui arrive par le nginx public reçoit `404`, car nginx ajoute
 `X-Forwarded-For` / `X-Real-IP`.
 
+Cela suppose que le proxy ajoute l'en-tête. Le `proxy_pass` de nginx par défaut n'en ajoute aucun :
+un frontal qui ne dit que `proxy_pass` rend `/metrics` lisible par quiconque l'atteint. Ajoutez
+`proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;` (comme `deploy/nginx/*.conf`) ou
+répondez 404 sur `/metrics` au niveau du proxy.
+
 | Variable | Par défaut | Effet |
 |---|---|---|
 | `AIMARKET_METRICS_TOKEN` | non définie | Un collecteur externe lit avec `Authorization: Bearer <jeton>`. |

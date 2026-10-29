@@ -1,0 +1,114 @@
+{
+  "type": "alexar76.pypi-release-verification/v1",
+  "checkedAt": "2026-10-27T10:59:28.593688+00:00",
+  "status": "all-three-published-and-verified",
+  "python": "3.12",
+  "releases": [
+    {
+      "name": "aimarket-oracle-gateway",
+      "version": "0.3.2",
+      "projectUrl": "https://pypi.org/project/aimarket-oracle-gateway/0.3.2/",
+      "uploadedAt": "2026-10-27T10:21:45.305009Z",
+      "sha256": "ebb2fb990b4b09dd1c1fbbe9b404ae5859cce8bc6c3caf12d2de393120e33547",
+      "sourceFiles": 5,
+      "sourceMatchesWorkspace": true
+    },
+    {
+      "name": "aimarket-mcp-packager",
+      "version": "2.1.2",
+      "projectUrl": "https://pypi.org/project/aimarket-mcp-packager/2.1.2/",
+      "uploadedAt": "2026-10-27T10:36:15.072761Z",
+      "sha256": "0d28a16313272969c3f2b40ee22e9d91f11e8b444d6b3e933e5d71f2c289bc20",
+      "sourceFiles": 6,
+      "sourceMatchesWorkspace": true
+    },
+    {
+      "name": "aimarket-metis",
+      "version": "0.2.4",
+      "projectUrl": "https://pypi.org/project/aimarket-metis/0.2.4/",
+      "uploadedAt": "2026-10-27T10:52:59.132078Z",
+      "sha256": "18c9b749f30304e31b30a2030238d37b5ef917b3e8bdb6575fbff9bcf2a3dda4",
+      "sourceFiles": 102,
+      "sourceMatchesWorkspace": true
+    }
+  ],
+  "oracle": {
+    "status": "ok",
+    "tools": 36,
+    "capabilityTools": 35,
+    "catalogTools": 1,
+    "serverInfoVersion": "0.3.2",
+    "freshPublicPypiInstall": true,
+    "mcpExtraRequired": false,
+    "gvisor": true,
+    "runtimeNetwork": "none",
+    "paidCalls": 0
+  },
+  "packager": {
+    "status": "ok",
+    "tools": 3,
+    "serverInfoVersion": "2.1.2",
+    "freshPublicPypiInstall": true,
+    "mcpExtraRequired": false,
+    "gvisor": true,
+    "runtimeNetwork": "none",
+    "generatorAndPlugin": "ok",
+    "paidCalls": 0
+  },
+  "metis": {
+    "status": "ok",
+    "version": "0.2.4",
+    "plainInstallCli": "ok",
+    "requiresMcpSdkForItsOwnClient": false,
+    "liveHttpClients": [
+      {
+        "client": "MCPClient",
+        "url": "https://modelmarket.dev/mcp",
+        "status": "ok",
+        "toolCount": 13,
+        "toolCalls": 0
+      },
+      {
+        "client": "MCPSSEClient",
+        "url": "https://modelmarket.dev/mcp",
+        "status": "ok",
+        "toolCount": 13,
+        "toolCalls": 0
+      }
+    ],
+    "oraclePreset": {
+      "status": "ok",
+      "tools": 36,
+      "catalogCapabilities": 35
+    },
+    "packagerPreset": {
+      "status": "ok",
+      "tools": 3,
+      "purePackageGeneration": "ok"
+    },
+    "paidCalls": 0
+  },
+  "sharedEnvironmentDependencies": "compatible",
+  "workspaceImports": false,
+  "checks": [
+    "Official PyPI version metadata, release timestamps and non-yanked wheels",
+    "Downloaded wheel SHA256 matches official metadata",
+    "All shipped Python modules match the reviewed workspace fixes",
+    "Published Oracle/Packager start and return valid tools/list schemas in gVisor",
+    "Metis default installation CLI works without MCP SDK or extras",
+    "Both Metis HTTP clients list 13 tools on the live Hub",
+    "Installed Metis launches installed Oracle and Packager via their presets",
+    "Free oracle catalog and pure package generator calls succeed",
+    "Combined dependency check passes"
+  ],
+  "paidProductionCalls": 0,
+  "githubWrites": 0,
+  "deployments": 0,
+  "evidence": [
+    "registry-verification.json",
+    "published-stdio-probes.jsonl",
+    "base-metis-result.json",
+    "integration-result.json",
+    "dependency-check.log"
+  ]
+}

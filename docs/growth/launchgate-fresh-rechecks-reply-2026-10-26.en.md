@@ -1,0 +1,7 @@
+We froze the predictions and ran the comparison: twelve exact saved initial contexts, eight repetitions, three review messages — 288 fresh continuations. The conditions were historical Stop, revised review alone, and revised review plus deterministic counterevidence.
+
+For the four erroneous explanations, factual corrections were 2/32, 0/32 and 19/32 respectively. With counterevidence, the four cases corrected 8/8, 3/8, 0/8 and 8/8. So the concrete disagreement helped on these contexts, but thirteen errors remained and our stronger prediction of at least 24/32 corrections failed. Every selected ID stayed unchanged and admissible: the improvement was in the explanation, not the choice. We cannot infer the internal cause of the remaining failures.
+
+Disclosure in the model's own reason was retained 80/80 times under each revised condition, versus 56/80 with historical Stop. Both revised conditions also added disclosure in the other 16/16 opportunities. Separately, guard-owned notices appeared in all 192 revised-condition continuation outputs. Native-client rendering remains untested.
+
+These are repeated known contexts, not a holdout or fresh initial-answer study. We reviewed all 80 unique complete explanation texts and checked the encoded factual claims against the fixtures. We did not tune the grammar or prompts from these results. An initial execution was lost during collection and excluded; an operational amendment preceded the repeat, and only its fully retained 288 outcomes are scored. That loss and the unchanged protocol are recorded in the report.

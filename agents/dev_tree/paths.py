@@ -34,11 +34,17 @@ def _resolve_safe_code_path(code_root: Path, file_path: str) -> Path | None:
             raw = raw[len(wrapper):]
             break
     candidate = PurePosixPath(raw)
-    if candidate.is_absolute() or ".." in candidate.parts:
+    if (
+        candidate.is_absolute()
+        or ".." in candidate.parts
+        or any(part.casefold() == ".git" for part in candidate.parts)
+    ):
         return None
     base_resolved = code_root.resolve()
     full_path = (code_root / raw).resolve()
     if full_path == base_resolved or not full_path.is_relative_to(base_resolved):
+        return None
+    if any(part.casefold() == ".git" for part in full_path.relative_to(base_resolved).parts):
         return None
     return full_path
 

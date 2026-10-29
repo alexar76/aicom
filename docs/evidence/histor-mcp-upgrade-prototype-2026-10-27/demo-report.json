@@ -1,0 +1,403 @@
+{
+  "analysis": "deterministic-offline",
+  "dependencies": [
+    {
+      "comparability": "bounded",
+      "contextChanges": [
+        "protocol"
+      ],
+      "id": "demo:migration",
+      "limitations": [],
+      "observedChanges": false,
+      "provenanceGaps": [
+        "before: packageVersion missing; not inferred",
+        "after: packageVersion missing; not inferred"
+      ],
+      "selectedTools": [
+        {
+          "changes": [],
+          "name": "read_status",
+          "retest": [],
+          "status": "unchanged"
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "after": {
+          "fullList": 94,
+          "selectedTools": 94
+        },
+        "before": {
+          "fullList": 94,
+          "selectedTools": 94
+        },
+        "delta": {
+          "fullList": 0,
+          "selectedTools": 0
+        }
+      },
+      "sources": {
+        "after": {
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-27T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/migration-after.json",
+          "protocol": "2026-07-28",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "2",
+          "sha256": "sha256:80a04b3ec2e35f3b0330bd643d3ff8a7297c34e74288e6f91ecbed1290177e98",
+          "status": "ok",
+          "targetId": "demo:migration",
+          "toolsSha256": "sha256:5325c115abb0aa1d4febda77fd2bf9ba6d3ad87de4233604fab23b704174d082",
+          "transport": "streamable-http"
+        },
+        "before": {
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-26T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/migration-before.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1",
+          "sha256": "sha256:aae66bbd278f22d34ff079b78b6a2c449043920db192aa710b916bc609006e4d",
+          "status": "ok",
+          "targetId": "demo:migration",
+          "toolsSha256": "sha256:5325c115abb0aa1d4febda77fd2bf9ba6d3ad87de4233604fab23b704174d082",
+          "transport": "streamable-http"
+        }
+      },
+      "status": "context_changed",
+      "toolSet": {
+        "added": [],
+        "afterCount": 1,
+        "beforeCount": 1,
+        "removed": []
+      },
+      "workflows": [
+        {
+          "affectedTools": [],
+          "description": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0441\u0442\u0430\u0442\u0443\u0441 \u0441\u0435\u0440\u0432\u0438\u0441\u0430 \u043f\u043e\u0441\u043b\u0435 \u043c\u0438\u0433\u0440\u0430\u0446\u0438\u0438 MCP",
+          "id": "status-check",
+          "retest": [
+            {
+              "check": "\u0421\u0432\u0435\u0440\u0438\u0442\u044c protocol, launcher \u0438 \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u0434\u043e\u0441\u0442\u0443\u043f\u0430; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0430 \u0441\u043d\u0438\u043c\u043a\u0430 \u0432 \u043e\u0434\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u0435.",
+              "tool": null
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "read_status"
+          ]
+        }
+      ]
+    },
+    {
+      "comparability": "unknown",
+      "contextChanges": [],
+      "id": "demo:offline",
+      "limitations": [
+        "after: successful full observation missing"
+      ],
+      "observedChanges": null,
+      "provenanceGaps": [],
+      "selectedTools": [
+        {
+          "changes": [],
+          "name": "read_status",
+          "retest": [
+            "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043e\u0431\u0430 \u043f\u043e\u043b\u043d\u044b\u0445 \u0443\u0441\u043f\u0435\u0448\u043d\u044b\u0445 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f \u0432 \u0441\u043e\u043f\u043e\u0441\u0442\u0430\u0432\u0438\u043c\u043e\u043c \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0438."
+          ],
+          "status": "unknown"
+        }
+      ],
+      "serializedUtf8Bytes": null,
+      "sources": {
+        "after": {
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-27T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/offline-after.json",
+          "protocol": null,
+          "serverName": "synthetic-fixture",
+          "serverVersion": null,
+          "sha256": "sha256:66727987e9474aba873aec44d9f5567fcc3f9678fbdeab69717dcfb269effa63",
+          "status": "failed",
+          "targetId": "demo:offline",
+          "toolsSha256": null,
+          "transport": "streamable-http"
+        },
+        "before": {
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-26T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/offline-before.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1",
+          "sha256": "sha256:8d1528bbe8087c1cbceeaa0f4cbac46469e27eed3ff3ca9f50a56b714bb4e59c",
+          "status": "ok",
+          "targetId": "demo:offline",
+          "toolsSha256": "sha256:5325c115abb0aa1d4febda77fd2bf9ba6d3ad87de4233604fab23b704174d082",
+          "transport": "streamable-http"
+        }
+      },
+      "status": "unknown",
+      "workflows": [
+        {
+          "affectedTools": [
+            "read_status"
+          ],
+          "description": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0435\u0436\u0435\u0434\u043d\u0435\u0432\u043d\u044b\u0439 \u0441\u0442\u0430\u0442\u0443\u0441 \u0432\u043d\u0435\u0448\u043d\u0435\u0433\u043e \u0441\u0435\u0440\u0432\u0438\u0441\u0430",
+          "id": "daily-status",
+          "retest": [
+            {
+              "check": "\u0421\u0432\u0435\u0440\u0438\u0442\u044c protocol, launcher \u0438 \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u0434\u043e\u0441\u0442\u0443\u043f\u0430; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0430 \u0441\u043d\u0438\u043c\u043a\u0430 \u0432 \u043e\u0434\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u0435.",
+              "tool": null
+            },
+            {
+              "check": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043e\u0431\u0430 \u043f\u043e\u043b\u043d\u044b\u0445 \u0443\u0441\u043f\u0435\u0448\u043d\u044b\u0445 \u043d\u0430\u0431\u043b\u044e\u0434\u0435\u043d\u0438\u044f \u0432 \u0441\u043e\u043f\u043e\u0441\u0442\u0430\u0432\u0438\u043c\u043e\u043c \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0438.",
+              "tool": "read_status"
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "read_status"
+          ]
+        }
+      ]
+    },
+    {
+      "comparability": "comparable",
+      "contextChanges": [],
+      "id": "demo:research",
+      "limitations": [],
+      "observedChanges": true,
+      "provenanceGaps": [],
+      "selectedTools": [
+        {
+          "changes": [
+            "extras"
+          ],
+          "extras": {
+            "annotationFieldsChanged": [
+              "destructiveHint",
+              "readOnlyHint"
+            ],
+            "annotationHints": {
+              "destructiveHint": [
+                false,
+                true
+              ],
+              "readOnlyHint": [
+                true,
+                false
+              ]
+            },
+            "annotationsPresenceChanged": false,
+            "escalation": true,
+            "members": {}
+          },
+          "name": "export_brief",
+          "retest": [
+            "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439, permissions \u0438 \u0437\u0430\u044f\u0432\u043b\u0435\u043d\u043d\u044b\u0435 \u0446\u0435\u043d\u044b; annotations \u2014 \u0437\u0430\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u0441\u0435\u0440\u0432\u0435\u0440\u0430."
+          ],
+          "status": "changed"
+        },
+        {
+          "changes": [
+            "removed"
+          ],
+          "name": "legacy_fetch",
+          "retest": [
+            "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u043c\u0435\u043d\u0443 \u0438\u043b\u0438 \u0437\u0430\u043a\u0440\u0435\u043f\u0438\u0442\u044c \u043f\u0440\u0435\u0436\u043d\u0438\u0439 \u043f\u0430\u043a\u0435\u0442; \u043d\u0435 \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0442\u044c \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439 \u0432\u0441\u043b\u0435\u043f\u0443\u044e."
+          ],
+          "status": "removed"
+        },
+        {
+          "changes": [
+            "description",
+            "inputSchema",
+            "outputSchema"
+          ],
+          "descriptionDiff": [
+            {
+              "operation": "=",
+              "text": "Search documents ",
+              "truncated": false
+            },
+            {
+              "operation": "-",
+              "text": "using",
+              "truncated": false
+            },
+            {
+              "operation": "+",
+              "text": "in",
+              "truncated": false
+            },
+            {
+              "operation": "=",
+              "text": " the ",
+              "truncated": false
+            },
+            {
+              "operation": "-",
+              "text": "query.",
+              "truncated": false
+            },
+            {
+              "operation": "+",
+              "text": "selected workspace. Include source links in the result.",
+              "truncated": false
+            }
+          ],
+          "descriptionDiffTruncated": false,
+          "inputSchemaPaths": [
+            "$.\"properties\".\"limit\".\"type\"",
+            "$.\"properties\".\"workspace\".\"type\"",
+            "$.\"required\"[1]"
+          ],
+          "inputTypeChangedPaths": [
+            "$/properties/limit",
+            "$/properties/workspace"
+          ],
+          "name": "search_docs",
+          "outputSchemaPaths": [
+            "$.\"properties\".\"items\".\"type\"",
+            "$.\"properties\".\"results\".\"type\""
+          ],
+          "requiredAdded": [
+            "workspace"
+          ],
+          "requiredRemoved": [],
+          "retest": [
+            "\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c \u0438\u0437\u043c\u0435\u043d\u0451\u043d\u043d\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u044b\u0447\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441 \u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u044b\u0431\u043e\u0440 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0430.",
+            "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u0432\u0445\u043e\u0434\u044b, \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b; \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0433\u0440\u0430\u043d\u0438\u0447\u043d\u044b\u0439 \u043f\u0440\u0438\u043c\u0435\u0440.",
+            "\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0443 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0430: \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0447\u0438\u0442\u0430\u0435\u0442 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439."
+          ],
+          "status": "changed"
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "after": {
+          "fullList": 627,
+          "selectedTools": 451
+        },
+        "before": {
+          "fullList": 534,
+          "selectedTools": 534
+        },
+        "delta": {
+          "fullList": 93,
+          "selectedTools": -83
+        }
+      },
+      "sources": {
+        "after": {
+          "launchSha256": "sha256:4141d0b7749dfa4a869dbfd86253df4bad05f120eef54100eac6be218f6c133d",
+          "observedAt": "2026-10-27T09:00:00Z",
+          "packageVersion": "1.1.0",
+          "path": "snapshots/research-after.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1.1.0",
+          "sha256": "sha256:57194207461aaed52fd64ce50ed29039245f7b89d680b86f835158882721bc8f",
+          "status": "ok",
+          "targetId": "demo:research",
+          "toolsSha256": "sha256:5a83f60a71f582963de07d6f322767866d2f8a3e2a53e482ab74f4c71f944ab6",
+          "transport": "stdio"
+        },
+        "before": {
+          "launchSha256": "sha256:4141d0b7749dfa4a869dbfd86253df4bad05f120eef54100eac6be218f6c133d",
+          "observedAt": "2026-10-26T09:00:00Z",
+          "packageVersion": "1.0.0",
+          "path": "snapshots/research-before.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1.0.0",
+          "sha256": "sha256:f0d61f85b2ce2de63595690bd528b70994f329e3db903ac4d59950fb3b8263da",
+          "status": "ok",
+          "targetId": "demo:research",
+          "toolsSha256": "sha256:a158a85b17112f520008bb6101be9ce04cbfdc6232c7793659b1e4e2e8ca997b",
+          "transport": "stdio"
+        }
+      },
+      "status": "changed",
+      "toolSet": {
+        "added": [
+          "fetch_document"
+        ],
+        "afterCount": 3,
+        "beforeCount": 3,
+        "removed": [
+          "legacy_fetch"
+        ]
+      },
+      "workflows": [
+        {
+          "affectedTools": [
+            "legacy_fetch"
+          ],
+          "description": "\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c \u0430\u0440\u0445\u0438\u0432\u043d\u044b\u0435 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b",
+          "id": "archive-import",
+          "retest": [
+            {
+              "check": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u043c\u0435\u043d\u0443 \u0438\u043b\u0438 \u0437\u0430\u043a\u0440\u0435\u043f\u0438\u0442\u044c \u043f\u0440\u0435\u0436\u043d\u0438\u0439 \u043f\u0430\u043a\u0435\u0442; \u043d\u0435 \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0442\u044c \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439 \u0432\u0441\u043b\u0435\u043f\u0443\u044e.",
+              "tool": "legacy_fetch"
+            }
+          ],
+          "status": "retest",
+          "tools": [
+            "legacy_fetch"
+          ]
+        },
+        {
+          "affectedTools": [
+            "export_brief",
+            "search_docs"
+          ],
+          "description": "\u041f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u0438\u0442\u044c \u0435\u0436\u0435\u043d\u0435\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0431\u0437\u043e\u0440 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u043e\u0432",
+          "id": "weekly-review",
+          "retest": [
+            {
+              "check": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439, permissions \u0438 \u0437\u0430\u044f\u0432\u043b\u0435\u043d\u043d\u044b\u0435 \u0446\u0435\u043d\u044b; annotations \u2014 \u0437\u0430\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u0441\u0435\u0440\u0432\u0435\u0440\u0430.",
+              "tool": "export_brief"
+            },
+            {
+              "check": "\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c \u0438\u0437\u043c\u0435\u043d\u0451\u043d\u043d\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438; \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u044b\u0447\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441 \u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u044b\u0431\u043e\u0440 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0430.",
+              "tool": "search_docs"
+            },
+            {
+              "check": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u0432\u0445\u043e\u0434\u044b, \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b; \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0433\u0440\u0430\u043d\u0438\u0447\u043d\u044b\u0439 \u043f\u0440\u0438\u043c\u0435\u0440.",
+              "tool": "search_docs"
+            },
+            {
+              "check": "\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0443 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0430: \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043f\u043e\u043b\u044f \u0438 \u0442\u0438\u043f\u044b, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0447\u0438\u0442\u0430\u0435\u0442 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439.",
+              "tool": "search_docs"
+            }
+          ],
+          "status": "retest",
+          "tools": [
+            "export_brief",
+            "search_docs"
+          ]
+        }
+      ]
+    }
+  ],
+  "format": "histor.upgrade-brief/v1",
+  "limits": [
+    "\u0421\u0440\u0430\u0432\u043d\u0438\u0432\u0430\u044e\u0442\u0441\u044f \u043d\u0430\u0431\u043b\u044e\u0434\u0430\u0432\u0448\u0438\u0435\u0441\u044f \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0435\u043d\u0438\u044f, \u043d\u0435 \u0444\u0430\u043a\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u043f\u043e\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0441\u0435\u0440\u0432\u0435\u0440\u0430.",
+    "\u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043f\u043e\u043b\u043e\u043c\u043a\u0443; \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0439 \u043d\u0435 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0430\u0435\u0442 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u044c.",
+    "\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0438 \u0441\u0432\u044f\u0437\u0430\u043d\u044b \u043f\u043e \u044f\u0432\u043d\u043e \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u043c \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0430\u043c, \u0431\u0435\u0437 \u0441\u0435\u043c\u0430\u043d\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0433\u043e \u0430\u043d\u0430\u043b\u0438\u0437\u0430.",
+    "\u0420\u0430\u0437\u043c\u0435\u0440 \u043a\u043e\u043c\u043f\u0430\u043a\u0442\u043d\u043e\u0433\u043e JSON \u0432 UTF-8 \u2014 \u0431\u0430\u0439\u0442\u044b, \u043d\u0435 \u0442\u043e\u043a\u0435\u043d\u044b, \u0434\u0435\u043d\u044c\u0433\u0438 \u0438\u043b\u0438 \u0444\u0430\u043a\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u044d\u043a\u043e\u043d\u043e\u043c\u0438\u044f.",
+    "launch \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0445\u0435\u0448\u0435\u043c; \u0443\u0441\u043b\u043e\u0432\u0438\u044f \u043d\u0435 \u0438\u0441\u043f\u043e\u043b\u043d\u044f\u044e\u0442\u0441\u044f \u0438 \u0441\u0435\u043a\u0440\u0435\u0442\u044b \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u044f \u043d\u0435 \u0432\u044b\u0432\u043e\u0434\u044f\u0442\u0441\u044f."
+  ],
+  "summary": {
+    "changed": 1,
+    "context_changed": 1,
+    "unchanged": 0,
+    "unknown": 1
+  },
+  "title": "\u0415\u0436\u0435\u043d\u0435\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u0441\u043a\u0438\u0439 \u043f\u0440\u043e\u0446\u0435\u0441\u0441 \u2014 \u0441\u0438\u043d\u0442\u0435\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u043f\u0440\u0438\u043c\u0435\u0440",
+  "watchlistSha256": "sha256:e02b2ccd26fe814d1ed3a3c8080a6e54176e85260f6fbd6f935ca9f11624bbcb"
+}

@@ -1,0 +1,3741 @@
+{
+  "startedAt": "2026-10-28T16:00:42+00:00",
+  "scope": "80 roster models plus 6 eye variants; all supported Forge/game/World model, preview and OG copies",
+  "origins": {
+    "forge": "https://forge.pingblip.com",
+    "game": "https://pingblip.com",
+    "world": "https://world.pingblip.com"
+  },
+  "sourceRouteEvidence": [
+    "pingblip/deploy/nginx/pingblip.conf: three public HTTPS vhosts proxy to their respective apps",
+    "pingblip/memeforge/Dockerfile: COPY . . includes memeforge/public/models and public/dex",
+    "pingblip/web/Dockerfile: copies memeforge/public/models and world/public/dex into game public/",
+    "pingblip/world/Dockerfile: COPY world . includes world/public/dex; no world models copy",
+    "pingblip/web/next.config.ts: /models/:path* rewrite fallback to Forge",
+    "pingblip/memeforge/src/components/three/SculptedModel.tsx: /models/<id>.glb?v=<content hash>",
+    "pingblip/memeforge/scripts/render-dex.mjs: Forge and World webps, World dex/og jpgs, Forge rendered-from manifest"
+  ],
+  "local": {
+    "ids": [
+      "angry-dumpling",
+      "anvil-priest",
+      "ashtray-monk",
+      "bag-golem",
+      "barrel-toad",
+      "billet-frog",
+      "brass-bust",
+      "bruised-banana",
+      "bunny-wrong",
+      "button-spider",
+      "candle-demon",
+      "caramel-bust",
+      "chart-imp",
+      "chonk-capy",
+      "cigar-orb",
+      "cinder-whelp",
+      "coil-serpent",
+      "cola-cube",
+      "cute-skull",
+      "disk-angel",
+      "dumpster-raccoon",
+      "fee-moth",
+      "frost-imp",
+      "glaze-donut",
+      "goblin-frog",
+      "graveyard-shift",
+      "grease-moth",
+      "gummy-wraith",
+      "heel-golem",
+      "leverage-crab",
+      "liq-snake",
+      "liquid-blade",
+      "lollipop-golem",
+      "marble-head",
+      "mask-zero",
+      "midnight-pizza",
+      "mirror-idol",
+      "mochi-void",
+      "molar-breaker",
+      "motel-orb",
+      "orb-of-fees",
+      "pager-ghost",
+      "pickle-warlord",
+      "pigeon-king",
+      "piston-saint",
+      "pump-goblin",
+      "pumpjack-imp",
+      "quench-eel",
+      "rain-pigeon",
+      "rat-oracle",
+      "rekt-ghost",
+      "rust-crown",
+      "scale-imp",
+      "seam-imp",
+      "signet-ring",
+      "slag-cherub",
+      "slick-eel",
+      "sludge-bean",
+      "soda-can-saint",
+      "soft-egg",
+      "sour-worm",
+      "spark-moth",
+      "spill-orb",
+      "sprinkle-moth",
+      "taco-ghost",
+      "tar-cherub",
+      "taxi-larva",
+      "tiny-crown",
+      "toad-baron",
+      "tongs-golem",
+      "too-many-teeth",
+      "vault-toad",
+      "vending-knight",
+      "void-cat",
+      "wet-neon-cat",
+      "wet-plush",
+      "winged-bolt",
+      "worm-ceo",
+      "yacht-bean",
+      "zap-pebble"
+    ],
+    "count": 80,
+    "assets": [
+      {
+        "id": "angry-dumpling",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/angry-dumpling.glb",
+            "bytes": 1182284,
+            "sha256": "9917d9041b40ac4dbb523b9ac76cebae85e3802eb49e7618658f2bd7bd55b9b2"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/angry-dumpling.glb",
+            "bytes": 1182284,
+            "sha256": "9917d9041b40ac4dbb523b9ac76cebae85e3802eb49e7618658f2bd7bd55b9b2"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/angry-dumpling.webp",
+            "bytes": 13570,
+            "sha256": "fa8e22412ded7536fb4716e2b30777f241eaab67f81b4893a407f519d432c05c"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/angry-dumpling.webp",
+            "bytes": 13570,
+            "sha256": "fa8e22412ded7536fb4716e2b30777f241eaab67f81b4893a407f519d432c05c"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/angry-dumpling.webp",
+            "bytes": 13570,
+            "sha256": "fa8e22412ded7536fb4716e2b30777f241eaab67f81b4893a407f519d432c05c"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/angry-dumpling.jpg",
+            "bytes": 24621,
+            "sha256": "a3e74199330339ea3a526e6ab6cf445277af3c15044bc77868e537e46a99e27b"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/angry-dumpling.jpg",
+            "bytes": 24621,
+            "sha256": "a3e74199330339ea3a526e6ab6cf445277af3c15044bc77868e537e46a99e27b"
+          }
+        },
+        "expectedModelVersion": "9917d9041b"
+      },
+      {
+        "id": "anvil-priest",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/anvil-priest.glb",
+            "bytes": 675000,
+            "sha256": "3853ecee7cee27d32870f6aff935a502281c4995a41bcef402a7e5fc70398dec"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/anvil-priest.glb",
+            "bytes": 675000,
+            "sha256": "3853ecee7cee27d32870f6aff935a502281c4995a41bcef402a7e5fc70398dec"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/anvil-priest.webp",
+            "bytes": 27212,
+            "sha256": "302cc6f12e5e5881749ad81989671a71abf897f0a19e62e12b91edd1ba301de1"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/anvil-priest.webp",
+            "bytes": 27212,
+            "sha256": "302cc6f12e5e5881749ad81989671a71abf897f0a19e62e12b91edd1ba301de1"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/anvil-priest.webp",
+            "bytes": 27212,
+            "sha256": "302cc6f12e5e5881749ad81989671a71abf897f0a19e62e12b91edd1ba301de1"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/anvil-priest.jpg",
+            "bytes": 17337,
+            "sha256": "b9a356d8342a0cc418eb3e6b7833ab102f3060f14336f7ede4629ba72b182e01"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/anvil-priest.jpg",
+            "bytes": 17337,
+            "sha256": "b9a356d8342a0cc418eb3e6b7833ab102f3060f14336f7ede4629ba72b182e01"
+          }
+        },
+        "expectedModelVersion": "3853ecee7c"
+      },
+      {
+        "id": "ashtray-monk",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/ashtray-monk.glb",
+            "bytes": 922716,
+            "sha256": "1badc992361091d3812faf7ade96b6c342028484dff3ae153552eac6558fa91d"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/ashtray-monk.glb",
+            "bytes": 922716,
+            "sha256": "1badc992361091d3812faf7ade96b6c342028484dff3ae153552eac6558fa91d"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/ashtray-monk.webp",
+            "bytes": 16736,
+            "sha256": "2abd31cb5a3ebcb29517c9531fa29332bea9323494db5171b65534dae2bdd1f9"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/ashtray-monk.webp",
+            "bytes": 16736,
+            "sha256": "2abd31cb5a3ebcb29517c9531fa29332bea9323494db5171b65534dae2bdd1f9"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/ashtray-monk.webp",
+            "bytes": 16736,
+            "sha256": "2abd31cb5a3ebcb29517c9531fa29332bea9323494db5171b65534dae2bdd1f9"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/ashtray-monk.jpg",
+            "bytes": 12657,
+            "sha256": "75d9a72a867e8bb09382f5be15b7b000b81794737a8b03f3502c3ae1ff8471a9"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/ashtray-monk.jpg",
+            "bytes": 12657,
+            "sha256": "75d9a72a867e8bb09382f5be15b7b000b81794737a8b03f3502c3ae1ff8471a9"
+          }
+        },
+        "expectedModelVersion": "1badc99236"
+      },
+      {
+        "id": "bag-golem",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/bag-golem.glb",
+            "bytes": 1393232,
+            "sha256": "db8ccc255b7f5f90dcaf27cb51d6eba9ab738e758ff01f70c4e0374d6942bbee"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/bag-golem.glb",
+            "bytes": 1393232,
+            "sha256": "db8ccc255b7f5f90dcaf27cb51d6eba9ab738e758ff01f70c4e0374d6942bbee"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/bag-golem.webp",
+            "bytes": 19940,
+            "sha256": "2c7e31f6e9250bb5f3e3a21c5a974f18c75a521e05d456e4482866672ac266d4"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/bag-golem.webp",
+            "bytes": 19940,
+            "sha256": "2c7e31f6e9250bb5f3e3a21c5a974f18c75a521e05d456e4482866672ac266d4"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/bag-golem.webp",
+            "bytes": 19940,
+            "sha256": "2c7e31f6e9250bb5f3e3a21c5a974f18c75a521e05d456e4482866672ac266d4"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/bag-golem.jpg",
+            "bytes": 15307,
+            "sha256": "451c4241d436bdb2c787c4f2e1035661c29f2638b8c33c6f4a7af659ed050d93"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/bag-golem.jpg",
+            "bytes": 15307,
+            "sha256": "451c4241d436bdb2c787c4f2e1035661c29f2638b8c33c6f4a7af659ed050d93"
+          }
+        },
+        "expectedModelVersion": "db8ccc255b"
+      },
+      {
+        "id": "barrel-toad",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/barrel-toad.glb",
+            "bytes": 1737800,
+            "sha256": "a65a68b5a9761ec3c5140b8f9cd07a7261d0b9b2f16d45fe43df7d17311176a6"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/barrel-toad.glb",
+            "bytes": 1737800,
+            "sha256": "a65a68b5a9761ec3c5140b8f9cd07a7261d0b9b2f16d45fe43df7d17311176a6"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/barrel-toad.webp",
+            "bytes": 21386,
+            "sha256": "02a8730e83a7a844a969fd8c93ae62fadde98bd70effa71ba191e53d3914373d"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/barrel-toad.webp",
+            "bytes": 21386,
+            "sha256": "02a8730e83a7a844a969fd8c93ae62fadde98bd70effa71ba191e53d3914373d"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/barrel-toad.webp",
+            "bytes": 21386,
+            "sha256": "02a8730e83a7a844a969fd8c93ae62fadde98bd70effa71ba191e53d3914373d"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/barrel-toad.jpg",
+            "bytes": 15964,
+            "sha256": "d5f55f211e66f52085c32c2ca6c090de74ea9a6f2a6ac92bbe62a7aad49c6137"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/barrel-toad.jpg",
+            "bytes": 15964,
+            "sha256": "d5f55f211e66f52085c32c2ca6c090de74ea9a6f2a6ac92bbe62a7aad49c6137"
+          }
+        },
+        "expectedModelVersion": "a65a68b5a9"
+      },
+      {
+        "id": "billet-frog",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/billet-frog.glb",
+            "bytes": 829660,
+            "sha256": "5a538f938dae3f822dfafeb408cdb3b9dc08ba4722dc1c81841a6459cc48c5b4"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/billet-frog.glb",
+            "bytes": 829660,
+            "sha256": "5a538f938dae3f822dfafeb408cdb3b9dc08ba4722dc1c81841a6459cc48c5b4"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/billet-frog.webp",
+            "bytes": 28216,
+            "sha256": "244fd63b68677ebcb04361b50a7919dc6bf202b5842f9c81597cf27e13324ef9"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/billet-frog.webp",
+            "bytes": 28216,
+            "sha256": "244fd63b68677ebcb04361b50a7919dc6bf202b5842f9c81597cf27e13324ef9"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/billet-frog.webp",
+            "bytes": 28216,
+            "sha256": "244fd63b68677ebcb04361b50a7919dc6bf202b5842f9c81597cf27e13324ef9"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/billet-frog.jpg",
+            "bytes": 18494,
+            "sha256": "50bd390661e65e9f1ef813518d5544664a9087912b4f38c5687ca7ac0cefef40"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/billet-frog.jpg",
+            "bytes": 18494,
+            "sha256": "50bd390661e65e9f1ef813518d5544664a9087912b4f38c5687ca7ac0cefef40"
+          }
+        },
+        "expectedModelVersion": "5a538f938d"
+      },
+      {
+        "id": "brass-bust",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/brass-bust.glb",
+            "bytes": 615856,
+            "sha256": "10165606a5703a1465268f1f2936705f470cf83215e17ee6abb232d4be883884"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/brass-bust.glb",
+            "bytes": 615856,
+            "sha256": "10165606a5703a1465268f1f2936705f470cf83215e17ee6abb232d4be883884"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/brass-bust.webp",
+            "bytes": 18798,
+            "sha256": "d2838e4792e51a6705630a9e085f841883594361ffadbb4704ac0610500be642"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/brass-bust.webp",
+            "bytes": 18798,
+            "sha256": "d2838e4792e51a6705630a9e085f841883594361ffadbb4704ac0610500be642"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/brass-bust.webp",
+            "bytes": 18798,
+            "sha256": "d2838e4792e51a6705630a9e085f841883594361ffadbb4704ac0610500be642"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/brass-bust.jpg",
+            "bytes": 15837,
+            "sha256": "645f89b707fa237ebb46d9127e16ac57a185e3f04f40885879493b5578011803"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/brass-bust.jpg",
+            "bytes": 15837,
+            "sha256": "645f89b707fa237ebb46d9127e16ac57a185e3f04f40885879493b5578011803"
+          }
+        },
+        "expectedModelVersion": "10165606a5"
+      },
+      {
+        "id": "bruised-banana",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/bruised-banana.glb",
+            "bytes": 1006872,
+            "sha256": "e23d6f0f63898e23751e875b092ebafda0b98a15924a70da5d4cd746cf7e777f"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/bruised-banana.glb",
+            "bytes": 1006872,
+            "sha256": "e23d6f0f63898e23751e875b092ebafda0b98a15924a70da5d4cd746cf7e777f"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/bruised-banana.webp",
+            "bytes": 13264,
+            "sha256": "04381a1a36709a8e267480e5994a78da6652ea42f6383de1d0ed7dfcb3314b66"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/bruised-banana.webp",
+            "bytes": 13264,
+            "sha256": "04381a1a36709a8e267480e5994a78da6652ea42f6383de1d0ed7dfcb3314b66"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/bruised-banana.webp",
+            "bytes": 13264,
+            "sha256": "04381a1a36709a8e267480e5994a78da6652ea42f6383de1d0ed7dfcb3314b66"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/bruised-banana.jpg",
+            "bytes": 20047,
+            "sha256": "40c19f544e07d4f5b4c29fecea2d94d33076bd7a1e7cd5ee78a9a17ebb1046a1"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/bruised-banana.jpg",
+            "bytes": 20047,
+            "sha256": "40c19f544e07d4f5b4c29fecea2d94d33076bd7a1e7cd5ee78a9a17ebb1046a1"
+          }
+        },
+        "expectedModelVersion": "e23d6f0f63"
+      },
+      {
+        "id": "bunny-wrong",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/bunny-wrong.glb",
+            "bytes": 2063156,
+            "sha256": "a783c808727581a1a53c78753bd8736a0c5a3361e1da3cb7c2e91ccca7c054f4"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/bunny-wrong.glb",
+            "bytes": 2063156,
+            "sha256": "a783c808727581a1a53c78753bd8736a0c5a3361e1da3cb7c2e91ccca7c054f4"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/bunny-wrong.webp",
+            "bytes": 20016,
+            "sha256": "1e3fc4b876f46b19051101987e0fea6c4b8f33a6f54051fa2b437e42a1f4e385"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/bunny-wrong.webp",
+            "bytes": 20016,
+            "sha256": "1e3fc4b876f46b19051101987e0fea6c4b8f33a6f54051fa2b437e42a1f4e385"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/bunny-wrong.webp",
+            "bytes": 20016,
+            "sha256": "1e3fc4b876f46b19051101987e0fea6c4b8f33a6f54051fa2b437e42a1f4e385"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/bunny-wrong.jpg",
+            "bytes": 13495,
+            "sha256": "4abef5c63679dbcfef68b4e025053b1cf9a981b1cd382c913d4db9cc7fbc629b"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/bunny-wrong.jpg",
+            "bytes": 13495,
+            "sha256": "4abef5c63679dbcfef68b4e025053b1cf9a981b1cd382c913d4db9cc7fbc629b"
+          }
+        },
+        "expectedModelVersion": "a783c80872"
+      },
+      {
+        "id": "button-spider",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/button-spider.glb",
+            "bytes": 1664408,
+            "sha256": "955cdb9ee04ac9a62c5576639d617e6627416f9163c328ee308d3e8ac185015a"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/button-spider.glb",
+            "bytes": 1664408,
+            "sha256": "955cdb9ee04ac9a62c5576639d617e6627416f9163c328ee308d3e8ac185015a"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/button-spider.webp",
+            "bytes": 35400,
+            "sha256": "b95945ec229188f2fc969de5511db7d48447522fed17a9868f0c72e9f6bb4784"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/button-spider.webp",
+            "bytes": 35400,
+            "sha256": "b95945ec229188f2fc969de5511db7d48447522fed17a9868f0c72e9f6bb4784"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/button-spider.webp",
+            "bytes": 35400,
+            "sha256": "b95945ec229188f2fc969de5511db7d48447522fed17a9868f0c72e9f6bb4784"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/button-spider.jpg",
+            "bytes": 19250,
+            "sha256": "09a4e7e3a5438eea2356163cdaf437fb8c2214da5bf1fa838d021f2889b47217"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/button-spider.jpg",
+            "bytes": 19250,
+            "sha256": "09a4e7e3a5438eea2356163cdaf437fb8c2214da5bf1fa838d021f2889b47217"
+          }
+        },
+        "expectedModelVersion": "955cdb9ee0"
+      },
+      {
+        "id": "candle-demon",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/candle-demon.glb",
+            "bytes": 1248648,
+            "sha256": "301e76e83476b47113fceca3c08308d39371a348ac80ad32bd0850d7526313e2"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/candle-demon.glb",
+            "bytes": 1248648,
+            "sha256": "301e76e83476b47113fceca3c08308d39371a348ac80ad32bd0850d7526313e2"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/candle-demon.webp",
+            "bytes": 35116,
+            "sha256": "d8e234a4d9993928407722861cb8113e40883967e78f2b7f66d2a2f8dee36435"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/candle-demon.webp",
+            "bytes": 35116,
+            "sha256": "d8e234a4d9993928407722861cb8113e40883967e78f2b7f66d2a2f8dee36435"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/candle-demon.webp",
+            "bytes": 35116,
+            "sha256": "d8e234a4d9993928407722861cb8113e40883967e78f2b7f66d2a2f8dee36435"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/candle-demon.jpg",
+            "bytes": 21130,
+            "sha256": "836dcf9f01d121d360a88b1f5c088581ad30390fdda1103e002c69c69d871880"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/candle-demon.jpg",
+            "bytes": 21130,
+            "sha256": "836dcf9f01d121d360a88b1f5c088581ad30390fdda1103e002c69c69d871880"
+          }
+        },
+        "expectedModelVersion": "301e76e834"
+      },
+      {
+        "id": "caramel-bust",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/caramel-bust.glb",
+            "bytes": 519388,
+            "sha256": "ddc5c478d48b6c892c57199fa3ee21546af18b52ecb14d5d6f63d851ba4b178f"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/caramel-bust.glb",
+            "bytes": 519388,
+            "sha256": "ddc5c478d48b6c892c57199fa3ee21546af18b52ecb14d5d6f63d851ba4b178f"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/caramel-bust.webp",
+            "bytes": 19006,
+            "sha256": "a08446fff8893fcc415f11e5ca68a08adc1012567508f9c66a8b8d2d139353fe"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/caramel-bust.webp",
+            "bytes": 19006,
+            "sha256": "a08446fff8893fcc415f11e5ca68a08adc1012567508f9c66a8b8d2d139353fe"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/caramel-bust.webp",
+            "bytes": 19006,
+            "sha256": "a08446fff8893fcc415f11e5ca68a08adc1012567508f9c66a8b8d2d139353fe"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/caramel-bust.jpg",
+            "bytes": 14762,
+            "sha256": "7a8ef6d5fc3e5b3d2d444e4c51032ecaa480ff410faf1717503d555a6b42ea3a"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/caramel-bust.jpg",
+            "bytes": 14762,
+            "sha256": "7a8ef6d5fc3e5b3d2d444e4c51032ecaa480ff410faf1717503d555a6b42ea3a"
+          }
+        },
+        "expectedModelVersion": "ddc5c478d4"
+      },
+      {
+        "id": "chart-imp",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/chart-imp.glb",
+            "bytes": 4749016,
+            "sha256": "d98298690f5a7488ed6a7af3b3ac49d143d44653aa54f62118ee3be8a2fe4c1a"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/chart-imp.glb",
+            "bytes": 4749016,
+            "sha256": "d98298690f5a7488ed6a7af3b3ac49d143d44653aa54f62118ee3be8a2fe4c1a"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/chart-imp.webp",
+            "bytes": 30512,
+            "sha256": "f5b74fd26f4fdd7f746c6ee950678d81c01c834825766d77c9060719c8612372"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/chart-imp.webp",
+            "bytes": 30512,
+            "sha256": "f5b74fd26f4fdd7f746c6ee950678d81c01c834825766d77c9060719c8612372"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/chart-imp.webp",
+            "bytes": 30512,
+            "sha256": "f5b74fd26f4fdd7f746c6ee950678d81c01c834825766d77c9060719c8612372"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/chart-imp.jpg",
+            "bytes": 20528,
+            "sha256": "29f02070f5e4dac559ea475b711377de5c574d5100b82b2715d3f0584d315096"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/chart-imp.jpg",
+            "bytes": 20528,
+            "sha256": "29f02070f5e4dac559ea475b711377de5c574d5100b82b2715d3f0584d315096"
+          }
+        },
+        "expectedModelVersion": "d98298690f"
+      },
+      {
+        "id": "chonk-capy",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/chonk-capy.glb",
+            "bytes": 2317912,
+            "sha256": "c72927265c56ef30271b875baafaea3b2aa32890238966fafcbd62bc9ab17c5e"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/chonk-capy.glb",
+            "bytes": 2317912,
+            "sha256": "c72927265c56ef30271b875baafaea3b2aa32890238966fafcbd62bc9ab17c5e"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/chonk-capy.webp",
+            "bytes": 18860,
+            "sha256": "8e6e661ba46bbf75dd287aab2639796aa9c2096e1dddb54981d21530cae356d2"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/chonk-capy.webp",
+            "bytes": 18860,
+            "sha256": "8e6e661ba46bbf75dd287aab2639796aa9c2096e1dddb54981d21530cae356d2"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/chonk-capy.webp",
+            "bytes": 18860,
+            "sha256": "8e6e661ba46bbf75dd287aab2639796aa9c2096e1dddb54981d21530cae356d2"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/chonk-capy.jpg",
+            "bytes": 14000,
+            "sha256": "dff1afd73e90235ad4c10a9c0a3ef05f225d796b493d55b38e093382e2f0fb87"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/chonk-capy.jpg",
+            "bytes": 14000,
+            "sha256": "dff1afd73e90235ad4c10a9c0a3ef05f225d796b493d55b38e093382e2f0fb87"
+          }
+        },
+        "expectedModelVersion": "c72927265c"
+      },
+      {
+        "id": "cigar-orb",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/cigar-orb.glb",
+            "bytes": 1740984,
+            "sha256": "8a31dd356fd82e330df721ee899c6ebceef75412f18b309b8d5536652af1ce63"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/cigar-orb.glb",
+            "bytes": 1740984,
+            "sha256": "8a31dd356fd82e330df721ee899c6ebceef75412f18b309b8d5536652af1ce63"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/cigar-orb.webp",
+            "bytes": 19890,
+            "sha256": "b74027138f73df72595200c23204bbd1265f859ae49d04c144dcb18cc3f295d7"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/cigar-orb.webp",
+            "bytes": 19890,
+            "sha256": "b74027138f73df72595200c23204bbd1265f859ae49d04c144dcb18cc3f295d7"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/cigar-orb.webp",
+            "bytes": 19890,
+            "sha256": "b74027138f73df72595200c23204bbd1265f859ae49d04c144dcb18cc3f295d7"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/cigar-orb.jpg",
+            "bytes": 13968,
+            "sha256": "a81b42ea067094aad190c94a4d2e89989b4a093a36b3898a1cb23b88ce77a53d"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/cigar-orb.jpg",
+            "bytes": 13968,
+            "sha256": "a81b42ea067094aad190c94a4d2e89989b4a093a36b3898a1cb23b88ce77a53d"
+          }
+        },
+        "expectedModelVersion": "8a31dd356f"
+      },
+      {
+        "id": "cinder-whelp",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/cinder-whelp.glb",
+            "bytes": 1958024,
+            "sha256": "e1fd0cfa62bffaedacacdad098cb93434fde27d3c6bde8e7927029bfcc242989"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/cinder-whelp.glb",
+            "bytes": 1958024,
+            "sha256": "e1fd0cfa62bffaedacacdad098cb93434fde27d3c6bde8e7927029bfcc242989"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/cinder-whelp.webp",
+            "bytes": 23290,
+            "sha256": "bd4efc47e5c150532a4e45c510054cb18d45bb727ff799c715e467cdef9f9fe7"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/cinder-whelp.webp",
+            "bytes": 23290,
+            "sha256": "bd4efc47e5c150532a4e45c510054cb18d45bb727ff799c715e467cdef9f9fe7"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/cinder-whelp.webp",
+            "bytes": 23290,
+            "sha256": "bd4efc47e5c150532a4e45c510054cb18d45bb727ff799c715e467cdef9f9fe7"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/cinder-whelp.jpg",
+            "bytes": 17281,
+            "sha256": "e092b4bd4f9dd88588e0f72a56bed3384513f800485046c60988d7c382ced1e0"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/cinder-whelp.jpg",
+            "bytes": 17281,
+            "sha256": "e092b4bd4f9dd88588e0f72a56bed3384513f800485046c60988d7c382ced1e0"
+          }
+        },
+        "expectedModelVersion": "e1fd0cfa62"
+      },
+      {
+        "id": "coil-serpent",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/coil-serpent.glb",
+            "bytes": 1886952,
+            "sha256": "4fbec6645f82afebbc17cd926e71d3c3627811ba38c82c81fd4bd8c0a261b181"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/coil-serpent.glb",
+            "bytes": 1886952,
+            "sha256": "4fbec6645f82afebbc17cd926e71d3c3627811ba38c82c81fd4bd8c0a261b181"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/coil-serpent.webp",
+            "bytes": 17472,
+            "sha256": "4ebc3d6353cd2f3e9e695f434342b6449236930ea04a52b93a7522bf7e075846"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/coil-serpent.webp",
+            "bytes": 17472,
+            "sha256": "4ebc3d6353cd2f3e9e695f434342b6449236930ea04a52b93a7522bf7e075846"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/coil-serpent.webp",
+            "bytes": 17472,
+            "sha256": "4ebc3d6353cd2f3e9e695f434342b6449236930ea04a52b93a7522bf7e075846"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/coil-serpent.jpg",
+            "bytes": 25316,
+            "sha256": "3722a1726197c95024e54203c9fdc9bdc08e4f4a268229e23572693a4338397d"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/coil-serpent.jpg",
+            "bytes": 25316,
+            "sha256": "3722a1726197c95024e54203c9fdc9bdc08e4f4a268229e23572693a4338397d"
+          }
+        },
+        "expectedModelVersion": "4fbec6645f"
+      },
+      {
+        "id": "cola-cube",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/cola-cube.glb",
+            "bytes": 1586468,
+            "sha256": "e6f62b6587014bdfd24efe9354a568ab14b8392b6dc5f91388993561c4b8a827"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/cola-cube.glb",
+            "bytes": 1586468,
+            "sha256": "e6f62b6587014bdfd24efe9354a568ab14b8392b6dc5f91388993561c4b8a827"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/cola-cube.webp",
+            "bytes": 17578,
+            "sha256": "ce09cfb5aa80f6091967e04df4b13bd78132f07928af2305a075f380b8689138"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/cola-cube.webp",
+            "bytes": 17578,
+            "sha256": "ce09cfb5aa80f6091967e04df4b13bd78132f07928af2305a075f380b8689138"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/cola-cube.webp",
+            "bytes": 17578,
+            "sha256": "ce09cfb5aa80f6091967e04df4b13bd78132f07928af2305a075f380b8689138"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/cola-cube.jpg",
+            "bytes": 15493,
+            "sha256": "2f0b6c34c016801ea1f8ab64ae09666c93a61b183a7d4e66db9f9b8bf2f08c8c"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/cola-cube.jpg",
+            "bytes": 15493,
+            "sha256": "2f0b6c34c016801ea1f8ab64ae09666c93a61b183a7d4e66db9f9b8bf2f08c8c"
+          }
+        },
+        "expectedModelVersion": "e6f62b6587"
+      },
+      {
+        "id": "cute-skull",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/cute-skull.glb",
+            "bytes": 699984,
+            "sha256": "e900f09094cb3f9b560ba7ef175e222766b1226dae916791db5cf39fc23752a6"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/cute-skull.glb",
+            "bytes": 699984,
+            "sha256": "e900f09094cb3f9b560ba7ef175e222766b1226dae916791db5cf39fc23752a6"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/cute-skull.webp",
+            "bytes": 15824,
+            "sha256": "8d54e61683b692b9a986fd2c9473932e0da347153d647da1c278d9eec6e8fa95"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/cute-skull.webp",
+            "bytes": 15824,
+            "sha256": "8d54e61683b692b9a986fd2c9473932e0da347153d647da1c278d9eec6e8fa95"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/cute-skull.webp",
+            "bytes": 15824,
+            "sha256": "8d54e61683b692b9a986fd2c9473932e0da347153d647da1c278d9eec6e8fa95"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/cute-skull.jpg",
+            "bytes": 15200,
+            "sha256": "2fdcc3c526d9fc19900b05fbdb888dbbb212e328cc29a0fbcd6fea389fb745d8"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/cute-skull.jpg",
+            "bytes": 15200,
+            "sha256": "2fdcc3c526d9fc19900b05fbdb888dbbb212e328cc29a0fbcd6fea389fb745d8"
+          }
+        },
+        "expectedModelVersion": "e900f09094"
+      },
+      {
+        "id": "disk-angel",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/disk-angel.glb",
+            "bytes": 982232,
+            "sha256": "c349903388737a8dd9eb5046746c92b579d2cf53596c2e2673e2603393f2e1a1"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/disk-angel.glb",
+            "bytes": 982232,
+            "sha256": "c349903388737a8dd9eb5046746c92b579d2cf53596c2e2673e2603393f2e1a1"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/disk-angel.webp",
+            "bytes": 33758,
+            "sha256": "f4f943f984273189a11421da0aacbf6ef09cc76935809a4450c1f4c58f589b60"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/disk-angel.webp",
+            "bytes": 33758,
+            "sha256": "f4f943f984273189a11421da0aacbf6ef09cc76935809a4450c1f4c58f589b60"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/disk-angel.webp",
+            "bytes": 33758,
+            "sha256": "f4f943f984273189a11421da0aacbf6ef09cc76935809a4450c1f4c58f589b60"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/disk-angel.jpg",
+            "bytes": 21300,
+            "sha256": "ba95336ef9a533e8fcb2b4209558eb38d699c348dd58b2d174c876fe574d322d"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/disk-angel.jpg",
+            "bytes": 21300,
+            "sha256": "ba95336ef9a533e8fcb2b4209558eb38d699c348dd58b2d174c876fe574d322d"
+          }
+        },
+        "expectedModelVersion": "c349903388"
+      },
+      {
+        "id": "dumpster-raccoon",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/dumpster-raccoon.glb",
+            "bytes": 3133252,
+            "sha256": "62b39bd89f8ce49bdb158184cc7c8c6b01c3430e0d19e43494fb476e6d404aab"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/dumpster-raccoon.glb",
+            "bytes": 3133252,
+            "sha256": "62b39bd89f8ce49bdb158184cc7c8c6b01c3430e0d19e43494fb476e6d404aab"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/dumpster-raccoon.webp",
+            "bytes": 20762,
+            "sha256": "aaf43425a932b5bb01b7f6dcdfc0ee9d3944d1519b7676dacd312ab43ee8d6a3"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/dumpster-raccoon.webp",
+            "bytes": 20762,
+            "sha256": "aaf43425a932b5bb01b7f6dcdfc0ee9d3944d1519b7676dacd312ab43ee8d6a3"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/dumpster-raccoon.webp",
+            "bytes": 20762,
+            "sha256": "aaf43425a932b5bb01b7f6dcdfc0ee9d3944d1519b7676dacd312ab43ee8d6a3"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/dumpster-raccoon.jpg",
+            "bytes": 16769,
+            "sha256": "495daf22197056f5b8368865b29956e6d946d3a4c2c604c8aa29ab803f980ce7"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/dumpster-raccoon.jpg",
+            "bytes": 16769,
+            "sha256": "495daf22197056f5b8368865b29956e6d946d3a4c2c604c8aa29ab803f980ce7"
+          }
+        },
+        "expectedModelVersion": "62b39bd89f"
+      },
+      {
+        "id": "fee-moth",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/fee-moth.glb",
+            "bytes": 1475104,
+            "sha256": "ad42a9a71c149d94353a5cc0bc29ce20e33dedfcdb2d93ab219027f7c0dfffac"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/fee-moth.glb",
+            "bytes": 1475104,
+            "sha256": "ad42a9a71c149d94353a5cc0bc29ce20e33dedfcdb2d93ab219027f7c0dfffac"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/fee-moth.webp",
+            "bytes": 34224,
+            "sha256": "c5a1859a543987fd2bebcd79775e8f8b52de2115bca8bdd5f536f24fe33eb477"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/fee-moth.webp",
+            "bytes": 34224,
+            "sha256": "c5a1859a543987fd2bebcd79775e8f8b52de2115bca8bdd5f536f24fe33eb477"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/fee-moth.webp",
+            "bytes": 34224,
+            "sha256": "c5a1859a543987fd2bebcd79775e8f8b52de2115bca8bdd5f536f24fe33eb477"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/fee-moth.jpg",
+            "bytes": 23373,
+            "sha256": "1edf5b6e67094ca587c97022b202b3bddda9c3250cefa76376df339ac73239d4"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/fee-moth.jpg",
+            "bytes": 23373,
+            "sha256": "1edf5b6e67094ca587c97022b202b3bddda9c3250cefa76376df339ac73239d4"
+          }
+        },
+        "expectedModelVersion": "ad42a9a71c"
+      },
+      {
+        "id": "frost-imp",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/frost-imp.glb",
+            "bytes": 500848,
+            "sha256": "b9bed7f619c6e1c7426cdcd6e940b105ab0f8cd9ca06c45c082c1b45c365620a"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/frost-imp.glb",
+            "bytes": 500848,
+            "sha256": "b9bed7f619c6e1c7426cdcd6e940b105ab0f8cd9ca06c45c082c1b45c365620a"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/frost-imp.webp",
+            "bytes": 20314,
+            "sha256": "8a7f69e0145e4be042f155fba95ac48c1ac792ffce332b9d6aaa717176a8dbc3"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/frost-imp.webp",
+            "bytes": 20314,
+            "sha256": "8a7f69e0145e4be042f155fba95ac48c1ac792ffce332b9d6aaa717176a8dbc3"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/frost-imp.webp",
+            "bytes": 20314,
+            "sha256": "8a7f69e0145e4be042f155fba95ac48c1ac792ffce332b9d6aaa717176a8dbc3"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/frost-imp.jpg",
+            "bytes": 16223,
+            "sha256": "a545b5f84920fff456fab310edc781737961705848e8ee3cdf3fbdd3f0aa355a"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/frost-imp.jpg",
+            "bytes": 16223,
+            "sha256": "a545b5f84920fff456fab310edc781737961705848e8ee3cdf3fbdd3f0aa355a"
+          }
+        },
+        "expectedModelVersion": "b9bed7f619"
+      },
+      {
+        "id": "glaze-donut",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/glaze-donut.glb",
+            "bytes": 946632,
+            "sha256": "3c8babfb401565c98b10fc53b11257275bce1f1cc1735fe58fdc3d5878d1354f"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/glaze-donut.glb",
+            "bytes": 946632,
+            "sha256": "3c8babfb401565c98b10fc53b11257275bce1f1cc1735fe58fdc3d5878d1354f"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/glaze-donut.webp",
+            "bytes": 23332,
+            "sha256": "bfba107b6089ceb94a2edd31f466fee3164cc1569070b5674b8989553164a458"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/glaze-donut.webp",
+            "bytes": 23332,
+            "sha256": "bfba107b6089ceb94a2edd31f466fee3164cc1569070b5674b8989553164a458"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/glaze-donut.webp",
+            "bytes": 23332,
+            "sha256": "bfba107b6089ceb94a2edd31f466fee3164cc1569070b5674b8989553164a458"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/glaze-donut.jpg",
+            "bytes": 19540,
+            "sha256": "684fc4c4d505ea5969a948c86114fe6824019037c996376c4595fea359f8b775"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/glaze-donut.jpg",
+            "bytes": 19540,
+            "sha256": "684fc4c4d505ea5969a948c86114fe6824019037c996376c4595fea359f8b775"
+          }
+        },
+        "expectedModelVersion": "3c8babfb40"
+      },
+      {
+        "id": "goblin-frog",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/goblin-frog.glb",
+            "bytes": 5043500,
+            "sha256": "ed6658439fc397ec1f0b782f186e2e0d317cdcaef54e48f98894a8f92b90aafa"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/goblin-frog.glb",
+            "bytes": 5043500,
+            "sha256": "ed6658439fc397ec1f0b782f186e2e0d317cdcaef54e48f98894a8f92b90aafa"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/goblin-frog.webp",
+            "bytes": 25300,
+            "sha256": "4ff762c5d99a8654a07abf73ef79f88b262cd264667fad313d7ea276b631e008"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/goblin-frog.webp",
+            "bytes": 25300,
+            "sha256": "4ff762c5d99a8654a07abf73ef79f88b262cd264667fad313d7ea276b631e008"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/goblin-frog.webp",
+            "bytes": 25300,
+            "sha256": "4ff762c5d99a8654a07abf73ef79f88b262cd264667fad313d7ea276b631e008"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/goblin-frog.jpg",
+            "bytes": 21898,
+            "sha256": "a9465e2d9afe3c2f50263e81554a3146683b0d75ef1584045766b2e5fcf78c76"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/goblin-frog.jpg",
+            "bytes": 21898,
+            "sha256": "a9465e2d9afe3c2f50263e81554a3146683b0d75ef1584045766b2e5fcf78c76"
+          }
+        },
+        "expectedModelVersion": "ed6658439f"
+      },
+      {
+        "id": "graveyard-shift",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/graveyard-shift.glb",
+            "bytes": 1701424,
+            "sha256": "9261258af01d24834015ab68e8cddba5c3ff0354e891dca138d2a9bf61b1545d"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/graveyard-shift.glb",
+            "bytes": 1701424,
+            "sha256": "9261258af01d24834015ab68e8cddba5c3ff0354e891dca138d2a9bf61b1545d"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/graveyard-shift.webp",
+            "bytes": 23092,
+            "sha256": "beaee811d0908c40338f9f264b92c5e99c298809a58e491f33de1e62b3f6c1f3"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/graveyard-shift.webp",
+            "bytes": 23092,
+            "sha256": "beaee811d0908c40338f9f264b92c5e99c298809a58e491f33de1e62b3f6c1f3"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/graveyard-shift.webp",
+            "bytes": 23092,
+            "sha256": "beaee811d0908c40338f9f264b92c5e99c298809a58e491f33de1e62b3f6c1f3"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/graveyard-shift.jpg",
+            "bytes": 14611,
+            "sha256": "561e7356d754ef48ece35333b9b3a1e74a940f18677cd3d31a2286e7d04e7886"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/graveyard-shift.jpg",
+            "bytes": 14611,
+            "sha256": "561e7356d754ef48ece35333b9b3a1e74a940f18677cd3d31a2286e7d04e7886"
+          }
+        },
+        "expectedModelVersion": "9261258af0"
+      },
+      {
+        "id": "grease-moth",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/grease-moth.glb",
+            "bytes": 3955192,
+            "sha256": "f4b5f3970834d9ecc391207a2968f2544a03b14b9f3b67aab4cd2059cdeb2ab5"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/grease-moth.glb",
+            "bytes": 3955192,
+            "sha256": "f4b5f3970834d9ecc391207a2968f2544a03b14b9f3b67aab4cd2059cdeb2ab5"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/grease-moth.webp",
+            "bytes": 27486,
+            "sha256": "8df52ac4d312111511198b9a851316179dea59503857fb692a8196ba8b1ee897"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/grease-moth.webp",
+            "bytes": 27486,
+            "sha256": "8df52ac4d312111511198b9a851316179dea59503857fb692a8196ba8b1ee897"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/grease-moth.webp",
+            "bytes": 27486,
+            "sha256": "8df52ac4d312111511198b9a851316179dea59503857fb692a8196ba8b1ee897"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/grease-moth.jpg",
+            "bytes": 20729,
+            "sha256": "aaacfb91f82050b70269690c96b6f35e76dc81cd8ed333125451dd8aa586c3c1"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/grease-moth.jpg",
+            "bytes": 20729,
+            "sha256": "aaacfb91f82050b70269690c96b6f35e76dc81cd8ed333125451dd8aa586c3c1"
+          }
+        },
+        "expectedModelVersion": "f4b5f39708"
+      },
+      {
+        "id": "gummy-wraith",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/gummy-wraith.glb",
+            "bytes": 1180480,
+            "sha256": "e9f10376b97d029fcb1e854c839331b16c32e7281c83bc5ac4133204fa6f3d23"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/gummy-wraith.glb",
+            "bytes": 1180480,
+            "sha256": "e9f10376b97d029fcb1e854c839331b16c32e7281c83bc5ac4133204fa6f3d23"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/gummy-wraith.webp",
+            "bytes": 17338,
+            "sha256": "4cb83dee9b75558e25d128bbee54599b45c38c7e1e9c04a0d97c6d7175f02c30"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/gummy-wraith.webp",
+            "bytes": 17338,
+            "sha256": "4cb83dee9b75558e25d128bbee54599b45c38c7e1e9c04a0d97c6d7175f02c30"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/gummy-wraith.webp",
+            "bytes": 17338,
+            "sha256": "4cb83dee9b75558e25d128bbee54599b45c38c7e1e9c04a0d97c6d7175f02c30"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/gummy-wraith.jpg",
+            "bytes": 26547,
+            "sha256": "9a2979e441b334bf5c4533c32ae874d8df8592ef3e7a08a5911a66e1e93fac50"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/gummy-wraith.jpg",
+            "bytes": 26547,
+            "sha256": "9a2979e441b334bf5c4533c32ae874d8df8592ef3e7a08a5911a66e1e93fac50"
+          }
+        },
+        "expectedModelVersion": "e9f10376b9"
+      },
+      {
+        "id": "heel-golem",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/heel-golem.glb",
+            "bytes": 2279360,
+            "sha256": "28913038d5e6e8b2c77a7e270be6e43508b2b78b84b1ae28ac7baed31e059eba"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/heel-golem.glb",
+            "bytes": 2279360,
+            "sha256": "28913038d5e6e8b2c77a7e270be6e43508b2b78b84b1ae28ac7baed31e059eba"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/heel-golem.webp",
+            "bytes": 14834,
+            "sha256": "841e2701b939a9e5437f287b1d48d71018231a2fb616d6833ce61758e0888f8f"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/heel-golem.webp",
+            "bytes": 14834,
+            "sha256": "841e2701b939a9e5437f287b1d48d71018231a2fb616d6833ce61758e0888f8f"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/heel-golem.webp",
+            "bytes": 14834,
+            "sha256": "841e2701b939a9e5437f287b1d48d71018231a2fb616d6833ce61758e0888f8f"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/heel-golem.jpg",
+            "bytes": 24130,
+            "sha256": "6e2b861f3403afd0b9228a67cb35807b1e310ec32eda5a34e0d2c41ec9572bdc"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/heel-golem.jpg",
+            "bytes": 24130,
+            "sha256": "6e2b861f3403afd0b9228a67cb35807b1e310ec32eda5a34e0d2c41ec9572bdc"
+          }
+        },
+        "expectedModelVersion": "28913038d5"
+      },
+      {
+        "id": "leverage-crab",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/leverage-crab.glb",
+            "bytes": 1695080,
+            "sha256": "fd6fe8d5ab6db42731988e38b627c17bced803b3778967454523cf6d5a8fc8d2"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/leverage-crab.glb",
+            "bytes": 1695080,
+            "sha256": "fd6fe8d5ab6db42731988e38b627c17bced803b3778967454523cf6d5a8fc8d2"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/leverage-crab.webp",
+            "bytes": 30042,
+            "sha256": "7be0b26d7e8051dc2074b550c173aa89a4da31d44236c684270562c26df2b6ae"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/leverage-crab.webp",
+            "bytes": 30042,
+            "sha256": "7be0b26d7e8051dc2074b550c173aa89a4da31d44236c684270562c26df2b6ae"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/leverage-crab.webp",
+            "bytes": 30042,
+            "sha256": "7be0b26d7e8051dc2074b550c173aa89a4da31d44236c684270562c26df2b6ae"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/leverage-crab.jpg",
+            "bytes": 14745,
+            "sha256": "89d2737cdf478dcef59b647a3a5d0b423302598225bc5e78f720aa0933943bd9"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/leverage-crab.jpg",
+            "bytes": 14745,
+            "sha256": "89d2737cdf478dcef59b647a3a5d0b423302598225bc5e78f720aa0933943bd9"
+          }
+        },
+        "expectedModelVersion": "fd6fe8d5ab"
+      },
+      {
+        "id": "liq-snake",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/liq-snake.glb",
+            "bytes": 1754128,
+            "sha256": "75b124bb54424a6f2c8df7a03bcd2f70840ab8584d6f63049f8139ff7d5e13f3"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/liq-snake.glb",
+            "bytes": 1754128,
+            "sha256": "75b124bb54424a6f2c8df7a03bcd2f70840ab8584d6f63049f8139ff7d5e13f3"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/liq-snake.webp",
+            "bytes": 17360,
+            "sha256": "dbdf6f1c70db9c90214dd149dd8daf96085f2c8e9e66ddb904d25873d1ba57fc"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/liq-snake.webp",
+            "bytes": 17360,
+            "sha256": "dbdf6f1c70db9c90214dd149dd8daf96085f2c8e9e66ddb904d25873d1ba57fc"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/liq-snake.webp",
+            "bytes": 17360,
+            "sha256": "dbdf6f1c70db9c90214dd149dd8daf96085f2c8e9e66ddb904d25873d1ba57fc"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/liq-snake.jpg",
+            "bytes": 25772,
+            "sha256": "c55ce190f04b65f90f5d97296737bc933170d76e74c6262b2438998359313db9"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/liq-snake.jpg",
+            "bytes": 25772,
+            "sha256": "c55ce190f04b65f90f5d97296737bc933170d76e74c6262b2438998359313db9"
+          }
+        },
+        "expectedModelVersion": "75b124bb54"
+      },
+      {
+        "id": "liquid-blade",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/liquid-blade.glb",
+            "bytes": 543400,
+            "sha256": "663308fc98b82d15034750d410b79b079c6b6f47c3bc71022d5c82e0b9e3c480"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/liquid-blade.glb",
+            "bytes": 543400,
+            "sha256": "663308fc98b82d15034750d410b79b079c6b6f47c3bc71022d5c82e0b9e3c480"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/liquid-blade.webp",
+            "bytes": 13394,
+            "sha256": "8c20d2780f62d36f885086c340828022dbd6a7e9b074cdf4d891e07876724390"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/liquid-blade.webp",
+            "bytes": 13394,
+            "sha256": "8c20d2780f62d36f885086c340828022dbd6a7e9b074cdf4d891e07876724390"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/liquid-blade.webp",
+            "bytes": 13394,
+            "sha256": "8c20d2780f62d36f885086c340828022dbd6a7e9b074cdf4d891e07876724390"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/liquid-blade.jpg",
+            "bytes": 20093,
+            "sha256": "81b79e1d3d5f3fc92a63d2c5d22264ac515d146eb0a8a9b6cb42a546ee1a6c73"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/liquid-blade.jpg",
+            "bytes": 20093,
+            "sha256": "81b79e1d3d5f3fc92a63d2c5d22264ac515d146eb0a8a9b6cb42a546ee1a6c73"
+          }
+        },
+        "expectedModelVersion": "663308fc98"
+      },
+      {
+        "id": "lollipop-golem",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/lollipop-golem.glb",
+            "bytes": 630572,
+            "sha256": "ec31aa0afca1398f473b60f3ec2d586c0ad4c8d5369221ced01730c37f009a07"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/lollipop-golem.glb",
+            "bytes": 630572,
+            "sha256": "ec31aa0afca1398f473b60f3ec2d586c0ad4c8d5369221ced01730c37f009a07"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/lollipop-golem.webp",
+            "bytes": 20540,
+            "sha256": "6a7f10204cfc97e90e5b4a51d61f8ff33ce3568e4f19d13c885d7f3b5ab1070e"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/lollipop-golem.webp",
+            "bytes": 20540,
+            "sha256": "6a7f10204cfc97e90e5b4a51d61f8ff33ce3568e4f19d13c885d7f3b5ab1070e"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/lollipop-golem.webp",
+            "bytes": 20540,
+            "sha256": "6a7f10204cfc97e90e5b4a51d61f8ff33ce3568e4f19d13c885d7f3b5ab1070e"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/lollipop-golem.jpg",
+            "bytes": 18558,
+            "sha256": "7ee88c00067447bf510235f9c875eec5a88a324a18cc185cfca1bf59f9f88d34"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/lollipop-golem.jpg",
+            "bytes": 18558,
+            "sha256": "7ee88c00067447bf510235f9c875eec5a88a324a18cc185cfca1bf59f9f88d34"
+          }
+        },
+        "expectedModelVersion": "ec31aa0afc"
+      },
+      {
+        "id": "marble-head",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/marble-head.glb",
+            "bytes": 458068,
+            "sha256": "13c9c3f001f671be56adf3cc8c6fe744a8f944b1de167f5240386c6669217d3a"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/marble-head.glb",
+            "bytes": 458068,
+            "sha256": "13c9c3f001f671be56adf3cc8c6fe744a8f944b1de167f5240386c6669217d3a"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/marble-head.webp",
+            "bytes": 16884,
+            "sha256": "13fa8e71e78538ee02423d87fa47e14df439e48962f68f3fcfa2b9803167269e"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/marble-head.webp",
+            "bytes": 16884,
+            "sha256": "13fa8e71e78538ee02423d87fa47e14df439e48962f68f3fcfa2b9803167269e"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/marble-head.webp",
+            "bytes": 16884,
+            "sha256": "13fa8e71e78538ee02423d87fa47e14df439e48962f68f3fcfa2b9803167269e"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/marble-head.jpg",
+            "bytes": 14166,
+            "sha256": "4d20dc460e30226ef318cda649093b65475a84c3490a6f06a8abb98b20a059cf"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/marble-head.jpg",
+            "bytes": 14166,
+            "sha256": "4d20dc460e30226ef318cda649093b65475a84c3490a6f06a8abb98b20a059cf"
+          }
+        },
+        "expectedModelVersion": "13c9c3f001"
+      },
+      {
+        "id": "mask-zero",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/mask-zero.glb",
+            "bytes": 362644,
+            "sha256": "42b5d8cf9bc0f1a0f1d7493e5eabe6879aef7bab62844398b73994f34b948020"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/mask-zero.glb",
+            "bytes": 362644,
+            "sha256": "42b5d8cf9bc0f1a0f1d7493e5eabe6879aef7bab62844398b73994f34b948020"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/mask-zero.webp",
+            "bytes": 16812,
+            "sha256": "45945caabf018d5ce869a0ee141759a4b84187bd8578baf1810492c1a6b20d52"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/mask-zero.webp",
+            "bytes": 16812,
+            "sha256": "45945caabf018d5ce869a0ee141759a4b84187bd8578baf1810492c1a6b20d52"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/mask-zero.webp",
+            "bytes": 16812,
+            "sha256": "45945caabf018d5ce869a0ee141759a4b84187bd8578baf1810492c1a6b20d52"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/mask-zero.jpg",
+            "bytes": 11249,
+            "sha256": "12336ab514f2d6f703da3635da25e642792e2c51ecdb66b4faece7195bc7cfa1"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/mask-zero.jpg",
+            "bytes": 11249,
+            "sha256": "12336ab514f2d6f703da3635da25e642792e2c51ecdb66b4faece7195bc7cfa1"
+          }
+        },
+        "expectedModelVersion": "42b5d8cf9b"
+      },
+      {
+        "id": "midnight-pizza",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/midnight-pizza.glb",
+            "bytes": 3100648,
+            "sha256": "6d2f2f17339acfe402211fe74543d848df1ffa313f8583b96c66247c4320b9ba"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/midnight-pizza.glb",
+            "bytes": 3100648,
+            "sha256": "6d2f2f17339acfe402211fe74543d848df1ffa313f8583b96c66247c4320b9ba"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/midnight-pizza.webp",
+            "bytes": 24692,
+            "sha256": "15e3945edf1593e46fa23aa24236b5c8a91b477f1f36281f80a1229d40b8dde0"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/midnight-pizza.webp",
+            "bytes": 24692,
+            "sha256": "15e3945edf1593e46fa23aa24236b5c8a91b477f1f36281f80a1229d40b8dde0"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/midnight-pizza.webp",
+            "bytes": 24692,
+            "sha256": "15e3945edf1593e46fa23aa24236b5c8a91b477f1f36281f80a1229d40b8dde0"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/midnight-pizza.jpg",
+            "bytes": 20563,
+            "sha256": "8101a9181b0c310a2d2f28dab4d4b0e4fcf3867b7807414155b988e6aa36cfb9"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/midnight-pizza.jpg",
+            "bytes": 20563,
+            "sha256": "8101a9181b0c310a2d2f28dab4d4b0e4fcf3867b7807414155b988e6aa36cfb9"
+          }
+        },
+        "expectedModelVersion": "6d2f2f1733"
+      },
+      {
+        "id": "mirror-idol",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/mirror-idol.glb",
+            "bytes": 479808,
+            "sha256": "267ed2ae8afdbc28effe5dd4f6d8c6109195790e30205081935ae04d32b565be"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/mirror-idol.glb",
+            "bytes": 479808,
+            "sha256": "267ed2ae8afdbc28effe5dd4f6d8c6109195790e30205081935ae04d32b565be"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/mirror-idol.webp",
+            "bytes": 29748,
+            "sha256": "b22be11c0274b6300dffdf02c8054d06ccecd81674d840b4eb5ba9d75ca063c6"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/mirror-idol.webp",
+            "bytes": 29748,
+            "sha256": "b22be11c0274b6300dffdf02c8054d06ccecd81674d840b4eb5ba9d75ca063c6"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/mirror-idol.webp",
+            "bytes": 29748,
+            "sha256": "b22be11c0274b6300dffdf02c8054d06ccecd81674d840b4eb5ba9d75ca063c6"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/mirror-idol.jpg",
+            "bytes": 16883,
+            "sha256": "16976e27400e9e1e4bd1a2cc859c20a3f5db9910a0d1641de09a969be84b3c23"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/mirror-idol.jpg",
+            "bytes": 16883,
+            "sha256": "16976e27400e9e1e4bd1a2cc859c20a3f5db9910a0d1641de09a969be84b3c23"
+          }
+        },
+        "expectedModelVersion": "267ed2ae8a"
+      },
+      {
+        "id": "mochi-void",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/mochi-void.glb",
+            "bytes": 2078372,
+            "sha256": "86fe7ade99153189785510345f27e0d2e005f1110e055e6a22743199994ebc92"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/mochi-void.glb",
+            "bytes": 2078372,
+            "sha256": "86fe7ade99153189785510345f27e0d2e005f1110e055e6a22743199994ebc92"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/mochi-void.webp",
+            "bytes": 22342,
+            "sha256": "39bffee7085097d12d98668cc7f56fcc191c7cdd45b55401972944d73d608466"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/mochi-void.webp",
+            "bytes": 22342,
+            "sha256": "39bffee7085097d12d98668cc7f56fcc191c7cdd45b55401972944d73d608466"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/mochi-void.webp",
+            "bytes": 22342,
+            "sha256": "39bffee7085097d12d98668cc7f56fcc191c7cdd45b55401972944d73d608466"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/mochi-void.jpg",
+            "bytes": 18185,
+            "sha256": "d56dc99390b469d0d6cd7183009891d9d636443a3a92c48cc55fc67ce3f35a1b"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/mochi-void.jpg",
+            "bytes": 18185,
+            "sha256": "d56dc99390b469d0d6cd7183009891d9d636443a3a92c48cc55fc67ce3f35a1b"
+          }
+        },
+        "expectedModelVersion": "86fe7ade99"
+      },
+      {
+        "id": "molar-breaker",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/molar-breaker.glb",
+            "bytes": 757468,
+            "sha256": "f9656bf247935688dfe50894a19f46688f78e59be15f5b073a0fa7e15f5236be"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/molar-breaker.glb",
+            "bytes": 757468,
+            "sha256": "f9656bf247935688dfe50894a19f46688f78e59be15f5b073a0fa7e15f5236be"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/molar-breaker.webp",
+            "bytes": 26562,
+            "sha256": "e7ed7c60cb83046e8848a78db94dbb5f1a3fe44a69fad9d5e53eaa65687e81d6"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/molar-breaker.webp",
+            "bytes": 26562,
+            "sha256": "e7ed7c60cb83046e8848a78db94dbb5f1a3fe44a69fad9d5e53eaa65687e81d6"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/molar-breaker.webp",
+            "bytes": 26562,
+            "sha256": "e7ed7c60cb83046e8848a78db94dbb5f1a3fe44a69fad9d5e53eaa65687e81d6"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/molar-breaker.jpg",
+            "bytes": 23266,
+            "sha256": "3d6080913edf11df9bfe6388e010c5e53088d01ff22c58b344953741e62a8ab2"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/molar-breaker.jpg",
+            "bytes": 23266,
+            "sha256": "3d6080913edf11df9bfe6388e010c5e53088d01ff22c58b344953741e62a8ab2"
+          }
+        },
+        "expectedModelVersion": "f9656bf247"
+      },
+      {
+        "id": "motel-orb",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/motel-orb.glb",
+            "bytes": 466280,
+            "sha256": "a0e8f3f5692b2acae3103f04e5d3fdd1c29e76064cb74a6de59d0c6da4bedfc4"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/motel-orb.glb",
+            "bytes": 466280,
+            "sha256": "a0e8f3f5692b2acae3103f04e5d3fdd1c29e76064cb74a6de59d0c6da4bedfc4"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/motel-orb.webp",
+            "bytes": 24466,
+            "sha256": "17329e6d0309346c3cc06929f212daca501cf739c5b198248793fe07b28529c3"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/motel-orb.webp",
+            "bytes": 24466,
+            "sha256": "17329e6d0309346c3cc06929f212daca501cf739c5b198248793fe07b28529c3"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/motel-orb.webp",
+            "bytes": 24466,
+            "sha256": "17329e6d0309346c3cc06929f212daca501cf739c5b198248793fe07b28529c3"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/motel-orb.jpg",
+            "bytes": 15220,
+            "sha256": "905385f55888ea0a62d6aef80732a1fa519fb132de789950feb38f116d75c9c0"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/motel-orb.jpg",
+            "bytes": 15220,
+            "sha256": "905385f55888ea0a62d6aef80732a1fa519fb132de789950feb38f116d75c9c0"
+          }
+        },
+        "expectedModelVersion": "a0e8f3f569"
+      },
+      {
+        "id": "orb-of-fees",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/orb-of-fees.glb",
+            "bytes": 1330164,
+            "sha256": "5bf1db8c185b5dd8064477d2a19013e887c5f42cfb042a65f37ab892eaa74800"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/orb-of-fees.glb",
+            "bytes": 1330164,
+            "sha256": "5bf1db8c185b5dd8064477d2a19013e887c5f42cfb042a65f37ab892eaa74800"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/orb-of-fees.webp",
+            "bytes": 20890,
+            "sha256": "cee762c5be67797f5e81d47d98a4daf52c1b8d51556d034003b34ceaadad6ffc"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/orb-of-fees.webp",
+            "bytes": 20890,
+            "sha256": "cee762c5be67797f5e81d47d98a4daf52c1b8d51556d034003b34ceaadad6ffc"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/orb-of-fees.webp",
+            "bytes": 20890,
+            "sha256": "cee762c5be67797f5e81d47d98a4daf52c1b8d51556d034003b34ceaadad6ffc"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/orb-of-fees.jpg",
+            "bytes": 17316,
+            "sha256": "1313770ddefd9d8a056665ce5e02571475fe32f688f1cca4b1478ee454baf806"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/orb-of-fees.jpg",
+            "bytes": 17316,
+            "sha256": "1313770ddefd9d8a056665ce5e02571475fe32f688f1cca4b1478ee454baf806"
+          }
+        },
+        "expectedModelVersion": "5bf1db8c18"
+      },
+      {
+        "id": "pager-ghost",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/pager-ghost.glb",
+            "bytes": 663056,
+            "sha256": "94a68355666e88e94047fe1e7e3bebfb42a4c486f8cb68582f18e7a43def3324"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/pager-ghost.glb",
+            "bytes": 663056,
+            "sha256": "94a68355666e88e94047fe1e7e3bebfb42a4c486f8cb68582f18e7a43def3324"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/pager-ghost.webp",
+            "bytes": 20858,
+            "sha256": "83586471f9b2a71e2e7be41940c825574615b12755fbaa22c41e39fd97180a3b"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/pager-ghost.webp",
+            "bytes": 20858,
+            "sha256": "83586471f9b2a71e2e7be41940c825574615b12755fbaa22c41e39fd97180a3b"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/pager-ghost.webp",
+            "bytes": 20858,
+            "sha256": "83586471f9b2a71e2e7be41940c825574615b12755fbaa22c41e39fd97180a3b"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/pager-ghost.jpg",
+            "bytes": 14615,
+            "sha256": "ba50ae567664fc73f4545b89acd93d028c79531305c57e5e8b27072b0ec3840b"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/pager-ghost.jpg",
+            "bytes": 14615,
+            "sha256": "ba50ae567664fc73f4545b89acd93d028c79531305c57e5e8b27072b0ec3840b"
+          }
+        },
+        "expectedModelVersion": "94a6835566"
+      },
+      {
+        "id": "pickle-warlord",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/pickle-warlord.glb",
+            "bytes": 1984484,
+            "sha256": "ae97ce49fea737036c7899d1385130939874e0bb6cc3ab2aa04041f4e75d9dfb"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/pickle-warlord.glb",
+            "bytes": 1984484,
+            "sha256": "ae97ce49fea737036c7899d1385130939874e0bb6cc3ab2aa04041f4e75d9dfb"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/pickle-warlord.webp",
+            "bytes": 22196,
+            "sha256": "0d5be73546ff8170d08ac75816c4728ba4ddef0ad4e69d88339d71b7b47c6dce"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/pickle-warlord.webp",
+            "bytes": 22196,
+            "sha256": "0d5be73546ff8170d08ac75816c4728ba4ddef0ad4e69d88339d71b7b47c6dce"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/pickle-warlord.webp",
+            "bytes": 22196,
+            "sha256": "0d5be73546ff8170d08ac75816c4728ba4ddef0ad4e69d88339d71b7b47c6dce"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/pickle-warlord.jpg",
+            "bytes": 31022,
+            "sha256": "2732943e935738a0a446a076134fc78ea06b6da812f9f16bbd040615dc0803da"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/pickle-warlord.jpg",
+            "bytes": 31022,
+            "sha256": "2732943e935738a0a446a076134fc78ea06b6da812f9f16bbd040615dc0803da"
+          }
+        },
+        "expectedModelVersion": "ae97ce49fe"
+      },
+      {
+        "id": "pigeon-king",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/pigeon-king.glb",
+            "bytes": 1866452,
+            "sha256": "a7aaee8be1abb39ebb3d5af6028d27b6a6dc219edda44e28ccae02276a40e307"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/pigeon-king.glb",
+            "bytes": 1866452,
+            "sha256": "a7aaee8be1abb39ebb3d5af6028d27b6a6dc219edda44e28ccae02276a40e307"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/pigeon-king.webp",
+            "bytes": 16782,
+            "sha256": "156daaceef500594b5cff84c704282c17c679fb1dfff7ef663a8b0a0ead822eb"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/pigeon-king.webp",
+            "bytes": 16782,
+            "sha256": "156daaceef500594b5cff84c704282c17c679fb1dfff7ef663a8b0a0ead822eb"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/pigeon-king.webp",
+            "bytes": 16782,
+            "sha256": "156daaceef500594b5cff84c704282c17c679fb1dfff7ef663a8b0a0ead822eb"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/pigeon-king.jpg",
+            "bytes": 11974,
+            "sha256": "9687564c92e993970cf70f494cb2ffe0a76f57b54ab47fbd327d5923c38015e3"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/pigeon-king.jpg",
+            "bytes": 11974,
+            "sha256": "9687564c92e993970cf70f494cb2ffe0a76f57b54ab47fbd327d5923c38015e3"
+          }
+        },
+        "expectedModelVersion": "a7aaee8be1"
+      },
+      {
+        "id": "piston-saint",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/piston-saint.glb",
+            "bytes": 655004,
+            "sha256": "eacb0315df758dafb13e6591c89ad6105d010b5759a7ac2dff6ea25235cb4345"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/piston-saint.glb",
+            "bytes": 655004,
+            "sha256": "eacb0315df758dafb13e6591c89ad6105d010b5759a7ac2dff6ea25235cb4345"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/piston-saint.webp",
+            "bytes": 21812,
+            "sha256": "3a42fabdd9c1c0a8eb13676afde1bc3ac92b83195007658fb6716b15d5c1ff7b"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/piston-saint.webp",
+            "bytes": 21812,
+            "sha256": "3a42fabdd9c1c0a8eb13676afde1bc3ac92b83195007658fb6716b15d5c1ff7b"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/piston-saint.webp",
+            "bytes": 21812,
+            "sha256": "3a42fabdd9c1c0a8eb13676afde1bc3ac92b83195007658fb6716b15d5c1ff7b"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/piston-saint.jpg",
+            "bytes": 17215,
+            "sha256": "b8f9b1d212d8a818bc3380a1ca2cea9bd548fd62d46dcfd0316f0c44843887c2"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/piston-saint.jpg",
+            "bytes": 17215,
+            "sha256": "b8f9b1d212d8a818bc3380a1ca2cea9bd548fd62d46dcfd0316f0c44843887c2"
+          }
+        },
+        "expectedModelVersion": "eacb0315df"
+      },
+      {
+        "id": "pump-goblin",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/pump-goblin.glb",
+            "bytes": 1972036,
+            "sha256": "700b1ebedf7e883551f4149c29ff2febeaf46cc57c7886110f8108dbce4c426e"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/pump-goblin.glb",
+            "bytes": 1972036,
+            "sha256": "700b1ebedf7e883551f4149c29ff2febeaf46cc57c7886110f8108dbce4c426e"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/pump-goblin.webp",
+            "bytes": 22210,
+            "sha256": "b1f799983992717e8805b44eee38fc3266a5ac1f51185bd0937adda5b13c4fe0"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/pump-goblin.webp",
+            "bytes": 22210,
+            "sha256": "b1f799983992717e8805b44eee38fc3266a5ac1f51185bd0937adda5b13c4fe0"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/pump-goblin.webp",
+            "bytes": 22210,
+            "sha256": "b1f799983992717e8805b44eee38fc3266a5ac1f51185bd0937adda5b13c4fe0"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/pump-goblin.jpg",
+            "bytes": 17506,
+            "sha256": "a5f95461d3da3d490a02e77edda03f022f5c8377218e0dc77cac5647535bb184"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/pump-goblin.jpg",
+            "bytes": 17506,
+            "sha256": "a5f95461d3da3d490a02e77edda03f022f5c8377218e0dc77cac5647535bb184"
+          }
+        },
+        "expectedModelVersion": "700b1ebedf"
+      },
+      {
+        "id": "pumpjack-imp",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/pumpjack-imp.glb",
+            "bytes": 4809128,
+            "sha256": "2661c3ba3a9e1b746a36397d23cc38a6c634533785e449bbd8871e57700eb019"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/pumpjack-imp.glb",
+            "bytes": 4809128,
+            "sha256": "2661c3ba3a9e1b746a36397d23cc38a6c634533785e449bbd8871e57700eb019"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/pumpjack-imp.webp",
+            "bytes": 20722,
+            "sha256": "813d584c4958668f7e5fe83d166975eeee812c8f40372fab37fce2eb91a85ee9"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/pumpjack-imp.webp",
+            "bytes": 20722,
+            "sha256": "813d584c4958668f7e5fe83d166975eeee812c8f40372fab37fce2eb91a85ee9"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/pumpjack-imp.webp",
+            "bytes": 20722,
+            "sha256": "813d584c4958668f7e5fe83d166975eeee812c8f40372fab37fce2eb91a85ee9"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/pumpjack-imp.jpg",
+            "bytes": 13001,
+            "sha256": "56ee2f31df6ee24311595974e4e1f4a73a9b05c619c92d3e7686b4f4bfb0122d"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/pumpjack-imp.jpg",
+            "bytes": 13001,
+            "sha256": "56ee2f31df6ee24311595974e4e1f4a73a9b05c619c92d3e7686b4f4bfb0122d"
+          }
+        },
+        "expectedModelVersion": "2661c3ba3a"
+      },
+      {
+        "id": "quench-eel",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/quench-eel.glb",
+            "bytes": 1844720,
+            "sha256": "03f16834413aa419d58dfb13c7470316e56108143486625d9508634d903fe7b6"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/quench-eel.glb",
+            "bytes": 1844720,
+            "sha256": "03f16834413aa419d58dfb13c7470316e56108143486625d9508634d903fe7b6"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/quench-eel.webp",
+            "bytes": 16050,
+            "sha256": "85e5c06c02ee96276e2dc92ca5d62192e6fbd66d584d70b483d961497ba695b1"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/quench-eel.webp",
+            "bytes": 16050,
+            "sha256": "85e5c06c02ee96276e2dc92ca5d62192e6fbd66d584d70b483d961497ba695b1"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/quench-eel.webp",
+            "bytes": 16050,
+            "sha256": "85e5c06c02ee96276e2dc92ca5d62192e6fbd66d584d70b483d961497ba695b1"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/quench-eel.jpg",
+            "bytes": 23010,
+            "sha256": "42812a354e67012f93f785d6a8b07687cac954a8e5e4b95e454191ef7561d631"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/quench-eel.jpg",
+            "bytes": 23010,
+            "sha256": "42812a354e67012f93f785d6a8b07687cac954a8e5e4b95e454191ef7561d631"
+          }
+        },
+        "expectedModelVersion": "03f1683441"
+      },
+      {
+        "id": "rain-pigeon",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/rain-pigeon.glb",
+            "bytes": 1144940,
+            "sha256": "e41411a6ff13c64b838f144f150d4a0430a9fc720870c6f63bca65fbf7a5310d"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/rain-pigeon.glb",
+            "bytes": 1144940,
+            "sha256": "e41411a6ff13c64b838f144f150d4a0430a9fc720870c6f63bca65fbf7a5310d"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/rain-pigeon.webp",
+            "bytes": 18562,
+            "sha256": "1e8050904948f5d7770ae8b26ffd215f9b3a01bdc5cfb80754bd191545a09bc4"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/rain-pigeon.webp",
+            "bytes": 18562,
+            "sha256": "1e8050904948f5d7770ae8b26ffd215f9b3a01bdc5cfb80754bd191545a09bc4"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/rain-pigeon.webp",
+            "bytes": 18562,
+            "sha256": "1e8050904948f5d7770ae8b26ffd215f9b3a01bdc5cfb80754bd191545a09bc4"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/rain-pigeon.jpg",
+            "bytes": 12452,
+            "sha256": "7ca61a180055fc7145f364ed50a47c943132e55f250c9621c7a8be389a9f21a7"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/rain-pigeon.jpg",
+            "bytes": 12452,
+            "sha256": "7ca61a180055fc7145f364ed50a47c943132e55f250c9621c7a8be389a9f21a7"
+          }
+        },
+        "expectedModelVersion": "e41411a6ff"
+      },
+      {
+        "id": "rat-oracle",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/rat-oracle.glb",
+            "bytes": 3259152,
+            "sha256": "55c2a67b5814ae89148d5ea47a6f828c2e406d5c75c10606a041befd5ed5baca"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/rat-oracle.glb",
+            "bytes": 3259152,
+            "sha256": "55c2a67b5814ae89148d5ea47a6f828c2e406d5c75c10606a041befd5ed5baca"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/rat-oracle.webp",
+            "bytes": 30206,
+            "sha256": "3b0c9b60d2d44e8897bf5506a1074517f02c76da96202febe287e90221d93bcc"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/rat-oracle.webp",
+            "bytes": 30206,
+            "sha256": "3b0c9b60d2d44e8897bf5506a1074517f02c76da96202febe287e90221d93bcc"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/rat-oracle.webp",
+            "bytes": 30206,
+            "sha256": "3b0c9b60d2d44e8897bf5506a1074517f02c76da96202febe287e90221d93bcc"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/rat-oracle.jpg",
+            "bytes": 20590,
+            "sha256": "cafda20d938005db2c58aeb1d1416f9c14d8ff07252c85a572eba8fa821e8c03"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/rat-oracle.jpg",
+            "bytes": 20590,
+            "sha256": "cafda20d938005db2c58aeb1d1416f9c14d8ff07252c85a572eba8fa821e8c03"
+          }
+        },
+        "expectedModelVersion": "55c2a67b58"
+      },
+      {
+        "id": "rekt-ghost",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/rekt-ghost.glb",
+            "bytes": 814740,
+            "sha256": "f72e7e5c0d27eed7ee2fc9d2c9afb7ff0abcaa345b96d4de05f2441377d4739b"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/rekt-ghost.glb",
+            "bytes": 814740,
+            "sha256": "f72e7e5c0d27eed7ee2fc9d2c9afb7ff0abcaa345b96d4de05f2441377d4739b"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/rekt-ghost.webp",
+            "bytes": 29688,
+            "sha256": "526a1864fa9b057ca80e170190f34adede577c84e955f95b3a4687b7ea5400e2"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/rekt-ghost.webp",
+            "bytes": 29688,
+            "sha256": "526a1864fa9b057ca80e170190f34adede577c84e955f95b3a4687b7ea5400e2"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/rekt-ghost.webp",
+            "bytes": 29688,
+            "sha256": "526a1864fa9b057ca80e170190f34adede577c84e955f95b3a4687b7ea5400e2"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/rekt-ghost.jpg",
+            "bytes": 20850,
+            "sha256": "ac5db5f5cfce9cca875d3f95f24935cf08753dffbcef49a1f0d89d0b4eac6cec"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/rekt-ghost.jpg",
+            "bytes": 20850,
+            "sha256": "ac5db5f5cfce9cca875d3f95f24935cf08753dffbcef49a1f0d89d0b4eac6cec"
+          }
+        },
+        "expectedModelVersion": "f72e7e5c0d"
+      },
+      {
+        "id": "rust-crown",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/rust-crown.glb",
+            "bytes": 1092492,
+            "sha256": "4dc733429b706e06fc2c0fddde79d558539732be01e8e2e21a4865f9fb7f3e99"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/rust-crown.glb",
+            "bytes": 1092492,
+            "sha256": "4dc733429b706e06fc2c0fddde79d558539732be01e8e2e21a4865f9fb7f3e99"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/rust-crown.webp",
+            "bytes": 17106,
+            "sha256": "626694cae5a681ca26d689e9d82433b5e6994bf8b918d73ef08661efc40b4dd8"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/rust-crown.webp",
+            "bytes": 17106,
+            "sha256": "626694cae5a681ca26d689e9d82433b5e6994bf8b918d73ef08661efc40b4dd8"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/rust-crown.webp",
+            "bytes": 17106,
+            "sha256": "626694cae5a681ca26d689e9d82433b5e6994bf8b918d73ef08661efc40b4dd8"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/rust-crown.jpg",
+            "bytes": 11953,
+            "sha256": "90f21c10cf85ecc9f336daa71571ef15ec97e74360bcb4205ea5196098777f6d"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/rust-crown.jpg",
+            "bytes": 11953,
+            "sha256": "90f21c10cf85ecc9f336daa71571ef15ec97e74360bcb4205ea5196098777f6d"
+          }
+        },
+        "expectedModelVersion": "4dc733429b"
+      },
+      {
+        "id": "scale-imp",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/scale-imp.glb",
+            "bytes": 979776,
+            "sha256": "6bbe607cc2ef154637af6902df005200c4def7df0704a878b476e337933670b9"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/scale-imp.glb",
+            "bytes": 979776,
+            "sha256": "6bbe607cc2ef154637af6902df005200c4def7df0704a878b476e337933670b9"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/scale-imp.webp",
+            "bytes": 23782,
+            "sha256": "226c8dcba39222203c7a93070f3409b798dbe154db19291930bd2f4abc0331a6"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/scale-imp.webp",
+            "bytes": 23782,
+            "sha256": "226c8dcba39222203c7a93070f3409b798dbe154db19291930bd2f4abc0331a6"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/scale-imp.webp",
+            "bytes": 23782,
+            "sha256": "226c8dcba39222203c7a93070f3409b798dbe154db19291930bd2f4abc0331a6"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/scale-imp.jpg",
+            "bytes": 14944,
+            "sha256": "8d9384bae5765718a94961c12f7021589d4f0928b72eaaeca268826f0cfd6f37"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/scale-imp.jpg",
+            "bytes": 14944,
+            "sha256": "8d9384bae5765718a94961c12f7021589d4f0928b72eaaeca268826f0cfd6f37"
+          }
+        },
+        "expectedModelVersion": "6bbe607cc2"
+      },
+      {
+        "id": "seam-imp",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/seam-imp.glb",
+            "bytes": 1405644,
+            "sha256": "cfc217782dcd5f1c09d482d9b5cf8a0a6d31fe39c7bfc3632431c60fdc127d27"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/seam-imp.glb",
+            "bytes": 1405644,
+            "sha256": "cfc217782dcd5f1c09d482d9b5cf8a0a6d31fe39c7bfc3632431c60fdc127d27"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/seam-imp.webp",
+            "bytes": 18120,
+            "sha256": "d77f34c49c48b8beac9e78c2c6f6023143d71386a3e92a5744b773ce986e0019"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/seam-imp.webp",
+            "bytes": 18120,
+            "sha256": "d77f34c49c48b8beac9e78c2c6f6023143d71386a3e92a5744b773ce986e0019"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/seam-imp.webp",
+            "bytes": 18120,
+            "sha256": "d77f34c49c48b8beac9e78c2c6f6023143d71386a3e92a5744b773ce986e0019"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/seam-imp.jpg",
+            "bytes": 12274,
+            "sha256": "375091f1cee999cc0a4d5d2101e07a115279599d7ebb7d540505594186123082"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/seam-imp.jpg",
+            "bytes": 12274,
+            "sha256": "375091f1cee999cc0a4d5d2101e07a115279599d7ebb7d540505594186123082"
+          }
+        },
+        "expectedModelVersion": "cfc217782d"
+      },
+      {
+        "id": "signet-ring",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/signet-ring.glb",
+            "bytes": 639200,
+            "sha256": "aafe5ae0785b29b6951c513359d5c4e7e5a7beb979c5b95ada77512b2c06d098"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/signet-ring.glb",
+            "bytes": 639200,
+            "sha256": "aafe5ae0785b29b6951c513359d5c4e7e5a7beb979c5b95ada77512b2c06d098"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/signet-ring.webp",
+            "bytes": 21928,
+            "sha256": "ec88d89be5edab8f84672f54f9853b952325564a0b7e5ae94fbd48a7af0d585c"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/signet-ring.webp",
+            "bytes": 21928,
+            "sha256": "ec88d89be5edab8f84672f54f9853b952325564a0b7e5ae94fbd48a7af0d585c"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/signet-ring.webp",
+            "bytes": 21928,
+            "sha256": "ec88d89be5edab8f84672f54f9853b952325564a0b7e5ae94fbd48a7af0d585c"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/signet-ring.jpg",
+            "bytes": 19586,
+            "sha256": "04811d5fbb82ffbd4cfd694fa850dfa9dd41a436e7100a95901182d77ec4b0b9"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/signet-ring.jpg",
+            "bytes": 19586,
+            "sha256": "04811d5fbb82ffbd4cfd694fa850dfa9dd41a436e7100a95901182d77ec4b0b9"
+          }
+        },
+        "expectedModelVersion": "aafe5ae078"
+      },
+      {
+        "id": "slag-cherub",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/slag-cherub.glb",
+            "bytes": 2437296,
+            "sha256": "ef36d4d584898d185cbc522178747685e5ee074363f854a80af24303a6401696"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/slag-cherub.glb",
+            "bytes": 2437296,
+            "sha256": "ef36d4d584898d185cbc522178747685e5ee074363f854a80af24303a6401696"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/slag-cherub.webp",
+            "bytes": 31130,
+            "sha256": "db9021056eaac8347070c047055a6f32e7921c1e1632e9ad81a26f17ab046d62"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/slag-cherub.webp",
+            "bytes": 31130,
+            "sha256": "db9021056eaac8347070c047055a6f32e7921c1e1632e9ad81a26f17ab046d62"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/slag-cherub.webp",
+            "bytes": 31130,
+            "sha256": "db9021056eaac8347070c047055a6f32e7921c1e1632e9ad81a26f17ab046d62"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/slag-cherub.jpg",
+            "bytes": 21834,
+            "sha256": "2e9d68f9bda14f964cec617d89cbb4138a8aa4cc13d6c77ac65ef64225697ee6"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/slag-cherub.jpg",
+            "bytes": 21834,
+            "sha256": "2e9d68f9bda14f964cec617d89cbb4138a8aa4cc13d6c77ac65ef64225697ee6"
+          }
+        },
+        "expectedModelVersion": "ef36d4d584"
+      },
+      {
+        "id": "slick-eel",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/slick-eel.glb",
+            "bytes": 1169408,
+            "sha256": "2c523fd0d86c21916a7ddec62db419dba7afe27e7fd84c702815958735576981"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/slick-eel.glb",
+            "bytes": 1169408,
+            "sha256": "2c523fd0d86c21916a7ddec62db419dba7afe27e7fd84c702815958735576981"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/slick-eel.webp",
+            "bytes": 15464,
+            "sha256": "a2e7b72325b4dfbba29d2954bb4be1debacc940a66ca0bb57c25d95599010448"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/slick-eel.webp",
+            "bytes": 15464,
+            "sha256": "a2e7b72325b4dfbba29d2954bb4be1debacc940a66ca0bb57c25d95599010448"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/slick-eel.webp",
+            "bytes": 15464,
+            "sha256": "a2e7b72325b4dfbba29d2954bb4be1debacc940a66ca0bb57c25d95599010448"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/slick-eel.jpg",
+            "bytes": 21985,
+            "sha256": "432c5a2dfcdb0307a86ec9d3f02961bee9006d97a3acb3b5ca22255d79973e55"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/slick-eel.jpg",
+            "bytes": 21985,
+            "sha256": "432c5a2dfcdb0307a86ec9d3f02961bee9006d97a3acb3b5ca22255d79973e55"
+          }
+        },
+        "expectedModelVersion": "2c523fd0d8"
+      },
+      {
+        "id": "sludge-bean",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/sludge-bean.glb",
+            "bytes": 2001724,
+            "sha256": "1373340ac3e5e1f8e5cd59844dd862057aef8bccdd33059a8a52d46017853fc6"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/sludge-bean.glb",
+            "bytes": 2001724,
+            "sha256": "1373340ac3e5e1f8e5cd59844dd862057aef8bccdd33059a8a52d46017853fc6"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/sludge-bean.webp",
+            "bytes": 17292,
+            "sha256": "393c985148648c5d58436f1e3f3bf8edb4bf495f3ba6f742552abb700e1896fb"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/sludge-bean.webp",
+            "bytes": 17292,
+            "sha256": "393c985148648c5d58436f1e3f3bf8edb4bf495f3ba6f742552abb700e1896fb"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/sludge-bean.webp",
+            "bytes": 17292,
+            "sha256": "393c985148648c5d58436f1e3f3bf8edb4bf495f3ba6f742552abb700e1896fb"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/sludge-bean.jpg",
+            "bytes": 14140,
+            "sha256": "bf8dccbcea6858d3229a4d2edfd095f6be6016601d01e3056c7c56beff0bbabc"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/sludge-bean.jpg",
+            "bytes": 14140,
+            "sha256": "bf8dccbcea6858d3229a4d2edfd095f6be6016601d01e3056c7c56beff0bbabc"
+          }
+        },
+        "expectedModelVersion": "1373340ac3"
+      },
+      {
+        "id": "soda-can-saint",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/soda-can-saint.glb",
+            "bytes": 944040,
+            "sha256": "70411171300922e25bcf552450c4846ccd1a528c79a3dce657d0266c0d1dfca0"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/soda-can-saint.glb",
+            "bytes": 944040,
+            "sha256": "70411171300922e25bcf552450c4846ccd1a528c79a3dce657d0266c0d1dfca0"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/soda-can-saint.webp",
+            "bytes": 23044,
+            "sha256": "64bbd37e3c0e8efb3e7ab578157b6ed89d1d9cd4764df2dd051b95dc7ffb13b0"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/soda-can-saint.webp",
+            "bytes": 23044,
+            "sha256": "64bbd37e3c0e8efb3e7ab578157b6ed89d1d9cd4764df2dd051b95dc7ffb13b0"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/soda-can-saint.webp",
+            "bytes": 23044,
+            "sha256": "64bbd37e3c0e8efb3e7ab578157b6ed89d1d9cd4764df2dd051b95dc7ffb13b0"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/soda-can-saint.jpg",
+            "bytes": 16827,
+            "sha256": "1baed3f689f8b86d063e4b296d30e1b0cc9159b983c0ce94ba03a33d408a66f2"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/soda-can-saint.jpg",
+            "bytes": 16827,
+            "sha256": "1baed3f689f8b86d063e4b296d30e1b0cc9159b983c0ce94ba03a33d408a66f2"
+          }
+        },
+        "expectedModelVersion": "7041117130"
+      },
+      {
+        "id": "soft-egg",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/soft-egg.glb",
+            "bytes": 881900,
+            "sha256": "a6c4d96ec976d389bb4198cedeb9db30d15d7fd610d5cbb40e802dc50f6b99d3"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/soft-egg.glb",
+            "bytes": 881900,
+            "sha256": "a6c4d96ec976d389bb4198cedeb9db30d15d7fd610d5cbb40e802dc50f6b99d3"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/soft-egg.webp",
+            "bytes": 17458,
+            "sha256": "1fef256d416c066a5d98bffb347ca716b09d37b29d1a513d7dd7673af3628655"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/soft-egg.webp",
+            "bytes": 17458,
+            "sha256": "1fef256d416c066a5d98bffb347ca716b09d37b29d1a513d7dd7673af3628655"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/soft-egg.webp",
+            "bytes": 17458,
+            "sha256": "1fef256d416c066a5d98bffb347ca716b09d37b29d1a513d7dd7673af3628655"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/soft-egg.jpg",
+            "bytes": 30542,
+            "sha256": "4141b56df7c4b8d04c4ffb39ad3890d826ed633c683d05ccf241b2a0cbb80bb2"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/soft-egg.jpg",
+            "bytes": 30542,
+            "sha256": "4141b56df7c4b8d04c4ffb39ad3890d826ed633c683d05ccf241b2a0cbb80bb2"
+          }
+        },
+        "expectedModelVersion": "a6c4d96ec9"
+      },
+      {
+        "id": "sour-worm",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/sour-worm.glb",
+            "bytes": 511400,
+            "sha256": "a47f31fe0183892d89ffea05a9d336fdde4d40a32628b49a795f0a4d5ab7fc8a"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/sour-worm.glb",
+            "bytes": 511400,
+            "sha256": "a47f31fe0183892d89ffea05a9d336fdde4d40a32628b49a795f0a4d5ab7fc8a"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/sour-worm.webp",
+            "bytes": 15288,
+            "sha256": "7fe6b13d45988d8af2c5f8abe99d2dfce59e34f772f9f3e3afb05fe4bc57ce5a"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/sour-worm.webp",
+            "bytes": 15288,
+            "sha256": "7fe6b13d45988d8af2c5f8abe99d2dfce59e34f772f9f3e3afb05fe4bc57ce5a"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/sour-worm.webp",
+            "bytes": 15288,
+            "sha256": "7fe6b13d45988d8af2c5f8abe99d2dfce59e34f772f9f3e3afb05fe4bc57ce5a"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/sour-worm.jpg",
+            "bytes": 12249,
+            "sha256": "32d835ac9fd479fa360e1a57438cefb665afca9252a66fb096a1775bcc018426"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/sour-worm.jpg",
+            "bytes": 12249,
+            "sha256": "32d835ac9fd479fa360e1a57438cefb665afca9252a66fb096a1775bcc018426"
+          }
+        },
+        "expectedModelVersion": "a47f31fe01"
+      },
+      {
+        "id": "spark-moth",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/spark-moth.glb",
+            "bytes": 1647564,
+            "sha256": "776d63b59547c568a716a3efaa04c087036b83b479564bba55dc34e02c59c4bc"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/spark-moth.glb",
+            "bytes": 1647564,
+            "sha256": "776d63b59547c568a716a3efaa04c087036b83b479564bba55dc34e02c59c4bc"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/spark-moth.webp",
+            "bytes": 36170,
+            "sha256": "bd34f9302cabb9166250111cdff4a4d0194350bdb824c68a621aaa61713cce38"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/spark-moth.webp",
+            "bytes": 36170,
+            "sha256": "bd34f9302cabb9166250111cdff4a4d0194350bdb824c68a621aaa61713cce38"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/spark-moth.webp",
+            "bytes": 36170,
+            "sha256": "bd34f9302cabb9166250111cdff4a4d0194350bdb824c68a621aaa61713cce38"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/spark-moth.jpg",
+            "bytes": 22023,
+            "sha256": "c4ab47e501a75b2887d8964961ae65b7c2325148894d24f9d8d8b14165b94301"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/spark-moth.jpg",
+            "bytes": 22023,
+            "sha256": "c4ab47e501a75b2887d8964961ae65b7c2325148894d24f9d8d8b14165b94301"
+          }
+        },
+        "expectedModelVersion": "776d63b595"
+      },
+      {
+        "id": "spill-orb",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/spill-orb.glb",
+            "bytes": 883552,
+            "sha256": "038857648054630085a9c8f98267a6267d601472a61701e116f26da294b024b0"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/spill-orb.glb",
+            "bytes": 883552,
+            "sha256": "038857648054630085a9c8f98267a6267d601472a61701e116f26da294b024b0"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/spill-orb.webp",
+            "bytes": 20704,
+            "sha256": "ca03039e02bddea6180cc98a95fec6791e42f32e66a1eb6d5f7bd0ef916d7d69"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/spill-orb.webp",
+            "bytes": 20704,
+            "sha256": "ca03039e02bddea6180cc98a95fec6791e42f32e66a1eb6d5f7bd0ef916d7d69"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/spill-orb.webp",
+            "bytes": 20704,
+            "sha256": "ca03039e02bddea6180cc98a95fec6791e42f32e66a1eb6d5f7bd0ef916d7d69"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/spill-orb.jpg",
+            "bytes": 15423,
+            "sha256": "de09e64a010869474cf7af4df83c65334f1c26fd94138d4723f175dd748dfb4d"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/spill-orb.jpg",
+            "bytes": 15423,
+            "sha256": "de09e64a010869474cf7af4df83c65334f1c26fd94138d4723f175dd748dfb4d"
+          }
+        },
+        "expectedModelVersion": "0388576480"
+      },
+      {
+        "id": "sprinkle-moth",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/sprinkle-moth.glb",
+            "bytes": 1936228,
+            "sha256": "327c0787d1edde741e4f13d8c90811d7318d0a94a003cad2941d6179cffa8445"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/sprinkle-moth.glb",
+            "bytes": 1936228,
+            "sha256": "327c0787d1edde741e4f13d8c90811d7318d0a94a003cad2941d6179cffa8445"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/sprinkle-moth.webp",
+            "bytes": 27386,
+            "sha256": "9439a9a346e31927a4b3a5c456d224cf920e31c733a373c43b47ee03d8b92400"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/sprinkle-moth.webp",
+            "bytes": 27386,
+            "sha256": "9439a9a346e31927a4b3a5c456d224cf920e31c733a373c43b47ee03d8b92400"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/sprinkle-moth.webp",
+            "bytes": 27386,
+            "sha256": "9439a9a346e31927a4b3a5c456d224cf920e31c733a373c43b47ee03d8b92400"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/sprinkle-moth.jpg",
+            "bytes": 21841,
+            "sha256": "917267b8675cd6d86c21e75b1270ca6319e819721577ed1493f4e0a630db83f1"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/sprinkle-moth.jpg",
+            "bytes": 21841,
+            "sha256": "917267b8675cd6d86c21e75b1270ca6319e819721577ed1493f4e0a630db83f1"
+          }
+        },
+        "expectedModelVersion": "327c0787d1"
+      },
+      {
+        "id": "taco-ghost",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/taco-ghost.glb",
+            "bytes": 1047804,
+            "sha256": "1051e30ae8a38dbadb13a6934e896a2c8221356a611f108de1986cf9ae841190"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/taco-ghost.glb",
+            "bytes": 1047804,
+            "sha256": "1051e30ae8a38dbadb13a6934e896a2c8221356a611f108de1986cf9ae841190"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/taco-ghost.webp",
+            "bytes": 17626,
+            "sha256": "158824ed00aa9f554de7f7d5b01090f031ec3ee723c196edba8476bf23d793f6"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/taco-ghost.webp",
+            "bytes": 17626,
+            "sha256": "158824ed00aa9f554de7f7d5b01090f031ec3ee723c196edba8476bf23d793f6"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/taco-ghost.webp",
+            "bytes": 17626,
+            "sha256": "158824ed00aa9f554de7f7d5b01090f031ec3ee723c196edba8476bf23d793f6"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/taco-ghost.jpg",
+            "bytes": 14576,
+            "sha256": "514c041b3c6f714844fc4d9528bbc77fdaf91e9e94bad8d06fa3fb986c640b1e"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/taco-ghost.jpg",
+            "bytes": 14576,
+            "sha256": "514c041b3c6f714844fc4d9528bbc77fdaf91e9e94bad8d06fa3fb986c640b1e"
+          }
+        },
+        "expectedModelVersion": "1051e30ae8"
+      },
+      {
+        "id": "tar-cherub",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/tar-cherub.glb",
+            "bytes": 1965692,
+            "sha256": "e534f3c678c50f28d03327e105088f39846a0b467ed2e7de9a1830b3de947950"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/tar-cherub.glb",
+            "bytes": 1965692,
+            "sha256": "e534f3c678c50f28d03327e105088f39846a0b467ed2e7de9a1830b3de947950"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/tar-cherub.webp",
+            "bytes": 23528,
+            "sha256": "12abc29c7dbcc08dcbab416aea32705282dcde0fd1f091ba41aea24156b41b05"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/tar-cherub.webp",
+            "bytes": 23528,
+            "sha256": "12abc29c7dbcc08dcbab416aea32705282dcde0fd1f091ba41aea24156b41b05"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/tar-cherub.webp",
+            "bytes": 23528,
+            "sha256": "12abc29c7dbcc08dcbab416aea32705282dcde0fd1f091ba41aea24156b41b05"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/tar-cherub.jpg",
+            "bytes": 18149,
+            "sha256": "582462281a90409e58c0402aa936fa9773656f5cfc4e3bca399675707b7e0c20"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/tar-cherub.jpg",
+            "bytes": 18149,
+            "sha256": "582462281a90409e58c0402aa936fa9773656f5cfc4e3bca399675707b7e0c20"
+          }
+        },
+        "expectedModelVersion": "e534f3c678"
+      },
+      {
+        "id": "taxi-larva",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/taxi-larva.glb",
+            "bytes": 923480,
+            "sha256": "7dc18181ad7d0859e6924642375e82515565c62e3ea7c51347cde9a4f89a8010"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/taxi-larva.glb",
+            "bytes": 923480,
+            "sha256": "7dc18181ad7d0859e6924642375e82515565c62e3ea7c51347cde9a4f89a8010"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/taxi-larva.webp",
+            "bytes": 19566,
+            "sha256": "51c20c7e6643a760c8412400272aad41e9d2b32c4df527113a80ec9d8923ccae"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/taxi-larva.webp",
+            "bytes": 19566,
+            "sha256": "51c20c7e6643a760c8412400272aad41e9d2b32c4df527113a80ec9d8923ccae"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/taxi-larva.webp",
+            "bytes": 19566,
+            "sha256": "51c20c7e6643a760c8412400272aad41e9d2b32c4df527113a80ec9d8923ccae"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/taxi-larva.jpg",
+            "bytes": 15857,
+            "sha256": "0784ed0daa00b85466fae40efd84d48bad4de675bc3b0d303496026a731e2322"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/taxi-larva.jpg",
+            "bytes": 15857,
+            "sha256": "0784ed0daa00b85466fae40efd84d48bad4de675bc3b0d303496026a731e2322"
+          }
+        },
+        "expectedModelVersion": "7dc18181ad"
+      },
+      {
+        "id": "tiny-crown",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/tiny-crown.glb",
+            "bytes": 1571044,
+            "sha256": "9b9ab79e7b92801f056c0d88f15b1796fbf2b9112ad481d1f75fb6afbbda19f7"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/tiny-crown.glb",
+            "bytes": 1571044,
+            "sha256": "9b9ab79e7b92801f056c0d88f15b1796fbf2b9112ad481d1f75fb6afbbda19f7"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/tiny-crown.webp",
+            "bytes": 25256,
+            "sha256": "60921bbf37cdb899f6639cf3122dbb86db9f74ac6ae4d0253c60f86c4061a739"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/tiny-crown.webp",
+            "bytes": 25256,
+            "sha256": "60921bbf37cdb899f6639cf3122dbb86db9f74ac6ae4d0253c60f86c4061a739"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/tiny-crown.webp",
+            "bytes": 25256,
+            "sha256": "60921bbf37cdb899f6639cf3122dbb86db9f74ac6ae4d0253c60f86c4061a739"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/tiny-crown.jpg",
+            "bytes": 17054,
+            "sha256": "ec590b92708901be535939994b23e11f4da450828e2947be87684fc3ce21d365"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/tiny-crown.jpg",
+            "bytes": 17054,
+            "sha256": "ec590b92708901be535939994b23e11f4da450828e2947be87684fc3ce21d365"
+          }
+        },
+        "expectedModelVersion": "9b9ab79e7b"
+      },
+      {
+        "id": "toad-baron",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/toad-baron.glb",
+            "bytes": 1787952,
+            "sha256": "e872f5e9da83aec3bea6bb307fbb17fe35774977d2ad900778c74097d03aec83"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/toad-baron.glb",
+            "bytes": 1787952,
+            "sha256": "e872f5e9da83aec3bea6bb307fbb17fe35774977d2ad900778c74097d03aec83"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/toad-baron.webp",
+            "bytes": 21368,
+            "sha256": "f58890c2e63373946702276f0b0016edcc43c237db8ad64d13cc3f373096809c"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/toad-baron.webp",
+            "bytes": 21368,
+            "sha256": "f58890c2e63373946702276f0b0016edcc43c237db8ad64d13cc3f373096809c"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/toad-baron.webp",
+            "bytes": 21368,
+            "sha256": "f58890c2e63373946702276f0b0016edcc43c237db8ad64d13cc3f373096809c"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/toad-baron.jpg",
+            "bytes": 18529,
+            "sha256": "862257a313496ac794a9a9f3fac75b1ab5cfc608ec59b948c2f7a8ff465b3118"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/toad-baron.jpg",
+            "bytes": 18529,
+            "sha256": "862257a313496ac794a9a9f3fac75b1ab5cfc608ec59b948c2f7a8ff465b3118"
+          }
+        },
+        "expectedModelVersion": "e872f5e9da"
+      },
+      {
+        "id": "tongs-golem",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/tongs-golem.glb",
+            "bytes": 625028,
+            "sha256": "84cd76b7db27bd035d5267fba0f79cbf8ce653f848070bee5b3a4142735b43c6"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/tongs-golem.glb",
+            "bytes": 625028,
+            "sha256": "84cd76b7db27bd035d5267fba0f79cbf8ce653f848070bee5b3a4142735b43c6"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/tongs-golem.webp",
+            "bytes": 27622,
+            "sha256": "c56eb2d1e86c2a8f1ea65266fd02dc5466d330827bba86d211e672f152256c5f"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/tongs-golem.webp",
+            "bytes": 27622,
+            "sha256": "c56eb2d1e86c2a8f1ea65266fd02dc5466d330827bba86d211e672f152256c5f"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/tongs-golem.webp",
+            "bytes": 27622,
+            "sha256": "c56eb2d1e86c2a8f1ea65266fd02dc5466d330827bba86d211e672f152256c5f"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/tongs-golem.jpg",
+            "bytes": 17563,
+            "sha256": "e87796975730545b216f83af366e1b6db82a05626688e23fa6bc5bba8e6cebf4"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/tongs-golem.jpg",
+            "bytes": 17563,
+            "sha256": "e87796975730545b216f83af366e1b6db82a05626688e23fa6bc5bba8e6cebf4"
+          }
+        },
+        "expectedModelVersion": "84cd76b7db"
+      },
+      {
+        "id": "too-many-teeth",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/too-many-teeth.glb",
+            "bytes": 1391924,
+            "sha256": "9e8a4ebebec8cd110d56b5322e4822ed89246c822794338f4523371582713342"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/too-many-teeth.glb",
+            "bytes": 1391924,
+            "sha256": "9e8a4ebebec8cd110d56b5322e4822ed89246c822794338f4523371582713342"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/too-many-teeth.webp",
+            "bytes": 25270,
+            "sha256": "3728ca01fec4da48707af34a42c44bac658ebc8a1641d1c488b5ef2c51d84c88"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/too-many-teeth.webp",
+            "bytes": 25270,
+            "sha256": "3728ca01fec4da48707af34a42c44bac658ebc8a1641d1c488b5ef2c51d84c88"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/too-many-teeth.webp",
+            "bytes": 25270,
+            "sha256": "3728ca01fec4da48707af34a42c44bac658ebc8a1641d1c488b5ef2c51d84c88"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/too-many-teeth.jpg",
+            "bytes": 21980,
+            "sha256": "cd0593f1f9aa18049077bfcb067fce8ce19a6efcf88d510e3bca426493c30088"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/too-many-teeth.jpg",
+            "bytes": 21980,
+            "sha256": "cd0593f1f9aa18049077bfcb067fce8ce19a6efcf88d510e3bca426493c30088"
+          }
+        },
+        "expectedModelVersion": "9e8a4ebebe"
+      },
+      {
+        "id": "vault-toad",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/vault-toad.glb",
+            "bytes": 2826144,
+            "sha256": "0e35e6a0f435420eb9b744815ab12fa90c6c6b8385851c1af74efd331f8d480c"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/vault-toad.glb",
+            "bytes": 2826144,
+            "sha256": "0e35e6a0f435420eb9b744815ab12fa90c6c6b8385851c1af74efd331f8d480c"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/vault-toad.webp",
+            "bytes": 32712,
+            "sha256": "aab3215f6cb94c08eae2afa24cfb739eb047dfde1ea59fdac7c1f76c2e7b6ecc"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/vault-toad.webp",
+            "bytes": 32712,
+            "sha256": "aab3215f6cb94c08eae2afa24cfb739eb047dfde1ea59fdac7c1f76c2e7b6ecc"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/vault-toad.webp",
+            "bytes": 32712,
+            "sha256": "aab3215f6cb94c08eae2afa24cfb739eb047dfde1ea59fdac7c1f76c2e7b6ecc"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/vault-toad.jpg",
+            "bytes": 25932,
+            "sha256": "64c0f17f44ad1bddaa04b9135050c758bbd36db226ef743189f92ac5d8083d74"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/vault-toad.jpg",
+            "bytes": 25932,
+            "sha256": "64c0f17f44ad1bddaa04b9135050c758bbd36db226ef743189f92ac5d8083d74"
+          }
+        },
+        "expectedModelVersion": "0e35e6a0f4"
+      },
+      {
+        "id": "vending-knight",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/vending-knight.glb",
+            "bytes": 565924,
+            "sha256": "515656ecb8d8cc6e43f5636eea0ec339023d823bb1e6cd2da56901c9c5109058"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/vending-knight.glb",
+            "bytes": 565924,
+            "sha256": "515656ecb8d8cc6e43f5636eea0ec339023d823bb1e6cd2da56901c9c5109058"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/vending-knight.webp",
+            "bytes": 25050,
+            "sha256": "85f2e12d54a7ae76c075c4f6fd4cf7110f6d29802f1068e2f1e2bedcb59842b6"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/vending-knight.webp",
+            "bytes": 25050,
+            "sha256": "85f2e12d54a7ae76c075c4f6fd4cf7110f6d29802f1068e2f1e2bedcb59842b6"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/vending-knight.webp",
+            "bytes": 25050,
+            "sha256": "85f2e12d54a7ae76c075c4f6fd4cf7110f6d29802f1068e2f1e2bedcb59842b6"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/vending-knight.jpg",
+            "bytes": 15195,
+            "sha256": "b9c8c1bbd29e500a84327231534f5d020e1e9dcdc6523d6725fa24cce82f9437"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/vending-knight.jpg",
+            "bytes": 15195,
+            "sha256": "b9c8c1bbd29e500a84327231534f5d020e1e9dcdc6523d6725fa24cce82f9437"
+          }
+        },
+        "expectedModelVersion": "515656ecb8"
+      },
+      {
+        "id": "void-cat",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/void-cat.glb",
+            "bytes": 2781144,
+            "sha256": "c439fceaa2acfb61237003ccd5697c4ed377e97e6bd11672d50ce5a67aaae91c"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/void-cat.glb",
+            "bytes": 2781144,
+            "sha256": "c439fceaa2acfb61237003ccd5697c4ed377e97e6bd11672d50ce5a67aaae91c"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/void-cat.webp",
+            "bytes": 19880,
+            "sha256": "3a3d5643f30d52aac381bd69e2b8effce00401076a59d1d6e5a790473b771050"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/void-cat.webp",
+            "bytes": 19880,
+            "sha256": "3a3d5643f30d52aac381bd69e2b8effce00401076a59d1d6e5a790473b771050"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/void-cat.webp",
+            "bytes": 19880,
+            "sha256": "3a3d5643f30d52aac381bd69e2b8effce00401076a59d1d6e5a790473b771050"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/void-cat.jpg",
+            "bytes": 15458,
+            "sha256": "c1962f0e798888673c7c4cf99c57c79e7ef85fbf028dea272cb1305d92350abf"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/void-cat.jpg",
+            "bytes": 15458,
+            "sha256": "c1962f0e798888673c7c4cf99c57c79e7ef85fbf028dea272cb1305d92350abf"
+          }
+        },
+        "expectedModelVersion": "c439fceaa2"
+      },
+      {
+        "id": "wet-neon-cat",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/wet-neon-cat.glb",
+            "bytes": 3094428,
+            "sha256": "4ae0724803fccac52ef509cf2a112ddc4a615cde4b8d78cd08aaab3dac9fcfec"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/wet-neon-cat.glb",
+            "bytes": 3094428,
+            "sha256": "4ae0724803fccac52ef509cf2a112ddc4a615cde4b8d78cd08aaab3dac9fcfec"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/wet-neon-cat.webp",
+            "bytes": 25850,
+            "sha256": "a2151400fd2009d2dfa3fe63e76dd9f45c87b843b66d363a7426254832a1b25f"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/wet-neon-cat.webp",
+            "bytes": 25850,
+            "sha256": "a2151400fd2009d2dfa3fe63e76dd9f45c87b843b66d363a7426254832a1b25f"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/wet-neon-cat.webp",
+            "bytes": 25850,
+            "sha256": "a2151400fd2009d2dfa3fe63e76dd9f45c87b843b66d363a7426254832a1b25f"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/wet-neon-cat.jpg",
+            "bytes": 17963,
+            "sha256": "8dfa74dcd184051948eab968c28f972f76b8e1c1322ead8cfb67315526be73b0"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/wet-neon-cat.jpg",
+            "bytes": 17963,
+            "sha256": "8dfa74dcd184051948eab968c28f972f76b8e1c1322ead8cfb67315526be73b0"
+          }
+        },
+        "expectedModelVersion": "4ae0724803"
+      },
+      {
+        "id": "wet-plush",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/wet-plush.glb",
+            "bytes": 1413568,
+            "sha256": "3f0a364c73e08874d55dbce7015ab1db639a1ae07af345111052c7e188ef3672"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/wet-plush.glb",
+            "bytes": 1413568,
+            "sha256": "3f0a364c73e08874d55dbce7015ab1db639a1ae07af345111052c7e188ef3672"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/wet-plush.webp",
+            "bytes": 20728,
+            "sha256": "7385c476fad19bb24f0bd19eceb54d0c00c40f534cd2a43fd055d639818e9f6a"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/wet-plush.webp",
+            "bytes": 20728,
+            "sha256": "7385c476fad19bb24f0bd19eceb54d0c00c40f534cd2a43fd055d639818e9f6a"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/wet-plush.webp",
+            "bytes": 20728,
+            "sha256": "7385c476fad19bb24f0bd19eceb54d0c00c40f534cd2a43fd055d639818e9f6a"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/wet-plush.jpg",
+            "bytes": 14981,
+            "sha256": "dcaaf61e4e770988a1e3e156c56bf2b999f0186d9f77f9fcaa80f08ae9716472"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/wet-plush.jpg",
+            "bytes": 14981,
+            "sha256": "dcaaf61e4e770988a1e3e156c56bf2b999f0186d9f77f9fcaa80f08ae9716472"
+          }
+        },
+        "expectedModelVersion": "3f0a364c73"
+      },
+      {
+        "id": "winged-bolt",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/winged-bolt.glb",
+            "bytes": 694520,
+            "sha256": "9c43502322ffcd82b35450695459426a59f8ca8b3afcdf85a982678556e44d33"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/winged-bolt.glb",
+            "bytes": 694520,
+            "sha256": "9c43502322ffcd82b35450695459426a59f8ca8b3afcdf85a982678556e44d33"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/winged-bolt.webp",
+            "bytes": 27706,
+            "sha256": "98b13558bc636f7cbe51d9397a8c4a65a63e7b00a3e61c4337320f51252abbb5"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/winged-bolt.webp",
+            "bytes": 27706,
+            "sha256": "98b13558bc636f7cbe51d9397a8c4a65a63e7b00a3e61c4337320f51252abbb5"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/winged-bolt.webp",
+            "bytes": 27706,
+            "sha256": "98b13558bc636f7cbe51d9397a8c4a65a63e7b00a3e61c4337320f51252abbb5"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/winged-bolt.jpg",
+            "bytes": 21462,
+            "sha256": "e9f00095859b625f79d16543187c2eec2a5e66516809e084292ce301524ee84d"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/winged-bolt.jpg",
+            "bytes": 21462,
+            "sha256": "e9f00095859b625f79d16543187c2eec2a5e66516809e084292ce301524ee84d"
+          }
+        },
+        "expectedModelVersion": "9c43502322"
+      },
+      {
+        "id": "worm-ceo",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/worm-ceo.glb",
+            "bytes": 1173244,
+            "sha256": "2d99942d03f602c6a311a80f7fe7e3832f05d2c45fc3198a4a5118506de91c59"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/worm-ceo.glb",
+            "bytes": 1173244,
+            "sha256": "2d99942d03f602c6a311a80f7fe7e3832f05d2c45fc3198a4a5118506de91c59"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/worm-ceo.webp",
+            "bytes": 16280,
+            "sha256": "69ab99109fa111ea49de7e45c8bd3ac0b2610155cdab5d9735f8dd0ec1f578b3"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/worm-ceo.webp",
+            "bytes": 16280,
+            "sha256": "69ab99109fa111ea49de7e45c8bd3ac0b2610155cdab5d9735f8dd0ec1f578b3"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/worm-ceo.webp",
+            "bytes": 16280,
+            "sha256": "69ab99109fa111ea49de7e45c8bd3ac0b2610155cdab5d9735f8dd0ec1f578b3"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/worm-ceo.jpg",
+            "bytes": 13073,
+            "sha256": "ad2edad10ca9ab19dfb6b8654e4cc56210ac084b5bc5123e6ba9eeb8a76ca49e"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/worm-ceo.jpg",
+            "bytes": 13073,
+            "sha256": "ad2edad10ca9ab19dfb6b8654e4cc56210ac084b5bc5123e6ba9eeb8a76ca49e"
+          }
+        },
+        "expectedModelVersion": "2d99942d03"
+      },
+      {
+        "id": "yacht-bean",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/yacht-bean.glb",
+            "bytes": 2007504,
+            "sha256": "9c1c16cb5d105a084928df17b24e771d4fc94756400530206bf4b1596314fc8a"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/yacht-bean.glb",
+            "bytes": 2007504,
+            "sha256": "9c1c16cb5d105a084928df17b24e771d4fc94756400530206bf4b1596314fc8a"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/yacht-bean.webp",
+            "bytes": 20066,
+            "sha256": "6a24f6f414bede8dbb07c3cc00697ecc1bf0a47c84e2a56aa3d6a45e024449f6"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/yacht-bean.webp",
+            "bytes": 20066,
+            "sha256": "6a24f6f414bede8dbb07c3cc00697ecc1bf0a47c84e2a56aa3d6a45e024449f6"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/yacht-bean.webp",
+            "bytes": 20066,
+            "sha256": "6a24f6f414bede8dbb07c3cc00697ecc1bf0a47c84e2a56aa3d6a45e024449f6"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/yacht-bean.jpg",
+            "bytes": 16986,
+            "sha256": "bb3113b98c17d320cb4246d7747064441f19b78533520a89fb3e52f7de31e042"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/yacht-bean.jpg",
+            "bytes": 16986,
+            "sha256": "bb3113b98c17d320cb4246d7747064441f19b78533520a89fb3e52f7de31e042"
+          }
+        },
+        "expectedModelVersion": "9c1c16cb5d"
+      },
+      {
+        "id": "zap-pebble",
+        "copies": {
+          "forge-model": {
+            "path": "pingblip/memeforge/public/models/zap-pebble.glb",
+            "bytes": 381088,
+            "sha256": "9b17643d5f24979ba4740b0a09d76bef57107f9058af8f2fcccd874fba7576b3"
+          },
+          "game-model": {
+            "path": "pingblip/web/public/models/zap-pebble.glb",
+            "bytes": 381088,
+            "sha256": "9b17643d5f24979ba4740b0a09d76bef57107f9058af8f2fcccd874fba7576b3"
+          },
+          "forge-preview": {
+            "path": "pingblip/memeforge/public/dex/zap-pebble.webp",
+            "bytes": 20078,
+            "sha256": "a97b9f9a90531974b1b4c1f1c07971a6497489340ceb0db32a705541dca1e20e"
+          },
+          "game-preview": {
+            "path": "pingblip/web/public/dex/zap-pebble.webp",
+            "bytes": 20078,
+            "sha256": "a97b9f9a90531974b1b4c1f1c07971a6497489340ceb0db32a705541dca1e20e"
+          },
+          "world-preview": {
+            "path": "pingblip/world/public/dex/zap-pebble.webp",
+            "bytes": 20078,
+            "sha256": "a97b9f9a90531974b1b4c1f1c07971a6497489340ceb0db32a705541dca1e20e"
+          },
+          "game-og": {
+            "path": "pingblip/web/public/dex/og/zap-pebble.jpg",
+            "bytes": 17751,
+            "sha256": "6e2f571d299f62898602665fd84db7a97f6b4888109dcf003fa45b451d4de5f6"
+          },
+          "world-og": {
+            "path": "pingblip/world/public/dex/og/zap-pebble.jpg",
+            "bytes": 17751,
+            "sha256": "6e2f571d299f62898602665fd84db7a97f6b4888109dcf003fa45b451d4de5f6"
+          }
+        },
+        "expectedModelVersion": "9b17643d5f"
+      }
+    ],
+    "auxiliaryEyes": [
+      {
+        "id": "dot",
+        "copies": {
+          "forge-eyes": {
+            "path": "pingblip/memeforge/public/models/eyes/dot.glb",
+            "bytes": 37532,
+            "sha256": "377e434987da42991adb87c33b04cec79d5bd147b2842d30a57a9576f1b75c01"
+          },
+          "game-eyes": {
+            "path": "pingblip/web/public/models/eyes/dot.glb",
+            "bytes": 37532,
+            "sha256": "377e434987da42991adb87c33b04cec79d5bd147b2842d30a57a9576f1b75c01"
+          }
+        }
+      },
+      {
+        "id": "googly",
+        "copies": {
+          "forge-eyes": {
+            "path": "pingblip/memeforge/public/models/eyes/googly.glb",
+            "bytes": 121772,
+            "sha256": "c2c89a8e6184e0766a16d3aaf09a3bcd28477bb519e312afa5fb11d270981e63"
+          },
+          "game-eyes": {
+            "path": "pingblip/web/public/models/eyes/googly.glb",
+            "bytes": 121772,
+            "sha256": "c2c89a8e6184e0766a16d3aaf09a3bcd28477bb519e312afa5fb11d270981e63"
+          }
+        }
+      },
+      {
+        "id": "jewel",
+        "copies": {
+          "forge-eyes": {
+            "path": "pingblip/memeforge/public/models/eyes/jewel.glb",
+            "bytes": 67380,
+            "sha256": "921dbb203d34c95fb8d7890ede28b886bf5b425d2eab2128a836ccdce743b101"
+          },
+          "game-eyes": {
+            "path": "pingblip/web/public/models/eyes/jewel.glb",
+            "bytes": 67380,
+            "sha256": "921dbb203d34c95fb8d7890ede28b886bf5b425d2eab2128a836ccdce743b101"
+          }
+        }
+      },
+      {
+        "id": "slit",
+        "copies": {
+          "forge-eyes": {
+            "path": "pingblip/memeforge/public/models/eyes/slit.glb",
+            "bytes": 116500,
+            "sha256": "01fb4d682244265c973352b5535745b54cbdd8e404db8f2855ef72d92ff8a3a1"
+          },
+          "game-eyes": {
+            "path": "pingblip/web/public/models/eyes/slit.glb",
+            "bytes": 116500,
+            "sha256": "01fb4d682244265c973352b5535745b54cbdd8e404db8f2855ef72d92ff8a3a1"
+          }
+        }
+      },
+      {
+        "id": "spiral",
+        "copies": {
+          "forge-eyes": {
+            "path": "pingblip/memeforge/public/models/eyes/spiral.glb",
+            "bytes": 265672,
+            "sha256": "3c229552aea21939aca12f75102323c19cc69d878f436d97ca8f09a4d0ce618d"
+          },
+          "game-eyes": {
+            "path": "pingblip/web/public/models/eyes/spiral.glb",
+            "bytes": 265672,
+            "sha256": "3c229552aea21939aca12f75102323c19cc69d878f436d97ca8f09a4d0ce618d"
+          }
+        }
+      },
+      {
+        "id": "tired",
+        "copies": {
+          "forge-eyes": {
+            "path": "pingblip/memeforge/public/models/eyes/tired.glb",
+            "bytes": 128772,
+            "sha256": "2fd0517f7169046d56978f9b8fba67afa05f7b20b1eae14aa28959f3ba9506dd"
+          },
+          "game-eyes": {
+            "path": "pingblip/web/public/models/eyes/tired.glb",
+            "bytes": 128772,
+            "sha256": "2fd0517f7169046d56978f9b8fba67afa05f7b20b1eae14aa28959f3ba9506dd"
+          }
+        }
+      }
+    ],
+    "errors": [],
+    "manifests": {
+      "forgeModelVersions": {
+        "angry-dumpling": "9917d9041b",
+        "anvil-priest": "3853ecee7c",
+        "ashtray-monk": "1badc99236",
+        "bag-golem": "db8ccc255b",
+        "barrel-toad": "a65a68b5a9",
+        "billet-frog": "5a538f938d",
+        "brass-bust": "10165606a5",
+        "bruised-banana": "e23d6f0f63",
+        "bunny-wrong": "a783c80872",
+        "button-spider": "955cdb9ee0",
+        "candle-demon": "301e76e834",
+        "caramel-bust": "ddc5c478d4",
+        "chart-imp": "d98298690f",
+        "chonk-capy": "c72927265c",
+        "cigar-orb": "8a31dd356f",
+        "cinder-whelp": "e1fd0cfa62",
+        "coil-serpent": "4fbec6645f",
+        "cola-cube": "e6f62b6587",
+        "cute-skull": "e900f09094",
+        "disk-angel": "c349903388",
+        "dumpster-raccoon": "62b39bd89f",
+        "fee-moth": "ad42a9a71c",
+        "frost-imp": "b9bed7f619",
+        "glaze-donut": "3c8babfb40",
+        "goblin-frog": "ed6658439f",
+        "graveyard-shift": "9261258af0",
+        "grease-moth": "f4b5f39708",
+        "gummy-wraith": "e9f10376b9",
+        "heel-golem": "28913038d5",
+        "leverage-crab": "fd6fe8d5ab",
+        "liq-snake": "75b124bb54",
+        "liquid-blade": "663308fc98",
+        "lollipop-golem": "ec31aa0afc",
+        "marble-head": "13c9c3f001",
+        "mask-zero": "42b5d8cf9b",
+        "midnight-pizza": "6d2f2f1733",
+        "mirror-idol": "267ed2ae8a",
+        "mochi-void": "86fe7ade99",
+        "molar-breaker": "f9656bf247",
+        "motel-orb": "a0e8f3f569",
+        "orb-of-fees": "5bf1db8c18",
+        "pager-ghost": "94a6835566",
+        "pickle-warlord": "ae97ce49fe",
+        "pigeon-king": "a7aaee8be1",
+        "piston-saint": "eacb0315df",
+        "pump-goblin": "700b1ebedf",
+        "pumpjack-imp": "2661c3ba3a",
+        "quench-eel": "03f1683441",
+        "rain-pigeon": "e41411a6ff",
+        "rat-oracle": "55c2a67b58",
+        "rekt-ghost": "f72e7e5c0d",
+        "rust-crown": "4dc733429b",
+        "scale-imp": "6bbe607cc2",
+        "seam-imp": "cfc217782d",
+        "signet-ring": "aafe5ae078",
+        "slag-cherub": "ef36d4d584",
+        "slick-eel": "2c523fd0d8",
+        "sludge-bean": "1373340ac3",
+        "soda-can-saint": "7041117130",
+        "soft-egg": "a6c4d96ec9",
+        "sour-worm": "a47f31fe01",
+        "spark-moth": "776d63b595",
+        "spill-orb": "0388576480",
+        "sprinkle-moth": "327c0787d1",
+        "taco-ghost": "1051e30ae8",
+        "tar-cherub": "e534f3c678",
+        "taxi-larva": "7dc18181ad",
+        "tiny-crown": "9b9ab79e7b",
+        "toad-baron": "e872f5e9da",
+        "tongs-golem": "84cd76b7db",
+        "too-many-teeth": "9e8a4ebebe",
+        "vault-toad": "0e35e6a0f4",
+        "vending-knight": "515656ecb8",
+        "void-cat": "c439fceaa2",
+        "wet-neon-cat": "4ae0724803",
+        "wet-plush": "3f0a364c73",
+        "winged-bolt": "9c43502322",
+        "worm-ceo": "2d99942d03",
+        "yacht-bean": "9c1c16cb5d",
+        "zap-pebble": "9b17643d5f"
+      },
+      "gameModelVersions": {
+        "angry-dumpling": "9917d9041b",
+        "anvil-priest": "3853ecee7c",
+        "ashtray-monk": "1badc99236",
+        "bag-golem": "db8ccc255b",
+        "barrel-toad": "a65a68b5a9",
+        "billet-frog": "5a538f938d",
+        "brass-bust": "10165606a5",
+        "bruised-banana": "e23d6f0f63",
+        "bunny-wrong": "a783c80872",
+        "button-spider": "955cdb9ee0",
+        "candle-demon": "301e76e834",
+        "caramel-bust": "ddc5c478d4",
+        "chart-imp": "d98298690f",
+        "chonk-capy": "c72927265c",
+        "cigar-orb": "8a31dd356f",
+        "cinder-whelp": "e1fd0cfa62",
+        "coil-serpent": "4fbec6645f",
+        "cola-cube": "e6f62b6587",
+        "cute-skull": "e900f09094",
+        "disk-angel": "c349903388",
+        "dumpster-raccoon": "62b39bd89f",
+        "fee-moth": "ad42a9a71c",
+        "frost-imp": "b9bed7f619",
+        "glaze-donut": "3c8babfb40",
+        "goblin-frog": "ed6658439f",
+        "graveyard-shift": "9261258af0",
+        "grease-moth": "f4b5f39708",
+        "gummy-wraith": "e9f10376b9",
+        "heel-golem": "28913038d5",
+        "leverage-crab": "fd6fe8d5ab",
+        "liq-snake": "75b124bb54",
+        "liquid-blade": "663308fc98",
+        "lollipop-golem": "ec31aa0afc",
+        "marble-head": "13c9c3f001",
+        "mask-zero": "42b5d8cf9b",
+        "midnight-pizza": "6d2f2f1733",
+        "mirror-idol": "267ed2ae8a",
+        "mochi-void": "86fe7ade99",
+        "molar-breaker": "f9656bf247",
+        "motel-orb": "a0e8f3f569",
+        "orb-of-fees": "5bf1db8c18",
+        "pager-ghost": "94a6835566",
+        "pickle-warlord": "ae97ce49fe",
+        "pigeon-king": "a7aaee8be1",
+        "piston-saint": "eacb0315df",
+        "pump-goblin": "700b1ebedf",
+        "pumpjack-imp": "2661c3ba3a",
+        "quench-eel": "03f1683441",
+        "rain-pigeon": "e41411a6ff",
+        "rat-oracle": "55c2a67b58",
+        "rekt-ghost": "f72e7e5c0d",
+        "rust-crown": "4dc733429b",
+        "scale-imp": "6bbe607cc2",
+        "seam-imp": "cfc217782d",
+        "signet-ring": "aafe5ae078",
+        "slag-cherub": "ef36d4d584",
+        "slick-eel": "2c523fd0d8",
+        "sludge-bean": "1373340ac3",
+        "soda-can-saint": "7041117130",
+        "soft-egg": "a6c4d96ec9",
+        "sour-worm": "a47f31fe01",
+        "spark-moth": "776d63b595",
+        "spill-orb": "0388576480",
+        "sprinkle-moth": "327c0787d1",
+        "taco-ghost": "1051e30ae8",
+        "tar-cherub": "e534f3c678",
+        "taxi-larva": "7dc18181ad",
+        "tiny-crown": "9b9ab79e7b",
+        "toad-baron": "e872f5e9da",
+        "tongs-golem": "84cd76b7db",
+        "too-many-teeth": "9e8a4ebebe",
+        "vault-toad": "0e35e6a0f4",
+        "vending-knight": "515656ecb8",
+        "void-cat": "c439fceaa2",
+        "wet-neon-cat": "4ae0724803",
+        "wet-plush": "3f0a364c73",
+        "winged-bolt": "9c43502322",
+        "worm-ceo": "2d99942d03",
+        "yacht-bean": "9c1c16cb5d",
+        "zap-pebble": "9b17643d5f"
+      },
+      "renderedFrom": {
+        "goblin-frog": "ed6658439f",
+        "dumpster-raccoon": "62b39bd89f",
+        "chonk-capy": "c72927265c",
+        "void-cat": "c439fceaa2",
+        "pigeon-king": "a7aaee8be1",
+        "worm-ceo": "2d99942d03",
+        "rat-oracle": "55c2a67b58",
+        "toad-baron": "e872f5e9da",
+        "candle-demon": "301e76e834",
+        "leverage-crab": "fd6fe8d5ab",
+        "rekt-ghost": "f72e7e5c0d",
+        "pump-goblin": "700b1ebedf",
+        "liq-snake": "75b124bb54",
+        "bag-golem": "db8ccc255b",
+        "chart-imp": "d98298690f",
+        "fee-moth": "ad42a9a71c",
+        "angry-dumpling": "9917d9041b",
+        "bruised-banana": "e23d6f0f63",
+        "soda-can-saint": "7041117130",
+        "midnight-pizza": "6d2f2f1733",
+        "soft-egg": "a6c4d96ec9",
+        "pickle-warlord": "ae97ce49fe",
+        "glaze-donut": "3c8babfb40",
+        "taco-ghost": "1051e30ae8",
+        "brass-bust": "10165606a5",
+        "tiny-crown": "9b9ab79e7b",
+        "heel-golem": "28913038d5",
+        "cigar-orb": "8a31dd356f",
+        "yacht-bean": "9c1c16cb5d",
+        "vault-toad": "0e35e6a0f4",
+        "signet-ring": "aafe5ae078",
+        "marble-head": "13c9c3f001",
+        "wet-plush": "3f0a364c73",
+        "too-many-teeth": "9e8a4ebebe",
+        "seam-imp": "cfc217782d",
+        "mochi-void": "86fe7ade99",
+        "button-spider": "955cdb9ee0",
+        "bunny-wrong": "a783c80872",
+        "cute-skull": "e900f09094",
+        "gummy-wraith": "e9f10376b9",
+        "anvil-priest": "3853ecee7c",
+        "cinder-whelp": "e1fd0cfa62",
+        "spark-moth": "776d63b595",
+        "quench-eel": "03f1683441",
+        "slag-cherub": "ef36d4d584",
+        "tongs-golem": "84cd76b7db",
+        "billet-frog": "5a538f938d",
+        "scale-imp": "6bbe607cc2",
+        "wet-neon-cat": "4ae0724803",
+        "taxi-larva": "7dc18181ad",
+        "pager-ghost": "94a6835566",
+        "vending-knight": "515656ecb8",
+        "rain-pigeon": "e41411a6ff",
+        "motel-orb": "a0e8f3f569",
+        "ashtray-monk": "1badc99236",
+        "graveyard-shift": "9261258af0",
+        "mirror-idol": "267ed2ae8a",
+        "liquid-blade": "663308fc98",
+        "orb-of-fees": "5bf1db8c18",
+        "winged-bolt": "9c43502322",
+        "piston-saint": "eacb0315df",
+        "disk-angel": "c349903388",
+        "coil-serpent": "4fbec6645f",
+        "mask-zero": "42b5d8cf9b",
+        "molar-breaker": "f9656bf247",
+        "sour-worm": "a47f31fe01",
+        "cola-cube": "e6f62b6587",
+        "frost-imp": "b9bed7f619",
+        "lollipop-golem": "ec31aa0afc",
+        "sprinkle-moth": "327c0787d1",
+        "caramel-bust": "ddc5c478d4",
+        "zap-pebble": "9b17643d5f",
+        "slick-eel": "2c523fd0d8",
+        "barrel-toad": "a65a68b5a9",
+        "tar-cherub": "e534f3c678",
+        "rust-crown": "4dc733429b",
+        "spill-orb": "0388576480",
+        "pumpjack-imp": "2661c3ba3a",
+        "grease-moth": "f4b5f39708",
+        "sludge-bean": "1373340ac3"
+      }
+    }
+  },
+  "options": {
+    "live": false,
+    "both_model_urls": false,
+    "concurrency": 4,
+    "timeout": 30,
+    "attempts": 2,
+    "revalidate": false
+  },
+  "live": {
+    "performed": false,
+    "results": []
+  },
+  "completedAt": "2026-10-28T16:00:42+00:00",
+  "elapsedSeconds": 0.472,
+  "ok": true
+}

@@ -113,3 +113,18 @@ contracts/zk/build/*.wtns
 # Keep them even with the legacy Docker builder's root-only ignore handling.
 !warden/docs/data/
 !warden/docs/data/**
+
+# WARDEN's isolated component suite checks these cross-repository documentation
+# links. Keep only the exact public references for its test stage; retain the
+# docs exclusion for every other workspace page (legacy builder fallback).
+!docs/
+docs/**
+!docs/growth/
+docs/growth/**
+!docs/growth/kevin-annotations-answer-review-2026-10-25.ru.md
+!docs/growth/warden-thresholds-2026-10-25.ru.md
+!docs/growth/launchgate-methodology-2026-10-25.ru.md
+!docs/growth/launchgate-selection-2026-10-25.en.md
+!docs/growth/launchgate-selection-2026-10-25.ru.md
+!docs/growth/launchgate-tie-selection-2026-10-25.en.md
+!docs/growth/launchgate-tie-selection-2026-10-25.ru.md

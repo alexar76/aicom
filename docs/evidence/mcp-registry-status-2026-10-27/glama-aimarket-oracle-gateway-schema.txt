@@ -1,0 +1,295 @@
+Schema | aimarket-oracle-gateway | Glama
+Skip to main content
+Glama
+Servers
+Connectors
+Tools
+Clients
+Inspector
+New Chat
+Sign Up
+Glama
+MCP
+Servers
+aimarket-oracle-gateway
+Favorite
+Web3 & Decentralized Tech
+AI & Machine Learning
+by
+alexar76
+Overview
+Schema
+Source
+Related Servers
+Discussions
+Admin
+Python
+Hybrid
+Server Configuration
+Describes the environment variables required to run the server.
+Name
+Required
+Description
+Default
+AIMARKET_HUB_URL
+Yes
+AIMarket Hub base URL — recommended: metered + paid, the routing fee funds the ecosystem
+AIMARKET_API_TOKEN
+No
+optional bearer token (dev/prod auth)
+AIMARKET_ORACLE_URL
+No
+direct oracle-family URL (used if no hub) — demo/free path
+AIMARKET_MAX_SPEND_USD
+No
+hard cumulative budget this process (default 5.0) — refused once exceeded
+5.0
+AIMARKET_PAYMENT_CHANNEL
+No
+optional pre-opened payment channel id (sent as X-Payment-Channel)
+AIMARKET_PRICE_TOLERANCE
+No
+reject if the hub charges > advertised × (1 + this) (default 0.10) — overcharge guard
+0.10
+AIMARKET_MAX_PER_CALL_USD
+No
+hard cap per call (default 0.10) — a call advertised above this is refused
+0.10
+Instructions
+Guidance the server publishes about itself, which clients place ahead of the tool catalog so the model reads it before choosing anything.
+This server publishes no instructions, or was last inspected before Glama recorded them.
+Capabilities
+Features and capabilities supported by this server
+Protocol revision
+2025-11-25
+Capability
+Details
+tools
+{
+  "listChanged": false
+}
+prompts
+{
+  "listChanged": false
+}
+resources
+{
+  "subscribe": false,
+  "listChanged": false
+}
+experimental
+{}
+Tools
+Functions exposed to the LLM to take actions
+Name
+Description
+get_random
+A
+Draw unbiasable, Ed25519-signed verifiable randomness (Platon).
+Use this when you need randomness an autonomous agent cannot bias or predict and that a third
+party can verify — fair selection, sampling, raffles, commit-reveal, anti-MEV ordering. The
+oracle signs the value, so you (or anyone) can verify it offline against the published signer key.
+
+Returns:
+    The standard envelope (see server instructions). `result` contains:
+      - `random_hex`: the random bytes, hex-encoded (`num_bytes` long).
+      - `proof`: `{state_hash, tick, timestamp, entropy_commitment}` binding the value to the
+        oracle's chaotic state at draw time.
+      - `signature`: Ed25519 signature over the value+proof (verify with `verify_random`/the
+        signer key in the Hub manifest). `verifiable.signed` will be true.
+    Cost ~$0.004 USDC, charged per call.
+
+Example:
+    get_random(num_bytes=32, client_seed="0xdeadbeef")
+get_randomness_beacon
+A
+Fetch the round's public randomness beacon (Platon) — one shared value all callers in the
+    round observe, useful as a common coin / shared seed.
+Returns:
+    The standard envelope; `result` has the same `{random_hex, proof, signature}` shape as
+    `get_random`, but the value is the round-wide beacon (not caller-specific). Cost ~$0.004 USDC.
+
+Example:
+    get_randomness_beacon()
+ask_oracle
+A
+Ask the Platon oracle for a grounded, entropy-derived read-only answer.
+Use for lightweight oracle-mediated decisions (e.g. an unbiased pick among options). Read-only —
+no side effects, no state change.
+
+Returns:
+    The standard envelope; `result` carries the oracle's answer payload. Cost ~$0.003 USDC.
+
+Example:
+    ask_oracle(question="Pick one at random: red, green, or blue?")
+verify_random
+A
+Verify a Platon randomness draw without re-running it (Platon verify).
+Pass `random_hex`, `proof`, and `signature` exactly as returned by `get_random` /
+`get_randomness_beacon`. Confirms the Ed25519 signature over the canonical (random_hex, proof)
+against the signer's published public key — so you trust the math, not the service.
+
+Returns:
+    The standard envelope; `result` is `{valid: <bool>}` (plus `error` if the input was
+    malformed). Cost ~$0.001 USDC.
+
+Example:
+    verify_random(random_hex="0x9f2c…", proof={"scheme": "platon-chaos-vrf/v1", …},
+                  signature={"algorithm": "ed25519", "public_key": "<b64>", "value": "<b64>"})
+compute_vdf
+A
+Evaluate a Verifiable Delay Function (Chronos) — proof that real sequential work elapsed.
+Use when you need provable, unforgeable elapsed time / sequential work: timed reveals, fair
+ordering, proof-of-elapsed-time, randomness that cannot be precomputed. Producing the output
+requires `T` sequential squarings over an RSA-2048 modulus (no shortcut), so a valid proof
+attests the delay actually happened. Verify cheaply with `verify_vdf`.
+
+Returns:
+    The standard envelope; `result` contains:
+      - `scheme`, `g`, `y` (= g^(2^T) mod N), `proof` (`{pi, l}`, Wesolowski), `modulus`.
+    `verifiable.has_proof` will be true. Cost ~$0.01 USDC.
+
+Example:
+    compute_vdf(seed="0x1234abcd", difficulty=100000)
+verify_vdf
+A
+Verify a Chronos VDF proof in a single exponentiation.
+Pass the `g`, `y`, `T`, and `proof` returned by `compute_vdf` (or by any party claiming a VDF
+result). Confirms `y = g^(2^T) mod N` without redoing the T squarings.
+
+Returns:
+    The standard envelope; `result` is `{valid: <bool>}`. Cost ~$0.001 USDC.
+
+Example:
+    verify_vdf(g="0x03", y="0x9f2a…", T=100000, proof={"pi": "0x1a2b…", "l": "0x65"})
+get_reputation_scores
+A
+Compute PageRank/EigenTrust trust scores over a directed trust graph you supply (LUMEN).
+Use to rank agents/entities by trust when you have who-trusts-whom edges: counterparty
+selection, sybil-dampened weighting, prioritization. You provide the graph; the oracle returns
+a normalized score per node plus convergence info.
+
+Returns:
+    The standard envelope; `result` contains:
+      - `scores`: array of `nodes` floats that sum to 1 (±1e-6) — node i's trust share.
+      - `iterations`, `converged`: power-iteration convergence info.
+    Cost ~$0.005 USDC (scales with graph size).
+
+Example:
+    get_reputation_scores(nodes=3, edges=[[0,1,1.0],[1,2,0.5],[2,0,0.5]], damping=0.85)
+get_agent_trust
+A
+Trust score, rank, and percentile of ONE node in a trust graph you supply (LUMEN).
+A single-agent reputation lookup over the same PageRank as `get_reputation_scores` — use when
+you only care about one counterparty's standing.
+
+Returns:
+    The standard envelope; `result` is `{target_node, score, rank (1=highest), of, percentile,
+    graph_commitment}`. Cost ~$0.003 USDC.
+
+Example:
+    get_agent_trust(nodes=3, edges=[[0,1,1.0],[1,2,0.5],[2,0,0.5]], target_node=1)
+verify_reputation
+A
+Verify LUMEN reputation scores by re-deriving PageRank over the supplied graph (LUMEN verify).
+Pass the graph and the `scores` (and optionally the `graph_commitment`) from a
+`get_reputation_scores` result; confirms they are the correct PageRank of exactly that graph.
+
+Returns:
+    The standard envelope; `result` is `{valid: <bool>, max_abs_diff, [commitment_match]}`.
+    Cost ~$0.002 USDC.
+
+Example:
+    verify_reputation(nodes=3, edges=[[0,1,1.0],[1,2,0.5],[2,0,0.5]], scores=[0.33,0.33,0.34])
+list_oracle_capabilities
+A
+List every oracle tool with its AIMarket capabilityId and per-call price (USD).
+Call this first to discover what's available and what each call costs before invoking.
+
+Returns:
+    A JSON array (string) of `{tool, capability_id, price_usd, summary}` — one entry per tool.
+
+Example:
+    list_oracle_capabilities()
+Prompts
+Interactive templates invoked by user choice
+Name
+Description
+No prompts
+Resources
+Contextual data attached and managed by the client
+Name
+Description
+No resources
+Try in Browser
+Deploy Server
+Deploy Server
+One endpoint for every MCP tool
+Rayrun runs every MCP server behind one URL and holds the credentials. Each call is decided per client, tool, and argument, then recorded.
+ray.run
+Ad
+TDQS
+A
+4.6
+/5.0
+Scored
+2026-06-19 12:45
+across
+10
+tools
+Disambiguation
+5
+/5
+Each tool has a distinct, clearly defined purpose: ask_oracle for queries, compute_vdf for VDF, get_agent_trust and get_reputation_scores for trust, get_random and get_randomness_beacon for randomness (one per-call, one shared beacon), list_oracle_capabilities for discovery, and three verify tools. No overlapping functionality causes ambiguity.
+Naming Consistency
+5
+/5
+All tool names follow a consistent verb_noun pattern using snake_case (e.g., compute_vdf, get_random, verify_vdf). The verbs are descriptive (ask, compute, get, list, verify) and the nouns clearly indicate the resource or action. No mixing of conventions.
+Tool Count
+5
+/5
+10 tools is well-scoped for an oracle gateway. It covers core operations (randomness, VDF, trust) plus verification and discovery without being overwhelming. Each tool earns its place; there are no redundant or trivial tools.
+Completeness
+5
+/5
+The tool surface is complete for the domain: it provides both per-call and beacon randomness, VDF computation, trust/reputation scoring, and separate verification for each. The inclusion of list_oracle_capabilities aids discovery. No obvious gaps like missing lifecycle operations.
+Maintenance
+Activity
+Maintained
+Responsiveness
+No issues
+Resources
+PyPI Package
+GitHub Repository
+Need Help?
+Report Issue
+Related Servers
+Was this helpful?
+Yes
+No
+MCP
+MCP Servers
+MCP Connectors
+MCP Clients
+MCP Tools
+Best MCP Servers
+Products
+Chat
+MCP Directory API
+MCP Gateway
+MCP Hosting
+MCP Inspector
+Policies
+Terms of Service
+Privacy Policy
+VDP
+Resources
+Support
+Careers
+Blog
+Newsletter
+Advertise
+Glama
+– all-in-one AI workspace.
+All systems online
+Help

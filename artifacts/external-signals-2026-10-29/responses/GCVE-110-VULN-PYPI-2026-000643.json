@@ -1,0 +1,129 @@
+{
+  "containers": {
+    "cna": {
+      "affected": [
+        {
+          "collectionURL": "https://pypi.org",
+          "defaultStatus": "unknown",
+          "modules": [
+            "platon.main"
+          ],
+          "packageName": "aimarket-platon",
+          "product": "aimarket-platon",
+          "programFiles": [
+            "platon/main.py"
+          ],
+          "programRoutines": [
+            {
+              "name": "platon.main._write_authorized"
+            },
+            {
+              "name": "platon.main._local_caller"
+            },
+            {
+              "name": "platon.main._caller_is_this_user"
+            }
+          ],
+          "vendor": "pypi",
+          "versions": [
+            {
+              "lessThanOrEqual": "0.1.5",
+              "status": "affected",
+              "version": "0.1.0",
+              "versionType": "python"
+            }
+          ]
+        }
+      ],
+      "configurations": [
+        {
+          "lang": "en",
+          "value": "PLATON_STEER_TOKEN is unset, production mode is off and PLATON_PUBLIC_WRITES is unset."
+        },
+        {
+          "lang": "en",
+          "value": "A reverse proxy, tunnel or port forward relays requests to the server from inside its network namespace, and it runs as the server's user or the host is not Linux."
+        }
+      ],
+      "descriptions": [
+        {
+          "lang": "en",
+          "value": "If you run aimarket-platon without PLATON_STEER_TOKEN, outside production mode, behind a reverse proxy, tunnel or port forward on the same host, and that proxy runs as the same user as the server or the host is not Linux, every caller of the proxy can steer and project the shared world (POST /api/steer, /api/project, the beacon checkpoint, the platon.steer@v1 and platon.project@v1 capabilities and the websocket writes). Without a token the server accepts writes only from callers it judges local (main._write_authorized, main._local_caller). The test added in 0.1.5 (main._caller_is_this_user) tells a proxy from a local client only by the owner of its socket in /proc/net/tcp: a proxy running as the server's user passes it, and where /proc/net/tcp does not exist (macOS, Windows) every caller passes it. Earlier versions accepted every writer (GCVE-110-VULN-PYPI-2026-000630). Affects 0.1.0 through 0.1.5."
+        }
+      ],
+      "metrics": [
+        {
+          "cvssV3_1": {
+            "baseScore": 3.7,
+            "baseSeverity": "LOW",
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
+            "version": "3.1"
+          }
+        }
+      ],
+      "problemTypes": [
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-306",
+              "description": "Missing Authentication for Critical Function",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        },
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-1188",
+              "description": "Initialization of a Resource with an Insecure Default",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "dateUpdated": "2026-10-28T01:49:28Z",
+        "orgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+        "shortName": "Vulnetix"
+      },
+      "references": [
+        {
+          "tags": [
+            "third-party-advisory"
+          ],
+          "url": "https://pypi.org/project/aimarket-platon/"
+        }
+      ],
+      "solutions": [
+        {
+          "lang": "en",
+          "value": "Set PLATON_STEER_TOKEN whenever anything relays requests to the server, and send it as X-Platon-Token from the clients allowed to write. This is the only control that works in every affected version."
+        }
+      ],
+      "title": "Keyless Platon server treats a same-user or non-Linux reverse proxy as a local writer",
+      "workarounds": [
+        {
+          "lang": "en",
+          "value": "On 0.1.5, run the proxy in a different container or host that does not share the server's network namespace, or, on Linux, as a different user from the server."
+        },
+        {
+          "lang": "en",
+          "value": "Require authentication at the proxy for the write routes (client certificates over mTLS, or an identity-aware proxy)."
+        }
+      ],
+      "x_vulnetix_classification": "weakness"
+    }
+  },
+  "cveMetadata": {
+    "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+    "assignerShortName": "Vulnetix",
+    "cveId": "GCVE-110-VULN-PYPI-2026-000643",
+    "datePublished": "2026-10-27T22:42:51Z",
+    "dateUpdated": "2026-10-28T01:49:28Z",
+    "state": "PUBLISHED"
+  },
+  "dataType": "CVE_RECORD",
+  "dataVersion": "5.1"
+}

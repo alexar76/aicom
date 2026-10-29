@@ -1,0 +1,63 @@
+{
+  "suites": [
+    {
+      "project": "root cross-package authorization regressions",
+      "command": ".venv/bin/python -m pytest tests/test_keyless_tcp_authorization.py -q -o addopts=",
+      "passed": 160,
+      "skipped": 0,
+      "log": "keyless-fixed.log"
+    },
+    {
+      "project": "aimarket-mcp full suite",
+      "command": "PYTHONPATH=aimarket-mcp aimarket-mcp/.venv/bin/python -m pytest aimarket-mcp/tests -q -o addopts=",
+      "passed": 102,
+      "skipped": 1,
+      "note": "One native Linux socket test skipped on macOS."
+    },
+    {
+      "project": "Metis affected HTTP/API suites",
+      "command": "METIS_WEB_SEARCH_URL=https://93.184.216.34/html/ PYTHONPATH=metis .venv/bin/python -m pytest metis/tests/test_api.py metis/tests/test_api_app.py metis/tests/test_api_observability.py metis/tests/test_coordinator_server.py metis/tests/test_distributed_node_server.py metis/tests/test_jury.py metis/tests/test_multimodal.py metis/tests/test_verify_guarantee.py metis/tests/test_ecosystem_api.py metis/tests/test_pipeline_event_sink.py metis/tests/test_host_execution_policy.py -q -o addopts=",
+      "passed": 185,
+      "skipped": 0,
+      "note": "Permitted DNS needed by existing example.com public-URL test; unrelated DNS test unchanged."
+    },
+    {
+      "project": "Treasury full suite",
+      "command": "PYTHONPATH=treasury:oracles/core:momus .venv/bin/python -m pytest treasury/tests -q -o addopts=",
+      "passed": 21,
+      "skipped": 0,
+      "log": "treasury-fixed.log"
+    },
+    {
+      "project": "Platon full backend suite",
+      "command": "PYTHONPATH=platon/backend:oracles/core .venv/bin/python -m pytest platon/backend/tests -q -o addopts=",
+      "passed": 106,
+      "skipped": 0,
+      "log": "platon-fixed.log"
+    },
+    {
+      "project": "oracle_platon mirror full backend suite",
+      "command": "PYTHONPATH=oracles/oracles/platon/backend:oracles/core .venv/bin/python -m pytest oracles/oracles/platon/backend/tests -q -o addopts=",
+      "passed": 90,
+      "skipped": 0,
+      "log": "platon-mirror-fixed.log"
+    },
+    {
+      "project": "SKOPOS auth/login/IP/hostkey suites",
+      "cwd": "skopos",
+      "command": ".venv/bin/python -m pytest -q tests/test_login_pacing.py tests/test_auth_store.py tests/test_app_auth_session.py tests/test_client_ip_trust.py tests/test_remediation_git_push_hostkeys.py tests/test_ssh_hostkeys.py",
+      "passed": 71,
+      "skipped": 0
+    },
+    {
+      "project": "SKOPOS localization/hardening/password policy",
+      "cwd": "skopos",
+      "command": ".venv/bin/python -m pytest -q tests/test_remediation_i18n.py tests/test_security_hardening.py tests/test_password_policy.py",
+      "passed": 65,
+      "skipped": 0
+    }
+  ],
+  "passed": 800,
+  "skipped": 1,
+  "scope": "Non-overlapping selections listed here. Earlier audit and independent reruns are not included in this total."
+}

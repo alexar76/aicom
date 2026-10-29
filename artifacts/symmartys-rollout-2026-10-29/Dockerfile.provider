@@ -1,0 +1,11 @@
+# The base is tagged from the exact running, security-patched provider on the host.
+FROM emporion:before-symmartys-20261029
+USER root
+COPY dist/aimarket_oracle_core-0.6.3-py3-none-any.whl /tmp/rollout-wheels/
+COPY dist/aimarket_symmartys-0.5.0-py3-none-any.whl /tmp/rollout-wheels/
+RUN python -m pip install --no-index --no-deps /tmp/rollout-wheels/*.whl \
+    && python -m pip check \
+    && python -c "import symmartys, oracle_core; assert symmartys.__version__ == '0.5.0'; assert oracle_core.__version__ == '0.6.3'" \
+    && rm -rf /tmp/rollout-wheels
+USER 10001:10001
+CMD ["python", "-m", "symmartys.main"]

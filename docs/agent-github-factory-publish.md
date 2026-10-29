@@ -38,6 +38,9 @@ AICOM_FACTORY_REMOTE=https://github.com/alexar76/aicom.git \
 ```
 
 Auth: `GH_PAT` or `GITHUB_TOKEN` with `repo` scope.
+The factory target is selected from `--remote`, then `AICOM_FACTORY_REMOTE`, then
+an existing GitHub `aicom` push URL (such as the `gh` remote). The Gitea `origin`
+stays unchanged; missing or ambiguous GitHub targets require an explicit URL.
 
 **Do not publish:** `docs/gitea-publishing.md` (internal Gitea hosts) — excluded in `scripts/aicom_publish_config.py`.
 

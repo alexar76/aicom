@@ -33,6 +33,11 @@ Skopos **не** заменяет Grafana: читает Prometheus для KPI и 
 проходит; всё, что приходит через публичный nginx, получает `404`, потому что nginx добавляет
 `X-Forwarded-For` / `X-Real-IP`.
 
+Это держится на том, что прокси добавляет заголовок. `proxy_pass` nginx по умолчанию не добавляет ни
+одного, так что фронт, где написан только `proxy_pass`, открывает `/metrics` всем, кто до него
+доходит. Добавьте `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;` (как в
+`deploy/nginx/*.conf`) или отвечайте на `/metrics` кодом 404 на прокси.
+
 | Переменная | По умолчанию | Действие |
 |---|---|---|
 | `AIMARKET_METRICS_TOKEN` | не задана | Внешний сборщик читает с `Authorization: Bearer <токен>`. |

@@ -1,0 +1,11 @@
+usage: __main__.py [-h] --watchlist WATCHLIST --out-dir OUT_DIR
+                   [--lang {ru,en,es,fr,zh}]
+
+Personal offline review of two saved MCP observations.
+
+options:
+  -h, --help            show this help message and exit
+  --watchlist WATCHLIST
+  --out-dir OUT_DIR
+  --lang {ru,en,es,fr,zh}
+                        Report and checklist language (default: en).

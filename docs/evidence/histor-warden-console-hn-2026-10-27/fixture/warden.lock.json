@@ -1,0 +1,39 @@
+{
+  "generatedBy": "@aimarket/warden 0.22.2",
+  "lockfileVersion": 1,
+  "ruleset": {
+    "digest": "sha256-86y6iNc4R+LM5WmjSVxaCNgSMUEggeNOMQPUzq4L9n8=",
+    "version": "16"
+  },
+  "servers": {
+    "notes": {
+      "approvalMode": "operator",
+      "approvedAt": "2026-10-27T18:27:40.609Z",
+      "identityHash": "7fc9e9778bc7595e2b4b55a0a2243e3bfdec75fbbbb6b822d25c9e2649a234cc",
+      "mtlDigest": "sha256-GwO7wfbf8rB1K+S/FWa49sbhrsorgxzxGGFkZiyOURI=",
+      "serverId": "notes",
+      "toolNames": [
+        "get_note"
+      ],
+      "tools": [
+        {
+          "description": "Returns a saved note by its ID.",
+          "inputSchema": {
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object"
+          },
+          "name": "get_note"
+        }
+      ],
+      "toolsHash": "1b03bbc1f6dff2b0752be4bf1566b8f6c6e1aeca2b831cf1186164662c8e5112",
+      "toolsHashVersion": 2
+    }
+  }
+}

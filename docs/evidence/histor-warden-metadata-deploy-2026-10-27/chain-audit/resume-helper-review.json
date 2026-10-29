@@ -1,0 +1,65 @@
+{
+  "reviewedAt": "2026-10-27T17:26:55.541802+00:00",
+  "reviewedAtMoscow": "2026-10-27T20:26:55.541802+03:00",
+  "scope": "Read-only local review of bounded existing-cycle continuation around the already authorized native HISTOR deployment",
+  "helper": "../native/run-native-release-resume.py",
+  "helperSha256": "15fddc27fda0223005fb8a4519503084385396f8276dd3ab5bc247c70e2635a3",
+  "sourceCommit": "4afe0243856d02b6b543b9b9559f2a286fab1a90",
+  "candidateImage": "sha256:1221f1bcc8af9081c923b9064301674d5bc4d8d0ce701cca1075a5b1355b3017",
+  "decision": "approved-for-deploy-phase",
+  "authorization": "User explicitly requested rebuild/deployment; existing-cycle continuation preserves the work already running rather than requesting an additional fresh daily cycle.",
+  "candidateAcceptance": {
+    "enforcedComponentTestsPassed": true,
+    "defaultRuntimeUid": 65532,
+    "packageVersion": "0.22.2",
+    "packageMode": "0644",
+    "allNineIndependentRuntimeChecksPassed": true,
+    "signedExactImageMomusAcceptance": "Verified by parent and independent acceptance agent; archived under ../native/final-build/",
+    "runtimeEvidence": "../verification/candidate-final-runtime.json"
+  },
+  "resumeChangesReviewed": [
+    "Operator-only idle assertion replaced by safe pre-deploy active-run snapshot",
+    "Snapshot uses existing Store reads with PostgreSQL default_transaction_read_only; no Services.build, schema, plan or run writes",
+    "Only run IDs, timestamps, aggregate counters and plan hashes are retained; no plan body, endpoints, settings or secrets are printed",
+    "Allow normal scheduler continuation for a bounded 25-second polling window plus existing per-call timeouts",
+    "One narrowly eligible existing admin/crawl API fallback after interruption and no active continuation; token remains inside current container",
+    "Normal independent-remote setting determines include_remote; HTTP409 is treated as an already-running result",
+    "Natural successful completion of either original or resumed run is recognized instead of forcing a fresh cycle or falsely rolling back",
+    "Active continuation requires an unfinished run and running flag",
+    "Same cycle, resumed-from ancestry, nondecreasing committed attempts, unchanged configured budgets, saved-plan hash and checkpoint-based classified consumption are checked",
+    "Rollback follows the same cycle ancestry, including an intermediate continuation run if one started on the new image",
+    "Original signed BuildOrder, candidate quality, actual MOMUS FixVerdict, signed DeployOrder, image/source/journal/health checks and signed rollback remain unchanged"
+  ],
+  "limitations": [
+    "Statistics checkpoints are30seconds; the proof does not promise recovery of uncommitted in-flight results or zero repeated provider requests.",
+    "If no package plan had been saved while planning, free registry planning may repeat; the helper records this explicitly."
+  ],
+  "requiredRepairBeforeApproval": "Completed-run ancestry is explicitly queried using current.id, while prospective restart eligibility uses current.id+1 only after a finished row. Postconditions use ancestry, avoiding successful-completion None proofs and finished-error double counting.",
+  "remoteActionsByReviewer": false,
+  "credentialOrSettingsReadsByReviewer": false,
+  "remainingBlockers": [],
+  "revisionHistory": [
+    {
+      "reviewedAt": "2026-10-27T17:24:17.056694+00:00",
+      "reviewedAtMoscow": "2026-10-27T20:24:17.056694+03:00",
+      "helperSha256": "7b1fa4db85603f77598dd0a15c4149bbf92c16a697098268ab03f3f31a21c200",
+      "decision": "approved-for-deploy-phase",
+      "requiredRepairBeforeApproval": "Successful completion of a newly resumed run is now recognized; its prior-chain proof excludes that successful run to avoid a false None proof and unnecessary rollback."
+    }
+  ],
+  "completionProofReviewed": {
+    "source": "../native/verify_resume_contract.py",
+    "result": "../native/resume-contract-validation.json",
+    "actualContinuationFunctionInvoked": true,
+    "cases": [
+      "resumed-active",
+      "resumed-completed",
+      "original-completed-during-restart"
+    ],
+    "allPassed": true,
+    "apiCalls": 0,
+    "nativeOperations": 0,
+    "reviewerReranTests": false,
+    "reviewerNote": "Reviewed actual helper branches plus the fixture script and recorded result; parent and operator confirmed the offline and real read-only snapshot checks. No redundant tests or remote actions were run by this reviewer."
+  }
+}

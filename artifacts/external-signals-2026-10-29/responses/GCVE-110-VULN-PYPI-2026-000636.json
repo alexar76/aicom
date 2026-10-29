@@ -1,0 +1,136 @@
+{
+  "containers": {
+    "cna": {
+      "affected": [
+        {
+          "collectionURL": "https://pypi.org",
+          "defaultStatus": "unknown",
+          "modules": [
+            "platon.main"
+          ],
+          "packageName": "aimarket-platon",
+          "product": "aimarket-platon",
+          "programFiles": [
+            "platon/main.py"
+          ],
+          "programRoutines": [
+            {
+              "name": "platon.main._from_local_proxy"
+            },
+            {
+              "name": "platon.main._key_from"
+            },
+            {
+              "name": "platon.main._client_key"
+            },
+            {
+              "name": "platon.main._ws_client_key"
+            }
+          ],
+          "vendor": "pypi",
+          "versions": [
+            {
+              "lessThanOrEqual": "0.1.5",
+              "status": "affected",
+              "version": "0.1.0",
+              "versionType": "python"
+            }
+          ]
+        }
+      ],
+      "configurations": [
+        {
+          "lang": "en",
+          "value": "The server's port is reachable from a private network that hosts or containers you do not control share with it (the default bind address is 0.0.0.0)."
+        }
+      ],
+      "descriptions": [
+        {
+          "lang": "en",
+          "value": "If you run aimarket-platon on a network that hosts or containers you do not control can also reach (a LAN, a shared Docker network, a Kubernetes namespace), any of them can reset the per-client rate limit on the paid ask completion (POST /api/ask and the platon.ask@v1 capability) with every request and spend your model budget past the 30-a-minute ceiling. The server binds 0.0.0.0 by default and keys the limit on X-Real-IP, or the right-most X-Forwarded-For entry. 0.1.5 reads those headers only when the TCP peer is a loopback, private or link-local address (main._from_local_proxy, main._key_from), on the assumption that such a peer is your reverse proxy. A neighbour on a private network is such a peer, so it still names its own key. In 0.1.0 through 0.1.3 a caller on any network could (GCVE-110-VULN-PYPI-2026-000615). No release limits header trust to your proxy. Affects 0.1.0 through 0.1.5."
+        }
+      ],
+      "metrics": [
+        {
+          "cvssV3_1": {
+            "baseScore": 4.3,
+            "baseSeverity": "MEDIUM",
+            "vectorString": "CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+            "version": "3.1"
+          }
+        }
+      ],
+      "problemTypes": [
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-348",
+              "description": "Use of Less Trusted Source",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        },
+        {
+          "descriptions": [
+            {
+              "cweId": "CWE-799",
+              "description": "Improper Control of Interaction Frequency",
+              "lang": "en",
+              "type": "CWE"
+            }
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "dateUpdated": "2026-10-28T01:49:28Z",
+        "orgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+        "shortName": "Vulnetix"
+      },
+      "references": [
+        {
+          "tags": [
+            "third-party-advisory"
+          ],
+          "url": "https://pypi.org/project/aimarket-platon/"
+        }
+      ],
+      "solutions": [
+        {
+          "lang": "en",
+          "value": "Bind the server to the loopback interface (PLATON_HOST=127.0.0.1) and reach it only through a reverse proxy on the same host."
+        }
+      ],
+      "title": "Platon rate limit key can be forged by hosts on the same private network in aimarket-platon",
+      "workarounds": [
+        {
+          "lang": "en",
+          "value": "Allow only your reverse proxy to reach the server's port (host firewall, a Docker network with no other members, a Kubernetes NetworkPolicy), so no other private peer can send its own X-Real-IP or X-Forwarded-For."
+        },
+        {
+          "lang": "en",
+          "value": "Have the reverse proxy overwrite X-Real-IP and X-Forwarded-For with the client's address instead of appending to what the client sent."
+        },
+        {
+          "lang": "en",
+          "value": "Where clients can hold certificates, terminate mTLS at a proxy on the same host and keep the server on loopback, so only certificate holders reach it."
+        },
+        {
+          "lang": "en",
+          "value": "Rate-limit the ask route at the reverse proxy as well."
+        }
+      ],
+      "x_vulnetix_classification": "weakness"
+    }
+  },
+  "cveMetadata": {
+    "assignerOrgId": "4c0d58bb-5895-4ca8-94cf-1885b1c0f000",
+    "assignerShortName": "Vulnetix",
+    "cveId": "GCVE-110-VULN-PYPI-2026-000636",
+    "datePublished": "2026-10-27T22:42:51Z",
+    "dateUpdated": "2026-10-28T01:49:28Z",
+    "state": "PUBLISHED"
+  },
+  "dataType": "CVE_RECORD",
+  "dataVersion": "5.1"
+}

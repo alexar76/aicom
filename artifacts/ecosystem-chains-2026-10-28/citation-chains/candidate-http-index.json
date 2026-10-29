@@ -1,0 +1,501 @@
+[
+  {
+    "key": "hubwiz-tools",
+    "url": "https://www.hubwiz.com/blog/mcp-tool-count-1932-runs-measured/",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:05.583995+00:00",
+    "status": 200,
+    "final_url": "https://www.hubwiz.com/blog/mcp-tool-count-1932-runs-measured/",
+    "bytes": 48677,
+    "sha256": "44b5bdfd688709dcd89a1a620f292ea4bbbbb54a8c1592cd75ec1251658dd56c",
+    "identifiers": {
+      "alexar76": 0,
+      "modelmarket.dev": 0,
+      "HISTOR": 0,
+      "WARDEN": 0,
+      "AICOM": 0,
+      "1932": 0,
+      "1,932": 4,
+      "25 微秒": 0
+    },
+    "contexts": {
+      "来源": [
+        "个领域；只测了 3 个前沿模型；任务不涉及长推理；模糊命名只搭配了好描述；token 数包含客户端自身开销；部分规模没跑满；这只是一 个时间点（2026 年 10 月） 的快照。 来源 @yahhi（Moein）, How many tools should an MCP server have? I measured 5 to 100 in Claude Code, Codex and Gemini （dev.to，2026-10-14）：https://dev.to/yahhi/how-many-tools-should-an-mcp-server-have-i-measured-5-to-100-in-claude-code-codex-and-gemini-3hap 原始数据与工具：https://github.com/worklore/worklore-mcp/tree/main/research/tools-count ",
+        "-the-server-does-3ibo 延伸阅读（本站） MCP 是什么？为什么它成了 AI 工具连接的标准 不是\"有没有依据\"，而是\"依据来自哪个源\"：MCP Agent 的来源感知验证 子代理、fork 与上下文折叠：Agent 交接的三种做法 专题：Agent / MCP / 自动化完全指南 本文由 汇智网 · Software 2.0 编译整理，转载请注明出处。 想系统了解 Agent / MCP 的上下文工程、评测与成本控制，见 Agent / MCP / 自动化完全指南 。 这是「Agent / MCP」专题的一部分。 完整地图见： Agent / MCP / 自动化完全指南 阅读更多 AI 算力不是堆芯片：Google 的 token 产能每半年翻一倍 10 万张卡跑一个训练，一小时可能挂几次。Google 的答案不是买更多卡：提高 goodput，让每瓦交付更多有用 token。 By admin 28 10月 "
+      ],
+      "Tools": [
+        "并工具\"变体上。真正被工具数量改变的是 成本 ——而成本的大小，取决于 客户端怎么把工具装进上下文 ，而不是模型本身。 本文完整编译 dev.to @yahhi《How many tools should an MCP server have? I measured 5 to 100 in Claude Code, Codex and Gemini》（2026-10-14），并合入 @zerokdevops《MCP at 90+ tools: the catalog breaks before the server does》（2026-10-04）中的平台化设计部分，做中文整理。 一、先说行业里没人测过的那部分 作者先做了一次文献调查：把 91 份 资料每一篇都读完—— 21 份官方文档、28 篇厂商博客、20 篇独立博客、2 个论坛帖、20 篇论文 。结论是\"少而精\"几乎是唯一建议： 38 份 建议\"精挑细选、少给工具\"； 22 份 ",
+        "asured 5 to 100 in Claude Code, Codex and Gemini》（2026-10-14），并合入 @zerokdevops《MCP at 90+ tools: the catalog breaks before the server does》（2026-10-04）中的平台化设计部分，做中文整理。 一、先说行业里没人测过的那部分 作者先做了一次文献调查：把 91 份 资料每一篇都读完—— 21 份官方文档、28 篇厂商博客、20 篇独立博客、2 个论坛帖、20 篇论文 。结论是\"少而精\"几乎是唯一建议： 38 份 建议\"精挑细选、少给工具\"； 22 份 建议\"通过搜索或延迟加载把可见工具集合压小\"； 8 份 推荐 code mode（用一两个工具去执行代码）； 没有任何一份 建议把所有工具都暴露给模型。 其中 20 份 给出了具体数字： 5–8 （Workato）、 5–15 （Phil Schmid）",
+        "y 所有原始数据（报告、 results.csv 、每次运行的原始日志）都公开在 GitHub： worklore/worklore-mcp/tree/main/research/tools-count 。 三、5 到 100 个工具，准确率没有下降 在 5 到 100 个工具的所有运行里，每个客户端、每种模式下，准确率都是 100% ——包括全部歧义任务，也包括 75–100 个工具时那 50 个多出来的近似工具。换句话说：在 Opus 5.5、GPT-6.1-sol、Gemini 3.1 Pro（2026 年 10 月）上，\"工具越少越准\" 在这个区间里没有出现 ——这与文献调查里的提醒一致： 性能退化高度依赖模型 ，小模型和旧模型才是需要警惕的地方。 作者还观察了 Claude Code 默认开启的 tool search ： 每一次运行都恰好先做一次 ToolSearch 调用 ，然后按 精确名字 选工具——模型在读到任何 sch"
+      ]
+    },
+    "meta": [
+      {
+        "name": "description",
+        "content": "MCP 工具从 5 个加到 100 个，准确率会掉吗？1,932 次实测（3 个客户端、18 个任务）显示前沿模型上准确率全程 100%，唯一一次 89% 出在 Gemini 的分组工具；真正的差异在成本——取决于客户端如何装载工具。附模糊命名实验、64 字符命名预算与 90+ 工具的平台化清单。"
+      },
+      {
+        "property": "og:type",
+        "content": "article"
+      },
+      {
+        "property": "og:title",
+        "content": "MCP 工具该给几个？1,932 次实测：准确率不降，成本看客户端"
+      },
+      {
+        "property": "og:description",
+        "content": "MCP 工具该给几个？1,932 次实测：5→100 个准确率一次没掉，唯一 89% 出在 Gemini 的分组工具；成本上，装载方式比数量更关键。"
+      },
+      {
+        "property": "article:published_time",
+        "content": "2026-10-15T17:27:45.000Z"
+      },
+      {
+        "property": "article:modified_time",
+        "content": "2026-10-15T17:28:39.000Z"
+      },
+      {
+        "name": "twitter:title",
+        "content": "MCP 工具该给几个？1,932 次实测：准确率不降，成本看客户端"
+      },
+      {
+        "name": "twitter:description",
+        "content": "MCP 工具该给几个？1,932 次实测：5→100 个准确率一次没掉，唯一 89% 出在 Gemini 的分组工具；成本上，装载方式比数量更关键。"
+      }
+    ],
+    "source_links": [
+      "https://www.hubwiz.com/blog",
+      "https://www.hubwiz.com/blog/",
+      "https://www.hubwiz.com/blog/vibe-coding-stack/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/local-llm-stack/",
+      "https://www.hubwiz.com/blog/ai-industrial-stack/",
+      "https://www.hubwiz.com/blog/tag/mcp/",
+      "https://www.hubwiz.com/blog/what-is-mcp-model-context-protocol/",
+      "https://www.hubwiz.com/blog/source-aware-verification-for-mcp-agents/",
+      "https://www.hubwiz.com/blog/subagent-fork-fold-context-handoff/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/rag-data-stack/",
+      "https://www.hubwiz.com/blog/generative-media-stack/",
+      "https://www.hubwiz.com/blog/ai-infra-stack/",
+      "https://www.hubwiz.com/blog/ai-tools/",
+      "https://www.hubwiz.com/blog/about/",
+      "https://www.hubwiz.com/blog/contribute/",
+      "https://www.hubwiz.com/blog/privacy/"
+    ]
+  },
+  {
+    "key": "hubwiz-payments",
+    "url": "https://www.hubwiz.com/blog/agent-payment-security-x402-guardrails/",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:05.584726+00:00",
+    "status": 200,
+    "final_url": "https://www.hubwiz.com/blog/agent-payment-security-x402-guardrails/",
+    "bytes": 47392,
+    "sha256": "0b006f9e18c4b4518240f7febfb7b73533cc3551851624ce9e1fdcdcdef9b7c4",
+    "identifiers": {
+      "alexar76": 0,
+      "modelmarket.dev": 0,
+      "HISTOR": 0,
+      "WARDEN": 0,
+      "AICOM": 0,
+      "1932": 0,
+      "1,932": 1,
+      "25 微秒": 2
+    },
+    "contexts": {
+      "来源": [
+        "无需逐笔批准。这正是协议有意思的地方，也恰恰是 安全边界移动的地方 ：facilitator 只验证签名有效、金额与收款人匹配—— 它没有理由知道买方原本预期花多少钱、买什么 。 来源文章作者用 官方 x402 客户端 连到 Base Sepolia（公共测试网）上的测试卖家，用公共 facilitator 跑了一组攻击。六种失败最值得记录—— 每一种里，支付机器都运转正常 。 二、六种\"付款成功\"的错误交易 # 失败 机制 支付系统为什么没拦住 1 价格操纵 目录里标价 5 分钱，实际支付请求要 50 分钱 facilitator 只验签，不知道买方的预期价格；客户端默认 1 美元上限高于 50 分 2 一次付款、多次交付 同一份签名支付并发发 5 次，卖方交付 5 次 链上防了双花， 没防重复交付 ；买方超时重试还会重复扣款 3 白嫖 验证通过但结算失败，卖方已经交付 验证 ≠ 结算；同一资源还有未保护的路径（ /report ",
+        "保护所有资源路径； 记住那条边界 ：\"付款成功\"只说明支付系统执行了。它没有回答： Agent 是否按预期金额、付给了预期卖家、买到了预期资源，以及不可信内容有没有改变它的决定。 来源 @dailycontext, Your Agent Paid. That Does Not Mean It Should Have. （dev.to，2026-10-11）：https://dev.to/dailycontext/your-agent-paid-that-does-not-mean-it-should-have-2dnd @dailycontext, An Agent's Plan Isn't Permission （dev.to，2026-10-14）：https://dev.to/dailycontext/an-agents-plan-isnt-permission-5cf8 Auth0, AI Agents Are Not Us",
+        "tbaseline.org 延伸阅读（本站） MCP 工具该给几个？1,932 次实测：准确率不降，成本看客户端 不是\"有没有依据\"，而是\"依据来自哪个源\"：MCP Agent 的来源感知验证 多 Agent 团队值得吗？50 个应用实测与\"独行侠\"的回归 专题：Agent / MCP / 自动化完全指南 本文由 汇智网 · Software 2.0 编译整理，转载请注明出处。 想系统了解 Agent 的权限、审计与成本控制，见 Agent / MCP / 自动化完全指南 。 这是「Agent / MCP」专题的一部分。 完整地图见： Agent / MCP / 自动化完全指南 阅读更多 AI 算力不是堆芯片：Google 的 token 产能每半年翻一倍 10 万张卡跑一个训练，一小时可能挂几次。Google 的答案不是买更多卡：提高 goodput，让每瓦交付更多有用 token。 By admin 28 10月 2026 AI"
+      ],
+      "来源文章": [
+        "无需逐笔批准。这正是协议有意思的地方，也恰恰是 安全边界移动的地方 ：facilitator 只验证签名有效、金额与收款人匹配—— 它没有理由知道买方原本预期花多少钱、买什么 。 来源文章作者用 官方 x402 客户端 连到 Base Sepolia（公共测试网）上的测试卖家，用公共 facilitator 跑了一组攻击。六种失败最值得记录—— 每一种里，支付机器都运转正常 。 二、六种\"付款成功\"的错误交易 # 失败 机制 支付系统为什么没拦住 1 价格操纵 目录里标价 5 分钱，实际支付请求要 50 分钱 facilitator 只验签，不知道买方的预期价格；客户端默认 1 美元上限高于 50 分 2 一次付款、多次交付 同一份签名支付并发发 5 次，卖方交付 5 次 链上防了双花， 没防重复交付 ；买方超时重试还会重复扣款 3 白嫖 验证通过但结算失败，卖方已经交付 验证 ≠ 结算；同一资源还有未保护的路径（ /report 受保"
+      ]
+    },
+    "meta": [
+      {
+        "name": "description",
+        "content": "x402 让 Agent 能自动付款，但\"付款成功\"不等于\"应该付款\"。本文整理官方客户端在测试网跑出的六种错误交易（价格操纵、重复交付、白嫖、付错货、恶意发现、提示注入），以及确定性护栏、Agent 身份与四级权限审批的可落地设计。"
+      },
+      {
+        "property": "og:type",
+        "content": "article"
+      },
+      {
+        "property": "og:title",
+        "content": "AI Agent 支付安全：六种\"付款成功\"的错误交易与护栏设计"
+      },
+      {
+        "property": "og:description",
+        "content": "付款成功 ≠ 应该付款。x402 实测的六种错误交易、25 微秒确定性护栏，以及 Agent 身份与四级权限的可落地设计。"
+      },
+      {
+        "property": "article:published_time",
+        "content": "2026-10-15T18:22:29.000Z"
+      },
+      {
+        "property": "article:modified_time",
+        "content": "2026-10-15T18:25:48.000Z"
+      },
+      {
+        "name": "twitter:title",
+        "content": "AI Agent 支付安全：六种\"付款成功\"的错误交易与护栏设计"
+      },
+      {
+        "name": "twitter:description",
+        "content": "付款成功 ≠ 应该付款。x402 实测的六种错误交易、25 微秒确定性护栏，以及 Agent 身份与四级权限的可落地设计。"
+      }
+    ],
+    "source_links": [
+      "https://www.hubwiz.com/blog",
+      "https://www.hubwiz.com/blog/",
+      "https://www.hubwiz.com/blog/vibe-coding-stack/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/local-llm-stack/",
+      "https://www.hubwiz.com/blog/ai-industrial-stack/",
+      "https://www.hubwiz.com/blog/tag/ai-agent/",
+      "https://www.hubwiz.com/blog/mcp-tool-count-1932-runs-measured/",
+      "https://www.hubwiz.com/blog/source-aware-verification-for-mcp-agents/",
+      "https://www.hubwiz.com/blog/do-agent-teams-pay-off/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/rag-data-stack/",
+      "https://www.hubwiz.com/blog/generative-media-stack/",
+      "https://www.hubwiz.com/blog/ai-infra-stack/",
+      "https://www.hubwiz.com/blog/ai-tools/",
+      "https://www.hubwiz.com/blog/about/",
+      "https://www.hubwiz.com/blog/contribute/",
+      "https://www.hubwiz.com/blog/privacy/"
+    ]
+  },
+  {
+    "key": "hubwiz-delivery",
+    "url": "https://www.hubwiz.com/blog/agent-delivery-verification-gates/",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:05.585107+00:00",
+    "status": 200,
+    "final_url": "https://www.hubwiz.com/blog/agent-delivery-verification-gates/",
+    "bytes": 53240,
+    "sha256": "2c689b0bd8c68f21eb5a25798b3e29f3dd5f2676638aaa597bed391fd9837c08",
+    "identifiers": {
+      "alexar76": 0,
+      "modelmarket.dev": 0,
+      "HISTOR": 0,
+      "WARDEN": 0,
+      "AICOM": 0,
+      "1932": 0,
+      "1,932": 0,
+      "25 微秒": 0
+    },
+    "contexts": {
+      "来源": [
+        "里最贵的一条经验： 验证系统本身也会出错，而且往往错得更隐蔽 （重试缺失、超时无裁决、合并结果没落库、回滚树编译失败）。三道门都需要\"拿不准就停下\"的默认值，而不是\"默认放行\"。 来源 @dannwaneri（Daniel Nwaneri）, I built a lie detector for AI coding agents. Then I read the rules. （dev.to，2026-10-15）：https://dev.to/dannwaneri/i-built-a-lie-detector-for-ai-coding-agents-then-i-read-the-rules-1hhb claimcheck 项目（MIT，v1.0.0）：https://github.com/dannwaneri/claimcheck Finley Zhou（@datacpp_8185）, Revert the Fix, Keep"
+      ],
+      "启发": [
+        "读提交进仓库的 JSON，不读模型的意见 。 作者也把适用边界写全了：回滚源码后 ablated 树可能 编译失败 ，此时只能记 inconclusive ；测试路径靠 grep 启发式判断，仓库布局特殊会误分类并抬高 fix-blind ；三倍运行成本对 15 分钟以上的套件不划算；纯测试补丁在这个门里天然\"空转\"；套件不确定就整张表失真。他还给了一条诚实的备注： 先拿最近五个 Agent 补丁手工跑一遍、记录判定分布再改规则 ——他自己的分布里 pre-existing-green 最多，而这反映的更像是\"测试套件在 Agent 写代码之前就搭好了\"。 三、第三道门：交付包里必须有能复核的东西 前两道门管的是\"改动\"，第三道门管\"交付\"。@patilrb 的观察是：一句\"修好了，测过了\"，把最难的部分全丢给了评审—— 改了哪儿、跑了哪个检查、截图和补丁是不是同一个版本 ，都得重新拼。他建议的最小交付包只有四件东西： 测试结果 ："
+      ],
+      "复盘": [
+        "2 委托、无限授权） 延伸阅读（本站） AGENTS.md 该写什么：1,866 个项目的说明书实测 Agent 说\"完成\"，数据库不同意：一次批准率 87% 的 Agent 评测复盘 子代理派活与上下文折叠：compaction、subagent、fold 三种交接实测 专题：AI 编程 / Vibe Coding 完全指南 本文由 汇智网 · Software 2.0 编译整理，转载请注明出处。 想系统了解 Agent 的上下文、工具与工程化，见 Agent / MCP / 自动化完全指南 。 这是「AI 编程 / Vibe Coding」专题的一部分。 完整地图见： AI 编程 / Vibe Coding 完全指南 阅读更多 AI 算力不是堆芯片：Google 的 token 产能每半年翻一倍 10 万张卡跑一个训练，一小时可能挂几次。Google 的答案不是买更多卡：提高 goodput，让每瓦交付更多有用 token。 B"
+      ]
+    },
+    "meta": [
+      {
+        "name": "description",
+        "content": "\"fixed and tested\"是声明不是证据。claimcheck 用 5 条规则对账声明与真实 diff（28 Agent × 5 轮：11 个不实被拒、0 个诚实被误伤）；三树差分把\"绿\"分成 7 类，只有 sensitive 算数；交付包要命令、输出、变更、截图与已知限制。"
+      },
+      {
+        "property": "og:type",
+        "content": "article"
+      },
+      {
+        "property": "og:title",
+        "content": "Agent 说\"做完了\"，证据呢：三道交付验证门"
+      },
+      {
+        "property": "og:description",
+        "content": "\"fixed and tested\"不是证据。三道门——声明核对、三树差分、证据包——把 Agent 的自述变成可复核的事实。"
+      },
+      {
+        "property": "article:published_time",
+        "content": "2026-10-15T20:18:41.000Z"
+      },
+      {
+        "property": "article:modified_time",
+        "content": "2026-10-15T20:19:54.000Z"
+      },
+      {
+        "name": "twitter:title",
+        "content": "Agent 说\"做完了\"，证据呢：三道交付验证门"
+      },
+      {
+        "name": "twitter:description",
+        "content": "\"fixed and tested\"不是证据。三道门——声明核对、三树差分、证据包——把 Agent 的自述变成可复核的事实。"
+      }
+    ],
+    "source_links": [
+      "https://www.hubwiz.com/blog",
+      "https://www.hubwiz.com/blog/",
+      "https://www.hubwiz.com/blog/vibe-coding-stack/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/local-llm-stack/",
+      "https://www.hubwiz.com/blog/ai-industrial-stack/",
+      "https://www.hubwiz.com/blog/tag/ai-agent/",
+      "https://bimant.com/blog/cad-step-mesh-topology-acceptance/?ref=hubwiz.com",
+      "https://defiplot.com/blog/onchain-verification-checklist-receipt-wallet-approval/?ref=hubwiz.com",
+      "https://www.hubwiz.com/blog/agents-md-instruction-quality-1866-projects/",
+      "https://www.hubwiz.com/blog/agent-said-done-database-disagreed/",
+      "https://www.hubwiz.com/blog/subagent-fork-fold-context-handoff/",
+      "https://www.hubwiz.com/blog/vibe-coding-stack/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/vibe-coding-stack/",
+      "https://www.hubwiz.com/blog/rag-data-stack/",
+      "https://www.hubwiz.com/blog/generative-media-stack/",
+      "https://www.hubwiz.com/blog/ai-infra-stack/",
+      "https://www.hubwiz.com/blog/ai-tools/",
+      "https://www.hubwiz.com/blog/about/",
+      "https://www.hubwiz.com/blog/contribute/",
+      "https://www.hubwiz.com/blog/privacy/"
+    ]
+  },
+  {
+    "key": "hubwiz-restarts",
+    "url": "https://www.hubwiz.com/blog/agent-restart-replay-idempotency-retro/",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:05.585659+00:00",
+    "status": 200,
+    "final_url": "https://www.hubwiz.com/blog/agent-restart-replay-idempotency-retro/",
+    "bytes": 57229,
+    "sha256": "e7d09e173aabd45cec97094bdc31eb8cffb4a0ed0eb402fb544250a677de2f36",
+    "identifiers": {
+      "alexar76": 0,
+      "modelmarket.dev": 0,
+      "HISTOR": 0,
+      "WARDEN": 0,
+      "AICOM": 0,
+      "1932": 0,
+      "1,932": 0,
+      "25 微秒": 0
+    },
+    "contexts": {
+      "来源": [
+        "前用回调把 除最新一条之外 所有消息里的大 base64 剥掉，换成 <stripped: N chars> ——模型已经看过那张图了，从下一轮起， 它自己关于这张图的文字就是事实来源 。 十六、边界 这是 一个团队在一个运行时上的实践 （ApowerB / ADK / Postgres / K8s），不是框架级标准；换成别的 Agent 框架，默认值不同，坑的形状也不同。 目前做到的是 安全重放 （要么因为无害而重开，要么带着解释拒绝）， 不是真正的续跑 （复用已执行工具的结果、中途接手）。作者自己说这是下一道坎。 键的设计部分 尚未落地 ，四个开放问题没有公认答案；评论区方案同样未经大规模验证。 第三篇的场景是示意的，不是事故记录；本文引用的\"数字\"里，8 次/天、40/100 封、6 小时、90 天、10–15 万 token 都来自前两篇的一手复盘。 作者给的三句话，比任何架构图都好记： 默认值是给 demo 写的。 内存会"
+      ],
+      "复盘": [
+        "Agent 上线复盘：重启失忆、重复退款、超时当失败 Software 2.0 首页 AI编程 Agent/MCP 本地大模型 工业AI 登录 订阅 AI Agent Agent 上线复盘：重启失忆、重复退款、超时当失败 重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。 admin 23 10月 2026 — 阅读时间 21 分钟 分享 一句话结论 ：Agent 上线后最难处理的事故，几乎都不在推理层。模型想得很对、参数也没错，但 进程在\"决定\"和\"做成\"之间死了一次 ——于是它要么忘了自己干到哪（失忆），要么把已经发生的事再做一遍（既视感）。三份一手复盘给出的答案不是\"更聪明的重试\"，而是三",
+        "ent 上线复盘：重启失忆、重复退款、超时当失败 Software 2.0 首页 AI编程 Agent/MCP 本地大模型 工业AI 登录 订阅 AI Agent Agent 上线复盘：重启失忆、重复退款、超时当失败 重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。 admin 23 10月 2026 — 阅读时间 21 分钟 分享 一句话结论 ：Agent 上线后最难处理的事故，几乎都不在推理层。模型想得很对、参数也没错，但 进程在\"决定\"和\"做成\"之间死了一次 ——于是它要么忘了自己干到哪（失忆），要么把已经发生的事再做一遍（既视感）。三份一手复盘给出的答案不是\"更聪明的重试\"，而是三个更朴素的东西： 把运行写下来、记调用而不是记回答、把\"不知道\"当\"发生过\"处理 。 披露 ：本文编译自三篇公开实践记录——Anis Meziani《Amnesia a",
+        "Agent/MCP 本地大模型 工业AI 登录 订阅 AI Agent Agent 上线复盘：重启失忆、重复退款、超时当失败 重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。 admin 23 10月 2026 — 阅读时间 21 分钟 分享 一句话结论 ：Agent 上线后最难处理的事故，几乎都不在推理层。模型想得很对、参数也没错，但 进程在\"决定\"和\"做成\"之间死了一次 ——于是它要么忘了自己干到哪（失忆），要么把已经发生的事再做一遍（既视感）。三份一手复盘给出的答案不是\"更聪明的重试\"，而是三个更朴素的东西： 把运行写下来、记调用而不是记回答、把\"不知道\"当\"发生过\"处理 。 披露 ：本文编译自三篇公开实践记录——Anis Meziani《Amnesia and déjà vu: how our AI agents failed after eve"
+      ],
+      "Tools": [
+        " / error_message running / success / error / cancelled replay_of 这是一次重放，指向原始运行（ 永远不覆盖历史 ） tools_executed 下文的核心 然后是整套设计里最关键的一行代码注释：统计工具调用时， 算调用（ functionCall ），不算回答 。原因作者写在 docstring 里——「一个中途崩掉的工具，可能已经产生了副作用，却从没来得及回答」。如果只统计\"有回答的工具\"，你会得出\"什么都没发生\"，然后把它再发一遍。 崩溃后响应丢了，拿不到事件列表怎么办？ 因为会话已经落在 Postgres 里了 ，可以直接读会话、从中抽出工具调用。有个细节：聊天会话包含整段对话，里面有 之前几轮 调过的工具，那不是本次运行的副作用，所以只看 用户最后一条消息之后 发生的事。 这也解释了为什么\"失忆\"和\"既视感\"是同一个问题： 失忆不只丢掉对话，它还毁掉了你判断\"能不能",
+        "发生的事。 这也解释了为什么\"失忆\"和\"既视感\"是同一个问题： 失忆不只丢掉对话，它还毁掉了你判断\"能不能重来\"所需的证据 。 七、三个状态： [] 、 [...] 、 NULL tools_executed 只有三种取值，其中两个的差别就是整套安全模型： [] ：我们查过了， 没有工具被调用 → 安全重放 [\"send_email\", \"update_crm\"] ：查过了，这些调过 → 重放会重复它们 NULL ： 没查成 （比如会话读不出来）→ 不知道 把\"不知道\"当成\"大概没事\"非常诱人。我们的处理是当成\"大概有事\"，因为 错的代价不对称 ：拒绝一次安全的重放，成本是点一下；放过一次不安全的重放，成本是客户收到第二封邮件。 八、重放规则表 所有重放走同一个端点 POST /runs/{run_id}/replay ，规则一张表说完： 原始运行的状态 请求重放时 成功过 拒绝 。副作用已经发生 还在跑 拒绝 。等它落定 失败，且确知没"
+      ]
+    },
+    "meta": [
+      {
+        "name": "description",
+        "content": "三份一手复盘合成一条主线：Agent 上线后真正翻车的地方是\"恢复语义\"。一天重启 8 次每次失忆、关标签页工作流死在半路、超时被当成没做导致退款发两遍——以及它们的修法：run 表、记调用不记回答、unknown 不等于 none、按意图做幂等键。"
+      },
+      {
+        "property": "og:type",
+        "content": "article"
+      },
+      {
+        "property": "og:title",
+        "content": "Agent 上线复盘：重启失忆、重复退款、超时当失败"
+      },
+      {
+        "property": "og:description",
+        "content": "重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。"
+      },
+      {
+        "property": "article:published_time",
+        "content": "2026-10-22T16:04:42.000Z"
+      },
+      {
+        "property": "article:modified_time",
+        "content": "2026-10-22T16:06:39.000Z"
+      },
+      {
+        "name": "twitter:title",
+        "content": "Agent 上线复盘：重启失忆、重复退款、超时当失败"
+      },
+      {
+        "name": "twitter:description",
+        "content": "重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。"
+      }
+    ],
+    "source_links": [
+      "https://www.hubwiz.com/blog",
+      "https://www.hubwiz.com/blog/",
+      "https://www.hubwiz.com/blog/vibe-coding-stack/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/local-llm-stack/",
+      "https://www.hubwiz.com/blog/ai-industrial-stack/",
+      "https://www.hubwiz.com/blog/tag/ai-agent/",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/agent-audit-logs-witness-suspect/",
+      "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+      "https://www.hubwiz.com/blog/claude-code-bash-deny-rule-bypass/",
+      "https://www.hubwiz.com/blog/agent-delivery-verification-gates/",
+      "https://dev.to/anis_meziani_52aab42304a8/amnesia-and-deja-vu-how-our-ai-agents-failed-after-every-restart-and-how-we-fixed-it-5c80?ref=hubwiz.com",
+      "https://dev.to/anis_meziani_52aab42304a8/idempotency-keys-for-ai-agents-why-hashing-the-arguments-doesnt-work-cap?ref=hubwiz.com",
+      "https://dev.to/cyclopt_dimitrisk/your-agents-retry-bug-isnt-an-ai-problem-its-a-distributed-systems-problem-with-an-llm-on-top-1i6k?ref=hubwiz.com",
+      "https://github.com/apowerb/apowerb?ref=hubwiz.com",
+      "https://www.hubwiz.com/blog/agent-stack/",
+      "https://www.hubwiz.com/blog/rag-data-stack/",
+      "https://www.hubwiz.com/blog/generative-media-stack/",
+      "https://www.hubwiz.com/blog/ai-infra-stack/",
+      "https://www.hubwiz.com/blog/ai-tools/",
+      "https://www.hubwiz.com/blog/about/",
+      "https://www.hubwiz.com/blog/contribute/",
+      "https://www.hubwiz.com/blog/privacy/"
+    ]
+  },
+  {
+    "key": "feinterview-tools",
+    "url": "https://feinterview.poetries.top/ai-monitor/news/how-many-tools-should-an-mcp-server-have-i-measured-5-to-100-in-claude-code-codex-and",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:08.211760+00:00",
+    "status": 200,
+    "final_url": "https://feinterview.poetries.top/ai-monitor/news/how-many-tools-should-an-mcp-server-have-i-measured-5-to-100-in-claude-code-codex-and",
+    "bytes": 172416,
+    "sha256": "0b5fa03c7f858d6dc77e8bfc77db2dd89f32ac168e935db3fa012a165bf2760e",
+    "identifiers": {
+      "alexar76": 0,
+      "modelmarket.dev": 0,
+      "HISTOR": 0,
+      "WARDEN": 0,
+      "AICOM": 0,
+      "1932": 1,
+      "1,932": 1,
+      "25 微秒": 0
+    },
+    "contexts": {
+      "来源": [
+        "结果，还是根据别人的建议来决定工具数量和名称的？你测了什么？ 如需进一步采取行动，你可以考虑屏蔽此人和／或举报滥用行为。 Original source 本文由 AI 翻译整理 ，来源 dev.to · AI ，原文版权归原作者所有。 阅读原文 上一篇 Copilot更新HydraFusion并新增Max 下一篇 Apigee 支持在自有集群运行 MCP 工具 资讯速览 dev.to · AI · 2026-10-15 03:54 AI 评分 8.0 / 10 相关标签 # MCP # 工具调用 # 成本优化 继续阅读 AI 代码上线前先排查这些安全漏洞 Copilot更新HydraFusion并新增Max Apigee 支持在自有集群运行 MCP 工具 编程 Agent 源码研究：架构比功能清单耐用 把 GPU 内核调优变成夜间并行搜索"
+      ],
+      "Tools": [
+        "内并没有出现。这也符合资料调研中的限定结论：性能是否下降，很大程度上取决于模型。 Claude Code 的 tool search 从未隐藏正确的工具。每次运行都恰好调用了一次 ToolSearch，而且都是第一步操作，随后通过精确名称选择工具。模型一开始就能看到所有工具名称，在读取任何 schema 之前，仅凭名称就在相似工具之间做出了选择。 MCP 工具在 Claude Code、Codex 和 Gemini 中的实际成本 输入 token 数量按每个单元格的 36 次运行取平均值（18 项任务 × 2 次）。这些运行全部正确，因此表格展示的只是成本。 在 Claude Code 中，真正起作用的开关是 tool search。它默认开启：只有工具名称进入 prompt，模型通过一次 ToolSearch 调用加载所需的 schema。这次额外调用使它在工具少于约 19 个时，比一次性加载所有工具更贵；超过这个数量后，则更省：工具达",
+        "。这些运行全部正确，因此表格展示的只是成本。 在 Claude Code 中，真正起作用的开关是 tool search。它默认开启：只有工具名称进入 prompt，模型通过一次 ToolSearch 调用加载所需的 schema。这次额外调用使它在工具少于约 19 个时，比一次性加载所有工具更贵；超过这个数量后，则更省：工具达到 100 个时，每次运行的输入量减少了 59%。在通过代理使用、使用 Azure Foundry、使用较旧模型、设置 ENABLE_TOOL_SEARCH=false，或使用 --tools \"\" 时，tool search 会关闭。不过，token 更少并不意味着每次运行更便宜：工具为 100 个时，按标价计算，开启搜索的一次运行成本为 $0.047，关闭搜索则为 $0.038，因为缓存输入很便宜，而搜索会增加一次调用。搜索节省的是上下文，不是钱。 我踩过一个坑：用于隔离测试的参数关闭了 Claude Code",
+        " 100 个时，每次运行的输入量减少了 59%。在通过代理使用、使用 Azure Foundry、使用较旧模型、设置 ENABLE_TOOL_SEARCH=false，或使用 --tools \"\" 时，tool search 会关闭。不过，token 更少并不意味着每次运行更便宜：工具为 100 个时，按标价计算，开启搜索的一次运行成本为 $0.047，关闭搜索则为 $0.038，因为缓存输入很便宜，而搜索会增加一次调用。搜索节省的是上下文，不是钱。 我踩过一个坑：用于隔离测试的参数关闭了 Claude Code 的 tool search，导致我最初把“关闭搜索”的数据当作正常情况发布。仅仅一个参数，就让首次调用的成本相差 4 倍。 MCP 工具分组：在一个客户端里更便宜，在另一个里表现更差 在加载全部 schema 的情况下（Claude Code，关闭搜索），7 个分组工具的成本相当于 14 个独立工具，准确率为 100%。开启 t"
+      ]
+    },
+    "meta": [
+      {
+        "name": "description",
+        "content": "作者在 Claude Code、Codex 和 Gemini 上完成了1932次测试，将工具数量从5个扩展到100个，未观察到准确率变化。测试指出，成本差异主要取决于客户端的工具加载方式，默认隐藏多数工具也改变了命名的作用。"
+      },
+      {
+        "name": "author",
+        "content": "程序员 Poetry"
+      },
+      {
+        "name": "publisher",
+        "content": "程序员 Poetry"
+      },
+      {
+        "name": "apple-mobile-web-app-title",
+        "content": "前端进阶之旅"
+      },
+      {
+        "property": "og:title",
+        "content": "MCP工具数量实测：准确率之外更要看成本"
+      },
+      {
+        "property": "og:description",
+        "content": "作者在 Claude Code、Codex 和 Gemini 上完成了1932次测试，将工具数量从5个扩展到100个，未观察到准确率变化。测试指出，成本差异主要取决于客户端的工具加载方式，默认隐藏多数工具也改变了命名的作用。"
+      },
+      {
+        "property": "og:type",
+        "content": "article"
+      },
+      {
+        "property": "article:published_time",
+        "content": "2026-10-15 04:15:30"
+      },
+      {
+        "property": "article:modified_time",
+        "content": "2026-10-15 04:20:47"
+      },
+      {
+        "name": "twitter:title",
+        "content": "MCP工具数量实测：准确率之外更要看成本"
+      },
+      {
+        "name": "twitter:description",
+        "content": "作者在 Claude Code、Codex 和 Gemini 上完成了1932次测试，将工具数量从5个扩展到100个，未观察到准确率变化。测试指出，成本差异主要取决于客户端的工具加载方式，默认隐藏多数工具也改变了命名的作用。"
+      }
+    ],
+    "source_links": [
+      "https://dev.to/yahhi/how-many-tools-should-an-mcp-server-have-i-measured-5-to-100-in-claude-code-codex-and-gemini-3hap"
+    ]
+  },
+  {
+    "key": "zalize-plugins",
+    "url": "https://mcp.zalize.com/s/alexar76-aimarket-plugins",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:08.453242+00:00",
+    "status": 200,
+    "final_url": "https://mcp.zalize.com/s/alexar76-aimarket-plugins",
+    "bytes": 37613,
+    "sha256": "8055824d102dfef5c6dffd94cf18173d989a3bd4b1ec8d034b0d56fd4311292c",
+    "identifiers": {
+      "alexar76": 5,
+      "modelmarket.dev": 2,
+      "HISTOR": 0,
+      "WARDEN": 0,
+      "AICOM": 0,
+      "1932": 0,
+      "1,932": 0,
+      "25 微秒": 0
+    },
+    "contexts": {
+      "alexar76": [
+        "alexar76/aimarket-plugins — MCP Server — MCP Index Skip to content M MCP Index / Servers Skills Categories About GitHub Home › Servers › Aggregators › alexar76/aimarket-plugins A alexar76/aimarket-plugins alexar76/aimarket-plugins MCP Server Active MIT cloud local aimarket-mcp-packager** hub plugin: turn AIMarket capabilities into self-",
+        "ntent M MCP Index / Servers Skills Categories About GitHub Home › Servers › Aggregators › alexar76/aimarket-plugins A alexar76/aimarket-plugins alexar76/aimarket-plugins MCP Server Active MIT cloud local aimarket-mcp-packager** hub plugin: turn AIMarket capabilities into self-hosted MCP servers (Docker image + `mcp_manifest` + Claude Desktop `mcpServers` config). Part of 15-plugin AIMarket Hub ([modelmarket.dev](https://mode",
+        "Skills Categories About GitHub Home › Servers › Aggregators › alexar76/aimarket-plugins A alexar76/aimarket-plugins alexar76/aimarket-plugins MCP Server Active MIT cloud local aimarket-mcp-packager** hub plugin: turn AIMarket capabilities into self-hosted MCP servers (Docker image + `mcp_manifest` + Claude Desktop `mcpServers` config). Part of 15-plugin AIMarket Hub ([modelmarket.dev](https://modelmarket.dev)); protocol disc"
+      ],
+      "modelmarket.dev": [
+        " + `mcp_manifest` + Claude Desktop `mcpServers` config). Part of 15-plugin AIMarket Hub ([modelmarket.dev](https://modelmarket.dev)); protocol discovery at `/.well-known/ai-market.json`. Install: `pip install aimarket-mcp-packager`. C Quality 53/100 ★ 1 stars Updated today Python View on GitHub → Installation Example client config (verify package name in the repo README) Copy { \"mcpServers\": { \"aimarket-plugins\": { \"command\": \"uvx\"",
+        "e Desktop `mcpServers` config). Part of 15-plugin AIMarket Hub ([modelmarket.dev](https://modelmarket.dev)); protocol discovery at `/.well-known/ai-market.json`. Install: `pip install aimarket-mcp-packager`. C Quality 53/100 ★ 1 stars Updated today Python View on GitHub → Installation Example client config (verify package name in the repo README) Copy { \"mcpServers\": { \"aimarket-plugins\": { \"command\": \"uvx\", \"args\": [\"aimarket-plug"
+      ],
+      "Tools": [
+        "am A PipedreamHQ/pipedream MCP Server Active Connect with 2,500 APIs with 8,000+ prebuilt tools, and manage servers for your users, in your own app. ★ 11.6k JavaScript today Score 90 A julien040/anyquery A julien040/anyquery MCP Server Active Query more than 40 apps with one binary using SQL. It can also connect to your PostgreSQL, MySQL, or SQLite compatible database. Local-first and private by design. ★ 1.7k Go 7d ago S"
+      ],
+      "heuristic": [
+        " \"command\": \"uvx\", \"args\": [\"aimarket-plugins\"] } } } Quality score breakdown Transparent heuristic — same formula for every entry. Total 53/100 . GitHub stars (log scale) 3/40 Maintenance activity 25/25 License present 10/10 Official project 0/10 Not archived 5/5 Meaningful description 5/5 Repo topics set 5/5 Topics ai-agents aimarket channels escrow plugins python reputation safety Quality score 53/100 Stars ★ 1 Forks 0 Las",
+        "e not affiliated with Anthropic or the Model Context Protocol project. Quality scores are heuristic signals, not endorsements — always review code before installing. No personal data is collected; anonymous page-view counters only."
+      ]
+    },
+    "meta": [
+      {
+        "name": "description",
+        "content": "aimarket-mcp-packager** hub plugin: turn AIMarket capabilities into self-hosted MCP servers (Docker image + `mcp_manifest` + Claude Desktop `mcpServer | ★1, Active, Python. Install method, quality score and maintenance signals."
+      },
+      {
+        "property": "og:title",
+        "content": "alexar76/aimarket-plugins — MCP Server — MCP Index"
+      },
+      {
+        "property": "og:description",
+        "content": "aimarket-mcp-packager** hub plugin: turn AIMarket capabilities into self-hosted MCP servers (Docker image + `mcp_manifest` + Claude Desktop `mcpServer | ★1, Active, Python. Install method, quality score and maintenance signals."
+      },
+      {
+        "property": "og:type",
+        "content": "website"
+      }
+    ],
+    "source_links": [
+      "/about",
+      "https://github.com/wookat/mcp-index",
+      "https://github.com/alexar76/aimarket-plugins",
+      "https://github.com/alexar76/aimarket-plugins",
+      "/about",
+      "https://github.com/wookat/mcp-index"
+    ]
+  }
+]

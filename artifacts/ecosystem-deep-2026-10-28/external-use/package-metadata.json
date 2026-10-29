@@ -1,0 +1,68 @@
+[
+  {
+    "name": "@aimarket/warden",
+    "version": "0.22.2",
+    "description": "WARDEN — MCP security firewall. Stdio wrap proxy, inspection tools and library. Vets definitions before model exposure. Zero runtime dependencies.",
+    "repository": {
+      "url": "git+https://github.com/alexar76/warden.git",
+      "type": "git"
+    },
+    "homepage": "https://warden.modelmarket.dev/",
+    "author": {
+      "url": "alexar76",
+      "name": "AICOM"
+    },
+    "maintainers": [
+      {
+        "name": "alexar76",
+        "email": "alexar76@rambler.ru"
+      }
+    ],
+    "dependencies": null,
+    "peerDependencies": null,
+    "optionalDependencies": null
+  },
+  {
+    "name": "@aimarket/agent",
+    "version": "0.3.0",
+    "description": "AI Market Protocol v2 consumer SDK for TypeScript — Electron, Node.js, web apps",
+    "repository": {
+      "url": "git+https://github.com/alexar76/aimarket-sdks.git",
+      "type": "git"
+    },
+    "homepage": "https://github.com/alexar76/aimarket-sdks/tree/main/typescript",
+    "author": null,
+    "maintainers": [
+      {
+        "name": "alexar76",
+        "email": "alexar76@rambler.ru"
+      }
+    ],
+    "dependencies": {
+      "viem": "^2.52.2",
+      "tweetnacl": "^1.0.3",
+      "@noble/curves": "^2.2.0",
+      "@noble/hashes": "^2.2.0",
+      "tweetnacl-util": "^0.15.1"
+    },
+    "peerDependencies": null,
+    "optionalDependencies": null
+  },
+  {
+    "name": "@aimarket-skill/refactoring-helper",
+    "version": "1.0.0",
+    "description": "A skill for automated code refactoring suggestions on AIMarket platform",
+    "repository": null,
+    "homepage": null,
+    "author": null,
+    "maintainers": [
+      {
+        "name": "cooper112",
+        "email": "huafengdongji@hotmail.com"
+      }
+    ],
+    "dependencies": null,
+    "peerDependencies": null,
+    "optionalDependencies": null
+  }
+]

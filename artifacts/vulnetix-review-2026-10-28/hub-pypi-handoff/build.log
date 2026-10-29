@@ -1,0 +1,667 @@
+Building wheel...
+running egg_info
+writing aimarket_hub.egg-info/PKG-INFO
+writing dependency_links to aimarket_hub.egg-info/dependency_links.txt
+writing entry points to aimarket_hub.egg-info/entry_points.txt
+writing requirements to aimarket_hub.egg-info/requires.txt
+writing top-level names to aimarket_hub.egg-info/top_level.txt
+reading manifest file 'aimarket_hub.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'aimarket_hub.egg-info/SOURCES.txt'
+running bdist_wheel
+running build
+running build_py
+creating build/lib/aimarket_hub
+copying aimarket_hub/validator.py -> build/lib/aimarket_hub
+copying aimarket_hub/catalog.py -> build/lib/aimarket_hub
+copying aimarket_hub/deposit_claims.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_references.py -> build/lib/aimarket_hub
+copying aimarket_hub/refund_client.py -> build/lib/aimarket_hub
+copying aimarket_hub/signing.py -> build/lib/aimarket_hub
+copying aimarket_hub/dataset_exporter.py -> build/lib/aimarket_hub
+copying aimarket_hub/a2a.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_provider.py -> build/lib/aimarket_hub
+copying aimarket_hub/metrics.py -> build/lib/aimarket_hub
+copying aimarket_hub/auto_listing.py -> build/lib/aimarket_hub
+copying aimarket_hub/acex_storage.py -> build/lib/aimarket_hub
+copying aimarket_hub/invoke_outcome.py -> build/lib/aimarket_hub
+copying aimarket_hub/topup.py -> build/lib/aimarket_hub
+copying aimarket_hub/card_topup.py -> build/lib/aimarket_hub
+copying aimarket_hub/peer_identity.py -> build/lib/aimarket_hub
+copying aimarket_hub/capital_pricing.py -> build/lib/aimarket_hub
+copying aimarket_hub/unpaid_invoke.py -> build/lib/aimarket_hub
+copying aimarket_hub/mcp_packager.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_payments.py -> build/lib/aimarket_hub
+copying aimarket_hub/mcp_gateway.py -> build/lib/aimarket_hub
+copying aimarket_hub/verified_settlement.py -> build/lib/aimarket_hub
+copying aimarket_hub/config.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_cli.py -> build/lib/aimarket_hub
+copying aimarket_hub/theme.py -> build/lib/aimarket_hub
+copying aimarket_hub/models.py -> build/lib/aimarket_hub
+copying aimarket_hub/capability_nft.py -> build/lib/aimarket_hub
+copying aimarket_hub/contracts_declaration.py -> build/lib/aimarket_hub
+copying aimarket_hub/peer_operations.py -> build/lib/aimarket_hub
+copying aimarket_hub/oracle_quorum.py -> build/lib/aimarket_hub
+copying aimarket_hub/landing.py -> build/lib/aimarket_hub
+copying aimarket_hub/factory_wallet.py -> build/lib/aimarket_hub
+copying aimarket_hub/deposit_watch.py -> build/lib/aimarket_hub
+copying aimarket_hub/acex_ai_audit.py -> build/lib/aimarket_hub
+copying aimarket_hub/outbound_http.py -> build/lib/aimarket_hub
+copying aimarket_hub/factory_products_loader.py -> build/lib/aimarket_hub
+copying aimarket_hub/seller_operations.py -> build/lib/aimarket_hub
+copying aimarket_hub/catalogue_view.py -> build/lib/aimarket_hub
+copying aimarket_hub/idempotency.py -> build/lib/aimarket_hub
+copying aimarket_hub/release_check.py -> build/lib/aimarket_hub
+copying aimarket_hub/safety_gate.py -> build/lib/aimarket_hub
+copying aimarket_hub/peer_routing.py -> build/lib/aimarket_hub
+copying aimarket_hub/agent_personas.py -> build/lib/aimarket_hub
+copying aimarket_hub/discovery_glue.py -> build/lib/aimarket_hub
+copying aimarket_hub/subcontract.py -> build/lib/aimarket_hub
+copying aimarket_hub/sandbox_trials.py -> build/lib/aimarket_hub
+copying aimarket_hub/database.py -> build/lib/aimarket_hub
+copying aimarket_hub/demo_seeder.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_refunds.py -> build/lib/aimarket_hub
+copying aimarket_hub/_signing_key_storage.py -> build/lib/aimarket_hub
+copying aimarket_hub/settle.py -> build/lib/aimarket_hub
+copying aimarket_hub/federation_assay.py -> build/lib/aimarket_hub
+copying aimarket_hub/__init__.py -> build/lib/aimarket_hub
+copying aimarket_hub/consumer_labels.py -> build/lib/aimarket_hub
+copying aimarket_hub/hub_lifespan.py -> build/lib/aimarket_hub
+copying aimarket_hub/invoke_funding.py -> build/lib/aimarket_hub
+copying aimarket_hub/fulfillment.py -> build/lib/aimarket_hub
+copying aimarket_hub/zk_groth16.py -> build/lib/aimarket_hub
+copying aimarket_hub/time_locked_promo.py -> build/lib/aimarket_hub
+copying aimarket_hub/mcp_stdio.py -> build/lib/aimarket_hub
+copying aimarket_hub/request_guards.py -> build/lib/aimarket_hub
+copying aimarket_hub/x402.py -> build/lib/aimarket_hub
+copying aimarket_hub/security_posture.py -> build/lib/aimarket_hub
+copying aimarket_hub/openapi_merge.py -> build/lib/aimarket_hub
+copying aimarket_hub/slash_sync.py -> build/lib/aimarket_hub
+copying aimarket_hub/api.py -> build/lib/aimarket_hub
+copying aimarket_hub/hubs_page.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_distribution.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_leases.py -> build/lib/aimarket_hub
+copying aimarket_hub/cli.py -> build/lib/aimarket_hub
+copying aimarket_hub/acex_merkle.py -> build/lib/aimarket_hub
+copying aimarket_hub/provider_recovery.py -> build/lib/aimarket_hub
+copying aimarket_hub/supply_chain_admission.py -> build/lib/aimarket_hub
+copying aimarket_hub/trust.py -> build/lib/aimarket_hub
+copying aimarket_hub/wallet_coordinator.py -> build/lib/aimarket_hub
+copying aimarket_hub/canonical.py -> build/lib/aimarket_hub
+copying aimarket_hub/orchestrator_capability.py -> build/lib/aimarket_hub
+copying aimarket_hub/acex_audit.py -> build/lib/aimarket_hub
+copying aimarket_hub/deposit_verify.py -> build/lib/aimarket_hub
+copying aimarket_hub/federation_transport.py -> build/lib/aimarket_hub
+copying aimarket_hub/onboarding_copy.py -> build/lib/aimarket_hub
+copying aimarket_hub/studio_paid.py -> build/lib/aimarket_hub
+copying aimarket_hub/public_cache.py -> build/lib/aimarket_hub
+copying aimarket_hub/supply_security.py -> build/lib/aimarket_hub
+copying aimarket_hub/migrations.py -> build/lib/aimarket_hub
+copying aimarket_hub/plugin.py -> build/lib/aimarket_hub
+copying aimarket_hub/api_models.py -> build/lib/aimarket_hub
+copying aimarket_hub/mandates.py -> build/lib/aimarket_hub
+copying aimarket_hub/acex_ipo.py -> build/lib/aimarket_hub
+copying aimarket_hub/revenue_proofs.py -> build/lib/aimarket_hub
+copying aimarket_hub/spot_auction.py -> build/lib/aimarket_hub
+copying aimarket_hub/channels.py -> build/lib/aimarket_hub
+copying aimarket_hub/a2a_tasks.py -> build/lib/aimarket_hub
+copying aimarket_hub/db_backend.py -> build/lib/aimarket_hub
+copying aimarket_hub/realm.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_client.py -> build/lib/aimarket_hub
+copying aimarket_hub/stdio.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_verification.py -> build/lib/aimarket_hub
+copying aimarket_hub/node.py -> build/lib/aimarket_hub
+copying aimarket_hub/lumen_client.py -> build/lib/aimarket_hub
+copying aimarket_hub/native_price.py -> build/lib/aimarket_hub
+copying aimarket_hub/terminal_ssr.py -> build/lib/aimarket_hub
+copying aimarket_hub/deliveries.py -> build/lib/aimarket_hub
+copying aimarket_hub/streaming.py -> build/lib/aimarket_hub
+copying aimarket_hub/chain_net.py -> build/lib/aimarket_hub
+copying aimarket_hub/payment_profiles.py -> build/lib/aimarket_hub
+copying aimarket_hub/reputation_oracle.py -> build/lib/aimarket_hub
+copying aimarket_hub/access_policy.py -> build/lib/aimarket_hub
+copying aimarket_hub/factory_bridge.py -> build/lib/aimarket_hub
+copying aimarket_hub/ecosystem.py -> build/lib/aimarket_hub
+copying aimarket_hub/zk_proofs.py -> build/lib/aimarket_hub
+copying aimarket_hub/credits.py -> build/lib/aimarket_hub
+copying aimarket_hub/provider_request_auth.py -> build/lib/aimarket_hub
+copying aimarket_hub/answer_dependence.py -> build/lib/aimarket_hub
+copying aimarket_hub/owner_notify.py -> build/lib/aimarket_hub
+copying aimarket_hub/payer_proof.py -> build/lib/aimarket_hub
+copying aimarket_hub/a2a_push.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_relay.py -> build/lib/aimarket_hub
+copying aimarket_hub/__main__.py -> build/lib/aimarket_hub
+copying aimarket_hub/lottery_entitlement.py -> build/lib/aimarket_hub
+copying aimarket_hub/data_capability.py -> build/lib/aimarket_hub
+copying aimarket_hub/paging.py -> build/lib/aimarket_hub
+copying aimarket_hub/oracle_paid_tier.py -> build/lib/aimarket_hub
+copying aimarket_hub/tee_attestation.py -> build/lib/aimarket_hub
+copying aimarket_hub/publish.py -> build/lib/aimarket_hub
+copying aimarket_hub/pipeline_lock.py -> build/lib/aimarket_hub
+copying aimarket_hub/semantic_search.py -> build/lib/aimarket_hub
+copying aimarket_hub/crawler.py -> build/lib/aimarket_hub
+copying aimarket_hub/envfile.py -> build/lib/aimarket_hub
+creating build/lib/aimarket_hub/settlement_service
+copying aimarket_hub/settlement_service/__init__.py -> build/lib/aimarket_hub/settlement_service
+copying aimarket_hub/settlement_service/appeals.py -> build/lib/aimarket_hub/settlement_service
+copying aimarket_hub/settlement_service/finalizing.py -> build/lib/aimarket_hub/settlement_service
+copying aimarket_hub/settlement_service/scheduling.py -> build/lib/aimarket_hub/settlement_service
+copying aimarket_hub/settlement_service/verifying.py -> build/lib/aimarket_hub/settlement_service
+creating build/lib/aimarket_hub/channel_ledger
+copying aimarket_hub/channel_ledger/opening.py -> build/lib/aimarket_hub/channel_ledger
+copying aimarket_hub/channel_ledger/__init__.py -> build/lib/aimarket_hub/channel_ledger
+copying aimarket_hub/channel_ledger/storage.py -> build/lib/aimarket_hub/channel_ledger
+copying aimarket_hub/channel_ledger/sweeps.py -> build/lib/aimarket_hub/channel_ledger
+copying aimarket_hub/channel_ledger/spending.py -> build/lib/aimarket_hub/channel_ledger
+creating build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/store.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/mirror.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/config.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/chain.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/collector.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/__init__.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/escrow_verify.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/authorization.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/cli.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/eip712.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/errors.py -> build/lib/aimarket_hub/escrow_bridge
+copying aimarket_hub/escrow_bridge/signer.py -> build/lib/aimarket_hub/escrow_bridge
+creating build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/catalog.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/plugins.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/capital.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/verification.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/payments.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/reputation.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/credentials.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/accounts.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/market_stats.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/__init__.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/agents.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/supply.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/pages.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/mandates.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/channels.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/invoke.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/wellknown.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/rate_limits.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/federation.py -> build/lib/aimarket_hub/hub_routes
+copying aimarket_hub/hub_routes/middleware.py -> build/lib/aimarket_hub/hub_routes
+creating build/lib/aimarket_hub/hub_routes/invoke_parts
+copying aimarket_hub/hub_routes/invoke_parts/local_admission.py -> build/lib/aimarket_hub/hub_routes/invoke_parts
+copying aimarket_hub/hub_routes/invoke_parts/local_delivery.py -> build/lib/aimarket_hub/hub_routes/invoke_parts
+copying aimarket_hub/hub_routes/invoke_parts/federated_delivery.py -> build/lib/aimarket_hub/hub_routes/invoke_parts
+copying aimarket_hub/hub_routes/invoke_parts/__init__.py -> build/lib/aimarket_hub/hub_routes/invoke_parts
+copying aimarket_hub/hub_routes/invoke_parts/federated_admission.py -> build/lib/aimarket_hub/hub_routes/invoke_parts
+running egg_info
+writing aimarket_hub.egg-info/PKG-INFO
+writing dependency_links to aimarket_hub.egg-info/dependency_links.txt
+writing entry points to aimarket_hub.egg-info/entry_points.txt
+writing requirements to aimarket_hub.egg-info/requires.txt
+writing top-level names to aimarket_hub.egg-info/top_level.txt
+reading manifest file 'aimarket_hub.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'aimarket_hub.egg-info/SOURCES.txt'
+copying aimarket_hub/federation_seeds.json -> build/lib/aimarket_hub
+creating build/lib/aimarket_hub/deployments
+copying aimarket_hub/deployments/base-mainnet.json -> build/lib/aimarket_hub/deployments
+creating build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/fonts.css -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxTcwgknk-6nFg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxPcwgknk-6nFg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pb0EPOleefkkbIxyyg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx7cwgknk-6nFg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDIxapCSOBg7S-QT7p4GM-aGW-rOq7s.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pa8FvOleefkkbIxyyg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx3cwgknk-6nFg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pbYF_OqeefkkbIxyyg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDIxapCSOBg7S-QT7p4HM-aGW-rO.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pbYF_OreefkkbIx.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pb0EPOreefkkbIx.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/orbitron-yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pb0EPOqeefkkbIxyyg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx_cwgknk-6nFg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pa8FvOreefkkbIx.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pa8FvOqeefkkbIxyyg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pbYF_OleefkkbIxyyg.woff2 -> build/lib/aimarket_hub/assets/fonts
+copying aimarket_hub/assets/fonts/rajdhani-LDIxapCSOBg7S-QT7p4JM-aGW-rOq7s.woff2 -> build/lib/aimarket_hub/assets/fonts
+creating build/lib/aimarket_hub/static
+copying aimarket_hub/static/llms.txt -> build/lib/aimarket_hub/static
+copying aimarket_hub/static/start.html -> build/lib/aimarket_hub/static
+copying aimarket_hub/static/og-card.png -> build/lib/aimarket_hub/static
+creating build/lib/aimarket_hub/static/well-known/mcp
+copying aimarket_hub/static/well-known/mcp/server-card.json -> build/lib/aimarket_hub/static/well-known/mcp
+installing to build/bdist.macosx-11.0-arm64/wheel
+running install
+running install_lib
+creating build/bdist.macosx-11.0-arm64/wheel
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub
+copying build/lib/aimarket_hub/validator.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/catalog.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/deposit_claims.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_references.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/refund_client.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/signing.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/dataset_exporter.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/a2a.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_provider.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/metrics.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/auto_listing.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/acex_storage.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/invoke_outcome.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/topup.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/settlement_service
+copying build/lib/aimarket_hub/settlement_service/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/settlement_service
+copying build/lib/aimarket_hub/settlement_service/appeals.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/settlement_service
+copying build/lib/aimarket_hub/settlement_service/finalizing.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/settlement_service
+copying build/lib/aimarket_hub/settlement_service/scheduling.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/settlement_service
+copying build/lib/aimarket_hub/settlement_service/verifying.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/settlement_service
+copying build/lib/aimarket_hub/card_topup.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/peer_identity.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/capital_pricing.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/unpaid_invoke.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/mcp_packager.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_payments.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/mcp_gateway.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/verified_settlement.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/config.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_cli.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/theme.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/models.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/federation_seeds.json -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/capability_nft.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/contracts_declaration.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/peer_operations.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/oracle_quorum.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/landing.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/factory_wallet.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/deposit_watch.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/acex_ai_audit.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/outbound_http.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/factory_products_loader.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/seller_operations.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/catalogue_view.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/idempotency.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/release_check.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/safety_gate.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/peer_routing.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/agent_personas.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/discovery_glue.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/subcontract.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/sandbox_trials.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/database.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/demo_seeder.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_refunds.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/_signing_key_storage.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/settle.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/federation_assay.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/consumer_labels.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/hub_lifespan.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/invoke_funding.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/fulfillment.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/zk_groth16.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/time_locked_promo.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/mcp_stdio.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/request_guards.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/x402.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/security_posture.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/openapi_merge.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/slash_sync.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/api.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/hubs_page.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_distribution.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_leases.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/cli.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/acex_merkle.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/provider_recovery.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/supply_chain_admission.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/channel_ledger
+copying build/lib/aimarket_hub/channel_ledger/opening.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/channel_ledger
+copying build/lib/aimarket_hub/channel_ledger/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/channel_ledger
+copying build/lib/aimarket_hub/channel_ledger/storage.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/channel_ledger
+copying build/lib/aimarket_hub/channel_ledger/sweeps.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/channel_ledger
+copying build/lib/aimarket_hub/channel_ledger/spending.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/channel_ledger
+copying build/lib/aimarket_hub/trust.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/wallet_coordinator.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/static
+copying build/lib/aimarket_hub/static/llms.txt -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/static
+copying build/lib/aimarket_hub/static/og-card.png -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/static
+copying build/lib/aimarket_hub/static/start.html -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/static
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/static/well-known
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/static/well-known/mcp
+copying build/lib/aimarket_hub/static/well-known/mcp/server-card.json -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/static/well-known/mcp
+copying build/lib/aimarket_hub/canonical.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/orchestrator_capability.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/acex_audit.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/deposit_verify.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/federation_transport.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/onboarding_copy.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/studio_paid.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/store.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/mirror.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/config.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/chain.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/collector.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/escrow_verify.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/authorization.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/cli.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/eip712.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/errors.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/escrow_bridge/signer.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/escrow_bridge
+copying build/lib/aimarket_hub/public_cache.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/supply_security.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/migrations.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/plugin.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/api_models.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/mandates.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/catalog.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/plugins.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/capital.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/verification.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/payments.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/reputation.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/credentials.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/accounts.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/market_stats.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/agents.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/supply.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/hub_routes/invoke_parts
+copying build/lib/aimarket_hub/hub_routes/invoke_parts/local_admission.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes/invoke_parts
+copying build/lib/aimarket_hub/hub_routes/invoke_parts/local_delivery.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes/invoke_parts
+copying build/lib/aimarket_hub/hub_routes/invoke_parts/federated_delivery.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes/invoke_parts
+copying build/lib/aimarket_hub/hub_routes/invoke_parts/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes/invoke_parts
+copying build/lib/aimarket_hub/hub_routes/invoke_parts/federated_admission.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes/invoke_parts
+copying build/lib/aimarket_hub/hub_routes/pages.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/mandates.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/channels.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/invoke.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/wellknown.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/rate_limits.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/federation.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/hub_routes/middleware.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/hub_routes
+copying build/lib/aimarket_hub/acex_ipo.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/revenue_proofs.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/spot_auction.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/channels.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/a2a_tasks.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/db_backend.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/realm.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_client.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/stdio.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_verification.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/node.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/lumen_client.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/native_price.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/terminal_ssr.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/deliveries.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/streaming.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/chain_net.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/payment_profiles.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/reputation_oracle.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/access_policy.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/factory_bridge.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/ecosystem.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/zk_proofs.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/assets
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxTcwgknk-6nFg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxPcwgknk-6nFg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pb0EPOleefkkbIxyyg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx7cwgknk-6nFg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDIxapCSOBg7S-QT7p4GM-aGW-rOq7s.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pa8FvOleefkkbIxyyg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx3cwgknk-6nFg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pbYF_OqeefkkbIxyyg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDIxapCSOBg7S-QT7p4HM-aGW-rO.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pbYF_OreefkkbIx.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pb0EPOreefkkbIx.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/orbitron-yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pb0EPOqeefkkbIxyyg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx_cwgknk-6nFg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pa8FvOreefkkbIx.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pa8FvOqeefkkbIxyyg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/fonts.css -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pbYF_OleefkkbIxyyg.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/assets/fonts/rajdhani-LDIxapCSOBg7S-QT7p4JM-aGW-rOq7s.woff2 -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/assets/fonts
+copying build/lib/aimarket_hub/credits.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/provider_request_auth.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/answer_dependence.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/owner_notify.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/payer_proof.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/a2a_push.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_relay.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/__main__.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/lottery_entitlement.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/data_capability.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/paging.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/oracle_paid_tier.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/tee_attestation.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/publish.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/pipeline_lock.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/semantic_search.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub/deployments
+copying build/lib/aimarket_hub/deployments/base-mainnet.json -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub/deployments
+copying build/lib/aimarket_hub/crawler.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+copying build/lib/aimarket_hub/envfile.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub
+running install_egg_info
+Copying aimarket_hub.egg-info to build/bdist.macosx-11.0-arm64/wheel/./aimarket_hub-3.16.1-py3.12.egg-info
+running install_scripts
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_hub-3.16.1.dist-info/WHEEL
+creating '/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/hub-release-build-mbtgoohl/.tmp-nd6jge7u/aimarket_hub-3.16.1-py3-none-any.whl' and adding 'build/bdist.macosx-11.0-arm64/wheel' to it
+adding 'aimarket_hub/__init__.py'
+adding 'aimarket_hub/__main__.py'
+adding 'aimarket_hub/_signing_key_storage.py'
+adding 'aimarket_hub/a2a.py'
+adding 'aimarket_hub/a2a_push.py'
+adding 'aimarket_hub/a2a_tasks.py'
+adding 'aimarket_hub/access_policy.py'
+adding 'aimarket_hub/acex_ai_audit.py'
+adding 'aimarket_hub/acex_audit.py'
+adding 'aimarket_hub/acex_ipo.py'
+adding 'aimarket_hub/acex_merkle.py'
+adding 'aimarket_hub/acex_storage.py'
+adding 'aimarket_hub/agent_personas.py'
+adding 'aimarket_hub/answer_dependence.py'
+adding 'aimarket_hub/api.py'
+adding 'aimarket_hub/api_models.py'
+adding 'aimarket_hub/auto_listing.py'
+adding 'aimarket_hub/canonical.py'
+adding 'aimarket_hub/capability_nft.py'
+adding 'aimarket_hub/capital_pricing.py'
+adding 'aimarket_hub/card_topup.py'
+adding 'aimarket_hub/catalog.py'
+adding 'aimarket_hub/catalogue_view.py'
+adding 'aimarket_hub/chain_net.py'
+adding 'aimarket_hub/channels.py'
+adding 'aimarket_hub/cli.py'
+adding 'aimarket_hub/config.py'
+adding 'aimarket_hub/consumer_labels.py'
+adding 'aimarket_hub/contracts_declaration.py'
+adding 'aimarket_hub/crawler.py'
+adding 'aimarket_hub/credits.py'
+adding 'aimarket_hub/data_capability.py'
+adding 'aimarket_hub/database.py'
+adding 'aimarket_hub/dataset_exporter.py'
+adding 'aimarket_hub/db_backend.py'
+adding 'aimarket_hub/deliveries.py'
+adding 'aimarket_hub/demo_seeder.py'
+adding 'aimarket_hub/deposit_claims.py'
+adding 'aimarket_hub/deposit_verify.py'
+adding 'aimarket_hub/deposit_watch.py'
+adding 'aimarket_hub/discovery_glue.py'
+adding 'aimarket_hub/ecosystem.py'
+adding 'aimarket_hub/envfile.py'
+adding 'aimarket_hub/factory_bridge.py'
+adding 'aimarket_hub/factory_products_loader.py'
+adding 'aimarket_hub/factory_wallet.py'
+adding 'aimarket_hub/federation_assay.py'
+adding 'aimarket_hub/federation_seeds.json'
+adding 'aimarket_hub/federation_transport.py'
+adding 'aimarket_hub/fulfillment.py'
+adding 'aimarket_hub/hub_lifespan.py'
+adding 'aimarket_hub/hubs_page.py'
+adding 'aimarket_hub/idempotency.py'
+adding 'aimarket_hub/invoke_funding.py'
+adding 'aimarket_hub/invoke_outcome.py'
+adding 'aimarket_hub/landing.py'
+adding 'aimarket_hub/lottery_entitlement.py'
+adding 'aimarket_hub/lumen_client.py'
+adding 'aimarket_hub/mandates.py'
+adding 'aimarket_hub/mcp_gateway.py'
+adding 'aimarket_hub/mcp_packager.py'
+adding 'aimarket_hub/mcp_stdio.py'
+adding 'aimarket_hub/metrics.py'
+adding 'aimarket_hub/migrations.py'
+adding 'aimarket_hub/models.py'
+adding 'aimarket_hub/native_price.py'
+adding 'aimarket_hub/node.py'
+adding 'aimarket_hub/onboarding_copy.py'
+adding 'aimarket_hub/openapi_merge.py'
+adding 'aimarket_hub/oracle_paid_tier.py'
+adding 'aimarket_hub/oracle_quorum.py'
+adding 'aimarket_hub/orchestrator_capability.py'
+adding 'aimarket_hub/outbound_http.py'
+adding 'aimarket_hub/owner_notify.py'
+adding 'aimarket_hub/paging.py'
+adding 'aimarket_hub/payer_proof.py'
+adding 'aimarket_hub/payment_profiles.py'
+adding 'aimarket_hub/peer_identity.py'
+adding 'aimarket_hub/peer_operations.py'
+adding 'aimarket_hub/peer_routing.py'
+adding 'aimarket_hub/pipeline_cli.py'
+adding 'aimarket_hub/pipeline_client.py'
+adding 'aimarket_hub/pipeline_distribution.py'
+adding 'aimarket_hub/pipeline_leases.py'
+adding 'aimarket_hub/pipeline_lock.py'
+adding 'aimarket_hub/pipeline_payments.py'
+adding 'aimarket_hub/pipeline_provider.py'
+adding 'aimarket_hub/pipeline_references.py'
+adding 'aimarket_hub/pipeline_refunds.py'
+adding 'aimarket_hub/pipeline_relay.py'
+adding 'aimarket_hub/pipeline_verification.py'
+adding 'aimarket_hub/plugin.py'
+adding 'aimarket_hub/provider_recovery.py'
+adding 'aimarket_hub/provider_request_auth.py'
+adding 'aimarket_hub/public_cache.py'
+adding 'aimarket_hub/publish.py'
+adding 'aimarket_hub/realm.py'
+adding 'aimarket_hub/refund_client.py'
+adding 'aimarket_hub/release_check.py'
+adding 'aimarket_hub/reputation_oracle.py'
+adding 'aimarket_hub/request_guards.py'
+adding 'aimarket_hub/revenue_proofs.py'
+adding 'aimarket_hub/safety_gate.py'
+adding 'aimarket_hub/sandbox_trials.py'
+adding 'aimarket_hub/security_posture.py'
+adding 'aimarket_hub/seller_operations.py'
+adding 'aimarket_hub/semantic_search.py'
+adding 'aimarket_hub/settle.py'
+adding 'aimarket_hub/signing.py'
+adding 'aimarket_hub/slash_sync.py'
+adding 'aimarket_hub/spot_auction.py'
+adding 'aimarket_hub/stdio.py'
+adding 'aimarket_hub/streaming.py'
+adding 'aimarket_hub/studio_paid.py'
+adding 'aimarket_hub/subcontract.py'
+adding 'aimarket_hub/supply_chain_admission.py'
+adding 'aimarket_hub/supply_security.py'
+adding 'aimarket_hub/tee_attestation.py'
+adding 'aimarket_hub/terminal_ssr.py'
+adding 'aimarket_hub/theme.py'
+adding 'aimarket_hub/time_locked_promo.py'
+adding 'aimarket_hub/topup.py'
+adding 'aimarket_hub/trust.py'
+adding 'aimarket_hub/unpaid_invoke.py'
+adding 'aimarket_hub/validator.py'
+adding 'aimarket_hub/verified_settlement.py'
+adding 'aimarket_hub/wallet_coordinator.py'
+adding 'aimarket_hub/x402.py'
+adding 'aimarket_hub/zk_groth16.py'
+adding 'aimarket_hub/zk_proofs.py'
+adding 'aimarket_hub/assets/fonts/fonts.css'
+adding 'aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx3cwgknk-6nFg.woff2'
+adding 'aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx7cwgknk-6nFg.woff2'
+adding 'aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2'
+adding 'aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxPcwgknk-6nFg.woff2'
+adding 'aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxTcwgknk-6nFg.woff2'
+adding 'aimarket_hub/assets/fonts/jetbrainsmono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx_cwgknk-6nFg.woff2'
+adding 'aimarket_hub/assets/fonts/orbitron-yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pa8FvOleefkkbIxyyg.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pa8FvOqeefkkbIxyyg.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pa8FvOreefkkbIx.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pb0EPOleefkkbIxyyg.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pb0EPOqeefkkbIxyyg.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pb0EPOreefkkbIx.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pbYF_OleefkkbIxyyg.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pbYF_OqeefkkbIxyyg.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDI2apCSOBg7S-QT7pbYF_OreefkkbIx.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDIxapCSOBg7S-QT7p4GM-aGW-rOq7s.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDIxapCSOBg7S-QT7p4HM-aGW-rO.woff2'
+adding 'aimarket_hub/assets/fonts/rajdhani-LDIxapCSOBg7S-QT7p4JM-aGW-rOq7s.woff2'
+adding 'aimarket_hub/channel_ledger/__init__.py'
+adding 'aimarket_hub/channel_ledger/opening.py'
+adding 'aimarket_hub/channel_ledger/spending.py'
+adding 'aimarket_hub/channel_ledger/storage.py'
+adding 'aimarket_hub/channel_ledger/sweeps.py'
+adding 'aimarket_hub/deployments/base-mainnet.json'
+adding 'aimarket_hub/escrow_bridge/__init__.py'
+adding 'aimarket_hub/escrow_bridge/authorization.py'
+adding 'aimarket_hub/escrow_bridge/chain.py'
+adding 'aimarket_hub/escrow_bridge/cli.py'
+adding 'aimarket_hub/escrow_bridge/collector.py'
+adding 'aimarket_hub/escrow_bridge/config.py'
+adding 'aimarket_hub/escrow_bridge/eip712.py'
+adding 'aimarket_hub/escrow_bridge/errors.py'
+adding 'aimarket_hub/escrow_bridge/escrow_verify.py'
+adding 'aimarket_hub/escrow_bridge/mirror.py'
+adding 'aimarket_hub/escrow_bridge/signer.py'
+adding 'aimarket_hub/escrow_bridge/store.py'
+adding 'aimarket_hub/hub_routes/__init__.py'
+adding 'aimarket_hub/hub_routes/accounts.py'
+adding 'aimarket_hub/hub_routes/agents.py'
+adding 'aimarket_hub/hub_routes/capital.py'
+adding 'aimarket_hub/hub_routes/catalog.py'
+adding 'aimarket_hub/hub_routes/channels.py'
+adding 'aimarket_hub/hub_routes/credentials.py'
+adding 'aimarket_hub/hub_routes/federation.py'
+adding 'aimarket_hub/hub_routes/invoke.py'
+adding 'aimarket_hub/hub_routes/mandates.py'
+adding 'aimarket_hub/hub_routes/market_stats.py'
+adding 'aimarket_hub/hub_routes/middleware.py'
+adding 'aimarket_hub/hub_routes/pages.py'
+adding 'aimarket_hub/hub_routes/payments.py'
+adding 'aimarket_hub/hub_routes/plugins.py'
+adding 'aimarket_hub/hub_routes/rate_limits.py'
+adding 'aimarket_hub/hub_routes/reputation.py'
+adding 'aimarket_hub/hub_routes/supply.py'
+adding 'aimarket_hub/hub_routes/verification.py'
+adding 'aimarket_hub/hub_routes/wellknown.py'
+adding 'aimarket_hub/hub_routes/invoke_parts/__init__.py'
+adding 'aimarket_hub/hub_routes/invoke_parts/federated_admission.py'
+adding 'aimarket_hub/hub_routes/invoke_parts/federated_delivery.py'
+adding 'aimarket_hub/hub_routes/invoke_parts/local_admission.py'
+adding 'aimarket_hub/hub_routes/invoke_parts/local_delivery.py'
+adding 'aimarket_hub/settlement_service/__init__.py'
+adding 'aimarket_hub/settlement_service/appeals.py'
+adding 'aimarket_hub/settlement_service/finalizing.py'
+adding 'aimarket_hub/settlement_service/scheduling.py'
+adding 'aimarket_hub/settlement_service/verifying.py'
+adding 'aimarket_hub/static/llms.txt'
+adding 'aimarket_hub/static/og-card.png'
+adding 'aimarket_hub/static/start.html'
+adding 'aimarket_hub/static/well-known/mcp/server-card.json'
+adding 'aimarket_hub-3.16.1.dist-info/licenses/LICENSE'
+adding 'aimarket_hub-3.16.1.dist-info/METADATA'
+adding 'aimarket_hub-3.16.1.dist-info/WHEEL'
+adding 'aimarket_hub-3.16.1.dist-info/entry_points.txt'
+adding 'aimarket_hub-3.16.1.dist-info/top_level.txt'
+adding 'aimarket_hub-3.16.1.dist-info/RECORD'
+removing build/bdist.macosx-11.0-arm64/wheel
+Successfully built /var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/hub-release-build-mbtgoohl/aimarket_hub-3.16.1-py3-none-any.whl

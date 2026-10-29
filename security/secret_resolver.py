@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 # Standard LLM env var → relative secret file under data/secrets/llm/
 LLM_SECRET_FILES: dict[str, str] = {
     "DEEPSEEK_API_KEY": "deepseek_api_key",
+    "OPENROUTER_API_KEY": "openrouter_api_key",
     "ANTHROPIC_API_KEY": "anthropic_api_key",
     "GROQ_API_KEY": "groq_api_key",
     "TOGETHER_API_KEY": "together_api_key",
@@ -176,17 +177,15 @@ def get_secret(
         if val:
             return val
 
-    from core.paths import data_root
+    from llm.provider_secrets import read_provider_secret
 
     for name in names:
         rel = LLM_SECRET_FILES.get(name)
         if not rel:
             continue
-        fpath = data_root() / "secrets" / "llm" / rel
-        if fpath.is_file():
-            val = fpath.read_text(encoding="utf-8").strip()
-            if val:
-                return val
+        val = read_provider_secret(rel)
+        if val:
+            return val
 
     return default
 
@@ -217,18 +216,16 @@ def sync_file_secrets_into_fernet_vault() -> int:
         "off",
     ):
         return 0
-    from core.paths import data_root
-
-    llm_dir = data_root() / "secrets" / "llm"
-    if not llm_dir.is_dir():
+    from llm.provider_secrets import read_provider_secret
+    material = [
+        (env_name, read_provider_secret(filename))
+        for env_name, filename in LLM_SECRET_FILES.items()
+    ]
+    if not any(value for _, value in material):
         return 0
     mgr = _fernet_manager()
     imported = 0
-    for env_name, filename in LLM_SECRET_FILES.items():
-        fpath = llm_dir / filename
-        if not fpath.is_file():
-            continue
-        val = fpath.read_text(encoding="utf-8").strip()
+    for env_name, val in material:
         if not val:
             continue
         key = env_name.lower().replace("_", "-")

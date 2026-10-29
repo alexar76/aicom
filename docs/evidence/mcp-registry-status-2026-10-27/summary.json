@@ -1,0 +1,114 @@
+{
+  "checkedAt": "2026-10-27T11:05:37.826904+00:00",
+  "officialRegistry": [
+    {
+      "name": "io.github.alexar76/aimarket-oracle-gateway",
+      "registryVersion": "0.3.1",
+      "currentRelease": "0.3.2",
+      "upToDate": false,
+      "registryUpdatedAt": "2026-10-21T08:07:26.528636Z"
+    },
+    {
+      "name": "io.github.alexar76/aimarket-plugins",
+      "registryVersion": "2.1.1",
+      "currentRelease": "2.1.2",
+      "upToDate": false,
+      "registryUpdatedAt": "2026-10-21T08:07:24.696125Z"
+    },
+    {
+      "name": "io.github.alexar76/aimarket-mcp",
+      "registryVersion": "0.4.0",
+      "currentRelease": "0.6.3",
+      "upToDate": false,
+      "registryUpdatedAt": "2026-10-07T09:59:21.293075Z"
+    },
+    {
+      "name": "io.github.alexar76/aimarket-hub",
+      "registryVersion": "3.15.21",
+      "currentRelease": "3.16.0",
+      "upToDate": false,
+      "registryUpdatedAt": "2026-10-07T10:00:06.908496Z"
+    },
+    {
+      "name": "io.github.alexar76/warden",
+      "registryVersion": "0.21.0",
+      "currentRelease": "0.22.1",
+      "upToDate": false,
+      "registryUpdatedAt": "2026-10-25T15:27:50.893048Z"
+    }
+  ],
+  "officialSource": "https://registry.modelcontextprotocol.io/v0.1/servers?search=alexar76&limit=100",
+  "metis": {
+    "separateServerEntryFound": false,
+    "role": "MCP client; not a standalone MCP server"
+  },
+  "argus": {
+    "registryVersion": "0.3.3",
+    "packageArguments": null,
+    "needsMcpArgumentUpdate": true
+  },
+  "glama": {
+    "oracle": {
+      "publicSchemaToolCount": 10,
+      "expectedTools": 36,
+      "listedTools": [
+        "ask_oracle",
+        "compute_vdf",
+        "get_agent_trust",
+        "get_random",
+        "get_randomness_beacon",
+        "get_reputation_scores",
+        "list_oracle_capabilities",
+        "verify_random",
+        "verify_reputation",
+        "verify_vdf"
+      ],
+      "missingTools": [
+        "aestus_open",
+        "aestus_seal",
+        "aestus_verify",
+        "aggregate_values",
+        "analyze_cascade_risk",
+        "analyze_network_resilience",
+        "audit_compute_cost",
+        "betti_distance",
+        "betti_homology",
+        "compute_least_time_route",
+        "fourier_spectrum",
+        "fourier_verify",
+        "gauss_field",
+        "gauss_suggest",
+        "gauss_verify",
+        "get_blue_noise",
+        "get_quasirandom_sequence",
+        "kantor_transport",
+        "kantor_verify",
+        "optimize_route",
+        "sortes_draw",
+        "sortes_verify",
+        "verify_cascade_risk",
+        "verify_compute_cost",
+        "verify_least_time_route",
+        "verify_network_resilience"
+      ],
+      "schemaUrl": "https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway/schema"
+    },
+    "packager": {
+      "publicSchemaToolCount": 3,
+      "releaseVersion": "not publicly confirmed",
+      "schemaUrl": "https://glama.ai/mcp/servers/alexar76/aimarket-plugins/schema"
+    },
+    "apiStatus": "401 unauthenticated; checked public schema pages instead"
+  },
+  "publicGithubManifests": {
+    "oracleVersion": "0.3.2",
+    "packagerVersion": "2.1.2"
+  },
+  "registryWrites": 0,
+  "githubWrites": 0,
+  "neededActions": [
+    "Publish updated Oracle Gateway and Packager manifests to Official MCP Registry",
+    "Refresh/reinspect Glama schema and confirm runtime release version",
+    "Other owned Official Registry entries also lag current releases"
+  ]
+}

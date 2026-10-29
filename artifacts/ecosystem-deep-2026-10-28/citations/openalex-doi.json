@@ -1,0 +1,935 @@
+{
+  "key": "openalex-doi",
+  "url": "https://api.openalex.org/works/https://doi.org/10.5281/zenodo.23512760",
+  "retrieved_at_utc": "2026-10-28T13:30:30.195871+00:00",
+  "method": "GET",
+  "status": 200,
+  "sha256": "7994d3da24c569fa6a80540b59c12dd896a0547c19acb748065c7bd8d23674dd",
+  "bytes": 12124,
+  "final_url": "https://api.openalex.org/works/https://doi.org/10.5281/zenodo.23512760",
+  "selected_metadata": {
+    "id": "https://openalex.org/W7223029314",
+    "doi": "https://doi.org/10.5281/zenodo.23512759",
+    "title": "HISTOR snapshot 2026-10-20: MCP tool definitions and how they change",
+    "display_name": "HISTOR snapshot 2026-10-20: MCP tool definitions and how they change",
+    "publication_year": 2026,
+    "publication_date": "2026-10-20",
+    "ids": {
+      "openalex": "https://openalex.org/W7223029314",
+      "doi": "https://doi.org/10.5281/zenodo.23512759"
+    },
+    "language": null,
+    "primary_location": {
+      "id": "doi:10.5281/zenodo.23512759",
+      "doi": "https://doi.org/10.5281/zenodo.23512759",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.5281/zenodo.23512759",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400562",
+        "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "listed_in": [],
+        "host_organization": "https://openalex.org/I67311998",
+        "host_organization_name": "European Organization for Nuclear Research",
+        "host_organization_lineage": [
+          "https://openalex.org/I67311998"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": null,
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Dataset"
+    },
+    "volume": null,
+    "type": "dataset",
+    "indexed_in": [
+      "datacite"
+    ],
+    "open_access": {
+      "is_oa": true,
+      "oa_status": "green",
+      "oa_url": "https://doi.org/10.5281/zenodo.23512759",
+      "any_repository_has_fulltext": true
+    },
+    "authorships": [
+      {
+        "author_position": "first",
+        "author": {
+          "id": "https://openalex.org/A5159132213",
+          "display_name": "Aleksandr Artamokhov",
+          "orcid": null,
+          "observed_orcids": []
+        },
+        "institutions": [],
+        "countries": [],
+        "is_corresponding": true,
+        "raw_author_name": "Artamokhov, Aleksandr",
+        "raw_affiliation_strings": [],
+        "raw_orcid": null,
+        "affiliations": []
+      }
+    ],
+    "institutions": [],
+    "countries_distinct_count": 0,
+    "institutions_distinct_count": 0,
+    "corresponding_author_ids": [
+      "https://openalex.org/A5159132213"
+    ],
+    "corresponding_institution_ids": [],
+    "apc_list": null,
+    "apc_paid": null,
+    "fwci": null,
+    "has_fulltext": false,
+    "cited_by_count": 0,
+    "citation_normalized_percentile": null,
+    "cited_by_percentile_year": null,
+    "biblio": {
+      "volume": null,
+      "issue": null,
+      "first_page": null,
+      "last_page": null
+    },
+    "is_retracted": false,
+    "is_paratext": false,
+    "is_xpac": false,
+    "primary_topic": {
+      "id": "https://openalex.org/T10260",
+      "display_name": "Software Engineering Research",
+      "score": 0.24959999322891235,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1710",
+        "display_name": "Information Systems"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/17",
+        "display_name": "Computer Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    "topics": [
+      {
+        "id": "https://openalex.org/T10260",
+        "display_name": "Software Engineering Research",
+        "score": 0.24959999322891235,
+        "subfield": {
+          "id": "https://openalex.org/subfields/1710",
+          "display_name": "Information Systems"
+        },
+        "field": {
+          "id": "https://openalex.org/fields/17",
+          "display_name": "Computer Science"
+        },
+        "domain": {
+          "id": "https://openalex.org/domains/3",
+          "display_name": "Physical Sciences"
+        }
+      },
+      {
+        "id": "https://openalex.org/T11986",
+        "display_name": "Scientific Computing and Data Management",
+        "score": 0.08370000123977661,
+        "subfield": {
+          "id": "https://openalex.org/subfields/1802",
+          "display_name": "Information Systems and Management"
+        },
+        "field": {
+          "id": "https://openalex.org/fields/18",
+          "display_name": "Decision Sciences"
+        },
+        "domain": {
+          "id": "https://openalex.org/domains/2",
+          "display_name": "Social Sciences"
+        }
+      },
+      {
+        "id": "https://openalex.org/T11689",
+        "display_name": "Adversarial Robustness in Machine Learning",
+        "score": 0.03060000017285347,
+        "subfield": {
+          "id": "https://openalex.org/subfields/1702",
+          "display_name": "Artificial Intelligence"
+        },
+        "field": {
+          "id": "https://openalex.org/fields/17",
+          "display_name": "Computer Science"
+        },
+        "domain": {
+          "id": "https://openalex.org/domains/3",
+          "display_name": "Physical Sciences"
+        }
+      }
+    ],
+    "keywords": [
+      {
+        "id": "https://openalex.org/keywords/npm-packages",
+        "display_name": "npm packages",
+        "score": 0.625
+      },
+      {
+        "id": "https://openalex.org/keywords/pypi-package",
+        "display_name": "PyPI packages",
+        "score": 0.9950000047683716
+      }
+    ],
+    "concepts": [
+      {
+        "id": "https://openalex.org/C55282118",
+        "wikidata": "https://www.wikidata.org/wiki/Q252683",
+        "display_name": "Snapshot (computer storage)",
+        "level": 2,
+        "score": 0.9042999744415283
+      },
+      {
+        "id": "https://openalex.org/C93996380",
+        "wikidata": "https://www.wikidata.org/wiki/Q44127",
+        "display_name": "Server",
+        "level": 2,
+        "score": 0.7736999988555908
+      },
+      {
+        "id": "https://openalex.org/C41008148",
+        "wikidata": "https://www.wikidata.org/wiki/Q21198",
+        "display_name": "Computer science",
+        "level": 0,
+        "score": 0.5856999754905701
+      },
+      {
+        "id": "https://openalex.org/C2780560020",
+        "wikidata": "https://www.wikidata.org/wiki/Q79719",
+        "display_name": "License",
+        "level": 2,
+        "score": 0.46219998598098755
+      },
+      {
+        "id": "https://openalex.org/C136764020",
+        "wikidata": "https://www.wikidata.org/wiki/Q466",
+        "display_name": "World Wide Web",
+        "level": 1,
+        "score": 0.43309998512268066
+      },
+      {
+        "id": "https://openalex.org/C75145180",
+        "wikidata": "https://www.wikidata.org/wiki/Q772007",
+        "display_name": "Georeference",
+        "level": 2,
+        "score": 0.39899998903274536
+      },
+      {
+        "id": "https://openalex.org/C38652104",
+        "wikidata": "https://www.wikidata.org/wiki/Q3510521",
+        "display_name": "Computer security",
+        "level": 1,
+        "score": 0.3978999853134155
+      },
+      {
+        "id": "https://openalex.org/C167981075",
+        "wikidata": "https://www.wikidata.org/wiki/Q2667186",
+        "display_name": "Sandbox (software development)",
+        "level": 2,
+        "score": 0.3919999897480011
+      },
+      {
+        "id": "https://openalex.org/C93518851",
+        "wikidata": "https://www.wikidata.org/wiki/Q180160",
+        "display_name": "Metadata",
+        "level": 2,
+        "score": 0.38179999589920044
+      },
+      {
+        "id": "https://openalex.org/C11392498",
+        "wikidata": "https://www.wikidata.org/wiki/Q11288",
+        "display_name": "Web server",
+        "level": 3,
+        "score": 0.29330000281333923
+      },
+      {
+        "id": "https://openalex.org/C23123220",
+        "wikidata": "https://www.wikidata.org/wiki/Q816826",
+        "display_name": "Information retrieval",
+        "level": 1,
+        "score": 0.27390000224113464
+      },
+      {
+        "id": "https://openalex.org/C95457728",
+        "wikidata": "https://www.wikidata.org/wiki/Q309",
+        "display_name": "History",
+        "level": 0,
+        "score": 0.26669999957084656
+      },
+      {
+        "id": "https://openalex.org/C96865113",
+        "wikidata": "https://www.wikidata.org/wiki/Q2946816",
+        "display_name": "Certificate",
+        "level": 2,
+        "score": 0.262800008058548
+      },
+      {
+        "id": "https://openalex.org/C121684516",
+        "wikidata": "https://www.wikidata.org/wiki/Q7600677",
+        "display_name": "Computer graphics (images)",
+        "level": 1,
+        "score": 0.26159998774528503
+      },
+      {
+        "id": "https://openalex.org/C2982933515",
+        "wikidata": "https://www.wikidata.org/wiki/Q104381823",
+        "display_name": "Public access",
+        "level": 2,
+        "score": 0.25769999623298645
+      },
+      {
+        "id": "https://openalex.org/C2992790187",
+        "wikidata": "https://www.wikidata.org/wiki/Q1145106",
+        "display_name": "Historical record",
+        "level": 3,
+        "score": 0.2540000081062317
+      },
+      {
+        "id": "https://openalex.org/C53605480",
+        "wikidata": "https://www.wikidata.org/wiki/Q852595",
+        "display_name": "Geotagging",
+        "level": 2,
+        "score": 0.2531999945640564
+      }
+    ],
+    "mesh": [],
+    "locations_count": 2,
+    "locations": [
+      {
+        "id": "doi:10.5281/zenodo.23512759",
+        "doi": "https://doi.org/10.5281/zenodo.23512759",
+        "is_oa": true,
+        "landing_page_url": "https://doi.org/10.5281/zenodo.23512759",
+        "pdf_url": null,
+        "source": {
+          "id": "https://openalex.org/S4306400562",
+          "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+          "issn_l": null,
+          "issn": null,
+          "is_oa": true,
+          "is_in_doaj": false,
+          "is_core": false,
+          "listed_in": [],
+          "host_organization": "https://openalex.org/I67311998",
+          "host_organization_name": "European Organization for Nuclear Research",
+          "host_organization_lineage": [
+            "https://openalex.org/I67311998"
+          ],
+          "host_organization_lineage_names": [],
+          "type": "repository"
+        },
+        "license": "cc-by",
+        "license_id": "https://openalex.org/licenses/cc-by",
+        "version": null,
+        "is_accepted": false,
+        "is_published": false,
+        "raw_source_name": null,
+        "raw_type": "Dataset"
+      },
+      {
+        "id": "doi:10.5281/zenodo.23512760",
+        "doi": "https://doi.org/10.5281/zenodo.23512760",
+        "is_oa": true,
+        "landing_page_url": "https://doi.org/10.5281/zenodo.23512760",
+        "pdf_url": null,
+        "source": {
+          "id": "https://openalex.org/S4306400562",
+          "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+          "issn_l": null,
+          "issn": null,
+          "is_oa": true,
+          "is_in_doaj": false,
+          "is_core": false,
+          "listed_in": [],
+          "host_organization": "https://openalex.org/I67311998",
+          "host_organization_name": "European Organization for Nuclear Research",
+          "host_organization_lineage": [
+            "https://openalex.org/I67311998"
+          ],
+          "host_organization_lineage_names": [],
+          "type": "repository"
+        },
+        "license": "cc-by",
+        "license_id": "https://openalex.org/licenses/cc-by",
+        "version": null,
+        "is_accepted": false,
+        "is_published": false,
+        "raw_source_name": null,
+        "raw_type": "Dataset"
+      }
+    ],
+    "best_oa_location": {
+      "id": "doi:10.5281/zenodo.23512759",
+      "doi": "https://doi.org/10.5281/zenodo.23512759",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.5281/zenodo.23512759",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400562",
+        "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "listed_in": [],
+        "host_organization": "https://openalex.org/I67311998",
+        "host_organization_name": "European Organization for Nuclear Research",
+        "host_organization_lineage": [
+          "https://openalex.org/I67311998"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": null,
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Dataset"
+    },
+    "sustainable_development_goals": [],
+    "sustainable_development_goals_aurora": [],
+    "study_designs": [],
+    "awards": [],
+    "funders": [],
+    "has_content": {
+      "grobid_xml": false,
+      "pdf": false
+    },
+    "content_urls": null,
+    "referenced_works_count": 0,
+    "referenced_works": [],
+    "related_works": [],
+    "abstract_inverted_index": {
+      "HISTOR": [
+        0
+      ],
+      "reads": [
+        1
+      ],
+      "the": [
+        2,
+        12,
+        40,
+        65,
+        173
+      ],
+      "tool": [
+        3,
+        42,
+        61,
+        92,
+        107
+      ],
+      "list": [
+        4
+      ],
+      "(`tools/list`)": [
+        5
+      ],
+      "of": [
+        6,
+        19,
+        199
+      ],
+      "every": [
+        7,
+        112,
+        200
+      ],
+      "remote": [
+        8,
+        81
+      ],
+      "MCP": [
+        9,
+        14,
+        21
+      ],
+      "server": [
+        10,
+        180
+      ],
+      "in": [
+        11,
+        24
+      ],
+      "official": [
+        13
+      ],
+      "registryonce": [
+        15
+      ],
+      "a": [
+        16,
+        25,
+        33,
+        36,
+        49,
+        53,
+        60,
+        90,
+        114,
+        120
+      ],
+      "day,": [
+        17
+      ],
+      "and": [
+        18,
+        47,
+        111,
+        129,
+        137,
+        144,
+        155,
+        177
+      ],
+      "npm/PyPI": [
+        20
+      ],
+      "packages": [
+        22
+      ],
+      "run": [
+        23
+      ],
+      "sandbox": [
+        26
+      ],
+      "once": [
+        27
+      ],
+      "per": [
+        28
+      ],
+      "published": [
+        29
+      ],
+      "version": [
+        30
+      ],
+      "(new": [
+        31
+      ],
+      "versionsfirst,": [
+        32
+      ],
+      "few": [
+        34
+      ],
+      "hundred": [
+        35
+      ],
+      "day).": [
+        37
+      ],
+      "It": [
+        38
+      ],
+      "records": [
+        39
+      ],
+      "exact": [
+        41
+      ],
+      "definitions,pins": [
+        43
+      ],
+      "them": [
+        44
+      ],
+      "by": [
+        45
+      ],
+      "digest,": [
+        46
+      ],
+      "writes": [
+        48
+      ],
+      "signed": [
+        50
+      ],
+      "label": [
+        51
+      ],
+      "to": [
+        52,
+        103
+      ],
+      "public": [
+        54
+      ],
+      "RFC": [
+        55
+      ],
+      "9162": [
+        56
+      ],
+      "Merkle": [
+        57
+      ],
+      "log": [
+        58
+      ],
+      "whenever": [
+        59
+      ],
+      "setfirst": [
+        62
+      ],
+      "appears,": [
+        63
+      ],
+      "stays": [
+        64
+      ],
+      "same,": [
+        66
+      ],
+      "or": [
+        67,
+        192
+      ],
+      "changes.": [
+        68
+      ],
+      "This": [
+        69
+      ],
+      "snapshot": [
+        70,
+        150
+      ],
+      "is": [
+        71
+      ],
+      "that": [
+        72
+      ],
+      "record": [
+        73
+      ],
+      "as": [
+        74,
+        159
+      ],
+      "files.": [
+        75
+      ],
+      "-": [
+        76
+      ],
+      "**81,879**": [
+        77
+      ],
+      "listed": [
+        78
+      ],
+      "servers": [
+        79,
+        118,
+        195
+      ],
+      "(31,040": [
+        80
+      ],
+      "endpoints,": [
+        82
+      ],
+      "50,839": [
+        83
+      ],
+      "packages),": [
+        84
+      ],
+      "plus": [
+        85
+      ],
+      "2,078": [
+        86
+      ],
+      "delisted-": [
+        87
+      ],
+      "**38,126**": [
+        88
+      ],
+      "with": [
+        89,
+        119,
+        166,
+        190
+      ],
+      "recorded": [
+        91,
+        100
+      ],
+      "set;": [
+        93
+      ],
+      "**9,340**": [
+        94
+      ],
+      "changed": [
+        95
+      ],
+      "at": [
+        96
+      ],
+      "least": [
+        97
+      ],
+      "once-": [
+        98
+      ],
+      "**23,821**": [
+        99
+      ],
+      "changes,": [
+        101
+      ],
+      "2026-09-24": [
+        102
+      ],
+      "2026-10-20-": [
+        104
+      ],
+      "**57,846**": [
+        105
+      ],
+      "distinct": [
+        106
+      ],
+      "sets": [
+        108
+      ],
+      "(current": [
+        109
+      ],
+      "ones": [
+        110
+      ],
+      "one": [
+        113
+      ],
+      "change": [
+        115
+      ],
+      "replaced)-": [
+        116
+      ],
+      "**636**": [
+        117
+      ],
+      "block-tier": [
+        121
+      ],
+      "WARDEN": [
+        122
+      ],
+      "pattern": [
+        123
+      ],
+      "match,": [
+        124
+      ],
+      "**14,379**": [
+        125
+      ],
+      "advise-only": [
+        126
+      ],
+      "Live": [
+        127
+      ],
+      "view": [
+        128
+      ],
+      "per-server": [
+        130
+      ],
+      "pages:": [
+        131
+      ],
+      "https://histor.modelmarket.dev": [
+        132
+      ],
+      "·": [
+        133
+      ],
+      "code:": [
+        134
+      ],
+      "https://github.com/alexar76/histor": [
+        135,
+        189
+      ],
+      "License": [
+        136
+      ],
+      "rights": [
+        138,
+        164
+      ],
+      "The": [
+        139
+      ],
+      "compilation,": [
+        140
+      ],
+      "digests,": [
+        141
+      ],
+      "labels,": [
+        142
+      ],
+      "scans": [
+        143
+      ],
+      "verdicts": [
+        145
+      ],
+      "are": [
+        146,
+        157,
+        170,
+        196
+      ],
+      "CC-BY-4.0:": [
+        147
+      ],
+      "cite": [
+        148
+      ],
+      "\"HISTOR,https://histor.modelmarket.dev,": [
+        149
+      ],
+      "2026-10-20\".": [
+        151
+      ],
+      "Tool": [
+        152
+      ],
+      "names,": [
+        153
+      ],
+      "descriptions": [
+        154
+      ],
+      "schemas": [
+        156
+      ],
+      "reproduced": [
+        158
+      ],
+      "each": [
+        160
+      ],
+      "serverpublished": [
+        161
+      ],
+      "them;": [
+        162
+      ],
+      "their": [
+        163,
+        167
+      ],
+      "stay": [
+        165
+      ],
+      "authors.": [
+        168
+      ],
+      "They": [
+        169
+      ],
+      "included": [
+        171
+      ],
+      "so": [
+        172
+      ],
+      "definitions": [
+        174
+      ],
+      "can": [
+        175
+      ],
+      "bestudied": [
+        176
+      ],
+      "checked.": [
+        178
+      ],
+      "A": [
+        179
+      ],
+      "operator": [
+        181
+      ],
+      "who": [
+        182
+      ],
+      "wants": [
+        183
+      ],
+      "out:": [
+        184
+      ],
+      "open": [
+        185
+      ],
+      "an": [
+        186
+      ],
+      "issue": [
+        187
+      ],
+      "on": [
+        188
+      ],
+      "theendpoint": [
+        191
+      ],
+      "host.": [
+        193
+      ],
+      "Opted-out": [
+        194
+      ],
+      "left": [
+        197
+      ],
+      "out": [
+        198
+      ],
+      "later": [
+        201
+      ],
+      "snapshot.": [
+        202
+      ]
+    },
+    "counts_by_year": [],
+    "updated_date": "2026-10-22T09:42:04.148104",
+    "created_date": "2026-10-21T00:00:00"
+  }
+}

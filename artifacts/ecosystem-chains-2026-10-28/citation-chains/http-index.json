@@ -1,0 +1,104 @@
+[
+  {
+    "key": "hubwiz",
+    "url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:49:49.334920+00:00",
+    "status": 200,
+    "final_url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+    "sha256": "e704e68d7fa8f3d790ec1c7f3a9b4aef38b38cfbcb77f8d34ef8161676cd7afe",
+    "bytes": 56332,
+    "title": "AI Agent 安全：九起事故、六项控制与 MCP 供应链",
+    "contexts": {
+      "histor": "半径压住。 本文编译三组 2026 年 10 月的新材料：GitGuardian 官方账号对 2025-05 至 2026-07 九起公开事故 的复盘与六项控制（dev.to，2026-10-15）；HISTOR 团队对 12,915 个 MCP 服务器 的真实安装与启动实测（dev.to，2026-10-14，快照 2026-10-13）；以及 Noma Labs 的 Claude Code Desktop 预览漏洞（CVE 级别 CVSS 8.7）、MCP Inspector 2.9.0 的密钥日志修复等补充（dev.to，2026-10-14 / 10-15）。 立场先说清楚 ：GitGuardian 是安全厂商、HISTOR/WARDEN 是作者团队的自建项目，文中数据均为其自述，本文按\"方法与数据\"引用与整理，不替任何产品背书。这不是一篇\"AI 要被取代了吗\"的文章，而是一份 上线前检查清单 。 一、三个攻击面：宿主、身份、Agent 本身 传统进程模型里，安全评估只需要看两样东西： 代码能力 （它能做什么）和 运行环境 （在哪做）。Agent 多了第三样： 攻击面 包含什么 老控制是否适用 宿主（Host） 文件系统、进程执行、网络、环境变量、摄像头/麦克风等硬件 ✅ 操",
+      "alexar76": "026-10-15）：https://dev.to/gitguardian/ai-agent-security-six-controls-from-nine-real-incidents-19bf @alexar76（HISTOR）, We installed 12,915 MCP servers and started each one. 41% never answered. （dev.to，2026-10-14；快照 2026-10-13）：https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh @bengreenberg, Your MCP Debug Log Should Not Become a Credential Store （dev.to，2026-10-15；MCP Inspector 2.9.0 变更）：https://dev.to/bengreenberg/your-mcp-debug-log-should-not-become-a-credential-store-4p5m @gabrielanhaia, Pad an",
+      "modelmarket": "check-passed-the-agent-still-did-something-nobody-asked-for-156f HISTOR 公开记录与 WARDEN：https://histor.modelmarket.dev ；仓库 alexar76/histor Noma Labs SneakPeek（Claude Code Desktop 预览漏洞）：https://noma.security/ （原文引用 CSO Online，2026-10-14） 本系列另两篇 外包渲染实测：四台笔记本农场 vs SheepIt 免费农场 （同一个\"把东西交出去\"的问题落到 3D 资产与陌生算力上：打包、验证与帧检查） 合约管理员是谁：146 个 Morpho 金库的权限实测 （落到链上资产：代理槽、Safe 阈值、时间锁与 Q3 12 亿美元黑客复盘） 延伸阅读（本站） MCP 工具数量实测：91 份资料、1,932 次运行，5→100 个工具会发生什么 Agent 支付安全：x402 六种错误交易与 25 微秒护栏 Agent 说\"做完了\"，证据呢：三道交付验证门 专题：Agent / MCP / 自动化完全指南 本文由 汇智网 · Software 2.0 编译整理，转载请注明出",
+      "nine": "；它们能做的，是让一个被劫持的 Agent 够不到太多东西。 这已经是今天你能控制的部分。 来源 @GitGuardian, AI Agent Security: Six Controls From Nine Real Incidents （dev.to，2026-10-15）：https://dev.to/gitguardian/ai-agent-security-six-controls-from-nine-real-incidents-19bf @alexar76（HISTOR）, We installed 12,915 MCP servers and started each one. 41% never answered. （dev.to，2026-10-14；快照 2026-10-13）：https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh @bengreenberg, Your MCP Debug Log Should Not Become a Credential Store （dev.to，2026-10-15；MCP In",
+      "九": "AI Agent 安全：九起事故、六项控制与 MCP 供应链 Software 2.0 首页 AI编程 Agent/MCP 本地大模型 工业AI 登录 订阅 AI Agent AI Agent 安全：九起事故、六项控制与 MCP 供应链 九起真实事故讲清 Agent 的三个攻击面，六项控制把爆炸半径压住；12,915 个 MCP 服务器的启动实测，揭示工具供应链的真实成色。 admin 16 10月 2026 — 阅读时间 20 分钟 分享 一句话结论 ：Agent 不是\"一个会写代码的程序\"，而是一个 拿着你的凭据、跑在你的机器上、并且把每一份读到的内容都当成潜在指令 的进程。它暴露三个面—— 宿主 （能摸到的文件、网络、进程）、 身份 （它继承和你给它的权限）、 它自己 （上下文、记忆、配置、工具连接）。安全工程里老的问题（最小权限、沙箱、审计日志）在这里依然有效，但多了一个新面： 没有任何控制能阻止\"指令\"抵达——你能做的只是把爆炸半径压住。 本文编译三组 2026 年 10 月的新材料：GitGuard",
+      "2026": "事故、六项控制与 MCP 供应链 九起真实事故讲清 Agent 的三个攻击面，六项控制把爆炸半径压住；12,915 个 MCP 服务器的启动实测，揭示工具供应链的真实成色。 admin 16 10月 2026 — 阅读时间 20 分钟 分享 一句话结论 ：Agent 不是\"一个会写代码的程序\"，而是一个 拿着你的凭据、跑在你的机器上、并且把每一份读到的内容都当成潜在指令 的进程。它暴露三个面—— 宿主 （能摸到的文件、网络、进程）、 身份 （它继承和你给它的权限）、 它自己 （上下文、记忆、配置、工具连接）。安全工程里老的问题（最小权限、沙箱、审计日志）在这里依然有效，但多了一个新面： 没有任何控制能阻止\"指令\"抵达——你能做的只是把爆炸半径压住。 本文编译三组 2026 年 10 月的新材料：GitGuardian 官方账号对 2025-05 至 2026-07 九起公开事故 的复盘与六项控制（dev.to，2026-10-15）；HISTOR 团队对 12,915 个 MCP 服务器 的真实安装与启动实测（dev.to，2026-10-14，快照 2026-10-13）；以及 Noma Labs 的 Claude Code Desktop 预览漏洞（CVE 级别 CVSS 8.7"
+    },
+    "exact_ecosystem_links": []
+  },
+  {
+    "key": "radyz",
+    "url": "https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:49:49.336075+00:00",
+    "status": 200,
+    "final_url": "https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/",
+    "sha256": "da583f3ab814bc30207acfc9a2c46cc11e7612087cbcb5361286b269c6e5d34f",
+    "bytes": 85600,
+    "title": "HISTOR: otevřená historie nástrojů MCP — Radyz",
+    "contexts": {
+      "histor": "HISTOR: otevřená historie nástrojů MCP — Radyz Keyzarro – porovnej ceny her → RADYZ ai lidsky Rychlé zprávy Novinky Názory O webu Slovník AI pojmů Rychlé zprávy Novinky Názory O webu Slovník AI pojmů Hledat na webu Hledat Rychlé zprávy Novinky Názory O webu Slovník AI pojmů Domů › Rychlé zprávy › HISTOR otevřel dataset změn nástrojů… RYCHLÉ ZPRÁVY 1 min čtení HISTOR otevřel dataset změn nástrojů MCP, nikoli seznam škodlivých serverů HISTOR otevře",
+      "2026": "h serverů HISTOR otevřel dataset změn nástrojů MCP, nikoli seznam škodlivých serverů. Radyz 22. 10. 2026 · Zdroj: HISTOR ↗ i Ilustrace: radyz.cz, AI vizualizace Projekt HISTOR zpřístupnil dataset definic nástrojů MCP a jejich změn. Snapshot z 20. října obsahuje přes 81 tisíc evidovaných serverů a balíčků a téměř 24 tisíc zaznamenaných změn. U vzdálených serverů sleduje deklarované nástroje, u balíčků npm a PyPI je získává spuštěním v sandboxu. Data lze použít ke studiu toho, jak se rozhraní nástrojů pro AI agenty vyvíjejí. Soubory obsahují defi"
+    },
+    "exact_ecosystem_links": [
+      "https://histor.modelmarket.dev/datasets/",
+      "https://twitter.com/intent/tweet?url=https%3A%2F%2Fradyz.cz%2Frychle-zpravy%2Fhistor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru%2F",
+      "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fradyz.cz%2Frychle-zpravy%2Fhistor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru%2F",
+      "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fradyz.cz%2Frychle-zpravy%2Fhistor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru%2F"
+    ]
+  },
+  {
+    "key": "hlido",
+    "url": "https://hlido.eu/reviews/alexar76-aimarket-plugins/",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:49:49.336847+00:00",
+    "status": 200,
+    "final_url": "https://hlido.eu/reviews/alexar76-aimarket-plugins/",
+    "sha256": "a0523d5a19bf733b512bdb7667ae2c65050d00a881a365d1a3bfbc0a67aa333c",
+    "bytes": 26449,
+    "title": "AICOM (AIMarket) review · FADING (60) · Hlido",
+    "contexts": {
+      "alexar76": "at we saw 4 screenshots captured by the Hlido engine during the reviewed run ( run-6fe882dcfe238c1f-alexar76-github-io ). Our own captures — not vendor marketing material. home.png page_flow.png page_oracles.png page_mcp.png × ← → What it does well Labels its own Chronos × Platon beacon as research/prototype cryptography rather than marketing it as production-grade Post-quantum ML-DSA available but off by default — a conservative, correct default 17 oracles with genuine mathematical specificity, each shipping Ed25519-signed receipts Fully self-",
+      "2026": "ING (60) · Hlido Hlido Reviews Services About Check a tool AICOM (AIMarket) Infrastructure · tested 2026-08-05 · re-test due 2026-11-05 · by the Hlido desk, not the vendor In short: An ambitious self-hosted agent economy — 13 pipeline agents, 17 signed oracles, a federated marketplace — whose most trustworthy feature is that it labels its own cryptography as prototype. 5 PASS · 0 FAIL of 5 public-surface claims Visit AICOM (AIMarket) → scorecard.json 60 FADING Tested · Hlido · 2026-08 Why FADING Claims What we saw Does well Falls short Red flag"
+    },
+    "exact_ecosystem_links": [
+      "https://alexar76.github.io/aicom/",
+      "/data/scorecards/alexar76-aimarket-plugins.json",
+      "https://images.hlido.eu/reviews/alexar76-aimarket-plugins/run-6fe882dcfe238c1f-alexar76-github-io/home.png",
+      "https://images.hlido.eu/reviews/alexar76-aimarket-plugins/run-6fe882dcfe238c1f-alexar76-github-io/page_flow.png",
+      "https://images.hlido.eu/reviews/alexar76-aimarket-plugins/run-6fe882dcfe238c1f-alexar76-github-io/page_oracles.png",
+      "https://images.hlido.eu/reviews/alexar76-aimarket-plugins/run-6fe882dcfe238c1f-alexar76-github-io/page_mcp.png",
+      "/check/?agent=alexar76-aimarket-plugins",
+      "/data/score-history.json",
+      "https://alexar76.github.io/aicom/",
+      "https://alexar76.github.io/aicom/",
+      "https://alexar76.github.io/aicom/",
+      "https://alexar76.github.io/aicom/",
+      "https://alexar76.github.io/aicom/ (self-authored tests; no independent audit)",
+      "https://alexar76.github.io/aicom/ (none published)",
+      "/data/scorecards/alexar76-aimarket-plugins.json",
+      "/passport/alexar76-aimarket-plugins/",
+      "/check/?agent=alexar76-aimarket-plugins"
+    ]
+  },
+  {
+    "key": "rugsnare",
+    "url": "https://rugsnare.com/",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:49:49.337078+00:00",
+    "status": 200,
+    "final_url": "https://rugsnare.com/",
+    "sha256": "40bc18246407be61d14996d46759bad6162a23fbb5040dd5a44096e4401c1c72",
+    "bytes": 28130,
+    "title": "RugSnare: runtime integrity for AI agents - pin MCP tool contracts, catch rug-pulls, audit your chats",
+    "contexts": {
+      "histor": "rity for AI agents - pin MCP tool contracts, catch rug-pulls, audit your chats RugSnare Quick start History check Skills Security Detection What's new Trust GitHub The tool you approved is not the tool running today. RugSnare pins every MCP tool contract at approval, watches for the moment it changes, quarantines mid-session swaps, scans your AI chat exports for leaked secrets, and now protects your skill files too. On-chain verified, zero dependencies. npx rugsnare init copied npm: rugsnare rugsnare diff · flights-search Drift detected (3 find",
+      "2026": "hine unless you export it yourself. Independently verified Four rounds of independent verification (2026-10-04): release artifacts, on-chain pins, Docker images, and test batteries - all byte-identical. Findings closed, reports published. Stability contract Exit codes, pins.json schema, signal IDs, and the vault placeholder syntax are frozen from 1.0.0 - see the changelog for the full contract. 140 silent contract changes found in 66 version pairs of the official @modelcontextprotocol/server-* reference servers. None announced in a changelog. R",
+      "comment": "butes and hyphenated variants included), ChatML <|system|> markers, [//]: # markdown stubs and HTML comments carrying directive text - markup addressed to the model, invisible in rendered markdown. The class our table was missing until the mcp-shield comparison surfaced it (teleport#61434). Build markers and linter pragmas stay clean: the comment arm requires directive vocabulary inside. CI badge, GitHub Action, Smithery rugsnare.com/badge/:owner/:repo.svg is a trust signal, not just a counter: green signed · N tools · M skills means the worker"
+    },
+    "exact_ecosystem_links": [
+      "#history",
+      "https://github.com/Paraphern/rugsnare",
+      "https://github.com/microsoft/autogen/issues/7353",
+      "https://github.com/snyk/agent-scan/issues/482",
+      "https://github.com/Paraphern/rugsnare/blob/main/product/CHANGELOG.md",
+      "https://github.com/Paraphern/rugsnare/blob/main/repro/SILENT-CHANGES-REPORT.md",
+      "https://github.com/Paraphern/rugsnare",
+      "https://github.com/Paraphern/rugsnare/releases",
+      "https://github.com/Paraphern/rugsnare/blob/main/product/CHANGELOG.md"
+    ]
+  }
+]

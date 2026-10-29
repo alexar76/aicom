@@ -1,0 +1,64 @@
+{
+  "observed_at_moscow": "2026-10-29 14:07 MSK",
+  "review_url": "https://usetested.com/v1/review?service=modelmarket.dev",
+  "services_url": "https://usetested.com/services",
+  "review": {
+    "service": "modelmarket.dev",
+    "endpoint": "https://modelmarket.dev/x402/histor-check",
+    "verdict": "CAUTION",
+    "scores": {
+      "reliability": 5,
+      "quality": 5,
+      "value": 3,
+      "docs": null
+    },
+    "measured": {
+      "latency_p50_ms": 2026,
+      "latency_p95_ms": 2026,
+      "error_rate": 0,
+      "calls_tested": 1
+    },
+    "price_per_call": "0.001 USDC",
+    "receipts": [
+      {
+        "chain": "base",
+        "tx": "0x656749e6bab12a3373a2905c0495126bd7a533902de08e3af18d4f47380fd32a",
+        "ts": "2026-10-27T03:08:02Z",
+        "payer": "0x4C29Ec4F680CA88d0019edBfe3A8FF5c80499494",
+        "amount": "0.001000"
+      }
+    ],
+    "refund_behavior": "not_applicable_no_failures",
+    "note": "snapshot v0.1 (single receipt-verified call; not qualified): settled=1 success=1",
+    "methodology_version": "0.1",
+    "updated_at": "2026-10-27 03:12:01",
+    "alive_status": "UNTESTED",
+    "alive_checked_at": null,
+    "alive_source": null,
+    "freshness_days": 0,
+    "freshness_note": "Reviews decay — re-verify before spending. See usetested.com for the latest."
+  },
+  "independent_transaction_verification": {
+    "source": "https://basescan.org/tx/0x656749e6bab12a3373a2905c0495126bd7a533902de08e3af18d4f47380fd32a",
+    "status": "Success",
+    "block": 53140568,
+    "timestamp_utc": "2026-10-27T03:08:03Z",
+    "payer": "0x4C29Ec4F680CA88d0019edBfe3A8FF5c80499494",
+    "recipient": "0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+    "token_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "amount_usdc": "0.001",
+    "method": "transferWithAuthorization",
+    "evidence_file": "usetested-basescan.body",
+    "interpretation_ru": "BaseScan подтверждает успешный перевод0.001USDC с указанного payer на recipient. Endpoint и содержимое ответа в переводе не закодированы: связь с histor-check и успешный ответ установлены только по опубликованному отчёту UseTested. Личность и независимость владельца payer не подтверждены."
+  },
+  "reliability_score_interpretation": {
+    "value": 5,
+    "scale_verified": false,
+    "note_ru": "JSON сообщает reliability5, methodology0.1 и один успешный вызов; note прямо говорит single receipt-verified call, not qualified. Определение шкалы5 в прочитанных источниках не найдено. /methodology вернул404. Не трактовать5 как95%или5из10 без дополнительного определения."
+  },
+  "liveness_interpretation_ru": "UNTESTED — отдельное поле alive_status с null в alive_checked_at и alive_source; оно не равно calls_tested0. На /services объясняется, что liveness приходит отPulse: собственных платных проверок и self-reports провайдеров. Поэтому один сохранённый review и UNTESTED liveness могут сосуществовать; явное противоречие не доказано.",
+  "directory_duplicate_ru": "В текущем /services есть также отдельная строка AIMarket/modelmarket.dev untested без оценки и даты. Считать одним подтверждённым review, не двумя независимыми тестами.",
+  "coverage_current_get": "GET https://usetested.com/coverage redirected to /services; cached web coverage shows one settled call and last tested2026-10-27.",
+  "summary_ru": "Новый для наших сводок внешний тестовый отчёт о HISTOR check от27октября. Реальность указанного микроплатежа независимо подтверждается BaseScan. Одного теста недостаточно для вывода о постоянном спросе, надёжности или платящем клиенте29октября.",
+  "scope": "Read-only. No endpoint invoke, payment, account change, messages or publication."
+}

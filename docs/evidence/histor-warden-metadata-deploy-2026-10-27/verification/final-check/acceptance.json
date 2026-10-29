@@ -1,0 +1,167 @@
+{
+  "verifiedAt": "2026-10-27T17:36:21.001Z",
+  "passed": true,
+  "imageDigest": "sha256:1221f1bcc8af9081c923b9064301674d5bc4d8d0ce701cca1075a5b1355b3017",
+  "sourceCommit": "4afe0243856d02b6b543b9b9559f2a286fab1a90",
+  "warden": {
+    "version": "0.22.2",
+    "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+    "packageJsonSha256": "0411601d6ec47d8d14f608a6643a94589e094940dcd93dde36bdcda52a57a34b"
+  },
+  "historApplicationVersion": "0.4.2",
+  "historApplication": {
+    "version": "0.4.2",
+    "pythonFiles": 43,
+    "sourceSha256": "a24be58d10784e10a1e0bade153d9bd6ac1ccdd5335c063a47b5cb14b0111e41"
+  },
+  "logAudit": {
+    "log": "https://histor.modelmarket.dev",
+    "did": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+    "treeSize": 1117580,
+    "rootHash": "61ff8b331c6662d65eda2c6a3e6d438192c762fe0ac47254ddbab682ac4e98de",
+    "signature": "ok",
+    "consistency": "ok (1115959 → 1117580)"
+  },
+  "candidateRun": "20261027T165628",
+  "liveRun": "20261027T165628",
+  "checks": [
+    {
+      "name": "running immutable image and source",
+      "passed": true
+    },
+    {
+      "name": "reviewed HISTOR application base retained",
+      "passed": true
+    },
+    {
+      "name": "HISTOR application source byte-identical to predeployment",
+      "passed": true
+    },
+    {
+      "name": "package metadata equals frozen npm package",
+      "passed": true
+    },
+    {
+      "name": "package metadata readable by unprivileged runtime",
+      "passed": true
+    },
+    {
+      "name": "exact compiled JavaScript",
+      "passed": true
+    },
+    {
+      "name": "scanner runtime describes installed release",
+      "passed": true
+    },
+    {
+      "name": "MCP runtime version and discovery",
+      "passed": true
+    },
+    {
+      "name": "native accepted source and quality binding",
+      "passed": true
+    },
+    {
+      "name": "signed candidate binds exact image",
+      "passed": true
+    },
+    {
+      "name": "signed live receipt binds exact image and source",
+      "passed": true
+    },
+    {
+      "name": "full candidate evaluation retained",
+      "passed": true
+    },
+    {
+      "name": "loopback HISTOR production health",
+      "passed": true
+    },
+    {
+      "name": "public HISTOR production health",
+      "passed": true
+    },
+    {
+      "name": "public route serves pinned application version",
+      "passed": true
+    },
+    {
+      "name": "signed log history preserved",
+      "passed": true
+    },
+    {
+      "name": "stored issuer metadata registered new release",
+      "passed": true
+    }
+  ],
+  "storedIssuerMatchesRuntime": true,
+  "storedIssuerNote": "Issuer metadata is a stored observation updated by ruleset registration, independently from installed package/runtime metadata.",
+  "quality": {
+    "fullEvidence": {
+      "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+      "evaluatedAt": 1793120188.2477772,
+      "holdoutSha256": "e975df064e57ae195a0ab33967d7d70ab83fc1fdf555d5c837f15411a321089a",
+      "status": "passed"
+    },
+    "expiresAt": 1793291881.4540646,
+    "suites": {
+      "candidates": {
+        "passed": true,
+        "counts": {
+          "attacks": 0,
+          "benign": 0,
+          "candidates": 31,
+          "falsePositives": 0,
+          "incomplete": 0,
+          "missed": 0
+        }
+      },
+      "development": {
+        "passed": true,
+        "counts": {
+          "attacks": 8244,
+          "benign": 362,
+          "candidates": 0,
+          "falsePositives": 0,
+          "incomplete": 0,
+          "missed": 0
+        }
+      },
+      "holdout": {
+        "passed": true,
+        "counts": {
+          "attacks": 24,
+          "benign": 24,
+          "candidates": 0,
+          "falsePositives": 0,
+          "incomplete": 0,
+          "missed": 0
+        }
+      }
+    },
+    "behaviour": {
+      "cases": 72,
+      "evaluatedAt": 1793120283.97756,
+      "executed": 72,
+      "falsePositives": 0,
+      "fixturesSha256": "0f94b16bc18b2bb5a6943bcab451dc8a94c59b7d27659bf1522df7499a04b867",
+      "incomplete": 0,
+      "missed": 0,
+      "observerSha256": "fd969fc1816b3a689a34059c70f1aac06b8c736d777cef355a8c1d6a1c8660bf",
+      "passed": true,
+      "seed": "20261027T165628"
+    },
+    "behaviourSmoke": {
+      "cases": 72,
+      "evaluatedAt": 1793120283.97756,
+      "executed": 72,
+      "falsePositives": 0,
+      "fixturesSha256": "0f94b16bc18b2bb5a6943bcab451dc8a94c59b7d27659bf1522df7499a04b867",
+      "incomplete": 0,
+      "missed": 0,
+      "observerSha256": "fd969fc1816b3a689a34059c70f1aac06b8c736d777cef355a8c1d6a1c8660bf",
+      "passed": true,
+      "seed": "20261027T165628"
+    }
+  }
+}

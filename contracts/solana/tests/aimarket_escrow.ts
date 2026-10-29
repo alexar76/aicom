@@ -110,7 +110,8 @@ describe("aimarket_escrow", () => {
   let hubBAuthPda: PublicKey;
 
   before(async () => {
-    admin = Keypair.generate();
+    // Anchor deploys under this local wallet; bootstrap requires its upgrade authority.
+    admin = (provider.wallet as anchor.Wallet).payer;
     // Depositor needs a tweetnacl keypair too — Solana Ed25519 sig program
     // expects the same 32-byte public key as the wallet, so we derive the
     // Solana Keypair from the tweetnacl seed.

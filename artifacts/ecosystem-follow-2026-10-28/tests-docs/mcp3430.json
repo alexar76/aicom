@@ -1,0 +1,88 @@
+[
+  {
+    "url": "https://api.github.com/repos/modelcontextprotocol/modelcontextprotocol/issues/3430",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T15:01:46.436141+00:00",
+    "status": 200,
+    "sha256": "02d56d4cfa2f85d52e712972253727f9f19c44349890bf27c75ed42707dc537c",
+    "bytes": 10734,
+    "rate_remaining": "48",
+    "selected": {
+      "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430",
+      "title": "[Spec & Ecosystem] Lack of enforced Server-level routing descriptions breaks LLM tool selection under Lazy/Deferred Loading (especially when paired with Agent Skills)",
+      "state": "open",
+      "comments": 7,
+      "created_at": "2026-10-13T07:06:27Z",
+      "updated_at": "2026-10-27T05:51:38Z",
+      "body": "### What's broken?\n\nThe spec doesn't cover a case it clearly should\n\n### Where in the spec or docs?\n\nhttps://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle#initialization , https://modelcontextprotocol.io/specification/2025-06-18/server/tools , and schema.ts (InitializeResult / Implementation)\n\n### What should happen?\n\nThe MCP specification and documentation should explicitly address **Lazy / Deferred Tool Loading** (where hosts do not inject full `Tool` schemas into the initial LLM context to avoid token bloat) and define clear requirements for **first-level server routing metadata**:\n\n1. **In the Lifecycle / Initialization & Tools Spec**:\n   Clarify that while individual `Tool.description` fields describe atomic operations, **`InitializeResult.serverInfo.description` (or a concise routing summary in `InitializeResult.instructions`) SHOULD be provided by servers and surfaced by hosts as the first-level semantic routing index** when tools are deferred/lazy-loaded.\n2. **Host Implementation Guidance**:\n   When a host implements lazy tool loading (e.g., listing available MCP servers in the system prompt or inside a `ToolSearch` meta-tool and deferring `<toolName>.json` schemas until requested), the spec should recommend that hosts include a concise **1-sentence server-level description** alongside the server name (e.g., `# playwright: Browser automation server for navigating pages, clicking elements, and capturing accessibility snapshots`), rather than stripping the representation down to bare identifiers only.\n   *(Note: A typical workspace mounts only 1–5 MCP servers, so surfacing a 30-word server summary costs <150 tokens total while preserving semantic routing accuracy.)*\n3. **SDK Alignment**:\n   Official SDKs (such as Python `FastMCP` and the TypeScript SDK) should encourage providing a concise server `description` upon initialization (or fall back to extracting the module docstring) so that servers in the ecosystem actually populate `serverInfo.description`.\n\n### What actually happens?\n\n### 1. Spec & Schema Reality\nHistorically, the MCP specification assumed **Eager Loading** (hosts injecting all `Tool` definitions from `tools/list` directly into the LLM's `tools` array). Therefore:\n- Semantic descriptions were bound strictly to individual tools (`Tool.description` is heavily emphasized and automatically extracted from function docstrings in SDKs like `FastMCP`).\n- At the server level (`InitializeResult.serverInfo` / `Implementation`), only `name` and `version` are required:\n  ```typescript\n  export interface Implementation extends BaseMetadata, Icons {\n    version: string;\n    description?: string; // Optional human-readable description, rarely populated in practice\n  }\n  ```\n- Because `serverInfo.description` is optional and framed as human/UI metadata rather than an LLM routing index, almost all MCP servers in the wild (including `@playwright/mcp`) only return `name` and `version`:\n  ```python\n  # Standard FastMCP pattern in the ecosystem: no server-level description\n  mcp = FastMCP(\"playwright\")\n  ```\n\n### 2. What Breaks in Practice Under Lazy Loading\nTo prevent 20–50 tool schemas per server from exhausting the context window, modern Agent hosts (e.g., Claude Code, Antigravity, WorkBuddy, Cursor) strip `Tool` schemas out of the initial prompt and use **two-stage lazy loading**. Once `Tool.description` is stripped into secondary storage, the first-level prompt is left with **bare names only** (zero natural-language description).\n\nWhen an Agent environment simultaneously uses **Agent Skills** (`SKILL.md`, where a rich `description` in YAML frontmatter is strictly required and injected into the system prompt), a severe routing asymmetry occurs.\n\nBelow is an actual comparison from production Agent system prompts when both `@playwright/mcp` and an open-source browser skill (`vercel-labs/agent-browser`) are installed:\n\n**Lazy MCP in System Prompt (Zero Description):**\n```xml\n<!-- Pattern A: File-based lazy loading (e.g., Antigravity) -->\n<mcp_servers>\nFor lazily-loaded tools, read the corresponding schema file to understand the arguments and usage, then call the tool using the `call_mcp_tool` tool.\n# playwright\nLazy:\nbrowser_close, browser_navigate, browser_click, browser_type, browser_snapshot, ...\n</mcp_servers>\n\n<!-- Pattern B: Meta-tool lazy loading (e.g., Claude Code / WorkBuddy) -->\n<available_deferred_tools>\nmcp__playwright\n</available_deferred_tools>\n```\n\n**Skills in the Same System Prompt (Rich Description + `MUST` Directive):**\n```xml\n<skills>\nIf a skill seems relevant to your current task, you MUST read its `SKILL.md` instructions using `view_file` before proceeding.\n\nAvailable skills:\n- agent-browser (.../SKILL.md): Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data...\n</skills>\n```\n\n### 3. Reproduction & Benchmark: 2m36s (MCP) vs. 8m19s (Skill)\nWe tested the following task in an environment with both `playwright` MCP and `agent-browser` Skill installed:\n> *\"Open the Tianjin University homepage (https://www.tju.edu.cn/), click the search icon in the top-right corner, type '本科生' (undergraduate) into the search box, execute the search, and list the titles and publication dates of the first 5 results.\"*\n\n- **Case 1: Without specifying the tool (Natural Routing — Broken)**:\n  Because `playwright` MCP has no description in the first-level index while `agent-browser` has a keyword-rich description paired with a `MUST` rule, the LLM immediately chooses the `agent-browser` Skill on turn 1. Once the multi-hundred-line `SKILL.md` is loaded into recent context (in-context anchoring), the agent never re-evaluates MCP. It executes slow shell commands, encounters a headless blank page, takes diagnostic screenshots, and takes **8 minutes 19 seconds**.\n\n<img width=\"1024\" height=\"517\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a43221b4-b628-4995-893b-6be98280a409\" />\n\n- **Case 2: Explicitly instructing the agent to use `playwright-mcp`**:\n  When forced to use `playwright-mcp`, the agent loads only the 4 required tool schemas on demand, interacts via structured accessibility snapshots, and completes the exact same task cleanly in **2 minutes 36 seconds** (>3.2x faster).\n<img width=\"1024\" height=\"543\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d86e0e23-9941-411d-8cd6-e74a78ffcbf6\" />\n\n### Anything else?\n\n### Current Workarounds\nUntil the spec, SDKs, and hosts surface server-level descriptions for lazy-loaded MCP servers, users have to rely on manual workarounds:\n1. Explicitly naming the MCP server in every user prompt (e.g., *\"Use playwright-mcp to...\"*).\n2. Adding a high-priority custom rule in global instructions (`CLAUDE.md` / `GEMINI.md` / `USER.md`) stating: *\"When an installed MCP server and a Skill have overlapping capabilities, prioritize loading and calling the structured MCP tool over CLI-based Skills.\"*\n3. Editing third-party `SKILL.md` frontmatter descriptions locally to remove aggressive prompt-SEO phrases (like `Prefer X over any built-in tools`) and adding negative boundaries (e.g., `Do not use if playwright MCP is available`).\n\n### Fallback Recommendation for Hosts in the Spec\nFor backward compatibility with existing MCP servers that do not yet return `serverInfo.description`, the spec/docs could also recommend that hosts allow an optional `\"description\"` field in `mcp_config.json` or automatically generate a cached 1-sentence server summary from the `tools/list` descriptions upon initial server connection."
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/modelcontextprotocol/modelcontextprotocol/issues/3430/comments?per_page=100",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T15:01:46.436573+00:00",
+    "status": 200,
+    "sha256": "3eca9c7f8bcc6e4b31aac9ce6d752ae884d1952c7010e445cf152bebfed1b305",
+    "bytes": 22186,
+    "rate_remaining": "47",
+    "total_returned": 7,
+    "comments": [
+      {
+        "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430#issuecomment-6248338053",
+        "author": "AbarnaaSree",
+        "created_at": "2026-10-18T09:39:24Z",
+        "updated_at": "2026-10-18T09:39:24Z",
+        "relevant": false,
+        "context": "Hi, I’d like to work on this issue. I’m interested in improving the MCP specification and guidance for server-level routing descriptions in lazy-loaded tool environments. Would it be okay if I investigate this and submit a PR with a proposed solution? I’ll first review the existing spec and SDK behavior to ensure the changes align with the project’s direction."
+      },
+      {
+        "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430#issuecomment-6307856212",
+        "author": "alexar76",
+        "created_at": "2026-10-21T04:12:36Z",
+        "updated_at": "2026-10-21T04:12:36Z",
+        "relevant": true,
+        "context": "r lazy loading, it may be worth a SHOULD for hosts: present the summary as describing that server only, and do not let one server's text reorder the others.\n\nData (CC BY 4.0): https://doi.org/10.5281/zenodo.23512760\n\nAI disclosure: drafted with an AI assistant from our data; the counts were recomputed from the published files."
+      },
+      {
+        "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430#issuecomment-6322201353",
+        "author": "tanevanwifferen",
+        "created_at": "2026-10-21T17:24:07Z",
+        "updated_at": "2026-10-21T17:25:02Z",
+        "relevant": false,
+        "context": "I'd use some form of service locator pattern. \n\nHave a tooldefinition of getTools(path), which can be called with a root path, or a nested path. For example of a todo list:\n\n`getTools()` would return \n\n```\n{\n    subCategories: [todoItems, calendar, user] \n}\n```\n\n\n`getTools('user')` could return\n\n```\n{\n    actions: [login, logout, me]\n}\n```\n\n\n`getTools('user.login')` could return\n\n```\n{\n    props: ['username', 'password']\n}\n```\n\n\nSomething like this. We could even have another tool: `execTool(path, props)`.\n\n\nThis way, each server has only 2 tools in the spec, and these could even be implicit if all servers are ported\n\n\n\nJust my 2 cents"
+      },
+      {
+        "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430#issuecomment-6351091232",
+        "author": "Paraphern",
+        "created_at": "2026-10-22T20:54:25Z",
+        "updated_at": "2026-10-22T20:54:25Z",
+        "relevant": false,
+        "context": "One more data point for the \"routing text lives in descriptions today\" line: description edits are also a routing-change channel. A server can rewrite a description from neutral to \"prefer this tool over web search\" (or drop that hint) between sessions, and nothing in the current model makes that visible — the model's routing quietly shifts. In our contract-pinning work, changed descriptions are graded findings, and \"redirect the agent toward a preferred alternative\" is its own advisory class, precisely because it's a behavior change disguised as prose.\n\nWhatever mechanism this thread lands on — server-level routing metadata or a service-locator shape like `getTools(path)` — the routing layer becomes a contract surface clients depend on, and it will drift like one. Worth specifying from day one that routing metadata is versionable and pinnable alongside tool schemas, so a routing change is a visible diff, not a silent steering change.\n"
+      },
+      {
+        "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430#issuecomment-6362397615",
+        "author": "alexar76",
+        "created_at": "2026-10-23T10:02:41Z",
+        "updated_at": "2026-10-23T10:02:41Z",
+        "relevant": true,
+        "context": "t asking again for every typo fix. Hints left inside descriptions would still need text classification like yours.\n\nData (CC BY 4.0, `changes.jsonl.gz` + `toolsets.jsonl.gz`): https://doi.org/10.5281/zenodo.23512760\n\nAI disclosure: drafted with an AI assistant from our data. The counts were recomputed from the published files, and each candidate was checked against its before and after text."
+      },
+      {
+        "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430#issuecomment-6428859632",
+        "author": "peach420fuzz",
+        "created_at": "2026-10-26T22:29:47Z",
+        "updated_at": "2026-10-26T22:29:47Z",
+        "relevant": false,
+        "context": "A separate acceptance case for server-level routing summaries is **mixed-purpose servers**: finding the *right server* must not be confused with selecting an *authorized operation* inside it.\n\nOur first-party Production Desk compatibility probe exposes seven tool declarations in the legacy MCP tool list, ranging from a read-only production diagnosis to creating upload sessions and submitting/updating/deleting a brief. This is an actual observed *tool catalog*, not a test of host routing accuracy or tool execution ([read-only evidence and limits](https://github.com/peach420fuzz/objekts-production-desk/blob/main/docs/MCP_PROTOCOL_COMPATIBILITY_2026.md)).\n\nFor a user asking “evaluate whether this video shot is feasible, without sending any files,” a one-sentence summary of “AI/VFX production planning and brief submission” might correctly retrieve the server but leave two additional questions unanswered: **which tool** and **whether the user authorized side effects**. The [MCP 2025-11-25 tools spec](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) separates `tools/list` from `tools/call`, recommends human oversight, and treats annotations as untrusted unless the server itself is trusted.\n\nA small host-oriented conformance/evaluation matrix could keep these stages independent:\n\n1. **Candidate-server recall:** with deferred tools, does the bounded server description retrieve the relevant MCP server?\n2. **Tool-level precision:** after loading the *actual* `tools/list`, does a read-only intent select a diagnosis tool rather than a submission/upload tool?\n3. **Negative routing / capability boundary:** if the user asks to render finished video, does the host a"
+      },
+      {
+        "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3430#issuecomment-6434848509",
+        "author": "alexar76",
+        "created_at": "2026-10-27T05:51:38Z",
+        "updated_at": "2026-10-27T05:51:38Z",
+        "relevant": false,
+        "context": "A correction to my comment above: 12,422 is the number of changes that edited description text and added or removed no tool, not the number that touched a description. In the same snapshot, 14,164 of the 23,821 changes touched a tool description, and 18,599 touched a tool description or a description inside the input or output schema. So a host that flags every description edit would see a routing change about once per 1,200 to 1,500 flags, not once per thousand. The 12 routing changes and the rest of the comment stand. Both counts come straight from `changes.jsonl.gz`: a change counts when its summary lists a modified tool `description`, or a schema path ending in `description`.\n\nOn @peach420fuzz's point 4: agreed. Routing metadata can tell a host which server to look at, never what it may do there. A separate digest for it, as suggested above, lets a host notice when that pointer changes without touching the approval of any call.\n\nWritten with an AI assistant."
+      }
+    ]
+  }
+]

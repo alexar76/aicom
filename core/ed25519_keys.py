@@ -6,8 +6,11 @@ import hmac
 import os
 import stat
 import tempfile
+import time
 from contextlib import suppress
 from pathlib import Path
+
+from security.signing_key_storage import reject_compromised_keypair
 
 
 def _private_key_type():
@@ -28,19 +31,31 @@ def _validated_keypair(raw: bytes) -> tuple[bytes, bytes]:
     derived = key_type.from_private_bytes(seed).public_key().public_bytes_raw()
     if not hmac.compare_digest(derived, public):
         raise RuntimeError("Ed25519 identity public key does not match its private key")
+    reject_compromised_keypair(raw)
     return seed, public
 
 
 def _read_keypair(path: Path) -> tuple[bytes, bytes]:
     # Refuse links and devices rather than following an identity-file replacement.
-    fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | os.O_NONBLOCK)
     try:
-        if not stat.S_ISREG(os.fstat(fd).st_mode):
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode):
             raise RuntimeError("Ed25519 identity must be a regular file")
-        os.fchmod(fd, 0o600)
+        # Another worker may still be removing its exclusive publish staging
+        # link. Persistent links to an external inode must never be chmod'ed.
+        for _ in range(20):
+            if info.st_nlink == 1:
+                break
+            time.sleep(0.005)
+            info = os.fstat(fd)
+        if info.st_nlink != 1:
+            raise RuntimeError("Ed25519 identity must not have external hardlinks")
         with os.fdopen(fd, "rb", closefd=False) as handle:
             raw = handle.read(65)
-        return _validated_keypair(raw)
+        pair = _validated_keypair(raw)
+        os.fchmod(fd, 0o600)
+        return pair
     finally:
         os.close(fd)
 
@@ -81,6 +96,7 @@ def load_or_create_ed25519_keypair(
         # before acknowledging an identity used to sign durable receipts.
         with suppress(FileExistsError):
             os.link(temporary, path)
+        os.unlink(temporary)
         directory = os.open(path.parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
         try:
             os.fsync(directory)
@@ -88,4 +104,5 @@ def load_or_create_ed25519_keypair(
             os.close(directory)
         return _read_keypair(path)
     finally:
-        os.unlink(temporary)
+        with suppress(FileNotFoundError):
+            os.unlink(temporary)

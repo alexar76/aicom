@@ -21,6 +21,7 @@ DEFAULT_RSYNC_EXCLUDES = [
     ".claude",
     ".cursor",
     ".venv",
+    ".venv-*",  # local test/tool environments are not satellite or factory source
     "venv",
     # Local quality-audit venv (Playwright browsers and site-packages). gitignored
     # via `.venv*/`, but an rsync exclude of `.venv` does not match `.venv-quality`.
@@ -63,6 +64,8 @@ DEFAULT_RSYNC_EXCLUDES = [
     "deploy/env",
     "session_secret",  # raw hub/game session seeds (e.g. data/signal-hunt/session_secret)
     "data/secrets",
+    "data/private_product_git",  # trusted product Git history/index may contain private generated data
+    "private_product_git",  # also protect custom data roots within the working tree
     "*.key",
     "*.pem",
     # `*.key` does NOT match `<service>_signing_key`, which is how every Ed25519 key in this
@@ -279,8 +282,22 @@ FACTORY_LOCAL_EXCLUDES = [
     # Local source-security evidence can describe unfixed deployments and must
     # never leave this workspace through the factory rsync export.
     "artifacts/code-security-*",
-    # Local quality-audit dump. Push protection rejected a live key inside it.
+    # Local quality-audit dumps are internal evidence. The 23rd includes raw
+    # pytest XML with token-shaped test values; the 24th held a live key.
+    "artifacts/quality-audit-2026-10-23",
     "artifacts/quality-audit-2026-10-24",
+    # Local rollout/install evidence includes copied virtualenvs, dependency
+    # caches, and private-host diagnostics. Keep the product sources public.
+    "artifacts/oracle-metis-rollout-2026-10-28",
+    "artifacts/system-verification-2026-10-28",
+    "artifacts/external-deep-2026-10-29",
+    # Preserve the clean package index used by the startup-regression reproducer.
+    "docs/evidence/histor-full-observations-2026-10-27/hub/baseline-wire.json",
+    "docs/evidence/histor-full-observations-2026-10-27/hub/recheck-wire.json",
+    "docs/evidence/histor-release-0.4.2-2026-10-27/release.json",
+    "docs/evidence/histor-release-0.4.2-2026-10-27/sandboxes.json",
+    # One-off publication helper has the private deploy host; articles stay.
+    "docs/growth/publication-2026-10-25/launchgate/prepare_blog.py",
     # Page snapshots left uncommitted. They are not factory docs.
     "docs/evidence/external-presence-2026-10-24",
     "scripts/delivery-survey/buy.jsonl",

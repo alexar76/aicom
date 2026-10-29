@@ -1,0 +1,235 @@
+{
+  "key": "distribution-test-workflow",
+  "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/5a400bd4b2d82c495ccb54e0aea007a02cb9f60a/.github/workflows/verify-sentinel-distribution.yml",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T15:02:52.000195+00:00",
+  "status": 200,
+  "sha256": "9ec7ee8402c8bcea636e88f37804fd94d506162acd3a632188a340e459c72fd6",
+  "bytes": 1919,
+  "lines": [
+    {
+      "line": 1,
+      "text": "name: Verify Sentinel Distribution"
+    },
+    {
+      "line": 2,
+      "text": ""
+    },
+    {
+      "line": 3,
+      "text": "on:"
+    },
+    {
+      "line": 4,
+      "text": "  push:"
+    },
+    {
+      "line": 5,
+      "text": "    branches: [main]"
+    },
+    {
+      "line": 6,
+      "text": "    paths:"
+    },
+    {
+      "line": 7,
+      "text": "      - \"skills/industrial-sentinel/**\""
+    },
+    {
+      "line": 8,
+      "text": "      - \"plugins/industrial-sentinel/**\""
+    },
+    {
+      "line": 9,
+      "text": "      - \".agents/plugins/marketplace.json\""
+    },
+    {
+      "line": 10,
+      "text": "      - \".github/plugin/marketplace.json\""
+    },
+    {
+      "line": 11,
+      "text": "      - \".cursor-plugin/marketplace.json\""
+    },
+    {
+      "line": 12,
+      "text": "      - \"aimarket-sentinel/**\""
+    },
+    {
+      "line": 13,
+      "text": "      - \".github/workflows/verify-sentinel-distribution.yml\""
+    },
+    {
+      "line": 14,
+      "text": "  workflow_dispatch:"
+    },
+    {
+      "line": 15,
+      "text": ""
+    },
+    {
+      "line": 16,
+      "text": "permissions:"
+    },
+    {
+      "line": 17,
+      "text": "  contents: read"
+    },
+    {
+      "line": 18,
+      "text": ""
+    },
+    {
+      "line": 19,
+      "text": "jobs:"
+    },
+    {
+      "line": 20,
+      "text": "  portable:"
+    },
+    {
+      "line": 21,
+      "text": "    runs-on: ubuntu-latest"
+    },
+    {
+      "line": 22,
+      "text": "    steps:"
+    },
+    {
+      "line": 23,
+      "text": "      - uses: actions/checkout@v4"
+    },
+    {
+      "line": 24,
+      "text": "      - uses: actions/setup-node@v4"
+    },
+    {
+      "line": 25,
+      "text": "        with:"
+    },
+    {
+      "line": 26,
+      "text": "          node-version: \"24\""
+    },
+    {
+      "line": 27,
+      "text": "      - name: Validate JSON manifests"
+    },
+    {
+      "line": 28,
+      "text": "        run: |"
+    },
+    {
+      "line": 29,
+      "text": "          node -e \"for (const p of ['plugins/industrial-sentinel/plugin.json','.agents/plugins/marketplace.json','.github/plugin/marketplace.json','.cursor-plugin/marketplace.json']) JSON.parse(require('fs').readFileSync(p,'utf8'))\""
+    },
+    {
+      "line": 30,
+      "text": "      - name: Verify skills.sh-compatible install"
+    },
+    {
+      "line": 31,
+      "text": "        run: |"
+    },
+    {
+      "line": 32,
+      "text": "          npx -y skills add \"https://github.com/industrial-platform-ai/industrial-platform-agent-tools\" --skill industrial-sentinel -y"
+    },
+    {
+      "line": 33,
+      "text": ""
+    },
+    {
+      "line": 34,
+      "text": "  aimarket:"
+    },
+    {
+      "line": 35,
+      "text": "    runs-on: ubuntu-latest"
+    },
+    {
+      "line": 36,
+      "text": "    defaults:"
+    },
+    {
+      "line": 37,
+      "text": "      run:"
+    },
+    {
+      "line": 38,
+      "text": "        working-directory: aimarket-sentinel"
+    },
+    {
+      "line": 39,
+      "text": "    steps:"
+    },
+    {
+      "line": 40,
+      "text": "      - uses: actions/checkout@v4"
+    },
+    {
+      "line": 41,
+      "text": "      - uses: actions/setup-python@v5"
+    },
+    {
+      "line": 42,
+      "text": "        with:"
+    },
+    {
+      "line": 43,
+      "text": "          python-version: \"3.12\""
+    },
+    {
+      "line": 44,
+      "text": "      - run: pip install -r requirements.txt"
+    },
+    {
+      "line": 45,
+      "text": "      - name: Import hub and verify four offerable capabilities"
+    },
+    {
+      "line": 46,
+      "text": "        env:"
+    },
+    {
+      "line": 47,
+      "text": "          AIMARKET_SKIP_SEED: \"1\""
+    },
+    {
+      "line": 48,
+      "text": "          AIMARKET_DB_PATH: \"/tmp/industrial-sentinel-hub.db\""
+    },
+    {
+      "line": 49,
+      "text": "          AIMARKET_SIGNING_KEY_PATH: \"/tmp/industrial-sentinel-hub-key\""
+    },
+    {
+      "line": 50,
+      "text": "          AIMARKET_HUB_URL: \"https://sentinel.example.invalid\""
+    },
+    {
+      "line": 51,
+      "text": "        run: |"
+    },
+    {
+      "line": 52,
+      "text": "          python - <<'PY'"
+    },
+    {
+      "line": 53,
+      "text": "          import app"
+    },
+    {
+      "line": 54,
+      "text": "          assert app.db.count_offerable(\"local\") == 4, app.db.count_offerable(\"local\")"
+    },
+    {
+      "line": 55,
+      "text": "          print(\"offerable capabilities:\", app.db.count_offerable(\"local\"))"
+    },
+    {
+      "line": 56,
+      "text": "          PY"
+    }
+  ]
+}

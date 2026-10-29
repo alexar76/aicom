@@ -1,0 +1,94 @@
+{
+  "key": "hubwiz-restarts",
+  "url": "https://www.hubwiz.com/blog/agent-restart-replay-idempotency-retro/",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T13:51:05.585659+00:00",
+  "status": 200,
+  "final_url": "https://www.hubwiz.com/blog/agent-restart-replay-idempotency-retro/",
+  "bytes": 57229,
+  "sha256": "e7d09e173aabd45cec97094bdc31eb8cffb4a0ed0eb402fb544250a677de2f36",
+  "identifiers": {
+    "alexar76": 0,
+    "modelmarket.dev": 0,
+    "HISTOR": 0,
+    "WARDEN": 0,
+    "AICOM": 0,
+    "1932": 0,
+    "1,932": 0,
+    "25 微秒": 0
+  },
+  "contexts": {
+    "来源": [
+      "前用回调把 除最新一条之外 所有消息里的大 base64 剥掉，换成 <stripped: N chars> ——模型已经看过那张图了，从下一轮起， 它自己关于这张图的文字就是事实来源 。 十六、边界 这是 一个团队在一个运行时上的实践 （ApowerB / ADK / Postgres / K8s），不是框架级标准；换成别的 Agent 框架，默认值不同，坑的形状也不同。 目前做到的是 安全重放 （要么因为无害而重开，要么带着解释拒绝）， 不是真正的续跑 （复用已执行工具的结果、中途接手）。作者自己说这是下一道坎。 键的设计部分 尚未落地 ，四个开放问题没有公认答案；评论区方案同样未经大规模验证。 第三篇的场景是示意的，不是事故记录；本文引用的\"数字\"里，8 次/天、40/100 封、6 小时、90 天、10–15 万 token 都来自前两篇的一手复盘。 作者给的三句话，比任何架构图都好记： 默认值是给 demo 写的。 内存会"
+    ],
+    "复盘": [
+      "Agent 上线复盘：重启失忆、重复退款、超时当失败 Software 2.0 首页 AI编程 Agent/MCP 本地大模型 工业AI 登录 订阅 AI Agent Agent 上线复盘：重启失忆、重复退款、超时当失败 重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。 admin 23 10月 2026 — 阅读时间 21 分钟 分享 一句话结论 ：Agent 上线后最难处理的事故，几乎都不在推理层。模型想得很对、参数也没错，但 进程在\"决定\"和\"做成\"之间死了一次 ——于是它要么忘了自己干到哪（失忆），要么把已经发生的事再做一遍（既视感）。三份一手复盘给出的答案不是\"更聪明的重试\"，而是三",
+      "ent 上线复盘：重启失忆、重复退款、超时当失败 Software 2.0 首页 AI编程 Agent/MCP 本地大模型 工业AI 登录 订阅 AI Agent Agent 上线复盘：重启失忆、重复退款、超时当失败 重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。 admin 23 10月 2026 — 阅读时间 21 分钟 分享 一句话结论 ：Agent 上线后最难处理的事故，几乎都不在推理层。模型想得很对、参数也没错，但 进程在\"决定\"和\"做成\"之间死了一次 ——于是它要么忘了自己干到哪（失忆），要么把已经发生的事再做一遍（既视感）。三份一手复盘给出的答案不是\"更聪明的重试\"，而是三个更朴素的东西： 把运行写下来、记调用而不是记回答、把\"不知道\"当\"发生过\"处理 。 披露 ：本文编译自三篇公开实践记录——Anis Meziani《Amnesia a",
+      "Agent/MCP 本地大模型 工业AI 登录 订阅 AI Agent Agent 上线复盘：重启失忆、重复退款、超时当失败 重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。 admin 23 10月 2026 — 阅读时间 21 分钟 分享 一句话结论 ：Agent 上线后最难处理的事故，几乎都不在推理层。模型想得很对、参数也没错，但 进程在\"决定\"和\"做成\"之间死了一次 ——于是它要么忘了自己干到哪（失忆），要么把已经发生的事再做一遍（既视感）。三份一手复盘给出的答案不是\"更聪明的重试\"，而是三个更朴素的东西： 把运行写下来、记调用而不是记回答、把\"不知道\"当\"发生过\"处理 。 披露 ：本文编译自三篇公开实践记录——Anis Meziani《Amnesia and déjà vu: how our AI agents failed after eve"
+    ],
+    "Tools": [
+      " / error_message running / success / error / cancelled replay_of 这是一次重放，指向原始运行（ 永远不覆盖历史 ） tools_executed 下文的核心 然后是整套设计里最关键的一行代码注释：统计工具调用时， 算调用（ functionCall ），不算回答 。原因作者写在 docstring 里——「一个中途崩掉的工具，可能已经产生了副作用，却从没来得及回答」。如果只统计\"有回答的工具\"，你会得出\"什么都没发生\"，然后把它再发一遍。 崩溃后响应丢了，拿不到事件列表怎么办？ 因为会话已经落在 Postgres 里了 ，可以直接读会话、从中抽出工具调用。有个细节：聊天会话包含整段对话，里面有 之前几轮 调过的工具，那不是本次运行的副作用，所以只看 用户最后一条消息之后 发生的事。 这也解释了为什么\"失忆\"和\"既视感\"是同一个问题： 失忆不只丢掉对话，它还毁掉了你判断\"能不能",
+      "发生的事。 这也解释了为什么\"失忆\"和\"既视感\"是同一个问题： 失忆不只丢掉对话，它还毁掉了你判断\"能不能重来\"所需的证据 。 七、三个状态： [] 、 [...] 、 NULL tools_executed 只有三种取值，其中两个的差别就是整套安全模型： [] ：我们查过了， 没有工具被调用 → 安全重放 [\"send_email\", \"update_crm\"] ：查过了，这些调过 → 重放会重复它们 NULL ： 没查成 （比如会话读不出来）→ 不知道 把\"不知道\"当成\"大概没事\"非常诱人。我们的处理是当成\"大概有事\"，因为 错的代价不对称 ：拒绝一次安全的重放，成本是点一下；放过一次不安全的重放，成本是客户收到第二封邮件。 八、重放规则表 所有重放走同一个端点 POST /runs/{run_id}/replay ，规则一张表说完： 原始运行的状态 请求重放时 成功过 拒绝 。副作用已经发生 还在跑 拒绝 。等它落定 失败，且确知没"
+    ]
+  },
+  "meta": [
+    {
+      "name": "description",
+      "content": "三份一手复盘合成一条主线：Agent 上线后真正翻车的地方是\"恢复语义\"。一天重启 8 次每次失忆、关标签页工作流死在半路、超时被当成没做导致退款发两遍——以及它们的修法：run 表、记调用不记回答、unknown 不等于 none、按意图做幂等键。"
+    },
+    {
+      "property": "og:type",
+      "content": "article"
+    },
+    {
+      "property": "og:title",
+      "content": "Agent 上线复盘：重启失忆、重复退款、超时当失败"
+    },
+    {
+      "property": "og:description",
+      "content": "重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。"
+    },
+    {
+      "property": "article:published_time",
+      "content": "2026-10-22T16:04:42.000Z"
+    },
+    {
+      "property": "article:modified_time",
+      "content": "2026-10-22T16:06:39.000Z"
+    },
+    {
+      "name": "twitter:title",
+      "content": "Agent 上线复盘：重启失忆、重复退款、超时当失败"
+    },
+    {
+      "name": "twitter:description",
+      "content": "重启后忘了自己在干什么，重试又把邮件发了两遍。三份生产复盘讲清楚：Agent 的可靠性问题不在推理，而在\"决定\"和\"做成\"之间。"
+    }
+  ],
+  "source_links": [
+    "https://www.hubwiz.com/blog",
+    "https://www.hubwiz.com/blog/",
+    "https://www.hubwiz.com/blog/vibe-coding-stack/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/local-llm-stack/",
+    "https://www.hubwiz.com/blog/ai-industrial-stack/",
+    "https://www.hubwiz.com/blog/tag/ai-agent/",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/agent-audit-logs-witness-suspect/",
+    "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+    "https://www.hubwiz.com/blog/claude-code-bash-deny-rule-bypass/",
+    "https://www.hubwiz.com/blog/agent-delivery-verification-gates/",
+    "https://dev.to/anis_meziani_52aab42304a8/amnesia-and-deja-vu-how-our-ai-agents-failed-after-every-restart-and-how-we-fixed-it-5c80?ref=hubwiz.com",
+    "https://dev.to/anis_meziani_52aab42304a8/idempotency-keys-for-ai-agents-why-hashing-the-arguments-doesnt-work-cap?ref=hubwiz.com",
+    "https://dev.to/cyclopt_dimitrisk/your-agents-retry-bug-isnt-an-ai-problem-its-a-distributed-systems-problem-with-an-llm-on-top-1i6k?ref=hubwiz.com",
+    "https://github.com/apowerb/apowerb?ref=hubwiz.com",
+    "https://www.hubwiz.com/blog/agent-stack/",
+    "https://www.hubwiz.com/blog/rag-data-stack/",
+    "https://www.hubwiz.com/blog/generative-media-stack/",
+    "https://www.hubwiz.com/blog/ai-infra-stack/",
+    "https://www.hubwiz.com/blog/ai-tools/",
+    "https://www.hubwiz.com/blog/about/",
+    "https://www.hubwiz.com/blog/contribute/",
+    "https://www.hubwiz.com/blog/privacy/"
+  ]
+}

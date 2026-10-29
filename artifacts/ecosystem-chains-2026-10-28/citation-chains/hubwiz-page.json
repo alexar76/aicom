@@ -1,0 +1,20 @@
+{
+  "key": "hubwiz",
+  "url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T13:49:49.334920+00:00",
+  "status": 200,
+  "final_url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+  "sha256": "e704e68d7fa8f3d790ec1c7f3a9b4aef38b38cfbcb77f8d34ef8161676cd7afe",
+  "bytes": 56332,
+  "title": "AI Agent 安全：九起事故、六项控制与 MCP 供应链",
+  "contexts": {
+    "histor": "半径压住。 本文编译三组 2026 年 10 月的新材料：GitGuardian 官方账号对 2025-05 至 2026-07 九起公开事故 的复盘与六项控制（dev.to，2026-10-15）；HISTOR 团队对 12,915 个 MCP 服务器 的真实安装与启动实测（dev.to，2026-10-14，快照 2026-10-13）；以及 Noma Labs 的 Claude Code Desktop 预览漏洞（CVE 级别 CVSS 8.7）、MCP Inspector 2.9.0 的密钥日志修复等补充（dev.to，2026-10-14 / 10-15）。 立场先说清楚 ：GitGuardian 是安全厂商、HISTOR/WARDEN 是作者团队的自建项目，文中数据均为其自述，本文按\"方法与数据\"引用与整理，不替任何产品背书。这不是一篇\"AI 要被取代了吗\"的文章，而是一份 上线前检查清单 。 一、三个攻击面：宿主、身份、Agent 本身 传统进程模型里，安全评估只需要看两样东西： 代码能力 （它能做什么）和 运行环境 （在哪做）。Agent 多了第三样： 攻击面 包含什么 老控制是否适用 宿主（Host） 文件系统、进程执行、网络、环境变量、摄像头/麦克风等硬件 ✅ 操",
+    "alexar76": "026-10-15）：https://dev.to/gitguardian/ai-agent-security-six-controls-from-nine-real-incidents-19bf @alexar76（HISTOR）, We installed 12,915 MCP servers and started each one. 41% never answered. （dev.to，2026-10-14；快照 2026-10-13）：https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh @bengreenberg, Your MCP Debug Log Should Not Become a Credential Store （dev.to，2026-10-15；MCP Inspector 2.9.0 变更）：https://dev.to/bengreenberg/your-mcp-debug-log-should-not-become-a-credential-store-4p5m @gabrielanhaia, Pad an",
+    "modelmarket": "check-passed-the-agent-still-did-something-nobody-asked-for-156f HISTOR 公开记录与 WARDEN：https://histor.modelmarket.dev ；仓库 alexar76/histor Noma Labs SneakPeek（Claude Code Desktop 预览漏洞）：https://noma.security/ （原文引用 CSO Online，2026-10-14） 本系列另两篇 外包渲染实测：四台笔记本农场 vs SheepIt 免费农场 （同一个\"把东西交出去\"的问题落到 3D 资产与陌生算力上：打包、验证与帧检查） 合约管理员是谁：146 个 Morpho 金库的权限实测 （落到链上资产：代理槽、Safe 阈值、时间锁与 Q3 12 亿美元黑客复盘） 延伸阅读（本站） MCP 工具数量实测：91 份资料、1,932 次运行，5→100 个工具会发生什么 Agent 支付安全：x402 六种错误交易与 25 微秒护栏 Agent 说\"做完了\"，证据呢：三道交付验证门 专题：Agent / MCP / 自动化完全指南 本文由 汇智网 · Software 2.0 编译整理，转载请注明出",
+    "nine": "；它们能做的，是让一个被劫持的 Agent 够不到太多东西。 这已经是今天你能控制的部分。 来源 @GitGuardian, AI Agent Security: Six Controls From Nine Real Incidents （dev.to，2026-10-15）：https://dev.to/gitguardian/ai-agent-security-six-controls-from-nine-real-incidents-19bf @alexar76（HISTOR）, We installed 12,915 MCP servers and started each one. 41% never answered. （dev.to，2026-10-14；快照 2026-10-13）：https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh @bengreenberg, Your MCP Debug Log Should Not Become a Credential Store （dev.to，2026-10-15；MCP In",
+    "九": "AI Agent 安全：九起事故、六项控制与 MCP 供应链 Software 2.0 首页 AI编程 Agent/MCP 本地大模型 工业AI 登录 订阅 AI Agent AI Agent 安全：九起事故、六项控制与 MCP 供应链 九起真实事故讲清 Agent 的三个攻击面，六项控制把爆炸半径压住；12,915 个 MCP 服务器的启动实测，揭示工具供应链的真实成色。 admin 16 10月 2026 — 阅读时间 20 分钟 分享 一句话结论 ：Agent 不是\"一个会写代码的程序\"，而是一个 拿着你的凭据、跑在你的机器上、并且把每一份读到的内容都当成潜在指令 的进程。它暴露三个面—— 宿主 （能摸到的文件、网络、进程）、 身份 （它继承和你给它的权限）、 它自己 （上下文、记忆、配置、工具连接）。安全工程里老的问题（最小权限、沙箱、审计日志）在这里依然有效，但多了一个新面： 没有任何控制能阻止\"指令\"抵达——你能做的只是把爆炸半径压住。 本文编译三组 2026 年 10 月的新材料：GitGuard",
+    "2026": "事故、六项控制与 MCP 供应链 九起真实事故讲清 Agent 的三个攻击面，六项控制把爆炸半径压住；12,915 个 MCP 服务器的启动实测，揭示工具供应链的真实成色。 admin 16 10月 2026 — 阅读时间 20 分钟 分享 一句话结论 ：Agent 不是\"一个会写代码的程序\"，而是一个 拿着你的凭据、跑在你的机器上、并且把每一份读到的内容都当成潜在指令 的进程。它暴露三个面—— 宿主 （能摸到的文件、网络、进程）、 身份 （它继承和你给它的权限）、 它自己 （上下文、记忆、配置、工具连接）。安全工程里老的问题（最小权限、沙箱、审计日志）在这里依然有效，但多了一个新面： 没有任何控制能阻止\"指令\"抵达——你能做的只是把爆炸半径压住。 本文编译三组 2026 年 10 月的新材料：GitGuardian 官方账号对 2025-05 至 2026-07 九起公开事故 的复盘与六项控制（dev.to，2026-10-15）；HISTOR 团队对 12,915 个 MCP 服务器 的真实安装与启动实测（dev.to，2026-10-14，快照 2026-10-13）；以及 Noma Labs 的 Claude Code Desktop 预览漏洞（CVE 级别 CVSS 8.7"
+  },
+  "exact_ecosystem_links": []
+}

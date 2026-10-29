@@ -1,0 +1,1077 @@
+{
+  "checked_date_moscow": "2026-10-28",
+  "generated_at_utc": "2026-10-28T11:35:29.422725+00:00",
+  "report": "../../docs/growth/external-signals-2026-10-28.ru.md",
+  "read_only": true,
+  "source_indexes": [
+    "public-api-index.json",
+    "additional-public-api-index.json",
+    "security-http-index.json",
+    "security-additional-http-index.json",
+    "security-followups-index.json",
+    "culture-evidence/index.json",
+    "culture-evidence/extra-index.json",
+    "culture-evidence/newruntime-facts.json",
+    "culture-evidence/newruntime-extra-facts.json",
+    "core-public-verification.json"
+  ],
+  "request_records": 105,
+  "unique_urls": 99,
+  "status_counts_all_records": {
+    "200": 99,
+    "429": 2,
+    "None": 4
+  },
+  "status_counts_latest_per_url": {
+    "200": 95,
+    "None": 4
+  },
+  "notes": [
+    "Initial sandbox DNS failures were superseded by permitted public GET requests.",
+    "Two initial DEV 429 responses were read successfully on retry.",
+    "HTTP 200 is evaluated together with visible exact identity in the source.",
+    "Current PyPI version numbers do not prove a vulnerability fixed.",
+    "Search coverage is bounded; no negative claim is universal."
+  ],
+  "records": [
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/repos/google/agentmesh/issues/561/comments?per_page=100",
+      "retrieved_at": "2026-10-28T11:29:34.567367+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "ebce6ab85e970a49bd6dcccc1e6d5d67e2b4b8a90a4f8617c93857a697e2ffa8",
+      "bytes": 16171,
+      "file": "agentmesh561-comments.json",
+      "final_url": "https://api.github.com/repos/google/agentmesh/issues/561/comments?per_page=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/articles?username=alexar76&per_page=100&page=1",
+      "retrieved_at": "2026-10-28T11:29:34.567885+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "0e6da68785b67889e5d64e6a113c4eee29fbee234bf177a0114e541cb6d849ac",
+      "bytes": 137252,
+      "file": "dev-articles.json",
+      "final_url": "https://dev.to/api/articles?username=alexar76&per_page=100&page=1"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=modelmarket.dev&hitsPerPage=100",
+      "retrieved_at": "2026-10-28T11:29:34.568038+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "376a3b0952906c1d3366da196a8baf895030fa93f092184abfbfc2ef13df2e8f",
+      "bytes": 1251,
+      "file": "hn-domain-search.json",
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=modelmarket.dev&hitsPerPage=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://hacker-news.firebaseio.com/v0/item/50193565.json",
+      "retrieved_at": "2026-10-28T11:29:34.568162+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "27b1305579191df39363cb054f1a88436f759627cd7edcf873be11a83a1bcb99",
+      "bytes": 266,
+      "file": "hn-histor-story.json",
+      "final_url": "https://hacker-news.firebaseio.com/v0/item/50193565.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://hn.algolia.com/api/v1/items/50193565",
+      "retrieved_at": "2026-10-28T11:29:35.044899+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "2829b375b4b9ca9e26e150849b1ebea16512b103ff7580b5921e33ddc393dcd0",
+      "bytes": 1362,
+      "file": "hn-histor-thread.json",
+      "final_url": "https://hn.algolia.com/api/v1/items/50193565"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=alexar76&hitsPerPage=100",
+      "retrieved_at": "2026-10-28T11:29:35.102738+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "b8ae7299ad64da16996502ac9a5d69edd1db465cf1638a18428c001011776d13",
+      "bytes": 118118,
+      "file": "hn-owner-search.json",
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=alexar76&hitsPerPage=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/repos/modelcontextprotocol/modelcontextprotocol/issues/3431/comments?per_page=100",
+      "retrieved_at": "2026-10-28T11:29:35.289547+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "3b1a2795e1708b7b107155b8e2d1d2e3ea6867f253762dc0a225f11e4cb4ba99",
+      "bytes": 56111,
+      "file": "mcp3431-comments.json",
+      "final_url": "https://api.github.com/repos/modelcontextprotocol/modelcontextprotocol/issues/3431/comments?per_page=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/issues/14/comments?per_page=100",
+      "retrieved_at": "2026-10-28T11:29:35.339904+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "cdd910a7de7c2140358e0405a4386f8a9e6a51dc3135b43143a3efc2639f31cb",
+      "bytes": 2015,
+      "file": "pr14-comments.json",
+      "final_url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/issues/14/comments?per_page=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14/comments?per_page=100",
+      "retrieved_at": "2026-10-28T11:29:35.518611+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2,
+      "file": "pr14-review-comments.json",
+      "final_url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14/comments?per_page=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14/reviews?per_page=100",
+      "retrieved_at": "2026-10-28T11:29:35.803501+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "f8d10b2f6bffa34585eb56a1364ac6331ab6bf5cd587e95cc3107dfaf2dbdeb1",
+      "bytes": 2661,
+      "file": "pr14-reviews.json",
+      "final_url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14/reviews?per_page=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14",
+      "retrieved_at": "2026-10-28T11:29:35.848615+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "1497728bcfb0dc60763317e9cdb3de2862d572bb735e0a157978c324ea89f315",
+      "bytes": 18907,
+      "file": "pr14.json",
+      "final_url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/repos/Paraphern/rugsnare/readme",
+      "retrieved_at": "2026-10-28T11:29:35.857369+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "ef47e4a3f1abdf4a4b1644d26bf4ac2123cdd5d150335ec2ba11cdfc5713daf8",
+      "bytes": 48391,
+      "file": "rugsnare-readme.json",
+      "final_url": "https://api.github.com/repos/Paraphern/rugsnare/readme"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/repos/Paraphern/rugsnare/contents/docs/servers/shopify.md",
+      "retrieved_at": "2026-10-28T11:29:35.943957+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "59550df4ac07ebf5fa4e59ff05d4eb429cbac6593be63461e41e5b2ac6abc2af",
+      "bytes": 4049,
+      "file": "rugsnare-shopify.json",
+      "final_url": "https://api.github.com/repos/Paraphern/rugsnare/contents/docs/servers/shopify.md"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/4xxx/GCVE-110-PYPI-2026-004375.json",
+      "retrieved_at": "2026-10-28T11:29:36.426532+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "2c774b7a85f83edf397fb046c97208e983fc54c8b343411b82b50f4a8626be3d",
+      "bytes": 4101,
+      "file": "vulnetix-GCVE-110-PYPI-2026-004375.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/4xxx/GCVE-110-PYPI-2026-004375.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/18xxx/GCVE-110-PYPI-2026-018883.json",
+      "retrieved_at": "2026-10-28T11:29:36.429600+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "40aff014f3a880b222e5df132c0227d857a74042b7b297fcec168d3bf2050bfb",
+      "bytes": 4138,
+      "file": "vulnetix-GCVE-110-PYPI-2026-018883.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/18xxx/GCVE-110-PYPI-2026-018883.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/20xxx/GCVE-110-PYPI-2026-020712.json",
+      "retrieved_at": "2026-10-28T11:29:36.486988+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "5a896e2070648911bca6e4bb81eb526dd42f33c674575496b92a78cf81d5744f",
+      "bytes": 5899,
+      "file": "vulnetix-GCVE-110-PYPI-2026-020712.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/20xxx/GCVE-110-PYPI-2026-020712.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/21xxx/GCVE-110-PYPI-2026-021807.json",
+      "retrieved_at": "2026-10-28T11:29:36.630389+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "693854db9bd9f9262ff0c8b0470e1e72e9daf450c45fdc8b23f7a929f70b6e54",
+      "bytes": 4254,
+      "file": "vulnetix-GCVE-110-PYPI-2026-021807.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/21xxx/GCVE-110-PYPI-2026-021807.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/21xxx/GCVE-110-PYPI-2026-021896.json",
+      "retrieved_at": "2026-10-28T11:29:36.964840+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "beee44d4b5dfcf5352fcf0adc35c0b4ce8af84ce4258bb86107322768e84eb42",
+      "bytes": 4476,
+      "file": "vulnetix-GCVE-110-PYPI-2026-021896.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/21xxx/GCVE-110-PYPI-2026-021896.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/21xxx/GCVE-110-PYPI-2026-021897.json",
+      "retrieved_at": "2026-10-28T11:29:36.967732+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "e959c191dc99fd2f5914247de5f1d59d087927be49b6f92fc0b141fdaf84a494",
+      "bytes": 4565,
+      "file": "vulnetix-GCVE-110-PYPI-2026-021897.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/21xxx/GCVE-110-PYPI-2026-021897.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/21xxx/GCVE-110-PYPI-2026-021946.json",
+      "retrieved_at": "2026-10-28T11:29:36.970841+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "220ec8e2e560b7d5571a88cb5f9754e1d014f0f97cc5edebeaddb9f260a27494",
+      "bytes": 4565,
+      "file": "vulnetix-GCVE-110-PYPI-2026-021946.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/21xxx/GCVE-110-PYPI-2026-021946.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/22xxx/GCVE-110-PYPI-2026-022091.json",
+      "retrieved_at": "2026-10-28T11:29:37.037746+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "0f049655ed15edcffbe7f1e8636b0975333c71769d928b0bca1e3e9691c3354e",
+      "bytes": 5057,
+      "file": "vulnetix-GCVE-110-PYPI-2026-022091.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/PYPI/2026/22xxx/GCVE-110-PYPI-2026-022091.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000504.json",
+      "retrieved_at": "2026-10-28T11:29:37.366463+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "9f2995683e638e27477b7da5441bf9867fbf114e4f593a542507e3a1b0623085",
+      "bytes": 1191,
+      "file": "vulnetix-GCVE-110-VULN-PYPI-2026-000504.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000504.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000589.json",
+      "retrieved_at": "2026-10-28T11:29:37.370603+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "e64ff4085464bb84948ae4ad3dafe31fbf388acc016883fa656937bce4ef6498",
+      "bytes": 4199,
+      "file": "vulnetix-GCVE-110-VULN-PYPI-2026-000589.json",
+      "final_url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000589.json"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/repos/Vulnetix/advisory-database/issues/5/comments?per_page=100",
+      "retrieved_at": "2026-10-28T11:29:37.380069+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "93bb635f845b2dcc74282973e08e1989ebe0398d49939dd0066d3a0a25eeafe4",
+      "bytes": 40389,
+      "file": "vulnetix5-comments.json",
+      "final_url": "https://api.github.com/repos/Vulnetix/advisory-database/issues/5/comments?per_page=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/search/repositories?q=alexar76+in%3Areadme+-user%3Aalexar76&per_page=100",
+      "retrieved_at": "2026-10-28T11:29:37.434237+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "46203bc8e465a63509d5ba1814363eda56586e687165bd7e38b7c75fec6a6157",
+      "bytes": 61196,
+      "file": "github-readme-mentions.json",
+      "final_url": "https://api.github.com/search/repositories?q=alexar76+in%3Areadme+-user%3Aalexar76&per_page=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/search/issues?q=%22alexar76%22+-author%3Aalexar76+updated%3A%3E%3D2026-10-27&sort=updated&per_page=100",
+      "retrieved_at": "2026-10-28T11:29:37.777419+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "3b86365367554acdcb03954fabe8b7084592a2024f11bdb930c321eced4e917a",
+      "bytes": 12558,
+      "file": "github-recent-mentions.json",
+      "final_url": "https://api.github.com/search/issues?q=%22alexar76%22+-author%3Aalexar76+updated%3A%3E%3D2026-10-27&sort=updated&per_page=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://api.github.com/search/issues?q=%22modelmarket.dev%22+-author%3Aalexar76+updated%3A%3E%3D2026-10-27&sort=updated&per_page=100",
+      "retrieved_at": "2026-10-28T11:29:37.782534+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "bb55985bbbc9afdc742b899b9f29bba155251ca5bb264cd753442bcc5e03819c",
+      "bytes": 8098,
+      "file": "github-recent-domain.json",
+      "final_url": "https://api.github.com/search/issues?q=%22modelmarket.dev%22+-author%3Aalexar76+updated%3A%3E%3D2026-10-27&sort=updated&per_page=100"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4904350",
+      "retrieved_at": "2026-10-28T11:29:38.473818+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "99487ff04f1d4052684d8dd2342d665f4892ddbc03417349ed0eff0d1579fb5b",
+      "bytes": 108919,
+      "file": "dev-comments-4904350.json",
+      "final_url": "https://dev.to/api/comments?a_id=4904350"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4894770",
+      "retrieved_at": "2026-10-28T11:29:38.473922+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "9721d71f6f379c679e35e6ab0d915ba4283693bdf82d154fdaa0102f87bcbb03",
+      "bytes": 12307,
+      "file": "dev-comments-4894770.json",
+      "final_url": "https://dev.to/api/comments?a_id=4894770"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4884244",
+      "retrieved_at": "2026-10-28T11:29:38.476040+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "7124d451e382012e8af034ae771f2489f731ce67b6bc0b0c34443c91c2b0797b",
+      "bytes": 5999,
+      "file": "dev-comments-4884244.json",
+      "final_url": "https://dev.to/api/comments?a_id=4884244"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4881999",
+      "retrieved_at": "2026-10-28T11:29:38.684909+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "7bd65ecde351eaccc39529205f1b0a2bd4263567594545695f61147747f54538",
+      "bytes": 10319,
+      "file": "dev-comments-4881999.json",
+      "final_url": "https://dev.to/api/comments?a_id=4881999"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4879058",
+      "retrieved_at": "2026-10-28T11:29:38.777572+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "d3985464d0ccc89c0a73875b03dace4845dd77d969c7bc74809d5cefd0afba53",
+      "bytes": 7791,
+      "file": "dev-comments-4879058.json",
+      "final_url": "https://dev.to/api/comments?a_id=4879058"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4873079",
+      "retrieved_at": "2026-10-28T11:29:39.024678+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "e4a993ed5f62829d6e05c59ade36d02dc77eb730ea3a3082733c38e8d0e590bd",
+      "bytes": 3620,
+      "file": "dev-comments-4873079.json",
+      "final_url": "https://dev.to/api/comments?a_id=4873079"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4868973",
+      "retrieved_at": "2026-10-28T11:29:39.350443+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "485a077b02382d0b0c5966c22cd8bff9826a833cb2d59e983e50049fac313018",
+      "bytes": 10532,
+      "file": "dev-comments-4868973.json",
+      "final_url": "https://dev.to/api/comments?a_id=4868973"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4847905",
+      "retrieved_at": "2026-10-28T11:29:39.553822+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "ad49c593df5dd884df018f496f1cdda225abc691cfc23fb36e1f912b1706de48",
+      "bytes": 39563,
+      "file": "dev-comments-4847905.json",
+      "final_url": "https://dev.to/api/comments?a_id=4847905"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4811646",
+      "retrieved_at": "2026-10-28T11:29:39.849118+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "50c457a49de1132126f3754099ddc83daed47d55ca44446ae13fd7e0255a8593",
+      "bytes": 9171,
+      "file": "dev-comments-4811646.json",
+      "final_url": "https://dev.to/api/comments?a_id=4811646"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4804987",
+      "retrieved_at": "2026-10-28T11:29:39.879551+00:00",
+      "status": 429,
+      "method": "GET",
+      "file": "dev-comments-4804987.json",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4802035",
+      "retrieved_at": "2026-10-28T11:29:40.228699+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "ed718ed355edaa80833df964d22e55bed7d5dc6b6654b4222067f906cc4ebfc3",
+      "bytes": 10970,
+      "file": "dev-comments-4802035.json",
+      "final_url": "https://dev.to/api/comments?a_id=4802035"
+    },
+    {
+      "source_file": "public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=3658657",
+      "retrieved_at": "2026-10-28T11:29:40.233964+00:00",
+      "status": 429,
+      "method": "GET",
+      "file": "dev-comments-3658657.json",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "source_file": "additional-public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=4804987",
+      "retrieved_at": "2026-10-28T11:31:16.044854+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "1d9ce569b44bed05f29051ced0b849cc1c3534a9d214da52b154d80a168d8cbb",
+      "bytes": 44268,
+      "file": "dev-comments-4804987.json"
+    },
+    {
+      "source_file": "additional-public-api-index.json",
+      "url": "https://dev.to/api/comments?a_id=3658657",
+      "retrieved_at": "2026-10-28T11:31:18.952839+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "9eb2a5fe93de91a8a97f32a53220dd4ff823bb495ccc582c54516123230a3d8b",
+      "bytes": 3518,
+      "file": "dev-comments-3658657.json"
+    },
+    {
+      "source_file": "additional-public-api-index.json",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14/files",
+      "retrieved_at": "2026-10-28T11:31:20.374388+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "47bf7bbfcfb0085737f664c5805f5af357a6bd9ab53fdc60caa2a889c8c0da0e",
+      "bytes": 1413,
+      "file": "pr14-files.json"
+    },
+    {
+      "source_file": "additional-public-api-index.json",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14/commits",
+      "retrieved_at": "2026-10-28T11:31:22.148610+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "d0d862cd27192eec85a58673cbb1020bc70f7a734ad114806979e419cada1632",
+      "bytes": 6957,
+      "file": "pr14-commits.json"
+    },
+    {
+      "source_file": "additional-public-api-index.json",
+      "url": "https://api.github.com/repos/Paraphern/rugsnare/commits?since=2026-10-27T04:54:00Z&per_page=100",
+      "retrieved_at": "2026-10-28T11:31:23.745902+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "a0897dc0ef6056d6d98de71a50addd75510d156a931ebde37f0e025aea6321f8",
+      "bytes": 8110,
+      "file": "rugsnare-recent-commits.json"
+    },
+    {
+      "source_file": "security-http-index.json",
+      "url": "https://skillget.dev/listings/paraphern-rugsnare?lang=en",
+      "retrieved_at": "2026-10-28T11:29:19.468744+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "f0f3ca6bf1d9cd537341f2dd107eff906e9c1c3f776df71f66c90863f0eb4971",
+      "bytes": 63234,
+      "final_url": "https://skillget.dev/listings/paraphern-rugsnare?lang=en"
+    },
+    {
+      "source_file": "security-http-index.json",
+      "url": "https://forgeregistry.com/es/registry/%40aimarket%2Fwarden",
+      "retrieved_at": "2026-10-28T11:29:19.469200+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "447f2692c109d029dc64500554de6f26cada6c85680cb701bc8dc43226e006b6",
+      "bytes": 533898,
+      "final_url": "https://forgeregistry.com/es/registry/%40aimarket%2Fwarden"
+    },
+    {
+      "source_file": "security-http-index.json",
+      "url": "https://getsafety.com/packages/pypi/aimarket-emporion",
+      "retrieved_at": "2026-10-28T11:29:19.469326+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "93f18cc6d0ad1cb12f0d2d8de38b9f656db109f29d0f18122f62bc42b8046256",
+      "bytes": 70604,
+      "final_url": "https://getsafety.com/packages/pypi/aimarket-emporion"
+    },
+    {
+      "source_file": "security-http-index.json",
+      "url": "https://aaa.jeremyfhall.com/repo/alexar76/warden/",
+      "retrieved_at": "2026-10-28T11:29:19.469430+00:00",
+      "status": null,
+      "method": "GET",
+      "error": "<urlopen error [SSL: TLSV1_ALERT_PROTOCOL_VERSION] tlsv1 alert protocol version (_ssl.c:1129)>"
+    },
+    {
+      "source_file": "security-http-index.json",
+      "url": "https://m8ven.ai/mcp/alexar76/domain-operator-kit",
+      "retrieved_at": "2026-10-28T11:29:19.469534+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "905360866d85e3d97d6679996f96970f33b2e3039586ab3194fe7215e2179d38",
+      "bytes": 278407,
+      "final_url": "https://m8ven.ai/mcp/alexar76/domain-operator-kit"
+    },
+    {
+      "source_file": "security-additional-http-index.json",
+      "url": "https://skillget.dev/listings/paraphern-rugsnare?lang=en",
+      "retrieved_at": "2026-10-28T11:30:09.192590+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "dc262356203063e9d9a4dd9d2badf51f26409eeb50fdb807a42af2f4e0e6cb78",
+      "bytes": 63234,
+      "final_url": "https://skillget.dev/listings/paraphern-rugsnare?lang=en"
+    },
+    {
+      "source_file": "security-additional-http-index.json",
+      "url": "https://forgeregistry.com/es/registry/%40aimarket%2Fwarden",
+      "retrieved_at": "2026-10-28T11:30:09.193118+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "447f2692c109d029dc64500554de6f26cada6c85680cb701bc8dc43226e006b6",
+      "bytes": 533898,
+      "final_url": "https://forgeregistry.com/es/registry/%40aimarket%2Fwarden"
+    },
+    {
+      "source_file": "security-additional-http-index.json",
+      "url": "https://getsafety.com/packages/pypi/aimarket-histor/",
+      "retrieved_at": "2026-10-28T11:30:09.193258+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "5d4f00c5fe4d917dcf81088f9634e150eb16f208a0a8702d7f49836f1ff0efe9",
+      "bytes": 64983,
+      "final_url": "https://getsafety.com/packages/pypi/aimarket-histor/"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000636.json",
+      "retrieved_at": "2026-10-28T11:31:15.381219+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "a2fdf52eb81a070959083e86d8e8f724d207d3df1f0017a8f088eb4b741d368f",
+      "file": "new-vulnetix-000636.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000637.json",
+      "retrieved_at": "2026-10-28T11:31:15.381822+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "cfe2b6fa0b91592e62d3ca0301733a733ebc823f3af1dce6b113006c1e509e81",
+      "file": "new-vulnetix-000637.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000638.json",
+      "retrieved_at": "2026-10-28T11:31:15.381980+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "086a72debf26fb4b6c5d3dab801f29a078273596fa35c214e3479a1061d2aad3",
+      "file": "new-vulnetix-000638.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000639.json",
+      "retrieved_at": "2026-10-28T11:31:15.382109+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "c470c6dfe08dc5590b7269e6f0c45be94913bb0a907dd4d3e754da4f12687521",
+      "file": "new-vulnetix-000639.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000640.json",
+      "retrieved_at": "2026-10-28T11:31:15.382234+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "59fb0b47655001cc4ba4f7bcd71ed64c9fc79a49b48d539f8c0a1100e7f31cfd",
+      "file": "new-vulnetix-000640.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000641.json",
+      "retrieved_at": "2026-10-28T11:31:15.860997+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "de704fd6ebaa2a9ac3ffacc31fb177408ad3be6e2ce91c3b0fac5c2374c4e963",
+      "file": "new-vulnetix-000641.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000642.json",
+      "retrieved_at": "2026-10-28T11:31:15.865998+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "ba32537142a7708a2aba88cc8ccd9f636b5a731e1152eddc78a250c2a9d8fad0",
+      "file": "new-vulnetix-000642.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000643.json",
+      "retrieved_at": "2026-10-28T11:31:15.869241+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "677a3ca6ae532b7bf47817f449f74d98d0048724ca5bf76e131b74c33c8c58b5",
+      "file": "new-vulnetix-000643.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/main/cvelistv5/VULN-PYPI/2026/0xxx/GCVE-110-VULN-PYPI-2026-000644.json",
+      "retrieved_at": "2026-10-28T11:31:15.871249+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "877e390015fd05c5ac6741e5a4df69e42bf7099c69f9214b703848a749a194c3",
+      "file": "new-vulnetix-000644.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/aimarket-platon/json",
+      "retrieved_at": "2026-10-28T11:31:15.875391+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "1aa28169d10f7a51c4f637b5d3be9f7a5dce9864d51acc5b1d4a6356ceecbb20",
+      "file": "current-pypi-aimarket-platon.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/aimarket-oracle-core/json",
+      "retrieved_at": "2026-10-28T11:31:16.156593+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "847ce43b62bb5e6ee1b811bae38df85b5af0635d3cce35b1884ae26ad26f311f",
+      "file": "current-pypi-aimarket-oracle-core.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/aimarket-logos/json",
+      "retrieved_at": "2026-10-28T11:31:16.270138+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "572c806ee40a799fca96372418ab194687510de62f68554fdcad52a8e5f9bf23",
+      "file": "current-pypi-aimarket-logos.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/aimarket-mcp/json",
+      "retrieved_at": "2026-10-28T11:31:16.293260+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "a9a1b8b1dba411798785bb32edfbf31f1556680fe3bd59261d98a57b771b5541",
+      "file": "current-pypi-aimarket-mcp.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/aimarket-metis/json",
+      "retrieved_at": "2026-10-28T11:31:16.297611+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "ca1e211ce7f1e26d5962bdb8a244883414dbedffdaf5375011e579eccc4d8ddf",
+      "file": "current-pypi-aimarket-metis.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/aimarket-treasury/json",
+      "retrieved_at": "2026-10-28T11:31:16.323538+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "433295da609dbde63cb9988ca913237c0b4453d3eee5678113c7d8a41d5c2a78",
+      "file": "current-pypi-aimarket-treasury.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/skopos-fleet/json",
+      "retrieved_at": "2026-10-28T11:31:16.384081+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "ac8be0348d7d9464b4780d698fc73dde2ab70a523226bd772eb2bcdb270e5461",
+      "file": "current-pypi-skopos-fleet.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/aimarket-atlas/json",
+      "retrieved_at": "2026-10-28T11:31:16.604865+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "fc1b9ece57b2cfe48a98a0c25587fe2ba48d9f55c1709f7278495473e62c582a",
+      "file": "current-pypi-aimarket-atlas.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/aimarket-hestia/json",
+      "retrieved_at": "2026-10-28T11:31:16.617805+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "c14a9f623878c7d38c03625c67660031e7bdc4b66dea62b439726af4d80e3ec0",
+      "file": "current-pypi-aimarket-hestia.json"
+    },
+    {
+      "source_file": "security-followups-index.json",
+      "url": "https://pypi.org/pypi/aimarket-hub/json",
+      "retrieved_at": "2026-10-28T11:31:16.622704+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "3c99441f51ea81ecd5c0e304916b419d12168a1e91ebb63bce19ad5c7ab59881",
+      "file": "current-pypi-aimarket-hub.json"
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=modelmarket.dev&hitsPerPage=100",
+      "retrieved_at": "2026-10-28T11:29:41.811020+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "376a3b0952906c1d3366da196a8baf895030fa93f092184abfbfc2ef13df2e8f",
+      "bytes": 1251
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=alexar76&hitsPerPage=100",
+      "retrieved_at": "2026-10-28T11:29:41.811602+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "b8ae7299ad64da16996502ac9a5d69edd1db465cf1638a18428c001011776d13",
+      "bytes": 118118
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=pingblip&hitsPerPage=100",
+      "retrieved_at": "2026-10-28T11:29:41.811770+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "6b34694bbf834abcdfc415e04831236419248e9c65dc08b4356e8f5538c41616",
+      "bytes": 396
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=modelmarket.dev&limit=100&sort=latest",
+      "retrieved_at": "2026-10-28T11:29:41.811912+00:00",
+      "status": null,
+      "method": "GET",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=pingblip&limit=100&sort=latest",
+      "retrieved_at": "2026-10-28T11:29:41.812034+00:00",
+      "status": null,
+      "method": "GET",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://www.reddit.com/search.json?q=%22modelmarket.dev%22&sort=new&limit=100",
+      "retrieved_at": "2026-10-28T11:29:42.258800+00:00",
+      "status": null,
+      "method": "GET",
+      "error": "HTTP Error 403: Blocked"
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game",
+      "retrieved_at": "2026-10-28T11:29:42.303921+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "9dedf566dbcab1f1a45b5ae8345ce5859141ffa7fd0f8ee552c800530920de48",
+      "bytes": 14936
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://pingblip.itch.io/pingblip",
+      "retrieved_at": "2026-10-28T11:29:42.309035+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "37e7500b7cf700875b83ce126110bf4cc96afe8c71b02bf011a1f2edadc1412c",
+      "bytes": 20184
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://alexar76.itch.io/the-weight-of-the-answer",
+      "retrieved_at": "2026-10-28T11:29:42.311583+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "76acd2d1dbae3ca4404fefbd613e415d9e9fabfc8a279a993316040bab5b2003",
+      "bytes": 22740
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://alexar76.itch.io/the-white-on-the-map",
+      "retrieved_at": "2026-10-28T11:29:42.544827+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "519c1502625f82d5ec2d469eda820ab170806ec0294d0b202b26fb2a19c83231",
+      "bytes": 22684
+    },
+    {
+      "source_file": "culture-evidence/index.json",
+      "url": "https://alexar76.itch.io/the-right-to-a-shadow",
+      "retrieved_at": "2026-10-28T11:29:42.658926+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "701752a7448fe7031c4ef5eb0ba8fcabf7d0a0efd3c85dd01ed9c541c3d6c6e7",
+      "bytes": 21109
+    },
+    {
+      "source_file": "culture-evidence/extra-index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=alexar76&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+      "retrieved_at": "2026-10-28T11:30:42.222382+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "d31344bbeeab9b7ed55a4efeb7e58e7a016bd84898524ee72fd5b936e6e2cf15",
+      "bytes": 437
+    },
+    {
+      "source_file": "culture-evidence/extra-index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=independentai.network&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+      "retrieved_at": "2026-10-28T11:30:42.222671+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "5b811613229ed7d81e9b1d28d5a5dc0632d33c0845be24f06ba29526d54f7655",
+      "bytes": 433
+    },
+    {
+      "source_file": "culture-evidence/extra-index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=attestedmemory.net&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+      "retrieved_at": "2026-10-28T11:30:42.222856+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "7d47a0eec873ed464449bd9be70fdc2d421028a0b23955999cf2ec6f8f67fe9d",
+      "bytes": 441
+    },
+    {
+      "source_file": "culture-evidence/extra-index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=emberlinedesk.com&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+      "retrieved_at": "2026-10-28T11:30:42.222991+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "01bfc8d640240e19dd94549ca81e2333a3a9e2f443a6540276463c5ddc952013",
+      "bytes": 448
+    },
+    {
+      "source_file": "culture-evidence/extra-index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=pantheon.modelmarket.dev&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+      "retrieved_at": "2026-10-28T11:30:42.754971+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "dc4e7912403f4d0c3b4f25e8b7b832958d49e66bcedc8e4e171b6a5cba83ff06",
+      "bytes": 451
+    },
+    {
+      "source_file": "culture-evidence/extra-index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=Trace+of+Refusal&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+      "retrieved_at": "2026-10-28T11:30:43.073588+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "8d1955afb1f0741aee6e3bd80b8337b8183ba3664a904450b1bb89d487062a71",
+      "bytes": 115815
+    },
+    {
+      "source_file": "culture-evidence/extra-index.json",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=pingblip&hitsPerPage=100&typoTolerance=false&restrictSearchableAttributes=title%2Ccomment_text%2Curl%2Cstory_text",
+      "retrieved_at": "2026-10-28T11:30:43.581784+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "c613182cda4cc98ef9d2dfb088288486c87b0f8992942e6cd279f6c1b12a4a01",
+      "bytes": 488
+    },
+    {
+      "source_file": "culture-evidence/newruntime-facts.json",
+      "url": "https://newruntime.com/readers/histor/",
+      "retrieved_at": "2026-10-28T11:32:06.499779+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "c27e666f8eb88e394c48f7a49f484f2f35b8da87b465de7bcad8ab6ed7898666",
+      "bytes": 49372,
+      "final_url": "https://newruntime.com/readers/histor/"
+    },
+    {
+      "source_file": "culture-evidence/newruntime-extra-facts.json",
+      "url": "https://newruntime.com/readers/histor.json",
+      "retrieved_at": "2026-10-28T11:32:25.335940+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "d5637c2be8780b1dd6b81930e322ba9fbc292896d0c88eea9e0011ac698868cb",
+      "bytes": 3106
+    },
+    {
+      "source_file": "culture-evidence/newruntime-extra-facts.json",
+      "url": "https://newruntime.com/bot-traffic-history.json",
+      "retrieved_at": "2026-10-28T11:32:25.336456+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "65ba23ad8feb69c361b9aeb08c34cc8c1c46329e1e3a02849916a40e50c081b8",
+      "bytes": 3018745
+    },
+    {
+      "source_file": "culture-evidence/newruntime-extra-facts.json",
+      "url": "https://newruntime.com/privacy/",
+      "retrieved_at": "2026-10-28T11:32:25.336599+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "a24774f7e83bb96cc1b4b68270d1f20c0d73ece95cd3ffe4c9aa519f14a92e61",
+      "bytes": 40535
+    },
+    {
+      "source_file": "culture-evidence/newruntime-extra-facts.json",
+      "url": "https://newruntime.com/readers/",
+      "retrieved_at": "2026-10-28T11:32:25.336751+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "dd94f9f5587109bdace216dd2a54793ec9f41c02ba8b9b76ec9deb07f875e352",
+      "bytes": 259448
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://agenteconomy.report/s/modelmarket.dev.json",
+      "retrieved_at": "2026-10-28T11:32:00.258254+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "f95b90c8bcdc0b8a60a61e0b6b81672cf6e470ba232550392d777d7e42182aef",
+      "bytes": 6183,
+      "final_url": "https://agenteconomy.report/s/modelmarket.dev.json"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://agenteconomy.report/s/modelmarket.dev",
+      "retrieved_at": "2026-10-28T11:32:00.258645+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "e5c510b2bffe9e0d41f9fcc449bd3d75d1c43b3ce4299e7552b9ac109c54e434",
+      "bytes": 15095,
+      "final_url": "https://agenteconomy.report/s/modelmarket.dev"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://x402-list.com/api/v1/services/aimarket/volume",
+      "retrieved_at": "2026-10-28T11:32:00.258802+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "6cdd2217006419daa2f9ef089db95b98a55175163ef1b7161593da0d9dfd0f99",
+      "bytes": 1519,
+      "final_url": "https://x402-list.com/api/v1/services/aimarket/volume"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://x402-list.com/api/v1/services/aimarket/buyers",
+      "retrieved_at": "2026-10-28T11:32:00.258934+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "ff3fba9d15640b88800c284ed92e8c806d5f9cd84cc1ad0c7eac337fb0e6cd83",
+      "bytes": 1542,
+      "final_url": "https://x402-list.com/api/v1/services/aimarket/buyers"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://www.x402-list.com/services/aimarket",
+      "retrieved_at": "2026-10-28T11:32:00.259047+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "234f656763350ef84b3aaf6a314758a27bbc5fe629df0c4312b4ab1f724a8dbb",
+      "bytes": 139310,
+      "final_url": "https://www.x402-list.com/services/aimarket"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://mcp.market/server/modelmarket-weather",
+      "retrieved_at": "2026-10-28T11:32:00.259243+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "e1906ee3acb1a5e8b0f2a4341ed99d8b2218073956f81826476e8a3dbd46b6f3",
+      "bytes": 130473,
+      "final_url": "https://mcp.market/server/modelmarket-weather"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://inite.ai/en/atlas/modelmarket.dev",
+      "retrieved_at": "2026-10-28T11:32:00.634660+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "0552849d9d3e03967b40f9a7bb071dd5f48195528ceaf23efcce70a23bdddebd",
+      "bytes": 182377,
+      "final_url": "https://inite.ai/en/atlas/modelmarket.dev"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://inite.ai/en/atlas/modelmarket.dev/alternatives",
+      "retrieved_at": "2026-10-28T11:32:00.685706+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "011597efa4143d3b7e5eddd766450d20e2c8811870a0a44fc896d57b991ea7a9",
+      "bytes": 139824,
+      "final_url": "https://inite.ai/en/atlas/modelmarket.dev/alternatives"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://inite.ai/en/atlas/all/m",
+      "retrieved_at": "2026-10-28T11:32:00.767270+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "7492fa8b030109259a031d59fcf3be39be0b3230908891a3f80d801a789332d7",
+      "bytes": 1469012,
+      "final_url": "https://inite.ai/en/atlas/all/m"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://inite.ai/en/atlas/method",
+      "retrieved_at": "2026-10-28T11:32:00.796587+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "251df53e7b9630887753c4f8548e522d32d0871c372c6671202c2529290b60b4",
+      "bytes": 98424,
+      "final_url": "https://inite.ai/en/atlas/method"
+    },
+    {
+      "source_file": "core-public-verification.json",
+      "url": "https://mcpbridge.org/directory/ai-ml/",
+      "retrieved_at": "2026-10-28T11:32:00.846498+00:00",
+      "status": 200,
+      "method": "GET",
+      "sha256": "b90ea2521858c48018395e1a7985a3fb4cc6078591331a3b91e3532da78952c8",
+      "bytes": 950469,
+      "final_url": "https://mcpbridge.org/directory/ai-ml/"
+    }
+  ]
+}

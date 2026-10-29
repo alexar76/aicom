@@ -13,12 +13,48 @@ import os
 import time
 import uuid
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
+from core.config_merge import ConfigLoadError
 from core.paths import director_rules_path, logs_dir
 from web.backend.api.metrics import PrometheusMetrics
 
 logger = logging.getLogger(__name__)
+
+
+def director_settings(section: Any, source: str = "director") -> dict[str, Any]:
+    """The Director's auto-action settings from a config mapping, checked.
+
+    A missing key takes the safe default: auto actions off, none allowed, a 4 h cycle. A value
+    of the wrong type raises :class:`ConfigLoadError` instead of being read loosely: a quoted
+    ``auto_actions_enabled: "false"`` is a non-empty string, which the engine took as on.
+    """
+    if section is None:
+        section = {}
+    if not isinstance(section, dict):
+        raise ConfigLoadError(f"{source}: expected a mapping, got {type(section).__name__}")
+    enabled = section.get("auto_actions_enabled", False)
+    if not isinstance(enabled, bool):
+        raise ConfigLoadError(
+            f"{source}.auto_actions_enabled must be true or false, got {enabled!r}"
+        )
+    allowed = section.get("allowed_auto_actions", [])
+    if allowed is None:
+        allowed = []
+    if not isinstance(allowed, list) or not all(isinstance(a, str) and a.strip() for a in allowed):
+        raise ConfigLoadError(
+            f"{source}.allowed_auto_actions must be a list of action names, got {allowed!r}"
+        )
+    interval = section.get("analysis_interval_hours", 4)
+    if isinstance(interval, bool) or not isinstance(interval, (int, float)) or interval <= 0:
+        raise ConfigLoadError(
+            f"{source}.analysis_interval_hours must be a positive number, got {interval!r}"
+        )
+    return {
+        "auto_actions_enabled": enabled,
+        "allowed_auto_actions": [a.strip() for a in allowed],
+        "analysis_interval_hours": interval,
+    }
 
 
 class DecisionEngine:
@@ -73,12 +109,34 @@ class DecisionEngine:
             import yaml
             with open(self.config_path, "r") as f:
                 rules = yaml.safe_load(f)
-                self.auto_actions_enabled = rules.get("auto_actions_enabled", self.auto_actions_enabled)
-                self.allowed_actions = set(rules.get("allowed_auto_actions", list(self.allowed_actions)))
         except FileNotFoundError:
             logger.warning(f"Director rules config not found at {self.config_path}")
+            return
         except Exception as e:
-            logger.error(f"Failed to load director rules: {e}")
+            # The operator wrote a rules file and it cannot be read: do not act on settings
+            # they may have meant to change. Recommendations still flow; nothing auto-applies.
+            logger.error(f"Failed to load director rules, auto actions off: {e}")
+            self.auto_actions_enabled = False
+            return
+        if rules is None:
+            return
+        checked = {
+            key: rules[key]
+            for key in ("auto_actions_enabled", "allowed_auto_actions")
+            if isinstance(rules, dict) and key in rules
+        }
+        try:
+            if not isinstance(rules, dict):
+                director_settings(rules, source=self.config_path)
+            director_settings(checked, source=self.config_path)
+        except ConfigLoadError as e:
+            logger.error(f"Invalid director rules, auto actions off: {e}")
+            self.auto_actions_enabled = False
+            return
+        if "auto_actions_enabled" in checked:
+            self.auto_actions_enabled = checked["auto_actions_enabled"]
+        if "allowed_auto_actions" in checked:
+            self.allowed_actions = {a.strip() for a in checked["allowed_auto_actions"] or []}
 
     def generate_decisions(self, analysis: dict, metrics: dict) -> list[dict]:
         """

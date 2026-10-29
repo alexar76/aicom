@@ -1,0 +1,643 @@
+Building wheel...
+/Users/alex/.cache/uv/builds-v0/.tmpxxmYs9/lib/python3.12/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+/Users/alex/.cache/uv/builds-v0/.tmpxxmYs9/lib/python3.12/site-packages/setuptools/config/_apply_pyprojecttoml.py:61: SetuptoolsDeprecationWarning: License classifiers are deprecated.
+!!
+
+        ********************************************************************************
+        Please consider removing the following classifiers in favor of a SPDX license expression:
+
+        License :: OSI Approved :: MIT License
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  dist._finalize_license_expression()
+/Users/alex/.cache/uv/builds-v0/.tmpxxmYs9/lib/python3.12/site-packages/setuptools/dist.py:765: SetuptoolsDeprecationWarning: License classifiers are deprecated.
+!!
+
+        ********************************************************************************
+        Please consider removing the following classifiers in favor of a SPDX license expression:
+
+        License :: OSI Approved :: MIT License
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  self._finalize_license_expression()
+running egg_info
+writing skopos_fleet.egg-info/PKG-INFO
+writing dependency_links to skopos_fleet.egg-info/dependency_links.txt
+writing entry points to skopos_fleet.egg-info/entry_points.txt
+writing requirements to skopos_fleet.egg-info/requires.txt
+writing top-level names to skopos_fleet.egg-info/top_level.txt
+reading manifest file 'skopos_fleet.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'skopos_fleet.egg-info/SOURCES.txt'
+/Users/alex/.cache/uv/builds-v0/.tmpxxmYs9/lib/python3.12/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+/Users/alex/.cache/uv/builds-v0/.tmpxxmYs9/lib/python3.12/site-packages/setuptools/config/_apply_pyprojecttoml.py:61: SetuptoolsDeprecationWarning: License classifiers are deprecated.
+!!
+
+        ********************************************************************************
+        Please consider removing the following classifiers in favor of a SPDX license expression:
+
+        License :: OSI Approved :: MIT License
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  dist._finalize_license_expression()
+/Users/alex/.cache/uv/builds-v0/.tmpxxmYs9/lib/python3.12/site-packages/setuptools/dist.py:765: SetuptoolsDeprecationWarning: License classifiers are deprecated.
+!!
+
+        ********************************************************************************
+        Please consider removing the following classifiers in favor of a SPDX license expression:
+
+        License :: OSI Approved :: MIT License
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  self._finalize_license_expression()
+running bdist_wheel
+running build
+running build_py
+creating build/lib
+copying skoposctl.py -> build/lib
+creating build/lib/skopos
+copying skopos/themes.py -> build/lib/skopos
+copying skopos/asn_db.py -> build/lib/skopos
+copying skopos/db_migrate.py -> build/lib/skopos
+copying skopos/geo_earth.py -> build/lib/skopos
+copying skopos/db.py -> build/lib/skopos
+copying skopos/log_sources.py -> build/lib/skopos
+copying skopos/countries.py -> build/lib/skopos
+copying skopos/ui_database_settings.py -> build/lib/skopos
+copying skopos/analytics_filters.py -> build/lib/skopos
+copying skopos/password_policy.py -> build/lib/skopos
+copying skopos/config.py -> build/lib/skopos
+copying skopos/env.py -> build/lib/skopos
+copying skopos/theme_prefs.py -> build/lib/skopos
+copying skopos/host_infer.py -> build/lib/skopos
+copying skopos/node_ingest.py -> build/lib/skopos
+copying skopos/apache_logs.py -> build/lib/skopos
+copying skopos/nav_chrome.py -> build/lib/skopos
+copying skopos/ui_topbar.py -> build/lib/skopos
+copying skopos/client_ip.py -> build/lib/skopos
+copying skopos/env_io.py -> build/lib/skopos
+copying skopos/charts.py -> build/lib/skopos
+copying skopos/config_io.py -> build/lib/skopos
+copying skopos/ui_security.py -> build/lib/skopos
+copying skopos/node_installer.py -> build/lib/skopos
+copying skopos/enrich.py -> build/lib/skopos
+copying skopos/config_paths.py -> build/lib/skopos
+copying skopos/ui.py -> build/lib/skopos
+copying skopos/app_auth.py -> build/lib/skopos
+copying skopos/apache.py -> build/lib/skopos
+copying skopos/analytics_queries.py -> build/lib/skopos
+copying skopos/ui_agent.py -> build/lib/skopos
+copying skopos/collector.py -> build/lib/skopos
+copying skopos/__init__.py -> build/lib/skopos
+copying skopos/ui_refresh.py -> build/lib/skopos
+copying skopos/shell_safe.py -> build/lib/skopos
+copying skopos/dashboard_snapshots.py -> build/lib/skopos
+copying skopos/agent_portal.py -> build/lib/skopos
+copying skopos/docs_i18n_render.py -> build/lib/skopos
+copying skopos/agent_widget.py -> build/lib/skopos
+copying skopos/ui_wizard.py -> build/lib/skopos
+copying skopos/docs_i18n_ui.py -> build/lib/skopos
+copying skopos/remote_ops.py -> build/lib/skopos
+copying skopos/fleet_warmup.py -> build/lib/skopos
+copying skopos/app_shell.py -> build/lib/skopos
+copying skopos/docs_i18n_translations.py -> build/lib/skopos
+copying skopos/ui_onboarding.py -> build/lib/skopos
+copying skopos/geo_centroids.py -> build/lib/skopos
+copying skopos/agent_token.py -> build/lib/skopos
+copying skopos/doc_i18n.py -> build/lib/skopos
+copying skopos/nginx.py -> build/lib/skopos
+copying skopos/geoip.py -> build/lib/skopos
+copying skopos/nginx_logs.py -> build/lib/skopos
+copying skopos/backfill.py -> build/lib/skopos
+copying skopos/ssh_setup.py -> build/lib/skopos
+copying skopos/ui_transport.py -> build/lib/skopos
+copying skopos/ui_briefing.py -> build/lib/skopos
+copying skopos/db_dialect.py -> build/lib/skopos
+copying skopos/ui_lazy_tabs.py -> build/lib/skopos
+copying skopos/ui_dashboard_auth.py -> build/lib/skopos
+copying skopos/traffic.py -> build/lib/skopos
+copying skopos/redact.py -> build/lib/skopos
+copying skopos/wrapper_gen.py -> build/lib/skopos
+copying skopos/setup_state.py -> build/lib/skopos
+copying skopos/db_settings.py -> build/lib/skopos
+copying skopos/period_picker.py -> build/lib/skopos
+copying skopos/node_store.py -> build/lib/skopos
+copying skopos/period_data.py -> build/lib/skopos
+copying skopos/premium_chrome.py -> build/lib/skopos
+copying skopos/node_remediation.py -> build/lib/skopos
+copying skopos/ui_agent_settings.py -> build/lib/skopos
+copying skopos/ui_a2a.py -> build/lib/skopos
+copying skopos/public_status.py -> build/lib/skopos
+copying skopos/db_connection.py -> build/lib/skopos
+copying skopos/i18n.py -> build/lib/skopos
+copying skopos/ssh.py -> build/lib/skopos
+copying skopos/ui_sidebar.py -> build/lib/skopos
+copying skopos/anonymize.py -> build/lib/skopos
+copying skopos/node_protocol.py -> build/lib/skopos
+copying skopos/ui_remediation.py -> build/lib/skopos
+copying skopos/node_report.py -> build/lib/skopos
+copying skopos/docs_viewer.py -> build/lib/skopos
+copying skopos/ecosystem.py -> build/lib/skopos
+copying skopos/atomic_io.py -> build/lib/skopos
+copying skopos/ui_security_report.py -> build/lib/skopos
+copying skopos/remote_scripts.py -> build/lib/skopos
+copying skopos/docs_i18n_translations_rest.py -> build/lib/skopos
+copying skopos/brand.py -> build/lib/skopos
+copying skopos/ui_tab_deeplink.py -> build/lib/skopos
+copying skopos/auth_store.py -> build/lib/skopos
+copying skopos/ui_password_gate.py -> build/lib/skopos
+copying skopos/uvicorn_log.py -> build/lib/skopos
+copying skopos/telegram_notify.py -> build/lib/skopos
+creating build/lib/skopos/economy
+copying skopos/economy/signing.py -> build/lib/skopos/economy
+copying skopos/economy/payments.py -> build/lib/skopos/economy
+copying skopos/economy/config.py -> build/lib/skopos/economy
+copying skopos/economy/manifest.py -> build/lib/skopos/economy
+copying skopos/economy/handlers.py -> build/lib/skopos/economy
+copying skopos/economy/__init__.py -> build/lib/skopos/economy
+copying skopos/economy/consumer.py -> build/lib/skopos/economy
+copying skopos/economy/capabilities.py -> build/lib/skopos/economy
+copying skopos/economy/invoke.py -> build/lib/skopos/economy
+creating build/lib/skopos/security
+copying skopos/security/history_charts.py -> build/lib/skopos/security
+copying skopos/security/report_builder.py -> build/lib/skopos/security
+copying skopos/security/store.py -> build/lib/skopos/security
+copying skopos/security/alert_i18n.py -> build/lib/skopos/security
+copying skopos/security/docker_insights.py -> build/lib/skopos/security
+copying skopos/security/audit.py -> build/lib/skopos/security
+copying skopos/security/charts.py -> build/lib/skopos/security
+copying skopos/security/auto_scan.py -> build/lib/skopos/security
+copying skopos/security/collector.py -> build/lib/skopos/security
+copying skopos/security/__init__.py -> build/lib/skopos/security
+copying skopos/security/fail2ban_status.py -> build/lib/skopos/security
+copying skopos/security/port_knocks.py -> build/lib/skopos/security
+copying skopos/security/export.py -> build/lib/skopos/security
+copying skopos/security/momus_push.py -> build/lib/skopos/security
+copying skopos/security/tls_certs.py -> build/lib/skopos/security
+copying skopos/security/probe.py -> build/lib/skopos/security
+copying skopos/security/knock_charts.py -> build/lib/skopos/security
+copying skopos/security/knock_analyzer.py -> build/lib/skopos/security
+copying skopos/security/posture_loader.py -> build/lib/skopos/security
+copying skopos/security/project_audit.py -> build/lib/skopos/security
+copying skopos/security/posture.py -> build/lib/skopos/security
+creating build/lib/skopos/agent
+copying skopos/agent/service.py -> build/lib/skopos/agent
+copying skopos/agent/security_report.py -> build/lib/skopos/agent
+copying skopos/agent/config.py -> build/lib/skopos/agent
+copying skopos/agent/__init__.py -> build/lib/skopos/agent
+copying skopos/agent/providers.py -> build/lib/skopos/agent
+copying skopos/agent/ecosystem_briefing.py -> build/lib/skopos/agent
+copying skopos/agent/context.py -> build/lib/skopos/agent
+copying skopos/agent/analyst.py -> build/lib/skopos/agent
+copying skopos/agent/redact.py -> build/lib/skopos/agent
+copying skopos/agent/rate_limit.py -> build/lib/skopos/agent
+copying skopos/agent/nav_actions.py -> build/lib/skopos/agent
+copying skopos/agent/injection_guard.py -> build/lib/skopos/agent
+creating build/lib/skopos/observability
+copying skopos/observability/charts.py -> build/lib/skopos/observability
+copying skopos/observability/__init__.py -> build/lib/skopos/observability
+copying skopos/observability/prom.py -> build/lib/skopos/observability
+copying skopos/observability/graph3d.py -> build/lib/skopos/observability
+copying skopos/observability/context_fmt.py -> build/lib/skopos/observability
+creating build/lib/skopos/node_agent
+copying skopos/node_agent/skopos_node.py -> build/lib/skopos/node_agent
+copying skopos/node_agent/__init__.py -> build/lib/skopos/node_agent
+creating build/lib/skopos/theming
+copying skopos/theming/catalog.py -> build/lib/skopos/theming
+copying skopos/theming/charts.py -> build/lib/skopos/theming
+copying skopos/theming/__init__.py -> build/lib/skopos/theming
+copying skopos/theming/page_css.py -> build/lib/skopos/theming
+copying skopos/theming/widget_css.py -> build/lib/skopos/theming
+copying skopos/theming/app_css.py -> build/lib/skopos/theming
+copying skopos/theming/shell_css.py -> build/lib/skopos/theming
+creating build/lib/skopos/remediation
+copying skopos/remediation/git_push.py -> build/lib/skopos/remediation
+copying skopos/remediation/node_agent.py -> build/lib/skopos/remediation
+copying skopos/remediation/autopilot.py -> build/lib/skopos/remediation
+copying skopos/remediation/fleet_forwarder.py -> build/lib/skopos/remediation
+copying skopos/remediation/health.py -> build/lib/skopos/remediation
+copying skopos/remediation/a2a_observer.py -> build/lib/skopos/remediation
+copying skopos/remediation/report_push.py -> build/lib/skopos/remediation
+copying skopos/remediation/agent_state.py -> build/lib/skopos/remediation
+copying skopos/remediation/a2a_ingress.py -> build/lib/skopos/remediation
+copying skopos/remediation/__init__.py -> build/lib/skopos/remediation
+copying skopos/remediation/jobs.py -> build/lib/skopos/remediation
+copying skopos/remediation/order_queue.py -> build/lib/skopos/remediation
+copying skopos/remediation/conductor.py -> build/lib/skopos/remediation
+copying skopos/remediation/deploy_order.py -> build/lib/skopos/remediation
+copying skopos/remediation/clients.py -> build/lib/skopos/remediation
+copying skopos/remediation/agent_executor.py -> build/lib/skopos/remediation
+copying skopos/remediation/recipes.py -> build/lib/skopos/remediation
+copying skopos/remediation/fleet_relay.py -> build/lib/skopos/remediation
+creating build/lib/skopos/components/voice_input
+copying skopos/components/voice_input/__init__.py -> build/lib/skopos/components/voice_input
+running egg_info
+writing skopos_fleet.egg-info/PKG-INFO
+writing dependency_links to skopos_fleet.egg-info/dependency_links.txt
+writing entry points to skopos_fleet.egg-info/entry_points.txt
+writing requirements to skopos_fleet.egg-info/requires.txt
+writing top-level names to skopos_fleet.egg-info/top_level.txt
+reading manifest file 'skopos_fleet.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'skopos_fleet.egg-info/SOURCES.txt'
+installing to build/bdist.macosx-11.0-arm64/wheel
+running install
+running install_lib
+creating build/bdist.macosx-11.0-arm64/wheel
+creating build/bdist.macosx-11.0-arm64/wheel/skopos
+copying build/lib/skopos/themes.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/asn_db.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/db_migrate.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/geo_earth.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/db.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/log_sources.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+creating build/bdist.macosx-11.0-arm64/wheel/skopos/economy
+copying build/lib/skopos/economy/signing.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/economy
+copying build/lib/skopos/economy/payments.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/economy
+copying build/lib/skopos/economy/config.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/economy
+copying build/lib/skopos/economy/manifest.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/economy
+copying build/lib/skopos/economy/handlers.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/economy
+copying build/lib/skopos/economy/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/economy
+copying build/lib/skopos/economy/consumer.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/economy
+copying build/lib/skopos/economy/capabilities.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/economy
+copying build/lib/skopos/economy/invoke.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/economy
+copying build/lib/skopos/countries.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_database_settings.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/analytics_filters.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/password_policy.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/config.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/env.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/theme_prefs.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/host_infer.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/node_ingest.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/apache_logs.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/nav_chrome.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_topbar.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/client_ip.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/env_io.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/charts.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/config_io.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_security.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/node_installer.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/enrich.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+creating build/bdist.macosx-11.0-arm64/wheel/skopos/security
+copying build/lib/skopos/security/history_charts.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/report_builder.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/store.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/alert_i18n.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/docker_insights.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/audit.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/charts.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/auto_scan.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/collector.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/fail2ban_status.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/port_knocks.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/export.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/momus_push.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/tls_certs.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/probe.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/knock_charts.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/knock_analyzer.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/posture_loader.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/project_audit.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/security/posture.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/security
+copying build/lib/skopos/config_paths.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/app_auth.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/apache.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/analytics_queries.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_agent.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/collector.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_refresh.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/shell_safe.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/dashboard_snapshots.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/agent_portal.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/docs_i18n_render.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/agent_widget.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+creating build/bdist.macosx-11.0-arm64/wheel/skopos/agent
+copying build/lib/skopos/agent/service.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/security_report.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/config.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/providers.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/ecosystem_briefing.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/context.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/analyst.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/redact.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/rate_limit.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/nav_actions.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/agent/injection_guard.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/agent
+copying build/lib/skopos/ui_wizard.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/docs_i18n_ui.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/remote_ops.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/fleet_warmup.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+creating build/bdist.macosx-11.0-arm64/wheel/skopos/observability
+copying build/lib/skopos/observability/charts.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/observability
+copying build/lib/skopos/observability/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/observability
+copying build/lib/skopos/observability/prom.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/observability
+copying build/lib/skopos/observability/graph3d.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/observability
+copying build/lib/skopos/observability/context_fmt.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/observability
+copying build/lib/skopos/app_shell.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/docs_i18n_translations.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_onboarding.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/geo_centroids.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/agent_token.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/doc_i18n.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+creating build/bdist.macosx-11.0-arm64/wheel/skopos/node_agent
+copying build/lib/skopos/node_agent/skopos_node.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/node_agent
+copying build/lib/skopos/node_agent/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/node_agent
+creating build/bdist.macosx-11.0-arm64/wheel/skopos/components
+creating build/bdist.macosx-11.0-arm64/wheel/skopos/components/voice_input
+copying build/lib/skopos/components/voice_input/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/components/voice_input
+copying build/lib/skopos/nginx.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/geoip.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+creating build/bdist.macosx-11.0-arm64/wheel/skopos/theming
+copying build/lib/skopos/theming/catalog.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/theming
+copying build/lib/skopos/theming/charts.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/theming
+copying build/lib/skopos/theming/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/theming
+copying build/lib/skopos/theming/page_css.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/theming
+copying build/lib/skopos/theming/widget_css.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/theming
+copying build/lib/skopos/theming/app_css.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/theming
+copying build/lib/skopos/theming/shell_css.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/theming
+copying build/lib/skopos/nginx_logs.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/backfill.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ssh_setup.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_transport.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_briefing.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/db_dialect.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_lazy_tabs.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_dashboard_auth.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/traffic.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/redact.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/wrapper_gen.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/setup_state.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/db_settings.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/period_picker.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/node_store.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/period_data.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/premium_chrome.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/node_remediation.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_agent_settings.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_a2a.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/public_status.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/db_connection.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/i18n.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ssh.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_sidebar.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/anonymize.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/node_protocol.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_remediation.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/node_report.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/docs_viewer.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ecosystem.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/atomic_io.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_security_report.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/remote_scripts.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/docs_i18n_translations_rest.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/brand.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_tab_deeplink.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/auth_store.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/ui_password_gate.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/uvicorn_log.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+copying build/lib/skopos/telegram_notify.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos
+creating build/bdist.macosx-11.0-arm64/wheel/skopos/remediation
+copying build/lib/skopos/remediation/git_push.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/node_agent.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/autopilot.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/fleet_forwarder.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/health.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/a2a_observer.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/report_push.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/agent_state.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/a2a_ingress.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/jobs.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/order_queue.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/conductor.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/deploy_order.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/clients.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/agent_executor.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/recipes.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skopos/remediation/fleet_relay.py -> build/bdist.macosx-11.0-arm64/wheel/./skopos/remediation
+copying build/lib/skoposctl.py -> build/bdist.macosx-11.0-arm64/wheel/.
+running install_egg_info
+Copying skopos_fleet.egg-info to build/bdist.macosx-11.0-arm64/wheel/./skopos_fleet-0.2.3-py3.12.egg-info
+running install_scripts
+creating build/bdist.macosx-11.0-arm64/wheel/skopos_fleet-0.2.3.dist-info/WHEEL
+creating '/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/vulnetix-response-check-2026-10-29/skopos-0.2.3-handoff/wheels/.tmp-gc8giaqw/skopos_fleet-0.2.3-py3-none-any.whl' and adding 'build/bdist.macosx-11.0-arm64/wheel' to it
+adding 'skoposctl.py'
+adding 'skopos/__init__.py'
+adding 'skopos/agent_portal.py'
+adding 'skopos/agent_token.py'
+adding 'skopos/agent_widget.py'
+adding 'skopos/analytics_filters.py'
+adding 'skopos/analytics_queries.py'
+adding 'skopos/anonymize.py'
+adding 'skopos/apache.py'
+adding 'skopos/apache_logs.py'
+adding 'skopos/app_auth.py'
+adding 'skopos/app_shell.py'
+adding 'skopos/asn_db.py'
+adding 'skopos/atomic_io.py'
+adding 'skopos/auth_store.py'
+adding 'skopos/backfill.py'
+adding 'skopos/brand.py'
+adding 'skopos/charts.py'
+adding 'skopos/client_ip.py'
+adding 'skopos/collector.py'
+adding 'skopos/config.py'
+adding 'skopos/config_io.py'
+adding 'skopos/config_paths.py'
+adding 'skopos/countries.py'
+adding 'skopos/dashboard_snapshots.py'
+adding 'skopos/db.py'
+adding 'skopos/db_connection.py'
+adding 'skopos/db_dialect.py'
+adding 'skopos/db_migrate.py'
+adding 'skopos/db_settings.py'
+adding 'skopos/doc_i18n.py'
+adding 'skopos/docs_i18n_render.py'
+adding 'skopos/docs_i18n_translations.py'
+adding 'skopos/docs_i18n_translations_rest.py'
+adding 'skopos/docs_i18n_ui.py'
+adding 'skopos/docs_viewer.py'
+adding 'skopos/ecosystem.py'
+adding 'skopos/enrich.py'
+adding 'skopos/env.py'
+adding 'skopos/env_io.py'
+adding 'skopos/fleet_warmup.py'
+adding 'skopos/geo_centroids.py'
+adding 'skopos/geo_earth.py'
+adding 'skopos/geoip.py'
+adding 'skopos/host_infer.py'
+adding 'skopos/i18n.py'
+adding 'skopos/log_sources.py'
+adding 'skopos/nav_chrome.py'
+adding 'skopos/nginx.py'
+adding 'skopos/nginx_logs.py'
+adding 'skopos/node_ingest.py'
+adding 'skopos/node_installer.py'
+adding 'skopos/node_protocol.py'
+adding 'skopos/node_remediation.py'
+adding 'skopos/node_report.py'
+adding 'skopos/node_store.py'
+adding 'skopos/password_policy.py'
+adding 'skopos/period_data.py'
+adding 'skopos/period_picker.py'
+adding 'skopos/premium_chrome.py'
+adding 'skopos/public_status.py'
+adding 'skopos/redact.py'
+adding 'skopos/remote_ops.py'
+adding 'skopos/remote_scripts.py'
+adding 'skopos/setup_state.py'
+adding 'skopos/shell_safe.py'
+adding 'skopos/ssh.py'
+adding 'skopos/ssh_setup.py'
+adding 'skopos/telegram_notify.py'
+adding 'skopos/theme_prefs.py'
+adding 'skopos/themes.py'
+adding 'skopos/traffic.py'
+adding 'skopos/ui.py'
+adding 'skopos/ui_a2a.py'
+adding 'skopos/ui_agent.py'
+adding 'skopos/ui_agent_settings.py'
+adding 'skopos/ui_briefing.py'
+adding 'skopos/ui_dashboard_auth.py'
+adding 'skopos/ui_database_settings.py'
+adding 'skopos/ui_lazy_tabs.py'
+adding 'skopos/ui_onboarding.py'
+adding 'skopos/ui_password_gate.py'
+adding 'skopos/ui_refresh.py'
+adding 'skopos/ui_remediation.py'
+adding 'skopos/ui_security.py'
+adding 'skopos/ui_security_report.py'
+adding 'skopos/ui_sidebar.py'
+adding 'skopos/ui_tab_deeplink.py'
+adding 'skopos/ui_topbar.py'
+adding 'skopos/ui_transport.py'
+adding 'skopos/ui_wizard.py'
+adding 'skopos/uvicorn_log.py'
+adding 'skopos/wrapper_gen.py'
+adding 'skopos/agent/__init__.py'
+adding 'skopos/agent/analyst.py'
+adding 'skopos/agent/config.py'
+adding 'skopos/agent/context.py'
+adding 'skopos/agent/ecosystem_briefing.py'
+adding 'skopos/agent/injection_guard.py'
+adding 'skopos/agent/nav_actions.py'
+adding 'skopos/agent/providers.py'
+adding 'skopos/agent/rate_limit.py'
+adding 'skopos/agent/redact.py'
+adding 'skopos/agent/security_report.py'
+adding 'skopos/agent/service.py'
+adding 'skopos/components/voice_input/__init__.py'
+adding 'skopos/economy/__init__.py'
+adding 'skopos/economy/capabilities.py'
+adding 'skopos/economy/config.py'
+adding 'skopos/economy/consumer.py'
+adding 'skopos/economy/handlers.py'
+adding 'skopos/economy/invoke.py'
+adding 'skopos/economy/manifest.py'
+adding 'skopos/economy/payments.py'
+adding 'skopos/economy/signing.py'
+adding 'skopos/node_agent/__init__.py'
+adding 'skopos/node_agent/skopos_node.py'
+adding 'skopos/observability/__init__.py'
+adding 'skopos/observability/charts.py'
+adding 'skopos/observability/context_fmt.py'
+adding 'skopos/observability/graph3d.py'
+adding 'skopos/observability/prom.py'
+adding 'skopos/remediation/__init__.py'
+adding 'skopos/remediation/a2a_ingress.py'
+adding 'skopos/remediation/a2a_observer.py'
+adding 'skopos/remediation/agent_executor.py'
+adding 'skopos/remediation/agent_state.py'
+adding 'skopos/remediation/autopilot.py'
+adding 'skopos/remediation/clients.py'
+adding 'skopos/remediation/conductor.py'
+adding 'skopos/remediation/deploy_order.py'
+adding 'skopos/remediation/fleet_forwarder.py'
+adding 'skopos/remediation/fleet_relay.py'
+adding 'skopos/remediation/git_push.py'
+adding 'skopos/remediation/health.py'
+adding 'skopos/remediation/jobs.py'
+adding 'skopos/remediation/node_agent.py'
+adding 'skopos/remediation/order_queue.py'
+adding 'skopos/remediation/recipes.py'
+adding 'skopos/remediation/report_push.py'
+adding 'skopos/security/__init__.py'
+adding 'skopos/security/alert_i18n.py'
+adding 'skopos/security/audit.py'
+adding 'skopos/security/auto_scan.py'
+adding 'skopos/security/charts.py'
+adding 'skopos/security/collector.py'
+adding 'skopos/security/docker_insights.py'
+adding 'skopos/security/export.py'
+adding 'skopos/security/fail2ban_status.py'
+adding 'skopos/security/history_charts.py'
+adding 'skopos/security/knock_analyzer.py'
+adding 'skopos/security/knock_charts.py'
+adding 'skopos/security/momus_push.py'
+adding 'skopos/security/port_knocks.py'
+adding 'skopos/security/posture.py'
+adding 'skopos/security/posture_loader.py'
+adding 'skopos/security/probe.py'
+adding 'skopos/security/project_audit.py'
+adding 'skopos/security/report_builder.py'
+adding 'skopos/security/store.py'
+adding 'skopos/security/tls_certs.py'
+adding 'skopos/theming/__init__.py'
+adding 'skopos/theming/app_css.py'
+adding 'skopos/theming/catalog.py'
+adding 'skopos/theming/charts.py'
+adding 'skopos/theming/page_css.py'
+adding 'skopos/theming/shell_css.py'
+adding 'skopos/theming/widget_css.py'
+adding 'skopos_fleet-0.2.3.dist-info/licenses/LICENSE'
+adding 'skopos_fleet-0.2.3.dist-info/METADATA'
+adding 'skopos_fleet-0.2.3.dist-info/WHEEL'
+adding 'skopos_fleet-0.2.3.dist-info/entry_points.txt'
+adding 'skopos_fleet-0.2.3.dist-info/top_level.txt'
+adding 'skopos_fleet-0.2.3.dist-info/RECORD'
+removing build/bdist.macosx-11.0-arm64/wheel
+Successfully built artifacts/vulnetix-response-check-2026-10-29/skopos-0.2.3-handoff/wheels/skopos_fleet-0.2.3-py3-none-any.whl

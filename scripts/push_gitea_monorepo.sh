@@ -166,6 +166,30 @@ _assert_satellite_links_resolve() {
   return 1
 }
 
+# Syntax errors and undefined names anywhere in the Python tree being pushed (ruff E9, F63,
+# F7, F82 over the committed files at BRANCH). CI's style and type gates cover the critical
+# modules only; this one covers satellites and legacy code too. Override: SKIP_PY_GATE=1
+_assert_python_bug_gate() {
+  if [[ "${SKIP_PY_GATE:-0}" == "1" ]]; then
+    echo "  ⚠️  SKIP_PY_GATE=1 — not checking Python syntax/undefined names"
+    return 0
+  fi
+  local rc=0
+  bash "$ROOT/scripts/python_bug_gate.sh" "$BRANCH" >/tmp/aicom-py-gate.log 2>&1 || rc=$?
+  if [[ "$rc" -eq 0 ]]; then
+    echo "  ✓ Python bug gate clean (syntax, undefined names)"
+    return 0
+  fi
+  if [[ "$rc" -eq 2 ]]; then
+    echo "  ⚠️  Python bug gate skipped: $(tail -1 /tmp/aicom-py-gate.log)"
+    return 0
+  fi
+  echo "  ✗ Python bug gate found errors in ${BRANCH}:" >&2
+  tail -30 /tmp/aicom-py-gate.log >&2
+  echo "  (or SKIP_PY_GATE=1 to push anyway)" >&2
+  return 1
+}
+
 _assert_clean_commit_trailers() {
   local url="$1"
   if [[ "${SKIP_TRAILER_GATE:-0}" == "1" ]]; then
@@ -259,6 +283,7 @@ _push_direct() {
     _assert_alexar76_author "$url"
     _assert_clean_commit_trailers "$url"
     _assert_satellite_links_resolve
+    _assert_python_bug_gate
     local pr_description
     # Git push options cannot contain literal LF; Gitea decodes escaped newlines.
     pr_description="$(python3 - "$PR_BODY_FILE" <<'PY'
@@ -286,6 +311,7 @@ PY
   _assert_alexar76_author "$url"
   _assert_clean_commit_trailers "$url"
   _assert_satellite_links_resolve
+  _assert_python_bug_gate
   git_t push "$url" "${BRANCH}:${BRANCH}"
   remote="$(_remote_head "$url" || true)"
   if [[ "$remote" != "$local_head" ]]; then

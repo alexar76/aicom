@@ -1,0 +1,201 @@
+{
+  "npm-latest": {
+    "url": "https://registry.npmjs.org/%40aimarket%2Fwarden/latest",
+    "checkedAt": "2026-10-27T18:25:44.002285+00:00",
+    "status": 200,
+    "finalUrl": "https://registry.npmjs.org/%40aimarket%2Fwarden/latest",
+    "contentType": "application/json",
+    "bytes": 3178,
+    "sha256": "370a468f0bdc252c1928b8ad54c43f708db969f461106824e22f1b8eb03cccda",
+    "version": "0.22.2",
+    "engines": {
+      "node": ">=20"
+    },
+    "runtimeDependencies": {},
+    "dist": {
+      "shasum": "f31ef1c06b28a34ea333c6c8dddeaa4f5d6db969",
+      "tarball": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.22.2.tgz",
+      "fileCount": 345,
+      "integrity": "sha512-qB9RKZUfkFebnqeCFwHwhgvwwbhAbrE6/EdAa7UVoytcDdrQQ8Nt1VdPhvCBZ+wKqCOfXSkj7fDGie0GJVWg0w==",
+      "signatures": [
+        {
+          "sig": "MEUCICZYJO9BJOBtpBpC2scmyrYObwJGL7uLrWIz2sUtVJBNAiEA/Ccxm7K/kqwlUA7Mr414Ee6qTbwAn9IRluOiUj69YIE=",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        },
+        {
+          "sig": "MEUCIQCySdSruCNHEx0Z/+5xiYElQWrNoeDAaZNkz5047WY4iQIgIo8fGA8O1tzz1WnvipT+N7FfQEsoZiVwC2yBtdRscRc=",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        }
+      ],
+      "unpackedSize": 3173780
+    },
+    "bin": {
+      "warden-mcp": "dist/mcp-server.js"
+    },
+    "scripts": {
+      "mcp": "node dist/mcp-server.js",
+      "test": "vitest run",
+      "build": "tsc -p tsconfig.json && node scripts/sync-flow-guard.mjs",
+      "prepare": "npm run build",
+      "typecheck": "tsc -p tsconfig.json --noEmit",
+      "bench:wrap": "npm run build && node scripts/benchmark-wrap.mjs",
+      "test:macos": "node scripts/build-macos.mjs && node scripts/build-macos.mjs --tests && npm run build && vitest run --config vitest.macos.config.ts",
+      "test:watch": "vitest",
+      "build:macos": "node scripts/build-macos.mjs",
+      "test:redteam": "node scripts/redteam/flow-redteam.mjs --check",
+      "check:quality": "node scripts/check-quality-gate.mjs",
+      "check:ruleset": "node scripts/check-published-ruleset.mjs",
+      "test:coverage": "vitest run --coverage",
+      "prepublishOnly": "npm run build && npm test && npm run test:redteam && npm run check:ruleset && npm run check:quality"
+    }
+  },
+  "npm-0.22.2": {
+    "url": "https://registry.npmjs.org/%40aimarket%2Fwarden/0.22.2",
+    "checkedAt": "2026-10-27T18:25:44.002659+00:00",
+    "status": 200,
+    "finalUrl": "https://registry.npmjs.org/%40aimarket%2Fwarden/0.22.2",
+    "contentType": "application/json",
+    "bytes": 3178,
+    "sha256": "370a468f0bdc252c1928b8ad54c43f708db969f461106824e22f1b8eb03cccda",
+    "version": "0.22.2",
+    "engines": {
+      "node": ">=20"
+    },
+    "runtimeDependencies": {},
+    "dist": {
+      "shasum": "f31ef1c06b28a34ea333c6c8dddeaa4f5d6db969",
+      "tarball": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.22.2.tgz",
+      "fileCount": 345,
+      "integrity": "sha512-qB9RKZUfkFebnqeCFwHwhgvwwbhAbrE6/EdAa7UVoytcDdrQQ8Nt1VdPhvCBZ+wKqCOfXSkj7fDGie0GJVWg0w==",
+      "signatures": [
+        {
+          "sig": "MEUCICZYJO9BJOBtpBpC2scmyrYObwJGL7uLrWIz2sUtVJBNAiEA/Ccxm7K/kqwlUA7Mr414Ee6qTbwAn9IRluOiUj69YIE=",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        },
+        {
+          "sig": "MEUCIQCySdSruCNHEx0Z/+5xiYElQWrNoeDAaZNkz5047WY4iQIgIo8fGA8O1tzz1WnvipT+N7FfQEsoZiVwC2yBtdRscRc=",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        }
+      ],
+      "unpackedSize": 3173780
+    },
+    "bin": {
+      "warden-mcp": "dist/mcp-server.js"
+    },
+    "scripts": {
+      "mcp": "node dist/mcp-server.js",
+      "test": "vitest run",
+      "build": "tsc -p tsconfig.json && node scripts/sync-flow-guard.mjs",
+      "prepare": "npm run build",
+      "typecheck": "tsc -p tsconfig.json --noEmit",
+      "bench:wrap": "npm run build && node scripts/benchmark-wrap.mjs",
+      "test:macos": "node scripts/build-macos.mjs && node scripts/build-macos.mjs --tests && npm run build && vitest run --config vitest.macos.config.ts",
+      "test:watch": "vitest",
+      "build:macos": "node scripts/build-macos.mjs",
+      "test:redteam": "node scripts/redteam/flow-redteam.mjs --check",
+      "check:quality": "node scripts/check-quality-gate.mjs",
+      "check:ruleset": "node scripts/check-published-ruleset.mjs",
+      "test:coverage": "vitest run --coverage",
+      "prepublishOnly": "npm run build && npm test && npm run test:redteam && npm run check:ruleset && npm run check:quality"
+    }
+  },
+  "warden-home": {
+    "url": "https://warden.modelmarket.dev/",
+    "checkedAt": "2026-10-27T18:25:44.002804+00:00",
+    "status": 200,
+    "finalUrl": "https://warden.modelmarket.dev/",
+    "contentType": "text/html",
+    "bytes": 130660,
+    "sha256": "5a8b4200d4bf2c353af47990db1fdd57a0a3d5798f01e21802283443cd1cbe86",
+    "preview": " WARDEN — the MCP firewall that publishes what it got wrong WARDEN The survey Gate chain Verdict Threat feed What it is not Quick start EN RU ES FR 中文 WARDEN 0.20.0 brings ruleset v16 and the second flow-guard pass of 2026-10-22. Measured on this code: AgentDojo replay 0 of 579 attack actions, MCPTox held-out 210 of 218 poisoned tools; other figures on this page describe earlier builds. See the flow-guard documentation for current behavior. MCP security firewall · zero runtime dependencies An MC"
+  },
+  "warden-public-readme": {
+    "url": "https://raw.githubusercontent.com/alexar76/warden/main/README.md",
+    "checkedAt": "2026-10-27T18:25:44.002935+00:00",
+    "status": 200,
+    "finalUrl": "https://raw.githubusercontent.com/alexar76/warden/main/README.md",
+    "contentType": "text/plain; charset=utf-8",
+    "bytes": 29616,
+    "sha256": "29d82f5bac03f5438e299dfa433dc1c863f55b36cdb2cfaee4b5b126162e651b",
+    "preview": " > **🔄 Synced from a monorepo — but with a live history.** `warden` mirrors the > canonical AI-Factory monorepo. History here is append-only (no force-push). > **Pull requests are welcome** — merged PRs are imported back into the monorepo > and re-synced here, so your contribution becomes canonical. > 💬 **[Issues](https://github.com/alexar76/warden/issues)** · **[Pull requests](https://github.com/alexar76/warden/pulls)** both welcome. # WARDEN — MCP server **[Final ranking-feedback comparison, 2"
+  },
+  "histor-home": {
+    "url": "https://histor.modelmarket.dev/",
+    "checkedAt": "2026-10-27T18:25:44.003053+00:00",
+    "status": 200,
+    "finalUrl": "https://histor.modelmarket.dev/",
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 25751,
+    "sha256": "076a4e3471ee6f8c54ef90b18171a4ec26355bcb6cc1a392c07a55ff0641d7c2",
+    "preview": " HISTOR — transparency log for MCP tool definitions HISTOR Servers Changes Log Check Why How it works GitHub EN RU ES FR ZH ☰ Servers Changes Log Check Why How it works GitHub EN RU ES FR ZH Transparency log · MCP tool definitions Every MCP server's tools, on the record . Your AI client trusts the tool descriptions an MCP server sends it — and a server can change them after you approved it. HISTOR keeps a public, signed record of what every remote MCP server in the official registry advertised, "
+  },
+  "histor-changes": {
+    "url": "https://histor.modelmarket.dev/changes",
+    "checkedAt": "2026-10-27T18:25:44.003169+00:00",
+    "status": 200,
+    "finalUrl": "https://histor.modelmarket.dev/changes",
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 25751,
+    "sha256": "076a4e3471ee6f8c54ef90b18171a4ec26355bcb6cc1a392c07a55ff0641d7c2",
+    "preview": " HISTOR — transparency log for MCP tool definitions HISTOR Servers Changes Log Check Why How it works GitHub EN RU ES FR ZH ☰ Servers Changes Log Check Why How it works GitHub EN RU ES FR ZH Transparency log · MCP tool definitions Every MCP server's tools, on the record . Your AI client trusts the tool descriptions an MCP server sends it — and a server can change them after you approved it. HISTOR keeps a public, signed record of what every remote MCP server in the official registry advertised, "
+  },
+  "histor-health": {
+    "url": "https://histor.modelmarket.dev/health",
+    "checkedAt": "2026-10-27T18:25:44.003289+00:00",
+    "status": 200,
+    "finalUrl": "https://histor.modelmarket.dev/health",
+    "contentType": "application/json",
+    "bytes": 209,
+    "sha256": "ea119e6775942589d4b00d1bc2a9c6016082c0d3dd59b78147bb94f3ac12cde0",
+    "health": {
+      "ok": true,
+      "service": "histor",
+      "version": "0.4.2",
+      "profile": "prod",
+      "store": "postgresql",
+      "tree_size": 1121729,
+      "crawl_running": true,
+      "last_crawl_error": "interrupted: the process restarted before the crawl finished"
+    }
+  },
+  "histor-latest-change": {
+    "url": "https://histor.modelmarket.dev/api/v1/changes?limit=1",
+    "checkedAt": "2026-10-27T18:25:44.003396+00:00",
+    "status": 200,
+    "finalUrl": "https://histor.modelmarket.dev/api/v1/changes?limit=1",
+    "contentType": "application/json",
+    "bytes": 9429,
+    "sha256": "1817d0d3ec28a86f01695fbc5664c24acb2b4a27bda4db8f2e96c55856528f52",
+    "preview": "{\"changes\":[{\"id\":33662,\"target_id\":\"f46297141d6b9e18\",\"observed_at\":\"2026-10-27T18:20:30Z\",\"from_subject\":\"sha256-83F8U2SOuqfBE/EAdUD5Of1on0N3wvY9zzupLW7HPQo=\",\"to_subject\":\"sha256-n+JxyK6Ya1AlCro8fwEjBviaRBYyvPg1s7lsqLXY4Qs=\",\"from_toolset\":\"sha256-l+aDLb4Mwjf06CX6PdPsLKdeSInZgqCfYHOhKpblKqE=\",\"to_toolset\":\"sha256-pQCwLGNaLTB23bkfKfwNLA+TRkkE8LkdZkXTTYISuDk=\",\"summary\":{\"added\":[],\"removed\":[],\"modified\":[{\"tool\":\"alegaciones_denuncia_trafico\",\"fields\":{\"description\":[[\"=\",\"Compone las alegaciones contra una denuncia de tráfico, con los motivos que se elijan (requisitos de la denuncia, notificación, error del radar, caducidad, prescripción, identificación del conductor). Los motivos cambian el cuerpo del escrito: elige los que se sostengan en el caso.\"],[\"+\",\" Con la fecha de los hechos y la del acuerdo de iniciación —que, si la denuncia se notificó en el acto, es la de su notificación (art. 86.2 RDL 6/2015)— el escrito AÑADE POR SU CUENTA los dos motivos que esas fechas sostengan —la prescripción de la infracción y la caducidad del procedimiento—, con su plazo, su cómputo y su petición de archivo; si las fechas dejan el expediente en plazo, no añade nada.\"],[\"=\",\" No pide ni devuelve datos personales: el nombre, el DNI, el domicilio y el contacto NO están entre sus campos (el escrito los deja como huecos entre corchetes para que los rellene quien lo presenta). No le pidas esos datos y no los escribas en la llamada.\"]],\"inputSchema\":[{\"path\":\"$.\\\"properties\\\".\\\"fechaInfraccion\\\".\\\"description\\\"\",\"new\":\"\\\"Fecha en que se cometieron los hechos (AAAA-MM-DD), si consta en la "
+  },
+  "console-criteria": {
+    "url": "https://console.dev/selection-criteria",
+    "checkedAt": "2026-10-27T18:25:44.655284+00:00",
+    "status": 200,
+    "finalUrl": "https://console.dev/selection-criteria",
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 19649,
+    "sha256": "1109d96ed6ee484965745506bdd91cb71ac6c5f3ecf7afed5840d670ca771b73",
+    "preview": " How Console selects tools Skip to content console.dev Logo console Archive Tools Categories Advertise Podcast console.dev Selection Criteria Console is the place to discover the best tools and beta releases for developers. We&#39;re always trying out new tools - whether brand new releases, updates, or things we&#39;ve rediscovered - but we only feature the most interesting. This page explains our selection criteria for how we choose. Interesting tools Each week we feature and review 2-3 interes"
+  },
+  "hn-show-guidelines": {
+    "url": "https://news.ycombinator.com/showhn.html",
+    "checkedAt": "2026-10-27T18:25:44.660756+00:00",
+    "status": 200,
+    "finalUrl": "https://news.ycombinator.com/showhn.html",
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 2682,
+    "sha256": "5354d8ed9b3fd61d50b1141c023aaaf16f30391e3cc09c49461da54e344956c4",
+    "preview": " Show HN Guidelines Show HN Show HN is for something you've made that other people can play with. HN users can try it out, give you feedback, and ask questions in the thread. On topic: things people can run on their computers or hold in their hands. For hardware, you can post a video or detailed article. For books, a sample chapter is ok. Off topic: blog posts, sign-up pages, newsletters, lists, and other reading material. Those can't be tried out, so can't be Show HNs. Make a regular submission"
+  },
+  "hn-guidelines": {
+    "url": "https://news.ycombinator.com/newsguidelines.html",
+    "checkedAt": "2026-10-27T18:25:44.739702+00:00",
+    "status": 200,
+    "finalUrl": "https://news.ycombinator.com/newsguidelines.html",
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 5864,
+    "sha256": "47dbe61e3db0e10ba11597196caf714a4e0172fc9f46e245a3181a3d9871a7fa",
+    "preview": " Hacker News Guidelines Hacker News Guidelines What to Submit On-Topic: Anything that good hackers would find interesting. That includes more than hacking and startups. If you had to reduce it to a sentence, the answer might be: anything that gratifies one's intellectual curiosity. Off-Topic: Most stories about politics, or crime, or sports, or celebrities, unless they're evidence of some interesting new phenomenon. If they'd cover it on TV news, it's probably off-topic. In Submissions Please do"
+  }
+}

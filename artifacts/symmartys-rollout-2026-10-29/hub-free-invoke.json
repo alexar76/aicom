@@ -1,0 +1,298 @@
+{
+  "ok": true,
+  "capability_id": "symmartys.sources@v1",
+  "output": {
+    "sources": [
+      {
+        "id": "vies",
+        "name": "EU VIES — VAT Information Exchange System (European Commission)",
+        "licence": "European Commission reuse policy (Decision 2011/833/EU)",
+        "basis": "A public verification service of the European Commission; the answer is what the member state's registry returned at request time. SYMMARTYS stores nothing.",
+        "attribution": "European Commission, VIES",
+        "licence_url": "https://ec.europa.eu/taxation_customs/vies/#/help"
+      },
+      {
+        "id": "gleif",
+        "name": "GLEIF — Global LEI Index",
+        "licence": "CC0 1.0",
+        "basis": "LEI reference data are published under CC0; no restriction on commercial use.",
+        "attribution": "Global Legal Entity Identifier Foundation (GLEIF), CC0",
+        "licence_url": "https://www.gleif.org/en/meta/lei-data-terms-of-use"
+      },
+      {
+        "id": "ecb",
+        "name": "ECB euro foreign exchange reference rates",
+        "licence": "ECB reuse with source acknowledgement",
+        "basis": "Reproduction is authorised provided the source is acknowledged. Reference rates are for information only, not dealing rates.",
+        "attribution": "Source: European Central Bank (euro foreign exchange reference rates)",
+        "licence_url": "https://www.ecb.europa.eu/services/disclaimer/html/index.en.html"
+      },
+      {
+        "id": "ofac",
+        "name": "U.S. Treasury OFAC — Specially Designated Nationals (SDN) list",
+        "licence": "U.S. Government work (public domain)",
+        "basis": "A U.S. federal government publication, free of copyright.",
+        "attribution": "U.S. Department of the Treasury, Office of Foreign Assets Control (SDN list)",
+        "licence_url": "https://ofac.treasury.gov/sanctions-list-service"
+      },
+      {
+        "id": "eu_fsf",
+        "name": "EU consolidated list of persons, groups and entities subject to financial sanctions",
+        "licence": "European Commission reuse policy (Decision 2011/833/EU)",
+        "basis": "Commission documents may be reused with acknowledgement of the source.",
+        "attribution": "European Commission, Financial Sanctions Files (FSF)",
+        "licence_url": "https://data.europa.eu/data/datasets/consolidated-list-of-persons-groups-and-entities-subject-to-eu-financial-sanctions"
+      },
+      {
+        "id": "uk_fcdo",
+        "name": "UK Sanctions List (Foreign, Commonwealth & Development Office)",
+        "licence": "Open Government Licence v3.0",
+        "basis": "UK government information, free to reuse commercially with attribution. It carries the UN Security Council designations the UK implements, each with its UN reference number; SYMMARTYS reads the UN's own file no longer, as that carries no reuse licence.",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0 (UK Sanctions List, FCDO)",
+        "licence_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+      },
+      {
+        "id": "opentimestamps",
+        "name": "OpenTimestamps public calendars",
+        "licence": "Free public service",
+        "basis": "Calendars aggregate digests into Bitcoin transactions; a proof is verified against the Bitcoin block header, not against the calendar.",
+        "attribution": "OpenTimestamps (opentimestamps.org)",
+        "licence_url": "https://opentimestamps.org/"
+      },
+      {
+        "id": "bitcoin_headers",
+        "name": "Bitcoin block headers from the Bitcoin P2P network",
+        "licence": "Public chain data",
+        "basis": "Block headers are public consensus data that every Bitcoin node serves; SYMMARTYS keeps its own copy from the genesis block, checks each header's proof of work and difficulty, and uses a header only once a second node on another network agrees.",
+        "attribution": "Bitcoin network (headers fetched peer to peer)",
+        "licence_url": ""
+      },
+      {
+        "id": "eos",
+        "name": "EU EORI validation (European Commission, EOS)",
+        "licence": "European Commission reuse policy (Decision 2011/833/EU)",
+        "basis": "A public verification service of the European Commission for Economic Operators Registration and Identification numbers; name and address appear only where the operator consented to their publication. SYMMARTYS stores nothing.",
+        "attribution": "European Commission, EORI validation (EOS)",
+        "licence_url": "https://ec.europa.eu/taxation_customs/dds2/eos/eori_validation.jsp"
+      },
+      {
+        "id": "brreg",
+        "name": "Brønnøysund Register Centre — Central Coordinating Register for Legal Entities (Norway)",
+        "licence": "Norwegian Licence for Open Government Data (NLOD) 2.0",
+        "basis": "Open data of the Norwegian state; free reuse with attribution.",
+        "attribution": "Brønnøysundregistrene, Enhetsregisteret (NLOD 2.0)",
+        "licence_url": "https://data.norge.no/nlod/en/2.0"
+      },
+      {
+        "id": "recherche_entreprises",
+        "name": "API Recherche d'entreprises (France: SIRENE and the RNE)",
+        "licence": "Licence Ouverte / Open Licence 2.0 (Etalab)",
+        "basis": "French public-sector open data from INSEE's SIRENE register and the national register of companies, served by the State's digital directorate (DINUM).",
+        "attribution": "DINUM, API Recherche d'entreprises (INSEE SIRENE, INPI RNE), Licence Ouverte 2.0",
+        "licence_url": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/"
+      },
+      {
+        "id": "ares",
+        "name": "ARES — Administrative Register of Economic Subjects (Czech Republic)",
+        "licence": "Czech public administration open data",
+        "basis": "Published by the Czech Ministry of Finance for free public use.",
+        "attribution": "Ministerstvo financí ČR, ARES",
+        "licence_url": "https://ares.gov.cz/stranky/vyvojar-info"
+      },
+      {
+        "id": "prh",
+        "name": "PRH / YTJ open data — Finnish Trade Register and Business Information System",
+        "licence": "Creative Commons Attribution 4.0 (CC BY 4.0)",
+        "basis": "Open data of the Finnish Patent and Registration Office and the Tax Administration.",
+        "attribution": "Finnish Patent and Registration Office (PRH), YTJ open data, CC BY 4.0",
+        "licence_url": "https://www.prh.fi/en/presentation_and_duties/opendata.html"
+      },
+      {
+        "id": "companies_house",
+        "name": "Companies House — UK register of companies",
+        "licence": "Open Government Licence v3.0",
+        "basis": "Public register data of the UK Registrar of Companies; the API needs a free key, held by the operator.",
+        "attribution": "Contains public sector information from Companies House, licensed under the Open Government Licence v3.0",
+        "licence_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+      },
+      {
+        "id": "iana_rdap",
+        "name": "RDAP — domain registration data (IANA bootstrap, then the TLD registry)",
+        "licence": "Public registration data (RFC 9083)",
+        "basis": "IANA's bootstrap file names each TLD's RDAP service; the answer is what that registry publishes. Only registries named in IANA's file are asked.",
+        "attribution": "IANA RDAP bootstrap and the TLD registry's RDAP service",
+        "licence_url": "https://www.iana.org/help/rdap-faq"
+      },
+      {
+        "id": "web",
+        "name": "A web page the caller names (web capture)",
+        "licence": "The page's own terms; SYMMARTYS returns it to the caller as evidence only",
+        "basis": "SYMMARTYS fetches one page once, as a browser would, and records what it answered. The content belongs to its publisher.",
+        "attribution": "The publisher of the captured page",
+        "licence_url": ""
+      },
+      {
+        "id": "holidays",
+        "name": "python-holidays — public holidays and market calendars",
+        "licence": "MIT",
+        "basis": "An open-source library compiled into SYMMARTYS: no network at answer time.",
+        "attribution": "python-holidays (vacanza/holidays), MIT",
+        "licence_url": "https://github.com/vacanza/holidays/blob/dev/LICENSE"
+      }
+    ],
+    "sanctions": {
+      "lists": {
+        "OFAC-SDN": {
+          "list": "OFAC-SDN",
+          "entries": 19484,
+          "published": "2026-10-27",
+          "fetched_at": "2026-10-29T07:23:11Z",
+          "sha256": [
+            "5f240bed79d504e7a54788b4cd1c7f84e6afa56cd4778653b70b0771b6a8509d",
+            "b0e2811fbb49ba6e9941a497e6b05fa2c9037b45ae7923196a01e2363a402259",
+            "8255ce1eb2b85e08bac9e378eb8b28c59ca4926a3645f9421502cc11d48b86f1"
+          ],
+          "age_hours": 0.12
+        },
+        "EU": {
+          "list": "EU",
+          "entries": 6269,
+          "published": "2026-10-23",
+          "fetched_at": "2026-10-29T07:24:30Z",
+          "sha256": [
+            "636800c3e494b2ef8934f51f5e23c914a6208a383ac850e674b1b35a7d49d34f"
+          ],
+          "age_hours": 0.12
+        },
+        "UK": {
+          "list": "UK",
+          "entries": 6420,
+          "published": "2026-10-27",
+          "fetched_at": "2026-10-29T07:24:32Z",
+          "sha256": [
+            "6ddb9315a4d34cc89824a321db3688beaf4d71e4ceda7899874539d8e332792b"
+          ],
+          "age_hours": 0.12
+        }
+      },
+      "errors": {}
+    },
+    "calendars": {
+      "countries": 251,
+      "markets": [
+        "ASX",
+        "B3",
+        "BIST",
+        "BME",
+        "BMV",
+        "BSE",
+        "BVC",
+        "BVMF",
+        "BYMA",
+        "CME",
+        "ECB",
+        "GPW",
+        "HKEX",
+        "IFEU",
+        "JPX",
+        "JSE",
+        "KRX",
+        "LSE",
+        "NSE",
+        "NYSE",
+        "NZX",
+        "OSE",
+        "PSX",
+        "SEHK",
+        "SGX",
+        "SIX",
+        "SSE",
+        "SZSE",
+        "TAR",
+        "TSE",
+        "TSX",
+        "TWSE",
+        "XASX",
+        "XBOG",
+        "XBOM",
+        "XBUE",
+        "XCME",
+        "XECB",
+        "XETR",
+        "XFRA",
+        "XHKG",
+        "XIST",
+        "XJPX",
+        "XJSE",
+        "XKAR",
+        "XKRX",
+        "XLON",
+        "XMAD",
+        "XMEX",
+        "XNAS",
+        "XNSE",
+        "XNYS",
+        "XNZE",
+        "XSAU",
+        "XSES",
+        "XSHE",
+        "XSHG",
+        "XSWX",
+        "XTAI",
+        "XTSE",
+        "XWAR"
+      ],
+      "version": "0.107"
+    },
+    "timers": {},
+    "bitcoin_headers": {
+      "height": 973656,
+      "agreed_height": 973656,
+      "peers": {
+        "107.222.16.143": 973656,
+        "174.16.211.55": 973656
+      },
+      "synced_at": 1793258547.0390463,
+      "error": null,
+      "source": "Bitcoin P2P network (two nodes on different networks)"
+    },
+    "version": "0.5.0",
+    "ecb_latest": "2026-10-28"
+  },
+  "price_usd": 0.0,
+  "provenance": {
+    "source": "symmartys",
+    "timestamp": "2026-10-29T07:31:50Z",
+    "input_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+  },
+  "receipt": {
+    "nonce": "a22e5924fb37553d",
+    "product_id": "symmartys",
+    "capability_id": "symmartys.sources@v1",
+    "price_usd": 0.0,
+    "timestamp": "2026-10-29T07:31:50Z",
+    "success": true,
+    "latency_ms": 1.6,
+    "signature": {
+      "algorithm": "ed25519",
+      "public_key": "RxFtZIsxHnja47wBSREBKWa8n8lOh03f1+WKGTBZAyk=",
+      "value": "Cjh5W4DYbZpZYLlTIygVMnHw2fKQD0zDAxQQThAqp6G197mlxEVNjy8e7VdlA+lNJmAptEBJ0oFr+wMT/+PgCA==",
+      "pq_algorithm": "ml-dsa-65",
+      "pq_public_key": "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",
+      "pq_value": "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"
+    }
+  },
+  "success": true,
+  "latency_ms": 1.6,
+  "routed_via": "https://modelmarket.dev",
+  "routing_fee_bps": 100,
+  "provenance_receipt": {
+    "receipt_id": "urn:uuid:4d3085c1-2293-402b-b4d8-5bd3d1514d07",
+    "verify_url": "https://modelmarket.dev/ai-market/v2/p/provenance/verify/urn:uuid:4d3085c1-2293-402b-b4d8-5bd3d1514d07",
+    "receipt_url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:4d3085c1-2293-402b-b4d8-5bd3d1514d07",
+    "verifier_url": "https://verify.modelmarket.dev",
+    "awr_version": "2.0.0",
+    "issuer": "did:key:z6MkkCADReBRLTMEqSV7REQ399ujjFPb8UFBSryAC7SPv6LX",
+    "digest_sri": "sha256-NysdOoO7Mtm6n1rxYheE9/J81TnuMC7McEV8Cll/nG8="
+  }
+}

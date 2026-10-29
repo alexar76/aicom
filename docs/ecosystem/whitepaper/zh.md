@@ -35,7 +35,7 @@ AICOM 是一个**联邦式自主智能体经济体**，围绕供给侧工厂、�
 | **HESTIA 炉灶** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [落地页](https://alexar76.github.io/hestia/) | 隔离托管运行时 — 不是 Hub 目录 |
 | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [落地页](https://alexar76.github.io/attested-memory/) | 面向 AI 智能体的可验证记忆 |
 | **eSIM 运营者套件** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · [指南](https://esim.modelmarket.dev/zh/kit) | 面向用户和 AI 智能体销售旅行 eSIM；运营者一条命令即可加入 |
-| **EMPORION** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · [落地页](https://alexar76.github.io/emporion/) | 面向从事贸易的智能体的公共记录事实，经 Hub 出售 |
+| **SYMMARTYS** | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) · [落地页](https://symmartys.modelmarket.dev/) | 面向从事贸易的智能体的公共记录事实，经 Hub 出售 |
 
 ![完整生态系统图 — Alien Monitor LIVE 模式](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/01-full-ecosystem.png)
 
@@ -166,7 +166,7 @@ flowchart TB
     argus["ARGUS-3<br/>Local agent · optional economy"]
     memory["Attested Memory<br/>可验证智能体记忆"]
     esim["eSIM 运营者<br/>店铺 · 卖家节点 · x402"]
-    emporion["EMPORION<br/>增值税 · LEI · 登记册 · 汇率 · 制裁<br/>OTS · 网页快照 · 定时器"]
+    symmartys["SYMMARTYS<br/>增值税 · LEI · 登记册 · 汇率 · 制裁<br/>OTS · 网页快照 · 定时器"]
   end
 
   subgraph external["External"]
@@ -189,7 +189,7 @@ flowchart TB
   argus -->|写入 · 检索| memory
   argus -->|x402 订单 · 退款| esim
   esim -->|签名报价 · 收据| aicom
-  emporion -->|签名的公共记录事实| aicom
+  symmartys -->|签名的公共记录事实| aicom
   aicom -->|公开遥测| logos
   aicom -->|prompts| llm
   aicom -->|on-chain| chain
@@ -208,7 +208,7 @@ flowchart TB
 | [`gaia/`](https://github.com/alexar76/gaia) | **GAIA 物理预言机** | `:9320` | `gaia` |
 | [`atlas/`](https://github.com/alexar76/atlas) | **ATLAS 传感器地图** | [atlas.modelmarket.dev](https://atlas.modelmarket.dev) | `atlas` |
 | [`esim-kit/`](https://github.com/alexar76/esim-operator-kit) | **eSIM 运营者套件** | [esim.modelmarket.dev](https://esim.modelmarket.dev) · 演示卖家 [modelmarket.dev/providers/esim](https://modelmarket.dev/providers/esim/healthz) | `esim-operator-kit` |
-| [`emporion/`](https://github.com/alexar76/emporion) | **EMPORION 贸易事实** | [emporion.modelmarket.dev](https://emporion.modelmarket.dev/) · `:9351` · 枢纽对等节点 [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health) | `emporion` |
+| [`symmartys/`](https://github.com/alexar76/symmartys/blob/main/README.md) | **SYMMARTYS 贸易事实** | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) · `:9351` · 枢纽对等节点 [modelmarket.dev/providers/symmartys](https://modelmarket.dev/providers/symmartys/health) | `symmartys` |
 | [`logos/`](https://github.com/alexar76/logos) | **LOGOS · 联邦分析** | [logos.modelmarket.dev](https://logos.modelmarket.dev) · `:9460` | `logos` |
 | [`momus/`](https://github.com/alexar76/momus) | **MOMUS red team** | [momus.modelmarket.dev](https://momus.modelmarket.dev) · `:9400` | `momus` |
 | [`themis/`](https://github.com/alexar76/themis) | **THEMIS 准入** | [alexar76.github.io/themis](https://alexar76.github.io/themis/) · Hub 门控 | `themis` |
@@ -307,7 +307,7 @@ flowchart TB
     E1["面向用户的店铺 · 卖家节点 /agents<br/>x402 · 退款 · 签名的交付收据"]
   end
 
-  subgraph EMP["EMPORION · 公共记录事实"]
+  subgraph SYM["SYMMARTYS · 公共记录事实"]
     E2["VIES 增值税号 · GLEIF LEI · 欧洲央行汇率<br/>制裁名单 · OpenTimestamps<br/>公司登记册 · EORI · RDAP · 工作日<br/>网页快照 · 定时器"]
   end
 
@@ -339,7 +339,7 @@ flowchart TB
   MESH -->|"MESH_HUB_URL"| HUB
   CLIENTS --> HUB
   ESIM -->|"签名报价 · 节点或自己的枢纽"| HUB
-  EMP -->|"签名的查询 · 只经枢纽出售"| HUB
+  SYM -->|"签名的查询 · 只经枢纽出售"| HUB
   C1 -->|"x402 订单 · 退款"| E1
   C1 --> MESH
   HUB --> CHAIN
@@ -516,17 +516,19 @@ Hub `PluginRegistry` 中可通过 pip 安装的钩子：`aimarket-safety`、`aim
 
 **实况：** 演示卖家位于 [esim.modelmarket.dev](https://esim.modelmarket.dev)（实时价格，不销售）。2026 年 10 月 15 日的三个测试窗口向 ARGUS 和一个编程智能体出售了真实的 eSIM 并完成退款，每笔交易都在 Base 上（[案例](https://esim.modelmarket.dev/zh/kit/cases)）。**卫星项目：** `esim-kit/` → [alexar76/esim-operator-kit](https://github.com/alexar76/esim-operator-kit)。
 
-### 3.6d EMPORION——面向从事贸易的智能体的公共记录事实
+### 3.6d SYMMARTYS——面向从事贸易的智能体的公共记录事实
 
-**角色：** 智能体在与公司打交道或转账之前要核实的事项，答案直接来自公共登记本身：某个欧盟增值税号是否有效（VIES，附欧盟为该次核验出具的查询编号）、某个法人实体是谁（GLEIF LEI）、某日的欧洲央行参考汇率（是参考汇率，不是成交汇率）、某个名称或钱包地址是否出现在欧盟、OFAC SDN 或英国的制裁名单上（英国名单收录联合国认定并附联合国编号），以及为某个摘要生成锚定比特币的时间戳证明（OpenTimestamps，标准 `.ots`）。六项付费能力，每次 $0.001–0.002——`emporion.vat.check@v1`, `emporion.lei.lookup@v1`, `emporion.fx.rate@v1`, `emporion.sanctions.screen@v1`, `emporion.timestamp.stamp@v1`, `emporion.timestamp.verify@v1`——以及免费的 `emporion.sources@v1`。
+**部署状态（2026-10-29）：** SYMMARTYS（συμμάρτυς，佐证见证者）0.5.0 已在 [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) 上线，提供 16 项能力。现有密钥、数据和提供方历史均已保留。GitHub、PyPI、GHCR 和 MCP Registry 的更新尚未发布。
+
+**角色：** 智能体在与公司打交道或转账之前要核实的事项，答案直接来自公共登记本身：某个欧盟增值税号是否有效（VIES，附欧盟为该次核验出具的查询编号）、某个法人实体是谁（GLEIF LEI）、某日的欧洲央行参考汇率（是参考汇率，不是成交汇率）、某个名称或钱包地址是否出现在欧盟、OFAC SDN 或英国的制裁名单上（英国名单收录联合国认定并附联合国编号），以及为某个摘要生成锚定比特币的时间戳证明（OpenTimestamps，标准 `.ots`）。六项付费能力，每次 $0.001–0.002——`symmartys.vat.check@v1`, `symmartys.lei.lookup@v1`, `symmartys.fx.rate@v1`, `symmartys.sanctions.screen@v1`, `symmartys.timestamp.stamp@v1`, `symmartys.timestamp.verify@v1`——以及免费的 `symmartys.sources@v1`。
 
 **设计上就诚实：** 每个回答都用 Ed25519 签名，连同来源、获取时间以及来源返回内容的 SHA-256。制裁名单查询是查询，不是结论：命中是需要细看的理由，未命中也不等于放行。名单连同最初的获取时间和哈希保存在磁盘上，所以重启或上游故障绝不会悄无声息地把某份名单清空，`/health` 会列出实际已加载的名单。
 
 **自 0.2 起——接下来的问题，以及两样工具：** 按编号或名称查询各国公司登记册（挪威、法国、捷克、芬兰）、欧盟海关用的 EORI 号、域名由谁何时注册（RDAP，经 IANA 引导文件直达该顶级域的注册局），以及约 250 个国家和 TARGET2 等市场的工作日。有两项能力超出了查询：**网页快照**记录某一时刻页面的回答——最终 URL、重定向、IP、TLS 证书和正文的 SHA-256——并把这条记录锚定到比特币；**定时器**在指定时间、或在智能体停止签到时作为死人开关，用签名事件回调智能体的 https 地址。两者都只连接公网地址，并固定连接到已检查的那个地址。
 
-**经 Hub 出售：** EMPORION 运行在开启价格闸门的 `oracle-core` 上：付费能力只应答受信 Hub 签名的调用，直接调用会得到 `402`，并指明出售它的 Hub（§4.3）；每次调用都写入提供方自己的调用日志。
+**经 Hub 出售：** SYMMARTYS 运行在开启价格闸门的 `oracle-core` 上：付费能力只应答受信 Hub 签名的调用，直接调用会得到 `402`，并指明出售它的 Hub（§4.3）；每次调用都写入提供方自己的调用日志。
 
-**在线：** [emporion.modelmarket.dev](https://emporion.modelmarket.dev/)——一个展示其数据来源的实时 3D 集市的落地页——以及枢纽对等节点 [modelmarket.dev/providers/emporion](https://modelmarket.dev/providers/emporion/health)。**卫星仓库：** `emporion/` → [alexar76/emporion](https://github.com/alexar76/emporion)。
+**在线：** [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/)——一个展示其数据来源的实时 3D 集市的落地页——以及枢纽对等节点 [modelmarket.dev/providers/symmartys](https://modelmarket.dev/providers/symmartys/health)。**卫星仓库：** `symmartys/` → [symmartys/](https://github.com/alexar76/symmartys/blob/main/README.md)。
 
 ### 3.7 ARGUS-3
 
@@ -760,7 +762,7 @@ sequenceDiagram
 
 **买家确认的交付。** 直接收款的卖家（x402 seller-direct）对 Hub 不可见，因此收了钱却不交付的商店看起来和真正交付的商店一样。签发交付和退款收据的卖家（eSIM 套件就是如此，§3.6c）让买家可以证明交付：`POST /ai-market/v2/reputation/deliveries` 用上架条目公布的 `provider_pubkey` 核对签名，并在链上核对收据自身 EIP-3009 nonce 下的转账，每笔交易只计一次，且不以明文保存金额、地址或交易。搜索会显示 `deliveries_30d {confirmed, distinct_buyers, refunded}`，信任分对每个不同买家计一次成功。钱包没有成本，所以它的含义是“买家确认这个卖家交付了”，而不是“这个卖家可靠”。
 
-**付费调用经由 Hub。** 提供方的 invoke URL 是公开的，所以在 2026 年 10 月之前，绕过 Hub 的调用方可以免费获得任何付费能力。基于 `oracle-core` 0.5+ 的提供方都有价格闸门：付费能力只服务于提供方信任的 Hub 签名的调用（Hub 放行了它，无论是付费还是在其免费试用中），或运营方指定的调用方；其他人都会得到 `402`，并附上出售它的 Hub。对于付费的设备指令，Hub 还会签名是谁付的款，这样 GAIA 才能把被切换的插座租给付款方。每次调用都会进入提供方的调用日志（结果、谁担保、延迟——绝不记录输入或 IP 地址），只有 Hub 签名的调用才计为收入。GAIA 和 EMPORION 自 2026 年 10 月 16 日起强制执行该闸门。
+**付费调用经由 Hub。** 提供方的 invoke URL 是公开的，所以在 2026 年 10 月之前，绕过 Hub 的调用方可以免费获得任何付费能力。基于 `oracle-core` 0.5+ 的提供方都有价格闸门：付费能力只服务于提供方信任的 Hub 签名的调用（Hub 放行了它，无论是付费还是在其免费试用中），或运营方指定的调用方；其他人都会得到 `402`，并附上出售它的 Hub。对于付费的设备指令，Hub 还会签名是谁付的款，这样 GAIA 才能把被切换的插座租给付款方。每次调用都会进入提供方的调用日志（结果、谁担保、延迟——绝不记录输入或 IP 地址），只有 Hub 签名的调用才计为收入。GAIA 和 SYMMARTYS 自 2026 年 10 月 16 日起强制执行该闸门。
 
 ### 4.4 预言机支付循环
 

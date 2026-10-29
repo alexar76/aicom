@@ -1,0 +1,325 @@
+{
+  "source_url": "https://protocolprobe.com/api/v1/servers/dev.modelmarket/mcp-security",
+  "page": "https://protocolprobe.com/mcp/servers/dev.modelmarket/mcp-security",
+  "response_retrieved_at_utc": "2026-10-28T15:02:46.345075+00:00",
+  "response_sha256": "f70fa92ddd5127e30d47925357d09282e4bcbd07834bf1fe71fa7ca73d3d571c",
+  "license": {
+    "id": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "ProtocolProbe (https://protocolprobe.com), with a link to the server's page and the date checked",
+    "excludes": "Text quoted from others is not ours to license: the publisher's registry title, description and status message, quotes from the publisher's website (pricing), deprecation messages from npm or PyPI, the registry status message of a removed server, GitHub release names and release notes in registryChange, statements quoted from a repository's security policy, the tool descriptions in toolFacts (each is the publisher's first sentence), and tool, resource and package names."
+  },
+  "name": "dev.modelmarket/mcp-security",
+  "version": "1.0.0",
+  "remote": [
+    {
+      "type": "streamable-http",
+      "url": "https://modelmarket.dev/tools/mcp/security",
+      "headers": []
+    }
+  ],
+  "test": {
+    "kind": "remote",
+    "outcome": "tested",
+    "mode": "read-only",
+    "testedAt": "2026-10-23T03:46:16.738Z",
+    "durationMs": 3730,
+    "connectMs": 531,
+    "redirects": 0,
+    "engine": "mcp-runtime-engine@0.1.0",
+    "sdk": "@modelcontextprotocol/sdk@1.32.0",
+    "inventory": {
+      "tools": 4,
+      "resources": 0,
+      "prompts": 0,
+      "capabilities": [
+        "tools"
+      ]
+    },
+    "tools": [
+      "warden_scan",
+      "histor_check",
+      "tool_list_cost",
+      "x402_check"
+    ],
+    "writeLike": [],
+    "noCredentialSession": true,
+    "verdict": "not-probed-policy",
+    "errorClass": null,
+    "coverage": {
+      "exercised": 2,
+      "applicable": 14,
+      "notApplicable": 4
+    },
+    "checks": [
+      {
+        "n": 1,
+        "name": "tool-list",
+        "bucket": "exercised",
+        "why": null
+      },
+      {
+        "n": 2,
+        "name": "description-poisoning",
+        "bucket": "exercised",
+        "why": null
+      },
+      {
+        "n": 3,
+        "name": "real-execution",
+        "bucket": "not-run-policy",
+        "why": "policy"
+      },
+      {
+        "n": 4,
+        "name": "canary-leak",
+        "bucket": "not-run-no-basis",
+        "why": "noToolCall"
+      },
+      {
+        "n": 5,
+        "name": "ssrf",
+        "bucket": "not-run-policy",
+        "why": "policy"
+      },
+      {
+        "n": 6,
+        "name": "write-without-confirmation",
+        "bucket": "not-run-policy",
+        "why": "policy"
+      },
+      {
+        "n": 7,
+        "name": "error-handling",
+        "bucket": "not-run-policy",
+        "why": "policy"
+      },
+      {
+        "n": 8,
+        "name": "sampling",
+        "bucket": "not-run-no-basis",
+        "why": "noToolCall"
+      },
+      {
+        "n": 9,
+        "name": "elicitation-sensitive-data",
+        "bucket": "not-run-no-basis",
+        "why": "noToolCall"
+      },
+      {
+        "n": 10,
+        "name": "root-boundary",
+        "bucket": "not-run-policy",
+        "why": "policy"
+      },
+      {
+        "n": 11,
+        "name": "logging-side-channel",
+        "bucket": "not-run-no-basis",
+        "why": "noToolCall"
+      },
+      {
+        "n": 12,
+        "name": "audience-hiding",
+        "bucket": "not-run-no-basis",
+        "why": "nothingRead"
+      },
+      {
+        "n": 13,
+        "name": "fake-assistant-turn",
+        "bucket": "not-applicable",
+        "why": "noPrompts"
+      },
+      {
+        "n": 14,
+        "name": "token-passthrough",
+        "bucket": "not-applicable",
+        "why": "noTokenFlow"
+      },
+      {
+        "n": 15,
+        "name": "token-audience-validation",
+        "bucket": "not-applicable",
+        "why": "noTokenFlow"
+      },
+      {
+        "n": 16,
+        "name": "open-redirect",
+        "bucket": "not-run-policy",
+        "why": "redirectPolicy"
+      },
+      {
+        "n": 17,
+        "name": "confused-deputy",
+        "bucket": "not-testable",
+        "why": "deputy"
+      },
+      {
+        "n": 18,
+        "name": "oauth-url-scheme",
+        "bucket": "not-applicable",
+        "why": "noOauthMeta"
+      }
+    ]
+  },
+  "recordChecks": {
+    "version": "1",
+    "met": 5,
+    "of": 5,
+    "notApplicable": 4,
+    "notChecked": 0,
+    "checks": [
+      {
+        "id": "listing",
+        "label": "Registry entry is active and says how to run it",
+        "state": "met",
+        "detail": "Active, with a package or a remote address."
+      },
+      {
+        "id": "repo-opens",
+        "label": "Source repository link opens",
+        "state": "met",
+        "detail": "The linked GitHub repository is public."
+      },
+      {
+        "id": "not-archived",
+        "label": "Repository is not archived",
+        "state": "met",
+        "detail": "Not archived."
+      },
+      {
+        "id": "recent-push",
+        "label": "Code pushed to the repository in the 90 days before our check",
+        "state": "met",
+        "detail": "Last push 0-30 days before our check."
+      },
+      {
+        "id": "security-policy",
+        "label": "Repository publishes a security policy (SECURITY.md)",
+        "state": "met",
+        "detail": "SECURITY.md found."
+      },
+      {
+        "id": "licence",
+        "label": "Package names its licence with a standard (SPDX) identifier",
+        "state": "not-applicable",
+        "detail": "Remote server: it ships no package."
+      },
+      {
+        "id": "installs",
+        "label": "The version the registry lists can be installed and is not withdrawn",
+        "state": "not-applicable",
+        "detail": "Remote server: it ships no package."
+      },
+      {
+        "id": "provenance",
+        "label": "npm package carries build provenance (attestation)",
+        "state": "not-applicable",
+        "detail": "Remote server: it ships no package."
+      },
+      {
+        "id": "advisories",
+        "label": "No known critical or high advisory in the package or its dependencies",
+        "state": "not-applicable",
+        "detail": "Remote server: it ships no package."
+      }
+    ]
+  },
+  "tokenCost": {
+    "version": "1.0.0",
+    "model": "claude-opus-5-5",
+    "tokens": 1257,
+    "toolCount": 4,
+    "state": "counted",
+    "reason": null,
+    "checkedAt": "2026-10-24T20:32:14.874Z",
+    "listedAt": "2026-10-23T03:46:16.738Z",
+    "counter": "Anthropic count_tokens (POST /v1/messages/count_tokens)",
+    "method": "/methodology#token-cost"
+  },
+  "llmChecks": {
+    "version": "1.0.0",
+    "toolsHash": "da4951d37e0871804a1046e01fc94c9cf2b4a3182bf4399a020b0561e8fb73de",
+    "listedAt": "2026-10-23T03:46:16.738Z",
+    "models": {
+      "anthropic": {
+        "requestedModel": "claude-haiku-5-5",
+        "modelVersion": "claude-haiku-5-5",
+        "checkedAt": "2026-10-25T22:57:51.535Z",
+        "runs": "2 of 2",
+        "state": "answer",
+        "accepted": true,
+        "rejectReason": null,
+        "rejectReasonClass": null,
+        "rejectTool": null,
+        "rejectNames": [],
+        "toolChosen": null,
+        "inputCheck": null,
+        "inputErrors": [],
+        "fullyChecked": null,
+        "uncheckedKeywords": [],
+        "promptTokens": 1330,
+        "safetyBlock": null,
+        "toolCalls": 0,
+        "malformed": null,
+        "modelLabel": "Claude Haiku 5.5",
+        "retiredOn": null
+      },
+      "openai": {
+        "requestedModel": "gpt-5-nano",
+        "modelVersion": "gpt-5-nano-2025-08-07",
+        "checkedAt": "2026-10-25T15:40:08.379Z",
+        "runs": "1 of 1",
+        "state": "answer",
+        "accepted": true,
+        "rejectReason": null,
+        "rejectReasonClass": null,
+        "rejectTool": null,
+        "rejectNames": [],
+        "toolChosen": "warden_scan",
+        "inputCheck": "valid",
+        "inputErrors": [],
+        "fullyChecked": true,
+        "uncheckedKeywords": [],
+        "promptTokens": 640,
+        "safetyBlock": null,
+        "toolCalls": 1,
+        "malformed": null,
+        "modelLabel": "GPT-5-nano",
+        "retiredOn": null
+      },
+      "gemini": {
+        "requestedModel": "gemini-2.5-flash",
+        "modelVersion": "gemini-2.5-flash",
+        "checkedAt": "2026-10-26T04:54:56.808Z",
+        "runs": "2 of 2",
+        "state": "answer",
+        "accepted": true,
+        "rejectReason": null,
+        "rejectReasonClass": null,
+        "rejectTool": null,
+        "rejectNames": [],
+        "toolChosen": null,
+        "inputCheck": null,
+        "inputErrors": [],
+        "fullyChecked": null,
+        "uncheckedKeywords": [],
+        "promptTokens": 716,
+        "safetyBlock": null,
+        "toolCalls": 0,
+        "malformed": "malformed-function-call",
+        "modelLabel": "Gemini 2.5 Flash",
+        "retiredOn": null
+      }
+    },
+    "claudeExtras": null,
+    "static": {
+      "secretInputs": [],
+      "commandInputs": [],
+      "newDataChanging": null,
+      "invisible": []
+    },
+    "method": "/methodology#cross-llm"
+  },
+  "attribution": "ProtocolProbe; server page and asOf/check dates in the captured API record. Test date is not our retrieval date."
+}

@@ -1,0 +1,177 @@
+
+> @aimarket/warden@0.22.2 test
+> vitest run --reporter=default --reporter=json --outputFile=../docs/evidence/histor-warden-release-2026-10-27/warden/tests.json
+
+
+ RUN  v5.0.5 /Users/alex/Desktop/ai_tests/aicompany/aicom/warden
+
+warning: on branch 'main', pushing ref 'codex/warden-wrap'
+ ❯ test/action.test.ts (6 tests | 1 failed) 1784ms
+   ✓ GitHub Action step (4)
+     ✓ on a pull request: starts nothing, vets launch lines, writes SARIF, summary and outputs 490ms
+     ✓ with the lock committed and stdio allowed, a clean project passes 892ms
+     ✓ rejects inputs that are not what they claim to be, before running anything 60ms
+     ✓ takes explicit config files one per line, names with spaces included 334ms
+   ❯ integrations name the version they ship with (2)
+     ✓ action.yml defaults to this version and pins third-party actions by commit 1ms
+     × pre-commit hooks run this version and match the config files they claim to 5ms
+ ✓ test/flow-guard-secret-regression.test.ts (59 tests) 1858ms
+   ✓ short-secret fragment correlation (53)
+     ✓ deduplicates rereads and marks index capacity exhaustion instead of silently evicting 368ms
+warning: on branch 'main', pushing ref 'codex/warden-wrap'
+ ✓ test/scan.test.ts (28 tests) 1957ms
+   ✓ scan: lock file (5)
+     ✓ blocks unreviewed servers, records them, stays stable, and catches a rug pull with a diff 355ms
+ ✓ test/publish-pr.test.ts (1 test) 2210ms
+   ✓ Gitea PR mode retains gates, preserves the base branch and encodes a body file 2206ms
+ ✓ test/flow-guard-screen.test.ts (119 tests) 1132ms
+ ✓ test/flow-guard-gui-policy.test.ts (97 tests) 904ms
+ ✓ test/persistent-pins.test.ts (2 tests) 1263ms
+   ✓ requires operator opt-in and exact reviewed payload, persists approval across real process restarts, then revokes 1222ms
+ ✓ test/flow-guard.test.ts (46 tests) 1057ms
+ ✓ test/flow-guard-gautam.test.ts (37 tests) 619ms
+ ✓ test/flow-guard-gaps.test.ts (24 tests) 482ms
+ ✓ test/flow-guard-credential-boundary.test.ts (34 tests) 557ms
+ ✓ test/pin-review-origin.test.ts (1 test) 435ms
+   ✓ shows the reported versions, the unpinned launch and the added routing hint in one review 434ms
+ ✓ test/answer-gate-host.test.ts (4 tests) 310ms
+ ✓ test/server-info-validation.test.ts (22 tests) 4547ms
+   ✓ enabled approvals reject invalid metadata before changing pins (4)
+     ✓ unknown extra cannot create or replace an approval 721ms
+     ✓ unknown __proto__ cannot create or replace an approval 543ms
+     ✓ unknown constructor cannot create or replace an approval 562ms
+ ✓ test/hardening.test.ts (26 tests) 107ms
+ ✓ test/flow-guard-reference-egress.test.ts (25 tests) 233ms
+ ✓ test/claude-plugin.test.ts (8 tests) 175ms
+ ✓ test/encoded-text.test.ts (9 tests) 120ms
+ ✓ test/flow-guard-instructions.test.ts (57 tests) 214ms
+ ✓ test/ruleset-v13.test.ts (28 tests) 48ms
+ ✓ test/mcp-server.test.ts (18 tests) 146ms
+ ✓ test/landing.test.ts (8 tests) 89ms
+ ✓ test/ruleset-v15.test.ts (24 tests) 35ms
+ ✓ test/warden-benign.test.ts (26 tests) 51ms
+ ✓ test/flow-guard-constraints.test.ts (29 tests) 83ms
+ ✓ test/field-survey-regression.test.ts (42 tests) 67ms
+ ✓ test/docs.test.ts (13 tests) 77ms
+ ✓ test/atomic-screen.test.ts (33 tests) 84ms
+ ✓ test/ruleset-v10.test.ts (24 tests) 29ms
+ ✓ test/transport-hardening.test.ts (3 tests) 112ms
+ ✓ test/answer-gate.test.ts (46 tests) 33ms
+ ✓ test/warden.test.ts (19 tests) 25ms
+ ✓ test/flow-guard-answer-review.test.ts (9 tests) 70ms
+ ✓ test/extended-fields.test.ts (3 tests) 27ms
+ ✓ test/flow-guard-home-paths.test.ts (2 tests) 84ms
+ ✓ test/result-screen.test.ts (2 tests) 46ms
+ ✓ test/mcp-tools.test.ts (1 test) 32ms
+ ✓ test/precision-v12.test.ts (3 tests) 30ms
+ ✓ test/wrap-screen.test.ts (26 tests) 18ms
+ ✓ test/no-phantom-gate.test.ts (3 tests) 24ms
+ ✓ test/ruleset-v9.test.ts (26 tests) 29ms
+ ✓ test/review-diff.test.ts (16 tests) 26ms
+ ✓ test/declare.test.ts (10 tests) 8ms
+ ✓ test/packaging.test.ts (5 tests) 22ms
+ ✓ test/adversarial-static-scan.test.ts (1 test) 18ms
+ ✓ test/scan-config.test.ts (8 tests) 7ms
+ ✓ test/annotation-review.test.ts (28 tests) 6399ms
+   ✓ annotation first-use review through the real stdio proxy (19)
+     ✓ asks once for the exact annotated tool in a wrapper, and asks again in a new wrapper 1015ms
+     ✓ does not record a decline as review and does not forward the refused call 424ms
+     ✓ keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"annotationReview":"off"}} 322ms
+     ✓ keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"mode":"off"}} 393ms
+     ✓ keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"mode":"audit"}} 321ms
+     ✓ fails closed without consent only under the enabled policy: {"flags":[]} 379ms
+     ✓ never reuses an old tools/list already in flight when approval arrives 835ms
+ ✓ test/toxic-flow.test.ts (5 tests) 8ms
+ ✓ test/jcs.test.ts (18 tests) 9ms
+ ✓ test/launch.test.ts (1 test) 18ms
+ ✓ test/fold.test.ts (6 tests) 5ms
+ ✓ test/mtl.test.ts (6 tests) 4ms
+ ✓ test/threat-feed.test.ts (23 tests) 10271ms
+   ✓ durable anti-rollback (2)
+     ✓ keeps the abort deadline active while reading the body 10001ms
+ ✓ test/wrap.test.ts (123 tests) 40348ms
+   ✓ wrap proxy (123)
+     ✓ clean server, raw results, framing lsp=false and 5 MiB response 872ms
+     ✓ clean server, raw results, framing lsp=true and 5 MiB response 546ms
+     ✓ strict admission withholds unreviewed tools in any language and never creates a TOFU pin 1136ms
+     ✓ strict admission does not mistake an old automatic pin for operator approval 544ms
+     ✓ persists drift across sessions; TTY reapproval allows the new snapshot 650ms
+     ✓ captures initialize versions through real wrap and TTY approval, without treating metadata as identity or tools 1406ms
+     ✓ keeps a TOFU-reported version while flagging actual tool drift at the same version 477ms
+     ✓ revoke persists denial, without silently starting a fresh TOFU 552ms
+     ✓ identity drift blocks before spawning and returns initialize error with exit 3 464ms
+     ✓ EOF terminates a stubborn child within 10 seconds and reaps it 10028ms
+     ✓ five proxies sharing one state directory establish one intact pin 361ms
+     ✓ sensitive tools (policy.sensitiveToolPatterns) (6)
+       ✓ a client that offers only URL elicitation, or --ask refuse, is never asked 407ms
+     ✓ flow guard (--flow) (63)
+       ✓ Auten: fresh target after approval (18)
+         ✓ cancels approved execution when the fresh box changes or cannot be read 336ms
+         ✓ rechecks definitions even if the server forgot its change notification 332ms
+         ✓ honors cancellation during the final observation and releases the unused screen lease 1516ms
+         ✓ retains an uncertain screen lease across proxy restart when the action has no result 454ms
+       ✓ mode strict requires actual approval even for listed navigation 397ms
+       ✓ lets policy mode use the normal approval form for an unlisted target 337ms
+       ✓ never forwards tiny or custom-encoded data through send or read-only MCP arguments 708ms
+       ✓ refuses a send after outside text came through, and the refused call never reaches the server 438ms
+       ✓ audit-only logs what the guard would do and forwards the call; without --flow nothing changes 450ms
+ ❯ test/mcp-client.test.ts (15 tests | 9 failed) 45600ms
+   ❯ MCP client: streamable HTTP (7)
+     × JSON replies, a session id, and every page of tools 5006ms
+     × SSE replies, skipping notifications that arrive first 5005ms
+     × names an auth wall, and does not follow redirects 5003ms
+     × refuses an oversized answer 5002ms
+     × --public-only refuses loopback, by literal and by name 5002ms
+     × --public-only rejects canonical IPv4-mapped literals before any http request 5002ms
+     × --public-only rejects canonical IPv4-mapped literals before any sse request 5001ms
+   ❯ MCP client: legacy HTTP+SSE (2)
+     × follows the endpoint event and reads replies from the stream 5002ms
+     × refuses an endpoint event that points at another origin 5002ms
+   ✓ MCP client: stdio (2)
+     ✓ times out a server that never answers, and answers roots/list for one that asks 535ms
+     ✓ reports a server that exits with its last stderr line 36ms
+   ✓ address policy and SSE parsing (4)
+     ✓ classifies non-public addresses 1ms
+     ✓ compares numeric IPv6 groups and checks embedded IPv4 destinations 0ms
+     ✓ parses multi-line data, CRLF and comments 0ms
+     ✓ error kinds are typed 0ms
+ ❯ test/classifier.test.ts (33 tests | 21 failed) 105157ms
+   ❯ classifier: the request (2)
+     × fences the data with a random marker the data cannot forge, and sends the key only as a header 5004ms
+     ✓ keeps the head and the tail of an over-long field 1ms
+   ❯ classifier: the answer is untrusted (3)
+     ✓ rejects malformed findings instead of quietly converting them into a clean result 1ms
+     × reads an answer wrapped in a code fence 5001ms
+     × an HTTP error is an error, never a clean verdict 5004ms
+   ❯ classifier inside scan (3)
+     × is off unless both flags are given, and advisory by default 5003ms
+     × --classifier-blocks makes a high verdict block the tool 5002ms
+     ✓ a classifier that does not answer fails closed in enforcing mode 99ms
+   ❯ complete semantic inspection (11)
+     ✓ includes every extension and normalized reading, not just description and inputSchema 2ms
+     ✓ cannot declare incomplete, uncertain, or invented evidence safe 1ms
+     ✓ reads a large ordinary schema value by value instead of cutting it at 2 KB 2ms
+     ✓ still refuses a tool past the whole-definition budget, and never calls it clean 4ms
+     × sends a large tool alone instead of packing eight into one request 5002ms
+     × refuses truncation before sending an enforcing request 5002ms
+     × an incomplete classifier cannot write an operator approval (HTTP 500) 5003ms
+     × an incomplete classifier cannot write an operator approval (HTTP 200) 5001ms
+     × a complete semantic review controls lock writing, malicious=false 5002ms
+     × a complete semantic review controls lock writing, malicious=true 5002ms
+     × retains input indices across batches even when fixture names repeat 5003ms
+   ❯ field-reference protocol and isolated retries (10)
+     ✓ a confirmed attack cannot downgrade itself below the host high threshold 3ms
+     × recovers length-limited batches once per tool and forwards the explicit reasoning budget 5000ms
+     × does not retry outages, authentication failures or filtered answers per tool 5000ms
+     × a retry that is also truncated remains incomplete even if its content looks clean 5001ms
+     ✓ validates CLI reasoning settings without requiring a provider-specific default 1ms
+     ✓ resolves evidence from trusted input, without asking a model to transcribe a quotation 2ms
+     ✓ an invalid field, contradiction, duplicate or missing decision is incomplete, without losing another valid decision 1ms
+     × retries only the incomplete tool once; a second failure stays incomplete 5002ms
+     × recovers a malformed batch with individual decisions without changing admission policy 5001ms
+     ✓ reserved extension keys cannot overwrite indices or erase original fields 1ms
+   ❯ v12 byte-bound semantic clearance (4)
+     × clears only the ambiguous encoding gate after a complete clean answer; keeps operator approval 5001ms
+     × a clean model cannot clear explicit content rules, and advisory/uncertain reviews cannot clear encoding 5002ms
+     × binds the pre-request snapshot even when input or public result is mutated 5002ms
+     × enforcing scan and lock updates use the same review, advisory scan stays conservative 5001ms

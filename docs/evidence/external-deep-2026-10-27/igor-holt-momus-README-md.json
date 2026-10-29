@@ -1,0 +1,8 @@
+{
+  "url": "https://github.com/igor-holt/momus/blob/1ac416e4c2e2f92c23209db977166eccafcde2be/README.md",
+  "blob_url": "https://api.github.com/repos/igor-holt/momus/git/blobs/87ca8dbd96e6dbbefe2e89a613af361616b2fb9b",
+  "retrieved_at": "2026-10-27T08:12:02.342280+00:00",
+  "sha256": "aa595efbae59eac964f5efeca3903d8458b3c8e6f02634ab8fce420cada98329",
+  "status": 200,
+  "body": "# MOMUS — Genesis Conductor critic, marketplace, and meter\n\nEpoch **2026-09-13-E2** (Critique-to-Cash).\n\nMOMUS is Igor Holt's fleet agent for critique, coalition-seat licensing (R05), A2A skill-marketplace fees (R09), and metered API licensing. It is not the alexar76 red-team satellite and not the momusai.io prediction agent.\n\n## Planes\n\n| Plane | Duty | Must not |\n|---|---|---|\n| Critic | Review artifacts, DORA gate, signed findings | Hold Stripe or x402 payer keys |\n| Marketplace | List skills, grant coalition seats | Auto-pay itself |\n| Meter | D1 usage + 30-min Stripe flush + x402 | Enforce hard quotas from Stripe lag |\n\n## Layout\n\n```\ndocs/EPOCH-E2.md          epoch brief and provenance\nskill/momus/SKILL.md      Grok / OpenClaw skill contract\nworker/                   Cloudflare Worker (Hono) E2 spec\n```\n\n## Operator sequence\n\n1. Create D1 `momus-usage` and KV `API_KEYS`, `METER_CURSOR`.\n2. Apply `worker/migrations/0001_init.sql` and `0002_e2.sql`.\n3. Put secrets: `STRIPE_API_KEY`, `STRIPE_METER_EVENT_NAME`, `X402_RECEIVER`, provider keys.\n4. Bind through Ambient Access Layer. Do not deploy a bare worker to production.\n5. Smoke `/v1/health`, then a signed `/v1/critique`, then `/v1/infer` with a starter key.\n\nOwner: Kovach Enterprises. ORCID 0009-0008-8389-1297.\n"
+}

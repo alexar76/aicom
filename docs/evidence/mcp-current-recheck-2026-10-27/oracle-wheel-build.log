@@ -1,0 +1,88 @@
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=68
+* Getting build dependencies for wheel...
+running egg_info
+writing aimarket_oracle_gateway.egg-info/PKG-INFO
+writing dependency_links to aimarket_oracle_gateway.egg-info/dependency_links.txt
+writing entry points to aimarket_oracle_gateway.egg-info/entry_points.txt
+writing requirements to aimarket_oracle_gateway.egg-info/requires.txt
+writing top-level names to aimarket_oracle_gateway.egg-info/top_level.txt
+reading manifest file 'aimarket_oracle_gateway.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'aimarket_oracle_gateway.egg-info/SOURCES.txt'
+WARNING `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+* Installed build dependency versions:
+  - setuptools==84.2.1
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/aimarket_oracle_gateway
+copying aimarket_oracle_gateway/mcp_tool_surface.py -> build/lib/aimarket_oracle_gateway
+copying aimarket_oracle_gateway/stdio_server.py -> build/lib/aimarket_oracle_gateway
+copying aimarket_oracle_gateway/__init__.py -> build/lib/aimarket_oracle_gateway
+copying aimarket_oracle_gateway/mcp_family_tools.py -> build/lib/aimarket_oracle_gateway
+copying aimarket_oracle_gateway/gateway_core.py -> build/lib/aimarket_oracle_gateway
+running egg_info
+writing aimarket_oracle_gateway.egg-info/PKG-INFO
+writing dependency_links to aimarket_oracle_gateway.egg-info/dependency_links.txt
+writing entry points to aimarket_oracle_gateway.egg-info/entry_points.txt
+writing requirements to aimarket_oracle_gateway.egg-info/requires.txt
+writing top-level names to aimarket_oracle_gateway.egg-info/top_level.txt
+reading manifest file 'aimarket_oracle_gateway.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'aimarket_oracle_gateway.egg-info/SOURCES.txt'
+installing to build/bdist.macosx-11.0-arm64/wheel
+running install
+running install_lib
+creating build/bdist.macosx-11.0-arm64/wheel
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_oracle_gateway
+copying build/lib/aimarket_oracle_gateway/mcp_tool_surface.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_oracle_gateway
+copying build/lib/aimarket_oracle_gateway/stdio_server.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_oracle_gateway
+copying build/lib/aimarket_oracle_gateway/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_oracle_gateway
+copying build/lib/aimarket_oracle_gateway/mcp_family_tools.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_oracle_gateway
+copying build/lib/aimarket_oracle_gateway/gateway_core.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_oracle_gateway
+running install_egg_info
+Copying aimarket_oracle_gateway.egg-info to build/bdist.macosx-11.0-arm64/wheel/./aimarket_oracle_gateway-0.3.2-py3.12.egg-info
+running install_scripts
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_oracle_gateway-0.3.2.dist-info/WHEEL
+creating '/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/mcp-current-recheck-2026-10-27/wheels/.tmp-lfnre6uv/aimarket_oracle_gateway-0.3.2-py3-none-any.whl' and adding 'build/bdist.macosx-11.0-arm64/wheel' to it
+adding 'aimarket_oracle_gateway/__init__.py'
+adding 'aimarket_oracle_gateway/gateway_core.py'
+adding 'aimarket_oracle_gateway/mcp_family_tools.py'
+adding 'aimarket_oracle_gateway/mcp_tool_surface.py'
+adding 'aimarket_oracle_gateway/stdio_server.py'
+adding 'aimarket_oracle_gateway-0.3.2.dist-info/licenses/LICENSE'
+adding 'aimarket_oracle_gateway-0.3.2.dist-info/METADATA'
+adding 'aimarket_oracle_gateway-0.3.2.dist-info/WHEEL'
+adding 'aimarket_oracle_gateway-0.3.2.dist-info/entry_points.txt'
+adding 'aimarket_oracle_gateway-0.3.2.dist-info/top_level.txt'
+adding 'aimarket_oracle_gateway-0.3.2.dist-info/RECORD'
+removing build/bdist.macosx-11.0-arm64/wheel
+WARNING `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+Successfully built aimarket_oracle_gateway-0.3.2-py3-none-any.whl

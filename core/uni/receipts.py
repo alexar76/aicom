@@ -13,6 +13,7 @@ from typing import Any
 
 from core.uni.config import uni_db_backend
 from core.uni.store import row_to_dict, uni_connection
+from security.signing_key_storage import compromised_public_key
 
 
 def canonical_receipt_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -48,9 +49,11 @@ def verify_receipt(payload: dict[str, Any]) -> bool:
         from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
         public = str(sig_block.get("public_key") or "")
+        raw_public = base64.b64decode(public + "=" * (-len(public) % 4), altchars=b"-_", validate=True)
+        if compromised_public_key(raw_public):
+            return False
         if not hmac.compare_digest(public, public_key_b64()):
             return False
-        raw_public = base64.b64decode(public + "=" * (-len(public) % 4), altchars=b"-_", validate=True)
         raw_signature = base64.b64decode(signature + "=" * (-len(signature) % 4), altchars=b"-_", validate=True)
         canonical = json.dumps(canonical_receipt_payload(payload), sort_keys=True, separators=(",", ":")).encode("utf-8")
         Ed25519PublicKey.from_public_bytes(raw_public).verify(raw_signature, canonical)

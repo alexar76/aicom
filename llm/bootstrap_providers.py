@@ -13,15 +13,16 @@ from __future__ import annotations
 
 import logging
 import os
-import shutil
 from pathlib import Path
 from typing import Any
 
 import yaml
 
 from core.paths import data_root, logs_dir, model_providers_path
+from core.json_state import write_text_atomic
 from llm.pricing_estimate import migrate_llm_calls_provider_ids
 from llm.provider_ids import is_legacy_provider_id, normalize_llm_provider_id
+from llm.provider_secrets import migrate_provider_secret_config, save_provider_config
 
 logger = logging.getLogger(__name__)
 
@@ -47,11 +48,12 @@ def ensure_model_providers_file(config_path: str | Path | None = None) -> bool:
     """
     p = Path(config_path) if config_path is not None else model_providers_path()
     if p.exists():
+        migrate_provider_secret_config(p)
         return True
     for ex in _example_candidates(p):
         if ex.is_file():
-            p.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(ex, p)
+            config = yaml.safe_load(ex.read_text(encoding="utf-8")) or {}
+            save_provider_config(p, config)
             logger.info(
                 "Bootstrapped LLM providers config at %s from %s — set DEEPSEEK_API_KEY "
                 "(or other api_key_env vars) in the environment or edit keys in Admin.",
@@ -76,11 +78,13 @@ def migrate_model_providers_yaml(config_path: str | Path) -> dict[str, int]:
     if not p.is_file():
         return stats
 
+    migrate_provider_secret_config(p)
+
     try:
         with open(p, encoding="utf-8") as f:
             config = yaml.safe_load(f) or {}
     except Exception as e:
-        logger.warning("Could not read %s for provider id migration: %s", p, e)
+        logger.warning("Could not read %s for provider id migration (%s)", p, type(e).__name__)
         return stats
 
     if not isinstance(config, dict):
@@ -119,11 +123,12 @@ def migrate_model_providers_yaml(config_path: str | Path) -> dict[str, int]:
                 rule[field] = renamed[val]
                 stats["rules_updated"] += 1
 
+    # The pre-migration file already contains only references. Keep that state
+    # for rollback without making another durable copy of an inline API key.
     backup = p.with_suffix(p.suffix + ".bak")
     if not backup.exists():
-        shutil.copy2(p, backup)
-    with open(p, "w", encoding="utf-8") as f:
-        yaml.safe_dump(config, f, default_flow_style=False, sort_keys=False)
+        write_text_atomic(backup, p.read_text(encoding="utf-8"), mode=0o600)
+    save_provider_config(p, config)
 
     logger.info(
         "Migrated legacy provider ids in %s: %s (rules_updated=%s)",

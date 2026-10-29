@@ -1,0 +1,48 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.alexar76/aimarket-oracle-gateway",
+  "title": "AIMarket Oracle Gateway",
+  "description": "Stdio MCP: 17 verifiable AIMarket oracles, 35 pay-per-call tools for AI agents.",
+  "repository": {
+    "url": "https://github.com/alexar76/aimarket-oracle-gateway",
+    "source": "github"
+  },
+  "version": "0.3.2",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "aimarket-oracle-gateway",
+      "version": "0.3.2",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AIMARKET_HUB_URL",
+          "description": "AIMarket Hub base URL (recommended metered path)",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "AIMARKET_ORACLE_URL",
+          "description": "Direct oracle-family URL (demo/free path if no hub)",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "AIMARKET_MAX_PER_CALL_USD",
+          "description": "Hard cap per call in USD (default 0.10)",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "AIMARKET_MAX_SPEND_USD",
+          "description": "Hard cumulative budget for this process (default 5.0)",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+LOCAL DRAFT — NOT PUBLISHED
+
+Use this follow-up only after skopos-fleet 0.2.3 has been uploaded to PyPI and the
+published wheel has been checked against the tested local build. The local version
+bump and wheel alone do not make the release available to users. Remove this
+preparation note and the separator before posting.
+
+---
+
+One correction to my previous reply: our statement that the SKOPOS dashboard
+always checked the proxy allowlist was too broad. In skopos-fleet 0.2.2 it still
+read the old Tornado client's request.remote_ip. Streamlit 1.66.1 uses a Starlette
+session client, so the dashboard fell back to accepting address headers without
+verifying the peer. With direct dashboard access, or a proxy that preserved the
+caller's headers, a caller could choose the per-IP login bucket and claim a
+recently successful IP's exemption from the shared login delay.
+
+skopos-fleet 0.2.3 is now on PyPI. The dashboard reads the actual Uvicorn socket peer before forwarded-header
+rewrites and accepts X-Real-IP / X-Forwarded-For only when that peer passes
+SKOPOS_TRUSTED_PROXIES. If the peer cannot be established, it uses the shared
+unknown bucket and ignores those headers. This addresses the remaining dashboard
+address-trust issue in GCVE-110-PYPI-2026-021896. Please use 0.2.3 as the SKOPOS
+upgrade target. The SSH host-key change for 000639 and the bounded shared login
+delay for 000644 first shipped in 0.2.2 and are retained in 0.2.3; the other package
+versions listed in my previous reply are unchanged.
+
+A few wording clarifications to that reply:
+
+- Keyless access to protected HTTP operations is refused by default; intentionally
+  public health and read endpoints remain accessible.
+- For remediation Git operations using SKOPOS's configured SSH key, host keys are
+  pinned on first use and changed keys are rejected. Without an explicit SSH key
+  path, the operator's Git/SSH configuration applies.
+- Session restoration before login-budget checks requires a valid, unexpired,
+  signed remember-me cookie.
+- The hub does not send its paid-tier credential for sandbox trials or routing
+  fees alone. A positively priced call reserved against promotional credits is
+  still a funded call.
+- Credentials are selected only for explicitly configured exact invoke URLs; one
+  secret can be explicitly assigned to more than one URL, including a configured
+  transport rewrite. The secret must be configured on both the hub and the oracle.
+
+Thank you again for the detailed review. Our earlier SKOPOS claim missed this
+Streamlit compatibility gap.

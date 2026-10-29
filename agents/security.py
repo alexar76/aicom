@@ -8,6 +8,7 @@ and OWASP Top 10 violations. Reports security score and findings.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import re
@@ -65,6 +66,16 @@ class SecurityAgent(BaseAgent):
 
             # Step 4: Dependency check
             dep_risks = self._check_dependency_risks(code_files)
+            # Read real product lockfiles: the code manifest may omit them and the
+            # review's source snippets are truncated, neither is an audit input.
+            from core.paths import code_dir as product_code_dir
+            from web.backend.services.npm_dependency_check import run_npm_dependency_check
+
+            npm_dependency_audit = await asyncio.to_thread(
+                run_npm_dependency_check,
+                product_code_dir(product_id, data_root=self.data_root),
+            )
+            dep_risks.extend(npm_dependency_audit.get("dependency_risks") or [])
 
             # Step 5: Calculate security score
             security_score = self._compute_security_score(
@@ -92,6 +103,9 @@ class SecurityAgent(BaseAgent):
             # Determine passed/failed checks
             passed_checks = self._get_passed_checks(all_vulnerabilities)
             failed_checks = self._get_failed_checks(all_vulnerabilities)
+            if not npm_dependency_audit.get("skipped"):
+                npm_checks = passed_checks if npm_dependency_audit.get("passed") is True else failed_checks
+                npm_checks.append("npm Dependency Security")
 
             # Build output
             severity_counts = {"critical": 0, "high": 0, "medium": 0, "low": 0, "info": 0}
@@ -106,12 +120,15 @@ class SecurityAgent(BaseAgent):
                 "vulnerabilities": all_vulnerabilities,
                 "secrets_found": secrets_found,
                 "dependency_risks": dep_risks,
+                "npm_dependency_audit": npm_dependency_audit,
                 "passed_checks": passed_checks,
                 "failed_checks": failed_checks,
                 "summary": f"Security scan completed. Score: {security_score}/100 ({grade}). "
                            f"Found {len(all_vulnerabilities)} vulnerabilities "
                            f"({severity_counts['critical']} critical, {severity_counts['high']} high, "
-                           f"{severity_counts['medium']} medium, {severity_counts['low']} low).",
+                           f"{severity_counts['medium']} medium, {severity_counts['low']} low). "
+                           f"Dependency risks: {len(dep_risks)}. npm audit: "
+                           f"{'not applicable' if npm_dependency_audit.get('skipped') else 'passed' if npm_dependency_audit.get('passed') else 'failed'}.",
                 "severity_counts": severity_counts,
                 "total_files_scanned": len(code_files),
             }
@@ -123,7 +140,7 @@ class SecurityAgent(BaseAgent):
                 {
                     "report": output_data,
                     "scanned_at": time.time(),
-                    "scanner_version": "1.0.0",
+                    "scanner_version": "1.1.0",
                 },
                 filename="security_report.json",
             )
@@ -144,6 +161,8 @@ class SecurityAgent(BaseAgent):
                     "vulnerabilities_found": len(all_vulnerabilities),
                     "secrets_found": len(secrets_found),
                     "security_score": security_score,
+                    "dependency_risks_found": len(dep_risks),
+                    "npm_dependency_audit_passed": npm_dependency_audit.get("passed") is True,
                 },
             )
 

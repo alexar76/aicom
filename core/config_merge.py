@@ -11,6 +11,7 @@ See ``docs/configuration.md``.
 from __future__ import annotations
 
 import copy
+import logging
 import os
 import threading
 from pathlib import Path
@@ -19,11 +20,19 @@ from typing import Any
 import yaml
 
 __all__ = [
+    "ConfigLoadError",
     "config_yaml_path",
     "config_fragments_dir",
     "deep_merge",
     "load_merged_config",
 ]
+
+
+logger = logging.getLogger(__name__)
+
+
+class ConfigLoadError(RuntimeError):
+    """A config file exists but could not be used (unreadable, invalid YAML, not a mapping)."""
 
 
 def config_yaml_path() -> Path:
@@ -64,7 +73,7 @@ def deep_merge(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
 # worker asks for the config once per product per cycle (the pause and focus checks): on
 # factory-vps on 2026-10-23 re-parsing the YAML was 92% of the worker's CPU, about one core,
 # for files that change when an operator saves settings. A stat of each file decides now.
-_CACHE: dict[str, tuple[tuple[Any, ...], dict[str, Any]]] = {}
+_CACHE: dict[str, tuple[tuple[Any, ...], dict[str, Any], tuple[str, ...]]] = {}
 _CACHE_LOCK = threading.Lock()
 # What _apply_runtime_path_resolution and config_fragments_dir read besides the files.
 _ENV_KEYS = ("AIFACTORY_CONFIG_FRAGMENTS_DIR", "AIFACTORY_DATA_ROOT", "AIFACTORY_GIT_REPOS_DIR", "AIFACTORY_APP_ROOT")
@@ -86,7 +95,7 @@ def _fingerprint(primary_path: Path, fragments: list[Path]) -> tuple[Any, ...]:
     )
 
 
-def load_merged_config(primary: str | Path | None = None) -> dict[str, Any]:
+def load_merged_config(primary: str | Path | None = None, *, strict: bool = False) -> dict[str, Any]:
     """
     Load fragments from the resolved fragments directory (see :func:`config_fragments_dir`)
     as ``*.yaml`` in sorted order, then overlay ``primary``.
@@ -94,6 +103,11 @@ def load_merged_config(primary: str | Path | None = None) -> dict[str, Any]:
     If the fragments directory is missing (e.g. minimal test fixtures), only ``primary`` is used.
     The parse is reused while no file changes (mtime, size, inode) and no path variable does;
     every caller gets its own copy, as before.
+
+    A file that exists but cannot be used (unreadable, invalid YAML, top level not a mapping)
+    is skipped and logged, so a running process keeps its defaults. With ``strict=True`` it
+    raises :class:`ConfigLoadError` instead: a process that is starting should not run on
+    defaults the operator did not choose because their overlay failed to parse.
     """
     primary_path = Path(primary) if primary is not None else config_yaml_path()
     frag_dir = config_fragments_dir(primary_path)
@@ -103,31 +117,44 @@ def load_merged_config(primary: str | Path | None = None) -> dict[str, Any]:
     with _CACHE_LOCK:
         hit = _CACHE.get(key)
     if hit is not None and hit[0] == fingerprint:
-        return copy.deepcopy(hit[1])
-    merged = _load_merged_config(primary_path, fragments)
-    with _CACHE_LOCK:
-        _CACHE[key] = (fingerprint, merged)
+        merged, problems = hit[1], hit[2]
+    else:
+        merged, problems = _load_merged_config(primary_path, fragments)
+        for problem in problems:
+            logger.warning("config file skipped: %s", problem)
+        with _CACHE_LOCK:
+            _CACHE[key] = (fingerprint, merged, problems)
+    if strict and problems:
+        raise ConfigLoadError("unusable config file(s): " + "; ".join(problems))
     return copy.deepcopy(merged)
 
 
-def _load_merged_config(primary_path: Path, fragments: list[Path]) -> dict[str, Any]:
+def _read_mapping(path: Path, problems: list[str]) -> dict[str, Any]:
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, yaml.YAMLError) as exc:
+        problems.append(f"{path}: {type(exc).__name__}: {exc}".replace("\n", " "))
+        return {}
+    if data is None:
+        return {}
+    if not isinstance(data, dict):
+        problems.append(f"{path}: top level is {type(data).__name__}, expected a mapping")
+        return {}
+    return data
+
+
+def _load_merged_config(primary_path: Path, fragments: list[Path]) -> tuple[dict[str, Any], tuple[str, ...]]:
     merged: dict[str, Any] = {}
-    if fragments:
-        for fp in fragments:
-            try:
-                chunk = yaml.safe_load(fp.read_text(encoding="utf-8")) or {}
-            except (OSError, yaml.YAMLError):
-                chunk = {}
-            if isinstance(chunk, dict):
-                merged = deep_merge(merged, chunk)
+    problems: list[str] = []
+    for fp in fragments:
+        chunk = _read_mapping(fp, problems)
+        if chunk:
+            merged = deep_merge(merged, chunk)
     if primary_path.exists():
-        try:
-            overlay = yaml.safe_load(primary_path.read_text(encoding="utf-8"))
-        except (OSError, yaml.YAMLError):
-            overlay = None
-        if isinstance(overlay, dict) and overlay:
+        overlay = _read_mapping(primary_path, problems)
+        if overlay:
             merged = deep_merge(merged, overlay)
-    return _apply_runtime_path_resolution(merged)
+    return _apply_runtime_path_resolution(merged), tuple(problems)
 
 
 def _apply_runtime_path_resolution(config: dict[str, Any]) -> dict[str, Any]:

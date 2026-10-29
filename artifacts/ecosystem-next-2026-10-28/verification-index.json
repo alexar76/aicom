@@ -1,0 +1,1167 @@
+{
+  "generated_at_utc": "2026-10-28T14:15:27.781312+00:00",
+  "scope": "Read-only follow-up with external AIMarket signed-manifest compatibility test, Trovark static coverage case, automated ARGUS citation, MCPMoat chronology and regional search. No external mutations, tool invocations, payments or GitHub writes.",
+  "query_counts": {
+    "web search": 60,
+    "GitHub issue search": 6
+  },
+  "public_http_request_count": 72,
+  "http_status_counts": {
+    "200": 65,
+    "404": 4,
+    "403": 2,
+    "429": 1
+  },
+  "counts_note": "GitHub/native API requests are included in HTTP count. Root graph queries recorded as HTTP, not extra web searches. Repeated URL reads have distinct times and count separately.",
+  "queries": [
+    {
+      "query": "\"modelmarket.dev\" \"review\" site:youtube.com OR site:podcasts.apple.com OR site:open.spotify.com",
+      "origin": "web search",
+      "source_file": "independent-media-and-comparisons.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" site:substack.com OR site:medium.com -site:github.com -site:dev.to",
+      "origin": "web search",
+      "source_file": "independent-media-and-comparisons.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"histor.modelmarket.dev\" \"security\" -site:github.com -site:dev.to -site:modelmarket.dev -site:qiita.com -site:libhunt.com -site:legit.show -site:newruntime.com -site:radyz.cz",
+      "origin": "web search",
+      "source_file": "independent-media-and-comparisons.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"alexar76/warden\" \"comparison\" -site:github.com/alexar76 -site:github.com/Ducarv -site:dev.to -site:modelmarket.dev -site:glama.ai -site:libhunt.com",
+      "origin": "web search",
+      "source_file": "independent-media-and-comparisons.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"histor.modelmarket.dev\" \"引用\" -site:github.com -site:dev.to -site:modelmarket.dev -site:qiita.com -site:glama.ai",
+      "origin": "web search",
+      "source_file": "audits-and-other-references.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" \"newsletter\" -site:github.com -site:dev.to -site:modelmarket.dev -site:libhunt.com",
+      "origin": "web search",
+      "source_file": "audits-and-other-references.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"aimarket-plugins\" \"audit\" -site:github.com/alexar76 -site:glama.ai -site:odel.app -site:smithery.ai -site:dev.to",
+      "origin": "web search",
+      "source_file": "audits-and-other-references.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"WARDEN\" \"alexar76\" \"versus\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:libhunt.com",
+      "origin": "web search",
+      "source_file": "audits-and-other-references.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"HISTOR\" site:ai-outline.com",
+      "origin": "web search",
+      "source_file": "japanese-news-digest-followup.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" site:ai-outline.com",
+      "origin": "web search",
+      "source_file": "japanese-news-digest-followup.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"WARDEN\" site:ai-outline.com",
+      "origin": "web search",
+      "source_file": "japanese-news-digest-followup.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"qwezzy721\" site:ai-outline.com",
+      "origin": "web search",
+      "source_file": "japanese-news-digest-followup.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"リモート MCP\" \"4,926\" -site:qiita.com -site:github.com -site:dev.to",
+      "origin": "web search",
+      "source_file": "japanese-specific-study-dissemination.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"ツール定義\" \"HISTOR\" -site:qiita.com -site:github.com -site:glama.ai -site:modelmarket.dev -site:dev.to",
+      "origin": "web search",
+      "source_file": "japanese-specific-study-dissemination.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"b71aaeaae84fcb360fe6\" -site:qiita.com -site:github.com -site:dev.to -site:modelmarket.dev",
+      "origin": "web search",
+      "source_file": "japanese-specific-study-dissemination.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"MCP\" \"12,915\" -site:github.com -site:dev.to -site:modelmarket.dev -site:hubwiz.com -site:libhunt.com",
+      "origin": "web search",
+      "source_file": "japanese-specific-study-dissemination.json",
+      "source_log": "root/query-log.json"
+    },
+    {
+      "query": "\"mcpmoat\" \"Warden\" -site:github.com -site:libhunt.com -site:skillget.dev",
+      "origin": "web search",
+      "source_file": "web-chain.json",
+      "source_log": "mcpmoat/query-log.json"
+    },
+    {
+      "query": "\"mcpmoat\" \"competitors\" -site:github.com",
+      "origin": "web search",
+      "source_file": "web-chain.json",
+      "source_log": "mcpmoat/query-log.json"
+    },
+    {
+      "query": "\"alexar76/warden\" \"Credit\" -site:github.com/alexar76 -site:dev.to",
+      "origin": "web search",
+      "source_file": "web-chain.json",
+      "source_log": "mcpmoat/query-log.json"
+    },
+    {
+      "query": "\"mcpmoat\" \"rule set version\" -site:github.com",
+      "origin": "web search",
+      "source_file": "web-chain.json",
+      "source_log": "mcpmoat/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:securitylab.ru OR site:xakep.ru OR site:anti-malware.ru)",
+      "origin": "web search",
+      "result_file": "regional-security-forums.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" (site:opennet.ru OR site:linux.org.ru OR site:rsdn.org)",
+      "origin": "web search",
+      "result_file": "regional-security-forums.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"HISTOR\" \"MCP\" (site:4pda.to OR site:forum.ru-board.com OR site:searchengines.guru)",
+      "origin": "web search",
+      "result_file": "regional-security-forums.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"@aimarket/warden\" (site:siberbulten.com OR site:turkhackteam.org OR site:donanimhaber.com)",
+      "origin": "web search",
+      "result_file": "regional-security-forums.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" (site:securityaffairs.com OR site:bilgiguvenligi.gov.tr OR site:siberguvenlik.web.tr)",
+      "origin": "web search",
+      "result_file": "regional-security-editors.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:securitycafe.ro OR site:pentestmag.com OR site:securitum.com)",
+      "origin": "web search",
+      "result_file": "regional-security-editors.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:securitynewspaper.com OR site:ehacking.net OR site:hackread.com)",
+      "origin": "web search",
+      "result_file": "regional-security-editors.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"aimarket-logos\" (site:virgool.io OR site:roocket.ir OR site:quera.org)",
+      "origin": "web search",
+      "result_file": "regional-security-editors.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"MCP\" \"12.915\" \"güvenlik\" -site:dev.to -site:github.com",
+      "origin": "web search",
+      "result_file": "runtime-study-local-number-forms.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"MCP\" \"12.915\" \"keamanan\" -site:dev.to -site:github.com",
+      "origin": "web search",
+      "result_file": "runtime-study-local-number-forms.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"MCP\" \"12.915\" \"bảo mật\" -site:dev.to -site:github.com",
+      "origin": "web search",
+      "result_file": "runtime-study-local-number-forms.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"MCP\" \"١٢٩١٥\" -site:github.com -site:dev.to",
+      "origin": "web search",
+      "result_file": "runtime-study-local-number-forms.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"HISTOR\" \"MCP\" (site:ehkoo.com OR site:topdev.vn OR site:itviec.com)",
+      "origin": "web search",
+      "result_file": "developer-native-publications.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"WARDEN\" \"alexar76\" (site:codepolitan.com OR site:petanikode.com OR site:codesaya.com)",
+      "origin": "web search",
+      "result_file": "developer-native-publications.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:techinasia.com OR site:techsauce.co OR site:blognone.com)",
+      "origin": "web search",
+      "result_file": "developer-native-publications.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:blog.desdelinux.net OR site:diolinux.com.br OR site:plus.diolinux.com.br)",
+      "origin": "web search",
+      "result_file": "developer-native-publications.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" (site:arabicprogrammer.com OR site:programmerall.com OR site:programmersought.com)",
+      "origin": "web search",
+      "result_file": "regional-technical-publishers.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:digiato.com OR site:sokanacademy.com OR site:digikala.com/mag)",
+      "origin": "web search",
+      "result_file": "regional-technical-publishers.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:geeksforgeeks.org OR site:hasgeek.com OR site:fossunited.org)",
+      "origin": "web search",
+      "result_file": "regional-technical-publishers.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"aimarket\" \"warden\" (site:alamrakamy.com OR site:aitnews.com OR site:tech3arabi.com)",
+      "origin": "web search",
+      "result_file": "regional-technical-publishers.json",
+      "saved_before_utc": "2026-10-28 14:05:04 UTC",
+      "source_log": "regional/query-log.json"
+    },
+    {
+      "query": "\"alexar76/warden\" -site:github.com/alexar76 -site:dev.to -site:libhunt.com -site:glama.ai -site:modelmarket.dev -site:github.com/Ducarv",
+      "origin": "web search",
+      "source_file": "search-1.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" site:gitlab.com -site:github.com",
+      "origin": "web search",
+      "source_file": "search-1.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" site:codeberg.org OR site:sr.ht OR site:gitlab.com",
+      "origin": "web search",
+      "source_file": "search-1.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"WARDEN\" \"MCP\" \"competitors\" -site:github.com/Ducarv -site:dev.to -site:libhunt.com -site:modelmarket.dev",
+      "origin": "web search",
+      "source_file": "search-1.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"alexar76/warden\" \"comparison\" -site:github.com/alexar76 -site:github.com/Ducarv -site:libhunt.com -site:dev.to -site:modelmarket.dev",
+      "origin": "web search",
+      "source_file": "search2.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" \"security\" site:docs.google.com OR site:notion.site OR site:readthedocs.io OR site:gitbook.io",
+      "origin": "web search",
+      "source_file": "search2.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"histor-mcp-tool-definitions\" -site:huggingface.co -site:github.com/alexar76 -site:github.com/Paraphern -site:dev.to -site:qiita.com -site:modelmarket.dev -site:skillget.dev",
+      "origin": "web search",
+      "source_file": "search2.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" \"comparison\" -site:modelmarket.dev -site:dev.to -site:github.com/alexar76 -site:libhunt.com -site:glama.ai",
+      "origin": "web search",
+      "source_file": "search2.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"aimarket-plugins\" \"trovark\"",
+      "origin": "web search",
+      "source_file": "search-3.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" \"pinning.ts\" -site:github.com/alexar76 -site:modelmarket.dev -site:dev.to",
+      "origin": "web search",
+      "source_file": "search-3.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"alexar76/warden\" \"comparaison\" OR \"Vergleich\" OR \"comparativa\" OR \"比较\" -site:github.com/alexar76 -site:libhunt.com -site:dev.to -site:modelmarket.dev",
+      "origin": "web search",
+      "source_file": "search-3.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"histor.modelmarket.dev\" \"documentation\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:glama.ai -site:libhunt.com",
+      "origin": "web search",
+      "source_file": "search-3.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"alexar76/aimarket-plugins\" \"INSUFFICIENT\"",
+      "origin": "web search",
+      "source_file": "search-4.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"Trovark\" \"MCP\" \"score\"",
+      "origin": "web search",
+      "source_file": "search-4.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"alexar76/warden\" \"benchmark\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:libhunt.com -site:github.com/Ducarv",
+      "origin": "web search",
+      "source_file": "search-4.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"modelmarket.dev\" \"CodeRabbit\"",
+      "origin": "web search",
+      "source_file": "search-4.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"industrial-platform-agent-tools\" \"modelmarket.dev\"",
+      "origin": "web search",
+      "source_file": "search-5.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"AIMarket\" \"industrial-platform\" -site:github.com/alexar76",
+      "origin": "web search",
+      "source_file": "search-5.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"DanWahlin\" \"alexar76\"",
+      "origin": "web search",
+      "source_file": "search-5.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"aimarket-agent\" \"modelmarket\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:pypi.org -site:socket.dev",
+      "origin": "web search",
+      "source_file": "search-5.json",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"alexar76\" in:body -user:alexar76 -author:alexar76",
+      "origin": "GitHub issue search",
+      "source_file": "github-issue-search.json",
+      "url": "https://api.github.com/search/issues?q=%22alexar76%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"histor-mcp-tool-definitions\" in:body -user:alexar76 -author:alexar76",
+      "origin": "GitHub issue search",
+      "source_file": "github-issue-search.json",
+      "url": "https://api.github.com/search/issues?q=%22histor-mcp-tool-definitions%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"alexar76/warden\" in:body -user:alexar76 -author:alexar76",
+      "origin": "GitHub issue search",
+      "source_file": "github-issue-search.json",
+      "url": "https://api.github.com/search/issues?q=%22alexar76%2Fwarden%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"@alexar76/argus3\" -user:alexar76 -author:alexar76",
+      "origin": "GitHub issue search",
+      "source_file": "github-issue-search.json",
+      "url": "https://api.github.com/search/issues?q=%22%40alexar76%2Fargus3%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"aimarket-agent\" in:body -user:alexar76 -author:alexar76",
+      "origin": "GitHub issue search",
+      "source_file": "github-issue-search.json",
+      "url": "https://api.github.com/search/issues?q=%22aimarket-agent%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "source_log": "external-docs/query-log.json"
+    },
+    {
+      "query": "\"histor.modelmarket.dev\" in:body -user:alexar76 -author:alexar76",
+      "origin": "GitHub issue search",
+      "source_file": "github-issue-search.json",
+      "url": "https://api.github.com/search/issues?q=%22histor.modelmarket.dev%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "source_log": "external-docs/query-log.json"
+    }
+  ],
+  "records": [
+    {
+      "url": "https://pypi.org/pypi/aimarket-metis/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:36.963970+00:00",
+      "status": 200,
+      "sha256": "ca1e211ce7f1e26d5962bdb8a244883414dbedffdaf5375011e579eccc4d8ddf",
+      "bytes": 24805,
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://pypi.org/pypi/aimarket-logos/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:36.964387+00:00",
+      "status": 200,
+      "sha256": "572c806ee40a799fca96372418ab194687510de62f68554fdcad52a8e5f9bf23",
+      "bytes": 22449,
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://pypi.org/pypi/aimarket-oracle-core/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:36.964538+00:00",
+      "status": 200,
+      "sha256": "847ce43b62bb5e6ee1b811bae38df85b5af0635d3cce35b1884ae26ad26f311f",
+      "bytes": 20846,
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://pypi.org/pypi/aimarket-hestia/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:36.964711+00:00",
+      "status": 200,
+      "sha256": "c14a9f623878c7d38c03625c67660031e7bdc4b66dea62b439726af4d80e3ec0",
+      "bytes": 37405,
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://pypi.org/pypi/helios-broadcast/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.320397+00:00",
+      "status": 200,
+      "sha256": "98787f04000d28ed4d7d7c72d7fb4508785000c0795c354dbb0321bfe4ee37d8",
+      "bytes": 18348,
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://pypi.org/pypi/skopos-fleet/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.323220+00:00",
+      "status": 200,
+      "sha256": "ac8be0348d7d9464b4780d698fc73dde2ab70a523226bd772eb2bcdb270e5461",
+      "bytes": 22378,
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://pypi.org/pypi/aimarket-emporion/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.327457+00:00",
+      "status": 200,
+      "sha256": "2c1602c7fa432d0e6d5b8d7a0a5768b5b8eb27a23415ed97cadef34ce555fd4c",
+      "bytes": 31814,
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://pypi.org/pypi/aimarket-basanos/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.475811+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://pypi.org/pypi/aimarket-dolos/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.695790+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://pypi.org/pypi/aimarket-themis/json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:37.701084+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "source_file": "reverse-package-scope.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-metis/v/0.2.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:38.458593+00:00",
+      "status": 200,
+      "sha256": "4b1ca7be3454a0031aa3978e0ab15f6fa36219fbdfcd737f32ec688cdb58e38d",
+      "bytes": 158,
+      "source_file": "reverse-dependent-results.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-metis/v/0.2.5/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:38.463669+00:00",
+      "status": 200,
+      "sha256": "cfd4dd890a6bd08d2eb3ac75d7a6a7a4065ca297b8b54f32ede6853566ab932a",
+      "bytes": 158,
+      "source_file": "reverse-dependent-results.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-hestia/v/0.1.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:38.469083+00:00",
+      "status": 200,
+      "sha256": "a483af8ed5bd9e4aea6fcabbc01a24714c2fe676f27c078f71f7a7985ff1a6b0",
+      "bytes": 159,
+      "source_file": "reverse-dependent-results.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-hestia/v/0.1.3/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:38.469351+00:00",
+      "status": 200,
+      "sha256": "12d13023acade40506abc9506f2d7e3c48a2f6d427c2ad40cab7d748c48401fc",
+      "bytes": 159,
+      "source_file": "reverse-dependent-results.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-emporion/v/0.1.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:39.320266+00:00",
+      "status": 200,
+      "sha256": "bc9f9c152ab352be3de9bd7bd008e30e4cef2d0dacdfd63cd0c449b3f1e2de0b",
+      "bytes": 161,
+      "source_file": "reverse-dependent-results.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-emporion/v/0.4.2/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:39.327145+00:00",
+      "status": 200,
+      "sha256": "ae73f4388a0486aa0ebee7c8c84b066c0e8c76068364fb9252ba677e864fe6d3",
+      "bytes": 161,
+      "source_file": "reverse-dependent-results.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-logos/v/0.1.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:04.670644+00:00",
+      "status": 200,
+      "sha256": "67b14f1bbacce5c1d2f7e0a9db64b60f24fcd452b49276edcbec6261d4a97c89",
+      "bytes": 158,
+      "source_file": "reverse-dependent-candidates.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-logos/v/0.2.2/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:04.671017+00:00",
+      "status": 200,
+      "sha256": "146e68bfe7d5e0cf970111015193dfc845772d6f8e1c9b203ce83536bbc79c0a",
+      "bytes": 158,
+      "source_file": "reverse-dependent-candidates.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-oracle-core/v/0.2.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:04.671153+00:00",
+      "status": 200,
+      "sha256": "815df0e0422672b9b3634d97bc4d96c8f6890b38c7a0a14d065b24a2ff09f8aa",
+      "bytes": 164,
+      "source_file": "reverse-dependent-candidates.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-oracle-core/v/0.6.3/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:04.671273+00:00",
+      "status": 200,
+      "sha256": "8203867ebb281503a4a63622c1bb5a68f86f1d15a9e9123ae32a4277e499825c",
+      "bytes": 164,
+      "source_file": "reverse-dependent-candidates.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/helios-broadcast/v/0.1.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:04.918551+00:00",
+      "status": 200,
+      "sha256": "b06b0cf8cdf94e95d8fc9abc961cfe5bd076230e06fffaa49ac4fa21ab90f628",
+      "bytes": 160,
+      "source_file": "reverse-dependent-candidates.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/helios-broadcast/v/0.2.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:04.918904+00:00",
+      "status": 200,
+      "sha256": "c54181ad0b8070eb4a40d8c5f63e8b4b140a0d5539b3369df54685425c91ec32",
+      "bytes": 160,
+      "source_file": "reverse-dependent-candidates.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/skopos-fleet/v/0.1.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:04.938485+00:00",
+      "status": 200,
+      "sha256": "e2219df6392671bcecab958f1e54aa207a085eff95887ed6a534cb58acce6323",
+      "bytes": 156,
+      "source_file": "reverse-dependent-candidates.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://deps.dev/_/s/pypi/p/skopos-fleet/v/0.2.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:04.946759+00:00",
+      "status": 200,
+      "sha256": "d51296cd16c32ac2b27adbac058f2010345e605da4662379f6f6c276c8ab067d",
+      "bytes": 156,
+      "source_file": "reverse-dependent-candidates.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://ai-outline.com/2026/10/21/",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:01.654269+00:00",
+      "status": 403,
+      "error": "HTTP Error 403: Forbidden",
+      "source_file": "japanese-digest-evidence.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://ai-outline.com/",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:01.654697+00:00",
+      "status": 403,
+      "error": "HTTP Error 403: Forbidden",
+      "source_file": "japanese-digest-evidence.json",
+      "source_index": "root/verification-index.json"
+    },
+    {
+      "url": "https://api.github.com/repos/Ducarv/mcpmoat/branches/dev",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:02:42.296271+00:00",
+      "status": 200,
+      "sha256": "0f78fde4a1896a3bb8da85ccf52ff2df2c7bcdf03a43f23dcdcda39d6171f46a",
+      "bytes": 5246,
+      "source_file": "discovery.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://api.github.com/repos/Ducarv/mcpmoat/git/trees/fc776bc2eb10376994b6d021a18f6230487bc033?recursive=1",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:02:42.296709+00:00",
+      "status": 200,
+      "sha256": "28f43854924251b7380418698a639535ac3fca772f3626f162385d5a384fcf51",
+      "bytes": 165917,
+      "source_file": "discovery.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://api.github.com/repos/Ducarv/mcpmoat/issues?state=all&sort=updated&direction=desc&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:02:42.296849+00:00",
+      "status": 200,
+      "sha256": "d9012861af8139f7ebac404f9011df7baa70dacb253dd8ca5e90af7ca62d787f",
+      "bytes": 692270,
+      "source_file": "discovery.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://api.github.com/repos/Ducarv/mcpmoat/issues?state=all&sort=updated&direction=desc&per_page=100&page=2",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:36.197183+00:00",
+      "status": 200,
+      "sha256": "4b6ac41d4e2cc5af5b6100390864ee37917838a008653ffc0c61e14acc99c190",
+      "bytes": 809653,
+      "source_file": "older-issues.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://api.github.com/repos/Ducarv/mcpmoat/issues?state=all&sort=updated&direction=desc&per_page=100&page=3",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:37.761220+00:00",
+      "status": 200,
+      "sha256": "5d46c87819ef5a86f5df70de372ce065a11c82e99f225d38d23a4c8d688e86b3",
+      "bytes": 458169,
+      "source_file": "older-issues.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/README.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:34.369302+00:00",
+      "status": 200,
+      "sha256": "99fccf0d0a5b9bfbe2e3df8dbde948a41f9ad1cdfa0912e12ffced159590e3f5",
+      "bytes": 6983,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/PRD.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:34.370172+00:00",
+      "status": 200,
+      "sha256": "7ae2667fda78655e10523718c44ac36e699653cb43d2fa5c7d70d171afce7a63",
+      "bytes": 68799,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/ARCHITECTURE.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:34.370493+00:00",
+      "status": 200,
+      "sha256": "a00587abbfd0e9c9ff93094afba82041b91b2fcb4c9e8116529d7825afa57f57",
+      "bytes": 124060,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/README.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:34.371541+00:00",
+      "status": 200,
+      "sha256": "f7eeca04505526326428c90a4ce8f5102d16cd725d042de6b5f973944308102e",
+      "bytes": 2707,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/limits.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:34.930587+00:00",
+      "status": 200,
+      "sha256": "88bd3ad75df4d95f9bfe7aad75f6a20cd2f80f0074c331dedd980df57dede7d9",
+      "bytes": 18697,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/pins.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:34.973452+00:00",
+      "status": 200,
+      "sha256": "8d7bf2ba4d671bb8282d9154c62955c0278b933b2a552dd02a980d3711aa9767",
+      "bytes": 20990,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/scan-output.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:35.055565+00:00",
+      "status": 200,
+      "sha256": "78b6141e89104cd1e2c7a08f200254db7aaa1dfbabb3a94f2af78b0c45c5fa49",
+      "bytes": 15807,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/go.mod",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:35.080870+00:00",
+      "status": 200,
+      "sha256": "ffd71502903f3433b2808acfadfa31dded1ef42a0aeddf71d5a7cae4a74edc7e",
+      "bytes": 653,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/report/json.go",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:35.353403+00:00",
+      "status": 200,
+      "sha256": "3e24d292a896c50a41a690c1da9fcdc511dfc2b87fbb1766aa46c47dbd00b327",
+      "bytes": 17897,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/report/diff.go",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:35.409298+00:00",
+      "status": 200,
+      "sha256": "23b85a496f402df5dbb39f0f32b047da435a920b2e2ff6ff0886eaa89af3ed49",
+      "bytes": 7851,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/pins/diff.go",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:35.475705+00:00",
+      "status": 200,
+      "sha256": "12ba998ce4bdb638618ceeef779896880aad4bc3fddf47850ec19253d305165b",
+      "bytes": 8601,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/rules/set.go",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:35.496397+00:00",
+      "status": 200,
+      "sha256": "78ec5f9b81a17c5146b01c233fec22ff929667cbd9c3ef30968dff5c5e085596",
+      "bytes": 8359,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/rules/finding.go",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:03:35.782828+00:00",
+      "status": 200,
+      "sha256": "125dde0ecc0d8b4c09e0c379839e8fca81f3d3dd9f8e7ff81c704023f0971777",
+      "bytes": 5329,
+      "source_file": "pinned-files.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/docs/exit-codes.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:05:24.301523+00:00",
+      "status": 200,
+      "sha256": "743f3944d51375724d4ae2995346898053625bda196344a4b0c7a98d1a198f81",
+      "bytes": 12509,
+      "source_file": "implementation.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/pins/render.go",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:05:24.301974+00:00",
+      "status": 200,
+      "sha256": "b14a81625e1143ed8e5d3f66573f491061af77a56b4f41c7c44a30c75cb2552f",
+      "bytes": 11285,
+      "source_file": "implementation.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/cmd/mcpmoat/scan_findings.go",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:05:24.302101+00:00",
+      "status": 200,
+      "sha256": "ce8f92a68b54f9eec32513805efca58a674e3e512906de35bd66d4ff34c195b4",
+      "bytes": 21486,
+      "source_file": "implementation.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/fc776bc2eb10376994b6d021a18f6230487bc033/internal/report/findings.go",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:05:24.302211+00:00",
+      "status": 200,
+      "sha256": "73a7b567b5e35403d3243b8144179cd1fdb17e853910ab82728e0f97da7409f8",
+      "bytes": 11393,
+      "source_file": "implementation.json",
+      "source_index": "mcpmoat/verification-index.json"
+    },
+    {
+      "url": "https://api.github.com/search/issues?q=%22alexar76%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:10.292376+00:00",
+      "status": 200,
+      "sha256": "82c6458b1a0b7602a469b83eda19ca12c6053db13faee98611cba49737c69627",
+      "bytes": 22009,
+      "source_file": "github-issue-search.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://api.github.com/search/issues?q=%22histor-mcp-tool-definitions%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:10.292878+00:00",
+      "status": 200,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+      "bytes": 79,
+      "source_file": "github-issue-search.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://api.github.com/search/issues?q=%22alexar76%2Fwarden%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:11.020669+00:00",
+      "status": 200,
+      "sha256": "871365c3a57ed5154d8c502742a726ac2430c0880272c6518401eaa1c6f744bb",
+      "bytes": 17554,
+      "source_file": "github-issue-search.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://api.github.com/search/issues?q=%22%40alexar76%2Fargus3%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:11.287500+00:00",
+      "status": 200,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+      "bytes": 79,
+      "source_file": "github-issue-search.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://api.github.com/search/issues?q=%22aimarket-agent%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:11.795700+00:00",
+      "status": 200,
+      "sha256": "bbacc6caa9c21d2872cf16d26a5da65e7c01866232d9837e895bc66557559367",
+      "bytes": 96535,
+      "source_file": "github-issue-search.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://api.github.com/search/issues?q=%22histor.modelmarket.dev%22+in%3Abody+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:11.870294+00:00",
+      "status": 200,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+      "bytes": 79,
+      "source_file": "github-issue-search.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://github.com/lets-order-some-fries/trovark/issues/22",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:13.211715+00:00",
+      "status": 200,
+      "sha256": "8c45e380c984209c559ec2035dccf9c45001b4ec649ab3a6df7f91e3363662c2",
+      "bytes": 318300,
+      "source_file": "issue-pages-grep.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://github.com/myoshi2891/Next-Store/pull/28",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:13.213903+00:00",
+      "status": 200,
+      "sha256": "aed5c356be16cd63f1bee0ea2cde563237066c59a744655563222e09769ff2d6",
+      "bytes": 1182131,
+      "source_file": "issue-pages-grep.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://github.com/hyperpolymath/rsr-template-repo/pull/83",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:13.215982+00:00",
+      "status": 200,
+      "sha256": "36895d04b0a61b40f3d8c0b283f25540980f6e60cdc5221087f06cc44cc53ed2",
+      "bytes": 1011807,
+      "source_file": "issue-pages-grep.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://grep.app/api/search?q=alexar76",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:04:14.812364+00:00",
+      "status": 429,
+      "error": "HTTP Error 429: Too Many Requests",
+      "source_file": "issue-pages-grep.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://api.github.com/repos/lets-order-some-fries/trovark/issues/22/comments?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:05:18.322963+00:00",
+      "status": 200,
+      "sha256": "4a63b58972be3f4e867c545b5b23950854d20177d59c03ccd569dcdb00b75763",
+      "bytes": 5075,
+      "source_file": "selected-issue-comments.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://api.github.com/repos/hyperpolymath/rsr-template-repo/issues/83/comments?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:05:18.800235+00:00",
+      "status": 200,
+      "sha256": "781f2e9e1936c81ce658df1d09f0e86bc81f4b7c62fbf1be8f06e8b91ed416f7",
+      "bytes": 83875,
+      "source_file": "selected-issue-comments.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://github.com/lets-order-some-fries/trovark/pull/25",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:06:38.615484+00:00",
+      "status": 200,
+      "sha256": "4dffcfde34babe1bdcf3d0870ef9b4420b8f1d5915f7eb612569c67c11e28a92",
+      "bytes": 331764,
+      "source_file": "trovark-pr25-and-hypatia-review.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://api.github.com/repos/hyperpolymath/rsr-template-repo/pulls/83/comments?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:06:40.173920+00:00",
+      "status": 200,
+      "sha256": "cf0961c351aa88c316cd986ac37a73683a36ee26ec8c56c8b7aafece09a1534b",
+      "bytes": 109719,
+      "source_file": "trovark-pr25-and-hypatia-review.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/pull/49",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:07:59.160134+00:00",
+      "status": 200,
+      "sha256": "d0f5029ac85b6ae2033d2aa81682ff102cea7a16892fa11b95830b84584b7233",
+      "bytes": 297284,
+      "source_file": "industrial-platform-pr49.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/lets-order-some-fries/trovark/73f44c42a17e0cafedea31650d6b218db2d34d9e/README.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:08:33.878781+00:00",
+      "status": 200,
+      "sha256": "73a0a23cb64b23dec35f3e4acfd8b13454faf29d50c5220c54f7a6116334d2ff",
+      "bytes": 10546,
+      "source_file": "trovark-pinned-method.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/lets-order-some-fries/trovark/73f44c42a17e0cafedea31650d6b218db2d34d9e/src/derive/schema.ts",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:08:34.305110+00:00",
+      "status": 200,
+      "sha256": "81308405f056e7ddecb9f719e4798becf2ba9e18eed289b875b416b86f1895d6",
+      "bytes": 100755,
+      "source_file": "trovark-pinned-method.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/pull/49.diff",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:10:43.020909+00:00",
+      "status": 200,
+      "sha256": "19649470c781e2aae14afa7c9fb6aa2750e4365bb6fd2a6409018c6fd14477b5",
+      "bytes": 5175,
+      "source_file": "industrial-platform-pr49-diff.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/README.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:11:03.454440+00:00",
+      "status": 200,
+      "sha256": "c024953c637ebc6715cc1b8d4f13921ab07470a9f709a664314d8264411260b0",
+      "bytes": 13032,
+      "source_file": "industrial-platform-root-source.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/package.json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:11:03.454828+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "source_file": "industrial-platform-root-source.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/gateway/aimarket-federation.mjs",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:11:32.584515+00:00",
+      "status": 200,
+      "sha256": "42172f87ffb273dfa1b275b8d14872d0fe9cbd74a7e0345ed969ef4dc3b04687",
+      "bytes": 11427,
+      "source_file": "industrial-federation-source-live.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/gateway/README.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:11:32.584957+00:00",
+      "status": 200,
+      "sha256": "7f87ea67a04f8e35e1ea8da5d9d9ba2eefe7b0d87617929573e212dfc4a53210",
+      "bytes": 1097,
+      "source_file": "industrial-federation-source-live.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://x402-gateway-production-1f21.up.railway.app/.well-known/ai-market.json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:11:32.585179+00:00",
+      "status": 200,
+      "sha256": "42558d5ea68e8047e4b8b0d24d18d652c3a2e5741821d37bf5713a5555a0d273",
+      "bytes": 1572,
+      "source_file": "industrial-federation-source-live.json",
+      "source_index": "external-docs/http-index.json"
+    },
+    {
+      "url": "https://x402-gateway-production-1f21.up.railway.app/ai-market/v2/manifest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-28T14:11:32.585350+00:00",
+      "status": 200,
+      "sha256": "c58bf3cba9a55b6f38283caeb035fb326867b04793574725b733e930b2285a72",
+      "bytes": 6328,
+      "source_file": "industrial-federation-source-live.json",
+      "source_index": "external-docs/http-index.json"
+    }
+  ],
+  "local_manifest_checks": [
+    {
+      "artifact": "external-docs/industrial-manifest-compatibility.json",
+      "artifact_sha256": "259e20561b518c43cb5b808bfe612d4abcc68fc1df258b32734eba8fd40224fa",
+      "network_requests": 0
+    },
+    {
+      "artifact": "external-docs/industrial-manifest-independent-review.json",
+      "artifact_sha256": "c48194ffc5d797832027f70f61a9faca76c36ef5f5bce5edb6c7b197dfe87fee",
+      "network_requests": 0
+    }
+  ]
+}

@@ -1,0 +1,413 @@
+{
+  "analysis": "deterministic-offline",
+  "dependencies": [
+    {
+      "comparability": "bounded",
+      "contextChanges": [
+        "protocol"
+      ],
+      "fieldCoverage": "full",
+      "id": "demo:migration",
+      "limitations": [],
+      "observedChanges": false,
+      "provenanceGaps": [
+        "before: packageVersion missing; not inferred",
+        "after: packageVersion missing; not inferred"
+      ],
+      "selectedTools": [
+        {
+          "changes": [],
+          "name": "read_status",
+          "retest": [],
+          "status": "unchanged"
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "after": {
+          "fullList": 94,
+          "selectedTools": 94
+        },
+        "before": {
+          "fullList": 94,
+          "selectedTools": 94
+        },
+        "delta": {
+          "fullList": 0,
+          "selectedTools": 0
+        }
+      },
+      "sources": {
+        "after": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-27T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/migration-after.json",
+          "protocol": "2026-07-28",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "2",
+          "sha256": "sha256:80a04b3ec2e35f3b0330bd643d3ff8a7297c34e74288e6f91ecbed1290177e98",
+          "status": "ok",
+          "targetId": "demo:migration",
+          "toolsSha256": "sha256:5325c115abb0aa1d4febda77fd2bf9ba6d3ad87de4233604fab23b704174d082",
+          "transport": "streamable-http"
+        },
+        "before": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-26T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/migration-before.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1",
+          "sha256": "sha256:aae66bbd278f22d34ff079b78b6a2c449043920db192aa710b916bc609006e4d",
+          "status": "ok",
+          "targetId": "demo:migration",
+          "toolsSha256": "sha256:5325c115abb0aa1d4febda77fd2bf9ba6d3ad87de4233604fab23b704174d082",
+          "transport": "streamable-http"
+        }
+      },
+      "status": "context_changed",
+      "toolSet": {
+        "added": [],
+        "afterCount": 1,
+        "beforeCount": 1,
+        "removed": []
+      },
+      "workflows": [
+        {
+          "affectedTools": [],
+          "description": "\u68c0\u67e5 MCP \u8fc1\u79fb\u540e\u7684\u670d\u52a1\u72b6\u6001",
+          "id": "status-check",
+          "retest": [
+            {
+              "check": "\u6838\u5bf9 protocol\u3001launcher \u548c\u8bbf\u95ee\u6761\u4ef6\uff1b\u5728\u76f8\u540c\u4e0a\u4e0b\u6587\u4e2d\u91cd\u65b0\u83b7\u53d6\u4e24\u4efd\u5feb\u7167\u3002",
+              "tool": null
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "read_status"
+          ]
+        }
+      ]
+    },
+    {
+      "comparability": "unknown",
+      "contextChanges": [],
+      "fieldCoverage": "none",
+      "id": "demo:offline",
+      "limitations": [
+        "after: successful full observation missing"
+      ],
+      "observedChanges": null,
+      "provenanceGaps": [],
+      "selectedTools": [
+        {
+          "changes": [],
+          "name": "read_status",
+          "retest": [
+            "\u5728\u53ef\u6bd4\u73af\u5883\u4e2d\u53d6\u5f97\u4e24\u6b21\u5b8c\u6574\u4e14\u6210\u529f\u7684\u89c2\u6d4b\u3002"
+          ],
+          "status": "unknown"
+        }
+      ],
+      "serializedUtf8Bytes": null,
+      "sources": {
+        "after": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-27T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/offline-after.json",
+          "protocol": null,
+          "serverName": "synthetic-fixture",
+          "serverVersion": null,
+          "sha256": "sha256:66727987e9474aba873aec44d9f5567fcc3f9678fbdeab69717dcfb269effa63",
+          "status": "failed",
+          "targetId": "demo:offline",
+          "toolsSha256": null,
+          "transport": "streamable-http"
+        },
+        "before": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:f4d3ee234f49f45d9ac644a9b5efe30925df20acacce929d638517ac72c4e2dc",
+          "observedAt": "2026-10-26T09:00:00Z",
+          "packageVersion": null,
+          "path": "snapshots/offline-before.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1",
+          "sha256": "sha256:8d1528bbe8087c1cbceeaa0f4cbac46469e27eed3ff3ca9f50a56b714bb4e59c",
+          "status": "ok",
+          "targetId": "demo:offline",
+          "toolsSha256": "sha256:5325c115abb0aa1d4febda77fd2bf9ba6d3ad87de4233604fab23b704174d082",
+          "transport": "streamable-http"
+        }
+      },
+      "status": "unknown",
+      "workflows": [
+        {
+          "affectedTools": [
+            "read_status"
+          ],
+          "description": "\u83b7\u53d6\u5916\u90e8\u670d\u52a1\u7684\u6bcf\u65e5\u72b6\u6001",
+          "id": "daily-status",
+          "retest": [
+            {
+              "check": "\u6838\u5bf9 protocol\u3001launcher \u548c\u8bbf\u95ee\u6761\u4ef6\uff1b\u5728\u76f8\u540c\u4e0a\u4e0b\u6587\u4e2d\u91cd\u65b0\u83b7\u53d6\u4e24\u4efd\u5feb\u7167\u3002",
+              "tool": null
+            },
+            {
+              "check": "\u5728\u53ef\u6bd4\u73af\u5883\u4e2d\u53d6\u5f97\u4e24\u6b21\u5b8c\u6574\u4e14\u6210\u529f\u7684\u89c2\u6d4b\u3002",
+              "tool": "read_status"
+            }
+          ],
+          "status": "unknown",
+          "tools": [
+            "read_status"
+          ]
+        }
+      ]
+    },
+    {
+      "comparability": "comparable",
+      "contextChanges": [],
+      "fieldCoverage": "full",
+      "id": "demo:research",
+      "limitations": [],
+      "observedChanges": true,
+      "provenanceGaps": [],
+      "selectedTools": [
+        {
+          "changes": [
+            "extras"
+          ],
+          "extras": {
+            "annotationFieldsChanged": [
+              "destructiveHint",
+              "readOnlyHint"
+            ],
+            "annotationHints": {
+              "destructiveHint": [
+                false,
+                true
+              ],
+              "readOnlyHint": [
+                true,
+                false
+              ]
+            },
+            "annotationsPresenceChanged": false,
+            "escalation": true,
+            "members": {}
+          },
+          "name": "export_brief",
+          "retest": [
+            "\u68c0\u67e5\u64cd\u4f5c\u786e\u8ba4\u3001\u6743\u9650\u548c\u58f0\u660e\u7684\u4ef7\u683c\uff1bannotations \u4ec5\u662f\u670d\u52a1\u5668\u7684\u58f0\u660e\u3002"
+          ],
+          "status": "changed"
+        },
+        {
+          "changes": [
+            "removed"
+          ],
+          "name": "legacy_fetch",
+          "retest": [
+            "\u68c0\u67e5\u66ff\u4ee3\u5de5\u5177\u6216\u56fa\u5b9a\u65e7\u7248\u8f6f\u4ef6\u5305\uff1b\u5148\u5ba1\u67e5\u6d41\u7a0b\uff0c\u518d\u6267\u884c\u3002"
+          ],
+          "status": "removed"
+        },
+        {
+          "changes": [
+            "description",
+            "inputSchema",
+            "outputSchema"
+          ],
+          "descriptionDiff": [
+            {
+              "operation": "=",
+              "text": "Search documents ",
+              "truncated": false
+            },
+            {
+              "operation": "-",
+              "text": "using",
+              "truncated": false
+            },
+            {
+              "operation": "+",
+              "text": "in",
+              "truncated": false
+            },
+            {
+              "operation": "=",
+              "text": " the ",
+              "truncated": false
+            },
+            {
+              "operation": "-",
+              "text": "query.",
+              "truncated": false
+            },
+            {
+              "operation": "+",
+              "text": "selected workspace. Include source links in the result.",
+              "truncated": false
+            }
+          ],
+          "descriptionDiffTruncated": false,
+          "inputSchemaPaths": [
+            "$.\"properties\".\"limit\".\"type\"",
+            "$.\"properties\".\"workspace\".\"type\"",
+            "$.\"required\"[1]"
+          ],
+          "inputTypeChangedPaths": [
+            "$/properties/limit",
+            "$/properties/workspace"
+          ],
+          "name": "search_docs",
+          "outputSchemaPaths": [
+            "$.\"properties\".\"items\".\"type\"",
+            "$.\"properties\".\"results\".\"type\""
+          ],
+          "requiredAdded": [
+            "workspace"
+          ],
+          "requiredRemoved": [],
+          "retest": [
+            "\u9605\u8bfb\u53d8\u66f4\u540e\u7684\u8bf4\u660e\uff1b\u91cd\u653e\u5e38\u7528\u8bf7\u6c42\u5e76\u68c0\u67e5\u5de5\u5177\u9009\u62e9\u3002",
+            "\u68c0\u67e5\u5df2\u4fdd\u5b58\u7684\u8f93\u5165\u3001\u5fc5\u586b\u5b57\u6bb5\u548c\u7c7b\u578b\uff0c\u5e76\u6dfb\u52a0\u8fb9\u754c\u7528\u4f8b\u3002",
+            "\u91cd\u653e\u7ed3\u679c\u5904\u7406\u8fc7\u7a0b\uff0c\u68c0\u67e5\u6d41\u7a0b\u8bfb\u53d6\u7684\u5b57\u6bb5\u548c\u7c7b\u578b\u3002"
+          ],
+          "status": "changed"
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "after": {
+          "fullList": 627,
+          "selectedTools": 451
+        },
+        "before": {
+          "fullList": 534,
+          "selectedTools": 534
+        },
+        "delta": {
+          "fullList": 93,
+          "selectedTools": -83
+        }
+      },
+      "sources": {
+        "after": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:4141d0b7749dfa4a869dbfd86253df4bad05f120eef54100eac6be218f6c133d",
+          "observedAt": "2026-10-27T09:00:00Z",
+          "packageVersion": "1.1.0",
+          "path": "snapshots/research-after.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1.1.0",
+          "sha256": "sha256:57194207461aaed52fd64ce50ed29039245f7b89d680b86f835158882721bc8f",
+          "status": "ok",
+          "targetId": "demo:research",
+          "toolsSha256": "sha256:5a83f60a71f582963de07d6f322767866d2f8a3e2a53e482ab74f4c71f944ab6",
+          "transport": "stdio"
+        },
+        "before": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:4141d0b7749dfa4a869dbfd86253df4bad05f120eef54100eac6be218f6c133d",
+          "observedAt": "2026-10-26T09:00:00Z",
+          "packageVersion": "1.0.0",
+          "path": "snapshots/research-before.json",
+          "protocol": "2025-06-18",
+          "serverName": "synthetic-fixture",
+          "serverVersion": "1.0.0",
+          "sha256": "sha256:f0d61f85b2ce2de63595690bd528b70994f329e3db903ac4d59950fb3b8263da",
+          "status": "ok",
+          "targetId": "demo:research",
+          "toolsSha256": "sha256:a158a85b17112f520008bb6101be9ce04cbfdc6232c7793659b1e4e2e8ca997b",
+          "transport": "stdio"
+        }
+      },
+      "status": "changed",
+      "toolSet": {
+        "added": [
+          "fetch_document"
+        ],
+        "afterCount": 3,
+        "beforeCount": 3,
+        "removed": [
+          "legacy_fetch"
+        ]
+      },
+      "workflows": [
+        {
+          "affectedTools": [
+            "legacy_fetch"
+          ],
+          "description": "\u8bfb\u53d6\u5f52\u6863\u6587\u6863",
+          "id": "archive-import",
+          "retest": [
+            {
+              "check": "\u68c0\u67e5\u66ff\u4ee3\u5de5\u5177\u6216\u56fa\u5b9a\u65e7\u7248\u8f6f\u4ef6\u5305\uff1b\u5148\u5ba1\u67e5\u6d41\u7a0b\uff0c\u518d\u6267\u884c\u3002",
+              "tool": "legacy_fetch"
+            }
+          ],
+          "status": "retest",
+          "tools": [
+            "legacy_fetch"
+          ]
+        },
+        {
+          "affectedTools": [
+            "export_brief",
+            "search_docs"
+          ],
+          "description": "\u51c6\u5907\u6bcf\u5468\u6587\u6863\u7efc\u8ff0",
+          "id": "weekly-review",
+          "retest": [
+            {
+              "check": "\u68c0\u67e5\u64cd\u4f5c\u786e\u8ba4\u3001\u6743\u9650\u548c\u58f0\u660e\u7684\u4ef7\u683c\uff1bannotations \u4ec5\u662f\u670d\u52a1\u5668\u7684\u58f0\u660e\u3002",
+              "tool": "export_brief"
+            },
+            {
+              "check": "\u9605\u8bfb\u53d8\u66f4\u540e\u7684\u8bf4\u660e\uff1b\u91cd\u653e\u5e38\u7528\u8bf7\u6c42\u5e76\u68c0\u67e5\u5de5\u5177\u9009\u62e9\u3002",
+              "tool": "search_docs"
+            },
+            {
+              "check": "\u68c0\u67e5\u5df2\u4fdd\u5b58\u7684\u8f93\u5165\u3001\u5fc5\u586b\u5b57\u6bb5\u548c\u7c7b\u578b\uff0c\u5e76\u6dfb\u52a0\u8fb9\u754c\u7528\u4f8b\u3002",
+              "tool": "search_docs"
+            },
+            {
+              "check": "\u91cd\u653e\u7ed3\u679c\u5904\u7406\u8fc7\u7a0b\uff0c\u68c0\u67e5\u6d41\u7a0b\u8bfb\u53d6\u7684\u5b57\u6bb5\u548c\u7c7b\u578b\u3002",
+              "tool": "search_docs"
+            }
+          ],
+          "status": "retest",
+          "tools": [
+            "export_brief",
+            "search_docs"
+          ]
+        }
+      ]
+    }
+  ],
+  "format": "histor.upgrade-brief/v1",
+  "language": "zh",
+  "limits": [
+    "\u4ec5\u6bd4\u8f83\u89c2\u6d4b\u5230\u7684\u5b9a\u4e49\uff0c\u4e0d\u9a8c\u8bc1\u670d\u52a1\u5668\u7684\u8fd0\u884c\u65f6\u884c\u4e3a\u3002",
+    "\u53d8\u5316\u4e0d\u80fd\u8bc1\u660e\u51fa\u73b0\u6545\u969c\uff1b\u5b9a\u4e49\u4e0d\u53d8\u4e5f\u4e0d\u80fd\u8bc1\u660e\u5b89\u5168\u3002",
+    "\u6d41\u7a0b\u4ec5\u901a\u8fc7\u660e\u786e\u9009\u62e9\u7684\u5de5\u5177\u5173\u8054\uff0c\u4e0d\u8fdb\u884c\u8bed\u4e49\u5206\u6790\u3002",
+    "\u7d27\u51d1 JSON \u7684 UTF-8 \u5927\u5c0f\u4ee5\u5b57\u8282\u8ba1\u91cf\uff0c\u4e0d\u662f token \u6570\u3001\u91d1\u989d\u6216\u5b9e\u9645\u8282\u7701\u3002",
+    "launch \u4ec5\u663e\u793a\u54c8\u5e0c\uff1b\u4e0d\u6267\u884c\u542f\u52a8\u6761\u4ef6\uff0c\u4e5f\u4e0d\u5c55\u793a\u73af\u5883\u4e2d\u7684\u79d8\u5bc6\u503c\u3002"
+  ],
+  "summary": {
+    "changed": 1,
+    "context_changed": 1,
+    "unchanged": 0,
+    "unknown": 1
+  },
+  "title": "\u6bcf\u5468\u7814\u7a76\u6d41\u7a0b \u5408\u6210\u793a\u4f8b",
+  "watchlistSha256": "sha256:ed2c44c23337bbe06715a9f5319a193bb2320dfae0042b5edd1cfb8764228477"
+}

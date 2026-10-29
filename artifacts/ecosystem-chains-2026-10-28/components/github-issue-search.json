@@ -1,0 +1,243 @@
+[
+  {
+    "query": "\"modelmarket.dev\" -user:alexar76",
+    "url": "https://api.github.com/search/issues?q=%22modelmarket.dev%22+-user%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:50:51.864464+00:00",
+    "status": 200,
+    "sha256": "40d69a844cedff515ec1995942fc61ed5330bfc61a3b0c8a1dc9df3d836d521f",
+    "bytes": 53907,
+    "total_count": 13,
+    "incomplete_results": false,
+    "items": [
+      {
+        "html_url": "https://github.com/Vulnetix/advisory-database/issues/5",
+        "title": "False positive: six aimarket-* PyPI packages (GCVE-110-PYPI-2026-004375, -018883, -020712, -020949, -021807, -021946) are not malware",
+        "created_at": "2026-10-21T19:39:23Z",
+        "updated_at": "2026-10-27T23:53:01Z",
+        "user": "alexar76",
+        "comments": 10,
+        "state": "open",
+        "body_excerpt": "We maintain these packages (source: github.com/alexar76; the same author on every release) and\nask for the six records to be withdrawn. Every matched line is a test fixture, documentation, a\npublic constant, or a sandbox that runs code by design. Not one of them runs on install: none of the\npackages has a setup.py or install hooks (they build with hatchling/setuptools from pyproject.toml).\n\n**GCVE-110-PYPI-2026-018883: aimarket-mcp 0.4.0**\n- P-PASSWD-READ `for url in (\"http://localhost:8080/admin\", \"file:///etc/passwd\"):` is in\n  `tests/test_gateway.py:67`. The test asserts that the gateway's fetch tool REFUSES these URLs\n  (SSRF guard); nothing reads the file.\n- P-CURL-POST-DATA `curl -s -X POST \"${AIMARKET_HUB_URL:-https://modelmarket.dev}/ai-market/v2/invoke\"`\n  is a usage example in `README.md:73`.\n\n**GCVE-110-PYPI-2026-004375: aimarket-hub 3.0.0**\n- P-PYTHON-INLINE `CMD python -c \"...urlopen('http://localhost:3100/health')\"` is a Dockerfile\n  HEALTHCHECK line that `aimarket_hub/mc"
+      },
+      {
+        "html_url": "https://github.com/Nikolife2016/pulsefeed-x402/issues/3",
+        "title": "radar: 48 веток ждут ответа",
+        "created_at": "2026-07-31T08:41:56Z",
+        "updated_at": "2026-10-27T15:25:10Z",
+        "user": "github-actions[bot]",
+        "comments": 101,
+        "state": "open",
+        "body_excerpt": "Свежие вопросы, где у нас есть конкретный ответ — 2026-07-31 UTC\n\n- **[x402-foundation/x402#3006](https://github.com/x402-foundation/x402/issues/3006)** — [Feature]: Privacy-minimal receipt does not bind the payment terms of the accepted offer\n  чем полезны: схемы: в спеке их четыре, и у upto/auth-capture amount — потолок, а не цена; смена получателя и адреса-двойники — у нас есть история наблюдений\n- **[x402-foundation/x402#3005](https://github.com/x402-foundation/x402/issues/3005)** — [Feature]: Bazaar catalogs client-echoed service metadata without server-origin authentication\n  чем полезны: v2 переносит челлендж в заголовок PAYMENT-REQUIRED — тело перестало быть источником; проверка живости: npx x402-payable <url> покажет, где именно ломается\n- **[x402-foundation/x402#3004](https://github.com/x402-foundation/x402/issues/3004)** — [Feature]: auth-capture zero feeRecipient is a wildcard payout authorization that is easy to under-disclose\n  чем полезны: v2 переносит челлендж в заголов"
+      },
+      {
+        "html_url": "https://github.com/datafund/swarm_connect/issues/467",
+        "title": "x402 on Base mainnet: USDC EIP-712 domain name advertised as \"USDC\" instead of \"USD Coin\"",
+        "created_at": "2026-09-29T14:10:21Z",
+        "updated_at": "2026-10-22T11:19:45Z",
+        "user": "crtahlin",
+        "comments": 4,
+        "state": "closed",
+        "body_excerpt": "**Problem.** `app/x402/middleware.py` (the `USDC_TOKEN_METADATA` table, around lines 57-66 on `dev`) advertises `extra.name = \"USDC\"`, version \"2\", for network `base`. The Base mainnet USDC contract's EIP-712 `name()` is `\"USD Coin\"`. `\"USDC\"` is correct only on Base Sepolia.\n\n**Impact.** Clients and facilitators build the EIP-3009 signing and verification domain from `extra`. On `X402_NETWORK=base`, signatures made against the advertised domain don't match the on-chain `DOMAIN_SEPARATOR`, so every mainnet payment fails verification. Nothing is lost, because it fails closed, but mainnet payments can't work. Startup validation (#407) doesn't check this value.\n\n**Evidence.** Read-only calls to Base mainnet USDC:\n- `name()` returns `\"USD Coin\"`, `version()` returns `\"2\"`, and `DOMAIN_SEPARATOR` is `0x02fa72…834f`.\n- The separator computed with `\"USDC\"` on chain 8453 doesn't match it; the one computed with `\"USD Coin\"` does.\n\nFound by the 2026-09 client audits. The CLI has the same bug on "
+      },
+      {
+        "html_url": "https://github.com/vaaya-ai/vaaya-mcp/issues/15",
+        "title": "Your x402 listing on the CDP Bazaar — one paid check, 5 October 2026",
+        "created_at": "2026-10-13T13:15:40Z",
+        "updated_at": "2026-10-13T13:15:40Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Hi,\n\nWe run AIMarket (modelmarket.dev). On 5 October 2026 we bought one call from 100 randomly drawn x402 sellers in the CDP Bazaar, each with the example request from its own listing, and checked what came back. Yours was one of them. We do not publish seller names; this note is only for you.\n\nYour listing's example asks for OCR of an image with no text (a flag), so the paid example returned empty data, and $0.01 was settled. A buyer cannot tell from it that the service works.\n\nSuggestion: Use an example image that contains text.\n\nIf you want the full evidence (request, raw response, transaction) or think we got something wrong, just reply — we will correct our record. Method and tool: https://github.com/alexar76/aicom/blob/main/docs/x402-delivery-survey.md\n\n— AIMarket\n"
+      },
+      {
+        "html_url": "https://github.com/qaml-ai/x402-file-upload/issues/1",
+        "title": "Your x402 listing on the CDP Bazaar — one paid check, 5 October 2026",
+        "created_at": "2026-10-06T10:42:42Z",
+        "updated_at": "2026-10-06T10:42:42Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Hi,\n\nWe run AIMarket (modelmarket.dev). On 5 October 2026 we bought one call from 100 randomly drawn x402 sellers in the CDP Bazaar, each with the example request from its own listing, and checked what came back. Yours was one of them. We do not publish seller names; this note is only for you.\n\nYour listing's example declares a raw file upload and gives a field description instead of an example file, so there is nothing a buyer can send from the listing; we did not buy.\n\nSuggestion: Add a small example file (or a JSON/URL-based variant) to the listing.\n\nIf you want the full evidence (request, raw response, transaction) or think we got something wrong, just reply — we will correct our record. Method and tool: https://github.com/alexar76/aicom/blob/main/docs/x402-delivery-survey.md\n\n— AIMarket\n"
+      },
+      {
+        "html_url": "https://github.com/LiquidAgent/liquidagentx402/issues/2",
+        "title": "Your x402 listing on the CDP Bazaar — one paid check, 5 October 2026",
+        "created_at": "2026-10-06T10:42:41Z",
+        "updated_at": "2026-10-06T10:42:41Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Hi,\n\nWe run AIMarket (modelmarket.dev). On 5 October 2026 we bought one call from 100 randomly drawn x402 sellers in the CDP Bazaar, each with the example request from its own listing, and checked what came back. Yours was one of them. We do not publish seller names; this note is only for you.\n\nYour live 402 asked $0.004 while the Bazaar listing says $0.002. After payment the API answered 400 (\"live Chainlink feed is reconnecting… you were not charged\") and indeed did not charge.\n\nSuggestion: The Bazaar refreshes a listing on its next settlement; the listed price is out of date.\n\nIf you want the full evidence (request, raw response, transaction) or think we got something wrong, just reply — we will correct our record. Method and tool: https://github.com/alexar76/aicom/blob/main/docs/x402-delivery-survey.md\n\n— AIMarket\n"
+      },
+      {
+        "html_url": "https://github.com/coinbase/x402/pull/373",
+        "title": "ecosystem: add AIMarket (Services/Endpoints)",
+        "created_at": "2026-10-02T19:51:46Z",
+        "updated_at": "2026-10-04T18:08:10Z",
+        "user": "alexar76",
+        "comments": 1,
+        "state": "open",
+        "body_excerpt": "Adds AIMarket under Services/Endpoints.\n\nSix live x402 routes on https://modelmarket.dev, each answering 402 with x402 V2 terms:\n\n- `https://modelmarket.dev/x402/weather-now`\n- `https://modelmarket.dev/x402/air-quality-now`\n- `https://modelmarket.dev/x402/nearby-sensors`\n- `https://modelmarket.dev/x402/fair-random`\n- `https://modelmarket.dev/x402/histor-check`\n- `https://modelmarket.dev/x402/warden-scan`\n\nPrices are $0.001–$0.03 USDC on Base. Machine-readable list: https://modelmarket.dev/a2mcp. Settlement goes through the CDP facilitator to `0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a` (operator wallet; ERC-8004 agent #96682 owner).\n\nFiles: `typescript/site/app/ecosystem/partners-data/aimarket/metadata.json` and `typescript/site/public/logos/aimarket.png`."
+      },
+      {
+        "html_url": "https://github.com/sudeepb02/awesome-erc8004/pull/120",
+        "title": "Add AIMarket Hub, HISTOR and WARDEN (ERC-8004 agents on Base)",
+        "created_at": "2026-10-01T20:23:39Z",
+        "updated_at": "2026-10-02T05:52:18Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Three live agents registered on the canonical IdentityRegistry on Base (0x8004A169…a432),\nall owned by the operator wallet 0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a:\n\n| agent | agentId | registration file |\n|---|---|---|\n| AIMarket Hub | 96682 | https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.json |\n| HISTOR | 96683 | https://modelmarket.dev/.well-known/erc-8004/histor.json |\n| WARDEN | 96684 | https://modelmarket.dev/.well-known/erc-8004/warden.json |\n\nDomain proof: https://modelmarket.dev/.well-known/agent-registration.json lists all three.\nRegistration txs: see https://8004scan.io/agents/base/96682 (block 52046664).\n"
+      },
+      {
+        "html_url": "https://github.com/xpaysh/awesome-x402/pull/1680",
+        "title": "Add AIMarket Hub (x402 V2, seller-direct, MCP + A2A)",
+        "created_at": "2026-10-01T20:23:21Z",
+        "updated_at": "2026-10-02T05:52:17Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Adds AIMarket Hub to AI Agent Integration.\n\n- What: a federated market where agents buy capabilities per call; MCP endpoint https://modelmarket.dev/mcp\n- x402: every 402 response carries the V2 `PAYMENT-REQUIRED` header and the V1 `accepts` body;\n  USDC on Base; `payTo` is the selling provider, not the platform; the EIP-3009 nonce commits to the call\n- Discovery: https://modelmarket.dev/.well-known/ai-market.json (signed), ERC-8004 agent #96682 on Base\n- Source: https://github.com/alexar76/aimarket-hub (Apache-2.0)\n"
+      },
+      {
+        "html_url": "https://github.com/docker/mcp-registry/pull/5365",
+        "title": "Add AIMarket Hub (remote, streamable-http)",
+        "created_at": "2026-10-01T20:25:57Z",
+        "updated_at": "2026-10-02T13:20:52Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Remote MCP server for the AIMarket Hub.\n\n- Endpoint: `https://modelmarket.dev/mcp` (streamable-http)\n- Auth: none / no OAuth — first calls per caller are free; after the trial, paid capabilities return HTTP 402 with x402 terms\n- Tools: discovered dynamically (`dynamic.tools: true`); direct tools include `weather_now`, `air_quality_now`, `nearby_sensors`, `fair_random`, plus `market_search` / `market_invoke`\n- Docs: https://modelmarket.dev/\n- Source: https://github.com/alexar76/aimarket-hub (Apache-2.0)"
+      },
+      {
+        "html_url": "https://github.com/vonzosten/awesome-LangGraph/pull/108",
+        "title": "Add aimarket-bridges to Packages",
+        "created_at": "2026-09-12T10:11:12Z",
+        "updated_at": "2026-09-15T12:18:52Z",
+        "user": "alexar76",
+        "comments": 1,
+        "state": "open",
+        "body_excerpt": "Adds **aimarket-bridges** to *Community Projects → 📦 Packages*.\n\nTwo lines, then a LangGraph agent has 181 more `StructuredTool`s:\n\n```python\nfrom aimarket_bridges.langchain import aimarket_tools\ntools = aimarket_tools(\"https://modelmarket.dev\", intent=\"verifiable randomness\")\n```\n\nEach tool is a live Hub capability (verifiable randomness, consensus, sequential-work proofs, …) with a signed receipt and a hard per-task spend cap. Bind them on `create_react_agent` as usual.\n\n- Repo: https://github.com/alexar76/aimarket-bridges\n- PyPI: https://pypi.org/project/aimarket-bridges/ — `pip install \"aimarket-bridges[langgraph]\"`\n- Live hub: https://modelmarket.dev\n- Write-up: https://dev.to/alexar76/181-more-tools-for-your-langgraph-agent-in-two-lines-2g76\n\nThe old “47” was one federated peer. Counted 2026-09-12 from the live Hub manifest: **181** federated capabilities across 14 hubs.\n\nChecklist:\n- [x] Uses LangGraph (`list[StructuredTool]` for `create_react_agent`)\n- [x] Actively maintained ("
+      },
+      {
+        "html_url": "https://github.com/e2b-dev/awesome-ai-sdks/pull/217",
+        "title": "Add AIMarket Agent and AIMarket SDKs (protocol v2)",
+        "created_at": "2026-05-31T14:54:11Z",
+        "updated_at": "2026-07-29T19:37:46Z",
+        "user": "alexart2025",
+        "comments": 3,
+        "state": "closed",
+        "body_excerpt": "## Summary\nAdds two related SDKs for [AIMarket Protocol v2](https://github.com/alexar76/aimarket-protocol) — federated discovery, HTTP 402 payment channels, safety-gated invoke, and settlement with signed receipts.\n\n| Project | Role |\n|---------|------|\n| [aimarket-agent](https://github.com/alexar76/aimarket-agent) | Python SDK + CLI (`pip install aimarket-agent`) |\n| [aimarket-sdks](https://github.com/alexar76/aimarket-sdks) | Dart (alpha), TypeScript/Rust clients |\n\nReference hub: https://modelmarket.dev\n\n## Why this list\nThese are client libraries for building autonomous agents that discover and pay for capabilities across a federation — aligned with “SDKs for creating and deploying AI agents.”\n\nNot affiliated with e2b; independent open-source (MIT)."
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/7193",
+        "title": "Add aimarket-mcp-packager to Aggregators",
+        "created_at": "2026-05-31T15:21:17Z",
+        "updated_at": "2026-06-11T06:06:17Z",
+        "user": "alexar76",
+        "comments": 6,
+        "state": "closed",
+        "body_excerpt": "Hub plugin that exports AIMarket marketplace capabilities as self-hosted MCP servers (Docker + `mcp_manifest` + Claude Desktop config).\n\n- Repo: https://github.com/alexar76/aimarket-plugins\n- Hub: https://modelmarket.dev\n- Install: `pip install aimarket-mcp-packager`"
+      }
+    ]
+  },
+  {
+    "query": "\"alexar76/metis\" -user:alexar76",
+    "url": "https://api.github.com/search/issues?q=%22alexar76%2Fmetis%22+-user%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:50:54.262778+00:00",
+    "status": 200,
+    "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+    "bytes": 79,
+    "total_count": 0,
+    "incomplete_results": false,
+    "items": []
+  },
+  {
+    "query": "\"aimarket-logos\" -user:alexar76",
+    "url": "https://api.github.com/search/issues?q=%22aimarket-logos%22+-user%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:50:56.121442+00:00",
+    "status": 200,
+    "sha256": "3c514ceb33bf01a099eace20ad18f9b0d41d8880922dda1419e1933fdd006f27",
+    "bytes": 10419,
+    "total_count": 2,
+    "incomplete_results": false,
+    "items": [
+      {
+        "html_url": "https://github.com/Vulnetix/advisory-database/issues/5",
+        "title": "False positive: six aimarket-* PyPI packages (GCVE-110-PYPI-2026-004375, -018883, -020712, -020949, -021807, -021946) are not malware",
+        "created_at": "2026-10-21T19:39:23Z",
+        "updated_at": "2026-10-27T23:53:01Z",
+        "user": "alexar76",
+        "comments": 10,
+        "state": "open",
+        "body_excerpt": "We maintain these packages (source: github.com/alexar76; the same author on every release) and\nask for the six records to be withdrawn. Every matched line is a test fixture, documentation, a\npublic constant, or a sandbox that runs code by design. Not one of them runs on install: none of the\npackages has a setup.py or install hooks (they build with hatchling/setuptools from pyproject.toml).\n\n**GCVE-110-PYPI-2026-018883: aimarket-mcp 0.4.0**\n- P-PASSWD-READ `for url in (\"http://localhost:8080/admin\", \"file:///etc/passwd\"):` is in\n  `tests/test_gateway.py:67`. The test asserts that the gateway's fetch tool REFUSES these URLs\n  (SSRF guard); nothing reads the file.\n- P-CURL-POST-DATA `curl -s -X POST \"${AIMARKET_HUB_URL:-https://modelmarket.dev}/ai-market/v2/invoke\"`\n  is a usage example in `README.md:73`.\n\n**GCVE-110-PYPI-2026-004375: aimarket-hub 3.0.0**\n- P-PYTHON-INLINE `CMD python -c \"...urlopen('http://localhost:3100/health')\"` is a Dockerfile\n  HEALTHCHECK line that `aimarket_hub/mc"
+      },
+      {
+        "html_url": "https://github.com/coinbase/x402/pull/373",
+        "title": "ecosystem: add AIMarket (Services/Endpoints)",
+        "created_at": "2026-10-02T19:51:46Z",
+        "updated_at": "2026-10-04T18:08:10Z",
+        "user": "alexar76",
+        "comments": 1,
+        "state": "open",
+        "body_excerpt": "Adds AIMarket under Services/Endpoints.\n\nSix live x402 routes on https://modelmarket.dev, each answering 402 with x402 V2 terms:\n\n- `https://modelmarket.dev/x402/weather-now`\n- `https://modelmarket.dev/x402/air-quality-now`\n- `https://modelmarket.dev/x402/nearby-sensors`\n- `https://modelmarket.dev/x402/fair-random`\n- `https://modelmarket.dev/x402/histor-check`\n- `https://modelmarket.dev/x402/warden-scan`\n\nPrices are $0.001–$0.03 USDC on Base. Machine-readable list: https://modelmarket.dev/a2mcp. Settlement goes through the CDP facilitator to `0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a` (operator wallet; ERC-8004 agent #96682 owner).\n\nFiles: `typescript/site/app/ecosystem/partners-data/aimarket/metadata.json` and `typescript/site/public/logos/aimarket.png`."
+      }
+    ]
+  },
+  {
+    "query": "\"aimarket-oracle-gateway\" -user:alexar76",
+    "url": "https://api.github.com/search/issues?q=%22aimarket-oracle-gateway%22+-user%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:50:58.400316+00:00",
+    "status": 200,
+    "sha256": "fd09f631b9bd9c22a901a232921002cfbcbcba5c28a2371a7b689527186d3f26",
+    "bytes": 17316,
+    "total_count": 4,
+    "incomplete_results": false,
+    "items": [
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/10663",
+        "title": "Add alexar76/argus — WARDEN-hardened agent MCP server (Security)",
+        "created_at": "2026-07-22T15:29:09Z",
+        "updated_at": "2026-07-22T20:13:26Z",
+        "user": "alexar76",
+        "comments": 3,
+        "state": "closed",
+        "body_excerpt": "## Summary\n- Adds **one** MCP server: [`alexar76/argus`](https://github.com/alexar76/argus) under **Security**\n- ARGUS-3 stdio MCP (`argus mcp` → `argus_ask`, `argus_status`); **WARDEN** vets third-party MCP servers before tools reach the model\n- MIT · Node ≥20 · npm `@alexar76/argus3` · Glama: https://glama.ai/mcp/servers/alexar76/argus · Registry `io.github.alexar76/argus3`\n- Not a duplicate of `alexar76/aimarket-plugins` (Aggregators) or sibling PRs for aimarket-mcp / oracle-gateway\n\nReplaces closed [#9910](https://github.com/punkpeye/awesome-mcp-servers/pull/9910) (split into one server per PR as requested). Siblings: [#10660](https://github.com/punkpeye/awesome-mcp-servers/pull/10660) (merged), [#10662](https://github.com/punkpeye/awesome-mcp-servers/pull/10662).\n\n## Test plan\n- [ ] Entry is under Security, alphabetically after `alexar76/aimarket-oracle-gateway` and before `alexfleetcommander/agent-trust-stack-mcp`\n- [ ] Link + Glama badge (`alexar76/argus`) resolve\n- [ ] Single s"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/10662",
+        "title": "Add alexar76/aimarket-oracle-gateway — verifiable oracles (Security)",
+        "created_at": "2026-07-22T15:28:45Z",
+        "updated_at": "2026-07-22T18:24:08Z",
+        "user": "alexar76",
+        "comments": 2,
+        "state": "closed",
+        "body_excerpt": "## Summary\n- Adds **one** MCP server: [`alexar76/aimarket-oracle-gateway`](https://github.com/alexar76/aimarket-oracle-gateway) under **Security**\n- Verifiable oracles as agent tools: Platon VRF, Chronos VDF, LUMEN reputation; pay-per-call over AIMarket Hub\n- MIT · Python · stdio · Glama: https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway\n\nReplaces closed [#9910](https://github.com/punkpeye/awesome-mcp-servers/pull/9910) (split into one server per PR as requested). Sibling of [#10660](https://github.com/punkpeye/awesome-mcp-servers/pull/10660) (aimarket-mcp only).\n\n## Test plan\n- [ ] Entry is under Security, alphabetically before `alexfleetcommander/agent-trust-stack-mcp`\n- [ ] Link + Glama badge resolve\n- [ ] Single server only in this PR"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/9910",
+        "title": "Add alexar76 MCP stack — web gateway, oracles, WARDEN agent (Security)",
+        "created_at": "2026-07-12T11:35:12Z",
+        "updated_at": "2026-07-22T12:29:20Z",
+        "user": "alexar76",
+        "comments": 3,
+        "state": "closed",
+        "body_excerpt": "## Summary\n\nAdds three **alexar76** stdio MCP servers to **Security** (plus our existing **Aggregators** entry `aimarket-plugins` / mcp-packager — unchanged):\n\n| Repo | Role |\n|------|------|\n| [aimarket-mcp](https://github.com/alexar76/aimarket-mcp) | SSRF-hardened `web_fetch` / `web_search` / `metis_verify` |\n| [aimarket-oracle-gateway](https://github.com/alexar76/aimarket-oracle-gateway) | Verifiable oracles — Platon VRF, Chronos VDF, LUMEN reputation |\n| [argus](https://github.com/alexar76/argus) | Demand-side agent + **WARDEN** MCP firewall |\n\nAll MIT · listed on Glama + Official MCP Registry · distinct scopes (not duplicates).\n\nReplaces closed PR #8422 (was from a personal fork; this PR is from **alexar76** as maintainer).\n\n## Test plan\n\n- [x] Three lines inserted before `alexfleetcommander/agent-trust-stack-mcp`\n- [x] Does not duplicate `alexar76/aimarket-plugins` (Aggregators)"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/8422",
+        "title": "Add aimarket-oracle-gateway (verifiable oracle MCP server)",
+        "created_at": "2026-06-20T20:12:08Z",
+        "updated_at": "2026-07-11T14:27:28Z",
+        "user": "alexart2025",
+        "comments": 2,
+        "state": "closed",
+        "body_excerpt": "## Summary\n\nAdds **alexar76/aimarket-oracle-gateway** to the **Security** section — a separate MCP server from our existing **Aggregators** entry (`aimarket-plugins` / mcp-packager).\n\nMIT · Python · stdio MCP server exposing verifiable oracle tools for AI agents:\n- **Platon VRF** — Ed25519-signed unbiasable randomness (`get_random`, `get_randomness_beacon`, `ask_oracle`)\n- **Chronos VDF** — verifiable delay / proof-of-elapsed-time (`compute_vdf`, `verify_vdf`)\n- **LUMEN reputation** — PageRank/EigenTrust trust scores (`get_reputation_scores`)\n- `list_oracle_capabilities`\n\nPay-per-call over the [AIMarket Protocol v2](https://github.com/alexar76/aimarket-protocol); every result is independently verifiable. Fail-closed spend caps.\n\n- Repo: https://github.com/alexar76/aimarket-oracle-gateway\n- Glama: https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway\n\n## Test plan\n\n- [x] Alphabetical placement in Security (after `alexfleetcommander`, before `alberthild`)\n- [x] Distinct from exis"
+      }
+    ]
+  }
+]

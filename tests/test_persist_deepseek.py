@@ -43,7 +43,10 @@ def test_sync_deepseek_writes_config(tmp_path, monkeypatch):
     ds = loaded["providers"][DEEPSEEK_PROVIDER_ID]
     assert ds["models"]["heavy"] == DEFAULT_HEAVY
     assert ds["models"]["light"] == DEFAULT_LIGHT
-    assert ds["api_key"] == "sk-test-key"
+    assert ds["api_key"] is None
+    assert ds["api_key_env"] == "DEEPSEEK_API_KEY"
+    assert ds["api_key_file"] == "deepseek_api_key"
+    assert "sk-test-key" not in cfg.read_text(encoding="utf-8")
     assert loaded["providers"]["lm_studio"]["enabled"] is False
 
     secret = data / "secrets" / "llm" / "deepseek_api_key"
@@ -82,4 +85,6 @@ def test_sync_deepseek_preserves_admin_capabilities(tmp_path, monkeypatch):
     assert ds["capabilities"]["context_window"] == 64000
     assert ds["capabilities"]["context_window_light"] == 32000
     assert ds["models"]["heavy"] == "custom-heavy"
-    assert ds["api_key"] == "sk-keep"
+    assert ds["api_key"] is None
+    assert ds["api_key_file"] == "deepseek_api_key"
+    assert (data / "secrets" / "llm" / "deepseek_api_key").read_text().strip() == "sk-keep"

@@ -1,0 +1,31 @@
+{
+  "scope": "Offline SDK/stdio verification; historical structured projection, no new model calls or automatic prose validation.",
+  "run": "run-03",
+  "host": "factory-vps",
+  "runtime": "runc",
+  "testNetwork": "none",
+  "wardenTestsPassed": 791,
+  "wardenTestFiles": 24,
+  "newGateTestsPassed": 43,
+  "newGateTestFiles": 2,
+  "redteamScenarios": 28,
+  "verifiedOutputs": 289,
+  "linuxGeneratedFiles": 276,
+  "historicalReplay": {
+    "historicalAnswers": 384,
+    "contradictedStructuredProjections": 50,
+    "contradictedProjectionsDenied": 50,
+    "unsupportedProseUnknown": 259,
+    "validExplicitProjectionsAllowed": 75,
+    "unverifiedCandidatesForwarded": 0,
+    "newModelCalls": 0
+  },
+  "temporaryRootRemoved": true,
+  "newModelCalls": 0,
+  "githubWrites": false,
+  "npmPublished": false,
+  "failedRunsRetained": [
+    "run-01: duplicate-key test syntax error",
+    "run-02: escaped-duplicate-key test syntax error"
+  ]
+}

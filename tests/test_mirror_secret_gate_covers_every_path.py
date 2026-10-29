@@ -11,8 +11,8 @@ That matters more here than the file count suggests: rsync copies the WORKING TR
 key once (see the memory note on the trimmed public mirror). A force-push afterwards does
 not un-publish a secret.
 
-Every export_* funnels through `_commit_and_push`, so the gate belongs there — once,
-unconditionally, before `git add -A`.
+Every export_* funnels through `_commit_and_push`: inspect the tree before staging
+and the actual index after final staging in each history mode.
 """
 
 from __future__ import annotations
@@ -38,7 +38,10 @@ def _commit_and_push_body(src: str) -> str:
     so the body ends at the matching top-level `)`."""
     start = src.index("_commit_and_push()")
     rest = src[start:]
-    end = rest.index("\n)\n")
+    # Embedded Python heredocs also have unindented closing parentheses.
+    # The shell subshell closes immediately before the next shell function.
+    next_function = rest.index("\nexport_satellite()")
+    end = rest.rindex("\n)\n", 0, next_function)
     return rest[: end + 3]
 
 
@@ -71,12 +74,16 @@ def test_the_scan_runs_before_every_staging_and_push_in_the_function(script):
     )
 
 
-def test_the_scan_is_not_duplicated_per_history_mode(script):
-    """One scan per push. Two meant the placement was per-branch rather than shared."""
+def test_each_commit_checks_the_actual_index_after_final_staging(script):
     body = _code_only(_commit_and_push_body(script))
-    assert body.count("verify_mirror_secrets.sh") == 1, (
-        "more than one scan in the function — it is still keyed to a branch"
-    )
+    assert body.count("verify_mirror_secrets.sh") == 3
+    commits = list(re.finditer(r"git -c user.name=.*?\n\s*commit --author=", body))
+    assert len(commits) == 2
+    for commit in commits:
+        stage = body.rfind("git add -A", 0, commit.start())
+        index_check = body.rfind('--git-index', 0, commit.start())
+        assert stage < index_check < commit.start()
+
 
 
 def _finditer(haystack: str, needle: str) -> list[int]:

@@ -1,0 +1,202 @@
+{
+  "url": "https://raw.githubusercontent.com/Ahmad-Faraj/mcp-conformance/47265b2bb09f5fedece4e1168fcd5e4afb9d530f/data/release/probe_census.jsonl",
+  "status": 200,
+  "retrieved_at": "2026-10-27T08:40:51.683405+00:00",
+  "sha256": "cf19f8f214e346b83b6c7cee0ca2cddfc9edfef14cbacad1955e5c274341b681",
+  "bytes": 10423579,
+  "totalRows": 6106,
+  "matches": [
+    {
+      "line": 464,
+      "record": {
+        "cmd": [
+          "docker",
+          "run",
+          "--rm",
+          "-i",
+          "--init",
+          "--memory",
+          "768m",
+          "--cpus",
+          "1",
+          "--pids-limit",
+          "256",
+          "--security-opt",
+          "no-new-privileges",
+          "--cap-drop",
+          "ALL",
+          "node:22-slim",
+          "npx",
+          "-y",
+          "@alexar76/argus3@0.2.4"
+        ],
+        "started": true,
+        "handshake_ok": false,
+        "negotiated_version": null,
+        "server_info": null,
+        "capabilities": null,
+        "tools_count": null,
+        "checks": [
+          {
+            "id": "server-initialize",
+            "verdict": "fail",
+            "detail": "no valid initialize result: {'_probe': 'eof'}"
+          }
+        ],
+        "stdout_noise": [
+          "ARGUS \u2014 wallet-native, security-hardened personal agent",
+          "Usage:",
+          "  argus setup                        interactive setup (wallet seed \u2192 provider/keys) \u2014 start here",
+          "  argus keystore create              create an encrypted wallet vault (new seed or --import)",
+          "  argus keystore address             print the vaulted wallet's public address"
+        ],
+        "stderr_tail": [
+          "npm notice",
+          "npm notice New major version of npm available! 10.9.8 -> 12.0.1",
+          "npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.1",
+          "npm notice To update run: npm install -g npm@12.0.1",
+          "npm notice"
+        ],
+        "exit_code": 0,
+        "duration_s": 33.99,
+        "failure_class": "exit-silent",
+        "server_name": "io.github.alexar76/argus3",
+        "server_version": "0.2.4",
+        "registry_type": "npm",
+        "identifier": "@alexar76/argus3",
+        "primed": null,
+        "harness_commit": "unknown",
+        "outbound_error_logged": false,
+        "credential_redacted": false,
+        "publisher_id": "f334ac75d428"
+      }
+    },
+    {
+      "line": 3418,
+      "record": {
+        "cmd": [
+          "docker",
+          "run",
+          "--rm",
+          "-i",
+          "--init",
+          "--memory",
+          "768m",
+          "--cpus",
+          "1",
+          "--pids-limit",
+          "256",
+          "--security-opt",
+          "no-new-privileges",
+          "--cap-drop",
+          "ALL",
+          "ghcr.io/astral-sh/uv:python3.12-bookworm-slim",
+          "uvx",
+          "aimarket-mcp-packager==2.0.1"
+        ],
+        "started": true,
+        "handshake_ok": false,
+        "negotiated_version": null,
+        "server_info": null,
+        "capabilities": null,
+        "tools_count": null,
+        "checks": [
+          {
+            "id": "server-initialize",
+            "verdict": "fail",
+            "detail": "no valid initialize result: {'_probe': 'eof'}"
+          }
+        ],
+        "stdout_noise": [],
+        "stderr_tail": [
+          "Downloading cryptography (4.5MiB)",
+          " Downloaded pydantic-core",
+          " Downloaded cryptography",
+          "Installed 26 packages in 54ms",
+          "An executable named `aimarket-mcp-packager` is not provided by package `aimarket-mcp-packager`.",
+          "The following executables are available:",
+          "- aimarket-mcp-packager-mcp",
+          "",
+          "Use `uvx --from aimarket-mcp-packager aimarket-mcp-packager-mcp` instead.",
+          ""
+        ],
+        "exit_code": 1,
+        "duration_s": 3.73,
+        "failure_class": "crash-exit-1",
+        "server_name": "io.github.alexar76/aimarket-plugins",
+        "server_version": "2.0.1",
+        "registry_type": "pypi",
+        "identifier": "aimarket-mcp-packager",
+        "primed": null,
+        "harness_commit": "unknown",
+        "outbound_error_logged": false,
+        "credential_redacted": false,
+        "publisher_id": "f334ac75d428"
+      }
+    },
+    {
+      "line": 4838,
+      "record": {
+        "cmd": [
+          "docker",
+          "run",
+          "--rm",
+          "-i",
+          "--init",
+          "--memory",
+          "768m",
+          "--cpus",
+          "1",
+          "--pids-limit",
+          "256",
+          "--security-opt",
+          "no-new-privileges",
+          "--cap-drop",
+          "ALL",
+          "ghcr.io/astral-sh/uv:python3.12-bookworm-slim",
+          "uvx",
+          "aimarket-oracle-gateway==0.2.0"
+        ],
+        "started": true,
+        "handshake_ok": false,
+        "negotiated_version": null,
+        "server_info": null,
+        "capabilities": null,
+        "tools_count": null,
+        "checks": [
+          {
+            "id": "server-initialize",
+            "verdict": "fail",
+            "detail": "no valid initialize result: {'_probe': 'eof'}"
+          }
+        ],
+        "stdout_noise": [],
+        "stderr_tail": [
+          "    self._tool_manager.add_tool(",
+          "  File \"/root/.cache/uv/archive-v0/IrN1Lo6TQVXnl5JmKcLUX/lib/python3.12/site-packages/mcp/server/fastmcp/tools/tool_manager.py\", line 57, in add_tool",
+          "    tool = Tool.from_function(",
+          "           ^^^^^^^^^^^^^^^^^^^",
+          "  File \"/root/.cache/uv/archive-v0/IrN1Lo6TQVXnl5JmKcLUX/lib/python3.12/site-packages/mcp/server/fastmcp/tools/base.py\", line 72, in from_function",
+          "    func_arg_metadata = func_metadata(",
+          "                        ^^^^^^^^^^^^^^",
+          "  File \"/root/.cache/uv/archive-v0/IrN1Lo6TQVXnl5JmKcLUX/lib/python3.12/site-packages/mcp/server/fastmcp/utilities/func_metadata.py\", line 226, in func_metadata",
+          "    raise InvalidSignature(f\"Unable to evaluate type annotations for callable {func.__name__!r}\") from e",
+          "mcp.server.fastmcp.exceptions.InvalidSignature: Unable to evaluate type annotations for callable 'aggregate_values'"
+        ],
+        "exit_code": 1,
+        "duration_s": 9.39,
+        "failure_class": "crash-python-exception",
+        "server_name": "io.github.alexar76/aimarket-oracle-gateway",
+        "server_version": "0.2.0",
+        "registry_type": "pypi",
+        "identifier": "aimarket-oracle-gateway",
+        "primed": null,
+        "harness_commit": "unknown",
+        "outbound_error_logged": false,
+        "credential_redacted": false,
+        "publisher_id": "f334ac75d428"
+      }
+    }
+  ],
+  "note": "Only ecosystem-matching records retained. SHA256 covers complete source response."
+}

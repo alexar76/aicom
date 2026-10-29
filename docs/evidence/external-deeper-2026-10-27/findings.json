@@ -1,0 +1,247 @@
+{
+  "date": "2026-10-27",
+  "scope": "Follow-up to external-deep-2026-10-27; new source paths beyond prior findings",
+  "findings": [
+    {
+      "source": "Trovark",
+      "kind": "Substantive external measurement and scorer repair",
+      "components": [
+        "AIMarket Packager"
+      ],
+      "files": [
+        "trovark-issue22",
+        "trovark-comments"
+      ],
+      "url": "https://github.com/lets-order-some-fries/trovark/issues/22#issuecomment-5682361982",
+      "date": "2026-09-15",
+      "finding": "Our aimarket-plugins is one of five partial-surface cases in a 381-repository check. Its previous B-72 becomes INSUFFICIENT DATA in the revised calculation.",
+      "limits": "This concerns incomplete extraction in Trovark, not a discovered vulnerability in our package. The comment describes a fix branch, not verified present-day production grading.",
+      "evidence": [
+        {
+          "file": "trovark-issue22.json",
+          "url": "https://api.github.com/repos/lets-order-some-fries/trovark/issues/22",
+          "sha256": "fe3162fd7f6490e6b9167bf8c77348082fb7ae02b2e3191b0056bfd9fa2c6dd8",
+          "retrieved_at": "2026-10-27T08:35:36.942730+00:00"
+        },
+        {
+          "file": "trovark-comments.json",
+          "url": "https://api.github.com/repos/lets-order-some-fries/trovark/issues/22/comments?per_page=100",
+          "sha256": "4a63b58972be3f4e867c545b5b23950854d20177d59c03ccd569dcdb00b75763",
+          "retrieved_at": "2026-10-27T08:37:00.937687+00:00"
+        }
+      ]
+    },
+    {
+      "source": "mcpprobe / Ahmad-Faraj MCP Conformance",
+      "kind": "External execution dataset attached to research preprint",
+      "components": [
+        "ARGUS-3",
+        "AIMarket Packager",
+        "Oracle Gateway",
+        "MCP Gateway registry entry"
+      ],
+      "files": [
+        "mcpprobe-zenodo-metadata",
+        "mcpprobe-repo",
+        "mcpprobe-probe_census-matches",
+        "mcpprobe-probe_census_sept-matches",
+        "mcpprobe-frame_latest-matches",
+        "mcpprobe-pdf-verification"
+      ],
+      "url": "https://doi.org/10.5281/zenodo.22996025",
+      "date": "Snapshot2026-07-19;rerun2026-09-26;preprint2026-09-27",
+      "finding": "Three of our packages were independently launched: argus3@0.2.4,aimarket-mcp-packager@2.0.1,aimarket-oracle-gateway@0.2.0. All failed the handshake in that study environment. Gateway0.1.0 is in the registry frame but has no locally installable package there.",
+      "limits": "Historical versions only. Packager rerun records missing mcp_stdio_server; Oracle rerun records missing FastMCP under SDK2. Our ecosystem is not named in the paper text; evidence is in its released data. Not a measurement of today's versions.",
+      "evidence": [
+        {
+          "file": "mcpprobe-zenodo-metadata.json",
+          "url": "https://zenodo.org/api/records/22996025",
+          "sha256": "97790d71b0405e83ad2b30d546471f2010bfcfcc5263136b11c4b23c8e1157b1",
+          "retrieved_at": "2026-10-27T08:32:54.595544+00:00"
+        },
+        {
+          "file": "mcpprobe-repo.json",
+          "url": "https://api.github.com/repos/Ahmad-Faraj/mcp-conformance",
+          "sha256": "56e8f56b22c9c6f3f8d10b9fc66cad11526ec5e146200f2e91cbf8b59a722053",
+          "retrieved_at": "2026-10-27T08:35:37.548685+00:00"
+        },
+        {
+          "file": "mcpprobe-probe_census-matches.json",
+          "url": "https://raw.githubusercontent.com/Ahmad-Faraj/mcp-conformance/47265b2bb09f5fedece4e1168fcd5e4afb9d530f/data/release/probe_census.jsonl",
+          "sha256": "cf19f8f214e346b83b6c7cee0ca2cddfc9edfef14cbacad1955e5c274341b681",
+          "retrieved_at": "2026-10-27T08:40:51.683405+00:00"
+        },
+        {
+          "file": "mcpprobe-probe_census_sept-matches.json",
+          "url": "https://raw.githubusercontent.com/Ahmad-Faraj/mcp-conformance/47265b2bb09f5fedece4e1168fcd5e4afb9d530f/data/release/probe_census_sept.jsonl",
+          "sha256": "d86fd4c76718d0668b052f8dd0ee31db4768f88cc73e5920670b3e47d79b57f7",
+          "retrieved_at": "2026-10-27T08:40:52.065714+00:00"
+        },
+        {
+          "file": "mcpprobe-frame_latest-matches.json",
+          "url": "https://raw.githubusercontent.com/Ahmad-Faraj/mcp-conformance/47265b2bb09f5fedece4e1168fcd5e4afb9d530f/data/release/frame_latest.jsonl",
+          "sha256": "ff37296baeeb7bda7373c7b16130d2ff3a92c36bcc3eef11a1ec743bf1615f5a",
+          "retrieved_at": "2026-10-27T08:40:58.934876+00:00"
+        },
+        {
+          "file": "mcpprobe-pdf-verification.json",
+          "url": "https://zenodo.org/api/records/22996025/files/Faraj-2026-MCP-conformance-census-preprint.pdf/content",
+          "sha256": "fdac164301ec201bf2af0099a4660d062c8d0eeeffd81396f7992891f44aff28",
+          "retrieved_at": "2026-10-27T08:34:13.406621+00:00"
+        }
+      ]
+    },
+    {
+      "source": "myoshi2891/Next-Store CodeRabbit review",
+      "kind": "Automated code-review citation",
+      "components": [
+        "AICOM frontend"
+      ],
+      "files": [
+        "nextstore-review-comments"
+      ],
+      "url": "https://github.com/myoshi2891/Next-Store/pull/28#discussion_r4022105489",
+      "date": "2026-09-16",
+      "finding": "CodeRabbit's web-search evidence quotes our web/frontend/eslint.config.mjs as an ESLint flat-config example for Next.js16.",
+      "limits": "Bot-authored recommendation with source excerpt. Not proof a maintainer adopted it or is an AICOM customer.",
+      "evidence": [
+        {
+          "file": "nextstore-review-comments.json",
+          "url": "https://api.github.com/repos/myoshi2891/Next-Store/pulls/28/comments?per_page=100",
+          "sha256": "5ab5acd5786e2d3c0bbb8a6164475b6c087ed66618d199c9e5f656eb5c8bc9c3",
+          "retrieved_at": "2026-10-27T08:38:47.012846+00:00"
+        }
+      ]
+    },
+    {
+      "source": "oaustegard/experiments commit0-swarm",
+      "kind": "Benchmark candidate screening",
+      "components": [
+        "METIS"
+      ],
+      "files": [
+        "oaustegard-experiments-commit0-swarm-data-control_candidates-json",
+        "commit0-README",
+        "commit0-RESULTS"
+      ],
+      "url": "https://github.com/oaustegard/experiments/tree/main/commit0-swarm",
+      "date": "Results2026-10-10",
+      "finding": "aimarket-metis was considered for the control-library cohort and rejected because10249 source lines exceeded the8000-line limit.",
+      "limits": "METIS was not among the eight evaluated control libraries; no reconstruction score or quality verdict for it.",
+      "evidence": [
+        {
+          "file": "oaustegard-experiments-commit0-swarm-data-control_candidates-json.json",
+          "url": "https://github.com/oaustegard/experiments/blob/cbe0c4f125f1e7c708df4364929b63657a55499f/commit0-swarm/data/control_candidates.json",
+          "sha256": "6e34a6d754fa8fc44c747f071a9983fbb81a957b760e223ee60ff38ef1077ef1",
+          "retrieved_at": "2026-10-27T08:29:44.867555+00:00"
+        },
+        {
+          "file": "commit0-README.json",
+          "url": "https://raw.githubusercontent.com/oaustegard/experiments/main/commit0-swarm/README.md",
+          "sha256": "36a34a8926d3955de0c42827f23393cb6e45ff174ad0eafc194e15c38c69eec8",
+          "retrieved_at": "2026-10-27T08:33:30.921343+00:00"
+        },
+        {
+          "file": "commit0-RESULTS.json",
+          "url": "https://raw.githubusercontent.com/oaustegard/experiments/main/commit0-swarm/RESULTS.md",
+          "sha256": "39e5dcc6a06596b2418d94776e9c19d613b23516ab114054699ebe4b9fbd6e73",
+          "retrieved_at": "2026-10-27T08:33:30.939821+00:00"
+        }
+      ]
+    },
+    {
+      "source": "nzdsf2-gif/relayshield",
+      "kind": "External regression-test reference",
+      "components": [
+        "ARGUS"
+      ],
+      "files": [
+        "nzdsf2-gif-relayshield-test_contact_hygiene-py",
+        "nzdsf2-gif-relayshield-README"
+      ],
+      "url": "https://github.com/nzdsf2-gif/relayshield/blob/main/test_contact_hygiene.py",
+      "date": "Test comments refer to sweep2026-09-03",
+      "finding": "https://magic-ai-factory.com/argus/ is a positive test case for usable_site in contact-hygiene tests.",
+      "limits": "Tests URL acceptance/filtering, not ARGUS execution, security certification or commercial usage.",
+      "evidence": [
+        {
+          "file": "nzdsf2-gif-relayshield-test_contact_hygiene-py.json",
+          "url": "https://github.com/nzdsf2-gif/relayshield/blob/a68264e1e97bf86562e1877b980c19d8ba456297/test_contact_hygiene.py",
+          "sha256": "e09e1263fe21a54a6bb5e580239b4b4edf12d6ed15da2c71eb50f8c3226fa3e8",
+          "retrieved_at": "2026-10-27T08:31:25.823248+00:00"
+        },
+        {
+          "file": "nzdsf2-gif-relayshield-README.json",
+          "url": "https://github.com/nzdsf2-gif/relayshield",
+          "sha256": "a190abaa10d30867dd6c468d818bcf4faaf5bfe7a9cd321709b49bac5fea7ee6",
+          "retrieved_at": "2026-10-27T08:31:26.613710+00:00"
+        }
+      ]
+    },
+    {
+      "source": "burchdad/ghostaisolutions",
+      "kind": "Automated article selection in repository",
+      "components": [
+        "MCP tool-cost article"
+      ],
+      "files": [
+        "burchdad-ghostaisolutions-content-auto-posts-2026-10-25-navigating-the-ai-landscape-what-you-need-to-know-this-week-json"
+      ],
+      "url": "https://github.com/burchdad/ghostaisolutions/blob/d04b386e04dbb15d341282be9b52334ee298e88c/content/auto-posts/2026-10-25-navigating-the-ai-landscape-what-you-need-to-know-this-week.json",
+      "date": "2026-10-25",
+      "finding": "Our copyable MCP tool-cost CI article is one of six sources selected for an automatically generated AI roundup.",
+      "limits": "Repository output verified; public website publication and reader reach not independently established.",
+      "evidence": [
+        {
+          "file": "burchdad-ghostaisolutions-content-auto-posts-2026-10-25-navigating-the-ai-landscape-what-you-need-to-know-this-week-json.json",
+          "url": "https://github.com/burchdad/ghostaisolutions/blob/d04b386e04dbb15d341282be9b52334ee298e88c/content/auto-posts/2026-10-25-navigating-the-ai-landscape-what-you-need-to-know-this-week.json",
+          "sha256": "111bf2f7cd9f0aab8890dbdf5c424e7759610dc346d760d762b61ed6ca013667",
+          "retrieved_at": "2026-10-27T08:29:44.515063+00:00"
+        }
+      ]
+    },
+    {
+      "source": "Tanjamul-Azad/CS EffectSeal",
+      "kind": "Research candidate-list inclusion",
+      "components": [
+        "AIMarket MCP Gateway"
+      ],
+      "files": [
+        "Tanjamul-Azad-CS-artifact-network-extra-heldout-plan-20261009-json",
+        "Tanjamul-Azad-CS-README"
+      ],
+      "url": "https://github.com/Tanjamul-Azad/CS/blob/ad14cb413cd09a37b0ddc1f69d78370180fcaaef/artifact/network-extra-heldout-plan-20261009.json",
+      "date": "2026-10-09",
+      "finding": "io.github.alexar76/aimarket-mcp appears at zero-based index2737 in candidate_order.",
+      "limits": "Candidate order is not the set of qualified or executed servers. Do not present as passed evaluation or adoption.",
+      "evidence": [
+        {
+          "file": "Tanjamul-Azad-CS-artifact-network-extra-heldout-plan-20261009-json.json",
+          "url": "https://github.com/Tanjamul-Azad/CS/blob/ad14cb413cd09a37b0ddc1f69d78370180fcaaef/artifact/network-extra-heldout-plan-20261009.json",
+          "sha256": "209cd579ef1b129d730e5d7b806f642c85c43e5302cf7d80941d90f743ae1ef7",
+          "retrieved_at": "2026-10-27T08:29:44.922097+00:00"
+        },
+        {
+          "file": "Tanjamul-Azad-CS-README.json",
+          "url": "https://github.com/Tanjamul-Azad/CS",
+          "sha256": "9c9e1728a99186e19e497833db47c87cb98ba2f90c402487cb43e237f1491775",
+          "retrieved_at": "2026-10-27T08:31:26.669953+00:00"
+        }
+      ]
+    }
+  ],
+  "excludedOrUnconfirmed": [
+    "Known Hubwiz overview and Boilerplate Store repeated; not new.",
+    "aigestion/aimarket-pwa is an unrelated grocery-price PWA; aimarket_histor search was a lexical false positive.",
+    "ACEX reference in genesis-bounty-hunter is archived; original comment GET404. No confirmed payout,review or new business demand.",
+    "No new external comments in the three previously checked DEV discussions:51,28,23. New capture-conditions article has0.",
+    "MTL/1 and AWR/2 code queries returned large irrelevant token matches; not counted as protocol implementations.",
+    "Zero indexed matches for aimarket_sdk and @aimarket/warden in package.json are not proof of zero adoption."
+  ],
+  "writes": {
+    "github": false,
+    "thirdPartyMessages": false,
+    "socialPosts": false
+  },
+  "checkedAt": "2026-10-27T08:45:29.018792+00:00"
+}

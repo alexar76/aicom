@@ -1,0 +1,65 @@
+{
+  "checked_at_utc": "2026-10-29T06:19:47.406089+00:00",
+  "comment_url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6489285683",
+  "result": "Core release/fix claims verified; material SKOPOS dashboard trusted-proxy claim is false with supported Streamlit 1.66.1.",
+  "verified": {
+    "published_versions": 9,
+    "published_python_files_equal_to_handoff": 563,
+    "focused_keyless_tests_passed": 160,
+    "published_sha256_matches_registry": true
+  },
+  "material_finding": {
+    "component": "skopos-fleet 0.2.2 dashboard",
+    "source": "skopos/skopos/app_auth.py:46-99",
+    "cause": "_websocket_peer reads client.request.remote_ip. Streamlit 1.66.1 uses StarletteSessionClient.client_context.remote_ip and has no request attribute. Normal supported client therefore takes the untrusted-header fallback.",
+    "proof": "skopos-streamlit-peer-probe-result.json",
+    "impact": "At direct dashboard access, or through a proxy that preserves attacker headers, an attacker controls the per-IP login-lockout key. Rotating headers switches buckets; a known successful IP receives the global pacing exemption. Existing valid remember-me cookies and unknown-IP global pacing remain.",
+    "scope_limit": "Component-level reproduction with real published Streamlit client and unchanged SKOPOS functions; no network end-to-end or live deployment test. Does not by itself invalidate all nine fixes.",
+    "recommendation": "Read the supported remote_ip API and fail closed when peer cannot be resolved; do not accept client address headers without verifying proxy trust. Verify new behavior before claiming complete SKOPOS proxy enforcement."
+  },
+  "wording_notes": [
+    {
+      "original": "keyless HTTP is refused by default",
+      "suggested": "keyless access to protected HTTP endpoints is refused by default",
+      "reason": "Public health/read endpoints remain intentionally accessible."
+    },
+    {
+      "original": "pins every SSH remote host key",
+      "suggested": "pins SSH host keys on first use and rejects subsequent changes",
+      "reason": "Explicit SSH-key path uses StrictHostKeyChecking=accept-new with persistent known_hosts. System SSH settings apply without an explicit key path."
+    },
+    {
+      "original": "A browser that has signed in before restores its session",
+      "suggested": "A browser with a valid, unexpired signed remember-me cookie restores its session"
+    },
+    {
+      "original": "never for a trial",
+      "suggested": "never for sandbox trials or routing fees alone",
+      "reason": "A funded paid call using promotional credit can receive the paid-tier header."
+    },
+    {
+      "original": "Each secret is mapped to one exact invoke URL",
+      "suggested": "Credentials are selected only for explicitly configured exact invoke URLs",
+      "reason": "A secret may be explicitly mapped to multiple exact URLs, including Docker URL rewrite."
+    }
+  ],
+  "public_status": {
+    "maintainer_reply_after_comment": false,
+    "records_000636_to_000644_updated_with_fixed_versions": false,
+    "evidence": "advisory-status.json"
+  },
+  "evidence": [
+    "registry-review.json",
+    "published-source-parity.json",
+    "wheel-archive-differences.json",
+    "keyless-tests.log",
+    "skopos_streamlit_peer_probe.py",
+    "skopos-streamlit-peer-probe-result.json",
+    "skopos-streamlit-dependency-evidence.json",
+    "streamlit-1.66.1-peer-source-snippets.txt",
+    "advisory-status.json",
+    "issue-comments.json"
+  ],
+  "external_mutations": false,
+  "application_source_edits": false
+}

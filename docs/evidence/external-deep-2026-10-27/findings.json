@@ -1,0 +1,422 @@
+{
+  "date": "2026-10-27",
+  "scope": "alexar76 ecosystem; deep search beyond prior 24/26/27 October reports",
+  "findings": [
+    {
+      "source": "Ducarv/mcpmoat",
+      "kind": "substantive technical comparison",
+      "components": [
+        "WARDEN"
+      ],
+      "files": [
+        "mcpmoat-competitors",
+        "mcpmoat-issue32",
+        "mcpmoat-pr111"
+      ],
+      "finding": "Closest comparator; five credited ideas in Ideas to adopt: ruleset identity, field-level diffs, separate severity/blocking, explicit limits, benchmark methods.",
+      "date": "2026-10-23",
+      "limit": "Documentation research. Benchmarks explicitly not reproduced; implementation/adoption not established.",
+      "evidence": [
+        {
+          "file": "mcpmoat-competitors.json",
+          "url": "https://raw.githubusercontent.com/Ducarv/mcpmoat/5e8034ebbacba41e4144aef460c171c6dff2636a/docs/competitors.md",
+          "sha256": "6a815d0d11b3b855d29990ef4995bca806a627f4ef4609e22eebfeebc375f638"
+        },
+        {
+          "file": "mcpmoat-issue32.json",
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/issues/32",
+          "sha256": "65fbae749cf7b8ef8cc690f0dfd1446e87413653a2202d5572e7a788a19a60a0"
+        },
+        {
+          "file": "mcpmoat-pr111.json",
+          "url": "https://api.github.com/repos/Ducarv/mcpmoat/pulls/111",
+          "sha256": "7bcd5971f091b7dc6ac1d3ff43d809e218dfc6b718810fffbc01781fa743cbbc"
+        }
+      ]
+    },
+    {
+      "source": "ZhenYan1214/ARC_2",
+      "kind": "Chinese research citation",
+      "components": [
+        "AIMarket",
+        "x402"
+      ],
+      "files": [
+        "ZhenYan1214-ARC_2-REPORT-md",
+        "ZhenYan1214-ARC_2-research-pain_evidence_2026-10-21-md"
+      ],
+      "finding": "Uses our three-seller article as evidence for weak demand; quotes 40400 unpaid quotes,23 paid calls,6 wallets,$0.075.",
+      "date": "2026-10-21 research file",
+      "limit": "Citation of our observation, not independently repeated measurement.",
+      "evidence": [
+        {
+          "file": "ZhenYan1214-ARC_2-REPORT-md.json",
+          "url": "https://github.com/ZhenYan1214/ARC_2/blob/b711077e15b1fa567eccec20ae50af71e94b006d/REPORT.md",
+          "sha256": "2c5b87783a4b27416bcf5fb352ff5512967428c10a909863e31de80a3e782734"
+        },
+        {
+          "file": "ZhenYan1214-ARC_2-research-pain_evidence_2026-10-21-md.json",
+          "url": "https://github.com/ZhenYan1214/ARC_2/blob/b711077e15b1fa567eccec20ae50af71e94b006d/research/pain_evidence_2026-10-21.md",
+          "sha256": "9b21cfccf91eb8a74b181b19e40c9afed3313316e83c7b4f6b24ca93f0947a8a"
+        }
+      ]
+    },
+    {
+      "source": "SheldonWangRJT blog",
+      "kind": "English/Chinese article citation",
+      "components": [
+        "HISTOR",
+        "MCP reliability study"
+      ],
+      "files": [
+        "SheldonWangRJT-SheldonWangRJT-Github-io-_posts-2026-10-16-harness-agnostic-skills-versioning-md",
+        "SheldonWangRJT-SheldonWangRJT-Github-io-_posts-2026-10-16-harness-agnostic-skills-versioning-zh-md"
+      ],
+      "finding": "Both language versions cite our 12915-server/41-percent study in the reference list.",
+      "date": "2026-10-16",
+      "limit": "One article in two language versions.",
+      "evidence": [
+        {
+          "file": "SheldonWangRJT-SheldonWangRJT-Github-io-_posts-2026-10-16-harness-agnostic-skills-versioning-md.json",
+          "url": "https://github.com/SheldonWangRJT/SheldonWangRJT.Github.io/blob/10f5aece0d8910a1baf4d9f92816a7f8e0d773cd/_posts/2026-10-16-harness-agnostic-skills-versioning.md",
+          "sha256": "2ed4d04f4db1e1b472b9d9fe0171fa9893f32319b18230e1a80c31ca377665c9"
+        },
+        {
+          "file": "SheldonWangRJT-SheldonWangRJT-Github-io-_posts-2026-10-16-harness-agnostic-skills-versioning-zh-md.json",
+          "url": "https://github.com/SheldonWangRJT/SheldonWangRJT.Github.io/blob/10f5aece0d8910a1baf4d9f92816a7f8e0d773cd/_posts/2026-10-16-harness-agnostic-skills-versioning-zh.md",
+          "sha256": "d45367bcb6b51a5f0509c62711bbc9211f3ac1b0be581ee922ddd1b03aa2e2e6"
+        }
+      ]
+    },
+    {
+      "source": "daveymena/landing-forge",
+      "kind": "Spanish architectural comparison",
+      "components": [
+        "AICOM Landing"
+      ],
+      "files": [
+        "daveymena-landing-forge-docs-00-investigacion-md"
+      ],
+      "finding": "LATAM landing-generator research describes aicom-landing Architect-to-Developer JSON-to-HTML workflow,20 styles and malformed-JSON retry.",
+      "date": "2026-10-03",
+      "limit": "Comparison, not proven code reuse or deployment.",
+      "evidence": [
+        {
+          "file": "daveymena-landing-forge-docs-00-investigacion-md.json",
+          "url": "https://github.com/daveymena/landing-forge/blob/df21e40761864edf952ee1b34af61eeca00d3f8e/docs/00-investigacion.md",
+          "sha256": "7902c4d16ce8fde57b9f1ead8271f9c796db965ef4be337da923fe71ebf87561"
+        }
+      ]
+    },
+    {
+      "source": "ace-code-engine/hooh-agent",
+      "kind": "Chinese naming research",
+      "components": [
+        "SKOPOS"
+      ],
+      "files": [
+        "ace-code-engine-hooh-agent-docs-NAMING-md"
+      ],
+      "finding": "Skopos rejected as a candidate name with direct link to alexar76/skopos.",
+      "limit": "Name disambiguation. Voice-input description does not match current Fleet Intelligence positioning.",
+      "evidence": [
+        {
+          "file": "ace-code-engine-hooh-agent-docs-NAMING-md.json",
+          "url": "https://github.com/ace-code-engine/hooh-agent/blob/dac87f419c4b887d2eff1a81fc378aef457327f1/docs/NAMING.md",
+          "sha256": "05267f2a05966a100858b6f7aefb39165636393da0bfe46a176e4f0cbf42dc23"
+        }
+      ]
+    },
+    {
+      "source": "EbookFoundation/free-programming-books",
+      "kind": "Accepted own submission",
+      "components": [
+        "AIMarket Courses"
+      ],
+      "files": [
+        "EbookFoundation-free-programming-books",
+        "courses-pr13394"
+      ],
+      "finding": "AIMarket Courses listed in free-courses-en.md; alexar76-authored PR13394 merged.",
+      "date": "2026-08-06",
+      "limit": "External acceptance of our submission; neither a new review nor a publication dated today.",
+      "evidence": [
+        {
+          "file": "EbookFoundation-free-programming-books.json",
+          "url": "https://github.com/EbookFoundation/free-programming-books/blob/b368006667eeffb705153f26cfd55009ba0e5764/courses/free-courses-en.md",
+          "sha256": "1bf732074d3127ee2a094139659748881fc13a3432890094b0e0e57936529d88"
+        },
+        {
+          "file": "courses-pr13394.json",
+          "url": "https://api.github.com/repos/EbookFoundation/free-programming-books/pulls/13394",
+          "sha256": "33adb71708df621cab999f33f5ff175cdfbba8492541cbc295c9b0420e3999bd"
+        }
+      ]
+    },
+    {
+      "source": "ondraulehla/mcpcost",
+      "kind": "External technical measurement",
+      "components": [
+        "AIMarket MCP endpoints"
+      ],
+      "files": [
+        "ondraulehla-mcpcost",
+        "mcpcost-readme"
+      ],
+      "finding": "modelmarket.dev:5 servers,5 OK,0 gated/dead/noAnswer,5 unique toolsets,medianTokens586.",
+      "date": "2026-10-26T10:19:46.640Z",
+      "limit": "External automated probing, not customers, revenue or security audit.",
+      "evidence": [
+        {
+          "file": "ondraulehla-mcpcost.json",
+          "url": "https://github.com/ondraulehla/mcpcost/blob/96d595f360eb8f08cc419dde1477df7a9d97d105/data/latest/summary.json",
+          "sha256": "9adcdf11d4c65b0dea2502ff796e5a14fb7e471eb2fd8c0010f734bf4114ad2f"
+        },
+        {
+          "file": "mcpcost-readme.json",
+          "url": "https://raw.githubusercontent.com/ondraulehla/mcpcost/main/README.md",
+          "sha256": "0f3d34ccbba172fd6eb5bd7837e3bba50677956be39662984e5e469495d4c44e"
+        }
+      ]
+    },
+    {
+      "source": "bendyline/gilde",
+      "kind": "Automatic community import",
+      "components": [
+        "WARDEN",
+        "ARGUS-3",
+        "Hub",
+        "MCP Gateway"
+      ],
+      "files": [
+        "gilde-warden-manifest",
+        "gilde-readme"
+      ],
+      "finding": "Four alexar76 toolsets. WARDEN0.5.0 runtime manifest includes npm package,entry and hash.",
+      "limit": "README explicitly says bot-managed and unreviewed. Not demonstrated end-user adoption.",
+      "evidence": [
+        {
+          "file": "gilde-warden-manifest.json",
+          "url": "https://raw.githubusercontent.com/bendyline/gilde/a406c53967ded944d29bad53b60f403b968faf8a/data/community/toolsets/al/alexar76-warden/versions/0.5.0/manifest.json",
+          "sha256": "c0f3963ec4c5478af61689b2ca27408dd83066a789c3ccfc49b7fbf5be7fc2be"
+        },
+        {
+          "file": "gilde-readme.json",
+          "url": "https://raw.githubusercontent.com/bendyline/gilde/a406c53967ded944d29bad53b60f403b968faf8a/README.md",
+          "sha256": "cb644abee65030495e249eb3db95b29246a119f0c348a4628f448c1c7077b8d0"
+        }
+      ]
+    },
+    {
+      "source": "tashan",
+      "kind": "Old automated scorecard",
+      "components": [
+        "WARDEN"
+      ],
+      "files": [
+        "tashan-live",
+        "tashan-warden"
+      ],
+      "finding": "Live HTTP200 card;57/100 with single-maintainer caveat.",
+      "date": "2026-09-13",
+      "limit": "Old0.5.0 snapshot,not current0.20.0 assessment. No source review or execution.",
+      "evidence": [
+        {
+          "file": "tashan-live.json",
+          "url": "https://tashan.sh/capability/pkg-aimarket-warden",
+          "sha256": "fabf7cf8b159c3f9cc133aed8d0e30fb4c7f74ccd8d124ddcc945b16e5d1adcf"
+        },
+        {
+          "file": "tashan-warden.json",
+          "url": "https://raw.githubusercontent.com/FlyingWHR/tashan/c0506512bab7d713935eacf04d187e607572058e/web/capability/pkg-aimarket-warden.html",
+          "sha256": "7a12f283b8ec8d2e27a07b6bfc0879b7d217ec48b8884f57843572486a19e4a4"
+        }
+      ]
+    },
+    {
+      "source": "Arnon-hs/open-source",
+      "kind": "Automatic multilingual card",
+      "components": [
+        "HISTOR"
+      ],
+      "files": [
+        "arnon-histor"
+      ],
+      "finding": "HISTOR in MCP/tokenization catalog with English,Russian,Chinese fragments and64/100 score.",
+      "date": "discovered2026-10-19",
+      "limit": "Generic description; no independent audit established.",
+      "evidence": [
+        {
+          "file": "arnon-histor.json",
+          "url": "https://raw.githubusercontent.com/Arnon-hs/open-source/63f27fbdd9b039bc6dc4d9e24c926946a131cb5f/mcp/alexar76-histor.md",
+          "sha256": "e77caea10ab7a3e1e0d82e8115fca4ecf6d6b685b3d3c4719dba11f85502657a"
+        }
+      ]
+    },
+    {
+      "source": "JMartynov/mcp-fingerprints",
+      "kind": "Technical catalog",
+      "components": [
+        "ARGUS",
+        "WARDEN",
+        "MCP Gateway",
+        "Oracle Gateway",
+        "Packager"
+      ],
+      "files": [
+        "fingerprints-argus"
+      ],
+      "finding": "Five fingerprint files in code-search results; inspected ARGUS contains tool schemas and github_ast/official_registry sources.",
+      "limit": "Runtime provenance and actual usage not established.",
+      "evidence": [
+        {
+          "file": "fingerprints-argus.json",
+          "url": "https://raw.githubusercontent.com/JMartynov/mcp-fingerprints/1a849b5eef5c673d0bf7c1c9ac1767a78c544342/data/fingerprints/alexar76_argus.json",
+          "sha256": "6b0f09bd7aa592eedf85b79d68acd308a26c76ab32f1fc43e9e88982f2beea8c"
+        }
+      ]
+    },
+    {
+      "source": "juninmd/fast-news",
+      "kind": "Portuguese automated news digest",
+      "components": [
+        "HISTOR",
+        "MCP reliability study"
+      ],
+      "files": [
+        "juninmd-fast-news-site-edicoes-2026-10-14-manha-md"
+      ],
+      "finding": "O Fio links our12915-server article and repeats original title/excerpt.",
+      "date": "2026-10-14",
+      "limit": "978-news/101-source digest; English excerpt retained,not standalone review.",
+      "evidence": [
+        {
+          "file": "juninmd-fast-news-site-edicoes-2026-10-14-manha-md.json",
+          "url": "https://github.com/juninmd/fast-news/blob/bb7430de651ba7af3bb2aeb362b2bd091d9d6db0/site/edicoes/2026-10-14-manha.md",
+          "sha256": "065fc4e93c3c7c59ee4316ea8e62599d568fc4796f8f78994590ed4b15127e07"
+        }
+      ]
+    },
+    {
+      "source": "GautamTalksDev/Plumbline",
+      "kind": "Registry version monitoring",
+      "components": [
+        "Oracle Gateway",
+        "ARGUS-3",
+        "MCP Gateway",
+        "Packager"
+      ],
+      "files": [
+        "GautamTalksDev-Plumbline-site-log-servers-d9-json",
+        "GautamTalksDev-Plumbline-site-log-servers-83-json",
+        "GautamTalksDev-Plumbline-site-log-servers-d6-json",
+        "GautamTalksDev-Plumbline-site-log-servers-2f-json"
+      ],
+      "finding": "Four server identities with hashed version_poll/status observations.",
+      "date": "2026-08-05/06",
+      "limit": "Empty protocol_version; these records do not establish runtime tools/list.",
+      "evidence": [
+        {
+          "file": "GautamTalksDev-Plumbline-site-log-servers-d9-json.json",
+          "url": "https://github.com/GautamTalksDev/Plumbline/blob/c8cb398b3a9f1877033278b72770b319c01ddc0f/site/log/servers/d9.json",
+          "sha256": "4ce984682cf2e5bf3cbb715e8d2cfd2dc2d107d12d905b700f86b296b62f99bc"
+        },
+        {
+          "file": "GautamTalksDev-Plumbline-site-log-servers-83-json.json",
+          "url": "https://github.com/GautamTalksDev/Plumbline/blob/c8cb398b3a9f1877033278b72770b319c01ddc0f/site/log/servers/83.json",
+          "sha256": "5a2c1effa8e39542590b51de42342243b41943839066fbe3463b8b23817c28af"
+        },
+        {
+          "file": "GautamTalksDev-Plumbline-site-log-servers-d6-json.json",
+          "url": "https://github.com/GautamTalksDev/Plumbline/blob/c8cb398b3a9f1877033278b72770b319c01ddc0f/site/log/servers/d6.json",
+          "sha256": "8d5b6aac07a2ed2e8ebc46359c1fcf2a3f92c288a63500019a98fd0a6eff031c"
+        },
+        {
+          "file": "GautamTalksDev-Plumbline-site-log-servers-2f-json.json",
+          "url": "https://github.com/GautamTalksDev/Plumbline/blob/c8cb398b3a9f1877033278b72770b319c01ddc0f/site/log/servers/2f.json",
+          "sha256": "6740ba4944f42ab70233ad83375d403a9b9fc393fde4d169403160f5cee6fe5f"
+        }
+      ]
+    },
+    {
+      "source": "murrayjameswatson-art/mmurr-site",
+      "kind": "External field notes",
+      "components": [
+        "AIMarket Hub"
+      ],
+      "files": [
+        "murrayjameswatson-art-mmurr-site"
+      ],
+      "finding": "modelmarket.dev mentioned among A2A Registry registrations in an agent-service field guide.",
+      "date": "2026-10-26",
+      "limit": "Inventory mention,not experience using our service.",
+      "evidence": [
+        {
+          "file": "murrayjameswatson-art-mmurr-site.json",
+          "url": "https://github.com/murrayjameswatson-art/mmurr-site/blob/d5c535b0fcb8617ef6abb1ed3b20f3213b7d385b/morton/field-guide.html",
+          "sha256": "e231f0fe7fb6243c6692ac16b5f538abfdd130cc0a7409701d044dbe6650b66f"
+        }
+      ]
+    },
+    {
+      "source": "gabrielmoreira/awesome-ai-rabbit-holes",
+      "kind": "Derived catalog with provenance",
+      "components": [
+        "Packager",
+        "Hub"
+      ],
+      "files": [
+        "gabrielmoreira-awesome-ai-rabbit-holes"
+      ],
+      "finding": "modelmarket.dev YAML preserves discovery through awesome-mcp-servers.",
+      "limit": "Derived import of an existing reference.",
+      "evidence": [
+        {
+          "file": "gabrielmoreira-awesome-ai-rabbit-holes.json",
+          "url": "https://github.com/gabrielmoreira/awesome-ai-rabbit-holes/blob/e11a8189bd6e2e7d7c42e58e1509d9a55e7d53b4/catalog/items/modelmarket__dev.yml",
+          "sha256": "b36ef5e35ecd7bbf16684a718aa1063ec4b648d3dd87e755fe6181fa07a0ea32"
+        }
+      ]
+    },
+    {
+      "source": "rogerchappel/mcpchangefeed",
+      "kind": "Automatic catalog",
+      "components": [
+        "Hub",
+        "ARGUS-3",
+        "WARDEN",
+        "Attested Memory",
+        "Gateway",
+        "Oracle Gateway",
+        "Packager"
+      ],
+      "files": [
+        "rogerchappel-mcpchangefeed"
+      ],
+      "finding": "Code-search finds seven server pages; inspected Hub page identifies alexar76.",
+      "limit": "Missing install/license signals and placeholder sponsor; score48 not security assurance.",
+      "evidence": [
+        {
+          "file": "rogerchappel-mcpchangefeed.json",
+          "url": "https://github.com/rogerchappel/mcpchangefeed/blob/767ca3feb855f77b92c3fa7824654338cbe900d7/site/servers/io-github-alexar76-aimarket-hub/index.html",
+          "sha256": "574dbf8f1c070da9ef7e14226f6ab66b0ac4517192c0e38f3df27cf426369da4"
+        }
+      ]
+    }
+  ],
+  "excludedOrUnconfirmed": [
+    "No new independent review of PingBlip,Pantheon books or Emberline confirmed in checked results.",
+    "Exact GitHub-code domain queries independentai.network,pantheon.modelmarket.dev,emberlinedesk.com returned0; not whole-web absence.",
+    "PingBlip expired-domain lists from2009/2015/2023 excluded as unrelated historical domain data.",
+    "Igor Holt MOMUS already known; disambiguation only.",
+    "histor.dev and KOVA film are unrelated namesakes.",
+    "GitHub broad search index changed150 to153 between pages; not a fixed complete census.",
+    "X/Reddit searches did not establish a new attributable post; indexing incomplete."
+  ],
+  "writes": {
+    "github": false,
+    "thirdPartyMessages": false,
+    "socialPosts": false
+  },
+  "checkedAt": "2026-10-27T08:18:42.660918+00:00"
+}

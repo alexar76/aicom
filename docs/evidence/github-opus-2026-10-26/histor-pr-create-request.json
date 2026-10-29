@@ -1,0 +1,8 @@
+{
+  "title": "README: add HISTOR MCP tool-definition history",
+  "body": "Adds [HISTOR](https://histor.modelmarket.dev/datasets/) under Related datasets, alongside the RugSnare corpus. HISTOR tracks remote MCP tool definitions over time and also observes npm/PyPI package versions in a sandbox. This complements the study's findings on version pins by covering changes in what remote servers actually serve.\n\nI maintain HISTOR; the dataset is available under CC BY 4.0.\n\nValidation: documentation-only change; adds one related-dataset entry.\n",
+  "head": "alexar76:codex/histor-related-dataset",
+  "base": "main",
+  "maintainer_can_modify": true,
+  "draft": false
+}

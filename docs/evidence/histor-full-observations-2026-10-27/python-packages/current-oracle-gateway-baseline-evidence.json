@@ -1,0 +1,2764 @@
+{
+  "actualArgv": [
+    "/private/tmp/pypi-mcp-releases-20261027/bin/python",
+    "-I",
+    "-B",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/launch_list_only.py",
+    "--module",
+    "aimarket_oracle_gateway.stdio_server",
+    "--overlay",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/active/oracle-gateway"
+  ],
+  "artifact": {
+    "extractedPath": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/artifacts/oracle-gateway-0.3.2",
+    "pythonFiles": [
+      {
+        "path": "aimarket_oracle_gateway/__init__.py",
+        "sha256": "06d9a75da9c562ac5c1d7f900df95e840681d05eebe53ab7ae1a83ec109f1b0b"
+      },
+      {
+        "path": "aimarket_oracle_gateway/gateway_core.py",
+        "sha256": "58374f00dfbf69f0d090065490f3491d985289d6d8688b1037476eccf3ac3a64"
+      },
+      {
+        "path": "aimarket_oracle_gateway/mcp_family_tools.py",
+        "sha256": "6d5148dac88250986bca24620d30f0f6f5e65f977271e443f4a1a6a4598696c4"
+      },
+      {
+        "path": "aimarket_oracle_gateway/mcp_tool_surface.py",
+        "sha256": "2e36baea74d6e9f3a6f8bc4edf6225750d28441272fd75f258d22a8739a6b757"
+      },
+      {
+        "path": "aimarket_oracle_gateway/stdio_server.py",
+        "sha256": "c761fcca1807c12dc8bf840e67b88953e1e0d50fb7d61f86b13109d091a7c193"
+      }
+    ],
+    "sha256": "ebb2fb990b4b09dd1c1fbbe9b404ae5859cce8bc6c3caf12d2de393120e33547",
+    "wheel": "docs/evidence/pypi-mcp-release-verification-2026-10-27/wheels/aimarket_oracle_gateway-0.3.2-py3-none-any.whl"
+  },
+  "error": null,
+  "events": [
+    {
+      "direction": "client",
+      "message": {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "server/discover",
+        "params": {
+          "_meta": {
+            "io.modelcontextprotocol/clientCapabilities": {},
+            "io.modelcontextprotocol/clientInfo": {
+              "name": "histor-tool-cost",
+              "version": "0.4.2"
+            },
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28"
+          }
+        }
+      }
+    },
+    {
+      "direction": "client",
+      "message": {
+        "id": 2,
+        "jsonrpc": "2.0",
+        "method": "initialize",
+        "params": {
+          "capabilities": {},
+          "clientInfo": {
+            "name": "histor-tool-cost",
+            "version": "0.4.2"
+          },
+          "protocolVersion": "2025-06-18"
+        }
+      }
+    },
+    {
+      "direction": "server",
+      "method": "initialize",
+      "result": {
+        "capabilities": {
+          "experimental": {},
+          "prompts": {
+            "listChanged": false
+          },
+          "resources": {
+            "listChanged": false,
+            "subscribe": false
+          },
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "instructions": "Verifiable oracle services for autonomous agents \u2014 pay-per-call over the AIMarket protocol (no signup by default). Call `list_oracle_capabilities` first.\n\nCategories:\n\u2022 Randomness (Platon): get_random, get_randomness_beacon, ask_oracle, verify_random\n\u2022 Delay (Chronos): compute_vdf, verify_vdf\n\u2022 Reputation (LUMEN): get_reputation_scores, get_agent_trust, verify_reputation\n\u2022 Consensus (Murmuration): aggregate_values \u2014 multi-agent robust aggregation\n\u2022 Thermodynamics (Landauer): audit_compute_cost, verify_compute_cost \u2014 ESG / energy floor\n\u2022 Routing (Fermat): compute_least_time_route, verify_least_time_route\n\u2022 Risk (Ablation): analyze_cascade_risk, verify_cascade_risk \u2014 SOC cascade tails\n\u2022 Sampling (Lattice/Turing): get_quasirandom_sequence, get_blue_noise\n\u2022 Optimization (Colony): optimize_route \u2014 TSP with gap certificate\n\u2022 Resilience (Percola): analyze_network_resilience, verify_network_resilience\n\u2022 VRF (Sortes): sortes_draw, sortes_verify\n\u2022 Learning (Gauss): gauss_field, gauss_suggest, gauss_verify\n\u2022 Time-lock (Aestus): aestus_seal, aestus_open, aestus_verify\n\u2022 Topology (Betti): betti_homology, betti_distance\n\u2022 Transport (Kantor): kantor_transport, kantor_verify\n\u2022 Spectral (Fourier): fourier_spectrum, fourier_verify\n\nEvery paid tool returns {capability_id, result, price_usd, routing_fee_usd, source, verifiable}. Prefer verifying signatures/proofs/certificates over trusting the service.",
+        "protocolVersion": "2025-06-18",
+        "serverInfo": {
+          "name": "aimarket-oracle-gateway",
+          "version": "0.3.2"
+        }
+      }
+    },
+    {
+      "direction": "client",
+      "message": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      }
+    },
+    {
+      "direction": "client",
+      "message": {
+        "id": 3,
+        "jsonrpc": "2.0",
+        "method": "tools/list",
+        "params": {}
+      }
+    },
+    {
+      "direction": "server",
+      "method": "tools/list",
+      "result": {
+        "tools": [
+          {
+            "description": "Robust consensus aggregation of multi-agent estimates (Murmuration).\n\n        Combines median, trimmed mean, Tukey biweight, and DeGroot consensus \u2014 resistant to\n        outliers and a few Byzantine agents. Use for multi-agent debate resolution, ensemble\n        aggregation, DAO voting, and distributed anomaly consensus.\n\n        Cost ~$0.002 USDC per call.\n        ",
+            "inputSchema": {
+              "properties": {
+                "trim": {
+                  "default": 0.1,
+                  "description": "Fraction trimmed from each tail for trimmed mean (0..0.499).",
+                  "examples": [
+                    0.1
+                  ],
+                  "maximum": 0.499,
+                  "minimum": 0.0,
+                  "title": "Trim",
+                  "type": "number"
+                },
+                "values": {
+                  "description": "Agent-submitted scalar estimates to aggregate (>=1 value).",
+                  "examples": [
+                    [
+                      1.2,
+                      1.1,
+                      1.15,
+                      99.0,
+                      1.18
+                    ]
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 1,
+                  "title": "Values",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "values"
+              ],
+              "title": "aggregate_valuesArguments",
+              "type": "object"
+            },
+            "name": "aggregate_values",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "aggregate_valuesOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Thermodynamic compute-cost audit via Landauer's principle (Landauer).\n\n        Counts irreversible bit erasures in an operation DAG, derives the energy floor\n        (erasures \u00b7 k_B\u00b7T\u00b7ln2), efficiency, and hot gates. Use for LLM cost optimization,\n        carbon reporting, ESG compliance, and EU AI Act energy disclosure.\n\n        Cost ~$0.01 USDC per call.\n        ",
+            "inputSchema": {
+              "properties": {
+                "ops": {
+                  "description": "Operation DAG for Landauer audit. Each gate: {id, gate, inputs:[id,...], width?}. Reversible gates erase 0 bits; boolean gates erase fan_in-1.",
+                  "examples": [
+                    [
+                      {
+                        "gate": "input",
+                        "id": "a",
+                        "width": 1
+                      },
+                      {
+                        "gate": "input",
+                        "id": "b",
+                        "width": 1
+                      },
+                      {
+                        "gate": "and",
+                        "id": "c",
+                        "inputs": [
+                          "a",
+                          "b"
+                        ]
+                      }
+                    ]
+                  ],
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "title": "Ops",
+                  "type": "array"
+                },
+                "temperature_k": {
+                  "default": 300.0,
+                  "description": "Kelvin (default 300).",
+                  "maximum": 10000.0,
+                  "minimum": 1.0,
+                  "title": "Temperature K",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "ops"
+              ],
+              "title": "audit_compute_costArguments",
+              "type": "object"
+            },
+            "name": "audit_compute_cost",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "audit_compute_costOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Trustless replay of a Landauer thermodynamic audit (Landauer verify).\n\n        Recomputes erasures and energy floor from the ops DAG and checks claims.\n        Cost ~$0.001 USDC.\n        ",
+            "inputSchema": {
+              "properties": {
+                "energy_floor_j": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Claimed energy floor (joules) to verify.",
+                  "title": "Energy Floor J"
+                },
+                "irreversible_bits": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Claimed erasure count to verify.",
+                  "title": "Irreversible Bits"
+                },
+                "ops": {
+                  "description": "Operation DAG for Landauer audit. Each gate: {id, gate, inputs:[id,...], width?}. Reversible gates erase 0 bits; boolean gates erase fan_in-1.",
+                  "examples": [
+                    [
+                      {
+                        "gate": "input",
+                        "id": "a",
+                        "width": 1
+                      },
+                      {
+                        "gate": "input",
+                        "id": "b",
+                        "width": 1
+                      },
+                      {
+                        "gate": "and",
+                        "id": "c",
+                        "inputs": [
+                          "a",
+                          "b"
+                        ]
+                      }
+                    ]
+                  ],
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "title": "Ops",
+                  "type": "array"
+                },
+                "temperature_k": {
+                  "default": 300.0,
+                  "title": "Temperature K",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "ops"
+              ],
+              "title": "verify_compute_costArguments",
+              "type": "object"
+            },
+            "name": "verify_compute_cost",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "verify_compute_costOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Least-time routing with eikonal potentials + dual certificate (Fermat).\n\n        Finds the minimum-time path on a weighted graph and returns potentials T(v) as an\n        optimality certificate. Use for multi-agent task routing, supply chain, logistics,\n        and data-pipeline optimization.\n\n        Cost ~$0.01 USDC per call.\n        ",
+            "inputSchema": {
+              "properties": {
+                "blend": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Blend coefficients {cost, latency, reputation, latency_scale} for dict edges.",
+                  "title": "Blend"
+                },
+                "edges": {
+                  "description": "Directed weighted edges: [u, v, weight] or {from, to, cost?, latency?, reputation?} for blended refractive index.",
+                  "examples": [
+                    [
+                      [
+                        "s",
+                        "a",
+                        1
+                      ],
+                      [
+                        "a",
+                        "t",
+                        1
+                      ],
+                      [
+                        "s",
+                        "b",
+                        1
+                      ],
+                      [
+                        "b",
+                        "t",
+                        5
+                      ]
+                    ]
+                  ],
+                  "items": {},
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "goal": {
+                  "description": "Start or goal node label.",
+                  "examples": [
+                    "s",
+                    "t"
+                  ],
+                  "title": "Goal",
+                  "type": "string"
+                },
+                "start": {
+                  "description": "Start or goal node label.",
+                  "examples": [
+                    "s",
+                    "t"
+                  ],
+                  "title": "Start",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "edges",
+                "start",
+                "goal"
+              ],
+              "title": "compute_least_time_routeArguments",
+              "type": "object"
+            },
+            "name": "compute_least_time_route",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "compute_least_time_routeOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Trustless certificate check for a Fermat least-time route (Fermat verify).\n\n        Confirms feasibility on every edge and tightness on the path in O(E) time.\n        Cost ~$0.001 USDC.\n        ",
+            "inputSchema": {
+              "properties": {
+                "blend": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Blend"
+                },
+                "edges": {
+                  "description": "Directed weighted edges: [u, v, weight] or {from, to, cost?, latency?, reputation?} for blended refractive index.",
+                  "examples": [
+                    [
+                      [
+                        "s",
+                        "a",
+                        1
+                      ],
+                      [
+                        "a",
+                        "t",
+                        1
+                      ],
+                      [
+                        "s",
+                        "b",
+                        1
+                      ],
+                      [
+                        "b",
+                        "t",
+                        5
+                      ]
+                    ]
+                  ],
+                  "items": {},
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "goal": {
+                  "description": "Start or goal node label.",
+                  "examples": [
+                    "s",
+                    "t"
+                  ],
+                  "title": "Goal",
+                  "type": "string"
+                },
+                "path": {
+                  "anyOf": [
+                    {
+                      "items": {},
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Claimed path (node labels).",
+                  "title": "Path"
+                },
+                "potentials": {
+                  "additionalProperties": {
+                    "type": "number"
+                  },
+                  "description": "Dual certificate T(v) from compute_least_time_route.",
+                  "title": "Potentials",
+                  "type": "object"
+                },
+                "start": {
+                  "description": "Start or goal node label.",
+                  "examples": [
+                    "s",
+                    "t"
+                  ],
+                  "title": "Start",
+                  "type": "string"
+                },
+                "total": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Claimed path total time.",
+                  "title": "Total"
+                }
+              },
+              "required": [
+                "edges",
+                "start",
+                "goal",
+                "potentials"
+              ],
+              "title": "verify_least_time_routeArguments",
+              "type": "object"
+            },
+            "name": "verify_least_time_route",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "verify_least_time_routeOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Systemic cascade-risk analysis via abelian sandpile / SOC (Ablation).\n\n        Returns avalanche-size distribution, power-law exponent tau, VaR/CVaR tail risk,\n        and trigger nodes. Use for financial contagion, supply-chain resilience, and\n        microservices failure analysis.\n\n        Cost ~$0.01 USDC per call.\n        ",
+            "inputSchema": {
+              "properties": {
+                "capacities": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": {
+                        "type": "integer"
+                      },
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Per-node toppling thresholds.",
+                  "title": "Capacities"
+                },
+                "dissipation": {
+                  "default": 1,
+                  "description": "Grains leaked per topple.",
+                  "minimum": 0,
+                  "title": "Dissipation",
+                  "type": "integer"
+                },
+                "edges": {
+                  "description": "Directed graph edges as [u, v] label pairs.",
+                  "examples": [
+                    [
+                      [
+                        "A",
+                        "B"
+                      ],
+                      [
+                        "B",
+                        "C"
+                      ],
+                      [
+                        "C",
+                        "A"
+                      ]
+                    ]
+                  ],
+                  "items": {
+                    "items": {},
+                    "type": "array"
+                  },
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "grains": {
+                  "default": 4000,
+                  "description": "Stress grains to drive.",
+                  "maximum": 100000,
+                  "minimum": 1,
+                  "title": "Grains",
+                  "type": "integer"
+                },
+                "nodes": {
+                  "anyOf": [
+                    {
+                      "items": {},
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Optional explicit node labels.",
+                  "title": "Nodes"
+                },
+                "nonce": {
+                  "default": "0",
+                  "description": "Commit-reveal nonce for drive schedule.",
+                  "title": "Nonce",
+                  "type": "string"
+                },
+                "s_min": {
+                  "default": 1,
+                  "description": "Power-law fit lower cutoff.",
+                  "minimum": 1,
+                  "title": "S Min",
+                  "type": "integer"
+                },
+                "sinks": {
+                  "anyOf": [
+                    {
+                      "items": {},
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Sink nodes that dissipate stress.",
+                  "title": "Sinks"
+                }
+              },
+              "required": [
+                "edges"
+              ],
+              "title": "analyze_cascade_riskArguments",
+              "type": "object"
+            },
+            "name": "analyze_cascade_risk",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "analyze_cascade_riskOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Trustless replay of an Ablation cascade analysis (Ablation verify).\n\n        Re-runs the sandpile and checks tau / topple_total claims.\n        Cost ~$0.001 USDC.\n        ",
+            "inputSchema": {
+              "properties": {
+                "claimed_tau": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Claimed power-law exponent.",
+                  "title": "Claimed Tau"
+                },
+                "claimed_topple_total": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Claimed topple total.",
+                  "title": "Claimed Topple Total"
+                },
+                "dissipation": {
+                  "default": 1,
+                  "title": "Dissipation",
+                  "type": "integer"
+                },
+                "edges": {
+                  "description": "Directed graph edges as [u, v] label pairs.",
+                  "examples": [
+                    [
+                      [
+                        "A",
+                        "B"
+                      ],
+                      [
+                        "B",
+                        "C"
+                      ],
+                      [
+                        "C",
+                        "A"
+                      ]
+                    ]
+                  ],
+                  "items": {
+                    "items": {},
+                    "type": "array"
+                  },
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "grains": {
+                  "default": 4000,
+                  "title": "Grains",
+                  "type": "integer"
+                },
+                "nonce": {
+                  "default": "0",
+                  "title": "Nonce",
+                  "type": "string"
+                },
+                "s_min": {
+                  "default": 1,
+                  "title": "S Min",
+                  "type": "integer"
+                },
+                "seed": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Reveal seed (after nonce commitment).",
+                  "title": "Seed"
+                }
+              },
+              "required": [
+                "edges"
+              ],
+              "title": "verify_cascade_riskArguments",
+              "type": "object"
+            },
+            "name": "verify_cascade_risk",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "verify_cascade_riskOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Halton low-discrepancy quasi-random sequence (Lattice).\n\n        Fills [0,1)^dim more evenly than RNG \u2014 faster QMC convergence for integration,\n        pricing, and space-filling search. Deterministic from (count, dim, skip).\n\n        Cost ~$0.002 USDC per call.\n        ",
+            "inputSchema": {
+              "properties": {
+                "count": {
+                  "default": 256,
+                  "description": "Number of Halton points.",
+                  "maximum": 4096,
+                  "minimum": 1,
+                  "title": "Count",
+                  "type": "integer"
+                },
+                "dim": {
+                  "default": 2,
+                  "description": "Dimension (default 2).",
+                  "maximum": 8,
+                  "minimum": 1,
+                  "title": "Dim",
+                  "type": "integer"
+                },
+                "skip": {
+                  "default": 0,
+                  "description": "Skip first N sequence indices.",
+                  "minimum": 0,
+                  "title": "Skip",
+                  "type": "integer"
+                }
+              },
+              "title": "get_quasirandom_sequenceArguments",
+              "type": "object"
+            },
+            "name": "get_quasirandom_sequence",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "get_quasirandom_sequenceOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Euclidean TSP tour with optimality gap certificate (Colony).\n\n        Returns tour, length, admissible lower bound, and gap = how far from optimal.\n        Use for routing, scheduling, and logistics with a quality proof.\n\n        Cost ~$0.005 USDC per call.\n        ",
+            "inputSchema": {
+              "properties": {
+                "iterations": {
+                  "default": 1000,
+                  "description": "2-opt improvement budget.",
+                  "maximum": 50000,
+                  "minimum": 1,
+                  "title": "Iterations",
+                  "type": "integer"
+                },
+                "points": {
+                  "description": "List of [x, y] coordinates (>=3 points) for TSP optimization.",
+                  "examples": [
+                    [
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        1,
+                        0
+                      ],
+                      [
+                        0.5,
+                        1
+                      ]
+                    ]
+                  ],
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "minItems": 3,
+                  "title": "Points",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "points"
+              ],
+              "title": "optimize_routeArguments",
+              "type": "object"
+            },
+            "name": "optimize_route",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "optimize_routeOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Blue-noise point set via Mitchell best-candidate (Turing).\n\n        Evenly spaced points with large minimum distance \u2014 spawn placement, dithering,\n        sensor layout. Omit seed for os.urandom (reported back).\n\n        Cost ~$0.002 USDC per call.\n        ",
+            "inputSchema": {
+              "properties": {
+                "candidates": {
+                  "default": 10,
+                  "description": "Best-candidate pool size.",
+                  "maximum": 100,
+                  "minimum": 1,
+                  "title": "Candidates",
+                  "type": "integer"
+                },
+                "count": {
+                  "default": 256,
+                  "description": "Number of points.",
+                  "maximum": 2048,
+                  "minimum": 1,
+                  "title": "Count",
+                  "type": "integer"
+                },
+                "seed": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Optional seed for reproducibility.",
+                  "title": "Seed"
+                }
+              },
+              "title": "get_blue_noiseArguments",
+              "type": "object"
+            },
+            "name": "get_blue_noise",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "get_blue_noiseOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Percolation threshold and network resilience analysis (Percola).\n\n        Returns critical attack fraction f_c, collapse curves P_inf(f), robustness scalar,\n        and keystone nodes. Use before joining exposure graphs or multi-hop agent routes.\n\n        Cost ~$0.01 USDC per call.\n        ",
+            "inputSchema": {
+              "properties": {
+                "attack": {
+                  "default": "both",
+                  "description": "Attack mode: targeted, random, or both.",
+                  "title": "Attack",
+                  "type": "string"
+                },
+                "edges": {
+                  "description": "Directed graph edges as [u, v] label pairs.",
+                  "examples": [
+                    [
+                      [
+                        "A",
+                        "B"
+                      ],
+                      [
+                        "B",
+                        "C"
+                      ],
+                      [
+                        "C",
+                        "A"
+                      ]
+                    ]
+                  ],
+                  "items": {
+                    "items": {},
+                    "type": "array"
+                  },
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "nodes": {
+                  "anyOf": [
+                    {
+                      "items": {},
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Optional isolated node labels.",
+                  "title": "Nodes"
+                },
+                "nonce": {
+                  "default": "0",
+                  "description": "Commit-reveal nonce for attack order.",
+                  "title": "Nonce",
+                  "type": "string"
+                },
+                "samples": {
+                  "default": 50,
+                  "description": "Collapse curve resolution.",
+                  "maximum": 500,
+                  "minimum": 2,
+                  "title": "Samples",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "edges"
+              ],
+              "title": "analyze_network_resilienceArguments",
+              "type": "object"
+            },
+            "name": "analyze_network_resilience",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "analyze_network_resilienceOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Trustless replay of a Percola percolation threshold (Percola verify).\n\n        Recomputes the attack sweep and checks the claimed f_c.\n        Cost ~$0.001 USDC.\n        ",
+            "inputSchema": {
+              "properties": {
+                "attack": {
+                  "default": "targeted",
+                  "description": "Attack mode used in the original analysis.",
+                  "title": "Attack",
+                  "type": "string"
+                },
+                "edges": {
+                  "description": "Directed graph edges as [u, v] label pairs.",
+                  "examples": [
+                    [
+                      [
+                        "A",
+                        "B"
+                      ],
+                      [
+                        "B",
+                        "C"
+                      ],
+                      [
+                        "C",
+                        "A"
+                      ]
+                    ]
+                  ],
+                  "items": {
+                    "items": {},
+                    "type": "array"
+                  },
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "f_c": {
+                  "description": "Claimed critical attack fraction to verify.",
+                  "title": "F C",
+                  "type": "number"
+                },
+                "nonce": {
+                  "default": "0",
+                  "title": "Nonce",
+                  "type": "string"
+                },
+                "samples": {
+                  "default": 50,
+                  "title": "Samples",
+                  "type": "integer"
+                },
+                "seed": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Reveal seed for random attack order.",
+                  "title": "Seed"
+                }
+              },
+              "required": [
+                "edges",
+                "f_c"
+              ],
+              "title": "verify_network_resilienceArguments",
+              "type": "object"
+            },
+            "name": "verify_network_resilience",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "verify_network_resilienceOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "ECVRF randomness bound to a caller seed (UTF-8 or 'hex:' bytes). ~$0.006 USDC.",
+            "inputSchema": {
+              "properties": {
+                "alpha": {
+                  "title": "Alpha",
+                  "type": "string"
+                },
+                "num_bytes": {
+                  "default": 32,
+                  "maximum": 64,
+                  "minimum": 1,
+                  "title": "Num Bytes",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "alpha"
+              ],
+              "title": "sortes_drawArguments",
+              "type": "object"
+            },
+            "name": "sortes_draw",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "sortes_drawOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Verify a Sortes VRF draw using the public key and proof (hex). ~$0.001 USDC.",
+            "inputSchema": {
+              "properties": {
+                "alpha": {
+                  "title": "Alpha",
+                  "type": "string"
+                },
+                "pi": {
+                  "title": "Pi",
+                  "type": "string"
+                },
+                "public_key": {
+                  "title": "Public Key",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "public_key",
+                "alpha",
+                "pi"
+              ],
+              "title": "sortes_verifyArguments",
+              "type": "object"
+            },
+            "name": "sortes_verify",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "sortes_verifyOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Gaussian-process posterior mean and uncertainty at query points. ~$0.006 USDC.",
+            "inputSchema": {
+              "properties": {
+                "X": {
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "X",
+                  "type": "array"
+                },
+                "hyperparams": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Hyperparams"
+                },
+                "query": {
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Query",
+                  "type": "array"
+                },
+                "y": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "title": "Y",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "X",
+                "y",
+                "query"
+              ],
+              "title": "gauss_fieldArguments",
+              "type": "object"
+            },
+            "name": "gauss_field",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "gauss_fieldOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Best next experiment by Expected Improvement; provide candidates or bounds. ~$0.006 USDC.",
+            "inputSchema": {
+              "properties": {
+                "X": {
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "X",
+                  "type": "array"
+                },
+                "bounds": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "type": "array"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Bounds"
+                },
+                "candidates": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "type": "array"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Candidates"
+                },
+                "goal": {
+                  "default": "max",
+                  "enum": [
+                    "max",
+                    "min"
+                  ],
+                  "title": "Goal",
+                  "type": "string"
+                },
+                "grid": {
+                  "default": 64,
+                  "minimum": 2,
+                  "title": "Grid",
+                  "type": "integer"
+                },
+                "hyperparams": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Hyperparams"
+                },
+                "xi": {
+                  "default": 0.01,
+                  "minimum": 0,
+                  "title": "Xi",
+                  "type": "number"
+                },
+                "y": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "title": "Y",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "X",
+                "y"
+              ],
+              "title": "gauss_suggestArguments",
+              "type": "object"
+            },
+            "name": "gauss_suggest",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "gauss_suggestOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Replay a Gaussian-process posterior and check claimed mean/variance. ~$0.001 USDC.",
+            "inputSchema": {
+              "properties": {
+                "X": {
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "X",
+                  "type": "array"
+                },
+                "claimed_mean": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "type": "number"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Claimed Mean"
+                },
+                "claimed_var": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "type": "number"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Claimed Var"
+                },
+                "hyperparams": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Hyperparams"
+                },
+                "query": {
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Query",
+                  "type": "array"
+                },
+                "tol": {
+                  "default": 1e-06,
+                  "minimum": 0,
+                  "title": "Tol",
+                  "type": "number"
+                },
+                "y": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "title": "Y",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "X",
+                "y",
+                "query"
+              ],
+              "title": "gauss_verifyArguments",
+              "type": "object"
+            },
+            "name": "gauss_verify",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "gauss_verifyOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Seal data in an RSW time-lock puzzle. Sequential squarings enforce delay. ~$0.006 USDC.",
+            "inputSchema": {
+              "properties": {
+                "T": {
+                  "default": 1000000,
+                  "maximum": 5000000,
+                  "minimum": 1,
+                  "title": "T",
+                  "type": "integer"
+                },
+                "data": {
+                  "title": "Data",
+                  "type": "string"
+                },
+                "encoding": {
+                  "default": "utf8",
+                  "enum": [
+                    "utf8",
+                    "hex"
+                  ],
+                  "title": "Encoding",
+                  "type": "string"
+                },
+                "modulus_bits": {
+                  "default": 2048,
+                  "maximum": 3072,
+                  "minimum": 256,
+                  "title": "Modulus Bits",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "data"
+              ],
+              "title": "aestus_sealArguments",
+              "type": "object"
+            },
+            "name": "aestus_seal",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "aestus_sealOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Open an Aestus puzzle by sequential squaring; may take time. ~$0.01 USDC.",
+            "inputSchema": {
+              "properties": {
+                "puzzle": {
+                  "additionalProperties": true,
+                  "title": "Puzzle",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "puzzle"
+              ],
+              "title": "aestus_openArguments",
+              "type": "object"
+            },
+            "name": "aestus_open",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "aestus_openOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Verify the claimed modular-squaring result of an Aestus puzzle. ~$0.001 USDC.",
+            "inputSchema": {
+              "properties": {
+                "b": {
+                  "title": "B",
+                  "type": "string"
+                },
+                "puzzle": {
+                  "additionalProperties": true,
+                  "title": "Puzzle",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "puzzle",
+                "b"
+              ],
+              "title": "aestus_verifyArguments",
+              "type": "object"
+            },
+            "name": "aestus_verify",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "aestus_verifyOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Persistent homology and Betti curves of a point cloud (up to 300 points). ~$0.008 USDC.",
+            "inputSchema": {
+              "properties": {
+                "max_dim": {
+                  "default": 2,
+                  "enum": [
+                    1,
+                    2
+                  ],
+                  "title": "Max Dim",
+                  "type": "integer"
+                },
+                "max_scale": {
+                  "anyOf": [
+                    {
+                      "exclusiveMinimum": 0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Max Scale"
+                },
+                "num_steps": {
+                  "default": 40,
+                  "maximum": 200,
+                  "minimum": 2,
+                  "title": "Num Steps",
+                  "type": "integer"
+                },
+                "points": {
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Points",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "points"
+              ],
+              "title": "betti_homologyArguments",
+              "type": "object"
+            },
+            "name": "betti_homology",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "betti_homologyOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Compare topological shape of two point clouds by persistence distance. ~$0.004 USDC.",
+            "inputSchema": {
+              "properties": {
+                "dim": {
+                  "default": 1,
+                  "enum": [
+                    0,
+                    1,
+                    2
+                  ],
+                  "title": "Dim",
+                  "type": "integer"
+                },
+                "max_scale": {
+                  "anyOf": [
+                    {
+                      "exclusiveMinimum": 0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Max Scale"
+                },
+                "points_a": {
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Points A",
+                  "type": "array"
+                },
+                "points_b": {
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Points B",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "points_a",
+                "points_b"
+              ],
+              "title": "betti_distanceArguments",
+              "type": "object"
+            },
+            "name": "betti_distance",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "betti_distanceOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Optimal transport/Wasserstein distance; supply cost or source/sink points. ~$0.006 USDC.",
+            "inputSchema": {
+              "properties": {
+                "a": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "title": "A",
+                  "type": "array"
+                },
+                "b": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "title": "B",
+                  "type": "array"
+                },
+                "cost": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "type": "array"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Cost"
+                },
+                "eps": {
+                  "default": 0.1,
+                  "minimum": 0,
+                  "title": "Eps",
+                  "type": "number"
+                },
+                "method": {
+                  "default": "exact",
+                  "enum": [
+                    "exact",
+                    "sinkhorn"
+                  ],
+                  "title": "Method",
+                  "type": "string"
+                },
+                "metric": {
+                  "default": "euclidean",
+                  "enum": [
+                    "euclidean",
+                    "sqeuclidean"
+                  ],
+                  "title": "Metric",
+                  "type": "string"
+                },
+                "p": {
+                  "default": 2,
+                  "minimum": 0,
+                  "title": "P",
+                  "type": "number"
+                },
+                "sink_points": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "anyOf": [
+                          {
+                            "items": {
+                              "type": "number"
+                            },
+                            "type": "array"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Sink Points"
+                },
+                "source_points": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "anyOf": [
+                          {
+                            "items": {
+                              "type": "number"
+                            },
+                            "type": "array"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Source Points"
+                }
+              },
+              "required": [
+                "a",
+                "b"
+              ],
+              "title": "kantor_transportArguments",
+              "type": "object"
+            },
+            "name": "kantor_transport",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "kantor_transportOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Certify transport feasibility, primal cost and dual optimality. ~$0.001 USDC.",
+            "inputSchema": {
+              "properties": {
+                "a": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "title": "A",
+                  "type": "array"
+                },
+                "b": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "title": "B",
+                  "type": "array"
+                },
+                "claimed_cost": {
+                  "title": "Claimed Cost",
+                  "type": "number"
+                },
+                "cost": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "type": "array"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Cost"
+                },
+                "metric": {
+                  "default": "euclidean",
+                  "enum": [
+                    "euclidean",
+                    "sqeuclidean"
+                  ],
+                  "title": "Metric",
+                  "type": "string"
+                },
+                "p": {
+                  "default": 2,
+                  "minimum": 0,
+                  "title": "P",
+                  "type": "number"
+                },
+                "plan": {
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Plan",
+                  "type": "array"
+                },
+                "potentials": {
+                  "additionalProperties": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Potentials",
+                  "type": "object"
+                },
+                "sink_points": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "anyOf": [
+                          {
+                            "items": {
+                              "type": "number"
+                            },
+                            "type": "array"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Sink Points"
+                },
+                "source_points": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "anyOf": [
+                          {
+                            "items": {
+                              "type": "number"
+                            },
+                            "type": "array"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Source Points"
+                },
+                "tol": {
+                  "default": 1e-06,
+                  "minimum": 0,
+                  "title": "Tol",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "a",
+                "b",
+                "claimed_cost",
+                "plan",
+                "potentials"
+              ],
+              "title": "kantor_verifyArguments",
+              "type": "object"
+            },
+            "name": "kantor_verify",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "kantor_verifyOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Graph Laplacian spectrum, connectivity and Fiedler cut. ~$0.005 USDC.",
+            "inputSchema": {
+              "properties": {
+                "edges": {
+                  "items": {
+                    "items": {},
+                    "type": "array"
+                  },
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "k": {
+                  "default": 6,
+                  "maximum": 400,
+                  "minimum": 1,
+                  "title": "K",
+                  "type": "integer"
+                },
+                "laplacian": {
+                  "default": "normalized",
+                  "enum": [
+                    "normalized",
+                    "combinatorial"
+                  ],
+                  "title": "Laplacian",
+                  "type": "string"
+                },
+                "nodes": {
+                  "anyOf": [
+                    {
+                      "items": {},
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Nodes"
+                }
+              },
+              "required": [
+                "edges"
+              ],
+              "title": "fourier_spectrumArguments",
+              "type": "object"
+            },
+            "name": "fourier_spectrum",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "fourier_spectrumOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Certify an eigenpair; eigenvalue is sent as the oracle's `lambda` field. ~$0.001 USDC.",
+            "inputSchema": {
+              "properties": {
+                "edges": {
+                  "items": {
+                    "items": {},
+                    "type": "array"
+                  },
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "eigenvalue": {
+                  "title": "Eigenvalue",
+                  "type": "number"
+                },
+                "laplacian": {
+                  "default": "normalized",
+                  "enum": [
+                    "normalized",
+                    "combinatorial"
+                  ],
+                  "title": "Laplacian",
+                  "type": "string"
+                },
+                "nodes": {
+                  "anyOf": [
+                    {
+                      "items": {},
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Nodes"
+                },
+                "tol": {
+                  "default": 1e-06,
+                  "maximum": 0.001,
+                  "minimum": 0,
+                  "title": "Tol",
+                  "type": "number"
+                },
+                "vector": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "title": "Vector",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "edges",
+                "eigenvalue",
+                "vector"
+              ],
+              "title": "fourier_verifyArguments",
+              "type": "object"
+            },
+            "name": "fourier_verify",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "fourier_verifyOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Draw unbiasable, Ed25519-signed verifiable randomness (Platon).\n\n    Use this when you need randomness an autonomous agent cannot bias or predict and that a third\n    party can verify \u2014 fair selection, sampling, raffles, commit-reveal, anti-MEV ordering. The\n    oracle signs the value, so you (or anyone) can verify it offline against the published signer key.\n\n    Returns:\n        The standard envelope (see server instructions). `result` contains:\n          - `random_hex`: the random bytes, hex-encoded (`num_bytes` long).\n          - `proof`: `{state_hash, tick, timestamp, entropy_commitment}` binding the value to the\n            oracle's chaotic state at draw time.\n          - `signature`: Ed25519 signature over the value+proof (verify with `verify_random`/the\n            signer key in the Hub manifest). `verifiable.signed` will be true.\n        Cost ~$0.004 USDC, charged per call.\n\n    Example:\n        get_random(num_bytes=32, client_seed=\"0xdeadbeef\")\n    ",
+            "inputSchema": {
+              "properties": {
+                "client_seed": {
+                  "default": "",
+                  "description": "Optional caller-supplied seed (hex) for domain separation \u2014 it is bound into the signed proof so two callers asking at the same tick get distinct, attributable randomness. Pass '' to omit.",
+                  "examples": [
+                    "0xdeadbeef",
+                    ""
+                  ],
+                  "title": "Client Seed",
+                  "type": "string"
+                },
+                "num_bytes": {
+                  "default": 32,
+                  "description": "Number of random bytes to draw, 1..1024. The result's `random_hex` is this many bytes hex-encoded. Use 32 for a 256-bit seed/word.",
+                  "examples": [
+                    32,
+                    64
+                  ],
+                  "maximum": 1024,
+                  "minimum": 1,
+                  "title": "Num Bytes",
+                  "type": "integer"
+                }
+              },
+              "title": "get_randomArguments",
+              "type": "object"
+            },
+            "name": "get_random",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "get_randomOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Fetch the round's public randomness beacon (Platon) \u2014 one shared value all callers in the\n    round observe, useful as a common coin / shared seed.\n\n    Returns:\n        The standard envelope; `result` has the same `{random_hex, proof, signature}` shape as\n        `get_random`, but the value is the round-wide beacon (not caller-specific). Cost ~$0.004 USDC.\n\n    Example:\n        get_randomness_beacon()\n    ",
+            "inputSchema": {
+              "properties": {},
+              "title": "get_randomness_beaconArguments",
+              "type": "object"
+            },
+            "name": "get_randomness_beacon",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "get_randomness_beaconOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Ask the Platon oracle for a grounded, entropy-derived read-only answer.\n\n    Use for lightweight oracle-mediated decisions (e.g. an unbiased pick among options). Read-only \u2014\n    no side effects, no state change.\n\n    Returns:\n        The standard envelope; `result` carries the oracle's answer payload. Cost ~$0.003 USDC.\n\n    Example:\n        ask_oracle(question=\"Pick one at random: red, green, or blue?\")\n    ",
+            "inputSchema": {
+              "properties": {
+                "question": {
+                  "description": "A question to answer from the oracle's entropy/state. Read-only; no side effects.",
+                  "examples": [
+                    "Which of these 3 options should I pick at random?"
+                  ],
+                  "title": "Question",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "question"
+              ],
+              "title": "ask_oracleArguments",
+              "type": "object"
+            },
+            "name": "ask_oracle",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "ask_oracleOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Verify a Platon randomness draw without re-running it (Platon verify).\n\n    Pass `random_hex`, `proof`, and `signature` exactly as returned by `get_random` /\n    `get_randomness_beacon`. Confirms the Ed25519 signature over the canonical (random_hex, proof)\n    against the signer's published public key \u2014 so you trust the math, not the service.\n\n    Returns:\n        The standard envelope; `result` is `{valid: <bool>}` (plus `error` if the input was\n        malformed). Cost ~$0.001 USDC.\n\n    Example:\n        verify_random(random_hex=\"0x9f2c\u2026\", proof={\"scheme\": \"platon-chaos-vrf/v1\", \u2026},\n                      signature={\"algorithm\": \"ed25519\", \"public_key\": \"<b64>\", \"value\": \"<b64>\"})\n    ",
+            "inputSchema": {
+              "properties": {
+                "proof": {
+                  "additionalProperties": true,
+                  "description": "The `proof` object from the draw: {scheme, state_hash, client_seed, tick, timestamp, entropy_commitment}.",
+                  "examples": [
+                    {
+                      "client_seed": "",
+                      "scheme": "platon-chaos-vrf/v1",
+                      "state_hash": "\u2026",
+                      "tick": 42,
+                      "timestamp": "2026-06-18T00:00:00Z"
+                    }
+                  ],
+                  "title": "Proof",
+                  "type": "object"
+                },
+                "random_hex": {
+                  "description": "The `random_hex` value returned by get_random / get_randomness_beacon.",
+                  "examples": [
+                    "0x9f2c4a\u2026"
+                  ],
+                  "title": "Random Hex",
+                  "type": "string"
+                },
+                "signature": {
+                  "additionalProperties": true,
+                  "description": "The `signature` object from the draw: {algorithm:'ed25519', public_key, value}.",
+                  "examples": [
+                    {
+                      "algorithm": "ed25519",
+                      "public_key": "<b64>",
+                      "value": "<b64>"
+                    }
+                  ],
+                  "title": "Signature",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "random_hex",
+                "proof",
+                "signature"
+              ],
+              "title": "verify_randomArguments",
+              "type": "object"
+            },
+            "name": "verify_random",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "verify_randomOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Evaluate a Verifiable Delay Function (Chronos) \u2014 proof that real sequential work elapsed.\n\n    Use when you need provable, unforgeable elapsed time / sequential work: timed reveals, fair\n    ordering, proof-of-elapsed-time, randomness that cannot be precomputed. Producing the output\n    requires `T` sequential squarings over an RSA-2048 modulus (no shortcut), so a valid proof\n    attests the delay actually happened. Verify cheaply with `verify_vdf`.\n\n    Returns:\n        The standard envelope; `result` contains:\n          - `scheme`, `g`, `y` (= g^(2^T) mod N), `proof` (`{pi, l}`, Wesolowski), `modulus`.\n        `verifiable.has_proof` will be true. Cost ~$0.01 USDC.\n\n    Example:\n        compute_vdf(seed=\"0x1234abcd\", difficulty=100000)\n    ",
+            "inputSchema": {
+              "properties": {
+                "difficulty": {
+                  "default": 1000,
+                  "description": "T \u2014 the number of sequential squarings to perform (1..1_000_000). Higher T = more wall-clock work that cannot be parallelized/GPU-accelerated, i.e. a longer provable delay. ~1000 is a fast demo; tune T to the delay you need. NOTE: without a payment channel the provider caps T at 100_000 and answers 402 payment_required above it (the response carries the exact ceiling). 100_000 is ~0.7s of work and demonstrates the primitive fully; the full range needs payment.",
+                  "examples": [
+                    1000,
+                    100000
+                  ],
+                  "maximum": 1000000,
+                  "minimum": 1,
+                  "title": "Difficulty",
+                  "type": "integer"
+                },
+                "seed": {
+                  "description": "Seed (hex) the VDF is evaluated over; it binds the generator g, so the output is tied to this input.",
+                  "examples": [
+                    "0x1234abcd"
+                  ],
+                  "title": "Seed",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed"
+              ],
+              "title": "compute_vdfArguments",
+              "type": "object"
+            },
+            "name": "compute_vdf",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "compute_vdfOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Verify a Chronos VDF proof in a single exponentiation.\n\n    Pass the `g`, `y`, `T`, and `proof` returned by `compute_vdf` (or by any party claiming a VDF\n    result). Confirms `y = g^(2^T) mod N` without redoing the T squarings.\n\n    Returns:\n        The standard envelope; `result` is `{valid: <bool>}`. Cost ~$0.001 USDC.\n\n    Example:\n        verify_vdf(g=\"0x03\", y=\"0x9f2a\u2026\", T=100000, proof={\"pi\": \"0x1a2b\u2026\", \"l\": \"0x65\"})\n    ",
+            "inputSchema": {
+              "properties": {
+                "T": {
+                  "description": "Difficulty T (squarings) that produced y; must match the value used in `compute_vdf`.",
+                  "examples": [
+                    1000
+                  ],
+                  "title": "T",
+                  "type": "integer"
+                },
+                "g": {
+                  "description": "Generator g (hex) as returned by `compute_vdf`.",
+                  "examples": [
+                    "0x03"
+                  ],
+                  "title": "G",
+                  "type": "string"
+                },
+                "proof": {
+                  "additionalProperties": true,
+                  "description": "The Wesolowski proof object from `compute_vdf` \u2014 `{pi, l}` (pi = proof element, l = Fiat-Shamir prime).",
+                  "examples": [
+                    {
+                      "l": "0x65",
+                      "pi": "0x1a2b\u2026"
+                    }
+                  ],
+                  "title": "Proof",
+                  "type": "object"
+                },
+                "y": {
+                  "description": "Claimed VDF output y = g^(2^T) mod N (hex) from `compute_vdf`.",
+                  "examples": [
+                    "0x9f2a\u2026"
+                  ],
+                  "title": "Y",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "g",
+                "y",
+                "T",
+                "proof"
+              ],
+              "title": "verify_vdfArguments",
+              "type": "object"
+            },
+            "name": "verify_vdf",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "verify_vdfOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Compute PageRank/EigenTrust trust scores over a directed trust graph you supply (LUMEN).\n\n    Use to rank agents/entities by trust when you have who-trusts-whom edges: counterparty\n    selection, sybil-dampened weighting, prioritization. You provide the graph; the oracle returns\n    a normalized score per node plus convergence info.\n\n    Returns:\n        The standard envelope; `result` contains:\n          - `scores`: array of `nodes` floats that sum to 1 (\u00b11e-6) \u2014 node i's trust share.\n          - `iterations`, `converged`: power-iteration convergence info.\n        Cost ~$0.005 USDC (scales with graph size).\n\n    Example:\n        get_reputation_scores(nodes=3, edges=[[0,1,1.0],[1,2,0.5],[2,0,0.5]], damping=0.85)\n    ",
+            "inputSchema": {
+              "properties": {
+                "damping": {
+                  "default": 0.85,
+                  "description": "PageRank damping factor in [0,1] (default 0.85). Lower = more weight on the uniform prior, dampening graph manipulation.",
+                  "examples": [
+                    0.85
+                  ],
+                  "maximum": 1.0,
+                  "minimum": 0.0,
+                  "title": "Damping",
+                  "type": "number"
+                },
+                "edges": {
+                  "description": "Directed, weighted trust edges as `[from_index, to_index, weight]`. An edge i\u2192j with weight w means node i confers w trust on node j. Weights need not be normalized.",
+                  "examples": [
+                    [
+                      [
+                        0,
+                        1,
+                        1.0
+                      ],
+                      [
+                        1,
+                        2,
+                        0.5
+                      ],
+                      [
+                        2,
+                        0,
+                        0.5
+                      ]
+                    ]
+                  ],
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "nodes": {
+                  "description": "Number of nodes in the directed trust graph, 1..100000. Node indices in `edges` must be in [0, nodes).",
+                  "examples": [
+                    3,
+                    1000
+                  ],
+                  "maximum": 100000,
+                  "minimum": 1,
+                  "title": "Nodes",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "nodes",
+                "edges"
+              ],
+              "title": "get_reputation_scoresArguments",
+              "type": "object"
+            },
+            "name": "get_reputation_scores",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "get_reputation_scoresOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Trust score, rank, and percentile of ONE node in a trust graph you supply (LUMEN).\n\n    A single-agent reputation lookup over the same PageRank as `get_reputation_scores` \u2014 use when\n    you only care about one counterparty's standing.\n\n    Returns:\n        The standard envelope; `result` is `{target_node, score, rank (1=highest), of, percentile,\n        graph_commitment}`. Cost ~$0.003 USDC.\n\n    Example:\n        get_agent_trust(nodes=3, edges=[[0,1,1.0],[1,2,0.5],[2,0,0.5]], target_node=1)\n    ",
+            "inputSchema": {
+              "properties": {
+                "damping": {
+                  "default": 0.85,
+                  "description": "PageRank damping factor in [0,1] (default 0.85). Lower = more weight on the uniform prior, dampening graph manipulation.",
+                  "examples": [
+                    0.85
+                  ],
+                  "maximum": 1.0,
+                  "minimum": 0.0,
+                  "title": "Damping",
+                  "type": "number"
+                },
+                "edges": {
+                  "description": "Directed, weighted trust edges as `[from_index, to_index, weight]`. An edge i\u2192j with weight w means node i confers w trust on node j. Weights need not be normalized.",
+                  "examples": [
+                    [
+                      [
+                        0,
+                        1,
+                        1.0
+                      ],
+                      [
+                        1,
+                        2,
+                        0.5
+                      ],
+                      [
+                        2,
+                        0,
+                        0.5
+                      ]
+                    ]
+                  ],
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "nodes": {
+                  "description": "Number of nodes in the directed trust graph, 1..100000. Node indices in `edges` must be in [0, nodes).",
+                  "examples": [
+                    3,
+                    1000
+                  ],
+                  "maximum": 100000,
+                  "minimum": 1,
+                  "title": "Nodes",
+                  "type": "integer"
+                },
+                "target_node": {
+                  "description": "Index of the node whose trust score/rank/percentile to return (0-based, in [0, nodes)).",
+                  "examples": [
+                    1
+                  ],
+                  "minimum": 0,
+                  "title": "Target Node",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "nodes",
+                "edges",
+                "target_node"
+              ],
+              "title": "get_agent_trustArguments",
+              "type": "object"
+            },
+            "name": "get_agent_trust",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "get_agent_trustOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "Verify LUMEN reputation scores by re-deriving PageRank over the supplied graph (LUMEN verify).\n\n    Pass the graph and the `scores` (and optionally the `graph_commitment`) from a\n    `get_reputation_scores` result; confirms they are the correct PageRank of exactly that graph.\n\n    Returns:\n        The standard envelope; `result` is `{valid: <bool>, max_abs_diff, [commitment_match]}`.\n        Cost ~$0.002 USDC.\n\n    Example:\n        verify_reputation(nodes=3, edges=[[0,1,1.0],[1,2,0.5],[2,0,0.5]], scores=[0.33,0.33,0.34])\n    ",
+            "inputSchema": {
+              "properties": {
+                "damping": {
+                  "default": 0.85,
+                  "description": "PageRank damping factor in [0,1] (default 0.85). Lower = more weight on the uniform prior, dampening graph manipulation.",
+                  "examples": [
+                    0.85
+                  ],
+                  "maximum": 1.0,
+                  "minimum": 0.0,
+                  "title": "Damping",
+                  "type": "number"
+                },
+                "edges": {
+                  "description": "Directed, weighted trust edges as `[from_index, to_index, weight]`. An edge i\u2192j with weight w means node i confers w trust on node j. Weights need not be normalized.",
+                  "examples": [
+                    [
+                      [
+                        0,
+                        1,
+                        1.0
+                      ],
+                      [
+                        1,
+                        2,
+                        0.5
+                      ],
+                      [
+                        2,
+                        0,
+                        0.5
+                      ]
+                    ]
+                  ],
+                  "items": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "title": "Edges",
+                  "type": "array"
+                },
+                "graph_commitment": {
+                  "default": "",
+                  "description": "Optional `graph_commitment` (0x\u2026 SHA-256) from the result, to bind the check to the exact graph. Pass '' to skip.",
+                  "examples": [
+                    "0xeb62af\u2026",
+                    ""
+                  ],
+                  "title": "Graph Commitment",
+                  "type": "string"
+                },
+                "nodes": {
+                  "description": "Number of nodes in the directed trust graph, 1..100000. Node indices in `edges` must be in [0, nodes).",
+                  "examples": [
+                    3,
+                    1000
+                  ],
+                  "maximum": 100000,
+                  "minimum": 1,
+                  "title": "Nodes",
+                  "type": "integer"
+                },
+                "scores": {
+                  "description": "The `scores` array from a get_reputation_scores result, to be re-derived and confirmed.",
+                  "examples": [
+                    [
+                      0.3333,
+                      0.3333,
+                      0.3334
+                    ]
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "title": "Scores",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "nodes",
+                "edges",
+                "scores"
+              ],
+              "title": "verify_reputationArguments",
+              "type": "object"
+            },
+            "name": "verify_reputation",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "verify_reputationOutput",
+              "type": "object"
+            }
+          },
+          {
+            "description": "List every oracle tool with capabilityId, price, category, and optional subscription tiers.\n\n    Call this first to discover what's available and what each call costs before invoking.\n\n    Returns:\n        JSON with `tools` (flat catalog) and `categories` (group labels).\n\n    Example:\n        list_oracle_capabilities()\n    ",
+            "inputSchema": {
+              "properties": {},
+              "title": "list_oracle_capabilitiesArguments",
+              "type": "object"
+            },
+            "name": "list_oracle_capabilities",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "title": "list_oracle_capabilitiesOutput",
+              "type": "object"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "label": "current-oracle-gateway-baseline",
+  "protocol": "2025-06-18",
+  "purpose": "fresh current baseline/recheck",
+  "resolvedOverlay": "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-full-observations-2026-10-27/python-packages/artifacts/oracle-gateway-0.3.2",
+  "serverInfo": {
+    "name": "aimarket-oracle-gateway",
+    "version": "0.3.2"
+  },
+  "snapshot": "docs/evidence/histor-full-observations-2026-10-27/python-packages/snapshots/current-oracle-gateway-baseline.json",
+  "snapshotSha256": "c6dcffed0d7bd56ddbadc2a12916350fa0957d3b981c38569c5e264701c7b829",
+  "sourceFilesSha256": {
+    "capture": "26f7beebb7fdb78b3cbf53dfaec79a68f21c9e7b9d6d4862e1a9de67d1e3252b",
+    "launcher": "d748c343073bd35cc62daf208c5c27bd23244b9beb951f9a6fbef38ce8c93197",
+    "reader": "1f21efca7015e9ce34c11bcbf41e7e27daf4ce4c1e4c99fac0740415ce765fd2"
+  },
+  "stderr": "current-oracle-gateway-baseline-stderr.log",
+  "toolCalls": 0,
+  "toolCount": 36
+}

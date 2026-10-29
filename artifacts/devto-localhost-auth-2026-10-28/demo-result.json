@@ -1,0 +1,54 @@
+{
+  "scope": "educational HTTP reconstruction; all listeners and clients use IPv4 loopback",
+  "checks": 8,
+  "results": [
+    {
+      "gate": "peer-only",
+      "path": "direct, no key",
+      "status": 200,
+      "backend_peer": "127.0.0.1"
+    },
+    {
+      "gate": "peer-only",
+      "path": "relay, no key",
+      "status": 200,
+      "backend_peer": "127.0.0.1"
+    },
+    {
+      "gate": "bearer",
+      "path": "direct, no key",
+      "status": 401,
+      "backend_peer": "127.0.0.1"
+    },
+    {
+      "gate": "bearer",
+      "path": "relay, no key",
+      "status": 401,
+      "backend_peer": "127.0.0.1"
+    },
+    {
+      "gate": "bearer",
+      "path": "direct, wrong key",
+      "status": 401,
+      "backend_peer": "127.0.0.1"
+    },
+    {
+      "gate": "bearer",
+      "path": "relay, wrong key",
+      "status": 401,
+      "backend_peer": "127.0.0.1"
+    },
+    {
+      "gate": "bearer",
+      "path": "direct, valid key",
+      "status": 200,
+      "backend_peer": "127.0.0.1"
+    },
+    {
+      "gate": "bearer",
+      "path": "relay, valid key",
+      "status": 200,
+      "backend_peer": "127.0.0.1"
+    }
+  ]
+}

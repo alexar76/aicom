@@ -1,0 +1,220 @@
+{
+  "since_utc": "2026-10-28T15:00:45Z",
+  "records": [
+    {
+      "key": "mcp3431",
+      "url": "https://api.github.com/repos/modelcontextprotocol/modelcontextprotocol/issues/3431/comments?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-29T11:05:30.317669+00:00",
+      "status": 200,
+      "sha256": "f2202a3701716ceb8d63010fb4424741fab550cbf2e25bdbd3023d4f74b9eff1",
+      "bytes": 60705,
+      "next_page": null,
+      "rate_remaining": "57",
+      "visible_count": 21,
+      "created_since": [
+        {
+          "id": 6475879932,
+          "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6475879932",
+          "created_at": "2026-10-28T17:24:38Z",
+          "updated_at": "2026-10-28T17:24:38Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "Agreed on the split and the two-sentence budget. \"Pin package servers to an exact version **and keep the launch arguments with it**\" is the right sentence, and the mongodb row is its cleanest one-line justification: identical package, identical version - our corpus pins it launched with `--readOnly` and a connection string, while @alexar76's cross-check recorded the bare launch of the same version serving 9 write tools more. Same bytes on disk, different agent-facing surface: the launch context isn't a footnote to the version pin, it's half of it.\n\nAnd yes to keeping contract pinning (#3430) behind a link from the security guide rather than in the quickstart - the beginner page should fix what installs, not what the install later becomes.",
+          "author": "Paraphern"
+        },
+        {
+          "id": 6476839050,
+          "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6476839050",
+          "created_at": "2026-10-28T18:08:59Z",
+          "updated_at": "2026-10-28T18:08:59Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "One correction to the wording I suggested: its example versions were already out of date when I posted it. `@modelcontextprotocol/server-filesystem` has had `2.0.1` as `latest` on npm since 25 October, and `mcp-server-git` is at `2026.10.19` on PyPI. So the docs PR should take the versions current when it is written, and the CI check @Ben-Home suggested would keep them from going stale again.\n\nWritten with an AI assistant.",
+          "author": "alexar76"
+        }
+      ],
+      "updated_since": [],
+      "latest": [
+        {
+          "id": 6475879932,
+          "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6475879932",
+          "created_at": "2026-10-28T17:24:38Z",
+          "updated_at": "2026-10-28T17:24:38Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "Agreed on the split and the two-sentence budget. \"Pin package servers to an exact version **and keep the launch arguments with it**\" is the right sentence, and the mongodb row is its cleanest one-line justification: identical package, identical version - our corpus pins it launched with `--readOnly` and a connection string, while @alexar76's cross-check recorded the bare launch of the same version serving 9 write tools more. Same bytes on disk, different agent-facing surface: the launch context isn't a footnote to the version pin, it's half of it.\n\nAnd yes to keeping contract pinning (#3430) behind a link from the security guide rather than in the quickstart - the beginner page should fix what installs, not what the install later becomes.",
+          "author": "Paraphern"
+        },
+        {
+          "id": 6476839050,
+          "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6476839050",
+          "created_at": "2026-10-28T18:08:59Z",
+          "updated_at": "2026-10-28T18:08:59Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "One correction to the wording I suggested: its example versions were already out of date when I posted it. `@modelcontextprotocol/server-filesystem` has had `2.0.1` as `latest` on npm since 25 October, and `mcp-server-git` is at `2026.10.19` on PyPI. So the docs PR should take the versions current when it is written, and the CI check @Ben-Home suggested would keep them from going stale again.\n\nWritten with an AI assistant.",
+          "author": "alexar76"
+        }
+      ]
+    },
+    {
+      "key": "vulnetix5",
+      "url": "https://api.github.com/repos/Vulnetix/advisory-database/issues/5/comments?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-29T11:05:30.318005+00:00",
+      "status": 200,
+      "sha256": "b95d15f23ac864549b6da2f6bb6d0155270018dbcb3ba01f750f0d40c17e3351",
+      "bytes": 45966,
+      "next_page": null,
+      "rate_remaining": "59",
+      "visible_count": 11,
+      "created_since": [
+        {
+          "id": 6489285683,
+          "html_url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6489285683",
+          "created_at": "2026-10-29T06:03:24Z",
+          "updated_at": "2026-10-29T06:35:21Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "Thank you for checking each release against the wheels and for the new records.\n\nYou are right about the versions: aimarket-platon 0.1.4 and aimarket-oracle-core 0.6.1 never reached\nPyPI, so 0.1.5 and 0.6.2 are the first published fixes; please disregard our note on 000615.\n\nThe nine open records are fixed to the six goals you set, and the releases are on PyPI: aimarket-mcp\n0.6.4, aimarket-metis 0.2.5, aimarket-treasury 0.1.4, aimarket-platon 0.1.6, aimarket-oracle-core 0.6.3,\naimarket-logos 0.2.2 and skopos-fleet 0.2.3, with aimarket-hub 3.16.1 for the last goal:\n\n- Address headers count only from `*_TRUSTED_PROXIES`, which defaults to loopback and takes addresses,\n  CIDRs, host names and `gateway` (000636–000638). We made the same change in aimarket-atlas 0.3.3 and in\n  skopos-fleet, which had the same pattern.\n- A keyless server no longer infers \"local\": keyless access to protected HTTP operations is refused by\n  default, local callers included.\n  A proxy or tunnel running as the server's own user cannot be told from a local client, so local TCP is\n  trusted only when the operator opts in with `*_LOCAL_RELAY=1`, and where the socket owner cannot be read\n  (macOS, Windows) only with `*_LOCAL_UNVERIFIED=1` as well; otherwise the request is refused\n  (000640–000643).\n- For remediation Git operations using SKOPOS's configured SSH key, host keys are pinned on first use\n  and changed keys are rejected, single-label remotes included. Only a loopback Gitea may skip this\n  check, with `SKOPOS_GIT_SKIP_HOST_KEY_LOOPBACK=1` (000639). Without an explicit SSH key path, the\n  operator's Git/SSH configuration applies.\n- A browser with a valid, unexpired signed remember-me cookie restores its session before any\n  lockout check, so the login budget never reaches it. An unknown client over the all-addresses budget is\n  slowed down, not refused: its submitted login waits once (at most a minute) and is then checked, so\n  failures from other addresses cannot lock the operator out. An address that logged in successfully\n  within `SKOPOS_LOGIN_KNOWN_DAYS` does not wait (000644).\n- logos binds 127.0.0.1 unless `LOGOS_HOST` says otherwise (000638).\n- aimarket-hub 3.16.1 sends an oracle its paid-tier secret as `X-AIMarket-Paid-Tier`, so the oracle can\n  sell its paid tier without trusting the hub's address. The hub sends it only for a call it funded (a\n  positive price reserved on a channel or credit account, or a verified x402 payment), never for\n  sandbox trials or routing fees alone. A positively priced call reserved against promotional credits\n  is funded. Credentials are selected only for explicitly configured exact invoke URLs in\n  `AIMARKET_ORACLE_PAID_TIER_CREDENTIALS`; one secret may be assigned to multiple explicit URLs,\n  including a configured transport rewrite. Credentials travel over HTTPS unless the destination\n  entry allows HTTP, never follow a redirect or an environment proxy, and a buyer's own\n  `X-AIMarket-Paid-Tier` header is dropped. Matching secrets must be configured on both hub and oracle.\n\nCorrection after rechecking the published SKOPOS wheel: 0.2.2 still had a dashboard fallback that\ntrusted address headers when its old Tornado peer lookup failed on Streamlit 1.66.1. In 0.2.3 the\ndashboard reads the actual Uvicorn socket peer, before any forwarded-header rewrite, and applies\n`SKOPOS_TRUSTED_PROXIES` to that peer. If the transport peer is unavailable or invalid, all such\nrequests use the shared `unknown` bucket and address headers are ignored. This closes the remaining\ndashboard address-trust issue in GCVE-110-PYPI-2026-021896. The SSH change for 000639 and the bounded\nshared login delay for 000644 first shipped in 0.2.2 and remain in 0.2.3.\n\nEach release's changelog names its record; the hub change is described in the aimarket-hub 3.16.1 release\nnotes. Could you mark these versions as fixed in 000636–000644?",
+          "author": "alexar76"
+        }
+      ],
+      "updated_since": [],
+      "latest": [
+        {
+          "id": 6455496971,
+          "html_url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6455496971",
+          "created_at": "2026-10-27T22:48:35Z",
+          "updated_at": "2026-10-27T23:53:01Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "Thanks for the list. We checked each release against the published wheels.\n\n**Versions.** aimarket-platon 0.1.4 and aimarket-oracle-core 0.6.1 are not on PyPI, so the records name the first published fix: 0.1.5 for GCVE-110-VULN-PYPI-2026-000615 and GCVE-110-VULN-PYPI-2026-000630, and 0.6.2 for GCVE-110-VULN-PYPI-2026-000632. The skopos-fleet host-key fix in 0.1.5 is already recorded in GCVE-110-PYPI-2026-021896.\n\n**New records from the sweep**\n\n| Record | Package | Affected | Fixed |\n|---|---|---|---|\n| GCVE-110-VULN-PYPI-2026-000630 | aimarket-platon (keyless writes) | 0.1.0 to 0.1.3 | 0.1.5 |\n| GCVE-110-VULN-PYPI-2026-000631 | aimarket-mcp (`web_fetch`) | 0.1.0 to 0.6.1 | 0.6.2 |\n| GCVE-110-VULN-PYPI-2026-000632 | aimarket-oracle-core | 0.2.0 to 0.6.0 | 0.6.2 |\n| GCVE-110-VULN-PYPI-2026-000633 | aimarket-logos | 0.1.0 to 0.2.0 | 0.2.1 |\n| GCVE-110-VULN-PYPI-2026-000634 | aimarket-atlas | 0.1.2 to 0.3.1 | 0.3.2 |\n| GCVE-110-VULN-PYPI-2026-000635 | aimarket-hestia (domain proof) | 0.1.0 to 0.1.2 | 0.1.3 |\n\n**Partial fixes.** Several fixes close the flaw for some deployments only. The original record now covers what was fixed. What remains is a new record with no fixed version, and each record lists what a user can configure or put around the package in the meantime.\n\n| Remaining | Packages | Records |\n|---|---|---|\n| Address headers trusted from any private-network peer, such as a neighbour on the same Docker network | platon 0.1.5, oracle-core 0.6.2, logos 0.2.1 | GCVE-110-VULN-PYPI-2026-000636, GCVE-110-VULN-PYPI-2026-000637, GCVE-110-VULN-PYPI-2026-000638 |\n| Keyless gate passes a reverse proxy running as the server's user, and every caller where `/proc/net/tcp` is missing (macOS, Windows) | mcp 0.6.3, metis 0.2.4, treasury 0.1.3, platon 0.1.5 | GCVE-110-VULN-PYPI-2026-000640, GCVE-110-VULN-PYPI-2026-000641, GCVE-110-VULN-PYPI-2026-000642, GCVE-110-VULN-PYPI-2026-000643 |\n| Git push skips the host-key check for single-label remotes | skopos-fleet 0.2.1 | GCVE-110-VULN-PYPI-2026-000639 |\n| The all-addresses login budget lets anyone lock the operator out (new in 0.2.1) | skopos-fleet 0.2.1 | GCVE-110-VULN-PYPI-2026-000644 |\n\n**Goals for a fixed version** (a safe default, with a setting to override it):\n1. Trust `X-Real-IP` and `X-Forwarded-For` only from a configured list of proxy addresses that defaults to loopback, as `AIMARKET_MCP_TRUSTED_PROXIES` already does in aimarket-mcp, not from every private address.\n2. Do not infer \"local\" for a keyless server: a proxy in the same network namespace looks identical to a local client. Generate a key on first start, or require an explicit keyless opt-in, and refuse the request when the socket owner cannot be read.\n3. Check the host key of every SSH remote, single-label names included, with an explicit setting to skip the check for a loopback Gitea.\n4. Keep the shared login budget from locking the operator out: a browser that has signed in before already holds a session cookie, so let that client through and slow down unknown ones instead of refusing everyone.\n5. Bind logos to 127.0.0.1 by default, with a host setting, as the other packages do.\n6. Have aimarket-hub authenticate to oracles (for example by sending each oracle its `ORACLE_PAID_TIER_SECRET` as `X-AIMarket-Paid-Tier`), so an oracle can sell its paid tier without trusting the hub's address. Through 3.16.0 the hub never sends that header.\n\nEach record's configurations, solutions and workarounds were checked against the affected versions. The records are published after review.\n",
+          "author": "0x73746F66"
+        },
+        {
+          "id": 6489285683,
+          "html_url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6489285683",
+          "created_at": "2026-10-29T06:03:24Z",
+          "updated_at": "2026-10-29T06:35:21Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "Thank you for checking each release against the wheels and for the new records.\n\nYou are right about the versions: aimarket-platon 0.1.4 and aimarket-oracle-core 0.6.1 never reached\nPyPI, so 0.1.5 and 0.6.2 are the first published fixes; please disregard our note on 000615.\n\nThe nine open records are fixed to the six goals you set, and the releases are on PyPI: aimarket-mcp\n0.6.4, aimarket-metis 0.2.5, aimarket-treasury 0.1.4, aimarket-platon 0.1.6, aimarket-oracle-core 0.6.3,\naimarket-logos 0.2.2 and skopos-fleet 0.2.3, with aimarket-hub 3.16.1 for the last goal:\n\n- Address headers count only from `*_TRUSTED_PROXIES`, which defaults to loopback and takes addresses,\n  CIDRs, host names and `gateway` (000636–000638). We made the same change in aimarket-atlas 0.3.3 and in\n  skopos-fleet, which had the same pattern.\n- A keyless server no longer infers \"local\": keyless access to protected HTTP operations is refused by\n  default, local callers included.\n  A proxy or tunnel running as the server's own user cannot be told from a local client, so local TCP is\n  trusted only when the operator opts in with `*_LOCAL_RELAY=1`, and where the socket owner cannot be read\n  (macOS, Windows) only with `*_LOCAL_UNVERIFIED=1` as well; otherwise the request is refused\n  (000640–000643).\n- For remediation Git operations using SKOPOS's configured SSH key, host keys are pinned on first use\n  and changed keys are rejected, single-label remotes included. Only a loopback Gitea may skip this\n  check, with `SKOPOS_GIT_SKIP_HOST_KEY_LOOPBACK=1` (000639). Without an explicit SSH key path, the\n  operator's Git/SSH configuration applies.\n- A browser with a valid, unexpired signed remember-me cookie restores its session before any\n  lockout check, so the login budget never reaches it. An unknown client over the all-addresses budget is\n  slowed down, not refused: its submitted login waits once (at most a minute) and is then checked, so\n  failures from other addresses cannot lock the operator out. An address that logged in successfully\n  within `SKOPOS_LOGIN_KNOWN_DAYS` does not wait (000644).\n- logos binds 127.0.0.1 unless `LOGOS_HOST` says otherwise (000638).\n- aimarket-hub 3.16.1 sends an oracle its paid-tier secret as `X-AIMarket-Paid-Tier`, so the oracle can\n  sell its paid tier without trusting the hub's address. The hub sends it only for a call it funded (a\n  positive price reserved on a channel or credit account, or a verified x402 payment), never for\n  sandbox trials or routing fees alone. A positively priced call reserved against promotional credits\n  is funded. Credentials are selected only for explicitly configured exact invoke URLs in\n  `AIMARKET_ORACLE_PAID_TIER_CREDENTIALS`; one secret may be assigned to multiple explicit URLs,\n  including a configured transport rewrite. Credentials travel over HTTPS unless the destination\n  entry allows HTTP, never follow a redirect or an environment proxy, and a buyer's own\n  `X-AIMarket-Paid-Tier` header is dropped. Matching secrets must be configured on both hub and oracle.\n\nCorrection after rechecking the published SKOPOS wheel: 0.2.2 still had a dashboard fallback that\ntrusted address headers when its old Tornado peer lookup failed on Streamlit 1.66.1. In 0.2.3 the\ndashboard reads the actual Uvicorn socket peer, before any forwarded-header rewrite, and applies\n`SKOPOS_TRUSTED_PROXIES` to that peer. If the transport peer is unavailable or invalid, all such\nrequests use the shared `unknown` bucket and address headers are ignored. This closes the remaining\ndashboard address-trust issue in GCVE-110-PYPI-2026-021896. The SSH change for 000639 and the bounded\nshared login delay for 000644 first shipped in 0.2.2 and remain in 0.2.3.\n\nEach release's changelog names its record; the hub change is described in the aimarket-hub 3.16.1 release\nnotes. Could you mark these versions as fixed in 000636–000644?",
+          "author": "alexar76"
+        }
+      ]
+    },
+    {
+      "key": "agentmesh561",
+      "url": "https://api.github.com/repos/google/agentmesh/issues/561/comments?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-29T11:05:30.318154+00:00",
+      "status": 200,
+      "sha256": "ebce6ab85e970a49bd6dcccc1e6d5d67e2b4b8a90a4f8617c93857a697e2ffa8",
+      "bytes": 16171,
+      "next_page": null,
+      "rate_remaining": "58",
+      "visible_count": 4,
+      "created_since": [],
+      "updated_since": [],
+      "latest": [
+        {
+          "id": 6395612661,
+          "html_url": "https://github.com/google/agentmesh/issues/561#issuecomment-6395612661",
+          "created_at": "2026-10-25T08:51:56Z",
+          "updated_at": "2026-10-25T08:51:56Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "Data on the three open questions from a public record of the tool lists of 38,126 MCP servers (registry remotes plus npm/PyPI packages). It complements Paraphern's per-server windows above. We run that record (HISTOR), so read it with that in mind.\n\n**Opt-in or default.** From 24 September to 20 October we recorded 23,821 tool-list changes on 9,472 servers. 5,862 of those servers changed exactly once, and the 100 busiest account for 8% of all changes. Of the remote servers we had pinned by 24 September, 45% (4,926 of 10,929) served a different tool list by 20 October. At registry scale, drift is spread thin rather than held by a few fast movers, so a mesh-wide default would ask for re-approval on almost any long-lived set of providers. A caller-supplied pin, as you sketched, fits that.\n\n**Canonicalisation.** The profile we use (MTL/1) digests four members per tool: `name`, `description`, `inputSchema`, `outputSchema`. It sorts tools by name in UTF-16 code-unit order, not locale order (`\"Z_tool\".localeCompare(\"a_tool\")` is 1, code-unit order gives -1). It serialises with RFC 8785 and hashes with SHA-256. RFC 8785 fixes key order and integer formatting. For a tool set with a fractional number anywhere in its schemas, the profile gives no digest and reports the set as inconclusive, because two implementations may print the same float differently. A missing digest is better than one nobody else can reproduce. `title`, `annotations` and `_meta` are outside this digest. Since 22 October we record them under a separate digest, so a tool that drops `readOnlyHint: true` shows up as its own change without moving the tool-set pin.\n\n**Where the first digest comes from.** Besides trust on first use and operator configuration, there is a third source: an independent observer. HISTOR reconnects to listed servers on a schedule, issues a signed label carrying each tool-set digest, and appends the label to an RFC 9162 Merkle log with signed tree heads. On first use, a caller can compare the digest it received with the one the log recorded (`GET https://histor.modelmarket.dev/api/v1/servers/<id>`, field `toolSetDigest`), and keep the inclusion proof (`GET /api/v1/labels/<label id>/proof`) as evidence of what was approved.\n\nProfile: https://github.com/alexar76/aicom/blob/main/awr/adoption/mcp-trust-label/PROFILE.md · data (CC BY 4.0): https://doi.org/10.5281/zenodo.23512760\n\nAI disclosure: drafted with an AI assistant from our data. The counts were recomputed from the published files.",
+          "author": "alexar76"
+        },
+        {
+          "id": 6396447622,
+          "html_url": "https://github.com/google/agentmesh/issues/561#issuecomment-6396447622",
+          "created_at": "2026-10-25T10:21:59Z",
+          "updated_at": "2026-10-25T10:21:59Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "The 45% figure lands harder than the per-server windows we posted — a month is enough for nearly half of any long-lived pinned set to have served something different, which settles opt-in-vs-default on its own.\n\nOn canonicalisation: having just run a cross-vendor digest pair (our `surfaceHash` vs Dominion Observatory's `manifest_hash` over one public endpoint — identical bytes, [rugsnare#6](https://github.com/Paraphern/rugsnare/issues/6)), the MTL/1 profile is a third flavor of the same base (RFC 8785 + SHA-256), and the deltas are exactly the ones a spec-level answer should force every profile to *state* rather than leave to implementation accident:\n\n1. **Tools sort unit.** MTL/1 sorts by UTF-16 code units; PIN-SPEC §3.2 by UTF-8 bytes (code-point order). Identical for ASCII names; divergent for supplementary-plane characters — a high surrogate sorts *below* U+E000–U+FFFF names in code-unit order and *above* them in code-point order. Two correct implementations that disagree only on the unit will produce different digests for the same tool set, and every consumer will read that as \"someone changed something.\" (Dominion's published profile says \"sorted by name\" without naming the unit — that question is simply open there, and our byte-order sort reproducing their live capture doesn't exercise it: the names in that capture are ASCII.)\n2. **Field set.** 3 fields (PIN-SPEC, Dominion) vs 4 (MTL/1 adds `outputSchema`). Fine while profiles are named — a join that doesn't state the set isn't a join.\n3. **Floats.** Three honest answers now exist: specified (JCS §3.2.2.3, ours), unexercised (Dominion — no non-integer in any captured schema), refused (MTL/1 — no digest, set reported inconclusive). \"Refused\" is the most conservative and worth respecting; whatever a standard picks, the policy should be mandatory to declare.\n\nOne convergence worth flagging for the design: MTL/1's separate annotation digest (since 2026-10-22) is the same decision as our ANNOTATION finding class — annotations outside the tool-set digest, surfaced as their own change. Two independent implementations landing on the same split is evidence the split is right.\n\nWe wrote the full three-way comparison up (with the live pair as the worked example): [comparison-dominion-captures.md](https://github.com/Paraphern/rugsnare/blob/main/audits/drift-watch/comparison-dominion-captures.md). And one practical note for MTL/1 §4.6: the consumer-recompute requirement is hard for stdio subjects (recompute = execute), but a public HTTPS endpoint is recomputable without running anything — the hosted endpoint behind that pair is available as a reference point for anyone testing label verification.",
+          "author": "Paraphern"
+        }
+      ]
+    },
+    {
+      "key": "skills-pr14",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-29T11:05:30.939799+00:00",
+      "status": 200,
+      "sha256": "1497728bcfb0dc60763317e9cdb3de2862d572bb735e0a157978c324ea89f315",
+      "bytes": 18907,
+      "next_page": null,
+      "rate_remaining": "56",
+      "selected": {
+        "html_url": "https://github.com/basitalisandhu/agent-skills-state-2026/pull/14",
+        "state": "open",
+        "merged": false,
+        "merged_at": null,
+        "updated_at": "2026-10-28T09:48:32Z",
+        "comments": 1,
+        "review_comments": 0,
+        "merge_commit_sha": "9ac6c7a4c430bc3e42fc7cc7666eba8a5661424c",
+        "head_sha": "e3569a7f36ec14cd3e72dd9301b7420ce53f9850",
+        "base_sha": "74279108cb0b9ee72e9435d237e97444494f4e8f"
+      }
+    },
+    {
+      "key": "skills-pr14-comments",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/issues/14/comments?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-29T11:05:30.996961+00:00",
+      "status": 200,
+      "sha256": "cdd910a7de7c2140358e0405a4386f8a9e6a51dc3135b43143a3efc2639f31cb",
+      "bytes": 2015,
+      "next_page": null,
+      "rate_remaining": "55",
+      "visible_count": 1,
+      "created_since": [],
+      "updated_since": [],
+      "latest": [
+        {
+          "id": 6465779501,
+          "html_url": "https://github.com/basitalisandhu/agent-skills-state-2026/pull/14#issuecomment-6465779501",
+          "created_at": "2026-10-28T09:48:31Z",
+          "updated_at": "2026-10-28T09:48:31Z",
+          "submitted_at": null,
+          "state": null,
+          "body": "Thanks, both done. The link now goes to the Zenodo record of the 20 October snapshot: a DOI, dated, with the CC BY 4.0 licence on the record and in its README. The entry is one sentence on what the data is. I wrote \"daily reads\" rather than \"daily snapshots\", because the servers are read daily but the published snapshots are monthly.",
+          "author": "alexar76"
+        }
+      ]
+    },
+    {
+      "key": "skills-pr14-reviews",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14/reviews?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-29T11:05:31.012577+00:00",
+      "status": 200,
+      "sha256": "f8d10b2f6bffa34585eb56a1364ac6331ab6bf5cd587e95cc3107dfaf2dbdeb1",
+      "bytes": 2661,
+      "next_page": null,
+      "rate_remaining": "54",
+      "visible_count": 1,
+      "created_since": [],
+      "updated_since": [],
+      "latest": [
+        {
+          "id": 5680480229,
+          "html_url": "https://github.com/basitalisandhu/agent-skills-state-2026/pull/14#pullrequestreview-5680480229",
+          "created_at": null,
+          "updated_at": null,
+          "submitted_at": "2026-10-28T09:31:37Z",
+          "state": "CHANGES_REQUESTED",
+          "body": "Thank you for suggesting HISTOR, and for saying up front that you maintain it. Tracking what remote servers serve over time is a real gap next to release-based corpora, so I would like to list it. Two small things first:\n\n1. Something a reader can check and cite. The study only links datasets that have a public, versioned home (the RugSnare entry points at a file in its repository). Could the link go to a public repository or a download with a licence file and a dated snapshot, rather than the site's dataset page? If that repository does not exist yet, I am happy to wait for it.\n2. Please keep the entry to one sentence on what the data is, for example: \"Daily snapshots and field-level changes of remote MCP tool definitions, plus sandboxed observations of npm and PyPI MCP package versions.\" The sentence about what a version pin cannot fix reads as a conclusion of the study, which it does not test.\n\nOnce those are in I will merge it.\n",
+          "author": "basitalisandhu"
+        }
+      ]
+    }
+  ]
+}

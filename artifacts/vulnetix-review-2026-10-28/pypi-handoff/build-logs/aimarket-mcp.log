@@ -1,0 +1,78 @@
+Building wheel...
+/Users/alex/.cache/uv/builds-v0/.tmptqouJV/lib/python3.12/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running egg_info
+writing aimarket_mcp.egg-info/PKG-INFO
+writing dependency_links to aimarket_mcp.egg-info/dependency_links.txt
+writing entry points to aimarket_mcp.egg-info/entry_points.txt
+writing requirements to aimarket_mcp.egg-info/requires.txt
+writing top-level names to aimarket_mcp.egg-info/top_level.txt
+reading manifest file 'aimarket_mcp.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'aimarket_mcp.egg-info/SOURCES.txt'
+/Users/alex/.cache/uv/builds-v0/.tmptqouJV/lib/python3.12/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running bdist_wheel
+running build
+running build_py
+running egg_info
+writing aimarket_mcp.egg-info/PKG-INFO
+writing dependency_links to aimarket_mcp.egg-info/dependency_links.txt
+writing entry points to aimarket_mcp.egg-info/entry_points.txt
+writing requirements to aimarket_mcp.egg-info/requires.txt
+writing top-level names to aimarket_mcp.egg-info/top_level.txt
+reading manifest file 'aimarket_mcp.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'aimarket_mcp.egg-info/SOURCES.txt'
+installing to build/bdist.macosx-11.0-arm64/wheel
+running install
+running install_lib
+creating build/bdist.macosx-11.0-arm64/wheel
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_mcp
+copying build/lib/aimarket_mcp/server.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_mcp
+copying build/lib/aimarket_mcp/stdio_server.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_mcp
+copying build/lib/aimarket_mcp/tools.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_mcp
+copying build/lib/aimarket_mcp/security.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_mcp
+copying build/lib/aimarket_mcp/__init__.py -> build/bdist.macosx-11.0-arm64/wheel/./aimarket_mcp
+running install_egg_info
+Copying aimarket_mcp.egg-info to build/bdist.macosx-11.0-arm64/wheel/./aimarket_mcp-0.6.4-py3.12.egg-info
+running install_scripts
+creating build/bdist.macosx-11.0-arm64/wheel/aimarket_mcp-0.6.4.dist-info/WHEEL
+creating '/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/aicom-release-refresh-3skgm1zq/.tmp-b0tlxve8/aimarket_mcp-0.6.4-py3-none-any.whl' and adding 'build/bdist.macosx-11.0-arm64/wheel' to it
+adding 'aimarket_mcp/__init__.py'
+adding 'aimarket_mcp/security.py'
+adding 'aimarket_mcp/server.py'
+adding 'aimarket_mcp/stdio_server.py'
+adding 'aimarket_mcp/tools.py'
+adding 'aimarket_mcp-0.6.4.dist-info/licenses/LICENSE'
+adding 'aimarket_mcp-0.6.4.dist-info/METADATA'
+adding 'aimarket_mcp-0.6.4.dist-info/WHEEL'
+adding 'aimarket_mcp-0.6.4.dist-info/entry_points.txt'
+adding 'aimarket_mcp-0.6.4.dist-info/top_level.txt'
+adding 'aimarket_mcp-0.6.4.dist-info/RECORD'
+removing build/bdist.macosx-11.0-arm64/wheel
+Successfully built /var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/aicom-release-refresh-3skgm1zq/aimarket_mcp-0.6.4-py3-none-any.whl

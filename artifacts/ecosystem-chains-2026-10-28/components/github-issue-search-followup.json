@@ -1,0 +1,378 @@
+[
+  {
+    "query": "\"alexar76\" -user:alexar76",
+    "url": "https://api.github.com/search/issues?q=%22alexar76%22+-user%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:52.342716+00:00",
+    "status": 200,
+    "sha256": "496f43c57d909fa420fa9176433df3a0952786757bd8a38e40b0523dda05003f",
+    "bytes": 148607,
+    "total_count": 31,
+    "incomplete_results": false,
+    "items": [
+      {
+        "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431",
+        "title": "Docs: quickstart MCP configs use unpinned `npx -y`, contradicting the Local Server Security guide",
+        "created_at": "2026-10-13T08:01:20Z",
+        "updated_at": "2026-10-28T09:43:33Z",
+        "user": "basitalisandhu",
+        "comments": 19,
+        "state": "open",
+        "body_excerpt": "### What's broken?\n\nThe documentation is wrong or misleading\n\n### Where in the spec or docs?\n\nhttps://modelcontextprotocol.io/docs/develop/connect-local-servers and https://modelcontextprotocol.io/examples\n\n### What should happen?\n\nThe beginner examples should follow the [Local Server Security](https://modelcontextprotocol.io/docs/tutorials/security/local-server-security) guide, which says to \"Install a specific version rather than `latest`\". For example `\"args\": [\"-y\", \"@modelcontextprotocol/server-filesystem@1.0.0\", ...]`, plus one sentence linking to that guide.\n\n### What actually happens?\n\nThe pages people copy from start every server unpinned: `docs/develop/connect-local-servers.mdx` (l"
+      },
+      {
+        "html_url": "https://github.com/Vulnetix/advisory-database/issues/5",
+        "title": "False positive: six aimarket-* PyPI packages (GCVE-110-PYPI-2026-004375, -018883, -020712, -020949, -021807, -021946) are not malware",
+        "created_at": "2026-10-21T19:39:23Z",
+        "updated_at": "2026-10-27T23:53:01Z",
+        "user": "alexar76",
+        "comments": 10,
+        "state": "open",
+        "body_excerpt": "We maintain these packages (source: github.com/alexar76; the same author on every release) and\nask for the six records to be withdrawn. Every matched line is a test fixture, documentation, a\npublic constant, or a sandbox that runs code by design. Not one of them runs on install: none of the\npackages has a setup.py or install hooks (they build with hatchling/setuptools from pyproject.toml).\n\n**GCVE-110-PYPI-2026-018883: aimarket-mcp 0.4.0**\n- P-PASSWD-READ `for url in (\"http://localhost:8080/admin\", \"file:///etc/passwd\"):` is in\n  `tests/test_gateway.py:67`. The test asserts that the gateway's fetch tool REFUSES these URLs\n  (SSRF guard); nothing reads the file.\n- P-CURL-POST-DATA `curl -s -X"
+      },
+      {
+        "html_url": "https://github.com/Nikolife2016/pulsefeed-x402/issues/3",
+        "title": "radar: 48 веток ждут ответа",
+        "created_at": "2026-07-31T08:41:56Z",
+        "updated_at": "2026-10-27T15:25:10Z",
+        "user": "github-actions[bot]",
+        "comments": 101,
+        "state": "open",
+        "body_excerpt": "Свежие вопросы, где у нас есть конкретный ответ — 2026-07-31 UTC\n\n- **[x402-foundation/x402#3006](https://github.com/x402-foundation/x402/issues/3006)** — [Feature]: Privacy-minimal receipt does not bind the payment terms of the accepted offer\n  чем полезны: схемы: в спеке их четыре, и у upto/auth-capture amount — потолок, а не цена; смена получателя и адреса-двойники — у нас есть история наблюдений\n- **[x402-foundation/x402#3005](https://github.com/x402-foundation/x402/issues/3005)** — [Feature]: Bazaar catalogs client-echoed service metadata without server-origin authentication\n  чем полезны: v2 переносит челлендж в заголовок PAYMENT-REQUIRED — тело перестало быть источником; проверка живо"
+      },
+      {
+        "html_url": "https://github.com/google/agentmesh/issues/561",
+        "title": "mcp: a caller cannot detect that a provider's tool definitions changed",
+        "created_at": "2026-10-01T21:36:27Z",
+        "updated_at": "2026-10-25T10:21:59Z",
+        "user": "HosniBelfeki",
+        "comments": 4,
+        "state": "open",
+        "body_excerpt": "## The gap\n\nA caller that reaches a provider over `/sam/mcp/1.0.0` verifies **who** the provider is — the Biscuit is signed by a trusted control-plane key, bound to the peer, unexpired, carrying `sam:role:node`. Nothing verifies that the tool it is about to call is the same tool it saw last time.\n\nThe mesh deliberately takes the live value as authoritative. `verifyGossipToolRows` (`internal/node/mcp_handlers.go:344`):\n\n> *treats unsolicited announcements as routing hints, not authorization evidence. Each candidate is confirmed through the existing authenticated MCP session and exact tools/list response before it is exposed.*\n\nand `verifyGossipToolRowsWithFetcher` keeps the fetched descriptio"
+      },
+      {
+        "html_url": "https://github.com/secure-agentic-framework/saf-mcp/pull/243",
+        "title": "SAF-T1201: add a registry-scale base rate of legitimate definition changes",
+        "created_at": "2026-10-25T09:58:02Z",
+        "updated_at": "2026-10-25T09:58:02Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "This adds field data to SAF-T1201's detection guidance. Claim C017 currently notes that false-positive rates are not measured in production. This PR does not measure a host's false-positive rate either, but it adds how often legitimate tool-definition changes happen at registry scale, which is the load a hash-mismatch analytic will see.\n\n**What changes**\n- `techniques/SAF-T1201/README.md`: one sentence in Known False Positives, one in Tuning Guidance, a References entry and a Version History row. \"First Observed\" and \"Known Exploitation\" are unchanged: the record shows changes, not attacks.\n- `research/techniques/SAF-T1201/claim-inventory.yml`: C021 and C022 (`research_finding`) and C023 (`f"
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/issues/32",
+        "title": "Study competitors and write docs/competitors.md",
+        "created_at": "2026-10-17T18:16:23Z",
+        "updated_at": "2026-10-23T15:49:08Z",
+        "user": "Ducarv",
+        "comments": 0,
+        "state": "closed",
+        "body_excerpt": "## Context\nPRD section 13 says: study competitors before M4 to sharpen the differentiator and avoid copying.\n\n## Requirements\n- PRD refs: PRD section 13 (risks)\n\n## Tasks\n- [ ] Review Snyk Agent Scan, mcpproxy-go, Docker MCP tooling, `alexar76/warden`, `mcp-lock`.\n- [ ] For each: scope, offline or not, license, detection approach, rule format, pins/rug-pull support.\n- [ ] List ideas to adopt and ideas to avoid, with credit.\n\n## Acceptance criteria\n- [ ] `docs/competitors.md` covers all five tools with a comparison table.\n- [ ] Every claim links a source.\n- [ ] A short section states how mcpmoat differs.\n\n## Notes\nInvariant Labs, tool poisoning: https://invariantlabs.ai/blog/mcp-security-noti"
+      },
+      {
+        "html_url": "https://github.com/Ducarv/mcpmoat/pull/111",
+        "title": "feat(rules): rule schema, YAML loader, --rules and test harness",
+        "created_at": "2026-10-23T14:23:21Z",
+        "updated_at": "2026-10-23T15:49:06Z",
+        "user": "Ducarv",
+        "comments": 11,
+        "state": "closed",
+        "body_excerpt": "## Summary\n\nThis PR builds the core of the rule engine for milestone M4. It loads rules from YAML, checks them, embeds the built-in rules in the binary, and adds `mcpmoat scan --rules <dir>` for extra rules. It also adds the test harness that makes `go test` fail when a built-in rule has no tests.\n\nRules are loaded and checked. They are not applied to scan results yet. The scan output is the same as before, and the \"no rules applied\" notice stays.\n\n- **#33 Rule schema and YAML loader.** New package `internal/rules` with `Rule`, `Match`, `Case`, `LoadError`, `Validate`, `Parse` and `Set`. Decoding is strict. It adds one module, `go.yaml.in/yaml/v3` v3.0.5. The repo owner approved this module "
+      },
+      {
+        "html_url": "https://github.com/docker/mcp-registry/pull/5364",
+        "title": "Add WARDEN (MCP security firewall)",
+        "created_at": "2026-10-01T20:25:36Z",
+        "updated_at": "2026-10-19T17:04:16Z",
+        "user": "alexar76",
+        "comments": 1,
+        "state": "open",
+        "body_excerpt": "MCP security firewall. Scans tool definitions for prompt injection, secret requests, exfiltration and hidden Unicode before a host exposes them to a model. Deterministic published rules (version and digest in every verdict); no network calls, no secrets.\n\n- Type: local server (Docker builds and signs `mcp/warden` from the root Dockerfile)\n- License: MIT\n- Source: https://github.com/alexar76/warden @ `82a7b878e3a8f0b33af659738b4b9ddb70ccfe90` (package 0.8.2)\n- No credentials / no `config:` block required\n- Reproducible false-positive survey: https://github.com/alexar76/warden/blob/main/docs/mcp-survey.md\n\nTools (from tools/list @ 0.8.2): `vet_mcp_server`, `static_scan_tools`, `classify_sensit"
+      },
+      {
+        "html_url": "https://github.com/tonylate520/mcp-serverlist/issues/4",
+        "title": "📌 Official Index & Maintainer Verification: ⚡ Productivity & Workspaces (104 Servers)",
+        "created_at": "2026-10-12T07:47:50Z",
+        "updated_at": "2026-10-16T07:52:27Z",
+        "user": "tonylate520",
+        "comments": 5,
+        "state": "open",
+        "body_excerpt": "## ⚡ Productivity & Workspaces (104 Servers) — Maintainer Recognition & 1-Click Config Index\n\nThank you to all open-source maintainers featured in the **⚡ Productivity & Workspaces (104 Servers)** category of **[MCP ServerList](https://mcp-serverlist.com)**!\n\nEach server listed below now includes:\n1. ⚡ **Interactive 1-Click Config Generator** for Claude Desktop, Cursor IDE, and Windsurf.\n2. 💻 **Terminal CLI Support**: Users can install directly via `npx mcp-serverlist --add <slug>` (or `npx mcp-init`).\n3. 🏷️ **Dynamic SVG README Badge**: Copy the snippet in the table below to display real-time verification & stars on your repository README.\n\n> 💡 **Maintainers**: Reply to this thread if you w"
+      },
+      {
+        "html_url": "https://github.com/vaaya-ai/vaaya-mcp/issues/15",
+        "title": "Your x402 listing on the CDP Bazaar — one paid check, 5 October 2026",
+        "created_at": "2026-10-13T13:15:40Z",
+        "updated_at": "2026-10-13T13:15:40Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Hi,\n\nWe run AIMarket (modelmarket.dev). On 5 October 2026 we bought one call from 100 randomly drawn x402 sellers in the CDP Bazaar, each with the example request from its own listing, and checked what came back. Yours was one of them. We do not publish seller names; this note is only for you.\n\nYour listing's example asks for OCR of an image with no text (a flag), so the paid example returned empty data, and $0.01 was settled. A buyer cannot tell from it that the service works.\n\nSuggestion: Use an example image that contains text.\n\nIf you want the full evidence (request, raw response, transaction) or think we got something wrong, just reply — we will correct our record. Method and tool: http"
+      },
+      {
+        "html_url": "https://github.com/qaml-ai/x402-file-upload/issues/1",
+        "title": "Your x402 listing on the CDP Bazaar — one paid check, 5 October 2026",
+        "created_at": "2026-10-06T10:42:42Z",
+        "updated_at": "2026-10-06T10:42:42Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Hi,\n\nWe run AIMarket (modelmarket.dev). On 5 October 2026 we bought one call from 100 randomly drawn x402 sellers in the CDP Bazaar, each with the example request from its own listing, and checked what came back. Yours was one of them. We do not publish seller names; this note is only for you.\n\nYour listing's example declares a raw file upload and gives a field description instead of an example file, so there is nothing a buyer can send from the listing; we did not buy.\n\nSuggestion: Add a small example file (or a JSON/URL-based variant) to the listing.\n\nIf you want the full evidence (request, raw response, transaction) or think we got something wrong, just reply — we will correct our record."
+      },
+      {
+        "html_url": "https://github.com/LiquidAgent/liquidagentx402/issues/2",
+        "title": "Your x402 listing on the CDP Bazaar — one paid check, 5 October 2026",
+        "created_at": "2026-10-06T10:42:41Z",
+        "updated_at": "2026-10-06T10:42:41Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Hi,\n\nWe run AIMarket (modelmarket.dev). On 5 October 2026 we bought one call from 100 randomly drawn x402 sellers in the CDP Bazaar, each with the example request from its own listing, and checked what came back. Yours was one of them. We do not publish seller names; this note is only for you.\n\nYour live 402 asked $0.004 while the Bazaar listing says $0.002. After payment the API answered 400 (\"live Chainlink feed is reconnecting… you were not charged\") and indeed did not charge.\n\nSuggestion: The Bazaar refreshes a listing on its next settlement; the listed price is out of date.\n\nIf you want the full evidence (request, raw response, transaction) or think we got something wrong, just reply — "
+      },
+      {
+        "html_url": "https://github.com/cline/mcp-marketplace/issues/2735",
+        "title": "[Server Submission]: WARDEN",
+        "created_at": "2026-10-03T05:49:32Z",
+        "updated_at": "2026-10-03T05:49:32Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "### GitHub Repository URL\n\nhttps://github.com/alexar76/warden\n\n### Logo Image\n\n![WARDEN logo](https://raw.githubusercontent.com/alexar76/warden/main/docs/assets/logo-400.png)\n\nhttps://raw.githubusercontent.com/alexar76/warden/main/docs/assets/logo-400.png\n\n### Installation Testing\n\n- [x] I have tested that Cline can successfully set up this server using only the README.md and/or llms-install.md file\n- [x] The server is stable and ready for public use\n\n### Additional Information\n\nMCP security firewall for advertised tool definitions: static injection/exfiltration scan, signed threat feed, origin checks and pinning before a recorded allow/block verdict. Zero runtime dependencies, MIT. Also in "
+      },
+      {
+        "html_url": "https://github.com/xpaysh/awesome-x402/pull/1680",
+        "title": "Add AIMarket Hub (x402 V2, seller-direct, MCP + A2A)",
+        "created_at": "2026-10-01T20:23:21Z",
+        "updated_at": "2026-10-02T05:52:17Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Adds AIMarket Hub to AI Agent Integration.\n\n- What: a federated market where agents buy capabilities per call; MCP endpoint https://modelmarket.dev/mcp\n- x402: every 402 response carries the V2 `PAYMENT-REQUIRED` header and the V1 `accepts` body;\n  USDC on Base; `payTo` is the selling provider, not the platform; the EIP-3009 nonce commits to the call\n- Discovery: https://modelmarket.dev/.well-known/ai-market.json (signed), ERC-8004 agent #96682 on Base\n- Source: https://github.com/alexar76/aimarket-hub (Apache-2.0)\n"
+      },
+      {
+        "html_url": "https://github.com/docker/mcp-registry/pull/5365",
+        "title": "Add AIMarket Hub (remote, streamable-http)",
+        "created_at": "2026-10-01T20:25:57Z",
+        "updated_at": "2026-10-02T13:20:52Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Remote MCP server for the AIMarket Hub.\n\n- Endpoint: `https://modelmarket.dev/mcp` (streamable-http)\n- Auth: none / no OAuth — first calls per caller are free; after the trial, paid capabilities return HTTP 402 with x402 terms\n- Tools: discovered dynamically (`dynamic.tools: true`); direct tools include `weather_now`, `air_quality_now`, `nearby_sensors`, `fair_random`, plus `market_search` / `market_invoke`\n- Docs: https://modelmarket.dev/\n- Source: https://github.com/alexar76/aimarket-hub (Apache-2.0)"
+      },
+      {
+        "html_url": "https://github.com/lets-order-some-fries/trovark/issues/22",
+        "title": "Tool-surface under-read is invisible on repos that do not use a tools/ directory: 4 of 125 tools published as a complete count",
+        "created_at": "2026-09-08T14:58:49Z",
+        "updated_at": "2026-09-25T17:01:48Z",
+        "user": "lets-order-some-fries",
+        "comments": 1,
+        "state": "closed",
+        "body_excerpt": "## What happens\n\n`github/github-mcp-server` — the repo used as the headline example in README.md:7 and as the\nsample `--json` scorecard at README.md:131-134 — is published with **`toolCount: 4`**.\n\nThe repo actually defines **125 distinct tool names**, 34 of them write or delete verbs\n(`delete_file`, `push_files`, `merge_pull_request`, `create_or_update_file`,\n`create_repository`, `fork_repository`, …).\n\nThe four that were read are `ui_get`, `get_me`, `get_teams`, `get_team_members` — all\nread-only, all from a 13-file sample. Everything downstream then treats that sample as the\nwhole surface:\n\n| field | published | reality |\n|---|---|---|\n| `toolCount` | 4 | 125 |\n| `toolSurfaceRisk` | `low`"
+      },
+      {
+        "html_url": "https://github.com/myoshi2891/Next-Store/pull/28",
+        "title": "Next.js 16 / React 19 メジャーアップグレードとコードベース監査・堅牢化計画 (Plan 001〜006) の策定",
+        "created_at": "2026-03-09T14:18:35Z",
+        "updated_at": "2026-09-18T11:09:25Z",
+        "user": "myoshi2891",
+        "comments": 52,
+        "state": "closed",
+        "body_excerpt": "大きく分けて以下の5つの柱で対応が進められました：\r\n\r\n1. **Next.js 16 / React 19 / Clerk v7 へのメジャー移行（TDDアプローチ）**\r\n2. **セキュリティ脆弱性（Image Optimizer DoS, AVIF RCE, SSRF等）へのパッチ対応**\r\n3. **型安全性・Lint・CIスクリプト等の開発基盤刷新**\r\n4. **AIエージェント向け監査・改善スキル（`improve` / `closing-the-loop`）の構築**\r\n5. **プロダクト堅牢化に向けた6つの詳細実装計画書（`plans/001〜006`）の策定・精緻化**\r\n\r\n---\r\n\r\n## **主な対応内容**\r\n\r\n### **1. フレームワークのメジャーアップグレード & 互換性修正 (TDD)**\r\n\r\nテストを先行作成（RED）した上で、破壊的変更への移行を完了：\r\n\r\n- **React 19 移行**: 非推奨となった `useFormState` を  へ刷新。\r\n    \r\n    **`useActionState`**\r\n    \r\n- **Next.js 16 移行**: `params` / `searchParams` の非同期化（`Promise`）に対応し、関連ページやテストを改修。\r\n- **Clerk v7 移行**: `auth()` の呼び出しを `async/await` に移行。\r\n- **型安全性向上**: Server Actions の `prevState` を `any` から `{ mess"
+      },
+      {
+        "html_url": "https://github.com/hyperpolymath/rsr-template-repo/pull/83",
+        "title": "Exempt reviewed Hypatia research-extension findings",
+        "created_at": "2026-09-10T12:40:41Z",
+        "updated_at": "2026-09-17T17:05:22Z",
+        "user": "coderabbitai[bot]",
+        "comments": 16,
+        "state": "closed",
+        "body_excerpt": "Add narrowly scoped Hypatia ignore entries for reviewed RE001, RE005, and RE008 findings across affected workflows, documenting why each advisory does not apply while preserving checks for new workflows. This aligns with the task intent by preventing the known Hypatia scan failures. Validation was not run.\n\n[View coding task](https://app.coderabbit.ai/code/tasks/f36ac704-d4fb-467c-8b3e-1c03b4b82f62?source=coding_agent_github_pr_description)"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/12774",
+        "title": "🤖🤖🤖 Add WARDEN MCP security firewall library to Frameworks",
+        "created_at": "2026-08-24T11:39:06Z",
+        "updated_at": "2026-09-15T16:27:06Z",
+        "user": "alexar76",
+        "comments": 5,
+        "state": "closed",
+        "body_excerpt": "## Summary\nAdds **[alexar76/warden](https://github.com/alexar76/warden)** under **## Frameworks** — WARDEN is a **library**, not an MCP server (same section as FastMCP / TurboMCP).\n\n- npm [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) — zero runtime dependencies\n- Gate chain: static tool-def scan → signed threat feed → origin → pinning before third-party tools reach the model\n- Field survey of 1,108 public registry servers: https://github.com/alexar76/warden/blob/main/docs/mcp-survey.md\n\n## Test plan\n- [x] One-line Frameworks format matches FastMCP / TurboMCP entries\n- [x] GitHub + npm links live"
+      },
+      {
+        "html_url": "https://github.com/vonzosten/awesome-LangGraph/pull/108",
+        "title": "Add aimarket-bridges to Packages",
+        "created_at": "2026-09-12T10:11:12Z",
+        "updated_at": "2026-09-15T12:18:52Z",
+        "user": "alexar76",
+        "comments": 1,
+        "state": "open",
+        "body_excerpt": "Adds **aimarket-bridges** to *Community Projects → 📦 Packages*.\n\nTwo lines, then a LangGraph agent has 181 more `StructuredTool`s:\n\n```python\nfrom aimarket_bridges.langchain import aimarket_tools\ntools = aimarket_tools(\"https://modelmarket.dev\", intent=\"verifiable randomness\")\n```\n\nEach tool is a live Hub capability (verifiable randomness, consensus, sequential-work proofs, …) with a signed receipt and a hard per-task spend cap. Bind them on `create_react_agent` as usual.\n\n- Repo: https://github.com/alexar76/aimarket-bridges\n- PyPI: https://pypi.org/project/aimarket-bridges/ — `pip install \"aimarket-bridges[langgraph]\"`\n- Live hub: https://modelmarket.dev\n- Write-up: https://dev.to/alexar76/"
+      },
+      {
+        "html_url": "https://github.com/EbookFoundation/free-programming-books/pull/13394",
+        "title": "Add AIMarket Courses (10 free AI agent-economy academies)",
+        "created_at": "2026-08-05T06:28:51Z",
+        "updated_at": "2026-08-06T13:01:39Z",
+        "user": "alexar76",
+        "comments": 3,
+        "state": "closed",
+        "body_excerpt": "## What\n\nAdds **[AIMarket Courses](https://alexar76.github.io/aimarket-courses/)** under **Artificial Intelligence** in `courses/free-courses-en.md`.\n\n## Why free / why a course\n\n- Always free portal — 10 structured Python academies (labs, Colab, docs, certificates), not a single blog post\n- MIT-licensed monorepo: https://github.com/alexar76/aimarket-courses\n- Live ecosystem labs (oracles, Hub/SDK, MCP security, agent economy, AI-Factory, …)\n- Locales EN / RU / ES on the course sites (EN catalog entry)\n\n## Notes for reviewers\n\n- Companion listing to open PR #13393 ([AIMarket School](https://edu.modelmarket.dev) — shorter clip on-ramp); this entry is the full academy track\n- Title = product n"
+      },
+      {
+        "html_url": "https://github.com/EbookFoundation/free-programming-books/pull/13393",
+        "title": "Add AIMarket School (free AI agent-economy clip lessons)",
+        "created_at": "2026-08-05T04:54:10Z",
+        "updated_at": "2026-08-06T09:42:43Z",
+        "user": "alexar76",
+        "comments": 3,
+        "state": "closed",
+        "body_excerpt": "## What\n\nAdds **[AIMarket School](https://edu.modelmarket.dev)** under **Artificial Intelligence** in `courses/free-courses-en.md`.\n\n## Why free / why a course\n\n- Always free, no signup/email wall for the portal lessons\n- 10 structured clip lessons with Try-it demos + Colab notebooks (not a blog post / single video)\n- MIT-licensed source: https://github.com/alexar76/aimarket-school\n- Locales also available at `/ru/`, `/es/`, `/fr/`, `/zh/` on the same site (listing EN catalog entry first)\n\n## Notes for reviewers\n\n- Title taken from the product name on the portal\n- Author: Aleksandr Artamokhov (alexar76)\n- Format note: `(HTML) (MIT)`\n- Alphabetized after *AI Python for Beginners*, before *Aml"
+      },
+      {
+        "html_url": "https://github.com/slavakurilyak/awesome-ai-agents/pull/344",
+        "title": "Add AI-Factory — multi-agent product pipeline (self-hosted)",
+        "created_at": "2026-07-12T11:36:31Z",
+        "updated_at": "2026-08-05T04:26:20Z",
+        "user": "alexar76",
+        "comments": 1,
+        "state": "closed",
+        "body_excerpt": "Adds **alexar76/aicom** (AI-Factory) under Multi-Agent Orchestration.\n\nMIT self-hosted pipeline: research → design → code → QA → deploy → storefront, with AI Director, build replays, and optional AIMarket integration.\n\n- https://github.com/alexar76/aicom\n- https://magic-ai-factory.com\n- https://modeldev.modelmarket.dev"
+      },
+      {
+        "html_url": "https://github.com/e2b-dev/awesome-ai-sdks/pull/217",
+        "title": "Add AIMarket Agent and AIMarket SDKs (protocol v2)",
+        "created_at": "2026-05-31T14:54:11Z",
+        "updated_at": "2026-07-29T19:37:46Z",
+        "user": "alexart2025",
+        "comments": 3,
+        "state": "closed",
+        "body_excerpt": "## Summary\nAdds two related SDKs for [AIMarket Protocol v2](https://github.com/alexar76/aimarket-protocol) — federated discovery, HTTP 402 payment channels, safety-gated invoke, and settlement with signed receipts.\n\n| Project | Role |\n|---------|------|\n| [aimarket-agent](https://github.com/alexar76/aimarket-agent) | Python SDK + CLI (`pip install aimarket-agent`) |\n| [aimarket-sdks](https://github.com/alexar76/aimarket-sdks) | Dart (alpha), TypeScript/Rust clients |\n\nReference hub: https://modelmarket.dev\n\n## Why this list\nThese are client libraries for building autonomous agents that discover and pay for capabilities across a federation — aligned with “SDKs for creating and deploying AI ag"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/10663",
+        "title": "Add alexar76/argus — WARDEN-hardened agent MCP server (Security)",
+        "created_at": "2026-07-22T15:29:09Z",
+        "updated_at": "2026-07-22T20:13:26Z",
+        "user": "alexar76",
+        "comments": 3,
+        "state": "closed",
+        "body_excerpt": "## Summary\n- Adds **one** MCP server: [`alexar76/argus`](https://github.com/alexar76/argus) under **Security**\n- ARGUS-3 stdio MCP (`argus mcp` → `argus_ask`, `argus_status`); **WARDEN** vets third-party MCP servers before tools reach the model\n- MIT · Node ≥20 · npm `@alexar76/argus3` · Glama: https://glama.ai/mcp/servers/alexar76/argus · Registry `io.github.alexar76/argus3`\n- Not a duplicate of `alexar76/aimarket-plugins` (Aggregators) or sibling PRs for aimarket-mcp / oracle-gateway\n\nReplaces closed [#9910](https://github.com/punkpeye/awesome-mcp-servers/pull/9910) (split into one server per PR as requested). Siblings: [#10660](https://github.com/punkpeye/awesome-mcp-servers/pull/10660) ("
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/10662",
+        "title": "Add alexar76/aimarket-oracle-gateway — verifiable oracles (Security)",
+        "created_at": "2026-07-22T15:28:45Z",
+        "updated_at": "2026-07-22T18:24:08Z",
+        "user": "alexar76",
+        "comments": 2,
+        "state": "closed",
+        "body_excerpt": "## Summary\n- Adds **one** MCP server: [`alexar76/aimarket-oracle-gateway`](https://github.com/alexar76/aimarket-oracle-gateway) under **Security**\n- Verifiable oracles as agent tools: Platon VRF, Chronos VDF, LUMEN reputation; pay-per-call over AIMarket Hub\n- MIT · Python · stdio · Glama: https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway\n\nReplaces closed [#9910](https://github.com/punkpeye/awesome-mcp-servers/pull/9910) (split into one server per PR as requested). Sibling of [#10660](https://github.com/punkpeye/awesome-mcp-servers/pull/10660) (aimarket-mcp only).\n\n## Test plan\n- [ ] Entry is under Security, alphabetically before `alexfleetcommander/agent-trust-stack-mcp`\n- [ ] Li"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/10660",
+        "title": "Add alexar76/aimarket-mcp — SSRF-hardened web gateway (Security)",
+        "created_at": "2026-07-22T15:28:01Z",
+        "updated_at": "2026-07-22T16:19:58Z",
+        "user": "alexar76",
+        "comments": 2,
+        "state": "closed",
+        "body_excerpt": "## Summary\n- Adds **one** MCP server: [`alexar76/aimarket-mcp`](https://github.com/alexar76/aimarket-mcp) under **Security**\n- SSRF-hardened web gateway (`web_fetch`, `web_search`, `metis_verify`) shared by Metis / ARGUS / ecosystem\n- MIT · Python · stdio + optional HTTP · Glama: https://glama.ai/mcp/servers/alexar76/aimarket-mcp · Registry `io.github.alexar76/aimarket-mcp`\n\nReplaces closed [#9910](https://github.com/punkpeye/awesome-mcp-servers/pull/9910) (split into one server per PR as requested).\n\n## Test plan\n- [ ] Entry is under Security, alphabetically before `alexfleetcommander/agent-trust-stack-mcp`\n- [ ] Link + Glama badge resolve\n- [ ] Single server only in this PR"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/9910",
+        "title": "Add alexar76 MCP stack — web gateway, oracles, WARDEN agent (Security)",
+        "created_at": "2026-07-12T11:35:12Z",
+        "updated_at": "2026-07-22T12:29:20Z",
+        "user": "alexar76",
+        "comments": 3,
+        "state": "closed",
+        "body_excerpt": "## Summary\n\nAdds three **alexar76** stdio MCP servers to **Security** (plus our existing **Aggregators** entry `aimarket-plugins` / mcp-packager — unchanged):\n\n| Repo | Role |\n|------|------|\n| [aimarket-mcp](https://github.com/alexar76/aimarket-mcp) | SSRF-hardened `web_fetch` / `web_search` / `metis_verify` |\n| [aimarket-oracle-gateway](https://github.com/alexar76/aimarket-oracle-gateway) | Verifiable oracles — Platon VRF, Chronos VDF, LUMEN reputation |\n| [argus](https://github.com/alexar76/argus) | Demand-side agent + **WARDEN** MCP firewall |\n\nAll MIT · listed on Glama + Official MCP Registry · distinct scopes (not duplicates).\n\nReplaces closed PR #8422 (was from a personal fork; this P"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/8422",
+        "title": "Add aimarket-oracle-gateway (verifiable oracle MCP server)",
+        "created_at": "2026-06-20T20:12:08Z",
+        "updated_at": "2026-07-11T14:27:28Z",
+        "user": "alexart2025",
+        "comments": 2,
+        "state": "closed",
+        "body_excerpt": "## Summary\n\nAdds **alexar76/aimarket-oracle-gateway** to the **Security** section — a separate MCP server from our existing **Aggregators** entry (`aimarket-plugins` / mcp-packager).\n\nMIT · Python · stdio MCP server exposing verifiable oracle tools for AI agents:\n- **Platon VRF** — Ed25519-signed unbiasable randomness (`get_random`, `get_randomness_beacon`, `ask_oracle`)\n- **Chronos VDF** — verifiable delay / proof-of-elapsed-time (`compute_vdf`, `verify_vdf`)\n- **LUMEN reputation** — PageRank/EigenTrust trust scores (`get_reputation_scores`)\n- `list_oracle_capabilities`\n\nPay-per-call over the [AIMarket Protocol v2](https://github.com/alexar76/aimarket-protocol); every result is independentl"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/7193",
+        "title": "Add aimarket-mcp-packager to Aggregators",
+        "created_at": "2026-05-31T15:21:17Z",
+        "updated_at": "2026-06-11T06:06:17Z",
+        "user": "alexar76",
+        "comments": 6,
+        "state": "closed",
+        "body_excerpt": "Hub plugin that exports AIMarket marketplace capabilities as self-hosted MCP servers (Docker + `mcp_manifest` + Claude Desktop config).\n\n- Repo: https://github.com/alexar76/aimarket-plugins\n- Hub: https://modelmarket.dev\n- Install: `pip install aimarket-mcp-packager`"
+      },
+      {
+        "html_url": "https://github.com/slavakurilyak/awesome-ai-agents/pull/287",
+        "title": "Add AI-Factory — self-hosted multi-agent pipeline",
+        "created_at": "2026-05-31T15:17:16Z",
+        "updated_at": "2026-06-08T12:49:29Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "closed",
+        "body_excerpt": "Self-hosted factory (alexar76/aicom): 12 agents, quality gates, Director, idea→shippable product."
+      }
+    ]
+  },
+  {
+    "query": "\"@aimarket/warden\" -user:alexar76",
+    "url": "https://api.github.com/search/issues?q=%22%40aimarket%2Fwarden%22+-user%3Aalexar76&per_page=100&sort=updated",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-28T13:51:55.190020+00:00",
+    "status": 200,
+    "sha256": "0836a6719cc0463fec9b6d3b2eed1dc0eabd24d5d8f3caa9210e108cd0b5098c",
+    "bytes": 14000,
+    "total_count": 4,
+    "incomplete_results": false,
+    "items": [
+      {
+        "html_url": "https://github.com/docker/mcp-registry/pull/5364",
+        "title": "Add WARDEN (MCP security firewall)",
+        "created_at": "2026-10-01T20:25:36Z",
+        "updated_at": "2026-10-19T17:04:16Z",
+        "user": "alexar76",
+        "comments": 1,
+        "state": "open",
+        "body_excerpt": "MCP security firewall. Scans tool definitions for prompt injection, secret requests, exfiltration and hidden Unicode before a host exposes them to a model. Deterministic published rules (version and digest in every verdict); no network calls, no secrets.\n\n- Type: local server (Docker builds and signs `mcp/warden` from the root Dockerfile)\n- License: MIT\n- Source: https://github.com/alexar76/warden @ `82a7b878e3a8f0b33af659738b4b9ddb70ccfe90` (package 0.8.2)\n- No credentials / no `config:` block required\n- Reproducible false-positive survey: https://github.com/alexar76/warden/blob/main/docs/mcp-survey.md\n\nTools (from tools/list @ 0.8.2): `vet_mcp_server`, `static_scan_tools`, `classify_sensit"
+      },
+      {
+        "html_url": "https://github.com/cline/mcp-marketplace/issues/2735",
+        "title": "[Server Submission]: WARDEN",
+        "created_at": "2026-10-03T05:49:32Z",
+        "updated_at": "2026-10-03T05:49:32Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "### GitHub Repository URL\n\nhttps://github.com/alexar76/warden\n\n### Logo Image\n\n![WARDEN logo](https://raw.githubusercontent.com/alexar76/warden/main/docs/assets/logo-400.png)\n\nhttps://raw.githubusercontent.com/alexar76/warden/main/docs/assets/logo-400.png\n\n### Installation Testing\n\n- [x] I have tested that Cline can successfully set up this server using only the README.md and/or llms-install.md file\n- [x] The server is stable and ready for public use\n\n### Additional Information\n\nMCP security firewall for advertised tool definitions: static injection/exfiltration scan, signed threat feed, origin checks and pinning before a recorded allow/block verdict. Zero runtime dependencies, MIT. Also in "
+      },
+      {
+        "html_url": "https://github.com/sudeepb02/awesome-erc8004/pull/120",
+        "title": "Add AIMarket Hub, HISTOR and WARDEN (ERC-8004 agents on Base)",
+        "created_at": "2026-10-01T20:23:39Z",
+        "updated_at": "2026-10-02T05:52:18Z",
+        "user": "alexar76",
+        "comments": 0,
+        "state": "open",
+        "body_excerpt": "Three live agents registered on the canonical IdentityRegistry on Base (0x8004A169…a432),\nall owned by the operator wallet 0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a:\n\n| agent | agentId | registration file |\n|---|---|---|\n| AIMarket Hub | 96682 | https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.json |\n| HISTOR | 96683 | https://modelmarket.dev/.well-known/erc-8004/histor.json |\n| WARDEN | 96684 | https://modelmarket.dev/.well-known/erc-8004/warden.json |\n\nDomain proof: https://modelmarket.dev/.well-known/agent-registration.json lists all three.\nRegistration txs: see https://8004scan.io/agents/base/96682 (block 52046664).\n"
+      },
+      {
+        "html_url": "https://github.com/punkpeye/awesome-mcp-servers/pull/12774",
+        "title": "🤖🤖🤖 Add WARDEN MCP security firewall library to Frameworks",
+        "created_at": "2026-08-24T11:39:06Z",
+        "updated_at": "2026-09-15T16:27:06Z",
+        "user": "alexar76",
+        "comments": 5,
+        "state": "closed",
+        "body_excerpt": "## Summary\nAdds **[alexar76/warden](https://github.com/alexar76/warden)** under **## Frameworks** — WARDEN is a **library**, not an MCP server (same section as FastMCP / TurboMCP).\n\n- npm [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) — zero runtime dependencies\n- Gate chain: static tool-def scan → signed threat feed → origin → pinning before third-party tools reach the model\n- Field survey of 1,108 public registry servers: https://github.com/alexar76/warden/blob/main/docs/mcp-survey.md\n\n## Test plan\n- [x] One-line Frameworks format matches FastMCP / TurboMCP entries\n- [x] GitHub + npm links live"
+      }
+    ]
+  }
+]

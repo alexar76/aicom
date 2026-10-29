@@ -17,6 +17,11 @@ dependencies = [
 # strict: a green CI here means new modules are clean; legacy code is still
 # subject to incremental cleanup PRs tracked outside the lint config.
 #
+# One gate does cover the whole tree: scripts/python_bug_gate.sh runs the rules
+# that are bugs rather than style (E9 syntax, F63, F7, F82 undefined names) over
+# every tracked .py file, satellites and legacy code included. It runs in CI and
+# in scripts/push_gitea_monorepo.sh.
+#
 # When migrating a new directory:
 #   1. Remove it from BOTH `tool.ruff.exclude` and `tool.mypy.exclude`.
 #   2. Run `ruff check <dir>/` + `mypy <dir>/` locally and fix findings.

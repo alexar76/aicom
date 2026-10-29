@@ -1,0 +1,979 @@
+Production public origins validated; live .env preserved.
+CPU/memory before build: 6
+               total        used        free      shared  buff/cache   available
+Mem:           11925        2269        2137          44        8081        9655
+Swap:              0           0           0
+ROLLBACK forge pingblip-forge:prev sha256:4c0edde153202ab4c02c5e5d05de58aadc87e19940e774700b8ebd8300fafa16
+ROLLBACK pingblip pingblip-pingblip:prev sha256:e9589050751a201b797598005b911066aa2bc8352c8fea07619ea353d421ffc2
+ROLLBACK world pingblip-world:prev sha256:e632e2cfd44922f26966d6ceabb52a7f276ac7457a238496c2f67328fdc418f6
+
+BUILD_START forge
+ Image pingblip-forge Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 811B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.17kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22.23.4-bookworm-slim
+#3 DONE 0.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 175B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [ 1/10] FROM docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#6 resolve docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da 0.1s done
+#6 sha256:0bee45faaffff77eee1e3d151cc650b854df28523ea01e5a2dcc0327da8793a9 448B / 448B 0.1s done
+#6 sha256:709e8267cebf108d59c4e6e386882a5c79c10bbe11ecd02c6ed9ed4efa5b905d 3.31kB / 3.31kB 0.1s done
+#6 sha256:d22dd8aef5082b9de7fb037db9c398ee2822c5c81cc5cbb63bb32a46a5decdb1 1.71MB / 1.71MB 0.2s done
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 0B / 49.89MB 0.2s
+#6 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 532.48kB / 28.25MB 0.2s
+#6 ...
+
+#5 [internal] load build context
+#5 transferring context: 8.54MB 0.5s done
+#5 DONE 0.7s
+
+#6 [ 1/10] FROM docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#6 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 3.57MB / 28.25MB 0.3s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 5.24MB / 49.89MB 0.5s
+#6 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 8.12MB / 28.25MB 0.5s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 8.39MB / 49.89MB 0.6s
+#6 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 12.58MB / 28.25MB 0.6s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 12.84MB / 49.89MB 0.8s
+#6 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 15.73MB / 28.25MB 0.8s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 16.89MB / 49.89MB 0.9s
+#6 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 20.11MB / 28.25MB 0.9s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 20.97MB / 49.89MB 1.1s
+#6 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 24.22MB / 28.25MB 1.1s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 24.12MB / 49.89MB 1.2s
+#6 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 28.25MB / 28.25MB 1.2s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 29.36MB / 49.89MB 1.4s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 34.60MB / 49.89MB 1.5s
+#6 sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 28.25MB / 28.25MB 1.4s done
+#6 extracting sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 39.54MB / 49.89MB 1.7s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 44.04MB / 49.89MB 1.8s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 48.23MB / 49.89MB 2.0s
+#6 sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 49.89MB / 49.89MB 2.2s done
+#6 extracting sha256:3c5439d0ae62993af4cc4e21b8c777297e81bc40e200d4633c85a3e0f977a3bc 3.1s done
+#6 DONE 5.0s
+
+#6 [ 1/10] FROM docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#6 extracting sha256:709e8267cebf108d59c4e6e386882a5c79c10bbe11ecd02c6ed9ed4efa5b905d 0.0s done
+#6 extracting sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c
+#6 extracting sha256:df736340692d217b57cd447c94f978f9a91ce3e8805b225e78374eae3aff864c 4.0s done
+#6 DONE 9.0s
+
+#6 [ 1/10] FROM docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#6 extracting sha256:d22dd8aef5082b9de7fb037db9c398ee2822c5c81cc5cbb63bb32a46a5decdb1
+#6 extracting sha256:d22dd8aef5082b9de7fb037db9c398ee2822c5c81cc5cbb63bb32a46a5decdb1 0.2s done
+#6 DONE 9.2s
+
+#6 [ 1/10] FROM docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#6 extracting sha256:0bee45faaffff77eee1e3d151cc650b854df28523ea01e5a2dcc0327da8793a9 0.0s done
+#6 DONE 9.2s
+
+#7 [ 2/10] WORKDIR /app
+#7 DONE 0.8s
+
+#8 [ 3/10] RUN apt-get update   && apt-get install -y --no-install-recommends openssl ca-certificates   && rm -rf /var/lib/apt/lists/*
+#8 0.630 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#8 0.659 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#8 0.659 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#8 0.813 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#8 0.989 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#8 1.161 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [358 kB]
+#8 3.003 Fetched 9397 kB in 2s (3950 kB/s)
+#8 3.003 Reading package lists...
+#8 4.612 Reading package lists...
+#8 6.242 Building dependency tree...
+#8 6.707 Reading state information...
+#8 7.322 The following additional packages will be installed:
+#8 7.331   libssl3
+#8 7.416 The following NEW packages will be installed:
+#8 7.416   ca-certificates libssl3 openssl
+#8 7.481 0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
+#8 7.481 Need to get 3643 kB of archives.
+#8 7.481 After this operation, 8955 kB of additional disk space will be used.
+#8 7.481 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libssl3 amd64 3.0.22-1~deb12u2 [2040 kB]
+#8 7.527 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 openssl amd64 3.0.22-1~deb12u2 [1442 kB]
+#8 7.538 Get:3 http://deb.debian.org/debian-security bookworm-security/main amd64 ca-certificates all 20250419~deb12u2 [161 kB]
+#8 7.922 debconf: delaying package configuration, since apt-utils is not installed
+#8 7.995 Fetched 3643 kB in 0s (37.0 MB/s)
+#8 8.035 Selecting previously unselected package libssl3:amd64.
+#8 8.035 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6096 files and directories currently installed.)
+#8 8.053 Preparing to unpack .../libssl3_3.0.22-1~deb12u2_amd64.deb ...
+#8 8.061 Unpacking libssl3:amd64 (3.0.22-1~deb12u2) ...
+#8 8.361 Selecting previously unselected package openssl.
+#8 8.364 Preparing to unpack .../openssl_3.0.22-1~deb12u2_amd64.deb ...
+#8 8.375 Unpacking openssl (3.0.22-1~deb12u2) ...
+#8 8.567 Selecting previously unselected package ca-certificates.
+#8 8.569 Preparing to unpack .../ca-certificates_20250419~deb12u2_all.deb ...
+#8 8.573 Unpacking ca-certificates (20250419~deb12u2) ...
+#8 8.730 Setting up libssl3:amd64 (3.0.22-1~deb12u2) ...
+#8 8.744 Setting up openssl (3.0.22-1~deb12u2) ...
+#8 8.772 Setting up ca-certificates (20250419~deb12u2) ...
+#8 8.983 debconf: unable to initialize frontend: Dialog
+#8 8.983 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#8 8.983 debconf: falling back to frontend: Readline
+#8 8.984 debconf: unable to initialize frontend: Readline
+#8 8.984 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#8 8.984 debconf: falling back to frontend: Teletype
+#8 10.30 Updating certificates in /etc/ssl/certs...
+#8 12.13 148 added, 0 removed; done.
+#8 12.19 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#8 12.22 Processing triggers for ca-certificates (20250419~deb12u2) ...
+#8 12.24 Updating certificates in /etc/ssl/certs...
+#8 13.89 0 added, 0 removed; done.
+#8 13.89 Running hooks in /etc/ca-certificates/update.d...
+#8 13.90 done.
+#8 DONE 14.1s
+
+#9 [ 4/10] COPY package.json package-lock.json ./
+#9 DONE 0.2s
+
+#10 [ 5/10] COPY vendor ./vendor
+#10 DONE 0.2s
+
+#11 [ 6/10] COPY prisma ./prisma
+#11 DONE 0.3s
+
+#12 [ 7/10] RUN npm ci --legacy-peer-deps
+#12 30.51 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#12 72.83 
+#12 72.83 > memeforge@1.0.0 postinstall
+#12 72.83 > prisma generate
+#12 72.83 
+#12 74.83 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#12 74.83 For more information, see: https://pris.ly/prisma-config
+#12 74.83 
+#12 75.46 Prisma schema loaded from prisma/schema.prisma
+#12 76.35 ┌─────────────────────────────────────────────────────────┐
+#12 76.35 │  Update available 6.16.2 -> 8.0.0-rc.28                 │
+#12 76.35 │                                                         │
+#12 76.35 │  This is a major update - please follow the guide at    │
+#12 76.35 │  https://pris.ly/d/major-version-upgrade                │
+#12 76.35 │                                                         │
+#12 76.35 │  Run the following to update                            │
+#12 76.35 │    npm i --save-dev prisma@latest                       │
+#12 76.35 │    npm i @prisma/client@latest                          │
+#12 76.35 └─────────────────────────────────────────────────────────┘
+#12 76.35 
+#12 76.35 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 439ms
+#12 76.35 
+#12 76.35 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#12 76.35 
+#12 76.35 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+#12 76.35 
+#12 76.44 
+#12 76.44 added 423 packages, and audited 425 packages in 1m
+#12 76.44 
+#12 76.44 151 packages are looking for funding
+#12 76.44   run `npm fund` for details
+#12 76.44 
+#12 76.44 found 0 vulnerabilities
+#12 76.45 npm notice
+#12 76.45 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#12 76.45 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#12 76.45 npm notice To update run: npm install -g npm@12.2.1
+#12 76.45 npm notice
+#12 DONE 77.2s
+
+#13 [ 8/10] COPY . .
+#13 DONE 3.2s
+
+#14 [ 9/10] RUN npx prisma generate && npm run build
+#14 3.905 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#14 3.905 For more information, see: https://pris.ly/prisma-config
+#14 3.905 
+#14 4.691 Prisma schema loaded from prisma/schema.prisma
+#14 5.618 
+#14 5.618 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 351ms
+#14 5.618 
+#14 5.618 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#14 5.618 
+#14 5.618 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+#14 5.618 
+#14 5.961 
+#14 5.961 > memeforge@1.0.0 prebuild
+#14 5.961 > npm run test:dependency-security && node scripts/check-shared-imports.mjs && node scripts/build-model-versions.mjs && node scripts/check-models.mjs --strict && node scripts/check-fit.mjs && node scripts/check-horns.mjs && node scripts/check-seated.mjs && node scripts/check-tails.mjs && node scripts/check-twins.mjs && node scripts/check-dex.mjs
+#14 5.961 
+#14 6.262 
+#14 6.262 > memeforge@1.0.0 test:dependency-security
+#14 6.262 > node vendor/next-root-glob/test.cjs
+#14 6.262 
+#14 6.580 TAP version 13
+#14 6.583 # Subtest: Next uses the adapter and no vulnerable glob packages remain
+#14 6.584 ok 1 - Next uses the adapter and no vulnerable glob packages remain
+#14 6.585   ---
+#14 6.585   duration_ms: 12.153672
+#14 6.585   type: 'test'
+#14 6.585   ...
+#14 6.585 # Subtest: Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+#14 6.586 ok 2 - Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+#14 6.586   ---
+#14 6.586   duration_ms: 48.691596
+#14 6.586   type: 'test'
+#14 6.586   ...
+#14 6.587 # Subtest: deeply nested brace and parenthesis patterns do not exhaust the stack
+#14 6.587 ok 3 - deeply nested brace and parenthesis patterns do not exhaust the stack
+#14 6.588   ---
+#14 6.588   duration_ms: 107.160487
+#14 6.588   type: 'test'
+#14 6.588   ...
+#14 6.591 1..3
+#14 6.591 # tests 3
+#14 6.591 # suites 0
+#14 6.591 # pass 3
+#14 6.591 # fail 0
+#14 6.591 # cancelled 0
+#14 6.591 # skipped 0
+#14 6.591 # todo 0
+#14 6.592 # duration_ms 190.010647
+#14 6.710 check-shared-imports: 29 shared files, every "@/" import resolves in every app (not in this build context: web, world).
+#14 7.706 model versions: 80 sculpts, none changed
+#14 7.882 check-models: all 80 figurines present in public/models
+#14 124.3 80 sculpts x 13 canvas shapes
+#14 124.3 
+#14 124.3 worst NDC reach (1.000 = touching the edge; target fill 0.840)
+#14 124.3   before this pass : 1.612   <-- cropped
+#14 124.3   after            : 0.840
+#14 124.3 
+#14 124.3 per-shape margin spread (max - min limiting reach across all 80 sculpts)
+#14 124.3   forge hero, phone          0.8400 .. 0.8400  spread 0.0000
+#14 124.3   forge hero, narrow phone   0.8400 .. 0.8400  spread 0.0000
+#14 124.3   forge hero, desktop        0.8400 .. 0.8400  spread 0.0000
+#14 124.3   bench, phone 48vh          0.8400 .. 0.8400  spread 0.0000
+#14 124.3   bench, desktop half        0.8400 .. 0.8400  spread 0.0000
+#14 124.3   map roster card            0.8400 .. 0.8400  spread 0.0000
+#14 124.3   wizard stage               0.8400 .. 0.8400  spread 0.0000
+#14 124.3   phone 320 hero             0.8400 .. 0.8400  spread 0.0000
+#14 124.3   phone 360 hero             0.8400 .. 0.8400  spread 0.0000
+#14 124.3   phone 390 hero             0.8400 .. 0.8400  spread 0.0000
+#14 124.3   phone 430 hero             0.8400 .. 0.8400  spread 0.0000
+#14 124.3   phone landscape            0.8400 .. 0.8400  spread 0.0000
+#14 124.3   tablet 768 hero            0.8400 .. 0.8400  spread 0.0000
+#14 124.3 
+#14 124.3 OK: every sculpt stays in frame through the full idle cycle, centred, equal margins.
+#14 124.6 check-horns: skipped — shared/ is not in this build context
+#14 256.5 80 sculpts checked
+#14 256.5 OK: every feature touches the sculpt it belongs to.
+#14 260.2 80 models inspected; 39 tail parts across 15 creatures checked
+#14 260.2 OK: all tail surfaces are closed.
+#14 265.6 80 sculpts checked
+#14 265.6 OK: no mirrored pair is inside itself.
+#14 265.8 80 sculpts checked
+#14 265.8 OK: every preview is of the sculpt that ships with it.
+#14 265.8 
+#14 265.8 > memeforge@1.0.0 build
+#14 265.8 > prisma generate && next build
+#14 265.8 
+#14 268.1 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#14 268.1 For more information, see: https://pris.ly/prisma-config
+#14 268.1 
+#14 269.1 Prisma schema loaded from prisma/schema.prisma
+#14 270.2 
+#14 270.2 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 540ms
+#14 270.2 
+#14 270.2 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#14 270.2 
+#14 270.2 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+#14 270.2 
+#14 272.9 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#14 272.9 This information is used to shape Next.js' roadmap and prioritize features.
+#14 272.9 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#14 272.9 https://nextjs.org/telemetry
+#14 272.9 
+#14 273.1    ▲ Next.js 15.5.28
+#14 273.1    - Experiments (use with caution):
+#14 273.1      · serverActions
+#14 273.1 
+#14 273.4    Creating an optimized production build ...
+#14 479.9  ✓ Compiled successfully in 3.3min
+#14 480.0    Linting and checking validity of types ...
+#14 490.7 
+#14 490.7 ./src/app/page.tsx
+#14 490.7 77:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#14 490.7 
+#14 490.7 ./src/components/forge/Constructor.tsx
+#14 490.7 64:6  Warning: React Hook useEffect has a missing dependency: 'pickPack'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+#14 490.7 295:27  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#14 490.7 
+#14 490.7 ./src/components/forge/ForgeClient.tsx
+#14 490.7 31:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#14 490.7 
+#14 490.7 ./src/components/packs/PackCatalog.tsx
+#14 490.7 101:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#14 490.7 153:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#14 490.7 
+#14 490.7 ./src/components/packs/PackPlate.tsx
+#14 490.7 92:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#14 490.7 
+#14 490.7 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+#14 500.9    Collecting page data ...
+#14 512.8    Generating static pages (0/23) ...
+#14 515.0    Generating static pages (5/23) 
+#14 515.1    Generating static pages (11/23) 
+#14 516.1    Generating static pages (17/23) 
+#14 516.3  ✓ Generating static pages (23/23)
+#14 519.8    Finalizing page optimization ...
+#14 519.8    Collecting build traces ...
+#14 543.3 
+#14 543.3 Route (app)                                 Size  First Load JS
+#14 543.3 ┌ ○ /                                    1.74 kB         558 kB
+#14 543.3 ├ ○ /_not-found                            160 B         103 kB
+#14 543.3 ├ ○ /admin                               1.97 kB         123 kB
+#14 543.3 ├ ƒ /api/admin/overview                    160 B         103 kB
+#14 543.3 ├ ƒ /api/admin/payouts                     160 B         103 kB
+#14 543.3 ├ ƒ /api/auth/admin                        160 B         103 kB
+#14 543.3 ├ ƒ /api/auth/guest                        160 B         103 kB
+#14 543.3 ├ ƒ /api/auth/logout                       160 B         103 kB
+#14 543.3 ├ ƒ /api/auth/telegram                     160 B         103 kB
+#14 543.3 ├ ƒ /api/checkout                          160 B         103 kB
+#14 543.3 ├ ƒ /api/compose                           160 B         103 kB
+#14 543.3 ├ ƒ /api/compositions                      160 B         103 kB
+#14 543.3 ├ ƒ /api/media/[file]                      160 B         103 kB
+#14 543.3 ├ ƒ /api/packs                             160 B         103 kB
+#14 543.3 ├ ƒ /api/referral                          160 B         103 kB
+#14 543.3 ├ ƒ /api/session                           160 B         103 kB
+#14 543.3 ├ ƒ /api/webhook/telegram                  160 B         103 kB
+#14 543.3 ├ ○ /dashboard                           2.56 kB         124 kB
+#14 543.3 ├ ƒ /export/[id]                         2.71 kB         124 kB
+#14 543.3 ├ ○ /forge                               45.5 kB         602 kB
+#14 543.3 ├ ○ /packs                               2.12 kB         558 kB
+#14 543.3 ├ ƒ /packs/[slug]                        1.69 kB         558 kB
+#14 543.3 └ ○ /robots.txt                            160 B         103 kB
+#14 543.3 + First Load JS shared by all             103 kB
+#14 543.3   ├ chunks/255-b1e2483a7e02feee.js       46.6 kB
+#14 543.3   ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+#14 543.3   └ other shared chunks (total)          1.92 kB
+#14 543.3 
+#14 543.3 
+#14 543.3 ○  (Static)   prerendered as static content
+#14 543.3 ƒ  (Dynamic)  server-rendered on demand
+#14 543.3 
+#14 DONE 544.1s
+
+#15 [10/10] RUN chmod +x docker/entrypoint.sh
+#15 DONE 1.0s
+
+#16 exporting to image
+#16 exporting layers
+#16 exporting layers 166.2s done
+#16 exporting manifest sha256:f49d163a9628de81ed2cad4abb64420d39db3280179ab3bd5bea68c2558660fc 0.0s done
+#16 exporting config sha256:212aec7548e3955b507209d78c3b6461fc0a2149b6e3994b4d790298a8a0a12f 0.0s done
+#16 exporting attestation manifest sha256:de8d78b475412de054414e463bf71c771a4d0f5a1f375861ac955c41e01222b1 0.0s done
+#16 exporting manifest list sha256:140a0c56f285345b53a3fba6764bbab6dfef0f594110bf1406fd55c6d71107ac 0.0s done
+#16 naming to docker.io/library/pingblip-forge:latest done
+#16 unpacking to docker.io/library/pingblip-forge:latest
+#16 unpacking to docker.io/library/pingblip-forge:latest 48.2s done
+#16 DONE 214.6s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s
+ Image pingblip-forge Built 
+BUILD_OK forge
+
+BUILD_START pingblip
+ Image pingblip-pingblip Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 741B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 2.62kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22.23.4-bookworm-slim
+#3 DONE 0.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 566B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [ 1/21] FROM docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#6 resolve docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da 0.1s done
+#6 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 8.48MB 0.9s done
+#5 DONE 1.1s
+
+#7 [ 2/21] WORKDIR /pingblip
+#7 DONE 1.2s
+
+#8 [ 3/21] RUN apt-get update   && apt-get install -y --no-install-recommends openssl ca-certificates   && rm -rf /var/lib/apt/lists/*
+#8 2.283 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#8 2.307 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#8 2.307 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#8 2.475 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#8 2.618 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#8 2.745 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [358 kB]
+#8 4.329 Fetched 9397 kB in 2s (4530 kB/s)
+#8 4.329 Reading package lists...
+#8 5.580 Reading package lists...
+#8 6.838 Building dependency tree...
+#8 7.100 Reading state information...
+#8 7.570 The following additional packages will be installed:
+#8 7.571   libssl3
+#8 7.629 The following NEW packages will be installed:
+#8 7.629   ca-certificates libssl3 openssl
+#8 7.697 0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
+#8 7.697 Need to get 3643 kB of archives.
+#8 7.697 After this operation, 8955 kB of additional disk space will be used.
+#8 7.697 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libssl3 amd64 3.0.22-1~deb12u2 [2040 kB]
+#8 7.735 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 openssl amd64 3.0.22-1~deb12u2 [1442 kB]
+#8 7.766 Get:3 http://deb.debian.org/debian-security bookworm-security/main amd64 ca-certificates all 20250419~deb12u2 [161 kB]
+#8 8.065 debconf: delaying package configuration, since apt-utils is not installed
+#8 8.144 Fetched 3643 kB in 0s (32.2 MB/s)
+#8 8.184 Selecting previously unselected package libssl3:amd64.
+#8 8.184 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6096 files and directories currently installed.)
+#8 8.230 Preparing to unpack .../libssl3_3.0.22-1~deb12u2_amd64.deb ...
+#8 8.240 Unpacking libssl3:amd64 (3.0.22-1~deb12u2) ...
+#8 8.449 Selecting previously unselected package openssl.
+#8 8.450 Preparing to unpack .../openssl_3.0.22-1~deb12u2_amd64.deb ...
+#8 8.454 Unpacking openssl (3.0.22-1~deb12u2) ...
+#8 8.612 Selecting previously unselected package ca-certificates.
+#8 8.614 Preparing to unpack .../ca-certificates_20250419~deb12u2_all.deb ...
+#8 8.617 Unpacking ca-certificates (20250419~deb12u2) ...
+#8 8.732 Setting up libssl3:amd64 (3.0.22-1~deb12u2) ...
+#8 8.742 Setting up openssl (3.0.22-1~deb12u2) ...
+#8 8.758 Setting up ca-certificates (20250419~deb12u2) ...
+#8 8.943 debconf: unable to initialize frontend: Dialog
+#8 8.943 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#8 8.943 debconf: falling back to frontend: Readline
+#8 8.944 debconf: unable to initialize frontend: Readline
+#8 8.944 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#8 8.944 debconf: falling back to frontend: Teletype
+#8 10.10 Updating certificates in /etc/ssl/certs...
+#8 11.66 148 added, 0 removed; done.
+#8 11.71 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#8 11.81 Processing triggers for ca-certificates (20250419~deb12u2) ...
+#8 11.82 Updating certificates in /etc/ssl/certs...
+#8 13.17 0 added, 0 removed; done.
+#8 13.17 Running hooks in /etc/ca-certificates/update.d...
+#8 13.18 done.
+#8 DONE 13.3s
+
+#9 [ 4/21] COPY shared ./shared
+#9 DONE 0.1s
+
+#10 [ 5/21] COPY memeforge/src/data ./memeforge/src/data
+#10 DONE 0.0s
+
+#11 [ 6/21] COPY memeforge/src/components/three ./memeforge/src/components/three
+#11 DONE 0.1s
+
+#12 [ 7/21] COPY memeforge/scripts/build-model-versions.mjs ./memeforge/scripts/build-model-versions.mjs
+#12 DONE 0.0s
+
+#13 [ 8/21] COPY memeforge/vendor ./memeforge/vendor
+#13 DONE 0.1s
+
+#14 [ 9/21] WORKDIR /pingblip/web
+#14 DONE 0.0s
+
+#15 [10/21] COPY web/package.json web/package-lock.json ./
+#15 DONE 0.0s
+
+#16 [11/21] COPY web/prisma ./prisma
+#16 DONE 0.0s
+
+#17 [12/21] RUN npm ci --legacy-peer-deps
+#17 31.22 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#17 66.28 
+#17 66.28 > pingblip@1.0.0 postinstall
+#17 66.28 > prisma generate
+#17 66.28 
+#17 68.27 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#17 68.27 For more information, see: https://pris.ly/prisma-config
+#17 68.27 
+#17 68.97 Prisma schema loaded from prisma/schema.prisma
+#17 70.06 ┌─────────────────────────────────────────────────────────┐
+#17 70.06 │  Update available 6.16.2 -> 8.0.0-rc.28                 │
+#17 70.06 │                                                         │
+#17 70.06 │  This is a major update - please follow the guide at    │
+#17 70.06 │  https://pris.ly/d/major-version-upgrade                │
+#17 70.06 │                                                         │
+#17 70.06 │  Run the following to update                            │
+#17 70.06 │    npm i --save-dev prisma@latest                       │
+#17 70.06 │    npm i @prisma/client@latest                          │
+#17 70.06 └─────────────────────────────────────────────────────────┘
+#17 70.07 
+#17 70.07 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 578ms
+#17 70.07 
+#17 70.07 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#17 70.07 
+#17 70.07 Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+#17 70.07 
+#17 70.16 
+#17 70.16 added 423 packages, and audited 425 packages in 1m
+#17 70.16 
+#17 70.16 153 packages are looking for funding
+#17 70.16   run `npm fund` for details
+#17 70.16 
+#17 70.16 found 0 vulnerabilities
+#17 70.16 npm notice
+#17 70.16 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#17 70.16 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#17 70.16 npm notice To update run: npm install -g npm@12.2.1
+#17 70.16 npm notice
+#17 DONE 71.5s
+
+#18 [13/21] COPY web .
+#18 DONE 1.1s
+
+#19 [14/21] RUN rm -rf public/models public/fonts public/dex
+#19 DONE 0.7s
+
+#20 [15/21] COPY memeforge/public/fonts ./public/fonts
+#20 DONE 0.1s
+
+#21 [16/21] COPY memeforge/public/models ./public/models
+#21 DONE 1.6s
+
+#22 [17/21] COPY world/public/dex ./public/dex
+#22 DONE 0.4s
+
+#23 [18/21] RUN ln -sfn /pingblip/web/node_modules /pingblip/node_modules
+#23 DONE 0.8s
+
+#24 [19/21] RUN npx prisma generate && npm run build
+#24 3.394 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#24 3.394 For more information, see: https://pris.ly/prisma-config
+#24 3.394 
+#24 4.259 Prisma schema loaded from prisma/schema.prisma
+#24 5.284 
+#24 5.284 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 487ms
+#24 5.284 
+#24 5.284 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#24 5.284 
+#24 5.284 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+#24 5.284 
+#24 5.642 
+#24 5.642 > pingblip@1.0.0 prebuild
+#24 5.642 > npm run test:dependency-security && node scripts/link-assets.mjs
+#24 5.642 
+#24 5.940 
+#24 5.940 > pingblip@1.0.0 test:dependency-security
+#24 5.940 > node ../memeforge/vendor/next-root-glob/test.cjs
+#24 5.940 
+#24 6.278 TAP version 13
+#24 6.281 # Subtest: Next uses the adapter and no vulnerable glob packages remain
+#24 6.284 ok 1 - Next uses the adapter and no vulnerable glob packages remain
+#24 6.284   ---
+#24 6.284   duration_ms: 16.835696
+#24 6.284   type: 'test'
+#24 6.284   ...
+#24 6.285 # Subtest: Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+#24 6.286 ok 2 - Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+#24 6.286   ---
+#24 6.286   duration_ms: 52.717752
+#24 6.286   type: 'test'
+#24 6.286   ...
+#24 6.287 # Subtest: deeply nested brace and parenthesis patterns do not exhaust the stack
+#24 6.287 ok 3 - deeply nested brace and parenthesis patterns do not exhaust the stack
+#24 6.288   ---
+#24 6.288   duration_ms: 123.968743
+#24 6.288   type: 'test'
+#24 6.288   ...
+#24 6.290 1..3
+#24 6.290 # tests 3
+#24 6.290 # suites 0
+#24 6.291 # pass 3
+#24 6.291 # fail 0
+#24 6.291 # cancelled 0
+#24 6.291 # skipped 0
+#24 6.291 # todo 0
+#24 6.292 # duration_ms 219.575611
+#24 6.409 link-assets: public/{models,fonts,dex} already linked
+#24 7.376 model versions: 80 sculpts, none changed
+#24 7.407 
+#24 7.407 > pingblip@1.0.0 build
+#24 7.407 > prisma generate && next build
+#24 7.407 
+#24 9.463 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#24 9.463 For more information, see: https://pris.ly/prisma-config
+#24 9.463 
+#24 10.15 Prisma schema loaded from prisma/schema.prisma
+#24 11.17 
+#24 11.17 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 580ms
+#24 11.17 
+#24 11.17 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#24 11.17 
+#24 11.17 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+#24 11.17 
+#24 13.48 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#24 13.48 This information is used to shape Next.js' roadmap and prioritize features.
+#24 13.48 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#24 13.48 https://nextjs.org/telemetry
+#24 13.48 
+#24 13.72    ▲ Next.js 15.5.28
+#24 13.72 
+#24 14.02    Creating an optimized production build ...
+#24 84.07  ✓ Compiled successfully in 70s
+#24 84.12    Linting and checking validity of types ...
+#24 99.65 
+#24 99.65 ./src/app/api/live/route.ts
+#24 99.65 2:22  Warning: 'requirePlayer' is defined but never used.  @typescript-eslint/no-unused-vars
+#24 99.65 
+#24 99.65 ./src/app/api/shelf/route.ts
+#24 99.65 4:22  Warning: 'requirePlayer' is defined but never used.  @typescript-eslint/no-unused-vars
+#24 99.65 
+#24 99.65 ./src/app/proof/[id]/opengraph-image.tsx
+#24 99.65 151:14  Warning: Unused eslint-disable directive (no problems were reported from '@next/next/no-img-element').
+#24 99.65 
+#24 99.65 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+#24 114.5    Collecting page data ...
+#24 126.5    Generating static pages (0/196) ...
+#24 131.7    Generating static pages (49/196) 
+#24 134.4    Generating static pages (98/196) 
+#24 145.8    Generating static pages (147/196) 
+#24 155.5  ✓ Generating static pages (196/196)
+#24 158.4    Finalizing page optimization ...
+#24 158.4    Collecting build traces ...
+#24 172.1 
+#24 172.1 Route (app)                                   Size  First Load JS
+#24 172.1 ┌ ○ /                                      46.6 kB         682 kB
+#24 172.1 ├ ○ /_not-found                              225 B         103 kB
+#24 172.1 ├ ○ /admin                                 5.54 kB         112 kB
+#24 172.1 ├ ƒ /admin/funnel                            165 B         106 kB
+#24 172.1 ├ ƒ /api/admin/funnel                        225 B         103 kB
+#24 172.1 ├ ƒ /api/admin/overview                      225 B         103 kB
+#24 172.1 ├ ƒ /api/admin/players                       225 B         103 kB
+#24 172.1 ├ ƒ /api/admin/players/[id]                  225 B         103 kB
+#24 172.1 ├ ƒ /api/auth/admin                          225 B         103 kB
+#24 172.1 ├ ƒ /api/auth/admin/logout                   225 B         103 kB
+#24 172.1 ├ ƒ /api/bench                               225 B         103 kB
+#24 172.1 ├ ƒ /api/catch                               225 B         103 kB
+#24 172.1 ├ ƒ /api/credits                             225 B         103 kB
+#24 172.1 ├ ƒ /api/egg                                 225 B         103 kB
+#24 172.1 ├ ƒ /api/events                              225 B         103 kB
+#24 172.1 ├ ƒ /api/feed                                225 B         103 kB
+#24 172.1 ├ ƒ /api/finale                              225 B         103 kB
+#24 172.1 ├ ƒ /api/hatch                               225 B         103 kB
+#24 172.1 ├ ƒ /api/live                                225 B         103 kB
+#24 172.1 ├ ƒ /api/merkle                              225 B         103 kB
+#24 172.1 ├ ƒ /api/proof/[id]                          225 B         103 kB
+#24 172.1 ├ ƒ /api/scan                                225 B         103 kB
+#24 172.1 ├ ƒ /api/session                             225 B         103 kB
+#24 172.1 ├ ƒ /api/shelf                               225 B         103 kB
+#24 172.1 ├ ƒ /api/station                             225 B         103 kB
+#24 172.1 ├ ƒ /api/watch                               225 B         103 kB
+#24 172.1 ├ ○ /bench                                 7.93 kB         647 kB
+#24 172.1 ├ ○ /clip                                  1.07 kB         537 kB
+#24 172.1 ├ ○ /finale                                1.47 kB         634 kB
+#24 172.1 ├ ƒ /go/[video]                              225 B         103 kB
+#24 172.1 ├ ○ /guide                                 1.38 kB         209 kB
+#24 172.1 ├ ○ /how                                   1.73 kB         210 kB
+#24 172.1 ├ ○ /look                                  1.35 kB         634 kB
+#24 172.1 ├ ○ /map                                    4.6 kB         637 kB
+#24 172.1 ├ ƒ /proof/[id]                            2.08 kB         204 kB
+#24 172.1 ├ ƒ /proof/[id]/opengraph-image              225 B         103 kB
+#24 172.1 ├ ○ /robots.txt                              225 B         103 kB
+#24 172.1 ├ ○ /rules                                   736 B         203 kB
+#24 172.1 ├ ● /s/[species]                             936 B         104 kB
+#24 172.1 ├   ├ /s/goblin-frog
+#24 172.1 ├   ├ /s/dumpster-raccoon
+#24 172.1 ├   ├ /s/chonk-capy
+#24 172.1 ├   └ [+77 more paths]
+#24 172.1 ├ ● /s/[species]/opengraph-image             225 B         103 kB
+#24 172.1 ├   ├ /s/goblin-frog/opengraph-image
+#24 172.1 ├   ├ /s/dumpster-raccoon/opengraph-image
+#24 172.1 ├   ├ /s/chonk-capy/opengraph-image
+#24 172.1 ├   └ [+77 more paths]
+#24 172.1 ├ ○ /shelf                                 1.18 kB         203 kB
+#24 172.1 └ ○ /stations                              2.84 kB         208 kB
+#24 172.1 + First Load JS shared by all               103 kB
+#24 172.1   ├ chunks/1255-dc3ddf72a1dc71a7.js        46.6 kB
+#24 172.1   ├ chunks/4bd1b696-f785427dddbba9fb.js    54.2 kB
+#24 172.1   └ other shared chunks (total)            1.93 kB
+#24 172.1 
+#24 172.1 
+#24 172.1 ○  (Static)   prerendered as static content
+#24 172.1 ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+#24 172.1 ƒ  (Dynamic)  server-rendered on demand
+#24 172.1 
+#24 DONE 172.7s
+
+#25 [20/21] RUN chmod +x docker/entrypoint.sh
+#25 DONE 0.7s
+
+#26 [21/21] RUN chown -R node:node /pingblip
+#26 DONE 189.2s
+
+#27 exporting to image
+#27 exporting layers
+#27 exporting layers 194.5s done
+#27 exporting manifest sha256:d8d51d17088463de0204fd9054781f0850137796b68367962a63eb3793fad4fc
+#27 exporting manifest sha256:d8d51d17088463de0204fd9054781f0850137796b68367962a63eb3793fad4fc 0.0s done
+#27 exporting config sha256:f08b8d0d1f8a0b79ee03a6926140cdd194582ade0e4d39d7bff33de6f9b72f69 0.0s done
+#27 exporting attestation manifest sha256:4509b2051cee0b2d3d2bf7fee7b03258b460013965b0a9057db6cef4b85e4d2a
+#27 exporting attestation manifest sha256:4509b2051cee0b2d3d2bf7fee7b03258b460013965b0a9057db6cef4b85e4d2a 0.1s done
+#27 exporting manifest list sha256:a3fbf9146ac1b74a628ec0570ea1801f2e777496dfe7351021cd8abcff0851d2 0.1s done
+#27 naming to docker.io/library/pingblip-pingblip:latest
+#27 naming to docker.io/library/pingblip-pingblip:latest 0.0s done
+#27 unpacking to docker.io/library/pingblip-pingblip:latest
+#27 unpacking to docker.io/library/pingblip-pingblip:latest 93.3s done
+#27 DONE 288.1s
+
+#28 resolving provenance for metadata file
+#28 DONE 0.1s
+ Image pingblip-pingblip Built 
+BUILD_OK pingblip
+
+BUILD_START world
+ Image pingblip-world Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 726B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.16kB done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/node:22.23.4-bookworm-slim
+#3 DONE 0.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 566B done
+#4 DONE 0.0s
+
+#5 [ 1/12] FROM docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#5 resolve docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da 0.0s done
+#5 DONE 0.0s
+
+#6 [ 2/12] WORKDIR /pingblip
+#6 CACHED
+
+#7 [ 3/12] RUN apt-get update   && apt-get install -y --no-install-recommends ca-certificates   && rm -rf /var/lib/apt/lists/*
+#7 ...
+
+#8 [internal] load build context
+#8 transferring context: 743.80kB 0.3s done
+#8 DONE 0.4s
+
+#7 [ 3/12] RUN apt-get update   && apt-get install -y --no-install-recommends ca-certificates   && rm -rf /var/lib/apt/lists/*
+#7 1.028 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 1.047 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 1.047 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#7 1.242 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#7 1.428 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#7 1.554 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [358 kB]
+#7 3.126 Fetched 9397 kB in 2s (4423 kB/s)
+#7 3.126 Reading package lists...
+#7 4.452 Reading package lists...
+#7 5.711 Building dependency tree...
+#7 6.029 Reading state information...
+#7 6.524 The following additional packages will be installed:
+#7 6.524   libssl3 openssl
+#7 6.590 The following NEW packages will be installed:
+#7 6.599   ca-certificates libssl3 openssl
+#7 6.669 0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
+#7 6.669 Need to get 3643 kB of archives.
+#7 6.669 After this operation, 8955 kB of additional disk space will be used.
+#7 6.669 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libssl3 amd64 3.0.22-1~deb12u2 [2040 kB]
+#7 6.736 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 openssl amd64 3.0.22-1~deb12u2 [1442 kB]
+#7 6.766 Get:3 http://deb.debian.org/debian-security bookworm-security/main amd64 ca-certificates all 20250419~deb12u2 [161 kB]
+#7 7.069 debconf: delaying package configuration, since apt-utils is not installed
+#7 7.142 Fetched 3643 kB in 0s (27.0 MB/s)
+#7 7.197 Selecting previously unselected package libssl3:amd64.
+#7 7.197 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6096 files and directories currently installed.)
+#7 7.252 Preparing to unpack .../libssl3_3.0.22-1~deb12u2_amd64.deb ...
+#7 7.258 Unpacking libssl3:amd64 (3.0.22-1~deb12u2) ...
+#7 7.513 Selecting previously unselected package openssl.
+#7 7.515 Preparing to unpack .../openssl_3.0.22-1~deb12u2_amd64.deb ...
+#7 7.520 Unpacking openssl (3.0.22-1~deb12u2) ...
+#7 7.700 Selecting previously unselected package ca-certificates.
+#7 7.702 Preparing to unpack .../ca-certificates_20250419~deb12u2_all.deb ...
+#7 7.706 Unpacking ca-certificates (20250419~deb12u2) ...
+#7 7.844 Setting up libssl3:amd64 (3.0.22-1~deb12u2) ...
+#7 7.863 Setting up openssl (3.0.22-1~deb12u2) ...
+#7 7.881 Setting up ca-certificates (20250419~deb12u2) ...
+#7 8.081 debconf: unable to initialize frontend: Dialog
+#7 8.081 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#7 8.081 debconf: falling back to frontend: Readline
+#7 8.085 debconf: unable to initialize frontend: Readline
+#7 8.085 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#7 8.085 debconf: falling back to frontend: Teletype
+#7 9.252 Updating certificates in /etc/ssl/certs...
+#7 11.05 148 added, 0 removed; done.
+#7 11.11 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#7 11.26 Processing triggers for ca-certificates (20250419~deb12u2) ...
+#7 11.29 Updating certificates in /etc/ssl/certs...
+#7 12.61 0 added, 0 removed; done.
+#7 12.61 Running hooks in /etc/ca-certificates/update.d...
+#7 12.61 done.
+#7 DONE 12.7s
+
+#9 [ 4/12] COPY shared ./shared
+#9 DONE 0.1s
+
+#10 [ 5/12] COPY memeforge/src/data ./memeforge/src/data
+#10 DONE 0.1s
+
+#11 [ 6/12] WORKDIR /pingblip/world
+#11 DONE 0.0s
+
+#12 [ 7/12] COPY world/package.json world/package-lock.json* ./
+#12 DONE 0.1s
+
+#13 [ 8/12] RUN npm install --legacy-peer-deps
+#13 36.59 
+#13 36.59 added 53 packages, and audited 54 packages in 36s
+#13 36.59 
+#13 36.59 13 packages are looking for funding
+#13 36.59   run `npm fund` for details
+#13 36.59 
+#13 36.59 found 0 vulnerabilities
+#13 36.59 npm notice
+#13 36.59 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#13 36.59 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#13 36.59 npm notice To update run: npm install -g npm@12.2.1
+#13 36.59 npm notice
+#13 DONE 38.1s
+
+#14 [ 9/12] COPY world .
+#14 DONE 0.5s
+
+#15 [10/12] COPY memeforge/public/fonts ./public/fonts
+#15 DONE 0.1s
+
+#16 [11/12] RUN ln -sfn /pingblip/world/node_modules /pingblip/node_modules
+#16 DONE 0.9s
+
+#17 [12/12] RUN npm run build
+#17 1.061 
+#17 1.061 > pingblip-world@1.0.0 build
+#17 1.061 > next build
+#17 1.061 
+#17 3.203 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#17 3.203 This information is used to shape Next.js' roadmap and prioritize features.
+#17 3.203 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#17 3.203 https://nextjs.org/telemetry
+#17 3.203 
+#17 3.450    ▲ Next.js 15.5.28
+#17 3.451 
+#17 3.704    Creating an optimized production build ...
+#17 36.25  ✓ Compiled successfully in 25.8s
+#17 36.26    Linting and checking validity of types ...
+#17 48.25    Collecting page data ...
+#17 53.48    Generating static pages (0/198) ...
+#17 56.56    Generating static pages (49/198) 
+#17 63.01    Generating static pages (98/198) 
+#17 72.70    Generating static pages (148/198) 
+#17 91.87  ✓ Generating static pages (198/198)
+#17 91.96    Finalizing page optimization ...
+#17 91.96    Collecting build traces ...
+#17 92.02 
+#17 92.05 Route (app)                                       Size  First Load JS
+#17 92.05 ┌ ƒ /                                          2.62 kB         109 kB
+#17 92.05 ├ ƒ /_not-found                                  136 B         103 kB
+#17 92.05 ├ ƒ /forge                                       729 B         107 kB
+#17 92.05 ├ ƒ /forge/how                                   729 B         107 kB
+#17 92.05 ├ ƒ /forge/packs                                 711 B         107 kB
+#17 92.05 ├ ƒ /guide                                       729 B         107 kB
+#17 92.05 ├ ○ /icon.svg                                      0 B            0 B
+#17 92.05 ├ ○ /opengraph-image                             136 B         103 kB
+#17 92.05 ├ ƒ /packs                                       729 B         107 kB
+#17 92.05 ├ ● /packs/[id]                                  729 B         107 kB
+#17 92.05 ├   ├ /packs/alley-beasts
+#17 92.05 ├   ├ /packs/candle-pit
+#17 92.05 ├   ├ /packs/snack-cult
+#17 92.05 ├   └ [+7 more paths]
+#17 92.05 ├ ƒ /proof                                       711 B         107 kB
+#17 92.05 ├ ○ /robots.txt                                  136 B         103 kB
+#17 92.05 ├ ƒ /rules                                       711 B         107 kB
+#17 92.05 ├ ƒ /shelf                                     1.88 kB         108 kB
+#17 92.05 ├ ● /shelf/[id]                                  729 B         107 kB
+#17 92.05 ├   ├ /shelf/goblin-frog
+#17 92.05 ├   ├ /shelf/dumpster-raccoon
+#17 92.05 ├   ├ /shelf/chonk-capy
+#17 92.05 ├   └ [+77 more paths]
+#17 92.05 ├ ● /shelf/[id]/opengraph-image                  136 B         103 kB
+#17 92.05 ├   ├ /shelf/goblin-frog/opengraph-image
+#17 92.05 ├   ├ /shelf/dumpster-raccoon/opengraph-image
+#17 92.05 ├   ├ /shelf/chonk-capy/opengraph-image
+#17 92.05 ├   └ [+77 more paths]
+#17 92.05 ├ ○ /sitemap.xml                                 136 B         103 kB
+#17 92.05 ├ ƒ /stations                                    729 B         107 kB
+#17 92.05 ├ ● /stations/[id]                               729 B         107 kB
+#17 92.05 ├   ├ /stations/gaia
+#17 92.05 ├   ├ /stations/atlas
+#17 92.05 ├   ├ /stations/sortes
+#17 92.05 ├   └ [+7 more paths]
+#17 92.05 └ ƒ /world                                     1.15 kB         107 kB
+#17 92.05 + First Load JS shared by all                   103 kB
+#17 92.05   ├ chunks/255-b1e2483a7e02feee.js             46.6 kB
+#17 92.05   ├ chunks/4bd1b696-c023c6e3521b1417.js        54.2 kB
+#17 92.05   └ other shared chunks (total)                1.92 kB
+#17 92.05 
+#17 92.05 
+#17 92.05 ƒ Middleware                                   34.3 kB
+#17 92.05 
+#17 92.05 ○  (Static)   prerendered as static content
+#17 92.05 ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+#17 92.05 ƒ  (Dynamic)  server-rendered on demand
+#17 92.05 
+#17 DONE 92.5s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 72.7s done
+#18 exporting manifest sha256:3657445bd07d24f0f760b16fbbc134d9c4f1a13bfb4ffcbf46fbfd029dac468d 0.0s done
+#18 exporting config sha256:86f766e9a1c90f9a17162fb66330cdae4da232c6952ab6d16d130cc8cd6850bb 0.0s done
+#18 exporting attestation manifest sha256:0e1f1e775b7cb680285acc81b3dcbf60bf01229ee1e1833e60710a337cc36541
+#18 exporting attestation manifest sha256:0e1f1e775b7cb680285acc81b3dcbf60bf01229ee1e1833e60710a337cc36541 0.1s done
+#18 exporting manifest list sha256:507f4cae897f5ba002b7be06f0e2cce170768fb080f14d202accb18cc5a81f45 0.0s done
+#18 naming to docker.io/library/pingblip-world:latest done
+#18 unpacking to docker.io/library/pingblip-world:latest
+#18 unpacking to docker.io/library/pingblip-world:latest 19.4s done
+#18 DONE 92.4s
+
+#19 resolving provenance for metadata file
+#19 DONE 0.0s
+ Image pingblip-world Built 
+BUILD_OK world
+
+RECREATE_APPLICATIONS
+time="2026-10-28T12:38:37-04:00" level=warning msg="volume \"blip_pgdata\" already exists but was created for project \"blip\" (expected \"pingblip\"). Use `external: true` to use an existing volume"
+time="2026-10-28T12:38:37-04:00" level=warning msg="volume \"blip_forge-data\" already exists but was created for project \"blip\" (expected \"pingblip\"). Use `external: true` to use an existing volume"
+ Container pingblip-forge-1 Recreate 
+ Container pingblip-pingblip-1 Recreate 
+ Container pingblip-world-1 Recreate 
+ Container pingblip-world-1 Recreated 
+ Container pingblip-forge-1 Recreated 
+ Container pingblip-pingblip-1 Recreated 
+ Container pingblip-forge-1 Starting 
+ Container pingblip-pingblip-1 Starting 
+ Container pingblip-world-1 Starting 
+ Container pingblip-forge-1 Started 
+ Container pingblip-pingblip-1 Started 
+ Container pingblip-world-1 Started 
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+HEALTH_OK 3080/
+HEALTH_OK 3081/forge
+HEALTH_OK 3082/
+{"Command":"\"./docker/entrypoint…\"","CreatedAt":"2026-10-28 12:38:37 -0400 EDT","Engine":"","ExitCode":0,"Health":"","ID":"b57092c0f6c2","Image":"pingblip-forge","Labels":"com.docker.compose.image=sha256:f49d163a9628de81ed2cad4abb64420d39db3280179ab3bd5bea68c2558660fc,com.docker.compose.oneoff=False,com.docker.compose.project=pingblip,com.docker.compose.project.config_files=/opt/pingblip/docker-compose.yml,com.docker.compose.project.working_dir=/opt/pingblip,com.docker.compose.version=5.5.1,com.docker.compose.config-hash=41a4df1a02bd44897780ab06f98164e31af3e527e776fac45273bc7dcdc41bcb,com.docker.compose.replace=forge-1,com.docker.compose.service=forge,com.docker.compose.container-number=1,com.docker.compose.depends_on=","LocalVolumes":"1","Mounts":"blip_forge-data","Name":"pingblip-forge-1","Names":"pingblip-forge-1","Networks":"pingblip_default","Ports":"127.0.0.1:3081-\u003e3000/tcp","Project":"pingblip","Publishers":[{"URL":"127.0.0.1","TargetPort":3000,"PublishedPort":3081,"Protocol":"tcp"}],"RunningFor":"21 seconds ago","Service":"forge","Size":"0B","State":"running","Status":"Up 17 seconds"}
+{"Command":"\"./docker/entrypoint…\"","CreatedAt":"2026-10-28 12:38:37 -0400 EDT","Engine":"","ExitCode":0,"Health":"","ID":"68350e50cccf","Image":"pingblip-pingblip","Labels":"com.docker.compose.depends_on=,com.docker.compose.project=pingblip,com.docker.compose.service=pingblip,com.docker.compose.version=5.5.1,com.docker.compose.config-hash=dcb197f93ebea617ef7aa74dd7a8599fac5174748ef06dd6a3b2f3b661de57f4,com.docker.compose.image=sha256:d8d51d17088463de0204fd9054781f0850137796b68367962a63eb3793fad4fc,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/opt/pingblip/docker-compose.yml,com.docker.compose.project.working_dir=/opt/pingblip,com.docker.compose.replace=pingblip-1,com.docker.compose.container-number=1","LocalVolumes":"0","Mounts":"/var/log/nginx","Name":"pingblip-pingblip-1","Names":"pingblip-pingblip-1","Networks":"pingblip_default","Ports":"127.0.0.1:3080-\u003e3000/tcp","Project":"pingblip","Publishers":[{"URL":"127.0.0.1","TargetPort":3000,"PublishedPort":3080,"Protocol":"tcp"}],"RunningFor":"21 seconds ago","Service":"pingblip","Size":"0B","State":"running","Status":"Up 16 seconds"}
+{"Command":"\"docker-entrypoint.s…\"","CreatedAt":"2026-10-02 07:32:10 -0400 EDT","Engine":"","ExitCode":0,"Health":"healthy","ID":"ea9069b01bbb","Image":"postgres:16-alpine","Labels":"com.docker.compose.container-number=1,com.docker.compose.image=sha256:075f7ba66bc9b3ce7d6b8b635208ff61cd7cf1a67d71ec530eec5d7ae0cbe571,com.docker.compose.oneoff=False,com.docker.compose.project=pingblip,com.docker.compose.project.working_dir=/opt/pingblip,com.docker.compose.replace=postgres-1,com.docker.compose.service=postgres,com.docker.compose.config-hash=b8c2641d28a32eb10f65635ce17bed0c8177da6e5df51b467cd9c77949bc0a74,com.docker.compose.depends_on=,com.docker.compose.project.config_files=/opt/pingblip/docker-compose.yml,com.docker.compose.version=5.5.1","LocalVolumes":"1","Mounts":"/opt/pingblip/…,blip_pgdata","Name":"pingblip-postgres-1","Names":"pingblip-postgres-1","Networks":"pingblip_default","Ports":"127.0.0.1:5434-\u003e5432/tcp","Project":"pingblip","Publishers":[{"URL":"127.0.0.1","TargetPort":5432,"PublishedPort":5434,"Protocol":"tcp"}],"RunningFor":"3 weeks ago","Service":"postgres","Size":"0B","State":"running","Status":"Up 3 weeks (healthy)"}
+{"Command":"\"docker-entrypoint.s…\"","CreatedAt":"2026-10-28 12:38:37 -0400 EDT","Engine":"","ExitCode":0,"Health":"","ID":"54bcd11c661d","Image":"pingblip-world","Labels":"com.docker.compose.project=pingblip,com.docker.compose.replace=world-1,com.docker.compose.version=5.5.1,com.docker.compose.config-hash=518f2ff684a93760ea0af847ac7deace3410e6b95204c93ece38a52496c0cbc6,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/opt/pingblip/docker-compose.yml,com.docker.compose.project.working_dir=/opt/pingblip,com.docker.compose.service=world,com.docker.compose.container-number=1,com.docker.compose.depends_on=,com.docker.compose.image=sha256:3657445bd07d24f0f760b16fbbc134d9c4f1a13bfb4ffcbf46fbfd029dac468d","LocalVolumes":"0","Mounts":"","Name":"pingblip-world-1","Names":"pingblip-world-1","Networks":"pingblip_default","Ports":"127.0.0.1:3082-\u003e3000/tcp","Project":"pingblip","Publishers":[{"URL":"127.0.0.1","TargetPort":3000,"PublishedPort":3082,"Protocol":"tcp"}],"RunningFor":"21 seconds ago","Service":"world","Size":"0B","State":"running","Status":"Up 16 seconds"}
+RUNNING /pingblip-forge-1 pingblip-forge sha256:140a0c56f285345b53a3fba6764bbab6dfef0f594110bf1406fd55c6d71107ac running
+RUNNING /pingblip-pingblip-1 pingblip-pingblip sha256:a3fbf9146ac1b74a628ec0570ea1801f2e777496dfe7351021cd8abcff0851d2 running
+RUNNING /pingblip-world-1 pingblip-world sha256:507f4cae897f5ba002b7be06f0e2cce170768fb080f14d202accb18cc5a81f45 running
+DEPLOY_OK adea1f8a197d4e9badfed559b960518bd1449cf4

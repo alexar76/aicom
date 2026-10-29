@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 import uuid
@@ -111,6 +112,19 @@ def list_traces(limit: int = 20) -> list[dict[str, Any]]:
 EXECUTOR_FAULTS = frozenset({"federation_not_configured", "federation_url_unsafe", "federation_unreachable"})
 
 
+def result_sha256(result: Any) -> str:
+    """Commit to a response without putting its contents in the public signed bill.
+
+    Canonical form: UTF-8 JSON, keys sorted recursively, compact separators,
+    ensure_ascii=True and allow_nan=False. This is the existing pipeline signing
+    JSON form, with non-finite numbers refused instead of signed as invalid JSON.
+    The digest covers the entire result, including any nested ``signature`` field.
+    """
+    encoded = json.dumps(result, sort_keys=True, separators=(",", ":"),
+                         ensure_ascii=True, allow_nan=False).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def hosted_here(product_id: str, capability_id: str) -> bool:
     """Whether this factory serves the capability itself.
 
@@ -138,6 +152,7 @@ async def execute_pipeline(
     authorization: str | None = None,
     llm_router: Any = None,
     sandbox_visitor: str | None = None,
+    continue_on_error: bool = False,
 ) -> dict[str, Any]:
     if channel_id:
         ch = get_channel(channel_id)
@@ -165,12 +180,23 @@ async def execute_pipeline(
     context: dict[str, Any] = {}
     # Per-node results, so `input_from` can name the parent it means (see below).
     results: dict[str, dict[str, Any]] = {}
+    # Full responses are returned only to this caller, never stored in public traces.
+    step_results: dict[str, dict[str, Any]] = {}
+    unsuccessful: set[str] = set()
 
     # Topological order by depends_on ids
     by_id: dict[str, dict[str, Any]] = {}
     for i, n in enumerate(nodes):
         nid = n.get("id") or f"n{i}"
         by_id[nid] = n
+
+    if continue_on_error:
+        # Continuation requires a real DAG: the legacy best-effort ordering must not
+        # turn an unknown or cyclic dependency into an independent paid call.
+        if len(by_id) != len(nodes) or any(
+            d not in by_id for n in nodes for d in (n.get("depends_on") or [])
+        ):
+            return {"error": "invalid_graph", "problems": ["duplicate ids or unknown dependencies"]}
 
     done: set[str] = set()
     ordered: list[tuple[str, dict[str, Any]]] = []
@@ -185,6 +211,8 @@ async def execute_pipeline(
                 done.add(nid)
                 progressed = True
         if not progressed:
+            if continue_on_error:
+                return {"error": "invalid_graph", "problems": ["the graph contains a cycle"]}
             ordered = list(by_id.items())
             break
 
@@ -192,6 +220,17 @@ async def execute_pipeline(
         pid = str(node.get("product_id") or "")
         cid = str(node.get("capability_id") or "")
         inp = dict(node.get("input") or {})
+        blocked_by = sorted(unsuccessful.intersection(node.get("depends_on") or []))
+        source = node.get("input_from")
+        if source in unsuccessful and source not in blocked_by:
+            blocked_by.append(source)
+        if continue_on_error and blocked_by:
+            unsuccessful.add(nid)
+            steps_out.append({"id": nid, "product_id": pid, "capability_id": cid,
+                              "status": "skipped", "status_code": 0, "success": False,
+                              "price_usd": 0, "receipt_nonce": None,
+                              "error": "dependency_failed", "blocked_by": blocked_by})
+            continue
         # `input_from` is declared as a node id (a 64-char string), and was implemented as
         # a boolean: any truthy value injected `context`, which held whichever hop ran
         # last. In a chain those are the same thing. In a DAG they are not — a node with
@@ -200,7 +239,6 @@ async def execute_pipeline(
         # feeding one hop data from the wrong one. Naming the parent makes the wiring say
         # what it means; an unrecognised value keeps the old last-result behaviour so
         # existing callers (and their boolean-ish flags) are unaffected.
-        source = node.get("input_from")
         if source:
             upstream = results.get(str(source)) if str(source) in results else context
             if upstream:
@@ -225,6 +263,9 @@ async def execute_pipeline(
                 "receipt_nonce": None,
                 "error": f"unresolved reference: {exc}",
             })
+            unsuccessful.add(nid)
+            if continue_on_error:
+                continue
             break
 
         # A hop this factory does not host goes to the hub, carrying the VISITOR's trial
@@ -251,24 +292,33 @@ async def execute_pipeline(
                 sandbox_visitor=sandbox_visitor,
                 payment_channel=channel_id,
             )
+        result = body.get("result", body.get("output", {}))
+        step_results[nid] = {"result": result}
+        if body.get("receipt") is not None:
+            step_results[nid]["receipt"] = body["receipt"]
+        success = status == 200 and body.get("success", body.get("ok", False)) is True
         step = {
             "id": nid,
             "product_id": pid,
             "capability_id": cid,
             "status_code": status,
-            "success": body.get("success", status == 200),
+            "success": success,
             "price_usd": body.get("price_usd"),
             "receipt_nonce": (body.get("receipt") or {}).get("nonce"),
+            "result_sha256": result_sha256(result),
             # Signed evidence must not claim the wrong buyer: a hop the visitor's free
             # trial covered is not a purchase by this factory.
             "payer": payer_of(
                 local=is_local, sandbox_visitor=sandbox_visitor, payment_channel=channel_id
             ),
         }
-        if status != 200 or not body.get("success"):
-            step["error"] = str(body.get("error") or "")[:80]
+        if not success:
+            step["error"] = str(body.get("error") or body.get("detail") or f"HTTP {status}")[:500]
         steps_out.append(step)
-        if status != 200 or not body.get("success"):
+        if not success:
+            unsuccessful.add(nid)
+            if continue_on_error:
+                continue
             break
         total_usd += float(body.get("price_usd") or 0)
         context = body.get("result") or {}
@@ -278,7 +328,7 @@ async def execute_pipeline(
     # never the whole graph's. Each successful upstream hop already settled its own
     # leg independently, so a dispute (and any resulting slash) must target only the
     # at-fault provider — this signed block is the portable evidence for that.
-    failed_step = next((s for s in steps_out if not s["success"]), None)
+    failed_step = next((s for s in steps_out if not s["success"] and s.get("status") != "skipped"), None)
     blame = None
     if failed_step is not None and failed_step.get("error") in EXECUTOR_FAULTS:
         # The provider never saw this hop: the fault is this executor's, and no provider's.
@@ -309,6 +359,20 @@ async def execute_pipeline(
             "not_executed": [nid for nid, _ in ordered if nid not in {s["id"] for s in steps_out}],
         }
 
+    if continue_on_error and blame is not None:
+        # Keep the first-failure fields for existing consumers, and account for every
+        # independent failed check rather than silently clearing later failures.
+        blame["failures"] = [
+            {"id": s["id"], "product_id": s["product_id"],
+             "capability_id": s["capability_id"], "status_code": s["status_code"],
+             "kind": "executor" if s.get("error") in EXECUTOR_FAULTS else
+                     "input" if "result_sha256" not in s else "provider"}
+            for s in steps_out if not s["success"] and s.get("status") != "skipped"
+        ]
+        provider_attempts = {s["id"] for s in steps_out if "result_sha256" in s
+                             and s.get("error") not in EXECUTOR_FAULTS}
+        blame["not_executed"] = [nid for nid, _ in ordered if nid not in provider_attempts]
+
     bom = {
         "trace_id": trace_id,
         "channel_id": channel_id,
@@ -320,7 +384,10 @@ async def execute_pipeline(
     }
     if otel_trace_id:
         bom["otel_trace_id"] = otel_trace_id
+    if continue_on_error:
+        bom["continue_on_error"] = True
     bom["signature"] = sign_payload(bom)
     _save_trace(trace_id, bom)
     append_stat({"type": "pipeline", "trace_id": trace_id, "steps": len(steps_out), "total_usd": total_usd})
-    return {"trace_id": trace_id, "bill_of_materials": bom, "final_result": context, "protocol_version": "v1"}
+    return {"trace_id": trace_id, "bill_of_materials": bom, "final_result": context,
+            "step_results": step_results, "protocol_version": "v1"}

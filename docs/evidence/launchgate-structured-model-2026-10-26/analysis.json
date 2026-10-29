@@ -1,0 +1,216 @@
+{
+  "schema": "structured-live-analysis/1",
+  "scope": "Known saved contexts and separately synthetic invalid initial seeds; changed output contract/catalog, not a format-only causal ablation or independent holdout.",
+  "trajectories": 160,
+  "freshModelCalls": 160,
+  "apiErrors": [],
+  "reportedModels": {
+    "deepseek-flash": 160
+  },
+  "groups": {
+    "natural": {
+      "trajectories": 96,
+      "modelCalls": 96,
+      "firstValid": 96,
+      "firstInvalid": 0,
+      "delivered": 96,
+      "CtoDSubstitution": 0,
+      "formerlyContradicted": 32,
+      "formerlyContradictedFirstValid": 32
+    },
+    "controlled_C": {
+      "trajectories": 32,
+      "modelCalls": 32,
+      "afterOneRepairValid": 32,
+      "afterSecondRepairValid": 0,
+      "delivered": 32,
+      "CtoDSubstitution": 0
+    },
+    "controlled_D": {
+      "trajectories": 32,
+      "modelCalls": 32,
+      "afterOneRepairValid": 32,
+      "afterSecondRepairValid": 0,
+      "delivered": 32,
+      "CtoDSubstitution": 0
+    }
+  },
+  "freshProposalDiagnostics": {
+    "freshProposals": 160,
+    "admitsC": 0,
+    "admitsD": 0,
+    "nonParseableOrDuplicate": 0,
+    "extraFieldProposals": 0
+  },
+  "predictions": {
+    "naturalFirstAtLeast80of96": {
+      "observed": 96,
+      "threshold": 80,
+      "met": true
+    },
+    "controlledFinalAtLeast48of64": {
+      "observed": 64,
+      "threshold": 48,
+      "met": true
+    }
+  },
+  "intervals": {
+    "method": "Wilson 95% per-trajectory descriptive only; repetitions share twelve contexts, not independent task population inference.",
+    "naturalFirst": [
+      0.9615244121423243,
+      1.0
+    ],
+    "controlledFinal": [
+      0.9433759402071946,
+      1.0
+    ]
+  },
+  "byInitialContext": [
+    {
+      "group": "controlled_C",
+      "pair_id": "16cd5bd384d46b96543bbdb9",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "controlled_C",
+      "pair_id": "74f864750d11540c67eee5f6",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "controlled_C",
+      "pair_id": "dd3a55f7b0e448fc6de797db",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "controlled_C",
+      "pair_id": "ec79302796382450c9c87fbf",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "controlled_D",
+      "pair_id": "16cd5bd384d46b96543bbdb9",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "controlled_D",
+      "pair_id": "74f864750d11540c67eee5f6",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "controlled_D",
+      "pair_id": "dd3a55f7b0e448fc6de797db",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "controlled_D",
+      "pair_id": "ec79302796382450c9c87fbf",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "16cd5bd384d46b96543bbdb9",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "2d939c3d73c567e04fd47e46",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "3cf650d14d24ea3615ba9e67",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "6139bbb7554152d27bef27ad",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "74f864750d11540c67eee5f6",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "8a8857d6e1e846595129da62",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "94a53c5effac5f25a553bcd4",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "aa32a9d6113af5a6b0ef24bc",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "c1a4643bec1959cf5f7d1043",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "dd3a55f7b0e448fc6de797db",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "ec79302796382450c9c87fbf",
+      "trajectories": 8,
+      "delivered": 8
+    },
+    {
+      "group": "natural",
+      "pair_id": "f7d4f4163b72596705001f43",
+      "trajectories": 8,
+      "delivered": 8
+    }
+  ],
+  "naturalRepairDenominator": 0,
+  "hostNoticeFrames": 160,
+  "unverifiedCandidatesForwarded": 0,
+  "nativeClientGuiRenderingTested": false,
+  "usage": {
+    "prompt_tokens": 211200,
+    "completion_tokens": 17946,
+    "prompt_cache_hit_tokens": 103936
+  },
+  "accountingUSDPeakUpper": 0.054338016,
+  "usageCostAtPublishedTimeWindowUSD": 0.027169008,
+  "unambiguouslyOffPeakCalls": 160,
+  "providerInvoiceOrBalanceVerified": false,
+  "budgetUSD": 0.15,
+  "verifiedOutputs": 333,
+  "runtimeChangedForThisStudy": false,
+  "failures": [],
+  "limitations": [
+    "No contemporaneous prose control or isolated format-only effect.",
+    "Controlled invalid seeds are not spontaneous model errors.",
+    "Known six fixtures/twelve contexts; no holdout or broad prompt-injection protection claim.",
+    "Host rendering is the captured output frame, not a third-party native GUI.",
+    "No semantic judgment of hidden reasoning; explicit structured list is the measured surface.",
+    "If natural first proposals all pass, natural correction efficacy is unmeasured.",
+    "AI-assisted unblinded preparation/audit; no independent human review."
+  ]
+}

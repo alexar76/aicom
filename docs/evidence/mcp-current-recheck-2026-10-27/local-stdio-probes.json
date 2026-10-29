@@ -1,0 +1,1939 @@
+[
+  {
+    "case": "domain-rails",
+    "toolCalls": 0,
+    "checkedAt": "2026-10-27T09:51:31.859295+00:00",
+    "status": "ok",
+    "serverInfo": {
+      "name": "domain-rails",
+      "title": null,
+      "version": "0.1.0",
+      "websiteUrl": null,
+      "icons": null
+    },
+    "protocol": "2024-11-05",
+    "tools": [
+      {
+        "name": "quote",
+        "title": null,
+        "description": "Quote a one-year domain registration or renewal. Renewal requires the owner signature. Availability is not a reservation.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "domain": {
+              "type": "string",
+              "description": "Exact registrable ASCII domain, e.g. example.com"
+            },
+            "operation": {
+              "enum": [
+                "register",
+                "renew"
+              ],
+              "default": "register"
+            },
+            "period_years": {
+              "const": 1
+            }
+          },
+          "required": [
+            "domain"
+          ]
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": null,
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": null,
+          "openWorldHint": true
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "register",
+        "title": null,
+        "description": "Buy the exact domain in an unexpired quote, registered to the supplied registrant. Irreversible after registration. Separate x402 payment required.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "quote_id": {
+              "type": "string"
+            },
+            "client_order_id": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 80
+            },
+            "accept_terms": {
+              "const": true
+            },
+            "terms_version": {
+              "type": "string"
+            },
+            "registrant": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "first_name": {
+                  "type": "string"
+                },
+                "last_name": {
+                  "type": "string"
+                },
+                "company": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "phone_country": {
+                  "type": "string"
+                },
+                "phone_area": {
+                  "type": "string"
+                },
+                "phone_number": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "postal_code": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone_country",
+                "phone_number",
+                "street",
+                "number",
+                "city",
+                "postal_code",
+                "country"
+              ]
+            }
+          },
+          "required": [
+            "quote_id",
+            "client_order_id",
+            "accept_terms",
+            "terms_version",
+            "registrant"
+          ]
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": null,
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": null,
+          "openWorldHint": true
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "renew",
+        "title": null,
+        "description": "Renew an owned domain for one year using a renewal quote. Separate payment; automatic registrar renewal is disabled.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "quote_id": {
+              "type": "string"
+            },
+            "client_order_id": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 80
+            },
+            "accept_terms": {
+              "const": true
+            },
+            "terms_version": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "quote_id",
+            "client_order_id",
+            "accept_terms",
+            "terms_version"
+          ]
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": null,
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": null,
+          "openWorldHint": true
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "status",
+        "title": null,
+        "description": "Recover a private order after a lost response. Pending is not failure; never buy again to resolve a timeout.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "order_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "order_id"
+          ]
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": null,
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": null,
+          "openWorldHint": true
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "info",
+        "title": null,
+        "description": "Read an owned domain, expiry, nameservers and verification requirements.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "domain": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "domain"
+          ]
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": null,
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": null,
+          "openWorldHint": true
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "dnsGet",
+        "title": null,
+        "description": "Read owned DNS records and their revision before an update.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "domain": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "domain"
+          ]
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": null,
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": null,
+          "openWorldHint": true
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "dnsSet",
+        "title": null,
+        "description": "Replace only named DNS record sets, preserving other names and types. Requires the current DNS revision.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "domain": {
+              "type": "string"
+            },
+            "revision": {
+              "type": "string"
+            },
+            "records": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 50,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "enum": [
+                      "A",
+                      "AAAA",
+                      "CNAME",
+                      "TXT",
+                      "MX",
+                      "CAA"
+                    ]
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "ttl": {
+                    "type": "integer",
+                    "minimum": 60,
+                    "maximum": 86400
+                  },
+                  "prio": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 65535
+                  }
+                },
+                "required": [
+                  "name",
+                  "type",
+                  "value",
+                  "ttl"
+                ]
+              }
+            }
+          },
+          "required": [
+            "domain",
+            "revision",
+            "records"
+          ]
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": null,
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": null,
+          "openWorldHint": true
+        },
+        "meta": null,
+        "execution": null
+      }
+    ]
+  },
+  {
+    "case": "warden-atomic-example",
+    "toolCalls": 0,
+    "checkedAt": "2026-10-27T09:51:31.906917+00:00",
+    "status": "ok",
+    "serverInfo": {
+      "name": "warden-atomic-example",
+      "title": null,
+      "version": "1",
+      "websiteUrl": null,
+      "icons": null
+    },
+    "protocol": "2025-06-18",
+    "tools": [
+      {
+        "name": "screenshot",
+        "title": null,
+        "description": "Observe the local virtual form.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": null,
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "click",
+        "title": null,
+        "description": "Activate an element of the local virtual form through atomic approval.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "index": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "index"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": null,
+        "meta": null,
+        "execution": null
+      }
+    ]
+  },
+  {
+    "case": "warden-local",
+    "toolCalls": 0,
+    "checkedAt": "2026-10-27T09:51:31.947519+00:00",
+    "status": "ok",
+    "serverInfo": {
+      "name": "warden",
+      "title": "WARDEN MCP security firewall",
+      "version": "0.22.1",
+      "websiteUrl": null,
+      "icons": null
+    },
+    "protocol": "2025-03-26",
+    "tools": [
+      {
+        "name": "vet_mcp_server",
+        "title": "Vet an MCP server through the full WARDEN gate chain",
+        "description": "Run WARDEN's ordered gate chain (static-scan \u2192 threat-feed \u2192 origin \u2192 pinning) over a server identity plus its advertised tools/list payload and return a recordable verdict (allow/block, 0..1 product score, findings, allowedTools/blockedTools, ruleset digest).\n\nWhen to use: you have a complete server record and want the same decision a host should make before any of those tool definitions reach the model. Prefer this over calling the four gates yourself.\n\nWhen NOT to use: inspecting descriptions only (call static_scan_tools \u2014 no origin/pinning); splitting tools by operator glob (classify_sensitive_tools); checking one outbound URL (check_egress_url); producing RFC 8785 bytes (canonicalize_json).\n\nBehaviour: local, deterministic, no network. This stdio process uses the built-in 11-record threat floor (it does not fetch a signed feed) and a durable local pin store. First contact is TOOL_DEF_UNPINNED/advisory until explicitly approved. Origin defaults to allowUnknownServers=true so catalog-discovered servers are not fail-closed. Override policy when you need the host's real knobs. Does not connect to, start, or approve the target server.\n\nReturns structured JSON matching outputSchema. Example: vet_mcp_server({ server: { id: \"demo@0\", name: \"demo\", transport: \"stdio\", command: \"npx\" }, tools: [{ name: \"add\", description: \"Add two integers.\", inputSchema: { type: \"object\" } }] }).",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "server",
+            "tools"
+          ],
+          "properties": {
+            "server": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "name",
+                "transport"
+              ],
+              "description": "Identity of the MCP server being vetted \u2014 the host's McpServerRef, not a live connection. WARDEN never launches this command or fetches this URL.",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "description": "Stable server id the host uses for pins and logs (e.g. \"github@1\"). Findings quote this id."
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "description": "Human-facing server name. Threat-feed server-scope patterns match this field."
+                },
+                "transport": {
+                  "type": "string",
+                  "enum": [
+                    "stdio",
+                    "sse",
+                    "http"
+                  ],
+                  "description": "How the host would launch the server. stdio uses command/args; sse/http use url. WARDEN does not open the transport."
+                },
+                "command": {
+                  "type": "string",
+                  "maxLength": 1024,
+                  "description": "stdio executable (e.g. \"npx\"). Required for a realistic stdio identity hash; omit for url transports."
+                },
+                "args": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 1024
+                  },
+                  "maxItems": 32,
+                  "description": "stdio argv. Included in the launch-identity hash used by pinning. Omit when unused."
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 2048,
+                  "description": "sse/http endpoint. Threat-feed and identity hashing see this string; this tool does not request it."
+                },
+                "catalog": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "description": "Remote catalog this server was discovered from. When set and policy.allowUnknownServers is false, the origin gate fail-closes. Omit for operator-declared servers."
+                }
+              }
+            },
+            "tools": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "description": "Exact tools/list payload (1..256 tools). Each item is name + description + inputSchema from the server. Do not filter before vetting \u2014 blockedTools is the partition.",
+              "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "required": [
+                  "name",
+                  "description",
+                  "inputSchema"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Unmodified advertised tool title; scanned and pinned."
+                  },
+                  "outputSchema": {
+                    "type": "object",
+                    "description": "Unmodified output schema, including nested descriptions; scanned and pinned."
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "description": "Advertised hints; untrusted metadata, never authorization."
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256,
+                    "description": "Exact tool name as advertised by tools/list. Matched case-sensitively against findings.tool and against sensitive glob patterns."
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 16384,
+                    "description": "Advertised description string from tools/list. This is prompt text the model would see; WARDEN scans it. Pass the server's text unmodified \u2014 rewriting it hides the injection surface."
+                  },
+                  "inputSchema": {
+                    "type": "object",
+                    "description": "JSON Schema object from tools/list (type/properties/required/\u2026). Pass through as-is. WARDEN stringifies it and scans field names, descriptions, and enums. Do not invent properties the server did not advertise."
+                  }
+                }
+              }
+            },
+            "policy": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Optional WardenPolicy overlay. Omitted keys keep the stdio defaults: blockAtSeverity=high, empty sensitiveToolPatterns, allowUnknownServers=true, pinToolDefs=true. Use classify_sensitive_tools when you only want the glob split.",
+              "properties": {
+                "blockAtSeverity": {
+                  "type": "string",
+                  "enum": [
+                    "info",
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                  ],
+                  "description": "Block the whole connection when any non-advisory finding reaches this severity. Default high. advisory findings never block, even at info."
+                },
+                "sensitiveToolPatterns": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 128
+                  },
+                  "maxItems": 64,
+                  "description": "Case-insensitive * globs matched against tool names. Hits are still advertised; they go to blockedTools only when a finding also trips. For a glob-only split, call classify_sensitive_tools."
+                },
+                "capabilityBindings": {
+                  "type": "array",
+                  "maxItems": 1000,
+                  "description": "Operator-reviewed capabilities, bound to launch identity and complete definitions. Unbound capabilities remain unknown.",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "serverId",
+                      "identityHash",
+                      "toolsHash",
+                      "tools"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "serverId": {
+                        "type": "string"
+                      },
+                      "identityHash": {
+                        "type": "string"
+                      },
+                      "toolsHash": {
+                        "type": "string"
+                      },
+                      "tools": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "enum": [
+                              "private",
+                              "untrusted",
+                              "outbound"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "allowUnknownServers": {
+                  "type": "boolean",
+                  "description": "When false, servers that carry server.catalog are refused by the origin gate. Default true on this stdio scanner so you can inspect catalog entries without declaring them."
+                },
+                "requireApproval": {
+                  "type": "boolean",
+                  "description": "Require an explicit operator approval of every advertised field and server identity. Automatic and legacy pins do not qualify. Default false."
+                },
+                "pinToolDefs": {
+                  "type": "boolean",
+                  "description": "When true, tool-def drift after a stored pin is fatal. Pins persist across calls and restarts; first contact stays UNPINNED/advisory. Default true."
+                }
+              }
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "allow",
+            "score",
+            "findings",
+            "allowedTools",
+            "blockedTools",
+            "rulesets"
+          ],
+          "properties": {
+            "allow": {
+              "type": "boolean",
+              "description": "false when a gate was fatal or a non-advisory finding reached blockAtSeverity."
+            },
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Product of per-gate scores in [0, 1]. One bad gate drags the whole server down; it is not an average."
+            },
+            "decidedBy": {
+              "type": "string",
+              "description": "Gate that produced the blocking decision, present only when allow is false."
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "gate",
+                  "severity",
+                  "code",
+                  "message"
+                ],
+                "properties": {
+                  "gate": {
+                    "type": "string",
+                    "description": "Gate that produced the finding: static-scan, threat-feed, origin, or pinning."
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": [
+                      "info",
+                      "low",
+                      "medium",
+                      "high",
+                      "critical"
+                    ],
+                    "description": "Attention rank. Independent of whether the finding blocks."
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "Stable machine code, e.g. TOOL_DEF_INJECTION or THREAT_TOOL_MATCH."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Human-readable finding, including the matched span where a static-scan rule fired."
+                  },
+                  "tool": {
+                    "type": "string",
+                    "description": "Tool name the finding refers to, when the defect is per-tool rather than server-wide."
+                  },
+                  "advisory": {
+                    "type": "boolean",
+                    "description": "When true the finding is report-only: it never blocks and never costs a tool, at any blockAtSeverity."
+                  }
+                }
+              },
+              "description": "Accumulated findings across all gates, including advisory."
+            },
+            "allowedTools": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Tool names individually permitted; the host MUST also require allow=true before exposure."
+            },
+            "blockedTools": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Tool names quarantined; the rest of the server may still be usable."
+            },
+            "rulesets": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "staticScan"
+              ],
+              "properties": {
+                "staticScan": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "version",
+                    "digest"
+                  ],
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "Monotonic static-scan ruleset version (currently \"12\")."
+                    },
+                    "digest": {
+                      "type": "string",
+                      "description": "sha256-<base64> over the RFC 8785 canonical form of the published rule table. A recorded scan is not reproducible without this."
+                    }
+                  }
+                }
+              },
+              "description": "Rule-table identity in force for this verdict. Store this with the scan."
+            }
+          }
+        },
+        "icons": null,
+        "annotations": {
+          "title": "Vet an MCP server through the full WARDEN gate chain",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "static_scan_tools",
+        "title": "Static-scan MCP tool definitions for injection and exfil",
+        "description": "Run only the static-scan gate (ruleset v14, 36 signatures with context guards, text folded first) over every advertised tool field: name, description, input schema, title, output schema, annotations and extension metadata. Returns findings, a 0..1 gate score, and the published ruleset digest.\n\nWhen to use: you have a tools/list dump and want injection / credential / hidden-Unicode hits without origin, pinning, or the threat feed. Cheaper and narrower than vet_mcp_server.\n\nWhen NOT to use: you need the full host decision (vet_mcp_server); you want operator glob classification (classify_sensitive_tools); you want the published rule table itself (list_scan_rules).\n\nBehaviour: local regex+guard evaluation, no network, no mutation. Advisory-tier hits are reported with advisory=true and do not reduce the score. Does not launch servers or send tool output to a model.\n\nReturns structured JSON matching outputSchema. Example: static_scan_tools({ tools: [{ name: \"add\", description: \"Add two integers.\", inputSchema: { type: \"object\" } }] }).",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tools"
+          ],
+          "properties": {
+            "tools": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "description": "tools/list items to scan (1..256). Same shape as vet_mcp_server.tools.",
+              "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "required": [
+                  "name",
+                  "description",
+                  "inputSchema"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Unmodified advertised tool title; scanned and pinned."
+                  },
+                  "outputSchema": {
+                    "type": "object",
+                    "description": "Unmodified output schema, including nested descriptions; scanned and pinned."
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "description": "Advertised hints; untrusted metadata, never authorization."
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256,
+                    "description": "Exact tool name as advertised by tools/list. Matched case-sensitively against findings.tool and against sensitive glob patterns."
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 16384,
+                    "description": "Advertised description string from tools/list. This is prompt text the model would see; WARDEN scans it. Pass the server's text unmodified \u2014 rewriting it hides the injection surface."
+                  },
+                  "inputSchema": {
+                    "type": "object",
+                    "description": "JSON Schema object from tools/list (type/properties/required/\u2026). Pass through as-is. WARDEN stringifies it and scans field names, descriptions, and enums. Do not invent properties the server did not advertise."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "findings",
+            "ruleset"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "static-scan gate contribution: 1 minus the penalty for the worst non-advisory severity. Advisory hits do not change this number."
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "gate",
+                  "severity",
+                  "code",
+                  "message"
+                ],
+                "properties": {
+                  "gate": {
+                    "type": "string",
+                    "description": "Gate that produced the finding: static-scan, threat-feed, origin, or pinning."
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": [
+                      "info",
+                      "low",
+                      "medium",
+                      "high",
+                      "critical"
+                    ],
+                    "description": "Attention rank. Independent of whether the finding blocks."
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "Stable machine code, e.g. TOOL_DEF_INJECTION or THREAT_TOOL_MATCH."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Human-readable finding, including the matched span where a static-scan rule fired."
+                  },
+                  "tool": {
+                    "type": "string",
+                    "description": "Tool name the finding refers to, when the defect is per-tool rather than server-wide."
+                  },
+                  "advisory": {
+                    "type": "boolean",
+                    "description": "When true the finding is report-only: it never blocks and never costs a tool, at any blockAtSeverity."
+                  }
+                }
+              },
+              "description": "Hits from the 36-rule table, including advisory-only codes."
+            },
+            "ruleset": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "version",
+                "digest"
+              ],
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "description": "Monotonic static-scan ruleset version (currently \"12\")."
+                },
+                "digest": {
+                  "type": "string",
+                  "description": "sha256-<base64> over the RFC 8785 canonical form of the published rule table. A recorded scan is not reproducible without this."
+                }
+              }
+            }
+          }
+        },
+        "icons": null,
+        "annotations": {
+          "title": "Static-scan MCP tool definitions for injection and exfil",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "classify_sensitive_tools",
+        "title": "Classify MCP tools as sensitive vs safe by glob policy",
+        "description": "Split advertised tool names into sensitive vs safe using the operator's case-insensitive * globs (the same policy.sensitiveToolPatterns a host would use). Sensitive tools stay advertised; they require per-call approval \u2014 this tool does not run them.\n\nWhen to use: show the user which names will need confirmation before they approve a server, or to preview a glob set. This is policy over identifiers, not an injection scan.\n\nWhen NOT to use: scanning descriptions for poisoning (static_scan_tools or vet_mcp_server); checking whether a URL is allowed out (check_egress_url).\n\nBehaviour: local glob match, no network. An empty patterns array marks every tool safe. Patterns match the whole name; \"*delete*\" hits create_delete_repo. Does not call Warden.vet and does not persist anything.\n\nReturns { sensitive, safe }. Example: classify_sensitive_tools({ tools: [{ name: \"delete_repo\", description: \"Delete a repository.\", inputSchema: { type: \"object\" } }], patterns: [\"*delete*\"] }).",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tools",
+            "patterns"
+          ],
+          "properties": {
+            "tools": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "description": "tools/list items whose names will be classified. Descriptions and schemas are ignored; only name is matched.",
+              "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "required": [
+                  "name",
+                  "description",
+                  "inputSchema"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Unmodified advertised tool title; scanned and pinned."
+                  },
+                  "outputSchema": {
+                    "type": "object",
+                    "description": "Unmodified output schema, including nested descriptions; scanned and pinned."
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "description": "Advertised hints; untrusted metadata, never authorization."
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256,
+                    "description": "Exact tool name as advertised by tools/list. Matched case-sensitively against findings.tool and against sensitive glob patterns."
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 16384,
+                    "description": "Advertised description string from tools/list. This is prompt text the model would see; WARDEN scans it. Pass the server's text unmodified \u2014 rewriting it hides the injection surface."
+                  },
+                  "inputSchema": {
+                    "type": "object",
+                    "description": "JSON Schema object from tools/list (type/properties/required/\u2026). Pass through as-is. WARDEN stringifies it and scans field names, descriptions, and enums. Do not invent properties the server did not advertise."
+                  }
+                }
+              }
+            },
+            "patterns": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "maxItems": 64,
+              "description": "Operator globs, case-insensitive, matched against the whole tool name. \"*\" is the only wildcard. Empty array \u2192 every tool is safe. Same semantics as WardenPolicy.sensitiveToolPatterns, not threat-feed matching."
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sensitive",
+            "safe"
+          ],
+          "properties": {
+            "sensitive": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Names matching at least one pattern. Still advertised; require per-call approval."
+            },
+            "safe": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Names matching no pattern."
+            }
+          }
+        },
+        "icons": null,
+        "annotations": {
+          "title": "Classify MCP tools as sensitive vs safe by glob policy",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "check_egress_url",
+        "title": "Check a URL against a WARDEN egress allowlist",
+        "description": "Ask EgressGuard whether a URL's hostname is on an operator allowlist. A tool reaching a host you never listed is the classic phone-home tell. Empty allowlist blocks everything (fail-closed), not everything-allowed.\n\nWhen to use: a tool is about to fetch/post and you want the same check a host should wrap around that request. Hostnames match case-insensitively; \"*.example.com\" matches subdomains, not the apex.\n\nWhen NOT to use: vetting tool definitions (vet_mcp_server / static_scan_tools); canonicalizing JSON (canonicalize_json). This does not fetch the URL and does not inspect tool text.\n\nBehaviour: local URL parse + hostname match. Unparseable URLs are refused. No DNS, no HTTP. Idempotent.\n\nReturns { allowed, host?, reason? }. Example: check_egress_url({ url: \"https://api.github.com/repos\", allowlist: [\"api.github.com\", \"*.internal.example.com\"] }).",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "url",
+            "allowlist"
+          ],
+          "properties": {
+            "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Absolute URL the tool wants to open (https://host/path). Only the hostname is compared; path, query, and credentials are not allowlisted separately. Must be parseable by the WHATWG URL parser."
+            },
+            "allowlist": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 253
+              },
+              "maxItems": 256,
+              "description": "Permitted hostnames. Exact match, or leading \"*.\" for subdomains (\"*.example.com\" matches api.example.com, not example.com). Empty array blocks every host. Entries are trimmed and compared case-insensitively."
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "allowed"
+          ],
+          "properties": {
+            "allowed": {
+              "type": "boolean",
+              "description": "true only when the hostname matches an allowlist entry."
+            },
+            "host": {
+              "type": "string",
+              "description": "Parsed hostname when the URL was valid."
+            },
+            "reason": {
+              "type": "string",
+              "description": "Why the request is blocked; omitted when allowed is true."
+            }
+          }
+        },
+        "icons": null,
+        "annotations": {
+          "title": "Check a URL against a WARDEN egress allowlist",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "canonicalize_json",
+        "title": "Canonicalize JSON with RFC 8785 (JCS) bytes",
+        "description": "Return the RFC 8785 JSON Canonicalization Scheme serialization WARDEN uses for threat-feed signatures and tool-def pins, so another implementation can byte-check against it. Integers only inside \u00b1(2^53\u22121); lone surrogates and non-integers are refused with a reason code, not escaped.\n\nWhen to use: you are publishing or verifying a signed threat feed, hashing tool defs, or comparing two JSON documents that must agree regardless of key order. Subpath @aimarket/warden/jcs is the same function.\n\nWhen NOT to use: scanning tool defs (static_scan_tools); pretty-printing for humans (this output is for bytes, not display).\n\nBehaviour: local, no network. Pass either a parsed JSON value or a JSON string (string is parsed with parseJsonStrict first). Failure returns isError with CanonicalizationCode \u2014 it does not emit partial bytes.\n\nReturns { canonical } or an error. Example: canonicalize_json({ value: { b: 1, a: 2 } }) \u2192 {\"a\":2,\"b\":1}.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "description": "JSON value to canonicalize, or a JSON string to parse first. Objects have keys sorted by UTF-16 code units. Numbers must be integers in \u00b1(2^53\u22121). Do not pass undefined, functions, or cyclic structures."
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "canonical"
+          ],
+          "properties": {
+            "canonical": {
+              "type": "string",
+              "description": "RFC 8785 canonical JSON text (UTF-8-ready string). Hash or sign these bytes, not JSON.stringify output."
+            }
+          }
+        },
+        "icons": null,
+        "annotations": {
+          "title": "Canonicalize JSON with RFC 8785 (JCS) bytes",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "list_scan_rules",
+        "title": "List the published WARDEN static-scan rule table",
+        "description": "Return the in-force static-scan ruleset: version, digest, and every rule's code, severity, tier (block vs advise), surfaces (name / description / inputSchema / title / outputSchema / annotations / metadata), optional regex source, and named guards. A recorded verdict is only reproducible together with this identity.\n\nWhen to use: explain a finding code, confirm you are on ruleset v14, or re-run a scan with the same table. include_source=true adds the regex source and flags for an independent re-implementation.\n\nWhen NOT to use: evaluating a live tools/list (static_scan_tools or vet_mcp_server \u2014 those apply the table). This tool does not scan anything.\n\nBehaviour: local snapshot of the compiled rule table, no network, no mutation. Digest is sha256 over the RFC 8785 form of {version, fold, rules} (each rule carries its `raw` flag).\n\nReturns the ruleset object. Example: list_scan_rules({ include_source: false }).",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "include_source": {
+              "type": "boolean",
+              "default": false,
+              "description": "When true, each rule includes source (regex body) and flags so a third party can re-run the exact pattern. Default false \u2014 identity, tier, surfaces, and guards only, smaller payload."
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version",
+            "fold",
+            "digest",
+            "rules"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "Monotonic ruleset version."
+            },
+            "fold": {
+              "type": "string",
+              "description": "Identity of the text normalisation applied before a non-raw rule is matched."
+            },
+            "digest": {
+              "type": "string",
+              "description": "sha256-<base64> of the canonical rule table (preimage {version, fold, rules})."
+            },
+            "rules": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "code",
+                  "severity",
+                  "tier",
+                  "surfaces",
+                  "guards",
+                  "raw"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "Finding code this rule emits."
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": [
+                      "info",
+                      "low",
+                      "medium",
+                      "high",
+                      "critical"
+                    ],
+                    "description": "Attention rank when the rule fires."
+                  },
+                  "tier": {
+                    "type": "string",
+                    "enum": [
+                      "block",
+                      "advise"
+                    ],
+                    "description": "block can refuse a connection; advise is report-only."
+                  },
+                  "surfaces": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "name",
+                        "description",
+                        "inputSchema",
+                        "title",
+                        "outputSchema",
+                        "annotations",
+                        "metadata"
+                      ]
+                    },
+                    "description": "Which tool-def fields the rule is run against."
+                  },
+                  "guards": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Named context guards that can drop a regex match (polarity, mention, \u2026)."
+                  },
+                  "raw": {
+                    "type": "boolean",
+                    "description": "true: matches the raw text; false: matches the folded text (see fold)."
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "Regex source; only when include_source is true."
+                  },
+                  "flags": {
+                    "type": "string",
+                    "description": "Regex flags; only when include_source is true."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "icons": null,
+        "annotations": {
+          "title": "List the published WARDEN static-scan rule table",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "status_mcp_server",
+        "title": "Show the stored approval for one MCP server",
+        "description": "Read the approval WARDEN has stored for one server id and compare it with the tools/list payload and launch identity you pass in. Returns the stored approval (or null), its revision, the hashes of what you passed, whether they differ, what changed field by field (words added and removed in descriptions, schema values before and after, changes made only of numbers marked), and whether this process may change approvals at all.\n\nWhen to use: before an operator decides to approve or revoke a server, to see what changed since the last approval; show the operator reviewText. It is the only source of the values approve_mcp_server and revoke_mcp_server ask for (currentToolsHash, currentIdentityHash, previousRevision).\n\nWhen NOT to use: deciding whether a server is safe to expose (vet_mcp_server runs every gate; this tool runs none). It does not scan descriptions and never blocks.\n\nBehaviour: read-only. Reads one file from the local state directory (WARDEN_STATE_DIR, default ~/.local/state/warden/pins); writes nothing, no network, never starts the target server. Works whether or not WARDEN_ALLOW_PIN_CHANGES is set.\n\nReturns structured JSON matching outputSchema. Example: status_mcp_server({ server: { id: \"demo@0\", name: \"demo\", transport: \"stdio\", command: \"npx\" }, tools: [{ name: \"add\", description: \"Add two integers.\", inputSchema: { type: \"object\" } }] }).",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "server",
+            "tools"
+          ],
+          "properties": {
+            "server": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "name",
+                "transport"
+              ],
+              "description": "Identity of the MCP server being vetted \u2014 the host's McpServerRef, not a live connection. WARDEN never launches this command or fetches this URL.",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "description": "Stable server id the host uses for pins and logs (e.g. \"github@1\"). Findings quote this id."
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "description": "Human-facing server name. Threat-feed server-scope patterns match this field."
+                },
+                "transport": {
+                  "type": "string",
+                  "enum": [
+                    "stdio",
+                    "sse",
+                    "http"
+                  ],
+                  "description": "How the host would launch the server. stdio uses command/args; sse/http use url. WARDEN does not open the transport."
+                },
+                "command": {
+                  "type": "string",
+                  "maxLength": 1024,
+                  "description": "stdio executable (e.g. \"npx\"). Required for a realistic stdio identity hash; omit for url transports."
+                },
+                "args": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 1024
+                  },
+                  "maxItems": 32,
+                  "description": "stdio argv. Included in the launch-identity hash used by pinning. Omit when unused."
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 2048,
+                  "description": "sse/http endpoint. Threat-feed and identity hashing see this string; this tool does not request it."
+                },
+                "catalog": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "description": "Remote catalog this server was discovered from. When set and policy.allowUnknownServers is false, the origin gate fail-closes. Omit for operator-declared servers."
+                }
+              }
+            },
+            "tools": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "description": "The server's current tools/list payload, unmodified. Its hash is compared with the stored approval and returned as currentToolsHash.",
+              "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "required": [
+                  "name",
+                  "description",
+                  "inputSchema"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Unmodified advertised tool title; scanned and pinned."
+                  },
+                  "outputSchema": {
+                    "type": "object",
+                    "description": "Unmodified output schema, including nested descriptions; scanned and pinned."
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "description": "Advertised hints; untrusted metadata, never authorization."
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256,
+                    "description": "Exact tool name as advertised by tools/list. Matched case-sensitively against findings.tool and against sensitive glob patterns."
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 16384,
+                    "description": "Advertised description string from tools/list. This is prompt text the model would see; WARDEN scans it. Pass the server's text unmodified \u2014 rewriting it hides the injection surface."
+                  },
+                  "inputSchema": {
+                    "type": "object",
+                    "description": "JSON Schema object from tools/list (type/properties/required/\u2026). Pass through as-is. WARDEN stringifies it and scans field names, descriptions, and enums. Do not invent properties the server did not advertise."
+                  }
+                }
+              }
+            },
+            "server_info": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "version": {
+                  "type": "string",
+                  "maxLength": 200
+                }
+              },
+              "description": "Optional: the serverInfo object from the server's initialize result, unmodified ({ name, version }). Shown next to the review as the version the server reports, and stored with an approval; it is the server's own word, so it is never hashed or trusted."
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "serverId",
+            "previous",
+            "previousRevision",
+            "currentToolsHash",
+            "currentIdentityHash",
+            "changed",
+            "currentTools",
+            "mutationsEnabled"
+          ],
+          "properties": {
+            "serverId": {
+              "type": "string",
+              "description": "The server id that was looked up."
+            },
+            "previous": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "A stored approval: serverId, toolsHash, identityHash, approvalMode (operator | automatic), toolNames, the approved tool definitions and approvedAt."
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The stored approval, or null when this server was never approved or was revoked."
+            },
+            "previousRevision": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "sha256 of the stored approval; pass it as previous_pin_revision. null when nothing is stored."
+            },
+            "currentToolsHash": {
+              "type": "string",
+              "description": "Hash of the tools you passed; pass it as reviewed_tools_hash to approve exactly these definitions."
+            },
+            "currentIdentityHash": {
+              "type": "string",
+              "description": "Hash of the launch identity (transport, command, args, url, name); pass it as reviewed_identity_hash."
+            },
+            "changed": {
+              "type": "boolean",
+              "description": "true when an approval is stored and the tools or the launch identity differ from it."
+            },
+            "currentTools": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "The tool definitions that were hashed, echoed for the operator's review."
+            },
+            "changes": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "added",
+                    "removed",
+                    "changed",
+                    "numbersOnly",
+                    "changes"
+                  ],
+                  "properties": {
+                    "added": {
+                      "type": "integer"
+                    },
+                    "removed": {
+                      "type": "integer"
+                    },
+                    "changed": {
+                      "type": "integer"
+                    },
+                    "numbersOnly": {
+                      "type": "integer",
+                      "description": "Changed tools whose every change is digits, separators or whitespace. Still a change: a number can be a limit."
+                    },
+                    "changes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Per tool: kind (added | removed | changed) and, for a changed tool, every changed value with its path, before, after and, for text, a word diff."
+                    }
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "What changed since the stored approval, field by field; null when nothing is stored."
+            },
+            "reviewText": {
+              "type": "string",
+              "description": "The same changes as plain lines for a person: where they came from (reported version, launch command), [-removed-] and {+added+} inside text, before \u2192 after for values, and which tools gain text about the user's approval or tool choice."
+            },
+            "origin": {
+              "type": "object",
+              "required": [
+                "approvedVersion",
+                "currentVersion",
+                "launch"
+              ],
+              "properties": {
+                "approvedVersion": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "serverInfo.version stored with the approval (the server's own word), or null."
+                },
+                "currentVersion": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "serverInfo.version you passed now, or null."
+                },
+                "launch": {
+                  "anyOf": [
+                    {
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "For npx / uvx style launches: runner, ecosystem, package, requested version or range, and pinned (an exact version in the command). null for other launches."
+                }
+              },
+              "description": "Where a change came from: the versions the server reported and whether the launch command pins one."
+            },
+            "mutationsEnabled": {
+              "type": "boolean",
+              "description": "false means approve_mcp_server and revoke_mcp_server will refuse in this process."
+            }
+          }
+        },
+        "icons": null,
+        "annotations": {
+          "title": "Show the stored approval for one MCP server",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "approve_mcp_server",
+        "title": "Record an operator's approval of an MCP server",
+        "description": "Store an operator approval for exactly the tool definitions and launch identity the operator reviewed, so later vet_mcp_server calls treat them as approved and report any change as drift. The server must still pass every WARDEN gate; an approval cannot override a block.\n\nWhen to use: after a human reviewed the output of status_mcp_server and agreed. Pass back the currentToolsHash, currentIdentityHash and previousRevision it returned; if the payload or the stored approval changed in the meantime, the call is refused and the review must be repeated.\n\nWhen NOT to use: on your own initiative or to make a blocked server pass (the gates run again and the call fails); to remove an approval (revoke_mcp_server); to look at the stored state (status_mcp_server).\n\nBehaviour: writes one file in the local state directory and replaces any earlier approval for this server id. Refused unless the operator started this process with WARDEN_ALLOW_PIN_CHANGES=1. No network; never starts the target server. Repeating the same call is refused because the revision it names is no longer current.\n\nReturns { approved: true, pin }. Example: approve_mcp_server({ server, tools, reviewed_tools_hash: \"<currentToolsHash>\", reviewed_identity_hash: \"<currentIdentityHash>\", previous_pin_revision: null }).",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "server",
+            "tools",
+            "reviewed_tools_hash",
+            "reviewed_identity_hash",
+            "previous_pin_revision"
+          ],
+          "properties": {
+            "server": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "name",
+                "transport"
+              ],
+              "description": "Identity of the MCP server being vetted \u2014 the host's McpServerRef, not a live connection. WARDEN never launches this command or fetches this URL.",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "description": "Stable server id the host uses for pins and logs (e.g. \"github@1\"). Findings quote this id."
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "description": "Human-facing server name. Threat-feed server-scope patterns match this field."
+                },
+                "transport": {
+                  "type": "string",
+                  "enum": [
+                    "stdio",
+                    "sse",
+                    "http"
+                  ],
+                  "description": "How the host would launch the server. stdio uses command/args; sse/http use url. WARDEN does not open the transport."
+                },
+                "command": {
+                  "type": "string",
+                  "maxLength": 1024,
+                  "description": "stdio executable (e.g. \"npx\"). Required for a realistic stdio identity hash; omit for url transports."
+                },
+                "args": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 1024
+                  },
+                  "maxItems": 32,
+                  "description": "stdio argv. Included in the launch-identity hash used by pinning. Omit when unused."
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 2048,
+                  "description": "sse/http endpoint. Threat-feed and identity hashing see this string; this tool does not request it."
+                },
+                "catalog": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "description": "Remote catalog this server was discovered from. When set and policy.allowUnknownServers is false, the origin gate fail-closes. Omit for operator-declared servers."
+                }
+              }
+            },
+            "tools": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "description": "The exact tools/list payload the operator reviewed. Its hash must equal reviewed_tools_hash.",
+              "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "required": [
+                  "name",
+                  "description",
+                  "inputSchema"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Unmodified advertised tool title; scanned and pinned."
+                  },
+                  "outputSchema": {
+                    "type": "object",
+                    "description": "Unmodified output schema, including nested descriptions; scanned and pinned."
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "description": "Advertised hints; untrusted metadata, never authorization."
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256,
+                    "description": "Exact tool name as advertised by tools/list. Matched case-sensitively against findings.tool and against sensitive glob patterns."
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 16384,
+                    "description": "Advertised description string from tools/list. This is prompt text the model would see; WARDEN scans it. Pass the server's text unmodified \u2014 rewriting it hides the injection surface."
+                  },
+                  "inputSchema": {
+                    "type": "object",
+                    "description": "JSON Schema object from tools/list (type/properties/required/\u2026). Pass through as-is. WARDEN stringifies it and scans field names, descriptions, and enums. Do not invent properties the server did not advertise."
+                  }
+                }
+              }
+            },
+            "reviewed_tools_hash": {
+              "type": "string",
+              "description": "currentToolsHash from the status_mcp_server call the operator reviewed."
+            },
+            "reviewed_identity_hash": {
+              "type": "string",
+              "description": "currentIdentityHash from the same status_mcp_server call."
+            },
+            "previous_pin_revision": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "The previousRevision value status_mcp_server returned when you reviewed this server (null when it reported no stored approval). The write is refused if the stored approval changed since then, so two reviewers cannot overwrite each other."
+            },
+            "server_info": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "version": {
+                  "type": "string",
+                  "maxLength": 200
+                }
+              },
+              "description": "Optional: the serverInfo object from the server's initialize result, unmodified ({ name, version }). Shown next to the review as the version the server reports, and stored with an approval; it is the server's own word, so it is never hashed or trusted."
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "approved",
+            "pin"
+          ],
+          "properties": {
+            "approved": {
+              "type": "boolean",
+              "const": true,
+              "description": "Always true; any refusal is returned as an error instead."
+            },
+            "pin": {
+              "type": "object",
+              "description": "The approval as stored, with approvalMode \"operator\"."
+            }
+          }
+        },
+        "icons": null,
+        "annotations": {
+          "title": "Record an operator's approval of an MCP server",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "revoke_mcp_server",
+        "title": "Delete the stored approval for an MCP server",
+        "description": "Delete the stored approval for one server id. Afterwards vet_mcp_server treats the server as never seen: its tools are unpinned again until someone approves them anew.\n\nWhen to use: an operator no longer trusts a server, or wants its next approval to start from a clean review. Take previousRevision from status_mcp_server first; the call is refused if the approval changed after that.\n\nWhen NOT to use: to approve a changed server (approve_mcp_server replaces the old approval directly); to block a server for everyone (a revoked server is unpinned, not blocked \u2014 use a threat feed or policy for that); to inspect state (status_mcp_server).\n\nBehaviour: deletes one file in the local state directory; cannot be undone except by approving again. Refused unless the operator started this process with WARDEN_ALLOW_PIN_CHANGES=1. Needs no tools payload. No network.\n\nReturns { revoked: true, serverId }. Example: revoke_mcp_server({ server: { id: \"demo@0\", name: \"demo\", transport: \"stdio\", command: \"npx\" }, previous_pin_revision: \"<previousRevision>\" }).",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "server",
+            "previous_pin_revision"
+          ],
+          "properties": {
+            "server": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "name",
+                "transport"
+              ],
+              "description": "Server whose approval to delete. Only id is used to find it; the other fields must still be valid.",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "description": "Stable server id the host uses for pins and logs (e.g. \"github@1\"). Findings quote this id."
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "description": "Human-facing server name. Threat-feed server-scope patterns match this field."
+                },
+                "transport": {
+                  "type": "string",
+                  "enum": [
+                    "stdio",
+                    "sse",
+                    "http"
+                  ],
+                  "description": "How the host would launch the server. stdio uses command/args; sse/http use url. WARDEN does not open the transport."
+                },
+                "command": {
+                  "type": "string",
+                  "maxLength": 1024,
+                  "description": "stdio executable (e.g. \"npx\"). Required for a realistic stdio identity hash; omit for url transports."
+                },
+                "args": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 1024
+                  },
+                  "maxItems": 32,
+                  "description": "stdio argv. Included in the launch-identity hash used by pinning. Omit when unused."
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 2048,
+                  "description": "sse/http endpoint. Threat-feed and identity hashing see this string; this tool does not request it."
+                },
+                "catalog": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "description": "Remote catalog this server was discovered from. When set and policy.allowUnknownServers is false, the origin gate fail-closes. Omit for operator-declared servers."
+                }
+              }
+            },
+            "previous_pin_revision": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "The previousRevision value status_mcp_server returned when you reviewed this server (null when it reported no stored approval). The write is refused if the stored approval changed since then, so two reviewers cannot overwrite each other."
+            }
+          }
+        },
+        "outputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "revoked",
+            "serverId"
+          ],
+          "properties": {
+            "revoked": {
+              "type": "boolean",
+              "const": true,
+              "description": "Always true; any refusal is returned as an error instead."
+            },
+            "serverId": {
+              "type": "string",
+              "description": "The server id whose approval was deleted."
+            }
+          }
+        },
+        "icons": null,
+        "annotations": {
+          "title": "Delete the stored approval for an MCP server",
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      }
+    ]
+  },
+  {
+    "case": "argus-local",
+    "toolCalls": 0,
+    "checkedAt": "2026-10-27T09:51:32.007899+00:00",
+    "configuration": "isolated empty MCP client list; no operator config",
+    "status": "ok",
+    "serverInfo": {
+      "name": "argus",
+      "title": null,
+      "version": "0.3.3",
+      "websiteUrl": null,
+      "icons": null
+    },
+    "protocol": "2025-11-25",
+    "tools": [
+      {
+        "name": "argus_ask",
+        "title": null,
+        "description": "Run one bounded natural-language task through the ARGUS-3 agent and return the final answer text.\n\nWhen to use: research, summarise, debug, or draft when you want a WARDEN-hardened agent (not a raw model completion). Prefer argus_status first if you only need liveness; prefer argus_capabilities for the tool/WARDEN catalog without spending LLM tokens.\n\nWhen NOT to use: interactive multi-turn chat (use Telegram/HTTP channels); tasks that need human approval for sensitive tools (stdio denies them); pasting secrets into `task`.\n\nSide effects / auth / limits: calls your configured LLM provider (API key from env/config); may invoke ARGUS-configured tools; third-party MCP tools run only after WARDEN gates (static scan \u2192 threat feed \u2192 LUMEN \u2192 def-pinning). Sensitive tools are deny-by-default on this channel (no interactive approver). Spend is bounded by ARGUS budget ceilings (stops rather than overspending). Not idempotent \u2014 each call is a new metered run. May use network (model + allowed tools).\n\nReturns: plain-text final answer. On failure or budget stop, text may still be returned with isError true. No streaming / partial events on this tool.\n\nExample: argus_ask({ task: \"Summarise https://example.com in three bullets\", response_format: \"bullets\" })",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "task": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000,
+              "description": "Required. Single clear goal for ARGUS (1..8000 chars). Include constraints (length, format, tone) and any URLs/paths. Do not embed secrets (API keys, private keys, passwords) \u2014 they may be logged or sent to the LLM provider. Whitespace-only values are rejected.",
+              "examples": [
+                "Summarise https://example.com in three bullets",
+                "Explain why WARDEN would block a tool whose description asks for API keys",
+                "Draft a short README blurb for an MCP server that exposes argus_ask"
+              ]
+            },
+            "response_format": {
+              "type": "string",
+              "enum": [
+                "prose",
+                "bullets",
+                "json_hint"
+              ],
+              "default": "prose",
+              "description": "Optional output shape hint prepended to the task. `prose` = normal paragraphs; `bullets` = short bullet list; `json_hint` = ask for a single JSON object in the answer (still returned as text \u2014 not a structured MCP outputSchema result). Default prose when omitted.",
+              "examples": [
+                "bullets",
+                "prose"
+              ]
+            },
+            "focus": {
+              "type": "string",
+              "maxLength": 500,
+              "description": "Optional one-line emphasis (\u2264500 chars) appended as a constraint, e.g. \"security only\" or \"ELI5\". Omit when the task is already specific enough.",
+              "examples": [
+                "security only",
+                "cite sources"
+              ]
+            }
+          },
+          "required": [
+            "task"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": "Ask ARGUS",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "argus_status",
+        "title": null,
+        "description": "Return ARGUS-3 MCP runtime status as JSON text (no LLM call, no side effects).\n\nWhen to use: before heavy argus_ask calls, or to confirm version/channel/tools. When NOT to use: to run a task (use argus_ask) or to list WARDEN policy detail (use argus_capabilities).\n\nAuth / limits: none beyond MCP session. Idempotent and read-only.\n\nReturns: JSON with status, agent, version, channel, mode, tools, detail, wardenNote, sensitiveToolsPolicy (and extra fields when detail=full).\n\nExample: argus_status({ detail: \"basic\" })",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "detail": {
+              "type": "string",
+              "enum": [
+                "basic",
+                "full"
+              ],
+              "default": "basic",
+              "description": "Response depth. `basic` = liveness + version + tool names. `full` adds instructions excerpt, annotation summary, and MCP transport notes. Default basic.",
+              "examples": [
+                "basic",
+                "full"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": "ARGUS status",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      },
+      {
+        "name": "argus_capabilities",
+        "title": null,
+        "description": "List ARGUS MCP tools and WARDEN security posture as JSON text (no LLM call).\n\nWhen to use: discovery \u2014 choose between argus_ask / argus_status / this catalog. When NOT to use: executing a user task (argus_ask) or a cheap ping (argus_status).\n\nSide effects: none. Read-only, idempotent, no provider auth required for this tool.\n\nReturns: JSON { agent, version, tools[{name, readOnly, summary}], warden, sensitiveToolsPolicy, channel }.\n\nExample: argus_capabilities({ include_schemas: false })",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "include_schemas": {
+              "type": "boolean",
+              "default": false,
+              "description": "If true, include each tool's inputSchema in the JSON (larger payload). Default false \u2014 names + short summaries only.",
+              "examples": [
+                false,
+                true
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "outputSchema": null,
+        "icons": null,
+        "annotations": {
+          "title": "ARGUS capabilities",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "meta": null,
+        "execution": null
+      }
+    ]
+  }
+]

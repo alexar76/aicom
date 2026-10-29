@@ -1,0 +1,88 @@
+{
+  "wheels": [
+    {
+      "package": "aimarket-atlas",
+      "version": "0.3.3",
+      "wheel": "aimarket_atlas-0.3.3-py3-none-any.whl",
+      "sha256": "2e1c91cb97d59c09e8a7c241f998c7968a466559c51b6ed9a38c30a64d52f298",
+      "python_sources_verified": 49
+    },
+    {
+      "package": "aimarket-logos",
+      "version": "0.2.2",
+      "wheel": "aimarket_logos-0.2.2-py3-none-any.whl",
+      "sha256": "f95239a2c6b6a3af12c04a2abfe06dc196a2e7cae82bde6bf585a620201da94f",
+      "python_sources_verified": 31
+    },
+    {
+      "package": "aimarket-mcp",
+      "version": "0.6.4",
+      "wheel": "aimarket_mcp-0.6.4-py3-none-any.whl",
+      "sha256": "4bc6117d5793862d04f58233d6bad8dd41b579c4afa0fc86d66f0a740d01a575",
+      "python_sources_verified": 5
+    },
+    {
+      "package": "aimarket-metis",
+      "version": "0.2.5",
+      "wheel": "aimarket_metis-0.2.5-py3-none-any.whl",
+      "sha256": "223d6611794fcfb5d262eb0b2cee3d286ab293e9b14558d2e7a7073ee583915e",
+      "python_sources_verified": 102
+    },
+    {
+      "package": "aimarket-oracle-core",
+      "version": "0.6.3",
+      "wheel": "aimarket_oracle_core-0.6.3-py3-none-any.whl",
+      "sha256": "48b71b8c05a1ae5fd0fb0ca9bd0953b86c42340b35eae8e91fe4c246e873c062",
+      "python_sources_verified": 12
+    },
+    {
+      "package": "aimarket-platon",
+      "version": "0.1.6",
+      "wheel": "aimarket_platon-0.1.6-py3-none-any.whl",
+      "sha256": "02cc244612be327018820de981cfe591d119b17a74b5610bb0706f855025c281",
+      "python_sources_verified": 17
+    },
+    {
+      "package": "aimarket-treasury",
+      "version": "0.1.4",
+      "wheel": "aimarket_treasury-0.1.4-py3-none-any.whl",
+      "sha256": "3fc7995aa4e3420f85dfea98132a1a71846e61bc933b005224ae0bb2f774292f",
+      "python_sources_verified": 3
+    },
+    {
+      "package": "skopos-fleet",
+      "version": "0.2.2",
+      "wheel": "skopos_fleet-0.2.2-py3-none-any.whl",
+      "sha256": "5984ca19c7c414439342b0fad79d5e75a356e39f19145cf25b810d76ac5a927a",
+      "python_sources_verified": 168
+    }
+  ],
+  "packaged_keyless_gates": [
+    {
+      "source": "aimarket-mcp/aimarket_mcp/server.py",
+      "default_denied": true,
+      "verified_opt_in_accepted": true,
+      "missing_proc_needs_both_flags": true
+    },
+    {
+      "source": "metis/metis/api/auth.py",
+      "default_denied": true,
+      "verified_opt_in_accepted": true,
+      "missing_proc_needs_both_flags": true
+    },
+    {
+      "source": "treasury/treasury/service.py",
+      "default_denied": true,
+      "verified_opt_in_accepted": true,
+      "missing_proc_needs_both_flags": true
+    },
+    {
+      "source": "platon/backend/platon/main.py",
+      "default_denied": true,
+      "verified_opt_in_accepted": true,
+      "missing_proc_needs_both_flags": true
+    }
+  ],
+  "published": false,
+  "verification": "All packaged Python source bytes match workspace; metadata and archive paths checked; no install or network."
+}

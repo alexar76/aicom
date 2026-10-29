@@ -4,9 +4,24 @@ set -euo pipefail
 
 clone="${1:-}"
 [[ -n "$clone" && -d "$clone" ]] || {
-  echo "usage: verify_mirror_secrets.sh <clone-dir>" >&2
+  echo "usage: verify_mirror_secrets.sh <clone-dir> [--git-index]" >&2
   exit 2
 }
+
+# Use the trusted workspace checker, never code from the candidate export.
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+python="$script_dir/../.venv/bin/python"
+[[ -x "$python" ]] || python="python3"
+structured_args=("$clone")
+case "${2:-}" in
+  "") ;;
+  --git-index) structured_args+=(--git-index) ;;
+  *) echo "error: unknown secret-check option" >&2; exit 2 ;;
+esac
+if ! "$python" "$script_dir/verify_structured_secrets.py" "${structured_args[@]}"; then
+  echo "error: structured secret check failed — refusing" >&2
+  exit 1
+fi
 
 fail=0
 
@@ -19,12 +34,12 @@ command -v rg >/dev/null 2>&1 || {
 
 # rg skips hidden files by default, and a mirror ships dotfiles: .env.example (one carried a
 # private host for weeks), .github/workflows, .npmrc*. Scan them; .git itself is not shipped.
-# Files the clone's own .gitignore matches are left out on purpose — `git add -A` will not
-# stage them either.
+# Ignore rules cannot exempt content: previously tracked/staged files remain publishable
+# after .gitignore changes. The optional index pass inspects the actual staged blobs.
 #   0 = match, 1 = no match, anything else = rg failed, which must not read as "clean".
 rg_hit() {
   local rc=0
-  rg -q --hidden -g '!.git' "$@" 2>/dev/null || rc=$?
+  rg -q --hidden --no-ignore -g '!.git' "$@" 2>/dev/null || rc=$?
   if [[ "$rc" -gt 1 ]]; then
     echo "error: rg failed (exit $rc) — refusing to certify the mirror" >&2
     fail=1
@@ -112,12 +127,9 @@ fi
 # Extra credential shapes — AWS access keys, Google API keys, PEM private-key blocks.
 # Real Google browser keys are AIzaSy…; bare AIza+35 matches random base64 in HTML assets.
 #
-# warden/test/flow-guard.test.ts is a flow-guard test fixture, not a shipped
-# credential: a placeholder access-key shape and a fake PEM used only to assert
-# the guard. The warden satellite clone is rooted at warden/, so that file's
-# mirror path is test/flow-guard.test.ts. One path — not a *.test.ts ignore.
+# Test paths cannot exempt credentials. Test sources must assemble synthetic
+# markers instead of committing complete private-key headers or access keys.
 if rg_hit \
-  -g '!**/test/flow-guard.test.ts' \
   -e 'AKIA[0-9A-Z]{16}' \
   -e 'AIzaSy[0-9A-Za-z_-]{33}' \
   -e '-----BEGIN (RSA |EC |DSA |OPENSSH |ENCRYPTED )?PRIVATE KEY-----' \
@@ -143,7 +155,7 @@ anvil_test_keys=$(
 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6
 ANVIL_KEYS
 )
-if rg --hidden -g '!.git' --no-heading -o -i 'PRIVATE_KEY=0x[0-9a-fA-F]{64}' "$clone" 2>/dev/null \
+if rg --hidden --no-ignore -g '!.git' --no-heading -o -i 'PRIVATE_KEY=0x[0-9a-fA-F]{64}' "$clone" 2>/dev/null \
   | grep -viF "$anvil_test_keys" | grep -q .; then
   echo "error: raw private key literal in mirror tree" >&2
   fail=1
@@ -182,6 +194,98 @@ allow_known_public_pem() {
   return 0
 }
 
+# Frozen public Solana ZK ElGamal sigma-proof fixtures, not signing keys.
+# zk_legacy_wire.rs loads these two files with include_bytes! and checks
+# verify_proof(). PubkeyValidityProofData is 96 bytes (32-byte public key +
+# 64-byte sigma proof). ZeroCiphertextProofData is 192 bytes (32-byte public
+# key + 64-byte ciphertext + 96-byte sigma proof). The acex satellite clone is
+# rooted at acex/, so the mirror paths have no acex/ prefix. Exact files and
+# exact sizes only — not *.proof, not the rest of legacy-zk/, and a different
+# size at the same path still fails the raw-key check.
+allow_known_zk_proof_fixture() {
+  local f="$1"
+  local size="$2"
+  case "$f" in
+    */contracts/solana/programs/acex-capital/tests/fixtures/legacy-zk/pubkey_validity.proof)
+      [[ "$size" -eq 96 ]]
+      ;;
+    */contracts/solana/programs/acex-capital/tests/fixtures/legacy-zk/zero_ciphertext.proof)
+      [[ "$size" -eq 192 ]]
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+# Exact frozen public proof contents, checked independently of file size.
+allow_pinned_zk_proof() {
+  local f="$1" expected
+  case "$f" in
+    */contracts/solana/programs/acex-capital/tests/fixtures/legacy-zk/pubkey_validity.proof)
+      expected="965369f2db0c0e05a0eb74fe20447d705a75e28a48832e56b5a4dcde62907bd1" ;;
+    */contracts/solana/programs/acex-capital/tests/fixtures/legacy-zk/zero_ciphertext.proof)
+      expected="249cdb9321614cb0ca1982ab08cf10c78094c863e39bf4d3db4344419dabfa63" ;;
+    *) return 1 ;;
+  esac
+  [[ "$("$python" -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest())' "$f")" == "$expected" ]]
+}
+
+# oracle_core/_signing_key_storage.py is storage code. The basename matches
+# *_signing_key_*, but the file is UTF-8 Python: it reads a key from disk and
+# stores SHA-256 revocation pins. It does not contain signing-key bytes.
+# A satellite clone is rooted at the satellite directory. The scanner therefore
+# sees these relative paths, and only these:
+#   vendor/oracle-core/oracle_core/_signing_key_storage.py
+#     post-rsync vendor copy of oracles/core (skopos, gaia, symmartys, momus,
+#     treasury, logos). No satellite-name prefix.
+#   core/oracle_core/_signing_key_storage.py
+#     export_oracles rsyncs oracles/ onto the clone root.
+#   oracles/platon/backend/oracle_platon/_signing_key_storage.py
+#     same oracles export. The inner oracles/ directory is part of that tree
+#     (the generated CI installs oracles/platon/backend). There is no second
+#     oracles/ prefix.
+#   backend/platon/_signing_key_storage.py
+#     export_platon rsyncs platon/ onto the clone root. The package directory
+#     is backend/platon, not backend/oracle_platon.
+# Not *_signing_key*, not *.proof, and not this filename on any other path.
+# The match is the path relative to the clone root. A longer path that merely
+# ends with one of these suffixes (an extra oracles/ or platon/ prefix) is a
+# different file and still fails. A PEM, a raw seed, a tiny stand-in, or any
+# other bytes at an allowed path still fail.
+allow_vendored_oracle_signing_storage() {
+  local f="$1" size ctl rel root
+  root="${clone%/}"
+  rel="${f#"$root"/}"
+  case "$rel" in
+    vendor/oracle-core/oracle_core/_signing_key_storage.py) ;;
+    core/oracle_core/_signing_key_storage.py) ;;
+    oracles/platon/backend/oracle_platon/_signing_key_storage.py) ;;
+    backend/platon/_signing_key_storage.py) ;;
+    *) return 1 ;;
+  esac
+  if grep -q 'PRIVATE KEY' "$f"; then
+    return 1
+  fi
+  size=$(wc -c < "$f" 2>/dev/null || echo 0)
+  # The module is several kilobytes of source. A key-sized stand-in is not it.
+  [[ "$size" -gt 512 ]] || return 1
+  ctl=$(LC_ALL=C tr -dc '\000-\010\013\014\016-\037\177' < "$f" 2>/dev/null | wc -c | tr -d ' ')
+  [[ "${ctl:-0}" -eq 0 ]] || return 1
+  grep -q 'def load_or_create_ed25519_keypair' "$f" || return 1
+  return 0
+}
+
+# Independently packaged copies are code only when their bytes exactly match
+# the current trusted helper. This is safe at catalog/vendor paths too; a path,
+# a Python suffix or a plausible-looking function cannot exempt another file.
+allow_trusted_signing_storage() {
+  local f="$1"
+  [[ "$(basename "$f")" == "_signing_key_storage.py" ]] || return 1
+  "$python" -I -c 'import pathlib,sys; raise SystemExit(0 if pathlib.Path(sys.argv[1]).read_bytes() == pathlib.Path(sys.argv[2]).read_bytes() else 1)' \
+    "$script_dir/../security/signing_key_storage.py" "$f"
+}
+
 key_hits=""
 while IFS= read -r f; do
   case "$(basename "$f")" in
@@ -193,6 +297,12 @@ while IFS= read -r f; do
       continue
       ;;
     *_signing_key|*_signing_key.*|*_signing_key_*|*_mldsa|conductor_key|*_ed25519|*_ed25519.key|id_rsa|id_ecdsa|id_ed25519|*.p12|*.pfx|*.jks|*.keystore|.npmrc.publish)
+      if allow_trusted_signing_storage "$f"; then
+        continue
+      fi
+      if allow_vendored_oracle_signing_storage "$f"; then
+        continue
+      fi
       key_hits+="  $f (name looks like key material)"$'\n'; continue;;
   esac
   # Shape test: tiny + contains CONTROL bytes, which text never does.
@@ -210,6 +320,9 @@ while IFS= read -r f; do
     case "$f" in
       *.png|*.jpg|*.jpeg|*.gif|*.ico|*.webp|*.avif|*.bmp|*.woff|*.woff2|*.ttf|*.otf|*.eot|*.wasm|*.pyc|*.so|*.dylib|*.node|*.pack|*.idx|*.mo|*.zip|*.gz|*.br) continue;;
     esac
+    if allow_pinned_zk_proof "$f"; then
+      continue
+    fi
     ctl=$(LC_ALL=C tr -dc '\000-\010\013\014\016-\037\177' < "$f" 2>/dev/null | wc -c | tr -d ' ')
     # "Any control byte at all" was too blunt above the key-sized range. It flagged
     # docs/assets/icons/bar-chart-3.svg (410 B, ONE control byte) and an AWR

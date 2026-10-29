@@ -8,6 +8,7 @@ from typing import Any
 import yaml
 
 from core.paths import model_providers_path
+from llm.provider_secrets import resolve_provider_api_key
 
 _PLACEHOLDER = re.compile(
     r"^(?:changeme|replace[_-]?me|your[_-]?key|sk-xxx|null|none|test|demo)$",
@@ -16,18 +17,11 @@ _PLACEHOLDER = re.compile(
 
 
 def _key_resolved(provider: dict[str, Any]) -> bool:
-    inline = provider.get("api_key")
-    if isinstance(inline, str) and inline.strip() and not _PLACEHOLDER.match(inline.strip()):
-        return True
-
-    env_name = provider.get("api_key_env")
-    if isinstance(env_name, str) and env_name.strip():
-        from security.secret_resolver import get_secret
-
-        val = get_secret(env_name.strip(), env_names=[env_name.strip()])
-        if val and not _PLACEHOLDER.match(val):
-            return True
-    return False
+    try:
+        value = resolve_provider_api_key(provider)
+    except (ValueError, OSError):
+        return False
+    return bool(value and not _PLACEHOLDER.match(value))
 
 
 def production_llm_key_issues() -> list[str]:
@@ -45,7 +39,7 @@ def production_llm_key_issues() -> list[str]:
     try:
         config = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
     except (OSError, yaml.YAMLError) as exc:
-        return [f"Cannot read {cfg_path}: {exc}"]
+        return [f"Cannot read {cfg_path} ({type(exc).__name__})"]
 
     providers = config.get("providers")
     if not isinstance(providers, dict):

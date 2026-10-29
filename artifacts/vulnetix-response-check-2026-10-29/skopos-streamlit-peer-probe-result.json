@@ -1,0 +1,28 @@
+{
+  "peer_probe": [
+    {
+      "streamlit": "1.66.1",
+      "actual_peer": "93.184.216.34",
+      "request_attribute_exists": false,
+      "extracted_peer": null,
+      "supplied_header": "198.51.100.1",
+      "login_lockout_key": "198.51.100.1"
+    },
+    {
+      "streamlit": "1.66.1",
+      "actual_peer": "93.184.216.34",
+      "request_attribute_exists": false,
+      "extracted_peer": null,
+      "supplied_header": "198.51.100.2",
+      "login_lockout_key": "198.51.100.2"
+    }
+  ],
+  "budget_probe": {
+    "known_ip": "198.51.100.1",
+    "unknown_ip": "198.51.100.2",
+    "known_ip_pace_seconds": 0,
+    "unknown_ip_pace_seconds": 59,
+    "exhausted_spoofed_ip_lockout_seconds": 299,
+    "fresh_spoofed_ip_lockout_seconds": 0
+  }
+}

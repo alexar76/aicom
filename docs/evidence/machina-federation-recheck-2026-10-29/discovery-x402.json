@@ -1,0 +1,42 @@
+{
+  "url": "https://mach402.dev/.well-known/x402",
+  "checked_at_utc": "2026-10-29T04:00:59.132206+00:00",
+  "method": "GET",
+  "status": 200,
+  "final_url": "https://mach402.dev/.well-known/x402",
+  "headers": {
+    "Date": "Thu, 29 Oct 2026 04:00:59 GMT",
+    "Content-Type": "text/plain",
+    "Content-Length": "436",
+    "Connection": "close",
+    "Server": "cloudflare",
+    "last-modified": "Wed, 28 Oct 2026 22:25:32 GMT",
+    "etag": "\"6ae2765c-1b4\"",
+    "Cache-Control": "public, max-age=3600",
+    "Accept-Ranges": "bytes",
+    "cf-cache-status": "DYNAMIC",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=rwURjakJdN41GNlqhFf8PCvdtDmVky3FSOZDzgvlxV81W04coN4e4%2Bby01KSfqnD4kqMnbzoGzZiHGAWuwA8UCsghiva2KSaerL1OXDOboQtrrVDbzWmyKh8QLBGAQ%3D%3D\"}]}",
+    "CF-RAY": "a51f46c36d62b94b-AMS",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "body_sha256": "41593aaf380cbc77221fedf2d90985d7c2984387bd624bf46fc2df7fd7a501a8",
+  "body_truncated": false,
+  "json": {
+    "endpoints": [
+      "POST /scan/python",
+      "POST /validate/email",
+      "POST /validate/email/bulk",
+      "POST /domain/intel",
+      "POST /pdf/extract",
+      "POST /pdf/extract/large",
+      "POST /url/extract"
+    ],
+    "seller_address": "0x14B21d80bf5776437dD4f1043BDAf31e60B366AD",
+    "network": "eip155:8453",
+    "facilitator": "Coinbase CDP",
+    "payment_token": "USDC",
+    "payment_token_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "documentation": "https://mach402.dev/docs/buyer-guide"
+  }
+}

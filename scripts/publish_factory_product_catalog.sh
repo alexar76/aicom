@@ -173,32 +173,31 @@ EOF
 
 # A product whose committed lockfile npm rates high or critical is not published: the catalog's own
 # npm-dependency-audit CI fails on it, and the factory would ship known-vulnerable code under its
-# name (Sentinel and Relay did until 2026-10-21). Same flags as that CI. An audit that cannot run
-# (no npm, no registry) warns and lets the product through. AICOM_CATALOG_ALLOW_NPM_HIGH=1 overrides.
+# name (Sentinel and Relay did until 2026-10-21). Same flags as that CI, including dev dependencies.
+# Unavailable npm/registry or an incomplete report blocks publication, as does a failing audit.
 audit_product_npm() {
-  local dest="$1" lock dir out found=0
-  if ! command -v npm >/dev/null 2>&1; then
-    echo "  warning: npm not installed — product lockfiles not audited" >&2
-    return 0
+  local dest="$1"
+  if ! command -v python3 >/dev/null 2>&1; then
+    echo "error: python3 not installed — npm dependency security cannot be verified" >&2
+    return 1
   fi
-  while IFS= read -r lock; do
-    dir="$(dirname "$lock")"
-    if out="$(cd "$dir" && npm audit --package-lock-only --include=dev --ignore-scripts --audit-level=high 2>&1)"; then
-      continue
-    fi
-    if grep -q -E "[0-9]+ (high|critical)|Severity: (high|critical)" <<<"$out"; then
-      echo "error: ${dir#"$dest"/}: npm audit reports high/critical advisories:" >&2
-      grep -E "^[a-z@][^ ]* |Severity: (high|critical)|vulnerabilit" <<<"$out" | head -20 >&2
-      found=1
-    else
-      echo "  warning: npm audit could not run in ${dir#"$dest"/} — not audited" >&2
-    fi
-  done < <(find "$dest" -name package-lock.json -not -path "*/node_modules/*")
-  if [[ "$found" -eq 1 && "${AICOM_CATALOG_ALLOW_NPM_HIGH:-}" == "1" ]]; then
-    echo "  AICOM_CATALOG_ALLOW_NPM_HIGH=1: publishing despite the advisories above" >&2
-    return 0
-  fi
-  return "$found"
+  python3 - "$ROOT" "$dest" <<'PYTHON'
+import sys
+from pathlib import Path
+
+sys.path.insert(0, sys.argv[1])
+from web.backend.services.npm_dependency_check import run_npm_dependency_check
+
+report = run_npm_dependency_check(Path(sys.argv[2]))
+if report.get("passed") is not True:
+    print("error: npm dependency security check failed; publication blocked", file=sys.stderr)
+    issues = report.get("issues") or ["npm audit did not produce a passing result"]
+    for issue in issues[:20]:
+        print("  " + str(issue).replace("\n", " ")[:500], file=sys.stderr)
+    if len(issues) > 20:
+        print(f"  {len(issues) - 20} additional issues omitted", file=sys.stderr)
+    raise SystemExit(1)
+PYTHON
 }
 
 ensure_readme_badge_markers() {
@@ -609,6 +608,7 @@ for pid in "${STAGED[@]}"; do
 done
 
 git -C "$REPO" add -A
+bash "$ROOT/scripts/verify_mirror_secrets.sh" "$REPO" --git-index
 if git -C "$REPO" diff --cached --quiet; then
   echo "No catalog changes to publish."
   exit 0

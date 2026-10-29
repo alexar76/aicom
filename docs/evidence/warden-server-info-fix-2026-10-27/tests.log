@@ -1,0 +1,164 @@
+
+> @aimarket/warden@0.22.1 test
+> vitest run --reporter=default --reporter=json --outputFile=../docs/evidence/warden-server-info-fix-2026-10-27/vitest.json
+
+
+ RUN  v5.0.5 /Users/alex/Desktop/ai_tests/aicompany/aicom/warden
+
+ ✓ test/flow-guard-screen.test.ts (119 tests) 2394ms
+   ✓ flow guard: screen tools (119)
+     ✓ resolves Playwright snapshots, [ref_N] trees and JSON element lists the same way 303ms
+ ✓ test/flow-guard.test.ts (46 tests) 1975ms
+   ✓ flow guard: sessions (14)
+     ✓ keeps state consistent when Claude Code runs tool hooks in parallel 712ms
+   ✓ flow guard: wiring (4)
+     ✓ the package CLI hooks and the plugin scripts give the same answers, and a blocked server still wins 311ms
+ ✓ test/flow-guard-secret-regression.test.ts (59 tests) 2663ms
+   ✓ short-secret fragment correlation (53)
+     ✓ deduplicates rereads and marks index capacity exhaustion instead of silently evicting 720ms
+ ✓ test/scan.test.ts (28 tests) 2746ms
+   ✓ scan: verdicts (6)
+     ✓ applies the pins wrap recorded to a server the config starts through wrap, and never writes pins 415ms
+   ✓ scan: lock file (5)
+     ✓ blocks unreviewed servers, records them, stays stable, and catches a rug pull with a diff 468ms
+warning: on branch 'main', pushing ref 'codex/warden-wrap'
+ ✓ test/flow-guard-gui-policy.test.ts (97 tests) 1649ms
+ ✓ test/task-adapter.test.ts (91 tests) 4860ms
+   ✓ actual task MCP transport (2)
+     ✓ shares a non-replayable budget across actual server processes 300ms
+ ✓ test/persistent-pins.test.ts (2 tests) 2012ms
+   ✓ requires operator opt-in and exact reviewed payload, persists approval across real process restarts, then revokes 1981ms
+warning: on branch 'main', pushing ref 'codex/warden-wrap'
+ ✓ test/publish-pr.test.ts (1 test) 2936ms
+   ✓ Gitea PR mode retains gates, preserves the base branch and encodes a body file 2934ms
+ ✓ test/flow-guard-gaps.test.ts (24 tests) 1065ms
+ ✓ test/action.test.ts (6 tests) 2422ms
+   ✓ GitHub Action step (4)
+     ✓ on a pull request: starts nothing, vets launch lines, writes SARIF, summary and outputs 572ms
+     ✓ with the lock committed and stdio allowed, a clean project passes 1193ms
+     ✓ takes explicit config files one per line, names with spaces included 537ms
+ ✓ test/mcp-client.test.ts (15 tests) 1083ms
+   ✓ MCP client: stdio (2)
+     ✓ times out a server that never answers, and answers roots/list for one that asks 580ms
+ ✓ test/flow-guard-gautam.test.ts (37 tests) 1097ms
+ ✓ test/flow-guard-credential-boundary.test.ts (34 tests) 735ms
+ ✓ test/pin-review-origin.test.ts (1 test) 732ms
+   ✓ shows the reported versions, the unpinned launch and the added routing hint in one review 730ms
+ ✓ test/classifier.test.ts (33 tests) 619ms
+ ✓ test/flow-guard-instructions.test.ts (57 tests) 336ms
+ ✓ test/answer-gate-host.test.ts (4 tests) 722ms
+ ✓ test/claude-plugin.test.ts (8 tests) 457ms
+   ✓ Claude Code hooks: end to end (2)
+     ✓ session-start records verdicts; pre-tool-use (package and plugin script) denies the blocked server 449ms
+ ✓ test/encoded-text.test.ts (9 tests) 450ms
+   ✓ bounded decoding (6)
+     ✓ handles nesting and keeps invalid/nontext/oversized encodings literal 307ms
+ ✓ test/hardening.test.ts (26 tests) 565ms
+ ✓ test/flow-guard-reference-egress.test.ts (25 tests) 582ms
+ ✓ test/atomic-screen.test.ts (33 tests) 167ms
+ ✓ test/server-info-validation.test.ts (22 tests) 7938ms
+   ✓ status server_info at the stdio boundary (18)
+     ✓ rejects unknown own key __proto__ without writing state 319ms
+     ✓ keeps compatible empty object input 468ms
+   ✓ enabled approvals reject invalid metadata before changing pins (4)
+     ✓ unknown extra cannot create or replace an approval 1185ms
+     ✓ unknown __proto__ cannot create or replace an approval 1317ms
+     ✓ unknown constructor cannot create or replace an approval 996ms
+     ✓ still stores valid partial metadata with an explicitly reviewed approval 702ms
+ ✓ test/docs.test.ts (13 tests) 178ms
+ ✓ test/transport-hardening.test.ts (3 tests) 177ms
+ ✓ test/field-survey-regression.test.ts (42 tests) 187ms
+ ✓ test/landing.test.ts (8 tests) 236ms
+ ✓ test/mcp-server.test.ts (18 tests) 285ms
+ ✓ test/flow-guard-home-paths.test.ts (2 tests) 127ms
+ ✓ test/flow-guard-answer-review.test.ts (9 tests) 128ms
+ ✓ test/flow-guard-constraints.test.ts (29 tests) 189ms
+ ✓ test/warden-benign.test.ts (26 tests) 222ms
+ ✓ test/result-screen.test.ts (2 tests) 85ms
+ ✓ test/ruleset-v13.test.ts (28 tests) 236ms
+ ✓ test/ruleset-v15.test.ts (24 tests) 208ms
+ ✓ test/answer-gate.test.ts (46 tests) 131ms
+ ✓ test/precision-v12.test.ts (3 tests) 74ms
+ ✓ test/ruleset-v9.test.ts (26 tests) 36ms
+ ✓ test/mcp-tools.test.ts (1 test) 69ms
+ ✓ test/extended-fields.test.ts (3 tests) 87ms
+ ✓ test/packaging.test.ts (5 tests) 31ms
+ ✓ test/adversarial-static-scan.test.ts (1 test) 26ms
+ ✓ test/ruleset-v10.test.ts (24 tests) 149ms
+ ✓ test/review-diff.test.ts (16 tests) 36ms
+ ✓ test/jcs.test.ts (18 tests) 10ms
+ ✓ test/no-phantom-gate.test.ts (3 tests) 56ms
+ ✓ test/scan-config.test.ts (8 tests) 13ms
+ ✓ test/warden.test.ts (19 tests) 144ms
+ ✓ test/declare.test.ts (10 tests) 32ms
+ ✓ test/wrap-screen.test.ts (26 tests) 69ms
+ ✓ test/toxic-flow.test.ts (5 tests) 12ms
+ ✓ test/launch.test.ts (1 test) 11ms
+ ✓ test/mtl.test.ts (6 tests) 5ms
+ ✓ test/fold.test.ts (6 tests) 9ms
+ ✓ test/annotation-review.test.ts (28 tests) 9932ms
+   ✓ annotation first-use review through the real stdio proxy (19)
+     ✓ asks once for the exact annotated tool in a wrapper, and asks again in a new wrapper 1053ms
+     ✓ does not record a decline as review and does not forward the refused call 732ms
+     ✓ keeps no-UI calls working when review is disabled or auditing: {"flow":false} 456ms
+     ✓ keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"annotationReview":"off"}} 364ms
+     ✓ keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"mode":"off"}} 512ms
+     ✓ keeps no-UI calls working when review is disabled or auditing: {"flowPolicy":{"mode":"audit"}} 482ms
+     ✓ fails closed without consent only under the enabled policy: {"flags":[]} 474ms
+     ✓ fails closed without consent only under the enabled policy: {"flags":["--ask","refuse"]} 622ms
+     ✓ fails closed without consent only under the enabled policy: {"flowPolicy":{"mode":"deny"}} 509ms
+     ✓ freshly lists after a yes and refuses silent definition drift without remembering that approval 705ms
+     ✓ never reuses an old tools/list already in flight when approval arrives 1077ms
+     ✓ rechecks shared credential/taint state after annotation approval, literal secret=true 557ms
+     ✓ rechecks shared credential/taint state after annotation approval, literal secret=false 519ms
+     ✓ accepts the same unchanged flow-ask basis instead of asking indefinitely 416ms
+     ✓ documents conservative refusal when the first precheck already consumed an exact public grant 434ms
+     ✓ never waives repeated sensitive-tool approval after annotation review 352ms
+ ✓ test/threat-feed.test.ts (23 tests) 10526ms
+   ✓ durable anti-rollback (2)
+     ✓ keeps the abort deadline active while reading the body 10001ms
+ ✓ test/wrap.test.ts (123 tests) 43353ms
+   ✓ wrap proxy (123)
+     ✓ clean server, raw results, framing lsp=false and 5 MiB response 1381ms
+     ✓ clean server, raw results, framing lsp=true and 5 MiB response 1052ms
+     ✓ strict admission withholds unreviewed tools in any language and never creates a TOFU pin 1987ms
+     ✓ strict admission does not mistake an old automatic pin for operator approval 945ms
+     ✓ poisoned descriptions never reach the client or receive calls; verdict contains ruleset 366ms
+     ✓ strips poisoned initialize instructions, preserves other capabilities 365ms
+     ✓ rejects names not exposed to the model 343ms
+     ✓ persists drift across sessions; TTY reapproval allows the new snapshot 1652ms
+     ✓ captures initialize versions through real wrap and TTY approval, without treating metadata as identity or tools 1569ms
+     ✓ revoke persists denial, without silently starting a fresh TOFU 452ms
+     ✓ identity drift blocks before spawning and returns initialize error with exit 3 360ms
+     ✓ EOF terminates a stubborn child within 10 seconds and reaps it 10002ms
+     ✓ sensitive tools (policy.sensitiveToolPatterns) (6)
+       ✓ a client that offers only URL elicitation, or --ask refuse, is never asked 381ms
+     ✓ flow guard (--flow) (63)
+       ✓ atomic screen server CAS after approval (16)
+         ✓ refuses the exact race after the final proxy read but before server comparison, with no raw-click fallback 361ms
+         ✓ rejects invisible handler/ABA revision changes even if both snapshots have identical role/ID/bounds 313ms
+         ✓ refuses malformed prepared protocol before approval 320ms
+         ✓ refuses malformed prepared stamp before approval 324ms
+         ✓ refuses malformed prepared ticket before approval 307ms
+         ✓ cancellation while approving discards the preparation; a late yes never commits 397ms
+         ✓ a malformed committed receipt stamp never triggers a retry and leaves an uncertain lease 350ms
+         ✓ a malformed committed receipt protocol never triggers a retry and leaves an uncertain lease 337ms
+         ✓ a malformed committed receipt extra never triggers a retry and leaves an uncertain lease 338ms
+         ✓ an error after the server effect remains uncertain and cannot be replayed automatically 337ms
+       ✓ Auten: fresh target after approval (18)
+         ✓ cancels approved execution when the fresh role changes or cannot be read 339ms
+         ✓ cancels approved execution when the fresh identity changes or cannot be read 320ms
+         ✓ cancels approved execution when the fresh box changes or cannot be read 320ms
+         ✓ cancels approved execution when the fresh reference changes or cannot be read 356ms
+         ✓ cancels a clipboard action when a credential read changes its approval basis, despite identical geometry 354ms
+         ✓ blocks a second proxy GUI action while the first approval is pending, even without revalidation configured on the second 367ms
+         ✓ honors cancellation during the final observation and releases the unused screen lease 1662ms
+         ✓ retains an uncertain screen lease across proxy restart when the action has no result 353ms
+       ✓ mode policy requires actual approval even for listed navigation 321ms
+
+ Test Files  57 passed (57)
+      Tests  1382 passed (1382)
+   Start at  15:05:23
+   Duration  44.42s (tests 94%, import 3%, transform 2%, setup 1%)
+
+JSON report written to /Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/warden-server-info-fix-2026-10-27/vitest.json

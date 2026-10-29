@@ -40,7 +40,7 @@ satellites:
     license: MIT
     extra_badges:
       - '<a href="https://github.com/alexar76/esim-operator-kit/actions/workflows/pages.yml"><img src="https://github.com/alexar76/esim-operator-kit/actions/workflows/pages.yml/badge.svg" alt="Pages" /></a>'
-      - '<a href="https://github.com/alexar76/esim-operator-kit/actions/workflows/pages.yml"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Falexar76.github.io%2Fesim-operator-kit%2Fbadges%2Ftests.json" alt="Tests (measured by CI)" /></a>'
+      - '<a href="https://github.com/alexar76/esim-operator-kit/actions/workflows/pages.yml"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Falexar76.github.io%2Fesim-operator-kit%2Fbadges%2Ftests.json&cacheSeconds=3600" alt="Tests (measured by CI)" /></a>'
       - '<a href="https://esim-shop.modelmarket.dev/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fesim-shop.modelmarket.dev%2Frobots.txt&label=example%20shop&up_message=live&down_message=down" alt="Example shop" /></a>'
       - '<a href="https://esim.modelmarket.dev/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fesim.modelmarket.dev%2F&label=landing&up_message=live&down_message=down" alt="Landing" /></a>'
       - '<a href="https://modelmarket.dev/providers/esim/healthz"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmodelmarket.dev%2Fproviders%2Fesim%2Fhealthz&query=%24.offers&label=plans%20(live)&color=2bd69b" alt="Plans in the live catalogue" /></a>'
@@ -130,17 +130,15 @@ satellites:
       - '<img src="docs/badges/tests.svg" alt="tests" />'
       - '<img src="docs/badges/aimarket.svg" alt="AIMarket v2" />'
       - '<img src="docs/badges/signing.svg" alt="Ed25519 signing" />'
-  emporion:
-    repo: emporion
+  symmartys:
+    repo: symmartys
+    github_published: false
     workflow: ci.yml
     pages_workflow: pages.yml
     coverage_kind: python
     license: MIT
     extra_badges:
-      - '<a href="https://github.com/alexar76/emporion/actions/workflows/pages.yml"><img src="https://github.com/alexar76/emporion/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" /></a>'
-      - '<a href="https://emporion.modelmarket.dev/"><img src="docs/badges/live.svg" alt="Live service" /></a>'
-      - '<a href="https://alexar76.github.io/emporion/"><img src="docs/badges/landing.svg" alt="Landing" /></a>'
-      - '<a href="https://github.com/alexar76/emporion/pkgs/container/emporion"><img src="docs/badges/ghcr.svg" alt="GHCR package" /></a>'
+      - '<a href="https://symmartys.modelmarket.dev/"><img src="docs/badges/live.svg" alt="Live service" /></a>'
       - '<img src="docs/badges/python.svg" alt="Python >=3.11" />'
       - '<img src="docs/badges/tests.svg" alt="tests" />'
       - '<img src="docs/badges/aimarket.svg" alt="AIMarket v2" />'

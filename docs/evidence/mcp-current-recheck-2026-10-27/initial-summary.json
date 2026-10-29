@@ -1,0 +1,94 @@
+{
+  "checkedAt": "2026-10-27T09:25:59.236440+00:00",
+  "scope": "Initial3publications; expanded audit requested afterwards",
+  "results": [
+    {
+      "case": "argus-default",
+      "distribution": "@alexar76/argus3",
+      "installedVersion": "0.3.3",
+      "status": "exited",
+      "tools": 0,
+      "protocol": null,
+      "detail": "[exit code 0] stdout: ARGUS \u2014 wallet-native, security-hardened personal agent\nUsage:\n  argus setup                        interactive setup (wallet seed \u2192 provider/keys) \u2014 start here\n  argus keystore create              create an encrypted wallet vault (new seed or --import)\n  argus keystore address             print the \u2026 ail refunds it (place AFTER the task text)\n  --yes             auto-approve sensitive tools (use with care)\n  --verbose         debug logging\nARGUS runs fully autonomously with no wallet. Set ARGUS_WALLET_KEY to connect to\nthe AICOM economy. See docs/ for architecture, security, and economy details.",
+      "requests": [
+        "initialize"
+      ],
+      "toolCalls": 0,
+      "file": "probes.jsonl"
+    },
+    {
+      "case": "packager-default",
+      "distribution": "aimarket-mcp-packager",
+      "installedVersion": "2.1.1",
+      "status": "exited",
+      "tools": 0,
+      "protocol": null,
+      "detail": "[exit code 1] Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/usr/local/lib/python3.12/importlib/__init__.py\", line 90, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen importlib._bootstrap>\", line 1387, in _gcd_import\n  File \"<frozen importlib._bootstrap>\", line 1360, in _find_and_load\n  File \"<frozen importlib._bootstrap>\", line 1331, in _find_and_load_unlocked\n  File \"<frozen importlib._bootstrap>\", line 935, in _load_unlocked\n  File \"<frozen importlib._bootstrap_external>\", line 999, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 488, in _call_with_frames_removed\n  File \"/work/pkg/aimarket_mcp_packager/stdio_server.py\", line 14, in <module>\n    from mcp.server.fastmcp import FastMCP\nModuleNotFoundError: No module named 'mcp'",
+      "requests": [
+        "initialize"
+      ],
+      "toolCalls": 0,
+      "file": "probes.jsonl"
+    },
+    {
+      "case": "oracle-default",
+      "distribution": "aimarket-oracle-gateway",
+      "installedVersion": "0.3.1",
+      "status": "exited",
+      "tools": 0,
+      "protocol": null,
+      "detail": "[exit code 1] Traceback (most recent call last):\n  File \"/work/pkg/mcp/server/fastmcp/utilities/func_metadata.py\", line 241, in func_metadata\n    sig = inspect.signature(func, eval_str=True)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/inspect.py\", line 3348, in signature\n    return Signature.from_callable(obj, follow_wrapped=follow_wrapped,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/inspect.py\", line 3085, in from_callable\n    return _signature_from_callable(obj, sigcls=cls,\n           ^^^^^^^^^^^^^^^^^^^^^^ \u2026 pkg/mcp/server/fastmcp/tools/tool_manager.py\", line 57, in add_tool\n    tool = Tool.from_function(\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/work/pkg/mcp/server/fastmcp/tools/base.py\", line 72, in from_function\n    func_arg_metadata = func_metadata(\n                        ^^^^^^^^^^^^^^\n  File \"/work/pkg/mcp/server/fastmcp/utilities/func_metadata.py\", line 245, in func_metadata\n    raise InvalidSignature(f\"Unable to evaluate type annotations for callable {func.__name__!r}\") from e\nmcp.server.fastmcp.exceptions.InvalidSignature: Unable to evaluate type annotations for callable 'aggregate_values'",
+      "requests": [
+        "initialize"
+      ],
+      "toolCalls": 0,
+      "file": "probes.jsonl"
+    },
+    {
+      "case": "argus-mcp",
+      "distribution": "@alexar76/argus3",
+      "installedVersion": "0.3.3",
+      "status": "ok",
+      "tools": 3,
+      "protocol": "2025-06-18",
+      "detail": null,
+      "requests": [
+        "initialize",
+        "notifications/initialized",
+        "tools/list"
+      ],
+      "toolCalls": 0,
+      "file": "configured-probes.jsonl"
+    },
+    {
+      "case": "packager-extra-mcp",
+      "distribution": "aimarket-mcp-packager",
+      "installedVersion": "2.1.1",
+      "status": "ok",
+      "tools": 3,
+      "protocol": "2025-06-18",
+      "detail": null,
+      "requests": [
+        "initialize",
+        "notifications/initialized",
+        "tools/list"
+      ],
+      "toolCalls": 0,
+      "file": "configured-probes.jsonl"
+    },
+    {
+      "case": "oracle-full-error",
+      "distribution": "aimarket-oracle-gateway",
+      "installedVersion": "0.3.1",
+      "status": "exited",
+      "tools": 0,
+      "protocol": null,
+      "detail": "[exit code 1] Traceback (most recent call last):\n  File \"/work/pkg/mcp/server/fastmcp/utilities/func_metadata.py\", line 241, in func_metadata\n    sig = inspect.signature(func, eval_str=True)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/inspect.py\", line 3348, in signature\n    return Signature.from_callable(obj, follow_wrapped=follow_wrapped,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/inspect.py\", line 3085, in from_callable\n    return _signature_from_callable(obj, sigcls=cls,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/inspect.py\", line 2597, in _signature_from_callable\n    return _signature_from_function(sigcls, obj,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/inspect.py\", line 2424, in _signature_from_function\n    annotations = get_annotations(func, globals=globals, locals=locals, eval_str=eval_str)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/inspect.py\", line 292, in get_annotations\n    value if not isinstance(value, str) else eval(value, globals, locals)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 1, in <module>\nNameError: name 'ValuesList' is not defined\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/usr/local/lib/python3.12/importlib/__init__.py\", line 90, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen importlib._bootstrap>\", line 1387, in _gcd_import\n  File \"<frozen importlib._bootstrap>\", line 1360, in _find_and_load\n  File \"<frozen importlib._bootstrap>\", line 1331, in _find_and_load_unlocked\n  File \"<frozen importlib._bootstrap>\", line 935, in _load_unlocked\n  File \"<frozen importlib._bootstrap_external>\", line 999, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 488, in _call_with_frames_removed\n  File \"/work/pkg/aimarket_oracle_gateway/stdio_server.py\", line 73, in <module>\n    register_extended_tools(mcp, _run)\n  File \"/work/pkg/aimarket_oracle_gateway/mcp_tool_surface.py\", line 77, in register_extended_tools\n    @mcp.tool()\n     ^^^^^^^^^^\n  File \"/work/pkg/mcp/server/fastmcp/server.py\", line 510, in decorator\n    self.add_tool(\n  File \"/work/pkg/mcp/server/fastmcp/server.py\", line 440, in add_tool\n    self._tool_manager.add_tool(\n  File \"/work/pkg/mcp/server/fastmcp/tools/tool_manager.py\", line 57, in add_tool\n    tool = Tool.from_function(\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/work/pkg/mcp/server/fastmcp/tools/base.py\", line 72, in from_function\n    func_arg_metadata = func_metadata(\n                        ^^^^^^^^^^^^^^\n  File \"/work/pkg/mcp/server/fastmcp/utilities/func_metadata.py\", line 245, in func_metadata\n    raise InvalidSignature(f\"Unable to evaluate type annotations for callable {func.__name__!r}\") from e\nmcp.server.fastmcp.exceptions.InvalidSignature: Unable to evaluate type annotations for callable 'aggregate_values'\n",
+      "requests": [
+        "initialize"
+      ],
+      "toolCalls": 0,
+      "file": "configured-probes.jsonl"
+    }
+  ]
+}

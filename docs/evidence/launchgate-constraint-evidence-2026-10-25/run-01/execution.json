@@ -1,0 +1,77 @@
+{
+  "host": "factory-vps",
+  "image": "sha256:a85c8ea75b21b6031dd94f06fcb70aa8366956133a0a6ea4f81c64c6b5424fd2",
+  "runtime": "runc",
+  "runtimeNetwork": "none",
+  "inputFiles": 170,
+  "archiveBytes": 499574,
+  "archiveSha256": "0bed28b2d7277479119e3efc873529a0164d76c9e7b98cc04ea321722dae4cd2",
+  "newModelCalls": 0,
+  "githubWrites": false,
+  "npmPublished": false,
+  "checks": [
+    {
+      "name": "dependencies",
+      "exitCode": 0,
+      "startedAt": "2026-10-26T03:40:18.331033+00:00",
+      "finishedAt": "2026-10-26T03:40:26.138305+00:00",
+      "logSha256": "1eb5d45f8c070f3af512865320df8ec06c356e3ae1d586af29461c7e26fcdca4"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "startedAt": "2026-10-26T03:40:26.138585+00:00",
+      "finishedAt": "2026-10-26T03:40:42.966666+00:00",
+      "logSha256": "0abd196caecdbbb2e8957204b9ca864336af5cd73f3773e22e6e917f368d0931"
+    },
+    {
+      "name": "typecheck",
+      "exitCode": 0,
+      "startedAt": "2026-10-26T03:40:42.966956+00:00",
+      "finishedAt": "2026-10-26T03:40:52.826371+00:00",
+      "logSha256": "a818fb3e3339c5c34560fd34ceca66dbff446b2a9bc3517c47d30325d86851e2"
+    },
+    {
+      "name": "warden-tests",
+      "exitCode": 0,
+      "startedAt": "2026-10-26T03:40:52.826456+00:00",
+      "finishedAt": "2026-10-26T03:42:55.761415+00:00",
+      "logSha256": "a80a92205026706a7847a09ae9a07d839feada5240aeb3d2ff04d359fd32906d"
+    },
+    {
+      "name": "redteam",
+      "exitCode": 0,
+      "startedAt": "2026-10-26T03:42:55.761736+00:00",
+      "finishedAt": "2026-10-26T03:43:37.800019+00:00",
+      "logSha256": "34b60edf74b4d75890caf6554291958c85dc003b96afe3d5d7e4de571d12d395"
+    },
+    {
+      "name": "probe-tests",
+      "exitCode": 0,
+      "startedAt": "2026-10-26T03:43:37.800302+00:00",
+      "finishedAt": "2026-10-26T03:43:50.443557+00:00",
+      "logSha256": "f7ed4601ab1b968e6b4517683cd9db10d50c08f97e534454549135de8de2f5b4"
+    },
+    {
+      "name": "extract-claims",
+      "exitCode": 0,
+      "startedAt": "2026-10-26T03:43:50.443760+00:00",
+      "finishedAt": "2026-10-26T03:44:04.738521+00:00",
+      "logSha256": "187a8a4a814b260df33d79fe0432fd098abfb395d9d8adf4f8e555100fc6419b"
+    },
+    {
+      "name": "replay",
+      "exitCode": 0,
+      "startedAt": "2026-10-26T03:44:04.738745+00:00",
+      "finishedAt": "2026-10-26T03:44:09.552600+00:00",
+      "logSha256": "3cb4d498c0b714962a939151d4f35342f58fd2ea13eeb3cc3bd604e4f808fb3b"
+    }
+  ],
+  "remoteTemp": "/tmp/warden-constraint-evidence-bxz0k0hg",
+  "outputSha256": "13e4ee2b7ad99382364404b09aae81635e4221e30427829c59c19af50a63c374",
+  "verifiedOutputs": 276,
+  "cleanup": {
+    "removed": "/tmp/warden-constraint-evidence-bxz0k0hg",
+    "absent": true
+  }
+}

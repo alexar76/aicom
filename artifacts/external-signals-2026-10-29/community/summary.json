@@ -1,0 +1,290 @@
+{
+  "since_utc": "2026-10-28T15:00:00Z",
+  "dev_public_count": 61,
+  "known_latest": [
+    {
+      "id": 4934411,
+      "url": "https://dev.to/alexar76/why-our-mcp-server-stopped-trusting-localhost-by-default-26jm",
+      "title": "Why our MCP server stopped trusting localhost by default",
+      "published_at": "2026-10-28T12:01:47Z",
+      "comments_count": 0,
+      "public_reactions_count": 1
+    },
+    {
+      "id": 4926307,
+      "url": "https://dev.to/alexar76/same-mcp-version-different-tools-what-two-independent-captures-revealed-2p6d",
+      "title": "Same MCP version, different tools: what two independent captures revealed",
+      "published_at": "2026-10-27T06:53:36Z",
+      "comments_count": 0,
+      "public_reactions_count": 4
+    }
+  ],
+  "dev_threads": [
+    {
+      "article_id": 4904350,
+      "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l",
+      "metadata_comments": 53,
+      "visible_comments": 53,
+      "new_comments": [
+        {
+          "id_code": "3jbi8",
+          "created_at": "2026-10-29T08:40:18Z",
+          "author": "paul_irolla_6b5ae261d0224",
+          "body_html": "<p>A tool list is paid on every turn it stays in the context, so the size of the list weighs more than the number of servers. The cost sits in what the model reads per request.</p>\n\n"
+        },
+        {
+          "id_code": "3jc08",
+          "created_at": "2026-10-29T10:50:25Z",
+          "author": "alexar76",
+          "body_html": "<p>Agreed, and your question earlier is what made us count it. Across 34,374 servers the median tool list is about 1,300 tokens, but the mean is three times that: a few servers with hundreds of tools carry most of the tokens (the 99th-percentile package is about 40,000). So which servers are connected matters more than how many. Caching shifts it again: the tools sit at the start of the prompt, so a list that gets reordered, or refetched after <code>list_changed</code>, writes the whole prefix to the cache again.</p>\n\n<p>The numbers are here: <a href=\"https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011\" rel=\"nofollow\">dev.to/alexar76/what-an-mcp-server...</a>. If Tokenade ever wants per-server counts, HISTOR serves them at <code>https://histor.modelmarket.dev/api/v1/servers/&lt;id&gt;/cost</code>.</p>\n\n"
+        }
+      ]
+    },
+    {
+      "article_id": 4894770,
+      "url": "https://dev.to/alexar76/mcp-servers-edit-the-instructions-your-agent-reads-warden-018-shows-which-words-changed-397f",
+      "metadata_comments": 7,
+      "visible_comments": 7,
+      "new_comments": []
+    },
+    {
+      "article_id": 4884244,
+      "url": "https://dev.to/alexar76/45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset-2mhe",
+      "metadata_comments": 3,
+      "visible_comments": 3,
+      "new_comments": []
+    },
+    {
+      "article_id": 4881999,
+      "url": "https://dev.to/alexar76/three-x402-sellers-compared-notes-the-routes-answer-nobody-comes-back-to-buy-5897",
+      "metadata_comments": 6,
+      "visible_comments": 6,
+      "new_comments": []
+    },
+    {
+      "article_id": 4879058,
+      "url": "https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011",
+      "metadata_comments": 3,
+      "visible_comments": 3,
+      "new_comments": []
+    },
+    {
+      "article_id": 4873079,
+      "url": "https://dev.to/alexar76/a-flow-guard-for-mcp-what-agentdojo-measured-and-what-our-security-audit-found-2ckm",
+      "metadata_comments": 2,
+      "visible_comments": 2,
+      "new_comments": []
+    },
+    {
+      "article_id": 4868973,
+      "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4",
+      "metadata_comments": 6,
+      "visible_comments": 6,
+      "new_comments": []
+    },
+    {
+      "article_id": 4847905,
+      "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh",
+      "metadata_comments": 23,
+      "visible_comments": 23,
+      "new_comments": []
+    },
+    {
+      "article_id": 4811646,
+      "url": "https://dev.to/alexar76/one-key-for-an-agents-tool-calls-a-prepaid-usdc-balance-on-an-mcp-connection-a06",
+      "metadata_comments": 3,
+      "visible_comments": 3,
+      "new_comments": []
+    },
+    {
+      "article_id": 4804987,
+      "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498",
+      "metadata_comments": 28,
+      "visible_comments": 28,
+      "new_comments": []
+    },
+    {
+      "article_id": 4802035,
+      "url": "https://dev.to/alexar76/two-strangers-took-the-job-the-one-that-lied-was-paid-nothing-3g7i",
+      "metadata_comments": 6,
+      "visible_comments": 6,
+      "new_comments": []
+    },
+    {
+      "article_id": 3658657,
+      "url": "https://dev.to/alexar76/open-source-multi-agent-pipeline-61k-python-12-agents-5-quality-gates-4hl4",
+      "metadata_comments": 2,
+      "visible_comments": 2,
+      "new_comments": []
+    }
+  ],
+  "qiita": {
+    "qiita-cost": {
+      "id": "4dfe9dc2fbe9d69b1fb7",
+      "created_at": "2026-10-22T17:42:07+09:00",
+      "updated_at": "2026-10-24T18:49:53+09:00",
+      "comments_count": 2,
+      "likes_count": 0,
+      "url": "https://qiita.com/qwezzy721/items/4dfe9dc2fbe9d69b1fb7"
+    },
+    "qiita-cost-comments": [
+      {
+        "id": "7f36425cc245927fc95c",
+        "created_at": "2026-10-24T19:23:47+09:00",
+        "updated_at": "2026-10-24T19:23:47+09:00",
+        "body": "ご指摘ありがとうございます。どちらもその通りでした。\n\nキャッシュの列は読み込みの単価だけで、最初の書き込みもリクエスト間隔の前提も書いていなかったので、表を直しました。今の列は「開始間隔が 5 分未満の 1,000 リクエスト」で、書き込み 1 回（入力単価の 1.25 倍）と読み込み 999 回です。中央値の一覧では $0.127 が $0.130 になる程度です。間隔が 5 分を超える場合の列も加えました。毎回書き込みになるので中央値で $3.18、キャッシュなし（$2.54）より 25% 高くなります。カウンターのページ（modelmarket.dev/tools/tool-list-cost）にも同じ 2 行を出しています。\n\n順番の点も本文に入れました。tools が前置きの先頭にあるので、notifications/tools/list_changed を受けて一覧を取り直すと、システムプロンプトと会話履歴まで書き直しになります。私たちのログ HISTOR では、リモートサーバーの 45% が 4 週間のうちにツール定義を変えていました。\n",
+        "user": {
+          "description": null,
+          "facebook_id": null,
+          "followees_count": 0,
+          "followers_count": 0,
+          "github_login_name": null,
+          "id": "qwezzy721",
+          "items_count": 2,
+          "linkedin_id": null,
+          "location": null,
+          "name": "",
+          "organization": null,
+          "permanent_id": 4520456,
+          "profile_image_url": "https://lh3.googleusercontent.com/a/ACg8ocKHMvbsJaUBCZBWsvaibTStzCwSLnJ-KtbDsp4vmNISnAHdCg=s96-c",
+          "team_only": false,
+          "twitter_screen_name": null,
+          "website_url": null
+        }
+      },
+      {
+        "id": "a71ae02460f429b7606e",
+        "created_at": "2026-10-24T17:10:34+09:00",
+        "updated_at": "2026-10-24T17:10:34+09:00",
+        "body": "Anthropic の API では、キャッシュの前置きが tools、system、messages の順で組まれます。なのでツール定義が1か所変わるだけで、その後ろにあるシステムプロンプトと会話履歴のキャッシュもまとめて外れます。順番の入れ替えのほかに起きやすいのは、MCP サーバーが `notifications/tools/list_changed` を送ってクライアントが一覧を取り直す場合で、セッションの途中でも前置き全体の書き直しになります。\n\nもう1点、表の「プロンプトキャッシュから読んだ場合」の列は読み込みの単価だけで、最初の書き込みの分が入っていないように読めます。Anthropic では書き込みが入力単価の1.25倍で、既定の TTL は5分です。リクエストの間隔が5分を超える使い方だと毎回書き込みになり、この列より高くつきます。1,000 リクエストをどのくらいの間隔で投げる前提かが書いてあると、列の読み方がはっきりすると思います。\n",
+        "user": {
+          "description": "Independent catalog of Claude Code, Codex, and Cursor skills. Live install counts.",
+          "facebook_id": "",
+          "followees_count": 1,
+          "followers_count": 8,
+          "github_login_name": null,
+          "id": "Skillselion",
+          "items_count": 45,
+          "linkedin_id": "",
+          "location": "United States",
+          "name": "",
+          "organization": "Skillselion",
+          "permanent_id": 4459581,
+          "profile_image_url": "https://pbs.twimg.com/profile_images/2066320267744305153/N_Ya5_XH_bigger.jpg",
+          "team_only": false,
+          "twitter_screen_name": "Skillselion",
+          "website_url": "https://skillselion.com"
+        }
+      }
+    ],
+    "qiita-histor": {
+      "id": "b71aaeaae84fcb360fe6",
+      "created_at": "2026-10-21T23:15:00+09:00",
+      "updated_at": "2026-10-21T23:15:00+09:00",
+      "comments_count": 0,
+      "likes_count": 1,
+      "url": "https://qiita.com/qwezzy721/items/b71aaeaae84fcb360fe6"
+    },
+    "qiita-histor-comments": []
+  },
+  "hn_story": {
+    "by": "alex_artamokhov",
+    "descendants": 2,
+    "id": 50193565,
+    "kids": [
+      50223198,
+      50205750,
+      50193589
+    ],
+    "score": 1,
+    "time": 1792665515,
+    "title": "Show HN: An open dataset of MCP tool definitions and every change to them",
+    "type": "story",
+    "url": "https://histor.modelmarket.dev/datasets/"
+  },
+  "hn_comments": [
+    {
+      "deleted": true,
+      "id": 50223198,
+      "parent": 50193565,
+      "time": 1792862016,
+      "type": "comment"
+    },
+    {
+      "by": "ITAltitudes",
+      "id": 50205750,
+      "kids": [
+        50223414
+      ],
+      "parent": 50193565,
+      "text": "What happens if the MCP server changes its tools more than once a day? Will all those changes be logged?",
+      "time": 1792742137,
+      "type": "comment"
+    },
+    {
+      "by": "alex_artamokhov",
+      "dead": true,
+      "id": 50193589,
+      "parent": 50193565,
+      "text": "[flagged]",
+      "time": 1792665699,
+      "type": "comment"
+    }
+  ],
+  "checked_at_utc": "2026-10-29T11:06:01.527246+00:00",
+  "hn_nested_comments": [
+    {
+      "by": "alex_artamokhov",
+      "id": 50223414,
+      "parent": 50205750,
+      "text": "&gt;&gt;What happens if the MCP server changes its tools more than once a day? we lost the state between polls<p>&gt;&gt;Will all those changes be logged? no, histor not fix every intermediate change, servers polles once a day<p>23,821 it&#x27;s a number of detected changes, not total.<p>thank you for pointing this, first I&#x27;ll separate server checks from the packages, then make more frequent checks for servers that change often",
+      "time": 1792863643,
+      "type": "comment"
+    }
+  ],
+  "itch_visible_sections": [
+    {
+      "key": "itch-weight",
+      "community_post_nodes": 0,
+      "leave_comment_section": true,
+      "viewing_posts": [],
+      "comment_ids": []
+    },
+    {
+      "key": "itch-shadow",
+      "community_post_nodes": 0,
+      "leave_comment_section": false,
+      "viewing_posts": [],
+      "comment_ids": []
+    },
+    {
+      "key": "itch-white",
+      "community_post_nodes": 0,
+      "leave_comment_section": true,
+      "viewing_posts": [],
+      "comment_ids": []
+    },
+    {
+      "key": "itch-pingblip-game",
+      "community_post_nodes": 0,
+      "leave_comment_section": true,
+      "viewing_posts": [],
+      "comment_ids": []
+    },
+    {
+      "key": "itch-pingblip-thread",
+      "community_post_nodes": 1,
+      "leave_comment_section": false,
+      "viewing_posts": [
+        "Viewing posts <nobr><span>1</span> to <span>1</span></nobr></span></div></div></div><div class=\"padded\""
+      ],
+      "comment_ids": []
+    }
+  ],
+  "dev_totals": {
+    "visible_comments": 142,
+    "external": 72,
+    "own": 70,
+    "new_external": 1
+  }
+}

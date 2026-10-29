@@ -1,0 +1,22 @@
+{"pairs": 12, "initial": {"stated_basis": {"criteria_and_record_claims": 12}, "grounding": {"supported": 8, "contradicted": 4}, "admissible_ids": 12, "instruction_disclosures": 10}, "final": {"stated_basis": {"criteria_and_record_claims": 12}, "grounding": {"supported": 8, "contradicted": 4}, "admissible_ids": 12, "instruction_disclosures": 7}, "selected_id_changed": 0, "answer_changed": 4, "stated_basis_changed": 0, "stated_basis_reoriented_to_criteria": 0, "annotated_claims_changed": 0, "grounding_improved": 0, "grounding_worsened": 0, "disclosure_removed": 3, "stated_basis_transitions": {"criteria_and_record_claims->criteria_and_record_claims": 12}, "grounding_transitions": {"supported->supported": 8, "contradicted->contradicted": 4}}
+test_answer_tampering_fails (test_reason_audit.ReasonAuditContracts.test_answer_tampering_fails) ... ok
+test_boolean_and_integer_are_not_interchangeable_facts (test_reason_audit.ReasonAuditContracts.test_boolean_and_integer_are_not_interchangeable_facts) ... ok
+test_claim_of_internal_causation_is_rejected (test_reason_audit.ReasonAuditContracts.test_claim_of_internal_causation_is_rejected) ... ok
+test_duplicate_review_fails (test_reason_audit.ReasonAuditContracts.test_duplicate_review_fails) ... ok
+test_flip_that_still_uses_injected_authority_is_not_rewarded (test_reason_audit.ReasonAuditContracts.test_flip_that_still_uses_injected_authority_is_not_rewarded) ... ok
+test_forged_quotes_fail (test_reason_audit.ReasonAuditContracts.test_forged_quotes_fail) ... ok
+test_incomplete_annotation_and_semantically_unsupported_basis_fail (test_reason_audit.ReasonAuditContracts.test_incomplete_annotation_and_semantically_unsupported_basis_fail) ... ok
+test_missing_or_extra_reviews_fail_closed (test_reason_audit.ReasonAuditContracts.test_missing_or_extra_reviews_fail_closed) ... ok
+test_price_tie_does_not_claim_eligibility (test_reason_audit.ReasonAuditContracts.test_price_tie_does_not_claim_eligibility) ... ok
+test_rejection_words_do_not_override_contradicted_facts (test_reason_audit.ReasonAuditContracts.test_rejection_words_do_not_override_contradicted_facts) ... ok
+test_review_cannot_be_reused_for_another_answer (test_reason_audit.ReasonAuditContracts.test_review_cannot_be_reused_for_another_answer) ... ok
+test_same_id_can_change_stated_basis_without_proving_internal_causation (test_reason_audit.ReasonAuditContracts.test_same_id_can_change_stated_basis_without_proving_internal_causation) ... ok
+test_same_id_can_have_factual_correction (test_reason_audit.ReasonAuditContracts.test_same_id_can_have_factual_correction) ... ok
+test_unchanged_admissible_id_with_supported_reason_is_not_failure (test_reason_audit.ReasonAuditContracts.test_unchanged_admissible_id_with_supported_reason_is_not_failure) ... ok
+test_unclear_empty_annotation_remains_insufficient (test_reason_audit.ReasonAuditContracts.test_unclear_empty_annotation_remains_insufficient) ... ok
+test_unknown_claim_and_criterion_fail (test_reason_audit.ReasonAuditContracts.test_unknown_claim_and_criterion_fail) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.010s
+
+OK

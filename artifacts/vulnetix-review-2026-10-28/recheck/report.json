@@ -1,0 +1,146 @@
+{
+  "observed_at_utc": "2026-10-28T07:01:14.053700+00:00",
+  "HEAD": "41ba65c7453de96291b824cc8e6976d326b15071",
+  "conclusion": "Not fully closed. Supplied email goals 1-5 pass local checks; current comment goal 6 is unimplemented and reproduced. Eight prepared releases are not yet on PyPI.",
+  "prior_report_correction": "The previous remediation conclusion omitted goal 6, which is present in the live comment and was already present in the saved comment. The previous all-closed claim must not be applied to the complete current comment.",
+  "goals": [
+    {
+      "goal": 1,
+      "records": [
+        "000636",
+        "000637",
+        "000638"
+      ],
+      "status": "fixed_in_current_source_and_prepared_wheels",
+      "detail": "Explicit trusted-proxy allowlists; loopback defaults."
+    },
+    {
+      "goal": 2,
+      "records": [
+        "000640",
+        "000641",
+        "000642",
+        "000643"
+      ],
+      "status": "fixed_in_current_source_and_prepared_wheels",
+      "detail": "Keyless TCP default deny; LOCAL_RELAY explicit opt-in; absent proc additionally requires LOCAL_UNVERIFIED; mismatched/unresolved owner remains denied."
+    },
+    {
+      "goal": 3,
+      "records": [
+        "000639"
+      ],
+      "status": "fixed_in_current_source_and_prepared_wheels",
+      "detail": "Single-label SSH uses accept-new with persistent known_hosts; explicit skip limited to loopback."
+    },
+    {
+      "goal": 4,
+      "records": [
+        "000644"
+      ],
+      "status": "fixed_in_current_source_and_prepared_wheels",
+      "detail": "Bounded per-attempt monotonic delay; other clients cannot extend it; valid session cookies restore authentication."
+    },
+    {
+      "goal": 5,
+      "status": "fixed_in_current_source_and_prepared_wheels",
+      "detail": "LOGOS_HOST defaults to 127.0.0.1."
+    },
+    {
+      "goal": 6,
+      "package": "aimarket-hub",
+      "version": "3.16.0",
+      "status": "open_reproduced",
+      "detail": "Hub provider requests omit paid-tier credential. Existing signed admission passes PriceGate but does not set PaidTierPolicy.is_paid. Above free ceiling the signed hub request returns 402; explicit correct tier grant returns 200.",
+      "evidence": "hub-paid-tier-result.json"
+    }
+  ],
+  "original_findings": {
+    "000630": "covered by Platon full suite and keyless gates",
+    "000631": "MCP SSRF pinning and redirect tests pass",
+    "000632": "oracle-core tier tests pass",
+    "000633": "LOGOS auth/budget tests pass",
+    "000634": "ATLAS public address pin/retry rebinding tests pass",
+    "000635": "Hestia domain tests pass; published 0.1.3 domains.py and owners.py equal current source"
+  },
+  "validation": {
+    "passed": 889,
+    "skipped": 1,
+    "suites": [
+      {
+        "name": "Cross-package keyless + handoff",
+        "passed": 175,
+        "skipped": 0
+      },
+      {
+        "name": "MCP full",
+        "passed": 102,
+        "skipped": 1
+      },
+      {
+        "name": "Oracle core tiers",
+        "passed": 62,
+        "skipped": 0
+      },
+      {
+        "name": "LOGOS app",
+        "passed": 32,
+        "skipped": 0
+      },
+      {
+        "name": "SKOPOS auth, pacing, hostkeys",
+        "passed": 71,
+        "skipped": 0
+      },
+      {
+        "name": "Treasury full",
+        "passed": 21,
+        "skipped": 0
+      },
+      {
+        "name": "Platon full",
+        "passed": 106,
+        "skipped": 0
+      },
+      {
+        "name": "oracle_platon full",
+        "passed": 90,
+        "skipped": 0
+      },
+      {
+        "name": "ATLAS DNS pinning and rebinding",
+        "passed": 3,
+        "skipped": 0
+      },
+      {
+        "name": "Hestia domain proof",
+        "passed": 42,
+        "skipped": 0
+      },
+      {
+        "name": "Metis affected API suites",
+        "passed": 185,
+        "skipped": 0
+      }
+    ],
+    "native_linux_limit": "MCP native Linux socket test skipped on macOS. Cross-package synthetic proc cases run.",
+    "environmental_retries": "Hestia first invoked from repo root had tests package collision; rerun from hestia fixed collection. Sandbox blocked 3 local stub server tests; all 42 passed with permitted local sockets. Metis DNS test failed in sandbox and passed separately with DNS access; 184 other cases passed initially. No implementation changes made for these retries.",
+    "wheel_source_parity": "current-source-wheel-parity.json",
+    "local_wheel_integrity": "local-wheels.json",
+    "published_status": "pypi-status.json",
+    "hestia_published": "hestia-published.json"
+  },
+  "actions_required": [
+    "Implement and test hub-to-oracle paid-tier authentication, scoped to the intended oracle and admitted paid request; add release preparation for aimarket-hub.",
+    "Designated publisher uploads the eight prepared exact wheel files; then rerun verify_release.py --published.",
+    "Confirm deployed versions/configuration and advisory status separately; neither deployment nor Vulnetix closure is asserted here."
+  ],
+  "uploads_performed": 0,
+  "runtime_source_changes": 0,
+  "evidence_source_sha256": {
+    "aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py": "892dec6c3c310c5715ddcf6208a58ebc110583c488b7a300fef4bae6bcfd1c07",
+    "aimarket-hub/aimarket_hub/provider_request_auth.py": "8f5fa9026f5e81aab4f1a971d9d33358c6258c342047582bd38a169c8c8e110c",
+    "oracles/core/oracle_core/app.py": "ba17272775e04d3537a70d16b03799141e2525b7913b3010dc8688f1618da1d8",
+    "oracles/core/oracle_core/tiers.py": "3cf2ae59e7e885b26b141114f75f5e7f8388bee8bd4cf404da400e69890246d9"
+  }
+}

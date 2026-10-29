@@ -1,0 +1,64 @@
+{
+  "key": "dockerfile",
+  "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/0266b6d59355acdebec6e76036e2451396d2799f/aimarket-sentinel/Dockerfile",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T15:01:11.624213+00:00",
+  "status": 200,
+  "sha256": "6ca24aa991a6408cbf9482752c3f390523e95ff50bb7fb987654b985956f4856",
+  "bytes": 256,
+  "rate_remaining": null,
+  "lines": [
+    {
+      "line": 1,
+      "text": "FROM python:3.12-slim"
+    },
+    {
+      "line": 2,
+      "text": ""
+    },
+    {
+      "line": 3,
+      "text": "ENV PYTHONDONTWRITEBYTECODE=1 \\"
+    },
+    {
+      "line": 4,
+      "text": "    PYTHONUNBUFFERED=1"
+    },
+    {
+      "line": 5,
+      "text": ""
+    },
+    {
+      "line": 6,
+      "text": "WORKDIR /app"
+    },
+    {
+      "line": 7,
+      "text": ""
+    },
+    {
+      "line": 8,
+      "text": "COPY requirements.txt ."
+    },
+    {
+      "line": 9,
+      "text": "RUN pip install --no-cache-dir -r requirements.txt"
+    },
+    {
+      "line": 10,
+      "text": ""
+    },
+    {
+      "line": 11,
+      "text": "COPY app.py ."
+    },
+    {
+      "line": 12,
+      "text": ""
+    },
+    {
+      "line": 13,
+      "text": "CMD [\"sh\", \"-c\", \"uvicorn app:app --host 0.0.0.0 --port ${PORT:-9083}\"]"
+    }
+  ]
+}

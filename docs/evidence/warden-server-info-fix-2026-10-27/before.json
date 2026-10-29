@@ -1,0 +1,17 @@
+{
+  "phase": "before",
+  "tools": [
+    "vet_mcp_server",
+    "static_scan_tools",
+    "classify_sensitive_tools",
+    "check_egress_url",
+    "canonicalize_json",
+    "list_scan_rules",
+    "status_mcp_server",
+    "approve_mcp_server",
+    "revoke_mcp_server"
+  ],
+  "listedToolsSha256": "de3eedfcc252e03776e456d98a6748ed4027456eec42b284aa989dffd2a16fdc",
+  "sourceSha256": "c71398ae7958d20df8ebecfb1f4177da91618bb8452238502899671fc97a1a65",
+  "compiledSha256": "4ef85696c4d0e99d8aa36c7e68c8b207b8374fe1c2bd114fd6ea825a1e776140"
+}

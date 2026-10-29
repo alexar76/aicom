@@ -1,0 +1,124 @@
+{
+  "generatedAt": "2026-10-28T16:44:41.695Z",
+  "liveRequested": true,
+  "only": "forge",
+  "models": [
+    {
+      "id": "spark-moth",
+      "packId": "slag-saints",
+      "name": "Spark Moth"
+    }
+  ],
+  "expected": {
+    "spark-moth": {
+      "modelSha256": "776d63b59547c568a716a3efaa04c087036b83b479564bba55dc34e02c59c4bc",
+      "modelVersion": "776d63b595",
+      "previewSha256": "bd34f9302cabb9166250111cdff4a4d0194350bdb824c68a621aaa61713cce38"
+    }
+  },
+  "forgeRoutes": [
+    "https://forge.pingblip.com/forge?pack=slag-saints&mascot=spark-moth&cutout=1"
+  ],
+  "worldShelfRoutes": [
+    "https://world.pingblip.com/shelf/spark-moth"
+  ],
+  "worldPackRoutes": [
+    "https://world.pingblip.com/packs/slag-saints"
+  ],
+  "gameShareRoutes": [
+    "https://pingblip.com/s/spark-moth"
+  ],
+  "gameModelRoutes": [
+    "https://pingblip.com/?from=spark-moth"
+  ],
+  "readOnlyPolicy": "Fresh browser contexts, no stored accounts, service workers disabled. Every non-GET/HEAD/OPTIONS request is fulfilled locally with 204 and never reaches a server. Share SSR previews are inspected with JavaScript disabled because their normal client behavior immediately redirects home.",
+  "startedAt": "2026-10-28T16:44:41.696Z",
+  "checks": [
+    {
+      "label": "forge-spark-moth",
+      "startedAt": "2026-10-28T16:44:44.714Z",
+      "consoleErrors": [
+        {
+          "text": "Failed to load resource: net::ERR_SOCKET_NOT_CONNECTED",
+          "location": {
+            "url": "https://telegram.org/js/telegram-web-app.js",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "https://telegram.org/js/telegram-web-app.js",
+          "error": "net::ERR_SOCKET_NOT_CONNECTED"
+        },
+        {
+          "url": "https://forge.pingblip.com/api/auth/guest",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "httpErrors": [],
+      "model": {
+        "id": "spark-moth",
+        "url": "https://forge.pingblip.com/models/spark-moth.glb?v=776d63b595",
+        "status": 200,
+        "version": "776d63b595",
+        "sha256": "776d63b59547c568a716a3efaa04c087036b83b479564bba55dc34e02c59c4bc"
+      },
+      "canvasReadinessProbe": {
+        "width": 858,
+        "height": 912,
+        "inkPct": 0.4780701754385965,
+        "litPct": 0.2883771929824561,
+        "intensityStdDev": 34.81295718517031,
+        "quantizedColors": 148,
+        "contextLost": false
+      },
+      "canvas": {
+        "width": 858,
+        "height": 912,
+        "inkPct": 0.47928056413913317,
+        "litPct": 0.2861500673480707,
+        "intensityStdDev": 34.543924726836394,
+        "quantizedColors": 199,
+        "contextLost": false
+      },
+      "ok": false,
+      "error": "Error: Console errors: Failed to load resource: net::ERR_SOCKET_NOT_CONNECTED",
+      "finalUrl": "https://forge.pingblip.com/forge?pack=slag-saints&mascot=spark-moth&cutout=1",
+      "completedAt": "2026-10-28T16:45:01.024Z"
+    }
+  ],
+  "failures": [
+    {
+      "label": "forge-spark-moth",
+      "error": "Error: Console errors: Failed to load resource: net::ERR_SOCKET_NOT_CONNECTED"
+    }
+  ],
+  "suppressedWrites": [
+    {
+      "method": "POST",
+      "origin": "https://forge.pingblip.com",
+      "path": "/api/auth/guest",
+      "knownAutomaticWrite": true
+    },
+    {
+      "method": "POST",
+      "origin": "https://forge.pingblip.com",
+      "path": "/api/auth/guest",
+      "knownAutomaticWrite": true
+    }
+  ],
+  "compiledGameVersions": null,
+  "ok": false,
+  "completedAt": "2026-10-28T16:45:01.757Z",
+  "summary": {
+    "checked": 1,
+    "passed": 0,
+    "failed": 1,
+    "suppressedRemoteWrites": 2
+  }
+}

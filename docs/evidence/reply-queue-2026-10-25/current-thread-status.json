@@ -1,0 +1,1141 @@
+{
+  "schema": "aicom-reply-queue-status/1",
+  "checked_at": "2026-10-25T11:30:52.751659+00:00",
+  "external_mutations": false,
+  "scope": "Public read-only comment API snapshots; local draft readiness is assessed separately. No email inbox check.",
+  "dev_sources": [
+    {
+      "article_id": 4904350,
+      "source": "https://dev.to/api/comments?a_id=4904350",
+      "retrieved_at": "2026-10-25T11:30:48.379743+00:00",
+      "source_sha256": "1866a42bd41bb644c8900a25deaeff12dd3bcc05f5da2385ba34b0aaa950df6d",
+      "comment_count": 16
+    },
+    {
+      "article_id": 4847905,
+      "source": "https://dev.to/api/comments?a_id=4847905",
+      "retrieved_at": "2026-10-25T11:30:48.526699+00:00",
+      "source_sha256": "5a884030b405d275ff0b3d301274583bfa1446bdef27ea04c35e4d7c549da410",
+      "comment_count": 19
+    },
+    {
+      "article_id": 4811646,
+      "source": "https://dev.to/api/comments?a_id=4811646",
+      "retrieved_at": "2026-10-25T11:30:48.677886+00:00",
+      "source_sha256": "64df0ce2f980c89e4364cdd5f2f7065af07d24ef6f073b35fba904f8f9fb2779",
+      "comment_count": 2
+    },
+    {
+      "article_id": 4868973,
+      "source": "https://dev.to/api/comments?a_id=4868973",
+      "retrieved_at": "2026-10-25T11:30:48.852203+00:00",
+      "source_sha256": "485a077b02382d0b0c5966c22cd8bff9826a833cb2d59e983e50049fac313018",
+      "comment_count": 6
+    },
+    {
+      "article_id": 4894770,
+      "source": "https://dev.to/api/comments?a_id=4894770",
+      "retrieved_at": "2026-10-25T11:30:48.842494+00:00",
+      "source_sha256": "3494464cb913159a624027e838ebe1901c87f0ec454045929e61e32888cd49f6",
+      "comment_count": 2
+    },
+    {
+      "article_id": 4873079,
+      "source": "https://dev.to/api/comments?a_id=4873079",
+      "retrieved_at": "2026-10-25T11:30:49.115156+00:00",
+      "source_sha256": "e4a993ed5f62829d6e05c59ade36d02dc77eb730ea3a3082733c38e8d0e590bd",
+      "comment_count": 2
+    },
+    {
+      "article_id": 4884244,
+      "source": "https://dev.to/api/comments?a_id=4884244",
+      "retrieved_at": "2026-10-25T11:30:49.490243+00:00",
+      "source_sha256": "ed30bf1cfb6d4c06057d54b723c9490909f1e90af9e318180f24763e3d8d2cd6",
+      "comment_count": 2
+    },
+    {
+      "article_id": 4804987,
+      "source": "https://dev.to/api/comments?a_id=4804987",
+      "retrieved_at": "2026-10-25T11:30:49.225807+00:00",
+      "source_sha256": "1d9ce569b44bed05f29051ced0b849cc1c3534a9d214da52b154d80a168d8cbb",
+      "comment_count": 28
+    },
+    {
+      "article_id": 4879058,
+      "source": "https://dev.to/api/comments?a_id=4879058",
+      "retrieved_at": "2026-10-25T11:30:49.428188+00:00",
+      "source_sha256": "61be939588d5f49e4eb758d55f08a4ef051c321c341efbfd53d7d02c406181f6",
+      "comment_count": 2
+    },
+    {
+      "article_id": 4802035,
+      "source": "https://dev.to/api/comments?a_id=4802035",
+      "retrieved_at": "2026-10-25T11:30:49.697432+00:00",
+      "source_sha256": "ed718ed355edaa80833df964d22e55bed7d5dc6b6654b4222067f906cc4ebfc3",
+      "comment_count": 6
+    },
+    {
+      "article_id": 4881999,
+      "source": "https://dev.to/api/comments?a_id=4881999",
+      "retrieved_at": "2026-10-25T11:30:49.789258+00:00",
+      "source_sha256": "b7cd0ddee47f5d43fea95e47b0674a5e839149f825754b5465babd10a0f72c2c",
+      "comment_count": 5
+    },
+    {
+      "article_id": 3658657,
+      "source": "https://dev.to/api/comments?a_id=3658657",
+      "retrieved_at": "2026-10-25T11:30:50.002916+00:00",
+      "source_sha256": "9eb2a5fe93de91a8a97f32a53220dd4ff823bb495ccc582c54516123230a3d8b",
+      "comment_count": 2
+    }
+  ],
+  "queue": [
+    {
+      "number": 1,
+      "name": "Launch Gate",
+      "parent_comment": {
+        "id": "3ipii",
+        "author": "launchgatecheck",
+        "display_name": "Launch Gate",
+        "created_at": "2026-10-25T10:02:57Z",
+        "parent": null,
+        "children": [],
+        "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3ipii",
+        "body_sha256": "fd22c577d5451286b68a88d215bdaec85a38d6e812362e78ceaa3effb73898cd",
+        "excerpt": "The strongest methodology here is the corpus on the other side of the ledger: 45 clean servers, 999 public ones, 2,000 honest packages. \"Measured only on attacks, both drafts would have looked better than what shipped\" is the sentence every guard author should pin up. Attack-only tuning buys detection with false denials, and the"
+      },
+      "descendants": [],
+      "owner_replies": [],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "no public reply; clean first-reply draft prepared locally",
+        "next_step": "ready for owner review; no comment sent",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 2,
+      "name": "Kevin Hall — annotations",
+      "parent_comment": {
+        "id": "3ipg1",
+        "author": "kevinhall",
+        "display_name": "Kevin Hall",
+        "created_at": "2026-10-25T09:23:46Z",
+        "parent": null,
+        "children": [],
+        "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3ipg1",
+        "body_sha256": "124bdc093ad5a610aade5722bb2ac751a018b622287422ec1fe362e04417941e",
+        "excerpt": "The row \"tools nobody labelled\" has a partial answer inside the protocol: MCP tool definitions can carry annotations (readOnlyHint, destructiveHint, openWorldHint), and a flow guard could read them as a default label where the operator gave none. The caveat is the one that applies to every tool description: the annotation is the"
+      },
+      "descendants": [],
+      "owner_replies": [],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "no public reply; local new first-reply draft",
+        "next_step": "final local regression verification was being completed separately; do not claim published fix",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 3,
+      "name": "Kartik",
+      "parent_comment": {
+        "id": "3i31k",
+        "author": "kartik-nvjk",
+        "display_name": "Kartik N V J K",
+        "created_at": "2026-10-16T18:28:15Z",
+        "parent": null,
+        "children": [
+          "3i5b8"
+        ],
+        "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i31k",
+        "body_sha256": "f2d37128044f60a5a3e303e25c9aed2a4c4cca5c6b54cb14a85d7bad2d8c95d2",
+        "excerpt": "Seeing 292 PyPI servers die on import after mcp 2.0.0 is the result I'd send every maintainer, since 207 of the 269 you retried came back with mcp<2. I also appreciated the breakdown of the 295 decoy file opens, because the ~/.netrc reads from requests would have alarmed me too. As the crawl continues, will you track how many of"
+      },
+      "descendants": [
+        {
+          "id": "3i5b8",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-17T20:40:54Z",
+          "parent": "3i31k",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i5b8",
+          "body_sha256": "22e4361a85b2cd786462ac05b2f56fee6610fc693cd65d6b299cf6302952a21d",
+          "excerpt": "The 292, the 207 of 269, and the 295 are the 13 October snapshot. The 292 are PyPI servers that depend on mcp with no upper bound, install 2.x, and die on import. We started 269 of them again with pip held to mcp<2, and 207 answered. 295 opened a decoy credential file. The crawl continues. Each pass installs the latest version a"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3i5b8",
+          "author": "alexar76",
+          "created_at": "2026-10-17T20:40:54Z",
+          "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i5b8",
+          "excerpt": "The 292, the 207 of 269, and the 295 are the 13 October snapshot. The 292 are PyPI servers that depend on mcp with no upper bound, install 2.x, and die on import. We started 269 of them again with pip held to mcp<2, and 207 answered. 295 opened a decoy credential file. The crawl continues. Each pass installs the latest version a"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "only old reply; new recovery-results follow-up not posted",
+        "next_step": "new clean follow-up ready",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 4,
+      "name": "Martin/textokit",
+      "parent_comment": {
+        "id": "3ioef",
+        "author": "martinpisacreta",
+        "display_name": "Martin Pisacreta",
+        "created_at": "2026-10-24T22:20:42Z",
+        "parent": "3iobi",
+        "children": [
+          "3ipgb"
+        ],
+        "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3ioef",
+        "body_sha256": "4de9c5257ef0685d52b6f4dd7f1d2fc49d78ac13bec332784589b548c7908dfa",
+        "excerpt": "Thanks, Alex. That matches what we see from our side: 0xec2a… (our only repeat payer, 20 paid calls) sends exactly the inputExample we publish for normativa-ar, so it reads as a monitor too. With your sweeper finding for 0x7722… and 0xA1d1…, none of our five outside payers looks like a buyer yet, so we took the buyer claims out "
+      },
+      "descendants": [
+        {
+          "id": "3ipgb",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-25T09:31:40Z",
+          "parent": "3ioef",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3ipgb",
+          "body_sha256": "877849ee80c932e4aaa56110fcbc5c98f108a8ded0e967199e161f5371ecf4d1",
+          "excerpt": "Thanks, Martin — I’ve implemented histor payer-audit and checked all five external payers. The report is here , and the implementation and usage guide are on GitHub . The command is in the source tree; it isn’t in the current PyPI release yet. All 24 payments in your ledger snapshot matched successful Base USDC transfers for the"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3ipgb",
+          "author": "alexar76",
+          "created_at": "2026-10-25T09:31:40Z",
+          "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3ipgb",
+          "excerpt": "Thanks, Martin — I’ve implemented histor payer-audit and checked all five external payers. The report is here , and the implementation and usage guide are on GitHub . The command is in the source tree; it isn’t in the current PyPI release yet. All 24 payments in your ledger snapshot matched successful Base USDC transfers for the"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [
+        "3ipgb"
+      ],
+      "current_assessment": {
+        "public_thread_status": "new follow-up already publicly posted by owner account",
+        "next_step": "do not queue duplicate; reply 3ipgb",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 5,
+      "name": "Raju",
+      "parent_comment": {
+        "id": "3ij29",
+        "author": "raju_dandigam",
+        "display_name": "Raju Dandigam",
+        "created_at": "2026-10-22T22:52:56Z",
+        "parent": null,
+        "children": [
+          "3ik91"
+        ],
+        "url": "https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011#comment-3ij29",
+        "body_sha256": "ce77ed0e7fbb54726445ffda9721ffaca3bbf680920905e99e5ffa4d1bbebaf8",
+        "excerpt": "The 129-token median per package tool versus the 7,700-token outlier is a useful reminder that tool count alone is a poor budget metric. I'd be interested in a CI check that snapshots the tools/list token cost per package release and flags schema regressions, with separate totals for client-visible descriptions and input schemas"
+      },
+      "descendants": [
+        {
+          "id": "3ik91",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-23T09:56:08Z",
+          "parent": "3ij29",
+          "children": [],
+          "url": "https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011#comment-3ik91",
+          "body_sha256": "da2cd85c33ce5c24c8fadb16b02434456aee125e656c818bc9bc01f829439b51",
+          "excerpt": "Yes, and it is built now. Every count is split into the tool names, the descriptions, the input schemas and the JSON around them (the four add up to the total), and each top-level input property is counted too, so a diff names the field behind a jump. Two ways to use it: After the fact, for any package HISTOR watches: each chang"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3ik91",
+          "author": "alexar76",
+          "created_at": "2026-10-23T09:56:08Z",
+          "url": "https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011#comment-3ik91",
+          "excerpt": "Yes, and it is built now. Every count is split into the tool names, the descriptions, the input schemas and the JSON around them (the four add up to the total), and each top-level input property is counted too, so a diff names the field behind a jump. Two ways to use it: After the fact, for any package HISTOR watches: each chang"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "only old reply; new CI-example follow-up not posted",
+        "next_step": "new clean follow-up ready",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 6,
+      "name": "Arhan",
+      "parent_comment": {
+        "id": "3iekp",
+        "author": "arhancanli",
+        "display_name": "Arhan Canli",
+        "created_at": "2026-10-21T12:03:54Z",
+        "parent": null,
+        "children": [
+          "3ifco"
+        ],
+        "url": "https://dev.to/alexar76/45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset-2mhe#comment-3iekp",
+        "body_sha256": "4f9f9a2d6955baa9b202bc4e1772d6e56ddc4da7d9beb3f94cbe7601e0a1c98b",
+        "excerpt": "The \"digits only\" bucket is the one a client can fix without the publisher: 2,719 changes where only numbers moved. If a client pins a hash of the definition after masking digit runs in descriptions, those become no-ops, and anything left (a word changed, a schema field added) is a real diff to read. The cost is that a swapped n"
+      },
+      "descendants": [
+        {
+          "id": "3ifco",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-21T16:19:12Z",
+          "parent": "3iekp",
+          "children": [],
+          "url": "https://dev.to/alexar76/45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset-2mhe#comment-3ifco",
+          "body_sha256": "ee23d2c5b1e092d4d438faa5ac548dc4d35d69dd295468b71d3d959dbc25d42e",
+          "excerpt": "We do not have that split. The 2,036 counts servers, not description changes: of the 4,926 remote servers that served a different tool list (45% of 10,929), 2,036 changed the description of a tool they already had. The post does not say how many of those alter more than digits and whitespace. The 2,719 is a different count. Over"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3ifco",
+          "author": "alexar76",
+          "created_at": "2026-10-21T16:19:12Z",
+          "url": "https://dev.to/alexar76/45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset-2mhe#comment-3ifco",
+          "excerpt": "We do not have that split. The 2,036 counts servers, not description changes: of the 4,926 remote servers that served a different tool list (45% of 10,929), 2,036 changed the description of a tool they already had. The post does not say how many of those alter more than digits and whitespace. The 2,719 is a different count. Over"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "only old reply; new change-breakdown follow-up not posted",
+        "next_step": "new clean follow-up ready",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 7,
+      "name": "Jakub/KyttoMCP",
+      "parent_comment": {
+        "id": "3ikoh",
+        "author": "heyitsjakub",
+        "display_name": "Jakub Hecht",
+        "created_at": "2026-10-23T14:08:37Z",
+        "parent": null,
+        "children": [
+          "3ildm"
+        ],
+        "url": "https://dev.to/alexar76/mcp-servers-edit-the-instructions-your-agent-reads-warden-018-shows-which-words-changed-397f#comment-3ikoh",
+        "body_sha256": "9c2673bcf39ba8673a5ad311b511d7bd80fb6841c34bcde94bbccd7561f46ac4",
+        "excerpt": "The “numbers only” label is useful, especially because you still require approval: a changed price or limit can matter as much as a rewritten instruction. Disclosure: I build KyttoMCP. Its Contract Guard compares tool descriptions, input schemas and safety annotations between health checks and flags changes for review; it’s advi"
+      },
+      "descendants": [
+        {
+          "id": "3ildm",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-23T18:32:39Z",
+          "parent": "3ikoh",
+          "children": [],
+          "url": "https://dev.to/alexar76/mcp-servers-edit-the-instructions-your-agent-reads-warden-018-shows-which-words-changed-397f#comment-3ildm",
+          "body_sha256": "ff8dd5704b4387230fdc3bfc3589ae5a2f182d763b937485aa6a31d6665b4248",
+          "excerpt": "Thanks. Both were good calls, so both are in. Version next to the diff: status_mcp_server and approve_mcp_server now take the serverInfo from the server's initialize result. The approval stores it, and the review opens with \"Version the server reports: 1.4.2 at the approval, 1.5.0 now\". When the tools changed and the version did"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3ildm",
+          "author": "alexar76",
+          "created_at": "2026-10-23T18:32:39Z",
+          "url": "https://dev.to/alexar76/mcp-servers-edit-the-instructions-your-agent-reads-warden-018-shows-which-words-changed-397f#comment-3ildm",
+          "excerpt": "Thanks. Both were good calls, so both are in. Version next to the diff: status_mcp_server and approve_mcp_server now take the serverInfo from the server's initialize result. The approval stores it, and the review opens with \"Version the server reports: 1.4.2 at the approval, 1.5.0 now\". When the tools changed and the version did"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "only old reply; new real-diff follow-up not posted",
+        "next_step": "new clean follow-up ready; source fixes local",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 8,
+      "name": "Kevin Hall — billing",
+      "parent_comment": {
+        "id": "3hmmh",
+        "author": "kevin_hall",
+        "display_name": "Kevin Hall",
+        "created_at": "2026-10-14T11:43:52Z",
+        "parent": null,
+        "children": [
+          "3i5b7"
+        ],
+        "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3hmmh",
+        "body_sha256": "2ff2615dd9c4294553ee78d6e557f000a0d8d7257093a609b9ec0f104732a2d8",
+        "excerpt": "A data point from the other side of your \"what it asks for\" finding, for remote servers. Apify's hosted MCP endpoint takes the Actor list in the URL ( ?tools=owner/actor ), authenticates with OAuth or a bearer token, and answers tools/list only after that. For one pinned Actor the list is five tools: the Actor itself plus four g"
+      },
+      "descendants": [
+        {
+          "id": "3i5b7",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-17T20:40:52Z",
+          "parent": "3hmmh",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i5b7",
+          "body_sha256": "606d26db33c83998aa12212b4169872444e629abe8dae33c9dd4d0eedc1e8f39",
+          "excerpt": "This crawl is local npm and PyPI packages. We install each one and start it. Answered means that process returned tools/list after initialize. Remote HTTP was the earlier 986. These notes do not put remote servers on a roadmap. A remote server that returns tools/list to an unauthenticated initialize is outside this count. This p"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3i5b7",
+          "author": "alexar76",
+          "created_at": "2026-10-17T20:40:52Z",
+          "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i5b7",
+          "excerpt": "This crawl is local npm and PyPI packages. We install each one and start it. Answered means that process returned tools/list after initialize. Remote HTTP was the earlier 986. These notes do not put remote servers on a roadmap. A remote server that returns tools/list to an unauthenticated initialize is outside this count. This p"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "only old reply; new fake-billing follow-up not posted",
+        "next_step": "new clean follow-up ready",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 9,
+      "name": "Micky Arun",
+      "parent_comment": {
+        "id": "3h1m7",
+        "author": "mickyarun",
+        "display_name": "arun rajkumar",
+        "created_at": "2026-10-09T09:59:45Z",
+        "parent": null,
+        "children": [
+          "3ha34"
+        ],
+        "url": "https://dev.to/alexar76/one-key-for-an-agents-tool-calls-a-prepaid-usdc-balance-on-an-mcp-connection-a06#comment-3h1m7",
+        "body_sha256": "7c363e94a0568b8b567dd702eafbf29d3ddcdf4ae39b9f071e067f3575b65da9",
+        "excerpt": "The number I would lead with is in your second paragraph. Hundreds of MCP clients listed the tools and none paid. That is not a result about signing being hard. It is what happens when the payment sits in the critical path of the work, and it is the same reason card rails pre-authorise instead of settling per transaction at the "
+      },
+      "descendants": [
+        {
+          "id": "3ha34",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-11T06:53:54Z",
+          "parent": "3h1m7",
+          "children": [],
+          "url": "https://dev.to/alexar76/one-key-for-an-agents-tool-calls-a-prepaid-usdc-balance-on-an-mcp-connection-a06#comment-3ha34",
+          "body_sha256": "7102be4603ee0808de4891b5f99be398149709f39d589ae00740b567b55f01c2",
+          "excerpt": "The second paragraph is the measurement: hundreds of MCP clients listed the tools, and none paid. A priced call was an EIP-3009 signature, a broadcast and confirmations, for $0.001. The key takes that off the call. The price stays $0.001. The $1 run is one transferWithAuthorization to the treasury, then a hold of $0.001 and a ca"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3ha34",
+          "author": "alexar76",
+          "created_at": "2026-10-11T06:53:54Z",
+          "url": "https://dev.to/alexar76/one-key-for-an-agents-tool-calls-a-prepaid-usdc-balance-on-an-mcp-connection-a06#comment-3ha34",
+          "excerpt": "The second paragraph is the measurement: hundreds of MCP clients listed the tools, and none paid. A priced call was an EIP-3009 signature, a broadcast and confirmations, for $0.001. The key takes that off the call. The price stays $0.001. The $1 run is one transferWithAuthorization to the treasury, then a hold of $0.001 and a ca"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "only old reply; new payment-lifecycle follow-up not posted",
+        "next_step": "new clean follow-up ready",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 10,
+      "name": "Auten",
+      "parent_comment": {
+        "id": "3i5ai",
+        "author": "autenai",
+        "display_name": "Auten",
+        "created_at": "2026-10-17T20:09:09Z",
+        "parent": null,
+        "children": [
+          "3i5b6"
+        ],
+        "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i5ai",
+        "body_sha256": "d1567393551bde0a1eea4eddfc58a0551883f33b89b90bd416c6b09574983d10",
+        "excerpt": "The private-key finding is the one I'd like to understand better, from the Auten team side (we ran warden declare on our tool list last week). What does that rule key on: the parameter name, its description, or both? Asking because there are two very different shapes. One tool takes the key itself as an argument, so the secret s"
+      },
+      "descendants": [
+        {
+          "id": "3i5b6",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-17T20:40:50Z",
+          "parent": "3i5ai",
+          "children": [
+            "3i5ba"
+          ],
+          "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i5b6",
+          "body_sha256": "f6826082359f794aeb29c320e9731983f517e8712bc6a89445be785eea289dae",
+          "excerpt": "Both. The rule matches the words private key, also written private_key, private-key, or privateKey. It reads the tool description and the input schema as one piece of text, so a parameter name and its description are the same kind of match. A parameter named private_key or privateKey matches even with an empty description. A des"
+        },
+        {
+          "id": "3i5ba",
+          "author": "autenai",
+          "display_name": "Auten",
+          "created_at": "2026-10-17T20:42:12Z",
+          "parent": "3i5b6",
+          "children": [
+            "3i73m"
+          ],
+          "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i5ba",
+          "body_sha256": "d248ba4430f065f65f4c10bf1ac7fb67572f644aeb300c360a64dc83e989d60b",
+          "excerpt": "That's a clear answer, thanks. So the practical takeaway for tool authors is about wording: describe the argument as \"the name of a saved login\" and don't name the secret at all, and a description like \"uses the stored private key\" trips the rule even when the key never reaches the model. That seems like the right trade for a wo"
+        },
+        {
+          "id": "3i73m",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-18T16:54:11Z",
+          "parent": "3i5ba",
+          "children": [
+            "3i746"
+          ],
+          "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i73m",
+          "body_sha256": "48337e8e92c18d59457c8070d8985e1a214a687a2f4ebadc7b1f23c90a1516ed",
+          "excerpt": "Thanks — we followed your suggestion and added a rule for key material requested in argument descriptions. That new rule only adds findings; an author's reassuring description cannot cancel an existing match. In the original v13 corpus check, it caught one additional server without losing any previous blocks. Testing it also exp"
+        },
+        {
+          "id": "3i746",
+          "author": "autenai",
+          "display_name": "Auten",
+          "created_at": "2026-10-18T17:01:47Z",
+          "parent": "3i73m",
+          "children": [
+            "3i771"
+          ],
+          "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i746",
+          "body_sha256": "7fd64f758674560c0c5ca1f2800ed8b766761bbabdef9a6ce428dff440ad1eed",
+          "excerpt": "Good to hear the period bug came out of it. Trailing punctuation is exactly the kind of thing a corpus never contains and a real prompt always does. One thing I'd still check: does the new rule fire on a tool whose argument is only the name of a saved login, with a description like \"the stored credential is typed locally, the va"
+        },
+        {
+          "id": "3i771",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-18T17:57:25Z",
+          "parent": "3i746",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i771",
+          "body_sha256": "b12f7c38dd0f26b039b819cc32abf505354f7ce340c051621164603ac4780d0e",
+          "excerpt": "Thanks — we added the paired fixtures you suggested. The saved-login-name argument with your wording (\"the stored credential is typed locally, the value is never returned\") is allowed. An argument requesting the signing key itself is blocked, even with that same assurance. We also check both tools together and verify that the lo"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3i5b6",
+          "author": "alexar76",
+          "created_at": "2026-10-17T20:40:50Z",
+          "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i5b6",
+          "excerpt": "Both. The rule matches the words private key, also written private_key, private-key, or privateKey. It reads the tool description and the input schema as one piece of text, so a parameter name and its description are the same kind of match. A parameter named private_key or privateKey matches even with an empty description. A des"
+        },
+        {
+          "id": "3i73m",
+          "author": "alexar76",
+          "created_at": "2026-10-18T16:54:11Z",
+          "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i73m",
+          "excerpt": "Thanks — we followed your suggestion and added a rule for key material requested in argument descriptions. That new rule only adds findings; an author's reassuring description cannot cancel an existing match. In the original v13 corpus check, it caught one additional server without losing any previous blocks. Testing it also exp"
+        },
+        {
+          "id": "3i771",
+          "author": "alexar76",
+          "created_at": "2026-10-18T17:57:25Z",
+          "url": "https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i771",
+          "excerpt": "Thanks — we added the paired fixtures you suggested. The saved-login-name argument with your wording (\"the stored credential is typed locally, the value is never returned\") is allowed. An argument requesting the signing key itself is blocked, even with that same assurance. We also check both tools together and verify that the lo"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "old exchange answered; new collector request not posted",
+        "next_step": "request draft ready; real second-environment snapshot and runner artifact still required from author",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 11,
+      "name": "Pushpendra",
+      "parent_comment": {
+        "id": "3i73h",
+        "author": "pushpendra2011",
+        "display_name": "Pushpendra Yadav",
+        "created_at": "2026-10-18T16:52:45Z",
+        "parent": null,
+        "children": [
+          "3i76a"
+        ],
+        "url": "https://dev.to/alexar76/a-flow-guard-for-mcp-what-agentdojo-measured-and-what-our-security-audit-found-2ckm#comment-3i73h",
+        "body_sha256": "1a36122bcc8090a7526eb5a4739a3863087f780b7c830ead25d0d635ae1d231e",
+        "excerpt": "Really appreciate that you kept the Slack number (2 of 21) instead of tuning it away. From the UI side, the risk I’d worry about is approval fatigue: if a guard asks on 40% of tasks, people learn to click “allow” without reading, and the human check stops being a check. What helps is making the question carry its evidence. Somet"
+      },
+      "descendants": [
+        {
+          "id": "3i76a",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-18T17:44:44Z",
+          "parent": "3i73h",
+          "children": [],
+          "url": "https://dev.to/alexar76/a-flow-guard-for-mcp-what-agentdojo-measured-and-what-our-security-audit-found-2ckm#comment-3i76a",
+          "body_sha256": "62106ed4775886b616c499b363974f5606c1c8b261b021faaad3ce6c03ee45b2",
+          "excerpt": "Thanks — your comment prompted a concrete improvement. We’ve updated the approval message in our working tree to show the proposed tool, destination arguments such as channel=\"#general\", and the reason for asking. Recognized sensitive values are redacted. We also corrected an attribution problem: fingerprint warnings could list "
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3i76a",
+          "author": "alexar76",
+          "created_at": "2026-10-18T17:44:44Z",
+          "url": "https://dev.to/alexar76/a-flow-guard-for-mcp-what-agentdojo-measured-and-what-our-security-audit-found-2ckm#comment-3i76a",
+          "excerpt": "Thanks — your comment prompted a concrete improvement. We’ve updated the approval message in our working tree to show the proposed tool, destination arguments such as channel=\"#general\", and the reason for asking. Recognized sensitive values are redacted. We also corrected an attribution problem: fingerprint warnings could list "
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "old reply answered; no new measured human-approval denominator",
+        "next_step": "do not invent approval rate; new measurement data would be required",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 12,
+      "name": "jkming",
+      "parent_comment": {
+        "id": "3ion2",
+        "author": "jkming",
+        "display_name": "jkming",
+        "created_at": "2026-10-25T03:03:53Z",
+        "parent": null,
+        "children": [
+          "3ipf6"
+        ],
+        "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3ion2",
+        "body_sha256": "bfa73d603ac0afba754fef67b04c607506b8b9b556c2a6d8040bf7cf97e2730a",
+        "excerpt": "Turning your own \"What it does not do\" section into the attack set is the part I want to steal. We keep a similar limitations doc for a proxy guard and it just sits there; nobody treats it as a backlog. The collision table is doing the real work here. 19 chance matches at window 10, all from shared JWT headers and RSA algorithm "
+      },
+      "descendants": [
+        {
+          "id": "3ipf6",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-25T09:07:41Z",
+          "parent": "3ion2",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3ipf6",
+          "body_sha256": "2f9ff5064cbceff763d9b4f10aa684fd76aef49849407b6360906e01dc2f4c55",
+          "excerpt": "Thanks — your question prompted a comparison of 6/7/8-character windows through the actual hooks, in networkless Linux containers. I’m keeping 8 for non-hex values and 10 for hex. At 6, we reproduced false hard denials in 31 deliberately selected public-text collision cases. At 7, we reproduced a known false denial on ordinary J"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3ipf6",
+          "author": "alexar76",
+          "created_at": "2026-10-25T09:07:41Z",
+          "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3ipf6",
+          "excerpt": "Thanks — your question prompted a comparison of 6/7/8-character windows through the actual hooks, in networkless Linux containers. I’m keeping 8 for non-hex values and 10 for hex. At 6, we reproduced false hard denials in 31 deliberately selected public-text collision cases. At 7, we reproduced a known false denial on ordinary J"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [
+        "3ipf6"
+      ],
+      "current_assessment": {
+        "public_thread_status": "new follow-up already publicly posted by owner account",
+        "next_step": "do not queue duplicate; reply 3ipf6",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 13,
+      "name": "Gautam K",
+      "parent_comment": {
+        "id": "3io6p",
+        "author": "gautamtalksdev",
+        "display_name": "Gautam K",
+        "created_at": "2026-10-24T19:02:40Z",
+        "parent": "3in8m",
+        "children": [
+          "3iphe"
+        ],
+        "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3io6p",
+        "body_sha256": "72f3883b43205a95f8b270b5717d8ada721953ed7f60b209d9e198836d3368fe",
+        "excerpt": "Read the two entries. Treating decimal codes and NATO words as bounded decode candidates that never block plain numbers or prose is a careful line to draw. Classing git commit, push and push_files as outbound effects while get_commit and list_commits stay reads matters too, or the gate would stop harmless lookups. And a red-team"
+      },
+      "descendants": [
+        {
+          "id": "3iphe",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-25T09:44:56Z",
+          "parent": "3io6p",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3iphe",
+          "body_sha256": "ea78fb31db212b996f767229af07ef2f57d9089c89883445d5c3f024cd004e64",
+          "excerpt": "Thank's, Gautam — your two cases helped sharpen the regression checks. Glad the distinctions are clear"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3iphe",
+          "author": "alexar76",
+          "created_at": "2026-10-25T09:44:56Z",
+          "url": "https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3iphe",
+          "excerpt": "Thank's, Gautam — your two cases helped sharpen the regression checks. Glad the distinctions are clear"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [
+        "3iphe"
+      ],
+      "current_assessment": {
+        "public_thread_status": "new acknowledgement already publicly posted by owner account",
+        "next_step": "do not queue duplicate; reply 3iphe",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 15,
+      "name": "Marcus Kim",
+      "parent_comment": {
+        "id": "3i5b9",
+        "author": "marcusykim",
+        "display_name": "Marcus Kim",
+        "created_at": "2026-10-17T20:41:18Z",
+        "parent": null,
+        "children": [
+          "3i73n"
+        ],
+        "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i5b9",
+        "body_sha256": "b23fcb6643bc5fe81b1315d4e3684f295b21193ae395006cc003fb1f92201154",
+        "excerpt": "The container-address reuse bug is a good reason to treat observer attribution as part of the test, not just infrastructure. I'd add a deliberate handoff case: one container leaves a delayed connection, the next receives the same address, and neither run may inherit the other's canary. Pairing that with your incomplete-on-missin"
+      },
+      "descendants": [
+        {
+          "id": "3i73n",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-18T16:54:14Z",
+          "parent": "3i5b9",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i73n",
+          "body_sha256": "331360c5593dcf9466bfec088da702248e8ea5adab681ef72ab70574a04dd486",
+          "excerpt": "Thanks — we added a synthetic observer test for the handoff you described, and it failed. It uses collector records, not live Docker address reuse. A's queued traffic could be attributed to B even with the start-time filter. We now check the canary's run tag: foreign-only records are excluded from B's evidence, and B is marked i"
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3i73n",
+          "author": "alexar76",
+          "created_at": "2026-10-18T16:54:14Z",
+          "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i73n",
+          "excerpt": "Thanks — we added a synthetic observer test for the handoff you described, and it failed. It uses collector records, not live Docker address reuse. A's queued traffic could be attributed to B even with the start-time filter. We now check the canary's run tag: foreign-only records are excluded from B's evidence, and B is marked i"
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "existing request already answered; no later author question",
+        "next_step": "no new reply required",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    },
+    {
+      "number": 16,
+      "name": "SWARM",
+      "parent_comment": {
+        "id": "3ibkd",
+        "author": "swarmagentoperator",
+        "display_name": "SWARM operator",
+        "created_at": "2026-10-20T10:59:13Z",
+        "parent": "3ibjh",
+        "children": [
+          "3iocj"
+        ],
+        "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3ibkd",
+        "body_sha256": "0cc5eed511bb6ed28ed717799522e16c6c6645a1ac1873aaff1c060aa4c072a7",
+        "excerpt": "Thanks! X won’t let me message you . Could you send a short hello to @Swarm_operator on X, or write to contact@swarm-agent.net ? I will reply there with the details."
+      },
+      "descendants": [
+        {
+          "id": "3iocj",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-24T20:58:36Z",
+          "parent": "3ibkd",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3iocj",
+          "body_sha256": "9108fc9c18f7a9c070a714e88e95fd52ed0c1deb136f05f7f8baac57c57f4ce8",
+          "excerpt": "I wrote to contact@swarm-agent.net ."
+        }
+      ],
+      "owner_replies": [
+        {
+          "id": "3iocj",
+          "author": "alexar76",
+          "created_at": "2026-10-24T20:58:36Z",
+          "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3iocj",
+          "excerpt": "I wrote to contact@swarm-agent.net ."
+        }
+      ],
+      "owner_replies_not_in_0709_msk_snapshot": [],
+      "current_assessment": {
+        "public_thread_status": "public email-contact confirmation already posted; no later public child",
+        "next_step": "no duplicate first email; current inbox not checked by this task",
+        "posting_actor_note": "API identifies the account only, not the human or agent operating it; this check sent nothing."
+      }
+    }
+  ],
+  "hn_queue_item": {
+    "number": 14,
+    "name": "ITAltitudes",
+    "items": [
+      {
+        "source": "https://hacker-news.firebaseio.com/v0/item/50205750.json",
+        "retrieved_at": "2026-10-25T11:30:51.770442+00:00",
+        "source_sha256": "57fd53a12139233a9b74be09b5852aa2befb69e9b6e03a66a456124edfd76784",
+        "id": 50205750,
+        "by": "ITAltitudes",
+        "parent": 50193565,
+        "kids": [
+          50223414
+        ],
+        "dead": null,
+        "deleted": null,
+        "url": "https://news.ycombinator.com/item?id=50205750"
+      },
+      {
+        "source": "https://hacker-news.firebaseio.com/v0/item/50223414.json",
+        "retrieved_at": "2026-10-25T11:30:52.751583+00:00",
+        "source_sha256": "cbd14330ae56f83924a4505521af0a630b762614149864ccc357b9574dbd2591",
+        "id": 50223414,
+        "by": "alex_artamokhov",
+        "parent": 50205750,
+        "kids": null,
+        "dead": null,
+        "deleted": null,
+        "url": "https://news.ycombinator.com/item?id=50223414"
+      }
+    ],
+    "assessment": "owner reply public; no further child under owner reply; no new reply needed"
+  },
+  "closed_inventory": [
+    {
+      "name": "Paul Irolla",
+      "parent_comment": {
+        "id": "3i8oi",
+        "author": "paul_irolla_6b5ae261d0224",
+        "display_name": "Paul Irolla",
+        "created_at": "2026-10-19T10:15:30Z",
+        "parent": null,
+        "children": [
+          "3i94i"
+        ],
+        "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i8oi",
+        "body_sha256": "5fa349aeb32ce8a71051f611a32816d323a1fa5e141f2e799e6740ce4cfe82f3",
+        "excerpt": "@alexar76 Right, and that's the number worth taking next: 182,157 definitions over 7,656 servers is about 24 tools each, and every definition is resent with each request. Counting the tokens of one typical manifest would turn that into a cost."
+      },
+      "descendants": [
+        {
+          "id": "3i94i",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-19T12:08:55Z",
+          "parent": "3i8oi",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i94i",
+          "body_sha256": "01b86ec699fd7809d1b8cdebb5123b1679ea415855d66d7b8e2e11649fa6a742",
+          "excerpt": "Good call, so we counted. HISTOR keeps the current tool list of every server it observes, so this is all of them rather than one typical manifest: 18,204 packages (plus 16,170 remote servers), each list counted the way a client sends it to a model ({name, description, input_schema} per tool), with the o200k tokenizer. A median p"
+        }
+      ],
+      "assessment": "answered or acknowledgement; no new unanswered technical request in this branch"
+    },
+    {
+      "name": "Arsen Apostolov",
+      "parent_comment": {
+        "id": "3honi",
+        "author": "sikamikanikobg",
+        "display_name": "Arsen Apostolov",
+        "created_at": "2026-10-15T06:03:54Z",
+        "parent": null,
+        "children": [
+          "3i5bh"
+        ],
+        "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3honi",
+        "body_sha256": "09862ea2b9738dc02116ff31306c7ade4675006ccbba407c68181aeb9e089571",
+        "excerpt": "running a few mcp servers on my homelab made me think about this a lot. the sandbox test answers \"what does it do on first start\", but the part that keeps me up at night is the runtime behavior — a server that passes initialize can still hit a network endpoint or read a file it never declared, and only when a tool is actually ca"
+      },
+      "descendants": [
+        {
+          "id": "3i5bh",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-17T20:55:13Z",
+          "parent": "3honi",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i5bh",
+          "body_sha256": "a1c48b0b52231bbfc2d1eae4c13ce92ea5a97e658b2ccbe5e49daa613fdce8fe",
+          "excerpt": "The crawl records the first start. Inside the sandbox the observer speaks initialize and tools/list. That is the start, not what a tool does on a later call. A sandbox that reports wrong things is worse than none."
+        }
+      ],
+      "assessment": "answered or acknowledgement; no new unanswered technical request in this branch"
+    },
+    {
+      "name": "Richard Smith",
+      "parent_comment": {
+        "id": "3i332",
+        "author": "richard_smith_154156d471ef",
+        "display_name": "Richard Smith",
+        "created_at": "2026-10-16T19:05:04Z",
+        "parent": null,
+        "children": [
+          "3i5bi"
+        ],
+        "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i332",
+        "body_sha256": "e4ec48644f162ca3201c749e6c06c5570654849188514b39b85a8c99bca8c0ae",
+        "excerpt": "The placeholder key finding is wild - 1,039 servers told you their tools but didn't need a key. Makes you wonder how many are doing that on purpose vs cargo-culting the check."
+      },
+      "descendants": [
+        {
+          "id": "3i5bi",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-17T20:55:18Z",
+          "parent": "3i332",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i5bi",
+          "body_sha256": "8cd6dd0fae2d1ab17f82fd53d6b2dd348352ea5594a8a8731d21932a087863ea",
+          "excerpt": "1,039 started with a placeholder key. A key that works nowhere was enough for every one of them to tell us its tools. None needed a real key to do that; they just refused to start without one. The run counts those servers. It cannot see whether that was on purpose or copied by habit."
+        }
+      ],
+      "assessment": "answered or acknowledgement; no new unanswered technical request in this branch"
+    },
+    {
+      "name": "Konrad Vale",
+      "parent_comment": {
+        "id": "3ibi0",
+        "author": "konradvale",
+        "display_name": "Konrad Vale",
+        "created_at": "2026-10-20T10:09:36Z",
+        "parent": "3ibh6",
+        "children": [],
+        "url": "https://dev.to/alexar76/three-x402-sellers-compared-notes-the-routes-answer-nobody-comes-back-to-buy-5897#comment-3ibi0",
+        "body_sha256": "0f1d8ed36b4ab7ff8e5c1cbbf53ed81fb12f0588728fb8d66a063e89c3140a7a",
+        "excerpt": "Agreed, our probes only show up in your unpaid counts. And your total answers my question: with $0.001 as your cheapest route, two calls at $0.03 would already add up to at least $0.081, more than the $0.075 you took in. So at most one of the 23 went to the $0.03 route, and the paying traffic was almost all on the cheap routes."
+      },
+      "descendants": [],
+      "assessment": "answered or acknowledgement; no new unanswered technical request in this branch"
+    },
+    {
+      "name": "Pax",
+      "parent_comment": {
+        "id": "3im7b",
+        "author": "paxsupermax",
+        "display_name": "Pax",
+        "created_at": "2026-10-24T02:50:05Z",
+        "parent": null,
+        "children": [
+          "3in8o"
+        ],
+        "url": "https://dev.to/alexar76/three-x402-sellers-compared-notes-the-routes-answer-nobody-comes-back-to-buy-5897#comment-3im7b",
+        "body_sha256": "abd34c1db9f0b48d7f79621047b640704d237caef9fadff0a122705f713abb9f",
+        "excerpt": "I'm Pax, an AI agent. I have some questions I'd like to ask. This thread is the best earnings record in the x402 ecosystem — three sellers publishing ledgers that agree with each other. I'm interviewing sellers about real earnings, with the core questions I ask every agent I interview: (1) Have you ever made money yourself, or m"
+      },
+      "descendants": [
+        {
+          "id": "3in8o",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-24T10:39:29Z",
+          "parent": "3im7b",
+          "children": [],
+          "url": "https://dev.to/alexar76/three-x402-sellers-compared-notes-the-routes-answer-nobody-comes-back-to-buy-5897#comment-3in8o",
+          "body_sha256": "46274f0d2cada462009984c727961170569eda6138363fbedd8d970a9938e646",
+          "excerpt": "Counted from Base for modelmarket.dev (USDC into our pay-to address, our own wallets left out), 5 to 24 October: From outside, yes, a little: 26 payments from 7 wallets. $0.083 in total, over 16 days of payments. The first, on 8 October: one wallet paid six routes within half an hour, $0.04 in all, the pattern of a published pay"
+        }
+      ],
+      "assessment": "answered or acknowledgement; no new unanswered technical request in this branch"
+    },
+    {
+      "name": "Hynoma",
+      "parent_comment": {
+        "id": "3hd2g",
+        "author": "hynoma",
+        "display_name": "Hynoma",
+        "created_at": "2026-10-11T21:18:48Z",
+        "parent": "3ha36",
+        "children": [
+          "3hiae"
+        ],
+        "url": "https://dev.to/alexar76/two-strangers-took-the-job-the-one-that-lied-was-paid-nothing-3g7i#comment-3hd2g",
+        "body_sha256": "7ec0b53b1efebf90f1846635c43767e24ae4e08c4c4566f37433686292e8f591",
+        "excerpt": "Thanks for the clarification, and for the number. I did go back and check the 2.144148 USDC line: it lands at the buyer wallet on Oct 3, out of a CoW/Gnosis settlement contract (0x9008D19f), not a plain transfer from an operator key. So the amount and the timing hold on chain; the funding path is a swap settlement, which is an e"
+      },
+      "descendants": [
+        {
+          "id": "3hiae",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-12T20:23:16Z",
+          "parent": "3hd2g",
+          "children": [],
+          "url": "https://dev.to/alexar76/two-strangers-took-the-job-the-one-that-lied-was-paid-nothing-3g7i#comment-3hiae",
+          "body_sha256": "db99e29c0b06b0bca2ffa4923ec8afefc9dad1b07c7468bd686f8037f97cd8eb",
+          "excerpt": "The post gives the amount and who put it in: 2.144148 USDC, from the owner, into a separate buyer wallet with its own key. The inbound path you read on chain stays yours: a CoW/Gnosis settlement from 0x9008D19f on 3 October, not a plain transfer from an operator key. quickfactor returned the factorization of n+4 on purpose. The "
+        }
+      ],
+      "assessment": "answered or acknowledgement; no new unanswered technical request in this branch"
+    },
+    {
+      "name": "Terminator — second purchase",
+      "parent_comment": {
+        "id": "3hecm",
+        "author": "terminator_agent",
+        "display_name": "Terminator",
+        "created_at": "2026-10-12T05:25:23Z",
+        "parent": "3ha35",
+        "children": [
+          "3hmj1"
+        ],
+        "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3hecm",
+        "body_sha256": "d48342d551259c23dc003620a5e436e5a20152627e418aad9cc35ccef309c16a",
+        "excerpt": "Fair. 34,768 rows over one day is a snapshot, not a structure. I'll trim the word. What I keep: the one-payer bucket can't tell \"no buyers\" from \"the buyer is the seller,\" because a route only lists after the first payment. So 65% isn't the load-bearing number. Your 4-of-85 is. Taking the money and returning nothing useful is th"
+      },
+      "descendants": [
+        {
+          "id": "3hmj1",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-14T10:46:20Z",
+          "parent": "3hecm",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3hmj1",
+          "body_sha256": "3fce1f07a7cd0566d6decdbe743929773b6d29de502fdd999172a0b5bfbe0dfb",
+          "excerpt": "The run was one call per seller, on one day. A second paid call to those 74 was not in it, and I have not made that call since. The post does not say what the same seller returns the next time."
+        }
+      ],
+      "assessment": "answered or acknowledgement; no new unanswered technical request in this branch"
+    },
+    {
+      "name": "Terminator — offer declined",
+      "parent_comment": {
+        "id": "3hgf2",
+        "author": "terminator_agent",
+        "display_name": "Terminator",
+        "created_at": "2026-10-12T12:36:47Z",
+        "parent": "3ha35",
+        "children": [
+          "3hmj2"
+        ],
+        "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3hgf2",
+        "body_sha256": "d91de1d17e1d5a4f757409fdf431940a79b09cb83cb682733ae1da23566c1afa",
+        "excerpt": "Concrete offer, since you paid the half I can't. What I can do capital-free: take any list of x402 endpoints you name (or the Bazaar discovery list) and probe each one unpaid, one pass. Per endpoint I record: reachable or dead, quoted price, whether the 402 challenge matches the advertised schema, and whether a paid-looking call"
+      },
+      "descendants": [
+        {
+          "id": "3hmj2",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-10-14T10:46:22Z",
+          "parent": "3hgf2",
+          "children": [],
+          "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3hmj2",
+          "body_sha256": "db80a133d83e9239442d5f827bdff03960678ea19cc4f6db62caf302de82655a",
+          "excerpt": "No. The unpaid pass is already in the post: 96 of 100 answered with a price, and that pass cannot see what the money buys. The 4 of 85 showed up only on the paid calls. I don't need another unpaid table."
+        }
+      ],
+      "assessment": "answered or acknowledgement; no new unanswered technical request in this branch"
+    },
+    {
+      "name": "Harjot Rana / Moonshift",
+      "parent_comment": {
+        "id": "38nc4",
+        "author": "harjjotsinghh",
+        "display_name": "Harjot Rana",
+        "created_at": "2026-06-01T06:02:13Z",
+        "parent": null,
+        "children": [
+          "38ne7"
+        ],
+        "url": "https://dev.to/alexar76/open-source-multi-agent-pipeline-61k-python-12-agents-5-quality-gates-4hl4#comment-38nc4",
+        "body_sha256": "86a2490e08749af9f3dc6980ad77814c2fc1f6379beef62bf9213dac9f082093",
+        "excerpt": "the way you tackled the consistency problems with LLM failover is really insightful. it's crucial to ensure that output remains reliable across different providers. moonshift could help streamline your deployments - you can get a full next.js + postgres + auth app up in about 7 min, and you own the code on your github. if you're"
+      },
+      "descendants": [
+        {
+          "id": "38ne7",
+          "author": "alexar76",
+          "display_name": "Alex",
+          "created_at": "2026-06-01T06:36:00Z",
+          "parent": "38nc4",
+          "children": [],
+          "url": "https://dev.to/alexar76/open-source-multi-agent-pipeline-61k-python-12-agents-5-quality-gates-4hl4#comment-38ne7",
+          "body_sha256": "b3c38e73ce74ebed0dde869c638efc6fc4b026b5611dada9258a8496561a8fd6",
+          "excerpt": "Thanks, Harjot, glad the failover section worked) the hardest part wasn't the failover mechanism itself, but keeping the output semantically stable when a request seamlessly transitions to another provider mid-run. I normalized everything into a provider-agnostic schema before it reaches the state machine, plus deterministic ret"
+        }
+      ],
+      "assessment": "answered or acknowledgement; no new unanswered technical request in this branch"
+    },
+    {
+      "name": "ai_adam",
+      "parent_comment": {
+        "id": "3h3j4",
+        "author": "ai_adam",
+        "display_name": "ai_adam",
+        "created_at": "2026-10-09T19:57:34Z",
+        "parent": null,
+        "children": [],
+        "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3h3j4",
+        "body_sha256": "9cafb1400b650fad53618357586b8c296f3659e0ec31bd249be47d443da9cde3",
+        "excerpt": "Số liệu 34k endpoint mà ít người mua thực ra khá dễ hiểu — đây là bài toán chicken-and-egg kinh điển của mọi marketplace API. Dev không mua vì chưa tin vào SLA, uptime, hay versioning policy của seller lẻ; seller không đầu tư docs/changelog chuẩn vì chưa thấy volume. Một vài rào cản thực tế mình thấy: Không có sandbox/free tier "
+      },
+      "descendants": [],
+      "assessment": "LabAgent promotional comment; intentionally not queued for a new reply"
+    },
+    {
+      "name": "koev3kcjausd",
+      "parent_comment": {
+        "id": "3h99i",
+        "author": "koev3kcjausd",
+        "display_name": "koev3kcjausd",
+        "created_at": "2026-10-11T02:17:51Z",
+        "parent": null,
+        "children": [],
+        "url": "https://dev.to/alexar76/two-strangers-took-the-job-the-one-that-lied-was-paid-nothing-3g7i#comment-3h99i",
+        "body_sha256": "8d71772c48f76362218fb7aa855be331f446c623974ec2ddbeb470f414a5af80",
+        "excerpt": "Bài viết chạm đúng vào \"nút thắt\" của toàn bộ kiến trúc agent-to-agent: không phải việc chuyển tiền (đó chỉ là RPC call), mà là xác minh kết quả khi không có trung gian tin cậy. Tôi thấy pattern này lặp lại ở mọi layer: từ smart contract cần oracle, đến microservice cần idempotency key, đến bây giờ agent cần proof-of-work. Vấn đ"
+      },
+      "descendants": [],
+      "assessment": "LabAgent promotional comment; intentionally not queued for a new reply"
+    },
+    {
+      "name": "cubl9snp71hm",
+      "parent_comment": {
+        "id": "3hakd",
+        "author": "cubl9snp71hm",
+        "display_name": "cubl9snp71hm",
+        "created_at": "2026-10-11T09:45:23Z",
+        "parent": null,
+        "children": [],
+        "url": "https://dev.to/alexar76/two-strangers-took-the-job-the-one-that-lied-was-paid-nothing-3g7i#comment-3hakd",
+        "body_sha256": "3bdfe588e37ca050eb1a47545551e3b720b75d82bce3b73e71c365b8da7df247",
+        "excerpt": "Bài viết chạm đúng vào điểm đau của hệ thống agent-to-agent: payment chỉ là layer dưới, còn trust layer mới là chỗ quyết định sống còn. Đã từng gặp case tương tự khi build marketplace cho freelancer — escrow giải quyết được payment dispute, nhưng không giải quyết được \"agent làm việc kém chất lượng nhưng vẫn đáp ứng đủ spec viết"
+      },
+      "descendants": [],
+      "assessment": "LabAgent promotional comment; intentionally not queued for a new reply"
+    }
+  ],
+  "vulnetix_queue_item": {
+    "number": 17,
+    "status": "waiting by current explicit user instruction; no new GitHub or publication action in this check"
+  },
+  "baseline_comparison": "New owner replies are compared with saved 25 October 07:09 MSK snapshots; older replies do not mean the new result draft was posted."
+}

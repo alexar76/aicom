@@ -1,0 +1,82 @@
+{
+  "url": "https://x402-list.com/api/v1/services/aimarket/buyers",
+  "retrieved_at": "2026-10-27T04:56:39.519595+00:00",
+  "status": 200,
+  "sha256": "3b28892c4e24b8fdc75b20057bf99a44a0295792bae70eb1a74478dcc33fc1ac",
+  "body": {
+    "data": [
+      {
+        "date": "2026-10-02",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-03",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-05",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-08",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-09",
+        "unique_buyers": 2
+      },
+      {
+        "date": "2026-10-10",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-11",
+        "unique_buyers": 2
+      },
+      {
+        "date": "2026-10-14",
+        "unique_buyers": 2
+      },
+      {
+        "date": "2026-10-15",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-18",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-19",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-21",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-23",
+        "unique_buyers": 1
+      },
+      {
+        "date": "2026-10-24",
+        "unique_buyers": 5
+      },
+      {
+        "date": "2026-10-25",
+        "unique_buyers": 6
+      },
+      {
+        "date": "2026-10-27",
+        "unique_buyers": 1
+      }
+    ],
+    "caveat": "Conservative undercount: only USDC settlements via facilitators we measure are counted. Operator-level (the full payout address), not pro-rata: do not sum across services that share a payout address. The daily series rolls up hourly, so the latest day can be up to about an hour behind, and briefly after a deploy the whole series can read low until the first rollup finishes (usually within minutes). Distinct buyers are counted per payout address, so a service with more than one payout address is an upper bound (a buyer paying two of its addresses on the same day counts once per address); a single-address service is exact.",
+    "provenance": {
+      "license": "CC-BY-4.0",
+      "attribution_required": true,
+      "attribution": "Data: x402-list.com (CC BY 4.0)",
+      "cite_as": "https://x402-list.com/api/v1/services/aimarket/buyers",
+      "source": "https://x402-list.com"
+    }
+  }
+}

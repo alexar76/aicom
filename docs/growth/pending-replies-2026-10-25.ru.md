@@ -1,168 +1,92 @@
-# Два новых обращения: состояние и подготовленные ответы
+# Полная очередь ответов — 25 октября 2026
 
-**Обновление 25 октября, 10:47 МСК:** статьи по [когорте 292](https://dev.to/alexar76/we-rechecked-292-failing-mcp-packages-12-newer-releases-now-list-tools-p72), [вопросу jkming](https://dev.to/alexar76/we-kept-wardens-810-thresholds-and-fixed-its-credential-index-4khn) и [пяти плательщикам Martin](https://dev.to/alexar76/five-wallets-paid-an-x402-seller-what-can-we-say-about-demand-5gek) опубликованы от alexar76 с Fully Autonomous. Окончательные ответы со ссылками: [jkming](publication-2026-10-25/jkming/reply.md), [Martin](publication-2026-10-25/martin/Reply.md), [Kartik](publication-2026-10-25/kartik/reply.md). Комментарии пока не отправлены; Martin/jkming ждут активной авторизованной DEV-вкладки Chrome. [Все языковые версии и статусы](publication-2026-10-25/README.md).
+<!-- qingfeng-reference-egress -->
+**Qingfeng — проверки завершены на factory-vps.** 25 новых синтетических сценариев, всего 127/127 тестов в четырёх наборах, сборка/typecheck прошли. Runtime и пороги не менялись. Проверка сохраняется для смысловой ссылки после промежуточных результатов; точное операторское разрешение может пропустить её один раз без семантической верификации. Неизвестные инструменты вне MCP, audit/off и ненаблюдаемые credentials явно обозначены как ограничения. [Отчёт](https://github.com/alexar76/warden/blob/main/docs/flow-guard-reference-egress.ru.md), [ответ для ручной вставки](qingfeng-reference-egress-reply-2026-10-26.en.md), [данные](../evidence/qingfeng-reference-egress-2026-10-26/results.json). Модельных вызовов и реальной отправки нет.
+<!-- /qingfeng-reference-egress -->
 
-Срез 25 октября 2026, 07:09 МСК: 54 статьи DEV, 87 комментариев. После предыдущего среза появились
-одно первое техническое обращение и один новый запрос в существующей ветке. Ответы ниже — черновики;
-они не опубликованы и не отправлены. SWARM уже получил письмо и публичное подтверждение контакта.
+<!-- final-ranking-witness -->
+**Launch Gate: серия завершена, 26 октября.** Финальное сравнение на пяти известных контекстах: старое сообщение 6/40, числовое сравнение 40/40, правильные контроли 20/20 на группу. 120 вызовов на Linux; дополнительный расчёт по usage $0,012380472, вместе с предыдущим прогоном $0,041314905 (консервативно $0,082629810). [Итоговый отчёт](launchgate-final-witness-2026-10-26.ru.md), [окончательный ответ для ручной вставки](launchgate-final-witness-reply-2026-10-26.en.md). Все прогнозы выполнены. Документация на пяти языках; публичный ответ не отправлен.
+<!-- /final-ranking-witness -->
 
-## jkming — короткие фрагменты секретов
+Публичные ветки сверены **25 октября, 14:30 МСК**: 12 DEV-веток и два HN item. [Свидетельства проверки](../evidence/reply-queue-2026-10-25/current-thread-status.json). Входящие Outlook этой сверкой не проверялись.
 
-[Вопрос, 06:03 МСК](https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3ion2).
-Спрашивает, можно ли опустить порог для не-hex ниже восьми символов, чтобы ловить шестисимвольные
-фрагменты внутри других слов, и что происходит с коллизиями. Это первое обращение, ответа пока нет.
+Поздние дополнения Launch Gate/Auten основаны на новых скриншотах пользователя и наших экспериментах; повторная полная сверка всех публичных веток не проводилась.
+**Порядок:** выбираем один номер, показываем окончательный текст здесь, пользователь вставляет его сам. Комментарии подготовлены без AI boilerplate; происхождение исследований раскрыто в отчётах и статьях. Письма открываем в Outlook без отправки. Новые публикации — после необходимых писем. Vulnetix ждёт. Код и новые поправки остаются локальными; GitHub writes запрещены.
 
-Проверено по текущему локальному коду: сильные окна — 8 символов, для hex-only значений 10.
-Отдельный механизм коротких изолированных фрагментов 5–7 символов запрашивает review; два разных
-соседних шестисимвольных фрагмента одного прочитанного credential могут дать сильное совпадение.
-Фрагмент внутри более длинного непрерывного слова не становится изолированным atom. Наличие этой
-ветки в локальном коде само по себе не подтверждает её публикацию в конкретном npm-релизе.
+**Новые случаи Launch Gate после заморозки, 26 октября — готово.** 24 новых синтетических случая после фиксации продукта/протокола, один seed, один живой прогон: естественные первые 89/96, финальные 94/96; семь ошибок ранжирования, пять исправлены, два удержаны. Контролируемые 45/48, три удержаны. Второе исправление: два успеха из семи срабатываний, пять удержаний. 12 отдельных детерминированных контролей. Неверной выдачи нет; 156 уведомлений. 158 API-вызовов, usage $0,028934433, консервативно $0,057868866, лимит $0,15. Сбор восстановлен без потери/повторной генерации после синтаксической ошибки упаковщика, 329 хешей. После фиксации результатов отдельно улучшены числовые подсказки ранжирования/пропусков: 798 тестов Linux, 28 red-team, replay всех решений/кадров неизменен; модель с новыми подсказками не запускалась. [Отчёт](launchgate-prospective-holdout-2026-10-26.ru.md), [актуальный ответ для ручной вставки](launchgate-prospective-holdout-reply-2026-10-26.en.md). Пять языков в WARDEN, same-author/unblinded ограничения раскрыты. Код и документы локально; серия платных прогонов остановлена.
 
-Основания: [сильные окна](https://github.com/alexar76/warden/blob/main/src/flow-guard-fingerprints.ts),
-[короткие фрагменты](https://github.com/alexar76/warden/blob/main/src/flow-guard-fragments.ts),
-[сохранённое измерение коллизий](https://github.com/alexar76/warden/blob/main/scripts/redteam/results/window-collisions.json).
+**Живой структурированный прогон Launch Gate, 26 октября — готово.** 160 свежих API-вызовов: 96/96 естественных первых предложений правильны, 32/32 искусственных C и 32/32 D исправлены первой живой попыткой. Эти знаменатели раздельны; естественных ошибок и поводов для второго исправления/удержания нет. Во всех 160 финальных кадрах проверенные данные и уведомление. Новый контракт, каталог и инструкция изменены вместе, поэтому чистый эффект схемы не изолирован; нет holdout или native-GUI проверки. 37 тестов и 480 preflight на Linux, 333 хеша сохранённых данных. По usage вне пика $0,027169008, пиковый учёт $0,054338016 при лимите $0,15. Runtime не менялся. [Отчёт](launchgate-structured-model-2026-10-26.ru.md), [актуальный текст для ручной вставки](launchgate-structured-model-reply-2026-10-26.en.md). Пять языков в документации. Комментарий не отправлен, GitHub/npm не изменены.
 
-Подготовленный ответ:
+**Ограниченная коррекция Launch Gate, 26 октября — реализовано локально.** Opt-in `createAnswerGate`: после каждого ответа все ограничения и все допустимые альтернативы проверяются заново; максимум два исправления, затем удержание результата. Настоящий stdio-host выдаёт только проверенные структурированные данные либо отказ с независимым уведомлением. Linux: 791 тест в 24 наборах, включая 43 gate/stdio, плюс 28 red-team сценариев. Историческая проекция: 50 ложных списков отклонены, 75 корректных разрешены, 259 неподдерживаемых неизвестны. Новых модельных вызовов нет; эффективность нового цикла не измерена. Прочитан полный упорный ответ с одновременными утверждениями C=$129/допустим и C=$190/исключён. [Отчёт](launchgate-answer-gate-2026-10-26.ru.md), [актуальный текст для ручной вставки](launchgate-answer-gate-reply-2026-10-26.en.md). Документация на пяти языках. Ничего не опубликовано.
 
-> Thanks — this prompted a 6/7/8 comparison through the actual hooks, in networkless Linux containers.
-> I’m keeping 8 for non-hex and 10 for hex. Six produced false hard denials in 31 deliberately selected
-> public-text collision cases; seven reproduced a known false denial on ordinary JSON/health-check
-> text, even though it had no exact hits in the new 22-million-character corpus. Those controls are
-> counterexamples, not a production false-positive rate.
->
-> A lone six-character piece inside a longer word still isn’t reliably identified as a secret. In the
-> current local source, the separate credential boundary asks before supported outbound/MCP calls
-> after a credential read and outside text. All 14,400 attack calls stopped at ask or deny at every
-> threshold; that is not a claim that the substring detector caught them all.
->
-> I also fixed an indexing gap: it skipped payload letters before a key’s first digit. Restricting the
-> change to recognized normalized provider prefixes converted 717 attack decisions from ask to deny,
-> with unchanged decisions on 7,680 public-request fixtures. The strict default still asks on all
-> those benign calls; exact reviewed public rules let them pass once. The fix is local and unreleased,
-> and it does not turn six-character substrings into reliable strong matches.
->
-> Disclosure: I maintain WARDEN. AI assisted the experiment code, analysis and drafting of this reply.
+**Факторный прогон Launch Gate, 26 октября — готово.** 384 новых продолжения, четыре условия: 22/32 (номер + условная), 25/32 (явная запись + условная), 14/32 (номер + прямая), 17/32 (явная + прямая). Прямая команда ухудшила полный результат; в совместном условии C-ошибка удалена 31/32, но 14 ответов ошибочно допустили D за пределом расстояния. Прежний 0/8: 1/8, 2/8, 0/8, 1/8; оба сильных прогноза не выполнены. Раскрытие 80/80 во всех условиях, ID неизменны. 44 теста Linux, 783 хеша, все ответы сохранены; учёт $0,07446. [Отчёт](launchgate-review-factors-2026-10-26.ru.md), [актуальный ответ](launchgate-review-factors-reply-2026-10-26.en.md). Пять языков в документации WARDEN. Runtime и грамматика заморожены, публикаций нет.
 
-Выполнено по поручению пользователя: [серверное сравнение 6/7/8, ограничения и исправление](warden-thresholds-2026-10-25.ru.md).
-Все 29 760 входов на вариант сверены попарно по SHA-256; сильные пороги 8/10 сохранены. Код,
-копия плагина и регрессии готовы локально; 1 156 тестов и typecheck прошли. Ответ не опубликован.
-Статья уже опубликована; окончательный ответ со ссылкой и явным раскрытием создания AI-агентами
-находится в пакете публикации выше. Он заменяет приведённый здесь предварительный текст.
+**Свежий модельный прогон Launch Gate, 26 октября — готово.** 288 сохранённых новых продолжений: исправления 2/32 со старым Stop, 0/32 с новой просьбой без фактов, 19/32 с фактами; раскрытие удержано 56/80 против 80/80 и 80/80. Прогноз ≥24/32 не выполнен; 13 ошибок остаются. Все выбранные ID неизменны и допустимы. Тесты инструментов 36/36 на Linux, 590 хешей проверены; 192 уведомления guard не доказывают отображение клиентом. Первая попытка потеряна из-за ошибки сбора после обрыва SSH, её семантика не просмотрена/не оценена; повтор отдельно зафиксирован, сборщик исправлен, суммарная учётная оценка ~$0,107. [Полный отчёт](launchgate-fresh-rechecks-2026-10-26.ru.md), [актуальный ответ для ручной вставки](launchgate-fresh-rechecks-reply-2026-10-26.en.md). Пять языков в документации WARDEN; GitHub/npm/публичные тексты не изменялись.
 
-## Martin / textokit — признаки sweeper-плательщиков
+**Новое продолжение Launch Gate, 26 октября — код и Linux-проверки готовы.** Добавлены необязательный доверенный контракт числовых/логических ограничений и сохранение уведомления guard после Stop. Сборка/typecheck, 743 теста WARDEN в 21 файле, 24 Python-теста и gate из 28 сценариев прошли. При повторе 12 прежних пар найдены четыре ошибочных допустимых набора; во всех 12 выходах hook после продолжения есть уведомление, в том числе в трёх случаях утраты раскрытия моделью. Новых модельных вызовов и исправлений модельных ответов нет: это повтор известных примеров, не holdout. Документация — на EN/RU/ES/FR/ZH, сборка/plugin синхронизированы из Linux. Перенос на factory-vps был отдельно разрешён пользователем, временный каталог удалён. [Отчёт](launchgate-constraint-evidence-2026-10-26.ru.md), [новый ответ для ручной вставки](launchgate-constraint-reply-2026-10-26.en.md), [свидетельства](../evidence/launchgate-constraint-evidence-2026-10-25/README.md), [документация](https://github.com/alexar76/warden/blob/main/docs/flow-guard-constraint-evidence.ru.md). Никаких GitHub writes, npm-публикации или изменения публичной статьи.
 
-[Продолжение, 01:20 МСК](https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3ioef).
-Сообщает, что его единственный повторный плательщик повторяет опубликованный inputExample, и
-выражает готовность использовать признаки sweeper-подобного поведения для классификации receipts.
-Предыдущие сообщения получили ответы; это новый запрос, а не давно оставленное первое обращение.
+**Проверка обоснований Stop выполнена локально:** [отчёт со всеми 12 парами](launchgate-reason-audit-2026-10-25.ru.md), [новый ответ для ручной вставки](launchgate-reason-reply-2026-10-25.en.md). Размеченные утверждения подтверждены 8/12 до и после; в 4/12 сохраняются ошибки допустимости. Исправлений фактов и смены заявленного основания не обнаружено; раскрытие инструкции 10/12 → 7/12. Разбор последующий, AI-assisted, без ослепления, не внутреннее объяснение причинности. Добавлен оценщик; 16 тестов прошли на Linux без сети, новых вызовов модели 0. Документация пакета уточнена на пяти языках. GitHub, npm, публичная статья и комментарии этим разбором не изменялись.
 
-Это заявленный интерес к конкретной функции. Внешний запуск такой функции и покупка продукта
-этим сообщением ещё не подтверждены. Разбор кошельков в нашем предыдущем ответе и tool-list diff
-HISTOR — разные источники результата. На первоначальном срезе функции разметки ещё не было;
-ниже добавлены результаты её локальной реализации и проверки по поручению пользователя.
+**Последнее продолжение Launch Gate:** после свежего прогона пользователь показал новый комментарий о неизменных выборах Stop и независимой отложенной выборке. [Актуальный ответ для ручной вставки](launchgate-post-live-reply-2026-10-25.en.md), [опубликованная статья DEV](https://dev.to/alexar76/we-improved-wardens-warnings-twelve-rechecks-changed-no-choices-1275) и [блог](https://modelmarket.dev/blog/we-improved-wardens-warnings-twelve-rechecks-changed-no-choices/), [отчёт](launchgate-live-comparison-2026-10-25.ru.md). 720 основных ответов; target под атакой: 48/48 без защиты, 44/48 и 46/48 со старой, 27/48 в обоих новых режимах. Stop: 12 продолжений, ноль изменённых ID. Контроли 30/30. Оценочная стоимость $0,05798 при лимите $1; 21 015 проверок аудита на Linux прошли. Шесть известных случаев участвовали в разработке сигналов; новый holdout и иная механика перепроверки не проверены. В Stop найдено дополнительное сообщение с просьбой проверки, но нет независимых данных; ошибки исполнения, объясняющей нулевое изменение ID, не выявлено. Runtime не меняли. Статья по отдельному поручению пользователя опубликована с обложкой и графиком; комментарий автоматически не отправлялся; прежний ответ сохранён [отдельно](launchgate-live-reply-2026-10-25.en.md).
 
-Подготовленный ответ:
+**Готовы восемь ответов с результатами и два уточнения/запроса данных.** Martin, jkming, Gautam, ITAltitudes и Marcus уже отвечены. SWARM требует проверки новой почты, Vulnetix — ожидания.
 
-> Thanks, Martin. I checked all five payers against a fixed fourteen-day Base USDC window. All 24
-> external payments in your current ledger match successful transfers for the stated amounts:
-> 0.055 USDC in total, including our own 0.001 USDC research probe.
->
-> For 0x7722… I found 1,010 recipients, 90.0% paid once, with 83.3% of transfers at or below 0.01 USDC.
-> For 0xA1d1… it was 1,632 recipients, 86.8% paid once, and 76.4% at or below 0.01 USDC. Those exact
-> fractions are more useful than my earlier “nearly all” wording. Recipients are addresses, not
-> necessarily merchants or x402 services.
->
-> I also implemented a local, unreleased `histor payer-audit` command that exports the counts,
-> settlement references, observation window and sourced indications. Your inputExample observation
-> is explicitly marked as publisher-reported; I have not independently checked request payloads.
-> The strict automatic rule leaves uncertain cases as unknown and retains the full settled amount.
-> None of that establishes buyer intent, and paid monitoring can still be genuine use.
->
-> Disclosure: I maintain HISTOR and AIMarket; this reply was drafted with AI assistance.
+1. **Launch Gate — tie-эксперимент завершён, новый ответ готов для ручной вставки.** Пользователь показал продолжение после нашего ответа о 270/270: коллега предложил два равноценных варианта и измерение selection delta. [Новый отчёт](launchgate-tie-selection-2026-10-25.ru.md), [новый текст ответа](launchgate-tie-reply-2026-10-25.en.md), [ветка](https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3j00o). На Linux получены 432 допустимых выбора: target none 28/48 clean → 48/48 injected; note 25/48 → 44/48; note+Stop 29/48 → 45/48. Baseline-adjusted интервалы выигрыша защиты включают ноль. Настоящие предпочтения пользователя выполнены 18/18; Stop 0/144 в main. Это смещение выбора при ничьей, не число неправильных ответов. В код WARDEN добавлен offline evaluator с admissible sets/common-reference эффектом; runtime-блокировка не изменена. 79 offline-тестов и 9 098 проверок аудита прошли; temporary root удалён после сверки SHA. Документация уточнена на пяти языках. Новый ответ этой работой не отправлен. [Прежний 270/270-отчёт](launchgate-selection-2026-10-25.ru.md) и [исторический аудит AgentDojo](launchgate-methodology-2026-10-25.ru.md) сохранены; 18/20 не изменены, upstream issue не создан.
 
-Выполнено локально по поручению пользователя: [английский отчёт](textokit-five-payers-2026-10-25.md),
-[русское пояснение](textokit-five-payers-2026-10-25.ru.md), [функция и инструкция](https://github.com/alexar76/histor/blob/main/docs/payer-audit.md).
-Все 24 внешних платежа проверены; 605 диапазонов сети прочитаны без пропусков. Код ещё не выпущен
-и не развёрнут. Сверка с известными Martin мониторами остаётся способом проверить назначения, но
-для подготовленного отчёта дополнительные закрытые данные не требуются. Ответ не опубликован.
+2. **Kevin Hall — annotations и подмена ответа: готов ответ.** [Комментарий](https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3ipg1). Добавлен opt-in review перед первым использованием annotations; server claims не дают прав. Исправлены две гонки ожидания, обход Stop через warning-слова и защита конфигурации при HOME=/. Финальные **273/273** прошли на Linux; три ошибки воспроизведены на предыдущем локальном кандидате. Семантическая подмена строк остаётся ограничением; честное предупреждение может получить дополнительный проход, сочетание с одноразовым public grant — консервативный отказ. [Текст ответа](kevin-annotations-reply-2026-10-25.en.md), [отчёт](kevin-annotations-answer-review-2026-10-25.ru.md). Изменения не выпущены.
 
-## Очередь после этих обращений
+3. **Kartik — готово продолжение со статьёй.** [Его вопрос](https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i31k). На скриншоте наш старый ответ от 17 октября. Новая [статья по 292 пакетам](https://dev.to/alexar76/we-rechecked-292-failing-mcp-packages-12-newer-releases-now-list-tools-p72) опубликована; доступ проверен в 14:22 МСК. Свежая установка на Linux/gVisor без нашего mcp<2: 14 ответили — 12 новых релизов и два declared-extra случая той же версии; 276 падают, два не проверены из-за auth/index. Новый ответ исправляет старое слишком широкое «все 292 — MCP 2». [Текст ответа](publication-2026-10-25/kartik/reply.md), [отчёт](mcp-sdk-recovery-2026-10-24.ru.md).
 
-1. Kartik: статья по когорте 292 опубликована, продолжение ответа подготовлено. Поимённая публичная таблица без private-host полей готова локально; CSV наружу пока не выгружался.
-2. Для Raju опубликован [полный CI-пример](https://dev.to/alexar76/a-copyable-mcp-tool-cost-check-for-ci-with-passing-and-failing-examples-3hl5) со скриптом и passing/failing-командами. Продолжение ответа подготовлено, не отправлено; внешний запуск его командой пока не подтверждён.
-3. Предложить Auten и Jakub/KyttoMCP короткие проверки их конкретных сценариев.
-4. Согласовать публичные карточки и описание расписания с каноническими версиями; локальные изменения и публикацию учитывать отдельно.
+4. **Martin / textokit — уже ответили.** [Наш новый ответ](https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3ipgb) публичен с 25 октября, 12:31 МСК. [Статья](https://dev.to/alexar76/five-wallets-paid-an-x402-seller-what-can-we-say-about-demand-5gek) есть; 24 платежа пяти плательщиков сверены с Base. payer-audit реализован в исходниках, не в текущем PyPI. Settlement не доказывает buyer intent. [Сохранённый текст](publication-2026-10-25/martin/Reply.md), [отчёт](textokit-five-payers-2026-10-25.ru.md). Повтор не нужен.
 
-Свидетельства проверки веток: [последний review](../evidence/unanswered-comments-2026-10-25/refresh/review.json).
+5. **Raju — готово продолжение с CI-примером.** [Вопрос](https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011#comment-3ij29). [Статья с полным скриптом](https://dev.to/alexar76/a-copyable-mcp-tool-cost-check-for-ci-with-passing-and-failing-examples-3hl5) содержит pinned versions, проходящий и намеренно падающий check, отдельные descriptions/schema/total. Проверено нами; внешний запуск ещё не подтверждён. [Текст ответа](raju-reply-2026-10-25.en.md).
 
-## Чек-лист: готовность ответов и недостающие данные
+6. **Arhan — готов ответ с разрезом изменений.** [Вопрос](https://dev.to/alexar76/45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset-2mhe#comment-3iekp). Разобраны исходные 2 036 серверов и 7 319 переходов: descriptions, schemas и состав tools с пересечениями. Двенадцать переходов остаются unknown. Числовая правка не названа безвредной: есть десятикратное изменение заявленной цены. [Текст ответа](arhan-reply-2026-10-25.en.md), [отчёт](arhan-change-breakdown-2026-10-25.ru.md). Отдельная статья/публичная копия отчёта не опубликованы; доступен публичный пример изменения.
 
-Статусы публичных веток — по проверке 25 октября в 07:09 МСК, не новая онлайн-проверка.
-Первые два пункта — новые обращения без ответа на том срезе. Остальные — продолжения уже
-отвеченных веток и работа с полученными результатами. Все действия ниже остаются локальными;
-черновики jkming и Martin не опубликованы.
+7. **Jakub / KyttoMCP — готов ответ с конкретным diff.** [Комментарий](https://dev.to/alexar76/mcp-servers-edit-the-instructions-your-agent-reads-warden-018-shows-which-words-changed-397f#comment-3ikoh). @mapled/mcp 0.21.5 → 0.21.6: 33 tools, два описания, новая carry on without asking. Неверная подсказка pin из self-reported 0.1.0 и потеря serverInfo в wrap исправлены локально; 142 теста и 19 replay-проверок прошли на Linux. Human usability не измерена, исправление не выпущено. [Текст ответа](jakub-reply-2026-10-25.en.md), [отчёт](jakub-review-check-2026-10-25.ru.md).
 
-1. **jkming:** [серверный эксперимент 6/7/8](warden-thresholds-2026-10-25.ru.md) завершён,
-   исправление индекса реализовано локально; пороги 8/10 сохранены. Ответ с результатами и
-   раскрытием AI обновлён выше, не опубликован. Новых данных для этого ответа не требуется;
-   нулевая production-частота ошибок и надёжное распознавание любой части из шести символов не заявляются.
-2. **Martin/textokit:** ответ с раскрытием AI обновлён выше. [Отчёт по пяти плательщикам](textokit-five-payers-2026-10-25.md)
-   и `histor payer-audit` реализованы локально; settlement и полное 14-дневное окно проверены.
-   Для этих результатов новых данных не требуется. Его пометки известных мониторов помогут
-   проверить назначения кошельков; закрытые payloads и credentials не нужны. Ответ не опубликован.
-3. **[Kartik](https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i31k):**
-   [исследовательский отчёт по 292 пакетам](mcp-sdk-recovery-2026-10-24.ru.md) и
-   [поимённая таблица](../evidence/mcp-sdk-recovery-2026-10-24/packages.csv) готовы.
-   [Публичная статья](https://dev.to/alexar76/we-rechecked-292-failing-mcp-packages-12-newer-releases-now-list-tools-p72) опубликована,
-   [продолжение ответа](publication-2026-10-25/kartik/reply.md) с поправкой старой категории SDK готово,
-   но не отправлено. Два случая с авторизацией/индексом честно остаются непроверенными; новых прогонов для ответа не требуется.
-4. **[Raju](https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011#comment-3ij29):**
-   [Самодостаточный CI-пример](https://dev.to/alexar76/a-copyable-mcp-tool-cost-check-for-ci-with-passing-and-failing-examples-3hl5)
-   опубликован от alexar76: полный скрипт, pinned-версии, exit 0 и намеренный exit 1, шаги CI.
-   HTTP 200 и доступ без авторизации проверены. Метка Fully Autonomous с этой статьи снята;
-   нового ответа в исходной ветке не отправляли. Для внешнего кейса нужны лог запуска его командой
-   и повтор после следующего изменения; публикация инструкции ещё не подтверждает внешнее внедрение.
-5. **[Arhan](https://dev.to/alexar76/45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset-2mhe#comment-3iekp):**
-   [разрез по исходным 2 036 серверам готов](arhan-change-breakdown-2026-10-25.ru.md):
-   1 994 имели правки описаний сверх цифр/пробелов, 39 — только числовые в этой части, 3 — только пробельные.
-   Разобраны все 7 319 событий; отдельно 5 482 изменения верхних descriptions (5 014 / 462 / 6).
-   Полные состояния и digest проверены на Linux, схемы и состав tools посчитаны с пересечениями;
-   12 событий без полных состояний остаются unknown. [Ответ с раскрытием AI](arhan-reply-2026-10-25.en.md)
-   подготовлен, не отправлен. Новых замеров для этого ответа не требуется; числовые правки не названы безопасными.
-6. **[Auten](https://dev.to/alexar76/we-re-ran-our-mcp-scanner-comparison-on-14933-npm-and-pypi-tool-lists-in-gvisor-with-two-more-21i4#comment-3i5ai):**
-   [подготовка выполнена](auten-launcher-check-2026-10-25.ru.md): найден реальный sandbox baseline
-   `@autenai/mcp@0.1.5` с `install_auten`; свежие npm/registry/HISTOR данные сверены.
-   [Сборщик полных снимков](https://github.com/alexar76/warden/blob/main/examples/launcher-evidence/README.md) готов и прошёл 10 тестов на Linux
-   с опубликованным WARDEN 0.21.0. [Запрос автору](auten-launcher-request-2026-10-25.en.md) подготовлен,
-   не отправлен. Второй настоящий снимок и точная версия/артефакт его runner ещё нужны от Auten;
-   реальные внешние окружения и использование команды не считаются нами воспроизведёнными.
-7. **[Jakub/KyttoMCP](https://dev.to/alexar76/mcp-servers-edit-the-instructions-your-agent-reads-warden-018-shows-which-words-changed-397f#comment-3ikoh):**
-   [конкретный diff и проверка готовы](jakub-review-check-2026-10-25.ru.md): `@mapled/mcp` 0.21.5 → 0.21.6,
-   33 tools, два изменённых описания, новая фраза `carry on without asking`. Полные изменённые описания
-   сверены с npm-архивами. Published WARDEN 0.21.0 выделяет фразу, но ошибочно советует pin из
-   self-reported версии 0.1.0. Это и потеря serverInfo в пути wrap исправлены локально; 142 теста
-   и 19 проверок replay прошли на Linux. [Чистый текст ответа](jakub-reply-2026-10-25.en.md) готов,
-   не отправлен; пользователь вставляет комментарии сам. Исправление ещё не выпущено, human usability не измерялась.
-8. **[Pushpendra](https://dev.to/alexar76/a-flow-guard-for-mcp-what-agentdojo-measured-and-what-our-security-audit-found-2ckm#comment-3i73h):**
-   для доли человеческих подтверждений нужны реальные события запросов и решений approve/deny
-   с общим знаменателем. Сейчас human approval остаётся unknown; количество задач с запросом
-   подтверждения не заменяет эту метрику.
-9. **[Kevin Hall](https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3hmmh):**
-   [контролируемый тест готов](kevin-fake-billing-2026-10-25.ru.md): 26 сценариев × 3 повтора на Linux,
-   отдельный журнал фиктивного биллинга. Текущий canary выбирает preview без списания, `{}` включает
-   серверный purchase и списывает 7 mock credits. Одинаковые MCP-сообщения могут соответствовать
-   разным списаниям; ошибка и таймаут не доказывают отсутствие эффекта. WARDEN с default policy
-   не угадывает платность; настроенное подтверждение sensitive tool проверено отдельно.
-   [Текст ответа](kevin-reply-2026-10-25.en.md) подготовлен, не отправлен. Исходная распространённость
-   и поведение Apify этим синтетическим тестом не установлены; реальных платежей не было.
-10. **[Micky Arun](https://dev.to/alexar76/one-key-for-an-agents-tool-calls-a-prepaid-usdc-balance-on-an-mcp-connection-a06#comment-3h1m7):**
-    нужны актуальные проверки платёжного цикла: hold → failed call → release/refund, перерасход,
-    expiry, лимит скорости расходования и возврат остатка. Новый ответ о текущем поведении должен
-    опираться на код и результаты тестов; старый эксперимент этих гарантий не установил.
-11. **[Vulnetix](https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6385911773):**
-    [поправки статьи](../malware-feed-accuracy.ru.md) на пяти языках готовы локально. Для завершения
-    всей истории не хватает отдельных решений по helios-broadcast, skopos-fleet и aimarket-histor;
-    для заявления о проверенных исправлениях — независимой повторной проверки пяти уязвимостей.
-12. **SWARM:** первое письмо уже отправлено 20 октября, публичное подтверждение контакта тоже есть.
-    Дубликат не нужен. Перед дальнейшим продолжением проверить новые входящие; прежний поиск
-    без ответа не устанавливает состояние почты на текущий момент.
+8. **Kevin Hall — скрытое платное действие: готов отдельный ответ.** [Прежний вопрос](https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3hmmh). Выполнены 26 сценариев × 3 повтора с отдельным фиктивным биллингом. Preview не списывает, пустые arguments включают purchase на 7 mock credits. Одинаковые MCP-сообщения могут сопровождать разный charge; ошибка/timeout не доказывают отсутствие эффекта. Реальные платежи, Apify и распространённость не проверены. [Текст ответа](kevin-reply-2026-10-25.en.md), [отчёт](kevin-fake-billing-2026-10-25.ru.md).
+
+9. **Micky Arun — готов ответ о платёжном цикле.** [Вопросы](https://dev.to/alexar76/one-key-for-an-agents-tool-calls-a-prepaid-usdc-balance-on-an-mcp-connection-a06#comment-3h1m7). 146 тестов и 14-шаговый ledger trace прошли на Linux с фиктивными средствами. Capture/release, ошибки и гонки проверены. Нет output-metered overage и per-key dollar/hour cap; retry после timeout может повторить эффект; release возвращает credit, а не USDC. Production и реальные переводы не проверялись; платёжный код не менялся. [Текст ответа](micky-reply-2026-10-25.en.md), [отчёт](micky-payment-lifecycle-2026-10-25.ru.md).
+
+10. **Auten — получил наш запрос и пока отказался публиковать runtime captures.** По новому скриншоту пользователя от 25 октября это их решение о раскрытии полных tool definitions, не претензия к collector. Они работают над hosted tool-sets file, но декларация ещё не опубликована. Повторно captures не запрашиваем; текущий installed runner остаётся непроверенным. [Короткий ответ для ручной вставки](auten-followup-2026-10-25.en.md), [прежний запрос](auten-launcher-request-2026-10-25.en.md), [исторический отчёт](auten-launcher-check-2026-10-25.ru.md). Будущая publisher declaration и реальное runtime-наблюдение должны оставаться разными источниками; синтетический тест не заменяет их второе окружение. Новый ответ этой работой не отправлен.
+
+11. **Pushpendra — готово уточнение метрики.** [Комментарий](https://dev.to/alexar76/a-flow-guard-for-mcp-what-agentdojo-measured-and-what-our-security-audit-found-2ckm#comment-3i73h). Исторические 39/97 — задачи с ask, не люди, нажавшие approve. Реальная доля человеческих решений и fatigue не измерены. Для rate нужны предъявленные людям requests и связанные ответы, отдельно timeout/cancel/refusal/audit. Scripted responses не выдаём за человеческие наблюдения. [Текст ответа](pushpendra-reply-2026-10-25.en.md).
+
+12. **jkming — уже ответили.** [Наш ответ](https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3ipf6) публичен с 25 октября, 12:07 МСК. [Статья](https://dev.to/alexar76/we-kept-wardens-810-thresholds-and-fixed-its-credential-index-4khn) опубликована; пороги 8/10 сохранены, indexing gap исправлен локально. [Отчёт](warden-thresholds-2026-10-25.ru.md). Fully Autonomous на статье сохранена по поручению пользователя. Повторять ответ не нужно.
+
+13. **Gautam K — уже ответили.** Последняя благодарность получила [наш ответ](https://dev.to/alexar76/we-attacked-our-own-mcp-firewall-with-its-source-code-open-14-of-17-attacks-got-through-now-2-of-2m7l#comment-3iphe) 25 октября, 12:44 МСК. Он подтвердил полезность двух исправленных кейсов и CI; нового запроса нет.
+
+14. **ITAltitudes / HN — уже ответили.** [Вопрос](https://news.ycombinator.com/item?id=50205750) имеет [наш публичный ответ](https://news.ycombinator.com/item?id=50223414); ответ не dead/deleted, продолжений нет. Сообщать о выполнении обещанного расписания можно после отдельной сверки развёрнутого состояния; текущая проверка комментариев этого не устанавливает.
+
+15. **Marcus Kim — уже ответили.** [Наш ответ](https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i73n) описывает исправления handoff/incomplete reasons. Контроль использовал синтетические collector records, не live Docker reuse. Продолжений нет.
+
+16. **SWARM — первое письмо уже было.** Письмо 20 октября и [публичное подтверждение контакта](https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3iocj) подтверждены прежней проверкой. Дубликат не готовим. Перед продолжением нужна свежая проверка входящих Outlook; старый поиск не устанавливает состояние почты сейчас.
+
+17. **Vulnetix — ждём.** [Их ответ](https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6385911773), [локальные поправки статьи](../malware-feed-accuracy.ru.md). Нет отдельных решений по helios-broadcast, skopos-fleet, aimarket-histor; нет независимой повторной проверки пяти исправлений. Наличие версий в PyPI не заменяет её. Перед публикацией ещё нужны письма; по поручению пользователя ждём.
+
+## Остальные проверенные ветки
+
+Нового ответа не требуется:
+
+- **Paul Irolla:** [tokens/метод уже отвечены](https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i94i).
+- **Arsen Apostolov / SikamikanikoBG:** [runtime/homelab замечание отвечено](https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i5bh).
+- **Richard Smith:** [placeholder keys и намерения авторов разделены в ответе](https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh#comment-3i5bi).
+- **Konrad Vale / ToolVet:** первое обращение отвечено; [последнее сообщение](https://dev.to/alexar76/three-x402-sellers-compared-notes-the-routes-answer-nobody-comes-back-to-buy-5897#comment-3ibi0) — согласие без нового вопроса.
+- **Pax:** [интервью отвечено](https://dev.to/alexar76/three-x402-sellers-compared-notes-the-routes-answer-nobody-comes-back-to-buy-5897#comment-3in8o), продолжений нет. Автор представляется AI-агентом.
+- **Hynoma:** [комментарий отвечен](https://dev.to/alexar76/two-strangers-took-the-job-the-one-that-lied-was-paid-nothing-3g7i#comment-3hiae); независимые покупатель/продавцы — идея нового эксперимента, не оставленный вопрос.
+- **Terminator:** вопрос о второй покупке [отвечен](https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3hmj1), платное предложение [отклонено](https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3hmj2).
+- **Harjot Rana / Moonshift:** trial-предложение [получило ответ](https://dev.to/alexar76/open-source-multi-agent-pipeline-61k-python-12-agents-5-quality-gates-4hl4#comment-38ne7) 1 июня, новых сообщений нет.
+- **LabAgent promos — ai_adam, koev3kcjausd, cubl9snp71hm:** рекламные комментарии оставлены без ответа намеренно; технические черновики не нужны.
+
+## Новое продолжение Launch Gate: сигналы и Stop
+
+После скриншота с замечанием о 44/48 проверили фактические предупреждения. В 0.21.0 все 96 защищённых атакованных примеров получали только общее предупреждение об источнике. Локальный кандидат добавляет сигналы инструкций и раздельную диагностику: 96/96 специальных предупреждений, 0/192 на чистых/нейтральных примерах; Stop запросил бы 12/48 перепроверок вместо нуля, 0/96 на соответствующих контролях. Это повтор сохранённых ответов, не новое поведение модели. На Linux прошли сборка/typecheck, 711 тестов и прежний gate из 28 сценариев. Все 266 выходных SHA проверены, временный каталог удалён. [Отчёт](launchgate-warning-diagnostics-2026-10-25.ru.md), [актуальный текст ответа](launchgate-warning-reply-2026-10-25.en.md). Комментарий не отправлен, npm не опубликован. Прежние результаты сохранены.
+
+## Материалы и история
+
+Уже опубликованы пять статей: Kartik, Martin, Raju, jkming и новый разбор Launch Gate. У первых трёх Fully Autonomous снята, у jkming оставлена. Новый разбор Launch Gate и его отчёт на пяти языках размещены в блоге; статья также на DEV. Материалы Kevin этой публикацией не изменялись.
+
+Прежние runtime-проверки Kevin/Micky и исторического аудита Launch Gate выполнены на Linux admin-vps в Docker runc, без реальных платежей, внешних provider/model вызовов и сторонних MCP implementations. Отдельный новый selection probe Launch Gate выполнен 25 октября на Linux factory-vps с настоящими вызовами `deepseek-flash`: 270 основных + 12 pilot = 282 попытки; guard-контейнер без сети, Docker runc. Это не gVisor. Повторная проверка 292 пакетов выполнялась отдельно на Linux/gVisor. Временные стенды удалены после проверки SHA; evidence сохранены.
+
+[Предыдущие срезы и черновики](pending-replies-2026-10-25.history.md) сохранены как история; их статусы не заменяют эту очередь.

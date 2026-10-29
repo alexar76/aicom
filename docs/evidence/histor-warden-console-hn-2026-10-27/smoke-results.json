@@ -1,0 +1,72 @@
+{
+  "status": "passed",
+  "version": "0.22.2",
+  "artifactIntegrityVerified": true,
+  "scope": "synthetic stdio fixture only; no user configs, credentials, network calls or tools/call",
+  "checks": [
+    {
+      "name": "cli-help",
+      "exitCode": 0,
+      "args": [
+        "--help"
+      ]
+    },
+    {
+      "name": "lock-create",
+      "exitCode": 0,
+      "args": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/.mcp.json",
+        "--state-dir",
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/state",
+        "--json",
+        "--fail-on-error",
+        "--lock",
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/warden.lock.json",
+        "--update-lock"
+      ]
+    },
+    {
+      "name": "lock-unchanged",
+      "exitCode": 0,
+      "args": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/.mcp.json",
+        "--state-dir",
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/state",
+        "--json",
+        "--fail-on-error",
+        "--lock",
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/warden.lock.json"
+      ]
+    },
+    {
+      "name": "lock-changed",
+      "exitCode": 1,
+      "args": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/.mcp.json",
+        "--state-dir",
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/state",
+        "--json",
+        "--fail-on-error",
+        "--lock",
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/warden.lock.json"
+      ]
+    },
+    {
+      "name": "no-launch",
+      "exitCode": 0,
+      "args": [
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/.mcp.json",
+        "--state-dir",
+        "/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/evidence/histor-warden-console-hn-2026-10-27/fixture/state",
+        "--json",
+        "--fail-on-error",
+        "--no-launch"
+      ]
+    }
+  ],
+  "methodsObserved": [
+    "initialize",
+    "notifications/initialized",
+    "tools/list"
+  ]
+}

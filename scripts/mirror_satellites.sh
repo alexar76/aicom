@@ -184,6 +184,24 @@ git_auth() {
   fi
 }
 
+# Why a mirror push was refused, from what GitHub answered. A refusal is not always the remote moving
+# ahead: on 2026-10-27 push protection refused alexar76/warden over a synthetic test key, and the old
+# message sent the operator to reverse-import a PR that did not exist.
+_explain_push_failure() {  # _explain_push_failure OUTPUT SAT_ID live|squash
+  local out="$1" sat_id="$2" mode="$3"
+  if grep -q -E "GH013|Push cannot contain secrets|push protection" <<<"$out"; then
+    echo "  ⛔ GitHub push protection refused the push: a secret-shaped string (path and commit above)."
+    echo "     Do NOT use the unblock URL. A real key: revoke and rotate it first. A synthetic test value:"
+    echo "     build it from parts in the monorepo (as warden/test/flow-guard-*.test.ts do), commit, push to"
+    echo "     Gitea, then re-run this sync: the next export is a new commit without the string."
+  elif [[ "$mode" == "live" ]] && grep -q -E "non-fast-forward|fetch first" <<<"$out"; then
+    echo "  ⚠️  Push rejected: the remote advanced (likely a just-merged PR). Do NOT --force. Reverse-import, then retry:"
+    echo "         ./scripts/import_satellite_pr.sh ${sat_id}"
+  else
+    echo "  ⚠️  Push failed (GitHub's answer is above) — check GH_PAT/GITHUB_TOKEN permissions"
+  fi
+}
+
 # ── Workdir setup ───────────────────────────────────────────────────────────
 if [[ "$DRY_RUN" -eq 0 ]]; then
   WORKDIR="$(mktemp -d)"
@@ -494,8 +512,8 @@ _post_rsync_satellite_hook() {
         echo "  ✓ docs/landing/ → GitHub Pages (workflow uploads folder)"
       fi
       ;;
-    emporion)
-      # EMPORION's CI, release and Dockerfile.standalone install oracle-core from vendor/.
+    symmartys)
+      # SYMMARTYS's CI, release and Dockerfile.standalone install oracle-core from vendor/.
       mkdir -p "$clone/vendor"
       if [[ -d "$ROOT/oracles/core" ]]; then
         rsync -a --delete \
@@ -1149,8 +1167,23 @@ export_plugins() {
 
   find "$clone" -mindepth 1 -not -name '.git' -not -path '*/.git/*' -exec rm -rf {} + 2>/dev/null || true
 
-  local rsync_args=(-a --exclude .git --exclude .claude --exclude .cursor --exclude .venv --exclude venv --exclude node_modules --exclude __pycache__ --exclude .pytest_cache --exclude build --exclude .build --exclude dist --exclude '*.egg-info' --exclude .DS_Store \
-    --include '.env.example' --include 'quality-public-key.pem' --exclude .env --exclude '.env.*' --exclude '*.key' --exclude '*.pem' --exclude '*.enc' --exclude data/secrets --exclude '*_signing_key' --exclude '*_vrf_sk' --exclude dataset_salt)
+  # BEGIN plugin export filters: also exercised against disposable local trees.
+  local rsync_args=(-a --include '.env.example' --include 'quality-public-key.pem')
+  local -a base_excludes=()
+  while IFS= read -r pat; do
+    [[ -n "$pat" ]] && base_excludes+=("$pat")
+  done < <(python3 "$ROOT/scripts/aicom_publish_config.py" list-rsync-excludes)
+  if (( ${#base_excludes[@]} < 20 )); then
+    echo "refusing plugin export: canonical secret exclusions are unavailable" >&2
+    return 1
+  fi
+  for pat in "${base_excludes[@]}"; do
+    rsync_args+=(--exclude "$pat")
+  done
+  # Importing a provider for capability-sync can create relative data/ identities.
+  # Plugin packages have no tracked data/ assets: runtime state is never source.
+  rsync_args+=(--exclude data)
+  # END plugin export filters
 
   # Main plugins
   mkdir -p "$clone/plugins"
@@ -2337,6 +2370,7 @@ PY
 
     # Normal commit ON TOP of the existing history — no orphan.
     git add -A
+    bash "$ROOT/scripts/verify_mirror_secrets.sh" "$clone" --git-index || { rm -f "$msg_file"; return 1; }
     git -c user.name="$GIT_AUTHOR_NAME" -c user.email="$GIT_AUTHOR_EMAIL" \
       commit --author="$GIT_AUTHOR_NAME <$GIT_AUTHOR_EMAIL>" -F "$msg_file"
     rm -f "$msg_file"
@@ -2347,12 +2381,13 @@ PY
     fi
 
     echo "  🚀 Pushing (append-only, no --force) to ${GITHUB_HOST}/${GITHUB_ORG}/${repo} ..."
-    git_auth push origin "HEAD:$BRANCH" 2>&1 || {
-      echo "  ⚠️  Push rejected (non-fast-forward means the remote advanced —"
-      echo "       likely a just-merged PR). Do NOT --force. Reverse-import, then retry:"
-      echo "         ./scripts/import_satellite_pr.sh ${sat_id}"
+    local push_out push_rc=0
+    push_out="$(git_auth push origin "HEAD:$BRANCH" 2>&1)" || push_rc=$?
+    printf '%s\n' "$push_out"
+    if [[ "$push_rc" -ne 0 ]]; then
+      _explain_push_failure "$push_out" "$sat_id" live
       return 1
-    }
+    fi
     _move_glama_tag "$sat_id"
     if command -v python3 >/dev/null 2>&1; then
       python3 "$ROOT/scripts/prune_github_collaborators.py" "$GITHUB_ORG" "$repo" 2>/dev/null || true
@@ -2367,6 +2402,7 @@ PY
   # ═══════════════════════════════════════════════════════════════════════
   git checkout --orphan "mirror-${BRANCH}" 2>/dev/null || git checkout --orphan "mirror-${BRANCH}"
   git add -A
+  bash "$ROOT/scripts/verify_mirror_secrets.sh" "$clone" --git-index || { rm -f "$msg_file"; return 1; }
   git -c user.name="$GIT_AUTHOR_NAME" -c user.email="$GIT_AUTHOR_EMAIL" \
     commit --author="$GIT_AUTHOR_NAME <$GIT_AUTHOR_EMAIL>" -F "$msg_file"
   rm -f "$msg_file"
@@ -2378,10 +2414,13 @@ PY
   fi
 
   echo "  🚀 Force-pushing squashed mirror to ${GITHUB_HOST}/${GITHUB_ORG}/${repo} ..."
-  git_auth push --force origin "HEAD:$BRANCH" 2>&1 || {
-    echo "  ⚠️  Push failed — check GH_PAT/GITHUB_TOKEN permissions"
+  local push_out push_rc=0
+  push_out="$(git_auth push --force origin "HEAD:$BRANCH" 2>&1)" || push_rc=$?
+  printf '%s\n' "$push_out"
+  if [[ "$push_rc" -ne 0 ]]; then
+    _explain_push_failure "$push_out" "$sat_id" squash
     return 1
-  }
+  fi
   _move_glama_tag "$sat_id"
   if command -v python3 >/dev/null 2>&1; then
     python3 "$ROOT/scripts/prune_github_collaborators.py" "$GITHUB_ORG" "$repo" 2>/dev/null || true
@@ -2666,10 +2705,10 @@ else:
       extra_excludes="$(_python_map exclude-paths histor)"
       export_simple "$sat_id" "histor" "histor" "mit" "$extra_excludes"
       ;;
-    emporion)
+    symmartys)
       local extra_excludes
-      extra_excludes="$(_python_map exclude-paths emporion)"
-      export_simple "$sat_id" "emporion" "emporion" "mit" "$extra_excludes"
+      extra_excludes="$(_python_map exclude-paths symmartys)"
+      export_simple "$sat_id" "symmartys" "symmartys" "mit" "$extra_excludes"
       ;;
     use-cases-portal)
       local extra_excludes
@@ -2724,6 +2763,7 @@ else
     echo "✅ All satellites mirrored successfully."
   else
     echo "⚠️  ${errors} satellite(s) had errors."
+    exit 1
   fi
 fi
 

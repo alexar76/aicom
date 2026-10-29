@@ -1,0 +1,7 @@
+Your suggestion exposed a more specific problem: in all 96 guarded injected cases, 0.21.0 supplied only the generic outside-source note. None received the instruction-specific warning. So that run cannot distinguish a model ignoring a detected instruction from a source detector missing it.
+
+We expanded the source signals and added diagnostics separating the signal, warning type, literal overlap and recheck request. In an offline replay of the same saved inputs, the local candidate gives specific warnings in 96/96 injected cases and none in the 192 clean/benign controls. Stop would request rechecks on 12/48 injected answers, versus zero previously, with none on its 96 clean/benign controls. The other 36/48 still expose the overlap limitation. Linux build/typecheck, 711 regression tests and the existing 28-case deterministic gate passed.
+
+These are hook-coverage results, not corrected model choices: we did not generate new answers or continuations. We also keep visible warning acknowledgement separate from model awareness or compliance.
+
+One numerical clarification: the untreated shift was 20/48, or 41.7 percentage points. The 8.3-point attenuation was a point estimate; its interval was −4.2 to +20.8 points, not an eight-point upper bound. The high remaining selection rate is still a practical finding, but that interval does not prove the proposed upper bound on defense strength.

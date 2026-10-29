@@ -1,0 +1,635 @@
+{
+  "scope": "Public alexar76 repositories only; all calls unauthenticated GET; no git changes or GitHub writes. Search dates broadened by a day for Moscow timezone.",
+  "records": [
+    {
+      "url": "https://api.github.com/rate_limit",
+      "fetched_at_utc": "2026-10-26T20:00:44.297103+00:00",
+      "status": 200,
+      "sha256": "c41dcc3cbcf74563690bd5ea0b617c90ab1f126955599e833661ca80e7d54d7e",
+      "remaining": "26",
+      "reset": "1793044848",
+      "resources": {
+        "code_search": {
+          "limit": 60,
+          "remaining": 26,
+          "reset": 1793044848,
+          "used": 34
+        },
+        "core": {
+          "limit": 60,
+          "remaining": 26,
+          "reset": 1793044848,
+          "used": 34
+        },
+        "graphql": {
+          "limit": 0,
+          "remaining": 0,
+          "reset": 1793048444,
+          "used": 0
+        },
+        "integration_manifest": {
+          "limit": 5000,
+          "remaining": 5000,
+          "reset": 1793048444,
+          "used": 0
+        },
+        "search": {
+          "limit": 10,
+          "remaining": 10,
+          "reset": 1793044904,
+          "used": 0
+        }
+      }
+    },
+    {
+      "url": "https://api.github.com/users/alexar76/repos?per_page=100&sort=pushed",
+      "fetched_at_utc": "2026-10-26T20:00:44.297930+00:00",
+      "status": 200,
+      "sha256": "f18ad4ad7de77bec50d2032f902820e09c727e466050b429188d55f1cd92ab6d",
+      "remaining": "26",
+      "reset": "1793044848",
+      "repositories": [
+        {
+          "full_name": "alexar76/signal-hunt",
+          "html_url": "https://github.com/alexar76/signal-hunt",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T19:57:28Z",
+          "archived": false,
+          "fork": false,
+          "size": 2287
+        },
+        {
+          "full_name": "alexar76/treasury",
+          "html_url": "https://github.com/alexar76/treasury",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T14:31:28Z",
+          "archived": false,
+          "fork": false,
+          "size": 5782
+        },
+        {
+          "full_name": "alexar76/momus",
+          "html_url": "https://github.com/alexar76/momus",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T14:31:12Z",
+          "archived": false,
+          "fork": false,
+          "size": 5385
+        },
+        {
+          "full_name": "alexar76/atlas",
+          "html_url": "https://github.com/alexar76/atlas",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T14:30:49Z",
+          "archived": false,
+          "fork": false,
+          "size": 7666
+        },
+        {
+          "full_name": "alexar76/skopos",
+          "html_url": "https://github.com/alexar76/skopos",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T14:30:35Z",
+          "archived": false,
+          "fork": false,
+          "size": 31709
+        },
+        {
+          "full_name": "alexar76/metis",
+          "html_url": "https://github.com/alexar76/metis",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T14:30:13Z",
+          "archived": false,
+          "fork": false,
+          "size": 2090
+        },
+        {
+          "full_name": "alexar76/warden",
+          "html_url": "https://github.com/alexar76/warden",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T14:29:17Z",
+          "archived": false,
+          "fork": false,
+          "size": 15132
+        },
+        {
+          "full_name": "alexar76/aimarket-plugins",
+          "html_url": "https://github.com/alexar76/aimarket-plugins",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T14:28:02Z",
+          "archived": false,
+          "fork": false,
+          "size": 398
+        },
+        {
+          "full_name": "alexar76/linked-in-profile-coach",
+          "html_url": "https://github.com/alexar76/linked-in-profile-coach",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T14:27:36Z",
+          "archived": false,
+          "fork": false,
+          "size": 5170
+        },
+        {
+          "full_name": "alexar76/aimarket-hub",
+          "html_url": "https://github.com/alexar76/aimarket-hub",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T14:27:17Z",
+          "archived": false,
+          "fork": false,
+          "size": 6080
+        },
+        {
+          "full_name": "alexar76/aicom-products",
+          "html_url": "https://github.com/alexar76/aicom-products",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T13:25:20Z",
+          "archived": false,
+          "fork": false,
+          "size": 731
+        },
+        {
+          "full_name": "alexar76/cite-desks",
+          "html_url": "https://github.com/alexar76/cite-desks",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T11:28:39Z",
+          "archived": false,
+          "fork": false,
+          "size": 4860
+        },
+        {
+          "full_name": "alexar76/histor",
+          "html_url": "https://github.com/alexar76/histor",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T11:27:52Z",
+          "archived": false,
+          "fork": false,
+          "size": 7738
+        },
+        {
+          "full_name": "alexar76/dioscuri",
+          "html_url": "https://github.com/alexar76/dioscuri",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T09:47:56Z",
+          "archived": false,
+          "fork": false,
+          "size": 712
+        },
+        {
+          "full_name": "alexar76/domain-operator-kit",
+          "html_url": "https://github.com/alexar76/domain-operator-kit",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T09:02:18Z",
+          "archived": false,
+          "fork": false,
+          "size": 2400
+        },
+        {
+          "full_name": "alexar76/esim-operator-kit",
+          "html_url": "https://github.com/alexar76/esim-operator-kit",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T09:02:11Z",
+          "archived": false,
+          "fork": false,
+          "size": 3195
+        },
+        {
+          "full_name": "alexar76/create-aimarket-agent",
+          "html_url": "https://github.com/alexar76/create-aimarket-agent",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T09:00:34Z",
+          "archived": false,
+          "fork": false,
+          "size": 363
+        },
+        {
+          "full_name": "alexar76/aimarket-playground",
+          "html_url": "https://github.com/alexar76/aimarket-playground",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T09:00:18Z",
+          "archived": false,
+          "fork": false,
+          "size": 2039
+        },
+        {
+          "full_name": "alexar76/logos",
+          "html_url": "https://github.com/alexar76/logos",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:59:28Z",
+          "archived": false,
+          "fork": false,
+          "size": 2216
+        },
+        {
+          "full_name": "alexar76/emporion",
+          "html_url": "https://github.com/alexar76/emporion",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:58:57Z",
+          "archived": false,
+          "fork": false,
+          "size": 1166
+        },
+        {
+          "full_name": "alexar76/gaia",
+          "html_url": "https://github.com/alexar76/gaia",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:58:44Z",
+          "archived": false,
+          "fork": false,
+          "size": 1665
+        },
+        {
+          "full_name": "alexar76/hephaestus",
+          "html_url": "https://github.com/alexar76/hephaestus",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:57:27Z",
+          "archived": false,
+          "fork": false,
+          "size": 4807
+        },
+        {
+          "full_name": "alexar76/oracles",
+          "html_url": "https://github.com/alexar76/oracles",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:56:32Z",
+          "archived": false,
+          "fork": false,
+          "size": 53359
+        },
+        {
+          "full_name": "alexar76/argus",
+          "html_url": "https://github.com/alexar76/argus",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:56:28Z",
+          "archived": false,
+          "fork": false,
+          "size": 3498
+        },
+        {
+          "full_name": "alexar76/platon",
+          "html_url": "https://github.com/alexar76/platon",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:55:40Z",
+          "archived": false,
+          "fork": false,
+          "size": 4446
+        },
+        {
+          "full_name": "alexar76/alien-monitor",
+          "html_url": "https://github.com/alexar76/alien-monitor",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:55:33Z",
+          "archived": false,
+          "fork": false,
+          "size": 28014
+        },
+        {
+          "full_name": "alexar76/aimarket-mcp",
+          "html_url": "https://github.com/alexar76/aimarket-mcp",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:55:21Z",
+          "archived": false,
+          "fork": false,
+          "size": 117
+        },
+        {
+          "full_name": "alexar76/aicom-landing",
+          "html_url": "https://github.com/alexar76/aicom-landing",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:54:33Z",
+          "archived": false,
+          "fork": false,
+          "size": 7964
+        },
+        {
+          "full_name": "alexar76/ai-service-mesh",
+          "html_url": "https://github.com/alexar76/ai-service-mesh",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:53:52Z",
+          "archived": false,
+          "fork": false,
+          "size": 394
+        },
+        {
+          "full_name": "alexar76/pulse-terminal",
+          "html_url": "https://github.com/alexar76/pulse-terminal",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:53:44Z",
+          "archived": false,
+          "fork": false,
+          "size": 621
+        },
+        {
+          "full_name": "alexar76/aimarket-sdks",
+          "html_url": "https://github.com/alexar76/aimarket-sdks",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:53:29Z",
+          "archived": false,
+          "fork": false,
+          "size": 286
+        },
+        {
+          "full_name": "alexar76/agent-skills-state-2026",
+          "html_url": "https://github.com/alexar76/agent-skills-state-2026",
+          "default_branch": "main",
+          "pushed_at": "2026-10-26T08:31:36Z",
+          "archived": false,
+          "fork": true,
+          "size": 1970
+        },
+        {
+          "full_name": "alexar76/helios",
+          "html_url": "https://github.com/alexar76/helios",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T17:29:15Z",
+          "archived": false,
+          "fork": false,
+          "size": 9432
+        },
+        {
+          "full_name": "alexar76/lottery",
+          "html_url": "https://github.com/alexar76/lottery",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T17:27:47Z",
+          "archived": false,
+          "fork": false,
+          "size": 24812
+        },
+        {
+          "full_name": "alexar76/attested-memory",
+          "html_url": "https://github.com/alexar76/attested-memory",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T12:48:28Z",
+          "archived": false,
+          "fork": false,
+          "size": 252
+        },
+        {
+          "full_name": "alexar76/escrow-signer",
+          "html_url": "https://github.com/alexar76/escrow-signer",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T12:47:32Z",
+          "archived": false,
+          "fork": false,
+          "size": 85
+        },
+        {
+          "full_name": "alexar76/aimarket-agent",
+          "html_url": "https://github.com/alexar76/aimarket-agent",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T12:34:50Z",
+          "archived": false,
+          "fork": false,
+          "size": 111
+        },
+        {
+          "full_name": "alexar76/aimarket-oracle-gateway",
+          "html_url": "https://github.com/alexar76/aimarket-oracle-gateway",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T12:33:38Z",
+          "archived": false,
+          "fork": false,
+          "size": 46
+        },
+        {
+          "full_name": "alexar76/acex",
+          "html_url": "https://github.com/alexar76/acex",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T11:29:52Z",
+          "archived": false,
+          "fork": false,
+          "size": 172
+        },
+        {
+          "full_name": "alexar76/aicom",
+          "html_url": "https://github.com/alexar76/aicom",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T10:21:30Z",
+          "archived": false,
+          "fork": false,
+          "size": 133360
+        },
+        {
+          "full_name": "alexar76/aimarket-bridges",
+          "html_url": "https://github.com/alexar76/aimarket-bridges",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T10:00:46Z",
+          "archived": false,
+          "fork": false,
+          "size": 469
+        },
+        {
+          "full_name": "alexar76/saf-mcp",
+          "html_url": "https://github.com/alexar76/saf-mcp",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T09:57:18Z",
+          "archived": false,
+          "fork": true,
+          "size": 5553
+        },
+        {
+          "full_name": "alexar76/basanos",
+          "html_url": "https://github.com/alexar76/basanos",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T08:06:44Z",
+          "archived": false,
+          "fork": false,
+          "size": 505
+        },
+        {
+          "full_name": "alexar76/hestia",
+          "html_url": "https://github.com/alexar76/hestia",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T08:06:03Z",
+          "archived": false,
+          "fork": false,
+          "size": 659
+        },
+        {
+          "full_name": "alexar76/themis",
+          "html_url": "https://github.com/alexar76/themis",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T08:05:53Z",
+          "archived": false,
+          "fork": false,
+          "size": 2027
+        },
+        {
+          "full_name": "alexar76/aimarket-protocol",
+          "html_url": "https://github.com/alexar76/aimarket-protocol",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T08:00:33Z",
+          "archived": false,
+          "fork": false,
+          "size": 207
+        },
+        {
+          "full_name": "alexar76/aimarket-widget",
+          "html_url": "https://github.com/alexar76/aimarket-widget",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T08:00:00Z",
+          "archived": false,
+          "fork": false,
+          "size": 360
+        },
+        {
+          "full_name": "alexar76/aimarket-desktop",
+          "html_url": "https://github.com/alexar76/aimarket-desktop",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T07:59:06Z",
+          "archived": false,
+          "fork": false,
+          "size": 2027
+        },
+        {
+          "full_name": "alexar76/aimarket-courses",
+          "html_url": "https://github.com/alexar76/aimarket-courses",
+          "default_branch": "main",
+          "pushed_at": "2026-10-25T07:58:49Z",
+          "archived": false,
+          "fork": false,
+          "size": 1105
+        },
+        {
+          "full_name": "alexar76/theoros",
+          "html_url": "https://github.com/alexar76/theoros",
+          "default_branch": "main",
+          "pushed_at": "2026-10-22T06:04:29Z",
+          "archived": false,
+          "fork": false,
+          "size": 222
+        },
+        {
+          "full_name": "alexar76/use-cases-portal",
+          "html_url": "https://github.com/alexar76/use-cases-portal",
+          "default_branch": "main",
+          "pushed_at": "2026-10-21T13:53:58Z",
+          "archived": false,
+          "fork": false,
+          "size": 4231
+        },
+        {
+          "full_name": "alexar76/dolos",
+          "html_url": "https://github.com/alexar76/dolos",
+          "default_branch": "main",
+          "pushed_at": "2026-10-21T13:53:02Z",
+          "archived": false,
+          "fork": false,
+          "size": 447
+        },
+        {
+          "full_name": "alexar76/aimarket-school",
+          "html_url": "https://github.com/alexar76/aimarket-school",
+          "default_branch": "main",
+          "pushed_at": "2026-10-21T13:38:00Z",
+          "archived": false,
+          "fork": false,
+          "size": 2469
+        },
+        {
+          "full_name": "alexar76/mcp-registry",
+          "html_url": "https://github.com/alexar76/mcp-registry",
+          "default_branch": "main",
+          "pushed_at": "2026-10-19T17:04:14Z",
+          "archived": false,
+          "fork": true,
+          "size": 5420
+        },
+        {
+          "full_name": "alexar76/alexar76",
+          "html_url": "https://github.com/alexar76/alexar76",
+          "default_branch": "main",
+          "pushed_at": "2026-10-19T11:59:24Z",
+          "archived": false,
+          "fork": false,
+          "size": 6677
+        },
+        {
+          "full_name": "alexar76/alexar76.github.io",
+          "html_url": "https://github.com/alexar76/alexar76.github.io",
+          "default_branch": "main",
+          "pushed_at": "2026-10-11T08:12:35Z",
+          "archived": false,
+          "fork": false,
+          "size": 3
+        },
+        {
+          "full_name": "alexar76/x402",
+          "html_url": "https://github.com/alexar76/x402",
+          "default_branch": "main",
+          "pushed_at": "2026-10-04T18:08:04Z",
+          "archived": false,
+          "fork": true,
+          "size": 278884
+        },
+        {
+          "full_name": "alexar76/awesome-erc8004",
+          "html_url": "https://github.com/alexar76/awesome-erc8004",
+          "default_branch": "main",
+          "pushed_at": "2026-10-01T20:23:37Z",
+          "archived": false,
+          "fork": true,
+          "size": 533
+        },
+        {
+          "full_name": "alexar76/awesome-x402",
+          "html_url": "https://github.com/alexar76/awesome-x402",
+          "default_branch": "main",
+          "pushed_at": "2026-10-01T20:23:10Z",
+          "archived": false,
+          "fork": true,
+          "size": 1231
+        },
+        {
+          "full_name": "alexar76/awesome-mcp-servers",
+          "html_url": "https://github.com/alexar76/awesome-mcp-servers",
+          "default_branch": "main",
+          "pushed_at": "2026-09-15T12:18:11Z",
+          "archived": false,
+          "fork": true,
+          "size": 283134
+        },
+        {
+          "full_name": "alexar76/awesome-LangGraph",
+          "html_url": "https://github.com/alexar76/awesome-LangGraph",
+          "default_branch": "main",
+          "pushed_at": "2026-09-12T10:18:42Z",
+          "archived": false,
+          "fork": true,
+          "size": 363
+        },
+        {
+          "full_name": "alexar76/free-programming-books",
+          "html_url": "https://github.com/alexar76/free-programming-books",
+          "default_branch": "main",
+          "pushed_at": "2026-08-06T09:42:28Z",
+          "archived": false,
+          "fork": true,
+          "size": 21659
+        }
+      ]
+    },
+    {
+      "url": "https://api.github.com/search/commits?q=user%3Aalexar76+opus+committer-date%3A2026-10-24..2026-10-26&per_page=100",
+      "fetched_at_utc": "2026-10-26T20:00:44.298211+00:00",
+      "status": 200,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "remaining": "8",
+      "reset": "1793044904",
+      "total_count": 0,
+      "incomplete_results": false,
+      "commits": []
+    },
+    {
+      "url": "https://api.github.com/search/commits?q=user%3Aalexar76+opus+author-date%3A2026-10-24..2026-10-26&per_page=100",
+      "fetched_at_utc": "2026-10-26T20:00:44.298409+00:00",
+      "status": 200,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "remaining": "9",
+      "reset": "1793044904",
+      "total_count": 0,
+      "incomplete_results": false,
+      "commits": []
+    }
+  ]
+}

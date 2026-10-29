@@ -1,0 +1,1583 @@
+{
+  "scope": "Read-only v14 nine final videos and v13 eight final portraits. Archived queue snapshots are not active rendered footage.",
+  "repairedModels": [
+    "caramel-bust",
+    "cola-cube",
+    "graveyard-shift",
+    "rust-crown",
+    "spark-moth",
+    "taxi-larva",
+    "winged-bolt"
+  ],
+  "videos": [
+    {
+      "id": "PB38",
+      "slug": "rat-snack",
+      "name": "Rat Oracle",
+      "kind": "gameplay",
+      "sources": [
+        {
+          "file": "youtube-season-something-pinged/v10-weird-one/capture-session/raw-vertical.mp4",
+          "sha256": "220e9fb600e75d34c4b4228a0e05e1bfd2694354f65830843a5568164bf7d6a1"
+        },
+        {
+          "file": "youtube-season-something-pinged/v10-weird-one/capture-session/feed-result.json",
+          "sha256": "8a3454931d23b5f753d56228698b2a3549061622db135e8e49b497633846ad5f"
+        }
+      ],
+      "capture": "v10-weird-one/capture-session",
+      "shots": [
+        [
+          42.8,
+          0.9,
+          1,
+          "face",
+          [
+            "I ADOPTED",
+            "A RAT."
+          ],
+          ""
+        ],
+        [
+          36.15,
+          1.3,
+          1,
+          "ui",
+          [
+            "IT WANTS",
+            "A SNACK."
+          ],
+          "50 game pips"
+        ],
+        [
+          37.5,
+          2.2,
+          2.2,
+          "ui",
+          [
+            "ONE TAP.",
+            "SNACK TIME."
+          ],
+          "Waiting shortened"
+        ],
+        [
+          42.9,
+          2.2,
+          1,
+          "ui",
+          [
+            "FIRST FEED.",
+            "ONE OF FIVE."
+          ],
+          ""
+        ],
+        [
+          45.1,
+          0.9,
+          1,
+          "face",
+          [
+            "MY LITTLE",
+            "RAT ORACLE."
+          ],
+          "Play: link in profile"
+        ]
+      ],
+      "batch": "v14-action-first",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v14-action-first/final/PB38-rat-snack.mp4",
+      "sha256": "abb6966306daaff1e78bb62cfe452d8eb024d895dfe32370f725cdc79eb43ff9",
+      "manifestHashMatches": true,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "7.500000"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelChecks": [
+        {
+          "file": "youtube-season-something-pinged/v10-weird-one/capture-session/raw-vertical.mp4",
+          "sourceExists": true,
+          "manifestHash": "220e9fb600e75d34c4b4228a0e05e1bfd2694354f65830843a5568164bf7d6a1",
+          "sourceHashMatchesManifest": true
+        },
+        {
+          "file": "youtube-season-something-pinged/v10-weird-one/capture-session/feed-result.json",
+          "sourceExists": true,
+          "manifestHash": "8a3454931d23b5f753d56228698b2a3549061622db135e8e49b497633846ad5f",
+          "sourceHashMatchesManifest": true
+        }
+      ],
+      "sampleTimesSeconds": [
+        0.15,
+        1.56,
+        2.97,
+        4.38,
+        5.79,
+        7.2
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v14-action-first-PB38-contact.jpg",
+      "recordedUpload": {
+        "videoId": "-SyYStgVjqc",
+        "url": "https://youtube.com/shorts/-SyYStgVjqc",
+        "uploadedAt": "2026-10-28T05:05:40+00:00",
+        "scheduleVerifiedAt": "2026-10-28T05:07:18+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-28T19:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled opening/face, UI/action, result and closing frames show only the named Rat Oracle or Pump Goblin plus action UI; no repaired-figurine cameo or rendered thumbnail appears."
+      }
+    },
+    {
+      "id": "PB39",
+      "slug": "before-coffee",
+      "name": "Angry Dumpling",
+      "kind": "comedy",
+      "sources": [
+        {
+          "file": "youtube-season-something-pinged/v13-ten-redesigns/source/models/angry-dumpling.glb",
+          "sha256": "9917d9041b40ac4dbb523b9ac76cebae85e3802eb49e7618658f2bd7bd55b9b2"
+        }
+      ],
+      "batch": "v14-action-first",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v14-action-first/final/PB39-before-coffee.mp4",
+      "sha256": "526243cd3051379eb8c7ac18015097ab3b5f2571cfdafb98908ff66b3953e09e",
+      "manifestHashMatches": true,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "7.200000"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelChecks": [
+        {
+          "file": "youtube-season-something-pinged/v13-ten-redesigns/source/models/angry-dumpling.glb",
+          "sourceExists": true,
+          "manifestHash": "9917d9041b40ac4dbb523b9ac76cebae85e3802eb49e7618658f2bd7bd55b9b2",
+          "sourceHashMatchesManifest": true,
+          "modelId": "angry-dumpling",
+          "repairedToday": false,
+          "sourceModelMatchesCurrent": true
+        }
+      ],
+      "sampleTimesSeconds": [
+        0.15,
+        1.5,
+        2.85,
+        4.2,
+        5.55,
+        6.9
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v14-action-first-PB39-contact.jpg",
+      "recordedUpload": {
+        "videoId": "1C07iIeR_Gk",
+        "url": "https://youtube.com/shorts/1C07iIeR_Gk",
+        "uploadedAt": "2026-10-28T05:05:43+00:00",
+        "scheduleVerifiedAt": "2026-10-28T05:07:18+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-28T22:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "CL18",
+      "slug": "wet-plush",
+      "name": "Wet Plush",
+      "kind": "library",
+      "sources": [
+        {
+          "file": "closeup/clips/wet-plush.mp4",
+          "sha256": "c8ee636ffe42dbb61768250ac2ced0b65af984e04c42dd6dc3bcf3c30877f469"
+        }
+      ],
+      "batch": "v14-action-first",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v14-action-first/final/CL18-wet-plush.mp4",
+      "sha256": "c8ee636ffe42dbb61768250ac2ced0b65af984e04c42dd6dc3bcf3c30877f469",
+      "manifestHashMatches": true,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "11.966667"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelChecks": [
+        {
+          "file": "closeup/clips/wet-plush.mp4",
+          "sourceExists": true,
+          "manifestHash": "c8ee636ffe42dbb61768250ac2ced0b65af984e04c42dd6dc3bcf3c30877f469",
+          "sourceHashMatchesManifest": true
+        }
+      ],
+      "sampleTimesSeconds": [
+        0.15,
+        2.453,
+        4.757,
+        7.06,
+        9.363,
+        11.667
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v14-action-first-CL18-contact.jpg",
+      "recordedUpload": {
+        "videoId": "yHVxL2rSCB4",
+        "url": "https://youtube.com/shorts/yHVxL2rSCB4",
+        "uploadedAt": "2026-10-28T05:05:47+00:00",
+        "scheduleVerifiedAt": "2026-10-28T05:07:18+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-29T01:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Single named library creature throughout sampled frames; copied MP4 equals the recorded source clip. That creature is outside the seven repairs."
+      }
+    },
+    {
+      "id": "PB40",
+      "slug": "fifth-feed",
+      "name": "Pump Goblin",
+      "kind": "gameplay",
+      "sources": [
+        {
+          "file": "youtube-season-something-pinged/v9-gameplay-funnel/capture-evolve/raw-vertical.mp4",
+          "sha256": "2960808bb0a899e6f0d4f462d6eea95397d2ba45fee520e7393069967fb1d9b4"
+        },
+        {
+          "file": "youtube-season-something-pinged/v9-gameplay-funnel/capture-evolve/feed-result.json",
+          "sha256": "a50bf965ba7f37a88b4d0e38144283dc4e7e8348a888a020ea774489c58702d4"
+        }
+      ],
+      "capture": "v9-gameplay-funnel/capture-evolve",
+      "shots": [
+        [
+          20,
+          1.1,
+          1,
+          "face",
+          [
+            "FOUR FEEDS.",
+            "ONE LEFT."
+          ],
+          ""
+        ],
+        [
+          29.75,
+          1.1,
+          1,
+          "ui",
+          [
+            "HERE GOES",
+            "NUMBER FIVE."
+          ],
+          ""
+        ],
+        [
+          30.85,
+          1.7,
+          3,
+          "ui",
+          [
+            "THE LAST",
+            "FEED."
+          ],
+          "Waiting shortened"
+        ],
+        [
+          37.5,
+          3,
+          1,
+          "ui",
+          [
+            "FIFTH FEED.",
+            "EVOLVED."
+          ],
+          ""
+        ],
+        [
+          40.5,
+          0.9,
+          1,
+          "face",
+          [
+            "RAISED",
+            "BY YOU."
+          ],
+          "Play: link in profile"
+        ]
+      ],
+      "batch": "v14-action-first",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v14-action-first/final/PB40-fifth-feed.mp4",
+      "sha256": "d98480edbfcb4850a481cd01a54ab8d1ea5e73e58167455b62dd50a9b4071adf",
+      "manifestHashMatches": true,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "7.800000"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelChecks": [
+        {
+          "file": "youtube-season-something-pinged/v9-gameplay-funnel/capture-evolve/raw-vertical.mp4",
+          "sourceExists": true,
+          "manifestHash": "2960808bb0a899e6f0d4f462d6eea95397d2ba45fee520e7393069967fb1d9b4",
+          "sourceHashMatchesManifest": true
+        },
+        {
+          "file": "youtube-season-something-pinged/v9-gameplay-funnel/capture-evolve/feed-result.json",
+          "sourceExists": true,
+          "manifestHash": "a50bf965ba7f37a88b4d0e38144283dc4e7e8348a888a020ea774489c58702d4",
+          "sourceHashMatchesManifest": true
+        }
+      ],
+      "sampleTimesSeconds": [
+        0.15,
+        1.62,
+        3.09,
+        4.56,
+        6.03,
+        7.5
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v14-action-first-PB40-contact.jpg",
+      "recordedUpload": {
+        "videoId": "cDYiGa4dsiI",
+        "url": "https://youtube.com/shorts/cDYiGa4dsiI",
+        "uploadedAt": "2026-10-28T05:05:50+00:00",
+        "scheduleVerifiedAt": "2026-10-28T05:07:18+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-29T19:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled opening/face, UI/action, result and closing frames show only the named Rat Oracle or Pump Goblin plus action UI; no repaired-figurine cameo or rendered thumbnail appears."
+      }
+    },
+    {
+      "id": "PB41",
+      "slug": "pick-your-mood",
+      "name": "Soft Egg / Angry Dumpling",
+      "kind": "choice",
+      "sources": [
+        {
+          "file": "youtube-season-something-pinged/v13-ten-redesigns/source/models/soft-egg.glb",
+          "sha256": "a6c4d96ec976d389bb4198cedeb9db30d15d7fd610d5cbb40e802dc50f6b99d3"
+        },
+        {
+          "file": "youtube-season-something-pinged/v13-ten-redesigns/source/models/angry-dumpling.glb",
+          "sha256": "9917d9041b40ac4dbb523b9ac76cebae85e3802eb49e7618658f2bd7bd55b9b2"
+        }
+      ],
+      "batch": "v14-action-first",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v14-action-first/final/PB41-pick-your-mood.mp4",
+      "sha256": "cda17b1e6f62a275d5dd0d5f56001ff273e8ade2b7fa3f444973294d2ef97a5d",
+      "manifestHashMatches": true,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "7.200000"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelChecks": [
+        {
+          "file": "youtube-season-something-pinged/v13-ten-redesigns/source/models/soft-egg.glb",
+          "sourceExists": true,
+          "manifestHash": "a6c4d96ec976d389bb4198cedeb9db30d15d7fd610d5cbb40e802dc50f6b99d3",
+          "sourceHashMatchesManifest": true,
+          "modelId": "soft-egg",
+          "repairedToday": false,
+          "sourceModelMatchesCurrent": true
+        },
+        {
+          "file": "youtube-season-something-pinged/v13-ten-redesigns/source/models/angry-dumpling.glb",
+          "sourceExists": true,
+          "manifestHash": "9917d9041b40ac4dbb523b9ac76cebae85e3802eb49e7618658f2bd7bd55b9b2",
+          "sourceHashMatchesManifest": true,
+          "modelId": "angry-dumpling",
+          "repairedToday": false,
+          "sourceModelMatchesCurrent": true
+        }
+      ],
+      "sampleTimesSeconds": [
+        0.15,
+        1.5,
+        2.85,
+        4.2,
+        5.55,
+        6.9
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v14-action-first-PB41-contact.jpg",
+      "recordedUpload": {
+        "videoId": "Jxwworge1_U",
+        "url": "https://youtube.com/shorts/Jxwworge1_U",
+        "uploadedAt": "2026-10-28T05:05:54+00:00",
+        "scheduleVerifiedAt": "2026-10-28T05:07:20+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-29T22:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "CL19",
+      "slug": "midnight-pizza",
+      "name": "Midnight Pizza",
+      "kind": "library",
+      "sources": [
+        {
+          "file": "closeup/clips/midnight-pizza.mp4",
+          "sha256": "6ee9c678473c3bf734992934bfe749fdc9bb5f507ef7c4b27804e8a6accb235d"
+        }
+      ],
+      "batch": "v14-action-first",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v14-action-first/final/CL19-midnight-pizza.mp4",
+      "sha256": "6ee9c678473c3bf734992934bfe749fdc9bb5f507ef7c4b27804e8a6accb235d",
+      "manifestHashMatches": true,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "11.966667"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelChecks": [
+        {
+          "file": "closeup/clips/midnight-pizza.mp4",
+          "sourceExists": true,
+          "manifestHash": "6ee9c678473c3bf734992934bfe749fdc9bb5f507ef7c4b27804e8a6accb235d",
+          "sourceHashMatchesManifest": true
+        }
+      ],
+      "sampleTimesSeconds": [
+        0.15,
+        2.453,
+        4.757,
+        7.06,
+        9.363,
+        11.667
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v14-action-first-CL19-contact.jpg",
+      "recordedUpload": {
+        "videoId": "pHt8_w_wfAU",
+        "url": "https://youtube.com/shorts/pHt8_w_wfAU",
+        "uploadedAt": "2026-10-28T05:05:57+00:00",
+        "scheduleVerifiedAt": "2026-10-28T05:07:23+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-30T01:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Single named library creature throughout sampled frames; copied MP4 equals the recorded source clip. That creature is outside the seven repairs."
+      }
+    },
+    {
+      "id": "PB42",
+      "slug": "still-here",
+      "name": "Pump Goblin",
+      "kind": "gameplay",
+      "sources": [
+        {
+          "file": "youtube-season-something-pinged/v10-weird-one/capture-wake/raw-vertical.mp4",
+          "sha256": "01b1b9eb1be80c25e4e37267de56332cc270ad0144b45aefe893d689ee6baf72"
+        },
+        {
+          "file": "youtube-season-something-pinged/v10-weird-one/capture-wake/feed-result.json",
+          "sha256": "abb05308d96b856934333f2086922e1bdb5b4b37348cbc045152d561f4ddabe1"
+        }
+      ],
+      "capture": "v10-weird-one/capture-wake",
+      "shots": [
+        [
+          11.5,
+          1.2,
+          1,
+          "ui",
+          [
+            "I CAME",
+            "BACK."
+          ],
+          "Sleeping. Still on my bench."
+        ],
+        [
+          22.8,
+          1,
+          1,
+          "ui",
+          [
+            "STILL",
+            "MY GUY."
+          ],
+          ""
+        ],
+        [
+          24,
+          1.5,
+          3,
+          "ui",
+          [
+            "A LITTLE",
+            "BREAKFAST."
+          ],
+          "Waiting shortened"
+        ],
+        [
+          29.8,
+          2.8,
+          1,
+          "ui",
+          [
+            "AWAKE",
+            "AGAIN."
+          ],
+          ""
+        ],
+        [
+          32.6,
+          1,
+          1,
+          "face",
+          [
+            "WELCOME",
+            "BACK."
+          ],
+          "Play: link in profile"
+        ]
+      ],
+      "batch": "v14-action-first",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v14-action-first/final/PB42-still-here.mp4",
+      "sha256": "c44625fddb0b5238b486b0e23b37c77b928f2c9dad18e609fec1e8076df07306",
+      "manifestHashMatches": true,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "7.500000"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelChecks": [
+        {
+          "file": "youtube-season-something-pinged/v10-weird-one/capture-wake/raw-vertical.mp4",
+          "sourceExists": true,
+          "manifestHash": "01b1b9eb1be80c25e4e37267de56332cc270ad0144b45aefe893d689ee6baf72",
+          "sourceHashMatchesManifest": true
+        },
+        {
+          "file": "youtube-season-something-pinged/v10-weird-one/capture-wake/feed-result.json",
+          "sourceExists": true,
+          "manifestHash": "abb05308d96b856934333f2086922e1bdb5b4b37348cbc045152d561f4ddabe1",
+          "sourceHashMatchesManifest": true
+        }
+      ],
+      "sampleTimesSeconds": [
+        0.15,
+        1.56,
+        2.97,
+        4.38,
+        5.79,
+        7.2
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v14-action-first-PB42-contact.jpg",
+      "recordedUpload": {
+        "videoId": "vfwrjvjYi8s",
+        "url": "https://youtube.com/shorts/vfwrjvjYi8s",
+        "uploadedAt": "2026-10-28T05:06:02+00:00",
+        "scheduleVerifiedAt": "2026-10-28T05:07:26+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-30T19:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled opening/face, UI/action, result and closing frames show only the named Rat Oracle or Pump Goblin plus action UI; no repaired-figurine cameo or rendered thumbnail appears."
+      }
+    },
+    {
+      "id": "PB43",
+      "slug": "boss-fight",
+      "name": "Liquid Blade",
+      "kind": "reveal",
+      "sources": [
+        {
+          "file": "youtube-season-something-pinged/v13-ten-redesigns/source/models/liquid-blade.glb",
+          "sha256": "663308fc98b82d15034750d410b79b079c6b6f47c3bc71022d5c82e0b9e3c480"
+        }
+      ],
+      "batch": "v14-action-first",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v14-action-first/final/PB43-boss-fight.mp4",
+      "sha256": "ec0f5d9f96bf1883ed23449a5f09f9fcfadbab311b6e65accc3494ca43a9c6cf",
+      "manifestHashMatches": true,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "7.200000"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelChecks": [
+        {
+          "file": "youtube-season-something-pinged/v13-ten-redesigns/source/models/liquid-blade.glb",
+          "sourceExists": true,
+          "manifestHash": "663308fc98b82d15034750d410b79b079c6b6f47c3bc71022d5c82e0b9e3c480",
+          "sourceHashMatchesManifest": true,
+          "modelId": "liquid-blade",
+          "repairedToday": false,
+          "sourceModelMatchesCurrent": true
+        }
+      ],
+      "sampleTimesSeconds": [
+        0.15,
+        1.5,
+        2.85,
+        4.2,
+        5.55,
+        6.9
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v14-action-first-PB43-contact.jpg",
+      "recordedUpload": {
+        "videoId": "vMHN_EPPM9E",
+        "url": "https://youtube.com/shorts/vMHN_EPPM9E",
+        "uploadedAt": "2026-10-28T05:06:05+00:00",
+        "scheduleVerifiedAt": "2026-10-28T05:07:28+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-30T22:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "CL20",
+      "slug": "too-many-teeth",
+      "name": "Too Many Teeth",
+      "kind": "library",
+      "sources": [
+        {
+          "file": "closeup/clips/too-many-teeth.mp4",
+          "sha256": "f2980ab590d2a18e69e17d3948cea44d4f2afbb7e9069d81a1d0941af384ec8e"
+        }
+      ],
+      "batch": "v14-action-first",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v14-action-first/final/CL20-too-many-teeth.mp4",
+      "sha256": "f2980ab590d2a18e69e17d3948cea44d4f2afbb7e9069d81a1d0941af384ec8e",
+      "manifestHashMatches": true,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "11.966667"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelChecks": [
+        {
+          "file": "closeup/clips/too-many-teeth.mp4",
+          "sourceExists": true,
+          "manifestHash": "f2980ab590d2a18e69e17d3948cea44d4f2afbb7e9069d81a1d0941af384ec8e",
+          "sourceHashMatchesManifest": true
+        }
+      ],
+      "sampleTimesSeconds": [
+        0.15,
+        2.453,
+        4.757,
+        7.06,
+        9.363,
+        11.667
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v14-action-first-CL20-contact.jpg",
+      "recordedUpload": {
+        "videoId": "llk_3NhukyU",
+        "url": "https://youtube.com/shorts/llk_3NhukyU",
+        "uploadedAt": "2026-10-28T05:06:10+00:00",
+        "scheduleVerifiedAt": "2026-10-28T05:07:29+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-31T01:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Single named library creature throughout sampled frames; copied MP4 equals the recorded source clip. That creature is outside the seven repairs."
+      }
+    },
+    {
+      "id": "CL17",
+      "slug": "angry-dumpling",
+      "name": "Angry Dumpling",
+      "sourceModelSHA256": "9917d9041b40ac4dbb523b9ac76cebae85e3802eb49e7618658f2bd7bd55b9b2",
+      "shots": [
+        [
+          [
+            "ANGRY",
+            "DUMPLING"
+          ],
+          "full",
+          "Same odd personality."
+        ],
+        [
+          [
+            "NEW LOOK.",
+            "SAME WEIRD."
+          ],
+          "full",
+          "Angry Dumpling."
+        ],
+        [
+          [
+            "YOUR KIND",
+            "OF WEIRD?"
+          ],
+          "full",
+          "Meet the creatures of PingBlip."
+        ],
+        [
+          [
+            "MEET YOUR",
+            "ODD ONES."
+          ],
+          "cta",
+          "pingblip.com"
+        ]
+      ],
+      "batch": "v13-ten-redesigns",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v13-ten-redesigns/final/CL17-angry-dumpling.mp4",
+      "sha256": "59c33b0f25fa3a80a56cace02bacab527a3b8882b425eb6e91c509682d7cd4de",
+      "manifestHashMatches": null,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "13.333333"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelMatchesCurrent": true,
+      "sampleTimesSeconds": [
+        0.15,
+        2.727,
+        5.303,
+        7.88,
+        10.457,
+        13.033
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v13-ten-redesigns-CL17-contact.jpg",
+      "recordedUpload": {
+        "videoId": "8PiVe_NGlOc",
+        "url": "https://youtube.com/shorts/8PiVe_NGlOc",
+        "uploadedAt": "2026-10-24T11:38:03+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-24T19:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "PB31",
+      "slug": "slick-eel",
+      "name": "Slick Eel",
+      "sourceModelSHA256": "2c523fd0d86c21916a7ddec62db419dba7afe27e7fd84c702815958735576981",
+      "shots": [
+        [
+          [
+            "SLICK.",
+            "VERY SLICK."
+          ],
+          "full",
+          "A smooth little troublemaker."
+        ],
+        [
+          [
+            "SLICK",
+            "EEL"
+          ],
+          "full",
+          "Meet the odd ones."
+        ],
+        [
+          [
+            "YOUR KIND",
+            "OF WEIRD?"
+          ],
+          "full",
+          "Find your next little creature."
+        ],
+        [
+          [
+            "MEET YOUR",
+            "ODD ONES."
+          ],
+          "cta",
+          "pingblip.com"
+        ]
+      ],
+      "batch": "v13-ten-redesigns",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v13-ten-redesigns/final/PB31-slick-eel.mp4",
+      "sha256": "8b9140d0d03f5b59e11da4d21ed9c9e662c8e7928e2b9d075247e18fdfd25c8e",
+      "manifestHashMatches": null,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "13.333333"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelMatchesCurrent": true,
+      "sampleTimesSeconds": [
+        0.15,
+        2.727,
+        5.303,
+        7.88,
+        10.457,
+        13.033
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v13-ten-redesigns-PB31-contact.jpg",
+      "recordedUpload": {
+        "videoId": "Lwr_yMV2Cmk",
+        "url": "https://youtube.com/shorts/Lwr_yMV2Cmk",
+        "uploadedAt": "2026-10-24T11:38:06+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-26T01:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "PB32",
+      "slug": "soft-egg",
+      "name": "Soft Egg",
+      "sourceModelSHA256": "a6c4d96ec976d389bb4198cedeb9db30d15d7fd610d5cbb40e802dc50f6b99d3",
+      "shots": [
+        [
+          [
+            "SOFT EGG.",
+            "HARD TO IGNORE."
+          ],
+          "full",
+          "A little sunny-side personality."
+        ],
+        [
+          [
+            "SOFT",
+            "EGG"
+          ],
+          "full",
+          "Meet the odd ones."
+        ],
+        [
+          [
+            "YOUR KIND",
+            "OF WEIRD?"
+          ],
+          "full",
+          "Find your next little creature."
+        ],
+        [
+          [
+            "MEET YOUR",
+            "ODD ONES."
+          ],
+          "cta",
+          "pingblip.com"
+        ]
+      ],
+      "batch": "v13-ten-redesigns",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v13-ten-redesigns/final/PB32-soft-egg.mp4",
+      "sha256": "139a52cfee3e4822b85a777f253140f238a537e2435d3c65128e26ae06e110bc",
+      "manifestHashMatches": null,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "13.333333"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelMatchesCurrent": true,
+      "sampleTimesSeconds": [
+        0.15,
+        2.727,
+        5.303,
+        7.88,
+        10.457,
+        13.033
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v13-ten-redesigns-PB32-contact.jpg",
+      "recordedUpload": {
+        "videoId": "BwJTCsjDSAA",
+        "url": "https://youtube.com/shorts/BwJTCsjDSAA",
+        "uploadedAt": "2026-10-24T11:38:09+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-26T19:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "PB33",
+      "slug": "liquid-blade",
+      "name": "Liquid Blade",
+      "sourceModelSHA256": "663308fc98b82d15034750d410b79b079c6b6f47c3bc71022d5c82e0b9e3c480",
+      "shots": [
+        [
+          [
+            "SHARP LOOK.",
+            "SMALL FRIEND."
+          ],
+          "full",
+          "A tiny chrome character."
+        ],
+        [
+          [
+            "LIQUID",
+            "BLADE"
+          ],
+          "full",
+          "Meet the odd ones."
+        ],
+        [
+          [
+            "YOUR KIND",
+            "OF WEIRD?"
+          ],
+          "full",
+          "Find your next little creature."
+        ],
+        [
+          [
+            "MEET YOUR",
+            "ODD ONES."
+          ],
+          "cta",
+          "pingblip.com"
+        ]
+      ],
+      "batch": "v13-ten-redesigns",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v13-ten-redesigns/final/PB33-liquid-blade.mp4",
+      "sha256": "d9e45c5234700294325b85a2567ba3f7586460777a14dc7b6f75acef5d6b4441",
+      "manifestHashMatches": null,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "13.333333"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelMatchesCurrent": true,
+      "sampleTimesSeconds": [
+        0.15,
+        2.727,
+        5.303,
+        7.88,
+        10.457,
+        13.033
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v13-ten-redesigns-PB33-contact.jpg",
+      "recordedUpload": {
+        "videoId": "LkVkX5q7S34",
+        "url": "https://youtube.com/shorts/LkVkX5q7S34",
+        "uploadedAt": "2026-10-24T11:38:12+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-26T22:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "PB34",
+      "slug": "coil-serpent",
+      "name": "Coil Serpent",
+      "sourceModelSHA256": "4fbec6645f82afebbc17cd926e71d3c3627811ba38c82c81fd4bd8c0a261b181",
+      "shots": [
+        [
+          [
+            "ONE SMALL",
+            "TWIST."
+          ],
+          "full",
+          "Meet your coiled little oddball."
+        ],
+        [
+          [
+            "COIL",
+            "SERPENT"
+          ],
+          "full",
+          "Meet the odd ones."
+        ],
+        [
+          [
+            "YOUR KIND",
+            "OF WEIRD?"
+          ],
+          "full",
+          "Find your next little creature."
+        ],
+        [
+          [
+            "MEET YOUR",
+            "ODD ONES."
+          ],
+          "cta",
+          "pingblip.com"
+        ]
+      ],
+      "batch": "v13-ten-redesigns",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v13-ten-redesigns/final/PB34-coil-serpent.mp4",
+      "sha256": "434dac52a15e3204f480d35acbe8c3047941dd0a0e4a4de9b5f5e30ac8e1a7ef",
+      "manifestHashMatches": null,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "13.333333"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelMatchesCurrent": true,
+      "sampleTimesSeconds": [
+        0.15,
+        2.727,
+        5.303,
+        7.88,
+        10.457,
+        13.033
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v13-ten-redesigns-PB34-contact.jpg",
+      "recordedUpload": {
+        "videoId": "VYyZ93yBYLE",
+        "url": "https://youtube.com/shorts/VYyZ93yBYLE",
+        "uploadedAt": "2026-10-24T11:38:15+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-27T01:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "PB35",
+      "slug": "gummy-wraith",
+      "name": "Gummy Wraith",
+      "sourceModelSHA256": "e9f10376b97d029fcb1e854c839331b16c32e7281c83bc5ac4133204fa6f3d23",
+      "shots": [
+        [
+          [
+            "A LITTLE",
+            "HAUNTING."
+          ],
+          "full",
+          "A translucent little ghost."
+        ],
+        [
+          [
+            "GUMMY",
+            "WRAITH"
+          ],
+          "full",
+          "Meet the odd ones."
+        ],
+        [
+          [
+            "YOUR KIND",
+            "OF WEIRD?"
+          ],
+          "full",
+          "Find your next little creature."
+        ],
+        [
+          [
+            "MEET YOUR",
+            "ODD ONES."
+          ],
+          "cta",
+          "pingblip.com"
+        ]
+      ],
+      "batch": "v13-ten-redesigns",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v13-ten-redesigns/final/PB35-gummy-wraith.mp4",
+      "sha256": "904de2b970da1c8531af8d89399c128167d5d9b1f7c7734281cf4dfd4efd2963",
+      "manifestHashMatches": null,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "13.333333"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelMatchesCurrent": true,
+      "sampleTimesSeconds": [
+        0.15,
+        2.727,
+        5.303,
+        7.88,
+        10.457,
+        13.033
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v13-ten-redesigns-PB35-contact.jpg",
+      "recordedUpload": {
+        "videoId": "MZc97zI1UOI",
+        "url": "https://youtube.com/shorts/MZc97zI1UOI",
+        "uploadedAt": "2026-10-24T11:38:18+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-27T19:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "PB36",
+      "slug": "heel-golem",
+      "name": "Heel Golem",
+      "sourceModelSHA256": "28913038d5e6e8b2c77a7e270be6e43508b2b78b84b1ae28ac7baed31e059eba",
+      "shots": [
+        [
+          [
+            "SMALL HEEL.",
+            "BIG ATTITUDE."
+          ],
+          "full",
+          "A stitched little character."
+        ],
+        [
+          [
+            "HEEL",
+            "GOLEM"
+          ],
+          "full",
+          "Meet the odd ones."
+        ],
+        [
+          [
+            "YOUR KIND",
+            "OF WEIRD?"
+          ],
+          "full",
+          "Find your next little creature."
+        ],
+        [
+          [
+            "MEET YOUR",
+            "ODD ONES."
+          ],
+          "cta",
+          "pingblip.com"
+        ]
+      ],
+      "batch": "v13-ten-redesigns",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v13-ten-redesigns/final/PB36-heel-golem.mp4",
+      "sha256": "a8174a7e235b77f53e14e0b8174e1a1fc87abe09c7c1c0010072f6044678e25e",
+      "manifestHashMatches": null,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "13.333333"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelMatchesCurrent": true,
+      "sampleTimesSeconds": [
+        0.15,
+        2.727,
+        5.303,
+        7.88,
+        10.457,
+        13.033
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v13-ten-redesigns-PB36-contact.jpg",
+      "recordedUpload": {
+        "videoId": "BdxF9RAwHis",
+        "url": "https://youtube.com/shorts/BdxF9RAwHis",
+        "uploadedAt": "2026-10-24T11:38:20+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-27T22:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    },
+    {
+      "id": "PB37",
+      "slug": "quench-eel",
+      "name": "Quench Eel",
+      "sourceModelSHA256": "03f16834413aa419d58dfb13c7470316e56108143486625d9508634d903fe7b6",
+      "shots": [
+        [
+          [
+            "A LITTLE",
+            "COOLANT."
+          ],
+          "full",
+          "A bright little eel."
+        ],
+        [
+          [
+            "QUENCH",
+            "EEL"
+          ],
+          "full",
+          "Meet the odd ones."
+        ],
+        [
+          [
+            "YOUR KIND",
+            "OF WEIRD?"
+          ],
+          "full",
+          "Find your next little creature."
+        ],
+        [
+          [
+            "MEET YOUR",
+            "ODD ONES."
+          ],
+          "cta",
+          "pingblip.com"
+        ]
+      ],
+      "batch": "v13-ten-redesigns",
+      "file": "/Users/alex/Desktop/ai_tests/aicompany/PromoMaterials/blip/youtube-season-something-pinged/v13-ten-redesigns/final/PB37-quench-eel.mp4",
+      "sha256": "6848a744b660634d675299b04f4737da7d6fddb1b84d70fd334c6934fa82921d",
+      "manifestHashMatches": null,
+      "stream": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "13.333333"
+        }
+      },
+      "featuredRepairedModelIntersection": [],
+      "sourceModelMatchesCurrent": true,
+      "sampleTimesSeconds": [
+        0.15,
+        2.727,
+        5.303,
+        7.88,
+        10.457,
+        13.033
+      ],
+      "contactSheet": "artifacts/youtube-reshoot-audit-2026-10-28/v13-ten-redesigns-PB37-contact.jpg",
+      "recordedUpload": {
+        "videoId": "up9tBf51d70",
+        "url": "https://youtube.com/shorts/up9tBf51d70",
+        "uploadedAt": "2026-10-24T11:38:23+00:00"
+      },
+      "matchesRecordedUploadedFileSHA256": true,
+      "recordedPublishAt": "2026-10-28T01:00:00Z",
+      "frameReview": {
+        "sampledFrames": 6,
+        "reviewed": true,
+        "repairedFigurineVisible": false,
+        "reshootRequiredBecauseOfSevenRepairs": false,
+        "wholeVideoOrShotReplacement": "none",
+        "notes": "Sampled portrait/choice/reveal frames match the stated model(s); recorded GLB hashes for these rendered sources equal current local GLBs."
+      }
+    }
+  ],
+  "frameReviewSummary": {
+    "videos": 17,
+    "sampledFramesVisuallyReviewed": 102,
+    "repairedGeometryVisible": false,
+    "reshootsRequiredForSevenRepairs": [],
+    "allV14FinalFilesMatchManifest": true,
+    "allV13SourceModelsMatchCurrent": true,
+    "allV14RenderedGLBReferencesMatchCurrent": true,
+    "all17FilesMatchRecordedUploadHashes": true
+  }
+}

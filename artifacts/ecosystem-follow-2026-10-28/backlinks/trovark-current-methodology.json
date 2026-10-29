@@ -1,0 +1,80 @@
+{
+  "url": "https://raw.githubusercontent.com/lets-order-some-fries/trovark/main/docs/methodology.md",
+  "method": "GET",
+  "retrieved_at_utc": "2026-10-28T15:00:48.404352+00:00",
+  "provenance": "Relative link observed in current README",
+  "status": 200,
+  "bytes": 17877,
+  "sha256": "52ea42778bf5c3e9a139c1c38f849118585c2a2f3717c6d03f433339f075bd16",
+  "links": [],
+  "selected_lines": [
+    {
+      "line": 22,
+      "text": "   scorecards record the rubric version. Changes bump the version."
+    },
+    {
+      "line": 65,
+      "text": "  on the scorecard, as the informational `cost/token-footprint` finding. It"
+    },
+    {
+      "line": 108,
+      "text": "to grade), is excluded from index-wide stats (grade distribution, average"
+    },
+    {
+      "line": 208,
+      "text": "  All 400 entries of the published index are bare `owner/repo` refs, so this"
+    },
+    {
+      "line": 239,
+      "text": "On every index scan, Trovark records a per-server **snapshot** of the tool"
+    },
+    {
+      "line": 240,
+      "text": "surface it extracted, under `index/surfaces/` (one JSON file per server), and"
+    },
+    {
+      "line": 241,
+      "text": "publishes changes between consecutive snapshots as a **drift feed**"
+    },
+    {
+      "line": 242,
+      "text": "(`index/drift.json`, rendered on the index page). The git history of the"
+    },
+    {
+      "line": 243,
+      "text": "committed snapshot files is the longitudinal dataset."
+    },
+    {
+      "line": 245,
+      "text": "**What a snapshot contains — hashes, not content.** Each snapshot lists the"
+    },
+    {
+      "line": 250,
+      "text": "stored — a snapshot can tell you *that* a description changed, never *what it"
+    },
+    {
+      "line": 253,
+      "text": "**The `EXTRACTOR_VERSION` suppression rule.** Every snapshot records the"
+    },
+    {
+      "line": 258,
+      "text": "moved the index from 211 to 270 graded servers by parsing more idioms. Every"
+    },
+    {
+      "line": 266,
+      "text": "**A missing snapshot is not a removal.** A server that becomes unreadable in"
+    },
+    {
+      "line": 268,
+      "text": "`insufficientData` — produces no new snapshot and **no drift event**. Its"
+    },
+    {
+      "line": 269,
+      "text": "last snapshot simply stands. \"We could not read the surface this time\" is"
+    },
+    {
+      "line": 276,
+      "text": "and no signal in the scoring rubric reads the snapshot data."
+    }
+  ]
+}

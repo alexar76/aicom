@@ -1,0 +1,56 @@
+{
+  "recorded_at_utc": "2026-10-28T11:41:35.000032+00:00",
+  "observation_date": "2026-10-28",
+  "observation_exact_time": "not retained in the earlier tool output; this JSON records note-storage time separately",
+  "provenance": "Reconstructed from the successful, verified public-wheel inspection tool output in this chat; no new network reads while saving this evidence.",
+  "inspection_method": "Read PyPI version JSON, download wheel to memory, verify archive SHA-256 against metadata, read the server.py ZIP member, compare its bytes to the local source. No package install, import or execution.",
+  "network_rechecked_while_saving": false,
+  "local_source": "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-mcp/aimarket_mcp/server.py",
+  "local_source_sha256_at_note_storage": "6363c667036cbe08f327a6a937ce18190064c330d04e88a212c8c920a4181f8f",
+  "wheels": [
+    {
+      "version": "0.6.3",
+      "metadata_url": "https://pypi.org/pypi/aimarket-mcp/0.6.3/json",
+      "wheel_url": "https://files.pythonhosted.org/packages/c6/c8/7b6b8bae4a7d8be9b2fd950888514cc9ce95e1048e53a4f6ab52e4a5809a/aimarket_mcp-0.6.3-py3-none-any.whl",
+      "upload_time_utc": "2026-10-26T07:06:44.455315Z",
+      "wheel_sha256": "12e2c24860aef76d5df5017487939ae1aaac8a6bc76c582d3b707d4a90530623",
+      "server_py_sha256": "62d7bc872b58fd56735e89215734b176acda591c9b6c825683199503fdf76497",
+      "wheel_sha256_matches_pypi": true,
+      "inspected_member": "aimarket_mcp/server.py",
+      "member_equal_to_local_at_original_inspection": false,
+      "member_equal_to_local_at_note_storage": false
+    },
+    {
+      "version": "0.6.4",
+      "metadata_url": "https://pypi.org/pypi/aimarket-mcp/0.6.4/json",
+      "wheel_url": "https://files.pythonhosted.org/packages/d1/a8/053d6dba2bffde03d5e2e27e4d9cc826db955dbe00336008dce207218516/aimarket_mcp-0.6.4-py3-none-any.whl",
+      "upload_time_utc": "2026-10-28T10:38:15.333052Z",
+      "wheel_sha256": "82d2c541d4ebda896c3a86c9fd48687d1de07c4033b0728f0b14b33c9d11bbf2",
+      "server_py_sha256": "6363c667036cbe08f327a6a937ce18190064c330d04e88a212c8c920a4181f8f",
+      "wheel_sha256_matches_pypi": true,
+      "inspected_member": "aimarket_mcp/server.py",
+      "member_equal_to_local_at_original_inspection": true,
+      "member_equal_to_local_at_note_storage": true
+    }
+  ],
+  "limitations": [
+    "Member equality is for server.py only, not the complete wheel or runtime deployment.",
+    "No independent Vulnetix verification or fixed-version status for 0.6.4 was established.",
+    "The gate authenticates RPC POST. Health remains public and stdio is unchanged.",
+    "PUBLIC=1 deliberately allows anonymous RPC when no key is configured, including production; it does not override a configured key.",
+    "The operator supplies AIMARKET_MCP_KEY before startup; no automatic key generation.",
+    "The startup warning is stale; process-name heuristics were not present in the inspected published 0.6.3 wheel.",
+    "No tests were executed by this fact-check task."
+  ],
+  "demo_static_review": {
+    "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/devto-localhost-auth-2026-10-28/localhost_auth_demo.py",
+    "sha256": "1511ce5d764dd1a6ce28cf9cea9b9678e161478cbfaf5eac153922ffde434c47",
+    "review_method": "Read source text only; no execution or edits.",
+    "all_listeners_and_connections_ipv4_loopback": true,
+    "fixed_upstream_and_path": true,
+    "proxy_only_forwards_caller_authorization": true,
+    "synthetic_key_generated_locally_not_logged": true,
+    "asserted_case_count": 8,
+    "scope": "Educational standard-library HTTP reconstruction; not an MCP/Linux UID regression or remote exploit."
+  }
+}

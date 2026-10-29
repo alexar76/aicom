@@ -1,0 +1,27 @@
+{
+  "health": {
+    "httpStatus": 200,
+    "ok": true,
+    "service": "histor",
+    "version": "0.4.2",
+    "profile": "prod",
+    "store": "postgresql",
+    "tree_size": 1117580,
+    "crawl_running": true,
+    "historicalInterruptedRunMarker": true
+  },
+  "issuer": {
+    "httpStatus": 200,
+    "warden": "@aimarket/warden@0.22.2",
+    "patternSet": "sha256-SqZPy2BshZv47wem/wNUy5+1hVMzYtwYKKQBu+fxZE0=",
+    "recordSet": "sha256-MDNQbFVgFEIP3amg9eQZZbtPCAeE+nRj/eVWt1C7EA8="
+  },
+  "logAudit": {
+    "log": "https://histor.modelmarket.dev",
+    "did": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+    "treeSize": 1117580,
+    "rootHash": "61ff8b331c6662d65eda2c6a3e6d438192c762fe0ac47254ddbab682ac4e98de",
+    "signature": "ok",
+    "consistency": "ok (1115959 \u2192 1117580)"
+  }
+}

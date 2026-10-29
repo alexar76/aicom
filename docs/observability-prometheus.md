@@ -42,6 +42,11 @@ loopback or private address (127.0.0.0/8, 10/8, 172.16/12, 192.168/16, ::1, fc00
 no forwarding header. Prometheus on the container network passes; anything that comes through
 the public nginx gets `404`, because nginx adds `X-Forwarded-For` / `X-Real-IP`.
 
+That rests on the proxy adding the header. nginx's default `proxy_pass` adds neither, so a front
+that says only `proxy_pass` makes `/metrics` readable by anyone who reaches it. Add
+`proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;` (as `deploy/nginx/*.conf` does), or
+answer `/metrics` with 404 at the proxy.
+
 | Variable | Default | Effect |
 |---|---|---|
 | `AIMARKET_METRICS_TOKEN` | unset | A scraper from outside reads it with `Authorization: Bearer <token>`. |

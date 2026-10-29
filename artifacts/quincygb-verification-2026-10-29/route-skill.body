@@ -1,0 +1,41 @@
+# route-verdict — trust & liveness checks for x402 endpoints (x402)
+
+Send any x402 resource URL, get a trust verdict on the endpoint itself.
+Pay $0.05 USDC per call on Base (`eip155:8453`) via the
+x402 protocol — no API key needed.
+
+## Paid endpoint
+
+`POST https://route-verdict-production.up.railway.app/v1/check`
+
+Body (JSON):
+- `resource_url` (required): full URL of the x402 resource to audit,
+  e.g. `https://token-verdict-production.up.railway.app/v1/verdict`
+
+The check is observation-only: RouteVerdict requests the target WITHOUT
+paying it, parses its 402 challenge, and never sends it money. Returns:
+
+- `verdict` (TRUSTED / CAUTION / AVOID) and `score` (0-100 trust score)
+- `reasons` — every deduction that produced the score, itemized
+- `liveness` — alive?, HTTP status, latency, whether the 402 parses as x402
+- `terms` — price, network, asset, payTo from the live challenge
+- `schema_quality` — is the Bazaar discovery schema real and typed, or
+  hollow ({"type", "example"} only)? Scored 0-100 with named deductions
+- `catalog` — is the resource listed in the CDP Bazaar / PayAI index?
+  (`unknown` means the lookup failed — never a fabricated "not listed")
+- `diff` — what changed since the previous check of the same URL (price,
+  payTo, schema score, listing presence, liveness); a first check says
+  "no prior check on record"
+
+## Free endpoints
+
+- `GET https://route-verdict-production.up.railway.app/quote` — price, network, payTo
+- `GET https://route-verdict-production.up.railway.app/health` — liveness
+- `GET https://route-verdict-production.up.railway.app/.well-known/x402` — machine-readable manifest
+
+## Honest limits
+
+RouteVerdict reads what an endpoint publishes and what the public
+catalogs hold. It does not settle a test payment to the target, does not
+measure response quality of the paid payload, and cannot see inside the
+target's wallet — payTo *changes* are flagged by the diff, not explained.

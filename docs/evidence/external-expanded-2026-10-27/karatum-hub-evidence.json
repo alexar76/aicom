@@ -1,0 +1,290 @@
+{
+  "url": "https://karatum.com/v1/ratings/kt_03befd45aaa86be2de6ceff9/evidence",
+  "retrieved_at": "2026-10-27T05:31:22.774986+00:00",
+  "status": 200,
+  "content_type": "application/json",
+  "sha256": "b728cfc20bc417f3051e70c8672c7711b2b40102ea8a0ab775f354d8c6858c77",
+  "body": {
+    "data": {
+      "ratingId": "ur_fa4a4e270e4e69e241f3f0b0",
+      "evidenceHash": "0x342055cdcc4cec25a2c93ebd7d5db9de66a1c9d459d860cfb4a43e8a3de655b9",
+      "ratingHash": "0xfa4a4e270e4e69e241f3f0b080b16380db408bc077cbdfeff6aef6062c8f920e",
+      "methodVersion": "ur-1.0",
+      "ratedAt": "2026-10-23T03:49:54.414Z",
+      "evidence": {
+        "note": "Unsolicited rating from public, read-only probes. It measures reachability, protocol conformance and declared-vs-actual consistency; it says nothing about the agent's task outcomes.",
+        "agent": {
+          "ktId": "kt_03befd45aaa86be2de6ceff9",
+          "agentId": "96682",
+          "chainId": 8453
+        },
+        "claims": [
+          {
+            "id": "name",
+            "pass": true,
+            "detail": "registration name matches \"modelmarket.dev\"",
+            "weight": 1
+          },
+          {
+            "id": "service_a2a",
+            "pass": true,
+            "detail": "declared a2a service answers and conforms",
+            "weight": 2
+          },
+          {
+            "id": "service_mcp",
+            "pass": true,
+            "detail": "declared mcp service answers and conforms",
+            "weight": 2
+          },
+          {
+            "id": "x402_support",
+            "pass": false,
+            "detail": "declares x402Support but no valid x402 challenge was observed at the declared endpoints",
+            "weight": 1
+          }
+        ],
+        "method": "ur-1.0",
+        "declared": {
+          "name": "AIMarket Hub",
+          "skills": [],
+          "services": [
+            "web",
+            "mcp",
+            "a2a"
+          ],
+          "x402Support": true,
+          "webPagesNotProbed": 1
+        },
+        "endpoints": [
+          {
+            "url": "https://modelmarket.dev/.well-known/agent-card.json",
+            "kind": "a2a",
+            "error": null,
+            "reach": "ok",
+            "checks": [
+              {
+                "id": "card_is_json_object",
+                "pass": true,
+                "weight": 3
+              },
+              {
+                "id": "content_type_json",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "name",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "description",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "version",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "service_url_https",
+                "pass": true,
+                "weight": 2
+              },
+              {
+                "id": "protocol_declared",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "capabilities_object",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "skills_array",
+                "pass": true,
+                "weight": 2
+              },
+              {
+                "id": "skills_have_id_name",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "io_modes",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "card_service_url_answers",
+                "pass": true,
+                "weight": 2
+              }
+            ],
+            "status": 200,
+            "service": "a2a",
+            "metadata": 1,
+            "observed": {
+              "echo": "skipped_auth",
+              "name": "modelmarket.dev",
+              "depth": "full",
+              "skillText": [
+                "marketplace-search",
+                "Search the AI capability market",
+                "ai-marketplace",
+                "capability-discovery",
+                "agent-tools",
+                "pricing",
+                "marketplace-invoke",
+                "Buy and run a market capability",
+                "ai-marketplace",
+                "paid-invoke",
+                "x402",
+                "receipts",
+                "agent-mandates"
+              ],
+              "serviceUrl": "https://modelmarket.dev/a2a",
+              "description": "Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt."
+            },
+            "requests": [
+              {
+                "label": "primary",
+                "method": "GET",
+                "status": 200,
+                "latencyMs": 331
+              },
+              {
+                "label": "card_service_url",
+                "method": "GET",
+                "status": 405,
+                "latencyMs": 454
+              }
+            ],
+            "checkedAt": "2026-10-23T03:49:40.812Z",
+            "latencyMs": 331,
+            "bodySha256": "089822eafe9bcda928db145218c84402de459a95dcc219ee85b9809cbaf27aba",
+            "conformance": 1
+          },
+          {
+            "url": "https://modelmarket.dev/mcp",
+            "kind": "mcp",
+            "error": null,
+            "reach": "ok",
+            "checks": [
+              {
+                "id": "initialize_envelope",
+                "pass": true,
+                "weight": 3
+              },
+              {
+                "id": "initialize_protocolVersion",
+                "pass": true,
+                "weight": 2
+              },
+              {
+                "id": "initialize_serverInfo",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "initialize_capabilities",
+                "pass": true,
+                "weight": 1
+              },
+              {
+                "id": "tools_list_ok",
+                "pass": true,
+                "weight": 3
+              },
+              {
+                "id": "tools_have_name_and_schema",
+                "pass": true,
+                "weight": 2
+              }
+            ],
+            "status": 200,
+            "service": "mcp",
+            "metadata": 1,
+            "observed": {
+              "name": "aimarket-hub-mcp",
+              "depth": "full",
+              "tools": [
+                "market_search",
+                "market_invoke",
+                "pipeline_prepare",
+                "pipeline_invoke",
+                "pipeline_status",
+                "pipeline_refund_prepare",
+                "pipeline_refund",
+                "pipeline_refund_status",
+                "weather_now",
+                "air_quality_now",
+                "nearby_sensors",
+                "fair_random",
+                "x402_check"
+              ],
+              "skillText": [
+                "market_search",
+                "Search this hub's catalogue of live data and computation by what you need, in plain words. Each match gives the product_",
+                "market_invoke",
+                "Invoke a capability found via market_search. A few trial invokes are granted per caller with no wallet, key or channel, ",
+                "pipeline_prepare",
+                "Validate a graph and return a signed quote and payment offers. No work or payment. Free steps require no wallet; paid st",
+                "pipeline_invoke",
+                "Execute or continue the SAME prepared graph. Submit authorizations when the signed quote enables gas_sponsorship, otherw",
+                "pipeline_status",
+                "Read an existing pipeline, including cached signed result, without broadcasting payments or invoking providers. No walle",
+                "pipeline_refund_prepare",
+                "Prepare a cash refund for a verified paid step of a finished pipeline. This moves no money. The original seller must app",
+                "pipeline_refund",
+                "Submit the original seller's refund authorization or resume the SAME refund. The recipient is the original buyer, amount",
+                "pipeline_refund_status",
+                "Read the saved cash-refund status and signed credit note without broadcasting a transaction. No private key or RPC is re",
+                "weather_now",
+                "Current weather at a place: temperature (°C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Met",
+                "air_quality_now",
+                "Current air quality at a place: PM2.5 and PM10 (µg/m³), US and European AQI, from Copernicus CAMS via Open-Meteo, with a",
+                "nearby_sensors",
+                "The nearest live public sensors to a point, one per layer asked for (e.g. weather, air, radiation, quake), each with its",
+                "fair_random",
+                "Verifiable random bytes for a draw, raffle or tie-break: an ECVRF output over your seed plus a proof anyone can check of",
+                "x402_check",
+                "Check a signed x402 USDC payment before submitting it: recovers the EIP-712 signer, runs USDC's own checks and the selle"
+              ],
+              "transport": "streamable-http",
+              "description": "AIMarket hub: live, signed real-world data and verifiable computation, sold per call by independent providers. For a common need call a direct tool when this server lists one (weather_now, air_quality_now, nearby_sensors, fair_random). For anything else: market_search with the user's need in plain words, pick a match, then market_invoke with that match's product_id, capability_id and source_hub, a",
+              "protocolVersion": "2025-06-18"
+            },
+            "requests": [
+              {
+                "label": "initialize",
+                "method": "POST",
+                "status": 200,
+                "latencyMs": 893
+              },
+              {
+                "label": "initialized",
+                "method": "POST",
+                "status": 202,
+                "latencyMs": 416
+              },
+              {
+                "label": "tools/list",
+                "method": "POST",
+                "status": 200,
+                "latencyMs": 477
+              }
+            ],
+            "checkedAt": "2026-10-23T03:49:50.829Z",
+            "latencyMs": 893,
+            "bodySha256": "5eda242bd1375412f35593b82f69c899c503bacb7bbd2d7ad45c8405141fea10",
+            "conformance": 1
+          }
+        ]
+      }
+    }
+  }
+}

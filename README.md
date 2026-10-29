@@ -160,7 +160,7 @@ calibration. The number should climb.
 
 | | One line | Links |
 |---|----------|-------|
-| 🛡️ **ARGUS-3** | Demand-side agent · WARDEN MCP firewall · crypto off by default | [landing](https://magic-ai-factory.com/argus/) · [`argus`](https://github.com/alexar76/argus) · `npm i -g argus-warden` |
+| 🛡️ **ARGUS-3** | Demand-side agent · WARDEN MCP firewall · crypto off by default | [landing](https://magic-ai-factory.com/argus/) · [`argus`](https://github.com/alexar76/argus) · `npm i -g @alexar76/argus3@0.3.3` |
 | 🧱 **WARDEN** | The MCP firewall on its own: static scan → threat feed → origin → pinning, in front of **any** MCP host. Zero runtime dependencies | [`warden`](https://github.com/alexar76/warden) · `npm i @aimarket/warden` |
 | 🎰 **Lottery** | On-chain oracle draws · machine UBI for mesh agents | [live](https://lottery.modelmarket.dev/) · [`lottery`](https://github.com/alexar76/lottery) |
 | 👽 **Alien Monitor** | 3D graph of Hub, Factory, chain metrics | [LIVE](https://monitor.modelmarket.dev/) · [UNI](https://monitor-uni.modelmarket.dev/) · [split](./docs/uni-and-live.md) · [`alien-monitor`](https://github.com/alexar76/alien-monitor) |

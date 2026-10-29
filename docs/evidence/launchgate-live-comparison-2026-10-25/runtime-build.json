@@ -1,0 +1,9 @@
+{
+  "base": "node@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402",
+  "image": "sha256:a85c8ea75b21b6031dd94f06fcb70aa8366956133a0a6ea4f81c64c6b5424fd2",
+  "recipe": "RUN apk add --no-cache bash python3",
+  "purpose": "Add missing Bash/Python for Linux test prerequisites; no project or key in build context",
+  "paidCallsBeforeFix": 0,
+  "previousAttempt": "run-01",
+  "previousAttemptPreservedAndTemporaryRootRemoved": true
+}

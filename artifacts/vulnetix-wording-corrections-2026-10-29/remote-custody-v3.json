@@ -1,0 +1,29 @@
+{
+  "method": "SSH transfer using tar --keep-old-files, followed by remote sha256sum",
+  "archive": {
+    "name": "mfa-study-data-2026-10-29-v3.tar.gz",
+    "sha256": "0f4970c53faa34cd1e3a73701dcf3c5dc4070e43b0541521b1cb1f2b1ff428af",
+    "bytes": 650554
+  },
+  "provenance": {
+    "name": "mfa-study-data-2026-10-29-v3.refresh.json",
+    "sha256": "db13397edc0d7c2974a69bd2bfa68d29e485b2380d375654b3edb81daa070fe3",
+    "bytes": 8019
+  },
+  "copies": [
+    {
+      "host": "pingblip",
+      "directory": "/root/mfa-study/archive/",
+      "archive_sha256_matches": true,
+      "provenance_sha256_matches": true
+    },
+    {
+      "host": "attested",
+      "directory": "/root/mfa-study/archive/",
+      "archive_sha256_matches": true,
+      "provenance_sha256_matches": true
+    }
+  ],
+  "preexisting_files_overwritten": false,
+  "previous_archive_write_operations": 0
+}

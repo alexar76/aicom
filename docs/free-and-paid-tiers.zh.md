@@ -1,5 +1,7 @@
 # 免费与付费层级 —— 生态系统免费给出什么，以及为什么
 
+> 公共记录提供方现名为 SYMMARTYS。下方带日期的测量保留当时请求使用的原始产品和 capability 标识符。
+
 *其他语言版本：[English](free-and-paid-tiers.md) · [Русский](free-and-paid-tiers.ru.md) · [Español](free-and-paid-tiers.es.md) · [Français](free-and-paid-tiers.fr.md)*
 
 `modelmarket.dev` 上几乎每一项能力目前都是免费的 —— 不需要密钥、不需要通道、不需要
@@ -215,7 +217,7 @@ Retry later, or ask for less work.
 | 变量 | 含义 |
 |---|---|
 | `ORACLE_PAID_TIER_SECRET` | 通过 `X-AIMarket-Paid-Tier` 发送的共享密钥，按常量时间比较。与网络拓扑无关 —— **优先选它**。 |
-| `ORACLE_TRUSTED_PAYMENT_PROXIES` | 逗号分隔的 IP/CIDR。来自其中之一并带有非空 `X-Payment-Channel` 的请求算作已付费，理由是 Hub 在转发前已经做了预留。这要求信任反向代理设置 `X-Real-IP` —— 与限流器已经给出的信任相同。 |
+| `ORACLE_TRUSTED_PAYMENT_PROXIES` | 逗号分隔的 IP/CIDR。来自其中之一并带有非空 `X-Payment-Channel` 的请求算作已付费，理由是 Hub 在转发前已经做了预留。这要求信任反向代理设置 `X-Real-IP` —— 与限流器已经给出的信任相同。来自回环地址的调用无论列表怎么写都不算数：本机所有进程共用这个地址，包括不传 `X-Real-IP` 的反向代理（nginx 默认的 `proxy_pass`）。同一台机器上的 Hub 使用密钥。 |
 
 **两者都未设置**（出厂状态）意味着*任何调用都永远不会被解除上限*，包括来自 Hub 的
 调用。免费上限对所有人生效。对一个当前什么都不卖的族来说，这正是想要的默认行为：它向

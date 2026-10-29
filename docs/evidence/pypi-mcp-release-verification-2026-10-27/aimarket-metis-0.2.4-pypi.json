@@ -1,0 +1,117 @@
+{
+  "info": {
+    "author": null,
+    "author_email": "alexar76 <publish@alexar76.dev>",
+    "bugtrack_url": null,
+    "classifiers": [],
+    "description": "# Metis\n\n<!-- aicom-readme-badges -->\n<p align=\"center\">\n  <a href=\"https://github.com/alexar76/metis/actions/workflows/ci.yml\"><img src=\"https://github.com/alexar76/metis/actions/workflows/ci.yml/badge.svg\" alt=\"CI\" /></a>\n  <a href=\"https://pypi.org/project/aimarket-metis/\"><img src=\"docs/badges/pypi.svg\" alt=\"PyPI\" /></a>\n  <img src=\"docs/badges/python.svg\" alt=\"Python 3.11 | 3.12\" />\n  <img src=\"docs/badges/tests.svg\" alt=\"315 tests passing\" />\n  <img src=\"docs/badges/docker.svg\" alt=\"Docker ready\" />\n  <a href=\"https://metis.modelmarket.dev/\"><img src=\"docs/badges/demo.svg\" alt=\"Live demo\" /></a>\n  <a href=\"docs/badges/coverage.svg\"><img src=\"docs/badges/coverage.svg\" alt=\"Test coverage\" /></a>\n  <a href=\"LICENSE\"><img src=\"docs/badges/license.svg\" alt=\"License: MIT\" /></a>\n</p>\n<!-- /aicom-readme-badges -->\n\n\n\n\n<!-- markers above: the GitHub mirror regenerates this block in place (no duplicate row). -->\n\n\n<p align=\"center\">\n  <strong>Metis</strong> (\u03bc\u1fc6\u03c4\u03b9\u03c2) \u2014 distributed cognitive layer over any LLM<br/>\n  Part of the <a href=\"https://github.com/alexar76\">alexar76</a> AI agent economy\n</p>\n\n<p align=\"center\">\n  <a href=\"https://metis.modelmarket.dev/\">\n    <img src=\"docs/screenshots/hero.png\" alt=\"Metis live demo \u2014 interactive cosmic 3D star with cognition graph and chat at metis.modelmarket.dev\" width=\"820\">\n  </a>\n  <br>\n  <sub>Grab the star \u00b7 watch it pulse and think \u00b7 chat with Metis \u2014 <a href=\"https://metis.modelmarket.dev/\"><b>open the live demo \u2192</b></a></sub>\n</p>\n\n> \ud83c\udf10 **English** \u00b7 [\u0420\u0443\u0441\u0441\u043a\u0438\u0439](README.ru.md) \u00b7 [Espa\u00f1ol](README.es.md) \u00b7 [Fran\u00e7ais](README.fr.md) \u00b7 [\u4e2d\u6587](README.zh.md) \u00b7 [Glossary](https://github.com/alexar76/aicom/blob/main/docs/localization-glossary.md)\n\n**Multi-agent reasoning orchestrator** \u2014 Understanding Council, DGPD depth gating, layered MoA, verifier, memory, search, economy metering, distributed cluster, MCP tools, and OpenAI-compatible API.\n\n## Quick start\n\n```bash\npython3 -m venv .venv && source .venv/bin/activate\npip install -e \".[dev,distributed]\"\nollama pull qwen3:8b\nmetis \"Explain multi-agent systems\" --model qwen3:8b --url http://localhost:11434/v1\n```\n\n## Install\n\nPyPI package name is **`aimarket-metis`** (the PyPI name `metis` is a different project). Import path and CLI stay **`metis`**, **`metis-serve`**, etc.\n\n```bash\n# PyPI\npip install aimarket-metis\npip install \"aimarket-metis[dev,distributed]\"\n\n# GitHub release tag\npip install \"aimarket-metis[distributed] @ git+https://github.com/alexar76/metis.git@v0.2.0\"\n\n# Clone / monorepo (editable)\ngit clone https://github.com/alexar76/metis.git && cd metis\npip install -e \".[dev,distributed]\"\n\n# Docker\ndocker compose up -d\n```\n\n## Documentation index\n\n| Resource | Link |\n|----------|------|\n| **Architecture** | [EN](docs/en/ARCHITECTURE.md) \u00b7 [RU](docs/ru/ARCHITECTURE.md) \u00b7 [ES](docs/es/ARCHITECTURE.md) |\n| **API reference** | [EN](docs/en/API.md) \u00b7 [RU](docs/ru/API.md) \u00b7 [ES](docs/es/API.md) |\n| **Deployment** | [EN](docs/en/DEPLOYMENT.md) \u00b7 [RU](docs/ru/DEPLOYMENT.md) \u00b7 [ES](docs/es/DEPLOYMENT.md) |\n| **Security** | [EN](docs/en/SECURITY.md) \u00b7 [RU](docs/ru/SECURITY.md) \u00b7 [ES](docs/es/SECURITY.md) |\n| **User guide** | [EN](docs/en/README.md) \u00b7 [RU](docs/ru/README.md) \u00b7 [ES](docs/es/README.md) |\n| **Distributed** | [EN](docs/en/DISTRIBUTED.md) \u00b7 [RU](docs/ru/DISTRIBUTED.md) \u00b7 [ES](docs/es/DISTRIBUTED.md) |\n| **Ecosystem** | [EN](docs/en/ECOSYSTEM.md) \u00b7 [RU](docs/ru/ECOSYSTEM.md) \u00b7 [ES](docs/es/ECOSYSTEM.md) |\n| **Research** | [EN](docs/en/RESEARCH.md) \u00b7 [RU](docs/ru/RESEARCH.md) \u00b7 [ES](docs/es/RESEARCH.md) |\n| **Wiki** | [Home](https://github.com/alexar76/metis/blob/main/wiki/Home.md) \u00b7 [Quick Start](https://github.com/alexar76/metis/blob/main/wiki/Quick-Start.md) \u00b7 [FAQ](https://github.com/alexar76/metis/blob/main/wiki/FAQ.md) |\n| **Landing page** | [Live demo](https://metis.modelmarket.dev/) \u00b7 [docs/landing/index.html](docs/landing/index.html) \u00b7 [deploy guide](docs/landing/README.md) |\n| **Changelog** | [CHANGELOG.md](CHANGELOG.md) \u00b7 [RELEASE.md](RELEASE.md) |\n\n## Ecosystem map\n\n| Project | Role |\n|---------|------|\n| **[Metis](https://github.com/alexar76/metis)** | Cognitive orchestration layer (this repo) |\n| **cognitive-runtime** | OpenAI API wrapper with DGPD |\n| **[ARGUS-3](https://github.com/alexar76/argus)** | Demand-side reference agent + WARDEN MCP firewall |\n| **[AIMarket Hub](https://github.com/alexar76/aimarket-hub)** | Federated capability catalog and invoke API |\n| **[aimarket-oracle-gateway](https://github.com/alexar76/aimarket-oracle-gateway)** | Verifiable oracle MCP services |\n| **[aimarket-mcp](https://github.com/alexar76/aimarket-mcp)** | Shared MCP gateway \u2014 web fetch/search + Metis verify ([Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp)) |\n| **[Ecosystem landing](https://ecosystem.modelmarket.dev/)** | Full AICOM map \u2014 Metis, MCP servers, oracles, ARGUS |\n| **[HELIOS](https://github.com/alexar76/helios)** | Broadcast pipeline for ecosystem content |\n| **[AICOM](https://github.com/alexar76/aicom)** | AI-Factory \u2014 autonomous product pipeline |\n\n## CLI commands\n\n| Command | Purpose |\n|---------|---------|\n| `metis` | Run a query through the cognitive stack |\n| `metis-serve` | OpenAI-compatible API (`/v1/chat/completions`) |\n| `metis-node` | Start a distributed worker node |\n| `metis-coordinator` | Start the cluster coordinator |\n| `metis-cluster` | Check cluster node health |\n\n## Architecture\n\n```mermaid\nflowchart LR\n    Q[\"Query\"] --> M[\"Metis\"]\n    M --> R[\"Router\"]\n    R --> C[\"Council/MoA/Agent\"]\n    C --> P[\"LLM Providers\"]\n    C --> T[\"Tools + MCP\"]\n    M --> E[\"Economy Meter\"]\n```\n\n## Jury verification (`/v1/verify`)\n\nBy default a `/v1/verify` verdict is written by one model and audited by one model \u2014 the\nbase model on `fast`, the MoA aggregator on `council`. That is the verdict the AIMarket\nhub's [Pay-on-Verified](https://github.com/alexar76/aimarket-hub/blob/main/docs/pay-on-verified.md) escrow moves money on,\nso a seller only has to fool one lineage. A **jury** makes it a vote across vendors:\n\n```yaml\njury_default_for_verify: true   # every /v1/verify goes to the jury; off \u2192 only route: \"jury\"\njury_min_vendors: 3             # and every seat must be a different vendor\njury_models:\n  - {model: deepseek-v4-pro, base_url: https://api.deepseek.com/v1, api_key_env: DEEPSEEK_API_KEY}\n  - {model: minimax/minimax-m3, base_url: https://openrouter.ai/api/v1, api_key_env: OPENROUTER_API_KEY}\n  - {model: z-ai/glm-5.3, base_url: https://openrouter.ai/api/v1, api_key_env: OPENROUTER_API_KEY}\n```\n\nReady rosters for both courts are in [`deploy/prod.jury.example.yaml`](deploy/prod.jury.example.yaml).\n\nWhat the jury does, and what it promises:\n\n- The caller's prompt goes to every juror **unchanged**, in parallel, at `jury_temperature`\n  (0.1). A juror slower than `jury_timeout_seconds` abstains; it does not hold the jury.\n- A juror's vote counts only if it states `{\"fulfils\": bool, \"score\": 0\u20131}` consistently\n  at the caller's bar and \u2014 when the request carries `audit_id` \u2014 echoes that id. A juror\n  that parroted a verdict planted in the audited text has not voted.\n- A side wins with a strict majority of the **whole roster**; abstentions count against\n  agreement. `verify_score` = agreement \u00d7 median confidence of the winning side\n  (confidence in \"fulfils\" = score, in \"does not fulfil\" = 1 \u2212 score), so a confident\n  unanimous conviction is a *trusted* audit.\n- `answer` is one winning juror's verdict object on its own, so a consumer's parser reads\n  it unchanged. A split carries no verdict object (indeterminate); every seat failing is\n  `status: \"error\"` (retry), never a verdict.\n- The envelope adds `jury` (`[{model, vendor, fulfils, score, latency_ms, abstained?}]`),\n  `jury_outcome` (`pass|fail|split|unavailable`), `jury_agreement` and\n  `input_flags.injection_suspected`. The trace resolves at `/v1/traces/{trace_id}`.\n- Injection-looking text is **flagged, not blocked** on this path: the audited text is\n  written by the parties with money on the verdict, and a hard block would hand either of\n  them an indeterminate outcome on demand.\n\nKnow the arithmetic before sizing a roster: at the hub's 0.7 bar a 3-seat jury settles only\nwhen unanimous (2/3 \u00d7 anything < 0.7); five seats tolerate one confident dissent; an even\nroster only adds splits. The jurors are independent *labs*, not independent\ninfrastructure \u2014 seats behind one gateway share its outages and its account.\n\nThe same change stops the capability gate from seating one model as both the writer and\nthe auditor of a verdict: with `judge_distinct_vendor: true` (default) the judge avoids the\nvendors of the base model and the MoA aggregator, an explicit `modules.judge` that clears\n`min_aggregator_capability` is honoured instead of silently overridden, and\n`min_unique_council_vendors` extends the diversity check from (model, endpoint) pairs to\nvendors, for the MoA seats as well as the council. `metis validate` warns when the judge\nstill shares a vendor with a writer.\n\n### Running a second instance as the appeal court\n\nThe hub's appeal path (`AIMARKET_APPEAL_WINDOW_S`) re-judges a disputed verdict on a\n**second, independent** Metis. Independence is operational, so it has to be set up that way:\n\n1. **Another host.** Not the first instance's machine (shared failure, shared operator\n   access) and not a host holding a hot wallet. Same image, its own container.\n2. **A disjoint jury.** The `metis_2` roster in `deploy/prod.jury.example.yaml` shares no\n   vendor with `metis_1` (a test enforces it). Use a second OpenRouter key with its own\n   spend cap \u2014 vendor-disjoint seats behind one key still share that key's quota.\n3. **Its own identity.** Its own `METIS_API_KEY` (setting it makes `/v1/verify` require\n   the Bearer), handed to the hub as `AIMARKET_APPEAL_METIS_KEY`; its own\n   `AIMARKET_APPEAL_METIS_URL`; and a distinct `AIMARKET_APPEAL_VERIFIER_ID` (e.g.\n   `metis.appeal@v1`) so every envelope and receipt names which court decided.\n4. **Nothing from the first instance.** It gets the stored intent and delivery, a fresh\n   audit id and the appellant's fenced statement \u2014 never the first verdict, its score, its\n   reasons or its trace. Do not point it at the first instance's trace store or knowledge\n   store.\n\n```bash\ndocker run -d --name metis-appeal --restart unless-stopped -p 127.0.0.1:8081:8080 \\\n  -e METIS_API_KEY=<appeal-court key> -e OPENROUTER_API_KEY=<second, capped key> \\\n  -v /opt/metis-appeal/prod.yaml:/app/config/prod.yaml:ro -v /opt/metis-appeal/data:/app/data \\\n  metis:latest metis-serve --host 0.0.0.0 --port 8080 --config /app/config/prod.yaml\n```\n\n## Production\n\n```bash\nexport METIS_API_KEY=sk-...\nmetis-serve --config config.production.yaml --production --port 8080\n```\n\nLegacy env vars `SUPERBRAIN_*` and `COGNITIVE_*` are still read for one release cycle.\n\n## Docker\n\n```bash\ncp config/docker.env.example .env\ndocker compose up -d --build\n```\n\n## Tests\n\n```bash\npytest --cov=metis --cov-report=term-missing -v\n```\n\n## Research citations\n\nDesign decisions are grounded in published work \u2014 see [docs/en/RESEARCH.md](docs/en/RESEARCH.md) for Yang et al. 2026 (heterogeneous agents), Wang et al. ICLR 2025 (layered MoA), and related citations with honest caveats.\n\nMIT License\n",
+    "description_content_type": "text/markdown",
+    "docs_url": null,
+    "download_url": null,
+    "downloads": {
+      "last_day": -1,
+      "last_month": -1,
+      "last_week": -1
+    },
+    "dynamic": null,
+    "home_page": null,
+    "keywords": "llm, multi-agent, reasoning, mcp, aimarket",
+    "license": "MIT",
+    "license_expression": null,
+    "license_files": null,
+    "maintainer": null,
+    "maintainer_email": null,
+    "name": "aimarket-metis",
+    "package_url": "https://pypi.org/project/aimarket-metis/",
+    "platform": null,
+    "project_url": "https://pypi.org/project/aimarket-metis/",
+    "project_urls": {
+      "Changelog": "https://github.com/alexar76/metis/blob/main/CHANGELOG.md",
+      "Documentation": "https://github.com/alexar76/metis",
+      "Homepage": "https://alexar76.github.io/metis/",
+      "Issues": "https://github.com/alexar76/metis/issues",
+      "Repository": "https://github.com/alexar76/metis"
+    },
+    "provides_extra": [
+      "dev",
+      "distributed"
+    ],
+    "release_url": "https://pypi.org/project/aimarket-metis/0.2.4/",
+    "requires_dist": [
+      "pydantic>=2.0",
+      "pydantic-settings>=2.0",
+      "httpx>=0.27.0",
+      "pyyaml>=6.0",
+      "hypothesis>=6.0; extra == \"dev\"",
+      "pytest-asyncio>=0.23; extra == \"dev\"",
+      "pytest-cov>=5.0; extra == \"dev\"",
+      "pytest>=8.0; extra == \"dev\"",
+      "fastapi>=0.100; extra == \"distributed\"",
+      "uvicorn[standard]>=0.23; extra == \"distributed\""
+    ],
+    "requires_python": ">=3.9",
+    "summary": "Metis \u2014 distributed cognitive layer over any LLM",
+    "version": "0.2.4",
+    "yanked": false,
+    "yanked_reason": null
+  },
+  "last_serial": 42811995,
+  "ownership": {
+    "organization": null,
+    "roles": [
+      {
+        "role": "Owner",
+        "user": "aleksandr.artamokhov"
+      }
+    ]
+  },
+  "urls": [
+    {
+      "comment_text": null,
+      "core-metadata": {
+        "sha256": "e23b15728215381c2ebdde794fa68491d811b8f2413b38a39884c0996ca40cc3"
+      },
+      "digests": {
+        "blake2b_256": "77d88a3069bec90c453eea6375e2948ea07cf398c0ddbd66d87d5ed55076524e",
+        "md5": "b0a4b5fc42918efa7520136529ffbfc6",
+        "sha256": "18c9b749f30304e31b30a2030238d37b5ef917b3e8bdb6575fbff9bcf2a3dda4"
+      },
+      "downloads": -1,
+      "filename": "aimarket_metis-0.2.4-py3-none-any.whl",
+      "has_sig": false,
+      "md5_digest": "b0a4b5fc42918efa7520136529ffbfc6",
+      "packagetype": "bdist_wheel",
+      "python_version": "py3",
+      "requires_python": ">=3.9",
+      "size": 176503,
+      "upload_time": "2026-10-27T10:52:59",
+      "upload_time_iso_8601": "2026-10-27T10:52:59.132078Z",
+      "url": "https://files.pythonhosted.org/packages/77/d8/8a3069bec90c453eea6375e2948ea07cf398c0ddbd66d87d5ed55076524e/aimarket_metis-0.2.4-py3-none-any.whl",
+      "yanked": false,
+      "yanked_reason": null
+    },
+    {
+      "comment_text": null,
+      "core-metadata": false,
+      "digests": {
+        "blake2b_256": "72b4bfdbe51f68caf347fce64337966a32cbca4f7fa886ceb01c11c149c74c2a",
+        "md5": "60d42765a1a6871f2cbfc26c7b06a4bc",
+        "sha256": "007fcd1338e5a5c3f615765106a687b0225775044e7b1b931c14dd84092fb6f1"
+      },
+      "downloads": -1,
+      "filename": "aimarket_metis-0.2.4.tar.gz",
+      "has_sig": false,
+      "md5_digest": "60d42765a1a6871f2cbfc26c7b06a4bc",
+      "packagetype": "sdist",
+      "python_version": "source",
+      "requires_python": ">=3.9",
+      "size": 206198,
+      "upload_time": "2026-10-27T10:53:00",
+      "upload_time_iso_8601": "2026-10-27T10:53:00.421710Z",
+      "url": "https://files.pythonhosted.org/packages/72/b4/bfdbe51f68caf347fce64337966a32cbca4f7fa886ceb01c11c149c74c2a/aimarket_metis-0.2.4.tar.gz",
+      "yanked": false,
+      "yanked_reason": null
+    }
+  ],
+  "vulnerabilities": []
+}

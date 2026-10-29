@@ -1,0 +1,471 @@
+{
+  "type": "alexar76.ecosystem-mcp-audit/v1",
+  "checkedAt": "2026-10-27T09:56:05.059228+00:00",
+  "scope": {
+    "canonicalPublicDistributions": 7,
+    "legacyDistribution": "argus-warden",
+    "publicHttpAddresses": 9,
+    "implementations": [
+      "ARGUS",
+      "WARDEN",
+      "aimarket-mcp (stdio and HTTP)",
+      "AIMarket Hub (stdio and HTTP; main, Attested Memory, Independent AI)",
+      "HISTOR stdio",
+      "Oracle Gateway",
+      "MCP Packager and its generated relay",
+      "Domain Operator Kit stdio",
+      "modelmarket thematic HTTP profiles"
+    ],
+    "additionalChecks": [
+      "WARDEN atomic-screen example",
+      "Metis client presets and HTTP session negotiation"
+    ],
+    "excludedFromMcpServerCount": "Native AIMarket oracles are exposed through Oracle Gateway; HISTOR has no direct HTTP /mcp route."
+  },
+  "publishedPackageResults": [
+    {
+      "case": "argus-default",
+      "distribution": "@alexar76/argus3",
+      "version": "0.3.3",
+      "status": "exited",
+      "tools": 0,
+      "evidence": "probes.jsonl"
+    },
+    {
+      "case": "packager-default",
+      "distribution": "aimarket-mcp-packager",
+      "version": "2.1.1",
+      "status": "exited",
+      "tools": 0,
+      "evidence": "probes.jsonl"
+    },
+    {
+      "case": "oracle-default",
+      "distribution": "aimarket-oracle-gateway",
+      "version": "0.3.1",
+      "status": "exited",
+      "tools": 0,
+      "evidence": "probes.jsonl"
+    },
+    {
+      "case": "argus-mcp",
+      "distribution": "@alexar76/argus3",
+      "version": "0.3.3",
+      "status": "ok",
+      "tools": 3,
+      "evidence": "configured-probes.jsonl"
+    },
+    {
+      "case": "packager-extra-mcp",
+      "distribution": "aimarket-mcp-packager",
+      "version": "2.1.1",
+      "status": "ok",
+      "tools": 3,
+      "evidence": "configured-probes.jsonl"
+    },
+    {
+      "case": "oracle-full-error",
+      "distribution": "aimarket-oracle-gateway",
+      "version": "0.3.1",
+      "status": "exited",
+      "tools": 0,
+      "evidence": "configured-probes.jsonl"
+    },
+    {
+      "case": "warden-default",
+      "distribution": "@aimarket/warden",
+      "version": "0.22.1",
+      "status": "ok",
+      "tools": 9,
+      "evidence": "remaining-public-probes.jsonl"
+    },
+    {
+      "case": "gateway-default",
+      "distribution": "aimarket-mcp",
+      "version": "0.6.3",
+      "status": "ok",
+      "tools": 6,
+      "evidence": "remaining-public-probes.jsonl"
+    },
+    {
+      "case": "hub-stdio",
+      "distribution": "aimarket-hub",
+      "version": "3.16.0",
+      "status": "ok",
+      "tools": 8,
+      "evidence": "remaining-public-probes.jsonl"
+    },
+    {
+      "case": "histor-stdio",
+      "distribution": "aimarket-histor",
+      "version": "0.4.2",
+      "status": "ok",
+      "tools": 3,
+      "evidence": "remaining-public-probes.jsonl"
+    },
+    {
+      "case": "argus-legacy-mcp",
+      "distribution": "argus-warden",
+      "version": "0.3.1",
+      "status": "ok",
+      "tools": 3,
+      "evidence": "remaining-public-probes.jsonl"
+    }
+  ],
+  "publicHttpResults": [
+    {
+      "url": "https://hub.attestedmemory.net/mcp",
+      "status": "ok",
+      "tools": 13,
+      "serverInfo": {
+        "name": "aimarket-hub-mcp",
+        "version": "1.2.0"
+      },
+      "protocol": "2025-06-18"
+    },
+    {
+      "url": "https://independentai.network/hub/mcp",
+      "status": "ok",
+      "tools": 13,
+      "serverInfo": {
+        "name": "aimarket-hub-mcp",
+        "version": "1.2.0"
+      },
+      "protocol": "2025-06-18"
+    },
+    {
+      "url": "https://mcp.modelmarket.dev/mcp",
+      "status": "ok",
+      "tools": 13,
+      "serverInfo": {
+        "name": "aimarket-hub-mcp",
+        "version": "1.2.0"
+      },
+      "protocol": "2025-06-18"
+    },
+    {
+      "url": "https://modelmarket.dev/ai-market/mcp",
+      "status": "ok",
+      "tools": 13,
+      "serverInfo": {
+        "name": "aimarket-hub-mcp",
+        "version": "1.2.0"
+      },
+      "protocol": "2025-06-18"
+    },
+    {
+      "url": "https://modelmarket.dev/mcp",
+      "status": "ok",
+      "tools": 13,
+      "serverInfo": {
+        "name": "aimarket-hub-mcp",
+        "version": "1.2.0"
+      },
+      "protocol": "2025-06-18"
+    },
+    {
+      "url": "https://modelmarket.dev/tools/mcp/domains",
+      "status": "ok",
+      "tools": 1,
+      "serverInfo": {
+        "name": "modelmarket-domains",
+        "title": "Domain availability and price quotes (Domain Operator Kit demo)",
+        "version": "1.0.0",
+        "websiteUrl": "https://modelmarket.dev/tools/"
+      },
+      "protocol": "2025-06-18"
+    },
+    {
+      "url": "https://modelmarket.dev/tools/mcp/emporion",
+      "status": "ok",
+      "tools": 8,
+      "serverInfo": {
+        "name": "modelmarket-emporion",
+        "title": "Business facts from public registers (EMPORION)",
+        "version": "1.0.0",
+        "websiteUrl": "https://modelmarket.dev/tools/"
+      },
+      "protocol": "2025-06-18"
+    },
+    {
+      "url": "https://modelmarket.dev/tools/mcp/security",
+      "status": "ok",
+      "tools": 4,
+      "serverInfo": {
+        "name": "modelmarket-security",
+        "title": "MCP security checks (WARDEN, HISTOR)",
+        "version": "1.0.0",
+        "websiteUrl": "https://modelmarket.dev/tools/",
+        "description": "WARDEN 0.21.0"
+      },
+      "protocol": "2025-06-18"
+    },
+    {
+      "url": "https://modelmarket.dev/tools/mcp/weather",
+      "status": "ok",
+      "tools": 3,
+      "serverInfo": {
+        "name": "modelmarket-weather",
+        "title": "Live weather and air quality (GAIA)",
+        "version": "1.0.0",
+        "websiteUrl": "https://modelmarket.dev/tools/"
+      },
+      "protocol": "2025-06-18"
+    }
+  ],
+  "localStdioResults": [
+    {
+      "case": "domain-rails",
+      "status": "ok",
+      "tools": 7,
+      "serverInfo": {
+        "name": "domain-rails",
+        "title": null,
+        "version": "0.1.0",
+        "websiteUrl": null,
+        "icons": null
+      }
+    },
+    {
+      "case": "warden-atomic-example",
+      "status": "ok",
+      "tools": 2,
+      "serverInfo": {
+        "name": "warden-atomic-example",
+        "title": null,
+        "version": "1",
+        "websiteUrl": null,
+        "icons": null
+      }
+    },
+    {
+      "case": "warden-local",
+      "status": "ok",
+      "tools": 9,
+      "serverInfo": {
+        "name": "warden",
+        "title": "WARDEN MCP security firewall",
+        "version": "0.22.1",
+        "websiteUrl": null,
+        "icons": null
+      }
+    },
+    {
+      "case": "argus-local",
+      "status": "ok",
+      "tools": 3,
+      "serverInfo": {
+        "name": "argus",
+        "title": null,
+        "version": "0.3.3",
+        "websiteUrl": null,
+        "icons": null
+      }
+    }
+  ],
+  "fixes": [
+    {
+      "component": "Oracle Gateway",
+      "localVersion": "0.3.2",
+      "changes": [
+        "Evaluate local aliases before FastMCP introspection",
+        "Expose all 35 advertised capability tools plus the catalog",
+        "Report distribution version in initialize"
+      ],
+      "validatedTools": 36
+    },
+    {
+      "component": "MCP Packager",
+      "localVersion": "2.1.2",
+      "changes": [
+        "Install MCP SDK as a default dependency",
+        "Generate a self-contained working stdio Docker relay",
+        "Use attached docker run in both client configs",
+        "Use canonical core from Hub plugin route",
+        "Correct Glama command and serverInfo version"
+      ],
+      "validatedTools": 3
+    },
+    {
+      "component": "ARGUS",
+      "localVersion": "0.3.3; registry metadata only",
+      "changes": [
+        "Supply required mcp positional argument in official registry metadata"
+      ]
+    },
+    {
+      "component": "Metis",
+      "localVersion": "0.2.4",
+      "changes": [
+        "Correct Oracle and Packager module paths",
+        "Implement explicit streamable-http transport with initialized notification, negotiated protocol, sessions and pagination",
+        "Share transport with legacy MCPSSEClient; preserve SSRF pinning"
+      ],
+      "note": "Old HTTP client already works with our stateless Hub; new strict-session regression tests demonstrate improved compatibility."
+    }
+  ],
+  "localWheelVerification": {
+    "artifacts": [
+      {
+        "name": "aimarket-oracle-gateway",
+        "version": "0.3.2",
+        "sha256": "dd2c37eaee567b709565c601bb659c204425f0298b04bcafb71530de15a73303",
+        "tools": 36,
+        "requires": [
+          "mcp<2,>=1.6",
+          "httpx>=0.27",
+          "pydantic>=2",
+          "pytest>=8; extra == \"dev\"",
+          "jsonschema>=4.23; extra == \"dev\""
+        ],
+        "sourceKind": "local-unpublished-wheel",
+        "status": "ok"
+      },
+      {
+        "name": "aimarket-mcp-packager",
+        "version": "2.1.2",
+        "sha256": "661d548c48369fcf0ac171e7cc983f254ca11017c41db0b25cb80cbc514cba98",
+        "tools": 3,
+        "requires": [
+          "aimarket-hub>=3.0.0",
+          "mcp<2,>=1.6",
+          "pytest>=8; extra == \"dev\"",
+          "jsonschema>=4.23; extra == \"dev\""
+        ],
+        "sourceKind": "local-unpublished-wheel",
+        "status": "ok",
+        "evidence": "packager-final-probe.jsonl"
+      }
+    ],
+    "registryManifestsValidated": [
+      "argus/server.json",
+      "warden/server.json",
+      "aimarket-mcp/server.json",
+      "aimarket-hub/server.json",
+      "attested/attested-memory-hub/server.json",
+      "independent/ops/mcp/server.json",
+      "plugins/aimarket-mcp-packager/server.json",
+      "plugins/aimarket-oracle-gateway/server.json",
+      "deploy/mcp-registry/domains/server.json",
+      "deploy/mcp-registry/security/server.json",
+      "deploy/mcp-registry/weather/server.json",
+      "deploy/mcp-registry/emporion/server.json"
+    ]
+  },
+  "generatedImage": {
+    "status": "ok",
+    "imageId": "sha256:7c9eeefcba7787cd2537288b3b2e7df70e139998368a69c6997f8b7ff8674bd6",
+    "runtime": "runsc",
+    "runNetwork": "none",
+    "tools": 1,
+    "evidence": "generated-image-probe.json"
+  },
+  "testRuns": [
+    {
+      "suite": "Oracle + Packager + generator regressions",
+      "passed": 54,
+      "skipped": 0,
+      "evidence": "fixed-package-tests.log"
+    },
+    {
+      "suite": "Oracle routes vs 17 actual oracle specs",
+      "passed": 1,
+      "skipped": 0,
+      "evidence": "oracle-capability-sync-tests.log"
+    },
+    {
+      "suite": "Metis full suite",
+      "passed": 440,
+      "skipped": 0,
+      "evidence": "metis-full-tests.log"
+    },
+    {
+      "suite": "Hub MCP transports and authentication",
+      "passed": 118,
+      "skipped": 0,
+      "evidence": "hub-mcp-tests.log"
+    },
+    {
+      "suite": "MCP Gateway full suite",
+      "passed": 97,
+      "skipped": 1,
+      "evidence": "exec_command tool output; source unchanged"
+    },
+    {
+      "suite": "HISTOR MCP stdio/client",
+      "passed": 10,
+      "skipped": 0,
+      "evidence": "histor-mcp-tests.log"
+    },
+    {
+      "suite": "ARGUS MCP/firewall/sandbox",
+      "passed": 29,
+      "skipped": 1,
+      "evidence": "argus-mcp-tests.log"
+    },
+    {
+      "suite": "ARGUS registry launch regression",
+      "passed": 1,
+      "skipped": 0,
+      "evidence": "argus-registry-tests.log"
+    },
+    {
+      "suite": "WARDEN MCP server/tools/client",
+      "passed": 34,
+      "skipped": 0,
+      "evidence": "warden-mcp-tests.log"
+    },
+    {
+      "suite": "Domain Kit + four HTTP profiles",
+      "passed": 10,
+      "skipped": 0,
+      "evidence": "node-mcp-tests.log"
+    },
+    {
+      "suite": "MCP SDK dependency ceilings",
+      "passed": 4,
+      "skipped": 0,
+      "evidence": "dependency-ceiling-tests.log"
+    }
+  ],
+  "testsPassed": 798,
+  "testsSkipped": 2,
+  "safety": {
+    "publicToolCalls": 0,
+    "paidToolCalls": 0,
+    "localTestToolCalls": "Fake backends/demos only",
+    "sandboxPackageRuntime": "gVisor runsc; runtime network none",
+    "productionDeployments": 0,
+    "githubWrites": 0
+  },
+  "releaseState": {
+    "allFixesLocal": true,
+    "pypiUploads": 0,
+    "npmUploads": 0,
+    "registryPublishes": 0,
+    "stillPublishedWithFailures": [
+      "aimarket-oracle-gateway 0.3.1 fails startup",
+      "aimarket-mcp-packager 2.1.1 needs [mcp] extra",
+      "ARGUS registry metadata still needs the mcp argument until updated"
+    ],
+    "preparedLocalWheels": [
+      "aimarket-oracle-gateway 0.3.2",
+      "aimarket-mcp-packager 2.1.2"
+    ]
+  },
+  "verificationLimits": [
+    "Checks prove startup, initialize, tools/list and valid schemas under the recorded configuration.",
+    "Business calls to paid live capabilities were not made; functional tests use local fixtures.",
+    "A fresh Hub has 8 generic stdio tools; hosted deployments have 13 including configured capabilities."
+  ],
+  "sourceFiles": {
+    "argus/server.json": "2bb8c231c847e4baf0dd0c95b938829a66cf4b74bda29ffd58ae3512f3461d8a",
+    "metis/metis/mcp/client.py": "53b84494c67b699a8cb6f8514a1323782f3c8ea3a6a80d79563b7ff6fd7ea7bb",
+    "metis/metis/mcp/config.py": "9f383244a720bc7248fff1ac77268381febf2702f10efdca09634dd06d29e683",
+    "metis/metis/mcp/sse.py": "8fbc59f9c1116e9798436f18d03d5a71b1e0a0b51aca59b50a15a75fdc1f1b69",
+    "plugins/aimarket-oracle-gateway/aimarket_oracle_gateway/mcp_tool_surface.py": "2e36baea74d6e9f3a6f8bc4edf6225750d28441272fd75f258d22a8739a6b757",
+    "plugins/aimarket-oracle-gateway/aimarket_oracle_gateway/mcp_family_tools.py": "6d5148dac88250986bca24620d30f0f6f5e65f977271e443f4a1a6a4598696c4",
+    "plugins/aimarket-mcp-packager/aimarket_mcp_packager/packager_core.py": "45e6765202837690725263a2bd891ea27927073762f23051902c50a0cec0c420",
+    "plugins/aimarket-mcp-packager/aimarket_mcp_packager/server_template.py": "d2a6d11055f2229e46dc8dbb0cdac3e6e1b78722a500c3a7bee82e34fad6cd6f"
+  }
+}

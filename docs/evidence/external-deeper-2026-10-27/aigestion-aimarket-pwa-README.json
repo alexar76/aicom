@@ -1,0 +1,8 @@
+{
+  "url": "https://github.com/aigestion/aimarket-pwa",
+  "fetch_url": "https://api.github.com/repos/aigestion/aimarket-pwa/readme",
+  "retrieved_at": "2026-10-27T08:31:26.491520+00:00",
+  "sha256": "99a7e552a8d15162df4a3a1068b2e0f496041d081d094cea8a58944f2edf9940",
+  "status": 200,
+  "body": "# AIMARKET\n\nComparador de precios PWA para supermercados en Canarias.\n\n## Funcionalidades\n\n- **Comparación de precios** entre HiperDino, Mercadona, DIA y Carrefour\n- **Productos sin código de barras** — solo nombre y precios necesarios\n- **Carrito de compras** con resumen por tienda y calculadora de ahorro\n- **Recetas dinámicas** basadas en los productos de tu carrito\n- **Chef Aimar** — asistente de cocina conversacional paso a paso\n- **Enlaces a recetas** externas (RecetasGratis, Cookpad, etc.)\n- **Fuentes de datos** verificadas\n- **PWA** — funciona offline, instalable como app\n\n## Despliegue\n\n### Netlify Drop\n1. Descarga o clona este repositorio\n2. Ve a [app.netlify.com/drop](https://app.netlify.com/drop)\n3. Arrastra la carpeta completa al navegador\n4. Obtendrás una URL tipo `tu-sitio.netlify.app`\n\n### Generar APK con PWABuilder\n1. Despliega primero en Netlify (paso anterior)\n2. Ve a [pwabuilder.com](https://pwabuilder.com)\n3. Ingresa la URL de Netlify\n4. Descarga el APK generado\n5. Instala en tu teléfono Android\n\n## Tecnologías\n\n- HTML5, CSS3, JavaScript puro (sin frameworks)\n- Service Worker para caché offline\n- Web App Manifest para instalación PWA"
+}

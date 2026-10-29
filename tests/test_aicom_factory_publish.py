@@ -133,6 +133,84 @@ def test_satellite_export_includes_provenance():
     assert "aimarket-hub/plugins/aimarket-provenance" in paths
 
 
+def test_factory_rsync_omits_internal_evidence_and_keeps_public_content(tmp_path):
+    import subprocess
+
+    source = tmp_path / "source"
+    target = tmp_path / "export"
+    reports = (
+        "artifacts/quality-audit-2026-10-23/factory-tests.xml",
+        "artifacts/quality-audit-2026-10-23/followup/factory-tests.xml",
+        "artifacts/quality-audit-2026-10-24/factory-tests.xml",
+        "artifacts/oracle-metis-rollout-2026-10-28/postdeploy-install/cache/ssh.py",
+        "artifacts/system-verification-2026-10-28/python/gateway/mcp.stderr.log",
+        "artifacts/external-deep-2026-10-29/social/identity-search-log.json",
+        "docs/growth/publication-2026-10-25/launchgate/prepare_blog.py",
+        "docs/evidence/histor-full-observations-2026-10-27/hub/baseline-wire.json",
+        "docs/evidence/histor-full-observations-2026-10-27/hub/recheck-wire.json",
+        "docs/evidence/histor-release-0.4.2-2026-10-27/release.json",
+        "docs/evidence/histor-release-0.4.2-2026-10-27/sandboxes.json",
+    )
+    for rel in reports:
+        path = source / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("<testsuite name='local-audit'/>\n", encoding="utf-8")
+    public = {
+        "artifacts/kaggle-histor/public-example.txt": "public example\n",
+        "docs/evidence/histor-full-observations-2026-10-27/python-packages/artifact-index.json": "{}\n",
+        "docs/growth/publication-2026-10-25/launchgate/article.published.md": "# Published article\n",
+    }
+    for rel, content in public.items():
+        path = source / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+    subprocess.run(
+        ["rsync", "-a", "--delete", *rsync_exclude_args(), f"{source}/", f"{target}/"],
+        check=True, capture_output=True, text=True, timeout=15,
+    )
+
+    assert not (target / "artifacts/quality-audit-2026-10-23").exists()
+    assert not (target / "artifacts/quality-audit-2026-10-24").exists()
+    for rel in reports:
+        assert not (target / rel).exists(), rel
+    for rel, content in public.items():
+        assert (target / rel).read_text(encoding="utf-8") == content, rel
+
+
+def test_rsync_omits_named_virtualenvs_at_any_depth_and_keeps_sources(tmp_path):
+    import subprocess
+
+    source = tmp_path / "source"
+    dependency_paths = (
+        ".venv-test/lib/python3.11/site-packages/cryptography/ssh.py",
+        "apps/example/.venv-test/lib/python3.11/site-packages/cryptography/ssh.py",
+    )
+    public_sources = {"app.py": "# application\n", "apps/example/main.py": "# example\n"}
+    for rel in dependency_paths:
+        path = source / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("# installed dependency snapshot\n", encoding="utf-8")
+    for rel, content in public_sources.items():
+        path = source / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+    # Satellite exports use the canonical defaults; factory exports add their
+    # own exclusions. Both must omit environment directories at every depth.
+    defaults = [part for pattern in DEFAULT_RSYNC_EXCLUDES for part in ("--exclude", pattern)]
+    for name, excludes in (("satellite", defaults), ("factory", rsync_exclude_args())):
+        target = tmp_path / name
+        subprocess.run(
+            ["rsync", "-a", *excludes, f"{source}/", f"{target}/"],
+            check=True, capture_output=True, text=True, timeout=15,
+        )
+        for rel in dependency_paths:
+            assert not (target / rel).exists(), (name, rel)
+        for rel, content in public_sources.items():
+            assert (target / rel).read_text(encoding="utf-8") == content, (name, rel)
+
+
 
 def test_every_tracked_repo_root_is_classified():
     """A deny-list leaks by omission; this makes a new root an explicit decision.

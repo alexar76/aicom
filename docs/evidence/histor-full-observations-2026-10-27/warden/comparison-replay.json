@@ -1,0 +1,207 @@
+{
+  "analysis": "deterministic-offline",
+  "dependencies": [
+    {
+      "comparability": "comparable",
+      "contextChanges": [],
+      "fieldCoverage": "full",
+      "id": "npm:@aimarket/warden",
+      "limitations": [],
+      "observedChanges": true,
+      "provenanceGaps": [],
+      "selectedTools": [
+        {
+          "changes": [
+            "inputSchema"
+          ],
+          "inputSchemaPaths": [
+            "$.\"properties\".\"server_info\".\"additionalProperties\"",
+            "$.\"properties\".\"server_info\".\"description\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"type\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"type\"",
+            "$.\"properties\".\"server_info\".\"type\""
+          ],
+          "inputTypeChangedPaths": [
+            "$/properties/server_info",
+            "$/properties/server_info/properties/name",
+            "$/properties/server_info/properties/version"
+          ],
+          "name": "approve_mcp_server",
+          "requiredAdded": [],
+          "requiredRemoved": [],
+          "retest": [
+            "Check saved inputs, required fields and types; add a boundary case."
+          ],
+          "status": "changed"
+        },
+        {
+          "changes": [
+            "inputSchema",
+            "outputSchema"
+          ],
+          "inputSchemaPaths": [
+            "$.\"properties\".\"server_info\".\"additionalProperties\"",
+            "$.\"properties\".\"server_info\".\"description\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"name\".\"type\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"maxLength\"",
+            "$.\"properties\".\"server_info\".\"properties\".\"version\".\"type\"",
+            "$.\"properties\".\"server_info\".\"type\""
+          ],
+          "inputTypeChangedPaths": [
+            "$/properties/server_info",
+            "$/properties/server_info/properties/name",
+            "$/properties/server_info/properties/version"
+          ],
+          "name": "status_mcp_server",
+          "outputSchemaPaths": [
+            "$.\"properties\".\"origin\".\"description\"",
+            "$.\"properties\".\"origin\".\"properties\".\"approvedVersion\".\"description\"",
+            "$.\"properties\".\"origin\".\"properties\".\"approvedVersion\".\"type\"[0]",
+            "$.\"properties\".\"origin\".\"properties\".\"approvedVersion\".\"type\"[1]",
+            "$.\"properties\".\"origin\".\"properties\".\"currentVersion\".\"description\"",
+            "$.\"properties\".\"origin\".\"properties\".\"currentVersion\".\"type\"[0]",
+            "$.\"properties\".\"origin\".\"properties\".\"currentVersion\".\"type\"[1]",
+            "$.\"properties\".\"origin\".\"properties\".\"launch\".\"anyOf\"[0].\"type\"",
+            "$.\"properties\".\"origin\".\"properties\".\"launch\".\"anyOf\"[1].\"type\"",
+            "$.\"properties\".\"origin\".\"properties\".\"launch\".\"description\"",
+            "$.\"properties\".\"origin\".\"required\"[0]",
+            "$.\"properties\".\"origin\".\"required\"[1]",
+            "$.\"properties\".\"origin\".\"required\"[2]",
+            "$.\"properties\".\"origin\".\"type\"",
+            "$.\"properties\".\"reviewText\".\"description\""
+          ],
+          "requiredAdded": [],
+          "requiredRemoved": [],
+          "retest": [
+            "Check saved inputs, required fields and types; add a boundary case.",
+            "Replay result handling: check the fields and types read by the workflow."
+          ],
+          "status": "changed"
+        }
+      ],
+      "serializedUtf8Bytes": {
+        "after": {
+          "fullList": 29231,
+          "selectedTools": 10167
+        },
+        "before": {
+          "fullList": 28371,
+          "selectedTools": 9307
+        },
+        "delta": {
+          "fullList": 860,
+          "selectedTools": 860
+        }
+      },
+      "sources": {
+        "after": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:727c840240dca36371fd5a5649c215c9b5a17fade860fae56b474790806ba25c",
+          "observedAt": "2026-10-27T13:16:43.727951Z",
+          "packageVersion": "0.22.1",
+          "path": "current-baseline.json",
+          "protocol": "2025-03-26",
+          "serverName": "warden",
+          "serverVersion": "0.22.1",
+          "sha256": "sha256:243b6e4013928379e4905a6be716e0310658f959d7e9ddf96907c2005c559ca3",
+          "status": "ok",
+          "targetId": "npm:@aimarket/warden",
+          "toolsSha256": "sha256:7ea930fdda90bd97ab24f665c61ff98b119c5292b5b917cf6b51bb4475241a41",
+          "transport": "stdio"
+        },
+        "before": {
+          "extrasCoverage": "observed",
+          "launchSha256": "sha256:727c840240dca36371fd5a5649c215c9b5a17fade860fae56b474790806ba25c",
+          "observedAt": "2026-10-27T13:16:43.604030Z",
+          "packageVersion": "0.18.0",
+          "path": "replay-before.json",
+          "protocol": "2025-03-26",
+          "serverName": "warden",
+          "serverVersion": "0.18.0",
+          "sha256": "sha256:32e466a760735e4ead095d754f3d2e6ff918bfa664ec2e3c3da0fa0fe4ba58d7",
+          "status": "ok",
+          "targetId": "npm:@aimarket/warden",
+          "toolsSha256": "sha256:f46030ff9e1be230e897274859e0963a1408e648b54d2e862163f16a59367b9e",
+          "transport": "stdio"
+        }
+      },
+      "status": "changed",
+      "toolSet": {
+        "added": [],
+        "afterCount": 9,
+        "beforeCount": 9,
+        "removed": []
+      },
+      "workflows": [
+        {
+          "affectedTools": [
+            "status_mcp_server"
+          ],
+          "description": "Review server origin and reported versions",
+          "id": "warden-origin-review",
+          "retest": [
+            {
+              "check": "Check saved inputs, required fields and types; add a boundary case.",
+              "tool": "status_mcp_server"
+            },
+            {
+              "check": "Replay result handling: check the fields and types read by the workflow.",
+              "tool": "status_mcp_server"
+            }
+          ],
+          "status": "retest",
+          "tools": [
+            "status_mcp_server"
+          ]
+        },
+        {
+          "affectedTools": [
+            "approve_mcp_server",
+            "status_mcp_server"
+          ],
+          "description": "Preserve reviewed hashes and revision during approval",
+          "id": "warden-review-to-approval",
+          "retest": [
+            {
+              "check": "Check saved inputs, required fields and types; add a boundary case.",
+              "tool": "approve_mcp_server"
+            },
+            {
+              "check": "Check saved inputs, required fields and types; add a boundary case.",
+              "tool": "status_mcp_server"
+            },
+            {
+              "check": "Replay result handling: check the fields and types read by the workflow.",
+              "tool": "status_mcp_server"
+            }
+          ],
+          "status": "retest",
+          "tools": [
+            "approve_mcp_server",
+            "status_mcp_server"
+          ]
+        }
+      ]
+    }
+  ],
+  "format": "histor.upgrade-brief/v1",
+  "language": "en",
+  "limits": [
+    "Only observed definitions are compared, not the server\u2019s runtime behavior.",
+    "A change does not prove breakage; unchanged definitions do not establish safety.",
+    "Workflows are linked through explicitly selected tools, without semantic analysis.",
+    "Compact JSON size in UTF-8 measures bytes, not tokens, money or achieved savings.",
+    "launch is represented only by its hash; launch conditions are not executed and environment secrets are not displayed."
+  ],
+  "summary": {
+    "changed": 1,
+    "context_changed": 0,
+    "unchanged": 0,
+    "unknown": 0
+  },
+  "title": "WARDEN complete local source observations",
+  "watchlistSha256": "sha256:a8ef6b8a83982fdf249b8aa78eea4cc034aa052df74aa3e8b5e0bc9b52a0d7db"
+}
