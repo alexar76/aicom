@@ -1,0 +1,11 @@
+{
+  "regression_tests": {
+    "command": ".venv/bin/pytest -q alien-monitor/tests/test_peer_hub_planets.py alien-monitor/tests/test_hub_health_endpoint.py alien-monitor/tests/test_hub_discovery_family.py alien-monitor/tests/test_hub_declared_identity.py",
+    "result": "55 passed in 12.47s"
+  },
+  "candidate_sha256": "f77f575020948edcaa0ad3d313dbcfbad828c76ae83dda1477a0fce8467eb0b2",
+  "compile": "passed",
+  "server_host_before_sha256": "ed1d0dd07a51396c0fa1847d82f594a87d8bac019df0459fec686e40761991e9",
+  "server_container_before_sha256": "fb0ae50fd944f838a0a79a9e508298d34245d898d42d5426159c1fef9b93a8ca",
+  "baseline_note": "The running image matches local HEAD. Host checkout was older; archive it separately before replacing this file."
+}

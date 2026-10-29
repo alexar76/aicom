@@ -1,0 +1,43 @@
+{"smoke": "passed", "agent_exec": {"id": "agent-exec", "canonical_id": "", "label": "agent-exec", "group": "peer_hub", "icon": "hub", "role": "hub", "url": "https://agent-exec.448c.org", "description": "Federated catalogue \u2014 AIMarket v1", "metrics": {"capabilities": 0, "trust_score": 0.265}, "status": "active", "position": {"x": 29.635, "y": 0.0, "z": 5.895}, "categories": [], "discovered": true, "hub": true, "color": "#38e0ff", "hop": 1}, "distance_from_modelmarket": 30.215629233891523, "local_ecosystem_radius": 26.215644184341535}
+
+captured 38 env vars (values not shown)
+container : alien-monitor-live
+own port  : 9101
+mounts    : -v /root/claudecode/aicom/data/config/model_providers.yaml:/app/llm/model_providers.yaml:ro -v /root/claudecode/aicom/scripts/satellite-map.yaml:/app/scripts/satellite-map.yaml:ro -v /root/claudecode/aicom/docs/ecosystem/knowledge-base.md:/app/docs/ecosystem/knowledge-base.md:ro
+reusing   : alien-monitor:agent-exec-hub-20261029
+7a2043f4a0c03512390e3b8a42585845f66b8ad702768936c6ba81cf206cdaa3
+healthy   : http://127.0.0.1:9101/api/health
+{"status": "deployed", "container": "alien-monitor-live", "previous_image": "alien-monitor:peers-20261029-live", "image": "alien-monitor:agent-exec-hub-20261029", "source_sha256": "f77f575020948edcaa0ad3d313dbcfbad828c76ae83dda1477a0fce8467eb0b2", "release_directory": "/root/alien-agent-exec-hub-20261029-layout"}
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 148B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/alien-monitor:peers-20261029-live
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 82.14kB done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/alien-monitor:peers-20261029-live@sha256:25e8e8eb98a03b80cc8eda3dce74c006504ae4ef158804c3633c38ca35c1c8ad
+#5 resolve docker.io/library/alien-monitor:peers-20261029-live@sha256:25e8e8eb98a03b80cc8eda3dce74c006504ae4ef158804c3633c38ca35c1c8ad 0.0s done
+#5 DONE 1.4s
+
+#6 [2/2] COPY --chown=10001:10001 hub_discovery.py /app/backend/hub_discovery.py
+#6 DONE 0.0s
+
+#7 exporting to image
+#7 exporting layers 0.1s done
+#7 exporting manifest sha256:ee9176d1e68fba47babc31e9becfe8d03a0d331559fe941e90f1ffb53921c35c 0.0s done
+#7 exporting config sha256:cae205b996250eb9665ba607baf207be78b45c4a57a0182081595cb7a11a1f05 done
+#7 exporting attestation manifest sha256:e74830e44b33b5c2c38107ea2df0e63fcb63c72b0042158c355129122e7f41a2 done
+#7 exporting manifest list sha256:9565ad6c517e3ee42aa0e75a4116564ff337c4cff0ba04b6ea99fc20863babdc done
+#7 naming to docker.io/library/alien-monitor:agent-exec-hub-20261029 done
+#7 unpacking to docker.io/library/alien-monitor:agent-exec-hub-20261029 0.1s done
+#7 DONE 0.3s

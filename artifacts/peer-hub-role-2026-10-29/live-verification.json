@@ -1,0 +1,57 @@
+{
+  "checked_at_utc": "2026-10-29T15:47:03.337498+00:00",
+  "status": "passed",
+  "live_health": {
+    "status": "ok",
+    "mode": "real",
+    "crypto_enabled": true,
+    "chain_context": true,
+    "realm_links": {
+      "realm": "live",
+      "other": {
+        "realm": "uni",
+        "map_url": "https://monitor-uni.modelmarket.dev/"
+      }
+    }
+  },
+  "peer_hubs": [
+    "industrial-platform-sentinel",
+    "attested-memory-hub",
+    "independent-ai-hub",
+    "charon---liquidation-risk-for-the-side-that-borr",
+    "agent-exec"
+  ],
+  "children_with_correct_affiliation": 10,
+  "ordinary_services_not_self_hubs": 2,
+  "agent_exec": {
+    "id": "agent-exec",
+    "canonical_id": "",
+    "label": "agent-exec",
+    "group": "peer_hub",
+    "icon": "hub",
+    "role": "hub",
+    "url": "https://agent-exec.448c.org",
+    "description": "Federated catalogue — AIMarket v1",
+    "metrics": {
+      "capabilities": 0,
+      "trust_score": 0.265
+    },
+    "status": "active",
+    "position": {
+      "x": 20.017,
+      "y": 27.213,
+      "z": 3.982
+    },
+    "categories": [],
+    "discovered": true,
+    "hub": {
+      "id": "agent-exec",
+      "label": "agent-exec",
+      "url": "https://agent-exec.448c.org"
+    },
+    "color": "#38e0ff",
+    "hop": 1
+  },
+  "agent_exec_distance": 34.016,
+  "platform_sentinel_distance": 34.016
+}

@@ -1,0 +1,49 @@
+{"status": "passed", "cases": 17, "checks": ["explicit hub / https://unseen.example.net / {}", "explicit hub / https://unseen.example.net / {'protocol_versions': ['mcp']}", "explicit hub / https://unseen.example.net / {'protocol_versions': ['vfuture']}", "explicit hub / https://unseen.example.net / {}", "explicit hub / https://unseen.example.net / {'protocol_versions': ['mcp']}", "explicit hub / https://unseen.example.net / {'protocol_versions': ['vfuture']}", "explicit hub / https://new.operator.example / {}", "explicit hub / https://new.operator.example / {'protocol_versions': ['mcp']}", "explicit hub / https://new.operator.example / {'protocol_versions': ['vfuture']}", "explicit hub / https://new.operator.example / {}", "explicit hub / https://new.operator.example / {'protocol_versions': ['mcp']}", "explicit hub / https://new.operator.example / {'protocol_versions': ['vfuture']}", "service stays service", "service stays service", "service stays service", "legacy agent-exec", "provider inherits parent hub"]}
+
+captured 38 env vars (values not shown)
+container : alien-monitor-live
+own port  : 9101
+mounts    : -v /root/claudecode/aicom/data/config/model_providers.yaml:/app/llm/model_providers.yaml:ro -v /root/claudecode/aicom/scripts/satellite-map.yaml:/app/scripts/satellite-map.yaml:ro -v /root/claudecode/aicom/docs/ecosystem/knowledge-base.md:/app/docs/ecosystem/knowledge-base.md:ro
+reusing   : alien-monitor:peer-hub-role-20261029
+9720b94bde9196ebb1d60f7d63bd9a1763e5cc085f75726b172a68df49f0fad4
+healthy   : http://127.0.0.1:9101/api/health
+{"status": "deployed", "container": "alien-monitor-live", "previous_image": "alien-monitor:agent-exec-hub-20261029", "image": "alien-monitor:peer-hub-role-20261029", "sources": {"hub_discovery.py": "1c1afd55c558b6b31f7343b84bb8a3f2956b2c92a77396404658517e610f52b6", "hub_affiliation.py": "1621a5e085bca4f25248786b65ab455db561f95f52b9c33ef2432163893c919e"}, "release_directory": "/root/alien-peer-hub-role-20261029"}
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 230B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/alien-monitor:agent-exec-hub-20261029
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 87.45kB done
+#4 DONE 0.0s
+
+#5 [1/3] FROM docker.io/library/alien-monitor:agent-exec-hub-20261029@sha256:9565ad6c517e3ee42aa0e75a4116564ff337c4cff0ba04b6ea99fc20863babdc
+#5 resolve docker.io/library/alien-monitor:agent-exec-hub-20261029@sha256:9565ad6c517e3ee42aa0e75a4116564ff337c4cff0ba04b6ea99fc20863babdc 0.0s done
+#5 DONE 0.0s
+
+#5 [1/3] FROM docker.io/library/alien-monitor:agent-exec-hub-20261029@sha256:9565ad6c517e3ee42aa0e75a4116564ff337c4cff0ba04b6ea99fc20863babdc
+#5 DONE 1.3s
+
+#6 [2/3] COPY --chown=10001:10001 hub_discovery.py /app/backend/hub_discovery.py
+#6 DONE 0.0s
+
+#7 [3/3] COPY --chown=10001:10001 hub_affiliation.py /app/backend/hub_affiliation.py
+#7 DONE 0.1s
+
+#8 exporting to image
+#8 exporting layers 0.1s done
+#8 exporting manifest sha256:4b1cc77b9b93bc307ee9aea502ac32593e9c378b167aa77b758934f099a65de3 done
+#8 exporting config sha256:5b817ca6b965d93b481228e9470751e87e0c91021e6f8f27d6ed91e5fe72141d done
+#8 exporting attestation manifest sha256:0f76e1c5e9a3128f93e2dcfa9c3bfce255f18d5817a2ab55bc144f6dfa4dd764 0.0s done
+#8 exporting manifest list sha256:f14ca9047e245141b49554db5d0758b09991c07afd26469639b7130c208b159d done
+#8 naming to docker.io/library/alien-monitor:peer-hub-role-20261029 done
+#8 unpacking to docker.io/library/alien-monitor:peer-hub-role-20261029 0.1s done
+#8 DONE 0.4s

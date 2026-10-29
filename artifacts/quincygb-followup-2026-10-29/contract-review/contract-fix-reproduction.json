@@ -1,0 +1,121 @@
+{
+  "commit": "5a36f743d0b2b9b6dd42ee075f25d138e738e166",
+  "method": "Only reviewed pure AST functions; no service, third-party module initialization, network or database executed.",
+  "function_provenance": [
+    {
+      "file": "app/schema_quality.py",
+      "function": "_schema_types_real_fields",
+      "line": 17
+    },
+    {
+      "file": "app/schema_quality.py",
+      "function": "_untyped_property_count",
+      "line": 37
+    },
+    {
+      "file": "app/schema_quality.py",
+      "function": "evaluate_schema_quality",
+      "line": 54
+    },
+    {
+      "file": "app/schema_quality.py",
+      "function": "_type_signature",
+      "line": 130
+    },
+    {
+      "file": "app/schema_quality.py",
+      "function": "_contract_fields",
+      "line": 151
+    },
+    {
+      "file": "app/schema_quality.py",
+      "function": "schema_contract",
+      "line": 168
+    },
+    {
+      "file": "app/checker.py",
+      "function": "_comparables",
+      "line": 161
+    },
+    {
+      "file": "app/checker.py",
+      "function": "_contract_of",
+      "line": 183
+    },
+    {
+      "file": "app/checker.py",
+      "function": "_contract_change_entries",
+      "line": 188
+    },
+    {
+      "file": "app/checker.py",
+      "function": "compute_diff",
+      "line": 239
+    }
+  ],
+  "original_type_flip_case": {
+    "prior_check": true,
+    "prior_checked_at": "2026-10-29T13:40:00Z",
+    "changes": [
+      {
+        "field": "output_schema",
+        "kind": "contract_change",
+        "path": "$.value",
+        "before": "string",
+        "after": "number",
+        "detail": "output schema field '$.value' changed type: string -> number — the published contract changed. The schema-quality score grades how well a schema is written, not what it promises, so it does not move for this (100 -> 100)."
+      }
+    ],
+    "schema_score_stability": "stable",
+    "contract_stability": "changed",
+    "summary": "1 change(s) since 2026-10-29T13:40:00Z: output_schema $.value: string -> number"
+  },
+  "identical_contract_control": {
+    "prior_check": true,
+    "prior_checked_at": "2026-10-29T13:40:00Z",
+    "changes": [],
+    "schema_score_stability": "stable",
+    "contract_stability": "stable",
+    "summary": "no changes since 2026-10-29T13:40:00Z"
+  },
+  "legacy_record_case": {
+    "prior_check": true,
+    "prior_checked_at": "2026-10-29T13:40:00Z",
+    "changes": [],
+    "schema_score_stability": "stable",
+    "contract_stability": "unknown",
+    "summary": "no changes since 2026-10-29T13:40:00Z"
+  },
+  "first_observation_case": {
+    "prior_check": false,
+    "prior_checked_at": null,
+    "changes": [],
+    "schema_score_stability": "unknown",
+    "contract_stability": "unknown",
+    "summary": "no prior check on record"
+  },
+  "score_only_change_control": {
+    "prior_check": true,
+    "prior_checked_at": "2026-10-29T13:40:00Z",
+    "changes": [
+      {
+        "field": "schema_score",
+        "before": "90",
+        "after": "100",
+        "detail": "schema_score changed: 90 -> 100."
+      }
+    ],
+    "schema_score_stability": "changed",
+    "contract_stability": "stable",
+    "summary": "1 change(s) since 2026-10-29T13:40:00Z: schema_score: 90 -> 100"
+  },
+  "quality_scores": [
+    100,
+    100
+  ],
+  "assertions_passed": true,
+  "limits": [
+    "Fix verified for the original field-type case in pinned source, not a new paid production response.",
+    "Contract identity is a selected output-schema field map, not complete semantic equivalence of every JSON Schema constraint."
+  ]
+}

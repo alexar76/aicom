@@ -1,0 +1,330 @@
+--- deployed-source
++++ local-before-fix
+@@ -175,7 +175,7 @@
+ 
+     ``True`` used to be what every peer fetch got, because one flag on
+     ``DiscoveryConfig`` covered both the trusted hub and everything the hub told us about.
+-    With it set, this function returned True unresolved and ``_pin_http_target`` skipped the
++    With it set, this function returned True unresolved and ``_pin_target`` skipped the
+     re-vet — so both the private-range check and the DNS-rebinding defence were off for
+     addresses a third party chose. A peer entry needs no operator: open federation
+     auto-admits, and the hub republishes the announcer's own well_known_url verbatim.
+@@ -235,20 +235,25 @@
+     return f"{base_url.rstrip('/')}{path}"
+ 
+ 
+-def _pin_http_target(url: str, *, allow_private: bool) -> tuple[str, dict[str, str]] | None:
+-    """For plain-HTTP, pin the connection to a freshly re-vetted IP (Host header
+-    preserved) to defeat DNS rebinding between the guard check and httpx's own
+-    resolution. Returns (request_url, extra_headers) or None if unsafe.
+-
+-    HTTPS keeps the hostname (IP-pinning would break TLS SNI/cert validation);
+-    the pre-flight guard + the operator-trusted hub relay bound that residual.
++def _pin_target(
++    url: str, *, allow_private: bool | str,
++) -> tuple[str, dict[str, str], dict[str, str]] | None:
++    """Pin the connection to a freshly re-vetted IP to defeat DNS rebinding between the
++    guard check and httpx's own resolution. Returns (request_url, extra_headers,
++    extensions) or None if unsafe.
++
++    HTTPS used to keep the hostname, on the belief that pinning an IP breaks TLS SNI and
++    certificate validation; it does not: ``sni_hostname`` sends the name in the handshake
++    and the certificate is verified against it. Peer URLs are chosen by the peer, so the
++    HTTPS path was the rebinding window this function exists to close (the class of Vulnetix
++    GCVE-110-PYPI-2026-021946 in signal-hunt's peer probe).
+     """
+     parsed = urlparse(url)
+     host = parsed.hostname or ""
+     # `is True` on purpose: the "loopback" allowance still gets resolved and pinned below,
+     # because permitting loopback is not the same as declining to look.
+-    if allow_private is True or parsed.scheme != "http" or not host:
+-        return url, {}
++    if allow_private is True or parsed.scheme not in ("http", "https") or not host:
++        return url, {}, {}
+     ips = _resolved_ips(host)
+     if not ips:
+         return None
+@@ -259,11 +264,19 @@
+             return None
+     chosen = ips[0]
+     if str(chosen) == host:
+-        return url, {}
++        return url, {}, {}
++    try:
++        # Host and SNI carry the ASCII form; httpx cannot put a Unicode name in a header.
++        ascii_host = host.encode("idna").decode("ascii")
++    except UnicodeError:
++        return None
+     netloc = f"[{chosen}]" if chosen.version == 6 else str(chosen)
++    host_header = ascii_host
+     if parsed.port:
+         netloc = f"{netloc}:{parsed.port}"
+-    return parsed._replace(netloc=netloc).geturl(), {"Host": parsed.netloc}
++        host_header = f"{ascii_host}:{parsed.port}"
++    extensions = {"sni_hostname": ascii_host} if parsed.scheme == "https" else {}
++    return parsed._replace(netloc=netloc).geturl(), {"Host": host_header}, extensions
+ 
+ 
+ # ── numeric coercion ────────────────────────────────────────────────
+@@ -330,6 +343,10 @@
+ 
+ 
+ def _node_id(well_known: dict[str, Any], base_url: str) -> str:
++    from product_display import symmartys_identity_url
++
++    if symmartys_identity_url(base_url):
++        return "symmartys"
+     eco = well_known.get("ecosystem") if isinstance(well_known.get("ecosystem"), dict) else {}
+     candidate = ""
+     if isinstance(eco, dict) and isinstance(eco.get("project"), str):
+@@ -363,14 +380,15 @@
+     """Fetch JSON with SSRF guard, IP-pinning, hard deadline, size cap, JSON-only."""
+     if not url_is_safe(url, allow_private=allow_private):
+         return None
+-    pinned = _pin_http_target(url, allow_private=allow_private)
++    pinned = _pin_target(url, allow_private=allow_private)
+     if pinned is None:
+         return None
+-    req_url, extra_headers = pinned
++    req_url, extra_headers, extensions = pinned
+     headers = {"User-Agent": USER_AGENT, **extra_headers}
+ 
+     async def _do() -> Any | None:
+-        async with client.stream("GET", req_url, follow_redirects=False, headers=headers) as resp:
++        async with client.stream("GET", req_url, follow_redirects=False, headers=headers,
++                                 extensions=extensions or None) as resp:
+             if resp.status_code != 200:
+                 return None
+             # JSON-only — default-closed: a peer that omits Content-Type is rejected.
+@@ -547,7 +565,12 @@
+ 
+ def _norm_url(url: Any) -> str:
+     """One spelling for one host, so two peer lists agree about what is the same node."""
+-    text = str(url or "").strip().rstrip("/").lower()
++    from product_display import symmartys_identity_url
++
++    text = str(url or "").strip()
++    # Only comparison keys change; the observed URL and signed declaration stay
++    # verbatim on the node. Old peer gossip becomes an edge to the same provider.
++    text = (symmartys_identity_url(text) or text).rstrip("/").lower()
+     for prefix in ("https://", "http://"):
+         if text.startswith(prefix):
+             text = text[len(prefix):]
+@@ -785,11 +808,142 @@
+     return frozenset(part.strip() for part in raw.split(",") if part.strip())
+ 
+ 
++#: The capability every eSIM operator kit node lists (esim-kit/rails, contract esim.*@v1). A peer
++#: that sells it is drawn as an eSIM operator, whatever else its well-known says: an operator who
++#: installs the kit and announces to the hub is a seller in this economy, not a hub and not an
++#: oracle. Read from OUR hub's own catalogue, which only lists a capability after calling it.
++_ESIM_QUOTE_PREFIX = "esim.quote@"
++#: Where the kit puts the seller node on the operator's own domain (esim-kit/Caddyfile).
++_ESIM_HEALTH_PATH = "/agents/healthz"
++#: Opened from the card: how to become one.
++ESIM_KIT_URL = os.getenv("ALIEN_ESIM_KIT_URL", "https://esim.modelmarket.dev/kit")
++
++
++def _count(value: Any) -> int | None:
++    """A non-negative whole count from a peer, or None — counts are never fractions or bools."""
++    number = _num(value)
++    if number is None or number < 0 or number != int(number):
++        return None
++    return int(number)
++
++
++def esim_sellers_from_search(payload: Any) -> dict[str, dict[str, Any]]:
++    """{normalised seller url: what our hub knows about its eSIM listing} from a hub search.
++
++    Only `esim.quote@*` rows count, and only the hub's own fields are read: the seller's
++    name as the hub crawled it, its product id, trust, and the deliveries buyers confirmed
++    with signed receipts (`deliveries_30d`). Nothing the seller merely claims.
++    """
++    out: dict[str, dict[str, Any]] = {}
++    matches = payload.get("matches") if isinstance(payload, dict) else None
++    if not isinstance(matches, list):
++        return out
++    for row in matches:
++        if not isinstance(row, dict):
++            continue
++        if not str(row.get("capability_id") or "").startswith(_ESIM_QUOTE_PREFIX):
++            continue
++        key = _norm_url(row.get("source_hub"))
++        if not key or key in out:
++            continue
++        raw = row.get("deliveries_30d") if isinstance(row.get("deliveries_30d"), dict) else {}
++        deliveries = {k: _count(raw.get(k)) or 0 for k in ("confirmed", "distinct_buyers", "refunded")}
++        out[key] = {
++            "product_id": str(row.get("product_id") or "")[:80],
++            "name": str(row.get("source_hub_name") or "")[:80],
++            "trust_score": _num(row.get("trust_score")),
++            "deliveries_30d": deliveries,
++        }
++    return out
++
++
++async def _esim_sellers(client: httpx.AsyncClient, base: str, cfg: "DiscoveryConfig") -> dict[str, dict[str, Any]]:
++    """Ask our own hub which federation members sell eSIMs. Empty on any failure."""
++    payload = await _get_json(
++        client, f"{base}/ai-market/v2/search?intent=esim&limit=50&include_stale=true&min_trust=0",
++        allow_private=True,  # our own hub, operator-configured
++        timeout=cfg.timeout,
++    )
++    return esim_sellers_from_search(payload)
++
++
++def esim_operator_node(
++    *, node_id: str, canonical_id: str, label: str, base_url: str, description: str,
++    categories: list[str], metrics: dict[str, float | int], listing: dict[str, Any],
++    health: Any,
++) -> dict[str, Any]:
++    """The sphere of an eSIM operator running the kit, with what its card shows.
++
++    `health` is the seller node's own /agents/healthz: its mode (demo or selling), how many
++    offers and countries its catalogue holds, and how refunds are paid. Strictly typed here —
++    a peer's JSON reaches the browser only as counts, booleans and two known words.
++    """
++    health = health if isinstance(health, dict) else {}
++    offers = _count(health.get("offers"))
++    countries = _count(health.get("countries"))
++    demo = health.get("demo") if isinstance(health.get("demo"), bool) else None
++    selling = bool(health.get("paid_orders")) if isinstance(health.get("paid_orders"), bool) else None
++    refunds = health.get("refunds") if health.get("refunds") in ("automatic", "operator") else None
++    catalog = health.get("catalog") if isinstance(health.get("catalog"), dict) else {}
++    catalog_source = catalog.get("source") if catalog.get("source") in ("live", "snapshot") else None
++    deliveries = dict(listing.get("deliveries_30d") or {})
++    if not description:
++        reach = f"{countries} countries, {offers} offers" if countries and offers else "travel eSIMs"
++        mode = "demo: live prices, no sales" if demo is True else "sells to AI agents over x402" if demo is False else ""
++        description = f"eSIM operator running the eSIM operator kit: {reach}" + (f"; {mode}." if mode else ".")
++
++    metrics = dict(metrics)
++    if offers is not None:
++        metrics["offers"] = offers
++    if countries is not None:
++        metrics["countries"] = countries
++    metrics["deliveries_30d"] = deliveries.get("confirmed", 0)
++    metrics["buyers_30d"] = deliveries.get("distinct_buyers", 0)
++    metrics["refunds_30d"] = deliveries.get("refunded", 0)
++    trust = listing.get("trust_score")
++    if trust is not None:
++        metrics.setdefault("trust_score", trust)
++
++    return {
++        "id": node_id,
++        "canonical_id": canonical_id,
++        "label": label,
++        "group": "esim_operator",
++        "icon": "esim",
++        "role": "seller",
++        "url": base_url,
++        "description": description,
++        "metrics": metrics,
++        "status": "active" if health.get("ok") is True else "idle",
++        "position": _position_for(node_id),
++        "categories": categories,
++        "discovered": True,
++        "hop": 1,
++        "color": node_palette.color_for("esim_operator", categories, node_id=node_id),
++        "esim": {
++            "product_id": listing.get("product_id") or "",
++            "demo": demo,
++            "selling": selling,
++            "refunds": refunds,
++            "catalog": catalog_source,
++            "offers": offers,
++            "countries": countries,
++            "deliveries_30d": deliveries,
++            "site": base_url,
++            "kit_url": ESIM_KIT_URL,
++        },
++    }
++
++
+ async def _build_peer_node(
+     client: httpx.AsyncClient, peer: dict[str, Any], cfg: DiscoveryConfig,
+     *, hub_own_url: str = "", trust_declared_identity: bool = False,
++    esim: dict[str, Any] | None = None,
+ ) -> dict[str, Any] | None:
+     """Resolve one peer into a graph node (or None if not a match / unsafe).
++
++    ``esim`` is what our hub's catalogue says about this peer's eSIM listing (from
++    `_esim_sellers`), when it sells eSIMs: such a peer is drawn as an eSIM operator.
+ 
+     ``trust_declared_identity`` says the peer dict came from OUR hub's own
+     ``/ai-market/v2/federation/peers`` — the only source whose ``canonical_id`` may be
+@@ -826,7 +980,16 @@
+     is_hub = _is_peer_hub(well_known)
+     own_peers = well_known.get("peers")
+     has_own_peers = isinstance(own_peers, list) and len(own_peers) > 0
+-    if not (matched or is_hub):
++    ours = _estate(base) or _estate(hub_own_url)
++    foreign = bool(ours) and _estate(base_url) != ours
++    # A stranger OUR hub approved stays on the map whatever it advertises. While it knocked it
++    # was drawn from metadata alone (_build_pending_node); approval sent it through the
++    # relevance filter below, and a service that is neither an oracle-ish capability nor a hub
++    # vanished at the moment it was admitted (agent-exec.448c.org, 2026-10-29: protocols
++    # v1 + mcp, no categories). deserves_sphere draws every hop-1 peer; this is the same rule.
++    # Our own estate keeps the filter: those services are seeded nodes already.
++    approved_stranger = trust_declared_identity and foreign
++    if not (matched or is_hub or esim or approved_stranger):
+         return None
+     # `hub_version` alone over-matches: ATLAS reports 0.1.0 and GAIA reports one too, because
+     # every satellite is built on the hub's manifest shape — so that field on its own would
+@@ -849,8 +1012,7 @@
+     #   * somebody else's domain + hub_version  -> a hub, peers or no peers;
+     #   * our own domain + hub_version          -> a hub only if it federates with someone,
+     #                                              otherwise it stays the satellite it is.
+-    ours = _estate(base) or _estate(hub_own_url)
+-    foreign = bool(ours) and _estate(base_url) != ours
++    # (`ours` / `foreign` are computed above, where the relevance filter needs them too.)
+     render_as_hub = is_hub and (foreign or has_own_peers)
+ 
+     node_id = _node_id(well_known, base_url)
+@@ -877,9 +1039,10 @@
+     # ecosystem service convention. The distinction is already established
+     # above from the peer's own well-known document.
+     status = "idle"
++    # An eSIM operator's health is its seller node's, where the kit puts it.
++    health_url = f"{base_url}{_ESIM_HEALTH_PATH}" if esim else _health_url(base_url, is_hub=render_as_hub)
+     health = await _get_json(
+-        client, _health_url(base_url, is_hub=render_as_hub),
+-        allow_private=cfg.peer_allow_private, timeout=cfg.timeout,
++        client, health_url, allow_private=cfg.peer_allow_private, timeout=cfg.timeout,
+     )
+     if isinstance(health, dict):
+         status = "active"
+@@ -923,6 +1086,16 @@
+     # copy of a table is a copy that drifts — it already had, missing the apex rule the
+     # backend grew. Sending what was resolved here lets that copy wither into a fallback.
+     resolved_identity = canon or ""
++
++    if esim:
++        return esim_operator_node(
++            node_id=node_id, canonical_id=resolved_identity, label=label, base_url=base_url,
++            # A hub publishes no description of its own before aimarket-hub 3.15.28; the card then
++            # says what the seller is from its own numbers rather than "discovered node".
++            description=clip_description(well_known.get("description") or ""), categories=cat_list,
++            metrics={k: v for k, v in metrics.items() if k in ("capabilities", "trust_score")},
++            listing=esim, health=health,
++        )
+ 
+     if render_as_hub:
+         for key in ("capabilities_count", "federated_capabilities_count", "products_count"):
+@@ -1056,6 +1229,8 @@
+             if not isinstance(peers, list):
+                 return result
+             peers = peers[: cfg.max_peers]
++            # Which of them sell eSIMs, by our hub's own catalogue: drawn as eSIM operators.
++            esim_sellers = await _esim_sellers(client, base, cfg)
+             result["peer_count"] = len(peers)
+ 
+             sem = asyncio.Semaphore(cfg.concurrency)
+@@ -1072,6 +1247,7 @@
+                                 client, p, cfg, hub_own_url=own_identity,
+                                 # These came from the hub this monitor is pointed at.
+                                 trust_declared_identity=True,
++                                esim=esim_sellers.get(_norm_url(p.get("url"))),
+                             ),
+                             timeout=cfg.peer_deadline,
+                         )

@@ -1,0 +1,63 @@
+--- live-before/hub_affiliation.py
++++ live-after/hub_affiliation.py
+@@ -7,7 +7,8 @@
+ - Signal Hunt game → Signal Hunt Hub.
+ - Use Cases portal → Competing Lab Hub.
+ - Other competing-galaxy nodes → Competing Lab Hub (default lab edge).
+-- Auto-discovered federation peers → themselves, except eSIM operators: sellers in our catalogue.
++- Discovered hub suns → themselves; their children → their parent hub.
++- Discovered services → the listing hub, never made into hubs by affiliation.
+ - Everything else in the primary galaxy → AIMarket Hub (public edge).
+ 
+ ``HUB_URL`` / loopback ``:9083`` is the *API* poll target inside Docker. Operator
+@@ -90,6 +91,18 @@
+     lab_hub = _hub_ref(hid="competing_hub", label="Competing Lab Hub", url=lab)
+     hunt_hub = _hub_ref(hid="signal_hunt_hub", label="Signal Hunt Hub", url=hunt)
+ 
++    # Consume the role discovery resolved for the graph, rather than inventing a second
++    # definition of "hub" from `discovered`. A provider in a hub's system stays a provider.
++    peer_hubs = {
++        str(n["id"]): _hub_ref(
++            hid=str(n["id"]), label=str(n.get("label") or n["id"]), url=n.get("url"),
++        )
++        for n in nodes if isinstance(n, dict) and n.get("id")
++        and (n.get("role") == "hub" or n.get("group") in ("peer_hub", "pending_hub"))
++    }
++    parent_hubs = {**peer_hubs, "hub": primary_hub, "competing_hub": lab_hub,
++                   "signal_hunt_hub": hunt_hub}
++
+     for node in nodes:
+         if not isinstance(node, dict) or not node.get("id"):
+             continue
+@@ -121,6 +134,15 @@
+             )
+             continue
+ 
++        if nid in peer_hubs:
++            node["hub"] = dict(peer_hubs[nid])
++            continue
++
++        parent = node.get("parent_id")
++        if isinstance(parent, str) and parent in parent_hubs:
++            node["hub"] = dict(parent_hubs[parent])
++            continue
++
+         # Game belongs to Signal Hunt Hub; use portal to Competing Lab Hub.
+         if nid == "signal_hunt":
+             node["hub"] = dict(hunt_hub)
+@@ -140,15 +162,4 @@
+             node["hub"] = dict(primary_hub)
+             continue
+ 
+-        # A discovered HUB belongs to itself. An eSIM operator does not run a hub: it is a
+-        # seller in OUR hub's catalogue (that is how discovery found it), so it falls through
+-        # to the primary hub below — "this node is a hub" on a shop's card was simply wrong.
+-        if node.get("discovered") and url and node.get("group") != "esim_operator":
+-            node["hub"] = _hub_ref(
+-                hid=nid,
+-                label=str(node.get("label") or nid),
+-                url=url,
+-            )
+-            continue
+-
+         node["hub"] = dict(primary_hub)

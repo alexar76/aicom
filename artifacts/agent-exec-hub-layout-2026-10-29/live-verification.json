@@ -1,0 +1,111 @@
+{
+  "checked_at_utc": "2026-10-29T14:59:02.892916+00:00",
+  "health": {
+    "status": "ok",
+    "mode": "real",
+    "crypto_enabled": true,
+    "chain_context": true,
+    "realm_links": {
+      "realm": "live",
+      "other": {
+        "realm": "uni",
+        "map_url": "https://monitor-uni.modelmarket.dev/"
+      }
+    }
+  },
+  "agent_exec": {
+    "id": "agent-exec",
+    "canonical_id": "",
+    "label": "agent-exec",
+    "group": "peer_hub",
+    "icon": "hub",
+    "role": "hub",
+    "url": "https://agent-exec.448c.org",
+    "description": "Federated catalogue — AIMarket v1",
+    "metrics": {
+      "capabilities": 0,
+      "trust_score": 0.265
+    },
+    "status": "active",
+    "position": {
+      "x": 20.017,
+      "y": 27.213,
+      "z": 3.982
+    },
+    "categories": [],
+    "discovered": true,
+    "hub": {
+      "id": "agent-exec",
+      "label": "agent-exec",
+      "url": "https://agent-exec.448c.org"
+    },
+    "color": "#38e0ff",
+    "hop": 1
+  },
+  "distance_from_modelmarket": 34.016,
+  "foreign_hubs": [
+    {
+      "id": "industrial-platform-sentinel",
+      "label": "Industrial Platform Sentinel",
+      "group": "peer_hub",
+      "position": {
+        "x": -20.405,
+        "y": -27.213,
+        "z": -0.434
+      },
+      "distance_from_modelmarket": 34.016
+    },
+    {
+      "id": "attested-memory-hub",
+      "label": "Attested Memory Hub",
+      "group": "peer_hub",
+      "position": {
+        "x": -18.438,
+        "y": 13.606,
+        "z": -25.139
+      },
+      "distance_from_modelmarket": 34.015
+    },
+    {
+      "id": "independent-ai-hub",
+      "label": "Independent AI Hub",
+      "group": "peer_hub",
+      "position": {
+        "x": 23.431,
+        "y": -13.606,
+        "z": -20.565
+      },
+      "distance_from_modelmarket": 34.015
+    },
+    {
+      "id": "charon---liquidation-risk-for-the-side-that-borr",
+      "label": "CHARON — liquidation risk for the side that borrows",
+      "group": "peer_hub",
+      "position": {
+        "x": -3.694,
+        "y": 0.0,
+        "z": 33.814
+      },
+      "distance_from_modelmarket": 34.015
+    },
+    {
+      "id": "agent-exec",
+      "label": "agent-exec",
+      "group": "peer_hub",
+      "position": {
+        "x": 20.017,
+        "y": 27.213,
+        "z": 3.982
+      },
+      "distance_from_modelmarket": 34.016
+    }
+  ],
+  "changed_node_groups": [
+    "agent-exec"
+  ],
+  "visual_check": {
+    "result": "passed",
+    "screenshot": "live-agent-exec-hub.png",
+    "observed": "Cyan hub sun with orbit belts, PEER-ХАБ badge and АКТИВЕН status; separate from central Modelmarket system."
+  }
+}

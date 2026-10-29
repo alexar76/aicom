@@ -1,0 +1,159 @@
+[
+  {
+    "key": "monitor-health",
+    "url": "https://monitor.modelmarket.dev/api/health",
+    "method": "GET",
+    "at_utc": "2026-10-29T14:23:46.535350+00:00",
+    "status": 200,
+    "bytes": 176,
+    "sha256": "19a4fdba19f84b151ed3af6995791b3432cd25d97a51329aa584ee020d52c55b",
+    "summary": {
+      "status": "ok",
+      "mode": "real",
+      "crypto_enabled": true,
+      "chain_context": true,
+      "realm_links": {
+        "realm": "live",
+        "other": {
+          "realm": "uni",
+          "map_url": "https://monitor-uni.modelmarket.dev/"
+        }
+      }
+    }
+  },
+  {
+    "key": "monitor-topology",
+    "url": "https://monitor.modelmarket.dev/api/topology?mode=real",
+    "method": "GET",
+    "at_utc": "2026-10-29T14:23:46.535895+00:00",
+    "status": 200,
+    "bytes": 571413,
+    "sha256": "fb4f91359c47c9eebb0a5f96a6fbbb35c08b8a12bdefe090eb62796353e3e699",
+    "matches": [
+      {
+        "id": "agent-exec",
+        "canonical_id": "",
+        "label": "agent-exec",
+        "group": "oracle",
+        "icon": "oracle",
+        "url": "https://agent-exec.448c.org",
+        "description": "Federation peer — discovered node",
+        "metrics": {
+          "capabilities": 0,
+          "trust_score": 0.265
+        },
+        "status": "idle",
+        "position": {
+          "x": 1.2,
+          "y": 5.0,
+          "z": 1.0
+        },
+        "categories": [],
+        "discovered": true,
+        "hop": 1,
+        "color": "#8f4dff",
+        "hub": {
+          "id": "agent-exec",
+          "label": "agent-exec",
+          "url": "https://agent-exec.448c.org"
+        }
+      }
+    ],
+    "node_count": 83,
+    "matching_links": [
+      {
+        "source": "independent-ai-hub",
+        "target": "agent-exec",
+        "label": "shared peer",
+        "kind": "shared"
+      },
+      {
+        "source": "federation",
+        "target": "agent-exec",
+        "label": "Federation peer"
+      }
+    ]
+  },
+  {
+    "key": "monitor-audit",
+    "url": "https://monitor.modelmarket.dev/api/federation/audit",
+    "method": "GET",
+    "at_utc": "2026-10-29T14:23:46.536023+00:00",
+    "status": 200,
+    "bytes": 4668,
+    "sha256": "562f1c9b26065b9f4d7ca442e7f4bbc63f54b3dec59fb79e36ceeedf3f155827",
+    "matches": [
+      {
+        "id": "agent-exec",
+        "label": "agent-exec",
+        "group": "oracle",
+        "hop": 1,
+        "parent_id": null,
+        "verdict": "on_map",
+        "why": ""
+      }
+    ],
+    "audit_top_keys": [
+      "discovered",
+      "on_map",
+      "folded",
+      "collisions",
+      "defects",
+      "ok",
+      "rows",
+      "note"
+    ]
+  },
+  {
+    "key": "hub-peers",
+    "url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+    "method": "GET",
+    "at_utc": "2026-10-29T14:23:47.411212+00:00",
+    "status": 200,
+    "bytes": 18422,
+    "sha256": "4217ab4d86db60be3245f971e78727e3a74ee51364b48637fa5885ed1ea5aef0",
+    "matches": [
+      {
+        "url": "https://agent-exec.448c.org",
+        "name": "agent-exec",
+        "capabilities_count": 0,
+        "last_crawl": "2026-10-29T13:59:46Z",
+        "trust_score": 0.265,
+        "depth": 1,
+        "categories": [],
+        "well_known_url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+        "trusted": true,
+        "public_key": "dvoENalt1FhzSO54A6sF4c54fd0zwyZiP3ljGlYOlsU=",
+        "status": "active",
+        "pin_reject_reason": "",
+        "advertised_public_key": "",
+        "canonical_id": "",
+        "identity_key_matches": null,
+        "declared": {
+          "description": "",
+          "hub_version": "",
+          "id": "",
+          "mcp_endpoint": ""
+        }
+      }
+    ]
+  },
+  {
+    "key": "agent-exec-discovery",
+    "url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+    "method": "GET",
+    "at_utc": "2026-10-29T14:23:47.420321+00:00",
+    "status": 200,
+    "bytes": 185,
+    "sha256": "2b8c229a0359a2c7d98e400acd83fe32c1e84aeae39b6022ed9200e42cf7bb6c",
+    "summary": {
+      "name": "agent-exec",
+      "protocol_versions": [
+        "v1",
+        "mcp"
+      ],
+      "manifest_url": "https://agent-exec.448c.org/ai-market/manifest",
+      "signer_public_key": "dvoENalt1FhzSO54A6sF4c54fd0zwyZiP3ljGlYOlsU="
+    }
+  }
+]

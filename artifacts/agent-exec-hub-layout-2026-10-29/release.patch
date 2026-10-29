@@ -1,0 +1,80 @@
+--- live-container-before
++++ live-container-after
+@@ -589,23 +589,31 @@
+ 
+ 
+ 
+-def _is_peer_hub(well_known: dict[str, Any]) -> bool:
+-    """Does this peer run a hub, rather than being a single capability service?
+-
+-    Read from what the peer publishes about itself — `hub_version`, or a v2 entry in
+-    `protocol_versions` — never inferred from its URL or its categories. A hub that
+-    advertises no oracle-ish category used to be dropped by the relevance filter, so the one
+-    kind of peer whose whole purpose is to have peers of its own was the one kind the map
+-    could not show.
++def _peer_hub_protocol(well_known: dict[str, Any]) -> str:
++    """Recognise a peer's catalogue for MAP placement, not invoke transport.
++
++    A v1 catalogue with an explicit manifest has its own system to draw too. Requiring v2
++    made agent-exec a purple oracle inside our shelf, although its card already called it
++    a hub. Keep the protocol so its visual hub role cannot switch its health probe to v2.
++    A bare MCP/v1 service, name or category alone does not declare such a catalogue.
+     """
+     if not isinstance(well_known, dict):
+-        return False
++        return ""
+     if str(well_known.get("hub_version") or "").strip():
+-        return True
++        return "v2"
+     versions = well_known.get("protocol_versions")
+     if isinstance(versions, (list, tuple)):
+-        return any(str(v).strip().lower() in ("v2", "2", "2.0") for v in versions)
+-    return False
++        declared = {str(v).strip().lower() for v in versions}
++        if declared & {"v2", "2", "2.0"}:
++            return "v2"
++        manifest = well_known.get("manifest_url")
++        if declared & {"v1", "1", "1.0"} and isinstance(manifest, str) and _displayable_url(manifest):
++            return "v1"
++    return ""
++
++
++def _is_peer_hub(well_known: dict[str, Any]) -> bool:
++    return bool(_peer_hub_protocol(well_known))
+ 
+ 
+ def _attach_declaration(
+@@ -977,7 +985,8 @@
+         if isinstance(wk, dict):
+             well_known = wk
+     matched = _matches(categories, cfg.categories)
+-    is_hub = _is_peer_hub(well_known)
++    hub_protocol = _peer_hub_protocol(well_known)
++    is_hub = bool(hub_protocol)
+     own_peers = well_known.get("peers")
+     has_own_peers = isinstance(own_peers, list) and len(own_peers) > 0
+     ours = _estate(base) or _estate(hub_own_url)
+@@ -1040,7 +1049,12 @@
+     # above from the peer's own well-known document.
+     status = "idle"
+     # An eSIM operator's health is its seller node's, where the kit puts it.
+-    health_url = f"{base_url}{_ESIM_HEALTH_PATH}" if esim else _health_url(base_url, is_hub=render_as_hub)
++    if esim:
++        health_url = f"{base_url}{_ESIM_HEALTH_PATH}"
++    elif render_as_hub and hub_protocol == "v1":
++        health_url = f"{base_url}/health"
++    else:
++        health_url = _health_url(base_url, is_hub=render_as_hub)
+     health = await _get_json(
+         client, health_url, allow_private=cfg.peer_allow_private, timeout=cfg.timeout,
+     )
+@@ -1128,7 +1142,8 @@
+             "url": base_url,
+             "description": clip_description(
+                 well_known.get("description")
+-                or f"Federated hub — {int(metrics.get('peers', 0))} peers of its own"
++                or ("Federated catalogue — AIMarket v1" if hub_protocol == "v1"
++                    else f"Federated hub — {int(metrics.get('peers', 0))} peers of its own")
+             ),
+             "metrics": metrics,
+             "status": status,

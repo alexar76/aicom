@@ -1,0 +1,45 @@
+{
+  "observed_at_utc": "2026-10-29T13:39:17Z",
+  "scope": "Public pinned source verification of three price formatter commits. Only reviewed pure format_price FunctionDef ASTs executed; no third-party imports, services, network calls from the tested functions, purchases or messages.",
+  "result_ru": "В трёх указанных commits новые format_price проходят все 60 проверок. Прежний дефект RouteVerdict для 0.001 и 0.005 USDC в исходнике исправлен.",
+  "verified_commits": [
+    {
+      "repo": "QuincyGB/route-verdict",
+      "commit": "5a36f743d0b2b9b6dd42ee075f25d138e738e166",
+      "source": "https://github.com/QuincyGB/route-verdict/blob/5a36f743d0b2b9b6dd42ee075f25d138e738e166/app/parsers.py#L128",
+      "function_end_line": 156,
+      "cases_passed": 20
+    },
+    {
+      "repo": "QuincyGB/list-smith",
+      "commit": "7f2f66a82a7b553bfb9bed0b9146b83301a252ac",
+      "source": "https://github.com/QuincyGB/list-smith/blob/7f2f66a82a7b553bfb9bed0b9146b83301a252ac/app/parsers.py#L128",
+      "function_end_line": 156,
+      "cases_passed": 20
+    },
+    {
+      "repo": "QuincyGB/lock-smith",
+      "commit": "04a17d91d3226b9e2a5d16780f3a954fef8761d2",
+      "source": "https://github.com/QuincyGB/lock-smith/blob/04a17d91d3226b9e2a5d16780f3a954fef8761d2/app/parsers.py#L128",
+      "function_end_line": 158,
+      "cases_passed": 20
+    }
+  ],
+  "regression_examples": [
+    {"units": "1000", "usdc": "0.001", "old_routeverdict": "$0.00", "new_all_three": "$0.001"},
+    {"units": "5000", "usdc": "0.005", "old_routeverdict": "$0.01", "new_all_three": "$0.005"},
+    {"units": "1", "usdc": "0.000001", "old_routeverdict": "$0.00", "new_all_three": "$0.000001"},
+    {"units": "10001", "usdc": "0.010001", "old_routeverdict": "$0.01", "new_all_three": "$0.010001"}
+  ],
+  "precision_coverage_ru": "На каждый repo проверены 16 точных цен известного Base USDC (6 decimals): ноль, 1 микро-USDC, исходные 0.001 и 0.005, другие субценты, 0.010001 выше цента, обычные центы, целое значение и 123.456789. Ещё 4 случая проверяют unknown/invalid input: None, нечисловой amount, неизвестный asset и другая сеть. Это ограниченный набор тестов; не заявляется исчерпывающая проверка всех величин integer units или других токенов.",
+  "implementation_ru": "Новые функции используют Decimal для вычисления из units и fixed-point rendering. Убирают только лишние нули справа, сохраняя минимум два десятичных знака для обычной долларовой записи. RouteVerdict и ListSmith app/parsers.py идентичны по SHA-256.",
+  "historical_locksmith_note_ru": "До 04a17d9 у LockSmith уже была отдельная float-ветка для 0 < price < 0.01, сохранявшая до 6 знаков. Поэтому прежние два дефекта нельзя автоматически приписывать старому LockSmith. Новый commit делает Decimal-логику общей и сохраняет субцентовый остаток также выше 0.01.",
+  "production_deployment_verified": false,
+  "limits_ru": "Получение commits и исходников подтверждено прямыми публичными GET200. Web-open этих commits дал cache miss, который не считался отсутствием. Платные production outputs повторно не вызывались; заявление о deployment остаётся заявлением автора. Проверка нового contract diff находится у основного агента.",
+  "evidence": [
+    "commit-index.json",
+    "source-index.json",
+    "price-fix-reproduction.json",
+    "reproduce_price_fix.py"
+  ]
+}

@@ -1,0 +1,391 @@
+{
+  "method": "Only reviewed pure format_price FunctionDef AST nodes executed in memory; KNOWN_ASSET_DECIMALS loaded through ast.literal_eval. No third-party module imports, network, database, service startup, payments or messages.",
+  "old_baseline_examples": [
+    {
+      "units": "1",
+      "old_output": "$0.00",
+      "new_output": "$0.000001"
+    },
+    {
+      "units": "1000",
+      "old_output": "$0.00",
+      "new_output": "$0.001"
+    },
+    {
+      "units": "5000",
+      "old_output": "$0.01",
+      "new_output": "$0.005"
+    },
+    {
+      "units": "10001",
+      "old_output": "$0.01",
+      "new_output": "$0.010001"
+    }
+  ],
+  "precision_coverage": "16 exact-price cases per repository, covering zero, 1 micro-USDC, the original 0.001/0.005 regressions, sub-cent residue above 0.01, cent values and 123.456789; plus 4 unknown/invalid cases. This is bounded test coverage of known Base USDC (6 decimals), not an exhaustive claim for every integer magnitude or unknown token.",
+  "repositories": [
+    {
+      "repo": "route-verdict",
+      "commit": "5a36f743d0b2b9b6dd42ee075f25d138e738e166",
+      "source": "https://github.com/QuincyGB/route-verdict/blob/5a36f743d0b2b9b6dd42ee075f25d138e738e166/app/parsers.py#L128",
+      "function_start_line": 128,
+      "function_end_line": 156,
+      "source_sha256": "5b01dcb7c8dfa964167e5c7aa5b805678eab73b402543a3814893a08c8062771",
+      "known_asset_entries": 1,
+      "tests_passed": 20,
+      "tests": [
+        {
+          "units": "0",
+          "expected": "$0.00",
+          "actual": "$0.00"
+        },
+        {
+          "units": "1",
+          "expected": "$0.000001",
+          "actual": "$0.000001"
+        },
+        {
+          "units": "10",
+          "expected": "$0.00001",
+          "actual": "$0.00001"
+        },
+        {
+          "units": "100",
+          "expected": "$0.0001",
+          "actual": "$0.0001"
+        },
+        {
+          "units": "1000",
+          "expected": "$0.001",
+          "actual": "$0.001"
+        },
+        {
+          "units": "3000",
+          "expected": "$0.003",
+          "actual": "$0.003"
+        },
+        {
+          "units": "5000",
+          "expected": "$0.005",
+          "actual": "$0.005"
+        },
+        {
+          "units": "6000",
+          "expected": "$0.006",
+          "actual": "$0.006"
+        },
+        {
+          "units": "9999",
+          "expected": "$0.009999",
+          "actual": "$0.009999"
+        },
+        {
+          "units": "10000",
+          "expected": "$0.01",
+          "actual": "$0.01"
+        },
+        {
+          "units": "10001",
+          "expected": "$0.010001",
+          "actual": "$0.010001"
+        },
+        {
+          "units": "30000",
+          "expected": "$0.03",
+          "actual": "$0.03"
+        },
+        {
+          "units": "50000",
+          "expected": "$0.05",
+          "actual": "$0.05"
+        },
+        {
+          "units": "500000",
+          "expected": "$0.50",
+          "actual": "$0.50"
+        },
+        {
+          "units": "1000000",
+          "expected": "$1.00",
+          "actual": "$1.00"
+        },
+        {
+          "units": "123456789",
+          "expected": "$123.456789",
+          "actual": "$123.456789"
+        },
+        {
+          "units": null,
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "units": "not-a-number",
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "units": "1000",
+          "network": "eip155:8453",
+          "asset": "0x0000000000000000000000000000000000000001",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "units": "1000",
+          "network": "eip155:1",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "expected": null,
+          "actual": null
+        }
+      ]
+    },
+    {
+      "repo": "list-smith",
+      "commit": "7f2f66a82a7b553bfb9bed0b9146b83301a252ac",
+      "source": "https://github.com/QuincyGB/list-smith/blob/7f2f66a82a7b553bfb9bed0b9146b83301a252ac/app/parsers.py#L128",
+      "function_start_line": 128,
+      "function_end_line": 156,
+      "source_sha256": "5b01dcb7c8dfa964167e5c7aa5b805678eab73b402543a3814893a08c8062771",
+      "known_asset_entries": 1,
+      "tests_passed": 20,
+      "tests": [
+        {
+          "units": "0",
+          "expected": "$0.00",
+          "actual": "$0.00"
+        },
+        {
+          "units": "1",
+          "expected": "$0.000001",
+          "actual": "$0.000001"
+        },
+        {
+          "units": "10",
+          "expected": "$0.00001",
+          "actual": "$0.00001"
+        },
+        {
+          "units": "100",
+          "expected": "$0.0001",
+          "actual": "$0.0001"
+        },
+        {
+          "units": "1000",
+          "expected": "$0.001",
+          "actual": "$0.001"
+        },
+        {
+          "units": "3000",
+          "expected": "$0.003",
+          "actual": "$0.003"
+        },
+        {
+          "units": "5000",
+          "expected": "$0.005",
+          "actual": "$0.005"
+        },
+        {
+          "units": "6000",
+          "expected": "$0.006",
+          "actual": "$0.006"
+        },
+        {
+          "units": "9999",
+          "expected": "$0.009999",
+          "actual": "$0.009999"
+        },
+        {
+          "units": "10000",
+          "expected": "$0.01",
+          "actual": "$0.01"
+        },
+        {
+          "units": "10001",
+          "expected": "$0.010001",
+          "actual": "$0.010001"
+        },
+        {
+          "units": "30000",
+          "expected": "$0.03",
+          "actual": "$0.03"
+        },
+        {
+          "units": "50000",
+          "expected": "$0.05",
+          "actual": "$0.05"
+        },
+        {
+          "units": "500000",
+          "expected": "$0.50",
+          "actual": "$0.50"
+        },
+        {
+          "units": "1000000",
+          "expected": "$1.00",
+          "actual": "$1.00"
+        },
+        {
+          "units": "123456789",
+          "expected": "$123.456789",
+          "actual": "$123.456789"
+        },
+        {
+          "units": null,
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "units": "not-a-number",
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "units": "1000",
+          "network": "eip155:8453",
+          "asset": "0x0000000000000000000000000000000000000001",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "units": "1000",
+          "network": "eip155:1",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "expected": null,
+          "actual": null
+        }
+      ]
+    },
+    {
+      "repo": "lock-smith",
+      "commit": "04a17d91d3226b9e2a5d16780f3a954fef8761d2",
+      "source": "https://github.com/QuincyGB/lock-smith/blob/04a17d91d3226b9e2a5d16780f3a954fef8761d2/app/parsers.py#L128",
+      "function_start_line": 128,
+      "function_end_line": 158,
+      "source_sha256": "e765711a5a3583d6fd3c5d2c6ee0fab174248fb47320a49c8145e9ce6257ecfb",
+      "known_asset_entries": 1,
+      "tests_passed": 20,
+      "tests": [
+        {
+          "units": "0",
+          "expected": "$0.00",
+          "actual": "$0.00"
+        },
+        {
+          "units": "1",
+          "expected": "$0.000001",
+          "actual": "$0.000001"
+        },
+        {
+          "units": "10",
+          "expected": "$0.00001",
+          "actual": "$0.00001"
+        },
+        {
+          "units": "100",
+          "expected": "$0.0001",
+          "actual": "$0.0001"
+        },
+        {
+          "units": "1000",
+          "expected": "$0.001",
+          "actual": "$0.001"
+        },
+        {
+          "units": "3000",
+          "expected": "$0.003",
+          "actual": "$0.003"
+        },
+        {
+          "units": "5000",
+          "expected": "$0.005",
+          "actual": "$0.005"
+        },
+        {
+          "units": "6000",
+          "expected": "$0.006",
+          "actual": "$0.006"
+        },
+        {
+          "units": "9999",
+          "expected": "$0.009999",
+          "actual": "$0.009999"
+        },
+        {
+          "units": "10000",
+          "expected": "$0.01",
+          "actual": "$0.01"
+        },
+        {
+          "units": "10001",
+          "expected": "$0.010001",
+          "actual": "$0.010001"
+        },
+        {
+          "units": "30000",
+          "expected": "$0.03",
+          "actual": "$0.03"
+        },
+        {
+          "units": "50000",
+          "expected": "$0.05",
+          "actual": "$0.05"
+        },
+        {
+          "units": "500000",
+          "expected": "$0.50",
+          "actual": "$0.50"
+        },
+        {
+          "units": "1000000",
+          "expected": "$1.00",
+          "actual": "$1.00"
+        },
+        {
+          "units": "123456789",
+          "expected": "$123.456789",
+          "actual": "$123.456789"
+        },
+        {
+          "units": null,
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "units": "not-a-number",
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "units": "1000",
+          "network": "eip155:8453",
+          "asset": "0x0000000000000000000000000000000000000001",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "units": "1000",
+          "network": "eip155:1",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "expected": null,
+          "actual": null
+        }
+      ]
+    }
+  ],
+  "total_asserted_cases": 60,
+  "result": "All 60 cases passed; the two original sub-cent display regressions are fixed in source.",
+  "production_deployment_verified": false
+}
