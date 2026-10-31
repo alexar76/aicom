@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-30",
+  "evidence_type": "manual observations of rendered UI through cua_repl; not raw HTTP captures",
+  "observations": [
+    {
+      "surface": "Chrome native UI, before stop and resume",
+      "url": "https://www.reddit.com/search/?q=%22modelmarket.dev%22&type=posts",
+      "query": "\"modelmarket.dev\"",
+      "result": "The rendered Posts search displayed an explicit no-results message.",
+      "scope": "One exact posts query only; not all Reddit and not comments."
+    },
+    {
+      "surface": "Chrome native UI, before stop and resume",
+      "url": "https://x.com/explore",
+      "result": "Redirected to X login/onboarding. Native X search was not executed."
+    },
+    {
+      "surface": "IAB, after resume",
+      "url": "https://www.reddit.com/search/?q=%22modelmarket.dev%22&type=comments",
+      "query": "\"modelmarket.dev\"",
+      "result": "Prove your humanity challenge; comment search results were not served."
+    },
+    {
+      "surface": "IAB, after resume",
+      "url": "https://bsky.app/search?q=%22modelmarket.dev%22",
+      "query": "\"modelmarket.dev\"",
+      "result": "Search is currently unavailable when logged out. Search results were not served."
+    }
+  ],
+  "actions": "Read-only navigation and search. No login, account switching, CAPTCHA solving, posting, payments or installs. Unrelated browser content and account details were not retained."
+}

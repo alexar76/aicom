@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "provider_key_matches_receipt": true,
+    "provider_ed25519_valid": true,
+    "hub_key_rejected": true,
+    "tampered_price_rejected": true,
+    "chain_transaction_succeeded": true,
+    "correct_chain": true,
+    "correct_transaction_sender": true,
+    "correct_token_contract": true,
+    "exact_usdc_transfer_event": true,
+    "invoice_nonce_used_on_chain": true
+  },
+  "cost": {
+    "service_usdc": "0.001",
+    "network_fee_eth": "5.02840259518E-7",
+    "eth_usd_recorded": "2236.67236114",
+    "total_usd_at_recorded_rate": "0.00212468891053237541833052"
+  },
+  "signature_scope": "Ed25519 invoke receipt; no independent ML-DSA verification; v1 receipt does not cryptographically bind weather payload or payment transaction"
+}

@@ -1,0 +1,100 @@
+{
+  "feeds": [
+    {
+      "capture": "quincy-feed-live.raw",
+      "rows": 16,
+      "modelmarket_rows": [
+        {
+          "checked_at": "2026-10-29T19:04:42Z",
+          "current": {
+            "amount": "1000",
+            "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+            "description_hash": "4cf8ddac1f2d4c72d1d18eecdae6c3a4f0bc1be01c2728848806e83ad5b462c2",
+            "network": "eip155:8453",
+            "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+            "schema_hash": "7cbfedb05602b8faeebb36fd7e2bf90592a5726292ed061b0e9de7d1e1c39ec6",
+            "status_code": 402
+          },
+          "kind": "x402",
+          "url": "https://modelmarket.dev/x402/histor-check",
+          "watch_id": "modelmarket-survey"
+        },
+        {
+          "checked_at": "2026-10-29T11:50:43Z",
+          "current": {
+            "amount": "1000",
+            "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+            "description_hash": "4cf8ddac1f2d4c72d1d18eecdae6c3a4f0bc1be01c2728848806e83ad5b462c2",
+            "network": "eip155:8453",
+            "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+            "schema_hash": "7cbfedb05602b8faeebb36fd7e2bf90592a5726292ed061b0e9de7d1e1c39ec6",
+            "status_code": 402
+          },
+          "kind": "x402",
+          "url": "https://modelmarket.dev/x402/histor-check",
+          "watch_id": "alexar76-independent-2026-10-29-6ef0db13d7144daa97e039a07209587f"
+        }
+      ]
+    },
+    {
+      "capture": "quincy-feed-v2-live.raw",
+      "rows": 16,
+      "modelmarket_rows": [
+        {
+          "corrections": [],
+          "prev_hash": "6a8afb999538e787e3345fdda19df65105c9820f5bd0f1dc2d6d87d82d6310e1",
+          "record": {
+            "checked_at": "2026-10-29T19:04:42Z",
+            "current": {
+              "amount": "1000",
+              "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+              "description_hash": "4cf8ddac1f2d4c72d1d18eecdae6c3a4f0bc1be01c2728848806e83ad5b462c2",
+              "network": "eip155:8453",
+              "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+              "schema_hash": "7cbfedb05602b8faeebb36fd7e2bf90592a5726292ed061b0e9de7d1e1c39ec6",
+              "status_code": 402
+            },
+            "kind": "x402",
+            "url": "https://modelmarket.dev/x402/histor-check",
+            "watch_id": "modelmarket-survey"
+          },
+          "record_hash": "61ebc2a31d3def93ac0ef366ee6ee95dc40c07a3fa1e07f7105cd7b033281f1c",
+          "record_id": "rec_61ebc2a31d3def93ac0ef366",
+          "schema_version": 1,
+          "seq": 12
+        },
+        {
+          "corrections": [],
+          "prev_hash": "6fb9c9e65f077e8262d22134bf7a2561d2d762bfaadb38485b87b5725e89b31d",
+          "record": {
+            "checked_at": "2026-10-29T11:50:43Z",
+            "current": {
+              "amount": "1000",
+              "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+              "description_hash": "4cf8ddac1f2d4c72d1d18eecdae6c3a4f0bc1be01c2728848806e83ad5b462c2",
+              "network": "eip155:8453",
+              "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+              "schema_hash": "7cbfedb05602b8faeebb36fd7e2bf90592a5726292ed061b0e9de7d1e1c39ec6",
+              "status_code": 402
+            },
+            "kind": "x402",
+            "url": "https://modelmarket.dev/x402/histor-check",
+            "watch_id": "alexar76-independent-2026-10-29-6ef0db13d7144daa97e039a07209587f"
+          },
+          "record_hash": "d4d2a2ba009e0dff651a0c61c634ff54c49e3341775db32e199f754ce68dd50c",
+          "record_id": "rec_d4d2a2ba009e0dff651a0c61",
+          "schema_version": 1,
+          "seq": 5
+        }
+      ]
+    }
+  ],
+  "health": {
+    "ok": true,
+    "service": "route-verdict",
+    "storage": {
+      "check_store": "persistent",
+      "check_db_path": "/data/route-verdict.db"
+    }
+  }
+}

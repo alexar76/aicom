@@ -1,0 +1,143 @@
+{
+  "id": "a2at_9dc86a20ef6ce5f47a36480e",
+  "contextId": "61d97036-b8d6-406d-8726-e4fa6e0b1b8d",
+  "status": {
+    "state": "TASK_STATE_COMPLETED",
+    "timestamp": "2026-10-31T04:38:25.846Z",
+    "message": {
+      "messageId": "a2am_8fea4ec37f3c8298",
+      "contextId": "61d97036-b8d6-406d-8726-e4fa6e0b1b8d",
+      "taskId": "a2at_9dc86a20ef6ce5f47a36480e",
+      "role": "ROLE_AGENT",
+      "parts": [
+        {
+          "text": "gaia.weather.read@v1 completed",
+          "mediaType": "text/plain"
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "artifactId": "result",
+      "name": "result",
+      "description": "What gaia.weather.read@v1 returned",
+      "parts": [
+        {
+          "data": null,
+          "mediaType": "application/json"
+        }
+      ]
+    },
+    {
+      "artifactId": "aimarket-receipt",
+      "name": "aimarket-receipt",
+      "description": "The signed gateway receipt for this call",
+      "parts": [
+        {
+          "data": {
+            "nonce": "685eef41507686f1",
+            "product_id": "gaia.gateway",
+            "capability_id": "gaia.weather.read@v1",
+            "price_usd": 0.001,
+            "timestamp": "2026-10-31T04:38:25Z",
+            "success": true,
+            "latency_ms": 14.64,
+            "signature": {
+              "algorithm": "ed25519",
+              "public_key": "nXqEvIbWv+rA8TASY0GqGWZi/OPazT0HM1LQTrRXemg=",
+              "value": "n9V0gide5NxZ4LITEBfJ1BlN7XSwuGQWJgwoRZfzj983xlaEvyHXJufQ883tC8D6Aq+huyw+S4lzAI/zXkeeAw==",
+              "pq_algorithm": "ml-dsa-65",
+              "pq_public_key": "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",
+              "pq_value": "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"
+            }
+          },
+          "mediaType": "application/json"
+        }
+      ],
+      "metadata": {
+        "sourceHub": "https://iot.modelmarket.dev",
+        "signerWellKnown": "https://iot.modelmarket.dev/.well-known/ai-market.json"
+      }
+    },
+    {
+      "artifactId": "provenance",
+      "name": "provenance",
+      "description": "The AWR/2 work receipt for this call",
+      "parts": [
+        {
+          "data": {
+            "receipt_id": "urn:uuid:8c55facc-3674-40ad-ba8c-e06a38cd0675",
+            "verify_url": "https://modelmarket.dev/ai-market/v2/p/provenance/verify/urn:uuid:8c55facc-3674-40ad-ba8c-e06a38cd0675",
+            "receipt_url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:8c55facc-3674-40ad-ba8c-e06a38cd0675",
+            "verifier_url": "https://verify.modelmarket.dev",
+            "awr_version": "2.0.0",
+            "issuer": "did:key:z6MkkCADReBRLTMEqSV7REQ399ujjFPb8UFBSryAC7SPv6LX",
+            "digest_sri": "sha256-Am1jS6EqHIwk4jeETarkrbaCJ0AMooDGv3EQKgKVxLg="
+          },
+          "mediaType": "application/json"
+        }
+      ],
+      "metadata": {
+        "digest_sri": "sha256-Am1jS6EqHIwk4jeETarkrbaCJ0AMooDGv3EQKgKVxLg=",
+        "receipt_url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:8c55facc-3674-40ad-ba8c-e06a38cd0675",
+        "verify_url": "https://modelmarket.dev/ai-market/v2/p/provenance/verify/urn:uuid:8c55facc-3674-40ad-ba8c-e06a38cd0675"
+      }
+    }
+  ],
+  "history": [
+    {
+      "messageId": "61d97036-b8d6-406d-8726-e4fa6e0b1b8d",
+      "contextId": "61d97036-b8d6-406d-8726-e4fa6e0b1b8d",
+      "taskId": "a2at_9dc86a20ef6ce5f47a36480e",
+      "role": "ROLE_USER",
+      "parts": [
+        {
+          "data": {
+            "invoke": {
+              "product_id": "gaia.gateway",
+              "capability_id": "gaia.weather.read@v1",
+              "source_hub": "https://iot.modelmarket.dev"
+            }
+          },
+          "mediaType": "application/json",
+          "metadata": {
+            "aimarket.redacted": "input and payment are not stored"
+          }
+        }
+      ]
+    },
+    {
+      "messageId": "a2am_8fea4ec37f3c8298",
+      "contextId": "61d97036-b8d6-406d-8726-e4fa6e0b1b8d",
+      "taskId": "a2at_9dc86a20ef6ce5f47a36480e",
+      "role": "ROLE_AGENT",
+      "parts": [
+        {
+          "text": "gaia.weather.read@v1 completed",
+          "mediaType": "text/plain"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "aimarket": {
+      "capability": {
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.weather.read@v1",
+        "source_hub": "https://iot.modelmarket.dev"
+      },
+      "price_usd": 0.0,
+      "latency_ms": 14.64,
+      "routed_via": "https://modelmarket.dev",
+      "sandbox": {
+        "sandbox": true,
+        "remaining": 3,
+        "used": 2,
+        "max_trials": 5
+      }
+    }
+  },
+  "receipt_verified": true,
+  "receipt_verify_reason": "ok"
+}

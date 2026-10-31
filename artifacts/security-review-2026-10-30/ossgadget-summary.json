@@ -1,0 +1,1621 @@
+{
+  "scanner": "OSSGadget 0.2.38",
+  "runtime": "dotnet10 roll-forward from net8",
+  "rules": {
+    "BD000702 Backdoor: Data Exfiltration (Environment)": 3330,
+    "BD000600 Backdoor: LOLBAS: Windows Indicator": 6888,
+    "BD000610 Backdoor: LOLBAS: Linux Indicator": 34346,
+    "BD000700 Backdoor: Data Exfiltration": 30440,
+    "BD000701 Backdoor: Data Exfiltration (Tokens)": 3603,
+    "BD000800 Backdoor: Obfuscation": 1128,
+    "BD000704 Backdoor: Data Exfiltration (Hostname)": 535,
+    "BD000804 Backdoor: Long Strings": 95783,
+    "BD000703 Backdoor: Data Exfiltration (Username)": 17,
+    "BD000801 Backdoor: Executing Obfuscated Code": 40,
+    "BD000805 Backdoor: Long Binary Strings": 17,
+    "BD000705 Backdoor: Data Exfiltration (DNS)": 4,
+    "BD000104 Backdoor: Curl Bashing": 7
+  },
+  "source_inventory": "source-inventory.json",
+  "results": 176138,
+  "files_with_findings": 4239,
+  "top_files": [
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/bot_borrowers_base.json",
+      21721
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/histor/histor/curated.json",
+      21003
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_base.json",
+      13197
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/beefy_all.json",
+      11544
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_mantle.json",
+      9336
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_polygon.json",
+      7484
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_ethereum.json",
+      6649
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/bot_borrowers_arbitrum.json",
+      4340
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_arbitrum.json",
+      2245
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/bot_c2_borrowers_base_moonwell.json",
+      1861
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/beefy_harvests.json",
+      1688
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_hyperevm.json",
+      1594
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_soneium.json",
+      1464
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_linea.json",
+      1226
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_zksync.json",
+      1019
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/modelmarket-blog/posts/we-improved-wardens-warnings-twelve-rechecks-changed-no-choices/study/analysis.json",
+      947
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/targeted_avalanche.json",
+      906
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_optimism.json",
+      844
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/mw_borrowers.json",
+      743
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_unichain.json",
+      721
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/discover_sonic.json",
+      520
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/beefy_payouts.json",
+      400
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/replay_moonwell-base.json",
+      360
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/replay_morpho-base.json",
+      360
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/scripts/ecosystem_alert.py",
+      310
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/scripts/mirror_satellites.sh",
+      285
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/independent/charon-liquidator/data/targeted_bsc.json",
+      282
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/agents/qa.py",
+      268
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/alien-monitor/backend/main.py",
+      257
+    ],
+    [
+      "/private/tmp/aicom-security-review-20261030/source/atlas/atlas/aggregator.py",
+      247
+    ]
+  ],
+  "examples": [
+    {
+      "rule": {
+        "id": "BD000702"
+      },
+      "message": {
+        "text": "Backdoor: Data Exfiltration (Environment)",
+        "id": "BD000702"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/src/app/page.tsx"
+            },
+            "region": {
+              "startLine": 30,
+              "startColumn": 20,
+              "endLine": 30,
+              "endColumn": 31,
+              "snippet": {
+                "text": "          </p>\n          <div className=\"pointer-events-auto mt-8 flex flex-wrap gap-3\">\n            <a\n              href={process.env.NEXT_PUBLIC_BLIP_URL || \"http://localhost:3080\"}\n              className=\"bg-[#c8ff3a] px-6 py-3 text-[12px] uppercase tracking-[0.12em] text-[#111]\"\n            >\n              {t(\"home.hatch\")}\n",
+                "rendered": {
+                  "text": "          </p>\n          <div className=\"pointer-events-auto mt-8 flex flex-wrap gap-3\">\n            <a\n              href={process.env.NEXT_PUBLIC_BLIP_URL || \"http://localhost:3080\"}\n              className=\"bg-[#c8ff3a] px-6 py-3 text-[12px] uppercase tracking-[0.12em] text-[#111]\"\n            >\n              {t(\"home.hatch\")}\n",
+                  "markdown": "`          </p>\n          <div className=\"pointer-events-auto mt-8 flex flex-wrap gap-3\">\n            <a\n              href={process.env.NEXT_PUBLIC_BLIP_URL || \"http://localhost:3080\"}\n              className=\"bg-[#c8ff3a] px-6 py-3 text-[12px] uppercase tracking-[0.12em] text-[#111]\"\n            >\n              {t(\"home.hatch\")}\n`"
+                }
+              },
+              "sourceLanguage": "typescriptreact"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 2,
+        "Confidence": 4
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/src/app/page.tsx"
+            },
+            "region": {
+              "startLine": 76,
+              "startColumn": 109,
+              "endLine": 76,
+              "endColumn": 113,
+              "snippet": {
+                "text": "              >\n                <div className=\"mb-5 grid h-32 grid-cols-3 gap-1 overflow-hidden\">\n                  {roster.slice(0, 3).map((m) => (\n                    <span key={m.id} className=\"overflow-hidden\" style={{ background: `radial-gradient(circle at 50% 55%, ${m.accent}33, ${m.color}22 75%, #100e0d)` }}>\n                      <img src={`/dex/${m.id}.webp`} alt=\"\" width={160} height={160} loading=\"lazy\" decoding=\"async\" className=\"h-full w-full object-contain transition-transform duration-200 group-hover:scale-110\" />\n                    </span>\n                  ))}\n",
+                "rendered": {
+                  "text": "              >\n                <div className=\"mb-5 grid h-32 grid-cols-3 gap-1 overflow-hidden\">\n                  {roster.slice(0, 3).map((m) => (\n                    <span key={m.id} className=\"overflow-hidden\" style={{ background: `radial-gradient(circle at 50% 55%, ${m.accent}33, ${m.color}22 75%, #100e0d)` }}>\n                      <img src={`/dex/${m.id}.webp`} alt=\"\" width={160} height={160} loading=\"lazy\" decoding=\"async\" className=\"h-full w-full object-contain transition-transform duration-200 group-hover:scale-110\" />\n                    </span>\n                  ))}\n",
+                  "markdown": "`              >\n                <div className=\"mb-5 grid h-32 grid-cols-3 gap-1 overflow-hidden\">\n                  {roster.slice(0, 3).map((m) => (\n                    <span key={m.id} className=\"overflow-hidden\" style={{ background: `radial-gradient(circle at 50% 55%, ${m.accent}33, ${m.color}22 75%, #100e0d)` }}>\n                      <img src={`/dex/${m.id}.webp`} alt=\"\" width={160} height={160} loading=\"lazy\" decoding=\"async\" className=\"h-full w-full object-contain transition-transform duration-200 group-hover:scale-110\" />\n                    </span>\n                  ))}\n`"
+                }
+              },
+              "sourceLanguage": "typescriptreact"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/src/app/layout.tsx"
+            },
+            "region": {
+              "startLine": 18,
+              "startColumn": 63,
+              "endLine": 18,
+              "endColumn": 67,
+              "snippet": {
+                "text": "      <body className=\"antialiased\">\n        <Script src=\"https://telegram.org/js/telegram-web-app.js\" strategy=\"afterInteractive\" />\n        <SessionBoot />\n        {/* Every screen can call useI18n, so the provider sits at the root rather than\n            around one branch. It sets <html lang> to the chosen locale on the client;\n            the server render ships \"en\", which is why suppressHydrationWarning is on\n            the <html> element above. */}\n",
+                "rendered": {
+                  "text": "      <body className=\"antialiased\">\n        <Script src=\"https://telegram.org/js/telegram-web-app.js\" strategy=\"afterInteractive\" />\n        <SessionBoot />\n        {/* Every screen can call useI18n, so the provider sits at the root rather than\n            around one branch. It sets <html lang> to the chosen locale on the client;\n            the server render ships \"en\", which is why suppressHydrationWarning is on\n            the <html> element above. */}\n",
+                  "markdown": "`      <body className=\"antialiased\">\n        <Script src=\"https://telegram.org/js/telegram-web-app.js\" strategy=\"afterInteractive\" />\n        <SessionBoot />\n        {/* Every screen can call useI18n, so the provider sits at the root rather than\n            around one branch. It sets <html lang> to the chosen locale on the client;\n            the server render ships \"en\", which is why suppressHydrationWarning is on\n            the <html> element above. */}\n`"
+                }
+              },
+              "sourceLanguage": "typescriptreact"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000610"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Linux Indicator",
+        "id": "BD000610"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/src/app/layout.tsx"
+            },
+            "region": {
+              "startLine": 18,
+              "startColumn": 17,
+              "endLine": 18,
+              "endColumn": 25,
+              "snippet": {
+                "text": "      <body className=\"antialiased\">\n        <Script src=\"https://telegram.org/js/telegram-web-app.js\" strategy=\"afterInteractive\" />\n        <SessionBoot />\n        {/* Every screen can call useI18n, so the provider sits at the root rather than\n            around one branch. It sets <html lang> to the chosen locale on the client;\n            the server render ships \"en\", which is why suppressHydrationWarning is on\n            the <html> element above. */}\n",
+                "rendered": {
+                  "text": "      <body className=\"antialiased\">\n        <Script src=\"https://telegram.org/js/telegram-web-app.js\" strategy=\"afterInteractive\" />\n        <SessionBoot />\n        {/* Every screen can call useI18n, so the provider sits at the root rather than\n            around one branch. It sets <html lang> to the chosen locale on the client;\n            the server render ships \"en\", which is why suppressHydrationWarning is on\n            the <html> element above. */}\n",
+                  "markdown": "`      <body className=\"antialiased\">\n        <Script src=\"https://telegram.org/js/telegram-web-app.js\" strategy=\"afterInteractive\" />\n        <SessionBoot />\n        {/* Every screen can call useI18n, so the provider sits at the root rather than\n            around one branch. It sets <html lang> to the chosen locale on the client;\n            the server render ships \"en\", which is why suppressHydrationWarning is on\n            the <html> element above. */}\n`"
+                }
+              },
+              "sourceLanguage": "typescriptreact"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000610"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Linux Indicator",
+        "id": "BD000610"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/src/app/layout.tsx"
+            },
+            "region": {
+              "startLine": 2,
+              "startColumn": 6,
+              "endLine": 2,
+              "endColumn": 14,
+              "snippet": {
+                "text": "import type { Metadata } from \"next\";\nimport Script from \"next/script\";\nimport { SessionBoot } from \"@/components/session/SessionBoot\";\nimport { I18nProvider } from \"@/i18n\";\nimport \"./globals.css\";\n",
+                "rendered": {
+                  "text": "import type { Metadata } from \"next\";\nimport Script from \"next/script\";\nimport { SessionBoot } from \"@/components/session/SessionBoot\";\nimport { I18nProvider } from \"@/i18n\";\nimport \"./globals.css\";\n",
+                  "markdown": "`import type { Metadata } from \"next\";\nimport Script from \"next/script\";\nimport { SessionBoot } from \"@/components/session/SessionBoot\";\nimport { I18nProvider } from \"@/i18n\";\nimport \"./globals.css\";\n`"
+                }
+              },
+              "sourceLanguage": "typescriptreact"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000700"
+      },
+      "message": {
+        "text": "Backdoor: Data Exfiltration",
+        "id": "BD000700"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/render_glb_stills.py"
+            },
+            "region": {
+              "startLine": 37,
+              "startColumn": 26,
+              "endLine": 37,
+              "endColumn": 31,
+              "snippet": {
+                "text": "\n\ndef shot(path, location, target, scene):\n    cam = bpy.data.objects.get(\"Still cam\") or bpy.data.objects.new(\"Still cam\", bpy.data.cameras.new(\"Still cam\"))\n    if cam.name not in bpy.context.scene.collection.objects:\n        bpy.context.scene.collection.objects.link(cam)\n    cam.location = location\n",
+                "rendered": {
+                  "text": "\n\ndef shot(path, location, target, scene):\n    cam = bpy.data.objects.get(\"Still cam\") or bpy.data.objects.new(\"Still cam\", bpy.data.cameras.new(\"Still cam\"))\n    if cam.name not in bpy.context.scene.collection.objects:\n        bpy.context.scene.collection.objects.link(cam)\n    cam.location = location\n",
+                  "markdown": "`\n\ndef shot(path, location, target, scene):\n    cam = bpy.data.objects.get(\"Still cam\") or bpy.data.objects.new(\"Still cam\", bpy.data.cameras.new(\"Still cam\"))\n    if cam.name not in bpy.context.scene.collection.objects:\n        bpy.context.scene.collection.objects.link(cam)\n    cam.location = location\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 2,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000700"
+      },
+      "message": {
+        "text": "Backdoor: Data Exfiltration",
+        "id": "BD000700"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 738,
+              "startColumn": 30,
+              "endLine": 738,
+              "endColumn": 35,
+              "snippet": {
+                "text": "\n\ndef glow(mat, color, strength=0.55):\n    bsdf = mat.node_tree.nodes.get(\"Principled BSDF\")\n    if bsdf and \"Emission Color\" in bsdf.inputs:\n        bsdf.inputs[\"Emission Color\"].default_value = (*color, 1)\n        bsdf.inputs[\"Emission Strength\"].default_value = strength\n",
+                "rendered": {
+                  "text": "\n\ndef glow(mat, color, strength=0.55):\n    bsdf = mat.node_tree.nodes.get(\"Principled BSDF\")\n    if bsdf and \"Emission Color\" in bsdf.inputs:\n        bsdf.inputs[\"Emission Color\"].default_value = (*color, 1)\n        bsdf.inputs[\"Emission Strength\"].default_value = strength\n",
+                  "markdown": "`\n\ndef glow(mat, color, strength=0.55):\n    bsdf = mat.node_tree.nodes.get(\"Principled BSDF\")\n    if bsdf and \"Emission Color\" in bsdf.inputs:\n        bsdf.inputs[\"Emission Color\"].default_value = (*color, 1)\n        bsdf.inputs[\"Emission Strength\"].default_value = strength\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 2,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 1029,
+              "startColumn": 62,
+              "endLine": 1029,
+              "endColumn": 66,
+              "snippet": {
+                "text": "    # hoop on a stand. Laid flat and sized to the body it reads as a collar.\n    # Squashing the torus in y was the right instinct and still left half of it in the\n    # waistcoat: a body is not an ellipse of one fixed ratio at every height.\n    # Raised from 0.24 to just above the waistcoat's top edge. At the old height the\n    # frontmost thing was the flat velvet disc, so the band followed ITS outline \u2014 a\n    # straight gold rod laid across the chest. Above it the silhouette is the body and\n    # the jaw, which are round, and the collar curves the way a collar does.\n",
+                "rendered": {
+                  "text": "    # hoop on a stand. Laid flat and sized to the body it reads as a collar.\n    # Squashing the torus in y was the right instinct and still left half of it in the\n    # waistcoat: a body is not an ellipse of one fixed ratio at every height.\n    # Raised from 0.24 to just above the waistcoat's top edge. At the old height the\n    # frontmost thing was the flat velvet disc, so the band followed ITS outline \u2014 a\n    # straight gold rod laid across the chest. Above it the silhouette is the body and\n    # the jaw, which are round, and the collar curves the way a collar does.\n",
+                  "markdown": "`    # hoop on a stand. Laid flat and sized to the body it reads as a collar.\n    # Squashing the torus in y was the right instinct and still left half of it in the\n    # waistcoat: a body is not an ellipse of one fixed ratio at every height.\n    # Raised from 0.24 to just above the waistcoat's top edge. At the old height the\n    # frontmost thing was the flat velvet disc, so the band followed ITS outline \u2014 a\n    # straight gold rod laid across the chest. Above it the silhouette is the body and\n    # the jaw, which are round, and the collar curves the way a collar does.\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 1028,
+              "startColumn": 60,
+              "endLine": 1028,
+              "endColumn": 64,
+              "snippet": {
+                "text": "    # Upright torus again: the baron's \"collar\" hung in front of his waistcoat like a\n    # hoop on a stand. Laid flat and sized to the body it reads as a collar.\n    # Squashing the torus in y was the right instinct and still left half of it in the\n    # waistcoat: a body is not an ellipse of one fixed ratio at every height.\n    # Raised from 0.24 to just above the waistcoat's top edge. At the old height the\n    # frontmost thing was the flat velvet disc, so the band followed ITS outline \u2014 a\n    # straight gold rod laid across the chest. Above it the silhouette is the body and\n",
+                "rendered": {
+                  "text": "    # Upright torus again: the baron's \"collar\" hung in front of his waistcoat like a\n    # hoop on a stand. Laid flat and sized to the body it reads as a collar.\n    # Squashing the torus in y was the right instinct and still left half of it in the\n    # waistcoat: a body is not an ellipse of one fixed ratio at every height.\n    # Raised from 0.24 to just above the waistcoat's top edge. At the old height the\n    # frontmost thing was the flat velvet disc, so the band followed ITS outline \u2014 a\n    # straight gold rod laid across the chest. Above it the silhouette is the body and\n",
+                  "markdown": "`    # Upright torus again: the baron's \"collar\" hung in front of his waistcoat like a\n    # hoop on a stand. Laid flat and sized to the body it reads as a collar.\n    # Squashing the torus in y was the right instinct and still left half of it in the\n    # waistcoat: a body is not an ellipse of one fixed ratio at every height.\n    # Raised from 0.24 to just above the waistcoat's top edge. At the old height the\n    # frontmost thing was the flat velvet disc, so the band followed ITS outline \u2014 a\n    # straight gold rod laid across the chest. Above it the silhouette is the body and\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 1011,
+              "startColumn": 60,
+              "endLine": 1011,
+              "endColumn": 64,
+              "snippet": {
+                "text": "            on_face([(-0.28, -0.32, 0.47), (0, -0.35, 0.44), (0.28, -0.32, 0.47)], sink=0.006),\n            0.017, dark)\n    # Worn ON the right eye: the ring sits just in front of the globe's face, square\n    # to the eye's own normal and sized to the eye, not left at a written depth.\n    mc, mn = placed[1]\n    ring = eye_r * 1.12\n    front = tuple(mc[i] + mn[i] * eye_r * 1.06 for i in range(3))\n",
+                "rendered": {
+                  "text": "            on_face([(-0.28, -0.32, 0.47), (0, -0.35, 0.44), (0.28, -0.32, 0.47)], sink=0.006),\n            0.017, dark)\n    # Worn ON the right eye: the ring sits just in front of the globe's face, square\n    # to the eye's own normal and sized to the eye, not left at a written depth.\n    mc, mn = placed[1]\n    ring = eye_r * 1.12\n    front = tuple(mc[i] + mn[i] * eye_r * 1.06 for i in range(3))\n",
+                  "markdown": "`            on_face([(-0.28, -0.32, 0.47), (0, -0.35, 0.44), (0.28, -0.32, 0.47)], sink=0.006),\n            0.017, dark)\n    # Worn ON the right eye: the ring sits just in front of the globe's face, square\n    # to the eye's own normal and sized to the eye, not left at a written depth.\n    mc, mn = placed[1]\n    ring = eye_r * 1.12\n    front = tuple(mc[i] + mn[i] * eye_r * 1.06 for i in range(3))\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 1002,
+              "startColumn": 13,
+              "endLine": 1002,
+              "endColumn": 17,
+              "snippet": {
+                "text": "                                                  ignore=g.FRONT_CLUTTER, label=f\"Spot.{side}.{i}\")[0], (0.035 + i * 0.004, 0.014, 0.035 + i * 0.004), dark, 20, 14)\n    # Globes in the sockets, like the goblin frog's. The shared `eyes()` carried the\n    # centre-line depth y=-0.28 out to x=\u00b10.26, and at z=0.79 the face on the centre\n    # line is at -0.215, so both eyes \u2014 and the monocle hung on them \u2014 stood ~65mm in\n    # front of the head: \u00ab\u0433\u043b\u0430\u0437\u0430 \u0432 \u0432\u043e\u0437\u0434\u0443\u0445\u0435\u00bb. The lid keeps him tired.\n    eye_r = 0.1\n    placed = socket_eyes(\"Toad eyes\", 0.26, 0.79, eye_r, -0.45, iris,\n",
+                "rendered": {
+                  "text": "                                                  ignore=g.FRONT_CLUTTER, label=f\"Spot.{side}.{i}\")[0], (0.035 + i * 0.004, 0.014, 0.035 + i * 0.004), dark, 20, 14)\n    # Globes in the sockets, like the goblin frog's. The shared `eyes()` carried the\n    # centre-line depth y=-0.28 out to x=\u00b10.26, and at z=0.79 the face on the centre\n    # line is at -0.215, so both eyes \u2014 and the monocle hung on them \u2014 stood ~65mm in\n    # front of the head: \u00ab\u0433\u043b\u0430\u0437\u0430 \u0432 \u0432\u043e\u0437\u0434\u0443\u0445\u0435\u00bb. The lid keeps him tired.\n    eye_r = 0.1\n    placed = socket_eyes(\"Toad eyes\", 0.26, 0.79, eye_r, -0.45, iris,\n",
+                  "markdown": "`                                                  ignore=g.FRONT_CLUTTER, label=f\"Spot.{side}.{i}\")[0], (0.035 + i * 0.004, 0.014, 0.035 + i * 0.004), dark, 20, 14)\n    # Globes in the sockets, like the goblin frog's. The shared `eyes()` carried the\n    # centre-line depth y=-0.28 out to x=\u00b10.26, and at z=0.79 the face on the centre\n    # line is at -0.215, so both eyes \u2014 and the monocle hung on them \u2014 stood ~65mm in\n    # front of the head: \u00ab\u0433\u043b\u0430\u0437\u0430 \u0432 \u0432\u043e\u0437\u0434\u0443\u0445\u0435\u00bb. The lid keeps him tired.\n    eye_r = 0.1\n    placed = socket_eyes(\"Toad eyes\", 0.26, 0.79, eye_r, -0.45, iris,\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 1001,
+              "startColumn": 51,
+              "endLine": 1001,
+              "endColumn": 55,
+              "snippet": {
+                "text": "                                                 ignore=g.FRONT_CLUTTER, label=f\"Spot.{side}.{i}\")[0], (0.035 + i * 0.004, 0.014, 0.035 + i * 0.004), dark, 20, 14)\n    # Globes in the sockets, like the goblin frog's. The shared `eyes()` carried the\n    # centre-line depth y=-0.28 out to x=\u00b10.26, and at z=0.79 the face on the centre\n    # line is at -0.215, so both eyes \u2014 and the monocle hung on them \u2014 stood ~65mm in\n    # front of the head: \u00ab\u0433\u043b\u0430\u0437\u0430 \u0432 \u0432\u043e\u0437\u0434\u0443\u0445\u0435\u00bb. The lid keeps him tired.\n    eye_r = 0.1\n    placed = socket_eyes(\"Toad eyes\", 0.26, 0.79, eye_r, -0.45, iris,\n                         (\"Sp",
+                "rendered": {
+                  "text": "                                                 ignore=g.FRONT_CLUTTER, label=f\"Spot.{side}.{i}\")[0], (0.035 + i * 0.004, 0.014, 0.035 + i * 0.004), dark, 20, 14)\n    # Globes in the sockets, like the goblin frog's. The shared `eyes()` carried the\n    # centre-line depth y=-0.28 out to x=\u00b10.26, and at z=0.79 the face on the centre\n    # line is at -0.215, so both eyes \u2014 and the monocle hung on them \u2014 stood ~65mm in\n    # front of the head: \u00ab\u0433\u043b\u0430\u0437\u0430 \u0432 \u0432\u043e\u0437\u0434\u0443\u0445\u0435\u00bb. The lid keeps him tired.\n    eye_r = 0.1\n    placed = socket_eyes(\"Toad eyes\", 0.26, 0.79, eye_r, -0.45, iris,\n                         (\"Sp",
+                  "markdown": "`                                                 ignore=g.FRONT_CLUTTER, label=f\"Spot.{side}.{i}\")[0], (0.035 + i * 0.004, 0.014, 0.035 + i * 0.004), dark, 20, 14)\n    # Globes in the sockets, like the goblin frog's. The shared `eyes()` carried the\n    # centre-line depth y=-0.28 out to x=\u00b10.26, and at z=0.79 the face on the centre\n    # line is at -0.215, so both eyes \u2014 and the monocle hung on them \u2014 stood ~65mm in\n    # front of the head: \u00ab\u0433\u043b\u0430\u0437\u0430 \u0432 \u0432\u043e\u0437\u0434\u0443\u0445\u0435\u00bb. The lid keeps him tired.\n    eye_r = 0.1\n    placed = socket_eyes(\"Toad eyes\", 0.26, 0.79, eye_r, -0.45, iris,\n                         (\"Sp`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 985,
+              "startColumn": 20,
+              "endLine": 985,
+              "endColumn": 24,
+              "snippet": {
+                "text": "    g.uv(\"Body\", _BARON_BODY[0], _BARON_BODY[1], green, 64, 44)\n    # Nested waistcoat plates are circles, not body_caps. The barrel is 0.53 wide and\n    # 0.46 tall, so a scaled copy of it paints an oval; the inner cap was also lifted\n    # down and built at 40 segments, which is the wavy, uneven ring. Same coverage as\n    # the old intersections (equal-area radii), one centre, the surface still the\n    # body's own so the rim does not hang in the air.\n    g.circle_cap(\"Waistcoat\", _BARON_BODY, velvet, 0.336, proud=0.016)\n",
+                "rendered": {
+                  "text": "    g.uv(\"Body\", _BARON_BODY[0], _BARON_BODY[1], green, 64, 44)\n    # Nested waistcoat plates are circles, not body_caps. The barrel is 0.53 wide and\n    # 0.46 tall, so a scaled copy of it paints an oval; the inner cap was also lifted\n    # down and built at 40 segments, which is the wavy, uneven ring. Same coverage as\n    # the old intersections (equal-area radii), one centre, the surface still the\n    # body's own so the rim does not hang in the air.\n    g.circle_cap(\"Waistcoat\", _BARON_BODY, velvet, 0.336, proud=0.016)\n",
+                  "markdown": "`    g.uv(\"Body\", _BARON_BODY[0], _BARON_BODY[1], green, 64, 44)\n    # Nested waistcoat plates are circles, not body_caps. The barrel is 0.53 wide and\n    # 0.46 tall, so a scaled copy of it paints an oval; the inner cap was also lifted\n    # down and built at 40 segments, which is the wavy, uneven ring. Same coverage as\n    # the old intersections (equal-area radii), one centre, the surface still the\n    # body's own so the rim does not hang in the air.\n    g.circle_cap(\"Waistcoat\", _BARON_BODY, velvet, 0.336, proud=0.016)\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 923,
+              "startColumn": 62,
+              "endLine": 923,
+              "endColumn": 66,
+              "snippet": {
+                "text": "    # part that did show into a row of unrelated blobs. One material, and the whole\n    # curve outside the silhouette: root tucked under the haunch at the back, then\n    # out past x=0.6 and up. Control points are subdivided so the STEP shrinks with\n    # the radius -- a taper that keeps its spacing comes apart at the thin end.\n    tail_ctrl = [\n        (0.28, 0.16, -0.42, 0.090),\n        (0.42, 0.27, -0.375, 0.078),\n",
+                "rendered": {
+                  "text": "    # part that did show into a row of unrelated blobs. One material, and the whole\n    # curve outside the silhouette: root tucked under the haunch at the back, then\n    # out past x=0.6 and up. Control points are subdivided so the STEP shrinks with\n    # the radius -- a taper that keeps its spacing comes apart at the thin end.\n    tail_ctrl = [\n        (0.28, 0.16, -0.42, 0.090),\n        (0.42, 0.27, -0.375, 0.078),\n",
+                  "markdown": "`    # part that did show into a row of unrelated blobs. One material, and the whole\n    # curve outside the silhouette: root tucked under the haunch at the back, then\n    # out past x=0.6 and up. Control points are subdivided so the STEP shrinks with\n    # the radius -- a taper that keeps its spacing comes apart at the thin end.\n    tail_ctrl = [\n        (0.28, 0.16, -0.42, 0.090),\n        (0.42, 0.27, -0.375, 0.078),\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 922,
+              "startColumn": 28,
+              "endLine": 922,
+              "endColumn": 37,
+              "snippet": {
+                "text": "    # not as a tail. It also alternated two materials bead by bead, which turned the\n    # part that did show into a row of unrelated blobs. One material, and the whole\n    # curve outside the silhouette: root tucked under the haunch at the back, then\n    # out past x=0.6 and up. Control points are subdivided so the STEP shrinks with\n    # the radius -- a taper that keeps its spacing comes apart at the thin end.\n    tail_ctrl = [\n        (0.28, 0.16, -0.42, 0.090),\n",
+                "rendered": {
+                  "text": "    # not as a tail. It also alternated two materials bead by bead, which turned the\n    # part that did show into a row of unrelated blobs. One material, and the whole\n    # curve outside the silhouette: root tucked under the haunch at the back, then\n    # out past x=0.6 and up. Control points are subdivided so the STEP shrinks with\n    # the radius -- a taper that keeps its spacing comes apart at the thin end.\n    tail_ctrl = [\n        (0.28, 0.16, -0.42, 0.090),\n",
+                  "markdown": "`    # not as a tail. It also alternated two materials bead by bead, which turned the\n    # part that did show into a row of unrelated blobs. One material, and the whole\n    # curve outside the silhouette: root tucked under the haunch at the back, then\n    # out past x=0.6 and up. Control points are subdivided so the STEP shrinks with\n    # the radius -- a taper that keeps its spacing comes apart at the thin end.\n    tail_ctrl = [\n        (0.28, 0.16, -0.42, 0.090),\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 921,
+              "startColumn": 64,
+              "endLine": 921,
+              "endColumn": 68,
+              "snippet": {
+                "text": "    # only three beads poked through the cloth -- read as lumps stuck on the thigh,\n    # not as a tail. It also alternated two materials bead by bead, which turned the\n    # part that did show into a row of unrelated blobs. One material, and the whole\n    # curve outside the silhouette: root tucked under the haunch at the back, then\n    # out past x=0.6 and up. Control points are subdivided so the STEP shrinks with\n    # the radius -- a taper that keeps its spacing comes apart at the thin end.\n    tail_ctrl = [\n",
+                "rendered": {
+                  "text": "    # only three beads poked through the cloth -- read as lumps stuck on the thigh,\n    # not as a tail. It also alternated two materials bead by bead, which turned the\n    # part that did show into a row of unrelated blobs. One material, and the whole\n    # curve outside the silhouette: root tucked under the haunch at the back, then\n    # out past x=0.6 and up. Control points are subdivided so the STEP shrinks with\n    # the radius -- a taper that keeps its spacing comes apart at the thin end.\n    tail_ctrl = [\n",
+                  "markdown": "`    # only three beads poked through the cloth -- read as lumps stuck on the thigh,\n    # not as a tail. It also alternated two materials bead by bead, which turned the\n    # part that did show into a row of unrelated blobs. One material, and the whole\n    # curve outside the silhouette: root tucked under the haunch at the back, then\n    # out past x=0.6 and up. Control points are subdivided so the STEP shrinks with\n    # the radius -- a taper that keeps its spacing comes apart at the thin end.\n    tail_ctrl = [\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 916,
+              "startColumn": 57,
+              "endLine": 916,
+              "endColumn": 61,
+              "snippet": {
+                "text": "        g.uv(f\"Foot.{side}\", (side * 0.22, -0.24, -0.5), (0.22, 0.18, 0.1), skin, 36, 24)\n        g.claw_cluster(f\"Foot.{side}\", (side * 0.22, -0.4, -0.48), 0.042, claw)\n\n    # Fat curling tail. The last version ran UP the flank at x=0.54 while the robe is\n    # 0.45 wide and the haunch reaches 0.50 there, so the tail was inside the hip and\n    # only three beads poked through the cloth -- read as lumps stuck on the thigh,\n    # not as a tail. It also alternated two materials bead by bead, which turned the\n",
+                "rendered": {
+                  "text": "        g.uv(f\"Foot.{side}\", (side * 0.22, -0.24, -0.5), (0.22, 0.18, 0.1), skin, 36, 24)\n        g.claw_cluster(f\"Foot.{side}\", (side * 0.22, -0.4, -0.48), 0.042, claw)\n\n    # Fat curling tail. The last version ran UP the flank at x=0.54 while the robe is\n    # 0.45 wide and the haunch reaches 0.50 there, so the tail was inside the hip and\n    # only three beads poked through the cloth -- read as lumps stuck on the thigh,\n    # not as a tail. It also alternated two materials bead by bead, which turned the\n",
+                  "markdown": "`        g.uv(f\"Foot.{side}\", (side * 0.22, -0.24, -0.5), (0.22, 0.18, 0.1), skin, 36, 24)\n        g.claw_cluster(f\"Foot.{side}\", (side * 0.22, -0.4, -0.48), 0.042, claw)\n\n    # Fat curling tail. The last version ran UP the flank at x=0.54 while the robe is\n    # 0.45 wide and the haunch reaches 0.50 there, so the tail was inside the hip and\n    # only three beads poked through the cloth -- read as lumps stuck on the thigh,\n    # not as a tail. It also alternated two materials bead by bead, which turned the\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 907,
+              "startColumn": 40,
+              "endLine": 907,
+              "endColumn": 44,
+              "snippet": {
+                "text": "    for side in (-1, 1):\n        g.capsule(f\"Arm.upper.{side}\", (side * 0.38, -0.04, 0.34), (side * 0.48, -0.18, 0.14), 0.075, fur)\n        g.capsule(f\"Arm.lower.{side}\", (side * 0.48, -0.18, 0.14), (side * 0.22, -0.38, 0.09), 0.065, fur_dark)\n        # Cupped ON the orb (radius 0.10 at x=0), not beside it.\n        g.uv(f\"Hand.{side}\", (side * 0.185, -0.40, 0.08), (0.105, 0.075, 0.085), skin, 28, 20)\n        g.claw_cluster(f\"Hand.{side}\", (side * 0.185, -0.455, 0.10), 0.026, claw)\n\n",
+                "rendered": {
+                  "text": "    for side in (-1, 1):\n        g.capsule(f\"Arm.upper.{side}\", (side * 0.38, -0.04, 0.34), (side * 0.48, -0.18, 0.14), 0.075, fur)\n        g.capsule(f\"Arm.lower.{side}\", (side * 0.48, -0.18, 0.14), (side * 0.22, -0.38, 0.09), 0.065, fur_dark)\n        # Cupped ON the orb (radius 0.10 at x=0), not beside it.\n        g.uv(f\"Hand.{side}\", (side * 0.185, -0.40, 0.08), (0.105, 0.075, 0.085), skin, 28, 20)\n        g.claw_cluster(f\"Hand.{side}\", (side * 0.185, -0.455, 0.10), 0.026, claw)\n\n",
+                  "markdown": "`    for side in (-1, 1):\n        g.capsule(f\"Arm.upper.{side}\", (side * 0.38, -0.04, 0.34), (side * 0.48, -0.18, 0.14), 0.075, fur)\n        g.capsule(f\"Arm.lower.{side}\", (side * 0.48, -0.18, 0.14), (side * 0.22, -0.38, 0.09), 0.065, fur_dark)\n        # Cupped ON the orb (radius 0.10 at x=0), not beside it.\n        g.uv(f\"Hand.{side}\", (side * 0.185, -0.40, 0.08), (0.105, 0.075, 0.085), skin, 28, 20)\n        g.claw_cluster(f\"Hand.{side}\", (side * 0.185, -0.455, 0.10), 0.026, claw)\n\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 891,
+              "startColumn": 49,
+              "endLine": 891,
+              "endColumn": 53,
+              "snippet": {
+                "text": "                f\"Whisker.{side}.{i}\",\n                # Measured against the built mesh: the inner end sat at x=+-0.18 while\n                # the snout TIP is only +-0.086 wide at that depth and the snout BASE\n                # does not reach that far forward at all \u2014 six wires touching neither.\n                # Anchored inside the tip.\n                [\n                    g.seat_nearest([(side * 0.07, -0.47, 0.56 + zoff)], proud=-0.006,\n",
+                "rendered": {
+                  "text": "                f\"Whisker.{side}.{i}\",\n                # Measured against the built mesh: the inner end sat at x=+-0.18 while\n                # the snout TIP is only +-0.086 wide at that depth and the snout BASE\n                # does not reach that far forward at all \u2014 six wires touching neither.\n                # Anchored inside the tip.\n                [\n                    g.seat_nearest([(side * 0.07, -0.47, 0.56 + zoff)], proud=-0.006,\n",
+                  "markdown": "`                f\"Whisker.{side}.{i}\",\n                # Measured against the built mesh: the inner end sat at x=+-0.18 while\n                # the snout TIP is only +-0.086 wide at that depth and the snout BASE\n                # does not reach that far forward at all \u2014 six wires touching neither.\n                # Anchored inside the tip.\n                [\n                    g.seat_nearest([(side * 0.07, -0.47, 0.56 + zoff)], proud=-0.006,\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 890,
+              "startColumn": 52,
+              "endLine": 890,
+              "endColumn": 56,
+              "snippet": {
+                "text": "            g.curve(\n                f\"Whisker.{side}.{i}\",\n                # Measured against the built mesh: the inner end sat at x=+-0.18 while\n                # the snout TIP is only +-0.086 wide at that depth and the snout BASE\n                # does not reach that far forward at all \u2014 six wires touching neither.\n                # Anchored inside the tip.\n                [\n",
+                "rendered": {
+                  "text": "            g.curve(\n                f\"Whisker.{side}.{i}\",\n                # Measured against the built mesh: the inner end sat at x=+-0.18 while\n                # the snout TIP is only +-0.086 wide at that depth and the snout BASE\n                # does not reach that far forward at all \u2014 six wires touching neither.\n                # Anchored inside the tip.\n                [\n",
+                  "markdown": "`            g.curve(\n                f\"Whisker.{side}.{i}\",\n                # Measured against the built mesh: the inner end sat at x=+-0.18 while\n                # the snout TIP is only +-0.086 wide at that depth and the snout BASE\n                # does not reach that far forward at all \u2014 six wires touching neither.\n                # Anchored inside the tip.\n                [\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 889,
+              "startColumn": 68,
+              "endLine": 889,
+              "endColumn": 72,
+              "snippet": {
+                "text": "        for i, zoff in enumerate((0.02, -0.02, -0.06)):\n            g.curve(\n                f\"Whisker.{side}.{i}\",\n                # Measured against the built mesh: the inner end sat at x=+-0.18 while\n                # the snout TIP is only +-0.086 wide at that depth and the snout BASE\n                # does not reach that far forward at all \u2014 six wires touching neither.\n                # Anchored inside the tip.\n",
+                "rendered": {
+                  "text": "        for i, zoff in enumerate((0.02, -0.02, -0.06)):\n            g.curve(\n                f\"Whisker.{side}.{i}\",\n                # Measured against the built mesh: the inner end sat at x=+-0.18 while\n                # the snout TIP is only +-0.086 wide at that depth and the snout BASE\n                # does not reach that far forward at all \u2014 six wires touching neither.\n                # Anchored inside the tip.\n",
+                  "markdown": "`        for i, zoff in enumerate((0.02, -0.02, -0.06)):\n            g.curve(\n                f\"Whisker.{side}.{i}\",\n                # Measured against the built mesh: the inner end sat at x=+-0.18 while\n                # the snout TIP is only +-0.086 wide at that depth and the snout BASE\n                # does not reach that far forward at all \u2014 six wires touching neither.\n                # Anchored inside the tip.\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 862,
+              "startColumn": 50,
+              "endLine": 862,
+              "endColumn": 54,
+              "snippet": {
+                "text": "    # it reads as pierced through the ear rather than stuck at an angle.\n    # PIERCED, not parked next to the ear. The previous centre (0.42, -0.02, 0.80)\n    # sat outside the ear ellipsoid entirely (1.77 in its own normalised space), so\n    # the whole ring hung beside the head. The ear at x=0.405 runs z 0.816..1.104 and\n    # is 0.08 thick there, so a ring centred just below its rim, in the ear's own\n    # plane, has its top arc INSIDE the ear and the rest swinging free \u2014 which is\n    # what an earring is.\n",
+                "rendered": {
+                  "text": "    # it reads as pierced through the ear rather than stuck at an angle.\n    # PIERCED, not parked next to the ear. The previous centre (0.42, -0.02, 0.80)\n    # sat outside the ear ellipsoid entirely (1.77 in its own normalised space), so\n    # the whole ring hung beside the head. The ear at x=0.405 runs z 0.816..1.104 and\n    # is 0.08 thick there, so a ring centred just below its rim, in the ear's own\n    # plane, has its top arc INSIDE the ear and the rest swinging free \u2014 which is\n    # what an earring is.\n",
+                  "markdown": "`    # it reads as pierced through the ear rather than stuck at an angle.\n    # PIERCED, not parked next to the ear. The previous centre (0.42, -0.02, 0.80)\n    # sat outside the ear ellipsoid entirely (1.77 in its own normalised space), so\n    # the whole ring hung beside the head. The ear at x=0.405 runs z 0.816..1.104 and\n    # is 0.08 thick there, so a ring centred just below its rim, in the ear's own\n    # plane, has its top arc INSIDE the ear and the rest swinging free \u2014 which is\n    # what an earring is.\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 859,
+              "startColumn": 59,
+              "endLine": 859,
+              "endColumn": 63,
+              "snippet": {
+                "text": "    # HEAD is 0.328 wide at that height: more than half the ring was inside the skull and\n    # only a sliver came out past the ear \u2014 a gold wire poking out of the head. Moved\n    # outboard so the whole ring clears the head, and turned into the ear's own plane so\n    # it reads as pierced through the ear rather than stuck at an angle.\n    # PIERCED, not parked next to the ear. The previous centre (0.42, -0.02, 0.80)\n    # sat outside the ear ellipsoid entirely (1.77 in its own normalised space), so\n    # the whole ring hung beside the head. The ear at x=0.405 runs z 0.816..1.104 and\n",
+                "rendered": {
+                  "text": "    # HEAD is 0.328 wide at that height: more than half the ring was inside the skull and\n    # only a sliver came out past the ear \u2014 a gold wire poking out of the head. Moved\n    # outboard so the whole ring clears the head, and turned into the ear's own plane so\n    # it reads as pierced through the ear rather than stuck at an angle.\n    # PIERCED, not parked next to the ear. The previous centre (0.42, -0.02, 0.80)\n    # sat outside the ear ellipsoid entirely (1.77 in its own normalised space), so\n    # the whole ring hung beside the head. The ear at x=0.405 runs z 0.816..1.104 and\n",
+                  "markdown": "`    # HEAD is 0.328 wide at that height: more than half the ring was inside the skull and\n    # only a sliver came out past the ear \u2014 a gold wire poking out of the head. Moved\n    # outboard so the whole ring clears the head, and turned into the ear's own plane so\n    # it reads as pierced through the ear rather than stuck at an angle.\n    # PIERCED, not parked next to the ear. The previous centre (0.42, -0.02, 0.80)\n    # sat outside the ear ellipsoid entirely (1.77 in its own normalised space), so\n    # the whole ring hung beside the head. The ear at x=0.405 runs z 0.816..1.104 and\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 856,
+              "startColumn": 24,
+              "endLine": 856,
+              "endColumn": 28,
+              "snippet": {
+                "text": "     g.uv(f\"Ear.outer.{side}\", (side * 0.28, 0.02, 0.96), (0.18, 0.055, 0.2), fur, 40, 26)\n        g.uv(f\"Ear.inner.{side}\", (side * 0.28, -0.03, 0.97), (0.11, 0.02, 0.13), inner, 32, 20)\n    # The hoop sat at x=0.30 with a 0.07 radius, so it spanned x 0.218..0.382 while the\n    # HEAD is 0.328 wide at that height: more than half the ring was inside the skull and\n    # only a sliver came out past the ear \u2014 a gold wire poking out of the head. Moved\n    # outboard so the whole ring clears the head, and turned into the ear's own plane so\n    # it reads as pierced through the ear rather than stuck at ",
+                "rendered": {
+                  "text": "     g.uv(f\"Ear.outer.{side}\", (side * 0.28, 0.02, 0.96), (0.18, 0.055, 0.2), fur, 40, 26)\n        g.uv(f\"Ear.inner.{side}\", (side * 0.28, -0.03, 0.97), (0.11, 0.02, 0.13), inner, 32, 20)\n    # The hoop sat at x=0.30 with a 0.07 radius, so it spanned x 0.218..0.382 while the\n    # HEAD is 0.328 wide at that height: more than half the ring was inside the skull and\n    # only a sliver came out past the ear \u2014 a gold wire poking out of the head. Moved\n    # outboard so the whole ring clears the head, and turned into the ear's own plane so\n    # it reads as pierced through the ear rather than stuck at ",
+                  "markdown": "`     g.uv(f\"Ear.outer.{side}\", (side * 0.28, 0.02, 0.96), (0.18, 0.055, 0.2), fur, 40, 26)\n        g.uv(f\"Ear.inner.{side}\", (side * 0.28, -0.03, 0.97), (0.11, 0.02, 0.13), inner, 32, 20)\n    # The hoop sat at x=0.30 with a 0.07 radius, so it spanned x 0.218..0.382 while the\n    # HEAD is 0.328 wide at that height: more than half the ring was inside the skull and\n    # only a sliver came out past the ear \u2014 a gold wire poking out of the head. Moved\n    # outboard so the whole ring clears the head, and turned into the ear's own plane so\n    # it reads as pierced through the ear rather than stuck at `"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 855,
+              "startColumn": 18,
+              "endLine": 855,
+              "endColumn": 22,
+              "snippet": {
+                "text": "    for side in (-1, 1):\n        g.uv(f\"Ear.outer.{side}\", (side * 0.28, 0.02, 0.96), (0.18, 0.055, 0.2), fur, 40, 26)\n        g.uv(f\"Ear.inner.{side}\", (side * 0.28, -0.03, 0.97), (0.11, 0.02, 0.13), inner, 32, 20)\n    # The hoop sat at x=0.30 with a 0.07 radius, so it spanned x 0.218..0.382 while the\n    # HEAD is 0.328 wide at that height: more than half the ring was inside the skull and\n    # only a sliver came out past the ear \u2014 a gold wire poking out of the head. Moved\n    # outboard so the whole ring clears the head, and turned into the ear's own plane so\n",
+                "rendered": {
+                  "text": "    for side in (-1, 1):\n        g.uv(f\"Ear.outer.{side}\", (side * 0.28, 0.02, 0.96), (0.18, 0.055, 0.2), fur, 40, 26)\n        g.uv(f\"Ear.inner.{side}\", (side * 0.28, -0.03, 0.97), (0.11, 0.02, 0.13), inner, 32, 20)\n    # The hoop sat at x=0.30 with a 0.07 radius, so it spanned x 0.218..0.382 while the\n    # HEAD is 0.328 wide at that height: more than half the ring was inside the skull and\n    # only a sliver came out past the ear \u2014 a gold wire poking out of the head. Moved\n    # outboard so the whole ring clears the head, and turned into the ear's own plane so\n",
+                  "markdown": "`    for side in (-1, 1):\n        g.uv(f\"Ear.outer.{side}\", (side * 0.28, 0.02, 0.96), (0.18, 0.055, 0.2), fur, 40, 26)\n        g.uv(f\"Ear.inner.{side}\", (side * 0.28, -0.03, 0.97), (0.11, 0.02, 0.13), inner, 32, 20)\n    # The hoop sat at x=0.30 with a 0.07 radius, so it spanned x 0.218..0.382 while the\n    # HEAD is 0.328 wide at that height: more than half the ring was inside the skull and\n    # only a sliver came out past the ear \u2014 a gold wire poking out of the head. Moved\n    # outboard so the whole ring clears the head, and turned into the ear's own plane so\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 820,
+              "startColumn": 16,
+              "endLine": 820,
+              "endColumn": 20,
+              "snippet": {
+                "text": "    # the BACK behind, because the back of the robe falls away; dropping the front\n    # 0.055 and lifting the back by the same keeps it on the neck all the way round.\n    # It has to be built after the head, so the rays behind meet the neck and not air.\n    # Same fault at the foot: a 0.42-wide gold disc on a robe that is 0.168 wide there,\n    # so it flared 250mm past the cloth AND cut straight through both feet. A hem is a\n    # band on the hem, not a plate under the figure.\n    g.uv(\"Robe.hem\", (0, 0.0, -0.47), (0.272, 0.203, 0.072), gold, 48, 24)\n",
+                "rendered": {
+                  "text": "    # the BACK behind, because the back of the robe falls away; dropping the front\n    # 0.055 and lifting the back by the same keeps it on the neck all the way round.\n    # It has to be built after the head, so the rays behind meet the neck and not air.\n    # Same fault at the foot: a 0.42-wide gold disc on a robe that is 0.168 wide there,\n    # so it flared 250mm past the cloth AND cut straight through both feet. A hem is a\n    # band on the hem, not a plate under the figure.\n    g.uv(\"Robe.hem\", (0, 0.0, -0.47), (0.272, 0.203, 0.072), gold, 48, 24)\n",
+                  "markdown": "`    # the BACK behind, because the back of the robe falls away; dropping the front\n    # 0.055 and lifting the back by the same keeps it on the neck all the way round.\n    # It has to be built after the head, so the rays behind meet the neck and not air.\n    # Same fault at the foot: a 0.42-wide gold disc on a robe that is 0.168 wide there,\n    # so it flared 250mm past the cloth AND cut straight through both feet. A hem is a\n    # band on the hem, not a plate under the figure.\n    g.uv(\"Robe.hem\", (0, 0.0, -0.47), (0.272, 0.203, 0.072), gold, 48, 24)\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 816,
+              "startColumn": 49,
+              "endLine": 816,
+              "endColumn": 53,
+              "snippet": {
+                "text": "    # that clears it arrives at the same y \u2014 a second ring below the first stopped\n    # reading as a collar and started reading as a gold tray bolted to the rat.\n    # Tilted, and measured off the mesh rather than off the robe ellipsoid. A level\n    # ring on a hunched animal rides up the chest at the front and slides down onto\n    # the BACK behind, because the back of the robe falls away; dropping the front\n    # 0.055 and lifting the back by the same keeps it on the neck all the way round.\n    # It has to be built after the head, so the rays behind meet the neck and not air.\n",
+                "rendered": {
+                  "text": "    # that clears it arrives at the same y \u2014 a second ring below the first stopped\n    # reading as a collar and started reading as a gold tray bolted to the rat.\n    # Tilted, and measured off the mesh rather than off the robe ellipsoid. A level\n    # ring on a hunched animal rides up the chest at the front and slides down onto\n    # the BACK behind, because the back of the robe falls away; dropping the front\n    # 0.055 and lifting the back by the same keeps it on the neck all the way round.\n    # It has to be built after the head, so the rays behind meet the neck and not air.\n",
+                  "markdown": "`    # that clears it arrives at the same y \u2014 a second ring below the first stopped\n    # reading as a collar and started reading as a gold tray bolted to the rat.\n    # Tilted, and measured off the mesh rather than off the robe ellipsoid. A level\n    # ring on a hunched animal rides up the chest at the front and slides down onto\n    # the BACK behind, because the back of the robe falls away; dropping the front\n    # 0.055 and lifting the back by the same keeps it on the neck all the way round.\n    # It has to be built after the head, so the rays behind meet the neck and not air.\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 813,
+              "startColumn": 28,
+              "endLine": 813,
+              "endColumn": 32,
+              "snippet": {
+                "text": "    # the skin, which is exactly what it was. Laid on the robe's own surface instead,\n    # point by point, so the band hugs it the whole way round.\n    # ONE band, not two. The lining panel down the chest is flat-fronted, so every band\n    # that clears it arrives at the same y \u2014 a second ring below the first stopped\n    # reading as a collar and started reading as a gold tray bolted to the rat.\n    # Tilted, and measured off the mesh rather than off the robe ellipsoid. A level\n    # ring on a hunched animal rides up the chest at the front and slides down onto\n",
+                "rendered": {
+                  "text": "    # the skin, which is exactly what it was. Laid on the robe's own surface instead,\n    # point by point, so the band hugs it the whole way round.\n    # ONE band, not two. The lining panel down the chest is flat-fronted, so every band\n    # that clears it arrives at the same y \u2014 a second ring below the first stopped\n    # reading as a collar and started reading as a gold tray bolted to the rat.\n    # Tilted, and measured off the mesh rather than off the robe ellipsoid. A level\n    # ring on a hunched animal rides up the chest at the front and slides down onto\n",
+                  "markdown": "`    # the skin, which is exactly what it was. Laid on the robe's own surface instead,\n    # point by point, so the band hugs it the whole way round.\n    # ONE band, not two. The lining panel down the chest is flat-fronted, so every band\n    # that clears it arrives at the same y \u2014 a second ring below the first stopped\n    # reading as a collar and started reading as a gold tray bolted to the rat.\n    # Tilted, and measured off the mesh rather than off the robe ellipsoid. A level\n    # ring on a hunched animal rides up the chest at the front and slides down onto\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 808,
+              "startColumn": 75,
+              "endLine": 808,
+              "endColumn": 79,
+              "snippet": {
+                "text": "    g.body_cap(\"Robe.chest\", _ROBE, lining, reach=0.847, lift=0.022)\n    # A CIRCULAR ring cannot sit on an OVAL body, and the robe is oval: at the collar\n    # line it is 0.290 wide across and 0.215 deep. A 0.265 ring therefore stood 50mm\n    # proud at the front \u2014 the gold arc you could see \u2014 and was buried 25mm at the\n    # sides, where it vanished into the cloth. It read as a hoop that had sunk under\n    # the skin, which is exactly what it was. Laid on the robe's own surface instead,\n    # point by point, so the band hugs it the whole way round.\n",
+                "rendered": {
+                  "text": "    g.body_cap(\"Robe.chest\", _ROBE, lining, reach=0.847, lift=0.022)\n    # A CIRCULAR ring cannot sit on an OVAL body, and the robe is oval: at the collar\n    # line it is 0.290 wide across and 0.215 deep. A 0.265 ring therefore stood 50mm\n    # proud at the front \u2014 the gold arc you could see \u2014 and was buried 25mm at the\n    # sides, where it vanished into the cloth. It read as a hoop that had sunk under\n    # the skin, which is exactly what it was. Laid on the robe's own surface instead,\n    # point by point, so the band hugs it the whole way round.\n",
+                  "markdown": "`    g.body_cap(\"Robe.chest\", _ROBE, lining, reach=0.847, lift=0.022)\n    # A CIRCULAR ring cannot sit on an OVAL body, and the robe is oval: at the collar\n    # line it is 0.290 wide across and 0.215 deep. A 0.265 ring therefore stood 50mm\n    # proud at the front \u2014 the gold arc you could see \u2014 and was buried 25mm at the\n    # sides, where it vanished into the cloth. It read as a hoop that had sunk under\n    # the skin, which is exactly what it was. Laid on the robe's own surface instead,\n    # point by point, so the band hugs it the whole way round.\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    },
+    {
+      "rule": {
+        "id": "BD000600"
+      },
+      "message": {
+        "text": "Backdoor: LOLBAS: Windows Indicator",
+        "id": "BD000600"
+      },
+      "locations": [
+        {
+          "physicalLocation": {
+            "address": {
+              "relativeAddress": -1,
+              "fullyQualifiedName": "/private/tmp/aicom-security-review-20261030/source/pingblip/memeforge/scripts/blender/generate_alley_pack.py"
+            },
+            "region": {
+              "startLine": 808,
+              "startColumn": 11,
+              "endLine": 808,
+              "endColumn": 15,
+              "snippet": {
+                "text": "    g.body_cap(\"Robe.chest\", _ROBE, lining, reach=0.847, lift=0.022)\n    # A CIRCULAR ring cannot sit on an OVAL body, and the robe is oval: at the collar\n    # line it is 0.290 wide across and 0.215 deep. A 0.265 ring therefore stood 50mm\n    # proud at the front \u2014 the gold arc you could see \u2014 and was buried 25mm at the\n    # sides, where it vanished into the cloth. It read as a hoop that had sunk under\n    # the skin, which is exactly what it was. Laid on the robe's own surface instead,\n    # point by point, so the band hugs it the whole way round.\n",
+                "rendered": {
+                  "text": "    g.body_cap(\"Robe.chest\", _ROBE, lining, reach=0.847, lift=0.022)\n    # A CIRCULAR ring cannot sit on an OVAL body, and the robe is oval: at the collar\n    # line it is 0.290 wide across and 0.215 deep. A 0.265 ring therefore stood 50mm\n    # proud at the front \u2014 the gold arc you could see \u2014 and was buried 25mm at the\n    # sides, where it vanished into the cloth. It read as a hoop that had sunk under\n    # the skin, which is exactly what it was. Laid on the robe's own surface instead,\n    # point by point, so the band hugs it the whole way round.\n",
+                  "markdown": "`    g.body_cap(\"Robe.chest\", _ROBE, lining, reach=0.847, lift=0.022)\n    # A CIRCULAR ring cannot sit on an OVAL body, and the robe is oval: at the collar\n    # line it is 0.290 wide across and 0.215 deep. A 0.265 ring therefore stood 50mm\n    # proud at the front \u2014 the gold arc you could see \u2014 and was buried 25mm at the\n    # sides, where it vanished into the cloth. It read as a hoop that had sunk under\n    # the skin, which is exactly what it was. Laid on the robe's own surface instead,\n    # point by point, so the band hugs it the whole way round.\n`"
+                }
+              },
+              "sourceLanguage": "python"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "Severity": 4,
+        "Confidence": 1
+      }
+    }
+  ],
+  "raw_bytes": 496892357,
+  "raw_sha256": "5b33877efdaf0ab481d40a911fb520c71335f6aea183fc72f19e55741951e242",
+  "raw_cache": "/private/tmp/aicom-security-review-20261030/ossgadget.sarif",
+  "notable_for_review": [
+    {
+      "rule": "BD000801",
+      "file": "histor/histor/cosign_cli.py",
+      "line": 55,
+      "snippet": "            if 0 < old < cp.tree_size:\n                resp = http.get(f\"{log}/api/v1/log/proof/consistency\", params={\"first\": old, \"second\": cp.tree_size})\n                resp.raise_for_status()\n                proof = [base64.b64encode(bytes.fromhex(h)).decode() for h in resp.json()[\"proof\"]]\n            if old > cp.tree_size:\n                print(f\"the witness is at {old}, ahead of the log's checkpoint {cp.tree_size}; nothing to do\", file=sys.stderr)\n                return 0\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 8881,
+      "snippet": ",\"e\":[\"a\"]},\"nH\":{\"K\":[\"a\"],\"t\":[\"a\"],\"m\":[\"a\"],\"e\":[\"a\"]},\"oC\":{\"K\":[\"a\"],\"t\":[\"a\"],\"m\":[\"a\"],\"e\":[\"a\"]},\"nA\":{\"K\":[\"A\"],\"t\":[\"A\"],\"m\":[\"A\"],\"e\":[\"A\"]},\"nB\":{\"K\":[\"A\"],\"t\":[\"A\"],\"m\":[\"A\"],\"e\":[\"A\"]}}'))\nA.p3(v.typeUniverse,JSON.parse('{\"ch\":1,\"dM\":2,\"a3\":1,\"ci\":2,\"dz\":1,\"e5\":2,\"nm\":1}'))\nvar u={f:\"\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\u03f6\\x00\\u0404\\u03f4 \\u03f4\\u03f6\\u01f6\\u01f6\\u03f6\\u03fc\\u01f4\\u0"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 6015,
+      "snippet": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFFFFFFFFFFFFFFFFGGGGGGGGGGGGGGGGHHHHHHHHHHHHHHHHHHHHHHHHHHHIHHHJEEBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBKCCCCCCCCCCCCDCLONNNMEEEEEEEEEEE\",i=\" \\x000:XECCCCCN:lDb \\x000:XECCCCCNvlDb \\x000:XECCCCCN:lDb AAAAA\\x00\\x00\\x00\\x00\\x00AAAAA00000AAAAA:::::AAAAAGG000AAAAA00KKKAAAAAG::::AAAAA:IIIIAAAAA000\\x800AAAAA\\x00\\x00\\x00\\x00 AAAAA\",h=65533,g=k.b,f=k.c,e=new A.ac(\"\"),d=b+1,c=a.length\nif(!(b>=0&&b<c))return A.b"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "\\xeb\\xcd\\v\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\x13\\xea\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\v\\xeb\\v\\xeb\\xac\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xeb\\xeb\\v\\xeb\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xea\\xeb\\xeb\\v\\xeb\\v\\xeb\\xcd\\v\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xea\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\v\\xeb\\v\\xeb\\xac\\xf5\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe9\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\t\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xeb\\xeb\\v\\xeb\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xea\\xeb\\xeb\\v\\xeb\\v\\xeb\\xcd\\v\\xeb\\v\\v\\v\\v\\v\\v"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe9\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\t\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xeb\\xeb\\v\\xeb\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xea\\"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xea\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x0f\\xea\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "ec\\xcd\\f\\xec\\f\\f\\f\\f\\f\\f\\f\\f\\f\\xec\\f\\f\\f\\f\\f\\f\\f\\f\\f\\f\\xec\\f\\xec\\f\\xec\\f\\xed\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\xed\\xed\\xed\\r\\xed\\xed\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\xed\\xed\\xed\\xed\\r\\xed\\r\\xed\\xed\\r\\xed\\r\\r\\r\\r\\r\\r\\r\\r\\r\\xed\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\xed\\r\\xed\\r\\xed\\r\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xcd\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\x07\\x07\\x07\\x07\\x07\\x07\\x07\\x07\\x07\\xe7\\xe7\\xe7\\xe7\\xe7\\xac\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7D\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xcd\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\x07\\x07\\x07"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "e5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05f\\x05\\xe5\\x05\\xe5\\xac\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7D\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xcd\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\x07\\x07"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05f\\x05\\xe5\\x05\\xe5\\xac\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7D\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "e5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe8\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05f\\x05\\xe5\\x05\\xe5\\xac\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe8\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05f\\x05\\xe5\\x05\\xe5\\xac\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "v\\xeb\\xeb\\xeb\\v\\xeb\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xebD\\xeb\\xeb\\v\\xeb\\v\\xeb\\xcd\\v\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\x12D\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\v\\xeb\\v\\xeb\\xac\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe8\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "8b\\x8b\\x8b\\x92\\x83\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\xeb\\x8b\\xeb\\x8b\\xeb\\xac\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xeb\\xeb\\v\\xeb\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xebD\\xeb\\xeb\\v\\xeb\\v\\xeb\\xcd\\v\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\x12D\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\v\\xeb\\v\\xeb\\xac\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xea\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\n\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xeb\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\xeb\\xeb\\xeb\\x8b\\xeb\\xeb\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xea\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\n\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xeb\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\xeb\\xeb\\xeb\\x8b\\xeb\\xeb\\x8b\\x8"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe3\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x0e\\x03\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01"
+    },
+    {
+      "rule": "BD000801",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "44)break}if(o>=0)B.b.p(j,o)\nelse{n=B.b.gap(j)\nif(p!==44||r!==n+7||!B.a.J(a,\"base64\",n+1))throw A.c(A.a_(\"Expecting '='\",a,r))\nbreak}}B.b.p(j,r)\nm=r+1\nif((j.length&1)===1)a=B.r.f7(a,m,s)\nelse{l=A.ma(a,m,s,256,!0,!1)\nif(l!=null)a=B.a.ar(a,m,s,l)}return new A.ij(a,j,c)},\nmy(a,b,c,d,e){var s,r,q,p,o,n='\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 8881,
+      "snippet": ",\"e\":[\"a\"]},\"nH\":{\"K\":[\"a\"],\"t\":[\"a\"],\"m\":[\"a\"],\"e\":[\"a\"]},\"oC\":{\"K\":[\"a\"],\"t\":[\"a\"],\"m\":[\"a\"],\"e\":[\"a\"]},\"nA\":{\"K\":[\"A\"],\"t\":[\"A\"],\"m\":[\"A\"],\"e\":[\"A\"]},\"nB\":{\"K\":[\"A\"],\"t\":[\"A\"],\"m\":[\"A\"],\"e\":[\"A\"]}}'))\nA.p3(v.typeUniverse,JSON.parse('{\"ch\":1,\"dM\":2,\"a3\":1,\"ci\":2,\"dz\":1,\"e5\":2,\"nm\":1}'))\nvar u={f:\"\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\u03f6\\x00\\u0404\\u03f4 \\u03f4\\u03f6\\u01f6\\u01f6\\u03f6\\u03fc\\u01f4\\u0"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "\\xeb\\xcd\\v\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\x13\\xea\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\v\\xeb\\v\\xeb\\xac\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xeb\\xeb\\v\\xeb\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xea\\xeb\\xeb\\v\\xeb\\v\\xeb\\xcd\\v\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xea\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\v\\xeb\\v\\xeb\\xac\\xf5\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\x15\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5\\xf5"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe9\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\t\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xeb\\xeb\\v\\xeb\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xea\\"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xea\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x0f\\xea\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "ec\\xcd\\f\\xec\\f\\f\\f\\f\\f\\f\\f\\f\\f\\xec\\f\\f\\f\\f\\f\\f\\f\\f\\f\\f\\xec\\f\\xec\\f\\xec\\f\\xed\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\xed\\xed\\xed\\r\\xed\\xed\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\xed\\xed\\xed\\xed\\r\\xed\\r\\xed\\xed\\r\\xed\\r\\r\\r\\r\\r\\r\\r\\r\\r\\xed\\r\\r\\r\\r\\r\\r\\r\\r\\r\\r\\xed\\r\\xed\\r\\xed\\r\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xcd\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\x07\\x07\\x07\\x07\\x07\\x07\\x07\\x07\\x07\\xe7\\xe7\\xe7\\xe7\\xe7\\xac\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7D\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xcd\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\x07\\x07\\x07"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "e5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05f\\x05\\xe5\\x05\\xe5\\xac\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7D\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xcd\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\x8a\\xe7\\x07\\x07"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05f\\x05\\xe5\\x05\\xe5\\xac\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7D\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe7\\xe"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "e5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe8\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05f\\x05\\xe5\\x05\\xe5\\xac\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe8\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05f\\x05\\xe5\\x05\\xe5\\xac\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "v\\xeb\\xeb\\xeb\\v\\xeb\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xebD\\xeb\\xeb\\v\\xeb\\v\\xeb\\xcd\\v\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\x12D\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\v\\xeb\\v\\xeb\\xac\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe8\\x8a\\xe5\\xe5\\x05\\xe5\\x05\\xe5\\xcd\\x05\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x8a\\x05\\x05\\x05"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "8b\\x8b\\x8b\\x92\\x83\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\xeb\\x8b\\xeb\\x8b\\xeb\\xac\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\xeb\\xeb\\v\\xeb\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xebD\\xeb\\xeb\\v\\xeb\\v\\xeb\\xcd\\v\\xeb\\v\\v\\v\\v\\v\\v\\v\\v\\x12D\\v\\v\\v\\v\\v\\v\\v\\v\\v\\v\\xeb\\v\\xeb\\v\\xeb\\xac\\xe5\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\x05\\xe5\\xe5\\xe5\\x05\\xe5D\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe5\\xe"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xea\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\n\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xeb\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\xeb\\xeb\\xeb\\x8b\\xeb\\xeb\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xea\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\n\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xeb\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\x8b\\xeb\\xeb\\xeb\\x8b\\xeb\\xeb\\x8b\\x8"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe3\\xe1\\xe1\\x01\\xe1\\x01\\xe1\\xcd\\x01\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x0e\\x03\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\"\\x01\\xe1\\x01\\xe1\\xac\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01"
+    },
+    {
+      "rule": "BD000805",
+      "file": "coach/web/sqflite_sw.js",
+      "line": 2739,
+      "snippet": "44)break}if(o>=0)B.b.p(j,o)\nelse{n=B.b.gap(j)\nif(p!==44||r!==n+7||!B.a.J(a,\"base64\",n+1))throw A.c(A.a_(\"Expecting '='\",a,r))\nbreak}}B.b.p(j,r)\nm=r+1\nif((j.length&1)===1)a=B.r.f7(a,m,s)\nelse{l=A.ma(a,m,s,256,!0,!1)\nif(l!=null)a=B.a.ar(a,m,s,l)}return new A.ij(a,j,c)},\nmy(a,b,c,d,e){var s,r,q,p,o,n='\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\xe1\\xe1\\xe1\\x01\\xe1\\xe1\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01\\x01"
+    },
+    {
+      "rule": "BD000801",
+      "file": "attested/attested-deal/src/attested_deal/actor_auth.py",
+      "line": 51,
+      "snippet": "    return {\"audience\": audience, \"method\": request.method.upper(),\n            \"path\": request.scope.get(\"path\", \"\"),\n            \"query\": [list(pair) for pair in parse_qsl(\n                request.scope.get(\"query_string\", b\"\").decode(\"ascii\"), keep_blank_values=True)],\n            \"body_sha256\": hashlib.sha256(body).hexdigest()}\n\n\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "attested/attested-meter/src/attested_meter/actor_auth.py",
+      "line": 51,
+      "snippet": "    return {\"audience\": audience, \"method\": request.method.upper(),\n            \"path\": request.scope.get(\"path\", \"\"),\n            \"query\": [list(pair) for pair in parse_qsl(\n                request.scope.get(\"query_string\", b\"\").decode(\"ascii\"), keep_blank_values=True)],\n            \"body_sha256\": hashlib.sha256(body).hexdigest()}\n\n\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "histor/sandbox/histor_observe.py",
+      "line": 423,
+      "snippet": "    header = qid + b\"\\x81\\x80\" + b\"\\x00\\x01\" + (b\"\\x00\\x01\" if ip else b\"\\x00\\x00\") + b\"\\x00\\x00\\x00\\x00\"\n    if not ip:\n        return header + question  # NOERROR, no record: AAAA and the rest fall back to A\n    return header + question + b\"\\xc0\\x0c\\x00\\x01\\x00\\x01\\x00\\x00\\x00\\x3c\\x00\\x04\" + bytes(int(x) for x in ip.split(\".\"))\n\n\nDNS: DnsLogger | None = None\n"
+    },
+    {
+      "rule": "BD000805",
+      "file": "histor/sandbox/histor_observe.py",
+      "line": 423,
+      "snippet": "    header = qid + b\"\\x81\\x80\" + b\"\\x00\\x01\" + (b\"\\x00\\x01\" if ip else b\"\\x00\\x00\") + b\"\\x00\\x00\\x00\\x00\"\n    if not ip:\n        return header + question  # NOERROR, no record: AAAA and the rest fall back to A\n    return header + question + b\"\\xc0\\x0c\\x00\\x01\\x00\\x01\\x00\\x00\\x00\\x3c\\x00\\x04\" + bytes(int(x) for x in ip.split(\".\"))\n\n\nDNS: DnsLogger | None = None\n"
+    },
+    {
+      "rule": "BD000104",
+      "file": "atlas/atlas/ecosystem_context.py",
+      "line": 157,
+      "snippet": "\n### Human / community / broadcast\n- **ARGUS-3** (magic-ai-factory.com/argus/) \u2014 sole intended human UI; WARDEN MCP firewall\n  (LUMEN); crypto off by default; install: curl \u2026/install | bash.\n- **DIOSCURI** \u2014 CASTOR (Telegram) + POLLUX (Discord); MNEMOSYNE KB; AEGIS firewall.\n- **THEOROS** \u2014 Agent Sovereignty Canon; weekly #the-canon via DIOSCURI.\n- **HELIOS** \u2014 yaml \u2192 voiced video \u2192 YouTube (@My-AI-Factory), private until approve.\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "attested/attested-memory-hub/memory-market/src/memory_market/actor_auth.py",
+      "line": 51,
+      "snippet": "    return {\"audience\": audience, \"method\": request.method.upper(),\n            \"path\": request.scope.get(\"path\", \"\"),\n            \"query\": [list(pair) for pair in parse_qsl(\n                request.scope.get(\"query_string\", b\"\").decode(\"ascii\"), keep_blank_values=True)],\n            \"body_sha256\": hashlib.sha256(body).hexdigest()}\n\n\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "pov-demo/provider.py",
+      "line": 132,
+      "snippet": "            return self._send(400, {\"success\": False, \"error\": f\"input.n must be between 2 and {MAX_N}\"})\n        result = deliver(name, n)\n        signature = base64.b64encode(KEYS[name].sign(canonical(\n            request.get(\"capability_id\", \"\"), request.get(\"product_id\", \"\"), payload, result))).decode()\n        self._send(200, {\"success\": True, \"result\": result}, {\"X-Provider-Signature\": signature})\n\n    def log_message(self, *args):\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "hestia-agents/agents/id-check/deploy.json",
+      "line": 44,
+      "snippet": "\\s-]\\\", \\\"\\\", raw).upper()\\n    if not re.fullmatch(r\\\"[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}\\\", text):\\n        return _result(\\\"iban\\\", False, text, \\\"not an IBAN: two letters, two digits, then up to \\\"\\n                       \\\"30 letters and digits\\\")\\n    country = text[:2]\\n    expected = IBAN_LENGTHS.get(country)\\n    if expected is None:\\n        return _result(\\\"iban\\\", False, text, country + \\\" does not issue IBANs\\\", country=country)\\n    if len(text) != expected:\\n        return _result(\\\"ib"
+    },
+    {
+      "rule": "BD000801",
+      "file": "hestia-agents/agents/commit-referee/deploy.json",
+      "line": 20,
+      "snippet": "rator):\\n    if layout == \\\"value\\\":\\n        return value\\n    if layout == \\\"concat\\\":\\n        return salt + value\\n    if layout == \\\"lenprefix\\\":\\n        return len(salt).to_bytes(8, \\\"big\\\") + salt + value\\n    return salt + separator + value\\n\\n\\ndef handle(payload):\\n    algorithm = payload.get(\\\"algorithm\\\", \\\"sha256\\\")\\n    if algorithm not in ALGORITHMS:\\n        raise ValueError(\\\"algorithm must be one of \\\" + \\\", \\\".join(ALGORITHMS))\\n    layout = payload.get(\\\"layout\\\", \\\"lenprefi"
+    },
+    {
+      "rule": "BD000801",
+      "file": "hestia-agents/agents/commit-referee/deploy.json",
+      "line": 20,
+      "snippet": "w).hexdigest()\\n\\n\\ndef _decode(text, encoding, field):\\n    if not isinstance(text, str):\\n        raise ValueError(field + \\\" must be a string\\\")\\n    if len(text) > MAX_INPUT:\\n        raise ValueError(field + \\\" is too long\\\")\\n    if encoding == \\\"hex\\\":\\n        try:\\n            return bytes.fromhex(text)\\n        except ValueError:\\n            raise ValueError(field + \\\" is not valid hex\\\") from None\\n    if encoding == \\\"utf8\\\":\\n        return text.encode(\\\"utf-8\\\")\\n    raise ValueEr"
+    },
+    {
+      "rule": "BD000801",
+      "file": "hestia-agents/agents/signature-verify/deploy.json",
+      "line": 78,
+      "snippet": "------------------- canonical forms\\n\\n_SHORT = {0x08: \\\"\\\\\\\\b\\\", 0x09: \\\"\\\\\\\\t\\\", 0x0A: \\\"\\\\\\\\n\\\", 0x0C: \\\"\\\\\\\\f\\\", 0x0D: \\\"\\\\\\\\r\\\", 0x22: '\\\\\\\\\\\"',\\n          0x5C: \\\"\\\\\\\\\\\\\\\\\\\"}\\n\\n\\ndef _jcs_string(text):\\n    out = ['\\\"']\\n    for char in text:\\n        point = ord(char)\\n        short = _SHORT.get(point)\\n        if short is not None:\\n            out.append(short)\\n        elif point < 0x20:\\n            out.append(\\\"\\\\\\\\u\\\" + format(point, \\\"04x\\\"))\\n        else:\\n            out.append"
+    },
+    {
+      "rule": "BD000801",
+      "file": "hestia-agents/agents/signature-verify/deploy.json",
+      "line": 78,
+      "snippet": "rip():\\n        raise ValueError(where + \\\" must be a non-empty string\\\")\\n    text = value.strip()\\n    candidates = []\\n    body = text[2:] if text[:2] in (\\\"0x\\\", \\\"0X\\\") else text\\n    if len(body) % 2 == 0 and all(c in \\\"0123456789abcdefABCDEF\\\" for c in body):\\n        candidates.append(bytes.fromhex(body))\\n    if text[0] == \\\"z\\\":\\n        try:\\n            candidates.append(_b58decode(text[1:]))\\n        except ValueError:\\n            pass\\n    try:\\n        candidates.append(_b64decod"
+    },
+    {
+      "rule": "BD000801",
+      "file": "aimarket-hub/aimarket_hub/a2a.py",
+      "line": 665,
+      "snippet": "        network = str(decoded.get(\"network\") or accepted.get(\"network\") or \"\")\n        inner = decoded.get(\"payload\") if isinstance(decoded.get(\"payload\"), dict) else {}\n        auth = inner.get(\"authorization\") if isinstance(inner.get(\"authorization\"), dict) else {}\n        payer = str(auth.get(\"from\") or decoded.get(\"payer\") or \"\")\n    if not network and required_terms:\n        accepts = required_terms.get(\"accepts\") or [{}]\n        network = str((accepts[0] if isinstance(accepts, list) and ac"
+    },
+    {
+      "rule": "BD000801",
+      "file": "aimarket-hub/aimarket_hub/a2a.py",
+      "line": 663,
+      "snippet": "    if decoded is not None:\n        accepted = decoded.get(\"accepted\") if isinstance(decoded.get(\"accepted\"), dict) else {}\n        network = str(decoded.get(\"network\") or accepted.get(\"network\") or \"\")\n        inner = decoded.get(\"payload\") if isinstance(decoded.get(\"payload\"), dict) else {}\n        auth = inner.get(\"authorization\") if isinstance(inner.get(\"authorization\"), dict) else {}\n        payer = str(auth.get(\"from\") or decoded.get(\"payer\") or \"\")\n    if not network and required_terms:\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "aimarket-hub/aimarket_hub/a2a.py",
+      "line": 661,
+      "snippet": "    network = \"\"\n    payer = \"\"\n    if decoded is not None:\n        accepted = decoded.get(\"accepted\") if isinstance(decoded.get(\"accepted\"), dict) else {}\n        network = str(decoded.get(\"network\") or accepted.get(\"network\") or \"\")\n        inner = decoded.get(\"payload\") if isinstance(decoded.get(\"payload\"), dict) else {}\n        auth = inner.get(\"authorization\") if isinstance(inner.get(\"authorization\"), dict) else {}\n"
+    },
+    {
+      "rule": "BD000104",
+      "file": "scripts/setup-argus-install.sh",
+      "line": 45,
+      "snippet": "fi\n\necho \"\"\necho \"OK: curl -fsSL https://magic-ai-factory.com/install | bash\"\n"
+    },
+    {
+      "rule": "BD000104",
+      "file": "scripts/setup-argus-install.sh",
+      "line": 4,
+      "snippet": "#!/usr/bin/env bash\n# Publish the ARGUS curl installer to nginx static root on magic-ai-factory.com.\n#\n#   curl -fsSL https://magic-ai-factory.com/install | bash\n#\n# Run on the production host (as root):\n#   sudo ./scripts/setup-argus-install.sh\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "attested/attested-saas-gateway/src/saas_gateway/actor_auth.py",
+      "line": 51,
+      "snippet": "    return {\"audience\": audience, \"method\": request.method.upper(),\n            \"path\": request.scope.get(\"path\", \"\"),\n            \"query\": [list(pair) for pair in parse_qsl(\n                request.scope.get(\"query_string\", b\"\").decode(\"ascii\"), keep_blank_values=True)],\n            \"body_sha256\": hashlib.sha256(body).hexdigest()}\n\n\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "attested/attested-prove/src/attested_prove/actor_auth.py",
+      "line": 51,
+      "snippet": "    return {\"audience\": audience, \"method\": request.method.upper(),\n            \"path\": request.scope.get(\"path\", \"\"),\n            \"query\": [list(pair) for pair in parse_qsl(\n                request.scope.get(\"query_string\", b\"\").decode(\"ascii\"), keep_blank_values=True)],\n            \"body_sha256\": hashlib.sha256(body).hexdigest()}\n\n\n"
+    },
+    {
+      "rule": "BD000104",
+      "file": "scripts/transfer_contract_ownership.sh",
+      "line": 88,
+      "snippet": "\n# \u2500\u2500 Check cast is available \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nif ! command -v cast &>/dev/null; then\n    die \"cast not found. Install Foundry: curl -L https://foundry.paradigm.xyz | bash\"\nfi\n\nexport ETH_RPC_URL=\"$RPC_URL\"\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "oracles/oracles/sortes/sortes/capabilities.py",
+      "line": 48,
+      "snippet": "    path = Path(os.environ.get(\"SORTES_VRF_SK_PATH\", \"data/sortes_vrf_sk\"))\n    def validate(raw: bytes) -> bytes:\n        try:\n            sk = bytes.fromhex(raw.decode(\"ascii\").strip())\n        except (UnicodeError, ValueError):\n            raise RuntimeError(\"Invalid VRF secret file; explicit identity recovery is required\") from None\n        if len(sk) != 32:\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "scripts/verify_structured_secrets.py",
+      "line": 263,
+      "snippet": "        for match in _prefixed_matches(\n            _HEX_FIELD_BYTES, window, lowered, (b\"private\", b\"secret\", b\"signing\"),\n        ):\n            secret = bytes.fromhex(match.group(\"secret\").decode(\"ascii\"))\n            fingerprint = _fingerprint(secret)\n            if fingerprint not in _PUBLIC_EVM_TEST_KEY_SHA256:\n                findings.add(Finding(rel, \"hex-private-key-field\", fingerprint))\n"
+    },
+    {
+      "rule": "BD000801",
+      "file": "hestia-agents/agents/x402-check/deploy.json",
+      "line": 68,
+      "snippet": "rror(\\\"x_payment is not base64\\\")\\n        bits = (bits << 6) | value\\n        count += 6\\n        if count >= 8:\\n            count -= 8\\n            out.append((bits >> count) & 0xFF)\\n            bits &= (1 << count) - 1\\n    return bytes(out)\\n\\n\\ndef _signature(payload, inner):\\n    sig = inner.get(\\\"signature\\\") if \\\"signature\\\" in inner else payload.get(\\\"signature\\\")\\n    if sig is not None:\\n        raw = _hex_bytes(sig, \\\"signature\\\")\\n        if len(raw) == 64:\\n            raise Valu"
+    },
+    {
+      "rule": "BD000801",
+      "file": "hestia-agents/agents/x402-check/deploy.json",
+      "line": 68,
+      "snippet": "gth=None):\\n    if not isinstance(value, str):\\n        raise ValueError(where + \\\" must be a hex string\\\")\\n    text = value[2:] if value[:2] in (\\\"0x\\\", \\\"0X\\\") else value\\n    if len(text) % 2:\\n        raise ValueError(where + \\\" has an odd number of hex digits\\\")\\n    try:\\n        raw = bytes.fromhex(text)\\n    except ValueError:\\n        raise ValueError(where + \\\" is not hex\\\") from None\\n    if length is not None and len(raw) != length:\\n        raise ValueError(where + \\\" must be \\\" + "
+    },
+    {
+      "rule": "BD000801",
+      "file": "hestia-agents/agents/x402-check/handler.py",
+      "line": 312,
+      "snippet": "        if not isinstance(payload.get(\"x_payment\"), str):\n            raise ValueError(\"x_payment must be the X-PAYMENT header value (base64)\")\n        try:\n            payment = json.loads(_b64decode(payload.get(\"x_payment\")).decode(\"utf-8\"))\n        except (ValueError, UnicodeDecodeError):\n            raise ValueError(\"x_payment does not decode to a JSON payment payload\") from None\n    if payment is not None:\n"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "sourcegraph-secondary-packages": "context:global patterntype:regexp (aimarket-metis|aimarket-symmartys) -repo:^github.com/alexar76/ archived:yes fork:yes count:100 timeout:25s",
+  "sourcegraph-operator-kits": "context:global patterntype:literal @aimarket/ -repo:^github.com/alexar76/ file:(package.json|package-lock.json|pnpm-lock.yaml|yarn.lock)$ archived:yes fork:yes count:100 timeout:25s",
+  "sourcegraph-federation-header": "context:global patterntype:literal X-AIMarket-Crawler -repo:^github.com/alexar76/ archived:yes fork:yes count:100 timeout:25s"
+}

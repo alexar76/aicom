@@ -1,0 +1,660 @@
+{
+  "observed_date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "generated_at_utc": "2026-10-30T07:26:00.366480+00:00",
+  "main_report": "../../growth/external-use-pass4-2026-10-30.ru.md",
+  "web_queries": 77,
+  "captured_gets": 35,
+  "branches": {
+    "code": {
+      "web_queries": 12,
+      "indexes": [
+        "verification-index.json"
+      ],
+      "summary": "code/summary.json",
+      "captured_gets": 23,
+      "statuses": {
+        "200": 23
+      },
+      "report": "code/report.ru.md"
+    },
+    "regional": {
+      "web_queries": 31,
+      "indexes": [
+        "verification-index.json"
+      ],
+      "summary": "regional/summary.json",
+      "captured_gets": 6,
+      "statuses": {
+        "200": 6
+      },
+      "report": "regional/report.ru.md"
+    },
+    "social": {
+      "web_queries": 26,
+      "indexes": [
+        "http-index.json"
+      ],
+      "summary": "social/summary.json",
+      "captured_gets": 3,
+      "statuses": {
+        "200": 3
+      },
+      "report": "social/report.ru.md"
+    },
+    "root": {
+      "web_queries": 8,
+      "indexes": [
+        "http-index.json"
+      ],
+      "summary": "root/summary.json",
+      "captured_gets": 3,
+      "statuses": {
+        "200": 3
+      },
+      "report": "root/report.ru.md"
+    }
+  },
+  "validation": {
+    "json_parse_errors": [],
+    "missing_capture_hashes": [],
+    "missing_local_report_links": [],
+    "hashed_captures_verified": 35
+  },
+  "captures": [
+    {
+      "branch": "code",
+      "key": "deps-aimarket-safety",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-safety/v/2.0.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:03.983225+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-safety/v/2.0.1/dependents",
+      "bytes": 159,
+      "sha256": "8d4fe6904b56c5e2159ff5298ad2371d2900965d1fd354f9f529a10c7a711c30",
+      "file": "deps-aimarket-safety.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-safety.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-aimarket-channels",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-channels/v/2.0.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:03.989288+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-channels/v/2.0.1/dependents",
+      "bytes": 161,
+      "sha256": "20a00486a85bcb7829934a373fe23e2442599df29db0ad819014fbf391227ef7",
+      "file": "deps-aimarket-channels.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-channels.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-aimarket-tee",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-tee/v/2.0.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:03.990354+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-tee/v/2.0.1/dependents",
+      "bytes": 156,
+      "sha256": "70927564139f2b524cfff7508ec47024eef06be03bc24f413895d79c7af4acac",
+      "file": "deps-aimarket-tee.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-tee.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-aimarket-reputation",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-reputation/v/2.0.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:04.278088+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-reputation/v/2.0.1/dependents",
+      "bytes": 163,
+      "sha256": "0fcbcc2a7acefe76dfe414f59553b0887badce0060c68d38b2fb79f30d078cc4",
+      "file": "deps-aimarket-reputation.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-reputation.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-aimarket-orchestrator",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-orchestrator/v/2.0.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:04.278341+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-orchestrator/v/2.0.0/dependents",
+      "bytes": 165,
+      "sha256": "1f275d283127dc3af4e70996e723c9a2a3d6c6871fad019271fda328a239f419",
+      "file": "deps-aimarket-orchestrator.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-orchestrator.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-aimarket-streaming",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-streaming/v/2.0.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:04.307636+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-streaming/v/2.0.1/dependents",
+      "bytes": 162,
+      "sha256": "2d3e5ba6cbad9266f1fc80cd133d0b09d00ba11d51635324d60e3de2780360c5",
+      "file": "deps-aimarket-streaming.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-streaming.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-aimarket-mcp-packager",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-mcp-packager/v/2.1.3/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:04.657884+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-mcp-packager/v/2.1.3/dependents",
+      "bytes": 165,
+      "sha256": "aadebe5ad4a8314bc0786a9a74064e43d72fffb3c0b7e0a91f23f1b4af660e25",
+      "file": "deps-aimarket-mcp-packager.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-mcp-packager.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-aimarket-zk",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-zk/v/2.1.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:04.670268+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-zk/v/2.1.1/dependents",
+      "bytes": 155,
+      "sha256": "c5507623ef78776b6e2108141a9806f0048f3ad58f75db35f63f0928278c070a",
+      "file": "deps-aimarket-zk.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-zk.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-aimarket-data-cap",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-data-cap/v/3.0.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:04.690404+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-data-cap/v/3.0.0/dependents",
+      "bytes": 161,
+      "sha256": "82d653beb3bfa556703a5daa4a92cc82429cf342aa96710c3d0f61df86ccb522",
+      "file": "deps-aimarket-data-cap.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-data-cap.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-aimarket-dataset",
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-dataset/v/2.0.0/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:04.912926+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-dataset/v/2.0.0/dependents",
+      "bytes": 160,
+      "sha256": "6f06b31e7df9a1afefca00e3cd8e38c972b3a5ad95f6ff1337959a11472ffbfa",
+      "file": "deps-aimarket-dataset.raw",
+      "verified_body_files": [
+        "code/deps-aimarket-dataset.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-npm-aimarket-widget",
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fwidget/v/0.1.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:04.932605+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fwidget/v/0.1.1/dependents",
+      "bytes": 159,
+      "sha256": "5ea672e4bd053f78028b11cab588fcbbbef4d67c965dd9a0889d691d2dd1ff27",
+      "file": "deps-npm-aimarket-widget.raw",
+      "verified_body_files": [
+        "code/deps-npm-aimarket-widget.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-npm-aimarket-hub-client",
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fhub-client/v/0.0.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:04.960384+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fhub-client/v/0.0.1/dependents",
+      "bytes": 163,
+      "sha256": "d306891072e4740a4f375457a32925c2b1617e4f706a2e66eb8aa878984f64dd",
+      "file": "deps-npm-aimarket-hub-client.raw",
+      "verified_body_files": [
+        "code/deps-npm-aimarket-hub-client.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "deps-npm-aimarket-sdk",
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fsdk/v/0.0.1/dependents",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:06.315275+00:00",
+      "status": 200,
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fsdk/v/0.0.1/dependents",
+      "bytes": 156,
+      "sha256": "7dd6d4f2a5586aa6c0a62acfa633c719ea21975fda39603ed3752ce970dd13a7",
+      "file": "deps-npm-aimarket-sdk.raw",
+      "verified_body_files": [
+        "code/deps-npm-aimarket-sdk.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commit-safety",
+      "url": "https://api.github.com/search/commits?q=%22aimarket-safety%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:06.415147+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22aimarket-safety%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "file": "commit-safety.raw",
+      "verified_body_files": [
+        "code/commit-secret-harvest.raw",
+        "code/commit-cross-tool.raw",
+        "code/repo-safety.raw",
+        "code/commit-safety.raw",
+        "code/commit-attested-origin.raw",
+        "code/commit-channels.raw",
+        "code/commit-widget.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commit-channels",
+      "url": "https://api.github.com/search/commits?q=%22aimarket-channels%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:06.505342+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22aimarket-channels%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "file": "commit-channels.raw",
+      "verified_body_files": [
+        "code/commit-secret-harvest.raw",
+        "code/commit-cross-tool.raw",
+        "code/repo-safety.raw",
+        "code/commit-safety.raw",
+        "code/commit-attested-origin.raw",
+        "code/commit-channels.raw",
+        "code/commit-widget.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commit-packager",
+      "url": "https://api.github.com/search/commits?q=%22aimarket-mcp-packager%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:06.666974+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22aimarket-mcp-packager%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 80120,
+      "sha256": "f5a7ab11f8b447e19e8fe355e9dbbe0f82c6e0754eb3a1ed0cc2a74e47a937f4",
+      "file": "commit-packager.raw",
+      "verified_body_files": [
+        "code/commit-packager.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commit-widget",
+      "url": "https://api.github.com/search/commits?q=%22%40aimarket%2Fwidget%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:07.093772+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22%40aimarket%2Fwidget%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "file": "commit-widget.raw",
+      "verified_body_files": [
+        "code/commit-secret-harvest.raw",
+        "code/commit-cross-tool.raw",
+        "code/repo-safety.raw",
+        "code/commit-safety.raw",
+        "code/commit-attested-origin.raw",
+        "code/commit-channels.raw",
+        "code/commit-widget.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "repo-safety",
+      "url": "https://api.github.com/search/repositories?q=%22aimarket-safety%22+in%3Areadme+-user%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:07.112791+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/repositories?q=%22aimarket-safety%22+in%3Areadme+-user%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "file": "repo-safety.raw",
+      "verified_body_files": [
+        "code/commit-secret-harvest.raw",
+        "code/commit-cross-tool.raw",
+        "code/repo-safety.raw",
+        "code/commit-safety.raw",
+        "code/commit-attested-origin.raw",
+        "code/commit-channels.raw",
+        "code/commit-widget.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "repo-packager",
+      "url": "https://api.github.com/search/repositories?q=%22aimarket-mcp-packager%22+in%3Areadme+-user%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:07.458365+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/repositories?q=%22aimarket-mcp-packager%22+in%3Areadme+-user%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "bytes": 22051,
+      "sha256": "ba35665c964b87d035debdc7b87d118688fed842812efd40500960b308e4ab8f",
+      "file": "repo-packager.raw",
+      "verified_body_files": [
+        "code/repo-packager.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commit-awr-reasons",
+      "url": "https://api.github.com/search/commits?q=%22AWR-PROOF%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:08.126925+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22AWR-PROOF%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 8059,
+      "sha256": "3ec2ac7a7025ded8b337a912beb2727e00ce448725eef3b206560732edb25a16",
+      "file": "commit-awr-reasons.raw",
+      "verified_body_files": [
+        "code/commit-awr-reasons.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commit-cross-tool",
+      "url": "https://api.github.com/search/commits?q=%22TOOL_DEF_CROSS_TOOL%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:08.127225+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22TOOL_DEF_CROSS_TOOL%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "file": "commit-cross-tool.raw",
+      "verified_body_files": [
+        "code/commit-secret-harvest.raw",
+        "code/commit-cross-tool.raw",
+        "code/repo-safety.raw",
+        "code/commit-safety.raw",
+        "code/commit-attested-origin.raw",
+        "code/commit-channels.raw",
+        "code/commit-widget.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commit-secret-harvest",
+      "url": "https://api.github.com/search/commits?q=%22TOOL_DEF_SECRET_HARVEST%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:09.148090+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22TOOL_DEF_SECRET_HARVEST%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "file": "commit-secret-harvest.raw",
+      "verified_body_files": [
+        "code/commit-secret-harvest.raw",
+        "code/commit-cross-tool.raw",
+        "code/repo-safety.raw",
+        "code/commit-safety.raw",
+        "code/commit-attested-origin.raw",
+        "code/commit-channels.raw",
+        "code/commit-widget.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commit-attested-origin",
+      "url": "https://api.github.com/search/commits?q=%22attestedmemory.net%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:09.415365+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22attestedmemory.net%22+-user%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "file": "commit-attested-origin.raw",
+      "verified_body_files": [
+        "code/commit-secret-harvest.raw",
+        "code/commit-cross-tool.raw",
+        "code/repo-safety.raw",
+        "code/commit-safety.raw",
+        "code/commit-attested-origin.raw",
+        "code/commit-channels.raw",
+        "code/commit-widget.raw"
+      ]
+    },
+    {
+      "branch": "regional",
+      "name": "aefact-readers",
+      "url": "https://aefact.site/readers",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:18:27.884479+00:00",
+      "status": 200,
+      "final_url": "https://aefact.site/readers",
+      "content_type": "text/html; charset=utf-8",
+      "sha256": "50cf20ded0d7c58eba3cc787b8a1fe4072f6ef1dba8b41974a0ca572b57244f7",
+      "bytes": 175302,
+      "body_file": "aefact-readers.html",
+      "verified_body_files": [
+        "regional/aefact-readers.html"
+      ]
+    },
+    {
+      "branch": "regional",
+      "name": "aefact-readers-json",
+      "url": "https://aefact.site/v1/readers",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:19:03.422141+00:00",
+      "status": 200,
+      "final_url": "https://aefact.site/v1/readers",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "b542ba72248511c6865395e6c708eeda6027e58241a935293fd976ef60d3efbf",
+      "bytes": 35453,
+      "body_file": "aefact-readers-json.json",
+      "verified_body_files": [
+        "regional/aefact-readers-json.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "name": "engr-subcontract",
+      "url": "https://app.engr-sng.com/news/detail/one-call-subcontract-390b827f",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:20:19.481239+00:00",
+      "status": 200,
+      "final_url": "https://app.engr-sng.com/news/detail/one-call-subcontract-390b827f",
+      "content_type": "text/html",
+      "sha256": "1f2f64eef32a75cb3d3a5eb1d12652fc5e2d9b2d6e3879a4b7278661b12765a6",
+      "bytes": 170339,
+      "body_file": "engr-subcontract.html",
+      "verified_body_files": [
+        "regional/engr-subcontract.html"
+      ]
+    },
+    {
+      "branch": "regional",
+      "name": "engr-portfolio",
+      "url": "https://app.engr-sng.com/portfolio",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:21:17.073101+00:00",
+      "status": 200,
+      "final_url": "https://app.engr-sng.com/portfolio",
+      "content_type": "text/html",
+      "sha256": "f245403210c222333bf609f3bdcba32a9c97660fd69560e1db0fae43a2027060",
+      "bytes": 127720,
+      "body_file": "engr-portfolio.html",
+      "verified_body_files": [
+        "regional/engr-portfolio.html"
+      ]
+    },
+    {
+      "branch": "regional",
+      "name": "engr-privacy",
+      "url": "https://app.engr-sng.com/privacy-policy",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:21:18.525560+00:00",
+      "status": 200,
+      "final_url": "https://app.engr-sng.com/privacy-policy",
+      "content_type": "text/html",
+      "sha256": "db361225a18c3fd04441714bab505a3db93aad359e078e195319e2a0c0e3b598",
+      "bytes": 39816,
+      "body_file": "engr-privacy.html",
+      "verified_body_files": [
+        "regional/engr-privacy.html"
+      ]
+    },
+    {
+      "branch": "regional",
+      "name": "engr-build-planner",
+      "url": "https://app.engr-sng.com/news/detail/language-model-build-planner-f39c0f9b",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:22:48.340558+00:00",
+      "status": 200,
+      "final_url": "https://app.engr-sng.com/news/detail/language-model-build-planner-f39c0f9b",
+      "content_type": "text/html",
+      "sha256": "33ed4a3dfbf83438b75c359f4094dcaa8629f11dd1390f258770c0ca4e25eaa9",
+      "bytes": 195464,
+      "body_file": "engr-build-planner.html",
+      "verified_body_files": [
+        "regional/engr-build-planner.html"
+      ]
+    },
+    {
+      "branch": "social",
+      "name": "cursor-native-warden",
+      "url": "https://forum.cursor.com/search.json?q=%40aimarket%2Fwarden",
+      "method": "GET",
+      "at_utc": "2026-10-30T07:18:47.506543+00:00",
+      "status": 200,
+      "final_url": "https://forum.cursor.com/search.json?q=%40aimarket%2Fwarden",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "da8345a512ba4a5df349dcd17b24e9b73f6381e12b2c600c42d95e608ab5724f",
+      "bytes": 349,
+      "body_file": "cursor-native-warden.json",
+      "verified_body_files": [
+        "social/cursor-native-warden.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "name": "n8n-native-modelmarket",
+      "url": "https://community.n8n.io/search.json?q=modelmarket.dev",
+      "method": "GET",
+      "at_utc": "2026-10-30T07:18:47.508168+00:00",
+      "status": 200,
+      "final_url": "https://community.n8n.io/search.json?q=modelmarket.dev",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "b8838bf80f0f8cf8b3e526d13f385aee8f180420056292ff4d2ab09876447bc5",
+      "bytes": 348,
+      "body_file": "n8n-native-modelmarket.json",
+      "verified_body_files": [
+        "social/n8n-native-modelmarket.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "name": "lobsters-native-stories",
+      "url": "https://lobste.rs/search?q=modelmarket.dev&what=stories&order=newest",
+      "method": "GET",
+      "at_utc": "2026-10-30T07:18:47.508986+00:00",
+      "status": 200,
+      "final_url": "https://lobste.rs/search?q=modelmarket.dev&what=stories&order=newest",
+      "content_type": "text/html; charset=utf-8",
+      "sha256": "7ea208dcb7ac5652d81e8d8e2a0939afc6a6a1e7a4ba0db2a841bdeac2bb44b9",
+      "bytes": 7586,
+      "body_file": "lobsters-native-stories.html",
+      "verified_body_files": [
+        "social/lobsters-native-stories.html"
+      ]
+    },
+    {
+      "branch": "root",
+      "name": "mentions-today",
+      "url": "https://api.github.com/search/issues?q=mentions%3Aalexar76%20updated%3A%3E%3D2026-10-30%20-user%3Aalexar76&sort=updated&order=desc&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:18:00.304006+00:00",
+      "status": 200,
+      "sha256": "7b8a94e04a9a6357394db542f92f33a164eec8a055f74a5ac444fffeb4b4da49",
+      "bytes": 5230,
+      "rate_remaining": "8",
+      "body_file": "mentions-today.json",
+      "verified_body_files": [
+        "root/mentions-today.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "name": "incoming-issues-today",
+      "url": "https://api.github.com/search/issues?q=user%3Aalexar76%20is%3Aissue%20-author%3Aalexar76%20updated%3A%3E%3D2026-10-30&sort=updated&order=desc&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:18:00.306171+00:00",
+      "status": 200,
+      "sha256": "e71a323f2e79e3ca1c31415b7a8837962cb6dd266fd7e3740a119e649037fbe7",
+      "bytes": 2812,
+      "rate_remaining": "9",
+      "body_file": "incoming-issues-today.json",
+      "verified_body_files": [
+        "root/incoming-issues-today.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "name": "incoming-prs-today",
+      "url": "https://api.github.com/search/issues?q=user%3Aalexar76%20is%3Apr%20-author%3Aalexar76%20updated%3A%3E%3D2026-10-30&sort=updated&order=desc&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T07:18:01.242055+00:00",
+      "status": 200,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+      "bytes": 79,
+      "rate_remaining": "7",
+      "body_file": "incoming-prs-today.json",
+      "verified_body_files": [
+        "root/incoming-prs-today.json"
+      ]
+    }
+  ],
+  "exclusions": {
+    "test_purchases_as_demand": true,
+    "executed_duplicate_web_queries_excluded": 1,
+    "duplicate_gets_excluded_from_technical_coverage": 19,
+    "code_distinct_urls_with_saved_bodies": 23
+  },
+  "article_assessment": {
+    "worth_short_technical_note": true,
+    "suggested_words": [
+      600,
+      900
+    ],
+    "draft_created": false,
+    "published": false
+  },
+  "new_independent_runtime_adoptions": 0,
+  "new_independent_user_reports": 0,
+  "external_mutations": "None in this pass. No payments, posts, messages, invokes, account changes or GitHub writes."
+}

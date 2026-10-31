@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "web_queries": 16,
+  "captured_gets": 43,
+  "new_independent_runtime_use_verified": false,
+  "new_independent_mention_verified": false,
+  "new_coverage": {
+    "warden_versions_not_previously_queried": 19,
+    "known_versions_not_requeried": [
+      "0.8.2",
+      "0.15.0",
+      "0.22.2"
+    ],
+    "new_direct_dependents": "Only own ARGUS aliases/versions; provenance checked",
+    "rust_reverse_dependents": 0,
+    "dart_registry_dependency_search": 0,
+    "fork_histories_closed": 3,
+    "fork_histories_result": "Each accessible default history contains public snapshot and coverage bot commit only",
+    "new_commit_searches": 6,
+    "sourcegraph_secondary_markers": "done=true, matchCount=0"
+  },
+  "repeated_findings_not_counted": [
+    "QuincyGB",
+    "traits-dev",
+    "Industrial Platform",
+    "RugSnare",
+    "MCPMoat",
+    "agent-exec",
+    "Enterprise Factory",
+    "awesome-list mirrors"
+  ],
+  "limitations": [
+    "Registry graphs do not cover private or unpublished apps, manual installs or HTTP calls",
+    "Sourcegraph and GitHub searches are incomplete",
+    "Default fork histories only; no other branches or private state"
+  ],
+  "report": "report.ru.md"
+}

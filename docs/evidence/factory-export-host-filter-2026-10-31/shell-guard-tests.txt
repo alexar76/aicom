@@ -1,0 +1,46 @@
+  ✓ refuses data/remediation/conductor_key
+  ✓ refuses data/momus_signing_key
+  ✓ refuses a 64-byte key blob with an innocent name and NO NUL byte
+  ✓ refuses key material grep -I would classify as text
+  ✓ refuses an *_ed25519 key file
+  ✓ still refuses a PEM private key (pre-existing check)
+  ✓ refuses credential shapes even in the flow-guard fixture path
+  ✓ still refuses the same shapes outside the flow-guard fixture
+  ✓ still refuses the shapes when another file in the tree carries them
+  ✓ allows the two frozen acex ZK proof fixtures
+  ✓ still refuses the same proof bytes outside the two fixture paths
+  ✓ still refuses a real key inside legacy-zk next to the proof fixtures
+  ✓ still refuses a key-sized blob at the proof fixture path
+  ✓ still refuses a real key elsewhere when the ZK proof fixtures are present
+  ✓ allows a tracked quality-public-key.pem whose header is a public key
+  ✓ still refuses quality-public-key.pem when the header is a private key
+  ✓ still refuses a public PEM outside the known quality-pin paths
+  ✓ allows the vendored oracle-core signing-key storage module
+  ✓ still refuses raw key bytes named _signing_key_storage.py
+  ✓ still refuses a PEM private key at the storage-module path
+  ✓ still refuses a text file that only borrows the storage-module name
+  ✓ still refuses a real key with a similar name next to the storage module
+  ✓ allows the exact trusted storage implementation in another package
+  ✓ allows the storage module at the oracles core mirror path
+  ✓ allows the storage module at the oracles platon mirror path
+  ✓ allows the storage module at the platon mirror path
+  ✓ allows exact trusted storage code below a catalog prefix
+  ✓ allows exact trusted storage code at another package root
+  ✓ allows exact trusted storage code with a satellite prefix
+  ✓ still refuses a tiny file at the oracles core mirror path
+  ✓ still refuses a PEM private key at the oracles platon mirror path
+  ✓ still refuses a PEM private key at the platon mirror path
+  ✓ still refuses a tiny file at the platon mirror path
+  ✓ accepts a clean tree with small binary assets
+  fixtures: svg=410B  vector=269B
+  ✓ accepts text files carrying a single control byte (SVG icon, canonicalization vector)
+  ✓ still refuses a 300-byte random blob (density stays key-like)
+  ✓ refuses a forbidden host inside a dotfile
+  ✓ refuses a sk-or-v1… credential in a dotfile
+  ✓ refuses a sk-ant-a… credential in a dotfile
+  ✓ refuses a 12345678… credential in a dotfile
+  ✓ refuses a aimk_QQQ… credential in a dotfile
+  ✓ refuses an ML-DSA key file (<key>_mldsa, 12 KB of hex)
+  ✓ refuses to certify anything when rg is missing
+
+  43 passed, 0 failed

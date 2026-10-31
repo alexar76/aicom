@@ -1,0 +1,93 @@
+Inventoried 304 manifests; 3716 distinct pinned registry versions; 0 parse errors
+Go: read 9806 public advisories; matched 0
+Pub: read 14 public advisories; matched 0
+PyPI: read 26744 public advisories; matched 0
+crates.io: read 3014 public advisories; matched 0
+npm: read 230949 public advisories; matched 160
+{
+  "scanned_at_utc": "2026-10-30T09:45:26.367650+00:00",
+  "method": "Downloaded whole public OSV ecosystem archives; all manifest matching offline; no dependency inventory transmitted",
+  "manifest_count": 304,
+  "package_versions": 3716,
+  "versions_by_ecosystem": {
+    "Go": 1,
+    "Pub": 174,
+    "PyPI": 248,
+    "crates.io": 464,
+    "npm": 2829
+  },
+  "affected_package_versions": 52,
+  "raw_advisory_ids": 160,
+  "unique_vulnerabilities_alias_deduplicated": 160,
+  "severity_unique_vulnerabilities": {
+    "CRITICAL": 2,
+    "HIGH": 65,
+    "MODERATE": 74,
+    "LOW": 19
+  },
+  "severity_rows": {
+    "CRITICAL": 2,
+    "HIGH": 99,
+    "MODERATE": 112,
+    "LOW": 28
+  },
+  "parse_error_count": 0,
+  "matching_error_count": 1,
+  "unresolved_requirement_count": 1081,
+  "datasets": [
+    {
+      "ecosystem": "Go",
+      "advisories_read": 9806,
+      "advisories_matching": 0,
+      "archive_sha256": "c452c7e81e519eebe5626e6e5855af783a6439f9f00d1b62ec3e36a2991e7964",
+      "archive_bytes": 12675856,
+      "cache_path": "/private/tmp/aicom-security-review-20261030/Go.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/Go/all.zip"
+    },
+    {
+      "ecosystem": "Pub",
+      "advisories_read": 14,
+      "advisories_matching": 0,
+      "archive_sha256": "e19f6fa83938e3b5e203086a99ea97da4a676cf645521c137f20ca352701e815",
+      "archive_bytes": 25896,
+      "cache_path": "/private/tmp/aicom-security-review-20261030/Pub.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/Pub/all.zip"
+    },
+    {
+      "ecosystem": "PyPI",
+      "advisories_read": 26744,
+      "advisories_matching": 0,
+      "archive_sha256": "e9c4eae1d64c78ee4ee66bbf5afc340a31c01bc6ff096ad6dce133220c39666b",
+      "archive_bytes": 37531198,
+      "cache_path": "/private/tmp/aicom-security-review-20261030/PyPI.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/PyPI/all.zip"
+    },
+    {
+      "ecosystem": "crates.io",
+      "advisories_read": 3014,
+      "advisories_matching": 0,
+      "archive_sha256": "d108c93afe0ba913813a77379b1a63f39f59a656a0f2d5d5a4d7b5e83aa10a11",
+      "archive_bytes": 3732126,
+      "cache_path": "/private/tmp/aicom-security-review-20261030/crates.io.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/crates.io/all.zip"
+    },
+    {
+      "ecosystem": "npm",
+      "advisories_read": 230949,
+      "advisories_matching": 160,
+      "archive_sha256": "d482a3941cec6fe870a50ffa911765912f875f05ad5c7ebdfe9736dfd5ee4f68",
+      "archive_bytes": 219599455,
+      "cache_path": "/private/tmp/aicom-security-review-20261030/npm.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/npm/all.zip"
+    }
+  ],
+  "limits": [
+    "Source manifest versions only; runtime deployed versions not checked",
+    "Unpinned requirements and manifest-only dependencies are not fully resolved",
+    "Optional/dev/platform dependencies included; reachability not established",
+    "Go third-party dependencies absent in only go.mod; declared Go stdlib version checked",
+    "OS images, browsers, Android/Maven, compiler, system and GitHub Actions dependencies not covered by these datasets",
+    "No malicious-code behavioral analysis; known public OSV advisories only"
+  ]
+}
+TRACKED 3 advisories 3 {'MODERATE': 2, 'LOW': 1}

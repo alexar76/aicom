@@ -1,0 +1,22 @@
+[
+  {
+    "name": "payer-roundhouse-api",
+    "url": "https://api.roundhouseai.io/v0/agents/0xe2d8dc842fc5037c99c332bd57baaba3649f66c2",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T14:41:15.882123+00:00",
+    "status": 401,
+    "error": "HTTP Error 401: Unauthorized"
+  },
+  {
+    "name": "payer-merchant-page",
+    "url": "https://roundhouseai.io/merchant/0xe2d8dc842fc5037c99c332bd57baaba3649f66c2",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T14:41:15.882494+00:00",
+    "status": 200,
+    "final_url": "https://roundhouseai.io/merchant/0xe2d8dc842fc5037c99c332bd57baaba3649f66c2",
+    "bytes": 648889,
+    "sha256": "214d9cc276d0202e92cac6430f6d33c9fdb9bf2909b1744223733116772a016d",
+    "content_type": "text/html; charset=utf-8",
+    "body_file": "payer-merchant-page.raw"
+  }
+]

@@ -1,0 +1,23 @@
+diff --git a/pingblip/memeforge/src/components/three/SculptedModel.tsx b/pingblip/memeforge/src/components/three/SculptedModel.tsx
+index 38be3ded4..376cce30f 100644
+--- a/pingblip/memeforge/src/components/three/SculptedModel.tsx
++++ b/pingblip/memeforge/src/components/three/SculptedModel.tsx
+@@ -438,6 +438,18 @@ function LoadedModel({
+           // scene.clone(true) shares material instances with the cached gltf, so
+           // editing in place would evolve every other copy on the page as well.
+           const lit = (m: THREE.Material) => {
++            // The chest ticket keeps its contrast through evolution and bursts.
++            if (/^(Liquidation tag enamel|LIQ ink)$/.test(m.name)) {
++              const ticket = m.clone();
++              if (ticket instanceof THREE.MeshStandardMaterial) {
++                ticket.emissive.set(0x000000);
++                ticket.emissiveIntensity = 0;
++                ticket.metalness = 0;
++                ticket.roughness = 0.8;
++                ticket.color.set(m.name === "LIQ ink" ? "#171b17" : "#c99b48");
++              }
++              return ticket;
++            }
+             const next = evolveMaterial(m);
+             if (next instanceof THREE.MeshStandardMaterial) {
+               cast.push({ material: next, base: next.emissiveIntensity });

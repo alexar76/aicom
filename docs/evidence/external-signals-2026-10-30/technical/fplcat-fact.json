@@ -1,0 +1,88 @@
+{
+  "url": "https://fplcat.com/blog/ai-agents-playing-fantasy-premier-league",
+  "schema": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://fplcat.com/#organization",
+      "name": "FPL Cat",
+      "url": "https://fplcat.com",
+      "logo": "https://fplcat.com/logo.jpg",
+      "description": "FPL Cat (fplcat.com) is a free Fantasy Premier League (FPL) website: an FPL planner with our model's projected points that plans transfers, captains and chips week by week, a gameweek review comparing your team with your mini-league rivals, live bonus points and DEFCON, injury news, price change predictions, fixture difficulty and stats dashboards, also usable inside ChatGPT, Claude and other AI assistants through its MCP server. It is an independent fan project, not affiliated with the Premier League or Fantasy Premier League.",
+      "email": "hello@fplcat.com",
+      "sameAs": [
+        "https://x.com/kotzwysp",
+        "https://www.youtube.com/@FPLCats"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://fplcat.com/#website",
+      "name": "FPL Cat",
+      "url": "https://fplcat.com",
+      "description": "FPL Cat (fplcat.com) is a free Fantasy Premier League (FPL) website: an FPL planner with our model's projected points that plans transfers, captains and chips week by week, a gameweek review comparing your team with your mini-league rivals, live bonus points and DEFCON, injury news, price change predictions, fixture difficulty and stats dashboards, also usable inside ChatGPT, Claude and other AI assistants through its MCP server. It is an independent fan project, not affiliated with the Premier League or Fantasy Premier League.",
+      "publisher": {
+        "@id": "https://fplcat.com/#organization"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Bot user agents could be a surprisingly good way to advertise to developers",
+      "description": "I built an MCP server for FPL. Then 145 user-agent strings showed up: assistants, crawlers, uptime bots, and a surprisingly effective way to advertise to developers.",
+      "datePublished": "2026-10-13",
+      "dateModified": "2026-10-13",
+      "image": "https://fplcat.com/blog/ai-agents-playing-fantasy-premier-league/opengraph-image",
+      "url": "https://fplcat.com/blog/ai-agents-playing-fantasy-premier-league",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fplcat.com/blog/ai-agents-playing-fantasy-premier-league"
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "name": "FPL Cat Blog",
+        "url": "https://fplcat.com/blog"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "FPL Cat",
+        "url": "https://fplcat.com"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "FPL Cat",
+        "url": "https://fplcat.com"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://fplcat.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://fplcat.com/blog"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Bot user agents could be a surprisingly good way to advertise to developers",
+          "item": "https://fplcat.com/blog/ai-agents-playing-fantasy-premier-league"
+        }
+      ]
+    }
+  ],
+  "article_excerpt": "nlike most visitors, its policy allows a few calls to selected read-only tools. histor/0.1.0 39 HISTOR , a signed transparency log for tool definitions: it tracks whether the descriptions and schemas an agent trusts change later. LEGION-tlog/1.0 36 Another tool-definition transparency probe . It says it hashes public tool lists, records changes and never calls tools. ProofBench",
+  "links_to_histor": true,
+  "classification": "Independent attributed mention of outgoing crawler; not use of HISTOR by external customer",
+  "event_date": "2026-10-13",
+  "discovered_in_this_pass": "2026-10-30"
+}

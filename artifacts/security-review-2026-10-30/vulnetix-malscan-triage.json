@@ -1,0 +1,371 @@
+{
+  "files_scanned": 6700,
+  "scanner_malicious_boolean": true,
+  "findings": [
+    {
+      "file": "acex/contracts/solana/deploy.sh",
+      "line": 24,
+      "ioc": "https://api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "acex/contracts/solana/deploy.sh",
+      "line": 24,
+      "ioc": "api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "aimarket-hub/aimarket_hub/chain_net.py",
+      "line": 200,
+      "ioc": "ethereum-rpc.publicnode.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "aimarket-hub/aimarket_hub/chain_net.py",
+      "line": 222,
+      "ioc": "https://api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "aimarket-hub/aimarket_hub/chain_net.py",
+      "line": 222,
+      "ioc": "api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "aimarket-hub/aimarket_hub/native_price.py",
+      "line": 28,
+      "ioc": "ethereum-rpc.publicnode.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "alien-monitor/backend/chain_metrics.py",
+      "line": 124,
+      "ioc": "https://api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "alien-monitor/backend/chain_metrics.py",
+      "line": 124,
+      "ioc": "api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "alien-monitor/backend/chain_net.py",
+      "line": 200,
+      "ioc": "ethereum-rpc.publicnode.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "alien-monitor/backend/chain_net.py",
+      "line": 222,
+      "ioc": "https://api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "alien-monitor/backend/chain_net.py",
+      "line": 222,
+      "ioc": "api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "awr/rust/src/json.rs",
+      "line": 259,
+      "ioc": "self.ws",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Rust self.ws() whitespace-parser method, not a DNS name or connection."
+    },
+    {
+      "file": "awr/rust/src/json.rs",
+      "line": 266,
+      "ioc": "self.ws",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Rust self.ws() whitespace-parser method, not a DNS name or connection."
+    },
+    {
+      "file": "awr/rust/src/json.rs",
+      "line": 278,
+      "ioc": "self.ws",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Rust self.ws() whitespace-parser method, not a DNS name or connection."
+    },
+    {
+      "file": "awr/rust/src/json.rs",
+      "line": 283,
+      "ioc": "self.ws",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Rust self.ws() whitespace-parser method, not a DNS name or connection."
+    },
+    {
+      "file": "awr/rust/src/json.rs",
+      "line": 286,
+      "ioc": "self.ws",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Rust self.ws() whitespace-parser method, not a DNS name or connection."
+    },
+    {
+      "file": "awr/rust/src/json.rs",
+      "line": 305,
+      "ioc": "self.ws",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Rust self.ws() whitespace-parser method, not a DNS name or connection."
+    },
+    {
+      "file": "awr/rust/src/json.rs",
+      "line": 312,
+      "ioc": "self.ws",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Rust self.ws() whitespace-parser method, not a DNS name or connection."
+    },
+    {
+      "file": "awr/rust/src/json.rs",
+      "line": 314,
+      "ioc": "self.ws",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Rust self.ws() whitespace-parser method, not a DNS name or connection."
+    },
+    {
+      "file": "contracts/solana/deploy.sh",
+      "line": 31,
+      "ioc": "https://api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "contracts/solana/deploy.sh",
+      "line": 31,
+      "ioc": "api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "esim-kit/store/src/payments/evm.js",
+      "line": 15,
+      "ioc": "ethereum-rpc.publicnode.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "esim-kit/store/src/payments/solana.js",
+      "line": 10,
+      "ioc": "https://api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "esim-kit/store/src/payments/solana.js",
+      "line": 10,
+      "ioc": "api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "independent/verified-execution-hub/backend/app/capabilities/blockchain/evm_rpc.py",
+      "line": 36,
+      "ioc": "ethereum-rpc.publicnode.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "independent/verified-execution-hub/backend/app/capabilities/blockchain/evm_rpc.py",
+      "line": 54,
+      "ioc": "polygon.drpc.org",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "independent/verified-execution-hub/docker-compose.yml",
+      "line": 134,
+      "ioc": "ethereum-rpc.publicnode.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "independent/verified-execution-hub/docker-compose.yml",
+      "line": 136,
+      "ioc": "polygon.drpc.org",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "independent/verified-execution-hub/ops/money.py",
+      "line": 20,
+      "ioc": "ethereum-rpc.publicnode.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "independent/verified-execution-hub/ops/money.py",
+      "line": 22,
+      "ioc": "polygon.drpc.org",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "independent/verified-execution-hub/start.sh",
+      "line": 66,
+      "ioc": "ethereum-rpc.publicnode.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "independent/verified-execution-hub/start.sh",
+      "line": 68,
+      "ioc": "polygon.drpc.org",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/docker-compose.yml",
+      "line": 85,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/docker-compose.yml",
+      "line": 100,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/docker-compose.yml",
+      "line": 30,
+      "ioc": "https://api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/docker-compose.yml",
+      "line": 30,
+      "ioc": "api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/docker-compose.yml",
+      "line": 31,
+      "ioc": "https://api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/docker-compose.yml",
+      "line": 31,
+      "ioc": "api.mainnet-beta.solana.com",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/docker-compose.yml",
+      "line": 37,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/components/forge/ExportSheet.tsx",
+      "line": 128,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/de.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/en.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/es.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/ja.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/ko.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/pt.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/ru.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/tr.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/vi.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/i18n/locales/zh.json",
+      "line": 115,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "pingblip/memeforge/src/lib/env.ts",
+      "line": 17,
+      "ioc": "pump.fun",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Public blockchain/RPC or token-launch service; name occurrence alone does not establish malicious use."
+    },
+    {
+      "file": "scripts/delivery-survey/test/lib.test.mjs",
+      "line": 121,
+      "ioc": "104.16.0.1",
+      "rule": "IOC-STIX-MATCH",
+      "disposition": "Literal public DNS-pinning target in a transport regression test helper, not a C2 connection."
+    }
+  ],
+  "conclusion": "All 52 matches are IOC references. No non-IOC detector hit; reviewed references do not demonstrate malicious code. External services themselves have not been certified safe."
+}

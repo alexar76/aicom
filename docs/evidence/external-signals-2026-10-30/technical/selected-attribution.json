@@ -1,0 +1,211 @@
+[
+  {
+    "capture": "genai105-comments",
+    "user": "alexar76",
+    "url": "https://github.com/GenAI-Security-Project/GenAI-Red-Team-Lab/issues/105#issuecomment-6374599458",
+    "created_at": "2026-10-23T20:57:53Z",
+    "updated_at": "2026-10-23T20:57:53Z",
+    "contexts": [
+      {
+        "term": "histor.modelmarket",
+        "context": " the rug-pull case does not need invented edits. HISTOR, a public log of MCP tool definitions, has 23,821 recorded changes from 24 Sep to 20 Oct 2026 (CC BY 4.0, https://histor.modelmarket.dev/datasets/), field by field, including description rewrites on servers that were already approved. A scenario could replay a real change set against the client under test, which keeps the benign/malicious ratio honest: about half of real changes are ordinary description edits. Happy to pull a sample if the lab want"
+      }
+    ],
+    "body_sha256": "0a873c54cb940f02d4bee031a89099dc3295245cdfaf17a6124b1df3bce6fa26"
+  },
+  {
+    "capture": "mcpcost7-comments",
+    "user": "github-actions[bot]",
+    "url": "https://github.com/ondraulehla/mcpcost/issues/7#issuecomment-6391849054",
+    "created_at": "2026-10-25T01:17:47Z",
+    "updated_at": "2026-10-25T01:17:47Z",
+    "contexts": [
+      {
+        "term": "histor.modelmarket",
+        "context": "ad-only) | 30 | 11 |\n| tool: node | 28 | 10 |\n| tool: AgentRankProbe/0.1 (+https://spark.tail6ec125.ts.net/developers) | 16 | 6 |\n| named crawler: histor/0.4.0 (+https://histor.modelmarket.dev/#crawler; read-only: initialize + tools/list) | 15 | 5 |\n| browser: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like M … Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 | 14 | 5 |\n| named crawler: Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Geck … eflection.ai/bot) Chrome/151.0.0.0 Safari/537.36 | 12 | 4 |\n| named "
+      }
+    ],
+    "body_sha256": "360ec31f06db89a917aec70b063c7dced1b3619dc9eb18882f7b6db72fbb4ba5"
+  },
+  {
+    "capture": "mcpcost7-comments",
+    "user": "github-actions[bot]",
+    "url": "https://github.com/ondraulehla/mcpcost/issues/7#issuecomment-6394787278",
+    "created_at": "2026-10-25T07:16:59Z",
+    "updated_at": "2026-10-25T07:16:59Z",
+    "contexts": [
+      {
+        "term": "histor.modelmarket",
+        "context": "amed crawler: Googlebot-Image/1.0 | 109 | 9 |\n| tool: AgentRankProbe/0.1 (+https://spark.tail6ec125.ts.net/developers) | 80 | 7 |\n| named crawler: histor/0.4.0 (+https://histor.modelmarket.dev/#crawler; read-only: initialize + tools/list) | 72 | 6 |\n| named crawler: Mozilla/5.0 (compatible; ExaSearchBot/1.0; +https://crawler.exa.ai/) | 71 | 6 |\n| named crawler: Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Geck … eflection.ai/bot) Chrome/151.0.0.0 Safari/537.36 | 58 | 5 |\n\n## By URL shape\n\n| shape | reque"
+      }
+    ],
+    "body_sha256": "53ce156b002afa8961fa27ee8e26d2dd79a93127691080fbfcccc2857aee1bd8"
+  },
+  {
+    "capture": "next-store28-reviews",
+    "user": "coderabbitai[bot]",
+    "url": "https://github.com/myoshi2891/Next-Store/pull/28#discussion_r4022105489",
+    "created_at": "2026-09-16T02:58:58Z",
+    "updated_at": "2026-09-16T03:54:05Z",
+    "contexts": [
+      {
+        "term": "alexar76",
+        "context": " of the ESLint CLI. A codemod is available to help you migrate. |</excerpt>\n</source>\n<source>\n<title>web/frontend/eslint.config.mjs</title>\n<location>https://github.com/alexar76/aicom/blob/main/web/frontend/eslint.config.mjs</location>\n<excerpt># web/frontend/eslint.config.mjs - Branch: main - Repository: alexar76/aicom --- // Flat config for ESLint 9 (required by eslint-config-next 16). // eslint-config-next 16 ships a native flat config, so spread it directly // (FlatCompat on it hits a cir"
+      },
+      {
+        "term": "alexar76",
+        "context": "e>\n<location>https://github.com/alexar76/aicom/blob/main/web/frontend/eslint.config.mjs</location>\n<excerpt># web/frontend/eslint.config.mjs - Branch: main - Repository: alexar76/aicom --- // Flat config for ESLint 9 (required by eslint-config-next 16). // eslint-config-next 16 ships a native flat config, so spread it directly // (FlatCompat on it hits a circular-JSON bug). import nextCoreWebVitals from &quot;eslint-config-next/core-web-vitals&quot;; const config = [ { ignores: [&quot;node_mod"
+      },
+      {
+        "term": "alexar76",
+        "context": ": https://github.com/jal-co/shieldcn/commit/d6b51d24fe116965aea6b71c4e618eec5ad13435\n- 3: https://nextjs.org/docs/app/api-reference/config/eslint\n- 4: https://github.com/alexar76/aicom/blob/main/web/frontend/eslint.config.mjs\n- 5: https://nextjs.org/docs/15/pages/api-reference/config/eslint\n\n---\n\n\n\n</details>\n\n**Step 5 の ESLint 設定方式をネイティブ flat config に固定してください。**\n\n`eslint-config-next@16.1.6` は flat config を提供するため、`FlatCompat` と `@eslint/eslintrc` は不要です。`next/core-web-vitals` 相当の設定を次の方式で明記してくださ"
+      }
+    ],
+    "body_sha256": "78442582e45b70abaca790ce2df79ba29743fa7a179ddb974efb7dd916fbdc6f"
+  },
+  {
+    "capture": "agentdojo235-comments",
+    "user": "RexHuang",
+    "url": "https://github.com/ethz-spylab/agentdojo/issues/235#issuecomment-6497336759",
+    "created_at": "2026-10-29T12:59:13Z",
+    "updated_at": "2026-10-29T12:59:13Z",
+    "contexts": [],
+    "body_sha256": "926e00328790a34dec8f7e92e03e07332c49414adb3e43280978fe909e2616c2"
+  },
+  {
+    "capture": "agentdojo235-comments",
+    "user": "alexar76",
+    "url": "https://github.com/ethz-spylab/agentdojo/issues/235#issuecomment-6499213822",
+    "created_at": "2026-10-29T14:20:23Z",
+    "updated_at": "2026-10-29T14:24:49Z",
+    "contexts": [],
+    "body_sha256": "6d20ba53b61b1218a18f48a32cc81224c19ea4e2e472c8877f5787647a95d7ec"
+  },
+  {
+    "capture": "agentdojo235-comments",
+    "user": "RexHuang",
+    "url": "https://github.com/ethz-spylab/agentdojo/issues/235#issuecomment-6512480723",
+    "created_at": "2026-10-30T01:14:20Z",
+    "updated_at": "2026-10-30T01:14:20Z",
+    "contexts": [
+      {
+        "term": "alexar76",
+        "context": "Thanks @alexar76 — this is exactly the ground-truthing the issue needed, and your correction is right: I mischaracterized Tasks 0-5. They check **post-run environment state** (0: the `reserve_hotel` reservation, 1: the forwarded email, 2: the calendar event, 3/5: emails carrying user data, 4: the most-expensive-hotel reservation), not"
+      }
+    ],
+    "body_sha256": "188165a6815595b26dea38bc0831ca9eeacdbee9d9943b0a225d92430d61193e"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "alexar76",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6384189005",
+    "created_at": "2026-10-24T12:25:58Z",
+    "updated_at": "2026-10-24T12:25:58Z",
+    "contexts": [],
+    "body_sha256": "c82bcfb0141ec81e2e7379b911bfc2ce04c842403915a073e71cd5d4e59deef9"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "0x73746F66",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6385911773",
+    "created_at": "2026-10-24T15:17:56Z",
+    "updated_at": "2026-10-24T22:12:57Z",
+    "contexts": [],
+    "body_sha256": "8fe15e351d4f973b282da420996ce8bd3d475616b5afb948a4e1dcc046bb1c7a"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "alexar76",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6389045427",
+    "created_at": "2026-10-24T20:17:07Z",
+    "updated_at": "2026-10-24T20:17:29Z",
+    "contexts": [],
+    "body_sha256": "7c4af3e270de0756d62ab488df5090bd74e39f1feb6075fa12651d9cef7d1cc6"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "0x73746F66",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6389970003",
+    "created_at": "2026-10-24T21:50:38Z",
+    "updated_at": "2026-10-24T21:50:38Z",
+    "contexts": [],
+    "body_sha256": "0fff9a7f9cc1dd057ac126c0de25b7289ddd6a80be0d84c194b1afd65aa8894f"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "0x73746F66",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6390466701",
+    "created_at": "2026-10-24T22:42:55Z",
+    "updated_at": "2026-10-24T22:42:55Z",
+    "contexts": [],
+    "body_sha256": "6c3d817ae4f4f61f3d621eaaf4dc3ac473d9b924af2d02d227c20ffe95aa2dcc"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "0x73746F66",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6405416922",
+    "created_at": "2026-10-26T00:19:03Z",
+    "updated_at": "2026-10-26T00:19:03Z",
+    "contexts": [],
+    "body_sha256": "aa0839391c812e7f58898041ea2968678e4fc9d2fe0b1b7050063917e977a243"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "alexar76",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6425050018",
+    "created_at": "2026-10-26T19:13:18Z",
+    "updated_at": "2026-10-26T19:13:18Z",
+    "contexts": [],
+    "body_sha256": "8964cab09a0840133cb50a49ecb1aa62f7c92d368d5233278e3548fb320c32d7"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "0x73746F66",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6435014222",
+    "created_at": "2026-10-27T06:03:39Z",
+    "updated_at": "2026-10-27T06:03:39Z",
+    "contexts": [],
+    "body_sha256": "fc2e5c6fb89c3f6942dabb53971b66bc00230704beee3f7f3591dfe202ca9c30"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "alexar76",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6435747369",
+    "created_at": "2026-10-27T06:55:30Z",
+    "updated_at": "2026-10-27T06:55:30Z",
+    "contexts": [],
+    "body_sha256": "2a7caeeb830b39ff3e66a86f53d1974be8ff19895c6f7e75084d18a0f3de83ad"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "0x73746F66",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6455496971",
+    "created_at": "2026-10-27T22:48:35Z",
+    "updated_at": "2026-10-27T23:53:01Z",
+    "contexts": [],
+    "body_sha256": "d0884ef2a4d5510bafd2ab7594d8925966da69846f12b21e45a6f0193c43fd21"
+  },
+  {
+    "capture": "vulnetix5-comments",
+    "user": "alexar76",
+    "url": "https://github.com/Vulnetix/advisory-database/issues/5#issuecomment-6489285683",
+    "created_at": "2026-10-29T06:03:24Z",
+    "updated_at": "2026-10-29T06:35:21Z",
+    "contexts": [],
+    "body_sha256": "0a6fef4ee85a7f1d9540464dd6323039911cca211d160b77376c090bd7538212"
+  },
+  {
+    "capture": "acs38-comments",
+    "user": "alexar76",
+    "url": "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6465192706",
+    "created_at": "2026-10-28T09:17:50Z",
+    "updated_at": "2026-10-28T09:17:50Z",
+    "contexts": [
+      {
+        "term": "histor.modelmarket",
+        "context": "e.\n\nData, CC BY 4.0: [20 October snapshot](https://doi.org/10.5281/zenodo.23512760). The runtime-version pairs are available separately through the [changes API](https://histor.modelmarket.dev/api/v1/changes), backfilled from retained observations where available. Historical registry-version fields remain null; the registry figures above use the separate publication-history export."
+      }
+    ],
+    "body_sha256": "26b083bca81cf941a6a779be1855f281e3a5672bb7d195f8ae3b4f111b1599cb"
+  }
+]

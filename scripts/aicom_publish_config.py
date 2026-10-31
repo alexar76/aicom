@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import fnmatch
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -59,6 +60,7 @@ DEFAULT_RSYNC_EXCLUDES = [
     # secrets and a public push. Keep aligned with .gitignore's secret rules.
     ".env",
     ".env.*",
+    ".mirror-forbidden-hosts",  # local scan policy contains private infrastructure addresses
     # Per-service env files cut from .env by scripts/security/service_env.py. They hold the
     # same secrets, and neither pattern above matches them (the basename is factory.env).
     "deploy/env",
@@ -171,7 +173,7 @@ DEFAULT_RSYNC_EXCLUDES = [
 FACTORY_LOCAL_EXCLUDES = [
     # Untracked leftovers in the owner's working tree that rsync shipped to alexar76/aicom:
     # 2026-09 PyPI build outputs (hub 3.7.0 wheels beside a 3.15 hub), an old fix scratch
-    # directory and two one-off UI probes. Listed by name too: the clone cleanup does not glob.
+    # directory and two one-off UI probes. Exact names also document known leftovers.
     "dist-pypi-*",
     "dist-pypi-20260926",
     "dist-pypi-20260926-v370",
@@ -190,6 +192,16 @@ FACTORY_LOCAL_EXCLUDES = [
     # Recovery notes record the private sandbox host on every row. They stay on
     # Gitea; the public factory must not receive that host.
     "docs/evidence/mcp-sdk-recovery-2026-10-24",
+    # Remove a previously copied policy file from existing factory clones too.
+    "scripts/.mirror-forbidden-hosts",
+    # Fleet diagnostics and security rollout inventories are operator evidence,
+    # not public factory documentation. Keep them in the Gitea monorepo.
+    "artifacts/security-rollout-*",
+    "docs/evidence/fleet-*",
+    # Native social-page captures can contain embedded infrastructure literals;
+    # the public summaries and source links remain available separately.
+    "docs/evidence/external-use-pass4-2026-10-30/social/lobsters-native-stories.html",
+    "docs/evidence/**/social/raw",
     "data/channels.db",  # local SQLite runtime — never mirror to public factory
     "data/uni_settlements.jsonl",  # local settlement dump — not source
     "data/water_quality_history.json",  # local sensor history dump — not source
@@ -526,6 +538,33 @@ def factory_local_exclude_paths() -> list[str]:
     return list(FACTORY_LOCAL_EXCLUDES)
 
 
+def purge_factory_local_paths(tree: Path) -> list[str]:
+    """Remove excluded material already present in a reused export or mirror clone.
+
+    rsync --exclude protects new copies, but leaves old excluded files in place.
+    Expand policy globs without traversing symlinks outside the candidate tree.
+    """
+    tree = tree.resolve()
+    workspace = MAP_PATH.parent.parent.resolve()
+    if tree == workspace or tree in workspace.parents:
+        raise ValueError("refusing to purge the workspace or one of its parent directories")
+    removed: list[str] = []
+    for pattern in factory_local_exclude_paths():
+        if Path(pattern).is_absolute() or ".." in Path(pattern).parts or ".git" in Path(pattern).parts:
+            raise ValueError("unsafe factory exclusion pattern")
+        for path in sorted(tree.glob(pattern)):
+            if not path.parent.resolve().is_relative_to(tree):
+                raise ValueError("factory exclusion traverses a symlink outside the candidate tree")
+            if path.is_symlink() or path.is_file():
+                path.unlink()
+            elif path.is_dir():
+                shutil.rmtree(path)
+            else:
+                continue
+            removed.append(path.relative_to(tree).as_posix())
+    return removed
+
+
 def factory_submodule_paths() -> list[str]:
     return []
 
@@ -558,6 +597,12 @@ def main() -> int:
     if cmd == "list-local-excludes":
         for p in factory_local_exclude_paths():
             print(p)
+        return 0
+    if cmd == "purge-local-excludes":
+        if len(sys.argv) != 3:
+            raise SystemExit("usage: aicom_publish_config.py purge-local-excludes <candidate-tree>")
+        for path in purge_factory_local_paths(Path(sys.argv[2])):
+            print(f"purged internal export path: {path}")
         return 0
     if cmd == "list-submodules":
         for p in factory_submodule_paths():

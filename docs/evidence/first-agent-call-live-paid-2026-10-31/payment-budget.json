@@ -1,0 +1,45 @@
+{
+  "at_utc": "2026-10-31T05:38:55.227342+00:00",
+  "service_usdc": "0.001",
+  "max_total_usd": "0.01",
+  "native_price": {
+    "source": "chainlink_base_eth_usd",
+    "feed": "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70",
+    "sequencer_feed": "0xBCF85224fc0756B9Fa45aA7892530B47e10b6433",
+    "observations": [
+      {
+        "price_usd": "2236.94963031",
+        "round_id": "55340232221128665956",
+        "updated_at": 1793421111,
+        "block_number": 53316156,
+        "block_timestamp": 1793421659,
+        "sequencer_up_since": 1782491507
+      },
+      {
+        "price_usd": "2236.94963031",
+        "round_id": "55340232221128665956",
+        "updated_at": 1793421111,
+        "block_number": 53316156,
+        "block_timestamp": 1793421659,
+        "sequencer_up_since": 1782491507
+      }
+    ],
+    "margin_percent": 25,
+    "max_age_s": 1500,
+    "manual_floor_usd": null,
+    "native_usd_ceiling": "2796.1870378875",
+    "checked_at": 1793421659.6258774
+  },
+  "gas_limit": 105192,
+  "max_fee_per_gas_wei": "12000000",
+  "l1_fee_upper_bound_wei": "10746651404",
+  "l1_safety_multiplier": 100,
+  "l1_upper_bound_transaction_bytes": 1024,
+  "fee_bound_wei": "2336969140400",
+  "conservative_total_usd": "0.00753460281832957310690500",
+  "balance_before": {
+    "payer_usdc_atomic": "872148",
+    "payee_usdc_atomic": "3571519",
+    "payer_eth_wei": "344327954094829"
+  }
+}

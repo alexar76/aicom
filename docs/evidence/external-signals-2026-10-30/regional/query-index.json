@@ -1,0 +1,145 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "web_query_count": 80,
+  "query_sets": [
+    {
+      "set": 1,
+      "queries": [
+        "\"alexar76\" (site:habr.com OR site:vc.ru OR site:dtf.ru OR site:pikabu.ru)",
+        "\"modelmarket.dev\" (site:vk.com OR site:t.me OR site:tgstat.ru OR site:dzen.ru)",
+        "\"attestedmemory.net\" (русский OR обзор OR агент)",
+        "\"PingBlip\" (русский OR обзор OR игра)",
+        "\"alexar76\" (site:csdn.net OR site:zhihu.com OR site:cnblogs.com OR site:juejin.cn)",
+        "\"modelmarket.dev\" (site:gitee.com OR site:gitcode.com OR site:linux.do OR site:v2ex.com)",
+        "\"alexar76\" (site:bilibili.com OR site:mp.weixin.qq.com OR site:weibo.com)",
+        "\"HISTOR\" \"WARDEN\" 中文",
+        "\"alexar76\" (site:qiita.com OR site:zenn.dev OR site:note.com)",
+        "\"modelmarket.dev\" (site:qiita.com OR site:zenn.dev OR site:note.com)",
+        "\"attestedmemory.net\" 日本語",
+        "\"PingBlip\" 日本語",
+        "\"alexar76\" (site:naver.com OR site:tistory.com OR site:velog.io)",
+        "\"modelmarket.dev\" (site:naver.com OR site:tistory.com OR site:velog.io)",
+        "\"aimarket\" \"warden\" 한국어",
+        "\"attestedmemory.net\" 한국어"
+      ]
+    },
+    {
+      "set": 2,
+      "queries": [
+        "site:habr.com \"modelmarket.dev\"",
+        "site:vc.ru \"alexar76\"",
+        "site:vk.com \"modelmarket.dev\"",
+        "site:t.me \"modelmarket.dev\"",
+        "site:csdn.net \"alexar76\"",
+        "site:zhihu.com \"modelmarket.dev\"",
+        "site:gitee.com \"alexar76\"",
+        "site:cnblogs.com \"modelmarket.dev\"",
+        "site:qiita.com \"modelmarket.dev\"",
+        "site:zenn.dev \"modelmarket.dev\"",
+        "site:note.com \"alexar76\"",
+        "site:qiita.com \"HISTOR\" MCP",
+        "site:naver.com \"modelmarket.dev\"",
+        "site:velog.io \"alexar76\"",
+        "site:tistory.com \"modelmarket.dev\"",
+        "\"modelmarket.dev\" 中文 -site:modelmarket.dev -site:github.com -site:glama.ai -site:dev.to -site:pypi.org"
+      ]
+    },
+    {
+      "set": 3,
+      "queries": [
+        "site:hubwiz.com \"HISTOR\"",
+        "site:papers.ananclaw.com \"alexar76\"",
+        "site:juejin.cn \"HISTOR\" MCP",
+        "site:bilibili.com \"alexar76\"",
+        "site:mp.weixin.qq.com \"modelmarket.dev\"",
+        "site:weibo.com \"modelmarket.dev\"",
+        "site:linux.do \"modelmarket.dev\"",
+        "site:v2ex.com \"modelmarket.dev\"",
+        "site:dzen.ru \"modelmarket.dev\"",
+        "site:tgstat.ru \"alexar76\"",
+        "site:author.today \"Вес ответа\" \"Пантеон\"",
+        "site:habr.com \"HISTOR\" MCP",
+        "site:tabnews.com.br \"modelmarket.dev\"",
+        "site:linuxfr.org \"modelmarket.dev\"",
+        "site:heise.de \"modelmarket.dev\"",
+        "site:meneame.net \"modelmarket.dev\""
+      ]
+    },
+    {
+      "set": 4,
+      "queries": [
+        "\"modelmarket.dev\" español -site:modelmarket.dev -site:github.com -site:pypi.org -site:dev.to -site:glama.ai",
+        "\"alexar76\" português -site:github.com -site:pypi.org -site:glama.ai",
+        "\"modelmarket.dev\" français -site:modelmarket.dev -site:github.com -site:pypi.org -site:dev.to -site:glama.ai",
+        "\"alexar76\" deutsch -site:github.com -site:pypi.org -site:glama.ai",
+        "site:radyz.cz HISTOR MCP",
+        "site:developpez.com \"modelmarket.dev\"",
+        "site:golem.de \"alexar76\"",
+        "site:tecnoblog.net \"modelmarket.dev\"",
+        "site:technopat.net \"alexar76\"",
+        "\"Karatum\" \"modelmarket\"",
+        "\"HISTOR\" \"12,915\" 中文 -site:github.com -site:dev.to",
+        "\"HISTOR\" \"45%\" 日本語 MCP -site:github.com -site:dev.to",
+        "\"HISTOR\" MCP 한국어 -site:github.com -site:dev.to",
+        "\"modelmarket.dev\" (site:.by OR site:.kz OR site:.ua OR site:.uz)",
+        "\"independentai.network\" 中文",
+        "\"pantheon.modelmarket.dev\" русский"
+      ]
+    },
+    {
+      "set": 5,
+      "queries": [
+        "\"mcp-transparency-log-chce-zaznamenavat-skutecne-rozhrani-verejnych-mcp-serveru\"",
+        "\"semantik-proveril-tisice-mcp-balicku-rizikove-signaly-nebyly-potvrzenymi-utoky\"",
+        "site:radyz.cz \"HISTOR\" \"alexar76\"",
+        "site:radyz.cz \"modelmarket.dev\""
+      ]
+    },
+    {
+      "set": 6,
+      "queries": [
+        "\"modelmarket.dev\" türkçe -site:modelmarket.dev -site:github.com -site:dev.to",
+        "\"alexar76\" site:virgool.io",
+        "\"modelmarket.dev\" site:zoomit.ir",
+        "\"alexar76\" site:qiita.com after:2026-10-28",
+        "\"modelmarket.dev\" site:techcommunity.microsoft.com",
+        "\"modelmarket.dev\" site:viblo.asia",
+        "\"alexar76\" site:dicoding.com",
+        "\"modelmarket.dev\" site:pantip.com",
+        "\"modelmarket.dev\" site:roocket.ir",
+        "\"modelmarket.dev\" site:donanimhaber.com",
+        "\"attestedmemory.net\" español",
+        "\"PingBlip\" site:naver.com"
+      ]
+    }
+  ],
+  "scope_note": "Public indexed search, exact markers and five native search-engine GET attempts. Not a complete crawl of national internets.",
+  "native_engines": [
+    {
+      "engine": "Yandex",
+      "query": "\"modelmarket.dev\"",
+      "result": "HTTP 200 redirects to CAPTCHA; results unread"
+    },
+    {
+      "engine": "Baidu",
+      "query": "\"modelmarket.dev\"",
+      "result": "HTTP 200 redirects to CAPTCHA; results unread"
+    },
+    {
+      "engine": "Naver",
+      "query": "\"modelmarket.dev\"",
+      "result": "HTTP 200 results; own packages and catalogues, no attributed Korean editorial or user post observed"
+    },
+    {
+      "engine": "Naver",
+      "query": "\"alexar76\"",
+      "result": "See final HTTP evidence"
+    },
+    {
+      "engine": "Naver",
+      "query": "\"attestedmemory.net\"",
+      "result": "See final HTTP evidence"
+    }
+  ]
+}

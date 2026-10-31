@@ -1,0 +1,20 @@
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+usage: main [options] args audit [-h] [-d] [-t]
+                                 (-p PACKAGES [PACKAGES ...] | -f DEPFILES [DEPFILES ...])
+
+options:
+  -h, --help            show this help message and exit
+  -d, --debug           Enable debugging
+  -t, --trace           Install package(s) and collect dynamic/runtime traces
+
+required arguments:
+  Either --packages or --depfiles must be chosen.
+
+  -p PACKAGES [PACKAGES ...], --packages PACKAGES [PACKAGES ...]
+                        Audit packages (e.g., npm:react, pypi:torch),
+                        optionally version (e.g., rubygems:overcommit:1.0),
+                        local Node/Python packages are also supported (e.g.
+                        local_nodejs:/path/to/node-project)
+  -f DEPFILES [DEPFILES ...], --depfiles DEPFILES [DEPFILES ...]
+                        Audit dependencies (e.g., npm:package.json,
+                        pypi:requirements.txt)

@@ -223,8 +223,15 @@ def inject_text(text: str, block: str) -> str:
         return _strip_legacy_duplicate_badges(_strip_manual_badge_lines(text))
 
     mirror_end = "<!-- aicom-mirror-notice -->"
-    if mirror_end in text:
-        # Insert after mirror notice block (ends at first blank line after policy line)
+    first_h1 = re.search(r"^# .+\n", text, re.MULTILINE)
+    notice_before_title = mirror_end in text and (
+        first_h1 is None or text.index(mirror_end) < first_h1.start()
+    )
+    if notice_before_title:
+        # Legacy layout: the mirror notice sits above the title. Insert the badges
+        # after the notice block (ends at first blank line after policy line).
+        # Since 2026-10-29 the notice goes BELOW the badges, so a notice found
+        # after the H1 falls through to the "after first heading" rule.
         lines = text.splitlines(keepends=True)
         out: list[str] = []
         i = 0

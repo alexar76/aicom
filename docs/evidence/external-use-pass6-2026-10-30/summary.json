@@ -1,0 +1,245 @@
+{
+  "observed_date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "finding_kind": "attribution_correction_of_previously_known_aggregate_demand_signal",
+  "aer": {
+    "as_of": "2026-10-30",
+    "tier": "CC",
+    "tier_raw": "CCC",
+    "organic_paying_agents": 3,
+    "paying_wallets_raw": 16,
+    "settled_usd_14d": 0.08
+  },
+  "aer_displayed_top_payers_attribution": [
+    {
+      "aer_displayed_prefix": "0xe2d8dc842fc503",
+      "candidate_full_address": null,
+      "classification": "unattributed_candidate",
+      "match_basis": "Displayed prefix only; AER does not disclose the full wallet here"
+    },
+    {
+      "aer_displayed_prefix": "0x097e3f339d0b02",
+      "candidate_full_address": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "classification": "our_funded_test_wallet",
+      "match_basis": "Displayed prefix only; AER does not disclose the full wallet here"
+    },
+    {
+      "aer_displayed_prefix": "0x4c29ec4f680ca8",
+      "candidate_full_address": "0x4c29ec4f680ca88d0019edbfe3a8ff5c80499494",
+      "classification": "previously_known_UseTested_single_paid_test",
+      "match_basis": "Displayed prefix only; AER does not disclose the full wallet here"
+    }
+  ],
+  "aer_limits": [
+    "Prefix matching, not disclosure of full AER wallet IDs",
+    "Raw payment graph is not published in the open dataset",
+    "No recomputation of AER rating or its hidden graph",
+    "One unassigned prefix is not a verified outside customer or delivered workflow"
+  ],
+  "known_UseTested_receipt": {
+    "chain": "base",
+    "tx": "0x656749e6bab12a3373a2905c0495126bd7a533902de08e3af18d4f47380fd32a",
+    "ts": "2026-10-27T03:08:02Z",
+    "payer": "0x4C29Ec4F680CA88d0019edBfe3A8FF5c80499494",
+    "amount": "0.001000"
+  },
+  "local_ownership_and_chain_evidence": [
+    {
+      "file": "docs/pay-on-verified-demo.md",
+      "sha256": "c8b5449c0c5ae5ad7366d6fc558b38da1af0d994b26cbb25331a073b154e58ba",
+      "role": "Explicit disclosure that this buyer is our own funded test wallet"
+    },
+    {
+      "file": "docs/start-onboarding-demo.md",
+      "sha256": "ed6d61ea0f175967b1179a75e44b7f5da62d9ad9b6dacd58262f1915978ec1fd",
+      "role": "Explicit disclosure that this buyer is our own funded test wallet"
+    },
+    {
+      "file": "artifacts/external-signals-2026-10-29/metrics/usetested-basescan.body",
+      "sha256": "329d44fa9d4cea4dc6d1c938d458ddc10d63bf1a6eb5a842189c09ba942c5a03",
+      "role": "Previously captured public BaseScan transaction matching the UseTested payer"
+    }
+  ],
+  "new_independent_mentions_confirmed": 0,
+  "new_independent_runtime_deployments_confirmed": 0,
+  "github_searches": [
+    {
+      "file": "commits-histor-origin.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    },
+    {
+      "file": "commits-memory-identity.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    },
+    {
+      "file": "commits-pingblip.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    },
+    {
+      "file": "commits-protocol.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    },
+    {
+      "file": "commits-school.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    },
+    {
+      "file": "issues-domain-new.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    },
+    {
+      "file": "issues-histor-citation.json",
+      "total_count": 3,
+      "returned_items": 3,
+      "incomplete_results": false
+    },
+    {
+      "file": "issues-pingblip.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    },
+    {
+      "file": "issues-warden-citation.json",
+      "total_count": 3,
+      "returned_items": 3,
+      "incomplete_results": false
+    },
+    {
+      "file": "repos-factory-origin.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    },
+    {
+      "file": "repos-histor-client.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    },
+    {
+      "file": "repos-warden-config.json",
+      "total_count": 0,
+      "returned_items": 0,
+      "incomplete_results": false
+    }
+  ],
+  "sourcegraph": [
+    {
+      "file": "sourcegraph-federation-header.raw",
+      "returned_matches": 0,
+      "skipped": [
+        {
+          "reason": "shard-match-limit",
+          "title": "result limit hit",
+          "message": "Not all results have been returned due to hitting a match limit. Sourcegraph has limits for the number of results returned from a line, document and repository.",
+          "severity": "info",
+          "suggested": {
+            "title": "increase limit",
+            "queryExpression": "count:1000"
+          }
+        }
+      ]
+    },
+    {
+      "file": "sourcegraph-operator-kits.raw",
+      "returned_matches": 0,
+      "skipped": [
+        {
+          "reason": "shard-match-limit",
+          "title": "result limit hit",
+          "message": "Not all results have been returned due to hitting a match limit. Sourcegraph has limits for the number of results returned from a line, document and repository.",
+          "severity": "info",
+          "suggested": {
+            "title": "increase limit",
+            "queryExpression": "count:1000"
+          }
+        }
+      ]
+    },
+    {
+      "file": "sourcegraph-secondary-clients.raw",
+      "returned_matches": 0,
+      "skipped": [
+        {
+          "reason": "shard-match-limit",
+          "title": "result limit hit",
+          "message": "Not all results have been returned due to hitting a match limit. Sourcegraph has limits for the number of results returned from a line, document and repository.",
+          "severity": "info",
+          "suggested": {
+            "title": "increase limit",
+            "queryExpression": "count:1000"
+          }
+        }
+      ]
+    },
+    {
+      "file": "sourcegraph-secondary-packages.raw",
+      "returned_matches": 0,
+      "skipped": [
+        {
+          "reason": "shard-match-limit",
+          "title": "result limit hit",
+          "message": "Not all results have been returned due to hitting a match limit. Sourcegraph has limits for the number of results returned from a line, document and repository.",
+          "severity": "info",
+          "suggested": {
+            "title": "increase limit",
+            "queryExpression": "count:1000"
+          }
+        }
+      ]
+    }
+  ],
+  "ecosystem_repository_count": 65,
+  "repositories_with_forks": [
+    {
+      "repo": "alexar76/aicom",
+      "forks": 4
+    },
+    {
+      "repo": "alexar76/aimarket-mcp",
+      "forks": 1
+    }
+  ],
+  "gateway_fork": {
+    "name": "adity982/aimarket-mcp",
+    "commits_returned": 1,
+    "action_runs": 0,
+    "interpretation": "One monorepo sync snapshot; no independent change or execution established"
+  },
+  "dev_delta": {
+    "articles": 62,
+    "changed_counters": [],
+    "limits": "Thread bodies not reread when counters unchanged; edits not covered"
+  },
+  "peer_delta": {
+    "current_active_list": 21,
+    "current_pending_list": 1,
+    "new_urls": {
+      "peers": [],
+      "pending": []
+    },
+    "limits": "Our operator telemetry, not independent demand evidence"
+  },
+  "web_queries": 43,
+  "exact_prior_query_matches": 0,
+  "direct_public_gets": 30,
+  "http_statuses": {
+    "200": 29,
+    "429": 1
+  },
+  "body_hashes_verified": 29,
+  "mutations": "Local audit documents and evidence only; no purchases, messages, paid APIs, foreign code execution, installs or GitHub/Gitea writes"
+}

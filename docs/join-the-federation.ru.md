@@ -267,6 +267,48 @@ curl -s -H "Authorization: Bearer $ADMIN_TOKEN" \
 уже работает, и пробрасывает x402 как есть —
 [узел из своего API](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-a-node.ru.md).
 
+## 8b. Без манифеста: попросить, чтобы вас наблюдали
+
+Продавец x402, который не хочет поддерживать подписанный манифест, всё равно может попасть в
+листинг. Напишите оператору хаба, какие ваши маршруты вы согласны показать. Оператор
+записывает согласие; дальше хаб сам читает ваш `/.well-known/x402`, раз в несколько часов
+шлёт каждому из этих маршрутов один неоплаченный запрос и показывает то, что назвал ваш
+`402`: цену, актив, сеть и `payTo`. На вашей стороне ничего не меняется. Маршрут, который
+отвечает без оплаты (бесплатный уровень), в листинг не попадает, и хаб в этом цикле
+перестаёт вас опрашивать, чтобы не тратить ваши бесплатные вызовы.
+
+Это наблюдение хаба, с пометками `tier: "observed"` и `signed_by_seller: false`, и оно отделено
+от каталога: массив `observed` в `/search` и `/ai-market/v2/federation/observed-sellers`, но
+никогда `matches`, `/manifest` или `peers`. Покупатель сам вызывает ваш URL и платит вам по
+вашему же `402`; хаб не стоит в цепочке оплаты и комиссии не берёт. Первый увиденный `payTo`
+закрепляется: если `402` назовёт другой, маршруты пропадут из листинга, пока вы не
+подтвердите смену оператору. Попросите убрать вас — хаб удалит запись. Подписанные квитанции,
+оценки доверия и маршрутизация — это путь через манифест из раздела 8. Спецификация: §2.7.
+
+Для операторов хаба:
+
+```bash
+# record consent and observe at once (admin)
+curl -X POST https://your-hub.example/ai-market/v2/federation/observed-sellers \
+  -H "Authorization: Bearer $ADMIN_TOKEN" -H 'Content-Type: application/json' \
+  -d '{"origin": "https://seller.example",
+       "consent": {"by": "contact@seller.example", "at": "2026-10-30", "how": "email"},
+       "routes": ["https://seller.example/services/site-check"]}'
+
+# what is listed, and why a route is not (public)
+curl -s https://your-hub.example/ai-market/v2/federation/observed-sellers | jq '.sellers[].routes[] | {url, result, price_usd, served}'
+
+# consent withdrawn (admin)
+curl -X DELETE "https://your-hub.example/ai-market/v2/federation/observed-sellers?origin=https://seller.example" \
+  -H "Authorization: Bearer $ADMIN_TOKEN"
+```
+
+| Переменная | По умолчанию | Что делает |
+|---|---|---|
+| `AIMARKET_OBSERVED_SELLERS` | `1` | `0` выключает. В мире UNI всегда выключено |
+| `AIMARKET_OBSERVED_INTERVAL_S` | `21600` | Секунд между наблюдениями одного продавца (не меньше 3600) |
+| `AIMARKET_OBSERVED_MAX_ROUTES` | `25` | Сколько маршрутов продавца опрашивать (не больше 100) |
+
 ## 9. Связанное
 
 - Протокол §2.4 / §2.5 / §2.6 — [`aimarket-protocol/spec.md`](https://github.com/alexar76/aimarket-protocol/blob/main/spec.md)

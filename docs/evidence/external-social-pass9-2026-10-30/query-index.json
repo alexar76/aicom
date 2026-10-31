@@ -1,0 +1,104 @@
+{
+  "recorded_at_utc": "2026-10-30T18:50:56.912879+00:00",
+  "recorded_at_Amsterdam": "2026-10-30T19:50:56.912879+01:00",
+  "successful_saved_batches": 9,
+  "saved_query_strings": 36,
+  "distinct_saved_queries": 36,
+  "prior_distinct_query_strings": 1521,
+  "literal_prior_repeats": [
+    "\"modelmarket.dev\" site:linux.do"
+  ],
+  "scope_note": "Literal novelty only. Related platforms, products and search themes have appeared before. Repeated findings are excluded. Four preliminary exploratory web queries are not included in these saved-batch counts.",
+  "batches": [
+    {
+      "file": "search-0.json",
+      "queries": [
+        "site:reddit.com \"aimarket\" \"warden\"",
+        "site:x.com \"alexar76\" \"WARDEN\" -site:x.com/alexar76",
+        "\"PingBlip\" \"review\" -site:pingblip.com -site:youtube.com -site:dev.to",
+        "\"modelmarket.dev\" site:discuss.huggingface.co"
+      ],
+      "returned_result": true
+    },
+    {
+      "file": "search-1.json",
+      "queries": [
+        "\"modelmarket.dev\" site:v2ex.com",
+        "\"modelmarket.dev\" site:linux.do",
+        "\"modelmarket.dev\" site:discuss.ai.google.dev",
+        "\"attestedmemory.net\" -site:attestedmemory.net -site:github.com -site:modelmarket.dev -site:dev.to"
+      ],
+      "returned_result": true
+    },
+    {
+      "file": "search-2.json",
+      "queries": [
+        "\"@aimarket/warden\" -site:github.com -site:dev.to -site:npmjs.com -site:modelmarket.dev",
+        "\"Tokenade\" -site:github.com -site:dev.to -site:modelmarket.dev",
+        "\"HISTOR\" \"modelmarket\" -site:github.com -site:dev.to -site:modelmarket.dev",
+        "\"PingBlip\" -site:pingblip.com -site:itch.io -site:youtube.com -site:github.com -site:dev.to -site:alexar76.github.io"
+      ],
+      "returned_result": true
+    },
+    {
+      "file": "search-3.json",
+      "queries": [
+        "\"modelmarket.dev\" site:discuss.huggingface.co OR site:community.openai.com OR site:discuss.pytorch.org",
+        "\"@aimarket/warden\" site:zhihu.com OR site:csdn.net OR site:cnblogs.com",
+        "\"alexar76\" site:5ch.net OR site:zenn.dev OR site:qiita.com -site:qiita.com/qwezzy721",
+        "\"Attested Memory\" site:velog.io OR site:tistory.com OR site:brunch.co.kr"
+      ],
+      "returned_result": true
+    },
+    {
+      "file": "search-4.json",
+      "queries": [
+        "\"attestedmemory.net\" site:lobste.rs",
+        "\"modelmarket.dev\" site:lemmy.world",
+        "\"modelmarket.dev\" site:discuss.privacyguides.net",
+        "\"alexar76\" \"WARDEN\" \"使\" -site:github.com -site:dev.to"
+      ],
+      "returned_result": true
+    },
+    {
+      "file": "search-5.json",
+      "queries": [
+        "\"WARDEN\" \"MCP\" \"I tried\" -site:dev.to -site:github.com -site:modelmarket.dev",
+        "\"WARDEN\" \"MCP\" \"使ってみた\" -site:qiita.com/qwezzy721",
+        "\"WARDEN\" \"MCP\" \"用了\" -site:modelmarket.dev",
+        "\"Attested Memory\" \"using\" -site:github.com -site:attestedmemory.net -site:dev.to -site:odel.app"
+      ],
+      "returned_result": true
+    },
+    {
+      "file": "search-6.json",
+      "queries": [
+        "\"WARDEN\" \"MCP\" site:news.ycombinator.com",
+        "\"WARDEN\" \"MCP\" site:reddit.com/r/LocalLLaMA/comments",
+        "\"HISTOR\" \"MCP\" site:linkedin.com/posts -alexar76",
+        "\"PingBlip\" site:threads.net -site:pingblip.com"
+      ],
+      "returned_result": true
+    },
+    {
+      "file": "search-7.json",
+      "queries": [
+        "\"magic-ai-factory.com\" \"review\" -site:github.com -site:dev.to -site:magic-ai-factory.com",
+        "\"independentai.network\" \"using\" -site:github.com -site:independentai.network -site:dev.to",
+        "\"The White on the Map\" \"review\" -site:itch.io -site:github.com -site:dev.to",
+        "\"The Right to a Shadow\" -site:itch.io -site:github.com -site:dev.to -site:scribd.com"
+      ],
+      "returned_result": true
+    },
+    {
+      "file": "search-8.json",
+      "queries": [
+        "\"modelmarket.dev\" site:vk.com/wall",
+        "\"attestedmemory.net\" site:t.me/s/",
+        "\"alexar76\" site:habr.com/ru/articles/ -site:habr.com/ru/users/",
+        "\"PingBlip\" site:jeu.video OR site:forocoches.com OR site:jeuxvideo.com"
+      ],
+      "returned_result": true
+    }
+  ]
+}

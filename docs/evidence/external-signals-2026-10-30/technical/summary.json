@@ -1,0 +1,64 @@
+{
+  "observed_date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "scope": "Read-only public technical external signals; no publishing",
+  "web_queries": 24,
+  "captured_gets": 51,
+  "http_statuses": {
+    "200": 42,
+    "404": 4,
+    "308": 3,
+    "403": 1,
+    "TLS-error": 1
+  },
+  "mcp3431": {
+    "comments": 22,
+    "delta_from_28_oct": 3,
+    "external_delta": 2,
+    "new_external_comment_urls": [
+      "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6475879932",
+      "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6504918640"
+    ],
+    "meaning": "External engagement with launch-context cross-check; not MCP maintainer acceptance"
+  },
+  "agentdojo235": {
+    "comments": 3,
+    "external_comments": 2,
+    "external_accounts": 1,
+    "latest_external_comment": "https://github.com/ethz-spylab/agentdojo/issues/235#issuecomment-6512480723",
+    "meaning": "RexHuang accepted correction and offered strict variant pending maintainers; not independent relabeling or merge"
+  },
+  "vulnetix5": {
+    "comments": 11,
+    "delta_from_28_oct": 1,
+    "external_delta": 0,
+    "latest_new_comment_user": "alexar76",
+    "meaning": "Fixes requested to be marked; no new independent confirmation in issue comments"
+  },
+  "histor_pr14": {
+    "state": "open",
+    "merged": false,
+    "merged_at": null,
+    "updated_at": "2026-10-28T09:48:32Z"
+  },
+  "newly_verified_existing_mentions": [
+    {
+      "url": "https://fplcat.com/blog/ai-agents-playing-fantasy-premier-league",
+      "event_date": "2026-10-13",
+      "class": "Independent attributed observation of outgoing HISTOR crawler;39 requests, not customers"
+    },
+    {
+      "url": "https://github.com/myoshi2891/Next-Store/pull/28#discussion_r4022105489",
+      "event_date": "2026-09-16",
+      "class": "CodeRabbit automated citation of AICOM ESLint config"
+    }
+  ],
+  "package_identity": {
+    "our_histor": "aimarket-histor",
+    "excluded_namesake": "histor (historlabs/histor)",
+    "prior_audit_namespace_verified_correct": true
+  },
+  "independent_new_adoption_confirmed": false,
+  "report": "report.ru.md",
+  "evidence_index": "verification-index.json"
+}

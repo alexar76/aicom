@@ -1,0 +1,120 @@
+name: history-scan
+
+# Runtime-exact history scan in an ephemeral sandbox. Triggered by the
+# website's "Runtime scan" button via repository_dispatch (worker holds a
+# fine-grained token, Contents:RW, repo-only). Runs `rugsnare history` on
+# every published version of the requested package and commits the result
+# to the `scans` BRANCH at history/<slug>.json - the site polls that file,
+# and the Actions log is the public evidence the scan really ran.
+#
+# Architecture (review 34): the job that EXECUTES foreign code (the scanned
+# package) never holds push credentials - checkout runs with
+# persist-credentials:false and no token is mapped into its environment.
+# Publishing is a separate job that runs no foreign code.
+
+on:
+  repository_dispatch:
+    types: [history-scan]
+
+permissions:
+  contents: write
+
+# serialize scans: one at a time, queued requests wait
+concurrency:
+  group: history-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run runtime history scan
+        env:
+          # env-var indirection: never interpolate the payload into a shell
+          PKG: ${{ github.event.client_payload.package }}
+        run: |
+          node product/src/cli.js version
+          set +e
+          node product/src/cli.js history "$PKG" --last 10 --json > /tmp/scan.json 2>/tmp/scan.err
+          code=$?
+          set -e
+          # exit 0 = clean, exit 1 = findings found - BOTH are successful scans
+          if [ "$code" -ge 2 ] || [ ! -s /tmp/scan.json ]; then
+            REASON=$(tail -n 3 /tmp/scan.err | tr -d '\000' | tr '\n' ' ' | cut -c1-300)
+            # JSON.stringify, never string interpolation: the scan's error
+            # text contains double quotes ("no data" is not "no changes") and
+            # a hand-built echo line breaks the publish job's JSON.parse
+            # (run 38304166250, two days in a row on the scans branch)
+            node -e 'const fs=require("fs");fs.writeFileSync("/tmp/scan.json",JSON.stringify({error:`scan failed (exit ${process.argv[2]}): ${process.argv[3]}`,package:process.argv[1]},null,2)+"\n")' "$PKG" "$code" "$REASON"
+          fi
+
+      - name: Upload scan result (no git credentials in this job)
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-json
+          path: /tmp/scan.json
+          retention-days: 7
+
+  publish:
+    needs: scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PKG: ${{ github.event.client_payload.package }}
+      SLUG: ${{ github.event.client_payload.slug }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Download scan result
+        uses: actions/download-artifact@v4
+        with:
+          name: scan-json
+          path: /tmp
+
+      - name: Publish to the scans branch
+        run: |
+          # shallow-fetch only the scans branch (no working tree of main)
+          git init -q repo
+          cd repo
+          git config user.name "rugsnare-bot"
+          git config user.email "releases@rugsnare.com"
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/Paraphern/rugsnare.git"
+          if git fetch --depth=1 origin scans; then
+            git checkout -q -B scans FETCH_HEAD
+          else
+            git checkout -q --orphan scans
+            git rm -rq --ignore-unmatch . 2>/dev/null || true
+          fi
+          mkdir -p history
+          node -e '
+            const fs = require("node:fs");
+            const scan = JSON.parse(fs.readFileSync("/tmp/scan.json", "utf8"));
+            const out = {
+              package: process.env.PKG,
+              ts: new Date().toISOString(),
+              runUrl: process.env.RUN_URL,
+              mode: "runtime (GitHub Actions sandbox)",
+              result: scan,
+            };
+            const slug = (process.env.SLUG || process.env.PKG).toLowerCase().replace(/^@/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+            fs.writeFileSync(`history/${slug}.json`, JSON.stringify(out, null, 2) + "\n");
+            console.log(`wrote history/${slug}.json`);
+          '
+          git add history
+          SUMMARY=$(node -e 'const s=JSON.parse(require("node:fs").readFileSync("/tmp/scan.json","utf8"));if(s.error||(s.result&&s.result.error)){console.log("fail")}else{console.log(((s.result&&s.result.silentChanges)??(s.silentChanges??0))+"c/"+((s.result&&s.result.checked)??(s.checked??0))+"v")}' 2>/dev/null || echo "fail")
+          git commit -m "scan(history): ${PKG} [skip ci] - ${SUMMARY}" || echo "nothing to commit"
+          # re-fetch right before push: another scan may have committed to
+          # the scans branch between our initial fetch and now (race condition)
+          git fetch --depth=1 origin scans 2>/dev/null || true
+          git rebase FETCH_HEAD 2>/dev/null || true
+          git push -u origin scans
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

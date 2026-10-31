@@ -65,7 +65,7 @@ EXTRA_ENV="/root/.${NAME}.extra.env"
 DROP_LIST="$ROOT/scripts/redeploy-drop/${NAME}.txt"
 export DROP_LIST
 docker inspect "$NAME" | python3 -c '
-import json, os, sys
+import json, os, re, shlex, sys
 spec = json.load(sys.stdin)[0]
 skip = {"PATH", "LANG", "GPG_KEY", "PYTHON_VERSION", "PYTHON_SHA256",
         "PYTHONDONTWRITEBYTECODE", "PYTHONUNBUFFERED"}
@@ -99,16 +99,21 @@ if dropped:
 # /app/data. A read-only bind on either loses money or a chain on the next restart.
 # Everything else is config the container has no business editing, and is mounted read-only
 # whatever the old container said.
-WRITABLE = {"/app/data/universe", "/app/data"}
+WRITABLE = {"/app/data/universe", "/app/data", "/shared/deposit-claims"}
 mounts = []
 for m in spec.get("Mounts") or []:
     suffix = "" if m["Destination"] in WRITABLE else ":ro"
-    mounts.append("%s:%s%s" % (m["Source"], m["Destination"], suffix))
+    source = m.get("Name") if m.get("Type") == "volume" else m["Source"]
+    mounts.append("%s:%s%s" % (source, m["Destination"], suffix))
 # The port this container serves on, asked of the container — never assumed. Guessing the
 # monitor ALIEN_PORT made the health check for the rebuilt HUB probe :9101, i.e. the
 # monitor, and report "healthy" while the hub was in a crash loop.
-port = ""
-for name in ("ALIEN_PORT", "AIMARKET_HUB_PORT", "PORT", "HUB_PORT"):
+# A known healthcheck names the application port even when an unrelated PORT
+# variable and a sidecar port are also present (live Hub: 8080/9460 vs 9083).
+health = spec["Config"].get("Healthcheck", {}).get("Test") or []
+health_port = re.search(r"https?://(?:localhost|127\.0\.0\.1):(\d+)(?:/|\b)", " ".join(health))
+port = health_port.group(1) if health_port else ""
+for name in (() if port else ("ALIEN_PORT", "AIMARKET_HUB_PORT", "PORT", "HUB_PORT")):
     port = next((e.split("=", 1)[1] for e in spec["Config"]["Env"] if e.startswith(name + "=")), "")
     if port:
         break
@@ -129,7 +134,7 @@ for container_port, bindings in (spec["HostConfig"].get("PortBindings") or {}).i
         ip = binding.get("HostIp") or ""
         hp = binding.get("HostPort") or ""
         publish.append("-p %s%s:%s" % ((ip + ":") if ip else "", hp, container_port.split("/")[0]))
-        if hp and not host_port:
+        if hp and container_port.split("/")[0] == port:
             host_port = hp
 # Two ports, two probes, and conflating them marked a healthy hub unhealthy for half an
 # hour. `modelmarket-hub-uni` listens on 9083 INSIDE and is published on 127.0.0.1:9183;
@@ -153,7 +158,9 @@ with open(env_path + ".shape", "w", encoding="utf-8") as fh:
     fh.write("PORT=%s\n" % json.dumps(port))
     fh.write("PROBE_PORT=%s\n" % json.dumps(probe_port))
     fh.write("CONTAINER_CMD=%s\n" % json.dumps(" ".join(container_cmd)))
-    fh.write("ENTRYPOINT=%s\n" % json.dumps(" ".join(spec["Config"].get("Entrypoint") or [])))
+    entrypoint = spec["Config"].get("Entrypoint") or []
+    fh.write("ENTRYPOINT_ARGS=(%s)\n" % " ".join(shlex.quote(v) for v in entrypoint))
+    fh.write("CONTAINER_CMD_ARGS=(%s)\n" % " ".join(shlex.quote(v) for v in container_cmd))
     fh.write("NETWORK=%s\n" % json.dumps(network))
     fh.write("PUBLISH=%s\n" % json.dumps(" ".join(publish)))
 print("port %s (probe %s) | network %s | publish %s | cmd %r" % (
@@ -240,16 +247,11 @@ fi
 # `__main__.py: error: unrecognized arguments: -m aimarket_hub serve`, and a crash loop on a
 # live hub. A command captured under one entrypoint is meaningless under another.
 RUN_ARGS=()
-ENTRY_WORDS=$(printf '%s' "${ENTRYPOINT:-}" | wc -w | tr -d ' ')
-if [[ "$ENTRY_WORDS" == "1" ]]; then
-  # Reproduce the shape exactly: single-binary override plus its arguments.
-  RUN_ARGS=(--entrypoint "$ENTRYPOINT")
-  echo "entrypoint: $ENTRYPOINT (override preserved)"
-elif [[ "$ENTRY_WORDS" != "0" ]]; then
-  # A multi-word override cannot be expressed as one --entrypoint, and the captured command
-  # was written for it. Use the image's own and say so, rather than guessing.
-  echo "entrypoint: captured multi-word override — using the image's own and dropping the command" >&2
-  CONTAINER_CMD=""
+COMMAND_ARGS=("${CONTAINER_CMD_ARGS[@]+"${CONTAINER_CMD_ARGS[@]}"}")
+if (( ${#ENTRYPOINT_ARGS[@]} )); then
+  RUN_ARGS=(--entrypoint "${ENTRYPOINT_ARGS[0]}")
+  COMMAND_ARGS=("${ENTRYPOINT_ARGS[@]:1}" "${CONTAINER_CMD_ARGS[@]+"${CONTAINER_CMD_ARGS[@]}"}")
+  echo "entrypoint: preserved ${#ENTRYPOINT_ARGS[@]} argument(s)"
 fi
 # shellcheck disable=SC2086
 docker run -d --name "$NAME" \
@@ -258,7 +260,7 @@ docker run -d --name "$NAME" \
   $MOUNTS ${PUBLISH:-} \
   "${RUN_ARGS[@]+"${RUN_ARGS[@]}"}" \
   "${HEALTH_ARGS[@]+"${HEALTH_ARGS[@]}"}" \
-  "$TAG" ${CONTAINER_CMD:-} || { echo "FAILED: docker run refused" >&2; rollback; exit 1; }
+  "$TAG" "${COMMAND_ARGS[@]+"${COMMAND_ARGS[@]}"}" || { echo "FAILED: docker run refused" >&2; rollback; exit 1; }
 
 if [[ -z "$PORT" ]]; then
   echo "no port could be established for $NAME — cannot verify it came up" >&2

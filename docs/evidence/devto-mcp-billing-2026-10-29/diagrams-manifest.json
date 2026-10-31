@@ -1,0 +1,459 @@
+[
+  {
+    "path": "/private/tmp/devto-mcp-billing-2026-10-29/assets/02-probe-vs-default.png",
+    "size": [
+      1280,
+      816
+    ],
+    "textBounds": [
+      {
+        "text": "CONTROLLED EXPERIMENT / LOOKUP_RECORD",
+        "bounds": [
+          72.0,
+          42.0,
+          593.0,
+          62.5
+        ]
+      },
+      {
+        "text": "One tool, two execution paths",
+        "bounds": [
+          48.0,
+          93.5,
+          732.5,
+          138.0
+        ]
+      },
+      {
+        "text": "The probe exercised the free branch. The empty call reached a paid default.",
+        "bounds": [
+          48.0,
+          156.5,
+          920.0,
+          180.0
+        ]
+      },
+      {
+        "text": "HISTOR canary probe",
+        "bounds": [
+          75.0,
+          223.0,
+          364.0,
+          249.5
+        ]
+      },
+      {
+        "text": "ARGUMENT EXCERPT",
+        "bounds": [
+          68.0,
+          287.0,
+          284.0,
+          301.5
+        ]
+      },
+      {
+        "text": "{\"mode\":\"preview\"}",
+        "bounds": [
+          68.0,
+          330.5,
+          374.0,
+          356.0
+        ]
+      },
+      {
+        "text": "HANDLER BRANCH",
+        "bounds": [
+          514.0,
+          287.0,
+          704.5,
+          301.5
+        ]
+      },
+      {
+        "text": "preview",
+        "bounds": [
+          514.0,
+          321.0,
+          637.5,
+          351.5
+        ]
+      },
+      {
+        "text": "Explicit free branch",
+        "bounds": [
+          514.0,
+          361.5,
+          691.5,
+          380.5
+        ]
+      },
+      {
+        "text": "INDEPENDENT LEDGER",
+        "bounds": [
+          885.0,
+          286.0,
+          1118.0,
+          300.5
+        ]
+      },
+      {
+        "text": "0",
+        "bounds": [
+          884.0,
+          321.0,
+          917.0,
+          364.0
+        ]
+      },
+      {
+        "text": "mock credits",
+        "bounds": [
+          944.0,
+          341.5,
+          1117.0,
+          362.0
+        ]
+      },
+      {
+        "text": "Ordinary empty call",
+        "bounds": [
+          75.0,
+          428.0,
+          337.5,
+          454.5
+        ]
+      },
+      {
+        "text": "COMPLETE ARGUMENTS",
+        "bounds": [
+          68.0,
+          492.0,
+          313.5,
+          506.5
+        ]
+      },
+      {
+        "text": "{}",
+        "bounds": [
+          68.0,
+          536.0,
+          102.0,
+          560.0
+        ]
+      },
+      {
+        "text": "HANDLER BRANCH",
+        "bounds": [
+          514.0,
+          492.0,
+          704.5,
+          506.5
+        ]
+      },
+      {
+        "text": "purchase",
+        "bounds": [
+          514.0,
+          526.0,
+          661.0,
+          556.5
+        ]
+      },
+      {
+        "text": "Handler default",
+        "bounds": [
+          514.0,
+          566.5,
+          655.0,
+          581.5
+        ]
+      },
+      {
+        "text": "INDEPENDENT LEDGER",
+        "bounds": [
+          885.0,
+          491.0,
+          1118.0,
+          505.5
+        ]
+      },
+      {
+        "text": "7",
+        "bounds": [
+          884.0,
+          526.5,
+          917.0,
+          568.5
+        ]
+      },
+      {
+        "text": "mock credits",
+        "bounds": [
+          944.0,
+          546.5,
+          1117.0,
+          567.0
+        ]
+      },
+      {
+        "text": "Both success responses: recordId + status",
+        "bounds": [
+          71.0,
+          665.5,
+          660.5,
+          692.5
+        ]
+      },
+      {
+        "text": "Same field names; different recordId values. Neither reports the charge.",
+        "bounds": [
+          71.0,
+          702.0,
+          807.5,
+          723.5
+        ]
+      },
+      {
+        "text": "Synthetic fixture \u00b7 25 Oct 2026 \u00b7 3 repeats per case \u00b7 No real money",
+        "bounds": [
+          48.0,
+          776.0,
+          701.5,
+          796.5
+        ]
+      }
+    ],
+    "sha256": "76e736d2ae01030d3f53a2f79a692eb7633bcf8f5e06eae5f55cb28bfb6a1c4f",
+    "metadata": {
+      "source": "docs/evidence/kevin-fake-billing-2026-10-25/results/result.json",
+      "sourceSha256": "a9d7c0fe54d3af90ef110545f660b57e08edbf81b6a106ed49d5f840852e9f5b",
+      "scope": "Synthetic fixture; mock credits; not a prevalence estimate; no real money.",
+      "sourceRecordedDate": "2026-10-25",
+      "renderedDate": "2026-10-29",
+      "cases": [
+        "histor-current-canary",
+        "empty-default-purchase"
+      ]
+    }
+  },
+  {
+    "path": "/private/tmp/devto-mcp-billing-2026-10-29/assets/03-charge-before-failure.png",
+    "size": [
+      1280,
+      842
+    ],
+    "textBounds": [
+      {
+        "text": "CONTROLLED EXPERIMENT / FAILURE AND RETRY",
+        "bounds": [
+          72.0,
+          42.0,
+          622.0,
+          58.0
+        ]
+      },
+      {
+        "text": "Charge first, failure later",
+        "bounds": [
+          48.0,
+          93.5,
+          603.5,
+          138.5
+        ]
+      },
+      {
+        "text": "A tool error or timeout can follow a completed charge.",
+        "bounds": [
+          47.5,
+          156.5,
+          663.0,
+          180.0
+        ]
+      },
+      {
+        "text": "01  Tool reports an error",
+        "bounds": [
+          49.0,
+          255.5,
+          349.0,
+          279.0
+        ]
+      },
+      {
+        "text": "TOOL CALL",
+        "bounds": [
+          68.0,
+          321.0,
+          181.5,
+          335.5
+        ]
+      },
+      {
+        "text": "arguments: {}",
+        "bounds": [
+          68.0,
+          361.0,
+          269.5,
+          384.0
+        ]
+      },
+      {
+        "text": "BACKEND CHARGE",
+        "bounds": [
+          417.0,
+          320.0,
+          610.0,
+          334.5
+        ]
+      },
+      {
+        "text": "7 mock credits",
+        "bounds": [
+          417.0,
+          359.0,
+          642.5,
+          382.5
+        ]
+      },
+      {
+        "text": "isError: true",
+        "bounds": [
+          832.0,
+          321.0,
+          1059.5,
+          342.0
+        ]
+      },
+      {
+        "text": "Error returned after charge",
+        "bounds": [
+          832.0,
+          365.5,
+          1117.0,
+          388.0
+        ]
+      },
+      {
+        "text": "02  Client receives no response",
+        "bounds": [
+          49.0,
+          451.0,
+          437.0,
+          475.0
+        ]
+      },
+      {
+        "text": "TOOL CALL",
+        "bounds": [
+          68.0,
+          517.0,
+          181.5,
+          531.5
+        ]
+      },
+      {
+        "text": "arguments: {}",
+        "bounds": [
+          68.0,
+          557.0,
+          269.5,
+          580.0
+        ]
+      },
+      {
+        "text": "BACKEND CHARGE",
+        "bounds": [
+          417.0,
+          516.0,
+          610.0,
+          530.5
+        ]
+      },
+      {
+        "text": "7 mock credits",
+        "bounds": [
+          417.0,
+          555.0,
+          642.5,
+          578.5
+        ]
+      },
+      {
+        "text": "No response",
+        "bounds": [
+          832.0,
+          516.5,
+          995.5,
+          543.5
+        ]
+      },
+      {
+        "text": "Client times out after charge",
+        "bounds": [
+          832.0,
+          561.0,
+          1133.0,
+          584.0
+        ]
+      },
+      {
+        "text": "RETRY WITH THE SAME OPERATION KEY",
+        "bounds": [
+          70.0,
+          681.5,
+          496.0,
+          696.5
+        ]
+      },
+      {
+        "text": "Two calls \u2192 7 credits total",
+        "bounds": [
+          70.0,
+          719.0,
+          447.5,
+          741.0
+        ]
+      },
+      {
+        "text": "The backend must enforce",
+        "bounds": [
+          662.0,
+          686.0,
+          960.0,
+          704.0
+        ]
+      },
+      {
+        "text": "duplicate suppression for the key.",
+        "bounds": [
+          662.0,
+          724.0,
+          1036.5,
+          747.0
+        ]
+      },
+      {
+        "text": "Synthetic fixture \u00b7 25 Oct 2026 \u00b7 3 repeats per case \u00b7 No real money",
+        "bounds": [
+          48.0,
+          810.0,
+          701.5,
+          830.5
+        ]
+      }
+    ],
+    "sha256": "e3938e96ec66ee3f97fe7d1c0390b67c16754160373b2db122da974058980d57",
+    "metadata": {
+      "source": "docs/evidence/kevin-fake-billing-2026-10-25/results/result.json",
+      "sourceSha256": "a9d7c0fe54d3af90ef110545f660b57e08edbf81b6a106ed49d5f840852e9f5b",
+      "scope": "Synthetic fixture; mock credits; not a prevalence estimate; no real money.",
+      "sourceRecordedDate": "2026-10-25",
+      "renderedDate": "2026-10-29",
+      "cases": [
+        "charge-before-tool-error",
+        "charge-before-timeout",
+        "idempotent-purchase-retry"
+      ]
+    }
+  }
+]

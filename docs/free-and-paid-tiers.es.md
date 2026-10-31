@@ -311,7 +311,7 @@ sandbox **y** el par está listado.
 otra puerta: la URL de invocación de un proveedor es pública, y antes de
 oracle-core 0.5.0 el proveedor no tenía forma de negar una capacidad con precio a
 quien la llamara directamente. Medido el 2026-10-16: un `POST` sin pagar a la URL
-propia de GAIA para `gaia.power.window@v1`, y a la de EMPORION para
+propia de GAIA para `gaia.power.window@v1`, y a la de SYMMARTYS para
 `emporion.vat.check@v1` ($0.002 cada una), respondió `ok: true` con la salida
 completa, mientras que las mismas llamadas a través de `modelmarket.dev` recibieron
 `402` al precio del catálogo.

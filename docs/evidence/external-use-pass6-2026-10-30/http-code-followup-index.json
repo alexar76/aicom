@@ -1,0 +1,46 @@
+[
+  {
+    "name": "sourcegraph-secondary-packages",
+    "url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aregexp+%28aimarket-metis%7Caimarket-symmartys%29+-repo%3A%5Egithub.com%2Falexar76%2F+archived%3Ayes+fork%3Ayes+count%3A100+timeout%3A25s&v=V3",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T12:08:34.440040+00:00",
+    "status": 200,
+    "final_url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aregexp+%28aimarket-metis%7Caimarket-symmartys%29+-repo%3A%5Egithub.com%2Falexar76%2F+archived%3Ayes+fork%3Ayes+count%3A100+timeout%3A25s&v=V3",
+    "bytes": 14031,
+    "sha256": "20d020fe5a28b4acc8d2b76c6ae73bc921435db49e1992934445088873f57f19",
+    "content_type": "text/event-stream",
+    "body_file": "sourcegraph-secondary-packages.raw"
+  },
+  {
+    "name": "sourcegraph-operator-kits",
+    "url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aliteral+%40aimarket%2F+-repo%3A%5Egithub.com%2Falexar76%2F+file%3A%28package.json%7Cpackage-lock.json%7Cpnpm-lock.yaml%7Cyarn.lock%29%24+archived%3Ayes+fork%3Ayes+count%3A100+timeout%3A25s&v=V3",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T12:08:34.441164+00:00",
+    "status": 200,
+    "final_url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aliteral+%40aimarket%2F+-repo%3A%5Egithub.com%2Falexar76%2F+file%3A%28package.json%7Cpackage-lock.json%7Cpnpm-lock.yaml%7Cyarn.lock%29%24+archived%3Ayes+fork%3Ayes+count%3A100+timeout%3A25s&v=V3",
+    "bytes": 5796,
+    "sha256": "eb0790ab57855a81dfa16d11d7acd3748a1421fa36231e5e9b334d1e231161ac",
+    "content_type": "text/event-stream",
+    "body_file": "sourcegraph-operator-kits.raw"
+  },
+  {
+    "name": "sourcegraph-federation-header",
+    "url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aliteral+X-AIMarket-Crawler+-repo%3A%5Egithub.com%2Falexar76%2F+archived%3Ayes+fork%3Ayes+count%3A100+timeout%3A25s&v=V3",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T12:08:34.441552+00:00",
+    "status": 200,
+    "final_url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aliteral+X-AIMarket-Crawler+-repo%3A%5Egithub.com%2Falexar76%2F+archived%3Ayes+fork%3Ayes+count%3A100+timeout%3A25s&v=V3",
+    "bytes": 5247,
+    "sha256": "6a1e7a6dffa880ff7054cbb5010425963e2927963c24c7ab30a06af2029407c7",
+    "content_type": "text/event-stream",
+    "body_file": "sourcegraph-federation-header.raw"
+  },
+  {
+    "name": "grepapp-warden",
+    "url": "https://grep.app/api/search?q=%40aimarket%2Fwarden",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T12:08:34.441992+00:00",
+    "status": 429,
+    "error": "HTTP Error 429: Too Many Requests"
+  }
+]

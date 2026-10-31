@@ -1,0 +1,45 @@
+{
+  "checked_at_utc": "2026-10-30T04:38:32.098Z",
+  "http_status": 200,
+  "request_count_signed": 1,
+  "response_hash_matches": true,
+  "call_ref_matches": true,
+  "buyer_paid_001_usdc": true,
+  "upstream_paid_0001_usdc": true,
+  "correct_seller": true,
+  "seller_proof": "unproven",
+  "engine": {
+    "package": "@aimarket/warden@0.21.0",
+    "ruleset": {
+      "version": "16",
+      "digest": "sha256-86y6iNc4R+LM5WmjSVxaCNgSMUEggeNOMQPUzq4L9n8="
+    }
+  },
+  "fixture_verdict": {
+    "blocked": [
+      "credential_debug"
+    ],
+    "allowed": [
+      "public_weather"
+    ],
+    "allow": false,
+    "score": 0
+  },
+  "buyer_debit_usdc": "0.01",
+  "upstream_credit_to_same_wallet_usdc": "0.001",
+  "net_wallet_cost_usdc": "0.009",
+  "buyer_gas_transaction": false,
+  "classification": "explicitly user-requested paid test; not organic independent demand",
+  "transactions": [
+    {
+      "name": "buyer-to-agent402",
+      "hash": "0x097048836ca8a17feda32b06d39ba69439f00c0ddd435eee336c5e4097c7e9c9",
+      "status": "success"
+    },
+    {
+      "name": "agent402-to-warden",
+      "hash": "0x33c43c06ad086a068983c14bf2788c217544feaec873160b0ff5b2188fff1279",
+      "status": "success"
+    }
+  ]
+}

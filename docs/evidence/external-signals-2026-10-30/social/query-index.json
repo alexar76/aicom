@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-30",
+  "queries": [
+    {
+      "group": 0,
+      "queries": [
+        "\"alexar76\" (site:x.com OR site:twitter.com OR site:bsky.app OR site:mastodon.social)",
+        "\"modelmarket.dev\" (site:x.com OR site:bsky.app OR site:threads.net)",
+        "\"attestedmemory.net\" (site:reddit.com OR site:news.ycombinator.com OR site:linkedin.com)",
+        "\"PingBlip\" (site:itch.io OR site:youtube.com OR site:reddit.com)"
+      ],
+      "result_file": "search-group-0.json"
+    },
+    {
+      "group": 1,
+      "queries": [
+        "\"alexar76\" site:reddit.com",
+        "\"modelmarket.dev\" site:news.ycombinator.com",
+        "\"WARDEN\" \"alexar76\" (site:linkedin.com OR site:youtube.com)",
+        "\"Karatum\" (site:itch.io OR site:youtube.com OR site:reddit.com)"
+      ],
+      "result_file": "search-group-1.json"
+    },
+    {
+      "group": 2,
+      "queries": [
+        "\"alexar76\" (site:youtube.com OR site:linkedin.com OR site:t.me)",
+        "\"magic-ai-factory.com\" (site:x.com OR site:reddit.com OR site:linkedin.com OR site:youtube.com)",
+        "\"HISTOR\" \"modelmarket\" (site:reddit.com OR site:news.ycombinator.com OR site:x.com)",
+        "\"Trace of Refusal\" (review OR comment OR recension)"
+      ],
+      "result_file": "search-group-2.json"
+    },
+    {
+      "group": 3,
+      "queries": [
+        "\"modelmarket.dev\"",
+        "\"alexar76\"",
+        "\"attestedmemory.net\"",
+        "\"PingBlip\""
+      ],
+      "result_file": "search-group-3.json"
+    },
+    {
+      "group": 4,
+      "queries": [
+        "\"HISTOR\" \"MCP\" \"Reddit\"",
+        "\"WARDEN\" \"MCP\" \"LinkedIn\"",
+        "\"modelmarket\" \"Bluesky\"",
+        "\"modelmarket.dev\" \"Telegram\""
+      ],
+      "result_file": "search-group-4.json"
+    },
+    {
+      "group": 5,
+      "queries": [
+        "\"independentai.network\" site:x.com",
+        "\"attested-memory\" \"alexar76\" site:reddit.com",
+        "\"magic-ai-factory.com\" site:news.ycombinator.com",
+        "\"alexar76\" site:dev.to"
+      ],
+      "result_file": "search-group-5.json"
+    },
+    {
+      "group": 6,
+      "queries": [
+        "\"modelmarket.dev\" site:linkedin.com",
+        "\"alexar76\" site:x.com",
+        "\"PingBlip\" site:bsky.app",
+        "\"attestedmemory.net\" site:youtube.com"
+      ],
+      "result_file": "search-group-6.json"
+    },
+    {
+      "group": 7,
+      "queries": [
+        "\"WARDEN\" \"HISTOR\" site:youtube.com",
+        "\"HISTOR\" \"MCP\" site:reddit.com",
+        "\"alexar76\" site:mastodon.social",
+        "\"magic-ai-factory.com\" site:facebook.com"
+      ],
+      "result_file": "search-group-7.json"
+    },
+    {
+      "group": 8,
+      "queries": [
+        "\"modelmarket.dev\" site:threads.net",
+        "\"modelmarket.dev\" site:quora.com",
+        "\"PingBlip\" -site:itch.io -site:pingblip.com -site:pingblip.net",
+        "\"Trace of Refusal\" \"Alex\""
+      ],
+      "result_file": "search-group-8.json"
+    }
+  ]
+}

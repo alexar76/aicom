@@ -1,0 +1,193 @@
+{
+  "schema_version": "2.0",
+  "slug": "alexar76-aimarket-plugins",
+  "name": "AICOM (AIMarket)",
+  "agent_url": "https://alexar76.github.io/aicom/",
+  "category": "Infrastructure",
+  "run_id": "run-alexar76-aimarket-plugins-v2-2026-08-05",
+  "run_at": "2026-08-05T12:00:00Z",
+  "editor": "Hlido Editor",
+  "editorial_method": "public-surface-tier-1+editorial-narrative-v2",
+  "methodology_version": "2026.05",
+  "methodology_url": "/methodology/public-surface-tier-1/",
+  "score": 60,
+  "tier": "FADING",
+  "laddoo_score": 60,
+  "confidence": "low",
+  "hlido_opinion": {
+    "headline": "An ambitious self-hosted agent economy — 13 pipeline agents, 17 signed oracles, a federated marketplace — whose most trustworthy feature is that it labels its own cryptography as prototype.",
+    "body": "AICOM proposes a full open economy for autonomous agents: a 13-agent factory that takes a brief through spec, code, QA, security and deploy; a federated hub where shipped capabilities and oracles are signed, indexed and invokable; and pay-per-call settlement over micropayment channels, all self-hosted under MIT/Apache-2.0 with an explicit \"no hosted black box — your keys, your data, your host\" stance. Seventeen oracles are listed with real mathematical substance (verifiable randomness, optimal transport, persistent homology, graph spectra, Gaussian-process uncertainty), each with Ed25519-signed receipts and optional post-quantum ML-DSA, alongside 377 passing tests. The single most credible thing on the page is the smallest: the Chronos × Platon beacon is labelled \"research/prototype crypto honesty\", with post-quantum signing off by default. A project that flags its own cryptography as prototype rather than marketing it as quantum-safe is telling you something true, and it is the reason this scores as high as it does. Everything else argues for caution. The scope — factory, marketplace, protocol, oracles, 3D visualisers, Telegram and Discord bots, YouTube release broadcasting, fleet observability — is enormous for what appears to be a very small team, and breadth at that ratio usually means shallow depth somewhere. It is hosted on GitHub Pages, has no adoption evidence, named users, or third-party audit, and \"377 tests green\" measures self-authored tests, not correctness. Reviewed from the public surface only.",
+    "voice": "Hlido Editor",
+    "as_of": "2026-08-05",
+    "editor_signature_pending": true
+  },
+  "tier_rationale": "FADING (60) — real technical substance (17 mathematically specified oracles, Ed25519-signed receipts, permissive licensing, genuine self-hosting) and notable intellectual honesty in labelling its own beacon cryptography as research/prototype with post-quantum signing off by default. Held at FADING because the scope is enormous relative to apparent team size, there is no adoption evidence, no third-party audit, and self-authored passing tests are not independent validation of a system that signs and settles value.",
+  "what_it_does_well": [
+    "Labels its own Chronos × Platon beacon as research/prototype cryptography rather than marketing it as production-grade",
+    "Post-quantum ML-DSA available but off by default — a conservative, correct default",
+    "17 oracles with genuine mathematical specificity, each shipping Ed25519-signed receipts",
+    "Fully self-hosted and permissively licensed (MIT/Apache-2.0) — no hosted black box, forkable in every part",
+    "Coherent compounding loop: factory ships a capability, hub indexes it, next run discovers and reuses it",
+    "Verify step is built into the invocation flow — discover, invoke, verify the signed proof, settle"
+  ],
+  "what_it_fails_at": [
+    "Scope (factory, marketplace, protocol, oracles, 3D visualisers, bots, broadcasting, observability) is enormous relative to apparent team size",
+    "No adoption evidence, named users, or production deployments on the public surface",
+    "'377 tests green' counts self-authored tests — not independent validation of a value-signing system",
+    "No third-party security audit despite cryptographic signing and on-chain settlement being central",
+    "Hosted on GitHub Pages with no institutional footprint or stated continuity commitment",
+    "Heavy mythological branding (Dioscuri, Helios, Metis, Gaia, Skopos, Chronos, Platon) obscures rather than explains what each component does"
+  ],
+  "best_for": [
+    "Researchers and builders exploring self-hosted, non-custodial agent-to-agent economies",
+    "Anyone who needs verifiable-math oracles with signed proofs and is able to audit the code themselves",
+    "Teams that require full self-hosting and permissive licensing over managed convenience"
+  ],
+  "not_recommended_for": [
+    "Production systems settling real value — the project labels key cryptography as prototype",
+    "Buyers needing an independent security audit before trusting signed receipts",
+    "Teams without the capacity to self-host and evaluate a large multi-component stack"
+  ],
+  "red_flags": [
+    {
+      "severity": "low",
+      "note": "The project self-describes its Chronos × Platon beacon as research/prototype cryptography. This is disclosed honestly and prominently — we flag it so the disclosure is not lost, not because it was hidden."
+    }
+  ],
+  "compared_to": [],
+  "evidence_urls": [
+    {
+      "claim": "13-agent factory taking a brief through spec, code, QA, security and deploy",
+      "source": "https://alexar76.github.io/aicom/",
+      "tested_at": "2026-08-05",
+      "verified": true
+    },
+    {
+      "claim": "17 oracles with Ed25519-signed proofs and optional ML-DSA (off by default)",
+      "source": "https://alexar76.github.io/aicom/",
+      "tested_at": "2026-08-05",
+      "verified": true
+    },
+    {
+      "claim": "Self-hosted, non-custodial, MIT/Apache-2.0 licensed",
+      "source": "https://alexar76.github.io/aicom/",
+      "tested_at": "2026-08-05",
+      "verified": true
+    },
+    {
+      "claim": "Chronos × Platon beacon labelled research/prototype cryptography by the project itself",
+      "source": "https://alexar76.github.io/aicom/",
+      "tested_at": "2026-08-05",
+      "verified": true
+    },
+    {
+      "claim": "377 tests green",
+      "source": "https://alexar76.github.io/aicom/ (self-authored tests; no independent audit)",
+      "tested_at": "2026-08-05",
+      "verified": false
+    },
+    {
+      "claim": "Adoption, production deployments, or third-party security audit",
+      "source": "https://alexar76.github.io/aicom/ (none published)",
+      "tested_at": "2026-08-05",
+      "verified": false
+    }
+  ],
+  "agent_relevance": {
+    "has_api": true,
+    "has_cli": false,
+    "has_mcp": true,
+    "has_webhook": false,
+    "has_sdk": true,
+    "behavioral_testable": false,
+    "agent_integration_path": "Agents are the intended participants: the hub is searchable by intent and price, invocation is pay-per-call over micropayment channels, MCP servers expose the oracles and web tools, and SDKs plus an embed widget cover other consumers.",
+    "agent_friendly_score": 8
+  },
+  "checklist": [
+    {
+      "id": "homepage_loads",
+      "pass": true,
+      "required": true,
+      "tested_at": "2026-08-04T20:31:14.245Z"
+    },
+    {
+      "id": "primary_value_prop",
+      "pass": true,
+      "required": true,
+      "evidence": "'An open economy for autonomous AI agents.'",
+      "tested_at": "2026-08-04T20:31:14.245Z"
+    },
+    {
+      "id": "cta_present",
+      "pass": true,
+      "required": true,
+      "evidence": "'STAR ON GITHUB' / 'TRY THE LIVE DEMO'",
+      "tested_at": "2026-08-04T20:31:14.245Z"
+    },
+    {
+      "id": "pricing_or_access",
+      "pass": true,
+      "required": false,
+      "evidence": "Self-hosted and open source; per-call pricing set by oracle operators",
+      "tested_at": "2026-08-04T20:31:14.245Z"
+    },
+    {
+      "id": "evidence_or_demo",
+      "pass": true,
+      "required": false,
+      "evidence": "Live demo, whitepaper and knowledge base; self-authored tests only, no third-party audit",
+      "tested_at": "2026-08-04T20:31:14.245Z"
+    }
+  ],
+  "summary": "An ambitious self-hosted agent economy — 13 pipeline agents, 17 signed oracles, a federated marketplace — whose most trustworthy feature is that it labels its own cryptography as prototype.",
+  "_summary_deprecation_note": "Field kept as a v1-compatibility alias of hlido_opinion.headline. New consumers should read hlido_opinion.{headline,body,voice,as_of} for the canonical Hlido-owned opinion.",
+  "staleness_after": "2026-11-05",
+  "review_age_days_at_publish": 0,
+  "next_review_due_at": "2026-11-05",
+  "attestation_url": "/data/attestations/alexar76-aimarket-plugins.json",
+  "signature_pending": true,
+  "source": "hlido-editor-v2",
+  "marking_signal": {
+    "marking_statement": false,
+    "detection_tool": false,
+    "cop_signatory": null,
+    "evidence_url": null,
+    "checked_at": "2026-08-05",
+    "source": "r4-editorial-enrich-backlog-clear"
+  },
+  "evidence_images": {
+    "run_id": "run-6fe882dcfe238c1f-alexar76-github-io",
+    "base": "https://images.hlido.eu/reviews/alexar76-aimarket-plugins/run-6fe882dcfe238c1f-alexar76-github-io",
+    "files": [
+      "home.png",
+      "page_flow.png",
+      "page_oracles.png",
+      "page_mcp.png"
+    ],
+    "urls": [
+      "https://images.hlido.eu/reviews/alexar76-aimarket-plugins/run-6fe882dcfe238c1f-alexar76-github-io/home.png",
+      "https://images.hlido.eu/reviews/alexar76-aimarket-plugins/run-6fe882dcfe238c1f-alexar76-github-io/page_flow.png",
+      "https://images.hlido.eu/reviews/alexar76-aimarket-plugins/run-6fe882dcfe238c1f-alexar76-github-io/page_oracles.png",
+      "https://images.hlido.eu/reviews/alexar76-aimarket-plugins/run-6fe882dcfe238c1f-alexar76-github-io/page_mcp.png"
+    ],
+    "verified_at": "2026-10-08T21:24:08.599Z",
+    "verified_count": 4,
+    "note": "Screenshots captured by the Hlido engine during the reviewed run, served from R2. Every URL here was HEAD-verified at the timestamp above. `run_id` is the ENGINE run id — it differs from `scorecard.run_id` and is the only one these keys resolve under."
+  },
+  "pricing_facts": {
+    "schema": "pricing-facts/1",
+    "model": [
+      "open-source",
+      "usage-based"
+    ],
+    "free_tier": true,
+    "pricing_disclosed": {
+      "pass": true,
+      "evidence": "Self-hosted and open source; per-call pricing set by oracle operators",
+      "tested_at": "2026-08-04"
+    },
+    "last_verified": "2026-08-04",
+    "basis": "Derived from Hlido-held evidence only (engine checklist + editorial text); quotes are verbatim from the scorecard; not vendor-supplied; re-derived daily. Verify current prices on the vendor's pricing page.",
+    "derived_at": "2026-08-21"
+  }
+}

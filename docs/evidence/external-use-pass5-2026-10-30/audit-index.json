@@ -1,0 +1,297 @@
+{
+  "verified_at_utc": "2026-10-30T09:12:09.476832+00:00",
+  "report": "../../growth/external-use-pass5-2026-10-30.ru.md",
+  "finding_kind": "new_verification_of_previously_known_external_fork_CI",
+  "event_at_utc": "2026-10-14T20:06:19Z",
+  "web_search_queries": 18,
+  "direct_public_gets": 24,
+  "statuses": {
+    "200": 23,
+    "403": 1
+  },
+  "body_hashes_verified": 23,
+  "json_files_parsed_before_index_write": 30,
+  "http_index_files": [
+    "http-chinese-index.json",
+    "http-deep-ci-index.json",
+    "http-followup-index.json",
+    "http-index.json",
+    "http-runner-index.json",
+    "http-source-index.json"
+  ],
+  "sources": [
+    {
+      "name": "chinese-warden-candidate",
+      "url": "https://zhupite.com/sec/warden-mcp-security-proxy.html",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T09:11:15.643070+00:00",
+      "status": 200,
+      "sha256": "3143400cb6d63a16090584ca4032b874c915e5643498de2dfcc42cffd0900e53",
+      "bytes": 50884,
+      "content_type": "text/html; charset=utf-8",
+      "rate_remaining": null,
+      "body_file": "chinese-warden-candidate.raw"
+    },
+    {
+      "name": "enterprise-root-tree",
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/git/trees/ef124a40d592bf149fab93fb632a4aaf688a04fa",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T09:03:20.395819+00:00",
+      "status": 200,
+      "sha256": "c93a4c4818c872f48b741b493f0b0c0404b6ef857c16fe7f374ed1eed1195cec",
+      "bytes": 21080,
+      "content_type": "application/json; charset=utf-8",
+      "rate_remaining": "49",
+      "body_file": "enterprise-root-tree.json"
+    },
+    {
+      "name": "enterprise-backend-logs",
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/actions/jobs/116076256030/logs",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T09:03:20.396399+00:00",
+      "status": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "name": "enterprise-ci-jobs",
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/actions/runs/38629232333/jobs?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:59:01.428170+00:00",
+      "status": 200,
+      "sha256": "87245fd8b8a785c3f51c3b8ef0ea8ad889590094931374e9eb2d84dada327106",
+      "bytes": 8335,
+      "rate_remaining": "53",
+      "body_file": "enterprise-ci-jobs.json"
+    },
+    {
+      "name": "enterprise-ci-workflow",
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/contents/.github/workflows/ci.yml?ref=ef124a40d592bf149fab93fb632a4aaf688a04fa",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:59:01.428547+00:00",
+      "status": 200,
+      "sha256": "7b4a85c794486fc925bcadaa107e9aa552bc533298897888f38d71adfa86a21a",
+      "bytes": 6843,
+      "rate_remaining": "55",
+      "body_file": "enterprise-ci-workflow.json"
+    },
+    {
+      "name": "histor-pr14-current",
+      "url": "https://api.github.com/repos/basitalisandhu/agent-skills-state-2026/pulls/14",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:59:01.428697+00:00",
+      "status": 200,
+      "sha256": "1497728bcfb0dc60763317e9cdb3de2862d572bb735e0a157978c324ea89f315",
+      "bytes": 18907,
+      "rate_remaining": "54",
+      "body_file": "histor-pr14-current.json"
+    },
+    {
+      "name": "mcp-new-comments",
+      "url": "https://api.github.com/repos/modelcontextprotocol/modelcontextprotocol/issues/3431/comments?since=2026-10-30T07%3A25%3A26Z&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:59:01.987895+00:00",
+      "status": 200,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2,
+      "rate_remaining": "52",
+      "body_file": "mcp-new-comments.json"
+    },
+    {
+      "name": "agentdojo-new-comments",
+      "url": "https://api.github.com/repos/ethz-spylab/agentdojo/issues/235/comments?since=2026-10-30T07%3A25%3A26Z&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:59:02.242332+00:00",
+      "status": 200,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2,
+      "rate_remaining": "51",
+      "body_file": "agentdojo-new-comments.json"
+    },
+    {
+      "name": "vulnetix-new-comments",
+      "url": "https://api.github.com/repos/Vulnetix/advisory-database/issues/5/comments?since=2026-10-30T07%3A25%3A26Z&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:59:02.429585+00:00",
+      "status": 200,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2,
+      "rate_remaining": "50",
+      "body_file": "vulnetix-new-comments.json"
+    },
+    {
+      "name": "dev-current-list",
+      "url": "https://dev.to/api/articles?username=alexar76&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:59:02.440559+00:00",
+      "status": 200,
+      "sha256": "e0b2c2df3f66371ca9557d9505fdbf46d073827d16f2aaa6ca47676b0184e83f",
+      "bytes": 143854,
+      "rate_remaining": null,
+      "body_file": "dev-current-list.json"
+    },
+    {
+      "name": "dev-comments-4804987",
+      "url": "https://dev.to/api/comments?a_id=4804987",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:59:03.546008+00:00",
+      "status": 200,
+      "sha256": "679b5c9c59df301034a5f590f6e574380736a3fa56131ee2b13a4529511bb8e0",
+      "bytes": 46123,
+      "rate_remaining": null,
+      "body_file": "dev-comments-4804987.json"
+    },
+    {
+      "name": "mentions-recent",
+      "url": "https://api.github.com/search/issues?q=mentions%3Aalexar76%20updated%3A%3E%3D2026-10-30%20-user%3Aalexar76&sort=updated&order=desc&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:57:07.166078+00:00",
+      "status": 200,
+      "sha256": "7b8a94e04a9a6357394db542f92f33a164eec8a055f74a5ac444fffeb4b4da49",
+      "bytes": 5230,
+      "rate_remaining": "9",
+      "body_file": "mentions-recent.json"
+    },
+    {
+      "name": "incoming-issues-recent",
+      "url": "https://api.github.com/search/issues?q=user%3Aalexar76%20is%3Aissue%20-author%3Aalexar76%20updated%3A%3E%3D2026-10-30&sort=updated&order=desc&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:57:07.166462+00:00",
+      "status": 200,
+      "sha256": "e71a323f2e79e3ca1c31415b7a8837962cb6dd266fd7e3740a119e649037fbe7",
+      "bytes": 2812,
+      "rate_remaining": "7",
+      "body_file": "incoming-issues-recent.json"
+    },
+    {
+      "name": "external-domain-recent",
+      "url": "https://api.github.com/search/issues?q=%22modelmarket.dev%22%20-user%3Aalexar76%20-author%3Aalexar76%20updated%3A%3E%3D2026-10-30&sort=updated&order=desc&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:57:07.166606+00:00",
+      "status": 200,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+      "bytes": 79,
+      "rate_remaining": "8",
+      "body_file": "external-domain-recent.json"
+    },
+    {
+      "name": "enterprise-repo",
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:57:07.758527+00:00",
+      "status": 200,
+      "sha256": "e8e3c9922c1a5f88621b7ef96b4c4482f4f1368c7d8b44a1c98ed79b5660957c",
+      "bytes": 16310,
+      "rate_remaining": "59",
+      "body_file": "enterprise-repo.json"
+    },
+    {
+      "name": "enterprise-actions",
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/actions/runs?per_page=20",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:57:07.816780+00:00",
+      "status": 200,
+      "sha256": "9109a6b234dd59d9f0db5e255fca1e58119b7a3e347099fb3fd506004af5bd7a",
+      "bytes": 277544,
+      "rate_remaining": "58",
+      "body_file": "enterprise-actions.json"
+    },
+    {
+      "name": "enterprise-deployments",
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/deployments?per_page=20",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:57:07.843005+00:00",
+      "status": 200,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2,
+      "rate_remaining": "57",
+      "body_file": "enterprise-deployments.json"
+    },
+    {
+      "name": "enterprise-readme",
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/contents/README.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T08:57:08.315757+00:00",
+      "status": 200,
+      "sha256": "8f713b5609269c929b389ba6fa6269bf6e88eecc6af44ac7ec6c25733ef7f20d",
+      "bytes": 75261,
+      "rate_remaining": "56",
+      "body_file": "enterprise-readme.json"
+    },
+    {
+      "name": "enterprise-pytest-ci-runner",
+      "url": "https://raw.githubusercontent.com/th3artfuldodger/enterprise-factory/ef124a40d592bf149fab93fb632a4aaf688a04fa/scripts/run_factory_pytest_ci.py",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T09:02:15.581709+00:00",
+      "status": 200,
+      "sha256": "d0e205f59d28e9600d64212fff03cb303210ef64d57d32157c648261e044dd77",
+      "bytes": 2429,
+      "content_type": "text/plain; charset=utf-8",
+      "rate_remaining": null,
+      "body_file": "enterprise-pytest-ci-runner.raw"
+    },
+    {
+      "name": "enterprise-frontend-package",
+      "url": "https://raw.githubusercontent.com/th3artfuldodger/enterprise-factory/ef124a40d592bf149fab93fb632a4aaf688a04fa/web/frontend/package.json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T09:02:15.582275+00:00",
+      "status": 200,
+      "sha256": "c741a94e4181c6fa4609dcd7c19c87976b5107ddaf744ad6e62afd8a714a69bc",
+      "bytes": 1582,
+      "content_type": "text/plain; charset=utf-8",
+      "rate_remaining": null,
+      "body_file": "enterprise-frontend-package.raw"
+    },
+    {
+      "name": "enterprise-pytest-runner",
+      "url": "https://raw.githubusercontent.com/th3artfuldodger/enterprise-factory/ef124a40d592bf149fab93fb632a4aaf688a04fa/scripts/run_factory_pytest.sh",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T09:01:16.705136+00:00",
+      "status": 200,
+      "sha256": "19a7c40fcb30c9fff376d0b7ef4ed826e05219d340aaf1aa39f66ff871981c64",
+      "bytes": 1294,
+      "rate_remaining": null,
+      "body_file": "enterprise-pytest-runner.sh"
+    },
+    {
+      "name": "enterprise-fetch-satellites",
+      "url": "https://raw.githubusercontent.com/th3artfuldodger/enterprise-factory/ef124a40d592bf149fab93fb632a4aaf688a04fa/scripts/ci_fetch_factory_test_deps.sh",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T09:01:16.705507+00:00",
+      "status": 200,
+      "sha256": "4dd674b8b3807299fff128d7666be380f139c62bf5a460fc19b6c1c871afee75",
+      "bytes": 2579,
+      "rate_remaining": null,
+      "body_file": "enterprise-fetch-satellites.sh"
+    },
+    {
+      "name": "enterprise-install-satellites",
+      "url": "https://raw.githubusercontent.com/th3artfuldodger/enterprise-factory/ef124a40d592bf149fab93fb632a4aaf688a04fa/scripts/ci_install_factory_test_deps.sh",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T09:01:16.705636+00:00",
+      "status": 200,
+      "sha256": "bd44fe0bc390b260bedc8eb8701e86cbf1b7297bb50bf2c9bc3604f77c0b4eaa",
+      "bytes": 385,
+      "rate_remaining": null,
+      "body_file": "enterprise-install-satellites.sh"
+    },
+    {
+      "name": "russian-digest-candidate",
+      "url": "https://ai-academy.ink/post/ai-digest-2026-07-31/",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T09:01:17.275739+00:00",
+      "status": 200,
+      "sha256": "3a067e5dc2c692a4310481bb0038629c552b7dc46acb80a7a306fb7199273f83",
+      "bytes": 251097,
+      "rate_remaining": null,
+      "body_file": "russian-digest-candidate.html"
+    }
+  ],
+  "limitations": [
+    "Known fork from26Oct, not a new project or deployment30Oct",
+    "New evidence is non-skipped CI job steps, workflows and pinned source; no live foreign app endpoint",
+    "Backend checkout names main; exact checkout bytes not independently recovered from forbidden logs",
+    "Public account distinct from alexar76; beneficial ownership not investigated",
+    "No revenue, organic clients or successful autonomous production build established"
+  ],
+  "organic_demand_from_our_paid_tests_counted": false
+}

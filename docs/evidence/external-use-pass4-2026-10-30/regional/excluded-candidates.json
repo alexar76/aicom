@@ -1,0 +1,24 @@
+[
+  {
+    "url": "https://aefact.site/readers",
+    "json": "https://aefact.site/v1/readers",
+    "observation": [
+      {
+        "client": "histor",
+        "n": 23
+      }
+    ],
+    "reason": "Only client name histor; no alexar76/modelmarket.dev attribution. Site explicitly warns UA can be spoofed and does not retain raw IP/UA. Likely crawler observation is not third-party use of HISTOR.",
+    "classification": "unattributed namesake/UA candidate; excluded from confirmed mentions and use"
+  },
+  {
+    "url": "https://app.engr-sng.com/news/detail/language-model-build-planner-f39c0f9b",
+    "source_article": "https://dev.to/megapixel99/taking-the-language-model-out-of-a-build-planner-489d",
+    "reason": "Exact Article.isBasedOn identifies another author; excluded despite thematically similar planner article"
+  },
+  {
+    "url": "https://cn-sec.com/archives/5531744.html",
+    "read_scope": "search result only",
+    "reason": "Search text explicitly names Kirtan Bhatt mcp-warden, not alexar76/warden; no claimed attribution to our ecosystem"
+  }
+]

@@ -1,0 +1,26 @@
+ossgadget 0.2.38+bc01360dac
+© Microsoft Corporation. All rights reserved.
+USAGE:
+Identify potential malware or backdoors in the given package:
+  ossgadget detect-backdoor --download-directory . --format text [options]
+  package-url...
+
+  -d, --download-directory    (Default: .) the directory to download the package
+                              to.
+
+  -f, --format                (Default: text) specify the output
+                              format(text|sarifv1|sarifv2)
+
+  -o, --output-file           (Default: ) send the command output to a file
+                              instead of stdout
+
+  -c, --use-cache             (Default: false) do not download the package if it
+                              is already present in the destination directory.
+
+  -b, --backtracking          Use backtracking engine by default.
+
+  -s, --single-threaded       Use single-threaded analysis
+
+  --help                      Display this help screen.
+
+  --version                   Display version information.

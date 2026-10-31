@@ -1,0 +1,94 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open data, Agent Economy Report</title>
+<meta name="description" content="The daily archive of the Agent Economy Report as files: trust ratings of every x402 service since 2026-08-16, the Agent Economy Index, a catalog census and skill ratings. CC BY 4.0: free for any use, commercial included, with citation.">
+<link rel="canonical" href="https://agenteconomy.report/s/data/">
+<link rel="icon" href="/s/brand/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"Agent Economy Report: daily trust ratings and settlement of the agent economy","url":"https://agenteconomy.report/s/data/","description":"Daily archive since 2026-08-16: the trust rating of every x402 service per day, the Agent Economy Index since 2026-08-02, a census of the x402 discovery catalog, a daily liveness census and the rating of every agent skill.","license":"https://creativecommons.org/licenses/by/4.0/","isAccessibleForFree":true,"version":"2026-10-29","dateModified":"2026-10-29","temporalCoverage":"2026-08-16/2026-10-29","creator":{"@type":"Organization","name":"Center for Studies in Strategy and Innovation","parentOrganization":{"@type":"Organization","name":"COPPEAD Graduate School of Business, UFRJ"}},"publisher":{"@type":"Organization","name":"Agent Economy Report","url":"https://agenteconomy.report","memberOf":{"@type":"Organization","name":"COPPEAD Graduate School of Business, UFRJ","url":"https://www.coppead.ufrj.br/"}},"keywords":["x402","agent economy","AI agents","stablecoin payments","trust rating","MCP","agent skills"],"distribution":[{"@type":"DataDownload","name":"ratings-daily","contentUrl":"https://agenteconomy.report/s/data/ratings-daily.csv.gz","encodingFormat":"text/csv+gzip","contentSize":"3109176"},{"@type":"DataDownload","name":"aei-daily","contentUrl":"https://agenteconomy.report/s/data/aei-daily.csv","encodingFormat":"text/csv","contentSize":"3062"},{"@type":"DataDownload","name":"catalog-daily","contentUrl":"https://agenteconomy.report/s/data/catalog-daily.csv","encodingFormat":"text/csv","contentSize":"3167"},{"@type":"DataDownload","name":"liveness-daily","contentUrl":"https://agenteconomy.report/s/data/liveness-daily.csv","encodingFormat":"text/csv","contentSize":"7070"},{"@type":"DataDownload","name":"skills-latest","contentUrl":"https://agenteconomy.report/s/data/skills-latest.csv.gz","encodingFormat":"text/csv+gzip","contentSize":"1696281"}]}</script>
+<style>
+ body{max-width:960px;margin:0 auto;padding:2.5rem 1.25rem;font:17px/1.6 Georgia,serif;
+      background:#0e1116;color:#e6e8eb}
+ 
+ p,li{max-width:70ch}
+ p.k,p.k+p{max-width:none}  
+ @media(prefers-color-scheme:light){body{background:#fafafa;color:#15181d}}
+ a{color:#5cc8ff}h1{font-size:1.5rem;margin:.2rem 0}h2{font-size:1.05rem;margin-top:2rem}
+ .badge{display:inline-block;font:800 1.6rem/1 system-ui;padding:.35rem .7rem;border-radius:10px;
+        background:#171c24;border:1px solid #2a313c;vertical-align:middle;color:#e6e8eb}
+ .k{color:#9aa4b2;font:700 .72rem/1 system-ui;text-transform:uppercase;letter-spacing:.12em}
+ table{border-collapse:collapse;width:100%;max-width:100%}td,th{padding:.35rem .5rem;border-bottom:1px solid #2a313c;
+      text-align:left;font:.95rem system-ui}th{white-space:nowrap}
+ 
+ td a,td code{overflow-wrap:anywhere}code{font-size:.85em}
+ 
+ a.claim{display:inline-block;width:1.05em;height:1.05em;line-height:1.05em;margin-left:.45rem;border:1px solid #4a5563;
+        border-radius:50%;color:#4a5563;font:.62rem system-ui;text-align:center;text-decoration:none;vertical-align:middle}
+ a.claim:hover,a.claim:focus{color:#5cc8ff;border-color:#5cc8ff}
+ footer{margin-top:2.5rem;border-top:1px solid #2a313c;padding-top:1rem;font:.8rem/1.6 system-ui;color:#9aa4b2}
+ 
+ @media(max-width:1000px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+   table tbody{display:table;width:100%}}
+
+ .site{display:flex;align-items:center;justify-content:space-between;gap:.8rem 1.5rem;flex-wrap:wrap;
+       margin:0 0 2.2rem;padding:0 0 .9rem;border-bottom:1px solid #2a313c;font:600 .82rem/1 system-ui,sans-serif}
+ .site .brand{display:inline-flex;align-items:center;gap:.55rem;color:inherit;text-decoration:none;font-weight:700}
+ .site .brand img{width:22px;height:22px;border-radius:6px;flex:none}
+ .site nav{display:flex;gap:1.1rem;flex-wrap:wrap}
+ .site nav a{color:#9aa4b2;text-decoration:none;padding:.2rem 0;border-bottom:2px solid transparent}
+ .site nav a:hover{color:inherit}.site nav a[aria-current=page]{color:inherit;border-bottom-color:#5cc8ff}
+ .site a:focus-visible{outline:2px solid #5cc8ff;outline-offset:3px;border-radius:3px}
+ @media(prefers-color-scheme:light){.site{border-color:#e3e6ea}.site nav a{color:#5b6470}}
+
+ h2{margin-top:2.2rem} h3{font-size:.95rem;margin-top:1.3rem}
+ .n{text-align:right;font-variant-numeric:tabular-nums}
+ dl{display:grid;grid-template-columns:max-content 1fr;gap:.25rem 1rem;font-size:.9rem} dt{color:#9aa4b2}
+ pre{white-space:pre-wrap;font-size:.85rem;background:#171c24;padding:.8rem;border-radius:8px}
+</style></head><body>
+<header class="site"><a class="brand" href="/"><img src="/s/brand/mark.svg" alt="" width="22" height="22"><span>Agent Economy Report</span></a><nav aria-label="Sections"><a href="/s/" aria-current="page">Services</a><a href="/k/">Skills</a><a href="/a/">Agents</a><a href="/aei/">AEI</a><a href="/report/">Reports</a><a href="/s/about">About</a></nav></header>
+<p class="k">Open data · version 2026-10-29 · regenerated daily</p>
+<h1>The daily archive, as files</h1>
+<p>Everything on this site is computed every morning from the same archive. This page publishes that archive:
+the rating of every x402 service for every day since 2026-08-16, the daily Agent Economy Index since
+2026-08-02, a daily census of the x402 discovery catalog, a daily liveness census of every resource ever
+listed (of those listed that day, and of the listed hosts) and the rating of every agent skill in the ClawHub registry. Same numbers as the pages, same day, with a schema and
+a citation; the monthly report's totals (gross flow, flow at agent scale, settlement transfers, listed and dead
+resources) are sums over these files: in <code>aei-daily.csv</code> each closed monthly window (the 2nd of a month
+to the 1st of the next, the window of the monthly report) is computed with the wallet classification of that report
+date (so the report's totals are sums of these rows), and the current window with today's, as the AEI page
+shows it. Method:
+<a href="https://agenteconomy.report/s/methodology">methodology</a>.</p>
+
+<h2>Files</h2>
+<table><tr><th>file</th><th>what</th><th>rows</th><th>size</th></tr><tr><td><a href="ratings-daily.csv.gz"><code>ratings-daily.csv.gz</code></a></td><td>Rating of every service, every day since the first run</td><td class="n">130,482</td><td class="n">3.0 MB</td></tr><tr><td><a href="aei-daily.csv"><code>aei-daily.csv</code></a></td><td>Agent Economy Index, one row per day since 2026-08-02</td><td class="n">89</td><td class="n">3 KB</td></tr><tr><td><a href="catalog-daily.csv"><code>catalog-daily.csv</code></a></td><td>Daily census of the x402 discovery catalog</td><td class="n">89</td><td class="n">3 KB</td></tr><tr><td><a href="liveness-daily.csv"><code>liveness-daily.csv</code></a></td><td>Daily liveness census: every resource ever listed, those listed that day, and the listed hosts</td><td class="n">89</td><td class="n">7 KB</td></tr><tr><td><a href="skills-latest.csv.gz"><code>skills-latest.csv.gz</code></a></td><td>Rating of every agent skill, as of 2026-10-29</td><td class="n">81,687</td><td class="n">1.6 MB</td></tr></table>
+<p><a href="datapackage.json">datapackage.json</a> describes every column (Frictionless Data Package);
+<a href="CITATION.cff">CITATION.cff</a> is the citation for reference managers.</p>
+
+<h2 id="licence">Licence</h2>
+<p><strong>Free for any use, commercial included</strong>, under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, with
+the citation below. Reuse the figures, redistribute the files, build on them, in research, journalism, a product or
+an internal process; say where they came from and when. There is no paid licence for these files.</p>
+<p>What is charged is machine access to the ratings (the rating API, from US$ 0.005 per call over x402), as cost
+recovery, by whoever reads it; <strong>the rated party never pays</strong>, and nobody can buy a tier
+(<a href="https://agenteconomy.report/s/policy#independence">policy</a>). Organizations that rely on the data can support the
+observatory; any support is disclosed and never touches a rating.</p>
+
+<h2 id="cite">Citation</h2>
+<p>Center for Studies in Strategy and Innovation, COPPEAD Graduate School of Business, UFRJ (2026). Agent Economy Report: daily trust ratings and settlement of the agent economy [dataset]. https://agenteconomy.report/s/data/</p>
+<pre>@misc{agenteconomyreport2026,
+  author = {{Center for Studies in Strategy and Innovation}},
+  title = {Agent Economy Report: daily trust ratings and settlement of the agent economy},
+  year = {2026},
+  howpublished = {\url{https://agenteconomy.report/s/data/}},
+  note = {Dataset, version 2026-10-29, CC BY 4.0}
+  institution = {COPPEAD Graduate School of Business, UFRJ},
+}</pre>
+<p>DOI: pending (the Zenodo deposit of this dataset is being prepared; until it exists, cite the URL). For a single page, cite the page URL with its <code>as_of</code> date and the method version
+shown on <a href="https://agenteconomy.report/s/methodology">the methodology page</a>.</p>
+
+<h2>Columns</h2>
+<h3>ratings-daily.csv.gz</h3><dl><dt><code>day</code> <small>date</small></dt><dd>Rating day (UTC morning run).</dd><dt><code>host</code> <small>string</small></dt><dd>Service host as listed in the x402 catalogs, or the payTo wallet for unlisted entries.</dd><dt><code>kind</code> <small>string</small></dt><dd>service (host) or unlisted_wallet.</dd><dt><code>tier</code> <small>string</small></dt><dd>AAA to D; BBB is the trust line.</dd><dt><code>score</code> <small>number</small></dt><dd>Score 0 to 100 (40 adoption, 25 settlement, 25 centrality, 10 uptime).</dd><dt><code>outlook</code> <small>string</small></dt><dd>positive, negative, stable or new (trend of organic agents over 7 days).</dd><dt><code>flag</code> <small>string</small></dt><dd>CAPTIVE, SYBIL, NEW, RETIRED or empty.</dd><dt><code>uptime</code> <small>number</small></dt><dd>Share of the daily probes in the 14-day window answered as up (402 or 200, see the methodology), 0 to 1. From 2026-11-02 (D-0061) only the resources listed in a catalog in the last 7 days count when one of them has a probe that counts (for a family, only the endpoints it lists), and a 405 never answered by POST counts as down, as does a probe without an answer except on a day the probe itself failed (before, both were left out).</dd><dt><code>organic_payers</code> <small>integer</small></dt><dd>Distinct organic paying wallets in the 14-day window (scanners excluded).</dd><dt><code>payers</code> <small>integer</small></dt><dd>Distinct paying wallets in the window, scanners included.</dd><dt><code>organic_payers_7d</code> <small>integer</small></dt><dd>Organic payers in the last 7 days of the window.</dd><dt><code>organic_payers_7d_prev</code> <small>integer</small></dt><dd>Organic payers in the 7 days before that.</dd><dt><code>settled_usd_14d</code> <small>number</small></dt><dd>USDC settled to the entry in 14 days at agent scale (a payment counts at most US$ 1).</dd><dt><code>centrality</code> <small>number</small></dt><dd>PageRank-style centrality in the organic payment graph.</dd><dt><code>retired_resources</code> <small>integer</small></dt><dd>Listed resources that answered 410 with a past Sunset date.</dd><dt><code>family</code> <small>integer</small></dt><dd>Family id when several hosts share the payTo wallet (D-0050); empty otherwise.</dd><dt><code>tier_raw</code> <small>string</small></dt><dd>Tier the day&#x27;s numbers alone would give; differs from tier only when the 2-point band holds the previous day&#x27;s tier (D-0058, from 2026-10-22); empty on days rated before the column existed.</dd></dl><h3>aei-daily.csv</h3><dl><dt><code>day</code> <small>date</small></dt><dd>Day (UTC).</dd><dt><code>usd</code> <small>number</small></dt><dd>USDC settled to x402 services at agent scale (a payment counts at most US$ 1).</dd><dt><code>gross</code> <small>number</small></dt><dd>USDC settled before the agent-scale cap (gross flow).</dd><dt><code>tx</code> <small>integer</small></dt><dd>Number of settlement transfers counted.</dd></dl><h3>catalog-daily.csv</h3><dl><dt><code>day</code> <small>date</small></dt><dd>Snapshot day.</dd><dt><code>resources</code> <small>integer</small></dt><dd>Resources listed in the CDP discovery catalog that day.</dd><dt><code>hosts</code> <small>integer</small></dt><dd>Distinct hosts among those resources.</dd><dt><code>paid_calls_30d</code> <small>integer</small></dt><dd>Sum of the 30-day paid-call counts the catalog reports per resource (gross, as declared).</dd><dt><code>payers_30d</code> <small>integer</small></dt><dd>Sum of the 30-day distinct-payer counts the catalog reports per resource.</dd></dl><h3>liveness-daily.csv</h3><dl><dt><code>day</code> <small>date</small></dt><dd>Probe day (UTC).</dd><dt><code>probed</code> <small>integer</small></dt><dd>Resources probed that day: every resource ever listed in the x402 discovery catalogs (CDP Bazaar and PayAI) since 2 August 2026, including those no longer listed.</dd><dt><code>answered_402</code> <small>integer</small></dt><dd>Of those, resources that answered HTTP 402 with a price (alive and selling).</dd><dt><code>dead</code> <small>integer</small></dt><dd>Of those, resources that did not answer at all or answered a 5xx (no response, connection error or server error).</dd><dt><code>listed</code> <small>integer</small></dt><dd>Resources probed that day that were listed in the catalogs that same day (the census in catalog-daily.csv). Empty on a day without a catalog census.</dd><dt><code>listed_answered_402</code> <small>integer</small></dt><dd>Of the listed ones, resources that answered HTTP 402 with a price. Empty on a day without a catalog census.</dd><dt><code>listed_dead</code> <small>integer</small></dt><dd>Of the listed ones, resources that did not answer at all or answered a 5xx. Empty on a day without a catalog census.</dd><dt><code>listed_hosts</code> <small>integer</small></dt><dd>Hosts with at least one listed resource probed that day. Empty on a day without a catalog census.</dd><dt><code>listed_hosts_answered_402</code> <small>integer</small></dt><dd>Of those hosts, the ones with at least one listed resource answering HTTP 402 with a price that day: the liveness by host, which one host with many resources cannot move by itself. Empty on a day without a catalog census.</dd><dt><code>largest_host</code> <small>string</small></dt><dd>The host with the most listed resources probed that day. Empty on a day without a catalog census.</dd><dt><code>largest_host_share_pct</code> <small>number</small></dt><dd>Share (%) of the listed resources probed that day that belong to largest_host: how much the liveness by resource depends on one host. Empty on a day without a catalog census.</dd></dl><h3>skills-latest.csv.gz</h3><dl><dt><code>day</code> <small>date</small></dt><dd>Rating day.</dd><dt><code>slug</code> <small>string</small></dt><dd>Skill slug in the ClawHub registry.</dd><dt><code>tier</code> <small>string</small></dt><dd>AAA to D.</dd><dt><code>outlook</code> <small>string</small></dt><dd>up, down, flat or NEW.</dd><dt><code>flags</code> <small>string</small></dt><dd>Pipe-separated flags (SUSPICIOUS, PIPE_SHELL, OBFUSCATED, UNKNOWN_PAYEE, KEYS, NEW).</dd><dt><code>score</code> <small>number</small></dt><dd>Score 0 to 100 (45 adoption, 25 maturity, 20 inherited payment trust, 10 instructions).</dd><dt><code>downloads</code> <small>integer</small></dt><dd>Registry downloads, cumulative.</dd><dt><code>downloads_7d</code> <small>integer</small></dt><dd>Downloads in the last 7 days (empty when the 7-day reference is missing).</dd><dt><code>installs</code> <small>integer</small></dt><dd>Registry installs, cumulative.</dd><dt><code>stars</code> <small>integer</small></dt><dd>Registry stars.</dd><dt><code>versions</code> <small>integer</small></dt><dd>Published versions.</dd><dt><code>age_days</code> <small>integer</small></dt><dd>Days since first publication.</dd><dt><code>pays_x402</code> <small>boolean</small></dt><dd>The skill&#x27;s instructions pay at least one x402 service.</dd><dt><code>owner</code> <small>string</small></dt><dd>Registry handle of the author.</dd></dl>
+<h2>What is not here</h2>
+<p>The raw payment graph (payer wallet, payTo wallet, day, amount) and the raw liveness probes are not published
+as files: they identify wallets at a granularity the pages do not show. They are available to researchers on
+request, under the same licence, with citation. Write to contact@agenteconomy.report.</p>
+<footer><p>This is an <strong>operational trust rating</strong> of a software service computed from public, on-chain and liveness data: <strong>not a credit rating</strong> and not investment advice. Every figure is reproducible from our daily archive.</p><p>Run a rated service? Questions about your rating, the data or a feed: <a href="https://agenteconomy.report/#contato">write to us</a>, we read everything. <a href="https://agenteconomy.report/s/methodology">Methodology</a> · <a href="https://agenteconomy.report/s/policy">Corrections and disputes</a> · <a href="https://agenteconomy.report/s/pro">Access and data</a> · <a href="https://agenteconomy.report/s/data/">Open data</a> · <a href="https://agenteconomy.report/s/terms">Terms</a> · <a href="https://agenteconomy.report/s/privacy">Privacy</a> · <a href="https://agenteconomy.report/s/refunds">Refunds</a>.</p><p><a href="https://agenteconomy.report/s/">All ratings</a> · <a href="https://agenteconomy.report/k/">Skill ratings</a> · <a href="https://agenteconomy.report">Agent Economy Report</a> · <a href="https://bsky.app/profile/agenteconomyreport.bsky.social">Bluesky</a></p><p class="afil">A research initiative of the Center for Studies in Strategy and Innovation, <a href="https://www.coppead.ufrj.br/" rel="noopener">COPPEAD Graduate School of Business, UFRJ</a>.</p></footer></body></html>

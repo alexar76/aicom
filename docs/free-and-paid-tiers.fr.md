@@ -314,7 +314,7 @@ Les §7.1 et §7.2 décident de ce que coûte un appel *passant par le Hub*. Auc
 deux ne ferme l'autre porte : l'URL d'invocation d'un fournisseur est publique, et
 avant oracle-core 0.5.0 le fournisseur n'avait aucun moyen de refuser une capacité
 tarifée à qui l'appelait directement. Mesuré le 2026-10-16 : un `POST` non payé vers
-l'URL propre de GAIA pour `gaia.power.window@v1`, et vers celle d'EMPORION pour
+l'URL propre de GAIA pour `gaia.power.window@v1`, et vers celle d'SYMMARTYS pour
 `emporion.vat.check@v1` ($0.002 chacun), a répondu `ok: true` avec la sortie
 complète, tandis que les mêmes appels via `modelmarket.dev` recevaient `402` au prix
 du catalogue.

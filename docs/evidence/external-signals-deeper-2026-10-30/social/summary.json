@@ -1,0 +1,90 @@
+{
+  "observed_date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "baseline": [
+    "docs/growth/external-signals-2026-10-30.ru.md",
+    "artifacts/external-deep-2026-10-29/report.json",
+    "artifacts/external-deep-2026-10-29/social/summary.json",
+    "artifacts/external-deep-2026-10-29/code-adoption/summary.json"
+  ],
+  "web_queries": 32,
+  "captured_gets": 47,
+  "http_statuses": {
+    "200": 45,
+    "429": 2
+  },
+  "new_independent_text_or_real_use_verified": false,
+  "new_low_strength_observation": {
+    "platform": "Bluesky",
+    "post_url": "https://bsky.app/profile/alexar76.bsky.social/post/3mpv2cab2vk2r",
+    "post_created_at_utc": "2026-07-05T07:25:36.519Z",
+    "reposted_by": "timxai.ai",
+    "reposted_by_did": "did:plc:wc247qet6fmuzynmhehrsfdl",
+    "repost_time": null,
+    "self_label": "bot",
+    "classification": "Different-account automated amplification; no independent text, endorsement, human audience or use verified",
+    "newness": "Account was not found in checked prior docs/artifacts. Original post is July5; repost date unknown."
+  },
+  "bluesky": {
+    "author_feed_status": 200,
+    "posts_returned": 58,
+    "cursor": null,
+    "earliest_post_utc": "2026-07-05T07:25:36.519Z",
+    "latest_post_utc": "2026-10-27T07:40:06.697Z",
+    "threads_read": 19,
+    "own_post_occurrences": 38,
+    "unique_own_posts_in_threads": 37,
+    "external_posts_in_threads": 0,
+    "reposted_by_lists_read": 4,
+    "lists_with_returned_accounts": 1,
+    "notes": "Three positive repost counters had empty repostedBy lists. No account attributed to those counters. Search API was not retried."
+  },
+  "hn": {
+    "exact_comment_queries": 5,
+    "queries": [
+      "histor.modelmarket.dev",
+      "@aimarket/warden",
+      "attestedmemory.net",
+      "\"We installed 12,915\"",
+      "\"Same MCP version\""
+    ],
+    "hits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "limits": "Specific exact comment searches, not all HN."
+  },
+  "dev": {
+    "publisher_feed_attempts": 6,
+    "publisher_feed_successes": 4,
+    "feed_429": [
+      "swarmagentoperator",
+      "heyitsjakub"
+    ],
+    "selected_articles_read": 12,
+    "articles_authors": [
+      "Paul Irolla",
+      "QuincyGB",
+      "GAL"
+    ],
+    "exact_ecosystem_marker_matches": 0,
+    "notes": "The known QuincyGB25oct article was excluded as already recorded29oct. A substring history initially matched HISTOR; final matching uses word boundaries and excludes it."
+  },
+  "limits": [
+    "LinkedIn profile web-open cache miss; William comment remains unread",
+    "No closed social groups or private messages",
+    "Public search results predominantly known mirrors/own syndication",
+    "No publishing, messages, account changes or GitHub writes"
+  ],
+  "evidence_indexes": [
+    "http-index.json",
+    "thread-http-index.json",
+    "article-http-index.json",
+    "bsky-thread-summary.json",
+    "article-keyword-matches.json",
+    "search-0.json…search-7.json"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "queries": [
+    "\"alexar76/warden\" (site:nuget.org OR site:crates.io OR site:pkg.go.dev OR site:rubygems.org)",
+    "\"aimarket-hub\" (site:gitlab.com OR site:codeberg.org OR site:gitee.com) -site:github.com",
+    "\"histor-mcp-tool-definitions\" (site:zenodo.org OR site:arxiv.org OR site:openreview.net) -23512760 -23512759 -site:zenodo.org/records/23512760",
+    "\"modelmarket.dev\" (site:news.ycombinator.com OR site:lobste.rs) -50193565 -50223414"
+  ],
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Blocked by robots.txt\nThe following domains cannot be accessed (non-retryable error): codeberg.org"
+      }
+    ],
+    "isError": false
+  }
+}

@@ -1,5 +1,7 @@
 # Работоспособность экосистемы: установки, endpoints и MCP — 28 октября 2026
 
+> Названия компонентов приведены к текущему бренду. Имена пакетов, URL и идентификаторы в исторических данных сохранены.
+
 Проверка начата около **19:16 МСК**. Использованы реальные опубликованные npm/PyPI-пакеты, отдельные окружения и процессы, MCP SDK 1.30.0 и локальный Docker Engine 29.2.1. Локальный checkout не подмешивался в первоначальные установки.
 
 **Проверенные базовые MCP-сценарии работают. Найдены воспроизводимые дефекты опубликованных Oracle Gateway и METIS, а также устаревшие инструкции установки.** На момент первичной проверки исправления были только локальными. Последующий [rollout Oracle 0.3.3 и METIS 0.2.6](/Users/alex/Desktop/ai_tests/aicompany/aicom/docs/verification/oracle-metis-rollout-2026-10-28.ru.md) обновил семь production-контейнеров; публикация новых версий в PyPI ожидает доступа к токену. Ниже сохранены результаты первоначальной проверки опубликованных пакетов.
@@ -30,7 +32,7 @@
 
 Первый проход охватил **96 URL**: 58 страниц, 24 JSON/health/API, девять предполагаемых OpenAPI URL, три MCP info URL и два namespace официального реестра. После уточнения TLS-клиента получены 92 ответа200, два404, один401 и один405. Это транспортные результаты, не 96 успешных сквозных сценариев.
 
-Дополнительно прочитано содержимое **14 health-ответов**: Factory, три Hub, GAIA, HISTOR, METIS, EMPORION, HESTIA, LOGOS, MOMUS, BASANOS, Signal Hunt и Monitor. Они сообщают `ok/status=ok`; Signal Hunt видит свой Hub, MOMUS видит провайдера. Основной Hub сообщает payment_ready=true, два вспомогательных — false; это конфигурация, а не тест платежа. Версии live сервисов записаны отдельно от версий установленных пакетов: например, METIS live0.2.2, HISTOR live0.4.2, Hub live3.16.0.
+Дополнительно прочитано содержимое **14 health-ответов**: Factory, три Hub, GAIA, HISTOR, METIS, SYMMARTYS, HESTIA, LOGOS, MOMUS, BASANOS, Signal Hunt и Monitor. Они сообщают `ok/status=ok`; Signal Hunt видит свой Hub, MOMUS видит провайдера. Основной Hub сообщает payment_ready=true, два вспомогательных — false; это конфигурация, а не тест платежа. Версии live сервисов записаны отдельно от версий установленных пакетов: например, METIS live0.2.2, HISTOR live0.4.2, Hub live3.16.0.
 
 Через настоящий MCP SDK успешно выполнены `initialize → initialized → tools/list` на **семи опубликованных endpoints**:
 
@@ -43,15 +45,15 @@
 | Вызов | Наблюдение |
 | --- | --- |
 | Hub → GAIA `gaia.place.resolve@v1`, Kraków/PL | Город найден; `max_price_usd=0`, квитанция получена |
-| EMPORION `business_days`, DE, 28 октября +2 рабочих дня | Возвращено 30 октября |
-| EMPORION с `date=not-a-date` | Корректный отказ, результат не придуман |
+| SYMMARTYS `business_days`, DE, 28 октября +2 рабочих дня | Возвращено 30 октября |
+| SYMMARTYS с `date=not-a-date` | Корректный отказ, результат не придуман |
 | Domains `domain_quote(example.com)` | available=false, demo; регистрации или покупки не было |
 | Weather, координаты Кракова | Отказ: нет live relay в радиусе75км; ближайшая Варшава примерно252км |
 | Weather, координаты варшавского relay | Живое чтение получено, с источником и аттестацией |
 
-У трёх полученных квитанций проверены подписи по опубликованным ключам фактических издателей: GAIA и EMPORION — Ed25519+ML-DSA-65, Domains — Ed25519. Изменение цены отвергается. Первоначально доменная квитанция не совпала с ключами трёх других хабов; после определения её `source_hub=domains.modelmarket.dev` она успешно проверена по ключу правильного провайдера. Это не дефект подписи.
+У трёх полученных квитанций проверены подписи по опубликованным ключам фактических издателей: GAIA и SYMMARTYS — Ed25519+ML-DSA-65, Domains — Ed25519. Изменение цены отвергается. Первоначально доменная квитанция не совпала с ключами трёх других хабов; после определения её `source_hub=domains.modelmarket.dev` она успешно проверена по ключу правильного провайдера. Это не дефект подписи.
 
-[SDK-сессии](../../artifacts/system-verification-2026-10-28/live/remote-mcp-results.json), [функциональные вызовы](../../artifacts/system-verification-2026-10-28/live/remote-mcp-functional.json), [контроль погоды](../../artifacts/system-verification-2026-10-28/live/weather-coverage-control.json), [квитанции GAIA/EMPORION](../../artifacts/system-verification-2026-10-28/live/receipt-verification.json), [доменная квитанция по правильному ключу](../../artifacts/system-verification-2026-10-28/live/domains-receipt-verification.json).
+[SDK-сессии](../../artifacts/system-verification-2026-10-28/live/remote-mcp-results.json), [функциональные вызовы](../../artifacts/system-verification-2026-10-28/live/remote-mcp-functional.json), [контроль погоды](../../artifacts/system-verification-2026-10-28/live/weather-coverage-control.json), [квитанции GAIA/SYMMARTYS](../../artifacts/system-verification-2026-10-28/live/receipt-verification.json), [доменная квитанция по правильному ключу](../../artifacts/system-verification-2026-10-28/live/domains-receipt-verification.json).
 
 ## Найденные дефекты и локальные исправления
 

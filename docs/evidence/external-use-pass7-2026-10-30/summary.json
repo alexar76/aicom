@@ -1,0 +1,116 @@
+{
+  "observed_date": "2026-10-30",
+  "display_timezone": "Europe/Amsterdam",
+  "finding_kind": "new_transaction_evidence_for_previously_unattributed_AER_prefix",
+  "payment": {
+    "tx": "0xb1c54f290cd1ec7cd98e0537f0068aee15ceec978f2313ba33fb048c15913dd5",
+    "date_utc": "2026-10-25 3:02:05",
+    "official_base_usdc": true,
+    "direction": "IN",
+    "counterparty": "0xe2d8dc842fc5037c99c332bd57baaba3649f66c2",
+    "payer": "0xe2d8dc842fc5037c99c332bd57baaba3649f66c2",
+    "recipient": "0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+    "amount_usdc": "0.03"
+  },
+  "event_at_utc": "2026-10-25T03:02:05+00:00",
+  "event_at_amsterdam": "2026-10-25T04:02:05+01:00",
+  "explorer_transaction_description": "0xE2d8dc84...3649F66C2 Transfer 0.03 USDC to 0x1218ff36...Fc606Ad0a | Success | Oct-25-2026 03:02:05 AM (UTC)",
+  "prior_exact_transaction_mentions_found": [],
+  "prior_scan_limits": "Accessible docs/artifacts text files under 4 MB; exclusions: this pass and its predecessor link",
+  "payer_recent_page": {
+    "payer_table_rows": 50,
+    "outbound_official_usdc_rows": 25,
+    "unique_outbound_recipients": 6,
+    "outbound_by_day": {
+      "2026-10-29": 7,
+      "2026-10-28": 18
+    },
+    "outbound_amounts": {
+      "0.02": 15,
+      "0.0111": 2,
+      "0.003": 4,
+      "0.01": 4
+    }
+  },
+  "attribution_limits": [
+    "AER only reveals a prefix, matched to the full address in the explorer",
+    "The event happened on25Oct; it is not a new payment30Oct",
+    "Beneficial owner and independence from us have not been established",
+    "No HTTP endpoint, request input, delivered response, application workflow or repeat purchase of our service was established",
+    "Single 50-row payer page is not the complete history",
+    "Roundhouse actor labels and payment catalog grouping are observer inferences, not identified customers"
+  ],
+  "new_independent_runtime_use_confirmed": false,
+  "new_independent_social_or_regional_mentions_confirmed": false,
+  "github_searches": [
+    {
+      "name": "repos-identity-readme",
+      "total": 11,
+      "incomplete": false
+    },
+    {
+      "name": "commits-domain",
+      "total": 0,
+      "incomplete": false
+    },
+    {
+      "name": "commits-dataset",
+      "total": 0,
+      "incomplete": false
+    },
+    {
+      "name": "issues-warden-identity",
+      "total": 3,
+      "incomplete": false
+    },
+    {
+      "name": "issues-symmartys",
+      "total": 0,
+      "incomplete": false
+    },
+    {
+      "name": "issues-memory-short",
+      "total": 0,
+      "incomplete": false
+    },
+    {
+      "name": "incoming-fresh",
+      "total": 1,
+      "incomplete": false
+    },
+    {
+      "name": "mentions-fresh",
+      "total": 1,
+      "incomplete": false
+    }
+  ],
+  "fresh_issue_window": {
+    "after_utc": "2026-10-30T12:14:35Z",
+    "returned_candidates": []
+  },
+  "web_search": {
+    "attempted_queries": 43,
+    "unique_attempted_queries": 43,
+    "returned_query_batch_members": 35,
+    "error_batch_members": 4,
+    "blocked_batch_members": 4,
+    "prior_structured_query_strings": 806,
+    "prior_json_files_parsed": 854,
+    "exact_prior_repeats": 0,
+    "new_returned_query_strings": 35,
+    "limits": "Batch membership is not per-query execution confirmation. Failed or robots-blocked batches are not counted as successful coverage. Literal structured-field deduplication only, not semantic deduplication."
+  },
+  "direct_public_gets": 20,
+  "http_statuses": {
+    "200": 15,
+    "401": 5
+  },
+  "body_hashes_verified": 15,
+  "access_limits": [
+    "Four stargazer GETs401; no authentication changes or retries",
+    "Roundhouse advertised API GET401; no keys or paid requests used",
+    "Four web query strings in an error batch and four in a robots-blocked batch are not successful coverage",
+    "Apple guide matched generic historical text rather than the ecosystem"
+  ],
+  "mutations": "Local audit files only. No purchases, paid APIs, invokes, messages, installs, foreign code execution, deployments, authentication changes or GitHub/Gitea writes."
+}

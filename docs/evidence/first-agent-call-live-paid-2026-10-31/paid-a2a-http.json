@@ -1,0 +1,752 @@
+{
+  "at_utc": "2026-10-31T05:39:04.117896+00:00",
+  "url": "https://modelmarket.dev/a2a",
+  "request_body": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "SendMessage",
+    "params": {
+      "message": {
+        "messageId": "first-agent-call-paid-20261031-once",
+        "taskId": "a2at_55f123548e7647c658d01a41",
+        "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+        "role": "ROLE_USER",
+        "parts": [
+          {
+            "text": "x402 payment submitted",
+            "mediaType": "text/plain"
+          }
+        ],
+        "metadata": {
+          "x402.payment.status": "payment-submitted",
+          "x402.payment.payload": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70"
+        }
+      }
+    }
+  },
+  "status_code": 200,
+  "response_body": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+      "task": {
+        "id": "a2at_55f123548e7647c658d01a41",
+        "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+        "status": {
+          "state": "TASK_STATE_COMPLETED",
+          "timestamp": "2026-10-31T04:41:09.909Z",
+          "message": {
+            "messageId": "a2am_0020107a1106eb5c",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_AGENT",
+            "parts": [
+              {
+                "text": "gaia.weather.read@v1 completed ($0.001)",
+                "mediaType": "text/plain"
+              }
+            ],
+            "metadata": {
+              "x402.payment.status": "payment-completed",
+              "x402.payment.receipts": [
+                {
+                  "success": true,
+                  "transaction": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70",
+                  "network": "eip155:8453"
+                }
+              ]
+            }
+          }
+        },
+        "artifacts": [
+          {
+            "artifactId": "result",
+            "name": "result",
+            "description": "What gaia.weather.read@v1 returned",
+            "parts": [
+              {
+                "data": null,
+                "mediaType": "application/json"
+              }
+            ]
+          },
+          {
+            "artifactId": "aimarket-receipt",
+            "name": "aimarket-receipt",
+            "description": "The signed gateway receipt for this call",
+            "parts": [
+              {
+                "data": {
+                  "nonce": "05629112d50d8ef4",
+                  "product_id": "gaia.gateway",
+                  "capability_id": "gaia.weather.read@v1",
+                  "price_usd": 0.001,
+                  "timestamp": "2026-10-31T04:41:09Z",
+                  "success": true,
+                  "latency_ms": 23.51,
+                  "signature": {
+                    "algorithm": "ed25519",
+                    "public_key": "nXqEvIbWv+rA8TASY0GqGWZi/OPazT0HM1LQTrRXemg=",
+                    "value": "wDuYB/XylJm2rtPci8vT5EghKJygPy5pdyFxTOc9KB1wh/sXd86tGdD7wgApJ8TnFuW3K/8vcQyXqPv/wbjSBQ==",
+                    "pq_algorithm": "ml-dsa-65",
+                    "pq_public_key": "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",
+                    "pq_value": "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"
+                  }
+                },
+                "mediaType": "application/json"
+              }
+            ],
+            "metadata": {
+              "sourceHub": "https://iot.modelmarket.dev",
+              "signerWellKnown": "https://iot.modelmarket.dev/.well-known/ai-market.json"
+            }
+          },
+          {
+            "artifactId": "provenance",
+            "name": "provenance",
+            "description": "The AWR/2 work receipt for this call",
+            "parts": [
+              {
+                "data": {
+                  "receipt_id": "urn:uuid:bd688c73-b623-41c0-a1a5-a07d38ae480c",
+                  "verify_url": "https://modelmarket.dev/ai-market/v2/p/provenance/verify/urn:uuid:bd688c73-b623-41c0-a1a5-a07d38ae480c",
+                  "receipt_url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:bd688c73-b623-41c0-a1a5-a07d38ae480c",
+                  "verifier_url": "https://verify.modelmarket.dev",
+                  "awr_version": "2.0.0",
+                  "issuer": "did:key:z6MkkCADReBRLTMEqSV7REQ399ujjFPb8UFBSryAC7SPv6LX",
+                  "digest_sri": "sha256-NGWc4j851b3jOrkJi4KCRkwbgxL7PSUIZ20Emf5BfPo="
+                },
+                "mediaType": "application/json"
+              }
+            ],
+            "metadata": {
+              "digest_sri": "sha256-NGWc4j851b3jOrkJi4KCRkwbgxL7PSUIZ20Emf5BfPo=",
+              "receipt_url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:bd688c73-b623-41c0-a1a5-a07d38ae480c",
+              "verify_url": "https://modelmarket.dev/ai-market/v2/p/provenance/verify/urn:uuid:bd688c73-b623-41c0-a1a5-a07d38ae480c"
+            }
+          }
+        ],
+        "history": [
+          {
+            "messageId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_USER",
+            "parts": [
+              {
+                "data": {
+                  "invoke": {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.weather.read@v1",
+                    "source_hub": "https://iot.modelmarket.dev"
+                  }
+                },
+                "mediaType": "application/json",
+                "metadata": {
+                  "aimarket.redacted": "input and payment are not stored"
+                }
+              }
+            ]
+          },
+          {
+            "messageId": "a2am_55bae72ec466e497",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_AGENT",
+            "parts": [
+              {
+                "text": "The free trial for this caller is used up. Payment required: $0.001 for gaia.weather.read@v1. Pay per x402.payment.required and reply on this task with x402.payment.payload — it must include the settle txHash (this hub verifies the transfer on chain and never settles one). Or send X-API-Key (a credit account on this hub) or X-AIMarket-Mandate with X-AIMarket-Mandate-Proof as HTTP headers on a follow-up message to this task.",
+                "mediaType": "text/plain"
+              },
+              {
+                "data": {
+                  "success": false,
+                  "error": "payment_required",
+                  "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel"
+                },
+                "mediaType": "application/json"
+              }
+            ],
+            "metadata": {
+              "x402.payment.status": "payment-required",
+              "x402.payment.required": {
+                "x402Version": 2,
+                "error": "Payment required",
+                "resource": {
+                  "url": "https://modelmarket.dev/ai-market/v2/invoke",
+                  "description": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarke",
+                  "mimeType": "application/json"
+                },
+                "accepts": [
+                  {
+                    "scheme": "exact",
+                    "network": "eip155:8453",
+                    "amount": "1000",
+                    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                    "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "maxTimeoutSeconds": 300,
+                    "extra": {
+                      "name": "USD Coin",
+                      "version": "2",
+                      "nonce": "0x679f36ab8b0d9c1c19c232fe650318bdeb438ee710d5eb324557d8d8e673298b"
+                    }
+                  }
+                ],
+                "nonce": "0x679f36ab8b0d9c1c19c232fe650318bdeb438ee710d5eb324557d8d8e673298b",
+                "extensions": {
+                  "offer-receipt": {
+                    "info": {
+                      "offers": [
+                        {
+                          "format": "jws",
+                          "acceptIndex": 0,
+                          "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3BWemMxeWZ6Z2hQcjdROXN3bzhBd0tQc2NwbVhVaEpDZ3ZZNmY0eDlmS1I2I3o2TWtwVnpjMXlmemdoUHI3UTlzd284QXdLUHNjcG1YVWhKQ2d2WTZmNHg5ZktSNiJ9.eyJhbW91bnQiOiIxMDAwIiwiYXNzZXQiOiIweDgzMzU4OWZDRDZlRGI2RTA4ZjRjN0MzMkQ0ZjcxYjU0YmRBMDI5MTMiLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMiLCJwYXlUbyI6IjB4MTIxOGZmMzZDNWQyZTNCNkE1NjVDZEIxQThCMUFjQ0ZjNjA2QWQwYSIsInJlc291cmNlVXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYvYWktbWFya2V0L3YyL2ludm9rZSIsInNjaGVtZSI6ImV4YWN0IiwidmFsaWRVbnRpbCI6MTc5MzQyMjQxNiwidmVyc2lvbiI6MX0.og4ceuS7NnLTH_pZqYXqZthfdcw_cVom3G7oFVOl7BSQj92fTIwFvag-52SAd6TqrjWA1tbluz7PD3yEYve0BQ"
+                        }
+                      ]
+                    },
+                    "schema": {
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "type": "object",
+                      "properties": {
+                        "offers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "format": {
+                                "type": "string",
+                                "const": "jws"
+                              },
+                              "acceptIndex": {
+                                "type": "integer"
+                              },
+                              "signature": {
+                                "type": "string",
+                                "description": "JWS compact serialization containing the offer payload"
+                              }
+                            },
+                            "required": [
+                              "format",
+                              "signature"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "offers"
+                      ]
+                    }
+                  }
+                }
+              },
+              "aimarket": {
+                "error": "payment_required",
+                "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel",
+                "needed": 0.001,
+                "payment_ways": [
+                  {
+                    "rail": "seller_direct",
+                    "header": "X-Payment",
+                    "also": [
+                      "PAYMENT-SIGNATURE",
+                      "X-PAYMENT",
+                      "X-Payment-Nonce"
+                    ],
+                    "asset": "USDC",
+                    "note": "pay the listing payout_address on-chain; the hub never holds the money"
+                  },
+                  {
+                    "rail": "credits",
+                    "header": "X-API-Key",
+                    "signup": "https://modelmarket.dev/ai-market/v2/accounts",
+                    "open_signup": true,
+                    "topup": "https://modelmarket.dev/ai-market/v2/account/topup",
+                    "start": "https://modelmarket.dev/start"
+                  },
+                  {
+                    "rail": "channel",
+                    "header": "X-Payment-Channel",
+                    "open": "https://modelmarket.dev/ai-market/v2/channel/open"
+                  }
+                ],
+                "trial_exhausted": true
+              }
+            }
+          },
+          {
+            "messageId": "ce55492d-ca5e-4827-bff8-ccdd2ffe2ef8",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_USER",
+            "parts": [
+              {
+                "text": "(follow-up)",
+                "mediaType": "text/plain",
+                "metadata": {
+                  "aimarket.redacted": "content and payment are not stored"
+                }
+              }
+            ]
+          },
+          {
+            "messageId": "a2am_e15f6dfc25ee85a8",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_AGENT",
+            "parts": [
+              {
+                "text": "The free trial for this caller is used up. Payment required: $0.001 for gaia.weather.read@v1. Pay per x402.payment.required and reply on this task with x402.payment.payload — it must include the settle txHash (this hub verifies the transfer on chain and never settles one). Or send X-API-Key (a credit account on this hub) or X-AIMarket-Mandate with X-AIMarket-Mandate-Proof as HTTP headers on a follow-up message to this task.",
+                "mediaType": "text/plain"
+              },
+              {
+                "data": {
+                  "success": false,
+                  "error": "payment_required",
+                  "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel"
+                },
+                "mediaType": "application/json"
+              }
+            ],
+            "metadata": {
+              "x402.payment.status": "payment-required",
+              "x402.payment.required": {
+                "x402Version": 2,
+                "error": "Payment required",
+                "resource": {
+                  "url": "https://modelmarket.dev/ai-market/v2/invoke",
+                  "description": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarke",
+                  "mimeType": "application/json"
+                },
+                "accepts": [
+                  {
+                    "scheme": "exact",
+                    "network": "eip155:8453",
+                    "amount": "1000",
+                    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                    "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "maxTimeoutSeconds": 300,
+                    "extra": {
+                      "name": "USD Coin",
+                      "version": "2",
+                      "nonce": "0x4b92bdd1516d5b58e23a38f1f1ddbfbda8182a6042935899395b2d67a41e4499"
+                    }
+                  }
+                ],
+                "nonce": "0x4b92bdd1516d5b58e23a38f1f1ddbfbda8182a6042935899395b2d67a41e4499",
+                "extensions": {
+                  "offer-receipt": {
+                    "info": {
+                      "offers": [
+                        {
+                          "format": "jws",
+                          "acceptIndex": 0,
+                          "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3BWemMxeWZ6Z2hQcjdROXN3bzhBd0tQc2NwbVhVaEpDZ3ZZNmY0eDlmS1I2I3o2TWtwVnpjMXlmemdoUHI3UTlzd284QXdLUHNjcG1YVWhKQ2d2WTZmNHg5ZktSNiJ9.eyJhbW91bnQiOiIxMDAwIiwiYXNzZXQiOiIweDgzMzU4OWZDRDZlRGI2RTA4ZjRjN0MzMkQ0ZjcxYjU0YmRBMDI5MTMiLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMiLCJwYXlUbyI6IjB4MTIxOGZmMzZDNWQyZTNCNkE1NjVDZEIxQThCMUFjQ0ZjNjA2QWQwYSIsInJlc291cmNlVXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYvYWktbWFya2V0L3YyL2ludm9rZSIsInNjaGVtZSI6ImV4YWN0IiwidmFsaWRVbnRpbCI6MTc5MzQyMjQ3NywidmVyc2lvbiI6MX0.KZVl5ANukh7BgB9_TDVhPQNx5Kfq9tem4JccSC9byz28_IO1SOxRMDxcPhkjEm6BBVLAq16LRbPVdPVBs2IRCQ"
+                        }
+                      ]
+                    },
+                    "schema": {
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "type": "object",
+                      "properties": {
+                        "offers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "format": {
+                                "type": "string",
+                                "const": "jws"
+                              },
+                              "acceptIndex": {
+                                "type": "integer"
+                              },
+                              "signature": {
+                                "type": "string",
+                                "description": "JWS compact serialization containing the offer payload"
+                              }
+                            },
+                            "required": [
+                              "format",
+                              "signature"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "offers"
+                      ]
+                    }
+                  }
+                }
+              },
+              "aimarket": {
+                "error": "payment_required",
+                "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel",
+                "needed": 0.001,
+                "payment_ways": [
+                  {
+                    "rail": "seller_direct",
+                    "header": "X-Payment",
+                    "also": [
+                      "PAYMENT-SIGNATURE",
+                      "X-PAYMENT",
+                      "X-Payment-Nonce"
+                    ],
+                    "asset": "USDC",
+                    "note": "pay the listing payout_address on-chain; the hub never holds the money"
+                  },
+                  {
+                    "rail": "credits",
+                    "header": "X-API-Key",
+                    "signup": "https://modelmarket.dev/ai-market/v2/accounts",
+                    "open_signup": true,
+                    "topup": "https://modelmarket.dev/ai-market/v2/account/topup",
+                    "start": "https://modelmarket.dev/start"
+                  },
+                  {
+                    "rail": "channel",
+                    "header": "X-Payment-Channel",
+                    "open": "https://modelmarket.dev/ai-market/v2/channel/open"
+                  }
+                ],
+                "trial_exhausted": true
+              }
+            }
+          },
+          {
+            "messageId": "7ee503ab-ab0a-401d-82e4-6ea5a1d14c32",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_USER",
+            "parts": [
+              {
+                "text": "(follow-up)",
+                "mediaType": "text/plain",
+                "metadata": {
+                  "aimarket.redacted": "content and payment are not stored"
+                }
+              }
+            ]
+          },
+          {
+            "messageId": "a2am_c80599314e1dcf26",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_AGENT",
+            "parts": [
+              {
+                "text": "The free trial for this caller is used up. Payment required: $0.001 for gaia.weather.read@v1. Pay per x402.payment.required and reply on this task with x402.payment.payload — it must include the settle txHash (this hub verifies the transfer on chain and never settles one). Or send X-API-Key (a credit account on this hub) or X-AIMarket-Mandate with X-AIMarket-Mandate-Proof as HTTP headers on a follow-up message to this task.",
+                "mediaType": "text/plain"
+              },
+              {
+                "data": {
+                  "success": false,
+                  "error": "payment_required",
+                  "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel"
+                },
+                "mediaType": "application/json"
+              }
+            ],
+            "metadata": {
+              "x402.payment.status": "payment-required",
+              "x402.payment.required": {
+                "x402Version": 2,
+                "error": "Payment required",
+                "resource": {
+                  "url": "https://modelmarket.dev/ai-market/v2/invoke",
+                  "description": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarke",
+                  "mimeType": "application/json"
+                },
+                "accepts": [
+                  {
+                    "scheme": "exact",
+                    "network": "eip155:8453",
+                    "amount": "1000",
+                    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                    "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "maxTimeoutSeconds": 300,
+                    "extra": {
+                      "name": "USD Coin",
+                      "version": "2",
+                      "nonce": "0xaa7cb8117a97d145f5f8397087e321bd1a53b744dd4d5ba31bb56083273abff5"
+                    }
+                  }
+                ],
+                "nonce": "0xaa7cb8117a97d145f5f8397087e321bd1a53b744dd4d5ba31bb56083273abff5",
+                "extensions": {
+                  "offer-receipt": {
+                    "info": {
+                      "offers": [
+                        {
+                          "format": "jws",
+                          "acceptIndex": 0,
+                          "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3BWemMxeWZ6Z2hQcjdROXN3bzhBd0tQc2NwbVhVaEpDZ3ZZNmY0eDlmS1I2I3o2TWtwVnpjMXlmemdoUHI3UTlzd284QXdLUHNjcG1YVWhKQ2d2WTZmNHg5ZktSNiJ9.eyJhbW91bnQiOiIxMDAwIiwiYXNzZXQiOiIweDgzMzU4OWZDRDZlRGI2RTA4ZjRjN0MzMkQ0ZjcxYjU0YmRBMDI5MTMiLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMiLCJwYXlUbyI6IjB4MTIxOGZmMzZDNWQyZTNCNkE1NjVDZEIxQThCMUFjQ0ZjNjA2QWQwYSIsInJlc291cmNlVXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYvYWktbWFya2V0L3YyL2ludm9rZSIsInNjaGVtZSI6ImV4YWN0IiwidmFsaWRVbnRpbCI6MTc5MzQyMjUzMSwidmVyc2lvbiI6MX0.Tbc9n3plTtRD9_BGyEwjEwoCeQdfBKW0OF5kTiNUaJ0mBvKnwY7lKm0DyR9a7a9k5CijxmRgk5aZ1F3mwxIEDg"
+                        }
+                      ]
+                    },
+                    "schema": {
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "type": "object",
+                      "properties": {
+                        "offers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "format": {
+                                "type": "string",
+                                "const": "jws"
+                              },
+                              "acceptIndex": {
+                                "type": "integer"
+                              },
+                              "signature": {
+                                "type": "string",
+                                "description": "JWS compact serialization containing the offer payload"
+                              }
+                            },
+                            "required": [
+                              "format",
+                              "signature"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "offers"
+                      ]
+                    }
+                  }
+                }
+              },
+              "aimarket": {
+                "error": "payment_required",
+                "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel",
+                "needed": 0.001,
+                "payment_ways": [
+                  {
+                    "rail": "seller_direct",
+                    "header": "X-Payment",
+                    "also": [
+                      "PAYMENT-SIGNATURE",
+                      "X-PAYMENT",
+                      "X-Payment-Nonce"
+                    ],
+                    "asset": "USDC",
+                    "note": "pay the listing payout_address on-chain; the hub never holds the money"
+                  },
+                  {
+                    "rail": "credits",
+                    "header": "X-API-Key",
+                    "signup": "https://modelmarket.dev/ai-market/v2/accounts",
+                    "open_signup": true,
+                    "topup": "https://modelmarket.dev/ai-market/v2/account/topup",
+                    "start": "https://modelmarket.dev/start"
+                  },
+                  {
+                    "rail": "channel",
+                    "header": "X-Payment-Channel",
+                    "open": "https://modelmarket.dev/ai-market/v2/channel/open"
+                  }
+                ],
+                "trial_exhausted": true
+              }
+            }
+          },
+          {
+            "messageId": "d937e934-ae7a-497f-846b-9f60c9afdde6",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_USER",
+            "parts": [
+              {
+                "text": "(follow-up)",
+                "mediaType": "text/plain",
+                "metadata": {
+                  "aimarket.redacted": "content and payment are not stored"
+                }
+              }
+            ]
+          },
+          {
+            "messageId": "a2am_81642b67b41e0aed",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_AGENT",
+            "parts": [
+              {
+                "text": "The free trial for this caller is used up. Payment required: $0.001 for gaia.weather.read@v1. Pay per x402.payment.required and reply on this task with x402.payment.payload — it must include the settle txHash (this hub verifies the transfer on chain and never settles one). Or send X-API-Key (a credit account on this hub) or X-AIMarket-Mandate with X-AIMarket-Mandate-Proof as HTTP headers on a follow-up message to this task.",
+                "mediaType": "text/plain"
+              },
+              {
+                "data": {
+                  "success": false,
+                  "error": "payment_required",
+                  "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel"
+                },
+                "mediaType": "application/json"
+              }
+            ],
+            "metadata": {
+              "x402.payment.status": "payment-required",
+              "x402.payment.required": {
+                "x402Version": 2,
+                "error": "Payment required",
+                "resource": {
+                  "url": "https://modelmarket.dev/ai-market/v2/invoke",
+                  "description": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarke",
+                  "mimeType": "application/json"
+                },
+                "accepts": [
+                  {
+                    "scheme": "exact",
+                    "network": "eip155:8453",
+                    "amount": "1000",
+                    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                    "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "maxTimeoutSeconds": 300,
+                    "extra": {
+                      "name": "USD Coin",
+                      "version": "2",
+                      "nonce": "0x0bb43648cc22632c27ea27c8748d1d1b29eec8e6fbc441af6819c3664668f585"
+                    }
+                  }
+                ],
+                "nonce": "0x0bb43648cc22632c27ea27c8748d1d1b29eec8e6fbc441af6819c3664668f585",
+                "extensions": {
+                  "offer-receipt": {
+                    "info": {
+                      "offers": [
+                        {
+                          "format": "jws",
+                          "acceptIndex": 0,
+                          "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3BWemMxeWZ6Z2hQcjdROXN3bzhBd0tQc2NwbVhVaEpDZ3ZZNmY0eDlmS1I2I3o2TWtwVnpjMXlmemdoUHI3UTlzd284QXdLUHNjcG1YVWhKQ2d2WTZmNHg5ZktSNiJ9.eyJhbW91bnQiOiIxMDAwIiwiYXNzZXQiOiIweDgzMzU4OWZDRDZlRGI2RTA4ZjRjN0MzMkQ0ZjcxYjU0YmRBMDI5MTMiLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMiLCJwYXlUbyI6IjB4MTIxOGZmMzZDNWQyZTNCNkE1NjVDZEIxQThCMUFjQ0ZjNjA2QWQwYSIsInJlc291cmNlVXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYvYWktbWFya2V0L3YyL2ludm9rZSIsInNjaGVtZSI6ImV4YWN0IiwidmFsaWRVbnRpbCI6MTc5MzQyMjU1OSwidmVyc2lvbiI6MX0.JEPl0IN5k3886_M-NRzWWqhi0AtQd_DXtsG4pGJeyKh6Ht30r-9408XQ15E6XA9yFoaatZfGEUC6On68oPfHBQ"
+                        }
+                      ]
+                    },
+                    "schema": {
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "type": "object",
+                      "properties": {
+                        "offers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "format": {
+                                "type": "string",
+                                "const": "jws"
+                              },
+                              "acceptIndex": {
+                                "type": "integer"
+                              },
+                              "signature": {
+                                "type": "string",
+                                "description": "JWS compact serialization containing the offer payload"
+                              }
+                            },
+                            "required": [
+                              "format",
+                              "signature"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "offers"
+                      ]
+                    }
+                  }
+                }
+              },
+              "aimarket": {
+                "error": "payment_required",
+                "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel",
+                "needed": 0.001,
+                "payment_ways": [
+                  {
+                    "rail": "seller_direct",
+                    "header": "X-Payment",
+                    "also": [
+                      "PAYMENT-SIGNATURE",
+                      "X-PAYMENT",
+                      "X-Payment-Nonce"
+                    ],
+                    "asset": "USDC",
+                    "note": "pay the listing payout_address on-chain; the hub never holds the money"
+                  },
+                  {
+                    "rail": "credits",
+                    "header": "X-API-Key",
+                    "signup": "https://modelmarket.dev/ai-market/v2/accounts",
+                    "open_signup": true,
+                    "topup": "https://modelmarket.dev/ai-market/v2/account/topup",
+                    "start": "https://modelmarket.dev/start"
+                  },
+                  {
+                    "rail": "channel",
+                    "header": "X-Payment-Channel",
+                    "open": "https://modelmarket.dev/ai-market/v2/channel/open"
+                  }
+                ],
+                "trial_exhausted": true
+              }
+            }
+          },
+          {
+            "messageId": "first-agent-call-paid-20261031-once",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_USER",
+            "parts": [
+              {
+                "text": "(follow-up)",
+                "mediaType": "text/plain",
+                "metadata": {
+                  "aimarket.redacted": "content and payment are not stored"
+                }
+              }
+            ],
+            "metadata": {
+              "x402.payment.status": "payment-submitted"
+            }
+          },
+          {
+            "messageId": "a2am_0020107a1106eb5c",
+            "contextId": "841ed91c-bbd0-46aa-ad6e-75d74a7349a0",
+            "taskId": "a2at_55f123548e7647c658d01a41",
+            "role": "ROLE_AGENT",
+            "parts": [
+              {
+                "text": "gaia.weather.read@v1 completed ($0.001)",
+                "mediaType": "text/plain"
+              }
+            ],
+            "metadata": {
+              "x402.payment.status": "payment-completed",
+              "x402.payment.receipts": [
+                {
+                  "success": true,
+                  "transaction": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70",
+                  "network": "eip155:8453"
+                }
+              ]
+            }
+          }
+        ],
+        "metadata": {
+          "aimarket": {
+            "capability": {
+              "product_id": "gaia.gateway",
+              "capability_id": "gaia.weather.read@v1",
+              "source_hub": "https://iot.modelmarket.dev"
+            },
+            "price_usd": 0.001,
+            "latency_ms": 23.51,
+            "routed_via": "https://modelmarket.dev"
+          }
+        }
+      }
+    }
+  }
+}

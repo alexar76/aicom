@@ -1,0 +1,21 @@
+Fetching malscan threat-intel definitions → /Users/alex/Library/Caches/vulnetix/malscan/definitions
+  ok   dshield-block                  ipv4=20     ipv6=0    domains=0       emails=0
+  ok   dshield-ipsascii               ipv4=100    ipv6=0    domains=0       emails=0
+  ok   crowdsec-intelligence          ipv4=4976   ipv6=23   domains=0       emails=0
+  ok   dandelionsprout-antimalware    ipv4=0      ipv6=0    domains=11773   emails=0
+  ok   feodotracker-recommended       ipv4=1      ipv6=0    domains=0       emails=0
+  ok   isc-intelfeed                  ipv4=51396  ipv6=0    domains=1       emails=0
+  ok   isc-cloudips                   ipv4=91     ipv6=0    domains=0       emails=0
+  ok   firehol-level3                 ipv4=9856   ipv6=0    domains=0       emails=0
+  ok   binarydefense-banlist          ipv4=820    ipv6=0    domains=0       emails=0
+  ok   aper-phishing-reply            ipv4=0      ipv6=0    domains=0       emails=53061
+  ok   projecthoneypot-p-rss          ipv4=50     ipv6=0    domains=1       emails=0
+  ok   projecthoneypot-rss            ipv4=50     ipv6=0    domains=1       emails=0
+  ok   cinsscore-badguys              ipv4=15000  ipv6=0    domains=0       emails=0
+  ok   alienvault-generic             ipv4=609    ipv6=0    domains=0       emails=0
+  ok   alienvault-data                ipv4=609    ipv6=0    domains=0       emails=0
+  ok   bruteforceblocker              ipv4=543    ipv6=0    domains=0       emails=0
+Definitions updated: ipv4=70768 ipv6=23 domains=11775 emails=53061 (4 files changed)
+16 feeds ok, 1 failed — future `vulnetix malscan` runs will use these definitions.
+Refreshing STIX feeds (vulnetix index + TweetFeed)…
+STIX feeds refreshed (0 warning(s)).

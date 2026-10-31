@@ -1,0 +1,40 @@
+{
+  "id": "a2at_3cb9974d4d27793a84152727",
+  "contextId": "first-agent-call-fixed-paid-20261031-2",
+  "status": {
+    "state": "TASK_STATE_COMPLETED",
+    "timestamp": "2026-10-31T04:48:32.371Z",
+    "message": {
+      "messageId": "a2am_95c396d5fef71fc4",
+      "contextId": "first-agent-call-fixed-paid-20261031-2",
+      "taskId": "a2at_3cb9974d4d27793a84152727",
+      "role": "ROLE_AGENT",
+      "parts": [
+        {
+          "text": "gaia.weather.read@v1 completed",
+          "mediaType": "text/plain"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "aimarket": {
+      "capability": {
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.weather.read@v1",
+        "source_hub": "https://iot.modelmarket.dev"
+      },
+      "price_usd": 0.0,
+      "latency_ms": 15.82,
+      "routed_via": "https://modelmarket.dev",
+      "sandbox": {
+        "sandbox": true,
+        "remaining": 2,
+        "used": 3,
+        "max_trials": 5
+      }
+    }
+  },
+  "receipt_verified": false,
+  "receipt_verify_reason": "no-receipt"
+}

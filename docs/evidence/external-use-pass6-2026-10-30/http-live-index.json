@@ -1,0 +1,38 @@
+[
+  {
+    "name": "aer-current",
+    "url": "https://agenteconomy.report/s/modelmarket.dev",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T12:10:02.288841+00:00",
+    "status": 200,
+    "final_url": "https://agenteconomy.report/s/modelmarket.dev",
+    "bytes": 15345,
+    "sha256": "7490450a0ff82ed89c76712fbc8097138088dfaa6f5d38a9c3a41224cdb90df0",
+    "content_type": "text/html; charset=utf-8",
+    "body_file": "aer-current.raw"
+  },
+  {
+    "name": "hub-peers-current",
+    "url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T12:10:02.290112+00:00",
+    "status": 200,
+    "final_url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+    "bytes": 18090,
+    "sha256": "ce94b9f9e76a647123d5e6f9c72e7634337b8cdafd45e9e740cbee61433243cc",
+    "content_type": "application/json",
+    "body_file": "hub-peers-current.json"
+  },
+  {
+    "name": "dev-list-current",
+    "url": "https://dev.to/api/articles?username=alexar76&per_page=100",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T12:10:02.290540+00:00",
+    "status": 200,
+    "final_url": "https://dev.to/api/articles?username=alexar76&per_page=100",
+    "bytes": 143854,
+    "sha256": "e0b2c2df3f66371ca9557d9505fdbf46d073827d16f2aaa6ca47676b0184e83f",
+    "content_type": "application/json; charset=utf-8",
+    "body_file": "dev-list-current.json"
+  }
+]

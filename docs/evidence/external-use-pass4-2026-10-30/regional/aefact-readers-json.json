@@ -1,0 +1,1549 @@
+{
+  "notice": {
+    "publisher": "Æfact(AEfact · 에팩트뉴스), 시지온",
+    "status": "시험 운영. 모든 기사는 원자료에서 자동 작성됐고 사람 데스크의 검토 전입니다.",
+    "verdicts": {
+      "supported": "사실",
+      "mostly_supported": "대체로 사실",
+      "contradicted": "사실과 다름",
+      "insufficient_evidence": "근거 부족",
+      "unverifiable": "검증 불가"
+    },
+    "methods": {
+      "primary_data": "문장의 숫자·날짜를 원자료 값과 직접 대조했습니다. 해석이나 전망은 판정 대상이 아닙니다.",
+      "web_evidence": "웹 근거로 판정했습니다. 근거 URL은 검색 결과에서 서버가 채웁니다."
+    },
+    "excluded_topics": [
+      "정치·선거",
+      "진행 중인 수사·재판",
+      "개인 의료 조언",
+      "연예 사생활"
+    ],
+    "citation": "인용할 때는 URL(canonical)과 확인 시각(checked_at), 상태라면 version_id를 함께 밝혀 주세요.",
+    "current_values": "지금 값이 필요하면 기사가 아니라 상태(/v1/facts)를 쓰세요. 기사는 값이 바뀐 시점의 기록입니다.",
+    "freshness": "freshness.stale 이 true 면 다음 확인 예정일이 지난 값입니다. 인용할 때 원자료 확인일(observed_at)을 함께 밝혀 주세요.",
+    "cite": "cite 는 답변에 그대로 붙일 수 있는 인용 한 줄입니다.",
+    "docs": "https://aefact.site/agents",
+    "mcp": "https://aefact.site/mcp",
+    "readers": "User-Agent 기준 1차 분류입니다. UA는 위조될 수 있습니다. 운영 주소(aefact.site) 요청만 셉니다. 원본 IP·UA는 저장하지 않습니다."
+  },
+  "page": "https://aefact.site/readers",
+  "live": true,
+  "stats": {
+    "live": true,
+    "days": [
+      "20261030",
+      "20261029",
+      "20261028",
+      "20261027",
+      "20261026",
+      "20261025",
+      "20261024"
+    ],
+    "today": {
+      "ai": 5027,
+      "human": 2116,
+      "http": 8,
+      "bots": 64,
+      "mcp": 6,
+      "mcpClients": 53
+    },
+    "week": {
+      "ai": 65890,
+      "human": 31042,
+      "mcp": 98
+    },
+    "bots": [
+      {
+        "bot": "Amazonbot",
+        "requests": 36578,
+        "hours": 157,
+        "perHour": 233,
+        "sections": {
+          "press": 340,
+          "api": 11520,
+          "law": 8280,
+          "now": 15326,
+          "change": 193,
+          "go": 837,
+          "economy": 1,
+          "check": 1,
+          "other": 37,
+          "q": 42,
+          "org": 1
+        },
+        "first": "20261020"
+      },
+      {
+        "bot": "PerplexityBot",
+        "requests": 16801,
+        "hours": 17,
+        "perHour": 988,
+        "sections": {
+          "check": 21,
+          "discovery": 17,
+          "home": 6,
+          "change": 299,
+          "api": 1841,
+          "go": 465,
+          "org": 54,
+          "economy": 27,
+          "now": 8841,
+          "press": 621,
+          "article": 5,
+          "q": 23,
+          "law": 4570,
+          "other": 10,
+          "ai_edition": 1
+        },
+        "first": "20261018"
+      },
+      {
+        "bot": "OAI-SearchBot",
+        "requests": 8087,
+        "hours": 67,
+        "perHour": 121,
+        "sections": {
+          "check": 489,
+          "home": 487,
+          "api": 245,
+          "law": 171,
+          "press": 1518,
+          "q": 481,
+          "other": 1384,
+          "org": 437,
+          "change": 677,
+          "economy": 464,
+          "discovery": 503,
+          "now": 695,
+          "go": 528,
+          "article": 8
+        },
+        "first": "20261017"
+      },
+      {
+        "bot": "signed-agent",
+        "requests": 1987,
+        "hours": 98,
+        "perHour": 20,
+        "sections": {
+          "change": 239,
+          "discovery": 66,
+          "home": 11,
+          "other": 95,
+          "press": 1442,
+          "check": 21,
+          "ai_edition": 2,
+          "law": 108,
+          "article": 1,
+          "org": 1,
+          "economy": 1
+        },
+        "first": "20261016"
+      },
+      {
+        "bot": "ClaudeBot",
+        "requests": 944,
+        "hours": 82,
+        "perHour": 12,
+        "sections": {
+          "discovery": 130,
+          "law": 26,
+          "check": 3,
+          "api": 382,
+          "article": 1,
+          "press": 343,
+          "change": 58,
+          "org": 1
+        },
+        "first": "20261016"
+      },
+      {
+        "bot": "Googlebot",
+        "requests": 740,
+        "hours": 118,
+        "perHour": 6,
+        "sections": {
+          "api": 67,
+          "discovery": 179,
+          "economy": 131,
+          "home": 6,
+          "press": 20,
+          "now": 1,
+          "law": 329,
+          "org": 5,
+          "check": 2
+        },
+        "first": "20261017"
+      },
+      {
+        "bot": "Meta-ExternalAgent",
+        "requests": 270,
+        "hours": 7,
+        "perHour": 39,
+        "sections": {
+          "ai_edition": 86,
+          "press": 3,
+          "api": 82,
+          "law": 99
+        },
+        "first": "20261023"
+      },
+      {
+        "bot": "ChatGPT-User",
+        "requests": 208,
+        "hours": 84,
+        "perHour": 2,
+        "sections": {
+          "press": 102,
+          "q": 2,
+          "now": 6,
+          "home": 59,
+          "change": 11,
+          "economy": 15,
+          "article": 2,
+          "org": 3,
+          "discovery": 4,
+          "law": 3,
+          "check": 1
+        },
+        "first": "20261019"
+      },
+      {
+        "bot": "GoogleOther",
+        "requests": 183,
+        "hours": 34,
+        "perHour": 5,
+        "sections": {
+          "economy": 72,
+          "law": 8,
+          "check": 3,
+          "other": 21,
+          "discovery": 10,
+          "org": 8,
+          "home": 9,
+          "press": 15,
+          "now": 12,
+          "q": 4,
+          "change": 10,
+          "api": 11
+        },
+        "first": "20261017"
+      },
+      {
+        "bot": "YandexBot",
+        "requests": 51,
+        "hours": 5,
+        "perHour": 10,
+        "sections": {
+          "discovery": 8,
+          "press": 36,
+          "law": 7
+        },
+        "first": "20261016"
+      },
+      {
+        "bot": "Bingbot",
+        "requests": 30,
+        "hours": 22,
+        "perHour": 1,
+        "sections": {
+          "discovery": 13,
+          "law": 17
+        },
+        "first": "20261025"
+      },
+      {
+        "bot": "GPTBot",
+        "requests": 8,
+        "hours": 8,
+        "perHour": 1,
+        "sections": {
+          "discovery": 8
+        },
+        "first": "20261017"
+      },
+      {
+        "bot": "Applebot",
+        "requests": 2,
+        "hours": 2,
+        "perHour": 1,
+        "sections": {
+          "discovery": 2
+        },
+        "first": "20261016"
+      },
+      {
+        "bot": "DuckDuckBot",
+        "requests": 1,
+        "hours": 1,
+        "perHour": 1,
+        "sections": {
+          "home": 1
+        },
+        "first": "20261021"
+      }
+    ],
+    "todayBots": [
+      {
+        "bot": "Amazonbot",
+        "requests": 2904,
+        "hours": 13,
+        "perHour": 223,
+        "sections": {
+          "press": 64,
+          "api": 45,
+          "law": 1,
+          "now": 2722,
+          "change": 4,
+          "go": 68
+        },
+        "first": "20261020"
+      },
+      {
+        "bot": "PerplexityBot",
+        "requests": 1229,
+        "hours": 3,
+        "perHour": 410,
+        "sections": {
+          "check": 2,
+          "discovery": 2,
+          "home": 1,
+          "change": 1,
+          "api": 106,
+          "go": 2,
+          "org": 5,
+          "economy": 2,
+          "now": 916,
+          "press": 94,
+          "article": 1,
+          "q": 2,
+          "law": 95
+        },
+        "first": "20261018"
+      },
+      {
+        "bot": "OAI-SearchBot",
+        "requests": 683,
+        "hours": 5,
+        "perHour": 137,
+        "sections": {
+          "check": 57,
+          "home": 55,
+          "api": 1,
+          "law": 2,
+          "press": 154,
+          "q": 47,
+          "other": 155,
+          "org": 48,
+          "change": 51,
+          "economy": 1,
+          "discovery": 57,
+          "now": 55
+        },
+        "first": "20261017"
+      },
+      {
+        "bot": "signed-agent",
+        "requests": 126,
+        "hours": 11,
+        "perHour": 11,
+        "sections": {
+          "change": 10,
+          "discovery": 4,
+          "home": 1,
+          "other": 2,
+          "press": 107,
+          "check": 2
+        },
+        "first": "20261016"
+      },
+      {
+        "bot": "Googlebot",
+        "requests": 30,
+        "hours": 9,
+        "perHour": 3,
+        "sections": {
+          "api": 3,
+          "discovery": 8,
+          "economy": 3,
+          "home": 2,
+          "press": 5,
+          "now": 1,
+          "law": 7,
+          "org": 1
+        },
+        "first": "20261017"
+      },
+      {
+        "bot": "ChatGPT-User",
+        "requests": 30,
+        "hours": 8,
+        "perHour": 4,
+        "sections": {
+          "press": 20,
+          "q": 1,
+          "now": 1,
+          "home": 8
+        },
+        "first": "20261019"
+      },
+      {
+        "bot": "YandexBot",
+        "requests": 17,
+        "hours": 2,
+        "perHour": 9,
+        "sections": {
+          "discovery": 4,
+          "press": 13
+        },
+        "first": "20261016"
+      },
+      {
+        "bot": "Bingbot",
+        "requests": 5,
+        "hours": 4,
+        "perHour": 1,
+        "sections": {
+          "discovery": 3,
+          "law": 2
+        },
+        "first": "20261025"
+      },
+      {
+        "bot": "ClaudeBot",
+        "requests": 1,
+        "hours": 1,
+        "perHour": 1,
+        "sections": {
+          "discovery": 1
+        },
+        "first": "20261016"
+      },
+      {
+        "bot": "GoogleOther",
+        "requests": 1,
+        "hours": 1,
+        "perHour": 1,
+        "sections": {
+          "economy": 1
+        },
+        "first": "20261017"
+      },
+      {
+        "bot": "GPTBot",
+        "requests": 1,
+        "hours": 1,
+        "perHour": 1,
+        "sections": {
+          "discovery": 1
+        },
+        "first": "20261017"
+      }
+    ],
+    "sections": {
+      "now": 24888,
+      "org": 510,
+      "law": 13618,
+      "q": 553,
+      "article": 17,
+      "api": 14148,
+      "change": 1489,
+      "check": 542,
+      "go": 1830,
+      "press": 4441,
+      "discovery": 977,
+      "home": 601,
+      "economy": 713,
+      "other": 1551,
+      "ai_edition": 89
+    },
+    "topPaths": [
+      {
+        "path": "/press",
+        "n": 528
+      },
+      {
+        "path": "/changes",
+        "n": 499
+      },
+      {
+        "path": "/check",
+        "n": 483
+      },
+      {
+        "path": "/q",
+        "n": 442
+      },
+      {
+        "path": "/c/economy",
+        "n": 332
+      },
+      {
+        "path": "/facts",
+        "n": 31
+      },
+      {
+        "path": "/press/156786419",
+        "n": 12
+      },
+      {
+        "path": "/press/156786451",
+        "n": 12
+      },
+      {
+        "path": "/press/156786578",
+        "n": 12
+      },
+      {
+        "path": "/press/156786546",
+        "n": 12
+      },
+      {
+        "path": "/press/156786445",
+        "n": 12
+      },
+      {
+        "path": "/press/156787067",
+        "n": 11
+      },
+      {
+        "path": "/press/156786475",
+        "n": 11
+      },
+      {
+        "path": "/press/156786465",
+        "n": 11
+      },
+      {
+        "path": "/press/156786463",
+        "n": 11
+      }
+    ],
+    "mcpTools": [
+      {
+        "tool": "list_categories",
+        "n": 20
+      },
+      {
+        "tool": "search_entities",
+        "n": 12
+      },
+      {
+        "tool": "search_articles",
+        "n": 10
+      },
+      {
+        "tool": "search_facts",
+        "n": 8
+      },
+      {
+        "tool": "what_changes",
+        "n": 7
+      },
+      {
+        "tool": "get_fact",
+        "n": 6
+      },
+      {
+        "tool": "get_request",
+        "n": 6
+      },
+      {
+        "tool": "lookup",
+        "n": 6
+      },
+      {
+        "tool": "get_article",
+        "n": 6
+      },
+      {
+        "tool": "get_change",
+        "n": 6
+      },
+      {
+        "tool": "get_entity",
+        "n": 6
+      },
+      {
+        "tool": "trending",
+        "n": 5
+      }
+    ],
+    "mcpClients": [
+      {
+        "client": "glama",
+        "n": 283
+      },
+      {
+        "client": "rokmcp-probe",
+        "n": 191
+      },
+      {
+        "client": "posthog-mcp-registry-probe",
+        "n": 176
+      },
+      {
+        "client": "agentrank-probe",
+        "n": 112
+      },
+      {
+        "client": "BrickBlueBot",
+        "n": 84
+      },
+      {
+        "client": "coda-agent-runtime",
+        "n": 79
+      },
+      {
+        "client": "talaria-catalog",
+        "n": 71
+      },
+      {
+        "client": "moonglade-shadows",
+        "n": 32
+      },
+      {
+        "client": "agent-collector",
+        "n": 32
+      },
+      {
+        "client": "glama-mcp-inspector",
+        "n": 32
+      },
+      {
+        "client": "every-mcp-probe",
+        "n": 30
+      },
+      {
+        "client": "protogrid-probe",
+        "n": 27
+      },
+      {
+        "client": "golemreach-trust",
+        "n": 26
+      },
+      {
+        "client": "factanker-probe",
+        "n": 26
+      },
+      {
+        "client": "histor",
+        "n": 23
+      },
+      {
+        "client": "mcpi-probe",
+        "n": 23
+      },
+      {
+        "client": "ps-mcp-tools-probe",
+        "n": 22
+      },
+      {
+        "client": "mcpindex-trust",
+        "n": 22
+      },
+      {
+        "client": "rmcp",
+        "n": 21
+      },
+      {
+        "client": "wellknown-prober (your listing: https://wellknown.network/ag",
+        "n": 21
+      },
+      {
+        "client": "mcptry-health-check",
+        "n": 18
+      },
+      {
+        "client": "proofbench-probe",
+        "n": 18
+      },
+      {
+        "client": "taifoon-harvester",
+        "n": 18
+      },
+      {
+        "client": "reliability-bureau-spike",
+        "n": 18
+      },
+      {
+        "client": "mcp.market-uptime",
+        "n": 17
+      },
+      {
+        "client": "mcp",
+        "n": 17
+      },
+      {
+        "client": "catalog-health",
+        "n": 16
+      },
+      {
+        "client": "ToolVetProbe",
+        "n": 13
+      },
+      {
+        "client": "verifymcp-probe",
+        "n": 13
+      },
+      {
+        "client": "heldfast",
+        "n": 13
+      },
+      {
+        "client": "atpp-scan",
+        "n": 11
+      },
+      {
+        "client": "mcpwatch",
+        "n": 11
+      },
+      {
+        "client": "SealKeeper",
+        "n": 10
+      },
+      {
+        "client": "LEGION-tlog",
+        "n": 10
+      },
+      {
+        "client": "annalist-checks",
+        "n": 8
+      },
+      {
+        "client": "aptlynx-catalog-probe",
+        "n": 8
+      },
+      {
+        "client": "FaceabotProbe",
+        "n": 8
+      },
+      {
+        "client": "mcp2-research",
+        "n": 7
+      },
+      {
+        "client": "agentprobe",
+        "n": 7
+      },
+      {
+        "client": "agent-tools.cloud",
+        "n": 7
+      },
+      {
+        "client": "AgentToolIndex",
+        "n": 7
+      },
+      {
+        "client": "alphaproxy-probe",
+        "n": 7
+      },
+      {
+        "client": "mcpstation-check",
+        "n": 7
+      },
+      {
+        "client": "mcp-observatory",
+        "n": 7
+      },
+      {
+        "client": "InvokeRankBot",
+        "n": 7
+      },
+      {
+        "client": "agent-index-prober",
+        "n": 7
+      },
+      {
+        "client": "7maps-bot",
+        "n": 7
+      },
+      {
+        "client": "mcpcost",
+        "n": 7
+      },
+      {
+        "client": "mcp-rugpull-research",
+        "n": 7
+      },
+      {
+        "client": "mcpscore",
+        "n": 7
+      },
+      {
+        "client": "hultra-link",
+        "n": 6
+      },
+      {
+        "client": "mcphub-snapshot",
+        "n": 6
+      },
+      {
+        "client": "addrbook-probe",
+        "n": 6
+      },
+      {
+        "client": "mcpcensusbot",
+        "n": 6
+      },
+      {
+        "client": "agora-probe",
+        "n": 6
+      },
+      {
+        "client": "proofhouse",
+        "n": 6
+      },
+      {
+        "client": "mcpwell.com",
+        "n": 6
+      },
+      {
+        "client": "botsrated-mcp-probe",
+        "n": 6
+      },
+      {
+        "client": "otter",
+        "n": 6
+      },
+      {
+        "client": "magazin-ai-sonda",
+        "n": 6
+      },
+      {
+        "client": "twr-registry-check",
+        "n": 6
+      },
+      {
+        "client": "agent-world-probe",
+        "n": 6
+      },
+      {
+        "client": "blackall-allmcp-census",
+        "n": 6
+      },
+      {
+        "client": "referencesource-mcp-health",
+        "n": 5
+      },
+      {
+        "client": "creora-verified-execution",
+        "n": 5
+      },
+      {
+        "client": "canmyaiuse-healthcheck",
+        "n": 5
+      },
+      {
+        "client": "stackduke-mcp-scanner",
+        "n": 5
+      },
+      {
+        "client": "sniffmcp-crawler",
+        "n": 5
+      },
+      {
+        "client": "teppi-probe",
+        "n": 5
+      },
+      {
+        "client": "didit-catalog-icons",
+        "n": 4
+      },
+      {
+        "client": "sarnai-sales",
+        "n": 4
+      },
+      {
+        "client": "mcp-inventory",
+        "n": 4
+      },
+      {
+        "client": "centinela",
+        "n": 4
+      },
+      {
+        "client": "mcplayer",
+        "n": 4
+      },
+      {
+        "client": "dss-mcp-survey",
+        "n": 4
+      },
+      {
+        "client": "twr-health",
+        "n": 4
+      },
+      {
+        "client": "lowdown-scanner",
+        "n": 3
+      },
+      {
+        "client": "ibl.ai",
+        "n": 3
+      },
+      {
+        "client": "ElectraIndexBot",
+        "n": 3
+      },
+      {
+        "client": "glide-mcp-index",
+        "n": 3
+      },
+      {
+        "client": "AgentIndexProbe",
+        "n": 3
+      },
+      {
+        "client": "pluginboard-scanner",
+        "n": 3
+      },
+      {
+        "client": "INITE Atlas",
+        "n": 3
+      },
+      {
+        "client": "lastseen-schema-probe",
+        "n": 3
+      },
+      {
+        "client": "McpClient",
+        "n": 3
+      },
+      {
+        "client": "ai-pulse-probe",
+        "n": 3
+      },
+      {
+        "client": "AriesView MCP Check",
+        "n": 2
+      },
+      {
+        "client": "ventru-health",
+        "n": 2
+      },
+      {
+        "client": "didit-wallet-catalogue",
+        "n": 2
+      },
+      {
+        "client": "creora-registry-verifier",
+        "n": 2
+      },
+      {
+        "client": "didit-wallet",
+        "n": 2
+      },
+      {
+        "client": "m360m-agent",
+        "n": 2
+      },
+      {
+        "client": "mcp-scraper",
+        "n": 2
+      },
+      {
+        "client": "tanod-mcp-check",
+        "n": 2
+      },
+      {
+        "client": "registry-probe",
+        "n": 2
+      },
+      {
+        "client": "mcp-checker",
+        "n": 2
+      },
+      {
+        "client": "mcp.market-scanner",
+        "n": 2
+      },
+      {
+        "client": "EndpointAudit",
+        "n": 2
+      },
+      {
+        "client": "warden-survey",
+        "n": 2
+      },
+      {
+        "client": "catalog-inspect",
+        "n": 2
+      },
+      {
+        "client": "mcpforcopilot-probe",
+        "n": 2
+      },
+      {
+        "client": "scry-research",
+        "n": 1
+      },
+      {
+        "client": "OpenTask-Directory",
+        "n": 1
+      },
+      {
+        "client": "mcp-check-scanner",
+        "n": 1
+      },
+      {
+        "client": "toolscaled-registry-probe",
+        "n": 1
+      },
+      {
+        "client": "telosnex-registry-check",
+        "n": 1
+      },
+      {
+        "client": "anlyon.dev-indexer",
+        "n": 1
+      },
+      {
+        "client": "mcprush-probe",
+        "n": 1
+      },
+      {
+        "client": "teahub-oracle",
+        "n": 1
+      },
+      {
+        "client": "whoelse-probe",
+        "n": 1
+      },
+      {
+        "client": "agenttested-mcp-check",
+        "n": 1
+      },
+      {
+        "client": "agent-almanac-snapshot",
+        "n": 1
+      },
+      {
+        "client": "securemyagent-registry",
+        "n": 1
+      },
+      {
+        "client": "mcp-discovery-measurement",
+        "n": 1
+      },
+      {
+        "client": "mcprush",
+        "n": 1
+      },
+      {
+        "client": "codexguild-catalog-review",
+        "n": 1
+      },
+      {
+        "client": "cupel-crawler",
+        "n": 1
+      },
+      {
+        "client": "leash-index",
+        "n": 1
+      },
+      {
+        "client": "mcphub-probe",
+        "n": 1
+      },
+      {
+        "client": "mcp-harbor-probe",
+        "n": 1
+      },
+      {
+        "client": "scout",
+        "n": 1
+      },
+      {
+        "client": "mcp-history",
+        "n": 1
+      },
+      {
+        "client": "safemcp",
+        "n": 1
+      },
+      {
+        "client": "Talandor Probe",
+        "n": 1
+      },
+      {
+        "client": "academic-research-mcp-auth-metadata-survey",
+        "n": 1
+      },
+      {
+        "client": "catalog-ingest-probe",
+        "n": 1
+      },
+      {
+        "client": "eda-claw-runtime-probe",
+        "n": 1
+      },
+      {
+        "client": "mcp-registry-census",
+        "n": 1
+      },
+      {
+        "client": "agentalog-sonda",
+        "n": 1
+      },
+      {
+        "client": "norn-catalogue-probe",
+        "n": 1
+      },
+      {
+        "client": "agent-readiness-check",
+        "n": 1
+      },
+      {
+        "client": "flame-brancher",
+        "n": 1
+      },
+      {
+        "client": "forge-registry-probe",
+        "n": 1
+      },
+      {
+        "client": "mcp-client",
+        "n": 1
+      },
+      {
+        "client": "mcp-indexer",
+        "n": 1
+      },
+      {
+        "client": "Pawnly-Registry-Probe",
+        "n": 1
+      },
+      {
+        "client": "capability-index-ingest",
+        "n": 1
+      },
+      {
+        "client": "unknown",
+        "n": 1
+      },
+      {
+        "client": "squatch-mcp-scanner",
+        "n": 1
+      },
+      {
+        "client": "GAIP-Observatory",
+        "n": 1
+      },
+      {
+        "client": "shortformkit-mcpscan",
+        "n": 1
+      },
+      {
+        "client": "pod-directory-probe",
+        "n": 1
+      },
+      {
+        "client": "lastseen-migration-watch",
+        "n": 1
+      },
+      {
+        "client": "agent-market-liveness",
+        "n": 1
+      },
+      {
+        "client": "span-pipeline",
+        "n": 1
+      },
+      {
+        "client": "rootz-mcp-registry-prober",
+        "n": 1
+      },
+      {
+        "client": "see-registry-introspector",
+        "n": 1
+      },
+      {
+        "client": "ziwei-ore",
+        "n": 1
+      },
+      {
+        "client": "agentservicedirectory.com",
+        "n": 1
+      },
+      {
+        "client": "agent-market-scanner",
+        "n": 1
+      },
+      {
+        "client": "mcpbeat",
+        "n": 1
+      },
+      {
+        "client": "mcpyp-probe",
+        "n": 1
+      },
+      {
+        "client": "assay-probe",
+        "n": 1
+      },
+      {
+        "client": "trimtab-verifier",
+        "n": 1
+      },
+      {
+        "client": "Syntic AI connector check",
+        "n": 1
+      },
+      {
+        "client": "csoai-census-probe",
+        "n": 1
+      },
+      {
+        "client": "ox-pkg-scanner-probe",
+        "n": 1
+      },
+      {
+        "client": "mcpatlas-verifier",
+        "n": 1
+      },
+      {
+        "client": "havlo-research",
+        "n": 1
+      },
+      {
+        "client": "more-ai-probe",
+        "n": 1
+      },
+      {
+        "client": "aiagentboard-hub",
+        "n": 1
+      },
+      {
+        "client": "chathome-skills-probe",
+        "n": 1
+      },
+      {
+        "client": "cortex37",
+        "n": 1
+      },
+      {
+        "client": "probe",
+        "n": 1
+      },
+      {
+        "client": "attestari-watch",
+        "n": 1
+      },
+      {
+        "client": "Pingroll",
+        "n": 1
+      },
+      {
+        "client": "central-pro-mcp-probe",
+        "n": 1
+      },
+      {
+        "client": "sourceweft-tool-listing",
+        "n": 1
+      },
+      {
+        "client": "mcp-watch",
+        "n": 1
+      },
+      {
+        "client": "rpg-connect-check",
+        "n": 1
+      },
+      {
+        "client": "sourceweft-auth-probe",
+        "n": 1
+      },
+      {
+        "client": "mcp-status",
+        "n": 1
+      }
+    ],
+    "firstSeen": {
+      "mcp:aiagentboard-hub": "20261021",
+      "mcp:mcp-observatory": "20261021",
+      "mcp:reliability-bureau-spike": "20261021",
+      "mcp:Hivebot-catalog-probe": "20261023",
+      "mcp:ai-pulse-probe": "20261021",
+      "mcp:histor": "20261021",
+      "mcp:agent-tools.cloud": "20261021",
+      "mcp:scry-research": "20261030",
+      "PerplexityBot": "20261018",
+      "mcp:Talandor Probe": "20261021",
+      "mcp:rmcp": "20261021",
+      "mcp:agent-collector": "20261021",
+      "mcp:sourceweft-auth-probe": "20261024",
+      "mcp:norn-catalogue-probe": "20261027",
+      "GPTBot": "20261017",
+      "mcp:EndpointAudit": "20261022",
+      "mcp:csoai-census-probe": "20261025",
+      "mcp:mcp-discovery-measurement": "20261029",
+      "mcp:telosnex-registry-check": "20261030",
+      "mcp:Pingroll": "20261024",
+      "mcp:agentalog-sonda": "20261021",
+      "mcp:mcplayer": "20261024",
+      "mcp:ox-pkg-scanner-probe": "20261021",
+      "mcp:academic-research-mcp-auth-metadata-survey": "20261028",
+      "mcp:centinela": "20261026",
+      "mcp:lastseen-migration-watch": "20261025",
+      "mcp:mcp-watch": "20261023",
+      "mcp:musedirectory.ai-scout": "20261021",
+      "mcp:referencesource-mcp-health": "20261021",
+      "mcp:talaria-catalog": "20261022",
+      "mcp:ToolVetProbe": "20261021",
+      "mcp:mcp.market-scanner": "20261027",
+      "mcp:agora-probe": "20261021",
+      "mcp:cortex37": "20261024",
+      "mcp:hultra-link": "20261021",
+      "mcp:mcp-stats-prober": "20261021",
+      "Bytespider": "20261017",
+      "mcp:warden-survey": "20261026",
+      "mcp:lastseen-schema-probe": "20261021",
+      "mcp:mcpstation-check": "20261021",
+      "mcp:mcpqueen-grader": "20261021",
+      "mcp:ventru-health": "20261029",
+      "mcp:og-rag-connected-mcp": "20261021",
+      "ChatGPT-User": "20261019",
+      "mcp:codexguild-catalog-review": "20261021",
+      "mcp:golemreach-trust": "20261021",
+      "mcp:mcpcost": "20261021",
+      "mcp:pluginboard-scanner": "20261021",
+      "mcp:mcp-check-scanner": "20261030",
+      "mcp:SealKeeper": "20261027",
+      "mcp:mcp-checker": "20261023",
+      "mcp:mcp-harbor-probe": "20261021",
+      "mcp:BaselionVerification": "20261021",
+      "mcp:ElectraIndexBot": "20261021",
+      "mcp:HANS": "20261023",
+      "mcp:catalog-inspect": "20261025",
+      "mcp:driftwatch-probe": "20261022",
+      "mcp:glide-mcp-index": "20261021",
+      "mcp:tanod-mcp-check": "20261021",
+      "mcp:twr-health": "20261024",
+      "mcp:flame-brancher": "20261027",
+      "mcp:mcpwell.com": "20261021",
+      "mcp:mcpbeat": "20261021",
+      "mcp:AriesView MCP Check": "20261029",
+      "mcp:teahub-oracle": "20261029",
+      "mcp:mcprush-probe": "20261029",
+      "mcp:FaceabotProbe": "20261021",
+      "mcp:factanker-probe": "20261021",
+      "mcp:mcp-status": "20261024",
+      "mcp:mcpindex-trust": "20261021",
+      "mcp:mcptry-health-check": "20261023",
+      "mcp:otter": "20261024",
+      "mcp:proofbench-probe": "20261021",
+      "mcp:teammates": "20261023",
+      "mcp:mcp.market-uptime": "20261024",
+      "mcp:mcpcensusbot": "20261021",
+      "mcp:probe": "20261024",
+      "mcp:rokha-probe": "20261021",
+      "mcp:teppi-probe": "20261021",
+      "mcp:securemyagent-registry": "20261029",
+      "mcp:LEGION-tlog": "20261021",
+      "ClaudeBot": "20261016",
+      "mcp:aefact-smoke": "20261022",
+      "mcp:mcp-runtime-engine": "20261023",
+      "mcp:capability-index-ingest": "20261026",
+      "mcp:mcpforcopilot-probe": "20261021",
+      "mcp:mcphub-probe": "20261021",
+      "mcp:mcp-inventory": "20261021",
+      "mcp:mcp-scraper": "20261024",
+      "mcp:sarnai-sales": "20261021",
+      "mcp:catalog-ingest-probe": "20261028",
+      "mcp:every-mcp-probe": "20261021",
+      "mcp:more-ai-probe": "20261024",
+      "mcp:annalist-checks": "20261021",
+      "mcp:moonglade-shadows": "20261024",
+      "mcp:agent-market-scanner": "20261025",
+      "mcp:mcplookup.com-probe": "20261021",
+      "mcp:didit-wallet-catalogue": "20261029",
+      "mcp:mcpmeter": "20261021",
+      "mcp:rpg-connect-check": "20261024",
+      "mcp:GAIP-Observatory": "20261026",
+      "mcp:INITE Atlas": "20261021",
+      "mcp:catalog-health": "20261021",
+      "mcp:exorails-gateway": "20261021",
+      "GoogleOther": "20261017",
+      "mcp:anlyon.dev-indexer": "20261022",
+      "mcp:cupel-crawler": "20261028",
+      "mcp:mcp2-research": "20261021",
+      "mcp:AgentToolIndex": "20261021",
+      "mcp:alphaproxy-probe": "20261021",
+      "mcp:odel-probe": "20261021",
+      "mcp:leash-index": "20261022",
+      "mcp:OpenTask-Directory": "20261030",
+      "mcp:havlo-research": "20261024",
+      "mcp:attestari-watch": "20261024",
+      "mcp:eda-claw-runtime-probe": "20261021",
+      "mcp:mcpi-probe": "20261021",
+      "mcp:registry-probe": "20261027",
+      "mcp:span-pipeline": "20261025",
+      "mcp:spiron": "20261021",
+      "Bingbot": "20261025",
+      "mcp:aptlynx-catalog-probe": "20261022",
+      "mcp:coda-agent-runtime": "20261024",
+      "mcp:mcp-history": "20261028",
+      "mcp:InvokeRankBot": "20261021",
+      "mcp:mcp-browser": "20261021",
+      "mcp:mcplayer-gateway": "20261023",
+      "mcp:ps-mcp-tools-probe": "20261021",
+      "mcp:tool-index": "20261023",
+      "mcp:verifymcp-probe": "20261021",
+      "mcp:ibl.ai": "20261029",
+      "mcp:McpClient": "20261024",
+      "mcp:agentservicedirectory.com": "20261022",
+      "mcp:builtwith-mcp-registry-scrape": "20261021",
+      "mcp:hilda-probe": "20261021",
+      "mcp:mcp-registry-census": "20261027",
+      "mcp:toolscaled-registry-probe": "20261030",
+      "mcp:mcp-rugpull-research": "20261021",
+      "mcp:callbus-hub-worker": "20261021",
+      "mcp:glama-mcp-inspector": "20261028",
+      "mcp:smallprint-probe": "20261021",
+      "mcp:sourceweft-tool-listing": "20261024",
+      "signed-agent": "20261016",
+      "mcp:scout": "20261028",
+      "mcp:didit-wallet": "20261029",
+      "mcp:agent-readiness-check": "20261027",
+      "mcp:readme-gen": "20261021",
+      "mcp:sniffmcp-crawler": "20261021",
+      "OAI-SearchBot": "20261017",
+      "mcp:magazin-ai-sonda": "20261028",
+      "Meta-ExternalAgent": "20261023",
+      "mcp:atpp-scan": "20261021",
+      "mcp:heldfast": "20261026",
+      "mcp:mcp-catalog": "20261021",
+      "mcp:unknown": "20261023",
+      "mcp:BrickBlueBot": "20261021",
+      "mcp:mcprush": "20261028",
+      "mcp:forge-registry-probe": "20261026",
+      "mcp:mcp-runtime-engine-auth-probe": "20261023",
+      "mcp:m8ven-verifier": "20261021",
+      "mcp:squatch-mcp-scanner": "20261021",
+      "mcp:twr-registry-check": "20261024",
+      "mcp:mcphub-snapshot": "20261021",
+      "Amazonbot": "20261020",
+      "mcp:mcp-indexer": "20261021",
+      "mcp:taifoon-harvester": "20261021",
+      "mcp:lowdown-scanner": "20261028",
+      "Applebot": "20261016",
+      "DuckDuckBot": "20261021",
+      "mcp:Pawnly-Registry-Probe": "20261026",
+      "mcp:creora-registry-verifier": "20261021",
+      "mcp:creora-verified-execution": "20261027",
+      "mcp:central-pro-mcp-probe": "20261024",
+      "mcp:posthog-mcp-registry-probe": "20261022",
+      "mcp:proofhouse": "20261021",
+      "mcp:rootz-mcp-registry-prober": "20261021",
+      "mcp:ziwei-ore": "20261025",
+      "mcp:agentage-mcp-catalog": "20261021",
+      "mcp:agentid-scout": "20261021",
+      "mcp:mosaiden-souq-directory": "20261021",
+      "mcp:trimtab-verifier": "20261025",
+      "mcp:whoelse-probe": "20261029",
+      "mcp:MCP-Marketplace-Scanner": "20261021",
+      "mcp:botsrated-mcp-probe": "20261024",
+      "mcp:fastdrop-verify": "20261021",
+      "mcp:pod-directory-probe": "20261025",
+      "mcp:see-registry-introspector": "20261025",
+      "mcp:shortformkit-mcpscan": "20261026",
+      "mcp:m360m-agent": "20261029",
+      "mcp:agent-market-liveness": "20261025",
+      "mcp:didit-catalog-icons": "20261029",
+      "Googlebot": "20261017",
+      "mcp:safemcp": "20261028",
+      "mcp:AgentIndexProbe": "20261029",
+      "mcp:agent-world-probe": "20261024",
+      "mcp:blackall-allmcp-census": "20261027",
+      "mcp:dss-mcp-survey": "20261026",
+      "mcp:rokmcp-probe": "20261021",
+      "mcp:x402-observatory": "20261022",
+      "mcp:agentprobe": "20261021",
+      "mcp:assay-probe": "20261025",
+      "mcp:glama": "20261021",
+      "mcp:mcpatlas-verifier": "20261024",
+      "mcp:ziwei-seat": "20261021",
+      "mcp:agent-index-prober": "20261021",
+      "mcp:mcp-client": "20261026",
+      "mcp:mcpwatch": "20261021",
+      "mcp:stackduke-mcp-scanner": "20261023",
+      "mcp:agenttested-mcp-check": "20261029",
+      "mcp:7maps-bot": "20261022",
+      "mcp:Syntic AI connector check": "20261025",
+      "mcp:canopii-scanner": "20261021",
+      "mcp:chathome-skills-probe": "20261024",
+      "mcp:mcp": "20261021",
+      "mcp:mcpscore": "20261024",
+      "mcp:agent-almanac-snapshot": "20261029",
+      "mcp:addrbook-probe": "20261027",
+      "mcp:agentrank-probe": "20261021",
+      "mcp:canmyaiuse-healthcheck": "20261025",
+      "mcp:mcpyp-probe": "20261022",
+      "mcp:wellknown-prober (your listing: https://wellknown.network/ag": "20261021",
+      "YandexBot": "20261016",
+      "mcp:Wolforia": "20261021",
+      "mcp:mcpmon": "20261022",
+      "mcp:protogrid-probe": "20261021"
+    }
+  },
+  "baseline": {
+    "note": "수집기(Redis) 가동 전, Vercel 런타임 로그(요금제상 1일 보관)를 직접 세어 남긴 기준치. 같은 요청이 여러 검색어에 걸릴 수 있어 섹션 수치는 대략치다.",
+    "measured_at": "2026-10-16T15:37:00+09:00",
+    "window": "2026-10-15 16:37 ~ 2026-10-16 15:37 KST (23시간)",
+    "total_reader_lines": 32126,
+    "bots": [
+      {
+        "bot": "ClaudeBot",
+        "cls": "training",
+        "requests": 32026
+      },
+      {
+        "bot": "OAI-SearchBot",
+        "cls": "search",
+        "requests": 1
+      }
+    ],
+    "user_fetch": 0,
+    "mcp_external_clients": 0,
+    "sections_approx": [
+      {
+        "sec": "law",
+        "label": "법령(현행 버전·대상 페이지)",
+        "matches": 26021
+      },
+      {
+        "sec": "api",
+        "label": "같은 내용의 JSON(/v1)",
+        "matches": 11023
+      },
+      {
+        "sec": "ai_edition",
+        "label": "AI 판(/ai)",
+        "matches": 6164
+      },
+      {
+        "sec": "press",
+        "label": "보도자료",
+        "matches": 292
+      },
+      {
+        "sec": "economy",
+        "label": "경제지표",
+        "matches": 114
+      },
+      {
+        "sec": "check",
+        "label": "팩트체크",
+        "matches": 27
+      }
+    ],
+    "findings": [
+      "AI 독자의 99.7%가 Anthropic 학습 크롤러 ClaudeBot. 사이트맵을 받아 법령 5천여 건을 하나씩 읽는다(2~3초 간격, 하루 내내).",
+      "같은 법령을 사람 판(/facts, /e)·AI 판(/ai)·JSON(/v1)으로 세 번 가져간다 → 크롤 예산의 절반 가까이가 중복.",
+      "팩트체크·보도자료는 거의 안 읽힌다. 수가 적고(5건·58건), 사이트맵 뒤쪽에 있다.",
+      "사용자 질문형(ChatGPT-User·Claude-User 등) 방문과 외부 MCP 연결은 아직 0. 검색형은 OAI-SearchBot이 robots.txt만 확인."
+    ]
+  }
+}

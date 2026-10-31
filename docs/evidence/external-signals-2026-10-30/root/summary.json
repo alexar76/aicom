@@ -1,0 +1,78 @@
+{
+  "date_msk": "2026-10-30",
+  "scope": "Public external signals for alexar76 ecosystem; delta against 2026-10-28; GET-only",
+  "web_queries": 36,
+  "findings": [
+    {
+      "key": "aer",
+      "url": "https://agenteconomy.report/s/modelmarket.dev.json",
+      "classification": "independent_observer",
+      "source_as_of": "2026-10-29",
+      "tier": "CC",
+      "organic_paying_agents": 3,
+      "paying_wallets_raw": 11,
+      "settled_usd_14d": 0.08,
+      "uptime": 0.571,
+      "notes": "Compare with Oct28: 3 organic/12 raw/$0.39/0.5. Rolling windows; wallets are not identified customers; below BBB."
+    },
+    {
+      "key": "x402",
+      "url": "https://x402-list.com/api/v1/services/aimarket/volume",
+      "classification": "external_settlement_measurement",
+      "dates": [
+        {
+          "date": "2026-10-29",
+          "tx_count": 5,
+          "unique_buyers": 5,
+          "volume_usd": 0.01
+        },
+        {
+          "date": "2026-10-30",
+          "tx_count": 4,
+          "unique_buyers": 4,
+          "volume_usd": 0
+        }
+      ],
+      "notes": "Partial current UTC day; rounded amounts; operator payout-address level; measured facilitators only. Data: x402-list.com CC BY 4.0."
+    },
+    {
+      "key": "a2a",
+      "url": "https://a2aregistry.org/api/agents/841eea85-51d4-450c-b35a-086534dc08f6",
+      "classification": "external_technical_probe",
+      "healthy": true,
+      "task_conformance_checked_at_utc": "2026-10-30T02:24:04.481148Z",
+      "notes": "Automated technical observation, not purchase or endorsement."
+    },
+    {
+      "key": "agenstry",
+      "url": "https://agenstry.com/agents/modelmarket.dev",
+      "classification": "external_technical_probe",
+      "grade": "B",
+      "score": 78,
+      "probes": 67,
+      "uptime_percent": 100,
+      "invocations_7d": 0,
+      "notes": "Grade unchanged against Oct24; search snippet was stale60/C. No calls/lookups/impressions in displayed 7d."
+    },
+    {
+      "key": "science",
+      "url": "https://api.openalex.org/works/https://doi.org/10.5281/zenodo.23512760",
+      "classification": "scientific_index",
+      "cited_by_count": 0,
+      "datacite_citation_counts": [
+        0,
+        0
+      ],
+      "hf_downloads": 113,
+      "hf_likes": 0,
+      "hf_human_discussions": 0,
+      "notes": "HF downloads increased111→113, not evidence of2 users. Known RugSnare usage exists outside scholarly citation count."
+    }
+  ],
+  "limitations": [
+    "Not all internet or private/social content covered",
+    "AER methodology/changelog fetched on Oct30 includes a future-dated2026-11-02 entry; not used as an already-effective change",
+    "Failed guessed Agenstry /docs/conformance404 was replaced by observed /methodology200",
+    "No paid API, invokes, messages or publications"
+  ]
+}

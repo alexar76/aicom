@@ -1,0 +1,917 @@
+[
+  {
+    "at_utc": "2026-10-31T05:47:49.696921+00:00",
+    "method": "GET",
+    "url": "https://modelmarket.dev/.well-known/agent-card.json",
+    "request_body": null,
+    "status_code": 200,
+    "response_body": {
+      "name": "modelmarket.dev",
+      "description": "Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt.",
+      "supportedInterfaces": [
+        {
+          "url": "https://modelmarket.dev/a2a",
+          "protocolBinding": "JSONRPC",
+          "protocolVersion": "1.0"
+        }
+      ],
+      "provider": {
+        "organization": "modelmarket.dev",
+        "url": "https://modelmarket.dev"
+      },
+      "version": "3.16.0",
+      "documentationUrl": "https://modelmarket.dev/developers",
+      "capabilities": {
+        "streaming": false,
+        "pushNotifications": true,
+        "extendedAgentCard": false,
+        "extensions": [
+          {
+            "uri": "https://github.com/google-agentic-commerce/a2a-x402/blob/main/spec/v0.2",
+            "description": "x402 payments on marketplace-invoke (standalone flow). Profile deviation: this hub verifies the transfer on chain and never settles, so x402.payment.payload must carry the settle txHash of a USDC transfer to the payTo it quoted.",
+            "required": false
+          }
+        ]
+      },
+      "defaultInputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "defaultOutputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "skills": [
+        {
+          "id": "marketplace-search",
+          "name": "Search the AI capability market",
+          "description": "Find executable offers by natural-language intent and optional budget, latency, trust, hub and category filters.",
+          "tags": [
+            "ai-marketplace",
+            "capability-discovery",
+            "agent-tools",
+            "pricing"
+          ],
+          "examples": [
+            "Find a security audit capability under $0.10",
+            "Найди проверяемый сервис памяти для AI-агента"
+          ],
+          "inputModes": [
+            "text/plain",
+            "application/json"
+          ],
+          "outputModes": [
+            "text/plain",
+            "application/json"
+          ]
+        },
+        {
+          "id": "marketplace-invoke",
+          "name": "Buy and run a market capability",
+          "description": "Run one offer found by marketplace-search and return its result with a signed receipt, as a Task. Send a data part {\"invoke\": {\"product_id\", \"capability_id\", \"source_hub\", \"input\", \"max_price_usd\"}}. Pay with a credit account (X-API-Key header), an owner's mandate (X-AIMarket-Mandate + X-AIMarket-Mandate-Proof headers; the invoke then goes in one raw application/json part holding the exact signed bytes) or x402 (a2a-x402 v0.2; the payload must include the settle txHash). The first few priced calls per caller are a free trial. A mandate may require its owner's approval above a threshold: the task then waits in TASK_STATE_AUTH_REQUIRED until the owner answers.",
+          "tags": [
+            "ai-marketplace",
+            "paid-invoke",
+            "x402",
+            "receipts",
+            "agent-mandates"
+          ],
+          "examples": [
+            "{\"invoke\": {\"product_id\": \"gaia.gateway\", \"capability_id\": \"gaia.weather.read@v1\", \"source_hub\": \"local\", \"input\": {\"device_id\": \"om-wx-01\"}, \"max_price_usd\": 0.01}}"
+          ],
+          "inputModes": [
+            "application/json"
+          ],
+          "outputModes": [
+            "application/json",
+            "text/plain"
+          ]
+        }
+      ],
+      "securitySchemes": {
+        "aimarketApiKey": {
+          "apiKeySecurityScheme": {
+            "location": "header",
+            "name": "X-API-Key",
+            "description": "A credit account on this hub. Optional: the free trial and x402 need none."
+          }
+        },
+        "aimarketMandate": {
+          "apiKeySecurityScheme": {
+            "location": "header",
+            "name": "X-AIMarket-Mandate",
+            "description": "An owner's signed mandate (aimarket-protocol/mandates.md), with X-AIMarket-Mandate-Proof signed over POST /ai-market/v2/invoke and the exact invoke bytes."
+          }
+        }
+      }
+    }
+  },
+  {
+    "at_utc": "2026-10-31T05:47:50.060817+00:00",
+    "method": "POST",
+    "url": "https://modelmarket.dev/a2a",
+    "request_body": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "SendMessage",
+      "params": {
+        "message": {
+          "messageId": "db177d7c-810a-42a4-b979-c3001706220c",
+          "role": "ROLE_USER",
+          "parts": [
+            {
+              "data": {
+                "intent": "gaia weather open-meteo",
+                "limit": 10,
+                "budget": 0.01
+              },
+              "mediaType": "application/json"
+            }
+          ]
+        }
+      }
+    },
+    "status_code": 200,
+    "response_body": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "message": {
+          "messageId": "9fa32f5d-1ae3-462b-98f5-f9bd280e9d22",
+          "contextId": "a6e4d717-bbfe-477b-95b1-275660dda22e",
+          "role": "ROLE_AGENT",
+          "parts": [
+            {
+              "text": "Found 10 executable market offers for: gaia weather open-meteo",
+              "mediaType": "text/plain"
+            },
+            {
+              "data": {
+                "query": "gaia weather open-meteo",
+                "category": null,
+                "matches": [
+                  {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.weather.read@v1",
+                    "source_hub": "https://iot.modelmarket.dev",
+                    "source_hub_name": "GAIA — physical-world oracle gateway",
+                    "name": "gaia.weather.read",
+                    "display_name": "gaia.weather.read",
+                    "description": "Current weather (temperature, humidity, pressure, wind) at a place: pass latitude+longitude or city (e.g. \"Tokyo\"); GAIA reads the nearest live Open-Meteo relay within 75 km, or refuses. Ed25519-attested. An exact device_id overrides the place: om-wx-01, nws-01, Met Éireann met-ie-01, SMHI MetObs smhi-wx-*-01 (CC BY 4.0), MET Norway Frost frost-*-01 (in-situ, not METAR), DMI dmi-*-01, Singapore NEA sg-wx-*-01 (Open Data Licence), HKO hko-wx-*-01 (DATA.GOV.HK attribution), AEMET aemet-wx-*-01 (Fuente: AEMET), MeteoSwiss ch-wx-*-01 (CC BY 4.0), CWA cwa-wx-*-01 (OGDL 1.0), Météo-France mf-wx-*-01 (Etalab OL 2.0), Estonia ee-wx-*-01 (CC BY 4.0), Iceland is-wx-*-01 (ODC-By), GeoSphere Austria at-wx-*-01 (CC BY 4.0), Lithuania lt-wx-*-01 (CC BY-SA 4.0), Latvia lv-wx-*-01 (CC0-1.0), JMA AMeDAS jp-wx-*-01 (Public Data License), CHMU cz-wx-*-01 (CC BY 4.0), or KMA kr-wx-*-01 (Public Nuri Type 1; needs GAIA_KMA_SERVICE_KEY) when live. Demo-site simulators ws-01/ws-02 answer only to their device_id (and to an empty call on a simulator-only GAIA).",
+                    "score": 0.8186,
+                    "match_type": "hybrid",
+                    "matched_concepts": [
+                      "weather"
+                    ],
+                    "matched_terms": [
+                      "weather",
+                      "meteo",
+                      "gaia",
+                      "open"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.7906,
+                      "semantic": 0.9627,
+                      "quality": 0.6945
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.001,
+                    "access_mode": "paid",
+                    "credits_eligible": false,
+                    "routed_price_usd": 0.00101,
+                    "routing_fee_bps": 100,
+                    "trust_score": 0.5,
+                    "reputation_basis": "measured",
+                    "observations_30d": 541,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 8,
+                    "publisher_id": null,
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "GAIA — physical-world oracle gateway",
+                    "seller_kind": "hub",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 201,
+                    "input_required": [],
+                    "input_hint": {}
+                  },
+                  {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.spacewx.read@v1",
+                    "source_hub": "https://iot.modelmarket.dev",
+                    "source_hub_name": "GAIA — physical-world oracle gateway",
+                    "name": "gaia.spacewx.read",
+                    "display_name": "gaia.spacewx.read",
+                    "description": "Live space-weather relay — NOAA SWPC planetary Kp + OVATION aurora, solar-wind / GOES X-ray summaries (U.S. PD), and/or NASA DONKI notifications (open data — cite NASA/CCMC). Default device_id=swpc-01. Ed25519-attested.",
+                    "score": 0.7087,
+                    "match_type": "hybrid",
+                    "matched_concepts": [
+                      "weather"
+                    ],
+                    "matched_terms": [
+                      "weather",
+                      "meteo",
+                      "gaia",
+                      "open"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.4962,
+                      "semantic": 0.9627,
+                      "quality": 0.6511
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.002,
+                    "access_mode": "paid",
+                    "credits_eligible": false,
+                    "routed_price_usd": 0.00202,
+                    "routing_fee_bps": 100,
+                    "trust_score": 0.5,
+                    "reputation_basis": "unobserved",
+                    "observations_30d": 0,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 259,
+                    "publisher_id": null,
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "GAIA — physical-world oracle gateway",
+                    "seller_kind": "hub",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 201,
+                    "input_required": [],
+                    "input_hint": {}
+                  },
+                  {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.water_quality.read@v1",
+                    "source_hub": "https://iot.modelmarket.dev",
+                    "source_hub_name": "GAIA — physical-world oracle gateway",
+                    "name": "gaia.water_quality.read",
+                    "display_name": "gaia.water_quality.read",
+                    "description": "Live USGS monitoring-locations registry joined to latest-continuous (public domain): water temperature, pH, dissolved oxygen and specific observations. Pass bbox and optional parameters/require_all; GAIA drains every OGC page, keeps only fresh qualified stations (48h default; max_age_hours is configurable), and returns per-parameter approval_status, qualifiers and timestamps. One signed row is one station coordinate. device_id=usgs-wq-01.",
+                    "score": 0.7084,
+                    "match_type": "semantic",
+                    "matched_concepts": [
+                      "weather"
+                    ],
+                    "matched_terms": [
+                      "weather",
+                      "meteo",
+                      "gaia"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.1677,
+                      "semantic": 0.9627,
+                      "quality": 0.6414
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.002,
+                    "access_mode": "paid",
+                    "credits_eligible": false,
+                    "routed_price_usd": 0.00202,
+                    "routing_fee_bps": 100,
+                    "trust_score": 0.5,
+                    "reputation_basis": "unobserved",
+                    "observations_30d": 0,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 341,
+                    "publisher_id": null,
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "GAIA — physical-world oracle gateway",
+                    "seller_kind": "hub",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 201,
+                    "input_required": [],
+                    "input_hint": {}
+                  },
+                  {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.marine.read@v1",
+                    "source_hub": "https://iot.modelmarket.dev",
+                    "source_hub_name": "GAIA — physical-world oracle gateway",
+                    "name": "gaia.marine.read",
+                    "display_name": "gaia.marine.read",
+                    "description": "Live marine relay — wave height (m) from NOAA NDBC, Open-Meteo Marine, and/or CDIP ERDDAP West Coast buoys (acknowledge CDIP/Scripps/USACE). Default device_id=ndbc-01. Ed25519-attested.",
+                    "score": 0.7021,
+                    "match_type": "hybrid",
+                    "matched_concepts": [
+                      "weather"
+                    ],
+                    "matched_terms": [
+                      "weather",
+                      "meteo",
+                      "gaia",
+                      "open"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.5093,
+                      "semantic": 0.9516,
+                      "quality": 0.6851
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.001,
+                    "access_mode": "paid",
+                    "credits_eligible": false,
+                    "routed_price_usd": 0.00101,
+                    "routing_fee_bps": 100,
+                    "trust_score": 0.5,
+                    "reputation_basis": "unobserved",
+                    "observations_30d": 0,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 58,
+                    "publisher_id": null,
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "GAIA — physical-world oracle gateway",
+                    "seller_kind": "hub",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 201,
+                    "input_required": [],
+                    "input_hint": {}
+                  },
+                  {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.cyclone.read@v1",
+                    "source_hub": "https://iot.modelmarket.dev",
+                    "source_hub_name": "GAIA — physical-world oracle gateway",
+                    "name": "gaia.cyclone.read",
+                    "display_name": "gaia.cyclone.read",
+                    "description": "Live tropical cyclone relay — NOAA NHC/CPHC CurrentStorms (U.S. PD; Atlantic + East Pacific + Central Pacific; not JTWC) and/or JMA typhoon jma-typhoon-01 (Public Data License; NW Pacific only; cite JMA; not NHC/JTWC). Empty season → offline / no debit. Default device_id=nhc-cyclone-01. Ed25519-attested.",
+                    "score": 0.691,
+                    "match_type": "semantic",
+                    "matched_concepts": [
+                      "weather"
+                    ],
+                    "matched_terms": [
+                      "weather",
+                      "meteo",
+                      "gaia"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.1677,
+                      "semantic": 0.9364,
+                      "quality": 0.6727
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.002,
+                    "access_mode": "paid",
+                    "credits_eligible": false,
+                    "routed_price_usd": 0.00202,
+                    "routing_fee_bps": 100,
+                    "trust_score": 0.5,
+                    "reputation_basis": "unobserved",
+                    "observations_30d": 0,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 108,
+                    "publisher_id": null,
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "GAIA — physical-world oracle gateway",
+                    "seller_kind": "hub",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 201,
+                    "input_required": [],
+                    "input_hint": {}
+                  },
+                  {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.atmosphere.read@v1",
+                    "source_hub": "https://iot.modelmarket.dev",
+                    "source_hub_name": "GAIA — physical-world oracle gateway",
+                    "name": "gaia.atmosphere.read",
+                    "display_name": "gaia.atmosphere.read",
+                    "description": "CAMS-derived aerosol optical depth, dust and pollen at configured coordinates via commercially licensed/self-hosted Open-Meteo. One signed point per returned source coordinate; arbitrary latitude/longitude is accepted. Default device_id=cams-berlin.",
+                    "score": 0.3811,
+                    "match_type": "lexical",
+                    "matched_concepts": [],
+                    "matched_terms": [
+                      "gaia",
+                      "open",
+                      "meteo"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.5093,
+                      "semantic": 0.0,
+                      "quality": 0.6893
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.002,
+                    "access_mode": "paid",
+                    "credits_eligible": false,
+                    "routed_price_usd": 0.00202,
+                    "routing_fee_bps": 100,
+                    "trust_score": 0.5,
+                    "reputation_basis": "unobserved",
+                    "observations_30d": 0,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 15,
+                    "publisher_id": null,
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "GAIA — physical-world oracle gateway",
+                    "seller_kind": "hub",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 201,
+                    "input_required": [],
+                    "input_hint": {}
+                  },
+                  {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.air.read@v1",
+                    "source_hub": "https://iot.modelmarket.dev",
+                    "source_hub_name": "GAIA — physical-world oracle gateway",
+                    "name": "gaia.air.read",
+                    "display_name": "gaia.air.read",
+                    "description": "Current air quality (PM2.5, PM10, US/EU AQI) at a place: pass latitude+longitude or city (e.g. \"Delhi\"); GAIA reads live Open-Meteo at that point (om-aq-01). Ed25519-attested. An exact device_id overrides the place. om-aq-01 accepts any latitude/longitude through the commercial or self-hosted Open-Meteo licence gate. sc-01 / sc-{slug} accept latitude/longitude as a Sensor.Community area query (ODbL — cite; empty area → offline; crowd density ≠ global). Also Singapore PSI sg-psi-*-01 (Open Data Licence), IRCELINE be-aq-*-01 (CC BY 4.0), and Hong Kong EPD AQHI hk-aqhi-*-01 (DATA.GOV.HK; health index, not PM2.5). Other device_ids remain fixed. Demo-site simulator aq-01 answers only to its device_id (and to an empty call on a simulator-only GAIA).",
+                    "score": 0.3803,
+                    "match_type": "lexical",
+                    "matched_concepts": [],
+                    "matched_terms": [
+                      "gaia",
+                      "open",
+                      "meteo"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.5093,
+                      "semantic": 0.0,
+                      "quality": 0.6506
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.001,
+                    "access_mode": "paid",
+                    "credits_eligible": false,
+                    "routed_price_usd": 0.00101,
+                    "routing_fee_bps": 100,
+                    "trust_score": 0.5,
+                    "reputation_basis": "measured",
+                    "observations_30d": 98,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 294,
+                    "publisher_id": null,
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "GAIA — physical-world oracle gateway",
+                    "seller_kind": "hub",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 201,
+                    "input_required": [],
+                    "input_hint": {}
+                  },
+                  {
+                    "product_id": "weather-witness",
+                    "capability_id": "weather.witness@v1",
+                    "source_hub": "local",
+                    "source_hub_name": "aicom",
+                    "name": "weather witness",
+                    "display_name": "weather witness",
+                    "description": "Research demo of subcontracting on this hub (aimarket-protocol mandates.md section 6), run by the hub operator. For a place (a city GAIA relays, or latitude and longitude) it buys GAIA's current weather and air-quality readings through this same hub, inside your job, and reports whether the two readings describe the same place and moment. Send subcontract: {allowance_usd: 0.01} to pay the two readings from your allowance (cost-plus: about $0.002 is spent, the rest released); without an allowance the provider pays them itself within a small daily cap. Returns both device-attested readings, their job nodes and work-receipt digests; your receipt lists theirs as parents.",
+                    "score": 0.2883,
+                    "match_type": "lexical",
+                    "matched_concepts": [],
+                    "matched_terms": [
+                      "gaia",
+                      "weather"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.3852,
+                      "semantic": 0.0,
+                      "quality": 0.6948
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.002,
+                    "access_mode": "paid",
+                    "credits_eligible": true,
+                    "routed_price_usd": 0.002,
+                    "routing_fee_bps": 0,
+                    "trust_score": 0.5,
+                    "reputation_basis": "unobserved",
+                    "observations_30d": 0,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 1500,
+                    "publisher_id": "aicom-weather-witness",
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "aicom-weather-witness",
+                    "seller_kind": "publisher",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 0,
+                    "input_required": [],
+                    "input_hint": {}
+                  },
+                  {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.place.resolve@v1",
+                    "source_hub": "https://iot.modelmarket.dev",
+                    "source_hub_name": "GAIA — physical-world oracle gateway",
+                    "name": "gaia.place.resolve",
+                    "display_name": "gaia.place.resolve",
+                    "description": "Free. Place name → one place: \"Kraków\", \"Paris, Texas\", \"Toronto, ON\", \"Москва\", \"東京\" (GeoNames, 171k places of 1,000+ people, country names in 16 languages); an ambiguous name returns the candidates instead of a guess. Or latitude+longitude → the nearest place. Says which GAIA weather/air reads cover it. GeoNames · CC BY 4.0.",
+                    "score": 0.2561,
+                    "match_type": "lexical",
+                    "matched_concepts": [],
+                    "matched_terms": [
+                      "gaia",
+                      "weather"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.3421,
+                      "semantic": 0.0,
+                      "quality": 0.699
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.0,
+                    "access_mode": "public_free",
+                    "credits_eligible": false,
+                    "routed_price_usd": 0.0,
+                    "routing_fee_bps": 100,
+                    "trust_score": 0.5,
+                    "reputation_basis": "measured",
+                    "observations_30d": 2,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 5,
+                    "publisher_id": null,
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "GAIA — physical-world oracle gateway",
+                    "seller_kind": "hub",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 201,
+                    "input_required": [],
+                    "input_hint": {}
+                  },
+                  {
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.aviation.read@v1",
+                    "source_hub": "https://iot.modelmarket.dev",
+                    "source_hub_name": "GAIA — physical-world oracle gateway",
+                    "name": "gaia.aviation.read",
+                    "display_name": "gaia.aviation.read",
+                    "description": "Live airport METAR mesh from NOAA Aviation Weather Center (U.S. public domain). Click an airport pin for in-situ instruments — not an NWS land ASOS pin, not a TAF. Default device_id=metar-kjfk-01. Ed25519-attested.",
+                    "score": 0.2558,
+                    "match_type": "lexical",
+                    "matched_concepts": [],
+                    "matched_terms": [
+                      "gaia",
+                      "weather"
+                    ],
+                    "score_breakdown": {
+                      "lexical": 0.3421,
+                      "semantic": 0.0,
+                      "quality": 0.6814
+                    },
+                    "input_independent": false,
+                    "price_per_call_usd": 0.001,
+                    "access_mode": "paid",
+                    "credits_eligible": false,
+                    "routed_price_usd": 0.00101,
+                    "routing_fee_bps": 100,
+                    "trust_score": 0.5,
+                    "reputation_basis": "unobserved",
+                    "observations_30d": 0,
+                    "deliveries_30d": null,
+                    "p50_latency_ms": 79,
+                    "publisher_id": null,
+                    "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                    "seller_id": "GAIA — physical-world oracle gateway",
+                    "seller_kind": "hub",
+                    "stake_usd": null,
+                    "demo": false,
+                    "offerable": true,
+                    "route_status": "live",
+                    "route_age_s": 201,
+                    "input_required": [],
+                    "input_hint": {}
+                  }
+                ],
+                "total": 17,
+                "offset": 0,
+                "limit": 10,
+                "has_more": true,
+                "observed": [],
+                "search": {
+                  "mode": "hybrid-semantic-v1",
+                  "languages": [
+                    "en",
+                    "ru",
+                    "es",
+                    "fr",
+                    "zh"
+                  ],
+                  "interpreted_concepts": [
+                    "weather"
+                  ],
+                  "latency_ms": 46.01,
+                  "query_stays_local": true
+                },
+                "total_hubs_searched": 22,
+                "protocol_version": "v2"
+              },
+              "mediaType": "application/json"
+            }
+          ],
+          "metadata": {
+            "marketProtocol": "aimarket-v2",
+            "invokeEndpoint": "https://modelmarket.dev/ai-market/v2/invoke",
+            "mcpEndpoint": "https://modelmarket.dev/mcp",
+            "invokeSkill": "marketplace-invoke"
+          }
+        }
+      }
+    }
+  },
+  {
+    "at_utc": "2026-10-31T05:47:50.715290+00:00",
+    "method": "POST",
+    "url": "https://modelmarket.dev/a2a",
+    "request_body": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "SendMessage",
+      "params": {
+        "message": {
+          "messageId": "ae1f9c77-a98e-461f-acc5-f2029dd9bb60",
+          "role": "ROLE_USER",
+          "parts": [
+            {
+              "text": "invoke gaia.weather.read@v1",
+              "mediaType": "text/plain"
+            },
+            {
+              "data": {
+                "invoke": {
+                  "product_id": "gaia.gateway",
+                  "capability_id": "gaia.weather.read@v1",
+                  "source_hub": "https://iot.modelmarket.dev",
+                  "input": {
+                    "device_id": "om-wx-01"
+                  },
+                  "max_price_usd": 0.01
+                }
+              },
+              "mediaType": "application/json"
+            }
+          ],
+          "contextId": "ae1f9c77-a98e-461f-acc5-f2029dd9bb60"
+        }
+      }
+    },
+    "status_code": 200,
+    "response_body": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "task": {
+          "id": "a2at_259c6e5b3bb6b7a9bc21da82",
+          "contextId": "ae1f9c77-a98e-461f-acc5-f2029dd9bb60",
+          "status": {
+            "state": "TASK_STATE_COMPLETED",
+            "timestamp": "2026-10-31T04:49:56.641Z",
+            "message": {
+              "messageId": "a2am_b1a6df5240ce8a51",
+              "contextId": "ae1f9c77-a98e-461f-acc5-f2029dd9bb60",
+              "taskId": "a2at_259c6e5b3bb6b7a9bc21da82",
+              "role": "ROLE_AGENT",
+              "parts": [
+                {
+                  "text": "gaia.weather.read@v1 completed ($0.001)",
+                  "mediaType": "text/plain"
+                }
+              ]
+            }
+          },
+          "artifacts": [
+            {
+              "artifactId": "result",
+              "name": "result",
+              "description": "What gaia.weather.read@v1 returned",
+              "parts": [
+                {
+                  "data": {
+                    "reading": {
+                      "device_id": "om-wx-01",
+                      "model": "GAIA-WS1 (Open-Meteo relay)",
+                      "site": "live-weather-eu",
+                      "firmware": "1.0.0",
+                      "seq": 94,
+                      "ts": "2026-10-31T04:49:56Z",
+                      "values": {
+                        "temperature_c": 8.4,
+                        "humidity_pct": 97.0,
+                        "pressure_hpa": 1025.8,
+                        "wind_mps": 1.42
+                      },
+                      "units": {
+                        "temperature_c": "cel",
+                        "humidity_pct": "percent",
+                        "pressure_hpa": "hPa",
+                        "wind_mps": "m/s"
+                      }
+                    },
+                    "attestation": {
+                      "algorithm": "ed25519",
+                      "public_key": "bdtWcNGNNk2Q6mcblT1OqAdtkncOohceH/G2dlxLDk0=",
+                      "value": "rXqkQShiJylZ72hbuWdjpPXDRpj2eDu2JfeiUWvnAxOwSirOeW0HOsUX1rgcNcENOkr7KJc7DRtNAMHO+3EOCQ==",
+                      "canonical": "device|model|seq|ts|values_sha256"
+                    }
+                  },
+                  "mediaType": "application/json"
+                }
+              ]
+            },
+            {
+              "artifactId": "aimarket-receipt",
+              "name": "aimarket-receipt",
+              "description": "The signed gateway receipt for this call",
+              "parts": [
+                {
+                  "data": {
+                    "nonce": "d3c09f7d2176081f",
+                    "product_id": "gaia.gateway",
+                    "capability_id": "gaia.weather.read@v1",
+                    "price_usd": 0.001,
+                    "timestamp": "2026-10-31T04:49:56Z",
+                    "success": true,
+                    "latency_ms": 14.2,
+                    "signature": {
+                      "algorithm": "ed25519",
+                      "public_key": "nXqEvIbWv+rA8TASY0GqGWZi/OPazT0HM1LQTrRXemg=",
+                      "value": "pAM2ATppXTv25B8zlxbelOmK37pcHuBkv3HEoQgZNXSu+xFRJYsFNWZC3TG6TKWTg8aC8MX2hQil6GC+o7ZnBA==",
+                      "pq_algorithm": "ml-dsa-65",
+                      "pq_public_key": "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",
+                      "pq_value": "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"
+                    }
+                  },
+                  "mediaType": "application/json"
+                }
+              ],
+              "metadata": {
+                "sourceHub": "https://iot.modelmarket.dev",
+                "signerWellKnown": "https://iot.modelmarket.dev/.well-known/ai-market.json"
+              }
+            },
+            {
+              "artifactId": "provenance",
+              "name": "provenance",
+              "description": "The AWR/2 work receipt for this call",
+              "parts": [
+                {
+                  "data": {
+                    "receipt_id": "urn:uuid:eb56d667-0d67-473c-a25a-19bac2555295",
+                    "verify_url": "https://modelmarket.dev/ai-market/v2/p/provenance/verify/urn:uuid:eb56d667-0d67-473c-a25a-19bac2555295",
+                    "receipt_url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:eb56d667-0d67-473c-a25a-19bac2555295",
+                    "verifier_url": "https://verify.modelmarket.dev",
+                    "awr_version": "2.0.0",
+                    "issuer": "did:key:z6MkkCADReBRLTMEqSV7REQ399ujjFPb8UFBSryAC7SPv6LX",
+                    "digest_sri": "sha256-7Z9mwkPDRPXC3FIGiGLybrKjjvEsc/KPVuMJyUfJ3JI="
+                  },
+                  "mediaType": "application/json"
+                }
+              ],
+              "metadata": {
+                "digest_sri": "sha256-7Z9mwkPDRPXC3FIGiGLybrKjjvEsc/KPVuMJyUfJ3JI=",
+                "receipt_url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:eb56d667-0d67-473c-a25a-19bac2555295",
+                "verify_url": "https://modelmarket.dev/ai-market/v2/p/provenance/verify/urn:uuid:eb56d667-0d67-473c-a25a-19bac2555295"
+              }
+            }
+          ],
+          "history": [
+            {
+              "messageId": "ae1f9c77-a98e-461f-acc5-f2029dd9bb60",
+              "contextId": "ae1f9c77-a98e-461f-acc5-f2029dd9bb60",
+              "taskId": "a2at_259c6e5b3bb6b7a9bc21da82",
+              "role": "ROLE_USER",
+              "parts": [
+                {
+                  "data": {
+                    "invoke": {
+                      "product_id": "gaia.gateway",
+                      "capability_id": "gaia.weather.read@v1",
+                      "source_hub": "https://iot.modelmarket.dev"
+                    }
+                  },
+                  "mediaType": "application/json",
+                  "metadata": {
+                    "aimarket.redacted": "input and payment are not stored"
+                  }
+                }
+              ]
+            },
+            {
+              "messageId": "a2am_b1a6df5240ce8a51",
+              "contextId": "ae1f9c77-a98e-461f-acc5-f2029dd9bb60",
+              "taskId": "a2at_259c6e5b3bb6b7a9bc21da82",
+              "role": "ROLE_AGENT",
+              "parts": [
+                {
+                  "text": "gaia.weather.read@v1 completed ($0.001)",
+                  "mediaType": "text/plain"
+                }
+              ]
+            }
+          ],
+          "metadata": {
+            "aimarket": {
+              "capability": {
+                "product_id": "gaia.gateway",
+                "capability_id": "gaia.weather.read@v1",
+                "source_hub": "https://iot.modelmarket.dev"
+              },
+              "price_usd": 0.001,
+              "latency_ms": 14.2,
+              "routed_via": "https://modelmarket.dev"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "at_utc": "2026-10-31T05:47:51.187290+00:00",
+    "method": "GET",
+    "url": "https://iot.modelmarket.dev/.well-known/ai-market.json",
+    "request_body": null,
+    "status_code": 200,
+    "response_body": {
+      "name": "GAIA — physical-world oracle gateway",
+      "protocol_versions": [
+        "v2"
+      ],
+      "hub_version": "0.1.0",
+      "manifest_url": "https://iot.modelmarket.dev/ai-market/v2/manifest",
+      "mcp_endpoint": "https://iot.modelmarket.dev/ai-market/v2/invoke",
+      "capabilities_count": 56,
+      "signer_public_key": "nXqEvIbWv+rA8TASY0GqGWZi/OPazT0HM1LQTrRXemg=",
+      "description": "Virtual IoT devices (weather ×2, air quality, energy) plus live public-API relays (Open-Meteo, NWS, UK carbon, USGS, NOAA tides/rivers/marine, NASA FIRMS/EONET, SWPC, GOES GLM, NWS CAP, Safecast, CyberNews, Sensor.Community, CWOP, Argo, MET Norway, USGS geomag, Copernicus EFFIS, optional own-edge ADS-B/AIS/IoT feeders, NHC cyclones, public ADS-B) sold as signed AIMarket capabilities, with a Metis-envelope statistical verifier for Pay-on-Verified escrow.",
+      "categories": [
+        "iot",
+        "sensors",
+        "physical-data",
+        "verification",
+        "weather",
+        "air-quality",
+        "energy",
+        "seismic",
+        "tides",
+        "fire",
+        "radiation",
+        "gnss",
+        "traffic",
+        "space-weather",
+        "lightning",
+        "alerts",
+        "ocean",
+        "geomagnetism",
+        "flood",
+        "volcano",
+        "cyclone",
+        "adsb",
+        "aviation",
+        "road",
+        "rail",
+        "drought",
+        "reservoir",
+        "uv",
+        "geocoding",
+        "electricity-prices",
+        "actuation",
+        "satellite-imagery"
+      ],
+      "protocol_version": "v2",
+      "hub_name": "GAIA — physical-world oracle gateway",
+      "hub_url": "https://iot.modelmarket.dev",
+      "ecosystem": {
+        "product": "gaia.gateway",
+        "related": [
+          "aimarket-hub",
+          "metis",
+          "oracle-family"
+        ]
+      },
+      "price_gate": {
+        "mode": "enforce",
+        "hubs": [
+          "https://modelmarket.dev"
+        ],
+        "scheme": "aimarket-hub-request/v1"
+      }
+    }
+  }
+]

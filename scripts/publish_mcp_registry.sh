@@ -67,6 +67,7 @@ declare -a MANIFESTS=(
   "aimarket-oracle-gateway|plugins/aimarket-oracle-gateway/server.json"
   "aimarket-plugins|plugins/aimarket-mcp-packager/server.json"
   "argus|argus/server.json"
+  "histor|histor/server.json"
   "warden|warden/server.json"
 )
 

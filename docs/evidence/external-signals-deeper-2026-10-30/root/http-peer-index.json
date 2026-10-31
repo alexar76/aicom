@@ -1,0 +1,62 @@
+[
+  {
+    "key": "machina-discovery",
+    "url": "https://mach402.dev/.well-known/ai-market.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T04:22:37.540095+00:00",
+    "status": 200,
+    "final_url": "https://mach402.dev/.well-known/ai-market.json",
+    "content_type": "application/json",
+    "sha256": "359fbd2b594b9ba8e9ed31c2fbf4d96fc3f3808b6f06e17cc2c61a6fa2237205",
+    "bytes": 554,
+    "body_file": "machina-discovery.json"
+  },
+  {
+    "key": "agentexec-discovery",
+    "url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T04:22:37.540476+00:00",
+    "status": 200,
+    "final_url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+    "content_type": "application/json; charset=utf-8",
+    "sha256": "2b8c229a0359a2c7d98e400acd83fe32c1e84aeae39b6022ed9200e42cf7bb6c",
+    "bytes": 185,
+    "body_file": "agentexec-discovery.json"
+  },
+  {
+    "key": "hub-peers",
+    "url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T04:22:37.540609+00:00",
+    "status": 200,
+    "final_url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+    "content_type": "application/json",
+    "sha256": "35424e3c6289cc7793205c3135497bace64de12ccae243b49a20a7dc014bec81",
+    "bytes": 18089,
+    "body_file": "hub-peers.json"
+  },
+  {
+    "key": "machina-manifest",
+    "url": "https://mach402.dev/ai-market/v2/manifest",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T04:22:38.437650+00:00",
+    "status": 200,
+    "final_url": "https://mach402.dev/ai-market/v2/manifest",
+    "content_type": "application/json",
+    "sha256": "ff94933a4405670530395b671dd6d511d4cd2cb11b38de6039f966f1d33f9ed3",
+    "bytes": 3217,
+    "body_file": "machina-manifest.json"
+  },
+  {
+    "key": "agentexec-manifest",
+    "url": "https://agent-exec.448c.org/ai-market/manifest",
+    "method": "GET",
+    "retrieved_at_utc": "2026-10-30T04:22:38.742554+00:00",
+    "status": 200,
+    "final_url": "https://agent-exec.448c.org/ai-market/manifest",
+    "content_type": "application/json; charset=utf-8",
+    "sha256": "c86c188570f076a5b41607877ab4b26e5e79592ef934ec19ac11d3f12484d1b1",
+    "bytes": 22147,
+    "body_file": "agentexec-manifest.json"
+  }
+]

@@ -1,0 +1,225 @@
+Atomdrift Scan — context-free malware detection (ML + static analysis)
+
+Usage: atomscan [OPTIONS] [COMMAND]
+
+Commands:
+  render        Experimental: render saved JSON locally, without models, updates, fetching, or LLM calls
+  path          Scan files or directories for hostile/suspicious content
+  ps            Scan executables of all running processes
+  sys           Triage this host: running-process executables plus common persistence and temp locations where malware stages
+  url           Fetch a URL and scan the retrieved bytes
+  purl          Fetch a package by PURL and scan it (e.g. npm/left-pad@1.3.0)
+  update-rules  Update models (and optionally cleave traits)
+  validate      Validate the model bundle and benign fixture corpus
+  serve         Run as an HTTP classification server
+  worker        Run as a pull-based worker, polling a hopper instance for analysis jobs
+  version       Print version information
+  help          Print this message or the help of the given subcommand(s)
+
+Options:
+      --verbose
+          Enable debug logging for Atomdrift Scan and cleave
+
+  -u, --update
+          Update models and traits before running (failures are non-fatal)
+
+      --no-update
+          Disable the automatic rules/models refresh (on by default when the local ruleset is over 24h stale). Use when the local traits/models are intentionally ahead of (or diverged from) the remote, e.g. local edits that would block the pull. Also settable via `SCAN_NO_UPDATE`
+
+      --light
+          Force light-background color theme
+
+      --dark
+          Force dark-background color theme
+
+      --model-dir <MODEL_DIR>
+          Override model directory (default: auto-resolved from models repo)
+
+  -f, --format <FORMAT>
+          Output format
+
+          Possible values:
+          - terminal:  Human-readable terminal output
+          - json:      Newline-delimited JSON, one object per file
+          - tiny:      Compact, context-centric text for feeding a local LLM: a litmus verdict line (gate, confidence, matched FP level) followed by cleave's annotated context. See `crate::engine::write_tiny`
+          - interpret: The LLM payload: byte-for-byte the user message a live `--interpret` query sends — cleave's sanitized tiny render, finding annotations included — without the system prompt (which hedges the descriptions as fallible interpretations; frame them likewise downstream). Binary windows carry xxd-style offset gutters for addressing. Emits every scanned file regardless of `--show`. Rendered locally — no LLM is contacted, and no verdict line is added
+
+          [env: SCAN_FORMAT=]
+          [default: terminal]
+
+      --mode <MODE>
+          Scan mode: `fast` (bloom matching only), `balanced` (bloom short-circuits, then full scan), or `slow` (no bloom; always full scan). Workers are always slow
+
+          Possible values:
+          - fast:     Bloom matching only: known-good is skipped, known-bad is flagged, and anything in neither set is left unscanned. Fastest, least thorough
+          - balanced: Bloom filters short-circuit known-good (skip) and known-bad (flag); everything else gets a full scan. The default
+          - slow:     No bloom lookups — every artifact is fully scanned. Always used by long-lived workers, where each job must be analyzed on its own merits
+
+          [default: balanced]
+
+      --rizin-timeout-secs <SECS>
+          Hard wall-clock limit for each Rizin subprocess, in seconds. On expiry Atomscan kills and reaps Rizin before releasing the analysis worker; on Unix it also kills the complete process group. Also settable via `SCAN_RIZIN_TIMEOUT_SECS`
+
+          [env: SCAN_RIZIN_TIMEOUT_SECS=]
+          [default: 600]
+
+      --threshold-suspicious <THRESHOLD_SUSPICIOUS>
+          Override suspicious threshold (0.0-1.0); omit to use model's recommendation
+
+      --threshold-hostile <THRESHOLD_HOSTILE>
+          Override hostile threshold (0.0-1.0); omit to use model's recommendation
+
+  -l, --level <N>
+          Tune thresholds for false-positive level N (0-25000, FP per 100M benigns): higher = more sensitive, noisier. Bundle decides which levels are calibrated
+
+      --show <SHOW>
+          Classifications to display in the terminal view: hostile, suspicious, sus, benign, all (comma-separated). The machine formats (json, tiny, interpret) emit every scanned file regardless
+
+          [default: hostile sus]
+          [possible values: hostile, sus, benign, all]
+
+      --llm [<TARGET>]
+          [optional] Enable additional LLM interpretation of analyzed samples: a second opinion blended with the ML verdict (stored in the `llm` JSON section and shown inline). Given with no value, uses a local model (an OpenAI-compatible endpoint at http://localhost:8000/v1). TARGET may be `local`, `openrouter` (https://openrouter.ai/api/v1; key from `--llm-key`, `SCAN_LLM_KEY`, or `~/.tok/openrouter`; defaults to `openrouter/auto` unless `--llm-model` names one), or an explicit OpenAI-compatible base URL. Endpoints that require a bearer token take it from `~/.tok/llm` when that file exists. Comma-separate several to fail over in order, e.g. `https://llm.isotope13.ai/v1,openrouter`. (env: SCAN_LLM)
+
+      --llm-model <NAME>
+          LLM model name, e.g. Qwen/Qwen3.8-27B. Defaults to the largest model the endpoint itself reports serving, or `openrouter/auto` for an OpenRouter endpoint; nothing else is hardcoded. With a comma-separated `--llm` chain, comma-separate one name per endpoint in the same order (a blank slot discovers/defaults, a single name applies to all) (env: SCAN_LLM_MODEL)
+
+      --llm-key <KEY>
+          LLM bearer token (env: SCAN_LLM_KEY). Defaults to `~/.tok/llm` when that file exists (`~/.tok/openrouter` for OpenRouter); omit for an endpoint that needs no key
+
+      --llm-min-level <N>
+          Loosest FP level (0-25000, per 100M benigns) at which ML alone sends a sample to the LLM; higher = more samples. Defaults to the model's grid ceiling — anything ML flagged at any level. Files cleave flagged suspicious/hostile are sent regardless of this cutoff
+
+      --llm-min-prob <P>
+          Raw ML probability at or above which a sample reaches the LLM, whatever the calibrated level grid and cleave findings say.
+
+          One of several independent admissions, so it can only send more, never block. The default sits on a measured elbow: malicious admission is flat across 0.46..0.57 while benign admission keeps falling through it. Lowering it buys the overlap region at roughly 50 benign samples per malicious one; raising it sheds about four benign per malicious.
+
+          [default: 0.55]
+
+      --llm-benign-notable-cap <N>
+          Size veto for the LLM gate: an ML-benign sample with no hostile finding and more than this many notable-or-above findings is not sent to the LLM, unless it carries a strong gate trait or ML placed it on the level grid. Big legitimate packages accumulate notable findings until some admission fires, and the reader then moves nothing; on the measured corpus the veto at 300 halved benign calls and kept every correct shift. `0` disables it
+
+          [default: 300]
+
+      --llm-timeout <SECS>
+          Per-request LLM timeout, in seconds. Once it elapses the endpoint is treated as a refusal and the next one in the `--llm` chain is tried.
+
+          Applies to every mode and every hop in the chain; an OpenRouter hop always gets at least 30.
+
+          [default: 60]
+
+      --zip-password <PASSWORD>
+          Additional passwords to try for encrypted ZIP/7z archives. Repeat the option to provide more than one; cleave's common defaults remain active
+
+      --follow[=<TARGETS>]
+          [EXPERIMENTAL] Follow references discovered inside the requested artifact, analyze their payloads, and fold them into the verdict: `dependencies` — manifest and lockfile dependencies; `references`   — packages and URLs named by install/download commands; `ci-actions`   — third-party actions referenced by CI configuration. `all` selects every category; `none` analyzes only the requested artifact. A bare `--follow` follows dependencies and references but not CI actions, and so does an absent one for an interactive scan. `serve` and `worker` default to `all` instead: they populate the shared corpus, where a category nobody followed is one nobody ever learns. The old `--fetch` flag and `deps`, `packages`, `urls`, and `ci` values remain accepted as aliases. Also settable via `SCAN_FOLLOW`; `SCAN_FETCH` remains a compatibility alias
+
+          [env: SCAN_FOLLOW=]
+          [alias: --fetch]
+
+      --follow-depth <N>
+          [EXPERIMENTAL] How many hops of references to follow when `--follow` is on: `1` fetches only what the scanned files reference, `2` also follows references found inside those payloads (reaching a stage-3 `curl | bash` dropper), and so on. Also settable via `SCAN_FOLLOW_DEPTH`; the old `--fetch-depth` and `SCAN_FETCH_DEPTH` names remain aliases
+
+          [env: SCAN_FOLLOW_DEPTH=]
+          [default: 2]
+          [alias: --fetch-depth]
+
+      --fetch-max-age <DAYS>
+          [EXPERIMENTAL] Skip fetching a declared dependency whose registry publish date is older than this many days — the cheap provenance lookup runs first, and only recent (freshest-risk) releases are pulled and scanned. Applies to declared dependencies only; URLs are never age-gated. `0` disables the gate (fetch every resolvable dependency). A dependency whose age can't be determined is always fetched. Also settable via `SCAN_FETCH_MAX_AGE`.
+
+          Unset, the ceiling depends on the mode: an interactive scan wants a fresh-risk window ([`scan::fetch::DEFAULT_MAX_DEP_AGE_DAYS`]), while a worker is a cache-population role and takes every resolvable dependency ([`WORKER_MAX_DEP_AGE_DAYS`]). Optional rather than defaulted so an explicit `--fetch-max-age` still wins in both.
+
+          [env: SCAN_FETCH_MAX_AGE=]
+
+      --fetch-all-platforms
+          [EXPERIMENTAL] Fetch and scan native-binary dependencies for every platform, not just the host's. This is automatic in `serve` and `worker`, which scan on behalf of other machines; interactive scans stay host-only for latency unless this flag is passed. Also settable via `SCAN_FETCH_ALL_PLATFORMS`
+
+          [env: SCAN_FETCH_ALL_PLATFORMS=]
+
+      --fetch-host-platform-only
+          [EXPERIMENTAL] Fetch only native-binary dependencies matching this host's OS and architecture. This is the interactive default and an explicit completeness opt-out for `serve` / `worker`. Also settable via `SCAN_FETCH_HOST_PLATFORM_ONLY`
+
+          [env: SCAN_FETCH_HOST_PLATFORM_ONLY=]
+
+      --fetch-transitive-deps
+          [EXPERIMENTAL] Follow declared dependencies past the first hop — the dependencies of a fetched dependency, out to `--fetch-depth`. This is automatic in `serve` and `worker`, which populate the shared corpus; an interactive scan stops declared dependencies at the first hop, since the transitive tail costs a registry lookup each and is almost entirely old releases the age gate then discards. URLs and command-mentioned packages — the dropper chain — are followed at every hop either way. Also settable via `SCAN_FETCH_TRANSITIVE_DEPS`
+
+          [env: SCAN_FETCH_TRANSITIVE_DEPS=]
+
+      --fetch-direct-deps-only
+          [EXPERIMENTAL] Follow declared dependencies for one hop only. This is the interactive default and an explicit completeness opt-out for `serve` / `worker`. Also settable via `SCAN_FETCH_DIRECT_DEPS_ONLY`
+
+          [env: SCAN_FETCH_DIRECT_DEPS_ONLY=]
+
+      --registry-ttl <DUR>
+          [EXPERIMENTAL] How long to trust cached *mutable* registry metadata before revalidating. Accepts a unit suffix (`90s`, `30m`, `4h`, `2d`) — a bare number is seconds; `never` caches indefinitely (offline/air-gapped). This bounds the two mutable tiers: a pinned version's packument (whose yank status can change after publish) and a `latest`/versionless lookup. Unset keeps the defaults — 4h pinned, 1h unpinned. A released version's immutable file list is never re-checked regardless. Also settable via `SCAN_REGISTRY_TTL`
+
+          [env: SCAN_REGISTRY_TTL=]
+
+      --fetch-max-size <SIZE>
+          [EXPERIMENTAL] Size cap for a single downloaded artifact. Accepts a unit suffix (`256M`, `2G`, `512K`); a bare number is bytes. A response larger than this is abandoned, so one artifact can't dominate a run. Also settable via `SCAN_FETCH_MAX_SIZE`
+
+          [env: SCAN_FETCH_MAX_SIZE=]
+          [default: 256M]
+
+      --fetch-pending <PATH>
+          Persist unfinished fetches and resume them when scanning the same content. Increasing --follow-depth resumes saved deeper references
+
+          [env: SCAN_FETCH_PENDING=]
+
+      --fetch-dev-deps <FETCH_DEV_DEPS>
+          Include lockfile dependencies used exclusively for development or tests
+
+          [default: true]
+          [possible values: true, false]
+
+      --fetch-all-versions
+          Analyze all pinned dependency versions, including older releases
+
+      --rizin-retry-timeout-secs <SECS>
+          Retry only native binaries whose disassembler timed out, once, with this larger per-file deadline. Unset disables the extra attempt
+
+      --fetch-max-file-fetches <N>
+          [EXPERIMENTAL] Maximum number of *live* dependency/package fetches triggered by a single scanned file. This is 100 by default. Cache hits are always served and never counted, so a warm re-run is never throttled. References past the cap are recorded as budget-exceeded, never silently dropped. Also settable via `SCAN_FETCH_MAX_FILE_FETCHES`
+
+          [env: SCAN_FETCH_MAX_FILE_FETCHES=]
+          [default: 100]
+
+      --fetch-max-urls <N>
+          [EXPERIMENTAL] Maximum number of *live* opportunistic raw-URL fetches triggered by a single scanned file. This is 4 by default. URL references declared as dependencies or command-mentioned packages use the larger `--fetch-max-file-fetches` cap instead. Also settable via `SCAN_FETCH_MAX_URLS`
+
+          [env: SCAN_FETCH_MAX_URLS=]
+          [default: 4]
+
+      --fetch-max-file-size <SIZE>
+          [EXPERIMENTAL] Maximum total bytes fetched on behalf of a single scanned file. Accepts a unit suffix (`2G`); a bare number is bytes. Also settable via `SCAN_FETCH_MAX_FILE_SIZE`
+
+          [env: SCAN_FETCH_MAX_FILE_SIZE=]
+          [default: 2G]
+
+      --fetch-timeout <DUR>
+          [EXPERIMENTAL] Wall-clock ceiling on the fetch phase for a single scanned artifact. Accepts a unit suffix (`90s`, `5m`, `1h`); a bare number is seconds; `0` or `never` disables the cap. This is 5 minutes by default. The count and size budgets bound how much a scan fetches, not how long fetching takes — a wide tree of slow registries can hold a scan open with every count budget still unspent. References not reached before the cap are left unfollowed; whatever was already fetched is analyzed and graded as usual. Also settable via `SCAN_FETCH_TIMEOUT`
+
+          [env: SCAN_FETCH_TIMEOUT=]
+          [default: 5m]
+
+      --fetch-max-total-fetches <N>
+          [EXPERIMENTAL] Maximum number of *live* fetches across the whole execution — a hard ceiling over every scanned file combined. Lifted in long-lived server modes (`serve`/`worker`), where the per-file caps bound each job instead. Also settable via `SCAN_FETCH_MAX_TOTAL_FETCHES`
+
+          [env: SCAN_FETCH_MAX_TOTAL_FETCHES=]
+          [default: 1000]
+
+      --fetch-max-total-size <SIZE>
+          [EXPERIMENTAL] Maximum total bytes fetched across the whole execution. Accepts a unit suffix (`10G`); a bare number is bytes. Lifted in long-lived server modes (`serve`/`worker`). Also settable via `SCAN_FETCH_MAX_TOTAL_SIZE`
+
+          [env: SCAN_FETCH_MAX_TOTAL_SIZE=]
+          [default: 10G]
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+
+Bare paths run `path`: `atomscan ~/Downloads` is `atomscan path ~/Downloads`, and takes every flag that subcommand accepts.

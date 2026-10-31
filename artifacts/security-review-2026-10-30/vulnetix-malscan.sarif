@@ -1,0 +1,1558 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "filesScanned": 6700,
+        "host": {
+          "hostname": "MacBook-Air-Artamohov.local",
+          "os": "darwin",
+          "arch": "arm64",
+          "pid": 88161,
+          "scanTime": "2026-10-30T09:29:53Z"
+        },
+        "indicatorCount": 266899,
+        "malicious": true,
+        "scanRoot": "/private/tmp/aicom-security-review-20261030/malscan-target"
+      },
+      "results": [
+        {
+          "fingerprints": {
+            "vulnetix/v1": "0ecd735dc1dcd973a9b3fc00e3ced3f6"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/acex/contracts/solana/deploy.sh"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "\ncase \"$NETWORK\" in\n  devnet) RPC=\"${SOLANA_RPC_DEVNET:-https://api.devnet.solana.com}\" ;;\n  mainnet) RPC=\"${SOLANA_RPC_MAINNET:-https://api.mainnet-beta.solana.com}\" ;;\n  *) echo \"Unknown network: $NETWORK\"; exit 1 ;;\nesac\n"
+                  },
+                  "startLine": 24
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious URL https://api.mainnet-beta.solana.com — known-bad url \"https://api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/acex/contracts/solana/deploy.sh"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "a5455b185c2a2279b6dc918e8f69dc67"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/acex/contracts/solana/deploy.sh"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "\ncase \"$NETWORK\" in\n  devnet) RPC=\"${SOLANA_RPC_DEVNET:-https://api.devnet.solana.com}\" ;;\n  mainnet) RPC=\"${SOLANA_RPC_MAINNET:-https://api.mainnet-beta.solana.com}\" ;;\n  *) echo \"Unknown network: $NETWORK\"; exit 1 ;;\nesac\n"
+                  },
+                  "startLine": 24
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain api.mainnet-beta.solana.com — known-bad domain \"api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/acex/contracts/solana/deploy.sh"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "76b3df7dd8cca4770216d9fd60f21e1c"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/aimarket-hub/aimarket_hub/chain_net.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        id=\"ethereum\", kind=EVM, display_name=\"Ethereum\", chain_id=1, cluster=None,\n        rpc_urls=(\n            \"https://eth.llamarpc.com\",\n            \"https://ethereum-rpc.publicnode.com\",\n            \"https://cloudflare-eth.com\",\n            \"https://eth.drpc.org\",\n            \"https://1rpc.io/eth\","
+                  },
+                  "startLine": 200
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain ethereum-rpc.publicnode.com — known-bad domain \"ethereum-rpc.publicnode.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/aimarket-hub/aimarket_hub/chain_net.py"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "fb9667cbb71fe33369d087bce9c204c8"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/aimarket-hub/aimarket_hub/chain_net.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"solana\": NetworkSpec(\n        id=\"solana\", kind=SOLANA, display_name=\"Solana\", chain_id=None, cluster=\"mainnet-beta\",\n        rpc_urls=(\n            \"https://api.mainnet-beta.solana.com\",\n            \"https://solana-rpc.publicnode.com\",\n            \"https://1rpc.io/sol\",\n        ),"
+                  },
+                  "startLine": 222
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious URL https://api.mainnet-beta.solana.com — known-bad url \"https://api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/aimarket-hub/aimarket_hub/chain_net.py"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "c0fd830fa4dbfdd22a9b60ac374e337f"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/aimarket-hub/aimarket_hub/chain_net.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"solana\": NetworkSpec(\n        id=\"solana\", kind=SOLANA, display_name=\"Solana\", chain_id=None, cluster=\"mainnet-beta\",\n        rpc_urls=(\n            \"https://api.mainnet-beta.solana.com\",\n            \"https://solana-rpc.publicnode.com\",\n            \"https://1rpc.io/sol\",\n        ),"
+                  },
+                  "startLine": 222
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain api.mainnet-beta.solana.com — known-bad domain \"api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/aimarket-hub/aimarket_hub/chain_net.py"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "1a73c02db03c601cccaaa21a27fc439a"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/aimarket-hub/aimarket_hub/native_price.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"\"\"Avoid counting the same hostname as two independent observations.\"\"\"\n    host = urlsplit(primary).hostname\n    choices = {8453: (\"https://mainnet.base.org\", \"https://base-rpc.publicnode.com\"),\n               1: (\"https://ethereum-rpc.publicnode.com\", \"https://eth.drpc.org\")}\n    if chain_id not in choices: raise ValueError(\"unsupported native-price chain\")\n    first, second = choices[chain_id]\n    secondary = secondary or (first if host == urlsplit(second).hostname else second)"
+                  },
+                  "startLine": 28
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain ethereum-rpc.publicnode.com — known-bad domain \"ethereum-rpc.publicnode.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/aimarket-hub/aimarket_hub/native_price.py"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "e60f5dbd37220624b4778266930bbe42"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_metrics.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "def solana_rpc_url() -\u003e str:\n    \"\"\"Back-compat single-URL accessor — the highest-priority Solana endpoint.\"\"\"\n    urls = solana_rpc_urls()\n    return urls[0] if urls else \"https://api.mainnet-beta.solana.com\"\n\n\ndef our_chain_addresses(net_id: str | None = None) -\u003e dict[str, str]:"
+                  },
+                  "startLine": 124
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious URL https://api.mainnet-beta.solana.com — known-bad url \"https://api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_metrics.py"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "30699427ca7c96faccaedbcefab90109"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_metrics.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "def solana_rpc_url() -\u003e str:\n    \"\"\"Back-compat single-URL accessor — the highest-priority Solana endpoint.\"\"\"\n    urls = solana_rpc_urls()\n    return urls[0] if urls else \"https://api.mainnet-beta.solana.com\"\n\n\ndef our_chain_addresses(net_id: str | None = None) -\u003e dict[str, str]:"
+                  },
+                  "startLine": 124
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain api.mainnet-beta.solana.com — known-bad domain \"api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_metrics.py"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "d203ad59c5ba54a75e334fb45e786315"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_net.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        id=\"ethereum\", kind=EVM, display_name=\"Ethereum\", chain_id=1, cluster=None,\n        rpc_urls=(\n            \"https://eth.llamarpc.com\",\n            \"https://ethereum-rpc.publicnode.com\",\n            \"https://cloudflare-eth.com\",\n            \"https://eth.drpc.org\",\n            \"https://1rpc.io/eth\","
+                  },
+                  "startLine": 200
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain ethereum-rpc.publicnode.com — known-bad domain \"ethereum-rpc.publicnode.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_net.py"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "d6b40f7917f1273fd1f1f266cfce8456"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_net.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"solana\": NetworkSpec(\n        id=\"solana\", kind=SOLANA, display_name=\"Solana\", chain_id=None, cluster=\"mainnet-beta\",\n        rpc_urls=(\n            \"https://api.mainnet-beta.solana.com\",\n            \"https://solana-rpc.publicnode.com\",\n            \"https://1rpc.io/sol\",\n        ),"
+                  },
+                  "startLine": 222
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious URL https://api.mainnet-beta.solana.com — known-bad url \"https://api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_net.py"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "9da94526e52f9199c66a6f0453a028af"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_net.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"solana\": NetworkSpec(\n        id=\"solana\", kind=SOLANA, display_name=\"Solana\", chain_id=None, cluster=\"mainnet-beta\",\n        rpc_urls=(\n            \"https://api.mainnet-beta.solana.com\",\n            \"https://solana-rpc.publicnode.com\",\n            \"https://1rpc.io/sol\",\n        ),"
+                  },
+                  "startLine": 222
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain api.mainnet-beta.solana.com — known-bad domain \"api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/alien-monitor/backend/chain_net.py"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "cb2b7584b4e036a444f680a6cd25048f"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        self.enter()?;\n        self.i += 1; // '{'\n        let mut members: Vec\u003c(String, Value)\u003e = Vec::new();\n        self.ws();\n        if self.peek() == Some(b'}') {\n            self.i += 1;\n            self.depth -= 1;"
+                  },
+                  "startLine": 259
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain self.ws — known-bad domain \"self.ws\" referenced in lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "c75198cab95b3f816ab3e4d9ea258ce5"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "            return Ok(Value::Object(members));\n        }\n        loop {\n            self.ws();\n            if self.peek() != Some(b'\"') {\n                return self.err(\"expected a `\\\"`-quoted property name\");\n            }"
+                  },
+                  "startLine": 266
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain self.ws — known-bad domain \"self.ws\" referenced in lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "30abc254a9f2d4adef813234633ddbf6"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "                    format!(\"duplicate object property name {:?}\", key),\n                ));\n            }\n            self.ws();\n            if self.peek() != Some(b':') {\n                return self.err(\"expected `:` after property name\");\n            }"
+                  },
+                  "startLine": 278
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain self.ws — known-bad domain \"self.ws\" referenced in lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "1445c1d826dd86deb0d167f928099c13"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "                return self.err(\"expected `:` after property name\");\n            }\n            self.i += 1;\n            self.ws();\n            let v = self.value()?;\n            members.push((key, v));\n            self.ws();"
+                  },
+                  "startLine": 283
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain self.ws — known-bad domain \"self.ws\" referenced in lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "7b5ce4775763d4bae98311737bf5c714"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "            self.ws();\n            let v = self.value()?;\n            members.push((key, v));\n            self.ws();\n            match self.peek() {\n                Some(b',') =\u003e {\n                    self.i += 1;"
+                  },
+                  "startLine": 286
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain self.ws — known-bad domain \"self.ws\" referenced in lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "5740fc13595441d1043a4be4333e8114"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        self.enter()?;\n        self.i += 1; // '['\n        let mut items = Vec::new();\n        self.ws();\n        if self.peek() == Some(b']') {\n            self.i += 1;\n            self.depth -= 1;"
+                  },
+                  "startLine": 305
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain self.ws — known-bad domain \"self.ws\" referenced in lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "bc06df14486ff816b1319e8e055b55c2"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "            return Ok(Value::Array(items));\n        }\n        loop {\n            self.ws();\n            items.push(self.value()?);\n            self.ws();\n            match self.peek() {"
+                  },
+                  "startLine": 312
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain self.ws — known-bad domain \"self.ws\" referenced in lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "58d26fed60c64f05a7f6f105352ecd5b"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        loop {\n            self.ws();\n            items.push(self.value()?);\n            self.ws();\n            match self.peek() {\n                Some(b',') =\u003e {\n                    self.i += 1;"
+                  },
+                  "startLine": 314
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain self.ws — known-bad domain \"self.ws\" referenced in lib/python3.12/site-packages/aicom_owned_source/awr/rust/src/json.rs"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "6eecdee861331932ce3d4d7f0d39889a"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/contracts/solana/deploy.sh"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        RPC_URL=\"${SOLANA_RPC_DEVNET:-https://api.devnet.solana.com}\"\n        ;;\n    mainnet)\n        RPC_URL=\"${SOLANA_RPC_MAINNET:-https://api.mainnet-beta.solana.com}\"\n        ;;\n    *)\n        echo \"Unknown network: $NETWORK\""
+                  },
+                  "startLine": 31
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious URL https://api.mainnet-beta.solana.com — known-bad url \"https://api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/contracts/solana/deploy.sh"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "f40fcc34223267bb3fa6646caf14c2d2"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/contracts/solana/deploy.sh"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        RPC_URL=\"${SOLANA_RPC_DEVNET:-https://api.devnet.solana.com}\"\n        ;;\n    mainnet)\n        RPC_URL=\"${SOLANA_RPC_MAINNET:-https://api.mainnet-beta.solana.com}\"\n        ;;\n    *)\n        echo \"Unknown network: $NETWORK\""
+                  },
+                  "startLine": 31
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain api.mainnet-beta.solana.com — known-bad domain \"api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/contracts/solana/deploy.sh"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "d8f705cb148b2d9d38d25f8840481f22"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/esim-kit/store/src/payments/evm.js"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "const TRANSFER = \"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\";\n\nexport const EVM_CHAINS = {\n  1: { key: \"ethereum\", name: \"Ethereum\", rpc: \"https://ethereum-rpc.publicnode.com\", confirmations: 3,\n       explorer: \"https://etherscan.io/tx/\", native: \"ETH\",\n       tokens: { USDC: [\"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48\", 6], USDT: [\"0xdAC17F958D2ee523a2206206994597C13D831ec7\", 6] } },\n  42161: { key: \"arbitrum\", name: \"Arbitrum One\", rpc: \"https://arbitrum-one-rpc.publicnode.com\", confirmations: 1,"
+                  },
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain ethereum-rpc.publicnode.com — known-bad domain \"ethereum-rpc.publicnode.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/esim-kit/store/src/payments/evm.js"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "1fa62bb125476a7fb4ed7a7883207737"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/esim-kit/store/src/payments/solana.js"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "\nexport const USDC_SOLANA = \"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v\";   // 6 decimals (getTokenSupply)\n\nexport function solanaUsdc({ address = \"\", rpc = \"https://api.mainnet-beta.solana.com\", fetchImpl = globalThis.fetch,\n                             storeName = \"eSIM\" }) {\n  if (address \u0026\u0026 !isSolanaAddress(address)) throw new Error(\"PAY_TO_SOLANA is not a Solana address\");\n  const call = async (method, params) =\u003e {"
+                  },
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious URL https://api.mainnet-beta.solana.com — known-bad url \"https://api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/esim-kit/store/src/payments/solana.js"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "cb1bbc8ca2f4c9aa78789fb51e5f26c3"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/esim-kit/store/src/payments/solana.js"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "\nexport const USDC_SOLANA = \"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v\";   // 6 decimals (getTokenSupply)\n\nexport function solanaUsdc({ address = \"\", rpc = \"https://api.mainnet-beta.solana.com\", fetchImpl = globalThis.fetch,\n                             storeName = \"eSIM\" }) {\n  if (address \u0026\u0026 !isSolanaAddress(address)) throw new Error(\"PAY_TO_SOLANA is not a Solana address\");\n  const call = async (method, params) =\u003e {"
+                  },
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain api.mainnet-beta.solana.com — known-bad domain \"api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/esim-kit/store/src/payments/solana.js"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "47973a3c98b0be8fffc496128a876e6a"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/backend/app/capabilities/blockchain/evm_rpc.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        \"ETH\",\n        \"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48\",\n        \"https://etherscan.io\",\n        (\"https://eth.drpc.org\", \"https://ethereum-rpc.publicnode.com\"),\n    ),\n    10: EvmNetwork(\n        10,"
+                  },
+                  "startLine": 36
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain ethereum-rpc.publicnode.com — known-bad domain \"ethereum-rpc.publicnode.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/backend/app/capabilities/blockchain/evm_rpc.py"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "83c6a8ddc1212f094f64c0e37ded767c"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/backend/app/capabilities/blockchain/evm_rpc.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        \"POL\",\n        \"0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359\",\n        \"https://polygonscan.com\",\n        (\"https://polygon-bor-rpc.publicnode.com\", \"https://polygon.drpc.org\", \"https://1rpc.io/matic\"),\n    ),\n    8453: EvmNetwork(\n        8453,"
+                  },
+                  "startLine": 54
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain polygon.drpc.org — known-bad domain \"polygon.drpc.org\" referenced in lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/backend/app/capabilities/blockchain/evm_rpc.py"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "830f25509f9f0555746d6fb653856eb1"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/docker-compose.yml"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "      AEGIS_CORS_ORIGINS: http://localhost:${AEGIS_PORT:-8787}\n      AIMARKET_EVM_CHAIN_IDS: ${AIMARKET_EVM_CHAIN_IDS:-1,10,137,8453,42161}\n      AIMARKET_DEFAULT_CHAIN_ID: ${AIMARKET_DEFAULT_CHAIN_ID:-8453}\n      AIMARKET_RPC_1: ${AIMARKET_RPC_1:-https://eth.drpc.org,https://ethereum-rpc.publicnode.com}\n      AIMARKET_RPC_10: ${AIMARKET_RPC_10:-https://optimism.drpc.org,https://optimism-rpc.publicnode.com,https://1rpc.io/op}\n      AIMARKET_RPC_137: ${AIMARKET_RPC_137:-https://polygon-bor-rpc.publicnode.com,https://polygon.drpc.org,https://1rpc.io/matic}\n      AIMARKET_RPC_8453: ${AIMARKET_RPC_8453:-https://base.drpc.org,https://mainnet.base.org,https://base-rpc.publicnode.com,https://1rpc.io/base}"
+                  },
+                  "startLine": 134
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain ethereum-rpc.publicnode.com — known-bad domain \"ethereum-rpc.publicnode.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/docker-compose.yml"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "586563616b2e16f1f1cb023faba6dd9f"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/docker-compose.yml"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "      AIMARKET_DEFAULT_CHAIN_ID: ${AIMARKET_DEFAULT_CHAIN_ID:-8453}\n      AIMARKET_RPC_1: ${AIMARKET_RPC_1:-https://eth.drpc.org,https://ethereum-rpc.publicnode.com}\n      AIMARKET_RPC_10: ${AIMARKET_RPC_10:-https://optimism.drpc.org,https://optimism-rpc.publicnode.com,https://1rpc.io/op}\n      AIMARKET_RPC_137: ${AIMARKET_RPC_137:-https://polygon-bor-rpc.publicnode.com,https://polygon.drpc.org,https://1rpc.io/matic}\n      AIMARKET_RPC_8453: ${AIMARKET_RPC_8453:-https://base.drpc.org,https://mainnet.base.org,https://base-rpc.publicnode.com,https://1rpc.io/base}\n      AIMARKET_RPC_42161: ${AIMARKET_RPC_42161:-https://arb1.arbitrum.io/rpc,https://arbitrum-one-rpc.publicnode.com}\n      AIMARKET_RPC_BASE: ${AIMARKET_RPC_BASE:-https://base-rpc.publicnode.com,https://base.drpc.org,https://mainnet.base.org,https://1rpc.io/base}"
+                  },
+                  "startLine": 136
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain polygon.drpc.org — known-bad domain \"polygon.drpc.org\" referenced in lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/docker-compose.yml"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "fa13b96fc34589d3a55cf6d6aaf02da0"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/ops/money.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "\n\nDEFAULT_RPCS = {\n    1: (\"https://eth.drpc.org\", \"https://ethereum-rpc.publicnode.com\"),\n    10: (\"https://optimism.drpc.org\", \"https://optimism-rpc.publicnode.com\", \"https://1rpc.io/op\"),\n    137: (\"https://polygon-bor-rpc.publicnode.com\", \"https://polygon.drpc.org\", \"https://1rpc.io/matic\"),\n    8453: ("
+                  },
+                  "startLine": 20
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain ethereum-rpc.publicnode.com — known-bad domain \"ethereum-rpc.publicnode.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/ops/money.py"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "d81cd183ed3444290fd0b6c4f3740ebd"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/ops/money.py"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "DEFAULT_RPCS = {\n    1: (\"https://eth.drpc.org\", \"https://ethereum-rpc.publicnode.com\"),\n    10: (\"https://optimism.drpc.org\", \"https://optimism-rpc.publicnode.com\", \"https://1rpc.io/op\"),\n    137: (\"https://polygon-bor-rpc.publicnode.com\", \"https://polygon.drpc.org\", \"https://1rpc.io/matic\"),\n    8453: (\n        \"https://base.drpc.org\",\n        \"https://mainnet.base.org\","
+                  },
+                  "startLine": 22
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain polygon.drpc.org — known-bad domain \"polygon.drpc.org\" referenced in lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/ops/money.py"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "656c938012cc1a6139ad9a7f9e2cf1bb"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/start.sh"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "ensure_env AIMARKET_PAYMENT_RECIPIENT \"\"\nensure_env AIMARKET_EVM_CHAIN_IDS \"1,10,137,8453,42161\"\nensure_env AIMARKET_DEFAULT_CHAIN_ID \"8453\"\nensure_env AIMARKET_RPC_1 \"https://eth.drpc.org,https://ethereum-rpc.publicnode.com\"\nensure_env AIMARKET_RPC_10 \"https://optimism.drpc.org,https://optimism-rpc.publicnode.com,https://1rpc.io/op\"\nensure_env AIMARKET_RPC_137 \"https://polygon-bor-rpc.publicnode.com,https://polygon.drpc.org,https://1rpc.io/matic\"\nensure_env AIMARKET_RPC_8453 \"https://base.drpc.org,https://mainnet.base.org,https://base-rpc.publicnode.com,https://1rpc.io/base\""
+                  },
+                  "startLine": 66
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain ethereum-rpc.publicnode.com — known-bad domain \"ethereum-rpc.publicnode.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/start.sh"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "03d5ed9d8703440c7e7b9496a6d7467d"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/start.sh"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "ensure_env AIMARKET_DEFAULT_CHAIN_ID \"8453\"\nensure_env AIMARKET_RPC_1 \"https://eth.drpc.org,https://ethereum-rpc.publicnode.com\"\nensure_env AIMARKET_RPC_10 \"https://optimism.drpc.org,https://optimism-rpc.publicnode.com,https://1rpc.io/op\"\nensure_env AIMARKET_RPC_137 \"https://polygon-bor-rpc.publicnode.com,https://polygon.drpc.org,https://1rpc.io/matic\"\nensure_env AIMARKET_RPC_8453 \"https://base.drpc.org,https://mainnet.base.org,https://base-rpc.publicnode.com,https://1rpc.io/base\"\nensure_env AIMARKET_RPC_42161 \"https://arb1.arbitrum.io/rpc,https://arbitrum-one-rpc.publicnode.com\"\n# Legacy alias retained only for the bundled Hub's Base-specific payment-channel rail."
+                  },
+                  "startLine": 68
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain polygon.drpc.org — known-bad domain \"polygon.drpc.org\" referenced in lib/python3.12/site-packages/aicom_owned_source/independent/verified-execution-hub/start.sh"
+          },
+          "properties": {
+            "severity": "critical",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "c72d41f276fe858b91234b7394f5603a"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/docker-compose.yml"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_FORGE_URL:-https://forge.pingblip.com}\n        NEXT_PUBLIC_BLIP_URL: ${NEXT_PUBLIC_APP_URL:-https://pingblip.com}\n        NEXT_PUBLIC_WORLD_URL: ${NEXT_PUBLIC_WORLD_URL:-https://world.pingblip.com}\n        NEXT_PUBLIC_LAUNCH_RAIL_URL: ${NEXT_PUBLIC_LAUNCH_RAIL_URL:-https://pump.fun/create}\n    ports:\n      - \"127.0.0.1:3081:3000\"\n    environment:"
+                  },
+                  "startLine": 85
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/docker-compose.yml"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "f7e58f5e4978243e0511042c72caaa7b"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/docker-compose.yml"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_FORGE_URL:-https://forge.pingblip.com}\n      NEXT_PUBLIC_BLIP_URL: ${NEXT_PUBLIC_APP_URL:-https://pingblip.com}\n      NEXT_PUBLIC_WORLD_URL: ${NEXT_PUBLIC_WORLD_URL:-https://world.pingblip.com}\n      NEXT_PUBLIC_LAUNCH_RAIL_URL: ${NEXT_PUBLIC_LAUNCH_RAIL_URL:-https://pump.fun/create}\n      DATA_DIR: /data\n      REFERRAL_BPS: \"0\"\n      PACK_PRICE_CENTS: \"0\""
+                  },
+                  "startLine": 100
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/docker-compose.yml"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "305775e88070c946a115171e4514f184"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "      ADMIN_TELEGRAM_IDS: \"\"\n      TELEGRAM_BOT_TOKEN: \"\"\n      TELEGRAM_WEBHOOK_SECRET: \"\"\n      SOLANA_RPC_URL: https://api.mainnet-beta.solana.com\n      NEXT_PUBLIC_SOLANA_RPC_URL: https://api.mainnet-beta.solana.com\n      SOLANA_PAYMENT_WALLET: \"\"\n      SOLANA_USDC_MINT: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                  },
+                  "startLine": 30
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious URL https://api.mainnet-beta.solana.com — known-bad url \"https://api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "67ac3cda3a72c1f6bb3e9b35b5908625"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "      ADMIN_TELEGRAM_IDS: \"\"\n      TELEGRAM_BOT_TOKEN: \"\"\n      TELEGRAM_WEBHOOK_SECRET: \"\"\n      SOLANA_RPC_URL: https://api.mainnet-beta.solana.com\n      NEXT_PUBLIC_SOLANA_RPC_URL: https://api.mainnet-beta.solana.com\n      SOLANA_PAYMENT_WALLET: \"\"\n      SOLANA_USDC_MINT: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                  },
+                  "startLine": 30
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain api.mainnet-beta.solana.com — known-bad domain \"api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "b937f420c99e495903620450f6f593d7"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "      TELEGRAM_BOT_TOKEN: \"\"\n      TELEGRAM_WEBHOOK_SECRET: \"\"\n      SOLANA_RPC_URL: https://api.mainnet-beta.solana.com\n      NEXT_PUBLIC_SOLANA_RPC_URL: https://api.mainnet-beta.solana.com\n      SOLANA_PAYMENT_WALLET: \"\"\n      SOLANA_USDC_MINT: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v\n      SOLANA_ORDER_TTL_MINUTES: \"15\""
+                  },
+                  "startLine": 31
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious URL https://api.mainnet-beta.solana.com — known-bad url \"https://api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "2b5fc9ad90eccba06a147547a83603a5"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "      TELEGRAM_BOT_TOKEN: \"\"\n      TELEGRAM_WEBHOOK_SECRET: \"\"\n      SOLANA_RPC_URL: https://api.mainnet-beta.solana.com\n      NEXT_PUBLIC_SOLANA_RPC_URL: https://api.mainnet-beta.solana.com\n      SOLANA_PAYMENT_WALLET: \"\"\n      SOLANA_USDC_MINT: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v\n      SOLANA_ORDER_TTL_MINUTES: \"15\""
+                  },
+                  "startLine": 31
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain api.mainnet-beta.solana.com — known-bad domain \"api.mainnet-beta.solana.com\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "70f4827a67465ed377e22fc7eed93183"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "      SOLANA_ORDER_TTL_MINUTES: \"15\"\n      NEXT_PUBLIC_APP_NAME: MemeForge\n      NEXT_PUBLIC_APP_URL: http://localhost:3000\n      NEXT_PUBLIC_LAUNCH_RAIL_URL: https://pump.fun/create\n      DATA_DIR: /data\n      REFERRAL_BPS: \"2000\"\n      PACK_PRICE_CENTS: \"499\""
+                  },
+                  "startLine": 37
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/docker-compose.yml"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "9d21ccacbb0c7b7c46f20f01c641b1ab"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/components/forge/ExportSheet.tsx"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "            \u003c/button\u003e\n          ) : null}\n          \u003ca href={launchUrl} target=\"_blank\" rel=\"noreferrer\" className={secondary}\u003e\n            {t(\"export.launch\", undefined, \"Open pump.fun create\")}\n          \u003c/a\u003e\n          \u003cLink href=\"/dashboard\" className=\"px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-[var(--ash)]\"\u003e\n            {t(\"export.back\", undefined, \"Back to bench\")}"
+                  },
+                  "startLine": 128
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/components/forge/ExportSheet.tsx"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "1cdeccef0e495f254bb53df8519c3a81"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/de.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"Link kopieren\",\n    \"disclaimer\": \"MemeForge gibt den Token nicht aus, betreibt keine Kurve und verspricht keinen Markt. Du gehst mit einem Bild und einem Text. Die meisten Starts verlieren alles. Das ist kein Angebot und kein Rat.\",\n    \"download\": \"PNG laden\",\n    \"launch\": \"pump.fun-Erstellen öffnen\",\n    \"postX\": \"Auf X posten\",\n    \"share\": \"Teilen\",\n    \"stamp\": \"Abgeschreckt\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/de.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "d8072ddbf9901f136ec5b9639690d7b5"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/en.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"Copy link\",\n    \"disclaimer\": \"MemeForge does not issue the token, run a curve, or promise a market. You leave with a picture and copy. Most launches lose everything. Do not treat this as an offer or advice.\",\n    \"download\": \"Download PNG\",\n    \"launch\": \"Open pump.fun create\",\n    \"postX\": \"Post on X\",\n    \"share\": \"Share\",\n    \"stamp\": \"Quenched\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/en.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "69b2a4a72bb527fe73f8edf30bb1431d"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/es.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"Copiar enlace\",\n    \"disclaimer\": \"MemeForge no emite el token, no mueve una curva ni promete un mercado. Te llevas una imagen y un texto. La mayoría de los lanzamientos lo pierden todo. No lo tomes como oferta ni consejo.\",\n    \"download\": \"Descargar PNG\",\n    \"launch\": \"Abrir creación en pump.fun\",\n    \"postX\": \"Publicar en X\",\n    \"share\": \"Compartir\",\n    \"stamp\": \"Templado\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/es.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "a4d62960aa5a95254013f0e10ff26958"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/ja.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"リンクをコピー\",\n    \"disclaimer\": \"MemeForge はトークンを発行せず、カーブも回さず、市場も約束しません。持ち帰るのは絵と文面です。ほとんどのローンチは全部失います。勧誘や助言として扱わないでください。\",\n    \"download\": \"PNG を保存\",\n    \"launch\": \"pump.fun の作成を開く\",\n    \"postX\": \"X に投稿\",\n    \"share\": \"共有\",\n    \"stamp\": \"焼き入れ済み\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/ja.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "d74036748e1083e5188511f91fc133eb"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/ko.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"링크 복사\",\n    \"disclaimer\": \"MemeForge는 토큰을 발행하지 않고, 곡선을 돌리지 않으며, 시장을 약속하지 않습니다. 가져가는 것은 그림과 문구입니다. 대부분의 출시는 전부를 잃습니다. 청약이나 조언으로 받아들이지 마세요.\",\n    \"download\": \"PNG 받기\",\n    \"launch\": \"pump.fun 생성 열기\",\n    \"postX\": \"X에 올리기\",\n    \"share\": \"공유\",\n    \"stamp\": \"담금질됨\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/ko.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "a13dd47ed2531245feb18c78df33e426"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/pt.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"Copiar ligação\",\n    \"disclaimer\": \"A MemeForge não emite o token, não corre uma curva nem promete um mercado. Sais com uma imagem e um texto. A maioria dos lançamentos perde tudo. Não trates isto como oferta nem conselho.\",\n    \"download\": \"Descarregar PNG\",\n    \"launch\": \"Abrir criação no pump.fun\",\n    \"postX\": \"Publicar no X\",\n    \"share\": \"Partilhar\",\n    \"stamp\": \"Temperado\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/pt.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "537304701e28626d7f6ed0d666a02b06"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/ru.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"Копировать ссылку\",\n    \"disclaimer\": \"MemeForge не выпускает токен, не ведёт кривую и не обещает рынок. С собой уносишь картинку и текст. Большинство запусков теряют всё. Это не оферта и не совет.\",\n    \"download\": \"Скачать PNG\",\n    \"launch\": \"Открыть создание на pump.fun\",\n    \"postX\": \"В X\",\n    \"share\": \"Поделиться\",\n    \"stamp\": \"Закалено\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/ru.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "f784c5d1856884d74afcd2e6e2ad7b0f"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/tr.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"Bağlantıyı kopyala\",\n    \"disclaimer\": \"MemeForge token basmaz, eğri işletmez ve piyasa vaat etmez. Yanında bir resim ve bir metin götürürsün. Çoğu lansman her şeyini kaybeder. Bunu teklif veya tavsiye sayma.\",\n    \"download\": \"PNG indir\",\n    \"launch\": \"pump.fun oluşturmayı aç\",\n    \"postX\": \"X'te paylaş\",\n    \"share\": \"Paylaş\",\n    \"stamp\": \"Su verildi\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/tr.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "007b728045b81590cfdd850d0e222a4d"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/vi.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"Sao chép liên kết\",\n    \"disclaimer\": \"MemeForge không phát hành token, không chạy đường cong và không hứa một thị trường. Bạn mang về một bức hình và đoạn chữ. Hầu hết lần ra mắt mất trắng. Đừng coi đây là chào bán hay lời khuyên.\",\n    \"download\": \"Tải PNG\",\n    \"launch\": \"Mở trang tạo trên pump.fun\",\n    \"postX\": \"Đăng lên X\",\n    \"share\": \"Chia sẻ\",\n    \"stamp\": \"Đã tôi\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/vi.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "ffc720b6208372a007ce58b5d5bd6c5c"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/zh.json"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"copy\": \"复制链接\",\n    \"disclaimer\": \"MemeForge 不发行代币、不运行曲线、也不承诺市场。你带走的是一张图和一段文案。大多数发币会亏光。不要把这当成要约或建议。\",\n    \"download\": \"下载 PNG\",\n    \"launch\": \"打开 pump.fun 创建\",\n    \"postX\": \"发到 X\",\n    \"share\": \"分享\",\n    \"stamp\": \"已淬火\","
+                  },
+                  "startLine": 115
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/i18n/locales/zh.json"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "deb53d1ab106480b4d28defb98ff5276"
+          },
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/lib/env.ts"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "  NEXT_PUBLIC_APP_NAME: z.string().default(\"MemeForge\"),\n  NEXT_PUBLIC_APP_URL: z.string().default(\"http://localhost:3000\"),\n  NEXT_PUBLIC_BLIP_URL: z.string().default(\"http://localhost:3080\"),\n  NEXT_PUBLIC_LAUNCH_RAIL_URL: z.string().default(\"https://pump.fun/create\"),\n  DATA_DIR: z.string().default(\"./data\"),\n  REFERRAL_BPS: z.coerce.number().int().min(0).max(5000).default(2000),\n  PACK_PRICE_CENTS: z.coerce.number().int().default(499),"
+                  },
+                  "startLine": 17
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious domain pump.fun — known-bad domain \"pump.fun\" referenced in lib/python3.12/site-packages/aicom_owned_source/pingblip/memeforge/src/lib/env.ts"
+          },
+          "properties": {
+            "severity": "high",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        },
+        {
+          "fingerprints": {
+            "vulnetix/v1": "0db41c9381cf87c36d132309bea648b3"
+          },
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".venv/lib/python3.12/site-packages/aicom_owned_source/scripts/delivery-survey/test/lib.test.mjs"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "    \"2002:a00:1::1\", \"2001:db8::1\", \"ff02::1\", \"not-an-ip\"]) {\n    assert.equal(isPublicAddress(ip), false, ip);\n  }\n  for (const ip of [\"8.8.8.8\", \"1.1.1.1\", \"104.16.0.1\", \"2606:4700:4700::1111\", \"2a00:1450:4001::200e\"]) {\n    assert.equal(isPublicAddress(ip), true, ip);\n  }\n});"
+                  },
+                  "startLine": 121
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Malicious IP address 104.16.0.1 — known-bad ipv4 \"104.16.0.1\" referenced in lib/python3.12/site-packages/aicom_owned_source/scripts/delivery-survey/test/lib.test.mjs"
+          },
+          "properties": {
+            "severity": "low",
+            "vulnetix/kind": "malware"
+          },
+          "ruleId": "IOC-STIX-MATCH"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://vulnetix.com",
+          "name": "vulnetix",
+          "rules": [
+            {
+              "id": "IOC-STIX-MATCH",
+              "name": "Known-bad IOC reference",
+              "properties": {
+                "cwe": [
+                  "CWE-506"
+                ],
+                "severity": "high",
+                "tags": [
+                  "malware",
+                  "ioc",
+                  "url"
+                ]
+              },
+              "shortDescription": {
+                "text": "A file references a known-bad indicator of compromise (domain, IP or URL) from the malscan STIX feeds."
+              }
+            }
+          ],
+          "version": "v3.151.2"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

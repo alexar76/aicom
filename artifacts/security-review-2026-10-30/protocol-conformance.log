@@ -1,0 +1,31 @@
+AIMarket Protocol conformance runner
+
+Positive vectors — these MUST verify
+  PASS  manifest-signed.json
+  PASS  receipt-signed.json
+  PASS  receipt-signed.json — signature version covers its content  signed v1, content requires v1
+  PASS  receipt-v2-signed.json
+  PASS  receipt-v2-signed.json — signature version covers its content  signed v2, content requires v2
+  PASS  federation-announce-signed.json
+  PASS  receipt-hybrid-signed.json
+  PASS  receipt-hybrid-signed.json — hybrid (§7.3.8)
+  PASS  receipt-hybrid-signed.json — signature version covers its content  signed v1, content requires v1
+
+Negative vectors — these MUST be rejected
+  PASS  announce-tampered-hub-url.json  rejected
+  PASS  manifest-legacy-3field-canonical.json  rejected
+  PASS  manifest-signature-bare-string.json  rejected: valid bytes, not a §7.3.1 object
+  PASS  manifest-tampered-by-hub.json  rejected
+  PASS  manifest-tampered-price.json  rejected
+  PASS  receipt-flipped-success.json  rejected
+  PASS  receipt-hybrid-pq-invalid.json  rejected (Ed25519 half valid)
+  PASS  receipt-hybrid-pq-key-substituted.json  rejected (Ed25519 half valid)
+  PASS  receipt-hybrid-pq-stripped.json  rejected (Ed25519 half valid)
+  PASS  receipt-small-order-key.json  rejected (the bare library accepts it)
+  PASS  receipt-stale-timestamp.json  rejected
+  PASS  receipt-tampered-latency.json  rejected
+  PASS  receipt-v2-downgraded-to-v1.json  detected: signed v1, content requires v2
+  PASS  receipt-wrong-signer.json  rejected: signer is not the pinned key
+
+all 23 checks passed
+Conformance to the vectors and the discovery surface. Not a security audit.

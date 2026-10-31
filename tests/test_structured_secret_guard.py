@@ -96,6 +96,41 @@ def test_encrypted_der_private_key_is_still_private_material(tmp_path):
     assert [(r.path, r.kind) for r in guard.scan(tmp_path)] == [("document.bin", "der-private-key")]
 
 
+def test_private_host_failure_reports_paths_without_values(tmp_path):
+    import os
+
+    target = tmp_path / "deploy/has spaces/settings.txt"
+    target.parent.mkdir(parents=True)
+    target.write_text("connect=https://private-canary.invalid:9090/sensitive-path\n")
+    result = subprocess.run(
+        ["bash", str(SCRIPT.with_name("verify_mirror_secrets.sh")), str(tmp_path)],
+        env={**os.environ, "MIRROR_FORBIDDEN_HOSTS": "private-canary.invalid"},
+        capture_output=True, text=True,
+    )
+    output = result.stdout + result.stderr
+    assert result.returncode != 0
+    assert "private server IP/hostname literal" in output
+    assert 'file: "deploy/has spaces/settings.txt"' in output
+    assert "private-canary.invalid" not in output
+    assert "sensitive-path" not in output
+
+
+def test_mirror_rejects_internal_host_policy_even_with_different_external_policy(tmp_path):
+    import os
+
+    target = tmp_path / "scripts/.mirror-forbidden-hosts"
+    target.parent.mkdir()
+    target.write_text("internal-policy-only.invalid\n")
+    result = subprocess.run(
+        ["bash", str(SCRIPT.with_name("verify_mirror_secrets.sh")), str(tmp_path)],
+        env={**os.environ, "MIRROR_FORBIDDEN_HOSTS": "different-canary.invalid"},
+        capture_output=True, text=True,
+    )
+    assert result.returncode != 0
+    assert "internal private-host policy file" in result.stderr
+    assert "internal-policy-only.invalid" not in result.stdout + result.stderr
+
+
 def test_public_key_signature_and_public_hex_vectors_are_allowed(tmp_path):
     public = _pair()[32:]
     private = Ed25519PrivateKey.from_private_bytes(_pair()[:32])

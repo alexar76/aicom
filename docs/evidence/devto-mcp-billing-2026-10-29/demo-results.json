@@ -1,0 +1,108 @@
+{
+  "scope": "Educational in-memory reconstruction; not a full MCP server or the original experiment",
+  "realMoneyUsed": false,
+  "networkUsed": false,
+  "casesChecked": 7,
+  "sameReplyDifferentBilling": true,
+  "cases": [
+    {
+      "case": "explicit-preview",
+      "calls": 1,
+      "replies": [
+        {
+          "kind": "result",
+          "body": {
+            "recordId": "demo-record",
+            "status": "available"
+          }
+        }
+      ],
+      "mockCredits": 0
+    },
+    {
+      "case": "empty-default-purchase",
+      "calls": 1,
+      "replies": [
+        {
+          "kind": "result",
+          "body": {
+            "recordId": "demo-record",
+            "status": "available"
+          }
+        }
+      ],
+      "mockCredits": 7
+    },
+    {
+      "case": "billing-disabled",
+      "calls": 1,
+      "replies": [
+        {
+          "kind": "result",
+          "body": {
+            "recordId": "demo-record",
+            "status": "available"
+          }
+        }
+      ],
+      "mockCredits": 0
+    },
+    {
+      "case": "charge-before-tool-error",
+      "calls": 1,
+      "replies": [
+        {
+          "kind": "result",
+          "body": {
+            "isError": true,
+            "message": "Record lookup unavailable"
+          }
+        }
+      ],
+      "mockCredits": 7
+    },
+    {
+      "case": "charge-before-timeout",
+      "calls": 1,
+      "replies": [
+        {
+          "kind": "TimeoutError",
+          "message": "Response unavailable after mock charge"
+        }
+      ],
+      "mockCredits": 7
+    },
+    {
+      "case": "required-mode-empty",
+      "calls": 1,
+      "replies": [
+        {
+          "kind": "ValueError",
+          "message": "Missing required mode"
+        }
+      ],
+      "mockCredits": 0
+    },
+    {
+      "case": "same-key-retry",
+      "calls": 2,
+      "replies": [
+        {
+          "kind": "result",
+          "body": {
+            "recordId": "demo-record",
+            "status": "available"
+          }
+        },
+        {
+          "kind": "result",
+          "body": {
+            "recordId": "demo-record",
+            "status": "available"
+          }
+        }
+      ],
+      "mockCredits": 7
+    }
+  ]
+}

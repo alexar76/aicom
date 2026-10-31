@@ -1,0 +1,34 @@
+== Freshness gate (histor) ==
+distribution                     version    state
+[2maimarket-histor                  0.5.2      tree ahead of PyPI (latest 0.5.1) — unpublished, fine[0m
+
+[32mEvery published distribution matches its tree.[0m
+== Build histor ==
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - hatchling
+* Getting build dependencies for sdist...
+* Installed build dependency versions:
+  - hatchling==1.33.0
+* Building sdist...
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - hatchling
+* Getting build dependencies for wheel...
+* Installed build dependency versions:
+  - hatchling==1.33.0
+* Building wheel...
+Successfully built aimarket_histor-0.5.2.tar.gz and aimarket_histor-0.5.2-py3-none-any.whl
+Checking dist/aimarket_histor-0.5.2-py3-none-any.whl: PASSED
+Checking dist/aimarket_histor-0.5.2.tar.gz: PASSED
+== Secret gate ==
+OK distribution contents inspected
+OK distribution contents inspected
+OK no key material, .env, database or .gitignore in aimarket_histor-0.5.2-py3-none-any.whl aimarket_histor-0.5.2.tar.gz
+OK dry-run — dist/ ready:
+total 8808
+drwxr-xr-x@  4 alex  staff      128 Oct 30 14:51 .
+drwxr-xr-x@ 36 alex  staff     1152 Oct 30 14:51 ..
+-rw-r--r--@  1 alex  staff   958430 Oct 30 14:51 aimarket_histor-0.5.2-py3-none-any.whl
+-rw-r--r--@  1 alex  staff  3550091 Oct 30 14:51 aimarket_histor-0.5.2.tar.gz

@@ -1,0 +1,167 @@
+TAP version 13
+# Subtest: base58btc matches the multibase specification example
+ok 1 - base58btc matches the multibase specification example
+  ---
+  duration_ms: 0.493334
+  type: 'test'
+  ...
+# Subtest: did:key derivation matches the published test key
+ok 2 - did:key derivation matches the published test key
+  ---
+  duration_ms: 1.17075
+  type: 'test'
+  ...
+# Subtest: JCS sorts by UTF-16 code units and refuses non-integer numbers
+ok 3 - JCS sorts by UTF-16 code units and refuses non-integer numbers
+  ---
+  duration_ms: 0.622542
+  type: 'test'
+  ...
+# Subtest: JCS escapes control characters in lowercase hex and does not normalize
+ok 4 - JCS escapes control characters in lowercase hex and does not normalize
+  ---
+  duration_ms: 0.092917
+  type: 'test'
+  ...
+# Subtest: the smallest receipt verifies in the Rust implementation
+ok 5 - the smallest receipt verifies in the Rust implementation
+  ---
+  duration_ms: 15.826041
+  type: 'test'
+  ...
+# Subtest: it omits optional fields it was not given, but always carries completedAt
+ok 6 - it omits optional fields it was not given, but always carries completedAt
+  ---
+  duration_ms: 0.934875
+  type: 'test'
+  ...
+# Subtest: a payload digest is over exactly the bytes given
+ok 7 - a payload digest is over exactly the bytes given
+  ---
+  duration_ms: 3.314708
+  type: 'test'
+  ...
+# Subtest: jcsPayload makes a JSON digest reproducible across key orderings
+ok 8 - jcsPayload makes a JSON digest reproducible across key orderings
+  ---
+  duration_ms: 0.112708
+  type: 'test'
+  ...
+# Subtest: a failed run still gets a verifiable receipt
+ok 9 - a failed run still gets a verifiable receipt
+  ---
+  duration_ms: 4.972625
+  type: 'test'
+  ...
+# Subtest: a non-integer latency and an unknown status are refused
+ok 10 - a non-integer latency and an unknown status are refused
+  ---
+  duration_ms: 0.882666
+  type: 'test'
+  ...
+# Subtest: a price given as a JSON number is refused by canonicalization
+ok 11 - a price given as a JSON number is refused by canonicalization
+  ---
+  duration_ms: 0.816042
+  type: 'test'
+  ...
+# Subtest: a chain edge commits to the parent bytes
+ok 12 - a chain edge commits to the parent bytes
+  ---
+  duration_ms: 0.556208
+  type: 'test'
+  ...
+# Subtest: two generated keys are two issuers
+ok 13 - two generated keys are two issuers
+  ---
+  duration_ms: 0.33975
+  type: 'test'
+  ...
+# Subtest: the MCP wrapper emits one verifiable receipt per call and returns the result
+ok 14 - the MCP wrapper emits one verifiable receipt per call and returns the result
+  ---
+  duration_ms: 3.131292
+  type: 'test'
+  ...
+# Subtest: an isError result is recorded as failed work, not as success
+ok 15 - an isError result is recorded as failed work, not as success
+  ---
+  duration_ms: 0.333833
+  type: 'test'
+  ...
+# Subtest: a thrown handler still leaves a receipt and the error still propagates
+ok 16 - a thrown handler still leaves a receipt and the error still propagates
+  ---
+  duration_ms: 0.352042
+  type: 'test'
+  ...
+# Subtest: the thrown error is not passed off as the tool output
+ok 17 - the thrown error is not passed off as the tool output
+  ---
+  duration_ms: 0.415333
+  type: 'test'
+  ...
+# Subtest: the wrapper refuses to be constructed without a sink
+ok 18 - the wrapper refuses to be constructed without a sink
+  ---
+  duration_ms: 0.086834
+  type: 'test'
+  ...
+# Subtest: validFrom is never derived from created — a proof timestamp is not a validity start
+ok 19 - validFrom is never derived from created — a proof timestamp is not a validity start
+  ---
+  duration_ms: 0.126375
+  type: 'test'
+  ...
+# Subtest: proof.created falls back to validFrom, exactly as the reference does
+ok 20 - proof.created falls back to validFrom, exactly as the reference does
+  ---
+  duration_ms: 0.121458
+  type: 'test'
+  ...
+# Subtest: proof.created is never taken from completedAt
+ok 21 - proof.created is never taken from completedAt
+  ---
+  duration_ms: 0.169667
+  type: 'test'
+  ...
+# Subtest: work.completedAt follows the reference precedence: completedAt, created, validFrom, now
+ok 22 - work.completedAt follows the reference precedence: completedAt, created, validFrom, now
+  ---
+  duration_ms: 0.48775
+  type: 'test'
+  ...
+# Subtest: hostile nesting is refused within the parser budget
+ok 23 - hostile nesting is refused within the parser budget
+  ---
+  duration_ms: 0.944417
+  type: 'test'
+  ...
+# Subtest: malformed and ambiguous JSON is refused
+ok 24 - malformed and ambiguous JSON is refused
+  ---
+  duration_ms: 0.395584
+  type: 'test'
+  ...
+# ok receipt-signed.json
+# ok receipt-v2-signed.json
+# ok negative/receipt-flipped-success.json
+# ok negative/receipt-tampered-latency.json
+# ok negative/receipt-stale-timestamp.json
+# ok negative/receipt-wrong-signer.json
+# ok negative/receipt-v2-downgraded-to-v1.json
+# Subtest: protocol-v2-receipt-from-spec/verify.test.mjs
+ok 3 - protocol-v2-receipt-from-spec/verify.test.mjs
+  ---
+  duration_ms: 40.455
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 89.807125

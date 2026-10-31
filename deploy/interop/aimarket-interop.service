@@ -1,0 +1,17 @@
+# /etc/systemd/system/aimarket-interop.service — regenerates https://modelmarket.dev/interop/
+# (aimarket-protocol/conformance/interop.py, installed in /usr/local/lib/aimarket-interop/ with run.py
+# and own-operators.txt). Reads only public endpoints; writes only /var/www/interop.
+[Unit]
+Description=AIMarket Protocol interop page (live conformance of every known peer, outside counters)
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/aimarket-interop/interop.py --out /var/www/interop
+TimeoutStartSec=900
+Nice=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/interop

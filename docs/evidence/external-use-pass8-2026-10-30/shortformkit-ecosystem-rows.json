@@ -1,0 +1,71 @@
+[
+  {
+    "name": "io.github.alexar76/attested-memory",
+    "title": "Attested Memory Market",
+    "description": "Attestable memory, truth, provenance. Hybrid Ed25519 + ML-DSA-65 receipts; USDC settlement on Base.",
+    "url": "https://hub.attestedmemory.net/mcp",
+    "topic": "AI, agents and memory",
+    "tools": 13,
+    "tool_names": [
+      "market_search",
+      "market_invoke",
+      "pipeline_prepare",
+      "pipeline_invoke",
+      "pipeline_status",
+      "pipeline_refund_prepare",
+      "pipeline_refund",
+      "pipeline_refund_status",
+      "weather_now",
+      "air_quality_now",
+      "nearby_sensors",
+      "fair_random",
+      "x402_check"
+    ],
+    "website": "",
+    "repo": "https://github.com/alexar76/attested-memory",
+    "tools_annotated": 0,
+    "tools_read_only": 0,
+    "tools_destructive": 0
+  },
+  {
+    "name": "dev.modelmarket/emporion",
+    "title": "EMPORION — business facts from public registers",
+    "description": "EU VAT and EORI checks, sanctions screening, company and LEI lookup, ECB rates. Free, no key.",
+    "url": "https://modelmarket.dev/tools/mcp/emporion",
+    "topic": "Business and marketing",
+    "tools": 8,
+    "tool_names": [
+      "vat_check",
+      "sanctions_screen",
+      "company_lookup",
+      "lei_lookup",
+      "fx_rate",
+      "business_days",
+      "eori_check",
+      "domain_rdap"
+    ],
+    "website": "https://modelmarket.dev/tools/",
+    "repo": "https://github.com/alexar76/emporion",
+    "tools_annotated": 8,
+    "tools_read_only": 8,
+    "tools_destructive": 0
+  },
+  {
+    "name": "dev.modelmarket/weather",
+    "title": "Live weather and air quality (GAIA)",
+    "description": "Weather, air quality and nearest live sensors anywhere, each with a signed receipt. Free, no key.",
+    "url": "https://modelmarket.dev/tools/mcp/weather",
+    "topic": "Weather, maps and travel",
+    "tools": 3,
+    "tool_names": [
+      "weather_now",
+      "air_quality_now",
+      "nearby_sensors"
+    ],
+    "website": "https://modelmarket.dev/tools/",
+    "repo": "https://github.com/alexar76/gaia",
+    "tools_annotated": 3,
+    "tools_read_only": 3,
+    "tools_destructive": 0
+  }
+]

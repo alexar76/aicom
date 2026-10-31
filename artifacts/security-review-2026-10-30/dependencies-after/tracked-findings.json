@@ -1,0 +1,132 @@
+[
+  {
+    "ecosystem": "npm",
+    "package": "@hono/node-server",
+    "version": "1.19.17",
+    "paths": [
+      "independent/daily-card/package-lock.json"
+    ],
+    "id": "GHSA-rmxm-3fg6-px4f",
+    "aliases": [
+      "CVE-2026-118663"
+    ],
+    "severity": "MODERATE",
+    "summary": "@hono/node-server: `serveStatic` decodes the request path a second time, leading to bypass of middleware on static paths",
+    "fixed": [
+      "2.1.3"
+    ],
+    "url": "https://osv.dev/vulnerability/GHSA-rmxm-3fg6-px4f",
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/honojs/node-server/security/advisories/GHSA-rmxm-3fg6-px4f"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/honojs/node-server/commit/982179278529d5673812116b042829f27794966f"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/honojs/node-server"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/honojs/node-server/releases/tag/v2.1.3"
+      }
+    ]
+  },
+  {
+    "ecosystem": "npm",
+    "package": "satori",
+    "version": "0.16.0",
+    "paths": [
+      "independent/kova-gateway/package-lock.json",
+      "independent/verified-execution-hub/package-lock.json"
+    ],
+    "id": "GHSA-wx4j-mvgx-mqwp",
+    "aliases": [
+      "CVE-2026-94545"
+    ],
+    "severity": "MODERATE",
+    "summary": "Satori-generated SVG has improper escaping",
+    "fixed": [
+      "0.33.5"
+    ],
+    "url": "https://osv.dev/vulnerability/GHSA-wx4j-mvgx-mqwp",
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/vercel/next.js/security/advisories/GHSA-vcvr-r3jv-pc5j"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vercel/satori/security/advisories/GHSA-wx4j-mvgx-mqwp"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-94545"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vercel/satori/pull/814"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vercel/next.js/commit/868fad38690d72088868f299fa2bef339b26838e"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vercel/satori/commit/26a52affc031216fee5882b6e965c8dbc7ac1782"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/vercel/next.js/releases/tag/v16.3.6"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/vercel/satori"
+      }
+    ]
+  },
+  {
+    "ecosystem": "npm",
+    "package": "deepmerge",
+    "version": "4.3.1",
+    "paths": [
+      "cite-desks/emberline/frontend/package-lock.json",
+      "esim-kit/store/package-lock.json",
+      "independent/kova-gateway/package-lock.json",
+      "independent/verified-execution-hub/package-lock.json"
+    ],
+    "id": "GHSA-gcqx-w48m-w2h4",
+    "aliases": [
+      "CVE-2026-93753"
+    ],
+    "severity": "LOW",
+    "summary": "deepmerge mergeObject() allows prototype poisoning of returned objects",
+    "fixed": [],
+    "url": "https://osv.dev/vulnerability/GHSA-gcqx-w48m-w2h4",
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-93753"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/TehShrike/deepmerge/issues/273"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/TehShrike/deepmerge"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/TehShrike/deepmerge/blob/5b87756a5671635679001cbac72aa42f23472c81/index.js#L39-L60"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.vulncheck.com/advisories/deepmerge-through-4.3.1-prototype-poisoning-via-mergeobject"
+      }
+    ]
+  }
+]

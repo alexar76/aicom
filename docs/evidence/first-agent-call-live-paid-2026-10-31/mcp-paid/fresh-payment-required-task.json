@@ -1,0 +1,34 @@
+{
+  "id": "mcp-call-first-agent-paid-20261031",
+  "status": {
+    "state": "TASK_STATE_INPUT_REQUIRED",
+    "message": {
+      "metadata": {
+        "x402.payment.required": {
+          "x402Version": 2,
+          "nonce": "0x4e6008f0a4d5aac01c7d5ea8c2eb5b61acce7c17a5867ab6f6a7dc1639c91665",
+          "accepts": [
+            {
+              "scheme": "exact",
+              "network": "eip155:8453",
+              "maxAmountRequired": "1000",
+              "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+              "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+              "resource": "https://modelmarket.dev/ai-market/v2/invoke",
+              "description": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarke",
+              "mimeType": "application/json",
+              "outputSchema": null,
+              "maxTimeoutSeconds": 300,
+              "extra": {
+                "name": "USD Coin",
+                "version": "2",
+                "nonce": "0x4e6008f0a4d5aac01c7d5ea8c2eb5b61acce7c17a5867ab6f6a7dc1639c91665"
+              },
+              "amount": "1000"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

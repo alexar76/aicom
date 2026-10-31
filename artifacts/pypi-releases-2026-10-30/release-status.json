@@ -1,0 +1,29 @@
+{
+  "requested_publication": {
+    "name": "aimarket-oracle-core",
+    "version": "0.6.4",
+    "state": "ready_to_upload",
+    "uploaded": false,
+    "blocker": "No alexar76 PyPI API token available in current environment, standard Keychain entries, uv auth or netrc; user input requested. No upload attempted."
+  },
+  "histor": {
+    "version": "0.5.2",
+    "freshness_gate": "passed; tree-ahead, no diverged distribution",
+    "build_twine_secret_gates": "passed",
+    "uploaded": false
+  },
+  "tests": {
+    "histor-tests.xml": {
+      "tests": 47,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3
+    },
+    "core-packaging-tests.xml": {
+      "tests": 411,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+}

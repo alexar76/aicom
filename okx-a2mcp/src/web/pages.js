@@ -65,6 +65,8 @@ ${links}<link rel="alternate" hreflang="x-default" href="${esc(origin + alternat
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
+<meta property="og:image" content="https://modelmarket.dev/og-card.png"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://modelmarket.dev/og-card.png">
 <meta property="og:locale" content="${OG_LOCALE[lang]}">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#02030a">${verification ? `

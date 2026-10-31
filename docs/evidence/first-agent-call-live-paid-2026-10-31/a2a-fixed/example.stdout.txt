@@ -1,0 +1,31 @@
+Agent: modelmarket.dev
+Task: a2at_eecf132e889478b8ca5a51cd TASK_STATE_COMPLETED
+Receipt verified against the signer's key.
+Result: {
+  "reading": {
+    "device_id": "om-wx-01",
+    "model": "GAIA-WS1 (Open-Meteo relay)",
+    "site": "live-weather-eu",
+    "firmware": "1.0.0",
+    "seq": 96,
+    "ts": "2026-10-31T04:54:56Z",
+    "values": {
+      "temperature_c": 8.4,
+      "humidity_pct": 97.0,
+      "pressure_hpa": 1025.8,
+      "wind_mps": 1.42
+    },
+    "units": {
+      "temperature_c": "cel",
+      "humidity_pct": "percent",
+      "pressure_hpa": "hPa",
+      "wind_mps": "m/s"
+    }
+  },
+  "attestation": {
+    "algorithm": "ed25519",
+    "public_key": "bdtWcNGNNk2Q6mcblT1OqAdtkncOohceH/G2dlxLDk0=",
+    "value": "gxEDpIqmlqcxn4pvtH9OWd67skUmks9cF6dwzbhu4jFuT3q5lHAhP96DgvCP+8Kys8QXjNDtmW4FYmTuVqryAA==",
+    "canonical": "device|model|seq|ts|values_sha256"
+  }
+}

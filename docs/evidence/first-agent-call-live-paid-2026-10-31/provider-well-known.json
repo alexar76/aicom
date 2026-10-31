@@ -1,0 +1,68 @@
+{
+  "retrieved_at_utc": "2026-10-31T05:33:10.122500+00:00",
+  "url": "https://iot.modelmarket.dev/.well-known/ai-market.json",
+  "body": {
+    "name": "GAIA — physical-world oracle gateway",
+    "protocol_versions": [
+      "v2"
+    ],
+    "hub_version": "0.1.0",
+    "manifest_url": "https://iot.modelmarket.dev/ai-market/v2/manifest",
+    "mcp_endpoint": "https://iot.modelmarket.dev/ai-market/v2/invoke",
+    "capabilities_count": 56,
+    "signer_public_key": "nXqEvIbWv+rA8TASY0GqGWZi/OPazT0HM1LQTrRXemg=",
+    "description": "Virtual IoT devices (weather ×2, air quality, energy) plus live public-API relays (Open-Meteo, NWS, UK carbon, USGS, NOAA tides/rivers/marine, NASA FIRMS/EONET, SWPC, GOES GLM, NWS CAP, Safecast, CyberNews, Sensor.Community, CWOP, Argo, MET Norway, USGS geomag, Copernicus EFFIS, optional own-edge ADS-B/AIS/IoT feeders, NHC cyclones, public ADS-B) sold as signed AIMarket capabilities, with a Metis-envelope statistical verifier for Pay-on-Verified escrow.",
+    "categories": [
+      "iot",
+      "sensors",
+      "physical-data",
+      "verification",
+      "weather",
+      "air-quality",
+      "energy",
+      "seismic",
+      "tides",
+      "fire",
+      "radiation",
+      "gnss",
+      "traffic",
+      "space-weather",
+      "lightning",
+      "alerts",
+      "ocean",
+      "geomagnetism",
+      "flood",
+      "volcano",
+      "cyclone",
+      "adsb",
+      "aviation",
+      "road",
+      "rail",
+      "drought",
+      "reservoir",
+      "uv",
+      "geocoding",
+      "electricity-prices",
+      "actuation",
+      "satellite-imagery"
+    ],
+    "protocol_version": "v2",
+    "hub_name": "GAIA — physical-world oracle gateway",
+    "hub_url": "https://iot.modelmarket.dev",
+    "ecosystem": {
+      "product": "gaia.gateway",
+      "related": [
+        "aimarket-hub",
+        "metis",
+        "oracle-family"
+      ]
+    },
+    "price_gate": {
+      "mode": "enforce",
+      "hubs": [
+        "https://modelmarket.dev"
+      ],
+      "scheme": "aimarket-hub-request/v1"
+    }
+  }
+}

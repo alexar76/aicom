@@ -1,0 +1,3465 @@
+[
+  {
+    "ids": [
+      "CVE-2026-106446",
+      "GHSA-8r5x-fm3f-whwj"
+    ],
+    "severity": "CRITICAL",
+    "summary": "Handlebars: JavaScript Injection via AST Type Confusion in compile (bypass of CVE-2026-33937)",
+    "packages": [
+      "npm:handlebars@4.7.9"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "4.7.10"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-8r5x-fm3f-whwj"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-106445",
+      "GHSA-p8wg-vrv2-v86f"
+    ],
+    "severity": "CRITICAL",
+    "summary": "Handlebars: JavaScript Injection via Own Property Check Bypass",
+    "packages": [
+      "npm:handlebars@4.7.9"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "4.7.10"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-p8wg-vrv2-v86f"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-19481",
+      "GHSA-x8mw-p69m-v3mx"
+    ],
+    "severity": "HIGH",
+    "summary": "@fastify/busboy vulnerable to Denial of Service via prototype-named multipart part header",
+    "packages": [
+      "npm:@fastify/busboy@2.1.1"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "3.2.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-x8mw-p69m-v3mx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44488",
+      "GHSA-777c-7fjr-54vf"
+    ],
+    "severity": "HIGH",
+    "summary": "Allocation of Resources Without Limits or Throttling in Axios",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.16.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-777c-7fjr-54vf"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67320",
+      "GHSA-gcfj-64vw-6mp9"
+    ],
+    "severity": "HIGH",
+    "summary": "Axios Node HTTP adapter can use an inherited proxy after interceptor config cloning",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.33.0",
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-gcfj-64vw-6mp9"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101901",
+      "GHSA-542g-h47m-68v8"
+    ],
+    "severity": "HIGH",
+    "summary": "Axios: Denial of Service via Unhandled 'error' Event in HTTP/2 ClientHttp2Session Initialization",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-542g-h47m-68v8"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101898",
+      "GHSA-3pq3-5fj3-cg6v"
+    ],
+    "severity": "HIGH",
+    "summary": "Axios: HTTP/2 adapter bypasses configured DNS lookup and proxy controls",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-3pq3-5fj3-cg6v"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101905",
+      "GHSA-m8m8-qj5v-23w3"
+    ],
+    "severity": "HIGH",
+    "summary": "Axios: Node HTTP adapter prototype-pollution gadget allows request socket hijack via inherited createConnection",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-m8m8-qj5v-23w3"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101909",
+      "GHSA-x97p-jq2g-jp4f"
+    ],
+    "severity": "HIGH",
+    "summary": "Axios: Prototype Pollution Gadget in axios toFormData Options",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.34.0",
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-x97p-jq2g-jp4f"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44487",
+      "GHSA-p92q-9vqr-4j8v"
+    ],
+    "severity": "HIGH",
+    "summary": "Axios: Proxy-Authorization Credential Leak to Origin Server Across HTTP-to-HTTPS Redirect in Axios Node.js HTTP Adapter",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.32.0",
+      "1.16.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-p92q-9vqr-4j8v"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44486",
+      "GHSA-j5f8-grm9-p9fc"
+    ],
+    "severity": "HIGH",
+    "summary": "Axios: Proxy-Authorization header leaks to redirect target when proxy is re-evaluated to direct connection",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.32.0",
+      "1.16.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-j5f8-grm9-p9fc"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101906",
+      "GHSA-mghh-pgcx-3jjj"
+    ],
+    "severity": "HIGH",
+    "summary": "Axios: ReDoS (O(N²)) in shouldBypassProxy host normalization, reachable via untrusted redirect Location",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-mghh-pgcx-3jjj"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44496",
+      "GHSA-hfxv-24rg-xrqf"
+    ],
+    "severity": "HIGH",
+    "summary": "Axios: Regular Expression Denial of Service (ReDoS) via Cookie Name Injection",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.32.0",
+      "1.16.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-hfxv-24rg-xrqf"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-73089",
+      "GHSA-c83g-rgw3-j3cx"
+    ],
+    "severity": "HIGH",
+    "summary": "Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM",
+    "packages": [
+      "npm:browserslist@4.28.2"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.28.7"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-c83g-rgw3-j3cx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-73088",
+      "GHSA-73wf-gq98-2v4g"
+    ],
+    "severity": "HIGH",
+    "summary": "Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)",
+    "packages": [
+      "npm:browserslist@4.28.2"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.28.7"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-73wf-gq98-2v4g"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-59879",
+      "GHSA-v56q-mh7h-f735"
+    ],
+    "severity": "HIGH",
+    "summary": "Immutable.js `List` 32-bit trie overflow → unrecoverable DoS",
+    "packages": [
+      "npm:immutable@4.3.8"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "3.8.4",
+      "4.3.9",
+      "5.1.8"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-v56q-mh7h-f735"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-59880",
+      "GHSA-xvcm-6775-5m9r"
+    ],
+    "severity": "HIGH",
+    "summary": "Immutable: Hash-collision algorithmic complexity denial of service in Immutable.Map/Set",
+    "packages": [
+      "npm:immutable@4.3.8"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "3.8.4",
+      "4.3.9",
+      "5.1.8"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xvcm-6775-5m9r"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-5p4m-2wfm-xmqj"
+    ],
+    "severity": "HIGH",
+    "summary": "JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) — CVE-2026-59870 fix not backported",
+    "packages": [
+      "npm:js-yaml@3.14.2",
+      "npm:js-yaml@4.1.1"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "3.15.1",
+      "4.3.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-5p4m-2wfm-xmqj"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-73646",
+      "GHSA-r28c-9q8g-f849"
+    ],
+    "severity": "HIGH",
+    "summary": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+    "packages": [
+      "npm:postcss@8.5.15"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "8.5.18"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-r28c-9q8g-f849"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-5c6j-r48x-rmvq"
+    ],
+    "severity": "HIGH",
+    "summary": "Serialize JavaScript is Vulnerable to RCE via RegExp.flags and Date.prototype.toISOString()",
+    "packages": [
+      "npm:serialize-javascript@6.0.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "7.0.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-5c6j-r48x-rmvq"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-1526",
+      "GHSA-vrm6-8vpv-qv8q"
+    ],
+    "severity": "HIGH",
+    "summary": "Undici has Unbounded Memory Consumption in WebSocket permessage-deflate Decompression",
+    "packages": [
+      "npm:undici@5.29.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "6.24.0",
+      "7.24.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-vrm6-8vpv-qv8q"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-2229",
+      "GHSA-v9p9-hfj2-hcw8"
+    ],
+    "severity": "HIGH",
+    "summary": "Undici has Unhandled Exception in WebSocket Client Due to Invalid server_max_window_bits Validation",
+    "packages": [
+      "npm:undici@5.29.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "6.24.0",
+      "7.24.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-v9p9-hfj2-hcw8"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102282",
+      "GHSA-j5f4-cc29-5x44"
+    ],
+    "severity": "HIGH",
+    "summary": "adm-zip extraction preserves SUID/SGID bits from untrusted ZIPs -> local privilege escalation",
+    "packages": [
+      "npm:adm-zip@0.4.16"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.6.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-j5f4-cc29-5x44"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-39244",
+      "GHSA-xcpc-8h2w-3j85"
+    ],
+    "severity": "HIGH",
+    "summary": "adm-zip: Crafted ZIP file triggers 4GB memory allocation",
+    "packages": [
+      "npm:adm-zip@0.4.16"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.6.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xcpc-8h2w-3j85"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-92000",
+      "GHSA-rcw4-f5rp-g42v"
+    ],
+    "severity": "HIGH",
+    "summary": "adm-zip: Decompression-bomb protection (fix for CVE-2026-39244) can be bypassed by declaring uncompressed size as 0",
+    "packages": [
+      "npm:adm-zip@0.4.16"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.6.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rcw4-f5rp-g42v"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-77301",
+      "GHSA-7q85-xj36-vmfc"
+    ],
+    "severity": "HIGH",
+    "summary": "adm-zip: Uncontrolled memory allocation via the declared uncompressed size (DoS)",
+    "packages": [
+      "npm:adm-zip@0.4.16"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.6.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-7q85-xj36-vmfc"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-114102",
+      "GHSA-8238-w5pm-2374"
+    ],
+    "severity": "HIGH",
+    "summary": "adm-zip: Unhandled error event in async DEFLATE decompression crashes Node.js process (DoS)",
+    "packages": [
+      "npm:adm-zip@0.4.16"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.6.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-8238-w5pm-2374"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44494",
+      "GHSA-35jp-ww65-95wh"
+    ],
+    "severity": "HIGH",
+    "summary": "axios Vulnerable to Full Man-in-the-Middle via Prototype Pollution Gadget in `config.proxy`",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.16.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-35jp-ww65-95wh"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44492",
+      "GHSA-pjwm-pj3p-43mv"
+    ],
+    "severity": "HIGH",
+    "summary": "axios's shouldBypassProxy does not recognize IPv4-mapped IPv6 addresses, allowing NO_PROXY bypass (incomplete fix for CVE-2025-62718)",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.32.0",
+      "1.16.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-pjwm-pj3p-43mv"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-13149",
+      "GHSA-3jxr-9vmj-r5cp"
+    ],
+    "severity": "HIGH",
+    "summary": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+    "packages": [
+      "npm:brace-expansion@1.1.12",
+      "npm:brace-expansion@2.0.2",
+      "npm:brace-expansion@5.0.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.1.16",
+      "2.1.2",
+      "5.0.7"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-3jxr-9vmj-r5cp"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-14257",
+      "GHSA-mh99-v99m-4gvg"
+    ],
+    "severity": "HIGH",
+    "summary": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+    "packages": [
+      "npm:brace-expansion@1.1.12",
+      "npm:brace-expansion@2.0.2",
+      "npm:brace-expansion@5.0.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.1.17",
+      "2.1.3",
+      "3.0.3",
+      "5.0.8"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-mh99-v99m-4gvg"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-69152",
+      "GHSA-rgw5-rvv9-x895"
+    ],
+    "severity": "HIGH",
+    "summary": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+    "packages": [
+      "npm:brace-expansion@1.1.12",
+      "npm:brace-expansion@2.0.2",
+      "npm:brace-expansion@5.0.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.1.18",
+      "2.1.4",
+      "3.0.6",
+      "5.0.9"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rgw5-rvv9-x895"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102276",
+      "GHSA-6j4f-fj2g-mc7p"
+    ],
+    "severity": "HIGH",
+    "summary": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+    "packages": [
+      "npm:brace-expansion@1.1.12",
+      "npm:brace-expansion@2.0.2",
+      "npm:brace-expansion@5.0.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.1.19",
+      "2.1.5",
+      "3.0.7",
+      "5.0.10"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-6j4f-fj2g-mc7p"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102278",
+      "GHSA-qhr7-859c-m2p7"
+    ],
+    "severity": "HIGH",
+    "summary": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+    "packages": [
+      "npm:brace-expansion@1.1.12",
+      "npm:brace-expansion@2.0.2",
+      "npm:brace-expansion@5.0.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.1.20",
+      "2.1.6",
+      "3.0.8",
+      "5.0.11"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-qhr7-859c-m2p7"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-84292",
+      "GHSA-qw65-cvwx-89v3"
+    ],
+    "severity": "HIGH",
+    "summary": "fast-uri vulnerable to authority injection via an unvalidated port in serialize",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.6",
+      "3.1.7",
+      "4.1.4"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-qw65-cvwx-89v3"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-18446",
+      "GHSA-7p8r-x3mc-p8w7"
+    ],
+    "severity": "HIGH",
+    "summary": "fast-uri vulnerable to host confusion via backslash authority introducer",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.4",
+      "3.1.5",
+      "4.1.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-7p8r-x3mc-p8w7"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-13676",
+      "GHSA-4c8g-83qw-93j6"
+    ],
+    "severity": "HIGH",
+    "summary": "fast-uri vulnerable to host confusion via failed IDN canonicalization",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.2",
+      "3.1.3",
+      "4.0.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4c8g-83qw-93j6"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-16221",
+      "GHSA-v2hh-gcrm-f6hx"
+    ],
+    "severity": "HIGH",
+    "summary": "fast-uri vulnerable to host confusion via literal backslash authority delimiter",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.3",
+      "3.1.4",
+      "4.1.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-v2hh-gcrm-f6hx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-76172",
+      "GHSA-jqff-g426-hqxp"
+    ],
+    "severity": "HIGH",
+    "summary": "fast-uri vulnerable to host confusion via percent-encoded scheme normalization",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.5",
+      "3.1.6",
+      "4.1.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jqff-g426-hqxp"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-75975",
+      "GHSA-f65p-4m7j-42xc"
+    ],
+    "severity": "HIGH",
+    "summary": "fast-uri vulnerable to server-side request forgery via malformed IPv6 normalization",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.5",
+      "3.1.6",
+      "4.1.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-f65p-4m7j-42xc"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-75899",
+      "GHSA-fph4-wmhf-6fwf"
+    ],
+    "severity": "HIGH",
+    "summary": "fast-uri vulnerable to server-side request forgery via repeated hostname percent-decoding",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.5",
+      "3.1.6",
+      "4.1.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-fph4-wmhf-6fwf"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-111756",
+      "GHSA-q3jh-wrc6-jgq8"
+    ],
+    "severity": "HIGH",
+    "summary": "follow-redirects array-form headers bypass cross-origin credential stripping",
+    "packages": [
+      "npm:follow-redirects@1.16.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.16.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-q3jh-wrc6-jgq8"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-111755",
+      "GHSA-8r9p-f939-6h3c"
+    ],
+    "severity": "HIGH",
+    "summary": "follow-redirects sensitiveHeaders regex escaping can expose credential headers",
+    "packages": [
+      "npm:follow-redirects@1.16.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.16.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-8r9p-f939-6h3c"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-12143",
+      "GHSA-hmw2-7cc7-3qxx"
+    ],
+    "severity": "HIGH",
+    "summary": "form-data: CRLF injection in form-data via unescaped multipart field names and filenames",
+    "packages": [
+      "npm:form-data@4.0.5"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.5.6",
+      "3.0.5",
+      "4.0.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-hmw2-7cc7-3qxx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-59869",
+      "GHSA-52cp-r559-cp3m"
+    ],
+    "severity": "HIGH",
+    "summary": "js-yaml: YAML merge-key chains can force quadratic CPU consumption",
+    "packages": [
+      "npm:js-yaml@3.14.2",
+      "npm:js-yaml@4.1.1"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "3.15.0",
+      "4.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-52cp-r559-cp3m"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-84375",
+      "GHSA-2883-xcg3-v3hh"
+    ],
+    "severity": "HIGH",
+    "summary": "js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources",
+    "packages": [
+      "npm:js-yaml@3.14.2",
+      "npm:js-yaml@4.1.1"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "3.15.2",
+      "4.3.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2883-xcg3-v3hh"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-52011",
+      "GHSA-c27g-q93r-2cwf"
+    ],
+    "severity": "HIGH",
+    "summary": "launch-editor vulnerable to command injection via the crafted request on Windows",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "5.4.9"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-c27g-q93r-2cwf"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-112942",
+      "GHSA-587h-7wmj-h5pm"
+    ],
+    "severity": "HIGH",
+    "summary": "launch-editor: `fs.existsSync()` existence check can be bypassed on Windows",
+    "packages": [
+      "npm:vite@5.4.0",
+      "npm:vite@8.0.14"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.4.4",
+      "7.3.7",
+      "8.1.6",
+      "8.2.4",
+      "8.3.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-587h-7wmj-h5pm"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-27904",
+      "GHSA-23c5-xmqv-rm74"
+    ],
+    "severity": "HIGH",
+    "summary": "minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions",
+    "packages": [
+      "npm:minimatch@3.1.2",
+      "npm:minimatch@5.1.6",
+      "npm:minimatch@9.0.5"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "10.2.3",
+      "3.1.4",
+      "4.2.5",
+      "5.1.8",
+      "6.2.2",
+      "7.4.8",
+      "8.0.6",
+      "9.0.7"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-23c5-xmqv-rm74"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-27903",
+      "GHSA-7r86-cg39-jmmj"
+    ],
+    "severity": "HIGH",
+    "summary": "minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments",
+    "packages": [
+      "npm:minimatch@3.1.2",
+      "npm:minimatch@5.1.6",
+      "npm:minimatch@9.0.5"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "10.2.3",
+      "3.1.3",
+      "4.2.5",
+      "5.1.8",
+      "6.2.2",
+      "7.4.8",
+      "8.0.6",
+      "9.0.7"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-7r86-cg39-jmmj"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-26996",
+      "GHSA-3ppc-4f35-3m26"
+    ],
+    "severity": "HIGH",
+    "summary": "minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern",
+    "packages": [
+      "npm:minimatch@3.1.2",
+      "npm:minimatch@5.1.6",
+      "npm:minimatch@9.0.5"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "10.2.1",
+      "3.1.3",
+      "4.2.4",
+      "5.1.7",
+      "6.2.1",
+      "7.4.7",
+      "8.0.5",
+      "9.0.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-3ppc-4f35-3m26"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67213",
+      "GHSA-2v37-7h3g-55p8"
+    ],
+    "severity": "HIGH",
+    "summary": "nanoid: custom generators can loop indefinitely when size is zero",
+    "packages": [
+      "npm:nanoid@3.3.12"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "3.3.18",
+      "5.1.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2v37-7h3g-55p8"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67214",
+      "GHSA-28wg-ghj8-5hjv"
+    ],
+    "severity": "HIGH",
+    "summary": "nanoid: non-secure generators can loop indefinitely with negative size",
+    "packages": [
+      "npm:nanoid@3.3.12"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "3.3.16",
+      "5.1.16"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-28wg-ghj8-5hjv"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-93749",
+      "GHSA-68fv-2mgg-jv7q"
+    ],
+    "severity": "HIGH",
+    "summary": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+    "packages": [
+      "npm:source-map-js@1.2.1"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "1.2.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-68fv-2mgg-jv7q"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44705",
+      "GHSA-ph9p-34f9-6g65"
+    ],
+    "severity": "HIGH",
+    "summary": "tmp has Path Traversal via unsanitized prefix/postfix that enables directory escape",
+    "packages": [
+      "npm:tmp@0.0.33"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.2.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-ph9p-34f9-6g65"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-9675",
+      "GHSA-38rv-x7px-6hhq"
+    ],
+    "severity": "HIGH",
+    "summary": "undici WebSocket client vulnerable to denial of service via cumulative fragment bypass",
+    "packages": [
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "8.5.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-38rv-x7px-6hhq"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-12151",
+      "GHSA-vxpw-j846-p89q"
+    ],
+    "severity": "HIGH",
+    "summary": "undici WebSocket client vulnerable to denial of service via fragment count bypass",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.27.0",
+      "7.28.0",
+      "8.5.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-vxpw-j846-p89q"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-87018",
+      "GHSA-qrxm-fqhp-jwvm"
+    ],
+    "severity": "HIGH",
+    "summary": "undici vulnerable to Denial of Service via TLS 1.2 certificate-changing renegotiation",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.29.1",
+      "7.30.1",
+      "8.12.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-qrxm-fqhp-jwvm"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-109869",
+      "GHSA-xjj6-f33q-929c"
+    ],
+    "severity": "HIGH",
+    "summary": "undici vulnerable to Denial of Service via unhandled error on excessive content-encodings",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.29.1",
+      "7.30.1",
+      "8.12.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xjj6-f33q-929c"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-19534",
+      "GHSA-rfgv-xxqx-mfg5"
+    ],
+    "severity": "HIGH",
+    "summary": "undici vulnerable to Denial of Service via unrequested WebSocket subprotocol",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.28.1",
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rfgv-xxqx-mfg5"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-84961",
+      "GHSA-w293-vg96-wgc3"
+    ],
+    "severity": "HIGH",
+    "summary": "undici vulnerable to TLS certificate validation bypass via dropped connect options in BalancedPool",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-w293-vg96-wgc3"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-9697",
+      "GHSA-vmh5-mc38-953g"
+    ],
+    "severity": "HIGH",
+    "summary": "undici vulnerable to TLS certificate validation bypass via dropped requestTls in SOCKS5 ProxyAgent",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.28.0",
+      "8.5.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-vmh5-mc38-953g"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-109383",
+      "GHSA-2m5v-pch6-74hx"
+    ],
+    "severity": "HIGH",
+    "summary": "undici vulnerable to TLS certificate validation bypass via dropped tls options in Agent",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.29.1",
+      "7.30.1",
+      "8.12.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2m5v-pch6-74hx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-109829",
+      "GHSA-4w7w-5xrc-9h26"
+    ],
+    "severity": "HIGH",
+    "summary": "undici vulnerable to cache poisoning and cross-user disclosure via cross-origin redirects",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.30.1",
+      "8.12.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4w7w-5xrc-9h26"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-6734",
+      "GHSA-hm92-r4w5-c3mj"
+    ],
+    "severity": "HIGH",
+    "summary": "undici vulnerable to cross-origin request routing via SOCKS5 proxy pool reuse",
+    "packages": [
+      "npm:undici@7.25.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.28.0",
+      "8.2.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-hm92-r4w5-c3mj"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-13697",
+      "GHSA-4cwx-7wf7-3272"
+    ],
+    "severity": "HIGH",
+    "summary": "undici vulnerable to cross-user information disclosure and parse-time crash via degenerate private cache directives",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.0",
+      "8.9.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4cwx-7wf7-3272"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-48779",
+      "GHSA-96hv-2xvq-fx4p"
+    ],
+    "severity": "HIGH",
+    "summary": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
+    "packages": [
+      "npm:ws@7.5.10",
+      "npm:ws@8.17.1",
+      "npm:ws@8.18.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "5.2.5",
+      "6.2.4",
+      "7.5.11",
+      "8.21.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-96hv-2xvq-fx4p"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-74866",
+      "GHSA-gxm5-99cw-xjw9"
+    ],
+    "severity": "MODERATE",
+    "summary": "@fastify/busboy vulnerable to CRLF injection via multipart Content-Disposition filename and name",
+    "packages": [
+      "npm:@fastify/busboy@2.1.1"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "3.2.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-gxm5-99cw-xjw9"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67321",
+      "GHSA-hcpx-6fm6-wx23"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios form serializer maxDepth bypass via {} metatoken",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.33.0",
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-hcpx-6fm6-wx23"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101899",
+      "GHSA-44g4-m2mj-wpvx"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: CIDR-form NO_PROXY entries are ignored, causing proxy exclusion bypass for internal IP ranges",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-44g4-m2mj-wpvx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67312",
+      "GHSA-pmv8-rq9r-6j72"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Deep formToJSON Key Recursion Can Cause Denial of Service",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.33.0",
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-pmv8-rq9r-6j72"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67313",
+      "GHSA-42h9-826w-cgv3"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Excessive recursion in formDataToJSON can cause denial of service",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.33.0",
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-42h9-826w-cgv3"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101900",
+      "GHSA-4hqw-qxg8-jxx2"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Fetch Adapter Header Injection via Inherited FormData getHeaders",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4hqw-qxg8-jxx2"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67317",
+      "GHSA-jqh4-m9w3-8hp9"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Fetch adapter `ReadableStream` uploads bypass `maxBodyLength`",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jqh4-m9w3-8hp9"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67318",
+      "GHSA-mwf2-3pr3-8698"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: HTTP/2 streamed uploads bypass `maxBodyLength`",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-mwf2-3pr3-8698"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101904",
+      "GHSA-j8rh-479h-cp32"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Header Injection via Inherited headers After Minimal Interceptor",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-j8rh-479h-cp32"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67315",
+      "GHSA-f4gw-2p7v-4548"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: NO_PROXY bypass for 0.0.0.0 local addresses in axios",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.33.0",
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-f4gw-2p7v-4548"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67319",
+      "GHSA-7q8q-rj6j-mhjq"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Nested axios option objects can consume polluted prototype values",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.33.0",
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-7q8q-rj6j-mhjq"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67314",
+      "GHSA-xj6q-8x83-jv6g"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Prototype pollution auth subfields can inject Basic auth",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xj6q-8x83-jv6g"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101908",
+      "GHSA-vh66-26gq-q6x8"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Prototype pollution gadget in fetch adapter can alter outbound requests",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-vh66-26gq-q6x8"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-67316",
+      "GHSA-mmx7-hfxf-jppx"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Prototype pollution gadgets can alter axios request construction",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.33.0",
+      "1.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-mmx7-hfxf-jppx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101902",
+      "GHSA-9fr6-4gfg-395g"
+    ],
+    "severity": "MODERATE",
+    "summary": "Axios: Prototype-Pollution Gadget in the Default Instance Allows Inherited Object.prototype.method to Override HTTP Method",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.34.0",
+      "1.20.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9fr6-4gfg-395g"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-106444",
+      "GHSA-xw65-4hp5-5hc7"
+    ],
+    "severity": "MODERATE",
+    "summary": "Handlebars: JavaScript Injection via Unsafe Inline Embedding of Precompiled Templates",
+    "packages": [
+      "npm:handlebars@4.7.9"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "4.7.10"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xw65-4hp5-5hc7"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-53550",
+      "GHSA-h67p-54hq-rp68"
+    ],
+    "severity": "MODERATE",
+    "summary": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+    "packages": [
+      "npm:js-yaml@3.14.2",
+      "npm:js-yaml@4.1.1"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "3.15.0",
+      "4.2.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-h67p-54hq-rp68"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-104844",
+      "GHSA-rj75-hqrm-r3gf"
+    ],
+    "severity": "MODERATE",
+    "summary": "PostCSS: Quadratic complexity in flat selector parsing allows CPU exhaustion",
+    "packages": [
+      "npm:postcss-selector-parser@6.1.2"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.1.5",
+      "7.1.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rj75-hqrm-r3gf"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-69153",
+      "GHSA-fxqj-rqcc-2cmp"
+    ],
+    "severity": "MODERATE",
+    "summary": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset",
+    "packages": [
+      "npm:postcss@8.5.15"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "8.5.23"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-fxqj-rqcc-2cmp"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-34043",
+      "GHSA-qj8w-gfj5-8c6v"
+    ],
+    "severity": "MODERATE",
+    "summary": "Serialize JavaScript has CPU Exhaustion Denial of Service via crafted array-like objects",
+    "packages": [
+      "npm:serialize-javascript@6.0.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "7.0.5"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-qj8w-gfj5-8c6v"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-1527",
+      "GHSA-4992-7rv2-5pvq"
+    ],
+    "severity": "MODERATE",
+    "summary": "Undici has CRLF Injection in undici via `upgrade` option",
+    "packages": [
+      "npm:undici@5.29.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "6.24.0",
+      "7.24.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4992-7rv2-5pvq"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-1525",
+      "GHSA-2mjp-6q6p-2qxm"
+    ],
+    "severity": "MODERATE",
+    "summary": "Undici has an HTTP Request/Response Smuggling issue",
+    "packages": [
+      "npm:undici@5.29.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "6.24.0",
+      "7.24.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2mjp-6q6p-2qxm"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-22036",
+      "GHSA-g9mf-h72j-4rw9"
+    ],
+    "severity": "MODERATE",
+    "summary": "Undici has an unbounded decompression chain in HTTP responses on Node.js Fetch API via Content-Encoding leads to resource exhaustion",
+    "packages": [
+      "npm:undici@5.29.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "6.23.0",
+      "7.18.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-g9mf-h72j-4rw9"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-45812",
+      "GHSA-64vr-g452-qvp3"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vite DOM Clobbering gadget found in vite bundled scripts that leads to XSS",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "3.2.11",
+      "4.5.4",
+      "5.1.8",
+      "5.2.14",
+      "5.3.6",
+      "5.4.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-64vr-g452-qvp3"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-39365",
+      "GHSA-4w7w-66w2-5vf9"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vite Vulnerable to Path Traversal in Optimized Deps `.map` Handling",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.4.2",
+      "7.3.2",
+      "8.0.5"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4w7w-66w2-5vf9"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-31486",
+      "GHSA-xcj6-pq6g-qj4x"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vite allows server.fs.deny to be bypassed with .svg or relative paths",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.5.12",
+      "5.4.17",
+      "6.0.14",
+      "6.1.4",
+      "6.2.5"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xcj6-pq6g-qj4x"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-30208",
+      "GHSA-x574-m823-4x7w"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vite bypasses server.fs.deny when using ?raw??",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.5.10",
+      "5.4.15",
+      "6.0.12",
+      "6.1.2",
+      "6.2.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-x574-m823-4x7w"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-31125",
+      "GHSA-4r4m-qw57-chr8"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vite has a `server.fs.deny` bypassed for `inline` and `raw` with `?import` query",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.5.11",
+      "5.4.16",
+      "6.0.13",
+      "6.1.3",
+      "6.2.4"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4r4m-qw57-chr8"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-32395",
+      "GHSA-356w-63v5-8wf4"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vite has an `server.fs.deny` bypass with an invalid `request-target`",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.5.13",
+      "5.4.18",
+      "6.0.15",
+      "6.1.5",
+      "6.2.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-356w-63v5-8wf4"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-45811",
+      "GHSA-9cwx-2883-4wfx"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vite's `server.fs.deny` is bypassed when using `?import&raw`",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "3.2.11",
+      "4.5.4",
+      "5.1.8",
+      "5.2.14",
+      "5.3.6",
+      "5.4.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9cwx-2883-4wfx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-46565",
+      "GHSA-859w-5945-r5v3"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vite's server.fs.deny bypassed with /. for files under project root",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.5.14",
+      "5.4.19",
+      "6.1.6",
+      "6.2.7",
+      "6.3.4"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-859w-5945-r5v3"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-112946",
+      "GHSA-rq7h-c2jc-7f22"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vite: Files outside `server.fs.allow` could be served when project paths match system paths on non-Windows machine",
+    "packages": [
+      "npm:vite@5.4.0",
+      "npm:vite@8.0.14"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.4.4",
+      "7.3.7",
+      "8.1.6",
+      "8.2.4",
+      "8.3.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rq7h-c2jc-7f22"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-112949",
+      "GHSA-qxg6-89mg-rqv8"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vitest: Code injection via unauthenticated manual mock registration",
+    "packages": [
+      "npm:@vitest/mocker@4.1.7"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.1.12",
+      "5.0.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-qxg6-89mg-rqv8"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-84373",
+      "GHSA-82fw-gwwq-j7x9"
+    ],
+    "severity": "MODERATE",
+    "summary": "Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+    "packages": [
+      "npm:@vitest/mocker@4.1.7",
+      "npm:vitest@4.1.7"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.1.11",
+      "5.0.0-rc.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-82fw-gwwq-j7x9"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-24010",
+      "GHSA-vg6x-rcgg-rjx6"
+    ],
+    "severity": "MODERATE",
+    "summary": "Websites were able to send any requests to the development server and read the response in vite",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "4.5.6",
+      "5.4.12",
+      "6.0.9"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-vg6x-rcgg-rjx6"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-114104",
+      "GHSA-p634-w6r4-rjp2"
+    ],
+    "severity": "MODERATE",
+    "summary": "adm-zip: Duplicate ZIP entry names: getEntry() and extractAllTo() resolve to different content",
+    "packages": [
+      "npm:adm-zip@0.4.16"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.6.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-p634-w6r4-rjp2"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-114103",
+      "GHSA-c6fg-446q-cg94"
+    ],
+    "severity": "MODERATE",
+    "summary": "adm-zip: getDataAsync() bypasses the maxOutputLength size guard enforced by the synchronous getData() path",
+    "packages": [
+      "npm:adm-zip@0.4.16"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.6.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-c6fg-446q-cg94"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-69873",
+      "GHSA-2g4f-4pwh-qvx6"
+    ],
+    "severity": "MODERATE",
+    "summary": "ajv has ReDoS when using `$data` option",
+    "packages": [
+      "npm:ajv@6.12.6",
+      "npm:ajv@8.17.1"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "6.14.0",
+      "8.18.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2g4f-4pwh-qvx6"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44490",
+      "GHSA-898c-q2cr-xwhg"
+    ],
+    "severity": "MODERATE",
+    "summary": "axios has DoS & Header Injection via Prototype Pollution Read-Side Gadgets in axios merge functions",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.32.0",
+      "1.16.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-898c-q2cr-xwhg"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-45819",
+      "GHSA-w5vr-8v7q-w6rv"
+    ],
+    "severity": "MODERATE",
+    "summary": "baseline-browser-mapping process termination on invalid input causes denial of service",
+    "packages": [
+      "npm:baseline-browser-mapping@2.10.32"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "2.11.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-w5vr-8v7q-w6rv"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-2739",
+      "GHSA-378v-28hj-76wf"
+    ],
+    "severity": "MODERATE",
+    "summary": "bn.js affected by an infinite loop",
+    "packages": [
+      "npm:bn.js@4.11.6",
+      "npm:bn.js@4.12.2",
+      "npm:bn.js@5.2.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "4.12.3",
+      "5.2.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-378v-28hj-76wf"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-45149",
+      "GHSA-jxxr-4gwj-5jf2"
+    ],
+    "severity": "MODERATE",
+    "summary": "brace-expansion: Large numeric range defeats documented `max` DoS protection",
+    "packages": [
+      "npm:brace-expansion@5.0.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "5.0.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jxxr-4gwj-5jf2"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102277",
+      "GHSA-q2hr-2g5m-vwhr"
+    ],
+    "severity": "MODERATE",
+    "summary": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+    "packages": [
+      "npm:brace-expansion@1.1.12",
+      "npm:brace-expansion@2.0.2",
+      "npm:brace-expansion@5.0.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.1.21",
+      "2.1.7",
+      "3.0.9",
+      "5.0.12"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-q2hr-2g5m-vwhr"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-33750",
+      "GHSA-f886-m6hf-6m8v"
+    ],
+    "severity": "MODERATE",
+    "summary": "brace-expansion: Zero-step sequence causes process hang and memory exhaustion",
+    "packages": [
+      "npm:brace-expansion@1.1.12",
+      "npm:brace-expansion@2.0.2",
+      "npm:brace-expansion@5.0.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.1.13",
+      "2.0.3",
+      "3.0.2",
+      "5.0.5"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-f886-m6hf-6m8v"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-67mh-4wv8-2f99"
+    ],
+    "severity": "MODERATE",
+    "summary": "esbuild enables any website to send any requests to the development server and read the response",
+    "packages": [
+      "npm:esbuild@0.21.5"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "0.25.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-67mh-4wv8-2f99"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-110306",
+      "GHSA-w74x-v6f9-j3xg"
+    ],
+    "severity": "MODERATE",
+    "summary": "fast-uri vulnerable to URI scheme spoofing via percent-encoded scheme decoding",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.8",
+      "3.1.9",
+      "4.2.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-w74x-v6f9-j3xg"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-86472",
+      "GHSA-hrr3-gc8f-f4qj"
+    ],
+    "severity": "MODERATE",
+    "summary": "fast-uri vulnerable to inconsistent host case normalization via percent-encoded octets",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.7",
+      "3.1.8",
+      "4.1.5"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-hrr3-gc8f-f4qj"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-45820",
+      "GHSA-px8p-9vwx-vf98"
+    ],
+    "severity": "MODERATE",
+    "summary": "fflate unzipSync can enter an infinite loop when parsing malformed ZIP64 archives",
+    "packages": [
+      "npm:fflate@0.6.10"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "0.4.9",
+      "0.5.4",
+      "0.6.11",
+      "0.7.5",
+      "0.8.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-px8p-9vwx-vf98"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-p498-v437-472g"
+    ],
+    "severity": "MODERATE",
+    "summary": "humanfs: Recursive copy follows symlinked files and copies data from outside the source tree",
+    "packages": [
+      "npm:@humanfs/node@0.16.7"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.16.8"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-p498-v437-472g"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-112944",
+      "GHSA-r825-w8mm-5pxw"
+    ],
+    "severity": "MODERATE",
+    "summary": "launch-editor: Editor CLI flag misinterpretation causing arbitrary command execution for some editors",
+    "packages": [
+      "npm:vite@5.4.0",
+      "npm:vite@8.0.14"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.4.4",
+      "7.3.7",
+      "8.1.6",
+      "8.2.4",
+      "8.3.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-r825-w8mm-5pxw"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-53632",
+      "GHSA-v6wh-96g9-6wx3"
+    ],
+    "severity": "MODERATE",
+    "summary": "launch-editor: NTLMv2 hash disclosure via UNC path handling on Windows",
+    "packages": [
+      "npm:vite@5.4.0",
+      "npm:vite@8.0.14"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.4.3",
+      "7.3.5",
+      "8.0.16"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-v6wh-96g9-6wx3"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-112943",
+      "GHSA-698v-4r3x-3vcv"
+    ],
+    "severity": "MODERATE",
+    "summary": "launch-editor: escapeCmdArgs() omits % escaping on Windows",
+    "packages": [
+      "npm:vite@5.4.0",
+      "npm:vite@8.0.14"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.4.4",
+      "7.3.7",
+      "8.1.6",
+      "8.2.4",
+      "8.3.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-698v-4r3x-3vcv"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102414",
+      "GHSA-477h-4r7f-fvrx"
+    ],
+    "severity": "MODERATE",
+    "summary": "pbkdf2 rehashes long passwords on every iteration, enabling denial of service",
+    "packages": [
+      "npm:pbkdf2@3.1.5"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "3.1.7"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-477h-4r7f-fvrx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-109932",
+      "GHSA-9fm3-97px-rjf6"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici WebSocket client vulnerable to Denial of Service via unbounded automatic PONG buffering",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.29.1",
+      "7.30.1",
+      "8.12.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9fm3-97px-rjf6"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-15157",
+      "GHSA-m8rv-5g2x-5cg5"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to CRLF Injection via blob-like body 'type' property",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.28.0",
+      "7.29.0",
+      "8.9.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-m8rv-5g2x-5cg5"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-85014",
+      "GHSA-rx4f-c7p8-82vq"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to Denial of Service via WebSocketStream unclean close",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rx4f-c7p8-82vq"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-18149",
+      "GHSA-pmjh-fq2x-6v4x"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to Denial of Service via orphaned RetryHandler response body",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-pmjh-fq2x-6v4x"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-84890",
+      "GHSA-3xpg-4rpp-hhhm"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to Denial of Service via unbounded decompression of compressed responses",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-3xpg-4rpp-hhhm"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-109924",
+      "GHSA-4qv8-2p9j-2685"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to Denial of Service via unbounded memory in the EventSource parser",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.29.1",
+      "7.30.1",
+      "8.12.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4qv8-2p9j-2685"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-85024",
+      "GHSA-3wwx-pv8p-q78v"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to Denial of Service via unhandled error in WebSocket permessage-deflate decompression",
+    "packages": [
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "6.28.1",
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-3wwx-pv8p-q78v"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-87029",
+      "GHSA-55wc-3pg8-jfw6"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to Denial of Service via unhandled exception in the decompress interceptor",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.30.1",
+      "8.12.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-55wc-3pg8-jfw6"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-9679",
+      "GHSA-p88m-4jfj-68fv"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to HTTP header injection via Set-Cookie percent-decoding",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.27.0",
+      "7.28.0",
+      "8.5.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-p88m-4jfj-68fv"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-109841",
+      "GHSA-f72v-6w45-q472"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to Subresource Integrity bypass via non-lowercase algorithm tokens",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.30.1",
+      "8.12.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-f72v-6w45-q472"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-16729",
+      "GHSA-v3r7-h72x-cjcm"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to cookie attribute injection via unsanitized domain and unparsed setCookie fields",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.28.0",
+      "7.29.0",
+      "8.9.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-v3r7-h72x-cjcm"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-84933",
+      "GHSA-2jfj-6hjv-fm6j"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to cross-user cookie disclosure via Set-Cookie caching in shared caches",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2jfj-6hjv-fm6j"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-9678",
+      "GHSA-pr7r-676h-xcf6"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to cross-user information disclosure via shared cache whitespace bypass",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.28.0",
+      "8.5.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-pr7r-676h-xcf6"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-14643",
+      "GHSA-jr45-8vmc-qm54"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to cross-user information disclosure via whitespace around equals in Cache-Control directives",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.0",
+      "8.9.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jr45-8vmc-qm54"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-16728",
+      "GHSA-8xcm-r25x-g524"
+    ],
+    "severity": "MODERATE",
+    "summary": "undici vulnerable to downstream response desynchronization via retry interceptor",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.28.0",
+      "7.29.0",
+      "8.9.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-8xcm-r25x-g524"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-41907",
+      "CVE-2026-41988",
+      "GHSA-w5hq-g745-h8pq"
+    ],
+    "severity": "MODERATE",
+    "summary": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+    "packages": [
+      "npm:uuid@8.3.2",
+      "npm:uuid@9.0.1"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "11.1.1",
+      "12.0.1",
+      "13.0.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-w5hq-g745-h8pq"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-62522",
+      "GHSA-93m4-6634-74q7"
+    ],
+    "severity": "MODERATE",
+    "summary": "vite allows server.fs.deny bypass via backslash on Windows",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "5.4.21",
+      "6.4.1",
+      "7.0.8",
+      "7.1.11"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-93m4-6634-74q7"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-53571",
+      "GHSA-fx2h-pf6j-xcff"
+    ],
+    "severity": "MODERATE",
+    "summary": "vite: `server.fs.deny` bypass on Windows alternate paths",
+    "packages": [
+      "npm:vite@5.4.0",
+      "npm:vite@8.0.14"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.4.3",
+      "7.3.5",
+      "8.0.16"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-fx2h-pf6j-xcff"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-45736",
+      "GHSA-58qx-3vcg-4xpx"
+    ],
+    "severity": "MODERATE",
+    "summary": "ws: Uninitialized memory disclosure",
+    "packages": [
+      "npm:ws@8.17.1",
+      "npm:ws@8.18.3"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "8.20.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-58qx-3vcg-4xpx"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-49356",
+      "GHSA-4x5r-pxfx-6jf8"
+    ],
+    "severity": "LOW",
+    "summary": "@babel/core: Arbitrary File Read via sourceMappingURL Comment",
+    "packages": [
+      "npm:@babel/core@7.29.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.6",
+      "8.0.0-rc.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4x5r-pxfx-6jf8"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44489",
+      "GHSA-654m-c8p4-x5fp"
+    ],
+    "severity": "LOW",
+    "summary": "Axios has a Patch Bypass: Proxy-Authorization Header Injection via Prototype Pollution — Incomplete Null-Prototype Fix",
+    "packages": [
+      "npm:axios@1.15.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "1.16.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-654m-c8p4-x5fp"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-14505",
+      "GHSA-848j-6mx2-7j84"
+    ],
+    "severity": "LOW",
+    "summary": "Elliptic Uses a Cryptographic Primitive with a Risky Implementation",
+    "packages": [
+      "npm:elliptic@6.6.1"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-848j-6mx2-7j84"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-115754",
+      "CVE-2026-115897",
+      "GHSA-m5mm-p8h7-m29v"
+    ],
+    "severity": "LOW",
+    "summary": "Serialize JavaScript: Cross-site scripting (XSS) via unescaped </script at the end of a serialized function body",
+    "packages": [
+      "npm:serialize-javascript@6.0.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "7.1.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-m5mm-p8h7-m29v"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-58751",
+      "GHSA-g4jq-h2w9-997c"
+    ],
+    "severity": "LOW",
+    "summary": "Vite middleware may serve files starting with the same name with the public directory",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "5.4.20",
+      "6.3.6",
+      "7.0.7",
+      "7.1.5"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-g4jq-h2w9-997c"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-58752",
+      "GHSA-jqfw-vq24-v9c3"
+    ],
+    "severity": "LOW",
+    "summary": "Vite's `server.fs` settings were not applied to HTML files",
+    "packages": [
+      "npm:vite@5.4.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "5.4.20",
+      "6.3.6",
+      "7.0.7",
+      "7.1.5"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jqfw-vq24-v9c3"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-112945",
+      "GHSA-9jrq-w75r-8gcw"
+    ],
+    "severity": "LOW",
+    "summary": "Vite: Cross origin script execution through Vite custom middleware",
+    "packages": [
+      "npm:vite@5.4.0",
+      "npm:vite@8.0.14"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.4.4",
+      "7.3.7",
+      "8.1.6",
+      "8.2.4",
+      "8.3.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9jrq-w75r-8gcw"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-47764",
+      "GHSA-pxg6-pf52-xh8x"
+    ],
+    "severity": "LOW",
+    "summary": "cookie accepts cookie name, path, and domain with out of bounds characters",
+    "packages": [
+      "npm:cookie@0.4.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.7.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-pxg6-pf52-xh8x"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-g7r4-m6w7-qqqr"
+    ],
+    "severity": "LOW",
+    "summary": "esbuild allows arbitrary file read when running the development server on Windows",
+    "packages": [
+      "npm:esbuild@0.28.0"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "0.28.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-g7r4-m6w7-qqqr"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-110095",
+      "GHSA-xhq7-xmqj-769h"
+    ],
+    "severity": "LOW",
+    "summary": "fast-uri vulnerable to improper path equivalence in relative reference normalization",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.8",
+      "3.1.9",
+      "4.2.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xhq7-xmqj-769h"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-110725",
+      "GHSA-333x-w4r6-6crp"
+    ],
+    "severity": "LOW",
+    "summary": "fast-uri vulnerable to scheme injection via an unescaped first-segment colon in suffix references",
+    "packages": [
+      "npm:fast-uri@3.1.2"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "2.4.8",
+      "3.1.9",
+      "4.2.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-333x-w4r6-6crp"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-9358",
+      "GHSA-w9m9-85wc-3x92"
+    ],
+    "severity": "LOW",
+    "summary": "postcss-selector-parser allows denial of service through uncontrolled AST recursion",
+    "packages": [
+      "npm:postcss-selector-parser@6.1.2"
+    ],
+    "paths": [
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.1.3",
+      "7.1.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-w9m9-85wc-3x92"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-54798",
+      "GHSA-52f5-9888-hmc6"
+    ],
+    "severity": "LOW",
+    "summary": "tmp allows arbitrary temporary file / directory write via symbolic link `dir` parameter",
+    "packages": [
+      "npm:tmp@0.0.33"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json"
+    ],
+    "fixed": [
+      "0.2.4"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-52f5-9888-hmc6"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-6733",
+      "GHSA-35p6-xmwp-9g52"
+    ],
+    "severity": "LOW",
+    "summary": "undici vulnerable to HTTP response queue poisoning via keep-alive socket reuse",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.27.0",
+      "7.28.0",
+      "8.5.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-35p6-xmwp-9g52"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-11525",
+      "GHSA-g8m3-5g58-fq7m"
+    ],
+    "severity": "LOW",
+    "summary": "undici vulnerable to Set-Cookie SameSite attribute downgrade via permissive substring matching",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.27.0",
+      "7.28.0",
+      "8.5.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-g8m3-5g58-fq7m"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-85008",
+      "GHSA-8436-99hf-9mmv"
+    ],
+    "severity": "LOW",
+    "summary": "undici vulnerable to caching and replay of unsafe HTTP method responses",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-8436-99hf-9mmv"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-18540",
+      "GHSA-r53p-7pc4-xj5r"
+    ],
+    "severity": "LOW",
+    "summary": "undici vulnerable to downstream response splitting via retry interceptor",
+    "packages": [
+      "npm:undici@5.29.0",
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "6.28.1",
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-r53p-7pc4-xj5r"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-84947",
+      "GHSA-2gqq-gqf2-x968"
+    ],
+    "severity": "LOW",
+    "summary": "undici vulnerable to response truncation via oversized chunked responses in the dump interceptor",
+    "packages": [
+      "npm:undici@7.25.0",
+      "npm:undici@8.2.0"
+    ],
+    "paths": [
+      "contracts/evm/lib/openzeppelin-contracts/package-lock.json",
+      "lottery/alien-monitor/frontend/package-lock.json"
+    ],
+    "fixed": [
+      "7.29.1",
+      "8.10.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2gqq-gqf2-x968"
+    ]
+  }
+]

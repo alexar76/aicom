@@ -424,6 +424,7 @@ if [[ -n "$EXPORT_DIR" ]]; then
   TARGET="$EXPORT_DIR"
   mkdir -p "$TARGET"
   rsync -a --delete "${RSYNC_EXCLUDE_ARGS[@]}" "$ROOT/" "$TARGET/"
+  python3 "$ROOT/scripts/aicom_publish_config.py" purge-local-excludes "$TARGET"
   for p in "${DISTRIBUTION_EXCLUDES[@]}"; do
     rm -rf "$TARGET/$p"
   done
@@ -523,9 +524,7 @@ fi
 # rsync --exclude does not delete these from an existing remote clone
 LOCAL_EXCLUDES=()
 while IFS= read -r line; do LOCAL_EXCLUDES+=("$line"); done < <(python3 "$ROOT/scripts/aicom_publish_config.py" list-local-excludes)
-for p in "${LOCAL_EXCLUDES[@]}"; do
-  rm -rf "$CLONE/$p"
-done
+python3 "$ROOT/scripts/aicom_publish_config.py" purge-local-excludes "$CLONE"
 
 if [[ "$HOLD_STUDY" -eq 1 ]]; then
   hold_published_copy "$CLONE" "${HELD_PATHS[@]}"

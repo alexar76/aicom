@@ -1,0 +1,110 @@
+{
+  "observed_date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "finding": {
+    "kind": "new_verification_of_previously_known_external_fork_CI",
+    "repository": "th3artfuldodger/enterprise-factory",
+    "event_at_utc": "2026-10-14T20:06:19Z",
+    "event_at_msk": "2026-10-14 23:06",
+    "run": "https://github.com/th3artfuldodger/enterprise-factory/actions/runs/38629232333",
+    "run_head_sha": "ef124a40d592bf149fab93fb632a4aaf688a04fa",
+    "jobs": [
+      {
+        "name": "Production misconfig guards",
+        "url": "https://github.com/th3artfuldodger/enterprise-factory/actions/runs/38629232333/job/116076255419",
+        "conclusion": "success",
+        "selected_steps": [
+          {
+            "name": "Fetch excluded satellite deps",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install backend dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prod startup guard tests",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "frontend-build",
+        "url": "https://github.com/th3artfuldodger/enterprise-factory/actions/runs/38629232333/job/116076255938",
+        "conclusion": "success",
+        "selected_steps": [
+          {
+            "name": "Install",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "backend-tests",
+        "url": "https://github.com/th3artfuldodger/enterprise-factory/actions/runs/38629232333/job/116076256030",
+        "conclusion": "success",
+        "selected_steps": [
+          {
+            "name": "Fetch excluded satellite deps (hub / acex / plugins)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install backend dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Factory pytest suite",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "workflow_has_continue_on_error": false,
+    "frontend_build_command": "next build",
+    "root_tree_satellites_present": [],
+    "backend_wrapper_caveat": "When coverage data exists, the CI wrapper may terminate a hung pytest process and succeed on coverage JSON generation; no claim all assertions passed. Backend logs GET403, no retry/bypass.",
+    "production_deployments_returned": 0,
+    "homepage_points_to_own_ecosystem": true,
+    "limits": [
+      "Known fork from26Oct, not a new project or deployment30Oct",
+      "New evidence is non-skipped CI job steps, workflows and pinned source; no live foreign app endpoint",
+      "Backend checkout names main; exact checkout bytes not independently recovered from forbidden logs",
+      "Public account distinct from alexar76; beneficial ownership not investigated",
+      "No revenue, organic clients or successful autonomous production build established"
+    ]
+  },
+  "response_delta": {
+    "since_utc": "2026-10-30T07:25:26Z",
+    "github_search_candidates": 0,
+    "mcp_new_or_edited_comments": 0,
+    "agentdojo_new_or_edited_comments": 0,
+    "vulnetix_new_or_edited_comments": 0,
+    "histor_pr14": {
+      "state": "open",
+      "merged": false
+    },
+    "dev": {
+      "articles": 62,
+      "changed_thread": 4804987,
+      "previous_comments": 28,
+      "current_comments": 29,
+      "added_comments": [
+        {
+          "id_code": "3je30",
+          "created_at": "2026-10-30T04:28:48Z",
+          "author": "alexar76"
+        }
+      ],
+      "new_external_added_comments": 0,
+      "limits": "Unchanged DEV counters were not reread; comment edits without count change not covered."
+    }
+  },
+  "web_queries": 18,
+  "direct_gets": 24,
+  "new_independent_production_deployments_confirmed": 0,
+  "mutations": "Local evidence only. No paid calls, messages, installations, foreign-code execution, GitHub/Gitea writes, account changes or deployments."
+}

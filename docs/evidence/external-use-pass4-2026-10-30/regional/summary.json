@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "web_queries_executed": 31,
+  "web_queries_unique": 31,
+  "baseline_exact_repeats_executed": 0,
+  "queries_excluded_before_search": 1,
+  "captured_gets": 6,
+  "http_statuses": {
+    "200": 6
+  },
+  "new_external_distribution": [
+    {
+      "url": "https://app.engr-sng.com/news/detail/one-call-subcontract-390b827f",
+      "title": "【ITニュース解説】One call orders the subcontract.",
+      "publisher": "いっしー@Webエンジニア",
+      "source_article": "https://dev.to/alexar76/one-call-orders-the-subcontract-13nb",
+      "datePublished_as_served": "2026-09-30T22:04:39+09:00",
+      "dateModified_as_served": "2026-09-30T22:15:40+09:00",
+      "source_published_at_utc": "2026-09-30T13:04:39Z",
+      "datePublished_matches_original_timestamp": true,
+      "independent_derivative_creation_date_established": false,
+      "classification": "External Japanese explanatory derivative of our own article; distribution/attribution confirmed, independent editorial testing or runtime usage not established",
+      "direct_primary_attribution": "JSON-LD Article.isBasedOn points to exact alexar76 DEV article; visible source link also present",
+      "content_markers": [
+        "ModelMarket.dev",
+        "Hephaestus pipeline.run@v1",
+        "GAIA weather and air quality",
+        "POST /studio/prepare-pipeline",
+        "POST /ai-market/v2/invoke",
+        "run_pipeline",
+        "SUB/1 job tree"
+      ],
+      "automation_model": "Not disclosed in the checked article, portfolio or privacy text; human editorial review not established",
+      "newness": "Domain, URL and publisher not present in checked previous docs/artifacts/PromoMaterials except current search capture",
+      "limits": [
+        "Not an independent run of the pipeline",
+        "Not a new customer or installation",
+        "Author/editorial identity and beneficial ownership not investigated",
+        "Article repeats the original authors own demonstration; example is not a new Japanese buyer",
+        "Metadata datePublished equals original DEV timestamp, so independent page creation date is not asserted"
+      ]
+    }
+  ],
+  "new_independent_editorial_test_verified": false,
+  "new_runtime_use_verified": false,
+  "unattributed_or_false_positive_candidates": [
+    {
+      "url": "https://aefact.site/readers",
+      "json": "https://aefact.site/v1/readers",
+      "observation": [
+        {
+          "client": "histor",
+          "n": 23
+        }
+      ],
+      "reason": "Only client name histor; no alexar76/modelmarket.dev attribution. Site explicitly warns UA can be spoofed and does not retain raw IP/UA. Likely crawler observation is not third-party use of HISTOR.",
+      "classification": "unattributed namesake/UA candidate; excluded from confirmed mentions and use"
+    },
+    {
+      "url": "https://app.engr-sng.com/news/detail/language-model-build-planner-f39c0f9b",
+      "source_article": "https://dev.to/megapixel99/taking-the-language-model-out-of-a-build-planner-489d",
+      "reason": "Exact Article.isBasedOn identifies another author; excluded despite thematically similar planner article"
+    },
+    {
+      "url": "https://cn-sec.com/archives/5531744.html",
+      "read_scope": "search result only",
+      "reason": "Search text explicitly names Kirtan Bhatt mcp-warden, not alexar76/warden; no claimed attribution to our ecosystem"
+    }
+  ],
+  "report": "report.ru.md",
+  "scope": "Public GET and search, no messages/publication/GitHub writes/payments/logins/foreign-code execution",
+  "validation": {
+    "hash_errors": []
+  }
+}

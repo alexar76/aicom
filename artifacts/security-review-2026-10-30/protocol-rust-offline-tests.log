@@ -1,0 +1,34 @@
+   Compiling protocol-v2-from-spec-rs v0.1.0 (/Users/alex/Desktop/ai_tests/aicompany/aicom/protocol-v2-from-spec-rs)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.41s
+     Running unittests src/lib.rs (protocol-v2-from-spec-rs/target/debug/deps/protocol_v2_from_spec_rs-85fe75abbbd84f4d)
+
+running 2 tests
+test safety::security_tests::refuse_transition_addresses_to_private_ipv4 ... ok
+test safety::security_tests::connection_resolver_refuses_private_or_mixed_answers ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/admit.rs (protocol-v2-from-spec-rs/target/debug/deps/admit-39c75abb53d0bc3c)
+
+running 3 tests
+test pending_peer_is_not_published_as_a_peer ... ok
+test admitted_peer_is_searchable_and_signed ... ok
+test own_announce_verifies_and_does_not_admit ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/json_security.rs (protocol-v2-from-spec-rs/target/debug/deps/json_security-baa790f23d6cdb94)
+
+running 2 tests
+test malformed_or_ambiguous_json_is_refused ... ok
+test hostile_nesting_is_rejected_before_stack_exhaustion ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/vectors.rs (protocol-v2-from-spec-rs/target/debug/deps/vectors-3b5106a54de0899f)
+
+running 2 tests
+test empty_object_digest_matches_the_vector_readme ... ok
+test manifest_and_announce_vectors ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

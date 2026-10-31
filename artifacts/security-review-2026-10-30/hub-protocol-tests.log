@@ -1,0 +1,88 @@
+........................................................................ [  8%]
+........................................................................ [ 16%]
+........................................................................ [ 25%]
+........................................................................ [ 33%]
+........................................................................ [ 42%]
+........................................................................ [ 50%]
+........................................................................ [ 59%]
+........................................................................ [ 67%]
+........................................................................ [ 76%]
+...............................................FFFFF.................... [ 84%]
+........................................................................ [ 93%]
+...........................................................              [100%]
+=================================== FAILURES ===================================
+_______ test_signer_refuses_redirects_without_forwarding_its_token[301] ________
+aimarket-hub/tests/test_signer_transport_security.py:43: in test_signer_refuses_redirects_without_forwarding_its_token
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:456: in __init__
+    self.server_bind()
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/http/server.py:140: in server_bind
+    socketserver.TCPServer.server_bind(self)
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:472: in server_bind
+    self.socket.bind(self.server_address)
+E   PermissionError: [Errno 1] Operation not permitted
+_______ test_signer_refuses_redirects_without_forwarding_its_token[302] ________
+aimarket-hub/tests/test_signer_transport_security.py:43: in test_signer_refuses_redirects_without_forwarding_its_token
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:456: in __init__
+    self.server_bind()
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/http/server.py:140: in server_bind
+    socketserver.TCPServer.server_bind(self)
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:472: in server_bind
+    self.socket.bind(self.server_address)
+E   PermissionError: [Errno 1] Operation not permitted
+_______ test_signer_refuses_redirects_without_forwarding_its_token[303] ________
+aimarket-hub/tests/test_signer_transport_security.py:43: in test_signer_refuses_redirects_without_forwarding_its_token
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:456: in __init__
+    self.server_bind()
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/http/server.py:140: in server_bind
+    socketserver.TCPServer.server_bind(self)
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:472: in server_bind
+    self.socket.bind(self.server_address)
+E   PermissionError: [Errno 1] Operation not permitted
+_______ test_signer_refuses_redirects_without_forwarding_its_token[307] ________
+aimarket-hub/tests/test_signer_transport_security.py:43: in test_signer_refuses_redirects_without_forwarding_its_token
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:456: in __init__
+    self.server_bind()
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/http/server.py:140: in server_bind
+    socketserver.TCPServer.server_bind(self)
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:472: in server_bind
+    self.socket.bind(self.server_address)
+E   PermissionError: [Errno 1] Operation not permitted
+_______ test_signer_refuses_redirects_without_forwarding_its_token[308] ________
+aimarket-hub/tests/test_signer_transport_security.py:43: in test_signer_refuses_redirects_without_forwarding_its_token
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:456: in __init__
+    self.server_bind()
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/http/server.py:140: in server_bind
+    socketserver.TCPServer.server_bind(self)
+/Users/alex/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socketserver.py:472: in server_bind
+    self.socket.bind(self.server_address)
+E   PermissionError: [Errno 1] Operation not permitted
+=============================== warnings summary ===============================
+aimarket-hub/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/test_discovery_names.py: 2 warnings
+tests/test_crawler.py: 12 warnings
+tests/test_open_federation.py: 3 warnings
+tests/test_federation_assay.py: 87 warnings
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/validator.py:72: DeprecationWarning: jsonschema.RefResolver is deprecated as of v4.18.0, in favor of the https://github.com/python-jsonschema/referencing library, which provides more compliant referencing behavior as well as more flexible APIs for customization. A future release will remove RefResolver. Please file a feature request (on referencing) if you are missing an API for the kind of customization you need.
+    resolver = jsonschema.RefResolver.from_schema(schema)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED aimarket-hub/tests/test_signer_transport_security.py::test_signer_refuses_redirects_without_forwarding_its_token[301]
+FAILED aimarket-hub/tests/test_signer_transport_security.py::test_signer_refuses_redirects_without_forwarding_its_token[302]
+FAILED aimarket-hub/tests/test_signer_transport_security.py::test_signer_refuses_redirects_without_forwarding_its_token[303]
+FAILED aimarket-hub/tests/test_signer_transport_security.py::test_signer_refuses_redirects_without_forwarding_its_token[307]
+FAILED aimarket-hub/tests/test_signer_transport_security.py::test_signer_refuses_redirects_without_forwarding_its_token[308]
+5 failed, 846 passed, 105 warnings in 56.08s

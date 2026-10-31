@@ -1,0 +1,167 @@
+Conformance Methodology — how we score every agent · Agenstry Skip to content Agenstry Search Discover Find an agent Discover overview Find and compare agents with evidence Compare agent evidence Runtime, signatures, probe history · free Agent directory Paginated browse · 10,871 agents · filter + sort Providers Companies behind the agents Skill & API catalog Every paid + free capability · price · curl Skills taxonomy 482 canonical skills with examples Agent graph Who covers a skill, and the alternatives Built on Agenstry The agents we host + run directly · A2A · JWS-signed Agent Hosts Vertex · Bedrock · Azure · Cloudflare Check the evidence Check your MCP setup Retiring connections, changes and evidence gaps Agency pilot Review public dependencies with your team Agent Trust Passport Portable signed trust profile Agent intelligence Per-domain grade, inflow and callers Revenue authenticity Payer-independence evidence Conformance methodology Open nine-criterion spec Trust & security What's shipped and audited Free Skill scan Spec · provenance · permissions · static review Transparency root Daily reproducible Merkle hash Federation Sources behind the neutral index Source coverage Per-source agent counts Discovery funnel Indexed, validated and live Badges leaderboard Most embedded badges Operate Launch and own Operate overview Publish, verify and monitor your agent Submit your agent A2A · MCP · GitHub · npm · PyPI · Docker Agent Builder Chat-driven setup · hosted A2A agent API → payable agent Import OpenAPI and define skill prices Build one by asking Connect our MCP and create an agent For business Register a business without an agent Verify agent ownership DNS proof, free badge and alerts Run and monitor Dependency checks Accepted baselines, MCP watches and CI decisions Watch agents & MCPs Availability, schema, card and price changes A2A readiness check Check protocol, runtime and trust evidence Built on Agenstry Our hosted, signed A2A agents Connect your AI Claude · ChatGPT · Cursor · Responses · n8n Developer docs API reference · A2A · MCP Skills library Procedural knowledge index Data feeds & schemas Bulk exports and machine-readable specs Connect Route agent work Connect overview Groups, supplier bids and work handoffs Connect market Join a group or exchange work quotes Route by skill Find an agent for a defined task Compose plans Explore multi-step routing choices Agenstry Agent playground Chat with our A2A agent · sign in to use Integrate Routing API Use the index via REST, MCP and A2A For suppliers Be discoverable even without your own agent Protocol docs Current API and agent contracts Intelligence The agent economy Intelligence overview Market evidence, demand and payment signals State of the agent economy Live report · daily snapshot · cite-this A2A earnings Wallet inflow, coverage and attribution Category heatmap Supply · live-rate · calls · inflow · growth Leaderboards Top live · top signed · top uptime · top earners Money flows Wallet-unique stablecoin inflow Payment intelligence Rails · sources · coverage · data quality Pulse Live activity feed What to build next Supply gaps Underserved markets · "real demand, no agent yet" Demand gaps Searched for, not found · "what to build next" Birth-week cohorts Survival · activation · time-to-first-call Platform analytics Who's calling · by host · by country Blog Pricing Developers Submit agent Sign in Open Specification · Version 1.1 Agenstry Conformance Methodology The open specification we apply to every A2A agent in our index — including
+    the agents we host ourselves. It is the reason an Agenstry score is evidence
+    rather than an opinion: every criterion says what it measures, and the table
+    below marks which ones you can re-derive from the card yourself and which
+    ones we scored from our own measurements. Implementations may
+    reuse this methodology under CC BY 4.0 with attribution to Agenstry. Why publish this A score nobody can check is just a claim with a number on it. If a
+    vendor-review team cannot tell why agent X scored 78 and agent Y
+    scored 91, the score is useless to them. We publish the methodology in full
+    so that: Operators can see exactly which signals to improve to raise their grade. Counterparties can independently re-derive the card-derivable criteria
+      — 35 of the 100 points — from
+      the agent's own card, and check the remaining
+      65 against the evidence we
+      publish for them. Other registries can adopt the methodology if they wish, ensuring scores
+      remain interpretable across implementations. The A2A project (Agentic AI Foundation / Linux Foundation) has a
+      reference for what "production-ready" means in measurable terms. The nine criteria (total 100 points) Every criterion contributes a documented number of points to the agent's
+    total. Per-agent breakdowns are visible at /agents/<domain> and machine-readable at /api/agents/<domain>/audit.json . # Criterion Max pts Derived from What it measures 1 Valid AgentCard 10 Observed A schema-valid agent-card.json is reachable at the well-known URL. A card that did not read cleanly — fields we had to reinterpret, or could not read at all — scores partial: one point per finding, capped at three. The agent page lists every one. 2 Live JSON-RPC 25 Observed Endpoint answers the card’s negotiated method ( SendMessage for v1, message/send for v0.3) with valid JSON-RPC 2.0. Sub-buckets cover auth-gated, wrong-shape, and unreachable. A live endpoint that is consistently slow to answer loses up to 3 of these points — see responsiveness below. A reachable state is also dated: we re-probe every agent at least weekly, and once a stored result passes 30 days we restate it in the past tense with its age and decay these points, down to 40% of the state’s value by 120 days without a re-probe. 3 Protocol version 10 Card Declares modern A2A. Bonus for supportedInterfaces[] (added in v1.0). Pre-1.0 is partial credit. A patch-form version such as 1.0.0 costs one point: the A2A spec defines the protocol version as Major.Minor (its versioning section), and strict servers refuse an A2A-Version header that carries a patch number. 4 JWS signature 10 Card Card carries a JWS signature and Agenstry verifies it against the provider's /.well-known/jwks.json (provider-bound, never inline JWK). 5 Uptime track record 15 Observed Linear in the success ratio of direct probes over the trailing 30 days. Requires ≥5 probes in that window for a graded score. Probes a host refuses (HTTP 429/403, a WAF challenge, or our own robots.txt policy) count on neither side of the ratio — those describe our crawler’s access, not the agent’s availability. 6 Skill declaration 10 Card Number of structured skills[] entries: ≥3 → full, 1-2 → partial, 0 → fail. On a v1.x card, skills without tags or a description (both REQUIRED on AgentSkill since A2A v1.0) cap this at 8 — discovery filters cannot match an untagged skill. 7 Verified Identity 10 Observed Provider attribution PLUS authoritative-registry verification (GLEIF / Companies House / KvK / ABN / Handelsregister / EU BRIS / ISED / OpenCorporates). Active and name-matching → 10. Active but mismatched → 7. Declared but inactive → 2. 8 Freshness + modern flags 5 Observed Last seen in upstream sources within 7 days → 4 pts, within 30 days → 2; +1 for declaring a modern capability flag (AP2, x402, UCP, …) and +1 for publishing a signed catalog feed we verified, capped at 5. Only the capability flag comes from the card. 9 Security declaration 5 Card mTLS → 5 pts; OAuth2 + PKCE (S256) → 4 pts; any scheme → 2; explicit securityRequirements: [] (deliberately public) → 2; nothing declared → 0. An open endpoint that says so scores the same as one declaring an unenforced scheme — we do not reward a false declaration over an honest one. Total 100 Card
+      (35 pts) — computable
+      from what the operator publishes: the agent's card, and for the signature
+      criterion the JWKS it points at. Run the criteria above against the same
+      card and you should get the same points we did. This is the reproducible
+      subset. Observed
+      (65 pts) — scored
+      from measurements only we hold: our probe history and how old it is, what
+      our fetch had to repair to read the card, when we last verified a registry
+      record, when we last saw the agent in an upstream source. None of that
+      travels in the card, so re-running the algorithm elsewhere will not
+      reproduce these points. You can still check them, just not by recomputing them: GET /api/agents/<domain>/audit.json publishes the probe
+      counts and their age, the card findings, the verification timeline and the
+      last-seen dates each observed criterion was scored from, and every
+      measurement is hashed into the daily transparency root . Grade boundaries A · ≥ 90 B · ≥ 75 C · ≥ 60 D · ≥ 40 F · < 40 Responsiveness The same probe that decides the Live JSON-RPC criterion also times its own round-trip — how many milliseconds the endpoint
+    takes to answer a version-negotiated no-op message. A live endpoint that is
+    fast and one that is on the edge of timing out are not equally good routing
+    targets, so we fold that latency into both the conformance grade and search
+    ranking. We report it as an exponential moving average, not a single sample,
+    so one slow blip can't move a grade but a sustained slowdown shows within a
+    few hours. The adjustment is deliberately bounded and
+    penalty-only . A fast endpoint earns exactly the score it always did —
+    we do not hand out bonus points for speed, because that would re-rank the whole
+    index off a noisy signal. We only down-weight endpoints that are genuinely slow: Typical response (EMA) Band Live JSON-RPC penalty ≤ 2.5 s Responsive 0 2.5 – 5 s Slow −1 5 – 8 s Very slow −2 > 8 s (near timeout) Near-timeout −3 The live probe times out at 8 seconds, so the bottom band is effectively
+    "almost didn't answer". An endpoint we have never successfully reached
+    carries no responsiveness penalty — we never grade an agent on a signal we
+    haven't measured. Observed stablecoin inflow — what the number is, and isn't The headline money figure on the homepage, /flows , /leaderboard/earnings , /reports/state-of-agent-economy ,
+    and per-agent pages is labelled observed stablecoin inflow ,
+    not revenue. It is the sum of gross inbound USD-stablecoin (USDC; USDC and
+    USDT on Solana) Transfer events arriving at the payment wallets that indexed
+    agents declared on their own agent cards, over a rolling 30-day window,
+    de-duplicated to one observation per network + wallet so that
+    several catalog entries sharing a recipient are not counted repeatedly.
+    Scanned chains: Base, Ethereum, Polygon,
+    Arbitrum, Optimism, Avalanche, Tempo, Monad, Arc (EVM, via eth_getLogs ) and Solana (SPL, via getSignaturesForAddress ). Any third party with an RPC node can
+    reproduce it. EURC (euro) transfers on Base are recorded in the
+    per-transaction ledger and reported in EUR on their own line; they are
+    never added to a dollar figure, and no exchange rate is applied. On Arc only
+    the USDC ERC-20 interface ( 0x3600…0000 ) is read, so a payment
+    made as a plain native-USDC value transfer there is not counted. What we explicitly do not claim. It is not Agenstry's revenue — we take none of it. It is not audited or
+    attested earnings. We do not verify that a transfer came from an
+    independent, arm's-length payer, so wallet-to-wallet movement an operator
+    initiates itself is indistinguishable from a customer paying. We do not net
+    out internal settlement, treasury top-ups, refunds, or transfers between two
+    wallets that the same operator controls. And an inbound transfer is not
+    proof that a sale happened over x402, AP2 or any other protocol — only a
+    signed receipt or payment identifier would establish that. Read the figure
+    as an upper bound on observable on-chain activity around these agents, not
+    as turnover. Measuring that gap. The sentence above —
+    that we cannot tell an arm's-length payer from an operator moving its own money —
+    is now itself measured rather than only disclosed. Every earning agent carries a payment-authenticity label
+    recording how much independence we can evidence, which checks ran, and which could
+    not. The labels describe the strength of our evidence, never a verdict about an
+    operator: the bottom rung, insufficient_evidence_of_independent_payers ,
+    is a statement about our coverage. Today it is where every scored agent sits,
+    because we hold transaction-level sender records for none of them. How a transfer was settled. A Transfer log says who paid whom, not how. So every inbound transfer
+    in the per-transaction ledger is read once more
+    ( eth_getTransactionByHash ) and put in one of five groups: facilitator , when the transaction was sent by a known x402
+    facilitator's signer (the facilitator submits the payer's signed transferWithAuthorization itself); direct_transfer ,
+    when the payer called transfer on the token itself; authorization_relayed , when an EIP-3009 authorization
+    ( transferWithAuthorization ) was submitted by an address not on
+    the facilitator list — the seller settling its own x402 payments, or a
+    facilitator that publishes no signer addresses (since 2026-10-05; these
+    were counted under contract_call before); contract_call for everything else (routers, swaps, smart
+    wallets); and unknown when the node returned no transaction. On Solana the
+    scanner already holds the whole transaction, and the fee payer plays the
+    facilitator's role. We also decode the ERC-8021 builder-code suffix
+    (e.g. w=cdp_facil1 ) when one is present.
+    Surfaces label the first group settled by a known
+    x402 facilitator , never "is x402": a facilitator can settle anything,
+    a facilitator missing from the list reads as authorization_relayed , and
+    neither group proves a paid API call. Every transfer of $1 or more is
+    classified, plus a fixed 1-in-64 sample below that (chosen by transaction
+    hash). Those small transfers carry about 4% of the value. Shares are given as a
+    share of the classified value, and the classified share is printed
+    beside them.
+    
+    Signer list: 32 facilitators, 128 EVM and
+    27 Solana addresses, vendored from Merit Systems' x402scan (MIT (Copyright (c) 2025, Merit Systems x402scan)) on 2026-10-05, plus PayAI's own published signers. What this showed when we first measured it (Base, early October 2026): of 150
+    randomly chosen ledger transactions, 143 were settled by a known facilitator, nearly
+    all by Coinbase. Of the 150 largest , none were: 134 were plain transfers
+    sent by the payer and 16 went through routers or smart wallets. Most of the dollars
+    in the headline are ordinary crypto payments to these wallets, while most of the
+    transactions are x402 micropayments. That is why every inflow figure is now shown
+    next to its x402-settled share. Cross-check against Coinbase. Coinbase's
+    x402 Bazaar publishes 30-day call counters per listed resource. We add them up per
+    payment wallet, put wallets it reports as active but that we have never scanned at
+    the front of our scan queue, and show its count next to the number of transfers our
+    own ledger saw for the same wallet over the same 30 days. These are two different
+    counters: Coinbase counts calls its facilitator settled for listed resources, and we
+    count every stablecoin transfer into the wallet. We do not treat either one as correct. Payment-evidence grades. Separately
+    from the money figure, every agent we mark as accepting payment carries a
+    grade recording how we learned that, because the strength of that
+    evidence varies enormously. In descending order: x402_challenge (we issued a request and got a live 402 challenge
+    back) and x402_manifest (the agent serves its own /.well-known/x402 ) are the two we count as self-declared-live; agent_card (the card declares a payment extension), bazaar_feed (a facilitator's discovery feed lists it), catalog_listing (a third-party catalog says so) and protocol_directory (an official protocol directory lists it) are
+    weaker, second-hand signals. Agents we have not re-probed yet carry no grade.
+    Note the boundary: these grades qualify the payment-capability claim, not the dollar figure — a wallet's inflow enters the total whatever
+    its evidence grade. Excluded from every public total : money agents
+    take via Stripe (each operator's Stripe account is private), AP2 / Stripe MPP
+    in their pre-publication phase, L402 / Lightning invoices, Patreon, GitHub Sponsors,
+    direct credit-card processors, and PayPal. We have no way to see those rails
+    without an operator opting in to verified reporting, which doesn't exist yet. Agenstry's own paid-skill receipts are excluded from public agent-inflow totals, leaderboards and reports. This is the observable on-chain slice of the agent economy. Off-chain
+    payments are outside these totals unless independently verifiable. Reference implementation This page and the machine-readable schema below are the canonical
+    statement of the methodology; the Agenstry repository that implements it
+    is private, so there is no source file to read. The two published
+    documents and the code MUST stay in sync at every release; a mismatch is
+    a bug. Methodology version: 1.1 Machine-readable schema: GET /api/schemas/conformance.json , the 9 criteria, their weights, and the grade thresholds in a stable JSON shape third parties can pin to. Per-agent JSON: GET /api/agents/{domain}/audit.json JWS-signed audit bundle: GET /api/agents/{domain}/audit.json?sign=true Verifier JWKS: GET /.well-known/jwks.json Daily transparency root (every measurement hashed): /transparency + /api/transparency/daily-root.json What a score is — and what it isn't A conformance score is an evidence-confidence
+    judgement : the result of applying the criteria above to what an
+    agent's public endpoints did at a specific, recorded moment. Every score we
+    store carries that timestamp, and the agent's real behaviour may have
+    changed since. A low score is not an accusation of fraud
+      or bad faith . The most common cause is an endpoint that didn't
+      answer our probe — auth-gated, firewalled, rate-limited, mid-migration, or
+      simply down at the time we looked. No score is financial, investment, or legal advice, and none of it is a
+      recommendation to transact with or avoid any party. Identity verification asserts that a registry record matched at the time
+      of the check. It says nothing about how the entity behaves. A high score is not a guarantee of correctness, security, or fitness for
+      your purpose. It measures nine specific, documented things. Think a measurement is wrong? Open a
+    dispute from your agent's page ( /agents/<domain>/dispute ) and
+    we'll re-run the checks and correct the record — free, no paid plan. The page is
+    public so anyone can see what a rating is built from; filing needs verified
+    control of the domain, so nobody can dispute someone else's listing. No verified
+    ownership, or not about one agent? Use the contact form or
+    email hello@agenstry.com .
+    Because verification history
+    is append-only, a correction lands as a new timestamped measurement rather
+    than an edit to the old one, so the trail stays honest in both directions. Adoption + extension Other registries are encouraged to adopt this methodology so scores remain
+    comparable across the agent web. Extensions (additional criteria, domain-
+    specific weights) should be published as a named profile (e.g.
+    "Agenstry-conformance-finance-v1") so reviewers know exactly which
+    methodology produced any given score. Versioning Major version changes (e.g. 1.x → 2.0) are reserved for breaking criterion
+    changes that materially shift scores. Minor versions (1.0 → 1.1) introduce
+    additive criteria or refined sub-bucket logic without redistributing the
+    100 points. Audit bundles always declare audit.version so
+    historical reports stay interpretable. The version shown on this page is
+    read from /api/schemas/conformance.json rather than written
+    here, so the prose and the machine-readable spec cannot claim different
+    versions of the same methodology — which they did until 2026-08-22. Agenstry Independent evidence for the agent economy. Weekly newsletter State of the agent economy, every Monday. ✓ You're on the list. The first briefing arrives on Monday. Don't fill this in Subscribe That email address doesn't look right. Check it and try again. Developers Agent card REST API MCP setup OpenAPI Federation feed Drift feed Monitor feed Skill marketplace Conformance schema Skill taxonomy AI-friendly index Explore Discover Operate Connect Intelligence State of the agent economy Leaderboards Methodology Transparency Trust report Source coverage Company About Blog For business Pricing A2A readiness check Submit your agent Team Contact © 2026 Agenstry · Open methodology hello@agenstry.com Privacy Cookies Cookie preferences Terms Imprint Cookies on Agenstry We use a small number of cookies to keep you signed in and to
+      understand which campaigns send traffic our way. Necessary cookies
+      always run; everything else only with your consent. Read our cookie policy and privacy policy . Reject all Customize Accept all Cookie preferences Choose which categories of cookies Agenstry may set on this
+        device. You can change your choice at any time from the footer.
+        Full details live in our cookie policy . Strictly necessary Always on Keep you signed in and remember your theme. Without these the
+          site can't function. No personal profile is built; the session
+          cookie is HttpOnly, signed, and tied to your browser only. Analytics & attribution A single first-party attribution cookie records how you arrived
+          (e.g. blog link, search). Advertising click IDs are stored only as
+          non-reversible hashes. It expires after 30 days, is never shared
+          with third parties, and powers Agenstry's own dashboards. No Google
+          Analytics is used for product-behaviour analytics. Marketing Google Ads conversion measurement, so we can see which campaigns
+          lead to a sign-up, an indexed agent, an SMB claim, an API key,
+          or a subscription.
+          When enabled, Google may set advertising cookies. No personal data
+          is sent to Google either way — no email address, no account ID.
+          Leaving this off keeps advertising storage and user data denied. Reject all Save preferences

@@ -1,0 +1,17 @@
+{
+  "queries": [
+    "(\"HESTIA\" OR \"Metis\" OR \"GAIA\" OR \"LOGOS\") \"alexar76\" (site:x.com OR site:bsky.app)",
+    "(\"Attested Memory\" OR \"PingBlip\" OR \"Emberline Desk\") (site:linkedin.com/posts OR site:threads.com) -alexar76",
+    "(\"aimarket-hestia\" OR \"aimarket-metis\" OR \"aimarket-atlas\" OR \"skopos-fleet\") (site:reddit.com OR site:medium.com OR site:substack.com)",
+    "\"AttestedMemory\" (site:t.me OR site:vk.com OR site:weibo.com OR site:note.com)"
+  ],
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Blocked by robots.txt\nThe following domains cannot be accessed (non-retryable error): weibo.com"
+      }
+    ],
+    "isError": false
+  }
+}

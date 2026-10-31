@@ -1,0 +1,10 @@
+{
+  "evidence_type": "manual search observation; full response was not saved",
+  "queries": [
+    "site:reddit.com/comments/ (\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"alexar76\")",
+    "site:x.com -from:alexar76 (\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"@aimarket/warden\")",
+    "site:bsky.app/profile/ (\"modelmarket.dev\" OR \"attestedmemory.net\")",
+    "site:mastodon.social (\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"PingBlip\")"
+  ],
+  "observation": "The combined returned output contained unrelated Bluesky profiles and platform posts. No attributable ecosystem mention was identified. Excluded from the nine fully saved batch counts."
+}

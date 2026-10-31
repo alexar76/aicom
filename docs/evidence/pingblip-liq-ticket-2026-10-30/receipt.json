@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-30",
+  "change": "Keep evolved LIQ ticket enamel gold and ink dark; exclude both from emissive evolution and burst ramp.",
+  "source": "pingblip/memeforge/src/components/three/SculptedModel.tsx",
+  "source_sha256": "3de27d79b4e84618a5a96009136679f85c8632d73e7c7813007b5e7063b6804f",
+  "checks": {
+    "typescript": "passed",
+    "shared_imports": "29 shared files passed",
+    "dependency_scan": "527 pinned dependencies; no known OSV vulnerability",
+    "browser": "Actual BlipCanvas with Liq Snake scene; evolved desktop 1280x1000 and mobile 390x844; mobile canvas height 288px; evolution button exercised; no console errors or warnings"
+  },
+  "screenshots": [
+    "desktop-evolved.jpg",
+    "desktop-evolution-burst.jpg",
+    "mobile-evolved.jpg"
+  ],
+  "review_fixture": "Temporary local-only app route removed before deployment; source retained in local-review-page.tsx",
+  "deployment": {
+    "status": "verified",
+    "services": [
+      "pingblip",
+      "forge"
+    ],
+    "url": "https://pingblip.com/bench",
+    "github_writes": false,
+    "only_uploaded_source": "memeforge/src/components/three/SculptedModel.tsx",
+    "source_in_both_running_containers_matches_local": true,
+    "live_js_contains_ticket_fix": true,
+    "public_http": {
+      "game": 200,
+      "forge": 200,
+      "bench": 200,
+      "liq_snake_model": 200
+    },
+    "rollback": "Previous application images tagged :prev; previous source saved on server outside build context.",
+    "evidence": "deployment.log",
+    "browser_verification_scope": "Visual QA ran on localhost using actual shared game renderer. Production verified via source hashes, publicly served compiled JS, and HTTP endpoints."
+  },
+  "github_writes": false
+}

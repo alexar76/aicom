@@ -1,0 +1,43 @@
+{
+  "observed_date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "baseline": [
+    "docs/growth/external-deeper-2026-10-30.ru.md",
+    "docs/evidence/external-signals-deeper-2026-10-30/social/summary.json",
+    "artifacts/external-signals-2026-10-29/report.json",
+    "artifacts/external-deep-2026-10-29/report.json"
+  ],
+  "web_queries_executed": 40,
+  "web_queries_new_against_recorded_fields": 37,
+  "exact_repeats_excluded": 3,
+  "captured_gets": 2,
+  "http_statuses": {
+    "200": 2
+  },
+  "new_independent_social_text_or_real_use_confirmed": false,
+  "new_findings": [],
+  "new_surface_checks": {
+    "atomdrift_feed_items": 54,
+    "atomdrift_feed_updated": "2026-10-17T00:00:00Z",
+    "matching_feed_summaries": [],
+    "atomdrift_home_social_links": []
+  },
+  "previous_bluesky_data_reused_offline": {
+    "nonzero_quote_count": 0,
+    "new_gets": 0,
+    "not_new_findings": true
+  },
+  "blocked": [
+    "bookwyrm.social robots",
+    "indiehackers.com robots"
+  ],
+  "scope_limits": [
+    "Only targeted public searches and two new direct publication-surface GETs",
+    "No closed social groups, private messages or exhaustive social corpus",
+    "Full Atomdrift54article bodies not read; only feed summaries",
+    "No repeated blocked Bluesky/Reddit search API"
+  ],
+  "report": "report.ru.md",
+  "query_index": "query-index.json",
+  "mutations": "Local evidence only. No messages, publications, auth changes, purchases, tool invokes, installs or GitHub writes."
+}

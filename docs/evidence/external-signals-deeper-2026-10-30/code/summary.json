@@ -1,0 +1,71 @@
+{
+  "observed_date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "baseline": [
+    "docs/growth/external-signals-2026-10-30.ru.md",
+    "artifacts/external-deep-2026-10-29/report.json",
+    "artifacts/external-deep-2026-10-29/code-adoption/summary.json",
+    "artifacts/external-signals-2026-10-29/report.json"
+  ],
+  "web_queries": 20,
+  "native_search_queries_in_gets": 13,
+  "captured_gets": 35,
+  "new_findings": [
+    {
+      "key": "quincy-feedback-implemented",
+      "classification": "external_product_changes_in_response_to_our_tests",
+      "independent_teams": 1,
+      "primary_url": "https://github.com/alexar76/aicom/issues/13#issuecomment-6496661337",
+      "followups": [
+        "https://github.com/alexar76/aicom/issues/13#issuecomment-6512718071",
+        "https://github.com/alexar76/aicom/issues/13#issuecomment-6513192467"
+      ],
+      "external_comments": 3,
+      "event_dates_msk": [
+        "2026-10-29 15:27",
+        "2026-10-30 04:31",
+        "2026-10-30 05:07"
+      ],
+      "confirmed_source_changes": [
+        "sub-cent price formatter",
+        "schema score vs contract stability distinction",
+        "persistent check store",
+        "free Recheck JSONL feed",
+        "structured field_changes and versioned feed envelopes"
+      ],
+      "pinned_commits": [
+        "5a36f743d0b2b9b6dd42ee075f25d138e738e166",
+        "15aec9f488494efeaa981fb80cc5800cd5dd7f40",
+        "9303c9d6e9862c599711e979a8acba342dc634d7",
+        "8750385243aa1aa89e71dbf5fff72f041e7b8286",
+        "d71698264878f8daccec703b1d1f6d205aad47ff"
+      ],
+      "live_feed_url": "https://stall-row-production.up.railway.app/v1/recheck/feed",
+      "live_feed_rows": 16,
+      "modelmarket_rows": 2,
+      "health_url": "https://route-verdict-production.up.railway.app/health",
+      "health_storage": "persistent",
+      "limits": "This is implementation of feedback by an outside vendor, not adoption of our library. modelmarket feed rows are requested review watches created by us; payments described by both sides are tests, not organic demand. No paid retest, source execution, restart or independently verified CI."
+    },
+    {
+      "key": "traits-warden-sample",
+      "classification": "external_automated_assessment_of_published_artifact",
+      "url": "https://github.com/isotope13-dev/traits-dev/commit/d28c0c79dfc7aecb94c40acbbc8109ecee26d2ab",
+      "event_msk": "2026-10-21 23:15",
+      "package": "@aimarket/warden",
+      "version": "0.18.0",
+      "reported_reclassification": "suspicious → good",
+      "reported_reason": "public-key PEM only, verify-side",
+      "tarball_sha256": "30b96f217c7ca951c3061e33b12e2601a739d6e14384e17f33998dc512f21c73",
+      "actual_tarball_hash_matches": true,
+      "limits": "Commit message identifies opencode/GLM; human review and correctness of classification not independently verified. Published WARDEN artifact was hashed only, not installed/executed. This is an external test sample, not runtime firewall adoption."
+    }
+  ],
+  "not_new": [
+    "FPL Cat and Quincy initial inbound proposal already present in 29 October baseline",
+    "Known Industrial Platform/RugSnare/MCPMoat links",
+    "Sourcegraph two eSIM catalogue Markdown pages in one Arnon-hs/open-source repository, not use"
+  ],
+  "new_independent_runtime_adoption_confirmed": false,
+  "mutations": "Local evidence only. No external messages, publication, GitHub writes, installs, payments, account/auth changes."
+}

@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-30",
+  "scope": "aicom first-party source, dependency manifests, protocol implementations; no external writes",
+  "history_threads": [
+    "01a1864b-e95f-7820-a570-42443b6c65ae",
+    "01a1865f-553d-71b1-90d7-7e008147541d"
+  ],
+  "sources": {
+    "vulnetix_advisories": "https://github.com/Vulnetix/advisory-database",
+    "vulnetix_stix": "https://vulnetix.com/malscan-stix/index.json",
+    "review_scanners": [
+      "GuardDog",
+      "malcontent",
+      "OSSGadget",
+      "Packj",
+      "Vulnetix CLI malscan",
+      "Atomdrift Scan"
+    ],
+    "review_feeds": [
+      "OpenSSF malicious-packages",
+      "GitHub Advisory Database",
+      "Vulnetix GCVE",
+      "OSV ecosystem datasets"
+    ]
+  },
+  "github_writes": false
+}

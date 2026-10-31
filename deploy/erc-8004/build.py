@@ -28,6 +28,11 @@ AGENTS = {
             {"name": "web", "endpoint": "https://modelmarket.dev/"},
             {"name": "MCP", "endpoint": "https://modelmarket.dev/mcp", "version": "2025-06-18"},
             {"name": "A2A", "endpoint": "https://modelmarket.dev/.well-known/agent-card.json"},
+            # The discovery document under its IETF draft name (draft-artamokhov-dawn-marketplace-
+            # discovery): name, protocol versions, catalogue URI and the signing key — the key the
+            # hub's x402 offers and receipts are signed with.
+            {"name": "agent-marketplace", "endpoint": "https://modelmarket.dev/.well-known/agent-marketplace",
+             "version": "draft-artamokhov-dawn-marketplace-discovery-00"},
         ],
         "x402Support": True,
         "supportedTrust": ["reputation", "crypto-economic"],
@@ -46,6 +51,12 @@ AGENTS = {
             {"name": "DID", "endpoint": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9", "version": "v1"},
             # The same check sold per call over x402 (USDC on Base, listed in the CDP Bazaar).
             {"name": "x402", "endpoint": "https://modelmarket.dev/x402/histor-check"},
+            # The log's head as a C2SP checkpoint (histor-tlog/2) and the instance's tlog-witness
+            # submission prefix; vkeys at https://histor.modelmarket.dev/api/v1/issuer.
+            {"name": "tlog-checkpoint", "endpoint": "https://histor.modelmarket.dev/checkpoint",
+             "version": "c2sp.org/tlog-checkpoint"},
+            {"name": "tlog-witness", "endpoint": "https://histor.modelmarket.dev/witness/v1",
+             "version": "c2sp.org/tlog-witness"},
         ],
         "x402Support": True,
     },

@@ -1,0 +1,31 @@
+AWR/2 conformance: 118 vectors x 3 implementation(s)
+manifest: /Users/alex/Desktop/ai_tests/aicompany/aicom/awr/vectors/index.json
+spec registry: 69 codes
+
+
+wrote /Users/alex/Desktop/ai_tests/aicompany/aicom/awr/conformance/results.json
+wrote /Users/alex/Desktop/ai_tests/aicompany/aicom/awr/conformance/badge.json
+  vector group       python-reference  rust     browser-node
+  -----------------  ----------------  -------  ------------
+  canonicalization/  15/15             15/15    15/15
+  invalid/           79/79             79/79    79/79
+  proof/             1/1               1/1      1/1
+  valid/             23/23             23/23    23/23
+  ALL                118/118           118/118  118/118
+
+  section 17 subcommand  python-reference  rust  browser-node
+  ---------------------  ----------------  ----  ------------
+  verify                 yes               yes   yes
+  canonicalize           yes               yes   yes
+  digest                 yes               yes   yes
+  hashdata               yes               yes   yes
+  issue (OPTIONAL)       yes               yes   not provided
+
+  implementation    language                                        crypto                                                    command
+  ----------------  ----------------------------------------------  --------------------------------------------------------  --------------------------------------
+  python-reference  Python 3.9+                                     cryptography (PyCA) — Ed25519 and SHA-256 via OpenSSL     `aimarket-hub/.venv/bin/python -m awr`
+  rust              Rust 2021                                       ed25519-dalek 2.2 + sha2 0.10; base58btc hand-written     `awr/rust/target/release/awr`
+  browser-node      JavaScript (ES5-compatible CommonJS), Node 18+  Node crypto (Ed25519, SHA-256); WebCrypto in the browser  `node docs/verifier/js/cli.js`
+
+passed 354 / measured 354, 0 failed, 0 not measured, in 13.3s
+conformant implementations (every vector in the manifest): browser-node, python-reference, rust

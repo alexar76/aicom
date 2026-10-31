@@ -308,7 +308,7 @@ AIMARKET_SELLS_FOR=https://oracles.modelmarket.dev
 закрывает: URL вызова у провайдера публичный, и до oracle-core 0.5.0 у провайдера
 не было способа отказать в платной capability тому, кто вызывает её напрямую. Замер
 2026-10-16: неоплаченный `POST` на собственный URL GAIA для `gaia.power.window@v1` и
-на URL EMPORION для `emporion.vat.check@v1` (по $0.002) вернул `ok: true` с полным
+на URL SYMMARTYS для `emporion.vat.check@v1` (по $0.002) вернул `ok: true` с полным
 результатом, а те же вызовы через `modelmarket.dev` получили `402` по каталожной
 цене.
 

@@ -1,0 +1,29 @@
+ WARN main scan::tools: required analysis tool not found — binary disassembly and import/export analysis will fail tool="rizin" purpose="binary disassembly and import/export analysis" install="brew install rizin  |  pkg install rizin  |  https://rizin.re"
+ WARN main scan::tools: required analysis tool not found — UPX-packed executable detection will fail tool="upx" purpose="UPX-packed executable detection" install="brew install upx  |  apt-get install upx-ucl  |  apk add upx"
+ WARN main scan::tools: required analysis tool not found — Inno Setup installer extraction will fail tool="innoextract" purpose="Inno Setup installer extraction" install="brew install innoextract  |  apt-get install innoextract  |  apk add innoextract"
+ WARN main scan::tools: required analysis tool not found — 7-Zip / CAB / tar archive extraction will fail tool="7z" purpose="7-Zip / CAB / tar archive extraction" install="brew install p7zip  |  apt-get install p7zip-full  |  apk add 7zip"
+ WARN main cleave::rule_update: rules download failed; retrying attempt=1 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=2 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=3 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+
+⚠️  No YARA rules loaded
+ WARN main cleave::rule_update: rules download failed; retrying attempt=1 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=2 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=3 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave: capability mapper prefetch failed error=resolve traits path
+ WARN main cleave::rule_update: rules download failed; retrying attempt=1 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=2 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=3 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=1 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=2 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=3 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave: capability mapper prefetch failed error=resolve traits path
+ WARN main cleave::rule_update: rules download failed; retrying attempt=1 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=2 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+ WARN main cleave::rule_update: rules download failed; retrying attempt=3 path="versions.toml" wait_ms=0 error=GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+Error: resolve traits path
+
+Caused by:
+    Failed to install traits from the update bucket: GET https://updates.atomdrift.org/cleave/versions.toml: error sending request for url (https://updates.atomdrift.org/cleave/versions.toml)
+
+    Run 'cleave update-rules' to install.

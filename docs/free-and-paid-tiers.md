@@ -299,7 +299,7 @@ listed.
 door: a provider's invoke URL is public, and before oracle-core 0.5.0 it had no
 way to refuse a priced capability to whoever called it directly. Measured on
 2026-10-16, an unpaid `POST` to GAIA's own URL for `gaia.power.window@v1`, and to
-EMPORION's for `emporion.vat.check@v1` ($0.002 each), answered `ok: true` with the
+SYMMARTYS's for `emporion.vat.check@v1` ($0.002 each), answered `ok: true` with the
 full output, while the same calls through `modelmarket.dev` answered `402` at the
 catalogue price.
 

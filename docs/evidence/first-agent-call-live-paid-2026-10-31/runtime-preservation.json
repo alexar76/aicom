@@ -1,0 +1,14 @@
+{
+  "checks": {
+    "effective_process_argv_preserved": true,
+    "mounts_and_write_modes_preserved": true,
+    "port_bindings_preserved": true,
+    "runtime_env_preserved": true,
+    "networks_preserved": true,
+    "container_running": true,
+    "healthy": true
+  },
+  "new_image": "modelmarket-hub:a2a-output-20261031",
+  "rollback_container": "modelmarket-hub-prev",
+  "module_sha256": "403f702a72476f7cef3e9d44c22fc3700bbc4dbb332a9f935db38ca2da1fe68a"
+}

@@ -707,6 +707,11 @@ export_course() {
 # imports merged ones back; a `mirror` satellite is read-only (a push there is
 # overwritten on the next sync). The banner tells visitors which door is open.
 # Idempotent — re-running does not re-inject.
+#
+# Placement (2026-10-29): one line, BELOW the badge block when the README has
+# one, else below the H1. Until then it was five quoted lines above the title,
+# so on 51 of 53 satellites the first screen a visitor saw was the banner, not
+# what the project is or how to install it (growth review 2026-10-29).
 _inject_mirror_banner() {
   local target="$1"
   local sat_id="$2"
@@ -722,27 +727,36 @@ _inject_mirror_banner() {
   local mode
   mode="$(_satellite_history_mode "$sat_id")"
 
+  local banner
+  if [[ "$mode" == "live" ]]; then
+    banner="$(printf '> 🔄 Synced from the [AI-Factory monorepo](https://github.com/%s/aicom) (append-only history). **Pull requests are welcome** — merged PRs are imported back and re-synced here. [Issues](https://github.com/%s/%s/issues) · [Pull requests](https://github.com/%s/%s/pulls)' "$GITHUB_ORG" "$GITHUB_ORG" "$repo" "$GITHUB_ORG" "$repo")"
+  else
+    banner="$(printf '> 📖 Read-only mirror of the [AI-Factory monorepo](https://github.com/%s/aicom): a commit pushed here is overwritten on the next sync. Found a bug or have a request? [Open an issue](https://github.com/%s/%s/issues).' "$GITHUB_ORG" "$GITHUB_ORG" "$repo")"
+  fi
+
+  # Anchor: the end of the badge block, else the first H1, else the top.
+  local anchor_line=""
+  anchor_line="$(grep -nF -m1 '<!-- /aicom-readme-badges -->' "$readme" | cut -d: -f1)"
+  if [[ -z "$anchor_line" ]]; then
+    anchor_line="$(grep -nE -m1 '^# ' "$readme" | cut -d: -f1)"
+  fi
+
   local tmp
   tmp="$(mktemp)"
-  {
-    printf '%s\n' "$banner_marker"
-    if [[ "$mode" == "live" ]]; then
-      printf '> **🔄 Synced from a monorepo — but with a live history.** `%s` mirrors the\n' "$sat_id"
-      printf '> canonical AI-Factory monorepo. History here is append-only (no force-push).\n'
-      printf '> **Pull requests are welcome** — merged PRs are imported back into the monorepo\n'
-      printf '> and re-synced here, so your contribution becomes canonical.\n'
-      printf '> 💬 **[Issues](https://github.com/%s/%s/issues)** · **[Pull requests](https://github.com/%s/%s/pulls)** both welcome.\n' "$GITHUB_ORG" "$repo" "$GITHUB_ORG" "$repo"
-    else
-      printf '> **📖 Read-only mirror.** `%s` is published from the canonical AI-Factory monorepo.\n' "$sat_id"
-      printf '> **Pull requests are not accepted** — any commit pushed here is overwritten by\n'
-      printf '> `scripts/mirror_satellites.sh` on the next sync.\n'
-      printf '> 🐞 Found a bug or have a request? Please **[open an issue](https://github.com/%s/%s/issues)**.\n' "$GITHUB_ORG" "$repo"
-    fi
-    printf '\n'
-    cat "$readme"
-  } > "$tmp"
+  if [[ -n "$anchor_line" ]]; then
+    {
+      head -n "$anchor_line" "$readme"
+      printf '\n%s\n%s\n' "$banner_marker" "$banner"
+      tail -n +"$((anchor_line + 1))" "$readme"
+    } > "$tmp"
+  else
+    {
+      printf '%s\n%s\n\n' "$banner_marker" "$banner"
+      cat "$readme"
+    } > "$tmp"
+  fi
   mv "$tmp" "$readme"
-  echo "  ✓ $([ "$mode" = live ] && echo LIVE || echo MIRROR) banner injected into README.md"
+  echo "  ✓ $([ "$mode" = live ] && echo LIVE || echo MIRROR) banner injected into README.md (below $([ -n "$anchor_line" ] && echo "line $anchor_line" || echo top))"
 }
 
 # README + CI expect docs/badges/coverage.svg and scripts/ at satellite repo root.

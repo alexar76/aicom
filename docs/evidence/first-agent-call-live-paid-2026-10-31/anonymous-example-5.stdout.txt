@@ -1,0 +1,51 @@
+Agent: modelmarket.dev
+Offer: {
+  "product_id": "gaia.gateway",
+  "capability_id": "gaia.weather.read@v1",
+  "source_hub": "https://iot.modelmarket.dev",
+  "source_hub_name": "GAIA — physical-world oracle gateway",
+  "name": "gaia.weather.read",
+  "display_name": "gaia.weather.read",
+  "description": "Current weather (temperature, humidity, pressure, wind) at a place: pass latitude+longitude or city (e.g. \"Tokyo\"); GAIA reads the nearest live Open-Meteo relay within 75 km, or refuses. Ed25519-attested. An exact device_id overrides the place: om-wx-01, nws-01, Met Éireann met-ie-01, SMHI MetObs smhi-wx-*-01 (CC BY 4.0), MET Norway Frost frost-*-01 (in-situ, not METAR), DMI dmi-*-01, Singapore NEA sg-wx-*-01 (Open Data Licence), HKO hko-wx-*-01 (DATA.GOV.HK attribution), AEMET aemet-wx-*-01 (Fuente: AEMET), MeteoSwiss ch-wx-*-01 (CC BY 4.0), CWA cwa-wx-*-01 (OGDL 1.0), Météo-France mf-wx-*-01 (Etalab OL 2.0), Estonia ee-wx-*-01 (CC BY 4.0), Iceland is-wx-*-01 (ODC-By), GeoSphere Austria at-wx-*-01 (CC BY 4.0), Lithuania lt-wx-*-01 (CC BY-SA 4.0), Latvia lv-wx-*-01 (CC0-1.0), JMA AMeDAS jp-wx-*-01 (Public Data License), CHMU cz-wx-*-01 (CC BY 4.0), or KMA kr-wx-*-01 (Public Nuri Type 1; needs GAIA_KMA_SERVICE_KEY) when live. Demo-site simulators ws-01/ws-02 answer only to their device_id (and to an empty call on a simulator-only GAIA).",
+  "score": 0.8165,
+  "match_type": "hybrid",
+  "matched_concepts": [
+    "weather"
+  ],
+  "matched_terms": [
+    "weather",
+    "meteo",
+    "gaia",
+    "open"
+  ],
+  "score_breakdown": {
+    "lexical": 0.7906,
+    "semantic": 0.9627,
+    "quality": 0.6446
+  },
+  "input_independent": false,
+  "price_per_call_usd": 0.001,
+  "access_mode": "paid",
+  "credits_eligible": false,
+  "routed_price_usd": 0.00101,
+  "routing_fee_bps": 100,
+  "trust_score": 0.5,
+  "reputation_basis": "measured",
+  "observations_30d": 534,
+  "deliveries_30d": null,
+  "p50_latency_ms": 346,
+  "publisher_id": null,
+  "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "seller_id": "GAIA — physical-world oracle gateway",
+  "seller_kind": "hub",
+  "stake_usd": null,
+  "demo": false,
+  "offerable": true,
+  "route_status": "live",
+  "route_age_s": 3092,
+  "input_required": [],
+  "input_hint": {}
+}
+Task: a2at_ef36390e7d40feda77011765 TASK_STATE_COMPLETED
+Receipt verified against the signer's key.
+Result: null

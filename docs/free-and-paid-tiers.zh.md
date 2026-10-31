@@ -261,7 +261,7 @@ AIMARKET_SELLS_FOR=https://oracles.modelmarket.dev
 §7.1 和 §7.2 决定的是一次*经由 Hub* 的调用花多少钱。两者都没有关上另一扇门：提供方的
 调用 URL 是公开的，而在 oracle-core 0.5.0 之前，提供方没有办法拒绝直接调用有价能力的
 人。2026-10-16 实测：未付费地向 GAIA 自己的 URL `POST` `gaia.power.window@v1`、向
-EMPORION 的 URL `POST` `emporion.vat.check@v1`（各 $0.002），都返回了 `ok: true` 和
+SYMMARTYS 的 URL `POST` `emporion.vat.check@v1`（各 $0.002），都返回了 `ok: true` 和
 完整输出；而同样的调用经由 `modelmarket.dev` 则按目录价得到 `402`。
 
 闸门不收款。通道、预留和账本已经在 Hub 里。ATLAS 自己计量（§10），这对一个服务行得

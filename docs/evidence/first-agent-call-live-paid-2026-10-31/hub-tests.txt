@@ -1,0 +1,19 @@
+........................................................................ [ 29%]
+........................................................................ [ 59%]
+........................................................................ [ 88%]
+............................                                             [100%]
+=============================== warnings summary ===============================
+../.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/test_a2a.py::TestAgentCard::test_native_manifest_binds_a2a_urls_inside_its_signature
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+tests/test_a2a_invoke.py: 16 warnings
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/.venv/lib/python3.12/site-packages/httpx/_client.py:1053: StarletteDeprecationWarning: You should not use the 'timeout' argument with the TestClient. See https://github.com/Kludex/starlette/issues/1108 for more information.
+    return self.request(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+244 passed, 18 warnings in 25.08s

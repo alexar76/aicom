@@ -1,5 +1,7 @@
 # Упоминания всей экосистемы alexar76 включая Пантеон и PingBlip
 
+> Названия компонентов приведены к текущему бренду. Имена пакетов, URL и идентификаторы в исторических данных сохранены.
+
 Дополнительный поиск 27 октября 2026 года, 08:25–08:34 МСК, после [утренней проверки реакций](external-signals-2026-10-27.ru.md). Исходный перечень — 60 записей satellite map; отдельно включены Пантеон с трилогией, PingBlip с World и Forge, Independent AI с KOVA/AEGIS/CHARON, семейство Attested и Emberline. Использовались индивидуальные и групповые запросы по названиям, пакетам, владельцу и точным доменам.
 
 **Дополнительно подтверждены техническая карточка AIMarket Hub в Karatum и три записи Free Startup Listing — Пантеон, KOVA и CHARON.** Книги Пантеона и PingBlip доступны на itch.io, но найденное там относится к публикациям самих проектов и автоматическому обнаружению. Новых проверяемых чужих постов или рецензий в соцсетях и национальных сегментах этот проход не дал.
@@ -41,7 +43,7 @@
 | Направление | Результат дополнительного прохода |
 |---|---|
 | AICOM, AIMarket Hub, ARGUS, WARDEN, HISTOR, оракулы | В выдаче повторяются уже известные Glama, Odel, Small Print, PluginBench, MCPRepository, Enterprise DNA, UNDERCODE и агрегаторы материалов. Новым подтверждённым источником для отчёта стал Karatum. |
-| GAIA, ATLAS, METIS, SKOPOS, HELIOS, HESTIA, EMPORION, LOGOS, MOMUS, Treasury, THEMIS, BASANOS, DOLOS, THEOROS, DIOSCURI, HEPHAESTUS | Дополнительно проверены имена с владельцем и уникальные package names. Подтверждена карточка DIOSCURI на npm.io. Safety уже был известен: прямое чтение теперь показывает версии emporion 0.4.2 и hestia 0.1.3, тогда как поисковая копия ещё содержала 0.1.0. Эти поля не считаются самостоятельным аудитом безопасности. |
+| GAIA, ATLAS, METIS, SKOPOS, HELIOS, HESTIA, SYMMARTYS, LOGOS, MOMUS, Treasury, THEMIS, BASANOS, DOLOS, THEOROS, DIOSCURI, HEPHAESTUS | Дополнительно проверены имена с владельцем и уникальные package names. Подтверждена карточка DIOSCURI на npm.io. Safety уже был известен: прямое чтение теперь показывает версии SYMMARTYS 0.4.2 и hestia 0.1.3, тогда как поисковая копия ещё содержала 0.1.0. Эти поля не считаются самостоятельным аудитом безопасности. |
 | ACEX, Pulse, Lottery, Alien Monitor, SDK, bridges, desktop, playground, school, courses, create-agent, escrow signer | Новых подтверждённых внешних публикаций не получено. В основном собственная документация, реестры и зеркала. |
 | Attested Memory, Personal/Team/Expert Memory, Deal/Meter/Prove, Independent AI, AEGIS, KOVA, CHARON | Дополнительные карточки KOVA и CHARON в Free Startup Listing. Для остальных — ранее известные каталоги либо отсутствие атрибутируемого результата. Одноимённые Attested Memory на другом домене и AEGIS-продукты без связи с нашим оператором исключены. |
 | Emberline, Cite Desks, Domain Operator Kit, eSIM Operator Kit | Новых подтверждённых чужих публикаций нет. M8ven и Glama для Domain Operator Kit уже были известны. |

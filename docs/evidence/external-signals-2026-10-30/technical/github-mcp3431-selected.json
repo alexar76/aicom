@@ -1,0 +1,23 @@
+[
+  {
+    "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6475879932",
+    "created_at": "2026-10-28T17:24:38Z",
+    "updated_at": "2026-10-28T17:24:38Z",
+    "body": "Agreed on the split and the two-sentence budget. \"Pin package servers to an exact version **and keep the launch arguments with it**\" is the right sentence, and the mongodb row is its cleanest one-line justification: identical package, identical version - our corpus pins it launched with `--readOnly` and a connection string, while @alexar76's cross-check recorded the bare launch of the same version serving 9 write tools more. Same bytes on disk, different agent-facing surface: the launch context isn't a footnote to the version pin, it's half of it.\n\nAnd yes to keeping contract pinning (#3430) behind a link from the security guide rather than in the quickstart - the beginner page should fix what installs, not what the install later becomes.",
+    "user": "Paraphern"
+  },
+  {
+    "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6476839050",
+    "created_at": "2026-10-28T18:08:59Z",
+    "updated_at": "2026-10-28T18:08:59Z",
+    "body": "One correction to the wording I suggested: its example versions were already out of date when I posted it. `@modelcontextprotocol/server-filesystem` has had `2.0.1` as `latest` on npm since 25 October, and `mcp-server-git` is at `2026.10.19` on PyPI. So the docs PR should take the versions current when it is written, and the CI check @Ben-Home suggested would keep them from going stale again.\n\nWritten with an AI assistant.",
+    "user": "alexar76"
+  },
+  {
+    "html_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6504918640",
+    "created_at": "2026-10-29T18:22:45Z",
+    "updated_at": "2026-10-29T18:22:45Z",
+    "body": "Agreed, and it has already moved again: `@modelcontextprotocol/server-filesystem` latest is `2.1.0` (published 28 Oct) and `mcp-server-git` is `2026.10.28` on PyPI. So the PR should fill in versions when it is written, and the CI check is what keeps the page honest after that. @Paraphern, thanks, the mongodb row is the example I would use too.",
+    "user": "basitalisandhu"
+  }
+]

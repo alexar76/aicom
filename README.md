@@ -166,6 +166,7 @@ calibration. The number should climb.
 | 👽 **Alien Monitor** | 3D graph of Hub, Factory, chain metrics | [LIVE](https://monitor.modelmarket.dev/) · [UNI](https://monitor-uni.modelmarket.dev/) · [split](./docs/uni-and-live.md) · [`alien-monitor`](https://github.com/alexar76/alien-monitor) |
 | 🔮 **Oracles** | 17 signed math capabilities (randomness, VDF, reputation, …) | [portal](https://oracles.modelmarket.dev/) · [`oracles`](https://github.com/alexar76/oracles) |
 | 🌍 **GAIA** | Physical-world oracle gateway · attested IoT sensors · plausibility verify | [`gaia`](https://github.com/alexar76/gaia) |
+| 📜 **SYMMARTYS** | Signed public-record facts: VAT, LEI, exchange rates, sanctions lists and timestamps | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) |
 | 🗺 **ATLAS** | Planetary sensor map over GAIA · LIVE/SIM pins · Analyst | [live](https://atlas.modelmarket.dev/) · [`atlas`](https://github.com/alexar76/atlas) |
 | 🧠 **Metis** | Cognition / verification tier — factory uses it as a confidence gate | [demo](https://metis.modelmarket.dev/) · [`metis`](https://github.com/alexar76/metis) |
 | 🧿 **LOGOS** | Read-only federation analytics — measured settlement volume, rolling z-score anomalies, cross-source correlations, guarded NL assistant | [live](https://logos.modelmarket.dev/) · [landing](https://alexar76.github.io/logos/) · [`logos`](https://github.com/alexar76/logos) |
@@ -747,6 +748,10 @@ flowchart TB
     AMEM["Attested Memory<br/>verifiable agent memory"]
   end
 
+  subgraph records["Public-record facts"]
+    SYMMARTYS["SYMMARTYS<br/>VAT · LEI · exchange rates · sanctions · timestamps"]
+  end
+
   subgraph security["Admission & assurance"]
     THEMIS["THEMIS admission"]
     BASANOS["BASANOS · Solidity scan"]
@@ -773,6 +778,8 @@ flowchart TB
   DSK --> SDK --> HUB
   WGT --> HUB
   SDK --> AMEM
+  HUB -->|"invoke"| SYMMARTYS
+  SYMMARTYS -->|"signed answer · source evidence"| HUB
   HUB -->|"stats · manifest · peers"| LOGOS
   MOMUS -->|"finding digest"| LOGOS
   SKOPOS -->|"remediation stats"| LOGOS
@@ -796,6 +803,7 @@ flowchart TB
 | **AIMarket Hub** | [`aimarket-hub`](https://github.com/alexar76/aimarket-hub) | [README](https://github.com/alexar76/aimarket-hub#readme) |
 | **Oracles** | [`oracles`](https://github.com/alexar76/oracles) | 17 signed math oracles · [README](https://github.com/alexar76/oracles#readme) |
 | **GAIA** 🌍 (physical oracles) | [`gaia`](https://github.com/alexar76/gaia) | Physical-world oracle gateway — attested IoT sensors, plausibility verify · [iot-physical-oracles.md](docs/iot-physical-oracles.md) |
+| **SYMMARTYS** 📜 (public-record facts) | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) | VAT, LEI, exchange rates, sanctions lists and timestamps · signed answers with source evidence |
 | **ATLAS** 🗺 (sensor map) | [`atlas`](https://github.com/alexar76/atlas) | Planetary MapLibre map over GAIA — LIVE/SIM pins, Analyst, Alien Monitor embed · [atlas.modelmarket.dev](https://atlas.modelmarket.dev/) · [GUIDE](https://github.com/alexar76/atlas/blob/main/docs/GUIDE.md) |
 | **LOGOS** 🧿 (federation analytics) | [`logos`](https://github.com/alexar76/logos) | Read-only snapshots, measured settlement volume, rolling z-score anomalies, cross-source insights · [live dashboard](https://logos.modelmarket.dev/) · [README](https://github.com/alexar76/logos#readme) |
 | **Protocol v2** | [`aimarket-protocol`](https://github.com/alexar76/aimarket-protocol) | [spec.md](https://github.com/alexar76/aimarket-protocol/blob/main/spec.md) |

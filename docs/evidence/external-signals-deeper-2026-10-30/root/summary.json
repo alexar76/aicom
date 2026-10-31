@@ -1,0 +1,183 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "web_queries": 28,
+  "captured_gets": 17,
+  "agent402": {
+    "source": "https://agent402.tools/api/index?seller=modelmarket.dev",
+    "source_fetched_at_utc": "2026-10-30T04:11:49.069000+00:00",
+    "previous_reason": "settlement_self_funded",
+    "current_reason": "settlement_required",
+    "paid_routes": 8,
+    "routes_with_unproven_tier": 7,
+    "routes": [
+      {
+        "route": "/x402/histor-check",
+        "price": "$0.001",
+        "reason": "settlement_required",
+        "base": {
+          "eligible": false,
+          "reason": "settlement_required",
+          "detail": "below the settlement floor",
+          "unprovenTier": true,
+          "unprovenMaxUsd": 0.01
+        }
+      },
+      {
+        "route": "/x402/warden-scan",
+        "price": "$0.001",
+        "reason": "settlement_required",
+        "base": {
+          "eligible": false,
+          "reason": "settlement_required",
+          "detail": "below the settlement floor",
+          "unprovenTier": true,
+          "unprovenMaxUsd": 0.01
+        }
+      },
+      {
+        "route": "/x402/weather-now",
+        "price": "$0.001",
+        "reason": "settlement_required",
+        "base": {
+          "eligible": false,
+          "reason": "settlement_required",
+          "detail": "below the settlement floor",
+          "unprovenTier": true,
+          "unprovenMaxUsd": 0.01
+        }
+      },
+      {
+        "route": "/x402/air-quality-now",
+        "price": "$0.001",
+        "reason": "settlement_required",
+        "base": {
+          "eligible": false,
+          "reason": "settlement_required",
+          "detail": "below the settlement floor",
+          "unprovenTier": true,
+          "unprovenMaxUsd": 0.01
+        }
+      },
+      {
+        "route": "/x402/nearby-sensors",
+        "price": "$0.03",
+        "reason": "settlement_required",
+        "base": {
+          "eligible": false,
+          "reason": "settlement_required",
+          "detail": "below the settlement floor"
+        }
+      },
+      {
+        "route": "/x402/fair-random",
+        "price": "$0.006",
+        "reason": "settlement_required",
+        "base": {
+          "eligible": false,
+          "reason": "settlement_required",
+          "detail": "below the settlement floor",
+          "unprovenTier": true,
+          "unprovenMaxUsd": 0.01
+        }
+      },
+      {
+        "route": "/x402/x402-check",
+        "price": "$0.003",
+        "reason": "settlement_required",
+        "base": {
+          "eligible": false,
+          "reason": "settlement_required",
+          "detail": "below the settlement floor",
+          "unprovenTier": true,
+          "unprovenMaxUsd": 0.01
+        }
+      },
+      {
+        "route": "/x402/mcp-diff",
+        "price": "$0.003",
+        "reason": "settlement_required",
+        "base": {
+          "eligible": false,
+          "reason": "settlement_required",
+          "detail": "below the settlement floor",
+          "unprovenTier": true,
+          "unprovenMaxUsd": 0.01
+        }
+      }
+    ],
+    "warden_recommendations": [
+      {
+        "route": "/x402/warden-scan",
+        "seller": "https://modelmarket.dev",
+        "executeViaCallableNow": true,
+        "executeViaLane": "unproven",
+        "executeVia": {
+          "tool": "route-execute",
+          "price": "$0.01",
+          "underlyingPriceUsd": 0.001,
+          "routingFeeUsd": 0.009
+        }
+      }
+    ],
+    "limits": "Public router eligibility declaration and free recommendation, not an executed call, new customer, payment or independently reproduced netting algorithm."
+  },
+  "external_protocol": {
+    "validation": "peer-manifest-compatibility.json",
+    "results": [
+      {
+        "name": "machina",
+        "protocol_version": "v2",
+        "tools": 8,
+        "all_tools_have_input_schema": true,
+        "signature_is_object": false,
+        "signature_key_matches_discovery": false,
+        "ed25519_valid_for_hub_manifest_canonical": false,
+        "negative_control_modified_description_valid": false,
+        "ed25519_valid_for_compact_sorted_document": true,
+        "generated_at": "2026-10-30T04:22:38.703780+00:00",
+        "canonical_sha256": "8b4bac03159f8cec9a0a539d877f7cc48caa76eb07d104d441cceadd92e27764"
+      },
+      {
+        "name": "agentexec",
+        "protocol_version": "v1",
+        "tools": 15,
+        "all_tools_have_input_schema": true,
+        "signature_is_object": true,
+        "signature_key_matches_discovery": true,
+        "ed25519_valid_for_hub_manifest_canonical": true,
+        "negative_control_modified_description_valid": false,
+        "ed25519_valid_for_compact_sorted_document": false,
+        "generated_at": "2026-10-30T04:22:38.969Z",
+        "canonical_sha256": "5e2547b91adc44aec1988385ff88fc3a1d1e314c250ecca875141c4c9e7fd12b"
+      }
+    ],
+    "agentexec_peer": [
+      {
+        "url": "https://agent-exec.448c.org",
+        "trusted": true,
+        "status": "active",
+        "capabilities_count": 0,
+        "public_key": "dvoENalt1FhzSO54A6sF4c54fd0zwyZiP3ljGlYOlsU=",
+        "last_crawl": "2026-10-30T03:58:57Z"
+      }
+    ],
+    "limits": "agent-exec active/trusted was already recorded in29Oct evidence. New check is snapshot signature compatibility, not a newly deployed implementation or successful tool execution. Hub still reports0capabilities. Machina remains pending with incompatible signature."
+  },
+  "usetested": {
+    "source": "https://usetested.com/v1/review?service=modelmarket.dev",
+    "calls_tested": 1,
+    "receipt_date": "2026-10-27",
+    "delta": "unchanged",
+    "limits": "Historical paid test previously captured29Oct; not new demand."
+  },
+  "hub_stats": {
+    "source": "https://modelmarket.dev/ai-market/v2/stats/live",
+    "limits": "Operator telemetry, not independent evidence. External label with traffic_basis=null is a fallback; do not count pseudonymous sandbox rows as verified new people."
+  },
+  "limitations": [
+    "Exact domains for Emberline use emberlinedesk.com; no new attributed match in queried pages",
+    "No invoke, payment, admission, messages or foreign-code execution",
+    "No new independent runtime user confirmed"
+  ]
+}

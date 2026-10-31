@@ -1,0 +1,281 @@
+{
+  "id": "a2at_eecf132e889478b8ca5a51cd",
+  "contextId": "first-agent-call-explicitly-approved-a2a-20261031",
+  "status": {
+    "state": "TASK_STATE_INPUT_REQUIRED",
+    "timestamp": "2026-10-31T04:54:31.900Z",
+    "message": {
+      "messageId": "a2am_7b5cbd3582795dd6",
+      "contextId": "first-agent-call-explicitly-approved-a2a-20261031",
+      "taskId": "a2at_eecf132e889478b8ca5a51cd",
+      "role": "ROLE_AGENT",
+      "parts": [
+        {
+          "text": "The free trial for this caller is used up. Payment required: $0.001 for gaia.weather.read@v1. Pay per x402.payment.required and reply on this task with x402.payment.payload — it must include the settle txHash (this hub verifies the transfer on chain and never settles one). Or send X-API-Key (a credit account on this hub) or X-AIMarket-Mandate with X-AIMarket-Mandate-Proof as HTTP headers on a follow-up message to this task.",
+          "mediaType": "text/plain"
+        },
+        {
+          "data": {
+            "success": false,
+            "error": "payment_required",
+            "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel"
+          },
+          "mediaType": "application/json"
+        }
+      ],
+      "metadata": {
+        "x402.payment.status": "payment-required",
+        "x402.payment.required": {
+          "x402Version": 2,
+          "error": "Payment required",
+          "resource": {
+            "url": "https://modelmarket.dev/ai-market/v2/invoke",
+            "description": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarke",
+            "mimeType": "application/json"
+          },
+          "accepts": [
+            {
+              "scheme": "exact",
+              "network": "eip155:8453",
+              "amount": "1000",
+              "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+              "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+              "maxTimeoutSeconds": 300,
+              "extra": {
+                "name": "USD Coin",
+                "version": "2",
+                "nonce": "0xb30ae0fe1e98f3f44b564e3122fd28815f6309d6563bc1be578922bca2fcb919"
+              }
+            }
+          ],
+          "nonce": "0xb30ae0fe1e98f3f44b564e3122fd28815f6309d6563bc1be578922bca2fcb919",
+          "extensions": {
+            "offer-receipt": {
+              "info": {
+                "offers": [
+                  {
+                    "format": "jws",
+                    "acceptIndex": 0,
+                    "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3BWemMxeWZ6Z2hQcjdROXN3bzhBd0tQc2NwbVhVaEpDZ3ZZNmY0eDlmS1I2I3o2TWtwVnpjMXlmemdoUHI3UTlzd284QXdLUHNjcG1YVWhKQ2d2WTZmNHg5ZktSNiJ9.eyJhbW91bnQiOiIxMDAwIiwiYXNzZXQiOiIweDgzMzU4OWZDRDZlRGI2RTA4ZjRjN0MzMkQ0ZjcxYjU0YmRBMDI5MTMiLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMiLCJwYXlUbyI6IjB4MTIxOGZmMzZDNWQyZTNCNkE1NjVDZEIxQThCMUFjQ0ZjNjA2QWQwYSIsInJlc291cmNlVXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYvYWktbWFya2V0L3YyL2ludm9rZSIsInNjaGVtZSI6ImV4YWN0IiwidmFsaWRVbnRpbCI6MTc5MzQyMzM3MSwidmVyc2lvbiI6MX0.n0Q0Fwu6gD90tAtr4u3iEP-m5V--R-31MutncklqDh7LdsjGtC8pHAO_mU2ekYKSxtoS0xT23r0gogngeSA7DA"
+                  }
+                ]
+              },
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "offers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "format": {
+                          "type": "string",
+                          "const": "jws"
+                        },
+                        "acceptIndex": {
+                          "type": "integer"
+                        },
+                        "signature": {
+                          "type": "string",
+                          "description": "JWS compact serialization containing the offer payload"
+                        }
+                      },
+                      "required": [
+                        "format",
+                        "signature"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "offers"
+                ]
+              }
+            }
+          }
+        },
+        "aimarket": {
+          "error": "payment_required",
+          "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel",
+          "needed": 0.001,
+          "payment_ways": [
+            {
+              "rail": "seller_direct",
+              "header": "X-Payment",
+              "also": [
+                "PAYMENT-SIGNATURE",
+                "X-PAYMENT",
+                "X-Payment-Nonce"
+              ],
+              "asset": "USDC",
+              "note": "pay the listing payout_address on-chain; the hub never holds the money"
+            },
+            {
+              "rail": "credits",
+              "header": "X-API-Key",
+              "signup": "https://modelmarket.dev/ai-market/v2/accounts",
+              "open_signup": true,
+              "topup": "https://modelmarket.dev/ai-market/v2/account/topup",
+              "start": "https://modelmarket.dev/start"
+            },
+            {
+              "rail": "channel",
+              "header": "X-Payment-Channel",
+              "open": "https://modelmarket.dev/ai-market/v2/channel/open"
+            }
+          ],
+          "trial_exhausted": true
+        }
+      }
+    }
+  },
+  "history": [
+    {
+      "messageId": "first-agent-call-explicitly-approved-a2a-20261031",
+      "contextId": "first-agent-call-explicitly-approved-a2a-20261031",
+      "taskId": "a2at_eecf132e889478b8ca5a51cd",
+      "role": "ROLE_USER",
+      "parts": [
+        {
+          "data": {
+            "invoke": {
+              "product_id": "gaia.gateway",
+              "capability_id": "gaia.weather.read@v1",
+              "source_hub": "https://iot.modelmarket.dev"
+            }
+          },
+          "mediaType": "application/json",
+          "metadata": {
+            "aimarket.redacted": "input and payment are not stored"
+          }
+        }
+      ]
+    },
+    {
+      "messageId": "a2am_7b5cbd3582795dd6",
+      "contextId": "first-agent-call-explicitly-approved-a2a-20261031",
+      "taskId": "a2at_eecf132e889478b8ca5a51cd",
+      "role": "ROLE_AGENT",
+      "parts": [
+        {
+          "text": "The free trial for this caller is used up. Payment required: $0.001 for gaia.weather.read@v1. Pay per x402.payment.required and reply on this task with x402.payment.payload — it must include the settle txHash (this hub verifies the transfer on chain and never settles one). Or send X-API-Key (a credit account on this hub) or X-AIMarket-Mandate with X-AIMarket-Mandate-Proof as HTTP headers on a follow-up message to this task.",
+          "mediaType": "text/plain"
+        },
+        {
+          "data": {
+            "success": false,
+            "error": "payment_required",
+            "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel"
+          },
+          "mediaType": "application/json"
+        }
+      ],
+      "metadata": {
+        "x402.payment.status": "payment-required",
+        "x402.payment.required": {
+          "x402Version": 2,
+          "error": "Payment required",
+          "resource": {
+            "url": "https://modelmarket.dev/ai-market/v2/invoke",
+            "description": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarke",
+            "mimeType": "application/json"
+          },
+          "accepts": [
+            {
+              "scheme": "exact",
+              "network": "eip155:8453",
+              "amount": "1000",
+              "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+              "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+              "maxTimeoutSeconds": 300,
+              "extra": {
+                "name": "USD Coin",
+                "version": "2",
+                "nonce": "0xb30ae0fe1e98f3f44b564e3122fd28815f6309d6563bc1be578922bca2fcb919"
+              }
+            }
+          ],
+          "nonce": "0xb30ae0fe1e98f3f44b564e3122fd28815f6309d6563bc1be578922bca2fcb919",
+          "extensions": {
+            "offer-receipt": {
+              "info": {
+                "offers": [
+                  {
+                    "format": "jws",
+                    "acceptIndex": 0,
+                    "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3BWemMxeWZ6Z2hQcjdROXN3bzhBd0tQc2NwbVhVaEpDZ3ZZNmY0eDlmS1I2I3o2TWtwVnpjMXlmemdoUHI3UTlzd284QXdLUHNjcG1YVWhKQ2d2WTZmNHg5ZktSNiJ9.eyJhbW91bnQiOiIxMDAwIiwiYXNzZXQiOiIweDgzMzU4OWZDRDZlRGI2RTA4ZjRjN0MzMkQ0ZjcxYjU0YmRBMDI5MTMiLCJuZXR3b3JrIjoiZWlwMTU1Ojg0NTMiLCJwYXlUbyI6IjB4MTIxOGZmMzZDNWQyZTNCNkE1NjVDZEIxQThCMUFjQ0ZjNjA2QWQwYSIsInJlc291cmNlVXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYvYWktbWFya2V0L3YyL2ludm9rZSIsInNjaGVtZSI6ImV4YWN0IiwidmFsaWRVbnRpbCI6MTc5MzQyMzM3MSwidmVyc2lvbiI6MX0.n0Q0Fwu6gD90tAtr4u3iEP-m5V--R-31MutncklqDh7LdsjGtC8pHAO_mU2ekYKSxtoS0xT23r0gogngeSA7DA"
+                  }
+                ]
+              },
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "offers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "format": {
+                          "type": "string",
+                          "const": "jws"
+                        },
+                        "acceptIndex": {
+                          "type": "integer"
+                        },
+                        "signature": {
+                          "type": "string",
+                          "description": "JWS compact serialization containing the offer payload"
+                        }
+                      },
+                      "required": [
+                        "format",
+                        "signature"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "offers"
+                ]
+              }
+            }
+          }
+        },
+        "aimarket": {
+          "error": "payment_required",
+          "detail": "payment required — pay USDC on-chain to the seller payout_address (X-Payment / PAYMENT-SIGNATURE), or send X-API-Key for a credit account (from https://modelmarket.dev/start or POST https://modelmarket.dev/ai-market/v2/accounts, funded with USDC at POST https://modelmarket.dev/ai-market/v2/account/topup) or X-Payment-Channel",
+          "needed": 0.001,
+          "payment_ways": [
+            {
+              "rail": "seller_direct",
+              "header": "X-Payment",
+              "also": [
+                "PAYMENT-SIGNATURE",
+                "X-PAYMENT",
+                "X-Payment-Nonce"
+              ],
+              "asset": "USDC",
+              "note": "pay the listing payout_address on-chain; the hub never holds the money"
+            },
+            {
+              "rail": "credits",
+              "header": "X-API-Key",
+              "signup": "https://modelmarket.dev/ai-market/v2/accounts",
+              "open_signup": true,
+              "topup": "https://modelmarket.dev/ai-market/v2/account/topup",
+              "start": "https://modelmarket.dev/start"
+            },
+            {
+              "rail": "channel",
+              "header": "X-Payment-Channel",
+              "open": "https://modelmarket.dev/ai-market/v2/channel/open"
+            }
+          ],
+          "trial_exhausted": true
+        }
+      }
+    }
+  ]
+}

@@ -15,6 +15,7 @@ from aicom_publish_config import (
     classify_root,
     factory_exclude_paths,
     factory_local_exclude_paths,
+    purge_factory_local_paths,
     rsync_exclude_args,
     satellite_export_paths,
 )
@@ -150,6 +151,12 @@ def test_factory_rsync_omits_internal_evidence_and_keeps_public_content(tmp_path
         "docs/evidence/histor-full-observations-2026-10-27/hub/recheck-wire.json",
         "docs/evidence/histor-release-0.4.2-2026-10-27/release.json",
         "docs/evidence/histor-release-0.4.2-2026-10-27/sandboxes.json",
+        "artifacts/security-rollout-2026-10-30/admin-inventory.txt",
+        "docs/evidence/fleet-cleanup-2026-10-29/snapshot.json",
+        "docs/evidence/fleet-resource-check-2026-10-29/collect.py",
+        "docs/evidence/external-use-pass4-2026-10-30/social/lobsters-native-stories.html",
+        "docs/evidence/external-signals-2026-10-30/social/raw/youtube-channel.html",
+        "scripts/.mirror-forbidden-hosts",
     )
     for rel in reports:
         path = source / rel
@@ -159,6 +166,7 @@ def test_factory_rsync_omits_internal_evidence_and_keeps_public_content(tmp_path
         "artifacts/kaggle-histor/public-example.txt": "public example\n",
         "docs/evidence/histor-full-observations-2026-10-27/python-packages/artifact-index.json": "{}\n",
         "docs/growth/publication-2026-10-25/launchgate/article.published.md": "# Published article\n",
+        "docs/evidence/external-signals-2026-10-30/summary.json": "{}\n",
     }
     for rel, content in public.items():
         path = source / rel
@@ -178,13 +186,49 @@ def test_factory_rsync_omits_internal_evidence_and_keeps_public_content(tmp_path
         assert (target / rel).read_text(encoding="utf-8") == content, rel
 
 
-def test_rsync_omits_named_virtualenvs_at_any_depth_and_keeps_sources(tmp_path):
+def test_reused_factory_tree_removes_old_internal_glob_matches(tmp_path):
+    internal = (
+        "artifacts/security-rollout-2026-10-30/inventory.txt",
+        "docs/evidence/fleet-cleanup-2026-10-29/snapshot.json",
+        "docs/evidence/external-signals-2026-10-30/social/raw/page.html",
+        "scripts/.mirror-forbidden-hosts",
+    )
+    for rel in (*internal, ".git/config", "README.md", "artifacts/kaggle-histor/public.txt"):
+        p = tmp_path / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text("fixture\n")
+    purge_factory_local_paths(tmp_path)
+    assert all(not (tmp_path / rel).exists() for rel in internal)
+    for rel in (".git/config", "README.md", "artifacts/kaggle-histor/public.txt"):
+        assert (tmp_path / rel).read_text() == "fixture\n"
+
+
+def test_factory_purge_refuses_workspace_and_symlink_escape(tmp_path):
+    import pytest
+
+    with pytest.raises(ValueError, match="workspace"):
+        purge_factory_local_paths(ROOT)
+    external = tmp_path / "outside"
+    external.mkdir()
+    secret = external / "fleet-snapshot.txt"
+    secret.write_text("must stay\n")
+    tree = tmp_path / "candidate"
+    (tree / "docs").mkdir(parents=True)
+    (tree / "docs/evidence").symlink_to(external, target_is_directory=True)
+    with pytest.raises(ValueError, match="symlink"):
+        purge_factory_local_paths(tree)
+    assert secret.read_text() == "must stay\n"
+
+
+def test_rsync_omits_local_environments_and_host_policy_at_any_depth(tmp_path):
     import subprocess
 
     source = tmp_path / "source"
     dependency_paths = (
         ".venv-test/lib/python3.11/site-packages/cryptography/ssh.py",
         "apps/example/.venv-test/lib/python3.11/site-packages/cryptography/ssh.py",
+        ".mirror-forbidden-hosts",
+        "scripts/.mirror-forbidden-hosts",
     )
     public_sources = {"app.py": "# application\n", "apps/example/main.py": "# example\n"}
     for rel in dependency_paths:
@@ -197,7 +241,7 @@ def test_rsync_omits_named_virtualenvs_at_any_depth_and_keeps_sources(tmp_path):
         path.write_text(content, encoding="utf-8")
 
     # Satellite exports use the canonical defaults; factory exports add their
-    # own exclusions. Both must omit environment directories at every depth.
+    # own exclusions. Both must omit local environments and private host policy.
     defaults = [part for pattern in DEFAULT_RSYNC_EXCLUDES for part in ("--exclude", pattern)]
     for name, excludes in (("satellite", defaults), ("factory", rsync_exclude_args())):
         target = tmp_path / name

@@ -1,0 +1,1884 @@
+{
+  "observed_date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "generated_at_utc": "2026-10-30T04:28:19.724760+00:00",
+  "main_report": "../../growth/external-deeper-2026-10-30.ru.md",
+  "web_queries": 140,
+  "captured_gets": 117,
+  "branches": {
+    "root": {
+      "web_queries": 28,
+      "indexes": [
+        "http-index.json",
+        "http-source-index.json",
+        "http-route-index.json",
+        "http-peer-index.json"
+      ],
+      "summary": "root/summary.json",
+      "captured_gets": 17,
+      "statuses": {
+        "200": 17
+      },
+      "report": "root/report.ru.md"
+    },
+    "social": {
+      "web_queries": 32,
+      "indexes": [
+        "http-index.json",
+        "thread-http-index.json",
+        "article-http-index.json"
+      ],
+      "summary": "social/summary.json",
+      "captured_gets": 47,
+      "statuses": {
+        "200": 45,
+        "429": 2
+      },
+      "report": "social/report.ru.md"
+    },
+    "regional": {
+      "web_queries": 60,
+      "indexes": [
+        "native-index.json",
+        "native-followup-index.json"
+      ],
+      "summary": "regional/summary.json",
+      "captured_gets": 18,
+      "statuses": {
+        "200": 16,
+        "404": 2
+      },
+      "report": "regional/report.ru.md"
+    },
+    "code": {
+      "web_queries": 20,
+      "indexes": [
+        "verification-index.json"
+      ],
+      "summary": "code/summary.json",
+      "captured_gets": 35,
+      "statuses": {
+        "200": 35
+      },
+      "report": "code/report.ru.md"
+    }
+  },
+  "validation": {
+    "json_parse_errors": [],
+    "missing_capture_hashes": [],
+    "missing_local_report_links": [],
+    "hashed_captures_verified": 113
+  },
+  "captures": [
+    {
+      "branch": "root",
+      "key": "usetested-review",
+      "url": "https://usetested.com/v1/review?service=modelmarket.dev",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:48.959955+00:00",
+      "status": 200,
+      "final_url": "https://usetested.com/v1/review?service=modelmarket.dev",
+      "content_type": "application/json",
+      "sha256": "fb81e5bcb855ccad5ce7e14a4093c3926997fe3ad47913a448135b32725cb6e8",
+      "bytes": 876,
+      "body_file": "usetested-review.json",
+      "verified_body_files": [
+        "root/usetested-review.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "usetested-services",
+      "url": "https://usetested.com/services",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:48.962574+00:00",
+      "status": 200,
+      "final_url": "https://usetested.com/services",
+      "content_type": "text/html; charset=utf-8",
+      "sha256": "7b2c745084ce483b1b40d8657679bf4718ce8a1b7e8d543ec63fa29150d714f6",
+      "bytes": 822554,
+      "body_file": "usetested-services.html",
+      "verified_body_files": [
+        "root/usetested-services.html"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agent402-modelmarket",
+      "url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:48.963471+00:00",
+      "status": 200,
+      "final_url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "335df99381f75221b47e6bb2551e3ed8a5a558d3cccabbe4898e6e16253737bd",
+      "bytes": 146913,
+      "body_file": "agent402-modelmarket.json",
+      "verified_body_files": [
+        "root/agent402-modelmarket.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agent402-leaderboard",
+      "url": "https://agent402.tools/api/leaderboard",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:49.643450+00:00",
+      "status": 200,
+      "final_url": "https://agent402.tools/api/leaderboard",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "652718164815778a6b7f5308ff0b4ad3f9c383a25b487f7fc2d12a54c651ea6b",
+      "bytes": 21701,
+      "body_file": "agent402-leaderboard.json",
+      "verified_body_files": [
+        "root/agent402-leaderboard.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agent402-router-guide",
+      "url": "https://agent402.tools/guides/smart-order-router",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:49.691708+00:00",
+      "status": 200,
+      "final_url": "https://agent402.tools/guides/smart-order-router",
+      "content_type": "text/html; charset=utf-8",
+      "sha256": "b6042284a734ccd71f6692a123553e17638725063bb13b0c681f525b972fcbc6",
+      "bytes": 75111,
+      "body_file": "agent402-router-guide.html",
+      "verified_body_files": [
+        "root/agent402-router-guide.html"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "hub-live-stats",
+      "url": "https://modelmarket.dev/ai-market/v2/stats/live",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:50.344807+00:00",
+      "status": 200,
+      "final_url": "https://modelmarket.dev/ai-market/v2/stats/live",
+      "content_type": "application/json",
+      "sha256": "b2408bd998966e5842beac04dede2c4bf468abff018da9375efc2a0145bdc0ce",
+      "bytes": 21226,
+      "body_file": "hub-live-stats.json",
+      "verified_body_files": [
+        "root/hub-live-stats.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agent402-current-commit",
+      "url": "https://api.github.com/repos/MikeyPetrillo/Agent402/commits?per_page=1",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:00.150574+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/MikeyPetrillo/Agent402/commits?per_page=1",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "35cbf5fc38475d22739ad3ded0e40e0c105ec2b265206f68b10b2767efb0fa13",
+      "bytes": 4941,
+      "body_file": "agent402-current-commit.json",
+      "verified_body_files": [
+        "root/agent402-current-commit.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agent402-source-dispatch",
+      "url": "https://raw.githubusercontent.com/MikeyPetrillo/Agent402/48aff2412cd297da40eaadf3f61f25a5b1be2a68/src/dispatch-eligibility.js",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:00.684470+00:00",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/MikeyPetrillo/Agent402/48aff2412cd297da40eaadf3f61f25a5b1be2a68/src/dispatch-eligibility.js",
+      "content_type": "text/plain; charset=utf-8",
+      "sha256": "1a4f373694d587573144bd1e7185e9d54ebf6167973941b3454d3da87d6728cc",
+      "bytes": 29948,
+      "body_file": "agent402-source-dispatch.html",
+      "verified_body_files": [
+        "root/agent402-source-dispatch.html"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agent402-source-index",
+      "url": "https://raw.githubusercontent.com/MikeyPetrillo/Agent402/48aff2412cd297da40eaadf3f61f25a5b1be2a68/src/x402-index.js",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:01.104407+00:00",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/MikeyPetrillo/Agent402/48aff2412cd297da40eaadf3f61f25a5b1be2a68/src/x402-index.js",
+      "content_type": "text/plain; charset=utf-8",
+      "sha256": "c61a1863251db2ca8f38deed680ffe83fe746a7ebe45a8e559dc1398b3d5230b",
+      "bytes": 576222,
+      "body_file": "agent402-source-index.html",
+      "verified_body_files": [
+        "root/agent402-source-index.html"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agent402-source-execute",
+      "url": "https://raw.githubusercontent.com/MikeyPetrillo/Agent402/48aff2412cd297da40eaadf3f61f25a5b1be2a68/src/tools/route-execute.js",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:01.756859+00:00",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/MikeyPetrillo/Agent402/48aff2412cd297da40eaadf3f61f25a5b1be2a68/src/tools/route-execute.js",
+      "content_type": "text/plain; charset=utf-8",
+      "sha256": "5c7e3d71faf7efcf28a3a51f9d18a7683d6f76477f6ec1590eec0223a8363be3",
+      "bytes": 57666,
+      "body_file": "agent402-source-execute.html",
+      "verified_body_files": [
+        "root/agent402-source-execute.html"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agent402-route-histor",
+      "url": "https://agent402.tools/api/route?q=HISTOR&include=external&top=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:21:30.409024+00:00",
+      "status": 200,
+      "final_url": "https://agent402.tools/api/route?q=HISTOR&include=external&top=10",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "ac4918a7110178b1099f47c0308035e434532c36937b8f17a4626d4fd004d1fd",
+      "bytes": 29546,
+      "body_file": "agent402-route-histor.json",
+      "verified_body_files": [
+        "root/agent402-route-histor.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agent402-route-warden",
+      "url": "https://agent402.tools/api/route?q=WARDEN&include=external&top=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:21:31.400354+00:00",
+      "status": 200,
+      "final_url": "https://agent402.tools/api/route?q=WARDEN&include=external&top=10",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "64bc2a8b9bb8bb1c19b86492706afccc70a55aeba726692995c40c13c2e6be86",
+      "bytes": 29718,
+      "body_file": "agent402-route-warden.json",
+      "verified_body_files": [
+        "root/agent402-route-warden.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "machina-discovery",
+      "url": "https://mach402.dev/.well-known/ai-market.json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:22:37.540095+00:00",
+      "status": 200,
+      "final_url": "https://mach402.dev/.well-known/ai-market.json",
+      "content_type": "application/json",
+      "sha256": "359fbd2b594b9ba8e9ed31c2fbf4d96fc3f3808b6f06e17cc2c61a6fa2237205",
+      "bytes": 554,
+      "body_file": "machina-discovery.json",
+      "verified_body_files": [
+        "root/machina-discovery.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agentexec-discovery",
+      "url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:22:37.540476+00:00",
+      "status": 200,
+      "final_url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "2b8c229a0359a2c7d98e400acd83fe32c1e84aeae39b6022ed9200e42cf7bb6c",
+      "bytes": 185,
+      "body_file": "agentexec-discovery.json",
+      "verified_body_files": [
+        "root/agentexec-discovery.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "hub-peers",
+      "url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:22:37.540609+00:00",
+      "status": 200,
+      "final_url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+      "content_type": "application/json",
+      "sha256": "35424e3c6289cc7793205c3135497bace64de12ccae243b49a20a7dc014bec81",
+      "bytes": 18089,
+      "body_file": "hub-peers.json",
+      "verified_body_files": [
+        "root/hub-peers.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "machina-manifest",
+      "url": "https://mach402.dev/ai-market/v2/manifest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:22:38.437650+00:00",
+      "status": 200,
+      "final_url": "https://mach402.dev/ai-market/v2/manifest",
+      "content_type": "application/json",
+      "sha256": "ff94933a4405670530395b671dd6d511d4cd2cb11b38de6039f966f1d33f9ed3",
+      "bytes": 3217,
+      "body_file": "machina-manifest.json",
+      "verified_body_files": [
+        "root/machina-manifest.json"
+      ]
+    },
+    {
+      "branch": "root",
+      "key": "agentexec-manifest",
+      "url": "https://agent-exec.448c.org/ai-market/manifest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:22:38.742554+00:00",
+      "status": 200,
+      "final_url": "https://agent-exec.448c.org/ai-market/manifest",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "c86c188570f076a5b41607877ab4b26e5e79592ef934ec19ac11d3f12484d1b1",
+      "bytes": 22147,
+      "body_file": "agentexec-manifest.json",
+      "verified_body_files": [
+        "root/agentexec-manifest.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-authorfeed",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=alexar76.bsky.social&limit=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:41.832285+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=alexar76.bsky.social&limit=100",
+      "bytes": 186000,
+      "sha256": "7d8be22d0786506169999e64531a22375788008b25df6bd35ba7fbb9eccf4e64",
+      "file": "raw/bsky-authorfeed.json",
+      "verified_body_files": [
+        "social/raw/bsky-authorfeed.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "hn-1",
+      "url": "https://hn.algolia.com/api/v1/search?query=histor.modelmarket.dev&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:41.833132+00:00",
+      "status": 200,
+      "final_url": "https://hn.algolia.com/api/v1/search?query=histor.modelmarket.dev&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "bytes": 379,
+      "sha256": "2efc97464e54bee5c090314d935f4c69428f20bc5ded4546f29879782ddfbb35",
+      "file": "raw/hn-1.json",
+      "verified_body_files": [
+        "social/raw/hn-1.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "hn-2",
+      "url": "https://hn.algolia.com/api/v1/search?query=%40aimarket%2Fwarden&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:42.387436+00:00",
+      "status": 200,
+      "final_url": "https://hn.algolia.com/api/v1/search?query=%40aimarket%2Fwarden&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "bytes": 371,
+      "sha256": "f94994cb23b129ee20fa7262281ae00e9c41cd5fe1faf258d7bb1c12a323f100",
+      "file": "raw/hn-2.json",
+      "verified_body_files": [
+        "social/raw/hn-2.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "hn-3",
+      "url": "https://hn.algolia.com/api/v1/search?query=attestedmemory.net&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:42.809023+00:00",
+      "status": 200,
+      "final_url": "https://hn.algolia.com/api/v1/search?query=attestedmemory.net&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "bytes": 371,
+      "sha256": "2d6631ebc5628c3d262c655ef05fa5181c804d16424b4f5e32d914b21cdd0884",
+      "file": "raw/hn-3.json",
+      "verified_body_files": [
+        "social/raw/hn-3.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "hn-4",
+      "url": "https://hn.algolia.com/api/v1/search?query=%22We+installed+12%2C915%22&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:43.242912+00:00",
+      "status": 200,
+      "final_url": "https://hn.algolia.com/api/v1/search?query=%22We+installed+12%2C915%22&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "bytes": 405,
+      "sha256": "618b29221b15886995e7c48325e3484a857fa3aa2dc5d433550b2fd52db7ee0e",
+      "file": "raw/hn-4.json",
+      "verified_body_files": [
+        "social/raw/hn-4.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "hn-5",
+      "url": "https://hn.algolia.com/api/v1/search?query=%22Same+MCP+version%22&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:43.282202+00:00",
+      "status": 200,
+      "final_url": "https://hn.algolia.com/api/v1/search?query=%22Same+MCP+version%22&tags=comment&hitsPerPage=100&typoTolerance=false",
+      "bytes": 410,
+      "sha256": "6e841edcfdc5d937dba7ee0eb6b6e470142bf44c37867dae8a2a2ce8beb3e484",
+      "file": "raw/hn-5.json",
+      "verified_body_files": [
+        "social/raw/hn-5.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-feed-quincygb",
+      "url": "https://dev.to/api/articles?username=quincygb&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:43.708559+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles?username=quincygb&per_page=100",
+      "bytes": 14163,
+      "sha256": "9417b7b15fcfa66bbc704ff7f24b0d7e0ff697bd92779f70292392915984d440",
+      "file": "raw/dev-feed-quincygb.json",
+      "verified_body_files": [
+        "social/raw/dev-feed-quincygb.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-feed-paul_irolla_6b5ae261d0224",
+      "url": "https://dev.to/api/articles?username=paul_irolla_6b5ae261d0224&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:43.760411+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles?username=paul_irolla_6b5ae261d0224&per_page=100",
+      "bytes": 19924,
+      "sha256": "f9bccfcd7b7185170407eafaa7036ee99778122cf9231e6c736f7fac11e683ae",
+      "file": "raw/dev-feed-paul_irolla_6b5ae261d0224.json",
+      "verified_body_files": [
+        "social/raw/dev-feed-paul_irolla_6b5ae261d0224.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-feed-swarmagentoperator",
+      "url": "https://dev.to/api/articles?username=swarmagentoperator&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:44.259659+00:00",
+      "status": 429,
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "branch": "social",
+      "key": "dev-feed-heyitsjakub",
+      "url": "https://dev.to/api/articles?username=heyitsjakub&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:44.287938+00:00",
+      "status": 429,
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "branch": "social",
+      "key": "dev-feed-launchgatecheck",
+      "url": "https://dev.to/api/articles?username=launchgatecheck&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:44.854651+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles?username=launchgatecheck&per_page=100",
+      "bytes": 12476,
+      "sha256": "0e9262eb2ed6cd73861cdfdcbd2197d3a27fdcab11b4bff146a3c36f79bfd14b",
+      "file": "raw/dev-feed-launchgatecheck.json",
+      "verified_body_files": [
+        "social/raw/dev-feed-launchgatecheck.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-feed-galagent",
+      "url": "https://dev.to/api/articles?username=galagent&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:44.897147+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles?username=galagent&per_page=100",
+      "bytes": 64323,
+      "sha256": "645dbd63eff8f19be5b040ae80e15f40d1efc1c5562ce9a2c7ac829a90e83076",
+      "file": "raw/dev-feed-galagent.json",
+      "verified_body_files": [
+        "social/raw/dev-feed-galagent.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3my3udt6nk22o",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3my3udt6nk22o&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:46.185329+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3my3udt6nk22o&depth=10&parentHeight=10",
+      "bytes": 4636,
+      "sha256": "bbc8d542b03b433933e7ae0436877cce6fda23a730269d4e139c867fe04cbd32",
+      "file": "raw/bsky-thread-3my3udt6nk22o.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3my3udt6nk22o.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3my3u7uuvm22o",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3my3u7uuvm22o&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:46.202153+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3my3u7uuvm22o&depth=10&parentHeight=10",
+      "bytes": 6720,
+      "sha256": "5259f1625f282de1b8d52a90bfdc936fc3eb28b57f3b468a4b6f8fcbfd16eb9f",
+      "file": "raw/bsky-thread-3my3u7uuvm22o.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3my3u7uuvm22o.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mwbafqq5rs2n",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mwbafqq5rs2n&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:46.922169+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mwbafqq5rs2n&depth=10&parentHeight=10",
+      "bytes": 4433,
+      "sha256": "377ad6054d1af668b19b792f526c2d6e78c59dacb101dead573fad451a3aa0ef",
+      "file": "raw/bsky-thread-3mwbafqq5rs2n.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mwbafqq5rs2n.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mvlenuwosk2a",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mvlenuwosk2a&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:46.970286+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mvlenuwosk2a&depth=10&parentHeight=10",
+      "bytes": 4129,
+      "sha256": "99a45c6aac1a3beaebaf37ff47ed0f633d742023fc80c42b208d6d5764d19257",
+      "file": "raw/bsky-thread-3mvlenuwosk2a.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mvlenuwosk2a.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mvg2jeidts2p",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mvg2jeidts2p&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:47.515524+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mvg2jeidts2p&depth=10&parentHeight=10",
+      "bytes": 4540,
+      "sha256": "c0f138997414f5612d095281e3e770bce6e3f97a15a6a7a33f0cfab9d9f01833",
+      "file": "raw/bsky-thread-3mvg2jeidts2p.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mvg2jeidts2p.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-reposted-3mvg2jeidts2p",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getRepostedBy?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mvg2jeidts2p&limit=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:47.610544+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getRepostedBy?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mvg2jeidts2p&limit=100",
+      "bytes": 96,
+      "sha256": "bafd7b6d1002335c7f533cf50e96c77a6c19af4c5e45e1fbcd1ff36d81ccdac7",
+      "file": "raw/bsky-reposted-3mvg2jeidts2p.json",
+      "verified_body_files": [
+        "social/raw/bsky-reposted-3mvg2jeidts2p.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-reposted-3mukg4zsup22s",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getRepostedBy?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mukg4zsup22s&limit=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:48.065930+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getRepostedBy?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mukg4zsup22s&limit=100",
+      "bytes": 96,
+      "sha256": "eb85b7f91599f79c5ecf84956a5add0e627ad8eb0e782b032ceef92176f65938",
+      "file": "raw/bsky-reposted-3mukg4zsup22s.json",
+      "verified_body_files": [
+        "social/raw/bsky-reposted-3mukg4zsup22s.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mukg4enmt22s",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mukg4enmt22s&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:48.151745+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mukg4enmt22s&depth=10&parentHeight=10",
+      "bytes": 4478,
+      "sha256": "e83daa27474abdd9e3515354f345bae3a8f5152e2214a2e010c7770a5f87ef2d",
+      "file": "raw/bsky-thread-3mukg4enmt22s.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mukg4enmt22s.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-reposted-3mttvb636fc25",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getRepostedBy?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mttvb636fc25&limit=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:48.846782+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getRepostedBy?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mttvb636fc25&limit=100",
+      "bytes": 96,
+      "sha256": "40004ba8137f3bdf44e9afa4f3e1f4c55475d2794e23e9335205a231202b357d",
+      "file": "raw/bsky-reposted-3mttvb636fc25.json",
+      "verified_body_files": [
+        "social/raw/bsky-reposted-3mttvb636fc25.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mttvaf5xnk25",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mttvaf5xnk25&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:48.859945+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mttvaf5xnk25&depth=10&parentHeight=10",
+      "bytes": 4567,
+      "sha256": "cc0f05916cff317326398b1bbd0368ade59d4da2265d7c4e75934cb1d30f8d3f",
+      "file": "raw/bsky-thread-3mttvaf5xnk25.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mttvaf5xnk25.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mtqwn3mwlc2v",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mtqwn3mwlc2v&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:49.378621+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mtqwn3mwlc2v&depth=10&parentHeight=10",
+      "bytes": 4377,
+      "sha256": "ad10da4489423a0bdbdf53e42485a222a0971a6d48734bcf0ba0aac5a868a6e4",
+      "file": "raw/bsky-thread-3mtqwn3mwlc2v.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mtqwn3mwlc2v.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mtezof6w3s2z",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mtezof6w3s2z&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:49.387477+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mtezof6w3s2z&depth=10&parentHeight=10",
+      "bytes": 3859,
+      "sha256": "d9d5f7e2289da75f128fba0093cee7c8e1950418f545300b79d70340abaf5b67",
+      "file": "raw/bsky-thread-3mtezof6w3s2z.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mtezof6w3s2z.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3msycdjhjck2b",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3msycdjhjck2b&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:49.905937+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3msycdjhjck2b&depth=10&parentHeight=10",
+      "bytes": 4169,
+      "sha256": "db4f97ea5ba1e96add72a4827ccb1da888506e23ca90c022344b75a91f0bfb62",
+      "file": "raw/bsky-thread-3msycdjhjck2b.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3msycdjhjck2b.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mslau3rlps2f",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mslau3rlps2f&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:49.922707+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mslau3rlps2f&depth=10&parentHeight=10",
+      "bytes": 4294,
+      "sha256": "971c8ee60b2b347eecb0f18b59469b3b4e9eba96b4edd08ec6988117f912fb77",
+      "file": "raw/bsky-thread-3mslau3rlps2f.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mslau3rlps2f.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3msgrn3imhs2q",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3msgrn3imhs2q&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:50.532628+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3msgrn3imhs2q&depth=10&parentHeight=10",
+      "bytes": 4825,
+      "sha256": "de778ce91a012c812fa1fcfddb1df4b07050bfb873c55df04f8608c3d5cd5ae9",
+      "file": "raw/bsky-thread-3msgrn3imhs2q.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3msgrn3imhs2q.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3ms4k4lcloc2g",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3ms4k4lcloc2g&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:50.539754+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3ms4k4lcloc2g&depth=10&parentHeight=10",
+      "bytes": 3408,
+      "sha256": "4edb66294c031c86ad40d2249e0508e6b82bd848f689653643385945a916ad9b",
+      "file": "raw/bsky-thread-3ms4k4lcloc2g.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3ms4k4lcloc2g.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mrujtbjd3s2u",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mrujtbjd3s2u&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:51.107406+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mrujtbjd3s2u&depth=10&parentHeight=10",
+      "bytes": 4722,
+      "sha256": "19a9cb3d89b967a5d30e85458f93e639217acd6613f5ce4d7b66c93e2a09042b",
+      "file": "raw/bsky-thread-3mrujtbjd3s2u.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mrujtbjd3s2u.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mqjzt622722e",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mqjzt622722e&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:51.118394+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mqjzt622722e&depth=10&parentHeight=10",
+      "bytes": 4083,
+      "sha256": "31573afe2158708fb4fea18fdee6f06ee1b3456b10043572254113a0c54a3a99",
+      "file": "raw/bsky-thread-3mqjzt622722e.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mqjzt622722e.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mqhdmkivr22l",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mqhdmkivr22l&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:51.663346+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mqhdmkivr22l&depth=10&parentHeight=10",
+      "bytes": 4819,
+      "sha256": "d65c09853aa749503537456ddc5734167482bfe630a0b24646daf459fe697e6c",
+      "file": "raw/bsky-thread-3mqhdmkivr22l.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mqhdmkivr22l.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mq37e3veyc2d",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mq37e3veyc2d&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:51.706831+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mq37e3veyc2d&depth=10&parentHeight=10",
+      "bytes": 5046,
+      "sha256": "d710f25d0d38f3121b0f15404c633813652f706fd17a70df27b9645858cbeabf",
+      "file": "raw/bsky-thread-3mq37e3veyc2d.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mq37e3veyc2d.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mpwbmfa2ds2j",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mpwbmfa2ds2j&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:52.204099+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mpwbmfa2ds2j&depth=10&parentHeight=10",
+      "bytes": 4972,
+      "sha256": "a631b351d69adc4c5a09664e4b600810d4d90786a62fd8c9e0ac9dc632c3223d",
+      "file": "raw/bsky-thread-3mpwbmfa2ds2j.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mpwbmfa2ds2j.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-thread-3mpv2cab2vk2r",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mpv2cab2vk2r&depth=10&parentHeight=10",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:52.274823+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mpv2cab2vk2r&depth=10&parentHeight=10",
+      "bytes": 4574,
+      "sha256": "cfc1daea79fc1a14d8b2c479716b052aaadc271b7de746f48bd50fe462e74842",
+      "file": "raw/bsky-thread-3mpv2cab2vk2r.json",
+      "verified_body_files": [
+        "social/raw/bsky-thread-3mpv2cab2vk2r.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "bsky-reposted-3mpv2cab2vk2r",
+      "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getRepostedBy?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mpv2cab2vk2r&limit=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:52.801654+00:00",
+      "status": 200,
+      "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getRepostedBy?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mpv2cab2vk2r&limit=100",
+      "bytes": 904,
+      "sha256": "30fd30d08482f882bf025e1bd6f8d4118fd418da110839c2616801ef01543328",
+      "file": "raw/bsky-reposted-3mpv2cab2vk2r.json",
+      "verified_body_files": [
+        "social/raw/bsky-reposted-3mpv2cab2vk2r.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4908243",
+      "url": "https://dev.to/api/articles/4908243",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:18.388431+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4908243",
+      "bytes": 63990,
+      "sha256": "69574d7da50accaf9e42660caefcb765c122120d2bc1b1896d3eb42fef62cd15",
+      "file": "raw/dev-article-4908243.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4908243.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4902690",
+      "url": "https://dev.to/api/articles/4902690",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:20.550154+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4902690",
+      "bytes": 55772,
+      "sha256": "a0193eceb37d808bb33922320e2d9b6213b87f50ba0f2b4745f75afc928b3ea5",
+      "file": "raw/dev-article-4902690.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4902690.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4892562",
+      "url": "https://dev.to/api/articles/4892562",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:22.750020+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4892562",
+      "bytes": 61593,
+      "sha256": "854d67e33a6b8a6ed878254d32da79fbf2aecc2292aa5c41a006e399e0af58f8",
+      "file": "raw/dev-article-4892562.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4892562.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4878922",
+      "url": "https://dev.to/api/articles/4878922",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:25.151988+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4878922",
+      "bytes": 10297,
+      "sha256": "bb8b66706cca5fa6620d15f15a46c25152d89275465dff1ba08fed6017efc6ec",
+      "file": "raw/dev-article-4878922.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4878922.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4931640",
+      "url": "https://dev.to/api/articles/4931640",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:27.347707+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4931640",
+      "bytes": 17562,
+      "sha256": "2fe333a257490810522a47b9a19209a63295ea8dbf9e50c48314d88ac0987745",
+      "file": "raw/dev-article-4931640.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4931640.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4930765",
+      "url": "https://dev.to/api/articles/4930765",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:29.457132+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4930765",
+      "bytes": 13393,
+      "sha256": "faeab564519875e685ec00c6786366fc667aaf5e5c57a83a69bbc70558c67cff",
+      "file": "raw/dev-article-4930765.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4930765.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4925388",
+      "url": "https://dev.to/api/articles/4925388",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:31.526862+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4925388",
+      "bytes": 18125,
+      "sha256": "ee31345388c0e76f467b5b8a6832f5caf4223b5eb6c578702b644ecfba0652d8",
+      "file": "raw/dev-article-4925388.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4925388.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4923609",
+      "url": "https://dev.to/api/articles/4923609",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:33.433443+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4923609",
+      "bytes": 9606,
+      "sha256": "b260ab323c6369ad94da2745ff1f13f215fd737453fbfc36138d471eea20ec18",
+      "file": "raw/dev-article-4923609.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4923609.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4922244",
+      "url": "https://dev.to/api/articles/4922244",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:35.273132+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4922244",
+      "bytes": 18162,
+      "sha256": "b0f87e629322d457cc27f81aa9ba0af807a66eaf650bc46268b2dc026f6eed54",
+      "file": "raw/dev-article-4922244.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4922244.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4890721",
+      "url": "https://dev.to/api/articles/4890721",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:37.383132+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4890721",
+      "bytes": 10922,
+      "sha256": "a11462be9ab06536c4acbbb5aedf0036190d892bbaac0ba36f8b04d4596e0aaa",
+      "file": "raw/dev-article-4890721.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4890721.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4888293",
+      "url": "https://dev.to/api/articles/4888293",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:39.451604+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4888293",
+      "bytes": 18843,
+      "sha256": "13bd9cfcdef67b134821e7cc4e9b9eaf04bfa528fa1aa8a4d5a9d2285099492a",
+      "file": "raw/dev-article-4888293.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4888293.json"
+      ]
+    },
+    {
+      "branch": "social",
+      "key": "dev-article-4885921",
+      "url": "https://dev.to/api/articles/4885921",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:41.367723+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4885921",
+      "bytes": 8098,
+      "sha256": "7583473b7194adff96cfc5000eca2ffc741597b01f576927681abf784dec8950",
+      "file": "raw/dev-article-4885921.json",
+      "verified_body_files": [
+        "social/raw/dev-article-4885921.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "hatena-qiita-histor",
+      "url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fqiita.com%2Fqwezzy721%2Fitems%2Fb71aaeaae84fcb360fe6",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:42.556378+00:00",
+      "status": 200,
+      "final_url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fqiita.com%2Fqwezzy721%2Fitems%2Fb71aaeaae84fcb360fe6",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 4,
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "body_file": "hatena-qiita-histor.json",
+      "verified_body_files": [
+        "regional/hatena-qiita-histor.json",
+        "regional/hatena-qiita-cost.json",
+        "regional/hatena-histor.json",
+        "regional/hatena-dev-dataset.json",
+        "regional/hatena-dev-cost.json",
+        "regional/hatena-warden.json",
+        "regional/hatena-dev-runtime.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "hatena-qiita-cost",
+      "url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fqiita.com%2Fqwezzy721%2Fitems%2F4dfe9dc2fbe9d69b1fb7",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:42.557112+00:00",
+      "status": 200,
+      "final_url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fqiita.com%2Fqwezzy721%2Fitems%2F4dfe9dc2fbe9d69b1fb7",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 4,
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "body_file": "hatena-qiita-cost.json",
+      "verified_body_files": [
+        "regional/hatena-qiita-histor.json",
+        "regional/hatena-qiita-cost.json",
+        "regional/hatena-histor.json",
+        "regional/hatena-dev-dataset.json",
+        "regional/hatena-dev-cost.json",
+        "regional/hatena-warden.json",
+        "regional/hatena-dev-runtime.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "hatena-histor",
+      "url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fhistor.modelmarket.dev%2F",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:42.557373+00:00",
+      "status": 200,
+      "final_url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fhistor.modelmarket.dev%2F",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 4,
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "body_file": "hatena-histor.json",
+      "verified_body_files": [
+        "regional/hatena-qiita-histor.json",
+        "regional/hatena-qiita-cost.json",
+        "regional/hatena-histor.json",
+        "regional/hatena-dev-dataset.json",
+        "regional/hatena-dev-cost.json",
+        "regional/hatena-warden.json",
+        "regional/hatena-dev-runtime.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "hatena-warden",
+      "url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fgithub.com%2Falexar76%2Fwarden",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:43.340677+00:00",
+      "status": 200,
+      "final_url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fgithub.com%2Falexar76%2Fwarden",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 4,
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "body_file": "hatena-warden.json",
+      "verified_body_files": [
+        "regional/hatena-qiita-histor.json",
+        "regional/hatena-qiita-cost.json",
+        "regional/hatena-histor.json",
+        "regional/hatena-dev-dataset.json",
+        "regional/hatena-dev-cost.json",
+        "regional/hatena-warden.json",
+        "regional/hatena-dev-runtime.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "qiita-histor",
+      "url": "https://qiita.com/api/v2/items?query=HISTOR&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:43.351349+00:00",
+      "status": 200,
+      "final_url": "https://qiita.com/api/v2/items?query=HISTOR&per_page=100",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 1085251,
+      "sha256": "605f883d6d3c03a616238da00f10c5f4c36cbe62064989191147e5da394c9afa",
+      "body_file": "qiita-histor.json",
+      "verified_body_files": [
+        "regional/qiita-histor.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "qiita-warden",
+      "url": "https://qiita.com/api/v2/items?query=WARDEN+MCP&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:43.359254+00:00",
+      "status": 200,
+      "final_url": "https://qiita.com/api/v2/items?query=WARDEN+MCP&per_page=100",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 3518244,
+      "sha256": "e492bec7f4e0992427aded86921fd67664fb437bb6d17a610e38d102ab6e4a05",
+      "body_file": "qiita-warden.json",
+      "verified_body_files": [
+        "regional/qiita-warden.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "qiita-12915",
+      "url": "https://qiita.com/api/v2/items?query=12915&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:43.825944+00:00",
+      "status": 200,
+      "final_url": "https://qiita.com/api/v2/items?query=12915&per_page=100",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 6318992,
+      "sha256": "c7a9c369036354e5d54a38dc5339d952ccf088000e8de6d9a40480af3e398cea",
+      "body_file": "qiita-12915.json",
+      "verified_body_files": [
+        "regional/qiita-12915.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "zenn-histor",
+      "url": "https://zenn.dev/search?q=HISTOR",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:44.877905+00:00",
+      "status": 200,
+      "final_url": "https://zenn.dev/search?q=HISTOR",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 34238,
+      "sha256": "86a5b91f5edcd0362c0b61ba35d5c344047e0993157d0658aa2d486e1533bc19",
+      "body_file": "zenn-histor.html",
+      "verified_body_files": [
+        "regional/zenn-histor.html"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "zenn-modelmarket",
+      "url": "https://zenn.dev/api/search?q=modelmarket.dev&source=articles&order=latest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:45.693935+00:00",
+      "status": 200,
+      "final_url": "https://zenn.dev/api/search?q=modelmarket.dev&source=articles&order=latest",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 32,
+      "sha256": "d4f90a120d0023c59f83c209d0bb9b0951195e69946776f8952d074b145e4922",
+      "body_file": "zenn-modelmarket.json",
+      "verified_body_files": [
+        "regional/zenn-alexar-api.json",
+        "regional/zenn-modelmarket.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "habr-modelmarket",
+      "url": "https://habr.com/kek/v2.0/search/?q=%22modelmarket.dev%22&target_type=posts&order=relevance",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:46.280702+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "branch": "regional",
+      "key": "habr-alexar76",
+      "url": "https://habr.com/kek/v2.0/search/?q=%22alexar76%22&target_type=posts&order=relevance",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:46.353833+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "branch": "regional",
+      "key": "hatena-dev-runtime",
+      "url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fdev.to%2Falexar76%2Fwe-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:23.447046+00:00",
+      "status": 200,
+      "final_url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fdev.to%2Falexar76%2Fwe-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 4,
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "body_file": "hatena-dev-runtime.json",
+      "verified_body_files": [
+        "regional/hatena-qiita-histor.json",
+        "regional/hatena-qiita-cost.json",
+        "regional/hatena-histor.json",
+        "regional/hatena-dev-dataset.json",
+        "regional/hatena-dev-cost.json",
+        "regional/hatena-warden.json",
+        "regional/hatena-dev-runtime.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "hatena-dev-cost",
+      "url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fdev.to%2Falexar76%2Fwhat-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:23.448375+00:00",
+      "status": 200,
+      "final_url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fdev.to%2Falexar76%2Fwhat-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 4,
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "body_file": "hatena-dev-cost.json",
+      "verified_body_files": [
+        "regional/hatena-qiita-histor.json",
+        "regional/hatena-qiita-cost.json",
+        "regional/hatena-histor.json",
+        "regional/hatena-dev-dataset.json",
+        "regional/hatena-dev-cost.json",
+        "regional/hatena-warden.json",
+        "regional/hatena-dev-runtime.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "hatena-dev-dataset",
+      "url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fdev.to%2Falexar76%2F45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset-2mhe",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:23.448926+00:00",
+      "status": 200,
+      "final_url": "https://b.hatena.ne.jp/entry/jsonlite/?url=https%3A%2F%2Fdev.to%2Falexar76%2F45-of-remote-mcp-servers-changed-their-tool-definitions-in-four-weeks-the-log-is-now-a-dataset-2mhe",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 4,
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "body_file": "hatena-dev-dataset.json",
+      "verified_body_files": [
+        "regional/hatena-qiita-histor.json",
+        "regional/hatena-qiita-cost.json",
+        "regional/hatena-histor.json",
+        "regional/hatena-dev-dataset.json",
+        "regional/hatena-dev-cost.json",
+        "regional/hatena-warden.json",
+        "regional/hatena-dev-runtime.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "zenn-histor-api",
+      "url": "https://zenn.dev/api/search?q=HISTOR&source=articles&order=latest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:24.154386+00:00",
+      "status": 200,
+      "final_url": "https://zenn.dev/api/search?q=HISTOR&source=articles&order=latest",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 44550,
+      "sha256": "bc13084ed64c0c09f750fcf8fb0e7c05e1286d327f9e456b8fb13c9a1c415f34",
+      "body_file": "zenn-histor-api.json",
+      "verified_body_files": [
+        "regional/zenn-histor-api.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "zenn-alexar-api",
+      "url": "https://zenn.dev/api/search?q=alexar76&source=articles&order=latest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:24.166200+00:00",
+      "status": 200,
+      "final_url": "https://zenn.dev/api/search?q=alexar76&source=articles&order=latest",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 32,
+      "sha256": "d4f90a120d0023c59f83c209d0bb9b0951195e69946776f8952d074b145e4922",
+      "body_file": "zenn-alexar-api.json",
+      "verified_body_files": [
+        "regional/zenn-alexar-api.json",
+        "regional/zenn-modelmarket.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "zenn-aimarket-scraps",
+      "url": "https://zenn.dev/api/search?q=aimarket&source=scraps&order=latest",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:24.172298+00:00",
+      "status": 200,
+      "final_url": "https://zenn.dev/api/search?q=aimarket&source=scraps&order=latest",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 30,
+      "sha256": "55194e7c67621902a6aea6f7f3a68c7f56e32c77ef810ca4263905718375618f",
+      "body_file": "zenn-aimarket-scraps.json",
+      "verified_body_files": [
+        "regional/zenn-aimarket-scraps.json"
+      ]
+    },
+    {
+      "branch": "regional",
+      "key": "habr-v2-modelmarket",
+      "url": "https://habr.com/kek/v2/articles/?query=%22modelmarket.dev%22&fl=ru&hl=ru",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:19:24.696028+00:00",
+      "status": 200,
+      "final_url": "https://habr.com/kek/v2/articles/?query=%22modelmarket.dev%22&fl=ru&hl=ru",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 162,
+      "sha256": "846546404d78d0dfa173dcdb4a98b583609ead534806371d89d7bbf241bfafe9",
+      "body_file": "habr-v2-modelmarket.json",
+      "verified_body_files": [
+        "regional/habr-v2-modelmarket.json"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "issues-hub",
+      "url": "https://api.github.com/search/issues?q=%22aimarket-hub%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:21.743559+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/issues?q=%22aimarket-hub%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "bytes": 7773,
+      "sha256": "91479998e136d86574625c755f73a73987baa9b478302db4521c483665859c20",
+      "file": "issues-hub.raw",
+      "verified_body_files": [
+        "code/issues-hub.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "issues-agent",
+      "url": "https://api.github.com/search/issues?q=%22aimarket-agent%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:21.744842+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/issues?q=%22aimarket-agent%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "bytes": 289388,
+      "sha256": "06f719445280890130869603adf73974bf8cc2fb09b6ef4103920c6fd8a89bd2",
+      "file": "issues-agent.raw",
+      "verified_body_files": [
+        "code/issues-agent.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "issues-memory",
+      "url": "https://api.github.com/search/issues?q=%22attestedmemory.net%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:21.745348+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/issues?q=%22attestedmemory.net%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "bytes": 79,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+      "file": "issues-memory.raw",
+      "verified_body_files": [
+        "code/issues-memory.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "issues-awr",
+      "url": "https://api.github.com/search/issues?q=%22alexar76%2Fawr%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:21.745708+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/issues?q=%22alexar76%2Fawr%22+-user%3Aalexar76+-author%3Aalexar76&per_page=100&sort=updated&order=desc",
+      "bytes": 5964,
+      "sha256": "ed82199fbc3f0965cb40870928aec835ba4d392f55ccd000774fc2c7ec410ee5",
+      "file": "issues-awr.raw",
+      "verified_body_files": [
+        "code/issues-awr.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commits-identity",
+      "url": "https://api.github.com/search/commits?q=%22alexar76%22+-author%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:22.325663+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22alexar76%22+-author%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 480461,
+      "sha256": "09d6133061acf94ebabadc5692313471e7b7156819eab11da96387e439924646",
+      "file": "commits-identity.raw",
+      "verified_body_files": [
+        "code/commits-identity.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commits-hub",
+      "url": "https://api.github.com/search/commits?q=%22aimarket-hub%22+-author%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:22.346831+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22aimarket-hub%22+-author%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 214107,
+      "sha256": "ee9fea3e083838ff296c3dc75309fe128312b512aa7c032f4d66c9427d7279a4",
+      "file": "commits-hub.raw",
+      "verified_body_files": [
+        "code/commits-hub.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commits-warden",
+      "url": "https://api.github.com/search/commits?q=%22%40aimarket%2Fwarden%22+-author%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:22.356597+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22%40aimarket%2Fwarden%22+-author%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 6478,
+      "sha256": "689c92102b8d5e7e2a2a6279fb034bcab448af891a693c71cbf17dfb21c4dec6",
+      "file": "commits-warden.raw",
+      "verified_body_files": [
+        "code/commits-warden.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "commits-memory",
+      "url": "https://api.github.com/search/commits?q=%22attestedmemory.net%22+-author%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:22.880389+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%22attestedmemory.net%22+-author%3Aalexar76&per_page=100&sort=committer-date&order=desc",
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "file": "commits-memory.raw",
+      "verified_body_files": [
+        "code/commits-memory.raw",
+        "code/traits-external-fixture.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "sourcegraph-packages",
+      "url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aregexp+%28%40aimarket%2Fwarden%7Caimarket-hub%7Caimarket-histor%7Caimarket-agent%29+-repo%3A%5Egithub.com%2Falexar76%2F+-file%3A%28%3Fi%29readme+archived%3Ayes+fork%3Ayes+count%3A200+timeout%3A40s&v=V3",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:23.023607+00:00",
+      "status": 200,
+      "final_url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aregexp+%28%40aimarket%2Fwarden%7Caimarket-hub%7Caimarket-histor%7Caimarket-agent%29+-repo%3A%5Egithub.com%2Falexar76%2F+-file%3A%28%3Fi%29readme+archived%3Ayes+fork%3Ayes+count%3A200+timeout%3A40s&v=V3",
+      "bytes": 1404,
+      "sha256": "5f07ec39aa085b4fce18a13f2ee75b9699f6ec8e7c8968f7d54eb0e143694bd5",
+      "file": "sourcegraph-packages.raw",
+      "verified_body_files": [
+        "code/sourcegraph-packages.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "sourcegraph-domains",
+      "url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aregexp+%28modelmarket%5C.dev%7Cattestedmemory%5C.net%29+-repo%3A%5Egithub.com%2Falexar76%2F+-file%3A%28%3Fi%29readme+archived%3Ayes+fork%3Ayes+count%3A200+timeout%3A40s&v=V3",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:23.649570+00:00",
+      "status": 200,
+      "final_url": "https://sourcegraph.com/search/stream?q=context%3Aglobal+patterntype%3Aregexp+%28modelmarket%5C.dev%7Cattestedmemory%5C.net%29+-repo%3A%5Egithub.com%2Falexar76%2F+-file%3A%28%3Fi%29readme+archived%3Ayes+fork%3Ayes+count%3A200+timeout%3A40s&v=V3",
+      "bytes": 6157,
+      "sha256": "b7db2fb9d7c4e3de2f6578bc4a46dc3eac40b66143e280472f16cf56ba70a68d",
+      "file": "sourcegraph-domains.raw",
+      "verified_body_files": [
+        "code/sourcegraph-domains.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "industrial-tree",
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/git/trees/main?recursive=1",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:23.744928+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/git/trees/main?recursive=1",
+      "bytes": 147283,
+      "sha256": "d4fee8d344116c28b73d51033e84684abe9a2d15b5bd7c940a9115d53b0dbe03",
+      "file": "industrial-tree.raw",
+      "verified_body_files": [
+        "code/industrial-tree.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "rugsnare-tree",
+      "url": "https://api.github.com/repos/Paraphern/rugsnare/git/trees/main?recursive=1",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:23.828485+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/Paraphern/rugsnare/git/trees/main?recursive=1",
+      "bytes": 139089,
+      "sha256": "9b2cc5f783533769a39cf68dd0bac6616e2702c2f5561ba2d53ebaff838cccb2",
+      "file": "rugsnare-tree.raw",
+      "verified_body_files": [
+        "code/rugsnare-tree.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "mcpmoat-tree",
+      "url": "https://api.github.com/repos/Ducarv/mcpmoat/git/trees/dev?recursive=1",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:24.385928+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/Ducarv/mcpmoat/git/trees/dev?recursive=1",
+      "bytes": 166638,
+      "sha256": "a8b9eb75fda59d6e0a522485e284f2d8802418d226acfc9aee8a95b1e4affbca",
+      "file": "mcpmoat-tree.raw",
+      "verified_body_files": [
+        "code/mcpmoat-tree.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "codeberg-projects",
+      "url": "https://codeberg.org/api/v1/repos/search?q=aimarket&limit=50",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:24.874956+00:00",
+      "status": 200,
+      "final_url": "https://codeberg.org/api/v1/repos/search?q=aimarket&limit=50",
+      "bytes": 22,
+      "sha256": "7c60055808f1242bb4ee29c5aac08d78235f51f17b2c4bd692ffc798399dddd9",
+      "file": "codeberg-projects.raw",
+      "verified_body_files": [
+        "code/codeberg-projects.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "gitlab-projects-package",
+      "url": "https://gitlab.com/api/v4/projects?search=aimarket&simple=true&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:17:25.089620+00:00",
+      "status": 200,
+      "final_url": "https://gitlab.com/api/v4/projects?search=aimarket&simple=true&per_page=100",
+      "bytes": 3246,
+      "sha256": "19c174d458e6ead64a16c043ecb78b29cf32f88f6a63c7ee82942472236d8079",
+      "file": "gitlab-projects-package.raw",
+      "verified_body_files": [
+        "code/gitlab-projects-package.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "quincy-price-fix",
+      "url": "https://api.github.com/repos/QuincyGB/route-verdict/commits/5a36f743d0b2b9b6dd42ee075f25d138e738e166",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:55.479982+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/QuincyGB/route-verdict/commits/5a36f743d0b2b9b6dd42ee075f25d138e738e166",
+      "bytes": 24671,
+      "sha256": "42fda5265bea203b94f4a62d9b1cb2cb9e2c4691a589515e724a3210f8bdc58e",
+      "file": "quincy-price-fix.raw",
+      "verified_body_files": [
+        "code/quincy-price-fix.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "quincy-persistence",
+      "url": "https://api.github.com/repos/QuincyGB/route-verdict/commits/15aec9f488494efeaa981fb80cc5800cd5dd7f40",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:55.481438+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/QuincyGB/route-verdict/commits/15aec9f488494efeaa981fb80cc5800cd5dd7f40",
+      "bytes": 11006,
+      "sha256": "461980772a98efaeafa540d4e556526d3947052b06bcb7d34884702bc3c1ec18",
+      "file": "quincy-persistence.raw",
+      "verified_body_files": [
+        "code/quincy-persistence.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "quincy-feed",
+      "url": "https://api.github.com/repos/QuincyGB/stall-row/commits/9303c9d6e9862c599711e979a8acba342dc634d7",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:55.481957+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/QuincyGB/stall-row/commits/9303c9d6e9862c599711e979a8acba342dc634d7",
+      "bytes": 24429,
+      "sha256": "7216846bb7afc59671e4ba2244cc34255fd1598c2015a9f86567c691d1c7db85",
+      "file": "quincy-feed.raw",
+      "verified_body_files": [
+        "code/quincy-feed.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "quincy-history",
+      "url": "https://api.github.com/repos/QuincyGB/route-verdict/commits/8750385243aa1aa89e71dbf5fff72f041e7b8286",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:55.482465+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/QuincyGB/route-verdict/commits/8750385243aa1aa89e71dbf5fff72f041e7b8286",
+      "bytes": 22977,
+      "sha256": "07380fbb15e20f8c972932a1c418d46709c6b3a5dbd1d1619f21c1613f1b2c8e",
+      "file": "quincy-history.raw",
+      "verified_body_files": [
+        "code/quincy-history.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "quincy-feed-v2",
+      "url": "https://api.github.com/repos/QuincyGB/stall-row/commits/d71698264878f8daccec703b1d1f6d205aad47ff",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:56.089253+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/QuincyGB/stall-row/commits/d71698264878f8daccec703b1d1f6d205aad47ff",
+      "bytes": 94200,
+      "sha256": "2e8d72ed82414f4dc95174c9c257c20b0da03f02fdb6cd6f160083af39bd66b4",
+      "file": "quincy-feed-v2.raw",
+      "verified_body_files": [
+        "code/quincy-feed-v2.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "aicom13",
+      "url": "https://api.github.com/repos/alexar76/aicom/issues/13",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:56.149338+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/alexar76/aicom/issues/13",
+      "bytes": 2738,
+      "sha256": "7c0bd4743bdf99d1fa8ef733224eddb1545a6c979b9b351abe1e36643d2a1c1d",
+      "file": "aicom13.raw",
+      "verified_body_files": [
+        "code/aicom13.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "aicom13-comments",
+      "url": "https://api.github.com/repos/alexar76/aicom/issues/13/comments?per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:56.164170+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/alexar76/aicom/issues/13/comments?per_page=100",
+      "bytes": 24242,
+      "sha256": "2148b24b010824d5325466443f3817d88e82c90b1f03fa4a6b41cc1ce784a062",
+      "file": "aicom13-comments.raw",
+      "verified_body_files": [
+        "code/aicom13-comments.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "traits-warden-review",
+      "url": "https://api.github.com/repos/isotope13-dev/traits-dev/commits/d28c0c79dfc7aecb94c40acbbc8109ecee26d2ab",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:56.191438+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/isotope13-dev/traits-dev/commits/d28c0c79dfc7aecb94c40acbbc8109ecee26d2ab",
+      "bytes": 7106,
+      "sha256": "0682d9c14bd9ab9d5541a074178b7964a1a6784512563bba4aab58eb36eaf506",
+      "file": "traits-warden-review.raw",
+      "verified_body_files": [
+        "code/traits-warden-review.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "traits-metadata",
+      "url": "https://api.github.com/repos/isotope13-dev/traits-dev",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:56.609551+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/isotope13-dev/traits-dev",
+      "bytes": 6522,
+      "sha256": "e23e110efbeb10b4c6017e6efa4a0da39948a4b3efcc9d39bff65d20cdd4abe3",
+      "file": "traits-metadata.raw",
+      "verified_body_files": [
+        "code/traits-metadata.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "traits-readme",
+      "url": "https://raw.githubusercontent.com/isotope13-dev/traits-dev/main/README.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:56.665149+00:00",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/isotope13-dev/traits-dev/main/README.md",
+      "bytes": 2968,
+      "sha256": "dd4159e7e54c0b2d83ae20068ce5d2ea0d188981982d95e14dce9ba8902da5dd",
+      "file": "traits-readme.raw",
+      "verified_body_files": [
+        "code/traits-readme.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "rugsnare-product-history",
+      "url": "https://raw.githubusercontent.com/Paraphern/rugsnare/main/product/src/history.js",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:56.727831+00:00",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/Paraphern/rugsnare/main/product/src/history.js",
+      "bytes": 23631,
+      "sha256": "78d0565cf6ee7b3021c5b0857bc8160940553698181633260880a54d6c7b8d71",
+      "file": "rugsnare-product-history.raw",
+      "verified_body_files": [
+        "code/rugsnare-product-history.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "rugsnare-history-workflow",
+      "url": "https://raw.githubusercontent.com/Paraphern/rugsnare/main/.github/workflows/history-scan.yml",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:18:56.733013+00:00",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/Paraphern/rugsnare/main/.github/workflows/history-scan.yml",
+      "bytes": 5152,
+      "sha256": "f69f1aef0ee22dc7d44bd80e6353457bec69a9afad84bcc516e0fe10c7242e5e",
+      "file": "rugsnare-history-workflow.raw",
+      "verified_body_files": [
+        "code/rugsnare-history-workflow.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "npm-warden-0180",
+      "url": "https://registry.npmjs.org/@aimarket%2fwarden/0.18.0",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:09.915769+00:00",
+      "status": 200,
+      "final_url": "https://registry.npmjs.org/@aimarket%2fwarden/0.18.0",
+      "bytes": 2774,
+      "sha256": "683a45e283d834fc64837e2d709bdd3ed1acd4f8c56639e7d63397cb2834c3e4",
+      "file": "npm-warden-0180.raw",
+      "verified_body_files": [
+        "code/npm-warden-0180.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "npm-warden-0180-tarball",
+      "url": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.18.0.tgz",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:09.917102+00:00",
+      "status": 200,
+      "final_url": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.18.0.tgz",
+      "bytes": 531522,
+      "sha256": "30b96f217c7ca951c3061e33b12e2601a739d6e14384e17f33998dc512f21c73",
+      "file": "npm-warden-0180-tarball.raw",
+      "verified_body_files": [
+        "code/npm-warden-0180-tarball.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "quincy-feed-live",
+      "url": "https://stall-row-production.up.railway.app/v1/recheck/feed",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:09.917605+00:00",
+      "status": 200,
+      "final_url": "https://stall-row-production.up.railway.app/v1/recheck/feed",
+      "bytes": 9230,
+      "sha256": "c8d4d44daa2927495df60bbfcc13d24e9cbacabd6e28e1f89ce85fecf0121b72",
+      "file": "quincy-feed-live.raw",
+      "verified_body_files": [
+        "code/quincy-feed-live.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "quincy-feed-v2-live",
+      "url": "https://stall-row-production.up.railway.app/v1/recheck/feed?v=2",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:10.420740+00:00",
+      "status": 200,
+      "final_url": "https://stall-row-production.up.railway.app/v1/recheck/feed?v=2",
+      "bytes": 13516,
+      "sha256": "1a16e01211d848395931eaf1247c403503d674e1cc9c0be9ecef69ba7de0f906",
+      "file": "quincy-feed-v2-live.raw",
+      "verified_body_files": [
+        "code/quincy-feed-v2-live.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "quincy-health-live",
+      "url": "https://route-verdict-production.up.railway.app/health",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:10.511111+00:00",
+      "status": 200,
+      "final_url": "https://route-verdict-production.up.railway.app/health",
+      "bytes": 117,
+      "sha256": "6d71044da947a8cfd15ba74904245a10a33108471a5ce13712c8d7df092d3290",
+      "file": "quincy-health-live.raw",
+      "verified_body_files": [
+        "code/quincy-health-live.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "cleave-readme",
+      "url": "https://raw.githubusercontent.com/atomdrift-project/cleave/main/README.md",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:10.991019+00:00",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/atomdrift-project/cleave/main/README.md",
+      "bytes": 6625,
+      "sha256": "b25496bd63fde1531df645884f1d80431c58eb4b52d00e6e58df1e4cccdd8937",
+      "file": "cleave-readme.raw",
+      "verified_body_files": [
+        "code/cleave-readme.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "traits-public-metadata",
+      "url": "https://api.github.com/repos/atomdrift-project/traits",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:11.003653+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/atomdrift-project/traits",
+      "bytes": 6646,
+      "sha256": "e6f9d48008475c8957cca04f315332c091cf5c969f18909ea01f3044fd912f0d",
+      "file": "traits-public-metadata.raw",
+      "verified_body_files": [
+        "code/traits-public-metadata.raw"
+      ]
+    },
+    {
+      "branch": "code",
+      "key": "traits-external-fixture",
+      "url": "https://api.github.com/search/commits?q=%2230b96f217c7ca951%22&per_page=100",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:20:11.040580+00:00",
+      "status": 200,
+      "final_url": "https://api.github.com/search/commits?q=%2230b96f217c7ca951%22&per_page=100",
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "file": "traits-external-fixture.raw",
+      "verified_body_files": [
+        "code/commits-memory.raw",
+        "code/traits-external-fixture.raw"
+      ]
+    }
+  ]
+}

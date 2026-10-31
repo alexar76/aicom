@@ -1,0 +1,278 @@
+Open data, Agent Economy Report
+Agent Economy Report
+Services
+Skills
+Agents
+AEI
+Reports
+About
+Open data · version 2026-10-30 · regenerated daily
+The daily archive, as files
+Everything on this site is computed every morning from the same archive. This page publishes that archive:
+the rating of every x402 service for every day since 2026-08-16, the daily Agent Economy Index since
+2026-08-02, a daily census of the x402 discovery catalog, a daily liveness census of every resource ever
+listed (of those listed that day, and of the listed hosts) and the rating of every agent skill in the ClawHub registry. Same numbers as the pages, same day, with a schema and
+a citation; the monthly report's totals (gross flow, flow at agent scale, settlement transfers, listed and dead
+resources) are sums over these files: in
+aei-daily.csv
+each closed monthly window (the 2nd of a month
+to the 1st of the next, the window of the monthly report) is computed with the wallet classification of that report
+date (so the report's totals are sums of these rows), and the current window with today's, as the AEI page
+shows it. Method:
+methodology
+.
+Files
+file
+what
+rows
+size
+ratings-daily.csv.gz
+Rating of every service, every day since the first run
+132,954
+3.0 MB
+aei-daily.csv
+Agent Economy Index, one row per day since 2026-08-02
+90
+3 KB
+catalog-daily.csv
+Daily census of the x402 discovery catalog
+90
+3 KB
+liveness-daily.csv
+Daily liveness census: every resource ever listed, those listed that day, and the listed hosts
+90
+7 KB
+skills-latest.csv.gz
+Rating of every agent skill, as of 2026-10-30
+81,782
+1.6 MB
+datapackage.json
+describes every column (Frictionless Data Package);
+CITATION.cff
+is the citation for reference managers.
+Licence
+Free for any use, commercial included
+, under
+CC BY 4.0
+, with
+the citation below. Reuse the figures, redistribute the files, build on them, in research, journalism, a product or
+an internal process; say where they came from and when. There is no paid licence for these files.
+What is charged is machine access to the ratings (the rating API, from US$ 0.005 per call over x402), as cost
+recovery, by whoever reads it;
+the rated party never pays
+, and nobody can buy a tier
+(
+policy
+). Organizations that rely on the data can support the
+observatory; any support is disclosed and never touches a rating.
+Citation
+Center for Studies in Strategy and Innovation, COPPEAD Graduate School of Business, UFRJ (2026). Agent Economy Report: daily trust ratings and settlement of the agent economy [dataset]. https://agenteconomy.report/s/data/
+@misc{agenteconomyreport2026,
+  author = {{Center for Studies in Strategy and Innovation}},
+  title = {Agent Economy Report: daily trust ratings and settlement of the agent economy},
+  year = {2026},
+  howpublished = {\url{https://agenteconomy.report/s/data/}},
+  note = {Dataset, version 2026-10-30, CC BY 4.0}
+  institution = {COPPEAD Graduate School of Business, UFRJ},
+}
+DOI: pending (the Zenodo deposit of this dataset is being prepared; until it exists, cite the URL). For a single page, cite the page URL with its
+as_of
+date and the method version
+shown on
+the methodology page
+.
+Columns
+ratings-daily.csv.gz
+day
+date
+Rating day (UTC morning run).
+host
+string
+Service host as listed in the x402 catalogs, or the payTo wallet for unlisted entries.
+kind
+string
+service (host) or unlisted_wallet.
+tier
+string
+AAA to D; BBB is the trust line.
+score
+number
+Score 0 to 100 (40 adoption, 25 settlement, 25 centrality, 10 uptime).
+outlook
+string
+positive, negative, stable or new (trend of organic agents over 7 days).
+flag
+string
+CAPTIVE, SYBIL, NEW, RETIRED or empty.
+uptime
+number
+Share of the daily probes in the 14-day window answered as up (402 or 200, see the methodology), 0 to 1. From 2026-11-02 (D-0061) only the resources listed in a catalog in the last 7 days count when one of them has a probe that counts (for a family, only the endpoints it lists), and a 405 never answered by POST counts as down, as does a probe without an answer except on a day the probe itself failed (before, both were left out).
+organic_payers
+integer
+Distinct organic paying wallets in the 14-day window (scanners excluded).
+payers
+integer
+Distinct paying wallets in the window, scanners included.
+organic_payers_7d
+integer
+Organic payers in the last 7 days of the window.
+organic_payers_7d_prev
+integer
+Organic payers in the 7 days before that.
+settled_usd_14d
+number
+USDC settled to the entry in 14 days at agent scale (a payment counts at most US$ 1).
+centrality
+number
+PageRank-style centrality in the organic payment graph.
+retired_resources
+integer
+Listed resources that answered 410 with a past Sunset date.
+family
+integer
+Family id when several hosts share the payTo wallet (D-0050); empty otherwise.
+tier_raw
+string
+Tier the day's numbers alone would give; differs from tier only when the 2-point band holds the previous day's tier (D-0058, from 2026-10-22); empty on days rated before the column existed.
+aei-daily.csv
+day
+date
+Day (UTC).
+usd
+number
+USDC settled to x402 services at agent scale (a payment counts at most US$ 1).
+gross
+number
+USDC settled before the agent-scale cap (gross flow).
+tx
+integer
+Number of settlement transfers counted.
+catalog-daily.csv
+day
+date
+Snapshot day.
+resources
+integer
+Resources listed in the CDP discovery catalog that day.
+hosts
+integer
+Distinct hosts among those resources.
+paid_calls_30d
+integer
+Sum of the 30-day paid-call counts the catalog reports per resource (gross, as declared).
+payers_30d
+integer
+Sum of the 30-day distinct-payer counts the catalog reports per resource.
+liveness-daily.csv
+day
+date
+Probe day (UTC).
+probed
+integer
+Resources probed that day: every resource ever listed in the x402 discovery catalogs (CDP Bazaar and PayAI) since 2 August 2026, including those no longer listed.
+answered_402
+integer
+Of those, resources that answered HTTP 402 with a price (alive and selling).
+dead
+integer
+Of those, resources that did not answer at all or answered a 5xx (no response, connection error or server error).
+listed
+integer
+Resources probed that day that were listed in the catalogs that same day (the census in catalog-daily.csv). Empty on a day without a catalog census.
+listed_answered_402
+integer
+Of the listed ones, resources that answered HTTP 402 with a price. Empty on a day without a catalog census.
+listed_dead
+integer
+Of the listed ones, resources that did not answer at all or answered a 5xx. Empty on a day without a catalog census.
+listed_hosts
+integer
+Hosts with at least one listed resource probed that day. Empty on a day without a catalog census.
+listed_hosts_answered_402
+integer
+Of those hosts, the ones with at least one listed resource answering HTTP 402 with a price that day: the liveness by host, which one host with many resources cannot move by itself. Empty on a day without a catalog census.
+largest_host
+string
+The host with the most listed resources probed that day. Empty on a day without a catalog census.
+largest_host_share_pct
+number
+Share (%) of the listed resources probed that day that belong to largest_host: how much the liveness by resource depends on one host. Empty on a day without a catalog census.
+skills-latest.csv.gz
+day
+date
+Rating day.
+slug
+string
+Skill slug in the ClawHub registry.
+tier
+string
+AAA to D.
+outlook
+string
+up, down, flat or NEW.
+flags
+string
+Pipe-separated flags (SUSPICIOUS, PIPE_SHELL, OBFUSCATED, UNKNOWN_PAYEE, KEYS, NEW).
+score
+number
+Score 0 to 100 (45 adoption, 25 maturity, 20 inherited payment trust, 10 instructions).
+downloads
+integer
+Registry downloads, cumulative.
+downloads_7d
+integer
+Downloads in the last 7 days (empty when the 7-day reference is missing).
+installs
+integer
+Registry installs, cumulative.
+stars
+integer
+Registry stars.
+versions
+integer
+Published versions.
+age_days
+integer
+Days since first publication.
+pays_x402
+boolean
+The skill's instructions pay at least one x402 service.
+owner
+string
+Registry handle of the author.
+What is not here
+The raw payment graph (payer wallet, payTo wallet, day, amount) and the raw liveness probes are not published
+as files: they identify wallets at a granularity the pages do not show. They are available to researchers on
+request, under the same licence, with citation. Write to contact@agenteconomy.report.
+This is an
+operational trust rating
+of a software service computed from public, on-chain and liveness data:
+not a credit rating
+and not investment advice. Every figure is reproducible from our daily archive.
+Run a rated service? Questions about your rating, the data or a feed:
+write to us
+, we read everything.
+Methodology
+·
+Corrections and disputes
+·
+Access and data
+·
+Open data
+·
+Terms
+·
+Privacy
+·
+Refunds
+.
+All ratings
+·
+Skill ratings
+·
+Agent Economy Report
+·
+Bluesky
+A research initiative of the Center for Studies in Strategy and Innovation,
+COPPEAD Graduate School of Business, UFRJ
+.

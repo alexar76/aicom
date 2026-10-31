@@ -50,6 +50,7 @@ Depuis le dépôt public, `./start.sh` lance la Factory (une clé LLM dans `.env
 
 | Document | Lien |
 | --- | --- |
+| **SYMMARTYS** — faits de registre public : TVA, LEI, taux de change, listes de sanctions et horodatage | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) — réponses signées avec les informations de source |
 | Tests de paiement et transactions : achats, remboursements, reprise, SQLite/PostgreSQL | [payment-tests-and-transactions.fr.md](payment-tests-and-transactions.fr.md) |
 | Diagnostics externes AICOM : algorithme, configuration, budget et reprise | [factory-subcontracting.fr.md](factory-subcontracting.fr.md) |
 | Base de connaissances | [knowledge-base-fr.md](ecosystem/knowledge-base-fr.md) |

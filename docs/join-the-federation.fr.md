@@ -209,6 +209,49 @@ Aucun hub n’est nécessaire pour tout cela : `aimarket node` sert ces document
 que vous faites déjà tourner et laisse passer x402 tel quel —
 [lancer un nœud](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-a-node.fr.md).
 
+## 8b. Pas de manifeste ? Demandez à être observé
+
+Un vendeur x402 qui ne veut pas tenir à jour un manifeste signé peut quand même être listé.
+Indiquez à l'opérateur d'un hub les routes que vous acceptez de voir listées. L'opérateur
+enregistre votre consentement ; ensuite le hub lit votre `/.well-known/x402`, envoie à chacune
+de ces routes une requête non payée toutes les quelques heures et liste ce que dit votre
+`402` : prix, actif, réseau et `payTo`. Rien ne change de votre côté. Une route qui répond
+sans demander de paiement (offre gratuite) n'est pas listée, et le hub cesse de vous sonder
+pour ce cycle afin de ne pas consommer vos appels gratuits.
+
+Le listage est une observation du hub, marquée `tier: "observed"` et `signed_by_seller: false`,
+et reste à part du catalogue : dans le tableau `observed` de `/search` et sur
+`/ai-market/v2/federation/observed-sellers`, jamais dans `matches`, `/manifest` ni `peers`.
+L'acheteur appelle votre URL et vous paie selon votre propre `402` ; le hub n'est pas dans le
+chemin du paiement et ne prend pas de commission. Le premier `payTo` vu est épinglé : si votre
+`402` en nomme un autre, vos routes sortent du listage jusqu'à ce que vous confirmiez le
+changement à l'opérateur. Demandez le retrait et le hub supprime votre fiche. Reçus signés,
+confiance et routage passent par le manifeste (section 8). Spécification : protocole §2.7.
+
+Pour les opérateurs de hub :
+
+```bash
+# record consent and observe at once (admin)
+curl -X POST https://your-hub.example/ai-market/v2/federation/observed-sellers \
+  -H "Authorization: Bearer $ADMIN_TOKEN" -H 'Content-Type: application/json' \
+  -d '{"origin": "https://seller.example",
+       "consent": {"by": "contact@seller.example", "at": "2026-10-30", "how": "email"},
+       "routes": ["https://seller.example/services/site-check"]}'
+
+# what is listed, and why a route is not (public)
+curl -s https://your-hub.example/ai-market/v2/federation/observed-sellers | jq '.sellers[].routes[] | {url, result, price_usd, served}'
+
+# consent withdrawn (admin)
+curl -X DELETE "https://your-hub.example/ai-market/v2/federation/observed-sellers?origin=https://seller.example" \
+  -H "Authorization: Bearer $ADMIN_TOKEN"
+```
+
+| Variable | Défaut | Effet |
+|---|---|---|
+| `AIMARKET_OBSERVED_SELLERS` | `1` | `0` le coupe. Toujours coupé dans le realm UNI |
+| `AIMARKET_OBSERVED_INTERVAL_S` | `21600` | Secondes entre deux observations d'un vendeur (au moins 3600) |
+| `AIMARKET_OBSERVED_MAX_ROUTES` | `25` | Routes sondées par vendeur (au plus 100) |
+
 ## 9. Liens
 
 - Protocole §2.4 / §2.5 / §2.6 — [`aimarket-protocol/spec.md`](https://github.com/alexar76/aimarket-protocol/blob/main/spec.md)

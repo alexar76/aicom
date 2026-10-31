@@ -1,0 +1,76 @@
+{
+  "reads": [
+    {
+      "url": "https://jishuzhan.net/article/2110937529516318721",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:34:52.732646+00:00",
+      "status": 200,
+      "final_url": "https://jishuzhan.net/article/2110937529516318721",
+      "sha256": "8000f0b1b2cd5843a6dfc4dcde9f2d548417640010e6cf54adcf3f05510c941d",
+      "bytes": 155114,
+      "content_type": "text/html;charset=utf-8",
+      "body_file": "jishuzhan.html",
+      "body_hash_valid": true
+    },
+    {
+      "url": "https://juejin.cn/post/7696713457148952630",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:36:26.573387+00:00",
+      "status": 200,
+      "final_url": "https://juejin.cn/post/7696713457148952630",
+      "content_type": "text/html; charset=utf-8",
+      "sha256": "33d46e5492aea678e3b4bc22ef38ab385d80745912cfc793bf7e2bc38e1215b2",
+      "bytes": 170587,
+      "body_file": "juejin.html",
+      "body_hash_valid": true
+    },
+    {
+      "url": "https://juejin.cn/user/2408404551482987/posts",
+      "method": "GET",
+      "retrieved_at_utc": "2026-10-30T04:37:33.250506+00:00",
+      "status": 200,
+      "final_url": "https://juejin.cn/user/2408404551482987/posts",
+      "sha256": "9b56a6acdcb27eb620b5ee1ad870ad67964c70131b6fc31e8bd946b39c1e309e",
+      "bytes": 72914,
+      "body_file": "juejin-author-posts.html",
+      "body_hash_valid": true
+    }
+  ],
+  "queries": [
+    "site:securitylab.ru \"WARDEN\" \"MCP\"",
+    "site:xakep.ru \"HISTOR\"",
+    "site:opennet.ru \"MCP\" \"WARDEN\"",
+    "site:linux.org.ru \"modelmarket\"",
+    "\"WARDEN\" \"MCP\" \"工具投毒\" -site:github.com -site:glama.ai",
+    "\"HISTOR\" \"MCP\" \"工具定义\" -site:github.com -site:hubwiz.com",
+    "site:scrapbox.io \"WARDEN\" \"MCP\"",
+    "site:speakerdeck.com \"HISTOR\" \"MCP\"",
+    "\"WARDEN\" \"MCP\" \"導入\" -site:github.com -site:glama.ai",
+    "\"HISTOR\" \"MCP\" \"検証\" -site:github.com -site:qiita.com",
+    "\"WARDEN\" \"MCP\" \"도구\"",
+    "\"HISTOR\" \"MCP\" \"서버\"",
+    "\"越权链的三个可检测点\"",
+    "\"从检测意图\" \"检测角色被使用\"",
+    "\"WARDEN 0.9.0\" \"检测\" -site:github.com -site:glama.ai -site:modelmarket.dev",
+    "\"WARDEN\" \"171\" \"218\" \"工具\" -site:github.com -site:modelmarket.dev",
+    "\"@aimarket/warden\" \"使用\" -site:github.com -site:glama.ai -site:npmjs.com",
+    "\"@aimarket/warden\" \"実装\" -site:github.com -site:glama.ai",
+    "\"aimarket-histor\" \"使用\" -site:github.com -site:glama.ai -site:pypi.org",
+    "\"HISTOR\" \"tool list\" site:lobste.rs",
+    "\"WARDEN\" \"MCP\" site:itmedia.co.jp",
+    "\"WARDEN\" \"MCP\" site:publickey1.jp",
+    "\"HISTOR\" \"MCP\" site:thinkit.co.jp",
+    "\"HISTOR\" \"MCP\" site:developpez.com",
+    "\"文谦南宁AI普工\" \"WARDEN\"",
+    "\"文谦南宁AI普工\" \"HISTOR\"",
+    "\"TOOL_DEF_CROSS_TOOL\" -site:github.com -site:modelmarket.dev -site:dev.to -site:glama.ai",
+    "\"WARDEN\" \"留出\" \"171\" -site:github.com -site:modelmarket.dev"
+  ],
+  "validation": {
+    "get_count": 3,
+    "status200": 3,
+    "hash_errors": [],
+    "query_count": 28,
+    "unique_queries": 28
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "records_checked": 2565,
+  "withdrawn_skipped": 0,
+  "package_versions_including_owned": 3886,
+  "owned_package_versions": 166,
+  "matches": [
+    {
+      "ecosystem": "PyPI",
+      "package": "aimarket-oracle-core",
+      "version": "0.3.0",
+      "paths": [
+        "basanos/uv.lock",
+        "momus/uv.lock",
+        "skopos/uv.lock",
+        "themis/uv.lock"
+      ],
+      "id": "GCVE-110-VULN-PYPI-2026-000637",
+      "summary": "Oracle client address and paid tier can be forged by hosts on the same private network in aimarket-oracle-core",
+      "classification": "weakness",
+      "modified": "2026-10-28T01:49:28Z",
+      "fixed": [],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://pypi.org/project/aimarket-oracle-core/"
+        }
+      ]
+    },
+    {
+      "ecosystem": "PyPI",
+      "package": "aimarket-oracle-core",
+      "version": "0.6.0",
+      "paths": [
+        "gaia/uv.lock"
+      ],
+      "id": "GCVE-110-VULN-PYPI-2026-000637",
+      "summary": "Oracle client address and paid tier can be forged by hosts on the same private network in aimarket-oracle-core",
+      "classification": "weakness",
+      "modified": "2026-10-28T01:49:28Z",
+      "fixed": [],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://pypi.org/project/aimarket-oracle-core/"
+        }
+      ]
+    },
+    {
+      "ecosystem": "PyPI",
+      "package": "aimarket-oracle-core",
+      "version": "0.3.0",
+      "paths": [
+        "basanos/uv.lock",
+        "momus/uv.lock",
+        "skopos/uv.lock",
+        "themis/uv.lock"
+      ],
+      "id": "GCVE-110-VULN-PYPI-2026-000632",
+      "summary": "Oracle client address and paid tier taken from client-supplied headers in aimarket-oracle-core",
+      "classification": "weakness",
+      "modified": "2026-10-28T01:50:52Z",
+      "fixed": [
+        "0.6.2"
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://pypi.org/project/aimarket-oracle-core/"
+        },
+        {
+          "type": "WEB",
+          "url": "https://pypi.org/project/aimarket-oracle-core/0.6.2/"
+        }
+      ]
+    },
+    {
+      "ecosystem": "PyPI",
+      "package": "aimarket-oracle-core",
+      "version": "0.6.0",
+      "paths": [
+        "gaia/uv.lock"
+      ],
+      "id": "GCVE-110-VULN-PYPI-2026-000632",
+      "summary": "Oracle client address and paid tier taken from client-supplied headers in aimarket-oracle-core",
+      "classification": "weakness",
+      "modified": "2026-10-28T01:50:52Z",
+      "fixed": [
+        "0.6.2"
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://pypi.org/project/aimarket-oracle-core/"
+        },
+        {
+          "type": "WEB",
+          "url": "https://pypi.org/project/aimarket-oracle-core/0.6.2/"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

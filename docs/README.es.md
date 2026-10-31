@@ -50,6 +50,7 @@ Desde el repositorio público, `./start.sh` arranca la Fábrica (una clave de LL
 
 | Documento | Enlace |
 | --- | --- |
+| **SYMMARTYS** — hechos de registro público: IVA, LEI, tipos de cambio, listas de sanciones y marcas de tiempo | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) — respuestas firmadas con información de la fuente |
 | Pruebas de pago y transacciones: compras, reembolsos, recuperación, SQLite/PostgreSQL | [payment-tests-and-transactions.es.md](payment-tests-and-transactions.es.md) |
 | Diagnóstico externo de AICOM: algoritmo, configuración, presupuesto y recuperación | [factory-subcontracting.es.md](factory-subcontracting.es.md) |
 | Base de conocimiento | [knowledge-base-es.md](ecosystem/knowledge-base-es.md) |

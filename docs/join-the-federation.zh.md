@@ -182,6 +182,36 @@ curl -s "https://your-hub.example/ai-market/v2/federation/assay?url=https://stra
 
 这些都不需要枢纽：`aimarket node` 在你已经运行的 API 旁提供这些文档和收据，并原样透传 x402——[运行节点](https://github.com/alexar76/aimarket-hub/blob/main/docs/run-a-node.zh.md)。
 
+## 8b. 没有清单？申请被观察
+
+不想维护签名清单的 x402 卖家也可以被列出。告诉某个 hub 的运营者您同意列出哪些路由。运营者记录您的同意；此后 hub 读取您的 `/.well-known/x402`，每隔几小时向这些路由各发送一次不付款的请求，并列出您的 `402` 所给出的内容：价格、资产、网络和 `payTo`。您这边无需任何改动。不要求付款就直接应答的路由（免费额度）不会被列出，hub 在本轮中也会停止探测您，以免消耗您的免费调用。
+
+该列表是 hub 的观察结果，标记为 `tier: "observed"` 和 `signed_by_seller: false`，与目录分开：出现在 `/search` 的 `observed` 数组和 `/ai-market/v2/federation/observed-sellers` 中，绝不出现在 `matches`、`/manifest` 或 `peers` 中。买家自己调用您的 URL，并按您自己的 `402` 向您付款；hub 不在支付路径上，也不收取费用。首次看到的 `payTo` 会被固定：如果您的 `402` 开始给出另一个地址，您的路由会从列表中撤下，直到您向运营者确认这一变更。申请移除后，hub 会删除您的记录。签名回执、信任评分和路由走第 8 节的清单路径。规范：协议 §2.7。
+
+hub 运营者：
+
+```bash
+# record consent and observe at once (admin)
+curl -X POST https://your-hub.example/ai-market/v2/federation/observed-sellers \
+  -H "Authorization: Bearer $ADMIN_TOKEN" -H 'Content-Type: application/json' \
+  -d '{"origin": "https://seller.example",
+       "consent": {"by": "contact@seller.example", "at": "2026-10-30", "how": "email"},
+       "routes": ["https://seller.example/services/site-check"]}'
+
+# what is listed, and why a route is not (public)
+curl -s https://your-hub.example/ai-market/v2/federation/observed-sellers | jq '.sellers[].routes[] | {url, result, price_usd, served}'
+
+# consent withdrawn (admin)
+curl -X DELETE "https://your-hub.example/ai-market/v2/federation/observed-sellers?origin=https://seller.example" \
+  -H "Authorization: Bearer $ADMIN_TOKEN"
+```
+
+| 变量 | 默认值 | 作用 |
+|---|---|---|
+| `AIMARKET_OBSERVED_SELLERS` | `1` | 设为 `0` 关闭。在 UNI realm 中始终关闭 |
+| `AIMARKET_OBSERVED_INTERVAL_S` | `21600` | 同一卖家两次观察之间的秒数（至少 3600） |
+| `AIMARKET_OBSERVED_MAX_ROUTES` | `25` | 每个卖家探测的路由数（最多 100） |
+
 ## 9. 相关
 
 - 协议 §2.4 / §2.5 / §2.6 — [`aimarket-protocol/spec.md`](https://github.com/alexar76/aimarket-protocol/blob/main/spec.md)

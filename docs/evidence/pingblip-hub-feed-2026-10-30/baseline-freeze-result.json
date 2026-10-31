@@ -1,0 +1,10 @@
+{
+  "baselineCommit": "cbb84563d008d8c3c9b354511700537f27e9895d",
+  "scenario": "Stats delivered a new feed event while the optional peers request never settled.",
+  "newEventsInMemory": 2,
+  "liveBadge": true,
+  "renderFeedCalls": 0,
+  "pendingPeerRequests": 1,
+  "freezeReproduced": true,
+  "incidentAttribution": "Reproduced code defect; the actual user session/network state was unavailable, so this does not establish the cause of that session."
+}

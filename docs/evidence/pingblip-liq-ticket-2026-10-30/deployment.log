@@ -1,0 +1,12 @@
+pingblip source=3de27d79b4e84618a5a96009136679f85c8632d73e7c7813007b5e7063b6804f live_chunk=https://pingblip.com/_next/static/chunks/8294-0c63881e06db4a69.js
+pingblip home HTTP 200
+forge source=3de27d79b4e84618a5a96009136679f85c8632d73e7c7813007b5e7063b6804f live_chunk=https://forge.pingblip.com/_next/static/chunks/298-199c78fa19dd291e.js
+forge home HTTP 200
+bench HTTP 200
+Liq Snake GLB HTTP 200
+NAME                  IMAGE                COMMAND                  SERVICE    CREATED              STATUS                 PORTS
+pingblip-forge-1      pingblip-forge       "./docker/entrypoint…"   forge      About a minute ago   Up About a minute      127.0.0.1:3081->3000/tcp
+pingblip-pingblip-1   pingblip-pingblip    "./docker/entrypoint…"   pingblip   About a minute ago   Up About a minute      127.0.0.1:3080->3000/tcp
+pingblip-postgres-1   postgres:16-alpine   "docker-entrypoint.s…"   postgres   3 weeks ago          Up 3 weeks (healthy)   127.0.0.1:5434->5432/tcp
+pingblip-world-1      pingblip-world       "docker-entrypoint.s…"   world      39 hours ago         Up 39 hours            127.0.0.1:3082->3000/tcp
+DEPLOY_VERIFIED

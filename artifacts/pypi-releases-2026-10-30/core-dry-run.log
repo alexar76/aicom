@@ -1,0 +1,52 @@
+== Freshness gate (oracles) ==
+distribution                     version    state
+[32maimarket-oracle-ablation         0.1.0      identical[0m
+[32maimarket-oracle-aestus           0.1.0      identical[0m
+[32maimarket-oracle-betti            0.1.0      identical[0m
+[32maimarket-oracle-chronos          0.1.0      identical[0m
+[32maimarket-oracle-colony           0.1.0      identical[0m
+[2maimarket-oracle-core             0.6.4      tree ahead of PyPI (latest 0.6.3) — unpublished, fine[0m
+[2maimarket-oracle-family           0.1.0      not-on-pypi[0m
+[32maimarket-oracle-fermat           0.1.0      identical[0m
+[32maimarket-oracle-fourier          0.1.0      identical[0m
+[32maimarket-oracle-gauss            0.1.0      identical[0m
+[32maimarket-oracle-kantor           0.1.0      identical[0m
+[32maimarket-oracle-landauer         0.1.0      identical[0m
+[32maimarket-oracle-lattice          0.1.0      identical[0m
+[32maimarket-oracle-lumen            0.1.0      identical[0m
+[2maimarket-oracle-murmuration      0.1.0      not-on-pypi[0m
+[2maimarket-oracle-percola          0.1.0      not-on-pypi[0m
+[2maimarket-oracle-platon           0.1.0      not-on-pypi[0m
+[32maimarket-oracle-sortes           0.1.2      identical[0m
+[2maimarket-oracle-turing           0.1.0      not-on-pypi[0m
+
+[32mEvery published distribution matches its tree.[0m
+== Build oracles/core ==
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - hatchling
+* Getting build dependencies for sdist...
+* Installed build dependency versions:
+  - hatchling==1.33.0
+* Building sdist...
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - hatchling
+* Getting build dependencies for wheel...
+* Installed build dependency versions:
+  - hatchling==1.33.0
+* Building wheel...
+Successfully built aimarket_oracle_core-0.6.4.tar.gz and aimarket_oracle_core-0.6.4-py3-none-any.whl
+Checking dist/aimarket_oracle_core-0.6.4-py3-none-any.whl: PASSED
+Checking dist/aimarket_oracle_core-0.6.4.tar.gz: PASSED
+== Secret gate ==
+OK distribution contents inspected
+OK distribution contents inspected
+OK no key material, .env, database or .gitignore in aimarket_oracle_core-0.6.4-py3-none-any.whl aimarket_oracle_core-0.6.4.tar.gz
+OK dry-run — dist/ ready:
+total 296
+drwxr-xr-x@  4 alex  staff    128 Oct 30 14:50 .
+drwxr-xr-x@ 12 alex  staff    384 Oct 30 14:50 ..
+-rw-r--r--@  1 alex  staff  54776 Oct 30 14:50 aimarket_oracle_core-0.6.4-py3-none-any.whl
+-rw-r--r--@  1 alex  staff  93845 Oct 30 14:50 aimarket_oracle_core-0.6.4.tar.gz

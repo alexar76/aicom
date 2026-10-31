@@ -51,6 +51,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && 
 
 | Документ | Ссылка |
 | --- | --- |
+| **SYMMARTYS** — публичные факты: VAT, LEI, валютные курсы, санкционные списки и временные метки | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) — подписанные ответы с данными об источнике |
 | Платёжные тесты и транзакции: покупка, возвраты, восстановление, SQLite/PostgreSQL | [payment-tests-and-transactions.ru.md](payment-tests-and-transactions.ru.md) |
 | Внешняя диагностика AICOM: алгоритм, настройка, бюджет и восстановление | [factory-subcontracting.ru.md](factory-subcontracting.ru.md) |
 | База знаний | [knowledge-base-ru.md](ecosystem/knowledge-base-ru.md) |
@@ -67,6 +68,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && 
 | **Hub** | каталог, invoke, эскроу, Pay-on-Verified |
 | **Metis** | когнитивный слой |
 | **GAIA / ATLAS** | физический оракул / карта датчиков |
+| **SYMMARTYS** | публичные факты из реестров и подписанные ответы с данными об источнике |
 | **ARGUS / WARDEN** | спрос + MCP-файрвол |
 | **MOMUS / THEMIS** | red team / допуск публикации |
 | **Oracles** | математика доверия |

@@ -1,0 +1,70 @@
+{
+  "observed_date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "baseline": [
+    "docs/growth/external-use-pass3-2026-10-30.ru.md",
+    "docs/evidence/external-use-pass3-2026-10-30/social/summary.json",
+    "docs/growth/external-deeper-2026-10-30.ru.md",
+    "artifacts/external-deep-2026-10-29/report.json"
+  ],
+  "web_queries_executed": 27,
+  "web_queries_new_against_recorded_fields": 26,
+  "exact_repeat_excluded": 1,
+  "proposed_duplicate_not_executed": 1,
+  "captured_gets": 3,
+  "http_statuses": {
+    "200": 3
+  },
+  "native_search_responses_read": 2,
+  "challenge_responses": 1,
+  "new_independent_social_text_or_runtime_use_confirmed": false,
+  "new_findings": [],
+  "new_surfaces": [
+    {
+      "url": "https://forum.cursor.com/search.json?q=%40aimarket%2Fwarden",
+      "term": "@aimarket/warden",
+      "status": 200,
+      "posts": 0,
+      "more_posts": null,
+      "search_error": null,
+      "scope": "Specific public native search only"
+    },
+    {
+      "url": "https://community.n8n.io/search.json?q=modelmarket.dev",
+      "term": "modelmarket.dev",
+      "status": 200,
+      "posts": 0,
+      "more_posts": null,
+      "search_error": null,
+      "scope": "Specific public native search only"
+    },
+    {
+      "url": "https://lobste.rs/search?q=modelmarket.dev&what=stories&order=newest",
+      "status": 200,
+      "challenge": "Anubis JavaScript/proof-of-work challenge",
+      "results_read": false,
+      "bypassed": false
+    }
+  ],
+  "web_scope": [
+    "Exact Juejin URL/ID social backlinks",
+    "TOOL_DEF_CROSS_TOOL and benchmark numbers on X/LinkedIn/YouTube",
+    "Substack/Buttondown and public newsletter search",
+    "Public developer community and forum markers including AnswerOverflow, Cursor, n8n, LangChain, CrewAI, StackOverflow"
+  ],
+  "excluded": [
+    "Unrelated LinkedIn people directories returned by broadened numeric query",
+    "Own articles, mirrors, prior findings",
+    "One exact executed query repeat removed from additional coverage"
+  ],
+  "limits": [
+    "Public target searches, not all platform content",
+    "No private groups/direct messages/authorized platform search",
+    "Lobsters search not read because of challenge",
+    "No old blocked Bluesky/Reddit API or already-read Bluesky threads repeated"
+  ],
+  "mutations": "Local evidence only. No messages, posts, payments, tool invokes, account/auth changes or GitHub writes.",
+  "report": "report.ru.md",
+  "query_index": "query-index.json",
+  "http_index": "http-index.json"
+}

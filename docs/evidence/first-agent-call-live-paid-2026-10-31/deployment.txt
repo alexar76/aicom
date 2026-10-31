@@ -1,0 +1,46 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.hotfix
+#1 transferring dockerfile: 114B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/modelmarket-hub:os-20261030
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 100.07kB done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/modelmarket-hub:os-20261030@sha256:7f13281c0b2a7955286a2d1868b06fc4b373678158f94e272117c65ea1676026
+#5 resolve docker.io/library/modelmarket-hub:os-20261030@sha256:7f13281c0b2a7955286a2d1868b06fc4b373678158f94e272117c65ea1676026 0.1s done
+#5 DONE 0.7s
+
+#6 [2/2] COPY a2a.py /app/aimarket_hub/a2a.py
+#6 DONE 0.1s
+
+#7 exporting to image
+#7 exporting layers 0.1s done
+#7 exporting manifest sha256:fd2138041de4e4939b2b3172ffc7eb5aa18fc24e69c600aaa83315a8f87d033d 0.0s done
+#7 exporting config sha256:2fccbe15d8972d2f6f824de05b6d0576da5bb4865babaa72562818c7e876bf3b done
+#7 exporting attestation manifest sha256:25d666a8bb37fa2baccc1c6a05619912dc14053bd42b2396f09f5ce4cd4e667b done
+#7 exporting manifest list sha256:5fe30a8f2780968c9f55bc073e8dfdb71fc6addce8b3c5bc9c12385afcfc3491 done
+#7 naming to docker.io/library/modelmarket-hub:a2a-output-20261031 done
+#7 unpacking to docker.io/library/modelmarket-hub:a2a-output-20261031 0.1s done
+#7 DONE 0.5s
+A2A module syntax OK
+port 8080 (probe 9460) | network aicom_aicom_net | publish -p 127.0.0.1:9460:8080 -p 127.0.0.1:9083:9083 | cmd ''
+captured 81 env vars (values not shown)
+container : modelmarket-hub
+own port  : 8080
+network   : aicom_aicom_net -p 127.0.0.1:9460:8080 -p 127.0.0.1:9083:9083
+from      : modelmarket-hub:os-20261030
+mounts    : -v /var/lib/aicom/hub-catalog:/factory_data:ro -v /var/lib/docker/volumes/modelmarket_hub_data/_data:/app/data -v /root/claudecode/aicom/data/state/ai_market/deposit_claims:/shared/deposit-claims:ro
+reusing   : modelmarket-hub:a2a-output-20261031
+entrypoint: captured multi-word override — using the image's own and dropping the command
+5925151e2796851aee4868682362b0a61df7c70a6443524f7030793ef42e07df
+Terminated

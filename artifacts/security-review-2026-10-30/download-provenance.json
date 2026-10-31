@@ -1,0 +1,282 @@
+[
+  {
+    "name": "vulnetix-manifest",
+    "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/9dd2ecd820b7ed7fa7054132812a09021acdb3ff/index/manifest.json",
+    "path": "artifacts/security-review-2026-10-30/vulnetix-manifest.json",
+    "bytes": 36442181,
+    "sha256": "24c791877dc46b1f3766eac627dd97f2cba6bf6d7da11303d61fadf44eb0f088",
+    "expected_sha256": null,
+    "checksum_matches": null,
+    "last_modified": null
+  },
+  {
+    "name": "vulnetix-cli",
+    "url": "https://github.com/Vulnetix/cli/releases/download/v3.151.2/vulnetix-darwin-arm64",
+    "path": "/private/tmp/aicom-security-review-20261030/vulnetix",
+    "bytes": 93989282,
+    "sha256": "c0d794182a175c38a2264044a8a0dae0025aa6f1db2c3e0a14b495ecdbe08f8b",
+    "expected_sha256": "c0d794182a175c38a2264044a8a0dae0025aa6f1db2c3e0a14b495ecdbe08f8b",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 06:39:09 GMT"
+  },
+  {
+    "name": "osv-npm",
+    "url": "https://osv-vulnerabilities.storage.googleapis.com/npm/all.zip",
+    "path": "/private/tmp/aicom-security-review-20261030/npm.zip",
+    "bytes": 219599455,
+    "sha256": "d482a3941cec6fe870a50ffa911765912f875f05ad5c7ebdfe9736dfd5ee4f68",
+    "expected_sha256": null,
+    "checksum_matches": null,
+    "last_modified": "Fri, 30 Oct 2026 07:48:17 GMT"
+  },
+  {
+    "name": "osv-PyPI",
+    "url": "https://osv-vulnerabilities.storage.googleapis.com/PyPI/all.zip",
+    "path": "/private/tmp/aicom-security-review-20261030/PyPI.zip",
+    "bytes": 37531198,
+    "sha256": "e9c4eae1d64c78ee4ee66bbf5afc340a31c01bc6ff096ad6dce133220c39666b",
+    "expected_sha256": null,
+    "checksum_matches": null,
+    "last_modified": "Fri, 30 Oct 2026 00:48:06 GMT"
+  },
+  {
+    "name": "osv-crates.io",
+    "url": "https://osv-vulnerabilities.storage.googleapis.com/crates.io/all.zip",
+    "path": "/private/tmp/aicom-security-review-20261030/crates.io.zip",
+    "bytes": 3732126,
+    "sha256": "d108c93afe0ba913813a77379b1a63f39f59a656a0f2d5d5a4d7b5e83aa10a11",
+    "expected_sha256": null,
+    "checksum_matches": null,
+    "last_modified": "Fri, 30 Oct 2026 03:03:06 GMT"
+  },
+  {
+    "name": "osv-Go",
+    "url": "https://osv-vulnerabilities.storage.googleapis.com/Go/all.zip",
+    "path": "/private/tmp/aicom-security-review-20261030/Go.zip",
+    "bytes": 12675856,
+    "sha256": "c452c7e81e519eebe5626e6e5855af783a6439f9f00d1b62ec3e36a2991e7964",
+    "expected_sha256": null,
+    "checksum_matches": null,
+    "last_modified": "Fri, 30 Oct 2026 03:03:06 GMT"
+  },
+  {
+    "name": "osv-Pub",
+    "url": "https://osv-vulnerabilities.storage.googleapis.com/Pub/all.zip",
+    "path": "/private/tmp/aicom-security-review-20261030/Pub.zip",
+    "bytes": 25896,
+    "sha256": "e19f6fa83938e3b5e203086a99ea97da4a676cf645521c137f20ca352701e815",
+    "expected_sha256": null,
+    "checksum_matches": null,
+    "last_modified": "Thu, 15 Oct 2026 20:33:04 GMT"
+  },
+  {
+    "name": "stix-cargo-dns",
+    "url": "https://vulnetix.com/malscan-stix/cargo/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-cargo-dns.json",
+    "bytes": 3323,
+    "sha256": "f175e952d7f0e1548935032d8fb3c8c003960b57a51e829eb16965d8fa645ded",
+    "expected_sha256": "f175e952d7f0e1548935032d8fb3c8c003960b57a51e829eb16965d8fa645ded",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:16 GMT"
+  },
+  {
+    "name": "stix-cargo-urls",
+    "url": "https://vulnetix.com/malscan-stix/cargo/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-cargo-urls.json",
+    "bytes": 4688,
+    "sha256": "419cd74bcc5fa33368a8dc1e80a658a2472cb2c82d4d02e977cab40e38efa2bc",
+    "expected_sha256": "419cd74bcc5fa33368a8dc1e80a658a2472cb2c82d4d02e977cab40e38efa2bc",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:16 GMT"
+  },
+  {
+    "name": "stix-chrome-dns",
+    "url": "https://vulnetix.com/malscan-stix/chrome/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-chrome-dns.json",
+    "bytes": 28674,
+    "sha256": "670ca6ce3bc5a10c18f9ffcf5fa4c9c9fc7e57be16411b737a8323eeb2b1eeae",
+    "expected_sha256": "670ca6ce3bc5a10c18f9ffcf5fa4c9c9fc7e57be16411b737a8323eeb2b1eeae",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:16 GMT"
+  },
+  {
+    "name": "stix-chrome-urls",
+    "url": "https://vulnetix.com/malscan-stix/chrome/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-chrome-urls.json",
+    "bytes": 4394,
+    "sha256": "61c1966ea6898139e891468d908d59ffd90850dfbb5464fcdd0b29d5d4a4b0c7",
+    "expected_sha256": "61c1966ea6898139e891468d908d59ffd90850dfbb5464fcdd0b29d5d4a4b0c7",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:16 GMT"
+  },
+  {
+    "name": "stix-generic-dns",
+    "url": "https://vulnetix.com/malscan-stix/generic/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-generic-dns.json",
+    "bytes": 10971139,
+    "sha256": "d91107a5c71c1b021d8c9fbb464eb071ab5fa760eeccfdf13faafa33d751b666",
+    "expected_sha256": "d91107a5c71c1b021d8c9fbb464eb071ab5fa760eeccfdf13faafa33d751b666",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-generic-urls",
+    "url": "https://vulnetix.com/malscan-stix/generic/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-generic-urls.json",
+    "bytes": 409598,
+    "sha256": "d8929ff1801a494029181e416b14598a5c1f03f512d0f7dff6d6eb9095c8b65e",
+    "expected_sha256": "d8929ff1801a494029181e416b14598a5c1f03f512d0f7dff6d6eb9095c8b65e",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-go-dns",
+    "url": "https://vulnetix.com/malscan-stix/go/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-go-dns.json",
+    "bytes": 8411,
+    "sha256": "78ef6f0047fed2bf6394ebfc3ca7350162030d37e2b64854ed8b80ae8e3f18c7",
+    "expected_sha256": "78ef6f0047fed2bf6394ebfc3ca7350162030d37e2b64854ed8b80ae8e3f18c7",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-go-urls",
+    "url": "https://vulnetix.com/malscan-stix/go/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-go-urls.json",
+    "bytes": 15685,
+    "sha256": "b1872cd7b3e3bd4ddc71684fdb29204935456353d8c58649c3f61cd0238d35e5",
+    "expected_sha256": "b1872cd7b3e3bd4ddc71684fdb29204935456353d8c58649c3f61cd0238d35e5",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-maven-urls",
+    "url": "https://vulnetix.com/malscan-stix/maven/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-maven-urls.json",
+    "bytes": 4380,
+    "sha256": "a1f259fc88b2693d79e1efee8480b1ec2c9b8dc35fe091f07202fb47f1c83085",
+    "expected_sha256": "a1f259fc88b2693d79e1efee8480b1ec2c9b8dc35fe091f07202fb47f1c83085",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-npm-dns",
+    "url": "https://vulnetix.com/malscan-stix/npm/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-npm-dns.json",
+    "bytes": 616744,
+    "sha256": "a3cc9dd1e7163ba248dcc0f424fcf78ddf8b998caf7e317b8779a36822bcd969",
+    "expected_sha256": "a3cc9dd1e7163ba248dcc0f424fcf78ddf8b998caf7e317b8779a36822bcd969",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-npm-urls",
+    "url": "https://vulnetix.com/malscan-stix/npm/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-npm-urls.json",
+    "bytes": 502040,
+    "sha256": "4e95158526ee3de193fc51c6fd03fd663ab38b44166f96e6815912c58fe04499",
+    "expected_sha256": "4e95158526ee3de193fc51c6fd03fd663ab38b44166f96e6815912c58fe04499",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-openvsx-dns",
+    "url": "https://vulnetix.com/malscan-stix/openvsx/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-openvsx-dns.json",
+    "bytes": 13895,
+    "sha256": "9edb502bbc920771e91a271e916cb14b3b47c74bca574c6aae732a20d4e2377f",
+    "expected_sha256": "9edb502bbc920771e91a271e916cb14b3b47c74bca574c6aae732a20d4e2377f",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-openvsx-urls",
+    "url": "https://vulnetix.com/malscan-stix/openvsx/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-openvsx-urls.json",
+    "bytes": 10002,
+    "sha256": "e4898a4bd8b744e228e2b199144d6451f1b50e44779faa1673e1614970d1e679",
+    "expected_sha256": "e4898a4bd8b744e228e2b199144d6451f1b50e44779faa1673e1614970d1e679",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-packagist-dns",
+    "url": "https://vulnetix.com/malscan-stix/packagist/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-packagist-dns.json",
+    "bytes": 23185,
+    "sha256": "661d9e35f353f54f46b838620ce970433765d5d8491c33cfe889fae8c5bf19d7",
+    "expected_sha256": "661d9e35f353f54f46b838620ce970433765d5d8491c33cfe889fae8c5bf19d7",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-packagist-urls",
+    "url": "https://vulnetix.com/malscan-stix/packagist/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-packagist-urls.json",
+    "bytes": 3468,
+    "sha256": "43dcffc3e11d00effa864c455968b740012c058ee3a43ebe4e5f34ff05fc6a7f",
+    "expected_sha256": "43dcffc3e11d00effa864c455968b740012c058ee3a43ebe4e5f34ff05fc6a7f",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-pypi-dns",
+    "url": "https://vulnetix.com/malscan-stix/pypi/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-pypi-dns.json",
+    "bytes": 334606,
+    "sha256": "4a55f54c66039debc04c31a77d8e1079c13fbd75d0aba0342f31a49da85142e1",
+    "expected_sha256": "4a55f54c66039debc04c31a77d8e1079c13fbd75d0aba0342f31a49da85142e1",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-pypi-urls",
+    "url": "https://vulnetix.com/malscan-stix/pypi/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-pypi-urls.json",
+    "bytes": 231595,
+    "sha256": "f7d2aea7a19a0e62caceb3537ecf85c5ca4402ecaa27067e8bdaddba379f78be",
+    "expected_sha256": "f7d2aea7a19a0e62caceb3537ecf85c5ca4402ecaa27067e8bdaddba379f78be",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-rubygems-dns",
+    "url": "https://vulnetix.com/malscan-stix/rubygems/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-rubygems-dns.json",
+    "bytes": 2232,
+    "sha256": "038cd4f4f0e43db57dcbfd7e79a5224d138bafc85c9980fbfc6d025b94b18379",
+    "expected_sha256": "038cd4f4f0e43db57dcbfd7e79a5224d138bafc85c9980fbfc6d025b94b18379",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-rubygems-urls",
+    "url": "https://vulnetix.com/malscan-stix/rubygems/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-rubygems-urls.json",
+    "bytes": 7655,
+    "sha256": "e8f19c6b530e1b6d261d3963c394c0349834ac66f82eea0683bbec54fef8857a",
+    "expected_sha256": "e8f19c6b530e1b6d261d3963c394c0349834ac66f82eea0683bbec54fef8857a",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-vscode-dns",
+    "url": "https://vulnetix.com/malscan-stix/vscode/dns.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-vscode-dns.json",
+    "bytes": 20098,
+    "sha256": "be22c2478c7efe8d3a4ed8ffa0d43b0035ce2fba5a1d8cb55303a1127be7bf92",
+    "expected_sha256": "be22c2478c7efe8d3a4ed8ffa0d43b0035ce2fba5a1d8cb55303a1127be7bf92",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  },
+  {
+    "name": "stix-vscode-urls",
+    "url": "https://vulnetix.com/malscan-stix/vscode/urls.stix.json",
+    "path": "/private/tmp/aicom-security-review-20261030/stix-vscode-urls.json",
+    "bytes": 25860,
+    "sha256": "ed9a6406184f48953ba5bc518d6552270f82fd81a738209e70a2f1953c1f6821",
+    "expected_sha256": "ed9a6406184f48953ba5bc518d6552270f82fd81a738209e70a2f1953c1f6821",
+    "checksum_matches": true,
+    "last_modified": "Fri, 30 Oct 2026 08:16:17 GMT"
+  }
+]

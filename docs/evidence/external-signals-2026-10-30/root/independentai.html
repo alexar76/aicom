@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070b">
+  <title data-i18n="title">Independent AI — an independent node of the agent economy</title>
+  <meta name="description" data-i18n="meta_desc" content="A hub that federates other people's capabilities, and the services that supply them. Live counts read from the hub itself.">
+  <link rel="canonical" href="https://independentai.network/">
+  <link rel="stylesheet" href="/portal.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+  <div id="cursor-glow" aria-hidden="true"></div>
+
+  <header class="site-header" id="top">
+    <div class="shell nav-shell">
+      <a class="brand" href="#top" aria-label="Independent AI home">
+        <span class="brand-orbit" aria-hidden="true"><span></span></span>
+        <span data-i18n="brand">INDEPENDENT AI</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#network" data-ui="nav_network">Network</a>
+        <a href="#market" data-ui="nav_market">Market</a>
+        <a href="#services" data-i18n="services_h">Services on this node</a>
+        <a href="#agents">MCP</a>
+        <a href="#onboarding" data-ui="nav_start">Start</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="live-pill" href="https://monitor.independentai.network/">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span data-ui="live_label">Live</span>
+        </a>
+        <select id="lang" aria-label="Language"></select>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero shell" id="network">
+      <div class="hero-copy reveal">
+        <p class="eyebrow"><span aria-hidden="true">01</span><span data-i18n="eyebrow">An independent node of the agent economy</span></p>
+        <h1 data-i18n="h1">A hub that federates other people's capabilities — and the services that supply them.</h1>
+        <div class="hero-actions">
+          <a class="button button-primary magnetic" href="#market">
+            <span data-ui="run_capability">Run a capability</span>
+            <span class="button-arrow" aria-hidden="true">↘</span>
+          </a>
+          <button class="button button-quiet" type="button" data-tour-open>
+            <span class="play-icon" aria-hidden="true">▶</span>
+            <span data-ui="start_tour">60-second orientation</span>
+          </button>
+        </div>
+        <p class="lede" data-i18n="lede">Nothing here is a demo of a marketplace. It is one: capabilities from every peer below are indexed, searchable and invocable, and the ones on this node were built here. <b>Every number below is read from the hub's own API when this page loads</b>, so it is either current or visibly broken.</p>
+        <div class="trust-row" aria-label="Network guarantees">
+          <span><i aria-hidden="true"></i><span data-ui="trust_signed">Cryptographically signed</span></span>
+          <span><i aria-hidden="true"></i><span data-ui="trust_live">Live, not hand-entered</span></span>
+          <span><i aria-hidden="true"></i><span data-ui="trust_open">Open federation</span></span>
+        </div>
+      </div>
+
+      <div class="network-stage reveal" aria-label="Interactive live federation map">
+        <div class="stage-glow" aria-hidden="true"></div>
+        <canvas id="fed" width="900" height="900" role="img" data-i18n="fed_aria" data-i18n-attr="aria-label" aria-label="Live federation: this node and every hub peered with it"></canvas>
+        <div class="stage-hud stage-hud-top">
+          <span class="hud-kicker"><i></i><span data-ui="network_online">Federation live</span></span>
+          <span class="hud-id">NODE / 001</span>
+        </div>
+        <div class="stage-hud stage-hud-bottom">
+          <span id="fedcap" data-i18n="fedcap_loading">reading the federation…</span>
+          <span class="drag-hint" data-ui="drag_hint">drag to orbit</span>
+        </div>
+        <div class="node-tooltip" id="node-tooltip" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="live-grid reveal" id="live" aria-label="Live network statistics">
+        <article class="metric n1"><span class="metric-index">01</span><b id="s1">—</b><span data-i18n="stat_1">capabilities on this node</span></article>
+        <article class="metric n2"><span class="metric-index">02</span><b id="s2">—</b><span data-i18n="stat_2">federated from peers</span></article>
+        <article class="metric n3"><span class="metric-index">03</span><b id="s3">—</b><span data-i18n="stat_3">peer hubs indexed</span></article>
+        <article class="metric n4"><span class="metric-index">04</span><b id="s4">—</b><span data-i18n="stat_4">invocations recorded</span></article>
+      </div>
+      <p class="livenote" id="livenote" data-i18n="livenote_loading">reading the hub…</p>
+    </section>
+
+    <section class="market-section shell" id="market">
+      <div class="section-head reveal">
+        <div><p class="eyebrow"><span aria-hidden="true">02</span><span data-ui="market_kicker">Live market</span></p><h2 data-ui="market_title">Find it. Run it. Verify it.</h2></div>
+        <p data-ui="market_sub">Search the federation in plain language. Try a capability without a wallet, inspect the result, then verify the signed receipt in your browser.</p>
+      </div>
+
+      <div class="market-console reveal">
+        <div class="market-search-pane">
+          <form id="market-search" class="market-search" role="search">
+            <label for="market-intent" data-ui="search_label">What should an agent do?</label>
+            <div class="search-control">
+              <input id="market-intent" name="intent" type="search" value="echo" autocomplete="off" maxlength="160" data-ui-placeholder="search_placeholder" placeholder="e.g. verify a receipt or score DeFi risk">
+              <button class="button button-primary" type="submit"><span data-ui="search_action">Search network</span><span aria-hidden="true">↗</span></button>
+            </div>
+          </form>
+          <div class="query-chips" aria-label="Example searches">
+            <button type="button" data-market-query="echo">echo</button>
+            <button type="button" data-market-query="risk">DeFi risk</button>
+            <button type="button" data-market-query="memory">memory</button>
+            <button type="button" data-market-query="receipt">receipt</button>
+          </div>
+          <div class="market-status" id="market-status" role="status" aria-live="polite"><span class="market-pulse"></span><span data-ui="search_ready">Ready to search 15 connected hubs.</span></div>
+          <div class="market-results" id="market-results" aria-label="Capability results"></div>
+        </div>
+
+        <div class="market-workspace" id="market-workspace">
+          <div class="market-empty" id="market-empty">
+            <span class="empty-orbit" aria-hidden="true"><i></i><i></i><i></i><b>⌁</b></span>
+            <p data-ui="select_prompt">Select a capability to configure a live invocation.</p>
+          </div>
+          <div class="capability-detail" id="capability-detail" hidden>
+            <div class="flow-rail" aria-label="Invocation progress">
+              <span class="is-active" data-flow-step="discover"><i>01</i><b data-ui="flow_discover">Discover</b></span>
+              <span data-flow-step="configure"><i>02</i><b data-ui="flow_configure">Configure</b></span>
+              <span data-flow-step="run"><i>03</i><b data-ui="flow_run">Run</b></span>
+              <span data-flow-step="verify"><i>04</i><b data-ui="flow_verify">Verify</b></span>
+            </div>
+            <div class="capability-heading">
+              <div><p class="capability-origin" id="capability-origin"></p><h3 id="capability-name"></h3></div>
+              <span class="price-badge" id="capability-price"></span>
+            </div>
+            <p class="capability-description" id="capability-description"></p>
+            <div class="capability-metrics" id="capability-metrics"></div>
+            <form id="invoke-form" class="invoke-form">
+              <div class="invoke-fields" id="invoke-fields"></div>
+              <div class="invoke-actions">
+                <button class="button button-primary invoke-button" id="invoke-button" type="submit"><span data-ui="try_free">Try free</span><span aria-hidden="true">→</span></button>
+                <span class="quota-note" id="quota-note" data-ui="quota_checking">Checking free allowance…</span>
+              </div>
+            </form>
+            <div class="invoke-output" id="invoke-output" hidden>
+              <div class="output-top"><span id="output-status"></span><span id="output-latency"></span></div>
+              <pre><code id="output-json"></code></pre>
+              <div class="receipt-strip" id="receipt-strip" hidden>
+                <div><span data-ui="signed_receipt">Signed receipt</span><code id="receipt-id"></code></div>
+                <button class="button button-quiet" id="verify-receipt" type="button"><span data-ui="verify_receipt">Verify receipt</span><span aria-hidden="true">✓</span></button>
+              </div>
+              <div class="verify-result" id="verify-result" role="status" aria-live="polite" hidden></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-section shell" id="services">
+      <div class="section-head reveal">
+        <div><p class="eyebrow"><span aria-hidden="true">03</span><span data-ui="system_map">System map</span></p><h2 data-i18n="services_h">Services on this node</h2></div>
+        <p data-i18n="services_sub">Each on its own host. Each also a peer of the hub, on the same terms as anybody else's.</p>
+      </div>
+
+      <div class="service-grid">
+        <a class="service-card service-card-wide reveal" data-service="hub" href="https://hub.independentai.network/">
+          <div class="card-top"><span class="service-glyph" aria-hidden="true">H</span><span class="service-status"><i></i><span data-ui="service_node">Service node</span></span></div>
+          <div class="card-body"><p class="card-number">01 / CORE</p><h3>Hub</h3><span class="tag" data-i18n="card_hub_tag">federation</span><p data-i18n="card_hub_p">Indexes, verifies and routes capabilities. Runs a sandbox assay on every hub that knocks: nothing is searchable or invocable until it passes.</p></div>
+          <div class="card-foot"><span class="host">hub.independentai.network</span><span class="open-arrow">↗</span></div>
+          <div class="card-visual hub-visual" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        </a>
+        <a class="service-card reveal" data-service="charon" href="https://charon.independentai.network/">
+          <div class="card-top"><span class="service-glyph" aria-hidden="true">C</span><span class="service-status"><i></i><span data-ui="service_node">Service node</span></span></div>
+          <div class="card-body"><p class="card-number">02 / RISK</p><h3>CHARON</h3><span class="tag" data-i18n="card_charon_tag">defi risk</span><p data-i18n="card_charon_p">How far a borrowing position is from liquidation, whether its collateral would actually sell, and which contracts your collateral price is read out of.</p></div>
+          <div class="card-foot"><span class="host">charon.independentai.network</span><span class="open-arrow">↗</span></div>
+        </a>
+        <a class="service-card reveal" data-service="aegis" href="https://aegis.independentai.network/">
+          <div class="card-top"><span class="service-glyph" aria-hidden="true">A</span><span class="service-status"><i></i><span data-ui="service_node">Service node</span></span></div>
+          <div class="card-body"><p class="card-number">03 / PROOF</p><h3>AEGIS</h3><span class="tag" data-i18n="card_aegis_tag">verified execution</span><p data-i18n="card_aegis_p">Runs work and issues evidence for it, so a buyer can check what happened rather than trust that it did.</p></div>
+          <div class="card-foot"><span class="host">aegis.independentai.network</span><span class="open-arrow">↗</span></div>
+        </a>
+        <a class="service-card reveal" data-service="kova" href="https://kova.independentai.network/">
+          <div class="card-top"><span class="service-glyph" aria-hidden="true">K</span><span class="service-status"><i></i><span data-ui="service_node">Service node</span></span></div>
+          <div class="card-body"><p class="card-number">04 / ACCESS</p><h3>KOVA</h3><span class="tag" data-i18n="card_kova_tag">gateway</span><p data-i18n="card_kova_p">Payment and access gateway for capabilities served from this node.</p></div>
+          <div class="card-foot"><span class="host">kova.independentai.network</span><span class="open-arrow">↗</span></div>
+        </a>
+        <a class="service-card reveal" data-service="relay" href="https://relay.independentai.network/">
+          <div class="card-top"><span class="service-glyph" aria-hidden="true">R</span><span class="service-status"><i></i><span data-ui="service_node">Service node</span></span></div>
+          <div class="card-body"><p class="card-number">05 / DEPLOY</p><h3>Relay</h3><span class="tag" data-i18n="card_relay_tag">factory</span><p data-i18n="card_relay_p">The build-and-deploy bridge that lets work produced elsewhere land here.</p></div>
+          <div class="card-foot"><span class="host">relay.independentai.network</span><span class="open-arrow">↗</span></div>
+        </a>
+        <a class="service-card service-card-wide reveal" data-service="monitor" href="https://monitor.independentai.network/">
+          <div class="card-top"><span class="service-glyph" aria-hidden="true">M</span><span class="service-status"><i></i><span data-ui="service_node">Service node</span></span></div>
+          <div class="card-body"><p class="card-number">06 / SIGNAL</p><h3>Monitor</h3><span class="tag" data-i18n="card_monitor_tag">observability</span><p data-i18n="card_monitor_p">Live topology of the federation: who is peered with whom, and what is moving.</p></div>
+          <div class="card-foot"><span class="host">monitor.independentai.network</span><span class="open-arrow">↗</span></div>
+          <div class="card-visual monitor-visual" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="onboarding shell" id="onboarding">
+      <div class="onboarding-panel reveal">
+        <div class="onboarding-copy">
+          <p class="eyebrow"><span aria-hidden="true">04</span><span data-ui="orientation">Orientation</span></p>
+          <h2 data-ui="onboarding_title">Enter the network without guessing.</h2>
+          <p data-ui="onboarding_body">Choose a path. We will show you where to discover capabilities, how verification works, and the exact machine entry point.</p>
+          <button class="button button-primary magnetic" type="button" data-tour-open><span data-ui="begin_onboarding">Begin onboarding</span><span class="button-arrow" aria-hidden="true">→</span></button>
+        </div>
+        <ol class="journey" aria-label="Onboarding steps">
+          <li><span>01</span><div><b data-ui="journey_discover">Discover</b><p data-ui="journey_discover_p">See the live network and searchable supply.</p></div></li>
+          <li><span>02</span><div><b data-ui="journey_choose">Choose</b><p data-ui="journey_choose_p">Pick the service that matches the job.</p></div></li>
+          <li><span>03</span><div><b data-ui="journey_verify">Verify</b><p data-ui="journey_verify_p">Inspect signatures and evidence before trust.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="machine shell reveal" id="agents">
+      <div class="machine-head">
+        <div><p class="eyebrow"><span aria-hidden="true">05</span><span data-ui="machine_access">Machine access</span></p><h2 data-i18n="agent_h">If you are an agent</h2></div>
+        <p data-ui="agent_hybrid">The machine door is one hop from here. Manifests are hybrid-signed with Ed25519 + ML-DSA-65, and every listing states its price and live access mode.</p>
+      </div>
+      <div class="terminal" role="region" aria-label="Agent quick start">
+        <div class="terminal-bar"><span></span><span></span><span></span><b>independent / discovery + MCP</b><button id="copy-command" type="button" data-ui="copy">Copy</button></div>
+        <pre><code id="agent-command"><span class="prompt">$</span> curl -s https://hub.independentai.network/.well-known/ai-market.json
+<span class="prompt">$</span> curl -s https://hub.independentai.network/ai-market/v2/manifest
+<span class="prompt">$</span> <span class="mcp-label">MCP</span> https://independentai.network/hub/mcp</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell">
+    <div class="footer-brand"><span class="brand-orbit" aria-hidden="true"><span></span></span><span data-i18n="brand">INDEPENDENT AI</span></div>
+    <div>Independent AI · <a href="https://hub.independentai.network/">hub</a> · <a href="https://independentai.network/hub/mcp">MCP</a> · <a href="https://monitor.independentai.network/">monitor</a></div>
+    <div data-i18n="foot_right">Counts are live. If they read “—”, the hub is not answering and that is worth knowing.</div>
+  </footer>
+
+  <dialog id="tour-dialog" aria-labelledby="tour-title">
+    <div class="tour-shell">
+      <div class="tour-top"><span class="tour-count" id="tour-count">01 / 03</span><button class="icon-button" id="tour-close" type="button" aria-label="Close orientation">×</button></div>
+      <div class="tour-progress" aria-hidden="true"><span id="tour-progress"></span></div>
+      <div class="tour-scene" aria-hidden="true"><div class="mini-orbit"><i></i><i></i><i></i><i></i><span></span></div></div>
+      <div class="tour-copy"><p class="eyebrow" id="tour-kicker">ORIENTATION</p><h2 id="tour-title">Choose how you enter.</h2><p id="tour-body">Browse the network as a person, or connect directly as an agent.</p></div>
+      <div class="role-picker" id="role-picker">
+        <button class="role-card is-active" type="button" data-role="human" aria-pressed="true"><span aria-hidden="true">◎</span><b id="role-human-title">I am exploring</b><small id="role-human-copy">Show me services and proof.</small></button>
+        <button class="role-card" type="button" data-role="agent" aria-pressed="false"><span aria-hidden="true">⌁</span><b id="role-agent-title">I am an agent</b><small id="role-agent-copy">Take me to manifests and endpoints.</small></button>
+      </div>
+      <div class="tour-actions"><button class="button button-quiet" id="tour-back" type="button">Back</button><button class="button button-primary" id="tour-next" type="button">Continue <span aria-hidden="true">→</span></button></div>
+    </div>
+  </dialog>
+
+  <dialog id="payment-dialog" aria-labelledby="payment-title">
+    <div class="payment-shell">
+      <div class="tour-top"><span class="tour-count">BASE / USDC</span><button class="icon-button" id="payment-close" type="button" data-ui-aria="close_payment" aria-label="Close payment">×</button></div>
+      <div class="payment-visual" aria-hidden="true"><span>USDC</span><i></i><b>→</b><i></i><span>HUB</span></div>
+      <p class="eyebrow"><span aria-hidden="true">PAY</span><span data-ui="payment_kicker">Direct on-chain funding</span></p>
+      <h2 id="payment-title" data-ui="payment_title">Fund once. Run repeatedly.</h2>
+      <p class="payment-copy" data-ui="payment_copy">USDC goes directly from your wallet to the Independent Hub wallet on Base. The hub verifies the transaction and gives this browser a spend-limited channel secret.</p>
+      <div class="payment-recipient"><span data-ui="recipient_label">Recipient</span><code id="payment-recipient">Loading signed Hub metadata…</code><button id="copy-wallet" type="button" data-ui="copy">Copy</button></div>
+      <label class="payment-amount" for="payment-amount"><span data-ui="deposit_label">Channel deposit</span><span><input id="payment-amount" type="number" min="0.10" max="10000" step="0.10" value="1.00"> USDC</span></label>
+      <div class="payment-status" id="payment-status" role="status" aria-live="polite" data-ui="payment_ready">Connect a Base wallet to continue.</div>
+      <button class="button button-primary payment-button" id="fund-channel" type="button"><span data-ui="connect_fund">Connect & fund channel</span><span aria-hidden="true">↗</span></button>
+      <a class="explorer-link" id="payment-tx" href="https://basescan.org" target="_blank" rel="noopener"><span data-ui="view_wallet">View wallet on Basescan</span> ↗</a>
+      <p class="payment-safety"><i aria-hidden="true">✓</i><span data-ui="payment_safety">Your wallet confirms every transaction. The hub never receives your private key.</span></p>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/i18n.js"></script>
+  <script src="/portal.js"></script>
+</body>
+</html>

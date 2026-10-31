@@ -1,0 +1,154 @@
+{
+  "base_url": "https://vulnetix.com/malscan-stix",
+  "feeds": [
+    {
+      "ecosystem": "cargo",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/cargo/dns.stix.json",
+      "sha256": "f175e952d7f0e1548935032d8fb3c8c003960b57a51e829eb16965d8fa645ded",
+      "count": 2
+    },
+    {
+      "ecosystem": "cargo",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/cargo/urls.stix.json",
+      "sha256": "419cd74bcc5fa33368a8dc1e80a658a2472cb2c82d4d02e977cab40e38efa2bc",
+      "count": 3
+    },
+    {
+      "ecosystem": "chrome",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/chrome/dns.stix.json",
+      "sha256": "670ca6ce3bc5a10c18f9ffcf5fa4c9c9fc7e57be16411b737a8323eeb2b1eeae",
+      "count": 25
+    },
+    {
+      "ecosystem": "chrome",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/chrome/urls.stix.json",
+      "sha256": "61c1966ea6898139e891468d908d59ffd90850dfbb5464fcdd0b29d5d4a4b0c7",
+      "count": 3
+    },
+    {
+      "ecosystem": "generic",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/generic/dns.stix.json",
+      "sha256": "d91107a5c71c1b021d8c9fbb464eb071ab5fa760eeccfdf13faafa33d751b666",
+      "count": 8843
+    },
+    {
+      "ecosystem": "generic",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/generic/urls.stix.json",
+      "sha256": "d8929ff1801a494029181e416b14598a5c1f03f512d0f7dff6d6eb9095c8b65e",
+      "count": 226
+    },
+    {
+      "ecosystem": "go",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/go/dns.stix.json",
+      "sha256": "78ef6f0047fed2bf6394ebfc3ca7350162030d37e2b64854ed8b80ae8e3f18c7",
+      "count": 6
+    },
+    {
+      "ecosystem": "go",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/go/urls.stix.json",
+      "sha256": "b1872cd7b3e3bd4ddc71684fdb29204935456353d8c58649c3f61cd0238d35e5",
+      "count": 8
+    },
+    {
+      "ecosystem": "maven",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/maven/urls.stix.json",
+      "sha256": "a1f259fc88b2693d79e1efee8480b1ec2c9b8dc35fe091f07202fb47f1c83085",
+      "count": 3
+    },
+    {
+      "ecosystem": "npm",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/npm/dns.stix.json",
+      "sha256": "a3cc9dd1e7163ba248dcc0f424fcf78ddf8b998caf7e317b8779a36822bcd969",
+      "count": 329
+    },
+    {
+      "ecosystem": "npm",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/npm/urls.stix.json",
+      "sha256": "4e95158526ee3de193fc51c6fd03fd663ab38b44166f96e6815912c58fe04499",
+      "count": 362
+    },
+    {
+      "ecosystem": "openvsx",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/openvsx/dns.stix.json",
+      "sha256": "9edb502bbc920771e91a271e916cb14b3b47c74bca574c6aae732a20d4e2377f",
+      "count": 9
+    },
+    {
+      "ecosystem": "openvsx",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/openvsx/urls.stix.json",
+      "sha256": "e4898a4bd8b744e228e2b199144d6451f1b50e44779faa1673e1614970d1e679",
+      "count": 8
+    },
+    {
+      "ecosystem": "packagist",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/packagist/dns.stix.json",
+      "sha256": "661d9e35f353f54f46b838620ce970433765d5d8491c33cfe889fae8c5bf19d7",
+      "count": 14
+    },
+    {
+      "ecosystem": "packagist",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/packagist/urls.stix.json",
+      "sha256": "43dcffc3e11d00effa864c455968b740012c058ee3a43ebe4e5f34ff05fc6a7f",
+      "count": 2
+    },
+    {
+      "ecosystem": "pypi",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/pypi/dns.stix.json",
+      "sha256": "4a55f54c66039debc04c31a77d8e1079c13fbd75d0aba0342f31a49da85142e1",
+      "count": 155
+    },
+    {
+      "ecosystem": "pypi",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/pypi/urls.stix.json",
+      "sha256": "f7d2aea7a19a0e62caceb3537ecf85c5ca4402ecaa27067e8bdaddba379f78be",
+      "count": 174
+    },
+    {
+      "ecosystem": "rubygems",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/rubygems/dns.stix.json",
+      "sha256": "038cd4f4f0e43db57dcbfd7e79a5224d138bafc85c9980fbfc6d025b94b18379",
+      "count": 1
+    },
+    {
+      "ecosystem": "rubygems",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/rubygems/urls.stix.json",
+      "sha256": "e8f19c6b530e1b6d261d3963c394c0349834ac66f82eea0683bbec54fef8857a",
+      "count": 1
+    },
+    {
+      "ecosystem": "vscode",
+      "kind": "dns",
+      "url": "https://vulnetix.com/malscan-stix/vscode/dns.stix.json",
+      "sha256": "be22c2478c7efe8d3a4ed8ffa0d43b0035ce2fba5a1d8cb55303a1127be7bf92",
+      "count": 15
+    },
+    {
+      "ecosystem": "vscode",
+      "kind": "urls",
+      "url": "https://vulnetix.com/malscan-stix/vscode/urls.stix.json",
+      "sha256": "ed9a6406184f48953ba5bc518d6552270f82fd81a738209e70a2f1953c1f6821",
+      "count": 19
+    }
+  ],
+  "generated": "2026-10-30T08:16:16Z",
+  "license": "AGPL-3.0-or-later"
+}

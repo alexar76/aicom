@@ -50,6 +50,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && 
 
 | 文档 | 链接 |
 | --- | --- |
+| **SYMMARTYS** — 公共记录事实：增值税、LEI、汇率、制裁名单和时间戳 | [symmartys.modelmarket.dev](https://symmartys.modelmarket.dev/) — 附来源信息的签名回答 |
 | 支付测试与交易：购买、退款、恢复及 SQLite/PostgreSQL 测试 | [payment-tests-and-transactions.zh.md](payment-tests-and-transactions.zh.md) |
 | AICOM 外部诊断：算法、配置、预算与恢复 | [factory-subcontracting.zh.md](factory-subcontracting.zh.md) |
 | 知识库 | [knowledge-base-zh.md](ecosystem/knowledge-base-zh.md) |

@@ -1,0 +1,142 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running unittests src/lib.rs (awr/rust/target/debug/deps/awr-c95f5e6f1d99aeb1)
+
+running 98 tests
+test chain::tests::missing_digest_sri_is_chain_001 ... ok
+test bundle::tests::container_validation ... ok
+test chain::tests::cycle_is_detected ... ok
+test bundle::tests::duplicate_ids_with_differing_content ... ok
+test chain::tests::digest_mismatch_against_supplied_parent ... ok
+test bundle::tests::subject_selection ... ok
+test chain::tests::conflicting_parent_ids_are_chain_006 ... ok
+test chain::tests::blame_reachability ... ok
+test chain::tests::depth_limit_is_enforced ... ok
+test decimal::tests::unit_interval_grammar ... ok
+test chain::tests::input_output_mismatch_is_a_warning_only ... ok
+test decimal::tests::decimal_comparison_is_exact ... ok
+test didkey::tests::jwk_consistency ... ok
+test didkey::tests::rejects_non_didkey_and_malformed ... ok
+test chain::tests::resolved_and_unresolved_edges_are_reported ... ok
+test didkey::tests::rejects_other_key_types_as_key_004 ... ok
+test document::tests::blame_subject_checks ... ok
+test document::tests::bare_string_issuer_is_rejected ... ok
+test document::tests::absolute_uri_reading ... ok
+test decimal::tests::amount_grammar ... ok
+test document::tests::empty_object_reports_every_envelope_error ... ok
+test document::tests::proof_structural_checks ... ok
+test document::tests::two_awr_types_is_doc_005 ... ok
+test chain::tests::node_limit_is_enforced ... ok
+test document::tests::awr_version_major_gate ... ok
+test document::tests::receipt_subject_checks ... ok
+test encoding::tests::base58_leading_zeros_and_edges ... ok
+test encoding::tests::base64_known_answers ... ok
+test document::tests::score_as_json_number_is_rejected ... ok
+test document::tests::proof_value_must_be_64_bytes_of_base58btc ... ok
+test document::tests::valid_until_must_be_later ... ok
+test document::tests::verdict_subject_checks ... ok
+test encoding::tests::base58_known_answer_hello_world ... ok
+test document::tests::verdict_score_threshold_disagreement_is_a_warning ... ok
+test encoding::tests::multibase_rejects_other_prefixes ... ok
+test encoding::tests::hex_roundtrip ... ok
+test json::tests::control_escapes_are_lowercase_and_minimal ... ok
+test issue::tests::rejects_a_bad_type_or_now ... ok
+test issue::tests::generated_keys_are_distinct_and_derive_valid_dids ... ok
+test json::tests::duplicate_keys_rejected ... ok
+test encoding::tests::base58_roundtrips_every_length ... ok
+test json::tests::integers_only ... ok
+test didkey::tests::derivation_shape_matches_spec ... ok
+test json::tests::lone_surrogates_rejected ... ok
+test json::tests::literal_non_ascii_is_emitted_literally ... ok
+test json::tests::malformed_json_is_canon_005 ... ok
+test json::tests::no_normalization_is_applied ... ok
+test json::tests::invalid_utf8_in_string_is_canon_003 ... ok
+test json::tests::nesting_limit_enforced ... ok
+test json::tests::rfc8785_appendix_b_sorting_sample ... ok
+test issue::tests::key_file_forms_all_read_back ... ok
+test issue::tests::template_mode_keeps_unknown_members_inside_the_signature ... ok
+test json::tests::scan_numbers_reports_every_violation ... ok
+test json::tests::self_check_accepts_this_canonicalizer_and_rejects_a_broken_one ... ok
+test json::tests::set_and_remove_preserve_position ... ok
+test json::tests::sorts_keys_and_drops_whitespace ... ok
+test json::tests::unknown_members_and_order_preserved ... ok
+test json::tests::utf16_key_order_differs_from_codepoint_order ... ok
+test json::tests::utf16_key_order_more_cases ... ok
+test legacy::tests::awr2_document_is_not_legacy ... ok
+test legacy::tests::a_number_outside_the_defined_range_has_no_legacy_form ... ok
+test legacy::tests::entries_are_sorted_by_whole_path_not_per_level ... ok
+test legacy::tests::dialects_differ_only_in_integer_rendering ... ok
+test proof::tests::hash_data_is_config_first_and_64_bytes ... ok
+test legacy::tests::unrecoverable_key_is_key_001 ... ok
+test legacy::tests::tampered_legacy_document_fails_under_both_dialects ... ok
+test legacy::tests::changing_an_unsigned_field_does_not_break_the_legacy_signature ... ok
+test report::tests::identical_reasons_are_deduplicated ... ok
+test report::tests::valid_tracks_error_severity_only ... ok
+test report::tests::result_shape_matches_the_specification_example ... ok
+test report::tests::registry_has_no_duplicates_and_covers_the_specification ... ok
+test sri::tests::empty_string_digest_matches_the_specification_text ... ok
+test proof::tests::unknown_members_are_inside_the_signature ... ok
+test sri::tests::digest_reference_codes ... ok
+test report::tests::verified_proof_is_a_function_of_the_codes_reported ... ok
+test sri::tests::parses_and_rejects ... ok
+test timefmt::tests::epoch_and_roundtrip ... ok
+test timefmt::tests::parses_the_specification_examples ... ok
+test timefmt::tests::rejects_non_utc_and_malformed ... ok
+test verify::tests::duplicate_key_is_reported_before_anything_else ... ok
+test issue::tests::round_trip_for_all_three_document_types ... ok
+test proof::tests::sign_then_verify ... ok
+test verify::tests::adding_an_unknown_field_breaks_the_proof ... ok
+test legacy::tests::both_dialects_are_accepted ... ok
+test verify::tests::non_integer_number_blocks_verification_with_canon_001 ... ok
+test verify::tests::issued_receipt_verifies_and_is_l0 ... ok
+test verify::tests::jwk_mismatch_invalidates ... ok
+test verify::tests::an_array_of_proofs_needs_one_that_verifies_and_reports_which ... ok
+test verify::tests::not_an_object_is_doc_001 ... ok
+test verify::tests::valid_until_in_the_past_is_a_warning ... ok
+test verify::tests::time_warnings_are_warnings ... ok
+test verify::tests::wrong_issuer_key_is_proof_006_not_key_002 ... ok
+test verify::tests::bundle_verification_and_subject_selection ... ok
+test verify::tests::chain_edges_are_reported ... ok
+test verify::tests::verdict_digest_substitution_is_vdct_005 ... ok
+test verify::tests::tampering_with_any_field_breaks_the_proof ... ok
+test verify::tests::profile_l2_needs_two_issuers_and_a_binding ... ok
+test verify::tests::profile_l1_requires_an_independent_verdict ... ok
+
+test result: ok. 98 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running unittests src/main.rs (awr/rust/target/debug/deps/awr-15b9eaefa1dc21d3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (awr/rust/target/debug/deps/cli-6b3db56a1f78b679)
+
+running 11 tests
+test canonicalize_sorts_and_emits_no_trailing_newline ... ok
+test an_unimplemented_subcommand_exits_3 ... ok
+test help_and_version_are_available ... ok
+test digest_is_the_sri_of_the_canonical_bytes ... ok
+test hashdata_prints_three_hex_lines_in_the_documented_order ... ok
+test verify_of_a_bundle_selects_the_subject ... ok
+test verify_of_a_tampered_document_exits_1_with_a_result ... ok
+test issue_then_verify_round_trip ... ok
+test usage_and_io_errors_exit_2 ... ok
+test canonicalize_rejects_the_negative_cases_with_a_reason_code ... ok
+test verify_with_profile_and_parents ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/reason_codes.rs (awr/rust/target/debug/deps/reason_codes-dad74a6301fc2e42)
+
+running 3 tests
+test a_correct_document_reports_nothing_at_all ... ok
+test each_scenario_reports_its_intended_code ... ok
+test the_whole_reason_code_registry_is_exercised ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+
+   Doc-tests awr
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Atomdrift News</title>
+  <link href="https://atomdrift.org/feed.xml" rel="self"/>
+  <link href="https://atomdrift.org/"/>
+  <id>https://atomdrift.org/</id>
+  <updated>2026-10-17T00:00:00Z</updated>
+  <entry>
+    <title>Scan v2.13.0: fresher verdicts, tougher parsers</title>
+    <link href="https://atomdrift.org/news/2026-10-17-scan-v2.13.0/"/>
+    <id>https://atomdrift.org/news/2026-10-17-scan-v2.13.0/</id>
+    <updated>2026-10-17T00:00:00Z</updated>
+    <summary>Scan now checks downloaded dependencies against current rules, invalidates cached verdicts when local rules change, and can render saved reports. The other tools get a round of parser and fetch hardening.</summary>
+  </entry>
+  <entry>
+    <title>stng v2.0.0</title>
+    <link href="https://atomdrift.org/news/2026-10-01-stng-v2.0.0/"/>
+    <id>https://atomdrift.org/news/2026-10-01-stng-v2.0.0/</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>Finds strings earlier versions missed in droppers, macOS stealers and obfuscated scripts, and holds up against hostile files.</summary>
+  </entry>
+  <entry>
+    <title>Scan v2.11.0: fonts, media files, and fewer dependency guesses</title>
+    <link href="https://atomdrift.org/news/2026-09-14-scan-v2.11.0/"/>
+    <id>https://atomdrift.org/news/2026-09-14-scan-v2.11.0/</id>
+    <updated>2026-09-14T00:00:00Z</updated>
+    <summary>Scan now analyzes fonts and media files structurally, resolves dependencies through lockfiles and registry metadata instead of guessing, and tells you when analysis came up short.</summary>
+  </entry>
+  <entry>
+    <title>Scan v2.10.0: less output spam, better build-time detection</title>
+    <link href="https://atomdrift.org/news/2026-09-10-scan-v2.10.0/"/>
+    <id>https://atomdrift.org/news/2026-09-10-scan-v2.10.0/</id>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary>We removed nearly all of the output spam related to dependency fetching and analysis, and added better support for detecting build-time infections.</summary>
+  </entry>
+  <entry>
+    <title>Scan v2.9.0 &amp; Beamline: now shipping a real HTTP API</title>
+    <link href="https://atomdrift.org/news/2026-09-08-scan-v2.9.0/"/>
+    <id>https://atomdrift.org/news/2026-09-08-scan-v2.9.0/</id>
+    <updated>2026-09-08T00:00:00Z</updated>
+    <summary>Introducing support for real HTTP APIs using Beamline and Scan</summary>
+  </entry>
+  <entry>
+    <title>cleave &amp; Scan v2.7.1, isomer v0.4.0</title>
+    <link href="https://atomdrift.org/news/2026-08-14-cleave-scan-v2.7.1/"/>
+    <id>https://atomdrift.org/news/2026-08-14-cleave-scan-v2.7.1/</id>
+    <updated>2026-08-14T00:00:00Z</updated>
+    <summary>CPU work, mostly. cleave is about 25% faster; Scan and isomer embed it, so they are too. Four file-type rules that never ran now run. isomer v0.4.0 adds three detectors that need no rules.</summary>
+  </entry>
+  <entry>
+    <title>isomer v0.3.0: learning from 30 years of attacks — plus cleave &amp; Scan v2.7.0</title>
+    <link href="https://atomdrift.org/news/2026-08-13-isomer-v0.3.0/"/>
+    <id>https://atomdrift.org/news/2026-08-13-isomer-v0.3.0/</id>
+    <updated>2026-08-13T00:00:00Z</updated>
+    <summary>This cycle was about shaping isomer into something useful: verdicts being calibrated against 30 years of real supply-chain attacks, cleanups no longer read as attacks, and the LLM can never raise the CI gate. cleave and Scan v2.7.0 carry the changes isomer needed. First release where all three ship prebuilt binaries.</summary>
+  </entry>
+  <entry>
+    <title>hood, an early supply-chain firewall experiment</title>
+    <link href="https://atomdrift.org/news/2026-08-12-hood/"/>
+    <id>https://atomdrift.org/news/2026-08-12-hood/</id>
+    <updated>2026-08-12T00:00:00Z</updated>
+    <summary>hood inspects the software your tools fetch — public or private — on your own machine, before you run it. It is an early experiment, released quietly to see how it behaves in the field.</summary>
+  </entry>
+  <entry>
+    <title>Introducing isomer — design partners wanted</title>
+    <link href="https://atomdrift.org/news/2026-08-09-isomer/"/>
+    <id>https://atomdrift.org/news/2026-08-09-isomer/</id>
+    <updated>2026-08-09T00:00:00Z</updated>
+    <summary>isomer is our differential supply-chain attack detector: an early, experimental build that judges the change between two versions instead of scoring a tree in isolation. We&#39;re looking for a few design partners to make sure we&#39;re building the right thing.</summary>
+  </entry>
+  <entry>
+    <title>Precompiled binaries and a one-line installer</title>
+    <link href="https://atomdrift.org/news/2026-08-05-precompiled-binaries/"/>
+    <id>https://atomdrift.org/news/2026-08-05-precompiled-binaries/</id>
+    <updated>2026-08-05T00:00:00Z</updated>
+    <summary>Atomdrift Scan now ships prebuilt binaries for eight Linux architectures, macOS, the BSDs, Solaris/illumos, Android, and Windows — with a new installer at install.atomdrift.org that verifies what it downloads before it replaces anything. Testers welcome.</summary>
+  </entry>
+  <entry>
+    <title>cleave &amp; Scan v2.5.0: quiet failures get loud, and cleave lands on Windows</title>
+    <link href="https://atomdrift.org/news/2026-08-04-cleave-scan-v2.5.0/"/>
+    <id>https://atomdrift.org/news/2026-08-04-cleave-scan-v2.5.0/</id>
+    <updated>2026-08-04T00:00:00Z</updated>
+    <summary>Files that used to produce no verdict at all — a truncated archive, a half-written gzip, a member that failed to scan — now say so. Plus ISO analysis, verified Mach-O signatures, five seconds off every cold start, and first builds for Windows, DragonFlyBSD, NetBSD, illumos/OmniOS and Solaris 11.4.</summary>
+  </entry>
+  <entry>
+    <title>New home on GitHub — and v2.4.0 across the board</title>
+    <link href="https://atomdrift.org/news/2026-07-25-github-and-v2.4.0/"/>
+    <id>https://atomdrift.org/news/2026-07-25-github-and-v2.4.0/</id>
+    <updated>2026-07-25T00:00:00Z</updated>
+    <summary>Every Atomdrift project has moved to GitHub, and we&#39;re marking the occasion with a coordinated v2.4.0: first-class dependency scanning, 16 GiB files, and faster archives — landing the same week Scan posted its best head-to-head run yet at 94% detection with zero false positives.</summary>
+  </entry>
+  <entry>
+    <title>cleave &amp; Scan v2.3.0: a third of the memory, twice the speed</title>
+    <link href="https://atomdrift.org/news/2026-07-11-cleave-scan-v2.3.0/"/>
+    <id>https://atomdrift.org/news/2026-07-11-cleave-scan-v2.3.0/</id>
+    <updated>2026-07-11T00:00:00Z</updated>
+    <summary>The headline is performance — rebuilt regex internals, parallel archive evaluation, and workers that stop hoarding memory deliver the same deterministic verdicts at a third of the memory and twice the speed — with a stack of accuracy fixes riding along.</summary>
+  </entry>
+  <entry>
+    <title>Atomdrift Scan v2.2.0: it checks what your code brings with it</title>
+    <link href="https://atomdrift.org/news/2026-07-06-scan-v2.2.0/"/>
+    <id>https://atomdrift.org/news/2026-07-06-scan-v2.2.0/</id>
+    <updated>2026-07-06T00:00:00Z</updated>
+    <summary>Scan stops trusting a project&#39;s own ingredient list — v2.2.0 fetches and scans the outside code your project pulls in, screens it through bloom filters first, and inherits new formats and byte-level evidence from the engine beneath it.</summary>
+  </entry>
+  <entry>
+    <title>Lab down today: growing the database to 4TB before the admins disappear for summer vacation</title>
+    <link href="https://atomdrift.org/news/2026-06-22-storage-upgrade/"/>
+    <id>https://atomdrift.org/news/2026-06-22-storage-upgrade/</id>
+    <updated>2026-06-22T00:00:00Z</updated>
+    <summary>The Atomdrift lab is offline for hardware maintenance today while engineers grow storage on the PostgreSQL master and its replicas to hold a 4TB dataset — the corpus of analyses we now track for more than 41 million files.</summary>
+  </entry>
+  <entry>
+    <title>Atomdrift Scan v2.1.0, cleave v2.1.1</title>
+    <link href="https://atomdrift.org/news/2026-06-22-release-roundup/"/>
+    <id>https://atomdrift.org/news/2026-06-22-release-roundup/</id>
+    <updated>2026-06-22T00:00:00Z</updated>
+    <summary>Scan learns to reach out — fetch and scan remote dependencies, packages, and URLs directly — while cleave makes YARA fast with precompiled rules and on-demand tier loading.</summary>
+  </entry>
+  <entry>
+    <title>db-xorma: malware laundered through legit npm packages</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/db-xorma-laundry-everywhere/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/db-xorma-laundry-everywhere/</id>
+    <updated>2026-06-21T00:00:00Z</updated>
+    <summary>db-xorma&#39;s tarball carries no payload — just a clone of a real ORM whose one bolted-on method launders the attack through a real installer and a second cloned package, pulling the obfuscated BeaverTail loader from a paste host at runtime.</summary>
+  </entry>
+  <entry>
+    <title>cleave v2.1.0, stng v1.7.0, filefacts v1.1.0 &amp; v1.1.1</title>
+    <link href="https://atomdrift.org/news/2026-06-20-release-roundup/"/>
+    <id>https://atomdrift.org/news/2026-06-20-release-roundup/</id>
+    <updated>2026-06-20T00:00:00Z</updated>
+    <summary>A package-aware wave: cleave learns DMG and go.mod, filefacts grows real lockfile parsing and PURL extraction, and stng adds generic decoded-string recovery for text.</summary>
+  </entry>
+  <entry>
+    <title>cleave v2.0.0, stng v1.6.2, filefacts v1.0.1</title>
+    <link href="https://atomdrift.org/news/2026-06-14-cleave-v2.0.0/"/>
+    <id>https://atomdrift.org/news/2026-06-14-cleave-v2.0.0/</id>
+    <updated>2026-06-14T00:00:00Z</updated>
+    <summary>The rest of the 2.0 stack lands alongside Atomdrift Scan: cleave&#39;s engine swap reaches stable, stng kills a class of XOR false positives, and filefacts goes panic-safe.</summary>
+  </entry>
+  <entry>
+    <title>🎉 Atomdrift Scan v2.0.0 (formerly litmus)</title>
+    <link href="https://atomdrift.org/news/2026-06-14-scan-v2.0.0/"/>
+    <id>https://atomdrift.org/news/2026-06-14-scan-v2.0.0/</id>
+    <updated>2026-06-14T00:00:00Z</updated>
+    <summary>litmus grows up: renamed Atomdrift Scan, now generally available on pure-Rust ONNX inference, with false-positive-budget severity, an optional local-LLM second opinion, and signed model bundles.</summary>
+  </entry>
+  <entry>
+    <title>@sqlite-node/createsql: the DPRK&#39;s npm quota, fulfilled via GitHub Gist</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/sqlite-node-createsql-dprk-gist/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/sqlite-node-createsql-dprk-gist/</id>
+    <updated>2026-06-13T00:00:00Z</updated>
+    <summary>The 707-byte package ships nothing but a fetch-and-eval; four hops later the same BeaverTail-to-InvisibleFerret kit from three prior finds is back on a brand-new IP, running a node-pty shell and hunting wallet seed phrases.</summary>
+  </entry>
+  <entry>
+    <title>surf: BYO-Interpreter — a faked Go library hides a LuaJIT payload</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/surf-byo-interpreter/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/surf-byo-interpreter/</id>
+    <updated>2026-06-13T00:00:00Z</updated>
+    <summary>The real surf is a browser-impersonating Go library you import; the clone forgot to rename its module, turned its README into a Download button, and hides a LuaJIT screenshot-stealer in a 309 KB line of obfuscated text.</summary>
+  </entry>
+  <entry>
+    <title>filefacts v1.0.0</title>
+    <link href="https://atomdrift.org/news/2026-06-12-filefacts-v1.0.0/"/>
+    <id>https://atomdrift.org/news/2026-06-12-filefacts-v1.0.0/</id>
+    <updated>2026-06-12T00:00:00Z</updated>
+    <summary>filefacts reaches 1.0.0 with richer package identity, new PE/.NET malware features, better evidence offsets, and explicit AST failure metrics for large-scale security ML pipelines.</summary>
+  </entry>
+  <entry>
+    <title>onering: a crate that leaks unreleased source</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/onering-source-leak/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/onering-source-leak/</id>
+    <updated>2026-06-10T00:00:00Z</updated>
+    <summary>The poison runs in your repo, not the library&#39;s — cargo&#39;s build dir leads build.rs to the consuming project&#39;s git tree, where it scrapes the latest commit&#39;s author, email and full patch, then POSTs it as a routine Sentry crash report.</summary>
+  </entry>
+  <entry>
+    <title>cleave v2.0.0-rc.5, litmus v2.0.0-rc.5, stng v1.6.0, filefacts v0.9.5</title>
+    <link href="https://atomdrift.org/news/2026-06-09-rc5-roundup/"/>
+    <id>https://atomdrift.org/news/2026-06-09-rc5-roundup/</id>
+    <updated>2026-06-09T00:00:00Z</updated>
+    <summary>Everything got a bump, and updates no longer need git: cleave and litmus now pull signed, sha256-verified .tar.zst bundles from R2 — atomic install, pin/check/update — plus richer package, PE/CLR, and Mach-O signals across the stack.</summary>
+  </entry>
+  <entry>
+    <title>express-timer: an npm &#39;security helper&#39; that self-destructs your src/</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/express-timer-self-destruct-wiper/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/express-timer-self-destruct-wiper/</id>
+    <updated>2026-06-09T00:00:00Z</updated>
+    <summary>Most malicious npm packages steal; this one just deletes your source tree a minute after you install it — and its author fumbled their own online-banking password into the very same tarball.</summary>
+  </entry>
+  <entry>
+    <title>path-internal-util: don&#39;t chase the URL, catch the shape</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/path-internal-util-trojanized-path-remote-eval/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/path-internal-util-trojanized-path-remote-eval/</id>
+    <updated>2026-06-09T00:00:00Z</updated>
+    <summary>It&#39;s the real Joyent path module, verbatim, plus three lines that fetch a jsonkeeper paste and eval it — pull that thread and it unrolls into a live DPRK BeaverTail loader and a socket.io RAT.</summary>
+  </entry>
+  <entry>
+    <title>v018-axios-cdntest: C is for cookie, not cryptojacking</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/v018-axios-cdntest-c-is-for-cookie/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/v018-axios-cdntest-c-is-for-cookie/</id>
+    <updated>2026-06-09T00:00:00Z</updated>
+    <summary>It ships a self-described &#39;cryptojacker payload&#39; that POSTs shares to a stratum port over XHR and mines exactly nothing — yet the cookie stealer bolted onto real axios works fine, and the README reads like a startup pitch deck.</summary>
+  </entry>
+  <entry>
+    <title>cleave v2.0.0-rc.4, litmus v2.0.0-rc.4, stng v1.5.2, filefacts v0.9.0</title>
+    <link href="https://atomdrift.org/news/2026-06-07-rc4-roundup/"/>
+    <id>https://atomdrift.org/news/2026-06-07-rc4-roundup/</id>
+    <updated>2026-06-07T00:00:00Z</updated>
+    <summary>Four releases, one storyline: the filefacts engine swap deepens, and the pipeline gets dramatically cheaper to run — bounded archive analysis, a fixed ~7.7 GB regex leak, −60% peak RSS, streaming JSON everywhere.</summary>
+  </entry>
+  <entry>
+    <title>awaitly-visualizer: The miasma continues to floweth — a binding.gyp Bun worm</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/awaitly-visualizer-miasma-floweth/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/awaitly-visualizer-miasma-floweth/</id>
+    <updated>2026-06-04T00:00:00Z</updated>
+    <summary>No install hook to flag — npm auto-builds the binding.gyp it ships, which fetches its own Bun runtime to run a credential-harvesting worm outside node&#39;s view, forge Sigstore provenance, and republish the maintainer&#39;s other packages.</summary>
+  </entry>
+  <entry>
+    <title>spadata: Gimme all your Roblox — the PyPI DataStore lib that isn&#39;t</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/spadata-roblox-cookie-stickup/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/spadata-roblox-cookie-stickup/</id>
+    <updated>2026-06-03T00:00:00Z</updated>
+    <summary>It promises a Roblox DataStore library and ships none of it — just an __init__.py that, on import, DPAPI-decrypts your Roblox session cookie and posts the cleartext to a Discord webhook; the README can&#39;t even spell its own name.</summary>
+  </entry>
+  <entry>
+    <title>sourceflow-tracker: I Has a Bucket — npm fetches its payload from GCS</title>
+    <link href="https://atomdrift.org/discoveries/2026/06/sourceflow-tracker-gcs-bucket-recon-beacon/"/>
+    <id>https://atomdrift.org/discoveries/2026/06/sourceflow-tracker-gcs-bucket-recon-beacon/</id>
+    <updated>2026-06-02T00:00:00Z</updated>
+    <summary>A 379-byte package whose only load-bearing content is a dependency version string pointing into a Google Cloud Storage bucket — so npm itself downloads and detonates the payload, and the registry never holds a copy to scan.</summary>
+  </entry>
+  <entry>
+    <title>cleave v2.0.0-rc.3, litmus v2.0.0-rc.3, stng v1.5.1</title>
+    <link href="https://atomdrift.org/news/2026-05-28-rc3-roundup/"/>
+    <id>https://atomdrift.org/news/2026-05-28-rc3-roundup/</id>
+    <updated>2026-05-28T00:00:00Z</updated>
+    <summary>Two release candidates and a point release: cleave and litmus both move to 2.0.0-rc.3, closing the gap between capability extraction and the azoth model, while stng v1.5.1 stops mistaking compiler tables for hardcoded IPs.</summary>
+  </entry>
+  <entry>
+    <title>clx-cookieparser: a cookie-parser clone whose evil twin is North Korean</title>
+    <link href="https://atomdrift.org/discoveries/2026/05/clx-cookieparser-dependency-twin-beavertail/"/>
+    <id>https://atomdrift.org/discoveries/2026/05/clx-cookieparser-dependency-twin-beavertail/</id>
+    <updated>2026-05-28T00:00:00Z</updated>
+    <summary>The package you install is the real express cookie-parser, tests and all — the theft lives one require() away in a twin dependency that pulls the DPRK&#39;s BeaverTail-to-InvisibleFerret kit, run by the same crew as web-dotenv.</summary>
+  </entry>
+  <entry>
+    <title>aes-decode-runner-pro: an &#39;AES demo&#39; that decrypts itself into a RAT</title>
+    <link href="https://atomdrift.org/discoveries/2026/05/aes-decode-runner-pro-nuitka-stealer/"/>
+    <id>https://atomdrift.org/discoveries/2026/05/aes-decode-runner-pro-nuitka-stealer/</id>
+    <updated>2026-05-27T00:00:00Z</updated>
+    <summary>A tutorial-shaped AES codec whose import decrypts its own hardcoded ciphertext, pulls a 6 MB payload from nvidiadriver.net, and unpacks the Winpatch RAT — which impersonates lsass.exe to lift Chrome&#39;s app-bound encryption keys.</summary>
+  </entry>
+  <entry>
+    <title>@polka-ui/config: a postinstall that announces itself, then drops Sliver</title>
+    <link href="https://atomdrift.org/discoveries/2026/05/polka-ui-config-dependency-confusion-sliver/"/>
+    <id>https://atomdrift.org/discoveries/2026/05/polka-ui-config-dependency-confusion-sliver/</id>
+    <updated>2026-05-27T00:00:00Z</updated>
+    <summary>It stamps its own payload &#39;authorized testing only,&#39; then — past the Russian comments — exfils every npmrc and env secret and drops a real Go Sliver implant beaconing to a Russian host; the PoC label is the alibi.</summary>
+  </entry>
+  <entry>
+    <title>Atomdrift lab going dark for bandwidth upgrade</title>
+    <link href="https://atomdrift.org/news/2026-05-26-bandwidth-upgrade/"/>
+    <id>https://atomdrift.org/news/2026-05-26-bandwidth-upgrade/</id>
+    <updated>2026-05-26T00:00:00Z</updated>
+    <summary>The Atomdrift research lab will be offline for several hours today while engineers upgrade the uplink feeding forager, the in-house crawler that has been pinned at line rate around the clock pulling releases from more than 100 software marketplaces.</summary>
+  </entry>
+  <entry>
+    <title>shop-minis: a Shopify-shaped canary that rats you out to Burp</title>
+    <link href="https://atomdrift.org/discoveries/2026/05/shop-minis-burp-canary/"/>
+    <id>https://atomdrift.org/discoveries/2026/05/shop-minis-burp-canary/</id>
+    <updated>2026-05-26T00:00:00Z</updated>
+    <summary>A 762-byte dependency-confusion probe wearing the name of Shopify&#39;s private Shop Minis package, that slurps your CI env vars and ships them out two ways at once — HTTPS and DNS — to a Burp Collaborator.</summary>
+  </entry>
+  <entry>
+    <title>web-dotenv: a dotenv clone, plus one function that robs you</title>
+    <link href="https://atomdrift.org/discoveries/2026/05/web-dotenv-jsonkeeper-redirector/"/>
+    <id>https://atomdrift.org/discoveries/2026/05/web-dotenv-jsonkeeper-redirector/</id>
+    <updated>2026-05-26T00:00:00Z</updated>
+    <summary>A near-perfect copy of dotenv — 50M downloads a week — with one function bolted into config(), so booting your app fetches a stealer that combs $HOME for wallets and keys and watches your clipboard on a 750 ms loop.</summary>
+  </entry>
+  <entry>
+    <title>cleave v2.0.0-rc.1, litmus v2.0.0-rc.1, stng v1.4.0</title>
+    <link href="https://atomdrift.org/news/2026-05-25-engine-swap/"/>
+    <id>https://atomdrift.org/news/2026-05-25-engine-swap/</id>
+    <updated>2026-05-25T00:00:00Z</updated>
+    <summary>The 2.0.0-rc.1 series swaps cleave&#39;s file-parsing engine out for filefacts, a standalone library you can use without the rest of cleave. litmus picks up a new JSON schema and ONNX. stng tightens the garbage filter and fixes a stack-string panic.</summary>
+  </entry>
+  <entry>
+    <title>api-rs-node: a fake Rust bridge that doxxed its own author</title>
+    <link href="https://atomdrift.org/discoveries/2026/05/api-rs-node-clob-dropper/"/>
+    <id>https://atomdrift.org/discoveries/2026/05/api-rs-node-clob-dropper/</id>
+    <updated>2026-05-25T00:00:00Z</updated>
+    <summary>A &#39;high-performance Rust bridge&#39; that&#39;s really a Windows dropper — IPFS payload, registry persistence, a beacon on port 2026 — whose author bundled their own config files and named the very machine they built it on.</summary>
+  </entry>
+  <entry>
+    <title>@devcarron/clob: api-rs-node&#39;s rough draft, same binary, same self-dox</title>
+    <link href="https://atomdrift.org/discoveries/2026/05/devcarron-clob/"/>
+    <id>https://atomdrift.org/discoveries/2026/05/devcarron-clob/</id>
+    <updated>2026-05-25T00:00:00Z</updated>
+    <summary>The same Windows implant as api-rs-node, shipped 5½ hours earlier under a copy-pasted sharp README its author forgot to re-title — and the bundled config files finger the same dev machine twice over.</summary>
+  </entry>
+  <entry>
+    <title>system-user-identifier-cli: an &#39;identity helper&#39; that just opens a reverse shell</title>
+    <link href="https://atomdrift.org/discoveries/2026/05/system-user-identifier-cli/"/>
+    <id>https://atomdrift.org/discoveries/2026/05/system-user-identifier-cli/</id>
+    <updated>2026-05-25T00:00:00Z</updated>
+    <summary>799 bytes, two files, and a name like a thousand throwaway npx tools — it really does check your user id, then drops a bash /dev/tcp reverse shell and calls home.</summary>
+  </entry>
+  <entry>
+    <title>stng v1.3.1, litmus v1.2.1, cleave v1.4.0</title>
+    <link href="https://atomdrift.org/news/2026-05-13-release-roundup/"/>
+    <id>https://atomdrift.org/news/2026-05-13-release-roundup/</id>
+    <updated>2026-05-13T00:00:00Z</updated>
+    <summary>Three pre-CackalackyCon releases: stng tightens mixed binary/script decoding, litmus improves worker reporting and model bundle handling, and cleave deepens PDF and LNK analysis.</summary>
+  </entry>
+  <entry>
+    <title>litmus v1.2.0</title>
+    <link href="https://atomdrift.org/news/2026-05-10-litmus-v1.2.0/"/>
+    <id>https://atomdrift.org/news/2026-05-10-litmus-v1.2.0/</id>
+    <updated>2026-05-10T00:00:00Z</updated>
+    <summary>Preview support for the azoth ensemble. Multi-seed averaging, per-route isotonic calibration, LightGBM alongside XGBoost. Models route per file from a top-level config.</summary>
+  </entry>
+  <entry>
+    <title>cleave v1.3</title>
+    <link href="https://atomdrift.org/news/2026-05-08-cleave-v1.3/"/>
+    <id>https://atomdrift.org/news/2026-05-08-cleave-v1.3/</id>
+    <updated>2026-05-08T00:00:00Z</updated>
+    <summary>cleave diff is the signal we have been building toward: a structured, scoped delta between two versions of the same software, with an estimated rate of change that nobody else is measuring. kv now covers PE/ELF/Mach-O along with Office, PDF, PyInstaller, CHM, and a long tail of source and archive formats, with much deeper binary provenance.</summary>
+  </entry>
+  <entry>
+    <title>Lab outage: btrfs cannot delete its way out of a full disk</title>
+    <link href="https://atomdrift.org/news/2026-05-07-lab-outage/"/>
+    <id>https://atomdrift.org/news/2026-05-07-lab-outage/</id>
+    <updated>2026-05-07T00:00:00Z</updated>
+    <summary>The lab&#39;s PostgreSQL master is offline: btrfs filled up and now refuses to delete files — or even snapshots — because it is out of space. No data was lost, thanks to our distributed replica architecture. We are moving the master to ZFS on OmniOS and teaching the lab to fail over to a replica. ETA back online: today.</summary>
+  </entry>
+  <entry>
+    <title>stng v1.3.0</title>
+    <link href="https://atomdrift.org/news/2026-05-07-stng-v1.3.0/"/>
+    <id>https://atomdrift.org/news/2026-05-07-stng-v1.3.0/</id>
+    <updated>2026-05-07T00:00:00Z</updated>
+    <summary>Go and Rust PE recovery, multi-key XOR via lea-near-xor analysis, and a pile of fixes for things that were quietly wrong.</summary>
+  </entry>
+  <entry>
+    <title>Release Mania: stng v1.2.1, cleave v1.2.0, litmus v1.1.0</title>
+    <link href="https://atomdrift.org/news/2026-04-28-release-mania/"/>
+    <id>https://atomdrift.org/news/2026-04-28-release-mania/</id>
+    <updated>2026-04-28T00:00:00Z</updated>
+    <summary>cleave fixes a class of rayon deadlocks, parses Python pickle and MSI-embedded PE, and skips rizin on Go binaries for a real speedup; litmus gains worker-mode fleet scanning behind a hardened HTTP server; stng stops mis-flagging Kotlin as Python.</summary>
+  </entry>
+  <entry>
+    <title>stng v1.2.0</title>
+    <link href="https://atomdrift.org/news/2026-04-21-stng-v1.2.0/"/>
+    <id>https://atomdrift.org/news/2026-04-21-stng-v1.2.0/</id>
+    <updated>2026-04-21T00:00:00Z</updated>
+    <summary>Preserve Telegram bot tokens, JWTs, and Swift mangled symbols that the chaos filter was dropping; cut XOR IP false positives inside binary data tables.</summary>
+  </entry>
+  <entry>
+    <title>cleave v1.1.0</title>
+    <link href="https://atomdrift.org/news/2026-04-10-cleave-v1.1.0/"/>
+    <id>https://atomdrift.org/news/2026-04-10-cleave-v1.1.0/</id>
+    <updated>2026-04-10T00:00:00Z</updated>
+    <summary>PE Authenticode chain extraction and ~100 new ELF/Mach-O fields; archive scanning raised from 1K to 100K members; breaking V4 output schema.</summary>
+  </entry>
+  <entry>
+    <title>stng v1.1.8</title>
+    <link href="https://atomdrift.org/news/2026-04-10-stng-v1.1.8/"/>
+    <id>https://atomdrift.org/news/2026-04-10-stng-v1.1.8/</id>
+    <updated>2026-04-10T00:00:00Z</updated>
+    <summary>Aho-Corasick rewrite of XOR/string classification and parallel disassembly via iced-x86; fixes a PE/XOR bug that was missing office_update-style samples.</summary>
+  </entry>
+  <entry>
+    <title>Atomdrift is here!</title>
+    <link href="https://atomdrift.org/news/2026-03-26-hello-world/"/>
+    <id>https://atomdrift.org/news/2026-03-26-hello-world/</id>
+    <updated>2026-03-26T00:00:00Z</updated>
+    <summary>Atomdrift launches: an open-source pipeline for catching supply-chain attacks the static-binary tools miss. First piece is litmus.</summary>
+  </entry>
+  <entry>
+    <title>litmus v1.0.0</title>
+    <link href="https://atomdrift.org/news/2026-03-26-litmus-v1.0.0/"/>
+    <id>https://atomdrift.org/news/2026-03-26-litmus-v1.0.0/</id>
+    <updated>2026-03-26T00:00:00Z</updated>
+    <summary>First tagged release. Open-source malware classifier with TreeSHAP-explained verdicts; CPU-only, offline, no telemetry. Default model is beta — not production-ready yet.</summary>
+  </entry>
+</feed>

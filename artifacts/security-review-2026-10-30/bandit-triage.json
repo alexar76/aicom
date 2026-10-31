@@ -1,0 +1,62 @@
+{
+  "results": 1925,
+  "errors": 0,
+  "lines": 506518,
+  "high": [
+    {
+      "path": "aimarket-playground/scripts/smoke_starters.py",
+      "line": 24,
+      "rule": "B602",
+      "disposition": "Local smoke helper executes commands from the tracked starter catalog; no remote request input."
+    },
+    {
+      "path": "alien-monitor/backend/onchain_refs.py",
+      "line": 72,
+      "rule": "B324",
+      "disposition": "Non-authentication hash: cache key, mock address or event deduplication. No signature/password validation."
+    },
+    {
+      "path": "histor/histor/app.py",
+      "line": 118,
+      "rule": "B613",
+      "disposition": "Defensive list/regex intentionally contains invisible characters to detect them."
+    },
+    {
+      "path": "momus/momus/security.py",
+      "line": 39,
+      "rule": "B613",
+      "disposition": "Defensive list/regex intentionally contains invisible characters to detect them."
+    },
+    {
+      "path": "pantheon/novel/scripts/build_audiobooks.py",
+      "line": 207,
+      "rule": "B324",
+      "disposition": "Non-authentication hash: cache key, mock address or event deduplication. No signature/password validation."
+    },
+    {
+      "path": "skopos/dashboard.py",
+      "line": 121,
+      "rule": "B324",
+      "disposition": "Non-authentication hash: cache key, mock address or event deduplication. No signature/password validation."
+    },
+    {
+      "path": "skopos/skopos/db.py",
+      "line": 270,
+      "rule": "B324",
+      "disposition": "Non-authentication hash: cache key, mock address or event deduplication. No signature/password validation."
+    },
+    {
+      "path": "skopos/skopos/ssh.py",
+      "line": 92,
+      "rule": "B507",
+      "disposition": "AutoAddPolicy is behind explicit nondefault SKOPOS_SSH_STRICT_HOST_KEYS opt-out; default RejectPolicy verified in source."
+    },
+    {
+      "path": "warden/scripts/scanner-comparison/build_mcptox.py",
+      "line": 28,
+      "rule": "B605",
+      "disposition": "Offline research dataset builder constructs a shell command from operator paths. Local-only shell/path quoting risk remains; not a production protocol endpoint."
+    }
+  ],
+  "medium_and_low": "Raw findings retained; not all individually reviewed."
+}

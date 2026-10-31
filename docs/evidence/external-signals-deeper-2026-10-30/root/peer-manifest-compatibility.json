@@ -1,0 +1,34 @@
+{
+  "verified_at_utc": "2026-10-30T04:24:12.858898+00:00",
+  "source": "aimarket-hub/aimarket_hub/signing.py",
+  "source_sha256": "4d2529b45860285d7966882f57e3d075b76c37995c4206fd8079590297a3b686",
+  "method": "Only the local manifest_canonical pure method extracted via AST; Ed25519 checked with cryptography. No full protocol certification, invokes, transactions, beneficial-owner verification or live assay.",
+  "records": [
+    {
+      "name": "machina",
+      "protocol_version": "v2",
+      "tools": 8,
+      "all_tools_have_input_schema": true,
+      "signature_is_object": false,
+      "signature_key_matches_discovery": false,
+      "ed25519_valid_for_hub_manifest_canonical": false,
+      "negative_control_modified_description_valid": false,
+      "ed25519_valid_for_compact_sorted_document": true,
+      "generated_at": "2026-10-30T04:22:38.703780+00:00",
+      "canonical_sha256": "8b4bac03159f8cec9a0a539d877f7cc48caa76eb07d104d441cceadd92e27764"
+    },
+    {
+      "name": "agentexec",
+      "protocol_version": "v1",
+      "tools": 15,
+      "all_tools_have_input_schema": true,
+      "signature_is_object": true,
+      "signature_key_matches_discovery": true,
+      "ed25519_valid_for_hub_manifest_canonical": true,
+      "negative_control_modified_description_valid": false,
+      "ed25519_valid_for_compact_sorted_document": false,
+      "generated_at": "2026-10-30T04:22:38.969Z",
+      "canonical_sha256": "5e2547b91adc44aec1988385ff88fc3a1d1e314c250ecca875141c4c9e7fd12b"
+    }
+  ]
+}

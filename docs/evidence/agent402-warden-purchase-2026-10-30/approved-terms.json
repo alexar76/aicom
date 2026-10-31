@@ -1,0 +1,468 @@
+{
+  "at_utc": "2026-10-30T04:36:24.633Z",
+  "approved": {
+    "amount": "10000",
+    "payTo": "0x77065d81e18ad403bcd6e9a0616b288e16744121",
+    "network": "eip155:8453",
+    "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "scheme": "exact",
+    "domain": {
+      "name": "USD Coin",
+      "version": "2"
+    }
+  },
+  "payment_required": {
+    "x402Version": 2,
+    "error": "Payment required",
+    "resource": {
+      "url": "https://agent402.tools/api/route/execute",
+      "description": "Describe a task in plain language (or name a tool slug) and the Smart Order Router resolves the best-matching tool across this catalog and the open x402/MPP seller index, then runs it in the same call and returns the result with a receipt. Flat price covers any tool listed at $0.005 or less.",
+      "mimeType": "application/json",
+      "serviceName": "Route and execute",
+      "tags": [
+        "agent",
+        "router",
+        "sor",
+        "execute",
+        "dispatch"
+      ],
+      "iconUrl": "https://agent402.tools/favicon.ico"
+    },
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "10000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USD Coin",
+          "version": "2"
+        },
+        "outputSchema": {
+          "type": "object"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "eip155:137",
+        "amount": "10000",
+        "asset": "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+        "payTo": "0xaBF4FAbd7c416fB67202E5f9002389Fc75e2a9D0",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USD Coin",
+          "version": "2"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "eip155:42161",
+        "amount": "10000",
+        "asset": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+        "payTo": "0xaBF4FAbd7c416fB67202E5f9002389Fc75e2a9D0",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USD Coin",
+          "version": "2"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "eip155:143",
+        "amount": "10000",
+        "asset": "0x754704Bc059F8C67012fEd69BC8A327a5aafb603",
+        "payTo": "0xaBF4FAbd7c416fB67202E5f9002389Fc75e2a9D0",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USDC",
+          "version": "2"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "eip155:43114",
+        "amount": "10000",
+        "asset": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+        "payTo": "0xaBF4FAbd7c416fB67202E5f9002389Fc75e2a9D0",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USD Coin",
+          "version": "2"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "eip155:1329",
+        "amount": "10000",
+        "asset": "0xe15fC38F6D8c56aF07bbCBe3BAf5708A2Bf42392",
+        "payTo": "0xaBF4FAbd7c416fB67202E5f9002389Fc75e2a9D0",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USDC",
+          "version": "2"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "eip155:10",
+        "amount": "11000",
+        "asset": "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
+        "payTo": "0xaBF4FAbd7c416fB67202E5f9002389Fc75e2a9D0",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USD Coin",
+          "version": "2"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "eip155:4663",
+        "amount": "10000",
+        "asset": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168",
+        "payTo": "0xaBF4FAbd7c416fB67202E5f9002389Fc75e2a9D0",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "Global Dollar",
+          "version": "1"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "eip155:42220",
+        "amount": "10000",
+        "asset": "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+        "payTo": "0xaBF4FAbd7c416fB67202E5f9002389Fc75e2a9D0",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USDC",
+          "version": "2"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "eip155:5042",
+        "amount": "10000",
+        "asset": "0x3600000000000000000000000000000000000000",
+        "payTo": "0xaBF4FAbd7c416fB67202E5f9002389Fc75e2a9D0",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USDC",
+          "version": "2"
+        }
+      },
+      {
+        "scheme": "upto",
+        "network": "eip155:8453",
+        "amount": "10000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USD Coin",
+          "version": "2",
+          "assetTransferMethod": "permit2",
+          "facilitatorAddress": "0x14fDa13953Fc30428938E6BF950d036e77214e52"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+        "amount": "10000",
+        "asset": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "payTo": "J7aN3PLJnTCF5qpEnvJHJsnCjcGuqC2rYtEM8Gv3xwg",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "feePayer": "BENrLoUbndxoNMUS5JXApGMtNykLjFXXixMtpDwDR9SP"
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "stellar:pubnet",
+        "amount": "100000",
+        "asset": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75",
+        "payTo": "GDNJXCKW7ZM7GEEVP674TWPU26YJNBQ2FI4ZIPRKTPTNUEJMDHFJWWRL",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "areFeesSponsored": true
+        }
+      },
+      {
+        "scheme": "exact",
+        "network": "algorand:wGHE2Pwdvd7S12BL5FaOP20EGYesN73k",
+        "amount": "10000",
+        "asset": "31566704",
+        "payTo": "W4GZHN36X35LGSJTTLNZNFPGSSBLMJKFLCMZK4NBLQGUS6PYPPCDB67UOE",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "tag": "x402-global-challenge",
+          "feePayer": "ZMFK2OI7ZBD2U27ISERZC4S6LKM6WMFJPZQ4MYNJDZ2VNBNMBA67RA22AA"
+        }
+      }
+    ],
+    "extensions": {
+      "bazaar": {
+        "info": {
+          "input": {
+            "type": "http",
+            "bodyType": "json",
+            "body": {
+              "task": "look up the DNS records of a domain",
+              "params": {
+                "name": "example.com",
+                "type": "A"
+              }
+            },
+            "method": "POST"
+          },
+          "output": {
+            "type": "json",
+            "example": {
+              "truncated": true,
+              "note": "full example in /openapi.json"
+            }
+          }
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "http"
+                },
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "POST"
+                  ]
+                },
+                "bodyType": {
+                  "type": "string",
+                  "enum": [
+                    "json",
+                    "form-data",
+                    "text"
+                  ]
+                },
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "task": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "params": {
+                      "type": "object"
+                    },
+                    "include": {
+                      "type": "string"
+                    },
+                    "maxUsd": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "method",
+                "bodyType",
+                "body"
+              ],
+              "additionalProperties": false
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "example": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            }
+          },
+          "required": [
+            "input"
+          ]
+        }
+      },
+      "builder-code": {
+        "info": {
+          "a": "bc_b4aw4uzd"
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,32}$",
+              "description": "App builder code"
+            },
+            "w": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,32}$",
+              "description": "Wallet builder code"
+            },
+            "s": {
+              "type": "array",
+              "maxItems": 11,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]{1,32}$"
+              },
+              "description": "Service builder codes"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "payment-identifier": {
+        "info": {
+          "required": false
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 128,
+              "pattern": "^[a-zA-Z0-9_-]+$"
+            }
+          },
+          "required": [
+            "required"
+          ]
+        }
+      }
+    }
+  },
+  "route": {
+    "seller": "https://modelmarket.dev",
+    "sellerHome": "https://modelmarket.dev",
+    "sellerName": "AIMarket",
+    "slug": "wardenScan",
+    "name": "WARDEN verdict on an MCP server's tools/list: allow or block, a 0-1 score and every finding with the matched text (promp",
+    "method": "POST",
+    "route": "/x402/warden-scan",
+    "url": "https://modelmarket.dev/x402/warden-scan",
+    "price": "$0.001",
+    "priceUsd": 0.001,
+    "priceKnown": true,
+    "payable": "x402",
+    "responseContract": {
+      "state": "declared",
+      "source": "seller_openapi",
+      "successVariants": 1,
+      "jsonSchemas": 1,
+      "guaranteedPaths": [
+        "engine",
+        "engine.package",
+        "service",
+        "status",
+        "verdict",
+        "verdict.allow",
+        "verdict.findings",
+        "verdict.score"
+      ],
+      "runtimeVerified": false
+    },
+    "requestContract": {
+      "state": "declared",
+      "source": "seller_openapi",
+      "required": {
+        "body": [
+          "tools"
+        ]
+      },
+      "optional": {
+        "body": [
+          "server"
+        ]
+      },
+      "runtimeVerified": false
+    },
+    "why": {
+      "score": 7,
+      "matchedOn": {
+        "slug": 4,
+        "name": 2,
+        "text": 1
+      },
+      "health": 1,
+      "healthSource": "crawl",
+      "priceRank": 0.001,
+      "bazaarPayers30d": null,
+      "bazaarCurated": false,
+      "tiebreaks": [
+        "score",
+        "health",
+        "distinct payers, last 30 days (Bazaar)",
+        "cheapest known price",
+        "curated (Bazaar)",
+        "shorter slug"
+      ]
+    },
+    "category": "mcp",
+    "description": "WARDEN verdict on an MCP server's tools/list: allow or block, a 0-1 score and every finding with the matched text (prompt injection, secret requests, exfiltration, hidden Unicode). Deterministic published rules, no network.",
+    "tags": [
+      "mcp",
+      "security",
+      "prompt-injection",
+      "firewall"
+    ],
+    "score": 7,
+    "health": 1,
+    "networks": [
+      "eip155:8453"
+    ],
+    "evmDomainByNetwork": {
+      "eip155:8453": {
+        "name": "USD Coin",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "version": "2"
+      }
+    },
+    "untrustedContent": true,
+    "source": "https://modelmarket.dev",
+    "paymentNetworksKnown": true,
+    "routerDispatchEligible": false,
+    "routerDispatchReason": "settlement_required",
+    "routerDispatchByChain": {
+      "base": {
+        "eligible": false,
+        "reason": "settlement_required",
+        "detail": "below the settlement floor",
+        "unprovenTier": true,
+        "unprovenMaxUsd": 0.01
+      }
+    },
+    "executeVia": {
+      "tool": "route-execute",
+      "price": "$0.01",
+      "underlyingPriceUsd": 0.001,
+      "routingFeeUsd": 0.009
+    },
+    "executeViaCallableNow": true,
+    "executeViaLane": "unproven"
+  },
+  "key_loaded": false,
+  "signed": false
+}

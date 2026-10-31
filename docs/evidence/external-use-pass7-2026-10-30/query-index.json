@@ -1,0 +1,272 @@
+{
+  "attempted_queries": 43,
+  "unique_attempted_queries": 43,
+  "returned_query_batch_members": 35,
+  "error_batch_members": 4,
+  "blocked_batch_members": 4,
+  "prior_structured_query_strings": 806,
+  "prior_json_files_parsed": 854,
+  "exact_prior_repeats": 0,
+  "new_returned_query_strings": 35,
+  "queries": [
+    {
+      "query": "\"histor-mcp-tool-definitions\" (citation OR analysis OR notebook OR dataset) -site:dev.to -site:github.com/alexar76 -site:huggingface.co/datasets/alexar76 -site:alexar76.github.io",
+      "file": "search-0.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"alexar76/warden\" -site:github.com/alexar76 -site:dev.to -site:glama.ai -site:odel.app -site:mcprepository.com -site:agentsearch.luthersystems.com",
+      "file": "search-0.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"aimarket-protocol\" -site:github.com/alexar76 -site:dev.to -site:alexar76.github.io -site:modelmarket.dev",
+      "file": "search-0.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"symmartys\" -site:modelmarket.dev -site:github.com/alexar76 -site:dev.to -site:pypi.org -site:getsafety.com",
+      "file": "search-0.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:ruanyifeng.com OR site:linux.do OR site:v2ex.com OR site:zhihu.com)",
+      "file": "search-1.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"alexar76\" (site:weibo.com OR site:mp.weixin.qq.com OR site:bilibili.com)",
+      "file": "search-1.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:reddit.com/r/mcp OR site:reddit.com/r/ClaudeAI OR site:reddit.com/r/LocalLLaMA)",
+      "file": "search-1.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"PingBlip\" (site:tiktok.com OR site:instagram.com OR site:facebook.com OR site:threads.com)",
+      "file": "search-1.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"0xe2d8dc842fc5037c99c332bd57baaba3649f66c2\"",
+      "file": "search-10.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"0xb1c54f290cd1ec7cd98e0537f0068aee15ceec978f2313ba33fb048c15913dd5\"",
+      "file": "search-10.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"0xe2d8dc842fc503\" (\"agent\" OR \"wallet\" OR \"probe\") -site:agenteconomy.report",
+      "file": "search-10.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"HISTOR\" \"MTL/1\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:alexar76.github.io -site:glama.ai",
+      "file": "search-2.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"WARDEN\" \"ruleset v16\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:npmjs.com",
+      "file": "search-2.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"AIMarket\" \"manifest_canonical\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev",
+      "file": "search-2.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"PingBlip\" (\"游玩\" OR \"プレイ\" OR \"играю\" OR \"joguei\" OR \"gespielt\") -site:github.com/alexar76 -site:dev.to",
+      "file": "search-2.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"alexar76\" (\"menggunakan\" OR \"đã dùng\" OR \"denedim\" OR \"kullandım\") -site:github.com/alexar76 -site:dev.to",
+      "file": "search-3.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"modelmarket.dev\" (\"استخدمت\" OR \"تجربة\" OR \"استفاده\" OR \"جربت\")",
+      "file": "search-3.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"WARDEN\" \"MCP\" (\"alexar76\" OR \"@aimarket\") (\"teste\" OR \"prueba\" OR \"essai\") -site:dev.to -site:github.com/alexar76",
+      "file": "search-3.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"Attested Memory\" \"alexar76\" -site:github.com/alexar76 -site:dev.to -site:glama.ai -site:odel.app -site:protocolprobe.com",
+      "file": "search-3.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"igor-holt/momus\"",
+      "file": "search-4.json",
+      "state": "error",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"alexar76\" (site:geeknews.jp OR site:news.hada.io OR site:itmedia.co.jp OR site:gihyo.jp)",
+      "file": "search-4.json",
+      "state": "error",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:indiehackers.com OR site:lobste.rs OR site:news.hada.io)",
+      "file": "search-4.json",
+      "state": "error",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"PingBlip\" (site:gamejolt.com OR site:newgrounds.com OR site:indiedb.com OR site:cohost.org)",
+      "file": "search-4.json",
+      "state": "error",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"HISTOR\" \"tool definitions\" \"used\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:alexar76.github.io -site:libhunt.com -site:pypi.org -site:glama.ai",
+      "file": "search-5.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"WARDEN\" \"MCP\" \"I tried\" \"aimarket\" -site:dev.to",
+      "file": "search-5.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"modelmarket.dev\" \"workflow\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:glama.ai -site:odel.app",
+      "file": "search-5.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"attested_memory\" \"Client\" -site:github.com/alexar76 -site:attestedmemory.net -site:pypi.org -site:dev.to -site:glama.ai",
+      "file": "search-5.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"0xe2d8dc842fc503\" -site:agenteconomy.report",
+      "file": "search-6.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"agent-exec.448c.org\" (\"github\" OR \"source\" OR \"AIMarket\")",
+      "file": "search-6.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"alexar76\" (site:lemmy.world OR site:lemmy.ml OR site:programming.dev OR site:discuss.huggingface.co)",
+      "file": "search-6.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:discuss.langchain.com OR site:forum.langchain.com OR site:community.crewai.com OR site:community.openai.com)",
+      "file": "search-6.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:hashnode.com OR site:blogspot.com OR site:wordpress.com) -alexar76",
+      "file": "search-7.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"histor.modelmarket.dev\" (site:kaggle.com OR site:colab.research.google.com OR site:observablehq.com)",
+      "file": "search-7.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"AttestedMemory\" (site:medium.com OR site:substack.com OR site:linkedin.com) -alexar76",
+      "file": "search-7.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"PingBlip\" (site:touch-arcade.com OR site:pocketgamer.com OR site:itch.io/blog OR site:gamedev.net)",
+      "file": "search-7.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"alexar76/warden\" (site:nuget.org OR site:crates.io OR site:pkg.go.dev OR site:rubygems.org)",
+      "file": "search-8.json",
+      "state": "blocked_batch",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"aimarket-hub\" (site:gitlab.com OR site:codeberg.org OR site:gitee.com) -site:github.com",
+      "file": "search-8.json",
+      "state": "blocked_batch",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"histor-mcp-tool-definitions\" (site:zenodo.org OR site:arxiv.org OR site:openreview.net) -23512760 -23512759 -site:zenodo.org/records/23512760",
+      "file": "search-8.json",
+      "state": "blocked_batch",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"modelmarket.dev\" (site:news.ycombinator.com OR site:lobste.rs) -50193565 -50223414",
+      "file": "search-8.json",
+      "state": "blocked_batch",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"The Weight of the Answer\" (review OR reading OR Minaeva) -site:leafed.app -site:dev.to -site:modelmarket.dev -site:github.com/alexar76",
+      "file": "search-9.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"The White on the Map\" -site:leafed.app -site:modelmarket.dev -site:dev.to -site:github.com/alexar76",
+      "file": "search-9.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"Вес ответа\" \"Минаева\" -site:author.today -site:modelmarket.dev -site:fanfics.me",
+      "file": "search-9.json",
+      "state": "returned",
+      "exact_prior_match": false
+    },
+    {
+      "query": "\"pantheon.modelmarket.dev\" -site:modelmarket.dev -site:github.com/alexar76 -site:dev.to",
+      "file": "search-9.json",
+      "state": "returned",
+      "exact_prior_match": false
+    }
+  ],
+  "limits": "Batch membership is not per-query execution confirmation. Failed or robots-blocked batches are not counted as successful coverage. Literal structured-field deduplication only, not semantic deduplication."
+}

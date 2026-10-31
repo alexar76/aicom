@@ -55,6 +55,14 @@ for forbidden in .env .env.local .env.production dioscuri.config.json argus.conf
   fi
 done
 
+# The private-host policy is read from the trusted workspace, never shipped in
+# the candidate tree. It is excluded from its own content rule below, so reject
+# the file explicitly rather than allowing its address list to leave unnoticed.
+if find "$clone" -type d -name .git -prune -o -name .mirror-forbidden-hosts -print -quit | grep -q .; then
+  echo "error: internal private-host policy file in mirror tree" >&2
+  fail=1
+fi
+
 # Runtime secret files inside data/ (directory itself may exist e.g. alien-monitor fixtures).
 if [[ -f "$clone/data/.env" ]] || find "$clone/data" -name '.env' -print -quit 2>/dev/null | grep -q .; then
   echo "error: .env under data/ must not be mirrored" >&2
@@ -105,6 +113,16 @@ if [[ -n "$forbidden_hosts" ]]; then
     -g '!scripts/scrub_private_hosts.sh' \
     "$clone"; then
     echo "error: private server IP/hostname literal in mirror tree" >&2
+    # Paths only: never print matched lines, host values or the policy contents.
+    rg -l --null --hidden --no-ignore -F "${rg_host_args[@]}" \
+      -g '!.git' -g '!.mirror-forbidden-hosts' \
+      -g '!scripts/scrub_private_hosts.sh' "$clone" \
+      | "$python" -c 'import json, os, sys
+root = sys.argv[1]
+paths = sorted(set(p for p in sys.stdin.buffer.read().decode("utf-8", "replace").split("\0") if p))
+for path in paths:
+    print("  file: " + json.dumps(os.path.relpath(path, root)), file=sys.stderr)
+' "$clone"
     fail=1
   fi
 elif [[ "${MIRROR_ALLOW_NO_HOST_LIST:-0}" == "1" ]]; then

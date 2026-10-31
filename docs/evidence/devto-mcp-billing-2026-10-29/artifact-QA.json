@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "reviewDate": "2026-10-29",
+  "articleTitle": "Our MCP probe missed the paid default",
+  "articleSha256": "cb9bbeafe27389f88e971b1c98aa636a4f77628e9c26f0a9a2decd4553670002",
+  "inlineCodeMatchesTestedDemo": true,
+  "demoCases": 7,
+  "figures": [
+    {
+      "file": "assets/01-cover.png",
+      "size": [
+        1933,
+        813
+      ],
+      "sha256": "04c19e04de80842f8ab91b88175f4b47e083e25463935d74e726455fe8f6bcf6",
+      "alt": "Identical software messages travel above an empty tray and a hidden compartment collecting tokens. Editorial illustration."
+    },
+    {
+      "file": "assets/02-probe-vs-default.png",
+      "size": [
+        1280,
+        816
+      ],
+      "sha256": "76e736d2ae01030d3f53a2f79a692eb7633bcf8f5e06eae5f55cb28bfb6a1c4f",
+      "alt": "The HISTOR probe selects preview and records zero mock credits. An empty argument object selects the handler purchase default and records seven mock credits."
+    },
+    {
+      "file": "assets/03-charge-before-failure.png",
+      "size": [
+        1280,
+        842
+      ],
+      "sha256": "e3938e96ec66ee3f97fe7d1c0390b67c16754160373b2db122da974058980d57",
+      "alt": "Two timelines show a seven-credit charge preceding a tool error or client timeout. A separate retry strip shows one charge for two calls with the same operation key."
+    }
+  ],
+  "preview": {
+    "desktop": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "images": [
+        {
+          "src": "assets/01-cover.png",
+          "ok": true
+        },
+        {
+          "src": "assets/02-probe-vs-default.png",
+          "ok": true
+        },
+        {
+          "src": "assets/03-charge-before-failure.png",
+          "ok": true
+        }
+      ]
+    },
+    "mobile": {
+      "width": 390,
+      "scrollWidth": 390
+    }
+  },
+  "visualReview": "Desktop top, flow figure, results table and failure figure; mobile top and code section inspected. Diagrams separately reviewed at 1280 and800px. Code/table scroll within containers on narrow screens.",
+  "publicationsPerformed": false
+}

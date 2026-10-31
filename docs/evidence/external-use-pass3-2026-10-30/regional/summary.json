@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Europe/Moscow",
+  "web_queries": 28,
+  "captured_gets": 3,
+  "new_independent_mentions": [
+    {
+      "url": "https://juejin.cn/post/7696713457148952630",
+      "title": "越权链的三个可检测点：从&quot;检测意图&quot;转向&quot;检测角色被使用&quot;（附可运行检测器）",
+      "author": "文谦南宁AI普工",
+      "published_at_utc": "2026-10-15T15:14:00+00:00",
+      "modified_at_utc": "2026-10-15T15:27:23+00:00",
+      "published_at_msk": "2026-10-15 18:14",
+      "modified_at_msk": "2026-10-15 18:27",
+      "classification": "external technical synthesis using our published benchmark; no independent rerun or runtime installation confirmed",
+      "markers": [
+        "WARDEN 0.9.0",
+        "171/218",
+        "mcp-shield1.0.4=41",
+        "mcp-audit0.18.2=25",
+        "45servers22/23split",
+        "485poisonedtools",
+        "TOOL_DEF_CROSS_TOOL"
+      ],
+      "references_in_text": [
+        "DEV Community",
+        "Web Pulse"
+      ],
+      "direct_alexar76_or_modelmarket_href": false,
+      "mirror": "https://jishuzhan.net/article/2110937529516318721",
+      "mirror_deduplicated": true,
+      "new_to_checked_baseline": true,
+      "limits": [
+        "Original post from15Oct, newly discovered30Oct",
+        "Not a statement of runtime use or independent measurement",
+        "No source code examples executed",
+        "Public authorship distinct from known own profiles; beneficial ownership not investigated"
+      ]
+    }
+  ],
+  "new_runtime_uses": [],
+  "report": "report.ru.md",
+  "validation": {
+    "get_count": 3,
+    "status200": 3,
+    "hash_errors": [],
+    "query_count": 28,
+    "unique_queries": 28
+  },
+  "mutations": "local evidence only; no external messages, GitHub writes, payment or foreign code execution"
+}

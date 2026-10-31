@@ -1,0 +1,54 @@
+{
+  "orders": [
+    {
+      "order": "original",
+      "transaction": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70",
+      "service_usdc": "0.001",
+      "network_fee_eth": "5.01902005655E-7",
+      "total_usd_at_recorded_rate": "0.00212272950600179977940305",
+      "checks_passed": 10
+    },
+    {
+      "order": "a2a-fixed",
+      "transaction": "0x478637aabfeb2a2ab0a0627cd706a6d75862e894d478488cc34db15baf036de9",
+      "service_usdc": "0.001",
+      "network_fee_eth": "5.02840259518E-7",
+      "total_usd_at_recorded_rate": "0.00212468891053237541833052",
+      "checks_passed": 10
+    },
+    {
+      "order": "mcp-paid",
+      "transaction": "0x6d1082db9b7fe841b5700a88c27c52e6e310077bc6a9eb5f811da391652ce342",
+      "service_usdc": "0.001",
+      "network_fee_eth": "5.0307999868E-7",
+      "total_usd_at_recorded_rate": "0.0021252251284899036832952",
+      "checks_passed": 10
+    }
+  ],
+  "total_service_usdc": "0.003",
+  "total_network_fee_eth": "0.000001507822263853",
+  "approx_total_usd": "0.00637264354502407888102877",
+  "additional_two_payments_approx_total_usd": "0.00424991403902227910162572",
+  "additional_two_payments_user_limit_usd": "0.02",
+  "additional_two_explicitly_authorized": true,
+  "a2a_postfix_checks": {
+    "actual_example_exit": 0,
+    "receipt_verified": true,
+    "weather_delivered": true,
+    "same_cli_replay_exit": 0,
+    "same_cli_replay_does_not_send_message_or_pay": true
+  },
+  "mcp_paid_checks": {
+    "paid_mcp_success": true,
+    "weather_delivered": true,
+    "provider_receipt_verified": true,
+    "same_settled_payment_rejected_on_replay": true
+  },
+  "automated_unique_passed": 491,
+  "automated_skipped": 2,
+  "wallet_reconciliation": {
+    "usdc_decrease_atomic": 3000,
+    "eth_decrease_wei": "1507822263853",
+    "matches_all_three_receipts": true
+  }
+}

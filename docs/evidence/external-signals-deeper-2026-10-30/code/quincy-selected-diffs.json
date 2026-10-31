@@ -1,0 +1,397 @@
+{
+  "quincy-price-fix": {
+    "url": "https://github.com/QuincyGB/route-verdict/commit/5a36f743d0b2b9b6dd42ee075f25d138e738e166",
+    "sha": "5a36f743d0b2b9b6dd42ee075f25d138e738e166",
+    "author_time_utc": "2026-10-29T12:18:08Z",
+    "message": "Fix sub-cent price rendering; diff now reports schema contract changes\n\nformat_price rendered a $0.001 endpoint as '$0.00' (two-decimal float\nformat). It now computes with Decimal and preserves exact sub-cent\nprecision ('$0.001', '$0.005'), never '$0.00' for a nonzero price.\nRegression tests added (aicom review, 2026-10-29).\n\nRouteVerdict also gains the schema/contract distinction alexar76\nasked for: each check stores the published schema's field->type\ncontract map beside its quality score, and compute_diff compares the\ntwo axes separately (schema_score_stability vs contract_stability).\nAn output field flipping string -> number now produces a named\ncontract_change entry even when both scores stay 100. Legacy stored\nresults report contract stability 'unknown'. Verdict scoring is\nunchanged.",
+    "files": [
+      {
+        "filename": "app/checker.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/5a36f743d0b2b9b6dd42ee075f25d138e738e166/app%2Fchecker.py",
+        "selected_added_lines": [
+          "+def _contract_of(result: dict) -> dict | None:",
+          "+def _contract_change_entries(",
+          "+                    \"kind\": \"contract_change\",",
+          "+    GRADE of the published schema, while \"contract_stability\" tracks",
+          "+            \"contract_stability\": \"unknown\",",
+          "+    before_contract, after_contract = _contract_of(prior), _contract_of(current)",
+          "+        contract_stability = \"unknown\"",
+          "+        contract_stability = \"stable\"",
+          "+        contract_stability = \"changed\"",
+          "+        entries, overflow = _contract_change_entries(",
+          "+                    \"kind\": \"contract_change_overflow\",",
+          "+            \"contract_stability\": contract_stability,",
+          "+        if c.get(\"kind\", \"\").startswith(\"contract_change\"):",
+          "+        \"contract_stability\": contract_stability,"
+        ]
+      },
+      {
+        "filename": "app/parsers.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/5a36f743d0b2b9b6dd42ee075f25d138e738e166/app%2Fparsers.py",
+        "selected_added_lines": [
+          "+from decimal import Decimal",
+          "+    the value is computed with Decimal from the raw units, so a nonzero",
+          "+    value = Decimal(units) / (Decimal(10) ** decimals)"
+        ]
+      },
+      {
+        "filename": "app/schema_quality.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/5a36f743d0b2b9b6dd42ee075f25d138e738e166/app%2Fschema_quality.py",
+        "selected_added_lines": [
+          "+def _contract_fields(schema: object, prefix: str, out: dict, depth: int = 0) -> dict:",
+          "+            _contract_fields(props[name], f\"{prefix}.{name}\", out, depth + 1)",
+          "+        _contract_fields(items, f\"{prefix}[]\", out, depth + 1)",
+          "+    return {\"output\": _contract_fields(output[\"schema\"], \"$\", {})}"
+        ]
+      },
+      {
+        "filename": "tests/test_diff.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/5a36f743d0b2b9b6dd42ee075f25d138e738e166/tests%2Ftest_diff.py",
+        "selected_added_lines": [
+          "+def test_field_type_flip_is_contract_change_with_stable_score():",
+          "+    assert d[\"contract_stability\"] == \"changed\"",
+          "+    contract_changes = [c for c in d[\"changes\"] if c.get(\"kind\") == \"contract_change\"]",
+          "+    assert len(contract_changes) == 1",
+          "+    entry = contract_changes[0]",
+          "+def test_identical_contract_is_stable():",
+          "+    assert d[\"contract_stability\"] == \"stable\"",
+          "+def test_legacy_results_without_contract_report_unknown():",
+          "+    assert d[\"contract_stability\"] == \"unknown\"",
+          "+    assert [c for c in d[\"changes\"] if c.get(\"kind\") == \"contract_change\"] == []",
+          "+def test_contract_field_added_and_removed():",
+          "+    assert d[\"contract_stability\"] == \"changed\"",
+          "+def test_score_change_without_contract_change():",
+          "+    assert d[\"contract_stability\"] == \"stable\""
+        ]
+      },
+      {
+        "filename": "tests/test_parsers.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/5a36f743d0b2b9b6dd42ee075f25d138e738e166/tests%2Ftest_parsers.py",
+        "selected_added_lines": [
+          "+def test_format_price_preserves_sub_cent_precision():",
+          "+    assert format_price(\"1000\", \"eip155:8453\", USDC) == \"$0.001\"",
+          "+    assert format_price(\"5000\", \"eip155:8453\", USDC) == \"$0.005\"",
+          "+    assert format_price(\"1\", \"eip155:8453\", USDC) == \"$0.000001\"",
+          "+    assert format_price(\"10000\", \"eip155:8453\", USDC) == \"$0.01\"",
+          "+    assert format_price(\"500000\", \"eip155:8453\", USDC) == \"$0.50\"",
+          "+    assert format_price(\"1000000\", \"eip155:8453\", USDC) == \"$1.00\"",
+          "+    assert format_price(\"0\", \"eip155:8453\", USDC) == \"$0.00\""
+        ]
+      },
+      {
+        "filename": "tests/test_schema_quality.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/5a36f743d0b2b9b6dd42ee075f25d138e738e166/tests%2Ftest_schema_quality.py",
+        "selected_added_lines": [
+          "+def test_schema_contract_captures_field_types():",
+          "+def test_schema_contract_distinguishes_type_flip_at_equal_quality():",
+          "+def test_schema_contract_none_without_typed_schema():"
+        ]
+      }
+    ]
+  },
+  "quincy-persistence": {
+    "url": "https://github.com/QuincyGB/route-verdict/commit/15aec9f488494efeaa981fb80cc5800cd5dd7f40",
+    "sha": "15aec9f488494efeaa981fb80cc5800cd5dd7f40",
+    "author_time_utc": "2026-10-30T01:38:01Z",
+    "message": "Check-store persistence: resolve DB onto a mounted volume, report storage in /health\n\nThe diff memory (prior-check sqlite) lived on the container's\nephemeral disk, so every redeploy silently wiped it — a buyer's\nround-2 diff came back 'no prior check on record' after the\n2026-10-29 price-fix deploy (alexar76/aicom#13).\n\nMirror StallRow's pattern: resolve_db_path() picks\nROUTE_VERDICT_DB if set, else /data/route-verdict.db when a\nvolume is mounted at /data, else the plain relative filename;\ndurability is measured (nearest existing ancestor is a mount\npoint), never assumed from the path. Settings gains\ndb_persistent, and /health reports storage.check_store /\nstorage.check_db_path so a reset is visible from outside.\n\nTests: health storage assertion + resolver unit tests (85 pass).",
+    "files": [
+      {
+        "filename": "app/config.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/15aec9f488494efeaa981fb80cc5800cd5dd7f40/app%2Fconfig.py",
+        "selected_added_lines": [
+          "+# persistent only when its nearest existing ancestor directory is a",
+          "+def _path_is_persistent(path: str) -> bool:",
+          "+    \"\"\"Resolve (db_path, persistent) for the check store.\"\"\"",
+          "+        return explicit, _path_is_persistent(explicit)",
+          "+    return default, _path_is_persistent(default)",
+          "+    db_persistent: bool = False",
+          "+    db_path, db_persistent = resolve_db_path()",
+          "+        db_persistent=db_persistent,"
+        ]
+      },
+      {
+        "filename": "app/main.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/15aec9f488494efeaa981fb80cc5800cd5dd7f40/app%2Fmain.py",
+        "selected_added_lines": [
+          "+        # measured at startup (config.resolve_db_path) — \"persistent\"",
+          "+                \"persistent\" if settings.db_persistent else \"ephemeral\""
+        ]
+      },
+      {
+        "filename": "tests/test_config.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/15aec9f488494efeaa981fb80cc5800cd5dd7f40/tests%2Ftest_config.py",
+        "selected_added_lines": [
+          "+    path, persistent = config.resolve_db_path()",
+          "+    assert persistent is False  # tmp_path is not a mount",
+          "+    path, persistent = config.resolve_db_path()",
+          "+    assert persistent is False",
+          "+    path, persistent = config.resolve_db_path()",
+          "+    assert persistent is True"
+        ]
+      },
+      {
+        "filename": "tests/test_paywall.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/15aec9f488494efeaa981fb80cc5800cd5dd7f40/tests%2Ftest_paywall.py",
+        "selected_added_lines": [
+          "+    expected = \"persistent\" if main.settings.db_persistent else \"ephemeral\""
+        ]
+      }
+    ]
+  },
+  "quincy-feed": {
+    "url": "https://github.com/QuincyGB/stall-row/commit/9303c9d6e9862c599711e979a8acba342dc634d7",
+    "sha": "9303c9d6e9862c599711e979a8acba342dc634d7",
+    "author_time_utc": "2026-10-30T01:42:39Z",
+    "message": "Recheck feed: free public JSONL of recent check responses at GET /v1/recheck/feed\n\nEvery completed check now appends its exact response object to a\nrecheck_history table in the watch store (recorded inside recheck()\nitself, so per-call, pack-spent, and scheduled checks are all\nrecorded once). The feed serves the last 100, newest first, as\napplication/x-ndjson — the observatory surface promised to the\naicom survey (alexar76/aicom#13).\n\nWatches that pre-date the history are seeded with one record built\nonly from the stored watch state (watch id, URL, kind, fingerprint\nas current, checked_at); their per-check status/changes/summary\nwere never stored and are omitted, never reconstructed.",
+    "files": [
+      {
+        "filename": "README.md",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/9303c9d6e9862c599711e979a8acba342dc634d7/README.md",
+        "selected_added_lines": [
+          "+a pack id; spends nothing), and `GET /v1/recheck/feed` — the recent"
+        ]
+      },
+      {
+        "filename": "app/discovery.py",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/9303c9d6e9862c599711e979a8acba342dc634d7/app%2Fdiscovery.py",
+        "selected_added_lines": [
+          "+        f\"- `GET {base_url}/v1/recheck/feed` — recent Recheck results as JSONL, newest first (public observatory feed)\",",
+          "+        f\"- GET {base_url}/v1/recheck/feed — free Recheck results feed (JSONL, newest first)\","
+        ]
+      },
+      {
+        "filename": "app/main.py",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/9303c9d6e9862c599711e979a8acba342dc634d7/app%2Fmain.py",
+        "selected_added_lines": [
+          "+        GET  /v1/recheck/feed (public JSONL feed of recent recheck",
+          "+@app.get(\"/v1/recheck/feed\")"
+        ]
+      },
+      {
+        "filename": "app/services/recheck.py",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/9303c9d6e9862c599711e979a8acba342dc634d7/app%2Fservices%2Frecheck.py",
+        "selected_added_lines": [
+          "+history table in the same store, and GET /v1/recheck/feed serves",
+          "+# The public feed's window: GET /v1/recheck/feed serves at most",
+          "+    # GET /v1/recheck/feed serves the recent window as JSONL. The",
+          "+    # moment the next check overwrote the baseline."
+        ]
+      },
+      {
+        "filename": "tests/test_recheck_feed.py",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/9303c9d6e9862c599711e979a8acba342dc634d7/tests%2Ftest_recheck_feed.py",
+        "selected_added_lines": [
+          "+\"\"\"The Recheck JSONL feed: GET /v1/recheck/feed serves the recent",
+          "+    r = http.get(\"/v1/recheck/feed\")",
+          "+    r = http.get(\"/v1/recheck/feed\")"
+        ]
+      }
+    ]
+  },
+  "quincy-history": {
+    "url": "https://github.com/QuincyGB/route-verdict/commit/8750385243aa1aa89e71dbf5fff72f041e7b8286",
+    "sha": "8750385243aa1aa89e71dbf5fff72f041e7b8286",
+    "author_time_utc": "2026-10-30T02:17:20Z",
+    "message": "Per-resource check history read + structured field_changes in diffs\n\n- GET /v1/history?resource_url= (free): every stored check for one\n  resource, oldest first — the read StallRow's unified timeline\n  aggregates. Pure read over the existing checks table.\n- compute_diff gains an additive field_changes array\n  ({path, op, before, after, severity, category}) derived from the\n  comparables and the stored field->type contract maps: a field\n  flipping string -> number at an unchanged score now yields a named\n  type_changed entry (alexar76/aicom#13). Legacy changes[],\n  schema_score_stability and contract_stability keep their meanings.\n- Docs: README, skill.md, llms.txt describe the new read.\nTests: 85 -> 93 passed.",
+    "files": [
+      {
+        "filename": "app/checker.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/8750385243aa1aa89e71dbf5fff72f041e7b8286/app%2Fchecker.py",
+        "selected_added_lines": [
+          "+# machine-readable `field_changes` array:",
+          "+def _contract_field_changes(",
+          "+            \"field_changes\": [],",
+          "+    field_changes: list[dict] = []",
+          "+            field_changes.append(",
+          "+        field_changes.extend(",
+          "+            _contract_field_changes(before_contract, after_contract)",
+          "+            \"field_changes\": field_changes,",
+          "+        \"field_changes\": field_changes,"
+        ]
+      },
+      {
+        "filename": "app/discovery.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/8750385243aa1aa89e71dbf5fff72f041e7b8286/app%2Fdiscovery.py",
+        "selected_added_lines": [
+          "+  `field_changes` array (path, op, before, after, severity, category)"
+        ]
+      },
+      {
+        "filename": "app/main.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/8750385243aa1aa89e71dbf5fff72f041e7b8286/app%2Fmain.py",
+        "selected_added_lines": [
+          "+    (StallRow GET /v1/resource/timeline) aggregates next to Recheck",
+          "+    field_changes shipped simply lack that key — history serves"
+        ]
+      },
+      {
+        "filename": "tests/test_diff.py",
+        "blob_url": "https://github.com/QuincyGB/route-verdict/blob/8750385243aa1aa89e71dbf5fff72f041e7b8286/tests%2Ftest_diff.py",
+        "selected_added_lines": [
+          "+# --- field_changes (structured, additive to legacy changes[]) -------------",
+          "+def _with_contract_map(result, contract):",
+          "+def test_field_changes_empty_without_prior():",
+          "+    assert d[\"field_changes\"] == []",
+          "+def test_field_changes_empty_when_identical():",
+          "+    assert d[\"field_changes\"] == []",
+          "+def test_field_changes_name_payment_moves():",
+          "+    by_path = {fc[\"path\"]: fc for fc in d[\"field_changes\"]}",
+          "+def test_contract_type_flip_named_at_unchanged_score():",
+          "+    schema-quality score stays 100 — field_changes must name it.\"\"\"",
+          "+    contract_a = {\"output\": {\"$\": \"object\", \"$.amount\": \"string\"}}",
+          "+    contract_b = {\"output\": {\"$\": \"object\", \"$.amount\": \"number\"}}",
+          "+    prior = _with_contract_map(_result(), contract_a)",
+          "+    current = _with_contract_map(_result(), contract_b)",
+          "+    assert d[\"contract_stability\"] == \"changed\"",
+          "+    entries = [fc for fc in d[\"field_changes\"] if fc[\"category\"] == \"contract\"]",
+          "+def test_contract_added_removed_required_and_enum_ops():",
+          "+    contract_a = {",
+          "+    contract_b = {",
+          "+        _with_contract_map(_result(), contract_a),",
+          "+        _with_contract_map(_result(), contract_b),",
+          "+    ops = {(fc[\"path\"], fc[\"op\"]) for fc in d[\"field_changes\"]}"
+        ]
+      }
+    ]
+  },
+  "quincy-feed-v2": {
+    "url": "https://github.com/QuincyGB/stall-row/commit/d71698264878f8daccec703b1d1f6d205aad47ff",
+    "sha": "d71698264878f8daccec703b1d1f6d205aad47ff",
+    "author_time_utc": "2026-10-30T02:24:20Z",
+    "message": "Recheck feed v2, baseline pins/imports, field-level diffs, change webhooks, unified timeline\n\nAicom improvements 1-5 (alexar76/aicom#13), all additive:\n- Feed v2: every history record gains seq, record_id, schema_version\n  and a hash chain (prev_hash/record_hash over canonical content);\n  legacy rows backfilled deterministically at store open. Default\n  GET /v1/recheck/feed body is byte-identical; ?v=2 / ?since_seq= /\n  ?watch_id= / ?url= serve envelopes, cursor mode ascending with\n  X-Recheck-Feed-* headers exposing the chain head.\n- GET /v1/recheck/history[/<record_id>]: envelope reads + stateless\n  compare_seq baseline comparison.\n- Baseline pins (a pinned snapshot governs the watch's diff) and\n  imports (validated by recomputing the schema hash from the\n  supplied schema; provenance stored) behind the fleet-internal\n  secret, mirroring /v1/internal/claims-history. No public writes.\n- field_changes[] beside legacy changes[] in every Recheck result,\n  derived from the stored fingerprint components.\n- Per-watch change webhooks (internal-secret config): CHANGED only,\n  HMAC-SHA256 signed over the raw body, SSRF-checked at config and\n  send time, bounded retries, every attempt recorded, dead_letter\n  readable via the authenticated deliveries read.\n- GET /v1/resource/timeline: Recheck events + RouteVerdict\n  /v1/history + latest CDP catalogue snapshot state for one URL,\n  sources named, failures degrade to 'unavailable'.\nTests: 467 -> 484 passed.",
+    "files": [
+      {
+        "filename": "README.md",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/d71698264878f8daccec703b1d1f6d205aad47ff/README.md",
+        "selected_added_lines": [
+          "+and a hash chain over its canonical content — `GET /v1/recheck/feed?v=2&since_seq=N`",
+          "+`url`); `GET /v1/recheck/history[/<record_id>]` reads the same",
+          "+records as JSON; `GET /v1/resource/timeline?url=` merges Recheck",
+          "+carry a structured `field_changes` array beside the legacy"
+        ]
+      },
+      {
+        "filename": "app/discovery.py",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/d71698264878f8daccec703b1d1f6d205aad47ff/app%2Fdiscovery.py",
+        "selected_added_lines": [
+          "+        f\"- `GET {base_url}/v1/recheck/feed?v=2&since_seq=N` — feed v2: each line an envelope (seq, record_id, schema_version, prev_hash, record_hash, record); since_seq is the gap-proof cursor mode (ascending), watch_id / url filter\",",
+          "+        f\"- `GET {base_url}/v1/recheck/history` — recorded check history as envelopes, oldest first (?watch_id=, ?url=, ?compare_seq= for a stateless baseline comparison); `GET {base_url}/v1/recheck/history/<record_id>` — one snapshot\",",
+          "+        f\"- `GET {base_url}/v1/resource/timeline?url=` — unified per-resource timeline: Recheck events + RouteVerdict check history + CDP catalogue snapshot state, each source named\",",
+          "+        \"- Recheck results carry a structured `field_changes` array (path, op, before, after, severity, category) beside the legacy `changes[]`. Watch baselines can be pinned/imported and CHANGED results pushed to a signed per-watch webhook — both mutations are fleet-internal-secret gated (`/v1/internal/recheck/*`), never public writes\",",
+          "+        f\"- GET {base_url}/v1/recheck/feed — free Recheck results feed (JSONL, newest first); ?v=2&since_seq=N for the hash-chained cursor mode\",",
+          "+        f\"- GET {base_url}/v1/recheck/history — free recorded history (envelopes); /v1/recheck/history/<record_id> for one snapshot\",",
+          "+        f\"- GET {base_url}/v1/resource/timeline?url= — free unified per-resource timeline (Recheck + RouteVerdict + catalogue snapshot)\","
+        ]
+      },
+      {
+        "filename": "app/main.py",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/d71698264878f8daccec703b1d1f6d205aad47ff/app%2Fmain.py",
+        "selected_added_lines": [
+          "+        GET  /v1/recheck/history[/<record_id>] (recorded checks as",
+          "+        GET  /v1/resource/timeline?url= (unified per-resource",
+          "+        POST /v1/internal/recheck/baseline/{pin,unpin,import} and",
+          "+    record_id, a schema_version, and a hash chain (prev_hash /",
+          "+    record_hash). Pass ?v=2 — or any of ?watch_id=, ?url=,",
+          "+    schema_version, prev_hash, record_hash, record}. since_seq=N",
+          "+@app.get(\"/v1/recheck/history\")",
+          "+    baseline comparison: the newest record in the filtered history",
+          "+    filtered history) — {changes, field_changes} computed on the",
+          "+        out[\"baseline_pin\"] = _recheck_store.get_pin(pin_key)",
+          "+                \"field_changes\": [],",
+          "+                \"field_changes\": recheck_svc.fingerprint_field_changes(",
+          "+@app.get(\"/v1/recheck/history/{record_id}\")",
+          "+@app.get(\"/v1/resource/timeline\")",
+          "+# --- Recheck watch mutations (baseline pins/imports, change webhooks) ------------",
+          "+    seq: int = Field(description=\"History seq of the snapshot to pin as the baseline\")",
+          "+@app.post(\"/v1/internal/recheck/baseline/pin\")",
+          "+async def internal_baseline_pin(req: BaselinePinRequest, request: Request):",
+          "+    \"\"\"Pin one recorded history snapshot as the watch's baseline:",
+          "+    envelope = _recheck_store.pin_baseline(key, req.seq, source=\"internal-pin\")",
+          "+@app.post(\"/v1/internal/recheck/baseline/unpin\")",
+          "+async def internal_baseline_unpin(req: BaselineUnpinRequest, request: Request):",
+          "+    removed = _recheck_store.unpin_baseline(key)",
+          "+@app.post(\"/v1/internal/recheck/baseline/import\")",
+          "+async def internal_baseline_import(req: BaselineImportRequest, request: Request):",
+          "+    \"\"\"Import an external snapshot as a watch's baseline. The",
+          "+    envelope = _recheck_store.import_baseline("
+        ]
+      },
+      {
+        "filename": "app/services/recheck.py",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/d71698264878f8daccec703b1d1f6d205aad47ff/app%2Fservices%2Frecheck.py",
+        "selected_added_lines": [
+          "+Feed v2 + baselines + webhooks (2026-10-29, aicom improvements",
+          "+unchanged, the envelope rides the v2 parameters. A baseline PIN",
+          "+governs a watch's diff while it exists; an imported baseline is",
+          "+provenance. Results carry a structured field_changes array beside",
+          "+# a record_id, a schema_version, and a hash chain (prev_hash /",
+          "+# record_hash over the record's canonical JSON). A poller reading",
+          "+# silently dropped: seqs are continuous and each record_hash",
+          "+def _chain_hash(prev_hash: str, record: dict) -> str:",
+          "+        f\"{prev_hash}\\n{_canonical_record_json(record)}\".encode(\"utf-8\")",
+          "+            # Feed v2 (seq + hash chain), baseline pins, and the",
+          "+                CREATE TABLE IF NOT EXISTS recheck_baseline_pins (",
+          "+                (\"schema_version\", \"INTEGER\"),",
+          "+                (\"prev_hash\", \"TEXT\"),",
+          "+                (\"record_hash\", \"TEXT\"),",
+          "+    # feed_meta carries the chain head: next_seq + last record_hash.",
+          "+                \"SELECT id, response_json, seq, record_hash \"",
+          "+            prev_hash = self._feed_meta(\"last_hash\") or _FEED_GENESIS",
+          "+                    prev_hash = head[3] or _FEED_GENESIS",
+          "+                record_hash = _chain_hash(prev_hash, record)",
+          "+                record_id = f\"rec_{record_hash[:24]}\"",
+          "+                    \"schema_version = ?, prev_hash = ?, record_hash = ? \"",
+          "+                        prev_hash,",
+          "+                        record_hash,",
+          "+                prev_hash = record_hash",
+          "+            self._set_feed_meta(\"last_hash\", prev_hash)",
+          "+        \"seq, record_id, schema_version, prev_hash, record_hash, response_json\"",
+          "+            \"schema_version\": row[2],",
+          "+            \"prev_hash\": row[3],"
+        ]
+      },
+      {
+        "filename": "app/services/timeline.py",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/d71698264878f8daccec703b1d1f6d205aad47ff/app%2Fservices%2Ftimeline.py",
+        "selected_added_lines": [
+          "+\"\"\"The unified per-resource timeline (GET /v1/resource/timeline).",
+          "+                \"field_changes\": record.get(\"field_changes\", []),"
+        ]
+      },
+      {
+        "filename": "tests/test_recheck_v2.py",
+        "blob_url": "https://github.com/QuincyGB/stall-row/blob/d71698264878f8daccec703b1d1f6d205aad47ff/tests%2Ftest_recheck_v2.py",
+        "selected_added_lines": [
+          "+\"\"\"Feed v2 + baselines + field-level diffs + change webhooks +",
+          "+            \"field_changes\": [],",
+          "+    assert envs[0][\"prev_hash\"] == \"genesis\"",
+          "+    assert envs[1][\"prev_hash\"] == envs[0][\"record_hash\"]",
+          "+    assert envs[2][\"prev_hash\"] == envs[1][\"record_hash\"]",
+          "+    before = [(e[\"seq\"], e[\"record_hash\"]) for e in store.feed_rows(ascending=True)]",
+          "+    conn.execute(\"UPDATE recheck_history SET seq=NULL, record_id=NULL, schema_version=NULL, prev_hash=NULL, record_hash=NULL\")",
+          "+    after = [(e[\"seq\"], e[\"record_hash\"]) for e in reopened.feed_rows(ascending=True)]",
+          "+    assert [(e[\"seq\"], e[\"record_hash\"]) for e in again.feed_rows(ascending=True)] == before",
+          "+    legacy = http.get(\"/v1/recheck/feed\")",
+          "+    v2 = http.get(\"/v1/recheck/feed\", params={\"since_seq\": 1})",
+          "+        \"/v1/recheck/history\", params={\"watch_id\": \"w1\", \"url\": X402_URL}",
+          "+        \"/v1/recheck/history\",",
+          "+    fc = compared[\"comparison\"][\"field_changes\"]",
+          "+    one = http.get(f\"/v1/recheck/history/{body['records'][0]['record_id']}\")",
+          "+    assert http.get(\"/v1/recheck/history/rec_nope\").status_code == 404",
+          "+async def test_recheck_field_changes_name_the_mutated_fields(store):",
+          "+        assert first[\"field_changes\"] == []",
+          "+    by_path = {fc[\"path\"]: fc for fc in changed[\"field_changes\"]}",
+          "+        await recheck.recheck(client, store, X402_URL)  # seq 1, baseline",
+          "+        assert store.pin_baseline(key, 1, source=\"test\") is not None",
+          "+        assert store.unpin_baseline(key) is True",
+          "+    env = store.import_baseline(",
+          "+        \"/v1/internal/recheck/baseline/pin\",",
+          "+        \"/v1/internal/recheck/baseline/pin\",",
+          "+        \"/v1/internal/recheck/baseline/pin\",",
+          "+        \"/v1/internal/recheck/baseline/import\",",
+          "+            \"field_changes\": ["
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="cs" prefix="og: https://ogp.me/ns#">
+<head>
+    <script>
+    (function () {
+        document.documentElement.classList.add('js');
+        try {
+            var stored = localStorage.getItem('theme');
+            var theme = (stored === 'light' || stored === 'dark')
+                ? stored
+                : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+    })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="https://gmpg.org/xfn/11">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="https://radyz.cz/wp-content/themes/radyz-theme/assets/fonts/inter-latin-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="https://radyz.cz/wp-content/themes/radyz-theme/assets/fonts/playfair-display-latin-ext-600.woff2">
+
+<!-- Optimalizace pro vyhledávače podle Rank Math - https://rankmath.com/ -->
+<title>HISTOR: otevřená historie nástrojů MCP &mdash; Radyz</title>
+<meta name="description" content="HISTOR zveřejnil dataset definic nástrojů MCP a jejich změn s podepsaným manifestem. Záznamy ani shody se vzory samy nedokazují škodlivost serverů."/>
+<meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large"/>
+<link rel="canonical" href="https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/" />
+<meta property="og:locale" content="cs_CZ" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="HISTOR: otevřená historie nástrojů MCP &mdash; Radyz" />
+<meta property="og:description" content="HISTOR zveřejnil dataset definic nástrojů MCP a jejich změn s podepsaným manifestem. Záznamy ani shody se vzory samy nedokazují škodlivost serverů." />
+<meta property="og:url" content="https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/" />
+<meta property="og:site_name" content="Radyz" />
+<meta property="article:tag" content="AI" />
+<meta property="article:tag" content="bezpečnost" />
+<meta property="article:tag" content="novinky" />
+<meta property="article:section" content="Rychlé zprávy" />
+<meta property="og:updated_time" content="2026-10-22T21:18:26+02:00" />
+<meta property="og:image" content="https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796.webp" />
+<meta property="og:image:secure_url" content="https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796.webp" />
+<meta property="og:image:width" content="1024" />
+<meta property="og:image:height" content="576" />
+<meta property="og:image:alt" content="Ilustrační příprava SQL dotazu nad souborem datasetu; nejde o skutečný výsledek ani hodnocení serverů." />
+<meta property="og:image:type" content="image/webp" />
+<meta property="article:published_time" content="2026-10-22T14:18:05+02:00" />
+<meta property="article:modified_time" content="2026-10-22T21:18:26+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="HISTOR: otevřená historie nástrojů MCP &mdash; Radyz" />
+<meta name="twitter:description" content="HISTOR zveřejnil dataset definic nástrojů MCP a jejich změn s podepsaným manifestem. Záznamy ani shody se vzory samy nedokazují škodlivost serverů." />
+<meta name="twitter:image" content="https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796.webp" />
+<meta name="twitter:label1" content="Napsal/a" />
+<meta name="twitter:data1" content="Radyz" />
+<meta name="twitter:label2" content="Doba čtení" />
+<meta name="twitter:data2" content="Méně než minuta" />
+<script type="application/ld+json" class="rank-math-schema">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://radyz.cz/#organization","name":"Radyz \u2014 AI lidsky","url":"https://radyz.cz","logo":{"@type":"ImageObject","@id":"https://radyz.cz/#logo","url":"https://radyz.cz/wp-content/uploads/2026/07/radyz-logo-512.png","contentUrl":"https://radyz.cz/wp-content/uploads/2026/07/radyz-logo-512.png","caption":"Radyz","inLanguage":"cs","width":"512","height":"512"}},{"@type":"WebSite","@id":"https://radyz.cz/#website","url":"https://radyz.cz","name":"Radyz","publisher":{"@id":"https://radyz.cz/#organization"},"inLanguage":"cs","description":"Novinky a anal\u00fdzy ze sv\u011bta um\u011bl\u00e9 inteligence. ChatGPT, Claude, OpenAI a AI n\u00e1stroje \u010desky.","potentialAction":{"@type":"SearchAction","target":"https://radyz.cz/?s={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"ImageObject","@id":"https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796.webp","url":"https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796.webp","width":"1024","height":"576","caption":"Ilustra\u010dn\u00ed p\u0159\u00edprava SQL dotazu nad souborem datasetu; nejde o skute\u010dn\u00fd v\u00fdsledek ani hodnocen\u00ed server\u016f.","inLanguage":"cs"},{"@type":"BreadcrumbList","@id":"https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/#breadcrumb","itemListElement":[{"@type":"ListItem","position":"1","item":{"@id":"https://radyz.cz","name":"Radyz"}},{"@type":"ListItem","position":"2","item":{"@id":"https://radyz.cz/rychle-zpravy/","name":"Rychl\u00e9 zpr\u00e1vy"}},{"@type":"ListItem","position":"3","item":{"@id":"https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/","name":"HISTOR otev\u0159el dataset zm\u011bn n\u00e1stroj\u016f MCP, nikoli seznam \u0161kodliv\u00fdch server\u016f"}}]},{"@type":"WebPage","@id":"https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/#webpage","url":"https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/","name":"HISTOR: otev\u0159en\u00e1 historie n\u00e1stroj\u016f MCP &mdash; Radyz","datePublished":"2026-10-22T14:18:05+02:00","dateModified":"2026-10-22T21:18:26+02:00","isPartOf":{"@id":"https://radyz.cz/#website"},"primaryImageOfPage":{"@id":"https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796.webp"},"inLanguage":"cs","breadcrumb":{"@id":"https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/#breadcrumb"}},{"@type":"Person","@id":"https://radyz.cz/author/radyz111/","name":"Radyz","description":"Radyz publikuje koment\u00e1\u0159e a praktick\u00e9 texty o AI n\u00e1stroj\u00edch, ChatGPT, Claude a d\u011bn\u00ed kolem OpenAI a Anthropicu. Na webu se soust\u0159ed\u00ed na srozumiteln\u00fd v\u00fdklad, vlastn\u00ed zku\u0161enost a d\u016fraz na to, co je pro \u010dten\u00e1\u0159e skute\u010dn\u011b u\u017eite\u010dn\u00e9.","url":"https://radyz.cz/author/radyz111/","image":{"@type":"ImageObject","@id":"https://secure.gravatar.com/avatar/6d87b6ab29d8776d43da384b46c8e0a5d3b9ee4b0488c39ec990c6b6da50d53d?s=96&amp;d=mm&amp;r=g","url":"https://secure.gravatar.com/avatar/6d87b6ab29d8776d43da384b46c8e0a5d3b9ee4b0488c39ec990c6b6da50d53d?s=96&amp;d=mm&amp;r=g","caption":"Radyz","inLanguage":"cs"},"sameAs":["https://radyz.cz"],"worksFor":{"@id":"https://radyz.cz/#organization"}},{"@type":"NewsArticle","headline":"HISTOR: otev\u0159en\u00e1 historie n\u00e1stroj\u016f MCP","keywords":"HISTOR MCP dataset","datePublished":"2026-10-22T14:18:05+02:00","dateModified":"2026-10-22T21:18:26+02:00","articleSection":"Rychl\u00e9 zpr\u00e1vy","author":{"@id":"https://radyz.cz/author/radyz111/","name":"Radyz"},"publisher":{"@id":"https://radyz.cz/#organization"},"description":"HISTOR zve\u0159ejnil dataset definic n\u00e1stroj\u016f MCP a jejich zm\u011bn s podepsan\u00fdm manifestem. Z\u00e1znamy ani shody se vzory samy nedokazuj\u00ed \u0161kodlivost server\u016f.","name":"HISTOR: otev\u0159en\u00e1 historie n\u00e1stroj\u016f MCP","wordCount":"107","about":[{"@type":"Thing","name":"AI","url":"https://radyz.cz/tag/ai/"},{"@type":"Thing","name":"bezpe\u010dnost","url":"https://radyz.cz/tag/bezpecnost/"},{"@type":"Thing","name":"novinky","url":"https://radyz.cz/tag/novinky/"}],"isBasedOn":"https://histor.modelmarket.dev/datasets/","citation":{"@type":"CreativeWork","name":"HISTOR","url":"https://histor.modelmarket.dev/datasets/"},"inLanguage":"cs","@id":"https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/#richSnippet","isPartOf":{"@id":"https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/#webpage"},"image":{"@id":"https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796.webp"},"mainEntityOfPage":{"@id":"https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/#webpage"}}]}</script>
+<!-- /Rank Math WordPress SEO plugin -->
+
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://radyz.cz/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fradyz.cz%2Frychle-zpravy%2Fhistor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://radyz.cz/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fradyz.cz%2Frychle-zpravy%2Fhistor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru%2F&#038;format=xml" />
+<link rel="alternate" hreflang="cs" href="https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/">
+<link rel="alternate" hreflang="x-default" href="https://radyz.cz/">
+<style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="wp-block-library-inline-css">
+:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-break:normal!important}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style^=border-color],[style*=";border-color"],[style*="; border-color"]){border-style:solid}html :where([style^=border-top-color],[style*=";border-top-color"],[style*="; border-top-color"]){border-top-style:solid}html :where([style^=border-right-color],[style*=";border-right-color"],[style*="; border-right-color"]){border-right-style:solid}html :where([style^=border-bottom-color],[style*=";border-bottom-color"],[style*="; border-bottom-color"]){border-bottom-style:solid}html :where([style^=border-left-color],[style*=";border-left-color"],[style*="; border-left-color"]){border-left-style:solid}html :where([style^=border-width],[style*=";border-width"],[style*="; border-width"]){border-style:solid}html :where([style^=border-top-width],[style*=";border-top-width"],[style*="; border-top-width"]){border-top-style:solid}html :where([style^=border-right-width],[style*=";border-right-width"],[style*="; border-right-width"]){border-right-style:solid}html :where([style^=border-bottom-width],[style*=";border-bottom-width"],[style*="; border-bottom-width"]){border-bottom-style:solid}html :where([style^=border-left-width],[style*=";border-left-width"],[style*="; border-left-width"]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+
+/*# sourceURL=/wp-includes/css/dist/block-library/common.min.css */
+</style>
+<style id="classic-theme-styles-inline-css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}.wp-block-button{--wp--preset--dimension--25: 25%;--wp--preset--dimension--50: 50%;--wp--preset--dimension--75: 75%;--wp--preset--dimension--100: 100%;}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<style id="cmplz-general-inline-css">.cmplz-video.cmplz-iframe-styles{background-color:transparent}.cmplz-video.cmplz-hidden{visibility:hidden !important}.cmplz-blocked-content-notice{display:none}.cmplz-placeholder-parent{height:inherit}.cmplz-optin .cmplz-blocked-content-container .cmplz-blocked-content-notice,.cmplz-optin .cmplz-wp-video .cmplz-blocked-content-notice,.cmplz-optout .cmplz-blocked-content-container .cmplz-blocked-content-notice,.cmplz-optout .cmplz-wp-video .cmplz-blocked-content-notice{display:block}.cmplz-blocked-content-container,.cmplz-wp-video{animation-name:cmplz-fadein;animation-duration:600ms;background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);display:flex;justify-content:center;align-items:center;background-repeat:no-repeat !important;background-size:cover !important;height:inherit;position:relative}.cmplz-blocked-content-container.gmw-map-cover,.cmplz-wp-video.gmw-map-cover{max-height:100%;position:absolute}.cmplz-blocked-content-container.cmplz-video-placeholder,.cmplz-wp-video.cmplz-video-placeholder{padding-bottom:initial}.cmplz-blocked-content-container iframe,.cmplz-wp-video iframe{visibility:hidden;max-height:100%;border:0 !important}.cmplz-blocked-content-container .cmplz-custom-accept-btn:focus,.cmplz-wp-video .cmplz-custom-accept-btn:focus{border:1px dotted #cecece}.cmplz-blocked-content-container .cmplz-custom-accept-btn,.cmplz-wp-video .cmplz-custom-accept-btn{white-space:normal;text-transform:initial;cursor:pointer;position:absolute !important;width:100%;top:50%;left:50%;transform:translate(-50%,-50%);max-width:200px;font-size:14px;padding:10px;background-color:rgba(0,0,0,0.5);color:#fff;text-align:center;z-index:98;line-height:23px}.cmplz-blocked-content-container .cmplz-blocked-content-notice,.cmplz-wp-video .cmplz-blocked-content-notice{white-space:normal;text-transform:initial;position:absolute !important;width:100%;top:50%;left:50%;transform:translate(-50%,-50%);max-width:300px;font-size:14px;padding:10px;background-color:rgba(0,0,0,0.5);color:#fff;text-align:center;z-index:98;line-height:23px}.cmplz-blocked-content-container .cmplz-blocked-content-notice .cmplz-links,.cmplz-wp-video .cmplz-blocked-content-notice .cmplz-links{display:block;margin-bottom:10px}.cmplz-blocked-content-container .cmplz-blocked-content-notice .cmplz-links a,.cmplz-wp-video .cmplz-blocked-content-notice .cmplz-links a{color:#fff}.cmplz-blocked-content-container .cmplz-blocked-content-notice .cmplz-blocked-content-notice-body,.cmplz-wp-video .cmplz-blocked-content-notice .cmplz-blocked-content-notice-body{display:block}.cmplz-blocked-content-container div div{display:none}.cmplz-wp-video .cmplz-placeholder-element{width:100%;height:inherit}@keyframes cmplz-fadein{from{opacity:0}to{opacity:1}}</style>
+<link rel='stylesheet' id='radyz-main-css' href='https://radyz.cz/wp-content/themes/radyz-theme/assets/css/main.css?ver=1791026622' media='all' />
+<style id="cmplz-banner-1-optin-inline-css">input[type="checkbox"].cmplz-category { width: initial; -webkit-appearance: checkbox;}input[type="checkbox"].cmplz-category:checked::before { content: '';}.cmplz-cookiebanner { box-sizing: border-box;}:root { --cmplz_banner_width: 526px; --cmplz_banner_background_color: #ffffff; --cmplz_banner_border_color: #f2f2f2; --cmplz_banner_border_width: 0px 0px 0px 0px ; --cmplz_banner_border_radius: 12px 12px 12px 12px; --cmplz_banner_margin: 10px; --cmplz_categories-height: 163px; --cmplz_title_font_size: 15px; --cmplz_text_line_height: calc(var(--cmplz_text_font_size) * 1.5); --cmplz_text_color: #222222; --cmplz_hyperlink_color: #3B29FF; --cmplz_text_font_size: 12px; --cmplz_link_font_size: 12px; --cmplz_category_body_font_size: 12px; --cmplz_button_accept_background_color: #3B29FF; --cmplz_button_accept_border_color: #3B29FF; --cmplz_button_accept_text_color: #ffffff; --cmplz_button_deny_background_color: #f9f9f9; --cmplz_button_deny_border_color: #f2f2f2; --cmplz_button_deny_text_color: #222222; --cmplz_button_settings_background_color: #f9f9f9; --cmplz_button_settings_border_color: #f2f2f2; --cmplz_button_settings_text_color: #333333; --cmplz_button_border_radius: 6px 6px 6px 6px; --cmplz_button_font_size: 15px; --cmplz_category_header_always_active_color: green; --cmplz_category_header_title_font_size: 14px; --cmplz_category_header_active_font_size: 12px; --cmplz-manage-consent-height: 50px; --cmplz-manage-consent-offset: -35px; --cmplz_slider_active_color: #3B29FF; --cmplz_slider_inactive_color: #555; --cmplz_slider_bullet_color: #ffffff;}body.cmplz-banner-active *:not(.cmplz-cookiebanner):not(.cmplz-cookiebanner *) { pointer-events: none !important; user-select: none !important;}.cmplz-cookiebanner * { pointer-events: auto !important; user-select: auto !important;}#cmplz-manage-consent .cmplz-manage-consent { margin: unset; z-index: 9998; color: var(--cmplz_text_color); background-color: var(--cmplz_banner_background_color); border-style: solid; border-color: var(--cmplz_banner_border_color); border-width: var(--cmplz_banner_border_width); border-radius: var(--cmplz_banner_border_radius); border-bottom-left-radius: 0; border-bottom-right-radius: 0; line-height: initial; position: fixed; bottom: var(--cmplz-manage-consent-offset); min-width: 100px; height: var(--cmplz-manage-consent-height); right: 40px; padding: 15px; cursor: pointer; animation: mc_slideOut 0.5s forwards;}#cmplz-manage-consent .cmplz-manage-consent:active { outline: none; border: none;}#cmplz-manage-consent .cmplz-manage-consent.cmplz-dismissed { display: none;}#cmplz-manage-consent .cmplz-manage-consent:hover,#cmplz-manage-consent .cmplz-manage-consent:focus { animation: mc_slideIn 0.5s forwards; animation-delay: 0;}@-webkit-keyframes mc_slideIn { 100% { bottom: 0; }}@keyframes mc_slideIn { 100% { bottom: 0; }}@-webkit-keyframes mc_slideOut { 100% { bottom: var(--cmplz-manage-consent-offset); }}@keyframes mc_slideOut { 100% { bottom: var(--cmplz-manage-consent-offset); }}@media (max-width: 425px) { .cmplz-cookiebanner .cmplz-header .cmplz-title { display: none; }}.cmplz-cookiebanner { max-height: calc(100vh - 20px); overflow-y: auto; position: fixed; height: auto; left: 50%; top: 50%; -ms-transform: translateX(-50%) translateY(-50%); transform: translateX(-50%) translateY(-50%); grid-template-rows: minmax(0, 1fr); z-index: 99999; background: var(--cmplz_banner_background_color);}.cmplz-cookiebanner a { transition: initial;}.cmplz-cookiebanner .cmplz-buttons a.cmplz-btn.tcf { display: none;}.cmplz-cookiebanner.cmplz-dismissed { display: none;}.cmplz-cookiebanner .cmplz-body { width: 100%; grid-column: span 3; overflow-y: auto; overflow-x: hidden; max-height: 55vh;}.cmplz-cookiebanner .cmplz-body::-webkit-scrollbar-track { border-radius: 10px; -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0); background-color: transparent;}.cmplz-cookiebanner .cmplz-body::-webkit-scrollbar { width: 5px; background-color: transparent;}.cmplz-cookiebanner .cmplz-body::-webkit-scrollbar-thumb { background-color: var(--cmplz_button_accept_background_color); border-radius: 10px;}@media (min-width: 350px) { .cmplz-cookiebanner .cmplz-body { min-width: 300px; }}@media (max-height: 400px) { .cmplz-cookiebanner { height: calc(100vh - 20px); display: flex; flex-direction: column; overflow: hidden; gap: 1px; grid-row-gap: 1px; padding: 7px 12px !important; zoom: 0.6; } .cmplz-cookiebanner .cmplz-body { flex: 1; min-height: 0; overflow-y: auto; max-height: none; margin-top: 15px !important; } .cmplz-cookiebanner .cmplz-header, .cmplz-cookiebanner .cmplz-divider, .cmplz-cookiebanner .cmplz-links, .cmplz-cookiebanner .cmplz-buttons, .cmplz-cookiebanner .cmplz-documents { flex-shrink: 0; } .cmplz-cookiebanner .cmplz-header { margin-bottom: 15px !important; max-height: 10px; } .cmplz-close { zoom: 0.6 !important; } .cmplz-cookiebanner .cmplz-buttons { gap: 1px !important; } .cmplz-cookiebanner .cmplz-buttons .cmplz-btn { height: 15vh !important; min-height: unset !important; padding: 0 !important; white-space: nowrap !important; font-size: 1.1rem !important; line-height: 14px !important; zoom: 0.5 !important; } .cmplz-cookiebanner .cmplz-documents, .cmplz-cookiebanner .cmplz-information { zoom: 0.5 !important; }}@media (max-height: 400px) and (max-width: 768px) { .cmplz-cookiebanner { gap: 1px; }}.cmplz-cookiebanner { border-style: solid; border-color: var(--cmplz_banner_border_color); border-width: var(--cmplz_banner_border_width); border-radius: var(--cmplz_banner_border_radius); padding: 15px 20px; display: grid; grid-gap: 10px;}.cmplz-cookiebanner .cmplz-divider { margin-left: -20px; margin-right: -20px;}.cmplz-cookiebanner .cmplz-header { grid-template-columns: 100px 1fr 100px; align-items: center; display: grid; grid-column: span 3;}@media (max-width: 399px) { .cmplz-cookiebanner .cmplz-header { grid-template-columns: auto 1fr auto; }}.cmplz-cookiebanner .cmplz-logo svg { max-height: 35px; width: inherit;}.cmplz-cookiebanner .cmplz-logo img { max-height: 40px; width: inherit;}.cmplz-cookiebanner .cmplz-title { justify-self: center; grid-column-start: 2; font-size: var(--cmplz_title_font_size); color: var(--cmplz_text_color); font-weight: 500;}.cmplz-cookiebanner .cmplz-close { line-height: 20px; justify-self: end; grid-column-start: 3; font-size: 20px; cursor: pointer; width: 20px; height: 20px; color: var(--cmplz_text_color);}.cmplz-cookiebanner .cmplz-close svg { width: 20px; height: 20px;}.cmplz-cookiebanner .cmplz-close:hover { text-decoration: none; line-height: initial; font-size: 18px;}.cmplz-cookiebanner .cmplz-message { word-wrap: break-word; font-size: var(--cmplz_text_font_size); line-height: var(--cmplz_text_line_height); color: var(--cmplz_text_color); margin-bottom: 5px;}.cmplz-cookiebanner .cmplz-message a { color: var(--cmplz_hyperlink_color);}.cmplz-cookiebanner .cmplz-message,.cmplz-cookiebanner .cmplz-categories,.cmplz-cookiebanner .cmplz-links,.cmplz-cookiebanner .cmplz-buttons,.cmplz-cookiebanner .cmplz-divider { grid-column: span 3;}.cmplz-cookiebanner .cmplz-categories.cmplz-tcf .cmplz-category .cmplz-category-header { grid-template-columns: 1fr auto;}.cmplz-cookiebanner .cmplz-categories .cmplz-category { background-color: rgba(239, 239, 239, 0.5);}.cmplz-cookiebanner .cmplz-categories .cmplz-category:not(:last-child) { margin-bottom: 10px;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-category-header { display: grid; grid-template-columns: 1fr auto 15px; grid-template-rows: minmax(0, 1fr); align-items: center; grid-gap: 10px; padding: 10px;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-category-header .cmplz-category-title { font-weight: 500; grid-column-start: 1; justify-self: start; font-size: var(--cmplz_category_header_title_font_size); color: var(--cmplz_text_color); margin: 0;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-category-header .cmplz-always-active { font-size: var(--cmplz_category_header_active_font_size); font-weight: 500; color: var(--cmplz_category_header_always_active_color);}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-category-header .cmplz-always-active label { display: none;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-category-header .cmplz-banner-checkbox { display: flex; align-items: center; margin: 0;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-category-header .cmplz-banner-checkbox input[data-category=cmplz_functional] { display: none;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-category-header .cmplz-category-toggle { background: none; border: none; padding: 0; margin: 0; cursor: pointer; grid-column-start: 3; display: flex; align-items: center; justify-content: center; color: inherit;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-category-header .cmplz-icon.cmplz-open { cursor: pointer; content: ''; transform: rotate(0deg); -webkit-transition: all 0.5s ease; -moz-transition: all 0.5s ease; -o-transition: all 0.5s ease; transition: all 0.5s ease; background-size: cover; height: 18px; width: 18px;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-description { font-size: var(--cmplz_category_body_font_size); color: var(--cmplz_text_color); margin: 0; max-width: 100%; padding: 10px;}@media (max-width: 425px) { .cmplz-cookiebanner .cmplz-category .cmplz-category-header { grid-template-columns: 1fr!important; }}@media (max-width: 425px) { .cmplz-cookiebanner .cmplz-message { margin-right: 5px; }}.cmplz-cookiebanner .cmplz-buttons { display: flex; gap: var(--cmplz_banner_margin);}.cmplz-cookiebanner .cmplz-buttons .cmplz-btn { min-height: 45px; padding: 10px; margin: initial; width: 100%; white-space: nowrap; border-radius: var(--cmplz_button_border_radius); cursor: pointer; font-size: var(--cmplz_button_font_size); font-weight: 500; text-decoration: none; line-height: 20px; text-align: center; flex: initial;}.cmplz-cookiebanner .cmplz-buttons .cmplz-btn:hover { text-decoration: none;}.cmplz-cookiebanner .cmplz-buttons .cmplz-btn.cmplz-accept { background-color: var(--cmplz_button_accept_background_color); border: 1px solid var(--cmplz_button_accept_border_color); color: var(--cmplz_button_accept_text_color);}.cmplz-cookiebanner .cmplz-buttons .cmplz-btn.cmplz-deny { background-color: var(--cmplz_button_deny_background_color); border: 1px solid var(--cmplz_button_deny_border_color); color: var(--cmplz_button_deny_text_color);}.cmplz-cookiebanner .cmplz-buttons .cmplz-btn.cmplz-view-preferences { background-color: var(--cmplz_button_settings_background_color); border: 1px solid var(--cmplz_button_settings_border_color); color: var(--cmplz_button_settings_text_color);}.cmplz-cookiebanner .cmplz-buttons .cmplz-btn.cmplz-save-preferences { background-color: var(--cmplz_button_settings_background_color); border: 1px solid var(--cmplz_button_settings_border_color); color: var(--cmplz_button_settings_text_color);}.cmplz-cookiebanner .cmplz-buttons .cmplz-btn.cmplz-manage-options { background-color: var(--cmplz_button_settings_background_color); border: 1px solid var(--cmplz_button_settings_border_color); color: var(--cmplz_button_settings_text_color);}.cmplz-cookiebanner .cmplz-buttons a.cmplz-btn { display: flex; align-items: center; justify-content: center; padding: initial;}@media (max-width: 425px) { .cmplz-cookiebanner .cmplz-links.cmplz-information { display: initial; text-align: center; }}.cmplz-cookiebanner .cmplz-links { display: flex; gap: var(--cmplz_banner_margin);}.cmplz-cookiebanner .cmplz-links.cmplz-information { justify-content: space-between;}.cmplz-cookiebanner .cmplz-links.cmplz-documents { justify-content: center;}.cmplz-cookiebanner .cmplz-links .cmplz-link { color: var(--cmplz_hyperlink_color); font-size: var(--cmplz_link_font_size); text-decoration: underline; margin: 0;}.cmplz-cookiebanner .cmplz-links .cmplz-link.cmplz-read-more-purposes { display: none;}.cmplz-cookiebanner .cmplz-links ul { margin: 0; padding: 0; list-style: none; display: flex; gap: var(--cmplz_banner_margin); justify-content: center;}.cmplz-categories .cmplz-category .cmplz-description-statistics-anonymous { display: none;}.cmplz-categories .cmplz-category .cmplz-description-statistics { display: block;}.cmplz-categories .cmplz-category .cmplz-category-header .cmplz-category-toggle { background: none; border: none; padding: 0; margin: 0; cursor: pointer; grid-column-start: 3; display: flex; align-items: center; justify-content: center; color: inherit;}.cmplz-categories .cmplz-category .cmplz-category-toggle[aria-expanded="true"] .cmplz-icon.cmplz-open { transform: rotate(180deg);}@media (max-width: 768px) { .cmplz-cookiebanner { width: 100%; } .cmplz-cookiebanner .cmplz-buttons { flex-direction: column; }}@media (max-width: 1023px) { .cmplz-cookiebanner { max-width: 100%; }}@media (max-width: 1023px) { .cmplz-cookiebanner { transform: translateX(-50%); bottom: 0; top: initial; }}@media (min-width: 1024px) { .cmplz-cookiebanner { margin: 10px; width: calc(100% - 20px); grid-column-gap: 10px; display: grid; grid-template-columns: 1fr 1fr; bottom: 0; left: initial; top: initial; transform: initial; } .cmplz-cookiebanner.cmplz-categories-type-save-preferences .cmplz-body > div { width: 49%; } .cmplz-cookiebanner.cmplz-categories-visible .cmplz-body > div { width: 49%; } .cmplz-cookiebanner .cmplz-body { grid-column: span 2; display: flex; gap: 10px; } .cmplz-cookiebanner .cmplz-message, .cmplz-cookiebanner .cmplz-categories, .cmplz-cookiebanner .cmplz-links, .cmplz-cookiebanner .cmplz-buttons { grid-column: inherit; } .cmplz-cookiebanner .cmplz-description { grid-column-start: 1; } .cmplz-cookiebanner.optin .cmplz-categories, .cmplz-cookiebanner.optout .cmplz-categories { width: 85vw; grid-column-start: 2; } .cmplz-cookiebanner .cmplz-buttons { grid-column-start: 3; grid-row-start: 3; display: flex; flex-direction: column; } .cmplz-cookiebanner .cmplz-buttons .cmplz-btn { min-width: 250px; width: 100%; } .cmplz-cookiebanner .cmplz-links.cmplz-documents { grid-column-end: 3; } .cmplz-cookiebanner .cmplz-links.cmplz-information { grid-column-start: 3; grid-column-end: 4; grid-row-start: 5; display: flex; justify-content: flex-end; } .cmplz-cookiebanner .cmplz-links.cmplz-documents { grid-column-start: 1; grid-row-start: 5; display: flex; justify-content: flex-start; } .cmplz-cookiebanner .cmplz-categories.cmplz-tcf { height: 160px; } .cmplz-cookiebanner.cmplz-categories-type-view-preferences .cmplz-buttons, .cmplz-cookiebanner.cmplz-categories-type-no .cmplz-buttons { flex-direction: initial; } .cmplz-cookiebanner.cmplz-categories-type-view-preferences.cmplz-categories-visible .cmplz-buttons, .cmplz-cookiebanner.cmplz-categories-type-no.cmplz-categories-visible .cmplz-buttons { flex-direction: column; }}.cmplz-cookiebanner .cmplz-categories,.cmplz-cookiebanner .cmplz-save-preferences,.cmplz-cookiebanner .cmplz-link.cmplz-manage-options,.cmplz-cookiebanner .cmplz-manage-vendors,.cmplz-cookiebanner .cmplz-read-more,.cmplz-cookiebanner .cmplz-btn.cmplz-manage-options { display: none;}.cmplz-cookiebanner .cmplz-categories.cmplz-fade-in { animation: fadeIn 1s; -webkit-animation: fadeIn 1s; -moz-animation: fadeIn 1s; -o-animation: fadeIn 1s; -ms-animation: fadeIn 1s; display: block;}@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; }}@-moz-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; }}@-webkit-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; }}@-o-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; }}@-ms-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; }}.cmplz-cookiebanner .cmplz-links.cmplz-information { display: none;}#cmplz-cookiebanner-container .cmplz-cookiebanner { bottom: -50vh; -webkit-animation: slideIn 0.5s forwards; -webkit-animation-delay: 1s; animation: slideIn 0.5s forwards; animation-delay: 1s;}@-webkit-keyframes slideIn { 100% { bottom: 0; }}@keyframes slideIn { 100% { bottom: 0; }}.cmplz-cookiebanner .cmplz-preferences,.cmplz-manage-consent-container .cmplz-preferences { display: none;}#cmplz-manage-consent .cmplz-manage-consent { display: none;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox { position: relative;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox input.cmplz-consent-checkbox { opacity: 0; margin: 0; margin-top: -10px; cursor: pointer; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: alpha(opacity=0); -moz-opacity: 0; -khtml-opacity: 0; position: absolute; z-index: 1; top: 0px; left: 0px; width: 40px; height: 20px;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox input.cmplz-consent-checkbox:focus + .cmplz-label:before { box-shadow: 0 0 0 2px #245fcc;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox input.cmplz-consent-checkbox:checked + .cmplz-label::before { display: block; background-color: var(--cmplz_slider_active_color); content: ""; padding-left: 6px;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox input.cmplz-consent-checkbox:checked + .cmplz-label:after { left: 14px;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox .cmplz-label { position: relative; padding-left: 30px; margin: 0;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox .cmplz-label:before,.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox .cmplz-label:after { box-sizing: border-box; position: absolute; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; transition: background-color 0.3s, left 0.3s;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox .cmplz-label:before { display: block; content: ""; color: #fff; box-sizing: border-box; font-family: 'FontAwesome', sans-serif; padding-left: 23px; font-size: 12px; line-height: 20px; background-color: var(--cmplz_slider_inactive_color); left: 0px; top: -7px; height: 15px; width: 28px; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;}.cmplz-cookiebanner .cmplz-categories .cmplz-category .cmplz-banner-checkbox .cmplz-label:after { display: block; content: ""; letter-spacing: 20px; background: var(--cmplz_slider_bullet_color); left: 4px; top: -5px; height: 11px; width: 11px;}.cmplz-cookiebanner { box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;}#cmplz-manage-consent .cmplz-manage-consent { box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;}.cmplz-cookiebanner.cmplz-show { box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;}.cmplz-cookiebanner.cmplz-show:hover { transition-duration: 1s; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;} .wpforms-recaptcha-container { position: relative !important; } div.wpforms-container-full .wpforms-form .cmplz-accept-marketing { background: grey; }</style>
+<link rel="https://api.w.org/" href="https://radyz.cz/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://radyz.cz/wp-json/wp/v2/posts/11796" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://radyz.cz/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 7.1.4" />
+<link rel='shortlink' href='https://radyz.cz/?p=11796' />
+			<style>.cmplz-hidden {
+					display: none !important;
+				}</style>
+				<link rel="icon" href="https://radyz.cz/wp-content/uploads/2026/05/radyz-favicon-orange.svg" sizes="32x32" />
+<link rel="icon" href="https://radyz.cz/wp-content/uploads/2026/05/radyz-favicon-orange.svg" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://radyz.cz/wp-content/uploads/2026/05/radyz-favicon-orange.svg" />
+<meta name="msapplication-TileImage" content="https://radyz.cz/wp-content/uploads/2026/05/radyz-favicon-orange.svg" />
+<style id="wp-custom-css">
+/* Vlastní CSS bylo 18. 7. 2026 přesunuto do radyz-theme/assets/css/main.css (sekce "Migrated from Customizer"). Nové úpravy piš tam, ne sem. */
+/* 6. 9. 2026: perex se zobrazoval mezi nadpisem a obrázkem a duplikoval text článku — skryto */
+.article-header__excerpt,
+.article-header__excerpt * {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+</style>
+</head>
+<body data-cmplz=1 class="wp-singular post-template-default single single-post postid-11796 single-format-standard wp-theme-radyz-theme">
+
+<!-- External project banner -->
+<aside class="project-banner" aria-label="Doporučený web">
+    <a class="project-banner__link" href="https://keyzarro.com/?currency=EUR" target="_blank" rel="noopener">
+        <strong>Keyzarro</strong>
+        <span aria-hidden="true">–</span>
+        <span>porovnej ceny her</span>
+        <span class="project-banner__arrow" aria-hidden="true">→</span>
+    </a>
+</aside>
+
+
+<!-- Site Header -->
+<header class="site-header" id="site-header">
+    <div class="site-header__inner">
+
+        <!-- Logo -->
+        <a href="https://radyz.cz/" class="site-header__logo" aria-label="Radyz AI lidsky – domů">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 156 36" height="36" aria-hidden="true">
+                <rect width="156" height="36" rx="18" fill="#C94A24"/>
+                <text x="16" y="24" font-family="Georgia,serif" fill="white"><tspan font-size="19" font-weight="700">RADYZ</tspan><tspan font-size="12" font-weight="400" dx="6">ai lidsky</tspan></text>
+            </svg>
+        </a>
+
+        <!-- Primary Navigation -->
+        <nav class="site-nav" id="site-nav" aria-label="Hlavní navigace">
+            <ul id="menu-top-menu" class="site-nav__list"><li id="menu-item-687" class="a1i0s0 menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-687"><a href="https://radyz.cz/rychle-zpravy/">Rychlé zprávy</a></li>
+<li id="menu-item-660" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-660"><a href="https://radyz.cz/novinky/">Novinky</a></li>
+<li id="menu-item-663" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-663"><a href="https://radyz.cz/nazory/">Názory</a></li>
+<li id="menu-item-1570" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1570"><a href="https://radyz.cz/o-webu/">O webu</a></li>
+<li id="menu-item-1572" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1572"><a href="https://radyz.cz/slovnik-ai-pojmu/">Slovník AI pojmů</a></li>
+</ul>        </nav>
+
+                <!-- Right side: theme toggle + search + hamburger -->
+        <div class="site-header__actions">
+            <!-- Dark mode toggle -->
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Přepnout na tmavý režim" aria-pressed="false">
+                <svg class="theme-toggle__icon theme-toggle__icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4"/>
+                    <line x1="12" y1="2" x2="12" y2="4"/>
+                    <line x1="12" y1="20" x2="12" y2="22"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="2" y1="12" x2="4" y2="12"/>
+                    <line x1="20" y1="12" x2="22" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <svg class="theme-toggle__icon theme-toggle__icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
+
+            <!-- Search toggle -->
+            <button class="search-toggle" id="search-toggle" aria-label="Hledat" aria-expanded="false" aria-controls="search-bar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+            </button>
+
+            <!-- Hamburger (mobile) -->
+            <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+                <span class="hamburger__line"></span>
+                <span class="hamburger__line"></span>
+                <span class="hamburger__line"></span>
+            </button>
+        </div>
+
+    </div><!-- /.site-header__inner -->
+
+    <!-- Inline Search Bar -->
+    <div class="search-bar" id="search-bar" hidden>
+        <form role="search" method="get" action="https://radyz.cz/" class="search-bar__form">
+            <input type="search" class="search-bar__input" placeholder="Hledat na Radyz…" value="" name="s" aria-label="Hledat na Radyz">
+            <button type="submit" class="search-bar__btn" aria-label="Hledat">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+</header><!-- /.site-header -->
+
+    <noscript><nav class="rz-nojs-nav" aria-label="Navigace bez JavaScriptu"><ul id="menu-top-menu-1" class="menu"><li class="a1i0s0 menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-687"><a href="https://radyz.cz/rychle-zpravy/">Rychlé zprávy</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-660"><a href="https://radyz.cz/novinky/">Novinky</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-663"><a href="https://radyz.cz/nazory/">Názory</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1570"><a href="https://radyz.cz/o-webu/">O webu</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1572"><a href="https://radyz.cz/slovnik-ai-pojmu/">Slovník AI pojmů</a></li>
+</ul><form role="search" method="get" action="https://radyz.cz/"><label for="rz-nojs-search">Hledat na webu</label><input id="rz-nojs-search" type="search" name="s"><button type="submit">Hledat</button></form></nav></noscript>
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert role="dialog" aria-modal="true" aria-label="Hlavní menu">
+    <button class="mobile-menu__close" id="mobile-menu-close" aria-label="Zavřít menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+    </button>
+    <ul id="menu-top-menu-2" class="mobile-menu__list"><li class="a1i0s0 menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-687"><a href="https://radyz.cz/rychle-zpravy/">Rychlé zprávy</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-660"><a href="https://radyz.cz/novinky/">Novinky</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-663"><a href="https://radyz.cz/nazory/">Názory</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1570"><a href="https://radyz.cz/o-webu/">O webu</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1572"><a href="https://radyz.cz/slovnik-ai-pojmu/">Slovník AI pojmů</a></li>
+</ul>    </div>
+<div class="mobile-menu__overlay" id="mobile-menu-overlay"></div>
+
+
+<!-- Reading Progress Bar -->
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<main class="article-page">
+
+    <!-- Article Header -->
+    <header class="article-header container">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="https://radyz.cz/">Domů</a>
+                            <span class="breadcrumb__sep">›</span>
+                <a href="https://radyz.cz/rychle-zpravy/">Rychlé zprávy</a>                        <span class="breadcrumb__sep">›</span>
+            <span class="breadcrumb__current">HISTOR otevřel dataset změn nástrojů…</span>
+        </nav>
+
+        <!-- Badge + read time -->
+        <div class="article-header__meta-top">
+            <a href="https://radyz.cz/rychle-zpravy/" class="badge">RYCHLÉ ZPRÁVY</a>            <span class="readtime">1 min &#269;ten&#237;</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="article-header__title">HISTOR otevřel dataset změn nástrojů MCP, nikoli seznam škodlivých serverů</h1>
+
+        <!-- Excerpt / perex -->
+                    <p class="article-header__excerpt"><p>HISTOR otevřel dataset změn nástrojů MCP, nikoli seznam škodlivých serverů.</p>
+</p>
+        
+        <!-- Author meta bar -->
+        <div class="article-header__author">
+            <img alt="" src="https://radyz.cz/wp-content/uploads/2026/03/Avatar.gif" class="avatar avatar-48 author-avatar" height="48" width="48" loading="lazy">            <div class="article-header__author-info">
+                <a class="author-name" href="https://radyz.cz/author/radyz111/">Radyz</a>
+                <span class="author-date">
+                    22. 10. 2026                                            · Zdroj:
+                                                    <a class="article-source-link" href="https://histor.modelmarket.dev/datasets/" target="_blank" rel="noopener noreferrer">HISTOR ↗</a>
+                                                            </span>
+            </div>
+        </div>
+
+    </header><!-- /.article-header -->
+
+    <!-- Hero Image -->
+                    <div class="article-hero-image container">
+            <figure class="article-hero-image__frame">
+                <img width="1024" height="576" src="https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796.webp" class="article-hero-image__img wp-post-image" alt="Ilustrační příprava SQL dotazu nad souborem datasetu; nejde o skutečný výsledek ani hodnocení serverů." loading="eager" decoding="async" fetchpriority="high" srcset="https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796.webp 1024w, https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796-300x169.webp 300w, https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796-768x432.webp 768w, https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796-800x450.webp 800w, https://radyz.cz/wp-content/uploads/2026/10/news-20261022-11796-600x338.webp 600w" sizes="(max-width: 1024px) 100vw, 1024px" />                <button type="button" class="article-hero-image__info" aria-expanded="false" aria-controls="hero-credit-11796" aria-label="Informace o obrázku">i</button>
+                <figcaption class="article-hero-image__caption" id="hero-credit-11796">Ilustrace: radyz.cz, AI vizualizace</figcaption>
+            </figure>
+        </div>
+    
+    <!-- Article Body -->
+    <div class="article-body">
+
+        <!-- Sticky social share (desktop only) -->
+        <div class="sticky-share" aria-label="Sdílet">
+            <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fradyz.cz%2Frychle-zpravy%2Fhistor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru%2F" target="_blank" rel="noopener" aria-label="Sdílet na X">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fradyz.cz%2Frychle-zpravy%2Fhistor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru%2F" target="_blank" rel="noopener" aria-label="Sdílet na Facebook">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fradyz.cz%2Frychle-zpravy%2Fhistor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru%2F" target="_blank" rel="noopener" aria-label="Sdílet na LinkedIn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <button class="share-btn--copy" data-url="https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/" aria-label="Kopírovat odkaz">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+        </div>
+
+        <!-- Content column -->
+        <div class="article-content">
+
+            
+                        
+            <div class="article-content__body">
+                <p>Projekt HISTOR zpřístupnil dataset definic nástrojů <a class="rz-term" href="https://radyz.cz/slovnik-ai-pojmu/mcp/" data-rz-def="MCP propojuje AI aplikace s externími nástroji a daty pomocí společného protokolu.">MCP</a> a jejich změn. Snapshot z 20. října obsahuje přes 81 tisíc evidovaných serverů a balíčků a téměř 24 tisíc zaznamenaných změn. U vzdálených serverů sleduje deklarované nástroje, u balíčků npm a PyPI je získává spuštěním v sandboxu. Data lze použít ke studiu toho, jak se rozhraní nástrojů pro AI agenty vyvíjejí.</p>
+<p>Soubory obsahují definice, historii změn i výsledky pomocných kontrol a mají zveřejněné kontrolní součty a podepsaný manifest. Dataset je dostupný pod CC BY 4.0. Autoři výslovně varují, že změna definice ani shoda s podezřelým vzorem nedokazuje škodlivost serveru. Záznam navíc ukazuje pouze to, co server zpřístupnil při daném dotazu, ne jeho skutečné chování.</p>
+            </div>
+
+            <!-- Rozbor tematu v delsim clanku -->
+            
+            <!-- Tags -->
+                            <div class="article-tags">
+                                            <a href="https://radyz.cz/tag/ai/" class="tag">
+                            AI                        </a>
+                                            <a href="https://radyz.cz/tag/bezpecnost/" class="tag">
+                            bezpečnost                        </a>
+                                            <a href="https://radyz.cz/tag/novinky/" class="tag">
+                            novinky                        </a>
+                                    </div>
+            
+            <!-- Author Box -->
+            <div class="author-box">
+                <img alt="" src="https://radyz.cz/wp-content/uploads/2026/03/Avatar.gif" class="avatar avatar-56 author-box__avatar" height="56" width="56" loading="lazy">                <div class="author-box__info">
+                    <a class="author-box__name" href="https://radyz.cz/author/radyz111/">Radyz</a>
+                                                                <p class="author-box__bio">Radyz publikuje komentáře a praktické texty o AI nástrojích, ChatGPT, Claude a dění kolem OpenAI a Anthropicu. Na webu se soustředí na srozumitelný výklad, vlastní zkušenost a důraz na to, co je pro čtenáře skutečně užitečné.</p>
+                                    </div>
+            </div>
+
+
+        </div><!-- /.article-content -->
+    </div><!-- /.article-body -->
+
+    <!-- Recommended Articles — full width, outside 680px column -->
+            <section class="article-related">
+            <div class="container">
+                <h2 class="section__heading">Mohlo by vás zajímat</h2>
+                <div class="grid grid--3">
+                    
+<article class="card card--large">
+    <a href="https://radyz.cz/rychle-zpravy/eagle-4-prizpusobuje-spekulativni-dekodovani-zatezi-licence-omezuje-komercni-vyuziti/" class="card__link" tabindex="-1" aria-hidden="true"></a>
+
+            <div class="card__image">
+            <img src="https://radyz.cz/wp-content/uploads/2026/10/radyz-20261021-2000-11573-eagle-600x338.webp"
+                 alt="EAGLE-4 přizpůsobuje spekulativní dekódování zátěži, licence omezuje komerční využití"
+                 loading="lazy"
+                 width="600" height="338">
+        </div>
+    
+    <div class="card__body">
+        <a href="https://radyz.cz/rychle-zpravy/" class="badge">RYCHLÉ ZPRÁVY</a>        <h3 class="card__title">
+            <a href="https://radyz.cz/rychle-zpravy/eagle-4-prizpusobuje-spekulativni-dekodovani-zatezi-licence-omezuje-komercni-vyuziti/">EAGLE-4 přizpůsobuje spekulativní dekódování zátěži, licence omezuje komerční využití</a>
+        </h3>
+        <div class="card__meta">
+            <span>21. 10. 2026</span>
+            <span>1 min &#269;ten&#237;</span>
+        </div>
+    </div>
+</article>
+
+<article class="card card--large">
+    <a href="https://radyz.cz/rychle-zpravy/chatgpt-pres-rozsireni-nove-cte-a-ovlada-otevrene-karty-chromu/" class="card__link" tabindex="-1" aria-hidden="true"></a>
+
+            <div class="card__image">
+            <img src="https://radyz.cz/wp-content/uploads/2026/10/rz-20261016-chrome-600x338.webp"
+                 alt="ChatGPT přes rozšíření nově čte a ovládá otevřené karty Chromu"
+                 loading="lazy"
+                 width="600" height="338">
+        </div>
+    
+    <div class="card__body">
+        <a href="https://radyz.cz/rychle-zpravy/" class="badge">RYCHLÉ ZPRÁVY</a>        <h3 class="card__title">
+            <a href="https://radyz.cz/rychle-zpravy/chatgpt-pres-rozsireni-nove-cte-a-ovlada-otevrene-karty-chromu/">ChatGPT přes rozšíření nově čte a ovládá otevřené karty Chromu</a>
+        </h3>
+        <div class="card__meta">
+            <span>16. 10. 2026</span>
+            <span>1 min &#269;ten&#237;</span>
+        </div>
+    </div>
+</article>
+
+<article class="card card--large">
+    <a href="https://radyz.cz/rychle-zpravy/openai-vydala-benchmark-pro-ai-v-rozhovorech-o-dusevnim-zdravi/" class="card__link" tabindex="-1" aria-hidden="true"></a>
+
+            <div class="card__image">
+            <img src="https://radyz.cz/wp-content/uploads/2026/09/mentalhealthbench-7337-600x338.webp"
+                 alt="OpenAI vydala benchmark pro AI v rozhovorech o duševním zdraví"
+                 loading="lazy"
+                 width="600" height="338">
+        </div>
+    
+    <div class="card__body">
+        <a href="https://radyz.cz/rychle-zpravy/" class="badge">RYCHLÉ ZPRÁVY</a>        <h3 class="card__title">
+            <a href="https://radyz.cz/rychle-zpravy/openai-vydala-benchmark-pro-ai-v-rozhovorech-o-dusevnim-zdravi/">OpenAI vydala benchmark pro AI v rozhovorech o duševním zdraví</a>
+        </h3>
+        <div class="card__meta">
+            <span>25. 9. 2026</span>
+            <span>1 min &#269;ten&#237;</span>
+        </div>
+    </div>
+</article>
+                </div>
+            </div>
+        </section>
+    
+</main>
+
+<!-- Scroll to top -->
+<button class="scroll-to-top" id="scroll-to-top" aria-label="Zpět na začátek">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- Site Footer -->
+<footer class="site-footer">
+    <div class="site-footer__inner">
+
+        <!-- Col 1: Logo + description -->
+        <div class="site-footer__col site-footer__col--brand">
+            <a href="https://radyz.cz/" class="site-footer__logo" aria-label="Radyz AI lidsky – domů">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 156 36" height="36" aria-hidden="true">
+                    <rect width="156" height="36" rx="18" fill="#C94A24"/>
+                    <text x="16" y="24" font-family="Georgia,serif" fill="white"><tspan font-size="19" font-weight="700">RADYZ</tspan><tspan font-size="12" font-weight="400" dx="6">ai lidsky</tspan></text>
+                </svg>
+            </a>
+            <p class="site-footer__desc">
+                Novinky a analýzy ze světa umělé inteligence. ChatGPT, Claude, OpenAI a AI nástroje česky.            </p>
+            <a class="site-footer__social" href="https://www.facebook.com/radyz.cz" target="_blank" rel="noopener noreferrer" aria-label="Radyz na Facebooku">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                Sledujte nás na Facebooku
+            </a>
+            <div class="site-footer__friend-link">
+                <a class="site-footer__social" href="https://satelitni-internet.cz" target="_blank" rel="noopener noreferrer">Satelitní internet – Starlink</a>
+            </div>
+        </div>
+
+        <!-- Col 2: Rubriky -->
+        <div class="site-footer__col">
+            <h2 class="site-footer__heading">Rubriky</h2>
+            <ul class="site-footer__nav">
+                                    <li><a href="https://radyz.cz/rychle-zpravy/">Rychlé zprávy</a></li>
+                                    <li><a href="https://radyz.cz/novinky/">Novinky</a></li>
+                                    <li><a href="https://radyz.cz/nazory/">Názory</a></li>
+                            </ul>
+        </div>
+
+        <!-- Col 3: Zjistit víc -->
+        <div class="site-footer__col">
+            <h2 class="site-footer__heading">Zjistit víc</h2>
+            <ul class="site-footer__nav">
+                                    <li><a href="https://radyz.cz/slovnik-ai-pojmu/">Slovník AI</a></li>
+                                                    <li><a href="https://radyz.cz/o-webu/">O webu</a></li>
+                                <li><a href="https://radyz.cz/?s=">Hledat</a></li>
+            </ul>
+        </div>
+
+        <!-- Col 4: Copyright + privacy -->
+        <div class="site-footer__col site-footer__col--copy">
+            <p class="site-footer__copy">
+                &copy; 2026 Radyz. Všechna práva vyhrazena.
+            </p>
+            <nav class="site-footer__privacy" aria-label="Soukromí a cookies">
+                                    <a href="https://radyz.cz/ochrana-soukromi/">Ochrana soukromí</a>
+                                <a href="https://radyz.cz/zasady-cookies-eu/">Zásady cookies (EU)</a>
+                <button type="button" class="cmplz-manage-consent site-footer__privacy-button">Nastavení cookies</button>
+            </nav>
+
+            <div class="site-footer__preferred-source">
+                <span class="site-footer__preferred-source-label">Chcete nás vidět častěji na Google?</span>
+                <div google-add-preferred-source-btn data-theme="dark" data-lang="cs"></div>
+            </div>
+        </div>
+
+    </div><!-- /.site-footer__inner -->
+</footer><!-- /.site-footer -->
+
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/radyz-theme/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+
+<!-- Consent Management powered by Complianz | GDPR/CCPA Cookie Consent https://wordpress.org/plugins/complianz-gdpr -->
+<div id="cmplz-cookiebanner-container"><div id="cmplz-cookiebanner-1-optin" class="cmplz-cookiebanner cmplz-hidden banner-1 banner-a optin cmplz-bottom cmplz-categories-type-view-preferences" aria-modal="true" data-nosnippet="true" role="dialog" aria-live="polite" aria-labelledby="cmplz-header-1-optin" aria-describedby="cmplz-message-1-optin">
+	<div class="cmplz-header">
+		<div class="cmplz-logo"><img width="32" height="32" src="https://radyz.cz/wp-content/uploads/2026/05/radyz-favicon-orange.svg" class="attachment-cmplz_banner_image size-cmplz_banner_image" alt="Radyz | AI lidsky" decoding="async" /></div>
+		<div class="cmplz-title" id="cmplz-header-1-optin">Spravovat Souhlas</div>
+		<div class="cmplz-close" tabindex="0" role="button" aria-label="Zavřít dialogové okno">
+			<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" class="svg-inline--fa fa-times fa-w-11" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>
+		</div>
+	</div>
+
+	<div class="cmplz-divider cmplz-divider-header"></div>
+	<div class="cmplz-body">
+		<div class="cmplz-message" id="cmplz-message-1-optin">Abychom poskytli co nejlepší služby, používáme k ukládání a/nebo přístupu k informacím o zařízení, technologie jako jsou soubory cookies. Souhlas s těmito technologiemi nám umožní zpracovávat údaje, jako je chování při procházení nebo jedinečná ID na tomto webu. Nesouhlas nebo odvolání souhlasu může nepříznivě ovlivnit určité vlastnosti a funkce.</div>
+		<!-- categories start -->
+		<div class="cmplz-categories">
+			<div class="cmplz-category cmplz-functional">
+				<div class="cmplz-category-header">
+					<span class="cmplz-category-title" id="cmplz-title-functional-1-optin">Funkční</span>
+					<span class='cmplz-always-active'>
+						<span class="cmplz-banner-checkbox">
+							<input type="checkbox"
+									id="cmplz-functional-optin"
+									data-category="cmplz_functional"
+									class="cmplz-consent-checkbox cmplz-functional"
+									size="40"
+									value="1"/>
+							<label class="cmplz-label" for="cmplz-functional-optin"><span class="screen-reader-text">Funkční</span></label>
+						</span>
+						Vždy aktivní					</span>
+					<button class="cmplz-category-toggle"
+							aria-expanded="false"
+							aria-controls="cmplz-desc-functional-1-optin"
+							aria-labelledby="cmplz-title-functional-1-optin">
+						<span class="cmplz-icon cmplz-open">
+							<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"/></svg>
+						</span>
+					</button>
+				</div>
+				<div class="cmplz-description" id="cmplz-desc-functional-1-optin" hidden>
+					<span class="cmplz-description-functional">Technické uložení nebo přístup je nezbytně nutný pro legitimní účel umožnění použití konkrétní služby, kterou si odběratel nebo uživatel výslovně vyžádal, nebo pouze za účelem provedení přenosu sdělení prostřednictvím sítě elektronických komunikací.</span>
+				</div>
+			</div>
+
+			<div class="cmplz-category cmplz-preferences">
+				<div class="cmplz-category-header">
+					<span class="cmplz-category-title" id="cmplz-title-preferences-1-optin">Předvolby</span>
+					<span class="cmplz-banner-checkbox">
+						<input type="checkbox"
+								id="cmplz-preferences-optin"
+								data-category="cmplz_preferences"
+								class="cmplz-consent-checkbox cmplz-preferences"
+								size="40"
+								value="1"/>
+						<label class="cmplz-label" for="cmplz-preferences-optin"><span class="screen-reader-text">Předvolby</span></label>
+					</span>
+					<button class="cmplz-category-toggle"
+							aria-expanded="false"
+							aria-controls="cmplz-desc-preferences-1-optin"
+							aria-labelledby="cmplz-title-preferences-1-optin">
+						<span class="cmplz-icon cmplz-open">
+							<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"/></svg>
+						</span>
+					</button>
+				</div>
+				<div class="cmplz-description" id="cmplz-desc-preferences-1-optin" hidden>
+					<span class="cmplz-description-preferences">Technické uložení nebo přístup je nezbytný pro legitimní účel ukládání preferencí, které nejsou požadovány odběratelem nebo uživatelem.</span>
+				</div>
+			</div>
+
+			<div class="cmplz-category cmplz-statistics">
+				<div class="cmplz-category-header">
+					<span class="cmplz-category-title" id="cmplz-title-statistics-1-optin">Statistiky</span>
+					<span class="cmplz-banner-checkbox">
+						<input type="checkbox"
+								id="cmplz-statistics-optin"
+								data-category="cmplz_statistics"
+								class="cmplz-consent-checkbox cmplz-statistics"
+								size="40"
+								value="1"/>
+						<label class="cmplz-label" for="cmplz-statistics-optin"><span class="screen-reader-text">Statistiky</span></label>
+					</span>
+					<button class="cmplz-category-toggle"
+							aria-expanded="false"
+							aria-controls="cmplz-desc-statistics-1-optin"
+							aria-labelledby="cmplz-title-statistics-1-optin">
+						<span class="cmplz-icon cmplz-open">
+							<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"/></svg>
+						</span>
+					</button>
+				</div>
+				<div class="cmplz-description" id="cmplz-desc-statistics-1-optin" hidden>
+					<span class="cmplz-description-statistics">Technické uložení nebo přístup, který se používá výhradně pro statistické účely.</span>
+					<span class="cmplz-description-statistics-anonymous">Technické uložení nebo přístup, který se používá výhradně pro anonymní statistické účely. Bez předvolání, dobrovolného plnění ze strany vašeho Poskytovatele internetových služeb nebo dalších záznamů od třetí strany nelze informace, uložené nebo získané pouze pro tento účel, obvykle použít k vaší identifikaci.</span>
+				</div>
+			</div>
+
+			<div class="cmplz-category cmplz-marketing">
+				<div class="cmplz-category-header">
+					<span class="cmplz-category-title" id="cmplz-title-marketing-1-optin">Marketing</span>
+					<span class="cmplz-banner-checkbox">
+						<input type="checkbox"
+								id="cmplz-marketing-optin"
+								data-category="cmplz_marketing"
+								class="cmplz-consent-checkbox cmplz-marketing"
+								size="40"
+								value="1"/>
+						<label class="cmplz-label" for="cmplz-marketing-optin"><span class="screen-reader-text">Marketing</span></label>
+					</span>
+					<button class="cmplz-category-toggle"
+							aria-expanded="false"
+							aria-controls="cmplz-desc-marketing-1-optin"
+							aria-labelledby="cmplz-title-marketing-1-optin">
+						<span class="cmplz-icon cmplz-open">
+							<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"/></svg>
+						</span>
+					</button>
+				</div>
+				<div class="cmplz-description" id="cmplz-desc-marketing-1-optin" hidden>
+					<span class="cmplz-description-marketing">Technické uložení nebo přístup je nutný k vytvoření uživatelských profilů za účelem zasílání reklamy nebo sledování uživatele na webových stránkách nebo několika webových stránkách pro podobné marketingové účely.</span>
+				</div>
+			</div>
+		</div><!-- categories end -->
+			</div>
+
+	<div class="cmplz-links cmplz-information">
+		<ul>
+			<li><a class="cmplz-link cmplz-manage-options cookie-statement" href="#" data-relative_url="#cmplz-manage-consent-container">Spravovat možnosti</a></li>
+			<li><a class="cmplz-link cmplz-manage-third-parties cookie-statement" href="#" data-relative_url="#cmplz-cookies-overview">Spravovat služby</a></li>
+			<li><a class="cmplz-link cmplz-manage-vendors tcf cookie-statement" href="#" data-relative_url="#cmplz-tcf-wrapper">Správa {vendor_count} prodejců</a></li>
+			<li><a class="cmplz-link cmplz-external cmplz-read-more-purposes tcf" target="_blank" rel="noopener noreferrer nofollow" href="https://cookiedatabase.org/tcf/purposes/" aria-label="Přečtěte si více o účelech TCF v databázi cookies">Přečtěte si více o těchto účelech</a></li>
+		</ul>
+			</div>
+
+	<div class="cmplz-divider cmplz-footer"></div>
+
+	<div class="cmplz-buttons">
+		<button class="cmplz-btn cmplz-accept">Přijmout vše</button>
+		<button class="cmplz-btn cmplz-deny">Odmítnout</button>
+		<button class="cmplz-btn cmplz-view-preferences">Nastavení</button>
+		<button class="cmplz-btn cmplz-save-preferences">Uložit předvolby</button>
+		<a class="cmplz-btn cmplz-manage-options tcf cookie-statement" href="#" data-relative_url="#cmplz-manage-consent-container">Nastavení</a>
+			</div>
+
+
+	<div class="cmplz-documents cmplz-links">
+		<ul>
+			<li><a class="cmplz-link cookie-statement" href="#" data-relative_url="">{title}</a></li>
+			<li><a class="cmplz-link privacy-statement" href="#" data-relative_url="">{title}</a></li>
+			<li><a class="cmplz-link impressum" href="#" data-relative_url="">{title}</a></li>
+		</ul>
+			</div>
+</div>
+</div>
+					<div id="cmplz-manage-consent" data-nosnippet="true"><button class="cmplz-btn cmplz-hidden cmplz-manage-consent manage-consent-1" aria-haspopup="dialog" aria-controls="cmplz-cookiebanner-1-optin">Spravovat souhlas</button>
+
+</div><script id="radyz-main-js-extra">
+var radyzData = {"isSingle":"true","ajaxUrl":"https://radyz.cz/wp-admin/admin-ajax.php","newsletterNonce":"747f14488b"};
+//# sourceURL=radyz-main-js-extra
+</script>
+<script id="radyz-main-js" src="https://radyz.cz/wp-content/themes/radyz-theme/assets/js/main.js?ver=1791026661"></script>
+<script id="cmplz-cookiebanner-js-extra">
+var complianz = {"prefix":"cmplz_","debug":"","user_banner_id":"1","set_cookies":[],"block_ajax_content":"","banner_version":"1418","version":"7.5.6","store_consent":"","do_not_track_enabled":"","consenttype":"optin","region":"eu","geoip":"","dismiss_timeout":"","disable_cookiebanner":"","soft_cookiewall":"","dismiss_on_scroll":"","cookie_expiry":"365","url":"https://radyz.cz/wp-json/complianz/v1/","locale":"lang=cs&locale=cs_CZ","set_cookies_on_root":"","cookie_domain":"","current_policy_id":"37","cookie_path":"/","categories":{"statistics":"statistika","marketing":"marketing"},"tcf_active":"","placeholdertext":"Klepnut\u00edm p\u0159ijm\u011bte marketingov\u00e9 soubory cookie a povolte tento obsah","css_file":"https://radyz.cz/wp-content/uploads/complianz/css/banner-{banner_id}-{type}.css?v=1418","page_links":{"eu":{"cookie-statement":{"title":"Z\u00e1sady cookies ","url":"https://radyz.cz/zasady-cookies-eu/"}}},"tm_categories":"","forceEnableStats":"","preview":"","clean_cookies":"","aria_label":"Klepnut\u00edm p\u0159ijm\u011bte marketingov\u00e9 soubory cookie a povolte tento obsah","iapi_nav":"fallback","is_cookiepolicy_page":""};
+//# sourceURL=cmplz-cookiebanner-js-extra
+</script>
+<script defer id="cmplz-cookiebanner-js" src="https://radyz.cz/wp-content/plugins/complianz-gdpr/cookiebanner/js/complianz.min.js?ver=1792005097"></script>
+				<script type="text/plain" data-service="google-analytics" data-category="statistics" async data-category="statistics"
+						data-cmplz-src="https://www.googletagmanager.com/gtag/js?id=G-P27XSL65MZ"></script>
+						<!-- Statistics script Complianz GDPR/CCPA -->
+						<script type="text/plain"							data-category="statistics">window['gtag_enable_tcf_support'] = false;
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-P27XSL65MZ', {
+	cookie_flags:'secure;samesite=none',
+	
+});
+</script>
+							    <script>
+    (function () {
+        var el = document.querySelector( '[google-add-preferred-source-btn]' );
+        if ( ! el ) {
+            return;
+        }
+        var loaded = false;
+        function load() {
+            if ( loaded ) {
+                return;
+            }
+            loaded = true;
+            var s = document.createElement( 'script' );
+            s.src = 'https://news.google.com/swg/js/v1/publisher.js';
+            s.async = true;
+            document.body.appendChild( s );
+        }
+        if ( 'IntersectionObserver' in window ) {
+            var observer = new IntersectionObserver( function ( entries ) {
+                entries.forEach( function ( entry ) {
+                    if ( entry.isIntersecting ) {
+                        load();
+                        observer.disconnect();
+                    }
+                } );
+            }, { rootMargin: '200px' } );
+            observer.observe( el );
+        } else {
+            load();
+        }
+    })();
+    </script>
+    </body>
+</html>
