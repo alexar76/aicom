@@ -105,15 +105,15 @@ def _stripe_price_catalog() -> dict[str, int]:
 def _verify_stripe_signature(payload: bytes, sig_header: str, secret: str) -> bool:
     if not sig_header or not secret:
         return False
-    parts: dict[str, str] = {}
+    ts = ""
+    signatures = []
     for piece in sig_header.split(","):
-        if "=" not in piece:
-            continue
-        k, v = piece.split("=", 1)
-        parts[k.strip()] = v.strip()
-    ts = parts.get("t")
-    sig = parts.get("v1")
-    if not ts or not sig:
+        key, _, value = piece.strip().partition("=")
+        if key == "t":
+            ts = value
+        if key == "v1":
+            signatures.append(value)
+    if not ts.isascii() or not ts.isdigit() or not signatures:
         return False
     try:
         ts_int = int(ts)
@@ -121,9 +121,9 @@ def _verify_stripe_signature(payload: bytes, sig_header: str, secret: str) -> bo
         return False
     if abs(time.time() - ts_int) > 300:
         return False
-    signed_payload = f"{ts}.{payload.decode('utf-8')}".encode("utf-8")
+    signed_payload = ts.encode("ascii") + b"." + payload
     expected = hmac.new(secret.encode("utf-8"), signed_payload, hashlib.sha256).hexdigest()
-    return hmac.compare_digest(expected, sig)
+    return any(hmac.compare_digest(expected, sig) for sig in signatures if sig.isascii())
 
 
 @router.post("/register")
@@ -256,25 +256,27 @@ async def create_stripe_checkout_session(body: StripeCheckoutRequest, payload: d
                 },
             )
         if resp.status_code >= 400:
-            raise HTTPException(status_code=502, detail=f"Stripe error: {resp.text[:300]}")
+            raise HTTPException(status_code=502, detail="Stripe checkout request failed")
         data = resp.json()
     except HTTPException:
         raise
     except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"Stripe request failed: {exc}")
+        raise HTTPException(status_code=502, detail="Stripe checkout request failed") from exc
 
     session_id = str(data.get("id") or "")
-    if not session_id:
-        raise HTTPException(status_code=502, detail="Stripe session id missing")
+    expected_prefix = "cs_live_" if secret_key.startswith(("sk_live_", "rk_live_")) else "cs_test_"
+    if (not session_id.startswith(expected_prefix) or data.get("amount_total") != amount
+            or data.get("currency") != "usd"):
+        raise HTTPException(status_code=502, detail="Stripe checkout does not match the order")
     commerce.save_stripe_checkout_session(
         session_id=session_id,
         customer_id=payload["sub"],
         customer_email=customer.get("email") or payload.get("email") or "",
         target_plan=target_plan,
-        amount_total=int(data.get("amount_total") or amount),
-        currency=str(data.get("currency") or "usd"),
+        amount_total=amount,
+        currency="usd",
         status=str(data.get("status") or "open"),
-        payment_status=str(data.get("payment_status") or "unpaid"),
+        payment_status="unpaid",
         idempotency_key=idem,
     )
     return {
@@ -300,26 +302,40 @@ async def stripe_webhook(request: Request):
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid webhook payload")
 
+    if not isinstance(event, dict):
+        raise HTTPException(status_code=400, detail="Invalid webhook payload")
     event_type = str(event.get("type") or "")
+    if event_type not in ("checkout.session.completed", "checkout.session.async_payment_succeeded"):
+        return {"ok": True, "event_type": event_type, "ignored": True}
+    secret_key = os.environ.get("STRIPE_SECRET_KEY", "").strip()
+    if not secret_key.startswith(("sk_live_", "rk_live_", "sk_test_", "rk_test_")):
+        raise HTTPException(status_code=503, detail="Stripe checkout mode is not configured")
+    live = secret_key.startswith(("sk_live_", "rk_live_"))
     event_id = str(event.get("id") or "")
-    obj = ((event.get("data") or {}).get("object") or {})
+    data = event.get("data")
+    obj = data.get("object") if isinstance(data, dict) else None
+    if not isinstance(obj, dict):
+        raise HTTPException(status_code=400, detail="Invalid Stripe checkout event")
     session_id = str(obj.get("id") or "")
-    payment_status = str(obj.get("payment_status") or "")
-    session_status = str(obj.get("status") or "")
-    customer_email = obj.get("customer_email")
-    metadata = obj.get("metadata") if isinstance(obj.get("metadata"), dict) else {}
-    if not event_id or not session_id:
-        raise HTTPException(status_code=400, detail="Webhook payload missing event/session ids")
+    if (not event_id or not session_id.startswith("cs_live_" if live else "cs_test_")
+            or event.get("livemode") is not live or obj.get("livemode") is not live
+            or obj.get("object") != "checkout.session"):
+        raise HTTPException(status_code=400, detail="Invalid Stripe checkout event")
 
-    result = commerce.apply_stripe_webhook_event(
-        event_id=event_id,
-        event_type=event_type,
-        session_id=session_id,
-        payment_status=payment_status,
-        session_status=session_status,
-        customer_email=customer_email,
-        metadata=metadata,
-    )
+    try:
+        result = commerce.apply_stripe_webhook_event(
+            event_id=event_id,
+            event_type=event_type,
+            session_id=session_id,
+            payment_status=str(obj.get("payment_status") or ""),
+            session_status=str(obj.get("status") or ""),
+            amount_total=obj.get("amount_total"),
+            currency=str(obj.get("currency") or ""),
+        )
+    except LookupError as exc:
+        raise HTTPException(status_code=503, detail="Stripe checkout record is unavailable") from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail="Stripe checkout amount or currency mismatch") from exc
     return {"ok": True, "event_type": event_type, **result}
 
 

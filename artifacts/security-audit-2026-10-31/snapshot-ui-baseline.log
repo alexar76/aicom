@@ -1,0 +1,92 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ test_all_analytics_dashboards_render_and_cached_revisit_is_fast ________
+
+tmp_path = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-478/test_all_analytics_dashboards_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x110f9f920>
+
+    def test_all_analytics_dashboards_render_and_cached_revisit_is_fast(tmp_path, monkeypatch):
+        monkeypatch.setenv("SKOPOS_REQUIRE_DASHBOARD_AUTH", "0")
+        monkeypatch.setenv("SKOPOS_DASHBOARD_CACHE_DIR", str(tmp_path))
+        app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "dashboard.py"), default_timeout=30).run()
+        assert not app.exception
+    
+        minimums = {
+            "overview": (7, 0),
+            "geo": (6, 0),
+            "audience": (5, 0),
+            "content": (4, 0),
+            "sources": (1, 0),
+            "journal": (0, 1),
+            "system": (0, 0),
+        }
+        for dashboard, (minimum_charts, minimum_tables) in minimums.items():
+            started = time.monotonic()
+>           app.radio[0].set_value(dashboard).run(timeout=30)
+            ^^^^^^^^^^^^
+
+skopos/tests/test_dashboard_snapshots.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = WidgetList(), idx = 0
+
+    def __getitem__(self, idx: int | slice) -> El_co | ElementList[El_co]:
+        if isinstance(idx, slice):
+            return ElementList(self._list[idx])
+>       return self._list[idx]
+               ^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+skopos/.venv/lib/python3.12/site-packages/streamlit/testing/v1/element_tree.py:353: IndexError
+----------------------------- Captured stderr call -----------------------------
+2026-10-31 12:03:16.866 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-31 12:03:21.238 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-10-31 12:03:21.240 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-10-31 12:03:21.257 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-10-31 12:03:21.259 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-10-31 12:03:21.265 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-10-31 12:03:21.301 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+------------------------------ Captured log call -------------------------------
+WARNING  streamlit.runtime.scriptrunner_utils.script_run_context:script_run_context.py:483 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+WARNING  streamlit.deprecation_util:deprecation_util.py:81 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+WARNING  streamlit.deprecation_util:deprecation_util.py:81 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+WARNING  streamlit.deprecation_util:deprecation_util.py:81 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+WARNING  streamlit.deprecation_util:deprecation_util.py:81 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+WARNING  streamlit.deprecation_util:deprecation_util.py:81 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+WARNING  streamlit.deprecation_util:deprecation_util.py:81 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+=============================== warnings summary ===============================
+tests/test_dashboard_snapshots.py::test_all_analytics_dashboards_render_and_cached_revisit_is_fast
+tests/test_dashboard_snapshots.py::test_all_analytics_dashboards_render_and_cached_revisit_is_fast
+tests/test_dashboard_snapshots.py::test_all_analytics_dashboards_render_and_cached_revisit_is_fast
+tests/test_dashboard_snapshots.py::test_all_analytics_dashboards_render_and_cached_revisit_is_fast
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/skopos/i18n.py:127: DeprecationWarning: 'locale.getdefaultlocale' is deprecated and slated for removal in Python 3.15. Use setlocale(), getencoding() and getlocale() instead.
+    (syslocale.getdefaultlocale()[0] if syslocale.getdefaultlocale() else None),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED skopos/tests/test_dashboard_snapshots.py::test_all_analytics_dashboards_render_and_cached_revisit_is_fast
+1 failed, 4 deselected, 4 warnings in 6.79s

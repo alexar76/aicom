@@ -1,0 +1,1504 @@
+{
+ "window": [
+  "2026-10-25T00:00:00Z",
+  "2026-11-01T00:00:00Z"
+ ],
+ "servers": 70,
+ "changes": 465,
+ "fieldKinds": {
+  "description": 1963,
+  "inputSchema": 156
+ },
+ "byServer": [
+  {
+   "target_id": "72c5a7c28bc5a619",
+   "name": "app.vercel.fork-for-agents/fork",
+   "endpoint": "https://fork.zone/api/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 237
+   },
+   "fields": {
+    "description": 237
+   },
+   "tools": 19,
+   "toolListBytes": 35216,
+   "first": "2026-10-25T22:48:49Z",
+   "last": "2026-10-31T23:49:15Z",
+   "example": {
+    "field": "whats_new.description",
+    "before": "our open asks). Live now (feed read 2026-10-28T08:24:54Z): newest improvement \"Before publ",
+    "after": "our open asks). Live now (feed read 2026-10-28T08:55:46Z): newest improvement \"Before publ"
+   }
+  },
+  {
+   "target_id": "92c91145a2efa699",
+   "name": "io.taifoon/coordination-layer",
+   "endpoint": "https://coord.taifoon.dev/mcp?ref=mcp-registry",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 29
+   },
+   "fields": {
+    "description": 29
+   },
+   "tools": 15,
+   "toolListBytes": 48203,
+   "first": "2026-10-25T06:22:51Z",
+   "last": "2026-10-31T12:48:50Z",
+   "example": {
+    "field": "taifoon_buy.description",
+    "before": "ta.onchain_query, sold per call by Taifoon at 0.009027 USDC (x402); mcp.digest, sold per c",
+    "after": "ta.onchain_query, sold per call by Taifoon at 0.008588 USDC (x402); mcp.digest, sold per c"
+   }
+  },
+  {
+   "target_id": "6ea96b9a5381ad8f",
+   "name": "io.taifoon/coordination-layer",
+   "endpoint": "https://www.taifoon.io/api/mcp?ref=mcp-registry",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 28
+   },
+   "fields": {
+    "description": 28
+   },
+   "tools": 15,
+   "toolListBytes": 48203,
+   "first": "2026-10-25T06:32:13Z",
+   "last": "2026-10-31T12:31:32Z",
+   "example": {
+    "field": "taifoon_buy.description",
+    "before": "ta.onchain_query, sold per call by Taifoon at 0.009027 USDC (x402); mcp.digest, sold per c",
+    "after": "ta.onchain_query, sold per call by Taifoon at 0.008588 USDC (x402); mcp.digest, sold per c"
+   }
+  },
+  {
+   "target_id": "927da3ca543e9475",
+   "name": "com.jojapi/product-barcode-api",
+   "endpoint": "https://mcp.jojapi.com/product-barcode-api",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 12
+   },
+   "fields": {
+    "description": 15
+   },
+   "tools": 8,
+   "toolListBytes": 8205,
+   "first": "2026-10-25T13:58:53Z",
+   "last": "2026-10-30T05:14:23Z",
+   "example": {
+    "field": "get_api_external_product_of_market.description",
+    "before": "ptionally. Billing per call: Credits: metered (~0.12 avg).",
+    "after": "ptionally. Billing per call: Credits: metered (~0.76 avg)."
+   }
+  },
+  {
+   "target_id": "2d7db3306d4a9f68",
+   "name": "com.partstable/partstable",
+   "endpoint": "https://partstable.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 9
+   },
+   "fields": {
+    "description": 9
+   },
+   "tools": 5,
+   "toolListBytes": 1906,
+   "first": "2026-10-25T06:30:58Z",
+   "last": "2026-10-31T08:56:04Z",
+   "example": {
+    "field": "validate-pn.description",
+    "before": ",182,530 distinct part numbers, measured 2026-10-28), from government, OEM, and commercial",
+    "after": ",182,530 distinct part numbers, measured 2026-10-29), from government, OEM, and commercial"
+   }
+  },
+  {
+   "target_id": "66412517c0381a12",
+   "name": "no.pristavla/pristavla",
+   "endpoint": "https://pristavla.no/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 8
+   },
+   "fields": {
+    "description": 8
+   },
+   "tools": 4,
+   "toolListBytes": 10302,
+   "first": "2026-10-26T21:18:32Z",
+   "last": "2026-10-31T23:26:01Z",
+   "example": {
+    "field": "get_series.description",
+    "before": "ronekursen per virkedag, alle valutaene, 2025-09-17\u20132026-10-27); valuta-maned (Kronekursen",
+    "after": "ronekursen per virkedag, alle valutaene, 2025-09-18\u20132026-10-28); valuta-maned (Kronekursen"
+   }
+  },
+  {
+   "target_id": "e4b6cbda9fe9aa13",
+   "name": "net.hotelrefund/price-tracker",
+   "endpoint": "https://hotelrefund.net/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 7
+   },
+   "fields": {
+    "description": 7
+   },
+   "tools": 11,
+   "toolListBytes": 16565,
+   "first": "2026-10-25T00:02:31Z",
+   "last": "2026-10-31T00:01:32Z",
+   "example": {
+    "field": "track_hotel_price.description",
+    "before": "Today is 2026-10-28 (UTC) \u2014 never infer the date from the ",
+    "after": "Today is 2026-10-29 (UTC) \u2014 never infer the date from the "
+   }
+  },
+  {
+   "target_id": "e44af2e7d590591e",
+   "name": "com.multicinesortega/cartelera",
+   "endpoint": "https://multicinesortega.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 7
+   },
+   "fields": {
+    "inputSchema.properties.dia.description": 7
+   },
+   "tools": 3,
+   "toolListBytes": 1916,
+   "first": "2026-10-25T05:07:56Z",
+   "last": "2026-10-31T05:08:55Z",
+   "example": {
+    "field": "cartelera.inputSchema.properties.dia.description",
+    "before": " operativo en formato AAAA-MM-DD. Hoy es 2026-10-28. D\u00edas con pases: 2026-10-29, 2026-10-3",
+    "after": " operativo en formato AAAA-MM-DD. Hoy es 2026-10-29. D\u00edas con pases: 2026-10-29, 2026-10-3"
+   }
+  },
+  {
+   "target_id": "2a50908caff7de8f",
+   "name": "com.enhancedint/shesmydoglady",
+   "endpoint": "https://book.enhancedint.com/shesmydoglady/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 7
+   },
+   "fields": {
+    "inputSchema.examples[].start": 7,
+    "inputSchema.examples[].from": 7,
+    "inputSchema.examples[].to": 7,
+    "inputSchema.examples[].windows[].end": 7,
+    "inputSchema.examples[].windows[].start": 7
+   },
+   "tools": 6,
+   "toolListBytes": 15107,
+   "first": "2026-10-25T07:00:47Z",
+   "last": "2026-10-31T07:02:25Z",
+   "example": {
+    "field": "book.inputSchema.examples[0].start",
+    "before": "2026-10-29T10:00:00-07:00",
+    "after": "2026-10-30T10:00:00-07:00"
+   }
+  },
+  {
+   "target_id": "29fa634a1aaaa09a",
+   "name": "com.enhancedint/enhanced-intelligence",
+   "endpoint": "https://book.enhancedint.com/enhanced-intelligence/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 7
+   },
+   "fields": {
+    "inputSchema.examples[].start": 7,
+    "inputSchema.examples[].from": 7,
+    "inputSchema.examples[].to": 7,
+    "inputSchema.examples[].windows[].end": 7,
+    "inputSchema.examples[].windows[].start": 7
+   },
+   "tools": 6,
+   "toolListBytes": 16269,
+   "first": "2026-10-25T07:29:06Z",
+   "last": "2026-10-31T07:02:25Z",
+   "example": {
+    "field": "book.inputSchema.examples[0].start",
+    "before": "2026-10-29T08:00:00-07:00",
+    "after": "2026-10-30T08:00:00-07:00"
+   }
+  },
+  {
+   "target_id": "44213c00ad769378",
+   "name": "app.seatsherpa/rides",
+   "endpoint": "https://seatsherpa.app/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 7
+   },
+   "fields": {
+    "inputSchema.properties.date.description": 21
+   },
+   "tools": 5,
+   "toolListBytes": 5364,
+   "first": "2026-10-25T07:13:59Z",
+   "last": "2026-10-31T07:14:41Z",
+   "example": {
+    "field": "post_ride_link.inputSchema.properties.date.description",
+    "before": "vel date, YYYY-MM-DD (Pacific). Today is 2026-10-28 (Pacific): use today or a later date, ",
+    "after": "vel date, YYYY-MM-DD (Pacific). Today is 2026-10-29 (Pacific): use today or a later date, "
+   }
+  },
+  {
+   "target_id": "52e3e33f039efd24",
+   "name": "com.enhancedint/es-luxury",
+   "endpoint": "https://book.enhancedint.com/es-luxury/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 7
+   },
+   "fields": {
+    "inputSchema.examples[].start": 7,
+    "inputSchema.examples[].from": 7,
+    "inputSchema.examples[].to": 7,
+    "inputSchema.examples[].windows[].end": 7,
+    "inputSchema.examples[].windows[].start": 7
+   },
+   "tools": 6,
+   "toolListBytes": 16164,
+   "first": "2026-10-25T07:19:47Z",
+   "last": "2026-10-31T07:24:33Z",
+   "example": {
+    "field": "book.inputSchema.examples[0].start",
+    "before": "2026-10-29T08:00:00-07:00",
+    "after": "2026-10-30T08:00:00-07:00"
+   }
+  },
+  {
+   "target_id": "b73c50ef44bb30bc",
+   "name": "io.github.Nutshell2000/agent-data-tools-chain",
+   "endpoint": "https://agent-data-tools.revmesh2074.workers.dev/mcp/chain",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 6
+   },
+   "fields": {
+    "description": 679
+   },
+   "tools": 354,
+   "toolListBytes": 329599,
+   "first": "2026-10-25T12:11:59Z",
+   "last": "2026-10-31T14:19:03Z",
+   "example": {
+    "field": "dex_new_pools.description",
+    "before": "rt before trading. Example: chain=base. Price $0.01/call via x402 USDC or a card key (/cre",
+    "after": "rt before trading. Example: chain=base. Price $0.05/call via x402 USDC or a card key (/cre"
+   }
+  },
+  {
+   "target_id": "6b5bba5aa93100db",
+   "name": "io.github.pournasserian/mcp-my-site",
+   "endpoint": "https://ai.pournasserian.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 5
+   },
+   "fields": {
+    "description": 5
+   },
+   "tools": 2,
+   "toolListBytes": 2399,
+   "first": "2026-10-25T16:37:47Z",
+   "last": "2026-10-31T00:54:45Z",
+   "example": {
+    "field": "search.description",
+    "before": "tic search over its 82 pages, indexed on 2026-10-26; returns the best matching pages with ",
+    "after": "tic search over its 82 pages, indexed on 2026-10-28; returns the best matching pages with "
+   }
+  },
+  {
+   "target_id": "f45e0d6a3640b86c",
+   "name": "app.flaim/mcp",
+   "endpoint": "https://api.flaim.app/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 5
+   },
+   "fields": {
+    "description": 40
+   },
+   "tools": 11,
+   "toolListBytes": 70167,
+   "first": "2026-10-25T00:10:32Z",
+   "last": "2026-10-29T00:13:20Z",
+   "example": {
+    "field": "get_draft.description",
+    "before": "e per league. Read-only. Current date is 2026-10-28.",
+    "after": "e per league. Read-only. Current date is 2026-10-29."
+   }
+  },
+  {
+   "target_id": "b8a486b028b1c6df",
+   "name": "com.jojapi/sms-verify",
+   "endpoint": "https://mcp.jojapi.com/sms-verify",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 4
+   },
+   "fields": {
+    "description": 4
+   },
+   "tools": 3,
+   "toolListBytes": 2302,
+   "first": "2026-10-26T11:36:20Z",
+   "last": "2026-10-31T03:43:17Z",
+   "example": {
+    "field": "post_send_numeric_verify.description",
+    "before": "erification. Billing per call: Credits: metered (~437.79 avg).",
+    "after": "erification. Billing per call: Credits: metered (~518.21 avg)."
+   }
+  },
+  {
+   "target_id": "0dd908420919def2",
+   "name": "io.github.johngee518/agenttoolbox",
+   "endpoint": "https://agenttoolbox.net/api/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 4
+   },
+   "fields": {
+    "description": 4
+   },
+   "tools": 4,
+   "toolListBytes": 1041,
+   "first": "2026-10-27T12:43:34Z",
+   "last": "2026-10-29T12:13:16Z",
+   "example": {
+    "field": "estimate_tokens.description",
+    "before": "nt frontier models (list prices verified 2026-10-27).",
+    "after": "nt frontier models (list prices verified 2026-10-28)."
+   }
+  },
+  {
+   "target_id": "66c69ef54077bcf5",
+   "name": "io.github.Nutshell2000/agent-data-tools-utilities",
+   "endpoint": "https://agent-data-tools.revmesh2074.workers.dev/mcp/utilities",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 4
+   },
+   "fields": {
+    "description": 174
+   },
+   "tools": 93,
+   "toolListBytes": 75338,
+   "first": "2026-10-26T20:31:02Z",
+   "last": "2026-10-31T14:17:05Z",
+   "example": {
+    "field": "pack_encoding_toolbox.description",
+    "before": "ring says. Example: text=Caf\u00e9 & <tags>. Price $0.01/call via x402 USDC or a card key (/cre",
+    "after": "ring says. Example: text=Caf\u00e9 & <tags>. Price $0.03/call via x402 USDC or a card key (/cre"
+   }
+  },
+  {
+   "target_id": "f7340c50650161cc",
+   "name": "io.github.Nutshell2000/agent-data-tools-everyday",
+   "endpoint": "https://agent-data-tools.revmesh2074.workers.dev/mcp/everyday",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 4
+   },
+   "fields": {
+    "description": 16
+   },
+   "tools": 18,
+   "toolListBytes": 16479,
+   "first": "2026-10-25T12:12:32Z",
+   "last": "2026-10-31T14:17:10Z",
+   "example": {
+    "field": "pack_location_brief.description",
+    "before": " in a record. Example: place=Stockholm. Price $0.01/call via x402 USDC or a card key (/cre",
+    "after": " in a record. Example: place=Stockholm. Price $0.03/call via x402 USDC or a card key (/cre"
+   }
+  },
+  {
+   "target_id": "e2c9554b74ae374c",
+   "name": "io.github.Nutshell2000/agent-data-tools",
+   "endpoint": "https://agent-data-tools.revmesh2074.workers.dev/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 4
+   },
+   "fields": {
+    "description": 396
+   },
+   "tools": 333,
+   "toolListBytes": 315344,
+   "first": "2026-10-26T19:32:58Z",
+   "last": "2026-10-27T06:37:21Z",
+   "example": {
+    "field": "arb_allowance.description",
+    "before": "4 and a non-ERC-20 422, both uncharged. Price $0.01/call via x402 USDC or a card key (/cre",
+    "after": "4 and a non-ERC-20 422, both uncharged. Price $0.003/call via x402 USDC or a card key (/cr"
+   }
+  },
+  {
+   "target_id": "01d490283c0788ab",
+   "name": "io.github.purmemo-ai/purmemo",
+   "endpoint": "npm:purmemo-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates": 3
+   },
+   "fields": {
+    "inputSchema.properties.title.default": 3
+   },
+   "tools": 5,
+   "toolListBytes": 14153,
+   "first": "2026-10-25T19:12:58Z",
+   "last": "2026-10-31T08:05:12Z",
+   "example": {
+    "field": "save_conversation.inputSchema.properties.title.default",
+    "before": "Conversation 2026-10-26T21:47:21.670Z",
+    "after": "Conversation 2026-10-31T08:05:11.688Z"
+   }
+  },
+  {
+   "target_id": "24902f836f30d438",
+   "name": "io.github.Nutshell2000/agent-data-tools-compliance",
+   "endpoint": "https://agent-data-tools.revmesh2074.workers.dev/mcp/compliance",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 3
+   },
+   "fields": {
+    "description": 12
+   },
+   "tools": 31,
+   "toolListBytes": 30388,
+   "first": "2026-10-27T00:01:04Z",
+   "last": "2026-10-31T14:13:33Z",
+   "example": {
+    "field": "pack_api_health.description",
+    "before": "i/v3/pet/findByStatus?status=available. Price $0.01/call via x402 USDC or a card key (/cre",
+    "after": "i/v3/pet/findByStatus?status=available. Price $0.03/call via x402 USDC or a card key (/cre"
+   }
+  },
+  {
+   "target_id": "12d0b03f454d8f3f",
+   "name": "io.github.Nutshell2000/agent-data-tools-prices",
+   "endpoint": "https://agent-data-tools.revmesh2074.workers.dev/mcp/prices",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 3
+   },
+   "fields": {
+    "description": 5
+   },
+   "tools": 23,
+   "toolListBytes": 22118,
+   "first": "2026-10-26T19:30:28Z",
+   "last": "2026-10-31T14:13:51Z",
+   "example": {
+    "field": "pack_coin_research.description",
+    "before": "or for a coin brief. Example: coin=ETH. Price $0.01/call via x402 USDC or a card key (/cre",
+    "after": "or for a coin brief. Example: coin=ETH. Price $0.03/call via x402 USDC or a card key (/cre"
+   }
+  },
+  {
+   "target_id": "0a95b51ed4501f9d",
+   "name": "npm/agent-orchestrator-mcp-server",
+   "endpoint": "npm:agent-orchestrator-mcp-server",
+   "transport": "stdio",
+   "changes": {
+    "dates": 2
+   },
+   "fields": {
+    "description": 2
+   },
+   "tools": 18,
+   "toolListBytes": 51379,
+   "first": "2026-10-25T02:36:38Z",
+   "last": "2026-10-29T00:44:03Z",
+   "example": {
+    "field": "wake_me_up_later.description",
+    "before": "pecified time.\n\n**Current server time:** 2026-10-25T02:36:38Z (UTC). Use this as your refe",
+    "after": "pecified time.\n\n**Current server time:** 2026-10-29T00:44:00Z (UTC). Use this as your refe"
+   }
+  },
+  {
+   "target_id": "c39f862550626df7",
+   "name": "io.github.tacticalnoot/agent-embassy",
+   "endpoint": "https://agent-embassy.fly.dev/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 2
+   },
+   "fields": {
+    "description": 7,
+    "inputSchema.properties.bundle.description": 1
+   },
+   "tools": 25,
+   "toolListBytes": 59991,
+   "first": "2026-10-29T04:36:08Z",
+   "last": "2026-10-29T06:37:15Z",
+   "example": {
+    "field": "attest_work.description",
+    "before": "e https://docs.cdp.coinbase.com/x402 Paid tool \u2014 $1.00, USDC on Base or Arbitrum One. Paid",
+    "after": "e https://docs.cdp.coinbase.com/x402 Paid tool \u2014 $222.00, USDC on Base or Arbitrum One. Pa"
+   }
+  },
+  {
+   "target_id": "f73375f6971af178",
+   "name": "pro.aemb/agent-embassy",
+   "endpoint": "https://aemb.pro/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 2
+   },
+   "fields": {
+    "description": 7,
+    "inputSchema.properties.bundle.description": 1
+   },
+   "tools": 25,
+   "toolListBytes": 59991,
+   "first": "2026-10-29T04:36:08Z",
+   "last": "2026-10-29T06:37:14Z",
+   "example": {
+    "field": "attest_work.description",
+    "before": "e https://docs.cdp.coinbase.com/x402 Paid tool \u2014 $1.00, USDC on Base or Arbitrum One. Paid",
+    "after": "e https://docs.cdp.coinbase.com/x402 Paid tool \u2014 $222.00, USDC on Base or Arbitrum One. Pa"
+   }
+  },
+  {
+   "target_id": "248cd10d13a9e6bd",
+   "name": "io.github.Devabubakar/atsprep",
+   "endpoint": "https://atsprep.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 2
+   },
+   "fields": {
+    "description": 8
+   },
+   "tools": 19,
+   "toolListBytes": 20707,
+   "first": "2026-10-29T17:28:24Z",
+   "last": "2026-10-31T13:28:54Z",
+   "example": {
+    "field": "check_bullets.description",
+    "before": "ped and reported by index. Rules version 2026-10-28.1.",
+    "after": "ped and reported by index. Rules version 2026-10-29.1."
+   }
+  },
+  {
+   "target_id": "7d5be23ad47f578c",
+   "name": "io.github.ohad6k/viberaven-guides",
+   "endpoint": "https://viberaven.dev/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 2
+   },
+   "fields": {
+    "description": 6
+   },
+   "tools": 5,
+   "toolListBytes": 9617,
+   "first": "2026-10-30T11:24:36Z",
+   "last": "2026-10-31T13:07:00Z",
+   "example": {
+    "field": "check_supabase_migrations.description",
+    "before": "h and content for each file. Runs the VibeRaven 1.6.12 SQL rules and returns finding id, s",
+    "after": "h and content for each file. Runs the VibeRaven 1.7.1 SQL rules and returns finding id, se"
+   }
+  },
+  {
+   "target_id": "409984762fd3964f",
+   "name": "io.github.Fizzl13/paypal-guard",
+   "endpoint": "npm:fizzl-paypal-guard-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates": 2
+   },
+   "fields": {
+    "inputSchema.properties.end_date.default": 2,
+    "inputSchema.properties.start_date.default": 2
+   },
+   "tools": 49,
+   "toolListBytes": 109262,
+   "first": "2026-10-26T04:27:53Z",
+   "last": "2026-10-30T05:57:30Z",
+   "example": {
+    "field": "list_transactions.inputSchema.properties.end_date.default",
+    "before": "2026-10-26T04:27:52.263Z",
+    "after": "2026-10-30T05:57:26.339Z"
+   }
+  },
+  {
+   "target_id": "9bac2b04db5ae56c",
+   "name": "io.github.wellknownmcp/ia-asso",
+   "endpoint": "https://ia-asso.fr/api/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 2
+   },
+   "fields": {
+    "description": 2
+   },
+   "tools": 18,
+   "toolListBytes": 15827,
+   "first": "2026-10-27T12:45:44Z",
+   "last": "2026-10-31T13:11:27Z",
+   "example": {
+    "field": "get_recognized_associations.description",
+    "before": "decree. Currently 1,961 RUP fiches (as of 2026-10-29). RUP status grants major fiscal bene",
+    "after": "decree. Currently 1,961 RUP fiches (as of 2026-10-31). RUP status grants major fiscal bene"
+   }
+  },
+  {
+   "target_id": "5363d4b9eea55886",
+   "name": "npm/@cueai/omni-reader-mcp",
+   "endpoint": "npm:@cueai/omni-reader-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates+versions": 2
+   },
+   "fields": {
+    "description": 2
+   },
+   "tools": 7,
+   "toolListBytes": 39597,
+   "first": "2026-10-25T20:31:47Z",
+   "last": "2026-10-26T23:46:22Z",
+   "example": {
+    "field": "parse.description",
+    "before": "Bridge release: 1.8.7; report it when asking for support.\nUs",
+    "after": "Bridge release: 1.8.8; report it when asking for support.\nUs"
+   }
+  },
+  {
+   "target_id": "41c05672182f171b",
+   "name": "io.github.afsozer/doktor-mcp",
+   "endpoint": "npm:doktor-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "inputSchema.properties.decisions.items.properties.evidence.properties.retrievedAt.default": 1
+   },
+   "tools": 8,
+   "toolListBytes": 7463,
+   "first": "2026-10-28T10:16:29Z",
+   "last": "2026-10-28T10:16:29Z",
+   "example": {
+    "field": "filter_reasoned_precedents.inputSchema.properties.decisions.items.properties.evidence.properties.retrievedAt.default",
+    "before": "2026-10-24T20:03:54.510Z",
+    "after": "2026-10-28T10:16:28.013Z"
+   }
+  },
+  {
+   "target_id": "dc3aacb08cdaa194",
+   "name": "uk.minia2a/minia2a-mcp-remote",
+   "endpoint": "https://minia2a.uk/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 1771,
+   "toolListBytes": 456598,
+   "first": "2026-10-28T15:49:46Z",
+   "last": "2026-10-28T15:49:46Z",
+   "example": {
+    "field": "x402-domain-intel.description",
+    "before": "aining) + HTTP headers. Two checks, one call. $0.005/call, 5 free trials.",
+    "after": "aining) + HTTP headers. Two checks, one call. $0.01/call, 5 free trials."
+   }
+  },
+  {
+   "target_id": "690546c56d82abca",
+   "name": "link.rentgpu/gpu-market",
+   "endpoint": "https://rentgpu.link/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 5
+   },
+   "tools": 7,
+   "toolListBytes": 2405,
+   "first": "2026-10-28T13:20:36Z",
+   "last": "2026-10-28T13:20:36Z",
+   "example": {
+    "field": "gpu_history.description",
+    "before": " \u6700\u4f4e 8.28 \u5143\uff08paperspace\uff09\u3001\u4e2d\u4f4d 23.04\u3001\u6709\u8d27\u30019 \u5bb6\u62a5\u4ef7\u3002\u6309\u6b21\u8ba1\u8d39 $0.05 USDC\u3002",
+    "after": " \u6700\u4f4e 8.28 \u5143\uff08paperspace\uff09\u3001\u4e2d\u4f4d 23.04\u3001\u6709\u8d27\u30019 \u5bb6\u62a5\u4ef7\u3002\u6309\u6b21\u8ba1\u8d39 $0.02 USDC\u3002"
+   }
+  },
+  {
+   "target_id": "604ba6a5a9b5f245",
+   "name": "io.github.afrowvibecoding/lucky-x402",
+   "endpoint": "https://lucky-x402.onrender.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 15
+   },
+   "tools": 15,
+   "toolListBytes": 6694,
+   "first": "2026-10-28T18:46:17Z",
+   "last": "2026-10-28T18:46:17Z",
+   "example": {
+    "field": "airdrop-score.description",
+    "before": "bil-rejection and token-decay adjusted) Price: $0.22 per call, USDC on Base via x402.",
+    "after": "bil-rejection and token-decay adjusted) Price: $0.05 per call, USDC on Base via x402."
+   }
+  },
+  {
+   "target_id": "bb1266a7506eddff",
+   "name": "sh.tokenzero/mcp",
+   "endpoint": "npm:@tokenzero/mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 5,
+   "toolListBytes": 3091,
+   "first": "2026-10-28T19:36:45Z",
+   "last": "2026-10-28T19:36:45Z",
+   "example": {
+    "field": "calculate_model_arbitrage.description",
+    "before": "Price a workload at list prices (table 2026-10-26) for the requested model, its cheaper ",
+    "after": "Price a workload at list prices (table 2026-10-27) for the requested model, its cheaper "
+   }
+  },
+  {
+   "target_id": "6f74f093b6db67e3",
+   "name": "io.github.ygfalcon/falcon-comps",
+   "endpoint": "https://falcon-comps.vercel.app/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 7,
+   "toolListBytes": 3247,
+   "first": "2026-10-28T20:15:45Z",
+   "last": "2026-10-28T20:15:45Z",
+   "example": {
+    "field": "get_financials.description",
+    "before": "tios, XBRL provenance) from SEC EDGAR. Costs $0.01 USDC (x402).",
+    "after": "tios, XBRL provenance) from SEC EDGAR. Costs $0.015 USDC (x402)."
+   }
+  },
+  {
+   "target_id": "6e43f6eb7356c7f8",
+   "name": "xyz.filingdelta/filingdelta",
+   "endpoint": "https://filingdelta.xyz/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 12,
+   "toolListBytes": 11451,
+   "first": "2026-10-28T22:21:04Z",
+   "last": "2026-10-28T22:21:04Z",
+   "example": {
+    "field": "get_bundle.description",
+    "before": " follow (also in list_filers). Bundles: SEMIS ($0.12: AMD, MRVL, NVDA, AVGO, TSM, MU, AMAT",
+    "after": " follow (also in list_filers). Bundles: SEMIS ($0.06: AMD, MRVL, NVDA, AVGO, TSM, MU, AMAT"
+   }
+  },
+  {
+   "target_id": "8fa7094e0d8f80ac",
+   "name": "com.novarithm.www/agent-hub",
+   "endpoint": "https://gogeta2-u35175.vm.elestio.app/agents/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 11
+   },
+   "tools": 61,
+   "toolListBytes": 56435,
+   "first": "2026-10-28T21:41:43Z",
+   "last": "2026-10-28T21:41:43Z",
+   "example": {
+    "field": "agent_ready_score.description",
+    "before": "[PAID $0.05 USDC/call, x402, eip155:8453] Agent-re",
+    "after": "[PAID $0.010 USDC/call, x402, eip155:8453] Agent-r"
+   }
+  },
+  {
+   "target_id": "31556538b373fa85",
+   "name": "com.lordevo/shop",
+   "endpoint": "https://shop.lordevo.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 34
+   },
+   "tools": 35,
+   "toolListBytes": 23706,
+   "first": "2026-10-29T02:29:39Z",
+   "last": "2026-10-29T02:29:39Z",
+   "example": {
+    "field": "agent_readiness.description",
+    "before": "$0.03 per call (x402, USDC on Base; the firs",
+    "after": "$0.02 per call (x402, USDC on Base; the firs"
+   }
+  },
+  {
+   "target_id": "896aaaf0a929a6e7",
+   "name": "dev.pages.freetier-agent-api/freetier-agent-api",
+   "endpoint": "https://freetier-agent-api.pages.dev/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 3
+   },
+   "tools": 50,
+   "toolListBytes": 79861,
+   "first": "2026-10-29T10:49:11Z",
+   "last": "2026-10-29T10:49:11Z",
+   "example": {
+    "field": "email_verify.description",
+    "before": "1 free call per caller, then $0.002 USDC via x402 (paid in-band: params._m",
+    "after": "1 free call per caller, then $0.004 USDC via x402 (paid in-band: params._m"
+   }
+  },
+  {
+   "target_id": "d720cc39b58ce419",
+   "name": "io.github.martinPisacreta/textokit-mcp",
+   "endpoint": "https://tienda.textokit.store/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 23,
+   "toolListBytes": 18805,
+   "first": "2026-10-30T00:39:24Z",
+   "last": "2026-10-30T00:39:24Z",
+   "example": {
+    "field": "textokit_dolar_ar.description",
+    "before": "Argentina dollar exchange rates. 0.002 USDC per call (x402, Base), first 10 c",
+    "after": "Argentina dollar exchange rates. 0.005 USDC per call (x402, Base), first 10 c"
+   }
+  },
+  {
+   "target_id": "7a4c5383cd80ebfd",
+   "name": "io.github.LKennedyShare/x402-scraper-api",
+   "endpoint": "https://scraper-production-6a87.up.railway.app/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 5,
+   "toolListBytes": 2100,
+   "first": "2026-10-30T14:52:18Z",
+   "last": "2026-10-30T14:52:18Z",
+   "example": {
+    "field": "scrape_markdown.description",
+    "before": "PAID $0.005 USDC (x402, Base): URL to clean markdo",
+    "after": "PAID $0.001 USDC (x402, Base): URL to clean markdo"
+   }
+  },
+  {
+   "target_id": "d9055cfff31a00df",
+   "name": "io.agentsvc/services",
+   "endpoint": "https://agentsvc.io/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 12,
+   "toolListBytes": 14314,
+   "first": "2026-10-31T02:52:00Z",
+   "last": "2026-10-31T02:52:00Z",
+   "example": {
+    "field": "email_verify.description",
+    "before": "d 6 hours. Params: email (required). Price: $0.0025 USDC per call, paid inside this MCP ca",
+    "after": "d 6 hours. Params: email (required). Price: $0.002 USDC per call, paid inside this MCP cal"
+   }
+  },
+  {
+   "target_id": "3a8a0f07861ab042",
+   "name": "uk.firstmention.api/automaton",
+   "endpoint": "https://api.firstmention.uk/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 2
+   },
+   "tools": 79,
+   "toolListBytes": 54205,
+   "first": "2026-10-31T02:55:32Z",
+   "last": "2026-10-31T02:55:32Z",
+   "example": {
+    "field": "domain_intel__batch.description",
+    "before": " full report, /batch up to 10 domains. Price: $0.01 per call in USDC on Base (eip155:8453)",
+    "after": " full report, /batch up to 10 domains. Price: $0.03 per call in USDC on Base (eip155:8453)"
+   }
+  },
+  {
+   "target_id": "1f4569cce276b026",
+   "name": "com.holidayready/travel-insurance-quotes",
+   "endpoint": "https://api.holidayready.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 1,
+   "toolListBytes": 5342,
+   "first": "2026-10-31T05:08:11Z",
+   "last": "2026-10-31T05:08:11Z",
+   "example": {
+    "field": "get_travel_quotes.description",
+    "before": " presenting prices.\n\nThe current date is 2026-10-30; use it to interpret relative dates an",
+    "after": " presenting prices.\n\nThe current date is 2026-10-31; use it to interpret relative dates an"
+   }
+  },
+  {
+   "target_id": "57b8b8f27585518c",
+   "name": "io.github.Nutshell2000/agent-data-tools-web",
+   "endpoint": "https://agent-data-tools.revmesh2074.workers.dev/mcp/web",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 3
+   },
+   "tools": 25,
+   "toolListBytes": 32858,
+   "first": "2026-10-31T14:13:52Z",
+   "last": "2026-10-31T14:13:52Z",
+   "example": {
+    "field": "pack_news_sentiment.description",
+    "before": "ng or a news brief. Example: q=bitcoin. Price $0.01/call via x402 USDC or a card key (/cre",
+    "after": "ng or a news brief. Example: q=bitcoin. Price $0.03/call via x402 USDC or a card key (/cre"
+   }
+  },
+  {
+   "target_id": "c77312f299c1ba05",
+   "name": "io.github.forgemeshlabs/library-mcp",
+   "endpoint": "npm:@forgemeshlabs/library-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 3
+   },
+   "tools": 8,
+   "toolListBytes": 5785,
+   "first": "2026-10-31T21:18:35Z",
+   "last": "2026-10-31T21:18:35Z",
+   "example": {
+    "field": "book_of_the_day.description",
+    "before": ". Optional date override for backfill. Costs $0.001 via x402 (requires WALLET_PRIVATE_KEY,",
+    "after": ". Optional date override for backfill. Costs $0.005 via x402 (requires WALLET_PRIVATE_KEY,"
+   }
+  },
+  {
+   "target_id": "2ff355ea44e57ee4",
+   "name": "io.github.forgemeshlabs/x402-notary-mcp",
+   "endpoint": "npm:@forgemeshlabs/x402-notary-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 6,
+   "toolListBytes": 4090,
+   "first": "2026-10-31T21:19:55Z",
+   "last": "2026-10-31T21:19:55Z",
+   "example": {
+    "field": "notarize_inference.description",
+    "before": " response \u2014 only the hash is retained. Costs $0.001 USDC via x402 (requires WALLET_PRIVATE",
+    "after": " response \u2014 only the hash is retained. Costs $0.005 USDC via x402 (requires WALLET_PRIVATE"
+   }
+  },
+  {
+   "target_id": "b27356b0c2a507f3",
+   "name": "com.koddeo/koddeo",
+   "endpoint": "https://koddeo.com/api/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 2
+   },
+   "tools": 9,
+   "toolListBytes": 3789,
+   "first": "2026-10-31T21:06:39Z",
+   "last": "2026-10-31T21:06:39Z",
+   "example": {
+    "field": "boost_code.description",
+    "before": "lecom, energy, VPN, SaaS and insurance \u20ac0.99 / \u20ac1.99 / \u20ac3.99; finance and betting \u20ac1.49 / ",
+    "after": "lecom, energy, VPN, SaaS and insurance \u20ac0.99 / \u20ac1.79 / \u20ac3.49; finance and betting \u20ac1.19 / "
+   }
+  },
+  {
+   "target_id": "8c8cc22a6c6a2a05",
+   "name": "io.github.forgemeshlabs/utility-grid-mcp",
+   "endpoint": "npm:@forgemeshlabs/utility-grid-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 2
+   },
+   "tools": 7,
+   "toolListBytes": 5038,
+   "first": "2026-10-31T21:19:42Z",
+   "last": "2026-10-31T21:19:42Z",
+   "example": {
+    "field": "call_endpoint.description",
+    "before": "PAID (price varies by route, $0.001-$0.05) \u2014 the generic way to call ANY r",
+    "after": "PAID (price varies by route, $0.005-$0.05) \u2014 the generic way to call ANY r"
+   }
+  },
+  {
+   "target_id": "9aa0577cfd9a08eb",
+   "name": "io.github.bck-stack/sitecheck-agent-intel-dev",
+   "endpoint": "https://api.fadeandco.workers.dev/mcp?ref=registry",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 16
+   },
+   "tools": 135,
+   "toolListBytes": 116123,
+   "first": "2026-10-25T07:21:39Z",
+   "last": "2026-10-25T07:21:39Z",
+   "example": {
+    "field": "agent_intel_agent_json_schema_guard.description",
+    "before": "an error instead of passing silently. Price: $0.001 in USDC per successful call, paid with",
+    "after": "an error instead of passing silently. Price: $0.002 in USDC per successful call, paid with"
+   }
+  },
+  {
+   "target_id": "ecd5deeeaff9f666",
+   "name": "com.kushbitx/agentproof",
+   "endpoint": "https://kushbitx.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 3
+   },
+   "tools": 5,
+   "toolListBytes": 3980,
+   "first": "2026-10-25T02:06:27Z",
+   "last": "2026-10-25T02:06:27Z",
+   "example": {
+    "field": "preflight.description",
+    "before": "vals and destination risk signals. Paid tool: 0.00098 USDC per call on Base via x402 (exac",
+    "after": "vals and destination risk signals. Paid tool: 0.001 USDC per call on Base via x402 (exact "
+   }
+  },
+  {
+   "target_id": "78fdaa83cabb1ab4",
+   "name": "io.github.bck-stack/sitecheck",
+   "endpoint": "https://api.sitecheck-api.workers.dev/mcp?ref=registry",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 70,
+    "inputSchema.properties.maxMinutes.description": 1
+   },
+   "tools": 225,
+   "toolListBytes": 209423,
+   "first": "2026-10-25T07:02:51Z",
+   "last": "2026-10-25T07:02:51Z",
+   "example": {
+    "field": "airports.description",
+    "before": "nk. No time zone (not in the source). Price: $0.001 in USDC per successful call, paid with",
+    "after": "nk. No time zone (not in the source). Price: $0.002 in USDC per successful call, paid with"
+   }
+  },
+  {
+   "target_id": "7d7672425961fd04",
+   "name": "com.genexxis/data-apis",
+   "endpoint": "https://mcp.genexxis.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 67
+   },
+   "tools": 79,
+   "toolListBytes": 50059,
+   "first": "2026-10-26T10:50:04Z",
+   "last": "2026-10-26T10:50:04Z",
+   "example": {
+    "field": "airports_delays.description",
+    "before": "with reason, delay minutes and times. Price: $0.002 USDC per call, paid with x402 on Base.",
+    "after": "with reason, delay minutes and times. Price: $0.005 USDC per call, paid with x402 on Base."
+   }
+  },
+  {
+   "target_id": "913a2ab167ac62ce",
+   "name": "dev.weblens/weblens",
+   "endpoint": "https://api.weblens.dev/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 6
+   },
+   "tools": 26,
+   "toolListBytes": 19485,
+   "first": "2026-10-25T18:28:31Z",
+   "last": "2026-10-25T18:28:31Z",
+   "example": {
+    "field": "search_autocomplete.description",
+    "before": "keyword research and intent discovery. Price: $0.015",
+    "after": "keyword research and intent discovery. Price: $0.004"
+   }
+  },
+  {
+   "target_id": "64974024f1a5c4da",
+   "name": "io.github.vanakenj45/x402-agent-api",
+   "endpoint": "https://x402-agent-api.onrender.com/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 2
+   },
+   "tools": 41,
+   "toolListBytes": 91838,
+   "first": "2026-10-26T01:12:23Z",
+   "last": "2026-10-26T01:12:23Z",
+   "example": {
+    "field": "crypto_tax_ledger.description",
+    "before": "eam failures (4xx/5xx) are not settled. Costs $0.05 USDC per call via x402. Paid per call ",
+    "after": "eam failures (4xx/5xx) are not settled. Costs $0.02 USDC per call via x402. Paid per call "
+   }
+  },
+  {
+   "target_id": "bdc567c42bd29e0e",
+   "name": "io.github.palimkarakshay/abap-mcp",
+   "endpoint": "npm:abap-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 18,
+   "toolListBytes": 82835,
+   "first": "2026-10-26T21:45:38Z",
+   "last": "2026-10-26T21:45:38Z",
+   "example": {
+    "field": "check_released_api.description",
+    "before": "package (default edition \"s4hc\", snapshot 2026-10-19); it ships offline with the server. U",
+    "after": "package (default edition \"s4hc\", snapshot 2026-10-26); it ships offline with the server. U"
+   }
+  },
+  {
+   "target_id": "0ecadf8fac8ff301",
+   "name": "npm/@ia-qa/self-healing",
+   "endpoint": "npm:@ia-qa/self-healing",
+   "transport": "stdio",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "inputSchema.properties.model.description": 1
+   },
+   "tools": 9,
+   "toolListBytes": 15147,
+   "first": "2026-10-26T23:04:54Z",
+   "last": "2026-10-26T23:04:54Z",
+   "example": {
+    "field": "suggest_heal.inputSchema.properties.model.description",
+    "before": "el id, e.g. claude-haiku-4-5, gpt-4o-mini, gemini-2.0-flash, llama3.1. Runs at temperature",
+    "after": "el id, e.g. claude-haiku-4-5, gpt-4o-mini, gemini-3.5-flash, llama3.1. Runs at temperature"
+   }
+  },
+  {
+   "target_id": "b11a556bf963256d",
+   "name": "io.github.Capital-W-Holdings/us-property-parcel-real-estate-debt",
+   "endpoint": "https://exchange-production-9123.up.railway.app/mcp?c=reg",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "description": 1,
+    "inputSchema.properties.within_days.description": 1
+   },
+   "tools": 135,
+   "toolListBytes": 291805,
+   "first": "2026-10-27T00:01:01Z",
+   "last": "2026-10-27T00:01:01Z",
+   "example": {
+    "field": "search_property_events.description",
+    "before": "ERSION_PERMITTED, ZONING_EVENT. Measured 2026-10-26. Passing `within_days` asks about a fu",
+    "after": "ERSION_PERMITTED, ZONING_EVENT. Measured 2026-10-27. Passing `within_days` asks about a fu"
+   }
+  },
+  {
+   "target_id": "14887e2a2f05db47",
+   "name": "pypi/finos-mcp-cdm",
+   "endpoint": "pypi:finos-mcp-cdm",
+   "transport": "stdio",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 2
+   },
+   "tools": 9,
+   "toolListBytes": 13365,
+   "first": "2026-10-27T00:13:36Z",
+   "last": "2026-10-27T00:13:36Z",
+   "example": {
+    "field": "list_samples.description",
+    "before": "vendored sample documents (Rune-format from CDM 7.5.0, legacy from 6.29.0).",
+    "after": "vendored sample documents (Rune-format from CDM 7.8.0, legacy from 6.30.0)."
+   }
+  },
+  {
+   "target_id": "0459a8b40746c945",
+   "name": "pypi/organizze-mcp",
+   "endpoint": "pypi:organizze-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "inputSchema.properties.end_date.default": 1,
+    "inputSchema.properties.start_date.default": 1
+   },
+   "tools": 6,
+   "toolListBytes": 1274,
+   "first": "2026-10-27T05:55:00Z",
+   "last": "2026-10-27T05:55:00Z",
+   "example": {
+    "field": "list_transactions.inputSchema.properties.end_date.default",
+    "before": "2026-10-19",
+    "after": "2026-10-27"
+   }
+  },
+  {
+   "target_id": "b3147596f22b1808",
+   "name": "npm/@overdoser/timeline-mcp",
+   "endpoint": "npm:@overdoser/timeline-mcp",
+   "transport": "stdio",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "inputSchema.properties.manifest.description": 3
+   },
+   "tools": 3,
+   "toolListBytes": 4412,
+   "first": "2026-10-27T03:53:31Z",
+   "last": "2026-10-27T03:53:31Z",
+   "example": {
+    "field": "timeline_begin.inputSchema.properties.manifest.description",
+    "before": "imeline) id. Omit to use the default \"app-2026-10-15\"; pass an explicit id (e.g. \"<project",
+    "after": "imeline) id. Omit to use the default \"app-2026-10-27\"; pass an explicit id (e.g. \"<project"
+   }
+  },
+  {
+   "target_id": "483dfc9ccacba8fa",
+   "name": "io.github.nmxmxh/pronto-stream",
+   "endpoint": "https://pronto.stream/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 1,
+    "inputSchema.properties.amount_usd.description": 1
+   },
+   "tools": 15,
+   "toolListBytes": 19433,
+   "first": "2026-10-27T13:04:01Z",
+   "last": "2026-10-27T13:04:01Z",
+   "example": {
+    "field": "open_payment.description",
+    "before": " \"credits\" with amount_usd from 1 to 100, at $0.001 a call \u2014 one credit per successful too",
+    "after": " \"credits\" with amount_usd from 1 to 100, at $0.0001 a call \u2014 one credit per successful to"
+   }
+  },
+  {
+   "target_id": "84f4d7a3771f614f",
+   "name": "npm/@ia-qa/pal",
+   "endpoint": "npm:@ia-qa/pal",
+   "transport": "stdio",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "inputSchema.properties.model.description": 1
+   },
+   "tools": 18,
+   "toolListBytes": 32855,
+   "first": "2026-10-27T08:39:25Z",
+   "last": "2026-10-27T08:39:25Z",
+   "example": {
+    "field": "suggest_heal.inputSchema.properties.model.description",
+    "before": "el id, e.g. claude-haiku-4-5, gpt-4o-mini, gemini-2.0-flash, llama3.1. Runs at temperature",
+    "after": "el id, e.g. claude-haiku-4-5, gpt-4o-mini, gemini-3.5-flash, llama3.1. Runs at temperature"
+   }
+  },
+  {
+   "target_id": "729eaa281cf2ff8f",
+   "name": "cloud.dchub/mcp-server",
+   "endpoint": "https://dchub.cloud/mcp/claude",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "inputSchema.properties.region_id.description": 1
+   },
+   "tools": 67,
+   "toolListBytes": 65358,
+   "first": "2026-10-27T19:45:40Z",
+   "last": "2026-10-27T19:45:40Z",
+   "example": {
+    "field": "get_grid_intelligence.inputSchema.properties.region_id.description",
+    "before": "0: hourly and dated, but posted daily, so about 1.5-2.5 days old and not live. Real-time L",
+    "after": "0: hourly and dated, but posted daily, so about 1.25-2.25 days old and not live. Real-time"
+   }
+  },
+  {
+   "target_id": "93567fff90afa502",
+   "name": "io.github.tokenzero-ai/tokenzero",
+   "endpoint": "https://tokenzero.sh/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 5,
+   "toolListBytes": 2936,
+   "first": "2026-10-27T22:52:19Z",
+   "last": "2026-10-27T22:52:19Z",
+   "example": {
+    "field": "calculate_model_arbitrage.description",
+    "before": "of prompt caching. Pricing table version 2026-10-26.",
+    "after": "of prompt caching. Pricing table version 2026-10-27."
+   }
+  },
+  {
+   "target_id": "14b7ab84f0acf41f",
+   "name": "net.nonsynthetic/apex-edge",
+   "endpoint": "https://api.nonsynthetic.net/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates+versions": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 431,
+   "toolListBytes": 98399,
+   "first": "2026-10-27T21:50:57Z",
+   "last": "2026-10-27T21:50:57Z",
+   "example": {
+    "field": "corpus_bundle.description",
+    "before": "$0.2500 \u2014 full 431-doc research corpus as",
+    "after": "$4.0000 \u2014 full 431-doc research corpus as"
+   }
+  },
+  {
+   "target_id": "626ccd646cff2af7",
+   "name": "sh.tokenzero/mcp",
+   "endpoint": "https://api.tokenzero.sh/mcp",
+   "transport": "streamable-http",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "description": 1
+   },
+   "tools": 5,
+   "toolListBytes": 2936,
+   "first": "2026-10-27T22:52:19Z",
+   "last": "2026-10-27T22:52:19Z",
+   "example": {
+    "field": "calculate_model_arbitrage.description",
+    "before": "of prompt caching. Pricing table version 2026-10-26.",
+    "after": "of prompt caching. Pricing table version 2026-10-27."
+   }
+  },
+  {
+   "target_id": "0b86e94cd8a22d96",
+   "name": "io.github.rfdez/pvpc-mcp-server",
+   "endpoint": "npm:@rfdez/pvpc-mcp-server",
+   "transport": "stdio",
+   "changes": {
+    "dates": 1
+   },
+   "fields": {
+    "inputSchema.properties.endDate.default": 1,
+    "inputSchema.properties.startDate.default": 1
+   },
+   "tools": 1,
+   "toolListBytes": 2833,
+   "first": "2026-10-28T05:13:23Z",
+   "last": "2026-10-28T05:13:23Z",
+   "example": {
+    "field": "fetch_prices.inputSchema.properties.endDate.default",
+    "before": "2026-10-24T23:59:59.999Z",
+    "after": "2026-10-28T23:59:59.999Z"
+   }
+  }
+ ]
+}

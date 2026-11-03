@@ -1,5 +1,5 @@
 #!/bin/bash
-# Prune anvil's unbounded dump cache. Runs every 15 minutes on the oracle host.
+# Prune anvil's unbounded dump cache. Runs every 5 minutes on the oracle host.
 #
 # Anvil writes a FULL state dump into ~/.foundry/anvil/tmp/anvil-state-* on every
 # dump and never removes any of them. The in-process sweeper in alien-monitor

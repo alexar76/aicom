@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "x402Version": 2,
+  "name": "SWARM",
+  "description": "An autonomous research agent. Every service is paid per request in USDC on Base over x402 — no account, no key, no subscription.",
+  "contact": "https://swarm-agent.net/",
+  "resources": [
+    "https://swarm-agent.net/services/utilities",
+    "https://swarm-agent.net/services/code-health",
+    "https://swarm-agent.net/services/summary",
+    "https://swarm-agent.net/services/report",
+    "https://swarm-agent.net/services/site-check",
+    "https://swarm-agent.net/services/read-page"
+  ],
+  "endpoints": [
+    {
+      "url": "https://swarm-agent.net/services/utilities",
+      "method": "POST",
+      "description": "SWARM Utilities - UUIDs, hashes, base64/URL encoding, secure passwords and timestamp conversion. Pick one with `op`. Instant, no AI. $0.02.",
+      "priceUsdCents": 2
+    },
+    {
+      "url": "https://swarm-agent.net/services/code-health",
+      "method": "POST",
+      "description": "SWARM Code Health - Static health check of a public GitHub repo: TODO/FIXME debt, oversized files, possible committed secrets, README/.gitignore/LICENSE. Requires `repo` (https://github.com/owner/name); repos over 25 MB are refused before payment. $0.05.",
+      "priceUsdCents": 5
+    },
+    {
+      "url": "https://swarm-agent.net/services/summary",
+      "method": "POST",
+      "description": "SWARM Research Brief - One-page brief on any topic, researched on the live web at request time, every source linked. Requires `topic`. 60-120 s (allow 180 s). Not billed if it fails. $0.75.",
+      "priceUsdCents": 75
+    },
+    {
+      "url": "https://swarm-agent.net/services/report",
+      "method": "POST",
+      "description": "SWARM Research Report - Full Markdown report on any topic, researched on the live web, every claim linked to its source. Requires `topic`. 2-4 min (allow 360 s). Not billed if it fails. $0.99.",
+      "priceUsdCents": 99
+    },
+    {
+      "url": "https://swarm-agent.net/services/site-check",
+      "method": "POST",
+      "description": "SWARM Site Check - Website uptime and link check in one call: is a URL up, its HTTP status, final URL after redirects, response time and TLS/certificate errors. Use when an agent monitors sites on a schedule, verifies a link or domain is reachable before scraping or citing it, or needs to detect a non-200 answer or a broken redirect. Requires `url`. Instant, no AI. $0.002.",
+      "priceUsdCents": 0.2
+    },
+    {
+      "url": "https://swarm-agent.net/services/read-page",
+      "method": "POST",
+      "description": "SWARM Read Page - Retrieve the content of a URL as clean, LLM-ready text (headings with #, lists with -; menus, scripts, styles and markup removed). Use when an agent needs to read a web page, article or docs page without paying model tokens for raw HTML: on 15 public pages we measured, the text was a median 97% smaller than the HTML (about 67,000 fewer tokens per page). Requires `url`; HTML or text up to 3 MB. Not billed if the page cannot be read. $0.002.",
+      "priceUsdCents": 0.2
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "checked_at_utc": "2026-11-03T06:57:42.518971+00:00",
+  "tasks": [
+    {
+      "task_id": "a2at_55f123548e7647c658d01a41",
+      "task_state": "TASK_STATE_COMPLETED",
+      "capability_id": "gaia.weather.read@v1",
+      "x402_nonce": "0x0bb43648cc22632c27ea27c8748d1d1b29eec8e6fbc441af6819c3664668f585",
+      "updated_at": 1793421669.9097614,
+      "expires_at": 1793422559.2686467,
+      "retained": true,
+      "artifact_data_shapes": [
+        {
+          "name": "result",
+          "data_shapes": [
+            "NoneType"
+          ]
+        },
+        {
+          "name": "aimarket-receipt",
+          "data_shapes": [
+            {
+              "nonce": "str",
+              "product_id": "str",
+              "capability_id": "str",
+              "price_usd": "float",
+              "timestamp": "str",
+              "success": "bool",
+              "latency_ms": "float",
+              "signature": "dict"
+            }
+          ]
+        },
+        {
+          "name": "provenance",
+          "data_shapes": [
+            {
+              "receipt_id": "str",
+              "verify_url": "str",
+              "receipt_url": "str",
+              "verifier_url": "str",
+              "awr_version": "str",
+              "issuer": "str",
+              "digest_sri": "str"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "a2at_eecf132e889478b8ca5a51cd",
+      "task_state": "TASK_STATE_COMPLETED",
+      "capability_id": "gaia.weather.read@v1",
+      "x402_nonce": "0xec32904c94405fbabd81fd4eaa74b4b66a516b15f5229404c9f57a839b0efb13",
+      "updated_at": 1793422496.8193018,
+      "expires_at": 1793423373.6106498,
+      "retained": true,
+      "artifact_data_shapes": [
+        {
+          "name": "result",
+          "data_shapes": [
+            {
+              "reading": "dict",
+              "attestation": "dict"
+            }
+          ]
+        },
+        {
+          "name": "aimarket-receipt",
+          "data_shapes": [
+            {
+              "nonce": "str",
+              "product_id": "str",
+              "capability_id": "str",
+              "price_usd": "float",
+              "timestamp": "str",
+              "success": "bool",
+              "latency_ms": "float",
+              "signature": "dict"
+            }
+          ]
+        },
+        {
+          "name": "provenance",
+          "data_shapes": [
+            {
+              "receipt_id": "str",
+              "verify_url": "str",
+              "receipt_url": "str",
+              "verifier_url": "str",
+              "awr_version": "str",
+              "issuer": "str",
+              "digest_sri": "str"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

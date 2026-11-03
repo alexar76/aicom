@@ -253,6 +253,13 @@ def detach_from_compose(run, units):
             continue
         body = create_body(unit["info"])
         body["Labels"] = {k: v for k, v in labels.items() if k not in dropped}
+        # An image made with `docker commit` can itself carry Compose ownership.
+        # Omitting those labels makes Docker inherit them again on create. Mask
+        # inherited ownership explicitly so Compose cannot adopt the rollback.
+        image_labels = (api("GET", f"/images/{body['Image']}/json").get("Config") or {}).get("Labels") or {}
+        for key, value in image_labels.items():
+            if key.startswith(COMPOSE_LABELS) and value:
+                body["Labels"][key] = ""
         if dropped:
             body["Labels"]["aicom.rollout.detached-from"] = "{}/{}".format(
                 labels.get(COMPOSE_LABELS + "project", ""), labels.get(COMPOSE_LABELS + "service", ""))

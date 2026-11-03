@@ -1,0 +1,76 @@
+{
+  "snapshot_utc": "2026-11-03T06:46:21.129151+00:00",
+  "card_environment": {},
+  "x402": [
+    {
+      "status": "settled",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "n": 2,
+      "units": "31000",
+      "missing_receipt": 2
+    }
+  ],
+  "x402_receipt_gaps": [
+    {
+      "nonce": "0x191b9e3b92f6a8784b4e124565f71e0e1313f2c9eeef16f2a84953553dea850c",
+      "capability_id": "contradiction.scan@v1",
+      "amount_atomic": "9000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0x0998c423bd7a4262648a731ae1ed3986beb0c0bbd3716f55f2986c84776bf832",
+      "created_at": "2026-10-04 13:11:18.284557+00"
+    },
+    {
+      "nonce": "0x84428e7eae7b08cac1ec9186e338e14fa5056d9f62bb9d92e1ea927370b8e779",
+      "capability_id": "claim.check@v1",
+      "amount_atomic": "22000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0xd8a41fb865beba51d9e795f556dc3b77e6ce5bb20a0dceb2e0691aa791997531",
+      "created_at": "2026-10-04 13:11:18.48144+00"
+    }
+  ],
+  "x402_uncollected": [],
+  "seller_invoice_orphans": [],
+  "seller_invoice_stats": [
+    {
+      "n": 1,
+      "consumed": 0
+    }
+  ],
+  "card": [],
+  "card_candidates": [],
+  "channels": [],
+  "channels_with_balance": [],
+  "obligations": [],
+  "obligations_owed": [],
+  "obligation_duplicate_payouts": [],
+  "deposits": [],
+  "deposit_candidates": [],
+  "credit_holds": [
+    {
+      "status": "captured",
+      "n": 4,
+      "amount_mc": 6200,
+      "oldest": "2026-10-04 09:31:33.865916+00"
+    }
+  ],
+  "credit_held": [],
+  "channel_holds": [],
+  "channel_held": [],
+  "pipeline_refunds": [],
+  "pipeline_refund_count": [
+    {
+      "n": 0,
+      "busy": null
+    }
+  ],
+  "verified_pending": [],
+  "credit_topups": [
+    {
+      "n": 1,
+      "amount_mc": 101540
+    }
+  ]
+}

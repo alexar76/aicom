@@ -1,0 +1,53 @@
+{
+  "recordedAt": 1793597366.883789,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "creature": {
+      "id": "cmvyrhssw003oo348lt9gj93i",
+      "playerId": "cmvwrg5px0000no48q8bpswx3",
+      "speciesId": "cola-cube",
+      "source": "catch",
+      "stage": "awake",
+      "evolved": false,
+      "evolvedAt": null,
+      "feedCount": 0,
+      "lastFeedAt": null,
+      "hatchedAt": "2026-11-02T04:31:32.625Z",
+      "cell": "dr5re",
+      "hatchProofId": "c5f02ac7de0983c7c3c4",
+      "catchProofId": "c5f02ac7de0983c7c3c4",
+      "asleepAt": null,
+      "nickname": null
+    },
+    "species": {
+      "id": "cola-cube",
+      "name": "Cola Cube",
+      "packId": "sugar-riot",
+      "type": "sugar",
+      "diet": {
+        "productId": "gaia.gateway",
+        "capabilityId": "gaia.weather.read@v1",
+        "sourceHub": "https://iot.modelmarket.dev",
+        "label": "weather",
+        "input": {
+          "device_id": "om-wx-01"
+        }
+      },
+      "sceneId": "sugar-forge",
+      "spawn": {
+        "layers": [
+          "weather"
+        ],
+        "weather": [
+          "heat",
+          "clear"
+        ],
+        "rarity": "common"
+      },
+      "starter": false
+    },
+    "already": false,
+    "creditsMilli": 310
+  }
+}

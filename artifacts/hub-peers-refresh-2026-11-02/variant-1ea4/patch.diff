@@ -1,0 +1,34 @@
+--- variant-1ea4/terminal-home.html	2026-11-02 07:12:42
++++ variant-1ea4/terminal-home.patched.html	2026-11-02 07:13:28
+@@ -2423,13 +2423,20 @@
+   let capsHasMore = false;
+   let capsLoadingMore = false;
+   let peersCache = null;
++  // A tab left open kept its first answer: a peer approved elsewhere stayed under "Unapproved hubs" until a reload.
++  // poll() asks again once the list is a minute old (after a failed try too, not every 3 s); the rail is redrawn
++  // only when the queue changed, so an open preview or a typed search survives the refresh.
++  const PEERS_TTL_MS = 60000;
++  let peersTriedAt = 0;
++  let pendingKey = '';
+   let peersRequest = null;
+   let peersForFed = null;
+   let pendingCache = [];
+ 
+   async function ensurePeers() {
+-    if (peersCache) return peersCache;
++    if (peersCache && Date.now() - peersTriedAt < PEERS_TTL_MS) return peersCache;
+     if (peersRequest) return peersRequest;
++    peersTriedAt = Date.now();
+     peersRequest = (async () => {
+       // One bounded request, including its body, shared by the drawer and the diagram.
+       const body = await fetchJson(`${HUB}/ai-market/v2/federation/peers`, LIVE_TIMEOUT_MS);
+@@ -2438,7 +2445,8 @@
+       // A stranger appears in its own section, never mixed into approved peers.
+       pendingCache = Array.isArray(body.pending) ? body.pending : [];
+       peersForFed = peersCache;
+-      renderKnockRail();
++      const key = JSON.stringify(pendingCache);
++      if (key !== pendingKey) { pendingKey = key; renderKnockRail(); }
+       return peersCache;
+     })();
+     try { return await peersRequest; }

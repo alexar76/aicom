@@ -1,7 +1,7 @@
 # MTL — MCP Trust Label
 
 **Profile of:** AWR/2 (`awr/SPEC.md`, version 2.0.0)
-**Version:** MTL/1 (1.0.0)
+**Version:** MTL/1 (1.1.0, 2026-10-31; see "Revision 1.1" below)
 **Status:** Draft profile, seeking implementation experience
 **License:** MIT
 **Profile namespace:** `https://verify.modelmarket.dev/ns/awr/mtl/v1`
@@ -70,6 +70,29 @@ from documentation or comments. The checks were re-run on 2026-07-31 (18:19–18
 revising this document; every codebase named is under active development, so a reviewer should
 re-run them rather than trust the prose.
 
+### Revision 1.1 (2026-10-31)
+
+MTL/1.0 refused to digest a tool set that carried a fraction, an exponent or an integer beyond
+±(2^53−1) anywhere in its schemas (`MTL-NUM-001`), an empty set (`MTL-SUBJ-002`) and a set that
+repeats a name (`MTL-SUBJ-003`). On 2026-10-31 HISTOR, which logs the tool sets of the servers in
+the official MCP registry, had read 5,162 servers whose sets it could therefore not digest: 4,941
+for a fraction or exponent, 21 for a large integer, 140 empty, 57 with a repeated name, 3 with an
+entry that has no name. Those servers could change their tools with no digest moving, and a third
+party counted them as unmeasurable (GenAI-Security-Project/agent-control-standard#38).
+
+The refusal of numbers was more cautious than RFC 8785 requires. RFC 8785 §3.2.2.3 already fixes
+one form for every IEEE 754 double, the ECMAScript one, so two implementations that parse a
+number to the same double write the same bytes; correctly rounding parsers, which JSON.parse and
+Python's are, do. 1.1 therefore reads every number as a double (§5.4), digests the empty set and
+orders repeated names by their canonical bytes (§5.3). Only an entry with no name, or a number
+with no double, still leaves a set undigested.
+
+No digest issued under 1.0 changes: a set whose numbers are all integers inside ±(2^53−1) has the
+same canonical bytes under both. Every set 1.1 newly digests was one 1.0 refused, so a 1.0
+verifier facing such a digest computes none of its own and reports `inconclusive`, never a
+mismatch. The `mtl` member of the descriptor stays `"1"`. The price is stated in §5.4: integers
+beyond 2^53 are digested as their nearest double, as JSON.parse holds them.
+
 ## Conventions
 
 The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **SHOULD**,
@@ -128,10 +151,12 @@ MTL/1 fixes those three defects and nothing else:
    tool set, which for a `stdio` server means executing the server. Retrieval and verification
    are separate phases and only the second one is free.
 2. **No new cryptography, no new canonicalization.** MTL reuses SPEC §4 and §6 unchanged. The
-   one new digest (§5) is SHA-256 over the same RFC 8785 canonical form.
+   one new digest (§5) is SHA-256 over RFC 8785; for a tool set, which is never signed, RFC
+   8785's own number rule applies rather than SPEC §4.3's integers-only profile (§5.4).
 3. **Every ambiguity refused, not arbitrated.** Where a value cannot be digested identically
    by two separately written implementations, MTL/1 declines to digest it and the label degrades to
-   `inconclusive` (§5.4). This follows SPEC §4.3 rather than extending it.
+   `inconclusive` (§5.4). Since 1.1 that is only a number with no IEEE 754 double: RFC 8785 itself
+   settles how every other number is written.
 4. **`inconclusive` is a first-class outcome.** SPEC §3.4 requires that `inconclusive` not be
    treated as a failure. MTL/1 relies on that: it is the outcome for every signal that is
    suggestive but not dispositive, which is most of them.
@@ -386,12 +411,14 @@ A future MTL version **MAY** digest more fields. Doing so changes every digest, 
 
 ### 5.3 Ordering
 
-- Duplicate `name` values **MUST** be rejected (`MTL-SUBJ-003`): with duplicates the digest
-  would depend on retrieval order, which servers vary freely.
-- An empty tool set **MUST** be rejected (`MTL-SUBJ-002`): there is nothing to pin.
 - Entries **MUST** be sorted by `name`, compared as **arrays of UTF-16 code units treated as
   unsigned integers** — the identical rule RFC 8785 §3.2.3 mandates for object keys, so an
   implementation reuses its JCS key comparator.
+- Entries that share a `name` **MUST** be ordered among themselves by their own canonical bytes
+  (§5.4, UTF-8), compared as unsigned bytes, so the digest does not depend on retrieval order,
+  which servers vary freely. (1.0 rejected them, `MTL-SUBJ-003`.)
+- An empty tool set **MUST** be digested: the array `[]`. A server that serves no tools has a
+  state, and serving some later is a change. (1.0 rejected it, `MTL-SUBJ-002`.)
 
   Locale collation **MUST NOT** be used. It disagrees with code-unit order on ordinary inputs:
   in JavaScript `"Z_tool".localeCompare("a_tool")` is `1` while code-unit order gives `-1`, and
@@ -404,15 +431,25 @@ A future MTL version **MAY** digest more fields. Doing so changes every digest, 
 
 ### 5.4 Digest, and the non-digestible case
 
-The **tool-set digest** is the SRI encoding of SHA-256 over the RFC 8785 canonical form (SPEC
-§4) of the normalised, sorted array.
+The **tool-set digest** is the SRI encoding of SHA-256 over the RFC 8785 canonical form of the
+normalised, sorted array, with every JSON number read as an IEEE 754 double and written per RFC
+8785 §3.2.2.3 (ECMAScript `Number.prototype.toString`): `0.5`, `1e+21`, `0.000001`, `1e-7`, and `5`
+for `5.0` and for `5`.
 
-SPEC §4.3 forbids non-integer JSON numbers in signed documents because implementations disagree
-about their serialization *silently*. JSON Schema permits them freely — `multipleOf`,
-`minimum`, `default` — so a real tool schema may contain one.
+A tool set is not a signed document, so SPEC §4.3's integers-only profile does not bind it. JSON
+Schema permits non-integers freely — `multipleOf`, `minimum`, `default` — and RFC 8785 gives each
+double exactly one form; a correctly rounding parser yields the same double from the same text in
+every language. A set whose integers all lie inside ±(2^53−1) has the same bytes under this rule
+and under SPEC §4, which is why no MTL/1.0 digest moved.
 
-MTL/1 does not arbitrate. **A tool set containing a non-integer JSON number is not digestible
-under MTL/1.** When one is encountered:
+**Integers beyond ±(2^53−1)** are digested as their nearest double (round to nearest, ties to
+even), which is what JSON.parse holds and what RFC 8785 writes. The cost, stated plainly: two
+integers that round to the same double — `9007199254740993` and `9007199254740992` — give the same
+digest, so a change between them does not move it. An implementation whose parser keeps such an
+integer exact **MUST** convert it first.
+
+A number with **no double** — only a literal whose magnitude overflows (`1e400`), which JSON
+permits and RFC 8785 cannot write — makes the set not digestible. When one is encountered:
 
 - the issuer **MUST NOT** compute or publish a `toolSet.digestSRI`, and **MUST** omit it from
   the MSD (§4.2);
@@ -424,9 +461,15 @@ under MTL/1.** When one is encountered:
 The subject remains well-formed and identifies the server and its tool *names*. What is
 withheld is the strong claim, not the label.
 
-This rule is why an issuer needs no number-serialization code of its own: the AWR/2 reference
-canonicalizer already refuses such a value with `AWR-CANON-001`, and MTL/1 maps that refusal to
-`MTL-NUM-001`.
+An issuer therefore needs one piece of number-serialization code beyond SPEC §4: ECMAScript's
+number-to-string, which JavaScript has built in and which the reference tool
+(`tools/mtl_subject.py`) writes from Python's shortest round-trip `repr`, checked against
+`JSON.stringify` on 399,880 doubles with no difference.
+
+**A set that gains its first digest is not a change.** When a subject that had no tool-set
+digest is followed by one that differs from it only by now having one (the same server, names
+and count), an issuer **SHOULD NOT** record a change: nothing is known to have changed. The
+continuity label is still `inconclusive` and names the prior side's reason (§7.4).
 
 ### 5.5 This is not WARDEN's `canonicalToolsHash`
 
@@ -437,7 +480,8 @@ SPEC Appendix D was written to close:
 1. It sorts tool names with `String.prototype.localeCompare`, which is ICU- and
    locale-dependent and disagrees with the code-unit order RFC 8785 mandates (§5.3).
 2. It serialises with `JSON.stringify`, so a schema containing a non-integer number is written
-   with JavaScript float formatting instead of being refused (§5.4).
+   with JavaScript float formatting where MTL/1.0 refused it (§5.4). Since 1.1 MTL writes numbers
+   the same ECMAScript way, so this item no longer tells the two apart; item 1 still does.
 
 A conformant reimplementation performing the obvious byte-wise sort computes a different digest
 for the same tool set — which would surface to a registry as spurious drift.
@@ -586,8 +630,8 @@ and nothing in the label establishes that the retrieval happened (§13.5).
 
 | Verdict | When |
 |---|---|
-| `pass` | the tool set was fully drained, is non-empty, and was digested |
-| `inconclusive` | connection or handshake failed; pagination could not be drained; the tool set was empty (`MTL-SUBJ-002`); a tool entry was malformed (`MTL-SUBJ-001`); duplicate names (`MTL-SUBJ-003`); a non-integer number made the set non-digestible (`MTL-NUM-001`) |
+| `pass` | the tool set was fully drained and was digested (an empty set included, since 1.1) |
+| `inconclusive` | connection or handshake failed; pagination could not be drained; a tool entry was malformed (`MTL-SUBJ-001`); a number had no double (`MTL-NUM-001`). Under 1.0 also an empty set (`MTL-SUBJ-002`), duplicate names (`MTL-SUBJ-003`) and any non-integer number (`MTL-NUM-001`) |
 | `fail` | **MUST NOT** be issued |
 
 `fail` is excluded because there is no proposition to be false. A server that cannot be reached
@@ -727,7 +771,7 @@ the same `server.name` and `server.registry`.
 |---|---|
 | `pass` | both subject digests are present and equal |
 | `fail` | both subject digests are present and differ |
-| `inconclusive` | no prior label exists; the prior label cannot be verified; either side lacks a `toolSet.digestSRI` (`MTL-NUM-001`); the current observation failed |
+| `inconclusive` | no prior label exists; the prior label cannot be verified; either side lacks a `toolSet.digestSRI` (the reason code of the side that lacks it; none when that reason is not known — never a default); the current observation failed |
 
 `fail` is permitted here, uniquely, because it is a mechanical statement about two committed
 digests rather than a judgement: the advertised definitions changed. **It is not an accusation.**
@@ -1022,10 +1066,10 @@ be parsed (SPEC §11.1).
 | Code | Severity | Meaning |
 |---|---|---|
 | `MTL-SUBJ-001` | error | Tool entry is not an object, or has no non-empty string `name` |
-| `MTL-SUBJ-002` | error | Tool set is empty; there is nothing to pin |
-| `MTL-SUBJ-003` | error | Duplicate tool name; the digest would depend on retrieval order |
+| `MTL-SUBJ-002` | error | MTL/1.0 only: tool set is empty. 1.1 digests the empty set (§5.3) |
+| `MTL-SUBJ-003` | error | MTL/1.0 only: duplicate tool name. 1.1 orders duplicates by canonical bytes (§5.3) |
 | `MTL-SUBJ-004` | error | Registry-recomputed subject digest ≠ `verifiedWork.digestSRI` (§4.6) |
-| `MTL-NUM-001` | error | Non-integer JSON number in a tool schema: not digestible under MTL/1 (§5.4) |
+| `MTL-NUM-001` | error | A number in a tool schema with no IEEE 754 double (§5.4). Under 1.0: any non-integer number or an integer beyond ±(2^53−1) |
 | `MTL-DOC-001` | error | `type` lacks `MCPTrustLabel`/`MCPTrustOpinion`, or `@context` lacks the MTL namespace |
 | `MTL-DOC-002` | error | `mcpTrustLabel` missing, not an object, or missing a required member |
 | `MTL-DOC-003` | error | Label carries `score` or `policy.threshold` (§6.4) |
@@ -1284,7 +1328,8 @@ these rather than trust the table.
 | **Executed:** L1/L2 report `AWR-PROFILE-001` for a `VerificationVerdict` | `awr/reference/python/awr/verify.py` — `evaluate_profiles` |
 | `AWR-VDCT-005` fires only when a same-`id` supporting document is supplied | `awr/reference/python/awr/verify.py` — `_cross_check_verdict` |
 | **Executed:** a bundle with no `WorkReceipt` reports `AWR-BUNDLE-003` unless a subject is named | `awr/reference/python/awr/verify.py` — `verify_bundle` |
-| The reference canonicalizer refuses non-integer numbers with `AWR-CANON-001` | `awr/reference/python/awr/jcs.py` |
+| The reference canonicalizer refuses non-integer numbers with `AWR-CANON-001`; MTL/1.1 tool-set digests take the double path in `tools/mtl_subject.py` only after that refusal, so an integers-only set keeps the canonicalizer's bytes | `awr/reference/python/awr/jcs.py`, `tools/mtl_subject.py` — `canonical_tool_bytes` |
+| **Executed (2026-10-31):** the Python number writer (`es_number`) equals Node's `JSON.stringify` on 399,880 doubles (random bit patterns, schema-like decimals, edge values), 0 differences; HISTOR, this tool and WARDEN's `mtl.ts` agree on the fraction, exponent, large-integer, empty and duplicate vectors in `warden/test/fixtures/mtl-vectors.json` | `histor/tests/test_subject.py`, `warden/test/mtl.test.ts` |
 | **Executed:** one flipped byte in a label → `AWR-PROOF-006`, exit 1 | `awr verify` |
 | **Executed:** all four shipped labels → `valid=true`, `profile=null` (§10.4), 0 reasons, 0 warnings, exit 0 | `awr verify examples/*.awr.json` |
 | **Executed:** `awr verify` emits nine top-level keys, and `profilesEvaluated` reports `AWR-PROFILE-001` for L1 and L2 | `awr verify` on `examples/pass-01-pattern-scan.awr.json` |

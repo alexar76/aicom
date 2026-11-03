@@ -1,0 +1,1110 @@
+{
+  "checkedAt": "2026-10-31T12:23:25.329636+00:00",
+  "well_known": {
+    "status": 200,
+    "body": {
+      "name": "modelmarket.dev",
+      "protocol_versions": [
+        "v1",
+        "v2"
+      ],
+      "hub_version": "3.16.0",
+      "mcp_endpoint": "https://modelmarket.dev/ai-market/mcp",
+      "a2a_endpoint": "https://modelmarket.dev/a2a",
+      "a2a_agent_card_url": "https://modelmarket.dev/.well-known/agent-card.json",
+      "manifest_url": "https://modelmarket.dev/ai-market/v2/manifest",
+      "products_count": 5,
+      "capabilities_count": 5,
+      "federated_capabilities_count": 264,
+      "supported_chains": [
+        "base",
+        "ethereum",
+        "arbitrum",
+        "optimism",
+        "polygon"
+      ],
+      "supported_tokens": [
+        "USDT",
+        "USDC",
+        "ETH"
+      ],
+      "payment_configured": true,
+      "payment_rails": {
+        "seller_direct": {
+          "enabled": true,
+          "header": "X-Payment",
+          "also": [
+            "PAYMENT-SIGNATURE",
+            "X-PAYMENT",
+            "X-Payment-Nonce"
+          ],
+          "asset": "USDC",
+          "note": "buyer pays the listing payout_address on-chain; this hub verifies and never holds the money"
+        },
+        "credits": {
+          "enabled": true,
+          "open_signup": true,
+          "signup_url": "https://modelmarket.dev/ai-market/v2/accounts",
+          "start_url": "https://modelmarket.dev/start",
+          "header": "X-API-Key",
+          "free_grant_usd": 0.01,
+          "min_unit_usd": 1e-05,
+          "topup": {
+            "enabled": true,
+            "quote": "/ai-market/v2/account/topup",
+            "redeem": "/ai-market/v2/topups/{nonce}",
+            "binding": "eip3009",
+            "asset": "USDC",
+            "asset_address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+            "network": "eip155:8453",
+            "pay_to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+            "min_usd": 0.01,
+            "max_usd": 100.0,
+            "daily_usd": 500.0,
+            "min_confirmations": 2,
+            "quote_ttl_s": 900,
+            "deposit_watch": {
+              "enabled": false,
+              "reason": "plain transfers are not watched: set AIMARKET_TOPUP_PAY_TO to a wallet that receives top-ups and nothing else"
+            }
+          },
+          "topup_card": {
+            "enabled": false,
+            "provider": "stripe-checkout",
+            "create": "/ai-market/v2/account/topup/card",
+            "status": "/ai-market/v2/card-topups/{id}",
+            "reason": "card top-ups are switched off on this hub (AIMARKET_CARD_TOPUP_ENABLED)"
+          }
+        },
+        "channel": {
+          "enabled": true,
+          "header": "X-Payment-Channel",
+          "chains": [
+            "base",
+            "ethereum",
+            "arbitrum",
+            "optimism",
+            "polygon"
+          ]
+        }
+      },
+      "free_trial": {
+        "enabled": true,
+        "max_invokes_per_visitor": 5,
+        "quota_window": "hourly",
+        "renews": true,
+        "visitor_header": "X-AIMarket-Sandbox-Visitor",
+        "excluded_capabilities": [
+          "atlas.fire.weather@v1",
+          "atlas.situation.brief@v1",
+          "hestia.compute.run@v1",
+          "hestia.compute.verify@v1",
+          "platon.ask@v1",
+          "platon.oracle@v1",
+          "platon.steer@v1",
+          "weather.witness@v1"
+        ],
+        "excluded_reason": "each call spends real budget \u2014 a paid model, or metered upstream data \u2014 so it is not free to serve",
+        "exhausted_status": 429,
+        "exhausted_error": "trial_quota_exhausted",
+        "how": "Send X-AIMarket-Sandbox-Visitor with a stable id you choose and no payment channel; the invoke runs for free and returns a signed receipt. Results are marked sandbox=true. A refused call costs nothing \u2014 the allowance is spent only when data is delivered. When it is spent the hub answers 429 trial_quota_exhausted until the window renews.",
+        "clients": {
+          "mcp": "pip install aimarket-mcp \u2014 market_search / market_invoke",
+          "python": "pip install aimarket-agent \u2014 AIMarketAgent(..., sandbox_visitor=\"<id>\") or AIMARKET_SANDBOX_VISITOR; CLI: --sandbox-visitor (2.6.1+)",
+          "http": "POST /ai-market/v2/invoke with the visitor header and no payment channel"
+        }
+      },
+      "payment_testnet": false,
+      "signer_public_key": "lUgnD6FKzGU0gMaTVjtKzUbtIKd/aRqI3Kzn12vQio0=",
+      "federation": {
+        "crawl_interval_s": 3600,
+        "routing_fee_bps": 100,
+        "min_trust_score": 0.3,
+        "seed_list": [
+          "https://oracles.modelmarket.dev/family/.well-known/ai-market.json",
+          "https://iot.modelmarket.dev/.well-known/ai-market.json",
+          "https://atlas.modelmarket.dev/.well-known/ai-market.json",
+          "https://basanos.modelmarket.dev/.well-known/ai-market.json",
+          "https://themis.modelmarket.dev/.well-known/ai-market.json",
+          "https://momus.modelmarket.dev/.well-known/ai-market.json",
+          "https://magic-ai-factory.com/.well-known/ai-market.json",
+          "https://skopos.modelmarket.dev/.well-known/ai-market.json",
+          "https://logos.modelmarket.dev/.well-known/ai-market.json",
+          "https://hunt.modelmarket.dev/.well-known/ai-market.json"
+        ]
+      },
+      "lottery_admission": {
+        "version": 1,
+        "work_seat_entitlement_url": "https://modelmarket.dev/ai-market/v2/lottery/work-seat-entitlement",
+        "authentication": "Bearer credential for the requested agent_id",
+        "participant_id": "sha256(normalized_hub_url + newline + agent_id)",
+        "max_ttl_s": 600,
+        "enabled": false
+      },
+      "peers": [
+        {
+          "url": "https://oracles.modelmarket.dev/family",
+          "name": "AIMarket Oracle Family",
+          "capabilities_count": 42,
+          "last_crawl": "2026-10-31T11:06:20Z",
+          "trust_score": 0.5081,
+          "categories": [
+            "oracle",
+            "randomness-beacon",
+            "verifiable-delay",
+            "consensus",
+            "reputation",
+            "optimization",
+            "sampling",
+            "percolation",
+            "routing",
+            "cascade-risk",
+            "thermodynamics",
+            "agent-tooling"
+          ]
+        },
+        {
+          "url": "https://atlas.modelmarket.dev",
+          "name": "ATLAS \u2014 planetary sensor map & composite briefs",
+          "capabilities_count": 15,
+          "last_crawl": "2026-10-31T11:06:21Z",
+          "trust_score": 0.4938,
+          "categories": [
+            "iot",
+            "sensors",
+            "physical-data",
+            "geospatial",
+            "risk-brief",
+            "wildfire",
+            "watchbox",
+            "gnss-integrity"
+          ]
+        },
+        {
+          "url": "https://iot.modelmarket.dev",
+          "name": "GAIA \u2014 physical-world oracle gateway",
+          "capabilities_count": 56,
+          "last_crawl": "2026-10-31T11:06:21Z",
+          "trust_score": 0.4906,
+          "categories": [
+            "iot",
+            "sensors",
+            "physical-data",
+            "verification",
+            "weather",
+            "air-quality",
+            "energy",
+            "seismic",
+            "tides",
+            "fire",
+            "radiation",
+            "gnss",
+            "traffic",
+            "space-weather",
+            "lightning",
+            "alerts",
+            "ocean",
+            "geomagnetism",
+            "flood",
+            "volcano",
+            "cyclone",
+            "adsb",
+            "aviation",
+            "road",
+            "rail",
+            "drought",
+            "reservoir",
+            "uv",
+            "geocoding",
+            "electricity-prices",
+            "actuation",
+            "satellite-imagery"
+          ]
+        },
+        {
+          "url": "https://hestia.modelmarket.dev",
+          "name": "HESTIA",
+          "capabilities_count": 19,
+          "last_crawl": "2026-10-31T11:06:27Z",
+          "trust_score": 0.449,
+          "categories": []
+        },
+        {
+          "url": "https://momus.modelmarket.dev",
+          "name": "MOMUS \u2014 adversarial-audit satellite",
+          "capabilities_count": 7,
+          "last_crawl": "2026-10-31T11:06:22Z",
+          "trust_score": 0.44,
+          "categories": [
+            "security",
+            "red-team",
+            "audit",
+            "conformance",
+            "verification",
+            "adversarial"
+          ]
+        },
+        {
+          "url": "https://logos.modelmarket.dev",
+          "name": "LOGOS Federation Analytics",
+          "capabilities_count": 1,
+          "last_crawl": "2026-10-31T11:06:24Z",
+          "trust_score": 0.44,
+          "categories": [
+            "analytics",
+            "federation",
+            "observability"
+          ]
+        },
+        {
+          "url": "https://x402-gateway-production-1f21.up.railway.app",
+          "name": "Industrial Platform Sentinel",
+          "capabilities_count": 4,
+          "last_crawl": "2026-10-31T11:06:27Z",
+          "trust_score": 0.44,
+          "categories": [
+            "agent-tooling",
+            "treasury",
+            "wallet",
+            "payments",
+            "monitoring",
+            "x402"
+          ]
+        },
+        {
+          "url": "https://independentai.network/hub",
+          "name": "Independent AI Hub",
+          "capabilities_count": 33,
+          "last_crawl": "2026-10-31T11:06:29Z",
+          "trust_score": 0.44,
+          "categories": [],
+          "contracts": {
+            "version": 1,
+            "entries": [
+              {
+                "role": "escrow",
+                "name": "AIMarketEscrow",
+                "address": "0x0BFCa46A324fe534Eb6E71c52C8b5AD74B969534",
+                "explorer": "https://basescan.org/address/0x0BFCa46A324fe534Eb6E71c52C8b5AD74B969534",
+                "note": "payment channels are funded and settled here"
+              },
+              {
+                "role": "other",
+                "name": "escrow debit address",
+                "address": "0x73D295139DA45e055b852273941B514ccDC01C96",
+                "explorer": "https://basescan.org/address/0x73D295139DA45e055b852273941B514ccDC01C96",
+                "note": "debits escrow channels; a DebitAuthorization names this address as `hub`"
+              },
+              {
+                "role": "wallet",
+                "name": "settlement wallet",
+                "address": "0xe8654a28c2680613B4428Da97517EA08BeeaFe8c",
+                "explorer": "https://basescan.org/address/0xe8654a28c2680613B4428Da97517EA08BeeaFe8c",
+                "note": "invoices for this hub are paid to this address"
+              },
+              {
+                "role": "token",
+                "name": "USDC",
+                "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                "explorer": "https://basescan.org/address/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                "note": "settlement token"
+              }
+            ],
+            "chain": "base",
+            "chain_id": 8453,
+            "network": "Base",
+            "explorer": "https://basescan.org"
+          }
+        },
+        {
+          "url": "https://hub.attestedmemory.net",
+          "name": "Attested Memory Hub",
+          "capabilities_count": 21,
+          "last_crawl": "2026-10-31T11:06:30Z",
+          "trust_score": 0.44,
+          "categories": []
+        },
+        {
+          "url": "https://domains.modelmarket.dev",
+          "name": "modelmarket.dev demo domain seller",
+          "capabilities_count": 1,
+          "last_crawl": "2026-10-31T11:06:32Z",
+          "trust_score": 0.44,
+          "categories": []
+        },
+        {
+          "url": "https://esim.modelmarket.dev",
+          "name": "modelmarket.dev demo eSIM seller",
+          "capabilities_count": 1,
+          "last_crawl": "2026-10-31T11:06:33Z",
+          "trust_score": 0.44,
+          "categories": []
+        },
+        {
+          "url": "https://modelmarket.dev/providers/symmartys",
+          "name": "SYMMARTYS \u2014 public-record facts for agents that trade",
+          "capabilities_count": 16,
+          "last_crawl": "2026-10-31T11:06:32Z",
+          "trust_score": 0.3469,
+          "categories": [
+            "commerce",
+            "compliance",
+            "kyb",
+            "vat",
+            "lei",
+            "fx",
+            "sanctions",
+            "timestamping",
+            "notary",
+            "bitcoin",
+            "eori",
+            "rdap",
+            "company-registry",
+            "business-days",
+            "web-capture",
+            "scheduling"
+          ]
+        },
+        {
+          "url": "https://basanos.modelmarket.dev",
+          "name": "BASANOS",
+          "capabilities_count": 1,
+          "last_crawl": "2026-10-31T11:06:21Z",
+          "trust_score": 0.265,
+          "categories": [
+            "security",
+            "solidity",
+            "assurance"
+          ]
+        },
+        {
+          "url": "https://themis.modelmarket.dev",
+          "name": "THEMIS",
+          "capabilities_count": 1,
+          "last_crawl": "2026-10-31T11:06:22Z",
+          "trust_score": 0.265,
+          "categories": [
+            "security",
+            "procurement",
+            "supply-chain",
+            "admission"
+          ]
+        },
+        {
+          "url": "https://magic-ai-factory.com",
+          "name": "Magic AI-Factory AI Market",
+          "capabilities_count": 13,
+          "last_crawl": "2026-10-31T11:06:23Z",
+          "trust_score": 0.265,
+          "categories": []
+        },
+        {
+          "url": "https://skopos.modelmarket.dev",
+          "name": "SKOPOS Fleet Intelligence",
+          "capabilities_count": 4,
+          "last_crawl": "2026-10-31T11:06:24Z",
+          "trust_score": 0.265,
+          "categories": [
+            "observability",
+            "security",
+            "fleet"
+          ]
+        },
+        {
+          "url": "https://hunt.modelmarket.dev",
+          "name": "Signal Hunt Hub",
+          "capabilities_count": 6,
+          "last_crawl": "2026-10-31T11:06:25Z",
+          "trust_score": 0.265,
+          "categories": []
+        },
+        {
+          "url": "https://charon.independentai.network",
+          "name": "CHARON \u2014 liquidation risk for the side that borrows",
+          "capabilities_count": 3,
+          "last_crawl": "2026-10-31T11:06:28Z",
+          "trust_score": 0.265,
+          "categories": [
+            "defi",
+            "risk",
+            "lending",
+            "liquidation",
+            "oracle-integrity",
+            "monitoring",
+            "onchain-data"
+          ]
+        },
+        {
+          "url": "https://histor.modelmarket.dev",
+          "name": "HISTOR",
+          "capabilities_count": 3,
+          "last_crawl": "2026-10-31T11:06:28Z",
+          "trust_score": 0.265,
+          "categories": [
+            "mcp-security",
+            "transparency-log",
+            "tool-definitions",
+            "awr",
+            "mtl"
+          ]
+        },
+        {
+          "url": "https://hub.modelmarket.dev",
+          "name": "Competing Lab Hub",
+          "capabilities_count": 1,
+          "last_crawl": "2026-10-31T11:06:31Z",
+          "trust_score": 0.265,
+          "categories": []
+        },
+        {
+          "url": "https://agent-exec.448c.org",
+          "name": "agent-exec",
+          "capabilities_count": 15,
+          "last_crawl": "2026-10-31T11:06:33Z",
+          "trust_score": 0.265,
+          "categories": [
+            "code-execution",
+            "sandbox",
+            "storage",
+            "key-claims",
+            "attestation",
+            "url-watch",
+            "email",
+            "dns",
+            "x402",
+            "risk-checks",
+            "directory",
+            "agents"
+          ]
+        }
+      ],
+      "ecosystem": {
+        "version": 1,
+        "relationship": "owned-provider",
+        "nodes": [
+          {
+            "id": "aicom-weather-witness",
+            "name": "aicom",
+            "role": "provider",
+            "url": "https://modelmarket.dev/providers/weather-witness",
+            "capabilities_count": 1,
+            "categories": []
+          },
+          {
+            "id": "gaia",
+            "name": "aicom",
+            "role": "provider",
+            "url": "https://iot.modelmarket.dev/ai-market/v2",
+            "capabilities_count": 1,
+            "categories": []
+          },
+          {
+            "id": "pov-demo-factorworks",
+            "name": "aicom",
+            "role": "provider",
+            "url": "https://modelmarket.dev/providers/pov-demo/honest",
+            "capabilities_count": 1,
+            "categories": []
+          }
+        ]
+      },
+      "observed_hubs": [
+        {
+          "url": "https://mach402.dev",
+          "name": "Machina",
+          "first_seen": "2026-10-19T17:39:28Z",
+          "observed_by": "https://modelmarket.dev",
+          "depth": 1,
+          "status": "observed"
+        }
+      ],
+      "observed_sellers": [],
+      "observed_sellers_url": "https://modelmarket.dev/ai-market/v2/federation/observed-sellers",
+      "plugins_loaded": 15,
+      "plugins_with_routes": 13,
+      "contracts": {
+        "version": 1,
+        "chain": "base",
+        "entries": [
+          {
+            "role": "escrow",
+            "name": "AIMarketEscrow",
+            "address": "0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb",
+            "explorer": "https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb",
+            "note": "payment channels are funded and settled here"
+          },
+          {
+            "role": "escrow_hub",
+            "name": "escrow debit address",
+            "address": "0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1",
+            "explorer": "https://basescan.org/address/0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1",
+            "note": "debits escrow channels; a DebitAuthorization names this address as `hub`"
+          },
+          {
+            "role": "wallet",
+            "name": "settlement wallet",
+            "address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+            "explorer": "https://basescan.org/address/0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+            "note": "invoices for this hub are paid to this address"
+          },
+          {
+            "role": "token",
+            "name": "USDC",
+            "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+            "explorer": "https://basescan.org/address/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+            "note": "settlement token"
+          }
+        ],
+        "chain_id": 8453,
+        "network": "Base",
+        "explorer": "https://basescan.org"
+      },
+      "pay_on_verified": {
+        "enabled": true,
+        "spec": "https://github.com/alexar76/aicom/blob/main/docs/pay-on-verified.md",
+        "verifier": "metis.modelmarket.dev",
+        "rail": "payment channel (X-Payment-Channel): the price is held, then captured on a passing verdict or released to the buyer on a failing one",
+        "scope": "capabilities this hub executes itself (federated invokes are not held)",
+        "request": {
+          "verify": {
+            "requested": true,
+            "intent": "<what the output must satisfy>",
+            "mode": "auto",
+            "wait": false
+          }
+        },
+        "min_price_usd": 0.05,
+        "score_threshold": 0.7,
+        "audit_threshold": 0.7,
+        "appeal_window_s": 3600.0,
+        "authorization_min_lifetime_s": 10800.0,
+        "routes": [
+          {
+            "capabilities": "gaia.actuate@v1",
+            "verifier": "gaia.verify@v1"
+          }
+        ]
+      },
+      "mandates": {
+        "spec": "aimarket-protocol/mandates.md",
+        "version": "AMD/1",
+        "enabled": true,
+        "audience": "https://modelmarket.dev",
+        "register": "/ai-market/v2/mandates",
+        "owners": "/ai-market/v2/mandates/owners",
+        "revoke": "/ai-market/v2/mandates/revoke",
+        "status": "/ai-market/v2/mandates/{digest}",
+        "max_chain": 4
+      },
+      "subcontracting": {
+        "spec": "aimarket-protocol/mandates.md#6-subcontracting-sub1",
+        "version": "SUB/1",
+        "job_tokens": true,
+        "allowance": true,
+        "max_allowance_usd": 1.0,
+        "max_depth": 3,
+        "max_nodes_per_job": 64,
+        "max_children_per_node": 16,
+        "jobs": "/ai-market/v2/jobs/{job_id}"
+      },
+      "seller_operations": {
+        "protocol": "SELLER-OP/1",
+        "prepare": "/ai-market/v2/operations/prepare",
+        "invoke": "/ai-market/v2/operations/{operation_id}/invoke",
+        "status": "/ai-market/v2/operations/{operation_id}",
+        "auth_header": "X-Operation-Token",
+        "funding": "seller_direct_eip3009",
+        "local_listings_only": true,
+        "recovery": "durable_result_at_most_once_dispatch",
+        "uncertain_dispatch": "reconciliation_required",
+        "provider_recovery_protocol": "PROVIDER-OP/1",
+        "provider_recovery_requires": "operator_opt_in_and_provider_durable_signed_result"
+      },
+      "pipeline_execution": {
+        "product_id": "hephaestus",
+        "capability_id": "pipeline.run@v1",
+        "invoke": "/ai-market/v2/invoke",
+        "preflight": "/studio/preflight",
+        "prepare": "/studio/paid-runs/{run_id}/prepare-pipeline",
+        "prepare_graph": "/studio/prepare-pipeline",
+        "status": "/studio/paid-runs/{run_id}/pipeline",
+        "status_auth_header": "X-Studio-Run-Token",
+        "mcp_tools": [
+          "pipeline_prepare",
+          "pipeline_invoke",
+          "pipeline_status",
+          "pipeline_refund_prepare",
+          "pipeline_refund",
+          "pipeline_refund_status"
+        ],
+        "client": {
+          "python": "aimarket_hub.pipeline_client.run_pipeline",
+          "minimum_version": "3.9.0",
+          "cli": "aimarket-pipeline",
+          "paid_chains": [
+            8453,
+            1
+          ],
+          "paid_token": "USDC",
+          "asset_policy": "buyer_pinned_usd_eip3009_allowlist",
+          "single_asset_per_graph": true,
+          "wallet_coordination": [
+            "local_files",
+            "buyer_owned_postgresql"
+          ],
+          "advanced_client_minimum_version": "3.14.0",
+          "requires_native_gas": "unless_sponsored",
+          "receipt_verification": true,
+          "distribution": {
+            "filename": "aimarket_hub-3.16.0-py3-none-any.whl",
+            "version": "3.16.0",
+            "sha256": "05744938e91ba696326b5be8db855ba33be354c7c57bdb0d20ec7989daf8eb01",
+            "commit": "519b863ba8179909a4d96320a941d3499ca460ef"
+          },
+          "documentation": {
+            "en": "/clients/pipeline-guide/en",
+            "ru": "/clients/pipeline-guide/ru",
+            "es": "/clients/pipeline-guide/es",
+            "fr": "/clients/pipeline-guide/fr",
+            "zh": "/clients/pipeline-guide/zh"
+          }
+        },
+        "settlement_routes": [
+          "local_seller_direct",
+          "peer_seller_of_record",
+          "configured_peer_reseller",
+          "independent_seller_operation"
+        ],
+        "independent_peer_billing": "SELLER-OP/1",
+        "quote_ttl_seconds": 900,
+        "payment_offer_ttl_seconds": 300,
+        "funding": "buyer_signed_transactions",
+        "credits_allowance": false,
+        "gas_sponsorship": {
+          "enabled": true,
+          "protocol": "GAS-SPONSOR/1",
+          "buyer_fee_units": "0",
+          "gas_payer": "0x663e0c31925ead877fd9414c2e1862fa50b2650b",
+          "reason": null,
+          "nonce_coordination": "shared_database",
+          "scope": "direct_base_usdc",
+          "buyer_private_key_required": false
+        },
+        "gas_modes": [
+          "buyer",
+          "auto",
+          "required"
+        ],
+        "refunds": {
+          "protocol": "SELLER-REFUND/1",
+          "seller_approval_required": true,
+          "prepare": "/studio/paid-runs/{run_id}/refunds/{step_id}/prepare",
+          "advance": "/studio/paid-runs/{run_id}/refunds/{step_id}",
+          "status": "/studio/paid-runs/{run_id}/refunds/{step_id}",
+          "buyer_gas_fee_units": "0"
+        },
+        "job_linkage": "SUB/1",
+        "max_steps": 16
+      },
+      "plugin_extensions": {
+        "provenance": {
+          "provenance": {
+            "version": "2.3.0",
+            "receipt_format": "AWR/2 (W3C Verifiable Credential)",
+            "awr_version": "2.0.0",
+            "specification": "https://verify.modelmarket.dev/ns/awr/v2",
+            "proof_type": "DataIntegrityProof",
+            "cryptosuite": "eddsa-jcs-2022",
+            "canonicalization": "RFC 8785 (JCS)",
+            "issuer_identity": "did:key",
+            "signing_algorithm": "Ed25519",
+            "endpoints": {
+              "attest": "/ai-market/v2/p/provenance/attest",
+              "receipt": "/ai-market/v2/p/provenance/receipt/{id}",
+              "verify": "/ai-market/v2/p/provenance/verify/{id}",
+              "anchor": "/ai-market/v2/p/provenance/anchor/{id}"
+            },
+            "features": {
+              "auto_receipt": true,
+              "tee_attestation": true,
+              "zk_proofs": true,
+              "provenance_chains": true,
+              "attestations_verified": false,
+              "legacy_awr1_verification": true,
+              "legacy_awr1_issuance": false,
+              "offline_verifiable": true,
+              "subcontract_parents": true
+            },
+            "transparency_log": "https://histor.modelmarket.dev"
+          }
+        },
+        "aimarket-mcp-packager": {
+          "mcp": {
+            "enabled": true,
+            "registry": "aifactory"
+          }
+        },
+        "aimarket-reputation": {
+          "reputation": {
+            "bond_required": true,
+            "slashing_enabled": true
+          }
+        },
+        "aimarket-nft": {
+          "nft": {
+            "standard": "ERC-721",
+            "transferable": true
+          }
+        },
+        "aimarket-dataset": {
+          "dataset": {
+            "format": "JSONL",
+            "license": "CC-BY 4.0",
+            "anonymization": "SHA-256"
+          }
+        },
+        "aimarket-personas": {
+          "personas": {
+            "enabled": true,
+            "chat_native": true
+          }
+        },
+        "aimarket-promo": {
+          "promo": {
+            "enabled": true,
+            "max_discount_pct": 100
+          }
+        },
+        "aimarket-orchestrator": {
+          "orchestrator": {
+            "fee_pct": 0.01,
+            "strategy": "optimal"
+          }
+        },
+        "aimarket-zk": {
+          "zk": {
+            "scheme": "PLONK",
+            "backend": "plonk",
+            "production": "circom + snarkjs bn128"
+          }
+        },
+        "aimarket-channels": {
+          "channels": {
+            "enabled": true,
+            "endpoints": {
+              "open": "/ai-market/v2/channel/open",
+              "close": "/ai-market/v2/channel/close"
+            },
+            "max_deposit_usd": 10000,
+            "expiry_hours": 24,
+            "demo_mode": false
+          }
+        },
+        "aimarket-safety": {
+          "safety_gate": {
+            "enabled": true,
+            "pre_invoke": true,
+            "post_response": true,
+            "on_block": "atomic_abort + refund + signed_rejection_receipt",
+            "categories_blocked": [
+              "class:injection",
+              "class:harassment",
+              "class:PII",
+              "class:children",
+              "class:illegal"
+            ]
+          }
+        }
+      },
+      "mcp_servers": [
+        {
+          "name": "aimarket-hub",
+          "transport": "streamable-http",
+          "url": "https://modelmarket.dev/mcp",
+          "description": "This hub's marketplace as MCP tools: search the catalogue and invoke a capability. A few trial invokes per caller with no wallet, key or install; after that the hub answers 402.",
+          "tools": [
+            "market_search",
+            "market_invoke",
+            "pipeline_prepare",
+            "pipeline_invoke",
+            "pipeline_status",
+            "pipeline_refund_prepare",
+            "pipeline_refund",
+            "pipeline_refund_status"
+          ]
+        },
+        {
+          "name": "aimarket-oracle-gateway",
+          "transport": "stdio",
+          "glama": "https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway",
+          "description": "Verifiable oracle services (Platon VRF, Chronos VDF, LUMEN reputation) as MCP tools \u2014 pay-per-call, every result verifiable.",
+          "tools": [
+            "get_random",
+            "get_randomness_beacon",
+            "ask_oracle",
+            "verify_random",
+            "compute_vdf",
+            "verify_vdf",
+            "get_reputation_scores",
+            "get_agent_trust",
+            "verify_reputation",
+            "list_oracle_capabilities"
+          ]
+        },
+        {
+          "name": "aimarket-mcp-packager",
+          "transport": "stdio",
+          "glama": "https://glama.ai/mcp/servers/alexar76/aimarket-plugins",
+          "description": "Package any AIMarket capability as a self-hosted MCP server.",
+          "tools": [
+            "package_capability",
+            "generate_dockerfile",
+            "generate_claude_desktop_config"
+          ]
+        }
+      ],
+      "prices_url": "https://modelmarket.dev/ai-market/v2/prices",
+      "generated_at": "2026-10-31T11:24:52Z",
+      "erc8004": {
+        "agent_id": "96682",
+        "chain": "eip155:8453",
+        "identity_registry": "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+        "reputation_registry": "0x8004BAa17C55a88189AE136b182e5fdA19dE9b63",
+        "agent_uri": "https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.json",
+        "verified_by_this_hub": false,
+        "note": "Self-declared. Read the identity registry to confirm this agentId resolves to this operator; this hub asserts the claim and does not check it."
+      },
+      "signature": {
+        "algorithm": "ed25519",
+        "public_key": "lUgnD6FKzGU0gMaTVjtKzUbtIKd/aRqI3Kzn12vQio0=",
+        "value": "3SlnxOB3WGQ3ICtpGICevVhCB721vEK7rPX8+/ybu3oSS8h/6KXlpTFwvqzpwN8NGsW1i5Mg7w7rrNeMbzcECQ==",
+        "pq_algorithm": "ml-dsa-65",
+        "pq_public_key": "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",
+        "pq_value": "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"
+      }
+    }
+  },
+  "plugins": {
+    "status": 200,
+    "body": {
+      "plugins": [
+        {
+          "name": "provenance",
+          "version": "2.3.0",
+          "description": "AWR/2 work receipts for AI outputs \u2014 W3C Verifiable Credentials with an eddsa-jcs-2022 Data Integrity proof over RFC 8785, issued by a did:key",
+          "homepage": "https://verify.modelmarket.dev",
+          "category": "compliance",
+          "hooks": [
+            "register_routes",
+            "on_invoke_receipt",
+            "on_startup",
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-mcp-packager",
+          "version": "2.1.1",
+          "description": "Package capabilities as ready-to-run MCP servers for Claude Desktop",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "tooling",
+          "hooks": [
+            "register_routes",
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-reputation",
+          "version": "2.0.1",
+          "description": "Stake bonds, signed outcomes and dispute resolution \u2014 reputation aggregation with bond slashing",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "reputation",
+          "hooks": [
+            "register_routes",
+            "on_startup",
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-nft",
+          "version": "2.0.0",
+          "description": "Tokenized pre-paid credits \u2014 transferable, giftable, sellable",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "monetization",
+          "hooks": [
+            "register_routes",
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-streaming",
+          "version": "2.0.1",
+          "description": "SSE/WS streaming with per-chunk billing \u2014 micro-receipts as tokens arrive, cancel mid-stream and pay only for what was received",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "monetization",
+          "hooks": [
+            "register_routes",
+            "on_startup"
+          ]
+        },
+        {
+          "name": "aimarket-data-cap",
+          "version": "3.0.0",
+          "description": "Data as a capability \u2014 build the listing for a private corpus the publisher serves, with the owner's revenue share enforced by the hub",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "monetization",
+          "hooks": [
+            "register_routes"
+          ]
+        },
+        {
+          "name": "aimarket-dataset",
+          "version": "2.0.0",
+          "description": "Weekly anonymized invocation corpus exporter \u2014 open data for researchers",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "tooling",
+          "hooks": [
+            "register_routes",
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-tee",
+          "version": "2.0.1",
+          "description": "TEE-attested execution (AWS Nitro Enclaves / Intel TDX) \u2014 attestation reports and enclave-signed receipts",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "security",
+          "hooks": [
+            "register_routes"
+          ]
+        },
+        {
+          "name": "aimarket-personas",
+          "version": "2.0.0",
+          "description": "Auto-generated AI agent personas \u2014 chat-native discovery",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "tooling",
+          "hooks": [
+            "register_routes",
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-promo",
+          "version": "2.0.0",
+          "description": "Signed time-locked discount offers \u2014 Yield Management for AI",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "monetization",
+          "hooks": [
+            "register_routes",
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-orchestrator",
+          "version": "2.0.0",
+          "description": "NL task planner and executor \u2014 decomposes tasks into capability chains, 1% fee",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "monetization",
+          "hooks": [
+            "register_routes",
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-auction",
+          "version": "2.0.1",
+          "description": "Spot bidding market \u2014 post a task, providers bid in real time, the consumer picks the winner",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "monetization",
+          "hooks": [
+            "register_routes"
+          ]
+        },
+        {
+          "name": "aimarket-zk",
+          "version": "2.1.1",
+          "description": "Zero-knowledge proofs for privacy-preserving AI invocation",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "security",
+          "hooks": [
+            "register_routes",
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-channels",
+          "version": "2.0.1",
+          "description": "Pre-funded payment channels \u2014 off-chain ledger, on-chain settlement",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "infrastructure",
+          "hooks": [
+            "get_manifest_extension"
+          ]
+        },
+        {
+          "name": "aimarket-safety",
+          "version": "2.0.1",
+          "description": "Pre/post-invoke safety classifier with constitutional contracts. Blocks injection, PII, medical data, harassment. Issues signed rejection receipts with automatic refund.",
+          "homepage": "https://github.com/alexar76/aimarket-plugins",
+          "category": "security",
+          "hooks": [
+            "register_routes",
+            "on_invoke_pre_check",
+            "on_invoke_post_check",
+            "get_manifest_extension"
+          ]
+        }
+      ],
+      "count": 15,
+      "discovery": "Plugins are auto-discovered via setuptools entry_points (group: aimarket.plugins)",
+      "registry_url": "https://modelmarket.dev/ai-market/v2/plugins/registry"
+    }
+  },
+  "mcp": {
+    "status": 200,
+    "body": {
+      "status": "ok",
+      "service": "aimarket-hub-mcp",
+      "version": "1.2.0",
+      "tools": [
+        "market_search",
+        "market_invoke",
+        "pipeline_prepare",
+        "pipeline_invoke",
+        "pipeline_status",
+        "pipeline_refund_prepare",
+        "pipeline_refund",
+        "pipeline_refund_status"
+      ],
+      "direct_tools": [
+        "weather_now",
+        "air_quality_now",
+        "nearby_sensors",
+        "fair_random",
+        "x402_check"
+      ],
+      "transport": "streamable-http",
+      "trial": "per-caller",
+      "api_key": {
+        "header": "X-API-Key",
+        "optional": true,
+        "start": "https://modelmarket.dev/start"
+      }
+    }
+  },
+  "observed": {
+    "status": 200,
+    "body": {
+      "tier": "observed",
+      "enabled": true,
+      "observed_by": "https://modelmarket.dev",
+      "interval_s": 21600,
+      "ttl_s": 43200,
+      "vouches_for": "only that, at observed_at, an unpaid request to url returned a 402 naming this amount, asset, network and payTo",
+      "how_to_buy": "Call the url yourself and pay per the 402 it returns. This hub is not in the payment path and holds no seller signature: refuse if that 402 names another payTo than pay_to here, or asks for more than amount_atomic.",
+      "sellers": [],
+      "spec": "aimarket-protocol/spec.md \u00a72.7",
+      "protocol_version": "v2"
+    }
+  }
+}

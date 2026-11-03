@@ -1,0 +1,16 @@
+{
+  "article_sha256": "8fdcd46bf514ebc15980c252abd9c064fa417d5fe55aa4e38aa2e3321551e6d6",
+  "words": 1329,
+  "title_length": 86,
+  "description_length": 142,
+  "published": false,
+  "validation": "passed",
+  "existing_test_suite": {
+    "command": "PYTHONPATH=\"$PWD/awr/reference/python:$PWD/aimarket-hub\" aimarket-hub/.venv/bin/python -m pytest aimarket-hub/tests/test_observed_sellers.py -q --no-header",
+    "passed": 32,
+    "duration_seconds": 1.98,
+    "warnings": 1,
+    "warning": "Starlette TestClient deprecation (httpx vs httpx2)"
+  },
+  "test_scope": "Existing observed-seller tests only. No new tests or software changes."
+}

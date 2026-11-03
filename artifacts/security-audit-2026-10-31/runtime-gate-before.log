@@ -1,0 +1,347 @@
+FFFFFFFFFFFF                                                             [100%]
+=================================== FAILURES ===================================
+________________ test_unreachable_osv_cannot_greenlight_runtime ________________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_unreachable_osv_cannot_gr0/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1080ce900>
+capsys = <_pytest.capture.CaptureFixture object at 0x1080d63c0>
+
+    def test_unreachable_osv_cannot_greenlight_runtime(runtime, monkeypatch, capsys):
+        def unavailable(*args, **kwargs):
+            raise urllib.error.URLError("offline")
+        monkeypatch.setattr(scan.urllib.request, "urlopen", unavailable)
+>       assert scan.main() == 2
+E       assert 0 == 2
+E        +  where 0 = <function main at 0x10762e340>()
+E        +    where <function main at 0x10762e340> = scan.main
+
+tests/test_deployed_versions_fail_closed.py:25: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+=== running in production ===
+  owned.example/app  (app)  1 direct deps
+
+OK: nothing running is vulnerable at or above HIGH.
+----------------------------- Captured stderr call -----------------------------
+owned.example: 1 running containers
+  app: 1 direct deps
+  ! OSV unreachable (<urlopen error offline>)
+
+wrote /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_unreachable_osv_cannot_gr0/report.json
+______________ test_partial_osv_response_fails_closed[response0] _______________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail0/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1080d5e20>
+response = {}
+
+    @pytest.mark.parametrize("response", [{}, [], {"results": []}, {"results": [None]},
+        {"results": [{"next_page_token": "more"}]}, {"results": [{"vulns": [{}]}]}])
+    def test_partial_osv_response_fails_closed(runtime, monkeypatch, response):
+        monkeypatch.setattr(scan.urllib.request, "urlopen", lambda *a, **k: io.BytesIO(json.dumps(response).encode()))
+>       assert scan.main() == 2
+E       assert 0 == 2
+E        +  where 0 = <function main at 0x10762e340>()
+E        +    where <function main at 0x10762e340> = scan.main
+
+tests/test_deployed_versions_fail_closed.py:34: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+=== running in production ===
+  owned.example/app  (app)  1 direct deps
+
+OK: nothing running is vulnerable at or above HIGH.
+----------------------------- Captured stderr call -----------------------------
+owned.example: 1 running containers
+  app: 1 direct deps
+
+wrote /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail0/report.json
+______________ test_partial_osv_response_fails_closed[response1] _______________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail1/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1080d5fd0>
+response = []
+
+    @pytest.mark.parametrize("response", [{}, [], {"results": []}, {"results": [None]},
+        {"results": [{"next_page_token": "more"}]}, {"results": [{"vulns": [{}]}]}])
+    def test_partial_osv_response_fails_closed(runtime, monkeypatch, response):
+        monkeypatch.setattr(scan.urllib.request, "urlopen", lambda *a, **k: io.BytesIO(json.dumps(response).encode()))
+>       assert scan.main() == 2
+E       assert 0 == 2
+E        +  where 0 = <function main at 0x10762e340>()
+E        +    where <function main at 0x10762e340> = scan.main
+
+tests/test_deployed_versions_fail_closed.py:34: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+=== running in production ===
+  owned.example/app  (app)  1 direct deps
+
+OK: nothing running is vulnerable at or above HIGH.
+----------------------------- Captured stderr call -----------------------------
+owned.example: 1 running containers
+  app: 1 direct deps
+  ! OSV unreachable ('list' object has no attribute 'get')
+
+wrote /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail1/report.json
+______________ test_partial_osv_response_fails_closed[response2] _______________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail2/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1080d7320>
+response = {'results': []}
+
+    @pytest.mark.parametrize("response", [{}, [], {"results": []}, {"results": [None]},
+        {"results": [{"next_page_token": "more"}]}, {"results": [{"vulns": [{}]}]}])
+    def test_partial_osv_response_fails_closed(runtime, monkeypatch, response):
+        monkeypatch.setattr(scan.urllib.request, "urlopen", lambda *a, **k: io.BytesIO(json.dumps(response).encode()))
+>       assert scan.main() == 2
+E       assert 0 == 2
+E        +  where 0 = <function main at 0x10762e340>()
+E        +    where <function main at 0x10762e340> = scan.main
+
+tests/test_deployed_versions_fail_closed.py:34: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+=== running in production ===
+  owned.example/app  (app)  1 direct deps
+
+OK: nothing running is vulnerable at or above HIGH.
+----------------------------- Captured stderr call -----------------------------
+owned.example: 1 running containers
+  app: 1 direct deps
+
+wrote /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail2/report.json
+______________ test_partial_osv_response_fails_closed[response3] _______________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail3/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1080d5f40>
+response = {'results': [None]}
+
+    @pytest.mark.parametrize("response", [{}, [], {"results": []}, {"results": [None]},
+        {"results": [{"next_page_token": "more"}]}, {"results": [{"vulns": [{}]}]}])
+    def test_partial_osv_response_fails_closed(runtime, monkeypatch, response):
+        monkeypatch.setattr(scan.urllib.request, "urlopen", lambda *a, **k: io.BytesIO(json.dumps(response).encode()))
+>       assert scan.main() == 2
+               ^^^^^^^^^^^
+
+tests/test_deployed_versions_fail_closed.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/deployed_versions.py:183: in main
+    hits = osv_lookup(sorted(running))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pairs = [('example', '1.0.0')]
+
+    def osv_lookup(pairs: list[tuple[str, str]]) -> dict[tuple[str, str], list[str]]:
+        """pairs of (package, version) in npm -> advisory ids."""
+        hits: dict[tuple[str, str], list[str]] = {}
+        for start in range(0, len(pairs), 900):
+            chunk = pairs[start : start + 900]
+            body = json.dumps({"queries": [
+                {"package": {"ecosystem": "npm", "name": n}, "version": v} for n, v in chunk
+            ]}).encode()
+            req = urllib.request.Request(OSV_BATCH, data=body, headers={"Content-Type": "application/json"})
+            try:
+                with urllib.request.urlopen(req, timeout=120) as fh:
+                    results = json.loads(fh.read()).get("results", [])
+            except Exception as exc:
+                print(f"  ! OSV unreachable ({exc})", file=sys.stderr)
+                return hits
+            for key, result in zip(chunk, results):
+>               ids = [v["id"] for v in (result.get("vulns") or [])]
+                                         ^^^^^^^^^^
+E               AttributeError: 'NoneType' object has no attribute 'get'
+
+scripts/deployed_versions.py:109: AttributeError
+----------------------------- Captured stderr call -----------------------------
+owned.example: 1 running containers
+  app: 1 direct deps
+______________ test_partial_osv_response_fails_closed[response4] _______________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail4/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1080d5d00>
+response = {'results': [{'next_page_token': 'more'}]}
+
+    @pytest.mark.parametrize("response", [{}, [], {"results": []}, {"results": [None]},
+        {"results": [{"next_page_token": "more"}]}, {"results": [{"vulns": [{}]}]}])
+    def test_partial_osv_response_fails_closed(runtime, monkeypatch, response):
+        monkeypatch.setattr(scan.urllib.request, "urlopen", lambda *a, **k: io.BytesIO(json.dumps(response).encode()))
+>       assert scan.main() == 2
+E       assert 0 == 2
+E        +  where 0 = <function main at 0x10762e340>()
+E        +    where <function main at 0x10762e340> = scan.main
+
+tests/test_deployed_versions_fail_closed.py:34: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+=== running in production ===
+  owned.example/app  (app)  1 direct deps
+
+OK: nothing running is vulnerable at or above HIGH.
+----------------------------- Captured stderr call -----------------------------
+owned.example: 1 running containers
+  app: 1 direct deps
+
+wrote /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail4/report.json
+______________ test_partial_osv_response_fails_closed[response5] _______________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_partial_osv_response_fail5/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1080d61b0>
+response = {'results': [{'vulns': [{}]}]}
+
+    @pytest.mark.parametrize("response", [{}, [], {"results": []}, {"results": [None]},
+        {"results": [{"next_page_token": "more"}]}, {"results": [{"vulns": [{}]}]}])
+    def test_partial_osv_response_fails_closed(runtime, monkeypatch, response):
+        monkeypatch.setattr(scan.urllib.request, "urlopen", lambda *a, **k: io.BytesIO(json.dumps(response).encode()))
+>       assert scan.main() == 2
+               ^^^^^^^^^^^
+
+tests/test_deployed_versions_fail_closed.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/deployed_versions.py:183: in main
+    hits = osv_lookup(sorted(running))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pairs = [('example', '1.0.0')]
+
+    def osv_lookup(pairs: list[tuple[str, str]]) -> dict[tuple[str, str], list[str]]:
+        """pairs of (package, version) in npm -> advisory ids."""
+        hits: dict[tuple[str, str], list[str]] = {}
+        for start in range(0, len(pairs), 900):
+            chunk = pairs[start : start + 900]
+            body = json.dumps({"queries": [
+                {"package": {"ecosystem": "npm", "name": n}, "version": v} for n, v in chunk
+            ]}).encode()
+            req = urllib.request.Request(OSV_BATCH, data=body, headers={"Content-Type": "application/json"})
+            try:
+                with urllib.request.urlopen(req, timeout=120) as fh:
+                    results = json.loads(fh.read()).get("results", [])
+            except Exception as exc:
+                print(f"  ! OSV unreachable ({exc})", file=sys.stderr)
+                return hits
+            for key, result in zip(chunk, results):
+>               ids = [v["id"] for v in (result.get("vulns") or [])]
+                       ^^^^^^^
+E               KeyError: 'id'
+
+scripts/deployed_versions.py:109: KeyError
+----------------------------- Captured stderr call -----------------------------
+owned.example: 1 running containers
+  app: 1 direct deps
+_________________ test_missing_advisory_severity_is_not_clean __________________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_missing_advisory_severity0/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1080d5cd0>
+
+    def test_missing_advisory_severity_is_not_clean(runtime, monkeypatch):
+        monkeypatch.setattr(scan, "osv_lookup", lambda pairs: {pairs[0]: ["GHSA-example"]})
+        monkeypatch.setattr(scan.urllib.request, "urlopen", lambda *a, **k: io.BytesIO(b'{"id":"GHSA-example"}'))
+>       assert scan.main() == 2
+E       assert 0 == 2
+E        +  where 0 = <function main at 0x10762e340>()
+E        +    where <function main at 0x10762e340> = scan.main
+
+tests/test_deployed_versions_fail_closed.py:40: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+=== running in production ===
+  owned.example/app  (app)  1 direct deps
+
+OK: nothing running is vulnerable at or above HIGH.
+----------------------------- Captured stderr call -----------------------------
+owned.example: 1 running containers
+  app: 1 direct deps
+
+wrote /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_missing_advisory_severity0/report.json
+______________________ test_empty_inventory_is_incomplete ______________________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_empty_inventory_is_incomp0/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108136810>
+
+    def test_empty_inventory_is_incomplete(runtime, monkeypatch):
+        monkeypatch.setattr(scan, "containers", lambda *a: [])
+>       assert scan.main() == 2
+E       assert 0 == 2
+E        +  where 0 = <function main at 0x10762e340>()
+E        +    where <function main at 0x10762e340> = scan.main
+
+tests/test_deployed_versions_fail_closed.py:45: AssertionError
+----------------------------- Captured stdout call -----------------------------
+no Node containers answered — nothing to check (non-Node services need their own probe)
+----------------------------- Captured stderr call -----------------------------
+owned.example: 0 running containers
+_______________________ test_verified_clean_batch_passes _______________________
+
+runtime = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_verified_clean_batch_pass0/report.json')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108137350>
+
+    def test_verified_clean_batch_passes(runtime, monkeypatch):
+        monkeypatch.setattr(scan.urllib.request, "urlopen", lambda *a, **k: io.BytesIO(b'{"results":[{}]}'))
+        assert scan.main() == 0
+>       assert json.loads(runtime.read_text())["status"] == "complete"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'status'
+
+tests/test_deployed_versions_fail_closed.py:51: KeyError
+----------------------------- Captured stdout call -----------------------------
+
+=== running in production ===
+  owned.example/app  (app)  1 direct deps
+
+OK: nothing running is vulnerable at or above HIGH.
+----------------------------- Captured stderr call -----------------------------
+owned.example: 1 running containers
+  app: 1 direct deps
+
+wrote /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-474/test_verified_clean_batch_pass0/report.json
+_____________ test_ssh_failure_is_never_an_empty_success[result0] ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1081374a0>
+result = CompletedProcess(args=[], returncode=255, stdout='', stderr='connection failed')
+
+    @pytest.mark.parametrize("result", [subprocess.CompletedProcess([], 255, "", "connection failed"),
+                                       subprocess.TimeoutExpired("ssh", 180)])
+    def test_ssh_failure_is_never_an_empty_success(monkeypatch, result):
+        def run(*args, **kwargs):
+            if isinstance(result, Exception):
+                raise result
+            return result
+        monkeypatch.setattr(scan.subprocess, "run", run)
+>       with pytest.raises(scan.IncompleteScan):
+                           ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'scripts.deployed_versions' has no attribute 'IncompleteScan'
+
+tests/test_deployed_versions_fail_closed.py:62: AttributeError
+_____________ test_ssh_failure_is_never_an_empty_success[result1] ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108136f30>
+result = TimeoutExpired('ssh', 180)
+
+    @pytest.mark.parametrize("result", [subprocess.CompletedProcess([], 255, "", "connection failed"),
+                                       subprocess.TimeoutExpired("ssh", 180)])
+    def test_ssh_failure_is_never_an_empty_success(monkeypatch, result):
+        def run(*args, **kwargs):
+            if isinstance(result, Exception):
+                raise result
+            return result
+        monkeypatch.setattr(scan.subprocess, "run", run)
+>       with pytest.raises(scan.IncompleteScan):
+                           ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'scripts.deployed_versions' has no attribute 'IncompleteScan'
+
+tests/test_deployed_versions_fail_closed.py:62: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_deployed_versions_fail_closed.py::test_unreachable_osv_cannot_greenlight_runtime
+FAILED tests/test_deployed_versions_fail_closed.py::test_partial_osv_response_fails_closed[response0]
+FAILED tests/test_deployed_versions_fail_closed.py::test_partial_osv_response_fails_closed[response1]
+FAILED tests/test_deployed_versions_fail_closed.py::test_partial_osv_response_fails_closed[response2]
+FAILED tests/test_deployed_versions_fail_closed.py::test_partial_osv_response_fails_closed[response3]
+FAILED tests/test_deployed_versions_fail_closed.py::test_partial_osv_response_fails_closed[response4]
+FAILED tests/test_deployed_versions_fail_closed.py::test_partial_osv_response_fails_closed[response5]
+FAILED tests/test_deployed_versions_fail_closed.py::test_missing_advisory_severity_is_not_clean
+FAILED tests/test_deployed_versions_fail_closed.py::test_empty_inventory_is_incomplete
+FAILED tests/test_deployed_versions_fail_closed.py::test_verified_clean_batch_passes
+FAILED tests/test_deployed_versions_fail_closed.py::test_ssh_failure_is_never_an_empty_success[result0]
+FAILED tests/test_deployed_versions_fail_closed.py::test_ssh_failure_is_never_an_empty_success[result1]
+12 failed in 1.81s

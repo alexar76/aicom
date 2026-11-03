@@ -1,0 +1,491 @@
+{
+  "verification_date_moscow": "2026-10-21",
+  "environment": "Official Stripe sandbox, AIMarket sandbox; no real funds",
+  "transport": "Official Stripe CLI forwards Stripe-signed events to actual local hub HTTP routes on 127.0.0.1:19084",
+  "amount_unit": "USD cents unless field explicitly says usd",
+  "prior_no_tax_payment": {
+    "date_moscow": "2026-10-20",
+    "topup_id": "ctp_26e49b1172c5bf89d92463d8",
+    "amount_cents": 500,
+    "tax_mode": "off",
+    "verification": "Paid through Checkout; credited by webhook once; Stripe redelivery added no credit (previous run)."
+  },
+  "managed_payments_original_payment": {
+    "id": "cs_test_a1QbBmuHJDhDzq6AaS5a8l0qgnFsszXAZ5rfH822CVlVXqJYW7KhngzGYJ",
+    "status": "complete",
+    "payment_status": "paid",
+    "currency": "usd",
+    "amount_subtotal": 500,
+    "amount_total": 605,
+    "total_details": {
+      "amount_discount": 0,
+      "amount_shipping": 0,
+      "amount_tax": 105
+    },
+    "automatic_tax": {
+      "enabled": true,
+      "liability": {
+        "type": "stripe"
+      },
+      "provider": "stripe",
+      "status": "complete"
+    },
+    "managed_payments": {
+      "enabled": true
+    },
+    "refresh": {
+      "outcome": "credited",
+      "topup_id": "ctp_af24f96dc7a78206e2639550",
+      "replay": false
+    },
+    "replay": {
+      "outcome": "already_credited",
+      "topup_id": "ctp_af24f96dc7a78206e2639550"
+    },
+    "topup": {
+      "topup_id": "ctp_af24f96dc7a78206e2639550",
+      "status": "credited",
+      "tax_mode": "managed_payments",
+      "tax_behavior": "exclusive",
+      "amount_cents": 500,
+      "tax_cents": 105,
+      "credited_mc": 500000
+    },
+    "balance_usd": 5.0,
+    "ledger_topup_count": 1
+  },
+  "refunds": [
+    {
+      "id": "re_3USk3aIQlLlK5FUZ1dmEjmVq",
+      "payment_intent": "pi_3USk3aIQlLlK5FUZ1Dvxr8Au",
+      "charge": "ch_3USk3aIQlLlK5FUZ1PRDLX37",
+      "amount": 605,
+      "currency": "usd",
+      "status": "succeeded"
+    },
+    {
+      "id": "re_3USqexIQlLlK5FUZ2gBMAYEu",
+      "payment_intent": "pi_3USqexIQlLlK5FUZ2toIP0pO",
+      "charge": "ch_3USqexIQlLlK5FUZ2ovwAYqM",
+      "amount": 500,
+      "currency": "usd",
+      "status": "succeeded"
+    }
+  ],
+  "final_inspections_after_replay": [
+    {
+      "topup": {
+        "topup_id": "ctp_5663dc269ded8f6459783b1c",
+        "status": "disputed",
+        "payment_intent": "pi_3USqd4IQlLlK5FUZ1Rf3nFpb",
+        "tax_mode": "off",
+        "tax_behavior": "",
+        "amount_cents": 500,
+        "tax_cents": 0,
+        "detail": "dispute du_1USqd5IQlLlK5FUZhgbfa7Rz: fraudulent"
+      },
+      "stripe": {
+        "id": "cs_test_a1eVjcJE4cSn4rEbduaidM2yhvlTdUrcQ1kj7wsW1PGcSnu84oi6Ig21MS",
+        "livemode": false,
+        "status": "complete",
+        "payment_status": "paid",
+        "currency": "usd",
+        "amount_subtotal": 500,
+        "amount_total": 500,
+        "total_details": {
+          "amount_discount": 0,
+          "amount_shipping": 0,
+          "amount_tax": 0
+        }
+      },
+      "balance_usd": 5.0,
+      "topup_entries": 1
+    },
+    {
+      "topup": {
+        "topup_id": "ctp_af24f96dc7a78206e2639550",
+        "status": "refunded",
+        "payment_intent": "pi_3USk3aIQlLlK5FUZ1Dvxr8Au",
+        "tax_mode": "managed_payments",
+        "tax_behavior": "exclusive",
+        "amount_cents": 500,
+        "tax_cents": 105,
+        "detail": "refunded 605 cents in Stripe"
+      },
+      "stripe": {
+        "id": "cs_test_a1QbBmuHJDhDzq6AaS5a8l0qgnFsszXAZ5rfH822CVlVXqJYW7KhngzGYJ",
+        "livemode": false,
+        "status": "complete",
+        "payment_status": "paid",
+        "currency": "usd",
+        "amount_subtotal": 500,
+        "amount_total": 605,
+        "total_details": {
+          "amount_discount": 0,
+          "amount_shipping": 0,
+          "amount_tax": 105
+        }
+      },
+      "balance_usd": 5.0,
+      "topup_entries": 1
+    },
+    {
+      "topup": {
+        "topup_id": "ctp_ca5e6f62f46e568c3172d096",
+        "status": "disputed",
+        "payment_intent": "pi_3USqamIQlLlK5FUZ2WvBG8KD",
+        "tax_mode": "off",
+        "tax_behavior": "",
+        "amount_cents": 500,
+        "tax_cents": 0,
+        "detail": "dispute du_1USqanIQlLlK5FUZBEgzPPga: fraudulent"
+      },
+      "stripe": {
+        "id": "cs_test_a1oS66J3wO3VRFlxms4Y2nsQ18IlbW8Aq4DgRExd4ojCiV7wQ5tx2KT6Ob",
+        "livemode": false,
+        "status": "complete",
+        "payment_status": "paid",
+        "currency": "usd",
+        "amount_subtotal": 500,
+        "amount_total": 500,
+        "total_details": {
+          "amount_discount": 0,
+          "amount_shipping": 0,
+          "amount_tax": 0
+        }
+      },
+      "balance_usd": 5.0,
+      "topup_entries": 1
+    },
+    {
+      "topup": {
+        "topup_id": "ctp_fb50438f486f99541591a0c9",
+        "status": "refunded",
+        "payment_intent": "pi_3USqexIQlLlK5FUZ2toIP0pO",
+        "tax_mode": "off",
+        "tax_behavior": "",
+        "amount_cents": 500,
+        "tax_cents": 0,
+        "detail": "refunded 500 cents in Stripe"
+      },
+      "stripe": {
+        "id": "cs_test_a1TTbgJINoV5w2VnHlVsIcSWTyxuwUnkYxPmqDW8NR96fjPs8oz84h7680",
+        "livemode": false,
+        "status": "complete",
+        "payment_status": "paid",
+        "currency": "usd",
+        "amount_subtotal": 500,
+        "amount_total": 500,
+        "total_details": {
+          "amount_discount": 0,
+          "amount_shipping": 0,
+          "amount_tax": 0
+        }
+      },
+      "balance_usd": 5.0,
+      "topup_entries": 1
+    }
+  ],
+  "webhook_deliveries_in_observed_order": [
+    {
+      "event_id": "evt_3USk3aIQlLlK5FUZ1cvCUSIY",
+      "type": "charge.refunded",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "refunded"
+      },
+      "object": {
+        "id": "ch_3USk3aIQlLlK5FUZ1PRDLX37",
+        "payment_intent": "pi_3USk3aIQlLlK5FUZ1Dvxr8Au",
+        "amount": 605,
+        "amount_refunded": 605,
+        "refunded": true,
+        "reason": null,
+        "status": "succeeded"
+      }
+    },
+    {
+      "event_id": "evt_1USqaoIQlLlK5FUZiZHdpDkA",
+      "type": "charge.dispute.created",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "ignored"
+      },
+      "object": {
+        "id": "du_1USqanIQlLlK5FUZBEgzPPga",
+        "payment_intent": "pi_3USqamIQlLlK5FUZ2WvBG8KD",
+        "amount": 500,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": "fraudulent",
+        "status": "needs_response"
+      }
+    },
+    {
+      "event_id": "evt_1USqaoIQlLlK5FUZ49CSHUzr",
+      "type": "checkout.session.completed",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "credited"
+      },
+      "object": {
+        "id": "cs_test_a1oS66J3wO3VRFlxms4Y2nsQ18IlbW8Aq4DgRExd4ojCiV7wQ5tx2KT6Ob",
+        "payment_intent": "pi_3USqamIQlLlK5FUZ2WvBG8KD",
+        "amount": null,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": null,
+        "status": "complete"
+      }
+    },
+    {
+      "event_id": "evt_1USqaoIQlLlK5FUZiZHdpDkA",
+      "type": "charge.dispute.created",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "disputed"
+      },
+      "object": {
+        "id": "du_1USqanIQlLlK5FUZBEgzPPga",
+        "payment_intent": "pi_3USqamIQlLlK5FUZ2WvBG8KD",
+        "amount": 500,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": "fraudulent",
+        "status": "needs_response"
+      }
+    },
+    {
+      "event_id": "evt_1USqd6IQlLlK5FUZE13HDlvz",
+      "type": "checkout.session.completed",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "credited"
+      },
+      "object": {
+        "id": "cs_test_a1eVjcJE4cSn4rEbduaidM2yhvlTdUrcQ1kj7wsW1PGcSnu84oi6Ig21MS",
+        "payment_intent": "pi_3USqd4IQlLlK5FUZ1Rf3nFpb",
+        "amount": null,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": null,
+        "status": "complete"
+      }
+    },
+    {
+      "event_id": "evt_1USqd6IQlLlK5FUZH5weeYi7",
+      "type": "charge.dispute.created",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "disputed"
+      },
+      "object": {
+        "id": "du_1USqd5IQlLlK5FUZhgbfa7Rz",
+        "payment_intent": "pi_3USqd4IQlLlK5FUZ1Rf3nFpb",
+        "amount": 500,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": "fraudulent",
+        "status": "needs_response"
+      }
+    },
+    {
+      "event_id": "evt_3USqexIQlLlK5FUZ2hfFDapq",
+      "type": "charge.refunded",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "refunded"
+      },
+      "object": {
+        "id": "ch_3USqexIQlLlK5FUZ2ovwAYqM",
+        "payment_intent": "pi_3USqexIQlLlK5FUZ2toIP0pO",
+        "amount": 500,
+        "amount_refunded": 500,
+        "refunded": true,
+        "reason": null,
+        "status": "succeeded"
+      }
+    },
+    {
+      "event_id": "evt_1USqezIQlLlK5FUZmzfMpXcY",
+      "type": "checkout.session.completed",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "refunded"
+      },
+      "object": {
+        "id": "cs_test_a1TTbgJINoV5w2VnHlVsIcSWTyxuwUnkYxPmqDW8NR96fjPs8oz84h7680",
+        "payment_intent": "pi_3USqexIQlLlK5FUZ2toIP0pO",
+        "amount": null,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": null,
+        "status": "complete"
+      }
+    },
+    {
+      "event_id": "evt_1USqd6IQlLlK5FUZE13HDlvz",
+      "type": "checkout.session.completed",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "disputed"
+      },
+      "object": {
+        "id": "cs_test_a1eVjcJE4cSn4rEbduaidM2yhvlTdUrcQ1kj7wsW1PGcSnu84oi6Ig21MS",
+        "payment_intent": "pi_3USqd4IQlLlK5FUZ1Rf3nFpb",
+        "amount": null,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": null,
+        "status": "complete"
+      }
+    },
+    {
+      "event_id": "evt_1USqaoIQlLlK5FUZ49CSHUzr",
+      "type": "checkout.session.completed",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "disputed"
+      },
+      "object": {
+        "id": "cs_test_a1oS66J3wO3VRFlxms4Y2nsQ18IlbW8Aq4DgRExd4ojCiV7wQ5tx2KT6Ob",
+        "payment_intent": "pi_3USqamIQlLlK5FUZ2WvBG8KD",
+        "amount": null,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": null,
+        "status": "complete"
+      }
+    },
+    {
+      "event_id": "evt_3USk3aIQlLlK5FUZ1cvCUSIY",
+      "type": "charge.refunded",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "ignored"
+      },
+      "object": {
+        "id": "ch_3USk3aIQlLlK5FUZ1PRDLX37",
+        "payment_intent": "pi_3USk3aIQlLlK5FUZ1Dvxr8Au",
+        "amount": 605,
+        "amount_refunded": 605,
+        "refunded": true,
+        "reason": null,
+        "status": "succeeded"
+      }
+    },
+    {
+      "event_id": "evt_1USqaoIQlLlK5FUZiZHdpDkA",
+      "type": "charge.dispute.created",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "disputed"
+      },
+      "object": {
+        "id": "du_1USqanIQlLlK5FUZBEgzPPga",
+        "payment_intent": "pi_3USqamIQlLlK5FUZ2WvBG8KD",
+        "amount": 500,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": "fraudulent",
+        "status": "needs_response"
+      }
+    },
+    {
+      "event_id": "evt_1USqd6IQlLlK5FUZH5weeYi7",
+      "type": "charge.dispute.created",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "disputed"
+      },
+      "object": {
+        "id": "du_1USqd5IQlLlK5FUZhgbfa7Rz",
+        "payment_intent": "pi_3USqd4IQlLlK5FUZ1Rf3nFpb",
+        "amount": 500,
+        "amount_refunded": null,
+        "refunded": null,
+        "reason": "fraudulent",
+        "status": "needs_response"
+      }
+    },
+    {
+      "event_id": "evt_3USqexIQlLlK5FUZ2hfFDapq",
+      "type": "charge.refunded",
+      "livemode": false,
+      "http_status": 200,
+      "response": {
+        "received": true,
+        "outcome": "ignored"
+      },
+      "object": {
+        "id": "ch_3USqexIQlLlK5FUZ2ovwAYqM",
+        "payment_intent": "pi_3USqexIQlLlK5FUZ2toIP0pO",
+        "amount": 500,
+        "amount_refunded": 500,
+        "refunded": true,
+        "reason": null,
+        "status": "succeeded"
+      }
+    }
+  ],
+  "replayed_events": {
+    "evt_1USqezIQlLlK5FUZmzfMpXcY": "checkout.session.completed",
+    "evt_1USqd6IQlLlK5FUZE13HDlvz": "checkout.session.completed",
+    "evt_1USqaoIQlLlK5FUZ49CSHUzr": "checkout.session.completed",
+    "evt_3USk3aIQlLlK5FUZ1cvCUSIY": "charge.refunded",
+    "evt_1USqaoIQlLlK5FUZiZHdpDkA": "charge.dispute.created",
+    "evt_1USqd6IQlLlK5FUZH5weeYi7": "charge.dispute.created",
+    "evt_3USqexIQlLlK5FUZ2hfFDapq": "charge.refunded"
+  },
+  "ordering_regression": {
+    "found": "First synchronous dispute arrived before checkout.session.completed and was ignored by old code.",
+    "fix": "Resolve unknown PaymentIntent through Checkout Sessions, reconcile the owned session with original row tax mode, then record reversal. Retry API failures; retain terminal statuses on delayed paid events.",
+    "sandbox_validation": "First dispute recovered by Stripe redelivery; second payment and dispute processed successfully. For the no-tax refund test, checkout.session.completed forwarding was withheld until after charge.refunded; early refund was reconciled and recorded. Later real Stripe redeliveries kept refunded/disputed and one topup per account.",
+    "local_regression_tests": "Early dispute and refund, delayed payment, duplicate reversal, lookup failure, wrong session ID and wrong amount."
+  },
+  "balance_policy": "Credit is not automatically removed and accounts are not automatically frozen; operator adjustment remains manual.",
+  "tests": {
+    "command": "PYTHONPATH=aimarket-hub aimarket-hub/.venv/bin/python -m pytest aimarket-hub/tests/test_card_topup.py -q",
+    "passed": 41
+  },
+  "not_verified": [
+    "stripe_tax payment/refund/dispute",
+    "inclusive payment/refund",
+    "Managed Payments dispute",
+    "partial refund",
+    "asynchronous refund failure",
+    "winning or losing a dispute",
+    "live payments or production Managed Payments eligibility"
+  ],
+  "sources": [
+    "https://docs.stripe.com/testing#disputes",
+    "https://docs.stripe.com/api/refunds/create",
+    "https://docs.stripe.com/api/checkout/sessions/list"
+  ]
+}

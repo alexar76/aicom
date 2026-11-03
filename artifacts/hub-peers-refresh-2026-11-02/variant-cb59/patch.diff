@@ -1,0 +1,32 @@
+--- variant-cb59/terminal-home.html	2026-11-02 07:23:17
++++ variant-cb59/terminal-home.patched.html	2026-11-02 07:23:17
+@@ -2352,11 +2352,18 @@
+   let capsHasMore = false;
+   let capsLoadingMore = false;
+   let peersCache = null;
++  // A tab left open kept its first answer: a peer approved elsewhere stayed under "Unapproved hubs" until a reload.
++  // poll() asks again once the list is a minute old (after a failed try too, not every 3 s); the rail is redrawn
++  // only when the queue changed, so an open preview or a typed search survives the refresh.
++  const PEERS_TTL_MS = 60000;
++  let peersTriedAt = 0;
++  let pendingKey = '';
+   let peersForFed = null;
+   let pendingCache = [];
+ 
+   async function ensurePeers() {
+-    if (peersCache) return peersCache;
++    if (peersCache && Date.now() - peersTriedAt < PEERS_TTL_MS) return peersCache;
++    peersTriedAt = Date.now();
+     const r = await fetch(`${HUB}/ai-market/v2/federation/peers`, { cache: 'no-store' });
+     if (!r.ok) throw new Error(r.status);
+     const body = await r.json();
+@@ -2366,7 +2373,8 @@
+     // section, never mixed into the list that implies trust.
+     pendingCache = body.pending || [];
+     peersForFed = peersCache;
+-    renderKnockRail();
++    const key = JSON.stringify(pendingCache);
++    if (key !== pendingKey) { pendingKey = key; renderKnockRail(); }
+     return peersCache;
+   }
+ 

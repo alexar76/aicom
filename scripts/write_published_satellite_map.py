@@ -25,7 +25,9 @@ def main(argv: list[str]) -> int:
     raw = (ROOT / "scripts" / "satellite-map.yaml").read_text(encoding="utf-8")
     dest = Path(argv[0])
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(satellite_map_mirror_text("scripts/satellite-map.yaml", raw), encoding="utf-8")
+    dest.write_text(satellite_map_mirror_text(
+        "scripts/satellite-map.yaml", raw, include_local_knowledge=False,
+    ), encoding="utf-8")
     return 0
 
 

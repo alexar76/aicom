@@ -77,6 +77,7 @@ alerter that depends on a package index is an alerter that stops working during 
 from __future__ import annotations
 
 import argparse
+import calendar
 import datetime
 import email.utils
 import http.client
@@ -286,13 +287,17 @@ def _hours_since_iso(ts: str, now: float) -> float | None:
     """
     try:
         parsed = time.strptime(ts.strip().replace("Z", "+0000"), "%Y-%m-%dT%H:%M:%S%z")
+        offset = parsed.tm_gmtoff or 0
     except (ValueError, TypeError):
         try:
             parsed = time.strptime(ts.strip()[:19], "%Y-%m-%dT%H:%M:%S")
         except (ValueError, TypeError):
             return None
-        return (now - time.mktime(parsed) + time.timezone) / 3600.0
-    return (now - time.mktime(parsed) + time.timezone) / 3600.0
+        offset = 0
+    # calendar.timegm reads the fields as UTC. `time.mktime(...) + time.timezone` read them as
+    # local time and ignored summer time, so on a host that has it every summer timestamp came
+    # out an hour off (14 tests failed on a CET machine after 2026-10-25).
+    return (now - (calendar.timegm(parsed) - offset)) / 3600.0
 
 
 def probe_signer(base: str, timeout: float = 8.0) -> list[Check]:

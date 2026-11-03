@@ -1,0 +1,53 @@
+{
+  "checked_at_utc": "2026-11-03T06:56:29.535900+00:00",
+  "records": [
+    {
+      "transaction": "0x0998c423bd7a4262648a731ae1ed3986beb0c0bbd3716f55f2986c84776bf832",
+      "payment": [
+        {
+          "settle_tx_hash": "0x0998c423bd7a4262648a731ae1ed3986beb0c0bbd3716f55f2986c84776bf832",
+          "capability_id": "contradiction.scan@v1",
+          "status": "settled",
+          "amount_atomic": "9000",
+          "receipt_id": "",
+          "created_at": "2026-10-04 13:11:18.284557+00"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 54,
+          "capability_id": "contradiction.scan@v1",
+          "success": 1,
+          "price_usd": 0.009,
+          "timestamp": "2026-10-04T13:11:18Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0xd8a41fb865beba51d9e795f556dc3b77e6ce5bb20a0dceb2e0691aa791997531",
+      "payment": [
+        {
+          "settle_tx_hash": "0xd8a41fb865beba51d9e795f556dc3b77e6ce5bb20a0dceb2e0691aa791997531",
+          "capability_id": "claim.check@v1",
+          "status": "settled",
+          "amount_atomic": "22000",
+          "receipt_id": "",
+          "created_at": "2026-10-04 13:11:18.48144+00"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 55,
+          "capability_id": "claim.check@v1",
+          "success": 1,
+          "price_usd": 0.022,
+          "timestamp": "2026-10-04T13:11:19Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    }
+  ]
+}

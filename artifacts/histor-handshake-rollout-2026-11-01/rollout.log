@@ -1,0 +1,18 @@
+sha256:503fc8da820c401a354084d6ded0edf1dec95615221c19f751b6a55207af30a1
+new image 503fc8da820c FROM 86ebc0124063
+MOMUS release gate passed: 20261101T050101, 3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de
+mock: 5 legacy refusals fall back once, a modern error and a 429 still stop
+live https://mcp.kaiku.tech/mcp: ok 2025-06-18 tools=203 
+live https://mcp.quotewise.io/: ok 2025-06-18 tools=21 
+live https://nova.civai.co/mcp/agents/telegram-agent: ok 2025-06-18 tools=6 
+live https://marx.finance/mcp: ok 2025-06-18 tools=12 
+SMOKE OK
+imports ok
+crawl running before: 1
+ Container histor-histor-1 Recreate 
+ Container histor-histor-1 Recreated 
+ Container histor-histor-1 Starting 
+ Container histor-histor-1 Started 
+waiting for /health … ok: {"ok":true,"service":"histor","version":"0.5.1","profile":"prod","store":"postgresql","tree_size":1369299,"crawl_running":false,"last_crawl_error":"interrupted: the process restarted before the crawl finished"}
+MOMUS quality binding → 503fc8da820c (WARDEN unchanged, nothing re-measured)
+restarted the crawl the redeploy interrupted

@@ -1,0 +1,142 @@
+[build-system]
+# >=77, not >=75. This project declares `license = "Apache-2.0"` — a PEP 639 SPDX expression —
+# and setuptools only accepts that form from 77.0 onward; 75.x and 76.x both fail the build with
+# `project.license must be valid exactly by one definition`. It builds today only because an
+# isolated build fetches the newest setuptools, so the floor was a latent trap for anyone
+# building with --no-build-isolation or a pinned toolchain.
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimarket-hub"
+# Bumped because the tree diverged from the published 3.2.1 wheel: `pip install
+# aimarket-hub==3.2.1` served code this tree had already moved past, at the same version
+# string, so every fix in it was unpublishable and unreachable.
+# 3.6.0: agent mandates, subcontracting and the A2A traffic counter (aimarket-protocol/mandates.md).
+# 3.7.0: A2A invoke (tasks, x402, mandates over A2A), Pay-on-Verified appeals to a second
+#        verifier, and the mandates/subcontracting audit fixes (migrations 036-038).
+# 3.8.0: credit accounts bought with USDC (topup.py, migration 041) and a failed A2A Task that
+#        keeps the bill of materials its subcontractors were paid for.
+version = "3.17.0"
+description = "AI Market Federation Hub — crawl, index, search, and route AI capabilities across the network"
+license = "Apache-2.0"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "AIMarket", email = "dev@modelmarket.dev" }]
+keywords = ["aimarket", "ai-agents", "marketplace", "federation", "micropayments"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+dependencies = [
+    "httpx>=0.28",
+    "fastapi>=0.115",
+    "uvicorn>=0.34",
+    "pydantic>=2.10",
+    "cryptography>=44",
+    "jsonschema>=4.23",
+    "prometheus_client>=0.21",
+    # Mandates verify owner-signed VCs with the AWR/2 reference implementation (our own
+    # distribution on PyPI — project URL verify.modelmarket.dev; byte-identical to
+    # awr/reference/python at 2.0.0). Pinned to 2.x for the reason the provenance plugin gives.
+    "awr>=2.0,<3",
+    # Post-quantum (ML-DSA-65 / FIPS 204) VERIFICATION. Required since 3.15.18: every AIMarket
+    # hub signs hybrid, and a hub that cannot check the PQ half fails closed and indexes none of
+    # them. It was an extra, and a plain `pip install aimarket-hub` produced exactly that hub.
+    # Pure Python, no compiler. Signing hybrid stays the operator's switch (AIMARKET_PQC=1).
+    "dilithium-py>=1.4.0",
+]
+
+[project.optional-dependencies]
+client = ["aimarket-hub[escrow,pqc]"]
+dev = ["pytest>=8", "pytest-asyncio>=0.25", "pytest-httpx>=0.35"]
+# Escrow settlement bridge (aimarket_hub.escrow_bridge). Optional on purpose: the
+# bridge fails closed with CryptoUnavailable when these are absent, so a hub that
+# does not settle on-chain carries no crypto stack. Required to ACCEPT escrow-funded
+# channels — without it every escrow channel open is refused, which is safe but means
+# no deposit can ever be credited on a deployment whose only funding path is escrow.
+escrow = ["eth-utils>=5", "eth-account>=0.13"]
+# Kept so every documented `aimarket-hub[pqc]` install line keeps working: the verifier is a
+# core dependency since 3.15.18 (see `dependencies`).
+pqc = ["dilithium-py>=1.4.0"]
+postgres = ["psycopg[binary,pool]>=3.2,<4"]
+plugins = [
+    "aimarket-safety>=2.0",
+    "aimarket-reputation>=2.0",
+    "aimarket-channels>=2.0",
+    "aimarket-tee>=2.0",
+    "aimarket-mcp-packager>=2.0",
+]
+all = [
+    "aimarket-hub[dev,plugins,postgres,escrow,pqc]",
+]
+
+[project.urls]
+Homepage = "https://modelmarket.dev"
+Documentation = "https://github.com/alexar76/aimarket-hub"
+Repository = "https://github.com/alexar76/aimarket-hub"
+Issues = "https://github.com/alexar76/aimarket-hub/issues"
+
+[project.scripts]
+aimarket = "aimarket_hub.cli:_entrypoint"
+aimarket-pipeline = "aimarket_hub.pipeline_cli:main"
+
+[tool.setuptools.packages.find]
+include = ["aimarket_hub*"]
+
+# Without this, setuptools ships only *.py and `federation_seeds.json` is silently absent from
+# both wheel and sdist -- so a pip-installed hub comes up with seed_list == [] and
+# seed_pubkeys == {}, discovers no peers, and `_load_seed_file()` swallows the miss without a
+# log line. The METADATA of the very same artifact promises the opposite in writing: "unset
+# falls back to the shipped seed file, not to 'no seeds'". 3.2.0 on PyPI has the same omission,
+# which is why the 3.2.1 federation fix would otherwise have reached no pip consumer at all.
+# Containers were never affected -- the Dockerfile COPYs the package directory -- so this was
+# invisible from every path the operator actually runs.
+# Verify after any build:  unzip -l dist/*.whl | grep federation_seeds
+[tool.setuptools.package-data]
+# deployments/*.json is generated by scripts/sync_deployment_addresses.py from the
+# canonical config/deployments registry. It MUST ship: chain_net has no inline address
+# table any more, so a wheel without it resolves to an empty contract map.
+#
+# assets/fonts/* is the self-hosted webfont bundle every page's <head> asks for. It is package
+# data for the same reason: the hub runs from an installed wheel, so a bundle left out of it
+# makes /assets/fonts/fonts.css a 404 on the deployed host while working perfectly from a source
+# checkout. That failure is silent — pages render in fallback faces and nothing logs an error.
+aimarket_hub = [
+    "federation_seeds.json",
+    "deployments/*.json",
+    "assets/fonts/*.css",
+    "assets/fonts/*.woff2",
+    "static/llms.txt",
+    "static/start.html",
+    "static/og-card.png",
+    "static/well-known/mcp/server-card.json",
+    "static/ui/*.html",
+    "static/ui/*.json",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = [
+    "live: touches a real network (Base RPC) — run with `-m live`, excluded by default.",
+]
+
+# The money gate (.github/workflows/ci.yml): bug-finding rules over the code that moves,
+# holds or authorizes money. The rest of the package is not held to it yet; widening the
+# path list in CI is how it grows.
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E9", "F", "B", "PLE"]
+
+[tool.ruff.lint.per-file-ignores]
+# Facades over mixins: their imports are what the mixins read at call time, and what tests patch.
+"aimarket_hub/channels.py" = ["F401"]
+"aimarket_hub/verified_settlement.py" = ["F401"]

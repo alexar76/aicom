@@ -1,0 +1,13 @@
+=== attested (before per-satellite exclusions) ===
+OK structured secret check
+error: private server IP/hostname literal in mirror tree
+  file: "DNS-PLAN.md"
+
+=== pingblip (before per-satellite exclusions) ===
+OK structured secret check
+error: private server IP/hostname literal in mirror tree
+  file: "deploy/deploy_pingblip.sh"
+  file: "deploy/install_docker_gc_timer.sh"
+  file: "deploy/nginx/pingblip.conf"
+error: raw key material in mirror tree — a signing key must never be published:
+  <candidate>/clips/.bag-golem.render.mp4 (     262 bytes, 167 control bytes — raw key seed shape)

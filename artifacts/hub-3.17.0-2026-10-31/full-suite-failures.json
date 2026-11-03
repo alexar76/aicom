@@ -1,0 +1,187 @@
+[
+  {
+    "case": "tests.test_escrow_bridge_chain.TestTheContractAgreesWithOurDigest.test_our_digest_equals_computeDebitDigest",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestTheContractAgreesWithOurDigest.test_the_contract_accepts_a_signature_we_built",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestOurReadingOfTheContractIsRight.test_getChannel_decodes_a_live_channel",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestOurReadingOfTheContractIsRight.test_an_unopened_channel_reads_as_absent",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestOurReadingOfTheContractIsRight.test_hub_authorization_matches_the_contract",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestOurReadingOfTheContractIsRight.test_chain_id_is_read_not_assumed",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestC1AgainstLiveState.test_verification_passes_for_a_real_channel",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestC1AgainstLiveState.test_a_stranger_cannot_claim_it",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestC1AgainstLiveState.test_an_overdrawn_credit_is_refused",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestC1AgainstLiveState.test_a_channel_already_debited_cannot_fund_another",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestTheContractRefusesWhatWeExpectItTo.test_a_signature_from_the_wrong_wallet",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestTheContractRefusesWhatWeExpectItTo.test_a_replayed_receipt",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestTheContractRefusesWhatWeExpectItTo.test_a_stale_nonce",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestTheContractRefusesWhatWeExpectItTo.test_an_expired_deadline",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestTheContractRefusesWhatWeExpectItTo.test_an_unauthorized_caller",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestTheContractRefusesWhatWeExpectItTo.test_an_amount_above_the_balance",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestPlanModeAgainstRealState.test_a_valid_authorization_plans_clean_and_sends_nothing",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_escrow_bridge_chain.TestPlanModeAgainstRealState.test_a_tampered_amount_is_caught_by_simulation",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_mcp_stdio.test_cli_protocol_and_tools",
+    "type": "failure",
+    "message": "ValueError: filedescriptor out of range in select()"
+  },
+  {
+    "case": "tests.test_mcp_stdio.test_stdio_account_uses_this_hub_without_a_listening_socket",
+    "type": "failure",
+    "message": "ValueError: filedescriptor out of range in select()"
+  },
+  {
+    "case": "tests.test_peer_operations_chain.test_two_independent_hubs_settle_once_on_chain[False]",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_peer_operations_chain.test_two_independent_hubs_settle_once_on_chain[True]",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_pipeline_ethereum_chain.test_sdk_ethereum_transaction_and_exact_seller_payment",
+    "type": "failure",
+    "message": "PermissionError: [Errno 1] Operation not permitted"
+  },
+  {
+    "case": "tests.test_pipeline_relay_chain.test_sponsor_pays_real_chain_gas_and_buyer_only_usdc[False]",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_pipeline_relay_chain.test_sponsor_pays_real_chain_gas_and_buyer_only_usdc[True]",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_signer_transport_security.test_signer_refuses_redirects_without_forwarding_its_token[301]",
+    "type": "failure",
+    "message": "PermissionError: [Errno 1] Operation not permitted"
+  },
+  {
+    "case": "tests.test_signer_transport_security.test_signer_refuses_redirects_without_forwarding_its_token[302]",
+    "type": "failure",
+    "message": "PermissionError: [Errno 1] Operation not permitted"
+  },
+  {
+    "case": "tests.test_signer_transport_security.test_signer_refuses_redirects_without_forwarding_its_token[303]",
+    "type": "failure",
+    "message": "PermissionError: [Errno 1] Operation not permitted"
+  },
+  {
+    "case": "tests.test_signer_transport_security.test_signer_refuses_redirects_without_forwarding_its_token[307]",
+    "type": "failure",
+    "message": "PermissionError: [Errno 1] Operation not permitted"
+  },
+  {
+    "case": "tests.test_signer_transport_security.test_signer_refuses_redirects_without_forwarding_its_token[308]",
+    "type": "failure",
+    "message": "PermissionError: [Errno 1] Operation not permitted"
+  },
+  {
+    "case": "tests.test_studio_paid_chain.test_wallet_pays_the_seller_and_the_pipeline_finishes_once[False-False]",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_studio_paid_chain.test_wallet_pays_the_seller_and_the_pipeline_finishes_once[False-True]",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_studio_paid_chain.test_wallet_pays_the_seller_and_the_pipeline_finishes_once[True-False]",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_studio_paid_chain.test_wallet_pays_the_seller_and_the_pipeline_finishes_once[True-True]",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_subcontract_example.TestParts.test_the_http_layer",
+    "type": "failure",
+    "message": "PermissionError: [Errno 1] Operation not permitted"
+  },
+  {
+    "case": "tests.test_topup_chain.test_a_stranger_buys_credit_with_usdc_and_spends_it",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  },
+  {
+    "case": "tests.test_topup_chain.test_a_plain_transfer_is_not_credited_and_a_short_authorization_is_credited_for_what_arrived",
+    "type": "error",
+    "message": "failed on setup with \"PermissionError: [Errno 1] Operation not permitted\""
+  }
+]

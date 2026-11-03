@@ -1,0 +1,90 @@
+[
+  {
+    "project": "aimarket-sdks/typescript",
+    "command": [
+      "npm",
+      "run",
+      "lint"
+    ],
+    "exit_code": 2,
+    "log": "npm-validation-0.log"
+  },
+  {
+    "project": "aimarket-sdks/typescript",
+    "command": [
+      "npm",
+      "test"
+    ],
+    "exit_code": 0,
+    "log": "npm-validation-1.log"
+  },
+  {
+    "project": "aimarket-sdks/typescript",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit_code": 0,
+    "log": "npm-validation-2.log"
+  },
+  {
+    "project": "cite-desks/emberline/frontend",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit_code": 0,
+    "log": "npm-validation-3.log"
+  },
+  {
+    "project": "cite-desks/emberline/frontend",
+    "command": [
+      "npm",
+      "test"
+    ],
+    "exit_code": 0,
+    "log": "npm-validation-4.log"
+  },
+  {
+    "project": "contracts/solana",
+    "command": [
+      "npm",
+      "run",
+      "test:client"
+    ],
+    "exit_code": 0,
+    "log": "npm-validation-5.log"
+  },
+  {
+    "project": "contracts/solana",
+    "command": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "log": "npm-validation-6.log"
+  },
+  {
+    "project": "independent/kova-gateway",
+    "command": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "log": "npm-validation-7.log"
+  },
+  {
+    "project": "independent/verified-execution-hub",
+    "command": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "log": "npm-validation-8.log"
+  }
+]

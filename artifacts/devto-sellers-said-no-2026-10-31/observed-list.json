@@ -1,0 +1,12 @@
+{
+  "tier": "observed",
+  "enabled": true,
+  "observed_by": "https://modelmarket.dev",
+  "interval_s": 21600,
+  "ttl_s": 43200,
+  "vouches_for": "only that, at observed_at, an unpaid request to url returned a 402 naming this amount, asset, network and payTo",
+  "how_to_buy": "Call the url yourself and pay per the 402 it returns. This hub is not in the payment path and holds no seller signature: refuse if that 402 names another payTo than pay_to here, or asks for more than amount_atomic.",
+  "sellers": [],
+  "spec": "aimarket-protocol/spec.md §2.7",
+  "protocol_version": "v2"
+}

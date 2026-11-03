@@ -641,10 +641,7 @@ class CommerceService:
             INSERT INTO stripe_checkout_sessions
             (session_id, customer_id, customer_email, target_plan, amount_total, currency, status, payment_status, idempotency_key, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(session_id) DO UPDATE SET
-              status = excluded.status,
-              payment_status = excluded.payment_status,
-              updated_at = excluded.updated_at
+            ON CONFLICT(session_id) DO NOTHING
             """,
             (
                 session_id,
@@ -670,9 +667,12 @@ class CommerceService:
         session_id: str,
         payment_status: str,
         session_status: str,
-        customer_email: str | None = None,
-        metadata: Optional[dict] = None,
+        *,
+        amount_total: int | None,
+        currency: str,
     ) -> dict:
+        if event_type not in ("checkout.session.completed", "checkout.session.async_payment_succeeded"):
+            return {"already_processed": False, "plan_upgraded": False}
         now = time.time()
         existing = self.conn.execute(
             "SELECT event_id FROM stripe_webhook_events WHERE event_id = ?",
@@ -685,30 +685,15 @@ class CommerceService:
             "SELECT * FROM stripe_checkout_sessions WHERE session_id = ?",
             (session_id,),
         ).fetchone()
-        customer_id = None
-        target_plan = "maker"
-        if session is not None:
-            customer_id = session["customer_id"]
-            target_plan = session["target_plan"] or "maker"
-        else:
-            md = metadata or {}
-            customer_id = md.get("customer_id")
-            target_plan = str(md.get("target_plan") or "maker")
-            if not customer_id and customer_email:
-                customer = self.get_customer_by_email(customer_email)
-                customer_id = (customer or {}).get("id")
-            if customer_id:
-                self.save_stripe_checkout_session(
-                    session_id=session_id,
-                    customer_id=customer_id,
-                    customer_email=customer_email or "",
-                    target_plan=target_plan,
-                    amount_total=0,
-                    currency="usd",
-                    status=session_status,
-                    payment_status=payment_status,
-                    idempotency_key=None,
-                )
+        if session is None:
+            raise LookupError("Checkout session has not been recorded")
+        if (type(amount_total) is not int or amount_total <= 0
+                or amount_total != session["amount_total"] or currency != session["currency"]):
+            raise ValueError("Stripe payment does not match the recorded checkout")
+        if payment_status != "paid" or session_status != "complete":
+            return {"already_processed": False, "plan_upgraded": False}
+        if session["payment_status"] == "paid":
+            return {"already_processed": True, "plan_upgraded": False}
 
         self.conn.execute(
             """
@@ -726,8 +711,12 @@ class CommerceService:
             (session_status, payment_status, now, session_id),
         )
 
+        plans = {"free": 0, "maker": 1, "studio": 2, "enterprise": 3}
+        customer_id = session["customer_id"]
+        target_plan = session["target_plan"]
+        customer = self.get_customer(customer_id)
         plan_upgraded = False
-        if payment_status == "paid" and customer_id:
+        if customer and target_plan in plans and plans[target_plan] > plans.get(customer["plan"], 0):
             plan_upgraded = self.set_customer_plan(customer_id, target_plan)
 
         self.conn.commit()

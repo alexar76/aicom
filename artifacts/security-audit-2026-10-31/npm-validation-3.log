@@ -1,0 +1,43 @@
+
+> emberline-web@0.1.0 build
+> tsc -p tsconfig.json --noEmit && vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 1078 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/manifest.webmanifest                            0.50 kB
+dist/index.html                                      3.90 kB │ gzip:   1.23 kB
+dist/assets/index-BtZb2saU.css                      31.57 kB │ gzip:  11.07 kB
+dist/assets/virtual_pwa-register-BhqSgCUh.js         1.12 kB │ gzip:   0.59 kB
+dist/assets/workbox-window.prod.es5-Bd17z0YL.js      5.65 kB │ gzip:   2.20 kB
+dist/assets/index-Bscn27GW.js                    1,600.77 kB │ gzip: 454.81 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.06s
+
+PWA v2.0.0
+Building src/sw.ts service worker ("es" format)...
+vite v8.3.5 building client environment for production...
+
+ WARN  inlineDynamicImports option is deprecated, please use codeSplitting: false instead.
+
+transforming...
+✓ 80 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/sw.mjs  18.04 kB │ gzip: 6.05 kB
+
+✓ built in 34ms
+
+PWA v2.0.0
+mode      injectManifest
+format:   es
+precache  20 entries (3135.43 KiB)
+files generated
+  dist/sw.js

@@ -1,0 +1,237 @@
+{
+  "checked_at_utc": "2026-11-03T06:56:26.431079+00:00",
+  "records": [
+    {
+      "transaction": "0xb73fc5dacdea3af759c0b3b2b1009dc0ac9e0ce2695f1978dc03cfb0953c5514",
+      "payment": [
+        {
+          "settle_tx_hash": "0xb73fc5dacdea3af759c0b3b2b1009dc0ac9e0ce2695f1978dc03cfb0953c5514",
+          "capability_id": "json.canonical@v1",
+          "status": "settled",
+          "amount_atomic": "1000",
+          "receipt_id": "",
+          "created_at": "2026-09-21 05:26:05"
+        }
+      ],
+      "invocations": [],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0xaec3874639ca9d00ae285c7e1ad4246adc4baf8911ac0a921a216c5558d9b9ab",
+      "payment": [
+        {
+          "settle_tx_hash": "0xaec3874639ca9d00ae285c7e1ad4246adc4baf8911ac0a921a216c5558d9b9ab",
+          "capability_id": "json.canonical@v1",
+          "status": "settled",
+          "amount_atomic": "1000",
+          "receipt_id": "",
+          "created_at": "2026-09-21 05:30:19"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 882,
+          "capability_id": "json.canonical@v1",
+          "success": 1,
+          "price_usd": 0.001,
+          "timestamp": "2026-09-21T05:30:19Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0x8982b8ac596d0192254017149bc2d1c050c05e838aba7fd5528de7776b0a2285",
+      "payment": [
+        {
+          "settle_tx_hash": "0x8982b8ac596d0192254017149bc2d1c050c05e838aba7fd5528de7776b0a2285",
+          "capability_id": "gaia.weather.read@v1",
+          "status": "settled",
+          "amount_atomic": "1000",
+          "receipt_id": "",
+          "created_at": "2026-09-29 20:32:48"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 1143,
+          "capability_id": "gaia.weather.read@v1",
+          "success": 1,
+          "price_usd": 0.001,
+          "timestamp": "2026-09-29T20:32:49Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0xf974e08b83c1518bed93bfac457f98d7088d3ae6901af9421950d402fb0dc016",
+      "payment": [
+        {
+          "settle_tx_hash": "0xf974e08b83c1518bed93bfac457f98d7088d3ae6901af9421950d402fb0dc016",
+          "capability_id": "gaia.air.read@v1",
+          "status": "settled",
+          "amount_atomic": "1000",
+          "receipt_id": "",
+          "created_at": "2026-09-29 20:33:02"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 1144,
+          "capability_id": "gaia.air.read@v1",
+          "success": 1,
+          "price_usd": 0.001,
+          "timestamp": "2026-09-29T20:33:02Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0x5ecc8cf51aec0618e730d130ce9d61003cbdccc0b1814d5a39d6c67228c2543e",
+      "payment": [
+        {
+          "settle_tx_hash": "0x5ecc8cf51aec0618e730d130ce9d61003cbdccc0b1814d5a39d6c67228c2543e",
+          "capability_id": "gaia.weather.read@v1",
+          "status": "settled",
+          "amount_atomic": "1000",
+          "receipt_id": "",
+          "created_at": "2026-09-30 04:24:29"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 1150,
+          "capability_id": "gaia.weather.read@v1",
+          "success": 1,
+          "price_usd": 0.001,
+          "timestamp": "2026-09-30T04:24:29Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0x5ef82ffce3e6d7a5a4866cf492ae2db5b44df238b85ad361ab4641de61304fa1",
+      "payment": [
+        {
+          "settle_tx_hash": "0x5ef82ffce3e6d7a5a4866cf492ae2db5b44df238b85ad361ab4641de61304fa1",
+          "capability_id": "gaia.air.read@v1",
+          "status": "settled",
+          "amount_atomic": "1000",
+          "receipt_id": "",
+          "created_at": "2026-09-30 04:24:33"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 1151,
+          "capability_id": "gaia.air.read@v1",
+          "success": 1,
+          "price_usd": 0.001,
+          "timestamp": "2026-09-30T04:24:34Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0xeba985a89e95ed7f637ca832c6bba3ed109cf731982272f749970c622590b272",
+      "payment": [
+        {
+          "settle_tx_hash": "0xeba985a89e95ed7f637ca832c6bba3ed109cf731982272f749970c622590b272",
+          "capability_id": "weather.witness@v1",
+          "status": "settled",
+          "amount_atomic": "2000",
+          "receipt_id": "",
+          "created_at": "2026-09-30 07:01:31"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 1171,
+          "capability_id": "weather.witness@v1",
+          "success": 1,
+          "price_usd": 0.002,
+          "timestamp": "2026-09-30T07:01:33Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70",
+      "payment": [
+        {
+          "settle_tx_hash": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70",
+          "capability_id": "gaia.weather.read@v1",
+          "status": "settled",
+          "amount_atomic": "1000",
+          "receipt_id": "",
+          "created_at": "2026-10-31 04:41:09"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 2568,
+          "capability_id": "gaia.weather.read@v1",
+          "success": 1,
+          "price_usd": 0.001,
+          "timestamp": "2026-10-31T04:41:09Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0x478637aabfeb2a2ab0a0627cd706a6d75862e894d478488cc34db15baf036de9",
+      "payment": [
+        {
+          "settle_tx_hash": "0x478637aabfeb2a2ab0a0627cd706a6d75862e894d478488cc34db15baf036de9",
+          "capability_id": "gaia.weather.read@v1",
+          "status": "settled",
+          "amount_atomic": "1000",
+          "receipt_id": "",
+          "created_at": "2026-10-31 04:54:56"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 2576,
+          "capability_id": "gaia.weather.read@v1",
+          "success": 1,
+          "price_usd": 0.001,
+          "timestamp": "2026-10-31T04:54:56Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    },
+    {
+      "transaction": "0x6d1082db9b7fe841b5700a88c27c52e6e310077bc6a9eb5f811da391652ce342",
+      "payment": [
+        {
+          "settle_tx_hash": "0x6d1082db9b7fe841b5700a88c27c52e6e310077bc6a9eb5f811da391652ce342",
+          "capability_id": "gaia.weather.read@v1",
+          "status": "settled",
+          "amount_atomic": "1000",
+          "receipt_id": "",
+          "created_at": "2026-10-31 04:55:45"
+        }
+      ],
+      "invocations": [
+        {
+          "id": 2577,
+          "capability_id": "gaia.weather.read@v1",
+          "success": 1,
+          "price_usd": 0.001,
+          "timestamp": "2026-10-31T04:55:45Z"
+        }
+      ],
+      "refunds": [],
+      "obligations": []
+    }
+  ]
+}

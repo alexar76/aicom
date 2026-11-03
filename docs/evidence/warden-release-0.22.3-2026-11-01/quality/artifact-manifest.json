@@ -1,0 +1,23 @@
+{
+  "release": "@aimarket/warden@0.22.3",
+  "tarballSha256": "183e60ef4435dbd63acb3c2c2299ee446241635aa5002316b8a6d16c903b50b7",
+  "buildDigest": "d7cc677ef85fb4c274b5247779dfd0362509cfb00913f4c3a7e385af4a3c6f83",
+  "sourceCommit": "213d1f9426031afd62ed68ef579ddc770070c60b",
+  "sourceTarSha256": "bbe6f02c96ccc2dfc651a1b902f4bd507bfa20421a84ffac83515e2346700abf",
+  "baseImageDigest": "sha256:07b33b835aefa7a18d56027230d1f6abcf09a3ffbc2144d99e499e3134f33b2e",
+  "imageDigest": "sha256:8cc613352e2299e78c94d164cfddeb924e729a3455a9bed012cb29ac26b0502c",
+  "tag": "aicom-security:histor-histor-1-wd-20261101",
+  "checks": {
+    "installedBuildDigest": "d7cc677ef85fb4c274b5247779dfd0362509cfb00913f4c3a7e385af4a3c6f83",
+    "sourceFiles": 63,
+    "describe": {
+      "old": "0.22.2",
+      "new": "0.22.3",
+      "rulesUnchanged": true
+    },
+    "probeScanIdentical": true,
+    "probeMatches": 3,
+    "historMigration": 18
+  },
+  "deployed": false
+}

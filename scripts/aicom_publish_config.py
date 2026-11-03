@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import fnmatch
+import os
+import re
 import shutil
 import subprocess
 import sys
@@ -303,6 +305,19 @@ FACTORY_LOCAL_EXCLUDES = [
     "artifacts/oracle-metis-rollout-2026-10-28",
     "artifacts/system-verification-2026-10-28",
     "artifacts/external-deep-2026-10-29",
+    # Fleet operations records (container OS rollouts, security maintenance, disk
+    # cleanup, per-host overlays) name our private hosts; the mirror's host check
+    # refused them on 2026-11-03. They stay on Gitea.
+    "artifacts/container-high-critical-2026-10-31",
+    "artifacts/container-os-security-2026-10-31",
+    "artifacts/security-maintenance-2026-10-31",
+    "artifacts/disk-cleanup-2026-11-02",
+    "artifacts/emberline-web-index-2026-11-01",
+    "artifacts/skopos-own-traffic-2026-11-01",
+    # A public ECDSA test vector (rfc6979 secp521r1) whose test private key trips
+    # gitleaks' generic-api-key rule and stops the pre-publish scan. The vendored
+    # patch and its other files publish; this fixture stays on Gitea.
+    "security/vendor/elliptic/p521-leading-zero.fixture.json",
     # Preserve the clean package index used by the startup-regression reproducer.
     "docs/evidence/histor-full-observations-2026-10-27/hub/baseline-wire.json",
     "docs/evidence/histor-full-observations-2026-10-27/hub/recheck-wire.json",
@@ -565,6 +580,75 @@ def purge_factory_local_paths(tree: Path) -> list[str]:
     return removed
 
 
+SATELLITE_PUBLIC_FILES = {".env.example", "quality-public-key.pem", "_signing_key_storage.py"}
+
+
+def satellite_exclude_paths(satellite_id: str) -> list[str]:
+    for satellite in _load_map().get("satellites", []):
+        if satellite["id"] == satellite_id and satellite_id != "aicom":
+            return [*DEFAULT_RSYNC_EXCLUDES, *(satellite.get("exclude_paths") or [])]
+    raise ValueError(f"unknown satellite: {satellite_id}")
+
+
+def _rsync_pattern(pattern: str) -> re.Pattern[str]:
+    """Compile rsync path globs: * cannot cross /; ** can. Basenames match anywhere."""
+    pattern = pattern.rstrip("/")
+    anchored = pattern.startswith("/") or "/" in pattern
+    pattern = pattern.lstrip("/")
+    if not pattern or ".." in Path(pattern).parts:
+        raise ValueError("unsafe satellite exclusion pattern")
+    out = "^" if anchored else r"(?:^|/)"
+    i = 0
+    while i < len(pattern):
+        char = pattern[i]
+        if pattern[i:i + 3] == "**/":
+            out += "(?:.*/)?"
+            i += 3
+        elif pattern[i:i + 2] == "**":
+            out += ".*"
+            i += 2
+        elif char == "*":
+            out += "[^/]*"
+            i += 1
+        elif char == "?":
+            out += "[^/]"
+            i += 1
+        else:
+            out += re.escape(char)
+            i += 1
+    return re.compile(out + "$")
+
+
+def purge_satellite_paths(tree: Path, satellite_id: str) -> list[str]:
+    """Apply export filters to stale/copied files too, without following symlinks."""
+    tree = tree.resolve(strict=True)
+    workspace = MAP_PATH.parent.parent.resolve()
+    if tree == workspace or tree in workspace.parents:
+        raise ValueError("refusing to purge the workspace or one of its parent directories")
+    patterns = [_rsync_pattern(p) for p in satellite_exclude_paths(satellite_id) if p != ".git"]
+    removed: list[str] = []
+    for parent, dirs, files in os.walk(tree, topdown=True, followlinks=False):
+        dirs[:] = [d for d in dirs if d != ".git"]
+        for name in [*dirs, *files]:
+            path = Path(parent) / name
+            rel = path.relative_to(tree).as_posix()
+            # Warden restores this exact blob from the live tip after source rsync.
+            # Its map exclusion prevents source edits, not preservation of that blob.
+            if satellite_id == "warden" and rel == ".github/workflows/publish-mcp-registry.yml":
+                continue
+            if name in SATELLITE_PUBLIC_FILES and not path.is_dir():
+                continue
+            if not any(pattern.search(rel) for pattern in patterns):
+                continue
+            if path.is_symlink() or path.is_file():
+                path.unlink()
+            elif path.is_dir():
+                shutil.rmtree(path)
+                dirs.remove(name)
+            removed.append(rel)
+    return sorted(removed)
+
+
 def factory_submodule_paths() -> list[str]:
     return []
 
@@ -603,6 +687,12 @@ def main() -> int:
             raise SystemExit("usage: aicom_publish_config.py purge-local-excludes <candidate-tree>")
         for path in purge_factory_local_paths(Path(sys.argv[2])):
             print(f"purged internal export path: {path}")
+        return 0
+    if cmd == "purge-satellite-excludes":
+        if len(sys.argv) != 4:
+            raise SystemExit("usage: aicom_publish_config.py purge-satellite-excludes <tree> <id>")
+        for path in purge_satellite_paths(Path(sys.argv[2]), sys.argv[3]):
+            print(f"purged satellite export path: {path}")
         return 0
     if cmd == "list-submodules":
         for p in factory_submodule_paths():

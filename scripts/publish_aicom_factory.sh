@@ -292,7 +292,9 @@ from sync_knowledge_base import satellite_map_mirror_text
 
 p = tree / "scripts" / "satellite-map.yaml"
 if p.is_file():
-    p.write_text(satellite_map_mirror_text("scripts/satellite-map.yaml", p.read_text()))
+    p.write_text(satellite_map_mirror_text(
+        "scripts/satellite-map.yaml", p.read_text(), include_local_knowledge=False,
+    ))
 PY
 }
 

@@ -1,0 +1,75 @@
+{
+  "recordedAt": 1793476372.6980329,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "creature": {
+      "id": "cmvwrggt60004no48nouxdrnz",
+      "playerId": "cmvwrg5px0000no48q8bpswx3",
+      "speciesId": "dumpster-raccoon",
+      "source": "hatch",
+      "stage": "awake",
+      "evolved": false,
+      "evolvedAt": null,
+      "feedCount": 0,
+      "lastFeedAt": null,
+      "hatchedAt": "2026-10-31T18:54:58.074Z",
+      "cell": "global",
+      "hatchProofId": "8c0e46f0e4a092a47079",
+      "catchProofId": null,
+      "asleepAt": null,
+      "nickname": null
+    },
+    "species": {
+      "id": "dumpster-raccoon",
+      "name": "Dumpster Raccoon",
+      "packId": "alley-beasts",
+      "type": "alley",
+      "diet": {
+        "productId": "prod-murmuration",
+        "capabilityId": "murmuration.aggregate@v1",
+        "sourceHub": "https://oracles.modelmarket.dev/family",
+        "label": "consensus",
+        "input": {
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            8,
+            13
+          ],
+          "trim": 0.1
+        }
+      },
+      "sceneId": "wet-asphalt",
+      "spawn": {
+        "layers": [
+          "weather"
+        ],
+        "weather": [
+          "rain",
+          "night",
+          "fog",
+          "cloud"
+        ],
+        "rarity": "common"
+      },
+      "starter": true
+    },
+    "weather": {
+      "kind": "clear",
+      "isNight": false,
+      "sceneId": "black-studio",
+      "windKmh": 6.516,
+      "humidity": 92,
+      "weatherCode": null,
+      "temperatureC": 7.8,
+      "precipitationMm": null
+    },
+    "proofId": "8c0e46f0e4a092a47079",
+    "coverage": "no pin in this cell. weather twin is the base. this is coverage, not emptiness.",
+    "referral": null,
+    "already": false
+  }
+}

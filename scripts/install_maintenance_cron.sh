@@ -11,11 +11,13 @@
 # Both jobs are idempotent, so re-running this is safe and is how you verify.
 #
 # What gets installed (tagged, so re-runs REPLACE rather than append):
-#   */15 * * * *  prune-anvil-state.sh   # aicom-prune-anvil
+#   */5 * * * *   prune-anvil-state.sh   # aicom-prune-anvil
 #                 Anvil writes a full state dump into ~/.foundry/anvil/tmp/anvil-state-*
 #                 on every dump and never reaps it. Five of those reached 35 GB on the
 #                 oracle host and filled the disk; nginx then truncated responses, which
-#                 is how a demo chain took down unrelated public pages.
+#                 is how a demo chain took down unrelated public pages. Every 5 minutes
+#                 since 2026-11-02: the lottery chain wrote ~2.2 GB per 15 minutes and the
+#                 host's disk swung 85→90 % between runs.
 #   30 4 * * 0    gitea-dind-prune.sh    # aicom-prune-gitea-dind
 #                 act_runner builds CI jobs inside gitea-runner-dind, a nested Docker
 #                 daemon with its own /var/lib/docker. Its images are throwaway and stay
@@ -46,7 +48,7 @@ done
 
 # (source path, installed name, schedule, cron tag)
 JOBS=(
-  "scripts/prune_anvil_state.sh|prune-anvil-state.sh|*/15 * * * *|aicom-prune-anvil"
+  "scripts/prune_anvil_state.sh|prune-anvil-state.sh|*/5 * * * *|aicom-prune-anvil"
   "scripts/gitea_dind_prune.sh|gitea-dind-prune.sh|30 4 * * 0|aicom-prune-gitea-dind"
   "scripts/prune_stale_deploy_images.sh|prune-stale-deploy-images.sh --yes|15 5 * * *|aicom-prune-images"
 )

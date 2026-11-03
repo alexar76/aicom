@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-30",
+  "version": "3.14.0",
+  "chain_id": 1,
+  "token_contract": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  "token_metadata": {
+    "name": "USD Coin",
+    "version": "2",
+    "decimals": 6
+  },
+  "native_price": {
+    "source": "chainlink_ethereum_eth_usd",
+    "feed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+    "sequencer_feed": null,
+    "observations": [
+      {
+        "price_usd": "2683.51528449",
+        "round_id": "129127208515966895503",
+        "updated_at": 1790760323,
+        "block_number": 26089454,
+        "block_timestamp": 1790761163,
+        "sequencer_up_since": null
+      },
+      {
+        "price_usd": "2683.51528449",
+        "round_id": "129127208515966895503",
+        "updated_at": 1790760323,
+        "block_number": 26089454,
+        "block_timestamp": 1790761163,
+        "sequencer_up_since": null
+      }
+    ],
+    "margin_percent": 25,
+    "max_age_s": 3900,
+    "manual_floor_usd": null,
+    "native_usd_ceiling": "3354.3941056125",
+    "checked_at": 1790761170.358094
+  },
+  "read_only": true,
+  "new_mainnet_transactions": 0,
+  "sources": [
+    "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+    "https://data.chain.link/feeds/ethereum/mainnet/eth-usd",
+    "https://reference-data-directory.vercel.app/feeds-mainnet.json"
+  ]
+}

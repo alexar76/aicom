@@ -1,0 +1,10 @@
+Production nginx access log, timestamp offset -0400; UTC below.
+2026-10-25 03:01:53 POST /x402/nearby-sensors 402
+2026-10-25 03:01:58 POST /x402/nearby-sensors 402
+2026-10-25 03:02:03 POST /x402/nearby-sensors 200
+2026-10-25 03:02:04 POST /x402/nearby-sensors 402
+2026-10-25 03:02:05 Base block 53053989, 0.03 USDC from 0xe2d8dc842fc5037c99c332bd57baaba3649f66c2
+to 0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a,
+tx 0xb1c54f290cd1ec7cd98e0537f0068aee15ceec978f2313ba33fb048c15913dd5.
+Nginx routes /x402/ to okx-a2mcp (127.0.0.1:9485). No matching application log returned in the queried interval.
+Price/time correlation only; no shared request ID, receipt or transaction hash in the proxy log.

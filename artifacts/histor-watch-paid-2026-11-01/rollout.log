@@ -1,0 +1,13 @@
+sha256:d834b00de443aaec72ebb09654ec5dcee78091831be74e42a4f6037ba0a30baa
+new image d834b00de443 FROM 503fc8da820c
+MOMUS release gate passed: 20261101T050101, 3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de
+smoke ok: imports, migration 018 last, demo closes checkout, key rules, escaped chat line
+crawl running before: 1
+ Container histor-histor-1 Recreate 
+ Container histor-histor-1 Recreated 
+ Container histor-histor-1 Starting 
+ Container histor-histor-1 Started 
+waiting for /health … ok: {"ok":true,"service":"histor","version":"0.5.1","profile":"prod","store":"postgresql","tree_size":1369471,"crawl_running":false,"last_crawl_error":"interrupted: the process restarted before the crawl finished"}
+plan: {"name":"HISTOR Watch for teams","priceUsd":29.0,"priceCents":2900,"days":30,"renews":"no — pay again to extend; nothing is charged automatically","maxServers":100,"includes":["a signed POST to your HTTPS endpoint for each change of the servers you follow","Slack incoming webhooks, ticketing systems or your own service","retries with backoff for a day when your endpoint is down","a test event on demand"],"demo":true,"card":{"enabled":false,"testMode":false,"closedReason":"demo mode: the plan and the price are real, card payment is switched off on this instance for now"}}
+MOMUS quality binding → d834b00de443 (WARDEN unchanged, nothing re-measured)
+restarted the crawl the redeploy interrupted

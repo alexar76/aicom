@@ -126,7 +126,8 @@ print(f'Pruned {n} pipeline.db backup(s); keep={keep}')
   # of the same tag becomes dangling, and plain `prune -f` collects dangling
   # images. What survives is the one thing worth keeping — the last image of a
   # service that is currently stopped.
-  docker system prune -f 2>&1 || true
+  # Stopped containers retain rollback state; only dangling images are garbage.
+  docker image prune -f 2>&1 || true
 
   df -h / | tail -1
 } >>"$LOG" 2>&1

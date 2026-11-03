@@ -1,0 +1,181 @@
+{
+  "snapshot_utc": "2026-11-03T06:46:20.216138+00:00",
+  "card_environment": {},
+  "x402": [
+    {
+      "status": "settled",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "n": 11,
+      "units": 12000,
+      "missing_receipt": 11
+    },
+    {
+      "status": "settled",
+      "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "network": "base",
+      "n": 2,
+      "units": 1020000,
+      "missing_receipt": 0
+    }
+  ],
+  "x402_receipt_gaps": [
+    {
+      "nonce": "0xde375d6c00e6852c792d72b1f5b0cbc7d447cb2ef49114e822ea237dc6117e26",
+      "capability_id": "json.canonical@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0xb73fc5dacdea3af759c0b3b2b1009dc0ac9e0ce2695f1978dc03cfb0953c5514",
+      "created_at": "2026-09-21 05:26:05"
+    },
+    {
+      "nonce": "0x9633f695a139a09ac987584742c0857c204f816a3710f918c09ef4faf29891bf",
+      "capability_id": "json.canonical@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0xaec3874639ca9d00ae285c7e1ad4246adc4baf8911ac0a921a216c5558d9b9ab",
+      "created_at": "2026-09-21 05:30:19"
+    },
+    {
+      "nonce": "0x2c6e4f9b34d3679f18da2be46b3b8ea0878f60f41b16ffeb2c8355348e93ca1a",
+      "capability_id": "gaia.weather.read@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0x8982b8ac596d0192254017149bc2d1c050c05e838aba7fd5528de7776b0a2285",
+      "created_at": "2026-09-29 20:32:48"
+    },
+    {
+      "nonce": "0x59845494fe1a6e39feed682046142619f5adddfdb1ffb86fc05085b37b3652fb",
+      "capability_id": "gaia.air.read@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0xf974e08b83c1518bed93bfac457f98d7088d3ae6901af9421950d402fb0dc016",
+      "created_at": "2026-09-29 20:33:02"
+    },
+    {
+      "nonce": "0xe4c2385c1a4218c9b38c1e51ddab0c5fb71b188ab90be6506f4ca33fcf552d7d",
+      "capability_id": "gaia.weather.read@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0x5ecc8cf51aec0618e730d130ce9d61003cbdccc0b1814d5a39d6c67228c2543e",
+      "created_at": "2026-09-30 04:24:29"
+    },
+    {
+      "nonce": "0x58bbbece92c9cfb96b74189200fe2f91b612e3b37f787187dd5aad26ebbfd2b0",
+      "capability_id": "gaia.air.read@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0x5ef82ffce3e6d7a5a4866cf492ae2db5b44df238b85ad361ab4641de61304fa1",
+      "created_at": "2026-09-30 04:24:33"
+    },
+    {
+      "nonce": "0x7fe9ed564701050ec2e2633ba60421946eecef2205292c4f8d667e741ac709d0",
+      "capability_id": "weather.witness@v1",
+      "amount_atomic": "2000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0xeba985a89e95ed7f637ca832c6bba3ed109cf731982272f749970c622590b272",
+      "created_at": "2026-09-30 07:01:31"
+    },
+    {
+      "nonce": "0x42f7e670c24e004ebf8fee2d4bd49b5437d77536e9eae0485e182950f036d783",
+      "capability_id": "refund.proof@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0x21d72df0e40f843051fc1fcbd5ed01d80fe4bfe36974524254555a06229d4a58",
+      "created_at": "2026-09-30 09:28:07"
+    },
+    {
+      "nonce": "0x0bb43648cc22632c27ea27c8748d1d1b29eec8e6fbc441af6819c3664668f585",
+      "capability_id": "gaia.weather.read@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70",
+      "created_at": "2026-10-31 04:41:09"
+    },
+    {
+      "nonce": "0xec32904c94405fbabd81fd4eaa74b4b66a516b15f5229404c9f57a839b0efb13",
+      "capability_id": "gaia.weather.read@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0x478637aabfeb2a2ab0a0627cd706a6d75862e894d478488cc34db15baf036de9",
+      "created_at": "2026-10-31 04:54:56"
+    },
+    {
+      "nonce": "0x4e6008f0a4d5aac01c7d5ea8c2eb5b61acce7c17a5867ab6f6a7dc1639c91665",
+      "capability_id": "gaia.weather.read@v1",
+      "amount_atomic": "1000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "network": "base",
+      "settle_tx_hash": "0x6d1082db9b7fe841b5700a88c27c52e6e310077bc6a9eb5f811da391652ce342",
+      "created_at": "2026-10-31 04:55:45"
+    }
+  ],
+  "x402_uncollected": [],
+  "seller_invoice_orphans": [],
+  "seller_invoice_stats": [
+    {
+      "n": 261,
+      "consumed": 0
+    }
+  ],
+  "card": [],
+  "card_candidates": [],
+  "channels": [],
+  "channels_with_balance": [],
+  "obligations": [],
+  "obligations_owed": [],
+  "obligation_duplicate_payouts": [],
+  "deposits": [],
+  "deposit_candidates": [],
+  "credit_holds": [
+    {
+      "status": "captured",
+      "n": 1513,
+      "amount_mc": 800650,
+      "oldest": "2026-09-12 09:29:53"
+    },
+    {
+      "status": "released",
+      "n": 139,
+      "amount_mc": 280200,
+      "oldest": "2026-09-12 09:30:23"
+    }
+  ],
+  "credit_held": [],
+  "channel_holds": [],
+  "channel_held": [],
+  "pipeline_refunds": [
+    {
+      "run_id": "paid_3c4ef00ca1b5f6eea9ec8b1c7aa9d1dc",
+      "step_id": "proof",
+      "original_tx_hash": "0x21d72df0e40f843051fc1fcbd5ed01d80fe4bfe36974524254555a06229d4a58",
+      "busy": 0,
+      "state": "refunded",
+      "outcome": "refunded",
+      "updated_utc": "2026-09-30 09:28:16"
+    }
+  ],
+  "pipeline_refund_count": [
+    {
+      "n": 1,
+      "busy": 0
+    }
+  ],
+  "verified_pending": [],
+  "credit_topups": [
+    {
+      "n": 3,
+      "amount_mc": 202000
+    }
+  ]
+}

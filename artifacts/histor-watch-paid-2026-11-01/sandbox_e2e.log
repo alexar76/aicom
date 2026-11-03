@@ -1,0 +1,13 @@
+10:40:02 mac clock minus Stripe: 3474 s (corrected in the signature check only)
+10:40:04 plan: 200 price 29.0 days 30 card {'enabled': True, 'testMode': True, 'closedReason': ''}
+10:40:05 open: 201 id wf94462711d5cafdc checkout host https://checkout.stripe.com/c/pay/cs_tes
+10:40:05 waiting for the test-card payment (checkout_url.txt) …
+10:40:40 after payment: state active until 2026-12-01T08:42:45Z payment paid livemode 0 intent pi_3UWuL…
+10:40:40 delivery to https://httpbin.org/post: {'subscriptions': 1, 'delivered': 1, 'failed': 0}; cursor 1 of newest change 1, failed attempts 0
+10:40:41 test event: 200 {'eventId': 'test-c41519b31f708e8e', 'endpointStatus': 200, 'ok': True}
+10:40:41 /watch page: 200, 27059 bytes, desk markup True
+10:40:43 refund via Stripe CLI: succeeded 2900 usd
+10:40:45 after refund: payment refunded state lapsed until 2026-11-01T08:42:49Z note refunded: refunded 2900 cents in Stripe
+10:40:45 delivery after refund: {'subscriptions': 0, 'delivered': 0, 'failed': 0}
+10:40:45 PASS
+10:40:45 holding the server for the browser check …

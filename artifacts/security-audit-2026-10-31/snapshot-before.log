@@ -1,0 +1,24 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______________ test_local_snapshot_cannot_execute_pickle_reducers ______________
+
+tmp_path = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-463/test_local_snapshot_cannot_exe0')
+
+    def test_local_snapshot_cannot_execute_pickle_reducers(tmp_path):
+        from skopos.dashboard_snapshots import _snapshot_path
+    
+        class ExecutableSnapshot:
+            def __reduce__(self):
+                # No external effects: proves a callable in the cache is not evaluated.
+                return eval, ("{'version': 1, 'payload': {'executed': True}}",)
+    
+        path = _snapshot_path("analytics", "overview", tmp_path)
+        path.write_bytes(pickle.dumps(ExecutableSnapshot()))
+>       assert load_dashboard_snapshot("analytics", "overview", cache_dir=tmp_path) is None
+E       AssertionError: assert {'executed': True} is None
+E        +  where {'executed': True} = load_dashboard_snapshot('analytics', 'overview', cache_dir=PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-463/test_local_snapshot_cannot_exe0'))
+
+skopos/tests/test_dashboard_snapshots.py:78: AssertionError
+=========================== short test summary info ============================
+FAILED skopos/tests/test_dashboard_snapshots.py::test_local_snapshot_cannot_execute_pickle_reducers
+1 failed, 4 deselected in 5.01s

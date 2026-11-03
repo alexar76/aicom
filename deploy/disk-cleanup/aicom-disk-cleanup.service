@@ -1,0 +1,9 @@
+[Unit]
+Description=aicom safe disk cleanup (runs when / >= 85 % or once a day)
+Documentation=file:///usr/local/sbin/aicom-disk-cleanup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/aicom-disk-cleanup --if-needed
+Nice=10
+IOSchedulingClass=idle

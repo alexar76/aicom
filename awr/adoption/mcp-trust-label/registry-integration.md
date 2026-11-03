@@ -292,7 +292,7 @@ inherits the same caveat.
 | `AWR-BUNDLE-003` | you verified a bundle instead of its documents | Verify each document individually (§3.1) |
 | `AWR-TIME-001/002` | timestamps outside your clock window | **Warning only.** Age is policy, never validity (AWR SPEC §11.3) |
 | `MTL-SUBJ-004` | your recomputed subject digest ≠ the label's | The label is not about this server, or the server changed since it was issued. Never display it against this listing |
-| `MTL-NUM-001` | a tool schema contains a non-integer number, so the tool set isn't digestible | Expect `inconclusive` and no `toolSet.digestSRI`. **Never** show drift as `fail` for this subject — there's no digest to compare |
+| `MTL-NUM-001` | a tool schema contains a number with no IEEE 754 double (`1e400`), so the tool set isn't digestible. Labels issued before MTL/1.1 (2026-10-31) also used it for any non-integer number | Expect `inconclusive` and no `toolSet.digestSRI`. **Never** show drift as `fail` for this subject — there's no digest to compare |
 | `MTL-ISS-001` | issuer not on your allow-list | Store, don't badge |
 | `MTL-METH-001` | unknown method | Store, don't badge |
 | `MTL-DOC-003` | the label carries a `score` | Reject the label: MTL/1 forbids scores, so the issuer is non-conformant |

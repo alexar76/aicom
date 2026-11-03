@@ -25,7 +25,7 @@ EXTRA_ROOTS=()
 # shellcheck source=/dev/null
 . "$CONF"
 : "${LABEL:?}" "${REPO:?}"
-ROOTS=(/etc /root /home /opt /srv /usr/local /var/www /var/spool/cron /var/lib/docker/volumes
+ROOTS=(/etc /root /home /opt /srv /usr/local /var/www /var/spool/cron /var/lib/docker/volumes /var/lib/aicom
        "${EXTRA_ROOTS[@]}")
 existing=()
 for r in "${ROOTS[@]}"; do [[ -e "$r" ]] && existing+=("$r"); done
@@ -91,15 +91,18 @@ fi
 # ── 1. Postgres ──────────────────────────────────────────────────────────────────────────
 if command -v docker >/dev/null 2>&1; then
   while read -r name image; do
-    [[ "$image" =~ postgres|postgis|pgvector|timescale ]] || continue
+    # Rebuilt security images may be named after the service (emberline-db),
+    # so image-name matching silently misses real PostgreSQL databases.
+    docker exec "$name" sh -c 'command -v postgres >/dev/null && command -v pg_dumpall >/dev/null' 2>/dev/null || continue
     # A container from a postgres image with no server up (a throwaway restore, a one-off
     # psql) is not a database to dump; its files stay in the archive as they are.
     if ! docker exec "$name" pg_isready -q >/dev/null 2>&1; then
       warnings+=("postgres in $name is not accepting connections: not dumped, files kept raw")
       continue
     fi
-    if docker exec "$name" sh -c 'PGPASSWORD="${POSTGRES_PASSWORD:-}" exec pg_dumpall -U "${POSTGRES_USER:-postgres}" --clean --if-exists' \
-         > "$STAGE/pg/$name.sql" 2> "$STAGE/pg/$name.err"; then
+    if docker exec "$name" sh -c 'export PGPASSWORD="${POSTGRES_PASSWORD:-}"; if [ -n "${POSTGRES_PASSWORD_FILE:-}" ]; then export PGPASSWORD="$(cat "$POSTGRES_PASSWORD_FILE")"; fi; exec pg_dumpall -w -U "${POSTGRES_USER:-postgres}" --clean --if-exists' \
+         2> "$STAGE/pg/$name.err" | gzip -1n > "$STAGE/pg/$name.sql.gz" \
+         && gzip -t "$STAGE/pg/$name.sql.gz"; then
       pg_count=$((pg_count + 1))
       rm -f "$STAGE/pg/$name.err"
       # the data directory itself stays out: the dump is the backup
@@ -111,7 +114,8 @@ if command -v docker >/dev/null 2>&1; then
   done < <(docker ps --format '{{.Names}} {{.Image}}')
 fi
 if systemctl is-active --quiet postgresql 2>/dev/null; then
-  if (cd / && runuser -u postgres -- pg_dumpall --clean --if-exists) > "$STAGE/pg/host-postgresql.sql" 2> "$STAGE/pg/host.err"; then
+  if (cd / && runuser -u postgres -- pg_dumpall --clean --if-exists) 2> "$STAGE/pg/host.err" | gzip -1n > "$STAGE/pg/host-postgresql.sql.gz" \
+      && gzip -t "$STAGE/pg/host-postgresql.sql.gz"; then
     pg_count=$((pg_count + 1)); rm -f "$STAGE/pg/host.err"
     echo "pp:/var/lib/postgresql" >> "$exclude_list"
   else

@@ -1,0 +1,20 @@
+........................F..                                              [100%]
+=================================== FAILURES ===================================
+_ test_required_runtime_source_stays_in_build_context[data/config/admin.json] __
+
+path = 'data/config/admin.json'
+
+    @pytest.mark.parametrize("path", [
+        "security/vendor/deepmerge-safe/index.js", "web/backend/main.py",
+        "data/config/admin.json", "contracts/evm/lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
+        "warden/docs/data/measurements.json",
+    ])
+    def test_required_runtime_source_stays_in_build_context(path):
+>       assert not _dockerignore_excludes(path)
+E       AssertionError: assert not True
+E        +  where True = _dockerignore_excludes('data/config/admin.json')
+
+tests/test_service_env_scope.py:732: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_service_env_scope.py::test_required_runtime_source_stays_in_build_context[data/config/admin.json]
+1 failed, 26 passed, 122 deselected in 0.99s

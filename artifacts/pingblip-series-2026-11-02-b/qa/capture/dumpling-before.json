@@ -1,0 +1,40 @@
+{
+  "id": "cmvyrgn92003go348scvay8ew",
+  "playerId": "cmvwrg5px0000no48q8bpswx3",
+  "speciesId": "angry-dumpling",
+  "source": "catch",
+  "stage": "awake",
+  "evolved": false,
+  "evolvedAt": null,
+  "feedCount": 0,
+  "lastFeedAt": null,
+  "hatchedAt": "2026-11-02T04:30:38.774Z",
+  "cell": "gcpvj",
+  "hatchProofId": "0589d8304c93aa03ba58",
+  "catchProofId": "0589d8304c93aa03ba58",
+  "asleepAt": null,
+  "nickname": null,
+  "feeds": [],
+  "species": {
+    "id": "angry-dumpling",
+    "name": "Angry Dumpling",
+    "type": "snack",
+    "typeLabel": "Snack",
+    "diet": {
+      "productId": "gaia.gateway",
+      "capabilityId": "gaia.weather.read@v1",
+      "sourceHub": "https://iot.modelmarket.dev",
+      "label": "weather",
+      "input": {
+        "device_id": "om-wx-01"
+      }
+    },
+    "sceneId": "candy-dump",
+    "rarity": "common",
+    "packId": "snack-cult"
+  },
+  "hungry": true,
+  "asleep": false,
+  "feedReady": true,
+  "nextFeedAt": "2026-11-02T13:11:46.847Z"
+}

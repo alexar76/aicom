@@ -1,0 +1,100 @@
+.F..F                                                                    [100%]
+=================================== FAILURES ===================================
+______ test_snapshot_is_shared_through_database_when_local_cache_is_empty ______
+
+tmp_path = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-467/test_snapshot_is_shared_throug0')
+
+    def test_snapshot_is_shared_through_database_when_local_cache_is_empty(tmp_path):
+        db_target = str(tmp_path / "shared.sqlite3")
+        figure = go.Figure(go.Bar(x=pd.Series(["RU", "DE"]), y=pd.Series([7, 3])))
+        payload = {
+            "metrics": [["Requests", "73"]],
+            "chart_rows": [[figure.to_dict()]],
+            "table": pd.DataFrame({"country": ["RU", "DE"], "requests": [7, 3]}),
+        }
+        save_dashboard_snapshot(
+            "analytics",
+            "overview",
+            payload,
+            cache_dir=tmp_path / "worker-a",
+            db_target=db_target,
+        )
+    
+        loaded = load_dashboard_snapshot(
+            "analytics",
+            "overview",
+            cache_dir=tmp_path / "worker-b",
+            db_target=db_target,
+        )
+    
+        assert loaded is not None
+        assert loaded["metrics"] == payload["metrics"]
+        restored_figure = go.Figure(loaded["chart_rows"][0][0])
+        assert list(restored_figure.data[0].x) == ["RU", "DE"]
+>       assert list(restored_figure.data[0].y) == [7, 3]
+E       AssertionError: assert ['dtype', 'bdata'] == [7, 3]
+E         
+E         At index 0 diff: 'dtype' != 7
+E         Use -v to get more diff
+
+skopos/tests/test_dashboard_snapshots.py:56: AssertionError
+_______ test_all_analytics_dashboards_render_and_cached_revisit_is_fast ________
+
+tmp_path = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-467/test_all_analytics_dashboards_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x11a630890>
+
+    def test_all_analytics_dashboards_render_and_cached_revisit_is_fast(tmp_path, monkeypatch):
+        monkeypatch.setenv("SKOPOS_REQUIRE_DASHBOARD_AUTH", "0")
+        monkeypatch.setenv("SKOPOS_DASHBOARD_CACHE_DIR", str(tmp_path))
+        app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "dashboard.py"), default_timeout=30).run()
+>       assert not app.exception
+E       assert not ElementList(_list=[Exception(message="No module named 'tldextract'", stack_trace=['File "/Users/alex/Desktop/ai_tests/..."/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/skopos/enrich.py", line 5, in <module>\n    import tldextract'])])
+E        +  where ElementList(_list=[Exception(message="No module named 'tldextract'", stack_trace=['File "/Users/alex/Desktop/ai_tests/..."/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/skopos/enrich.py", line 5, in <module>\n    import tldextract'])]) = AppTest(\n    _script_path='/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/dashboard.py',\n    default_timeout=30,\n...SpecialBlock(\n            type='sidebar'\n        ),\n        2: SpecialBlock(\n            type='event'\n        )\n    }\n).exception
+
+skopos/tests/test_dashboard_snapshots.py:85: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-10-31 11:56:40.304 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-31 11:56:44.467 Uncaught app execution
+Traceback (most recent call last):
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/exec_code.py", line 136, in exec_func_with_error_handling
+    result = func()
+             ^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 922, in code_to_exec
+    _mpa_v1(self._main_script_path)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 180, in _mpa_v1
+    page.run()
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/streamlit/navigation/page.py", line 502, in run
+    exec(code, module.__dict__)  # noqa: S102
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/dashboard.py", line 17, in <module>
+    from skopos.backfill import backfill_all
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/skopos/backfill.py", line 7, in <module>
+    from .enrich import parse_user_agent, referer_domain
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/skopos/enrich.py", line 5, in <module>
+    import tldextract
+ModuleNotFoundError: No module named 'tldextract'
+------------------------------ Captured log call -------------------------------
+WARNING  streamlit.runtime.scriptrunner_utils.script_run_context:script_run_context.py:483 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ERROR    streamlit.error_util:error_util.py:117 Uncaught app execution
+Traceback (most recent call last):
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/exec_code.py", line 136, in exec_func_with_error_handling
+    result = func()
+             ^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 922, in code_to_exec
+    _mpa_v1(self._main_script_path)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 180, in _mpa_v1
+    page.run()
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/.venv/lib/python3.12/site-packages/streamlit/navigation/page.py", line 502, in run
+    exec(code, module.__dict__)  # noqa: S102
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/dashboard.py", line 17, in <module>
+    from skopos.backfill import backfill_all
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/skopos/backfill.py", line 7, in <module>
+    from .enrich import parse_user_agent, referer_domain
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/skopos/enrich.py", line 5, in <module>
+    import tldextract
+ModuleNotFoundError: No module named 'tldextract'
+=========================== short test summary info ============================
+FAILED skopos/tests/test_dashboard_snapshots.py::test_snapshot_is_shared_through_database_when_local_cache_is_empty
+FAILED skopos/tests/test_dashboard_snapshots.py::test_all_analytics_dashboards_render_and_cached_revisit_is_fast
+2 failed, 3 passed in 7.56s

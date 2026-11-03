@@ -1,0 +1,32 @@
+F.                                                                       [100%]
+=================================== FAILURES ===================================
+_____________ test_gzip_bomb_is_refused_before_expanding_in_memory _____________
+
+mocked = <function mocked.<locals>._install at 0x109f7b420>
+
+    @pytest.mark.asyncio
+    async def test_gzip_bomb_is_refused_before_expanding_in_memory(mocked):
+        # A small wire block must not allocate its entire 8 MiB decoded payload.
+        wire = gzip.compress(b"x" * (8 * 1024 * 1024))
+        stream = _WireStream(wire)
+    
+        async def handler(request):
+            return httpx.Response(200, headers={"content-encoding": "gzip"}, stream=stream)
+    
+        mocked(handler)
+        tracemalloc.start()
+        try:
+            with pytest.raises(ResponseTooLarge):
+                await safe_post_capped("https://peer.example/invoke", json={}, max_bytes=CAP)
+            _, peak = tracemalloc.get_traced_memory()
+        finally:
+            tracemalloc.stop()
+        assert stream.closed
+>       assert peak < 2 * 1024 * 1024, f"allocated {peak} bytes for a {CAP}-byte budget"
+E       AssertionError: allocated 25279842 bytes for a 4096-byte budget
+E       assert 25279842 < ((2 * 1024) * 1024)
+
+aimarket-hub/tests/test_outbound_capped_post.py:150: AssertionError
+=========================== short test summary info ============================
+FAILED aimarket-hub/tests/test_outbound_capped_post.py::test_gzip_bomb_is_refused_before_expanding_in_memory
+1 failed, 1 passed, 4 deselected in 0.22s

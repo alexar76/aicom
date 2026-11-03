@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--HEAD-->
+<meta name="robots" content="noindex, nofollow">
+<style>
+  .gate, .desk { max-width: 720px; }
+  .desk { max-width: 960px; }
+  .hidden { display: none !important; }
+  .lock-card {
+    margin-top: 8px; padding: 28px;
+    background: var(--panel); border: 1px solid var(--brd); border-radius: var(--radius);
+  }
+  .lock-card label {
+    display: block; font-family: var(--head); font-size: 10px; letter-spacing: 1.6px;
+    text-transform: uppercase; color: var(--faint); margin-bottom: 8px;
+  }
+  .lock-card input[type="password"] {
+    width: 100%; padding: 12px 14px; border-radius: 9px;
+    border: 1px solid var(--brd); background: rgba(2,3,10,.72); color: var(--ink);
+    font-family: var(--mono); font-size: 14px; outline: none;
+  }
+  .lock-card input:focus { border-color: var(--brd-hot); box-shadow: 0 0 0 3px rgba(56,224,255,.12); }
+  .lock-hint { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 12px 0 18px; }
+  .flash { min-height: 22px; font-family: var(--mono); font-size: 12px; color: var(--pink); margin-top: 10px; }
+  .flash.ok { color: var(--good); }
+  .peer {
+    background: var(--panel); border: 1px dashed rgba(245,165,36,.4); border-radius: var(--radius);
+    padding: 18px; margin-bottom: 14px;
+  }
+  .peer.trusted { border-style: solid; border-color: var(--brd); }
+  .peer h3 { font-family: var(--head); font-size: 15px; letter-spacing: .4px; }
+  .peer .url { font-family: var(--mono); font-size: 12px; color: var(--cyan); word-break: break-all; margin-top: 4px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 12px; color: var(--muted); font-size: 13px; margin: 10px 0; }
+  .preview { margin-top: 10px; font-family: var(--mono); font-size: 12px; color: var(--ink); }
+  .preview .cap { padding: 8px 0; border-top: 1px solid var(--brd); }
+  .preview .q { color: var(--amber); margin-left: 8px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .chip {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 99px; border: 1px solid var(--brd); color: var(--muted);
+  }
+  .chip.pass { border-color: var(--good); color: var(--good); }
+  .chip.review { border-color: var(--amber); color: var(--amber); }
+  .chip.fail { border-color: var(--pink); color: var(--pink); }
+  .checks { margin-top: 8px; font-family: var(--mono); font-size: 12px; }
+  .checks .row { display: flex; gap: 10px; padding: 4px 0; border-top: 1px solid var(--brd); }
+  .checks .ok { color: var(--good); }
+  .checks .no { color: var(--pink); }
+  .checks .skip { color: var(--faint); }
+  .btn-good {
+    background: linear-gradient(100deg, var(--good), var(--cyan)); color: #021018;
+  }
+  .btn-warn {
+    background: rgba(255,204,77,.12); border: 1px solid rgba(255,204,77,.4); color: var(--amber);
+  }
+  .btn-danger {
+    background: rgba(255,93,138,.1); border: 1px solid rgba(255,93,138,.4); color: var(--pink);
+  }
+  .btn[disabled] { opacity: .45; cursor: default; transform: none; filter: none; }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 22px; }
+  .empty {
+    color: var(--muted); padding: 28px; text-align: center;
+    border: 1px dashed var(--brd); border-radius: var(--radius);
+  }
+</style>
+</head>
+<body>
+<!--BACKDROP-->
+<!--NAV-->
+<div class="shell">
+  <header class="hero">
+    <p class="eyebrow">Operator desk · exception path</p>
+    <h1><span class="grad">Review</span> a hub</h1>
+    <p class="tagline">Knock lands in quarantine. With a MiniMax judge token the sandbox auto-admits a pass; without a token you Approve by hand. This desk is also for paid-only hubs, vetoes, and dismissals. Unlock with the hub admin token.</p>
+  </header>
+
+  <section id="gate" class="gate">
+    <div class="lock-card">
+      <label for="token">Admin token</label>
+      <input id="token" type="password" autocomplete="current-password" spellcheck="false" placeholder="AIMARKET_ADMIN_TOKEN">
+      <p class="lock-hint">Same secret as <code>Authorization: Bearer</code> on this hub. It stays in this browser tab only.</p>
+      <div class="btn-row">
+        <button type="button" class="btn" id="unlock">Unlock desk</button>
+      </div>
+      <p class="flash" id="gate-flash" role="status"></p>
+    </div>
+  </section>
+
+  <section id="desk" class="desk hidden">
+    <div class="toolbar">
+      <button type="button" class="btn btn-ghost" id="refresh">Refresh</button>
+      <button type="button" class="btn btn-ghost" id="crawl">Crawl now</button>
+      <button type="button" class="btn btn-ghost" id="lock">Lock desk</button>
+    </div>
+    <p class="flash" id="desk-flash" role="status"></p>
+    <div class="section-head">
+      <div class="section-title"><b>Pending</b> · waiting for you</div>
+    </div>
+    <div id="pending"></div>
+    <div class="section-head" style="margin-top:36px;">
+      <div class="section-title"><b>Trusted</b> · already in the catalogue</div>
+    </div>
+    <div id="trusted"></div>
+  </section>
+</div>
+<!--FOOTER-->
+<script>
+(function () {
+  var TOKEN_KEY = "aimarket.operator.token";
+  var gate = document.getElementById("gate");
+  var desk = document.getElementById("desk");
+  var tokenInput = document.getElementById("token");
+  var gateFlash = document.getElementById("gate-flash");
+  var deskFlash = document.getElementById("desk-flash");
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c];
+    });
+  }
+
+  function token() {
+    return sessionStorage.getItem(TOKEN_KEY) || "";
+  }
+
+  function headers(json) {
+    var h = { Authorization: "Bearer " + token() };
+    if (json) h["Content-Type"] = "application/json";
+    return h;
+  }
+
+  function flash(el, msg, ok) {
+    el.textContent = msg || "";
+    el.className = "flash" + (ok ? " ok" : "");
+  }
+
+  async function probe(value) {
+    var r = await fetch("/ai-market/v2/federation/inbound", {
+      headers: { Authorization: "Bearer " + value },
+      cache: "no-store",
+    });
+    return r.status;
+  }
+
+  function showDesk() {
+    gate.classList.add("hidden");
+    desk.classList.remove("hidden");
+    load();
+  }
+
+  function showGate() {
+    sessionStorage.removeItem(TOKEN_KEY);
+    desk.classList.add("hidden");
+    gate.classList.remove("hidden");
+    tokenInput.value = "";
+    tokenInput.focus();
+  }
+
+  async function unlock() {
+    var value = tokenInput.value.trim();
+    flash(gateFlash, "");
+    if (value.length < 8) {
+      flash(gateFlash, "Token is too short.");
+      return;
+    }
+    var status = await probe(value);
+    if (status === 503) {
+      flash(gateFlash, "Admin token is not configured on this hub.");
+      return;
+    }
+    if (status === 401 || status === 403) {
+      flash(gateFlash, "Wrong token.");
+      return;
+    }
+    if (status !== 200) {
+      flash(gateFlash, "Hub refused unlock (" + status + ").");
+      return;
+    }
+    sessionStorage.setItem(TOKEN_KEY, value);
+    tokenInput.value = "";
+    showDesk();
+  }
+
+  async function api(path, opts) {
+    var r = await fetch(path, Object.assign({ cache: "no-store" }, opts));
+    var body = {};
+    try { body = await r.json(); } catch (e) { body = {}; }
+    if (r.status === 401 || r.status === 403) {
+      showGate();
+      flash(gateFlash, "Session expired. Unlock again.");
+      throw new Error("unauthorized");
+    }
+    if (!r.ok) {
+      var detail = body.detail || body.note || r.statusText;
+      if (typeof detail === "object") detail = JSON.stringify(detail);
+      throw new Error(String(detail || r.status));
+    }
+    return body;
+  }
+
+  function peerCard(p, pending) {
+    var url = p.url || "";
+    // Three different numbers used to share one variable through `a || b || 0`, so a
+    // pending hub that had previewed nothing silently reported its self-declared count
+    // as though this hub had read it — and on a closed-door deployment both were 0.
+    var previewed = Number(p.preview_capabilities) || 0;   // read + signature-checked here
+    var declared = Number(p.declared_capabilities) || 0;   // the peer's own claim
+    var indexed = Number(p.capabilities_count) || 0;       // in the catalogue (trusted only)
+    var verdict = p.assay_verdict || "";
+    var chip = verdict
+      ? '<span class="chip ' + esc(verdict) + '">assay ' + esc(verdict) + "</span>"
+      : '<span class="chip">not assayed</span>';
+    var extra = pending
+      ? "<span>first seen " + esc(p.first_seen || "—") + "</span><span>via " + esc(p.discoverer || "—") + "</span><span>" + declared + " claimed</span>" +
+        (previewed ? "<span>" + previewed + " read</span>" : "") + "<span>" + chip + "</span>"
+      : "<span>" + indexed + " indexed</span><span>trust " + esc(p.trust_score) + "</span><span>" + esc(p.status || "active") + "</span>";
+    var actions = pending
+      ? '<div class="btn-row">' +
+        '<button type="button" class="btn btn-ghost" data-preview="' + esc(url) + '">Preview claims</button>' +
+        '<button type="button" class="btn btn-warn" data-assay="' + esc(url) + '">Run assay</button>' +
+        '<button type="button" class="btn btn-good" data-approve="' + esc(url) + '" data-verdict="' + esc(verdict) + '">Approve &amp; crawl</button>' +
+        '<button type="button" class="btn btn-danger" data-dismiss="' + esc(url) + '">Dismiss</button>' +
+        "</div>"
+      : "";
+    return '<article class="peer' + (pending ? "" : " trusted") + '">' +
+      "<h3>" + esc(p.name || url) + "</h3>" +
+      '<div class="url">' + esc(url) + "</div>" +
+      '<div class="meta">' + extra + "</div>" +
+      actions +
+      '<div class="preview hidden" data-preview-body="' + esc(url) + '"></div>' +
+      '<div class="preview hidden" data-assay-body="' + esc(url) + '"></div>' +
+      "</article>";
+  }
+
+  async function load() {
+    flash(deskFlash, "");
+    var data = await fetch("/ai-market/v2/federation/peers", { cache: "no-store" }).then(function (r) { return r.json(); });
+    var pending = data.pending || [];
+    var trusted = (data.peers || []).filter(function (p) { return p.trusted; });
+    document.getElementById("pending").innerHTML = pending.length
+      ? pending.map(function (p) { return peerCard(p, true); }).join("")
+      : '<div class="empty">Nobody is waiting. New hubs appear here after they announce.</div>';
+    document.getElementById("trusted").innerHTML = trusted.length
+      ? trusted.map(function (p) { return peerCard(p, false); }).join("")
+      : '<div class="empty">No trusted peers yet.</div>';
+  }
+
+  document.getElementById("unlock").addEventListener("click", function () { unlock().catch(function (e) { flash(gateFlash, e.message); }); });
+  tokenInput.addEventListener("keydown", function (ev) { if (ev.key === "Enter") unlock(); });
+  document.getElementById("lock").addEventListener("click", showGate);
+  document.getElementById("refresh").addEventListener("click", function () { load().catch(function (e) { flash(deskFlash, e.message); }); });
+  document.getElementById("crawl").addEventListener("click", function () {
+    api("/ai-market/v2/federation/crawl", { method: "POST", headers: headers() })
+      .then(function () { flash(deskFlash, "Crawl finished.", true); return load(); })
+      .catch(function (e) { flash(deskFlash, e.message); });
+  });
+
+  document.getElementById("desk").addEventListener("click", async function (ev) {
+    var preview = ev.target.closest("[data-preview]");
+    var assayBtn = ev.target.closest("[data-assay]");
+    var approve = ev.target.closest("[data-approve]");
+    var dismiss = ev.target.closest("[data-dismiss]");
+    try {
+      if (preview) {
+        var url = preview.getAttribute("data-preview");
+        var box = desk.querySelector('[data-preview-body="' + CSS.escape(url) + '"]');
+        if (!box) return;
+        if (!box.classList.contains("hidden")) { box.classList.add("hidden"); return; }
+        var body = await fetch("/ai-market/v2/federation/preview?url=" + encodeURIComponent(url), { cache: "no-store" }).then(function (r) { return r.json(); });
+        var caps = body.capabilities || [];
+        box.innerHTML = caps.length
+          ? caps.map(function (c) {
+              return '<div class="cap"><b>' + esc(c.capability_id || "") + '</b><span class="q">quarantined</span><div>' + esc(c.name || "") + "</div></div>";
+            }).join("")
+          : "<div class=\"cap\">Nothing previewed yet.</div>";
+        box.classList.remove("hidden");
+        return;
+      }
+      if (assayBtn) {
+        var assayed = assayBtn.getAttribute("data-assay");
+        var abox = desk.querySelector('[data-assay-body="' + CSS.escape(assayed) + '"]');
+        if (!abox) return;
+        assayBtn.disabled = true;
+        var dossier = await api("/ai-market/v2/federation/assay", {
+          method: "POST",
+          headers: headers(true),
+          body: JSON.stringify({ url: assayed }),
+        });
+        assayBtn.disabled = false;
+        var rows = (dossier.checks || []).map(function (c) {
+          var state = c.ok === true ? "ok" : c.ok === false ? "no" : "skip";
+          var mark = c.ok === true ? "pass" : c.ok === false ? "fail" : "skip";
+          return '<div class="row"><span class="' + state + '">' + mark + "</span><span>" +
+            esc(c.id) + (c.detail ? " — " + esc(c.detail) : "") + "</span></div>";
+        }).join("");
+        abox.innerHTML =
+          '<div class="cap"><span class="chip ' + esc(dossier.verdict || "") + '">verdict ' +
+          esc(dossier.verdict || "none") + "</span>" +
+          '<span class="q">not trusted</span></div>' +
+          '<div class="checks">' + (rows || "<div class=\"row\">no checks</div>") + "</div>" +
+          '<div class="cap">' + esc(dossier.note || "") + "</div>";
+        abox.classList.remove("hidden");
+        flash(deskFlash, "Assay " + (dossier.verdict || "?") + " — still not trusted.", true);
+        await load();
+        return;
+      }
+      if (approve) {
+        var hub = approve.getAttribute("data-approve");
+        var prior = approve.getAttribute("data-verdict") || "";
+        var warn = prior === "pass"
+          ? "Assay passed. Index this hub into search and routing?\n" + hub
+          : "Assay is " + (prior || "missing") + " — copy in well-known is not evidence. Index anyway?\n" + hub;
+        if (!window.confirm(warn)) return;
+        approve.disabled = true;
+        await api("/ai-market/v2/federation/peers/approve", {
+          method: "POST",
+          headers: headers(true),
+          body: JSON.stringify({ url: hub, trusted: true }),
+        });
+        await api("/ai-market/v2/federation/crawl", { method: "POST", headers: headers() });
+        flash(deskFlash, "Approved and crawled: " + hub, true);
+        await load();
+        return;
+      }
+      if (dismiss) {
+        var gone = dismiss.getAttribute("data-dismiss");
+        if (!window.confirm("Remove this pending hub?\n" + gone)) return;
+        dismiss.disabled = true;
+        await api("/ai-market/v2/federation/peers?url=" + encodeURIComponent(gone), {
+          method: "DELETE",
+          headers: headers(),
+        });
+        flash(deskFlash, "Dismissed " + gone, true);
+        await load();
+      }
+    } catch (e) {
+      flash(deskFlash, e.message);
+    }
+  });
+
+  if (token()) {
+    probe(token()).then(function (status) {
+      if (status === 200) showDesk();
+      else showGate();
+    });
+  }
+})();
+</script>
+</body>
+</html>

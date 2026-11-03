@@ -1,0 +1,24 @@
+{
+  "upstream": {
+    "package": "elliptic",
+    "version": "6.6.1",
+    "url": "https://registry.npmjs.org/elliptic/-/elliptic-6.6.1.tgz",
+    "integrity": "sha512-RaddvvMatK2LJHqFJ+YA4WysVN5Ita9E35botqIYspQ4TkRAlCicdzKOjlyv/1Za5RyTNn7di//eEV0uTAfe3g=="
+  },
+  "patch": {
+    "url": "https://deb.debian.org/debian/pool/main/n/node-elliptic/node-elliptic_6.6.1+dfsg+~6.4.18-2.debian.tar.xz",
+    "archive_sha256": "d13dd705e9389025246a93e39d01732e8e0b8331b84e00fdf632007b4fc95174",
+    "path": "debian/patches/CVE-2025-14505.patch",
+    "sha256": "37edd51ebf3ed6a9a9d69e6379b2f207c42b9cca601ad6c1622a14e807adffda"
+  },
+  "local_version": "6.6.1+aicom.1",
+  "changes": [
+    "Debian nonce-width patch in lib/elliptic/ec/index.js",
+    "package.json version and private flag"
+  ],
+  "vector_source": {
+    "commit": "d446fbab802cb8289de36f715231b638066a0fa8",
+    "path": "test_vectors/ecdsa/ecdsa_rfc6979_secp521r1_sha_512.json",
+    "sha256": "79f7ac862239010fe436fe15900a1fba7bc7db9a5312a71b6232394b4ad64aca"
+  }
+}

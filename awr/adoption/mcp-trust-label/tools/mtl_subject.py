@@ -11,11 +11,12 @@ This module builds the two digests an MCP Trust Label commits to:
   * the **subject digest** -- SHA-256 over the RFC 8785 canonical form of the
     MCP Server Descriptor (PROFILE.md section 4).
 
-Both use ``awr.canonicalize`` from the AWR/2 reference implementation, unchanged.  That
-canonicalizer refuses non-integer JSON numbers (``AWR-CANON-001``, SPEC section 4.3), which
-is exactly the behaviour MTL/1 wants: a tool schema carrying a non-integer number is not
-digestible under MTL/1 and the label degrades to ``inconclusive`` with ``MTL-NUM-001``
-rather than committing to bytes two implementations might disagree about.
+The subject digest uses ``awr.canonicalize`` from the AWR/2 reference implementation,
+unchanged.  The tool-set digest is RFC 8785 with every JSON number read as an IEEE 754 double
+(PROFILE.md section 5.4, MTL/1.1): a value whose integers all lie inside +/-(2^53-1) gets
+AWR/2's own bytes, so no digest issued under MTL/1.0 moves; fractions, exponents and larger
+integers, which 1.0 refused with ``MTL-NUM-001``, are written in the ECMAScript form RFC 8785
+section 3.2.2.3 names.  ``MTL-NUM-001`` remains only for a number with no double (``1e400``).
 
 Run ``python mtl_subject.py --help`` for the CLI.
 """
@@ -24,7 +25,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
+from base64 import b64encode
+from hashlib import sha256
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from awr import AwrError, canonical_sri, canonicalize
@@ -34,9 +38,13 @@ from awr import AwrError, canonical_sri, canonicalize
 # ---------------------------------------------------------------------------
 
 MTL_SUBJ_001 = "MTL-SUBJ-001"  # tool entry is not an object, or name missing/empty
-MTL_SUBJ_002 = "MTL-SUBJ-002"  # tool set is empty
-MTL_SUBJ_003 = "MTL-SUBJ-003"  # duplicate tool name
-MTL_NUM_001 = "MTL-NUM-001"    # non-integer JSON number in a tool schema: not digestible
+# MTL/1.0 refused an empty set (SUBJ-002) and duplicate names (SUBJ-003); MTL/1.1 digests
+# both.  The codes stay so that labels issued under 1.0 still read.
+MTL_SUBJ_002 = "MTL-SUBJ-002"
+MTL_SUBJ_003 = "MTL-SUBJ-003"
+MTL_NUM_001 = "MTL-NUM-001"    # a number with no IEEE 754 double (1e400): not digestible
+
+MAX_SAFE_INTEGER = 2 ** 53 - 1
 
 #: Fields of an MCP tool definition that MTL/1 digests.  ``name``, ``description`` and
 #: ``inputSchema`` are always present in the normalised entry; ``outputSchema`` appears iff
@@ -84,45 +92,104 @@ def normalise_tool(tool: Any) -> Dict[str, Any]:
     return entry
 
 
+def es_number(value: float) -> str:
+    """RFC 8785 section 3.2.2.3: a double in ECMAScript ``Number.prototype.toString`` form.
+
+    ``repr`` yields the shortest round-tripping digits, the same digits ECMAScript chooses;
+    only the placement of the point and of the exponent is ECMAScript's own.
+    """
+    if not math.isfinite(value):
+        raise ValueError("%r has no JSON form" % (value,))
+    if value == 0:
+        return "0"  # -0 included
+    sign = "-" if value < 0 else ""
+    mantissa, _, exp = repr(abs(value)).partition("e")
+    whole, _, frac = mantissa.partition(".")
+    digits = whole + frac
+    lead = len(digits) - len(digits.lstrip("0"))
+    s = digits.strip("0")
+    k = len(s)
+    n = len(whole) + (int(exp) if exp else 0) - lead  # value = 0.s x 10^n
+    if k <= n <= 21:
+        return sign + s + "0" * (n - k)
+    if 0 < n <= 21:
+        return sign + s[:n] + "." + s[n:]
+    if -6 < n <= 0:
+        return sign + "0." + "0" * -n + s
+    e = n - 1
+    return sign + (s if k == 1 else s[0] + "." + s[1:]) + "e" + ("+" if e >= 0 else "-") + str(abs(e))
+
+
+def _serialize(value: Any, out: List[str]) -> None:
+    # Strings and member names go through awr.canonicalize, so escaping and the lone-surrogate
+    # refusal are the AWR/2 canonicalizer's own.
+    if value is None or isinstance(value, bool):
+        out.append("null" if value is None else ("true" if value else "false"))
+    elif isinstance(value, int):
+        # Beyond 2^53-1 JSON.parse already holds the nearest double; float() rounds the same way.
+        out.append(str(value) if -MAX_SAFE_INTEGER <= value <= MAX_SAFE_INTEGER else es_number(float(value)))
+    elif isinstance(value, float):
+        out.append(es_number(value))
+    elif isinstance(value, str):
+        out.append(canonicalize(value).decode("utf-8"))
+    elif isinstance(value, list):
+        out.append("[")
+        for index, item in enumerate(value):
+            if index:
+                out.append(",")
+            _serialize(item, out)
+        out.append("]")
+    elif isinstance(value, dict):
+        out.append("{")
+        for index, key in enumerate(sorted(value, key=utf16_sort_key)):
+            if index:
+                out.append(",")
+            out.append(canonicalize(key).decode("utf-8"))
+            out.append(":")
+            _serialize(value[key], out)
+        out.append("}")
+    else:
+        raise TypeError("%s is not a JSON value" % type(value).__name__)
+
+
+def canonical_tool_bytes(value: Any) -> bytes:
+    """RFC 8785 bytes of a tool set or entry, every JSON number read as an IEEE 754 double."""
+    try:
+        return canonicalize(value)
+    except AwrError as exc:
+        if exc.code not in ("AWR-CANON-001", "AWR-CANON-002"):
+            raise
+    out: List[str] = []
+    _serialize(value, out)
+    return "".join(out).encode("utf-8")
+
+
 def canonical_tool_set(tools: Sequence[Any]) -> List[Dict[str, Any]]:
-    """The normalised, sorted tool array MTL/1 digests."""
-    if not tools:
-        raise MtlError(MTL_SUBJ_002, "the tool set is empty; there is nothing to pin")
+    """The normalised, sorted tool array MTL/1 digests.  May be empty; may repeat a name.
+
+    Entries sort by ``name`` (UTF-16 code units).  Entries that share a name sort by their
+    canonical bytes, so the digest never depends on the order the server listed them in.
+    """
     entries = [normalise_tool(tool) for tool in tools]
-
-    seen: Dict[str, int] = {}
-    for index, entry in enumerate(entries):
-        if entry["name"] in seen:
-            raise MtlError(
-                MTL_SUBJ_003,
-                "duplicate tool name %r at positions %d and %d; the digest would be "
-                "ambiguous" % (entry["name"], seen[entry["name"]], index),
-            )
-        seen[entry["name"]] = index
-
-    entries.sort(key=lambda entry: utf16_sort_key(entry["name"]))
+    if len({entry["name"] for entry in entries}) == len(entries):
+        entries.sort(key=lambda entry: utf16_sort_key(entry["name"]))
+    else:
+        entries.sort(key=lambda entry: (utf16_sort_key(entry["name"]), canonical_tool_bytes(entry)))
     return entries
 
 
 def tool_set_digest(tools: Sequence[Any]) -> Tuple[str, List[Dict[str, Any]]]:
     """``(sri, canonical_entries)`` for *tools*.
 
-    Raises :class:`MtlError` with ``MTL-NUM-001`` when a schema carries a non-integer JSON
-    number, because ``awr.canonicalize`` refuses one (SPEC section 4.3) and MTL/1 does not
-    invent a resolution.
+    Raises :class:`MtlError` with ``MTL-NUM-001`` only for a number that has no IEEE 754
+    double (``1e400``), which RFC 8785 cannot write either.
     """
     entries = canonical_tool_set(tools)
     try:
-        sri = canonical_sri(entries)
-    except AwrError as exc:
-        if exc.code == "AWR-CANON-001":
-            raise MtlError(
-                MTL_NUM_001,
-                "a tool schema contains a non-integer JSON number, which MTL/1 cannot "
-                "digest reproducibly (%s)" % (exc,),
-            ) from exc
-        raise
-    return sri, entries
+        canonical = canonical_tool_bytes(entries)
+    except (ValueError, OverflowError) as exc:
+        raise MtlError(MTL_NUM_001, "a tool schema contains a number with no IEEE 754 double") from exc
+    return "sha256-" + b64encode(sha256(canonical).digest()).decode("ascii"), entries
 
 
 def build_descriptor(

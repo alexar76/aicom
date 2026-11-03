@@ -52,3 +52,14 @@ sh:/srv/skopos-relay/aicom.git
 # other hosts' backups (a receiver) and this host's own backup secrets
 sh:/srv/aicom-backups
 sh:/etc/aicom-backup/passphrase
+
+# One-off maintenance staging, source builds and duplicate pre-update archives.
+# Live application roots and fresh logical DB/SQLite snapshots remain covered.
+sh:/root/container-high-critical-*
+sh:/root/container-os-security-*
+sh:/root/security-maintenance-*
+sh:/root/security-rollbacks
+
+# PostgreSQL clusters relocated here are backed up logically above; old cutover
+# copies stay on the host for rollback, never archive a running raw cluster.
+sh:/var/lib/aicom/postgres

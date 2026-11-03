@@ -1,0 +1,22 @@
+SET
+SET
+status | detail | targets
+protocol | malformed JSON-RPC error response; no downgrade | 73
+http-400 |  | 33
+protocol | server/discover returned an error or no result | 28
+http-402 |  | 21
+http-401 |  | 16
+http-500 |  | 15
+protocol | modern server/discover returned MCP error -32020; no downgrade | 14
+http-404 |  | 13
+http-503 |  | 10
+http-403 |  | 8
+timeout |  | 8
+protocol | no JSON-RPC response for our request id | 7
+http-422 |  | 7
+http-530 |  | 6
+connect | ConnectError | 5
+(15 rows)
+timezone
+2026-11-02 04:21:49.030497
+(1 row)

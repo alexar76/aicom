@@ -1,0 +1,151 @@
+{
+  "_comment": "Committed federation seed list. The crawler walks these on startup/interval so ecosystem nodes are discovered automatically — no hand-editing of node lists anywhere. Each seed's `public_key` is operator-vouched: when a seed advertises exactly this Ed25519 key, the crawler trusts and indexes it on FIRST contact (instead of waiting for manual approval). A key mismatch falls back to the safe untrusted-first-contact path. Override the whole list with AIMARKET_SEED_LIST and pins with AIMARKET_SEED_PUBKEYS, or point AIMARKET_SEEDS_FILE elsewhere. This file is the source of truth: scripts/deploy_hub.sh used to carry its own SEED_LIST default that REPLACED it, so production crawled four of these and the rest arrived, if at all, by knocking. Each seed's `id` is the operator's answer to 'which of our nodes is this' — see aimarket_hub/peer_identity.py; a peer never names its own id.",
+  "seeds": [
+    {
+      "name": "Oracle Family (AIMarket v2)",
+      "well_known_url": "https://oracles.modelmarket.dev/family/.well-known/ai-market.json",
+      "public_key": "YkAOwWNbRFti2cqEzD6zfuI4OTLsGUoObpCmlwZqaTQ=",
+      "categories": [
+        "oracle",
+        "simulation",
+        "math-viz",
+        "randomness-beacon",
+        "agent-tooling"
+      ],
+      "note": "Federated oracle-family endpoint aggregating all 17 oracles (Platon chaos-VRF/beacon, Chronos Wesolowski VDF, Lattice low-discrepancy, Murmuration robust consensus, Lumen EigenTrust/PageRank, Colony TSP, Turing blue-noise, Percola percolation, Fermat routing, Ablation cascade-risk, Landauer thermodynamic audit, Sortes ECVRF verifiable randomness, Gauss Gaussian-process regression, Aestus RSW time-lock puzzles, Betti persistent homology, Kantor optimal transport, Fourier graph-spectral analysis) behind one signed manifest — 42 capabilities. The 'oracle'/'randomness-beacon' categories let the hub route invokes to the peer's mcp_endpoint. Until 2026-07-31 this entry pointed at https://oracles.modelmarket.dev/.well-known/ai-market.json with Platon's own signer key: that is one oracle of the seventeen, so a hub seeded from this file indexed 11 capabilities and the note above described 42 that were never crawled. The family endpoint lives under /family and signs with its own key. Verified live 2026-07-31.",
+      "id": "oracle_family"
+    },
+    {
+      "name": "GAIA physical-world oracle gateway",
+      "well_known_url": "https://iot.modelmarket.dev/.well-known/ai-market.json",
+      "public_key": "nXqEvIbWv+rA8TASY0GqGWZi/OPazT0HM1LQTrRXemg=",
+      "categories": [
+        "iot",
+        "sensors",
+        "physical-data",
+        "verification"
+      ],
+      "note": "Physical-world oracle gateway (GAIA): sim + LIVE relays sold as signed Hub SKUs (weather/air/energy + grid/quake/tide/river/marine + free-to-commercialize fire/radiation/jamming + optional own-edge ADS-B/AIS feeders) with Metis-envelope statistical verifier for Pay-on-Verified. Caps are dynamic from build_spec() on the running process — redeploy GAIA then wait for federation crawl. Hub UI strings: cap-descriptions-i18n.json.",
+      "id": "gaia"
+    },
+    {
+      "name": "ATLAS planetary sensor map & composite briefs",
+      "well_known_url": "https://atlas.modelmarket.dev/.well-known/ai-market.json",
+      "public_key": "p4dibtrb4RSgFvm8lF7xH6csSdpDp01XVVfhuiKfeBk=",
+      "categories": [
+        "iot",
+        "sensors",
+        "physical-data",
+        "geospatial",
+        "risk-brief",
+        "wildfire",
+        "watchbox"
+      ],
+      "note": "ATLAS map peer: composite Hub SKUs including atlas.situation.brief@v1, atlas.fire.weather@v1, atlas.field.consensus@v1, atlas.mesh.sample@v1 (signed manifest). LIVE fail-closed. Pin matches ATLAS_SIGNING_SEED_B64 on the atlas host (volume since 2026-08-12; live signer verified 2026-08-22). Prior pin UJ9MnZk217mUcPUe10CO7uOUM++AzOYRWtkhDRjb6Z0= rejected as key-changed until admin repin. Hub UI: cap-descriptions-i18n.json.",
+      "id": "atlas"
+    },
+    {
+      "name": "BASANOS Solidity assurance touchstone",
+      "well_known_url": "https://basanos.modelmarket.dev/.well-known/ai-market.json",
+      "public_key": "TcxndOG1DPUTR+MkUf4ZiYrspBlDcI0fUkIX8Rfvph4=",
+      "categories": [
+        "security",
+        "solidity",
+        "assurance"
+      ],
+      "note": "Signed Solidity assurance packs at a pinned commit/tree digest (agent.security.contract-assurance@v1). Technical layer only — it never emits scoreBps and never calls AgentAuditPool.coverListing; THEMIS decides Hub admission and MOMUS probes the live federation. The public_key above is the identity the LIVE node advertises on /health, and BASANOS signs its manifest with the SAME key as its assurance packs (one keypair, see basanos/federation.py). NOTE: the deployed node must be running the release that serves /.well-known/ai-market.json and /ai-market/v2/manifest — until it is redeployed the crawler simply skips this seed (a failing peer never aborts a crawl). Its /data volume holds the key, so the key survives redeploys; if the volume is ever recreated, refresh this value from GET /health.",
+      "id": "basanos"
+    },
+    {
+      "name": "THEMIS supply-chain admission auditor",
+      "well_known_url": "https://themis.modelmarket.dev/.well-known/ai-market.json",
+      "public_key": "/IpNx3KmIITuEC9WefwqRqwWAhCQ3bxhhXKZ3zI/UBQ=",
+      "categories": [
+        "security",
+        "procurement",
+        "supply-chain",
+        "admission"
+      ],
+      "note": "Signed publish-time admission audits (agent.security.supply-chain.audit@v1). Runs on the HUB host, not the oracle host: the Hub calls it at AIMARKET_SUPPLY_CHAIN_AUDITOR_URL (default http://127.0.0.1:8080/invoke) on loopback inside its own netns, because the Hub's SSRF guard refuses docker-network names — moving THEMIS elsewhere breaks admission, and the oracle host already gives 8080 to Platon. This seed only adds DISCOVERY; the admission call never traverses nginx. Listing the gate in the catalogue it gates is not circular: audit() is deterministic and takes no payment signal, it returns decision + human_approval_required rather than granting anything, and the Hub re-derives the permissions digest itself. public_key is INTENTIONALLY EMPTY until the deployed node's identity is read from GET /health — an empty pin is skipped, so the crawler falls back to the safe untrusted-first-contact path (manual approval) instead of trusting a guess. Pin read from the running container on 2026-08-24 (themis_data volume), NOT from themis/capability.json — that file is stamped by whichever machine ran configure_provider.py and carries a developer laptop's key.",
+      "id": "themis"
+    },
+    {
+      "name": "MOMUS (adversarial-audit satellite)",
+      "well_known_url": "https://momus.modelmarket.dev/.well-known/ai-market.json",
+      "public_key": "TmeHyNcvEC6/NKo4X8AvZEXFPXL+rJESvmii9iFvklA=",
+      "categories": [
+        "security",
+        "red-team",
+        "audit",
+        "conformance",
+        "verification",
+        "adversarial"
+      ],
+      "note": "Runtime red team: conformance probes, external scans and signed findings. Pin verified identical across the live /.well-known signer_public_key, the manifest signature and /health scanner_pubkey on 2026-08-24; the key lives on a dedicated volume (MOMUS_SIGNING_KEY_PATH=/data/momus_signing_key) so it survives redeploys. Four of its seven capabilities are operator-gated (x-momus-operator) and answer 403 to any hub-routed caller — momus.report@v1 at $0.002 is the one that is actually sellable today.",
+      "id": "momus"
+    },
+    {
+      "name": "Magic AI-Factory AI Market",
+      "well_known_url": "https://magic-ai-factory.com/.well-known/ai-market.json",
+      "public_key": "4UT6zTeaE6JjZiAnvs9EaiLjlV7iEvy1lOf9Z/TdpKw=",
+      "categories": [
+        "factory",
+        "pipelines",
+        "software-production"
+      ],
+      "note": "The factory itself. Lived ONLY in scripts/deploy_hub.sh's SEED_LIST default until 2026-08-31 — and that default REPLACED this file, so deleting it without adding this entry would have dropped the factory from every deployment. Its key is standard base64 since the same day; it published unpadded base64url before, which base64.b64decode silently mis-decodes (signing.decode_b64 now reads either).",
+      "id": "factory"
+    },
+    {
+      "name": "SKOPOS fleet intelligence",
+      "well_known_url": "https://skopos.modelmarket.dev/.well-known/ai-market.json",
+      "public_key": "GW1q2KZl+xz29RausX5uKbfkYz+4EBtHhQE2SSAFWjc=",
+      "categories": [
+        "observability",
+        "security",
+        "fleet",
+        "posture"
+      ],
+      "note": "Sells four capabilities and bills its own 402 (skopos/skopos/economy/payments.py). The hub holds a key at it (AIMARKET_PEER_API_KEYS) and is therefore its reseller, not its broker — see docs/onchain-journal.md §3n. Serves invokes at /aimarket/invoke, NOT /ai-market/v2/invoke: it speaks v2 but does not run the hub implementation, which is why federation_transport reads hub_version and not protocol_versions.",
+      "id": "skopos"
+    },
+    {
+      "name": "LOGOS federation analytics",
+      "well_known_url": "https://logos.modelmarket.dev/.well-known/ai-market.json",
+      "public_key": "rZXZIN+e+APx5g/eolhvOZ98c+aEzNj/ixrGPoyygs8=",
+      "categories": [
+        "analytics",
+        "federation",
+        "observability"
+      ],
+      "note": "Reads the federation for analytics and, since 2026-08-31, publishes into it: one free capability (logos.federation.summary@v1) built on oracle_core.Protocol. Its analytics reads carry the crawler header, so it was knocking on the hub long before it had anything to answer with.",
+      "id": "logos"
+    },
+    {
+      "name": "Signal Hunt Hub",
+      "well_known_url": "https://hunt.modelmarket.dev/.well-known/ai-market.json",
+      "public_key": "r6+J7JEt/ZUNjMtueDJmLjFz7aBr1wH4bQZqulLvMSI=",
+      "categories": [
+        "game",
+        "signals",
+        "federation"
+      ],
+      "note": "A second hub on the same host as the Competing Lab Hub (:9083) — two processes, two peers, distinguished only by port. Trusted in production since before this file listed it; seeded here so a fresh deployment reaches the same federation instead of a smaller one.",
+      "id": "signal_hunt_hub"
+    },
+    {
+      "name": "GAIA physical-world oracle gateway (gaia. alias)",
+      "id": "gaia",
+      "well_known_url": "https://gaia.modelmarket.dev/.well-known/ai-market.json",
+      "public_key": "nXqEvIbWv+rA8TASY0GqGWZi/OPazT0HM1LQTrRXemg=",
+      "categories": [
+        "iot",
+        "sensors",
+        "physical-data",
+        "verification"
+      ],
+      "note": "Same deployment as iot.modelmarket.dev under a second hostname. `alias_of` keeps it OUT of the crawl frontier and in the id/key maps: this file is three tables at once, and adding the entry as a plain seed enrolled one node as two peers — 74 catalogue rows for 37 capabilities, both rows answering to canonical_id 'gaia'.",
+      "alias_of": "https://iot.modelmarket.dev/.well-known/ai-market.json"
+    }
+  ]
+}

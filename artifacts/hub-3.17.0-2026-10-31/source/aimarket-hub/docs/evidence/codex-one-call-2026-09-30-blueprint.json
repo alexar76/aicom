@@ -1,0 +1,25 @@
+{
+  "nodes": [
+    {
+      "id": "weather",
+      "product_id": "gaia.gateway",
+      "capability_id": "gaia.weather.read@v1",
+      "source_hub": "https://iot.modelmarket.dev",
+      "input": {
+        "city": "Berlin"
+      }
+    },
+    {
+      "id": "air",
+      "product_id": "gaia.gateway",
+      "capability_id": "gaia.air.read@v1",
+      "source_hub": "https://iot.modelmarket.dev",
+      "depends_on": [
+        "weather"
+      ],
+      "input": {
+        "city": "Berlin"
+      }
+    }
+  ]
+}

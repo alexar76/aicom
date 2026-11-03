@@ -1,0 +1,17 @@
+base modelmarket-hub:hf-20261101 (9a347de55405), live page 1ea47818650006de, base expected 1ea47818650006de -> modelmarket-hub:pr-20261102
+image 89356c61dcad5ae4 context 89356c61dcad5ae4
+PEERS_TTL_MS lines: 2
+served /app/terminal-home.html
+EXPECT=modelmarket-hub:hf-20261101
+----
+base modelmarket-hub-uni:hf-20261101 (778de812f0d3), live page c68312a5492fde9e, base expected c68312a5492fde9e -> modelmarket-hub-uni:pr-20261102
+image 48eb304fabd8b994 context 48eb304fabd8b994
+PEERS_TTL_MS lines: 2
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'aimarket_hub.ui_assets'
+base modelmarket-hub-uni:hf-20261101 (778de812f0d3), live page c68312a5492fde9e, base expected c68312a5492fde9e -> modelmarket-hub-uni:pr-20261102
+image 48eb304fabd8b994 context 48eb304fabd8b994
+PEERS_TTL_MS lines: 2
+served /app/terminal-home.html (pages.py joins hub_root)
+EXPECT=modelmarket-hub-uni:hf-20261101

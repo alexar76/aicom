@@ -1,0 +1,73 @@
+{
+  "date": "2026-09-30",
+  "buyer_hub": "https://modelmarket.dev",
+  "seller_hub": "https://independentai.network/hub",
+  "wallet": "0x6e94c380d908531f9822035d6cc4c8d2b0186c9c",
+  "run_id": "paid_356c3e6931dc6a7f4b3bd2640881e04b",
+  "job_id": "job_b9aebbd2aa412d310b14c91e",
+  "operation_id": "op_c6d88ad6d742603073eaa6eab5326d38",
+  "source_hub": "https://independentai.network/hub",
+  "payment_rail": "independent_seller",
+  "pay_to": "0xB73d8Bc93B791510C4733C5C5Ac2015a3c2930Ec",
+  "tx_hash": "0x0d3f6ab3c20ea6c719a7bf8127583d6e3a14ddd48220e961834772cb852e8919",
+  "success": true,
+  "status": "completed",
+  "final_result": {
+    "block_number": 51980340,
+    "chain": "base",
+    "chain_id": 8453,
+    "findings": [],
+    "score": 100,
+    "summary": "Base mainnet is reachable through KOVA.",
+    "verdict": "pass"
+  },
+  "service_usdc": ".002",
+  "gas_wei": "603167313432",
+  "usd_policy_ceiling": 6000,
+  "prior_cost_at_ceiling_usd": "0.016197102150400000",
+  "new_cost_at_ceiling_usd": "0.005619003880592000",
+  "cumulative_cost_at_ceiling_usd": "0.021816106030992000",
+  "approved_total_usd": "1",
+  "new_order_limit_usd": ".15",
+  "controlled_client_response_loss": true,
+  "signed_result_verified": true,
+  "http_requests": [
+    {
+      "method": "GET",
+      "host": "modelmarket.dev",
+      "path": "/studio/paid-runs/paid_356c3e6931dc6a7f4b3bd2640881e04b/pipeline",
+      "http_status": 200
+    },
+    {
+      "method": "POST",
+      "host": "mainnet.base.org",
+      "path": "/",
+      "http_status": 200
+    },
+    {
+      "method": "POST",
+      "host": "mainnet.base.org",
+      "path": "/",
+      "http_status": 200
+    },
+    {
+      "method": "POST",
+      "host": "modelmarket.dev",
+      "path": "/ai-market/v2/invoke",
+      "http_status": 200
+    },
+    {
+      "method": "GET",
+      "host": "modelmarket.dev",
+      "path": "/studio/paid-runs/paid_356c3e6931dc6a7f4b3bd2640881e04b/pipeline",
+      "http_status": 200
+    },
+    {
+      "method": "POST",
+      "host": "mainnet.base.org",
+      "path": "/",
+      "http_status": 200
+    }
+  ],
+  "operator_note": "Separate production hub, keys, database and seller wallet; both deployments administered by the same user. Not evidence of an independently owned customer."
+}

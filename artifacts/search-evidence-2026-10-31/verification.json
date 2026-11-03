@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-31T11:42:18.127731+00:00",
+  "productionDeployed": false,
+  "pytest": {
+    "passed": 290,
+    "warnings": 17,
+    "durationSeconds": 19.88,
+    "scope": [
+      "database",
+      "crawler",
+      "crawler_stream_security",
+      "api",
+      "terminal_ssr",
+      "terminal_live",
+      "terminal_search_evidence",
+      "catalogue_evidence",
+      "search_ranking",
+      "observed_sellers"
+    ]
+  },
+  "javascriptRegressionTests": {
+    "passed": 7,
+    "lastRunAfterObservedOnlyReadoutFix": true
+  },
+  "migration": "064_catalogue_evidence; legacy rows retain an empty evidence object until a successful refresh",
+  "browser": {
+    "url": "http://127.0.0.1:8769/?lang=ru",
+    "data": "synthetic fixtures, never production sellers",
+    "verified": [
+      "separate catalogue and observed sections",
+      "actual signer key and UTC check time",
+      "observed seller-direct link",
+      "observed-only search is not an empty result"
+    ],
+    "screenshot": "qa/search-ru.jpg"
+  },
+  "securityProperties": [
+    "peer-supplied evidence ignored",
+    "failed signature refresh preserves historical check",
+    "untrusted text escaped",
+    "only same-origin HTTPS observed endpoint links",
+    "observed results never enter catalogue invocation indexes"
+  ],
+  "languages": [
+    "en",
+    "ru",
+    "es",
+    "fr",
+    "zh"
+  ]
+}

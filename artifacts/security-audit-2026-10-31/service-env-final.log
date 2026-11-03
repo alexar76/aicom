@@ -1,0 +1,25 @@
+......F................................................................. [ 47%]
+........................................................................ [ 94%]
+........                                                                 [100%]
+=================================== FAILURES ===================================
+_____________ test_every_name_a_service_reads_reaches_it[factory] ______________
+
+service = 'factory'
+
+    @pytest.mark.parametrize("service", SCANNED)
+    def test_every_name_a_service_reads_reaches_it(service):
+        names, _ = service_reads(service)
+        excused = NOT_READ_AT_RUNTIME.get(service, set()) | service_env.DENY.get(service, set())
+        dropped = sorted(n for n in names - excused if not service_env.allowed(service, n))
+>       assert not dropped, (
+            f"service_env.py would drop {len(dropped)} name(s) that {service} reads: {dropped}.\n"
+            f"Add each to SCOPES['{service}'] in scripts/security/service_env.py, or, if the "
+            f"service must not get it, to DENY with the reason.")
+E       AssertionError: service_env.py would drop 3 name(s) that factory reads: ['AIMARKET_ORACLE_PAID_TIER_CREDENTIALS', 'AIMARKET_PEER_IDENTITY_ALIASES', 'CARGO_HOME'].
+E         Add each to SCOPES['factory'] in scripts/security/service_env.py, or, if the service must not get it, to DENY with the reason.
+E       assert not ['AIMARKET_ORACLE_PAID_TIER_CREDENTIALS', 'AIMARKET_PEER_IDENTITY_ALIASES', 'CARGO_HOME']
+
+tests/test_service_env_scope.py:474: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_service_env_scope.py::test_every_name_a_service_reads_reaches_it[factory]
+1 failed, 151 passed in 21.03s

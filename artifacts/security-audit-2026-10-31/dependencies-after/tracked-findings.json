@@ -1,0 +1,85 @@
+[
+  {
+    "ecosystem": "npm",
+    "package": "minimatch",
+    "version": "3.1.5",
+    "paths": [
+      "pingblip/memeforge/package-lock.json",
+      "pingblip/web/package-lock.json",
+      "web/frontend/package-lock.json"
+    ],
+    "id": "GHSA-g3hv-75wg-m249",
+    "aliases": [
+      "CVE-2026-118764"
+    ],
+    "severity": "MODERATE",
+    "summary": "minimatch has potential denial of service via globparts amplification",
+    "fixed": [
+      "11.0.1"
+    ],
+    "url": "https://osv.dev/vulnerability/GHSA-g3hv-75wg-m249",
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/isaacs/minimatch/security/advisories/GHSA-g3hv-75wg-m249"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-118764"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/isaacs/minimatch/commit/77a0f5c4b80bdc641c3c930a1d9edf5ad2db57f8"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/isaacs/minimatch"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/isaacs/minimatch/releases/tag/v11.0.1"
+      }
+    ]
+  },
+  {
+    "ecosystem": "npm",
+    "package": "minimatch",
+    "version": "5.1.9",
+    "paths": [
+      "cite-desks/emberline/frontend/package-lock.json",
+      "contracts/zk/package-lock.json"
+    ],
+    "id": "GHSA-g3hv-75wg-m249",
+    "aliases": [
+      "CVE-2026-118764"
+    ],
+    "severity": "MODERATE",
+    "summary": "minimatch has potential denial of service via globparts amplification",
+    "fixed": [
+      "11.0.1"
+    ],
+    "url": "https://osv.dev/vulnerability/GHSA-g3hv-75wg-m249",
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/isaacs/minimatch/security/advisories/GHSA-g3hv-75wg-m249"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-118764"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/isaacs/minimatch/commit/77a0f5c4b80bdc641c3c930a1d9edf5ad2db57f8"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/isaacs/minimatch"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/isaacs/minimatch/releases/tag/v11.0.1"
+      }
+    ]
+  }
+]

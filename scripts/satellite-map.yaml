@@ -1,5 +1,4 @@
-# GENERATED COPY — do not hand-edit. `scripts/sync_knowledge_base.py --write` mirrors
-# scripts/satellite-map.yaml here, including explicit local/runtime knowledge entries.
+# GENERATED PUBLIC COPY — do not hand-edit. Closed satellite entries are omitted.
 # Monorepo → GitHub satellite mapping (source of truth for mirror + release scripts).
 # Org defaults to alexar76; override with SATELLITE_GITHUB_ORG env.
 #
@@ -1403,7 +1402,8 @@ satellites:
 
   - id: symmartys
     repo: symmartys
-    github_published: false
+    # Public on GitHub since 2026-10-29 (source 0.5.0; PyPI aimarket-symmartys 0.5.0).
+    github_published: true
     knowledge_visible: true
     deployment_status: live
     description: "SYMMARTYS — public-record facts for agents that trade: EU VAT (VIES), legal entities (GLEIF LEI), company registers, EORI, domains (RDAP), ECB rates, sanctions lists (OFAC with wallets, EU, UK), business days, Bitcoin timestamps, web evidence captures and dead man's switch timers — every answer signed with its source, fetch time and SHA-256."

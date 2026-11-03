@@ -1,0 +1,19 @@
+<claude-code-hint v="1" type="plugin" value="stripe@claude-plugins-official" />
+Checking for new versions...
+
+A newer version of the Stripe CLI is available, please update to: v1.55.6
+Getting ready...
+Ready! You are using Stripe API Version [2026-09-30.endive]. Your webhook signing secret is whsec_[redacted] (^C to quit)
+2026-11-01 10:24:01   --> checkout.session.completed [evt_1UWu5aIQlLlK5FUZ7PtlFEuo]
+2026-11-01 10:24:01  <--  [200] POST http://127.0.0.1:9497/api/v1/watch/stripe [evt_1UWu5aIQlLlK5FUZ7PtlFEuo]
+2026-11-01 10:30:14   --> checkout.session.completed [evt_1UWuBcIQlLlK5FUZo2UEnC3j]
+2026-11-01 10:30:14  <--  [200] POST http://127.0.0.1:9497/api/v1/watch/stripe [evt_1UWuBcIQlLlK5FUZo2UEnC3j]
+2026-11-01 10:39:23   --> charge.refunded [evt_3UWu5ZIQlLlK5FUZ1eyteclC]
+2026-11-01 10:39:23  <--  [200] POST http://127.0.0.1:9497/api/v1/watch/stripe [evt_3UWu5ZIQlLlK5FUZ1eyteclC]
+2026-11-01 10:39:24   --> charge.refunded [evt_3UWuBbIQlLlK5FUZ2UDDtnF2]
+2026-11-01 10:39:24  <--  [200] POST http://127.0.0.1:9497/api/v1/watch/stripe [evt_3UWuBbIQlLlK5FUZ2UDDtnF2]
+2026-11-01 10:40:40   --> checkout.session.completed [evt_1UWuLiIQlLlK5FUZi6SyUvPc]
+2026-11-01 10:40:40  <--  [200] POST http://127.0.0.1:9497/api/v1/watch/stripe [evt_1UWuLiIQlLlK5FUZi6SyUvPc]
+2026-11-01 10:40:43   --> charge.refunded [evt_3UWuLhIQlLlK5FUZ0U2lBqOS]
+2026-11-01 10:40:43  <--  [200] POST http://127.0.0.1:9497/api/v1/watch/stripe [evt_3UWuLhIQlLlK5FUZ0U2lBqOS]
+

@@ -1,0 +1,116 @@
+{
+  "bugs": {
+    "url": "https://github.com/isaacs/minimatch/issues"
+  },
+  "dist": {
+    "shasum": "6958bb689808489c3b4320428537fda7ae2a881c",
+    "tarball": "https://registry.npmjs.org/minimatch/-/minimatch-11.0.1.tgz",
+    "fileCount": 37,
+    "integrity": "sha512-t+Vn6DX4wPCxS23y03C0uhF7S1jpi1GfqPrnlEipCJaA2ykiNbMkVlDutZtmvLfRcUN6R8AYVlzTsQrT4RZoLQ==",
+    "signatures": [
+      {
+        "sig": "MEUCIQDB2uFESkha1qIPEvIJ3mxzmJ0gIzHBinxGHk+V0Px6rwIgFdwkf9cO6QFCCcbHyuXFDXIJ/pE3d7SnkJimJ47mLys=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "sig": "MEQCIDj9WO5QU7lR2BoI/oOe8ggF/52doLDzBXQSf2a1bym3AiBLmQZLM/Yw8k3UhjuSUYIApi3Wup2h+jzSBs/SVrE+QQ==",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 420517
+  },
+  "main": "./dist/commonjs/index.js",
+  "name": "minimatch",
+  "tshy": {
+    "exports": {
+      ".": "./src/index.ts",
+      "./package.json": "./package.json"
+    },
+    "selfLink": false
+  },
+  "type": "module",
+  "types": "./dist/commonjs/index.d.ts",
+  "author": {
+    "url": "http://blog.izs.me",
+    "name": "Isaac Z. Schlueter",
+    "email": "i@izs.me"
+  },
+  "module": "./dist/esm/index.js",
+  "engines": {
+    "node": "18 || 20 || >=22"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "funding": {
+    "url": "https://github.com/sponsors/isaacs"
+  },
+  "gitHead": "47afe882784638ccdee8d30e0b7516aed2b589a9",
+  "license": "BlueOak-1.0.0",
+  "scripts": {
+    "lint": "oxlint --fix src test",
+    "snap": "tap",
+    "test": "tap",
+    "format": "prettier --write .",
+    "prepare": "tshy",
+    "presnap": "npm run prepare",
+    "pretest": "npm run prepare",
+    "typedoc": "typedoc --tsconfig .tshy/esm.json ./src/*.ts",
+    "postlint": "npm run format",
+    "postsnap": "npm run lint",
+    "benchmark": "node benchmark/index.js",
+    "preversion": "npm test",
+    "postversion": "npm publish",
+    "prepublishOnly": "git push origin --follow-tags"
+  },
+  "_npmUser": {
+    "name": "isaacs",
+    "email": "i@izs.me"
+  },
+  "homepage": "https://github.com/isaacs/minimatch#readme",
+  "repository": {
+    "url": "git+ssh://git@github.com/isaacs/minimatch.git",
+    "type": "git"
+  },
+  "_npmVersion": "12.2.0",
+  "description": "a glob matcher in javascript",
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "isaacs",
+      "email": "i@izs.me"
+    }
+  ],
+  "_nodeVersion": "26.5.0",
+  "dependencies": {
+    "brace-expansion": "^5.0.12",
+    "@isaacs/nonrecursive-glob-match": "^1.0.1"
+  },
+  "_hasShrinkwrap": false,
+  "devDependencies": {
+    "tap": "^21.7.5",
+    "tshy": "^4.1.3",
+    "mkdirp": "^3.0.1",
+    "oxlint": "^1.90.0",
+    "typedoc": "^0.28.20",
+    "prettier": "^3.9.6",
+    "@types/node": "^26.6.5",
+    "oxlint-tsgolint": "^7.0.2001"
+  },
+  "_npmOperationalInternal": {
+    "tmp": "tmp/minimatch_11.0.1_1793139963656_0.9547388788188373",
+    "host": "s3://npm-registry-packages-npm-production"
+  },
+  "_id": "minimatch@11.0.1",
+  "version": "11.0.1"
+}

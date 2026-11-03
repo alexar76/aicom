@@ -1,0 +1,57 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 678B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/modelmarket-hub:pre3170-c66fe5e88c43
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 111B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/4] FROM docker.io/library/modelmarket-hub:pre3170-c66fe5e88c43@sha256:c66fe5e88c43997f21cdff3a0799dc4e01c7312c15faf7c5e901b69c72136f71
+#5 resolve docker.io/library/modelmarket-hub:pre3170-c66fe5e88c43@sha256:c66fe5e88c43997f21cdff3a0799dc4e01c7312c15faf7c5e901b69c72136f71 0.1s done
+#5 ...
+
+#4 [internal] load build context
+#4 transferring context: 1.83MB 0.0s done
+#4 DONE 0.1s
+
+#5 [1/4] FROM docker.io/library/modelmarket-hub:pre3170-c66fe5e88c43@sha256:c66fe5e88c43997f21cdff3a0799dc4e01c7312c15faf7c5e901b69c72136f71
+#5 DONE 0.7s
+
+#6 [2/4] COPY aimarket_hub-3.17.0-py3-none-any.whl /tmp/aimarket_hub-3.17.0-py3-none-any.whl
+#6 DONE 0.0s
+
+#7 [3/4] COPY activate_wheel.py /tmp/activate_wheel.py
+#7 DONE 0.0s
+
+#8 [4/4] RUN python -m pip install --no-index --no-deps --force-reinstall /tmp/aimarket_hub-3.17.0-py3-none-any.whl     && python /tmp/activate_wheel.py     && python -m pip check     && chown -R hub:hub /app/aimarket_hub     && rm /tmp/aimarket_hub-3.17.0-py3-none-any.whl /tmp/activate_wheel.py
+#8 0.949 Processing /tmp/aimarket_hub-3.17.0-py3-none-any.whl
+#8 1.013 Installing collected packages: aimarket-hub
+#8 1.014   Attempting uninstall: aimarket-hub
+#8 1.018     Found existing installation: aimarket-hub 3.15.28
+#8 1.023     Uninstalling aimarket-hub-3.15.28:
+#8 1.356       Successfully uninstalled aimarket-hub-3.15.28
+#8 2.405 Successfully installed aimarket-hub-3.17.0
+#8 2.407 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#8 2.828 {"package": "/usr/local/lib/python3.12/site-packages/aimarket_hub", "version": "3.17.0", "wheelSha256": "832f91e61cf486534bcb04552048a8fc14e392fe2cf866c3f56b5a73cd62219f", "filesVerified": 212}
+#8 3.327 No broken requirements found.
+#8 DONE 3.4s
+
+#9 exporting to image
+#9 exporting layers
+#9 exporting layers 1.1s done
+#9 exporting manifest sha256:ca0780e8753ae7f8ba54d135da742bf6446a71c89f085b4adb424e60b6f47d70 done
+#9 exporting config sha256:57899924c13c972ed54908c58db6a5e0747be418b3b744bde93366dcb60aabd0 0.0s done
+#9 exporting attestation manifest sha256:7436c1a56976b8a69d9342594e9ad2d311fc7ad2e38209c666e01438e9a2bec3 0.0s done
+#9 exporting manifest list sha256:65b88f33205a8c758317dcdd4827893499249f0545caf40cceab60a0b5f17b3b 0.0s done
+#9 naming to docker.io/library/modelmarket-hub:3.17.0-20261031 done
+#9 unpacking to docker.io/library/modelmarket-hub:3.17.0-20261031
+#9 unpacking to docker.io/library/modelmarket-hub:3.17.0-20261031 0.4s done
+#9 DONE 1.8s

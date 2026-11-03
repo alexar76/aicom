@@ -1,0 +1,50 @@
+{
+  "payments": [
+    {
+      "payer": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "amount_atomic": "1000000",
+      "capability_id": "credits.topup",
+      "status": "settled",
+      "settle_tx_hash": "0xf43944ce33179d4635c9e4fed0ad12fa3e64c707fe3c435a74519f37979ad661",
+      "created_at": "2026-10-06 18:43:04",
+      "receipt_id": "topup:base:0x2abe9ae86a8360f5e94f0d202dbd687c3ca60e9fefcea3c4681ee96e41997e7d"
+    },
+    {
+      "payer": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "amount_atomic": "1000",
+      "capability_id": "gaia.weather.read@v1",
+      "status": "settled",
+      "settle_tx_hash": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70",
+      "created_at": "2026-10-31 04:41:09",
+      "receipt_id": ""
+    },
+    {
+      "payer": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "amount_atomic": "1000",
+      "capability_id": "gaia.weather.read@v1",
+      "status": "settled",
+      "settle_tx_hash": "0x478637aabfeb2a2ab0a0627cd706a6d75862e894d478488cc34db15baf036de9",
+      "created_at": "2026-10-31 04:54:56",
+      "receipt_id": ""
+    },
+    {
+      "payer": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "amount_atomic": "1000",
+      "capability_id": "gaia.weather.read@v1",
+      "status": "settled",
+      "settle_tx_hash": "0x6d1082db9b7fe841b5700a88c27c52e6e310077bc6a9eb5f811da391652ce342",
+      "created_at": "2026-10-31 04:55:45",
+      "receipt_id": ""
+    }
+  ],
+  "topups": [
+    {
+      "payer": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "paid_units": 1000000,
+      "tx_hash": "0xf43944ce33179d4635c9e4fed0ad12fa3e64c707fe3c435a74519f37979ad661",
+      "status": "credited",
+      "created_at": "2026-10-06 18:42:55"
+    }
+  ],
+  "invoices": []
+}

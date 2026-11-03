@@ -1,0 +1,46 @@
+
+> aimarket-escrow-tests@0.0.0 test:client
+> node --test support/client-compatibility.test.cjs support/bigint-buffer-safe/test.cjs
+
+TAP version 13
+# Subtest: unsigned amount encodings match independent fixed endian vectors
+ok 1 - unsigned amount encodings match independent fixed endian vectors
+  ---
+  duration_ms: 2.705125
+  type: 'test'
+  ...
+# Subtest: untrusted widths and signed values cannot wrap, truncate or allocate unbounded memory
+ok 2 - untrusted widths and signed values cannot wrap, truncate or allocate unbounded memory
+  ---
+  duration_ms: 0.579167
+  type: 'test'
+  ...
+# (node:91515) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+# (Use `node --trace-deprecation ...` to show where the warning was created)
+# Subtest: legacy and versioned SOL transfer signatures match independent Ed25519 and message vectors
+ok 3 - legacy and versioned SOL transfer signatures match independent Ed25519 and message vectors
+  ---
+  duration_ms: 92.647292
+  type: 'test'
+  ...
+# Subtest: Anchor instruction coder and PDA derivation retain deployed lottery wire format
+ok 4 - Anchor instruction coder and PDA derivation retain deployed lottery wire format
+  ---
+  duration_ms: 2.573791
+  type: 'test'
+  ...
+# Subtest: real SPL layouts use the safe replacement without changing unsigned amount bytes
+ok 5 - real SPL layouts use the safe replacement without changing unsigned amount bytes
+  ---
+  duration_ms: 0.65875
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 462.011792

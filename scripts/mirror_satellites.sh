@@ -4,6 +4,7 @@
 # to their GitHub repos, applying per-satellite layout transforms.
 #
 # Source of truth: scripts/satellite-map.yaml
+# Offline audit (no remote operations): scripts/audit_satellite_exports.py
 #
 # Usage:
 #   ./scripts/mirror_satellites.sh                          # all satellites
@@ -118,7 +119,8 @@ mirror_satellites.sh — export satellites from aicom monorepo → GitHub repos
 Usage:
   ./scripts/mirror_satellites.sh [OPTIONS] [SATELLITE_ID]
 
-  Without SATELLITE_ID, mirrors ALL non-optional satellites.
+  Without SATELLITE_ID, mirrors ALL non-optional satellites, then the profile README
+  (alexar76/alexar76; MIRROR_SKIP_PROFILE=1 leaves it out).
   With SATELLITE_ID, mirrors only that one (for CI matrix use).
 
 Options:
@@ -137,6 +139,7 @@ Environment:
 EOF
 }
 
+if [[ "${AICOM_MIRROR_LIBRARY_ONLY:-0}" != "1" ]]; then
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run)      DRY_RUN=1; shift ;;
@@ -166,6 +169,7 @@ if [[ -z "$TOKEN" && "$DRY_RUN" -eq 0 ]]; then
 fi
 
 export AICOM_MIRROR_GH_TOKEN="$TOKEN"
+fi  # CLI/auth are intentionally absent when loaded by the offline exporter.
 
 satellite_remote_url() {
   local repo="$1"
@@ -203,7 +207,7 @@ _explain_push_failure() {  # _explain_push_failure OUTPUT SAT_ID live|squash
 }
 
 # ── Workdir setup ───────────────────────────────────────────────────────────
-if [[ "$DRY_RUN" -eq 0 ]]; then
+if [[ "$DRY_RUN" -eq 0 && "${AICOM_MIRROR_LIBRARY_ONLY:-0}" != "1" ]]; then
   WORKDIR="$(mktemp -d)"
   if [[ "$KEEP_WORKDIR" -eq 0 ]]; then
     trap 'rm -rf "$WORKDIR"' EXIT
@@ -215,6 +219,22 @@ fi
 # ═══════════════════════════════════════════════════════════════════════════
 #  Satellite-specific export functions
 # ═══════════════════════════════════════════════════════════════════════════
+
+# The canonical filters precede caller options: rsync uses the first matching rule.
+# These public source files have content checks in verify_structured_secrets.py.
+_satellite_rsync() {
+  local policy pat
+  policy="$(python3 "$ROOT/scripts/aicom_publish_config.py" list-rsync-excludes)" || return 1
+  local -a filters=(--include '.env.example' --include 'quality-public-key.pem' --include '_signing_key_storage.py')
+  local count=0
+  while IFS= read -r pat; do
+    [[ -n "$pat" ]] || continue
+    filters+=(--exclude "$pat")
+    count=$((count + 1))
+  done <<< "$policy"
+  (( count >= 20 )) || { echo "canonical satellite filters missing" >&2; return 1; }
+  command rsync "${filters[@]}" "$@"
+}
 
 export_simple() {
   # Generic export: rsync monorepo path → satellite root
@@ -306,8 +326,9 @@ PY
     done
   fi
 
-  rsync "${rsync_args[@]}" "$src/" "$clone/"
+  _satellite_rsync "${rsync_args[@]}" "$src/" "$clone/" || return 1
 
+  python3 "$ROOT/scripts/aicom_publish_config.py" purge-satellite-excludes "$clone" "$sat_id" || return 1
   bash "$ROOT/scripts/purge_mirror_runtime_artifacts.sh" "$clone"
   bash "$ROOT/scripts/verify_mirror_secrets.sh" "$clone"
 
@@ -363,7 +384,7 @@ PY
   while read -r from to; do
     [[ -d "$ROOT/$from" ]] || { echo "attested-memory: missing $from" >&2; exit 1; }
     mkdir -p "$clone/$to"
-    rsync "${args[@]}" "$ROOT/$from/" "$clone/$to/" || { echo "attested-memory: rsync $from failed" >&2; exit 1; }
+    _satellite_rsync "${args[@]}" "$ROOT/$from/" "$clone/$to/" || { echo "attested-memory: rsync $from failed" >&2; exit 1; }
   done <<< "$pairs"
   bash "$ROOT/scripts/purge_mirror_runtime_artifacts.sh" "$clone" || exit 1
   bash "$ROOT/scripts/verify_mirror_secrets.sh" "$clone" || { echo "attested-memory: secret check failed — nothing pushed" >&2; exit 1; }
@@ -449,10 +470,10 @@ _post_rsync_satellite_hook() {
       # vendor/oracle-core when present (see skopos/.github/workflows/ci.yml).
       mkdir -p "$clone/vendor"
       if [[ -d "$ROOT/oracles/core" ]]; then
-        rsync -a --delete \
+        _satellite_rsync -a --delete \
           --exclude '.venv' --exclude '__pycache__' --exclude '.pytest_cache' \
           --exclude '*.egg-info' --exclude '.mypy_cache' \
-          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/"
+          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/" || return 1
         echo "  ✓ vendored oracles/core → vendor/oracle-core (CI + GHCR)"
       else
         echo "  ⚠️  oracles/core missing — PQC CI will fall back to stale PyPI"
@@ -499,10 +520,10 @@ _post_rsync_satellite_hook() {
       # Satellite Docker build needs oracle-core without the monorepo path.
       mkdir -p "$clone/vendor"
       if [[ -d "$ROOT/oracles/core" ]]; then
-        rsync -a --delete \
+        _satellite_rsync -a --delete \
           --exclude '.venv' --exclude '__pycache__' --exclude '.pytest_cache' \
           --exclude '*.egg-info' --exclude '.mypy_cache' \
-          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/"
+          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/" || return 1
         echo "  ✓ vendored oracles/core → vendor/oracle-core (GHCR standalone)"
       else
         echo "  ⚠️  oracles/core missing — Dockerfile.standalone will fail until vendored"
@@ -516,10 +537,10 @@ _post_rsync_satellite_hook() {
       # SYMMARTYS's CI, release and Dockerfile.standalone install oracle-core from vendor/.
       mkdir -p "$clone/vendor"
       if [[ -d "$ROOT/oracles/core" ]]; then
-        rsync -a --delete \
+        _satellite_rsync -a --delete \
           --exclude '.venv' --exclude '__pycache__' --exclude '.pytest_cache' \
           --exclude '*.egg-info' --exclude '.mypy_cache' \
-          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/"
+          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/" || return 1
         echo "  ✓ vendored oracles/core → vendor/oracle-core (CI + GHCR standalone)"
       else
         echo "  ⚠️  oracles/core missing — CI and Dockerfile.standalone will fail until vendored"
@@ -533,10 +554,10 @@ _post_rsync_satellite_hook() {
       # MOMUS's standalone Docker build needs oracle-core without the monorepo path.
       mkdir -p "$clone/vendor"
       if [[ -d "$ROOT/oracles/core" ]]; then
-        rsync -a --delete \
+        _satellite_rsync -a --delete \
           --exclude '.venv' --exclude '__pycache__' --exclude '.pytest_cache' \
           --exclude '*.egg-info' --exclude '.mypy_cache' \
-          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/"
+          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/" || return 1
         echo "  ✓ vendored oracles/core → vendor/oracle-core (GHCR standalone)"
       else
         echo "  ⚠️  oracles/core missing — standalone Docker build will fail until vendored"
@@ -545,9 +566,9 @@ _post_rsync_satellite_hook() {
       # aimarket-protocol is absent on the GitHub satellite; monorepo Dockerfile
       # COPYs it from the tree — standalone must ship the same script).
       if [[ -d "$ROOT/aimarket-protocol/conformance" ]]; then
-        rsync -a --delete \
+        _satellite_rsync -a --delete \
           --exclude '__pycache__' --exclude '.pytest_cache' \
-          "$ROOT/aimarket-protocol/conformance/" "$clone/vendor/protocol-conformance/"
+          "$ROOT/aimarket-protocol/conformance/" "$clone/vendor/protocol-conformance/" || return 1
         echo "  ✓ vendored aimarket-protocol/conformance → vendor/protocol-conformance"
       else
         echo "  ⚠️  aimarket-protocol/conformance missing — cross-check CI will fail until vendored"
@@ -561,18 +582,18 @@ _post_rsync_satellite_hook() {
       # The Treasury depends on BOTH oracle-core AND aimarket-momus; vendor both for standalone.
       mkdir -p "$clone/vendor"
       if [[ -d "$ROOT/oracles/core" ]]; then
-        rsync -a --delete \
+        _satellite_rsync -a --delete \
           --exclude '.venv' --exclude '__pycache__' --exclude '.pytest_cache' \
           --exclude '*.egg-info' --exclude '.mypy_cache' \
-          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/"
+          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/" || return 1
         echo "  ✓ vendored oracles/core → vendor/oracle-core"
       fi
       if [[ -d "$ROOT/momus" ]]; then
-        rsync -a --delete \
+        _satellite_rsync -a --delete \
           --exclude '.venv' --exclude '__pycache__' --exclude '.pytest_cache' \
           --exclude '*.egg-info' --exclude 'data' --exclude 'frontend/node_modules' \
           --exclude 'frontend/dist' --exclude '.github' \
-          "$ROOT/momus/" "$clone/vendor/momus/"
+          "$ROOT/momus/" "$clone/vendor/momus/" || return 1
         echo "  ✓ vendored momus → vendor/momus (Treasury imports aimarket-momus)"
       else
         echo "  ⚠️  momus/ missing — Treasury standalone build will fail until vendored"
@@ -592,10 +613,10 @@ _post_rsync_satellite_hook() {
       # LOGOS's standalone Docker build needs oracle-core without the monorepo path.
       mkdir -p "$clone/vendor"
       if [[ -d "$ROOT/oracles/core" ]]; then
-        rsync -a --delete \
+        _satellite_rsync -a --delete \
           --exclude '.venv' --exclude '__pycache__' --exclude '.pytest_cache' \
           --exclude '*.egg-info' --exclude '.mypy_cache' \
-          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/"
+          "$ROOT/oracles/core/" "$clone/vendor/oracle-core/" || return 1
         echo "  ✓ vendored oracles/core → vendor/oracle-core (GHCR standalone)"
       else
         echo "  ⚠️  oracles/core missing — standalone Docker build will fail until vendored"
@@ -636,36 +657,13 @@ _mirror_landing_pages_root() {
   fi
 }
 
-_purge_dioscuri_stray_source() {
-  local src="$ROOT/dioscuri"
-  local stray
-  for stray in main.py config.yaml pipeline_worker.py finance_schemas.py finance_stats.py marketplace_taxonomy.py product_pnl.py; do
-    if [[ -f "$src/$stray" ]]; then
-      echo "  ⚠️  Removing stray dioscuri/$stray (factory file — not part of satellite)"
-      rm -f "$src/$stray"
-    fi
-  done
-  for stray in acex web agents ai-service-mesh aimarket-hub alien-monitor argus lottery oracles platon plugins ecosystem-landing dioscuri contracts deploy config core; do
-    if [[ -d "$src/$stray" ]]; then
-      echo "  ⚠️  Removing stray dioscuri/$stray/ (wrong publish target — not part of satellite)"
-      rm -rf "$src/$stray"
-    fi
-  done
-  for stray in scripts/mirror_satellites.sh scripts/publish_all_repos.sh scripts/satellite-map.yaml; do
-    if [[ -f "$src/$stray" ]]; then
-      echo "  ⚠️  Removing stray dioscuri/$stray (factory script — not part of satellite)"
-      rm -f "$src/$stray"
-    fi
-  done
-}
-
 _purge_dioscuri_mirror_clone() {
   local clone="$1"
   local stray
-  for stray in main.py config.yaml pipeline_worker.py; do
+  for stray in main.py config.yaml pipeline_worker.py finance_schemas.py finance_stats.py marketplace_taxonomy.py product_pnl.py; do
     rm -f "$clone/$stray"
   done
-  for stray in acex web agents ai-service-mesh aimarket-hub alien-monitor argus lottery oracles platon plugins ecosystem-landing dioscuri contracts; do
+  for stray in acex web agents ai-service-mesh aimarket-hub alien-monitor argus lottery oracles platon plugins ecosystem-landing dioscuri contracts deploy config core; do
     rm -rf "$clone/$stray"
   done
   rm -f "$clone/scripts/mirror_satellites.sh" "$clone/scripts/publish_all_repos.sh" "$clone/scripts/satellite-map.yaml"
@@ -675,7 +673,6 @@ export_dioscuri() {
   local sat_id="dioscuri"
   local extra_excludes
   extra_excludes="$(_python_map exclude-paths dioscuri)"
-  _purge_dioscuri_stray_source
   export_simple "$sat_id" "dioscuri" "dioscuri" "mit" "$extra_excludes"
 }
 
@@ -736,9 +733,9 @@ _inject_mirror_banner() {
 
   # Anchor: the end of the badge block, else the first H1, else the top.
   local anchor_line=""
-  anchor_line="$(grep -nF -m1 '<!-- /aicom-readme-badges -->' "$readme" | cut -d: -f1)"
+  anchor_line="$(grep -nF -m1 '<!-- /aicom-readme-badges -->' "$readme" | cut -d: -f1 || true)"
   if [[ -z "$anchor_line" ]]; then
-    anchor_line="$(grep -nE -m1 '^# ' "$readme" | cut -d: -f1)"
+    anchor_line="$(grep -nE -m1 '^# ' "$readme" | cut -d: -f1 || true)"
   fi
 
   local tmp
@@ -874,7 +871,7 @@ export_desktop_monorepo() {
     local dst_dir="$clone/apps/$sku"
     if [[ -d "$src_dir" ]]; then
       mkdir -p "$dst_dir"
-      rsync "${rsync_base_args[@]}" "$src_dir/" "$dst_dir/"
+      _satellite_rsync "${rsync_base_args[@]}" "$src_dir/" "$dst_dir/" || return 1
       echo "  ✓ apps/$sku"
 
       # ── Language packs (colocated) ──
@@ -882,7 +879,7 @@ export_desktop_monorepo() {
       local lp_dst="$dst_dir/language-packs"
       if [[ -d "$lp_src" ]]; then
         mkdir -p "$lp_dst"
-        rsync "${rsync_base_args[@]}" "$lp_src/" "$lp_dst/"
+        _satellite_rsync "${rsync_base_args[@]}" "$lp_src/" "$lp_dst/" || return 1
         echo "    ↳ language-packs from desktop-integrations/$sku/"
       fi
     else
@@ -894,7 +891,7 @@ export_desktop_monorepo() {
   local pkgs_src="$ROOT/desktop-integrations/packages"
   if [[ -d "$pkgs_src" ]]; then
     mkdir -p "$clone/packages"
-    rsync "${rsync_base_args[@]}" "$pkgs_src/" "$clone/packages/"
+    _satellite_rsync "${rsync_base_args[@]}" "$pkgs_src/" "$clone/packages/" || return 1
     echo "  ✓ packages/ (aicom_desktop_core, aicom_platform_init)"
   fi
 
@@ -1003,13 +1000,13 @@ PY
   cp "$ROOT/courses/README.md" "$clone/README.md"
   cp "$ROOT/courses/catalog.yaml" "$clone/catalog.yaml"
   cp "$ROOT/courses/.gitignore" "$clone/.gitignore" 2>/dev/null || true
-  rsync "${rsync_base[@]}" "$ROOT/courses/_shared/" "$clone/_shared/"
-  rsync "${rsync_base[@]}" "$ROOT/courses/_tooling/" "$clone/_tooling/"
+  _satellite_rsync "${rsync_base[@]}" "$ROOT/courses/_shared/" "$clone/_shared/" || return 1
+  _satellite_rsync "${rsync_base[@]}" "$ROOT/courses/_tooling/" "$clone/_tooling/" || return 1
   echo "  ✓ README.md, catalog.yaml, _shared/, _tooling/"
 
   for sku in $(_courses_skus); do
     mkdir -p "$clone/$sku"
-    rsync "${rsync_base[@]}" "$ROOT/courses/$sku/" "$clone/$sku/"
+    _satellite_rsync "${rsync_base[@]}" "$ROOT/courses/$sku/" "$clone/$sku/" || return 1
     echo "  ✓ $sku/"
   done
 
@@ -1202,7 +1199,7 @@ export_plugins() {
   # Main plugins
   mkdir -p "$clone/plugins"
   if [[ -d "$ROOT/plugins" ]]; then
-    rsync "${rsync_args[@]}" --exclude .github "$ROOT/plugins/" "$clone/plugins/"
+    _satellite_rsync "${rsync_args[@]}" --exclude .github "$ROOT/plugins/" "$clone/plugins/" || return 1
     echo "  ✓ plugins/"
   fi
 
@@ -1210,7 +1207,7 @@ export_plugins() {
   local provenance_src="$ROOT/aimarket-hub/plugins/aimarket-provenance"
   if [[ -d "$provenance_src" ]]; then
     mkdir -p "$clone/plugins/aimarket-provenance"
-    rsync "${rsync_args[@]}" "$provenance_src/" "$clone/plugins/aimarket-provenance/"
+    _satellite_rsync "${rsync_args[@]}" "$provenance_src/" "$clone/plugins/aimarket-provenance/" || return 1
     echo "  ✓ plugins/aimarket-provenance (from aimarket-hub)"
   fi
 
@@ -1318,7 +1315,7 @@ export_oracles() {
     rsync_args+=(--exclude "$pat")
   done
 
-  rsync "${rsync_args[@]}" "$src/" "$clone/"
+  _satellite_rsync "${rsync_args[@]}" "$src/" "$clone/" || return 1
 
   _copy_governance "$clone" "mit" "$repo" "oracles"
   _copy_github_templates "$clone"
@@ -1425,7 +1422,7 @@ export_aicom_products() {
   local products_backup=""
   if [[ -d "$clone/products" ]]; then
     products_backup="$(mktemp -d "${WORKDIR}/aicom-products-products.XXXXXX")"
-    rsync -a "$clone/products/" "$products_backup/"
+    _satellite_rsync -a "$clone/products/" "$products_backup/" || return 1
     echo "  ✓ preserved remote products/"
   fi
 
@@ -1440,11 +1437,11 @@ export_aicom_products() {
     rsync_args+=(--exclude "$pat")
   done
   rsync_args+=(--exclude "products/")
-  rsync "${rsync_args[@]}" "$src/" "$clone/"
+  _satellite_rsync "${rsync_args[@]}" "$src/" "$clone/" || return 1
 
   mkdir -p "$clone/products"
   if [[ -n "$products_backup" && -d "$products_backup" ]]; then
-    rsync -a "$products_backup/" "$clone/products/"
+    _satellite_rsync -a "$products_backup/" "$clone/products/" || return 1
     echo "  ✓ restored products/ after shell sync"
   elif [[ -f "$src/products/.gitkeep" ]]; then
     cp "$src/products/.gitkeep" "$clone/products/.gitkeep"
@@ -1505,7 +1502,7 @@ export_platon() {
     rsync_args+=(--exclude "$pat")
   done
 
-  rsync "${rsync_args[@]}" "$src/" "$clone/"
+  _satellite_rsync "${rsync_args[@]}" "$src/" "$clone/" || return 1
 
   _copy_governance "$clone" "mit" "$repo" "platon"
   _copy_github_templates "$clone"
@@ -1629,7 +1626,8 @@ export_lottery() {
     done
   fi
 
-  rsync "${rsync_args[@]}" "$src/" "$clone/"
+  _satellite_rsync "${rsync_args[@]}" "$src/" "$clone/" || return 1
+  python3 "$ROOT/scripts/aicom_publish_config.py" purge-satellite-excludes "$clone" "$sat_id" || return 1
   bash "$ROOT/scripts/purge_mirror_runtime_artifacts.sh" "$clone"
 
   # Standalone mirror: use self-contained foundry profile (monorepo dev keeps foundry.toml).
@@ -2273,9 +2271,12 @@ _commit_and_push() (
 
   cd "$clone"
 
+  # Also purge stale files in preserving exporters (profile, wiki, products).
+  python3 "$ROOT/scripts/aicom_publish_config.py" purge-satellite-excludes "$clone" "$sat_id" || return 1
+
   # Configure against the FINAL exported layout, including nested studio copies.
   # This also covers custom exporters that do not copy the shared GitHub templates.
-  python3 "$ROOT/scripts/security/configure_npm_security.py" "$clone"
+  python3 "$ROOT/scripts/security/configure_npm_security.py" "$clone" || return 1
 
   # ── Hard secret gate, for EVERY publish path ──────────────────────────
   # This used to run only inside the `live` branch below (and once inside
@@ -2752,6 +2753,11 @@ else:
   esac
 }
 
+# Sourcing the exporter library performs no auth, remote calls or exports.
+if [[ "${AICOM_MIRROR_LIBRARY_ONLY:-0}" == "1" ]]; then
+  return 0
+fi
+
 # ── Main ────────────────────────────────────────────────────────────────────
 
 echo "╔══════════════════════════════════════════════════════════════╗"
@@ -2770,6 +2776,12 @@ else
   while IFS= read -r sat_id; do
     export_satellite "$sat_id" || errors=$((errors + 1))
   done < <(_python_map list-ids)
+  # The profile README (alexar76/alexar76) describes every satellite, so it goes out with every
+  # full run. Until 2026-11-01 it was optional and only `mirror_satellites.sh profile` updated it,
+  # and it fell behind what was published. MIRROR_SKIP_PROFILE=1 leaves it out.
+  if [[ "${MIRROR_SKIP_PROFILE:-0}" != "1" ]]; then
+    export_satellite profile || errors=$((errors + 1))
+  fi
 
   echo ""
   echo "══════════════════════════════════════════════════════════════"

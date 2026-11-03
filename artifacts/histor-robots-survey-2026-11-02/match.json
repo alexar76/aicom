@@ -1,0 +1,158 @@
+{
+ "endpoints": 33520,
+ "hosts": 24282,
+ "hostKinds": {
+  "ok": 16393,
+  "5xx": 504,
+  "unreachable": 715,
+  "4xx": 6447,
+  "not-asked": 217,
+  "too-large": 6
+ },
+ "verdicts": {
+  "allowed": 19218,
+  "no robots.txt (4xx): allowed": 8059,
+  "disallowed": 3499,
+  "robots.txt 5xx or no answer: RFC 9309 says assume disallow": 1277,
+  "disallowed (whole site)": 1209,
+  "not asked / other: not-asked": 252,
+  "not asked / other: too-large": 6
+ },
+ "disallowed": {
+  "endpoints": 4708,
+  "hosts": 4359,
+  "readOkByHistor": 2224,
+  "withRecordedChanges": 1157,
+  "recordedChanges": 3712,
+  "topHosts": [
+   [
+    "a2awire.com",
+    120
+   ],
+   [
+    "cotlet.dev",
+    24
+   ],
+   [
+    "nova.civai.co",
+    23
+   ],
+   [
+    "apick.app",
+    11
+   ],
+   [
+    "api.kaiv.ai",
+    8
+   ],
+   [
+    "predictionmarketspicks.com",
+    8
+   ],
+   [
+    "three.ws",
+    8
+   ],
+   [
+    "inite.ai",
+    7
+   ],
+   [
+    "bonissystems.com",
+    7
+   ],
+   [
+    "gen.pollinations.ai",
+    6
+   ],
+   [
+    "status.live",
+    6
+   ],
+   [
+    "www.razi.pro",
+    6
+   ],
+   [
+    "platform.casafari.com",
+    5
+   ],
+   [
+    "factline.dev",
+    4
+   ],
+   [
+    "powmcp.com",
+    3
+   ]
+  ]
+ },
+ "allRemote": {
+  "readOkByHistor": 19649,
+  "withRecordedChanges": 9122,
+  "recordedChanges": 27034
+ },
+ "namesHistor": [],
+ "disallowingRules": [
+  [
+   "/api/",
+   1734
+  ],
+  [
+   "/",
+   1273
+  ],
+  [
+   "/mcp",
+   1162
+  ],
+  [
+   "/mcp/",
+   223
+  ],
+  [
+   "/api",
+   122
+  ],
+  [
+   "/mcp$",
+   45
+  ],
+  [
+   "/api/*",
+   32
+  ],
+  [
+   "/api/mcp",
+   20
+  ],
+  [
+   "/v1/",
+   15
+  ],
+  [
+   "/sse",
+   7
+  ],
+  [
+   "/*/mcp$",
+   3
+  ],
+  [
+   "/api/v1/mcp",
+   3
+  ],
+  [
+   "/wp-json/",
+   3
+  ],
+  [
+   "/api/v1/",
+   3
+  ],
+  [
+   "/v1",
+   2
+  ]
+ ]
+}

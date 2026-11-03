@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 import os
 from pathlib import Path
 
@@ -74,8 +76,8 @@ def test_stripe_webhook_idempotent_plan_upgrade(tmp_path: Path):
         session_id="cs_test_123",
         payment_status="paid",
         session_status="complete",
-        customer_email=customer["email"],
-        metadata={"target_plan": "maker"},
+        amount_total=1900,
+        currency="usd",
     )
     second = service.apply_stripe_webhook_event(
         event_id="evt_1",
@@ -83,11 +85,35 @@ def test_stripe_webhook_idempotent_plan_upgrade(tmp_path: Path):
         session_id="cs_test_123",
         payment_status="paid",
         session_status="complete",
-        customer_email=customer["email"],
-        metadata={"target_plan": "maker"},
+        amount_total=1900,
+        currency="usd",
     )
 
     profile = service.get_customer(customer["id"]) or {}
     assert first["already_processed"] is False
     assert second["already_processed"] is True
     assert profile.get("plan") == "maker"
+
+
+def test_stripe_webhook_rejects_unbound_or_mismatched_payment(tmp_path: Path):
+    service = CommerceService(base_dir=tmp_path / "store")
+    customer = service.register_customer("stripe@example.test", "strong-pass-123")
+    event = dict(event_id="evt_1", event_type="checkout.session.completed",
+                 session_id="cs_test_123", payment_status="paid", session_status="complete",
+                 amount_total=1900, currency="usd")
+    with pytest.raises(LookupError):
+        service.apply_stripe_webhook_event(**event)
+    service.save_stripe_checkout_session(
+        session_id=event["session_id"], customer_id=customer["id"],
+        customer_email=customer["email"], target_plan="maker", amount_total=1900,
+        currency="usd", status="open", payment_status="unpaid",
+    )
+    with pytest.raises(ValueError):
+        service.apply_stripe_webhook_event(**{**event, "amount_total": 1})
+    assert not service.apply_stripe_webhook_event(
+        **{**event, "event_type": "charge.updated"}
+    )["plan_upgraded"]
+    assert service.apply_stripe_webhook_event(**event)["plan_upgraded"]
+    assert service.apply_stripe_webhook_event(
+        **{**event, "event_id": "evt_2"}
+    )["already_processed"]

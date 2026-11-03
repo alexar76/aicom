@@ -1,0 +1,122 @@
+{
+  "date": "2026-09-30",
+  "version": "3.11.0",
+  "wallet": "0x6e94c380d908531f9822035d6cc4c8d2b0186c9c",
+  "sponsor": "0x663e0c31925ead877fd9414c2e1862fa50b2650b",
+  "run_id": "paid_38c0a7c6c2fe992186116a2822205d3d",
+  "job_id": "job_dc0b37b785a7f358bfb30b23",
+  "tx_hash": "0x8e4d3edbec6ab97e4c9bc7a6931b17582f9a29485b9e0b363d37d4fb2b08f857",
+  "service_usdc": ".002",
+  "sponsor_fee_wei": "516607663289",
+  "buyer_gas_wei": "0",
+  "buyer_nonce_unchanged": true,
+  "buyer_native_balance_unchanged": true,
+  "message_only_signer": true,
+  "sdk_rpc_configured": false,
+  "controlled_reply_loss": true,
+  "cumulative_conservative_usd": "0.1163241752052936711504319125",
+  "sponsor_funding_already_counted_in_full": true,
+  "budget_limit_usd": "1",
+  "calls": [
+    {
+      "method": "POST",
+      "path": "/studio/prepare-pipeline"
+    },
+    {
+      "method": "POST",
+      "path": "/ai-market/v2/invoke"
+    },
+    {
+      "method": "GET",
+      "path": "/studio/paid-runs/paid_38c0a7c6c2fe992186116a2822205d3d/pipeline"
+    },
+    {
+      "method": "POST",
+      "path": "/ai-market/v2/invoke"
+    }
+  ],
+  "funding": {
+    "sponsor": "0x663E0C31925EAd877fD9414C2e1862fa50b2650b",
+    "payer": "0x6E94c380d908531f9822035d6cc4c8D2B0186C9c",
+    "tx_hash": "0x73cff1e1da3242a2f3c77e1f7389fc5ed23f7625634975d7dbef2086bcfcfc78",
+    "funding_wei": "20000000000000",
+    "funding_fee_wei": "133597605703",
+    "budget_check": {
+      "service_usdc": "0",
+      "native_fee_bound_wei": "6235958489800",
+      "native_usd_ceiling": "3336.4504743875",
+      "native_price": {
+        "source": "chainlink_base_eth_usd",
+        "feed": "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70",
+        "sequencer_feed": "0xBCF85224fc0756B9Fa45aA7892530B47e10b6433",
+        "observations": [
+          {
+            "price_usd": "2669.16037951",
+            "round_id": "55340232221128660934",
+            "updated_at": 1790756921,
+            "block_number": 51983794,
+            "block_timestamp": 1790756935,
+            "sequencer_up_since": 1782491507
+          },
+          {
+            "price_usd": "2669.16037951",
+            "round_id": "55340232221128660934",
+            "updated_at": 1790756921,
+            "block_number": 51983794,
+            "block_timestamp": 1790756935,
+            "sequencer_up_since": 1782491507
+          }
+        ],
+        "margin_percent": 25,
+        "max_age_s": 1500,
+        "manual_floor_usd": null,
+        "native_usd_ceiling": "3336.4504743875",
+        "checked_at": 1790756935.732915
+      },
+      "l1_upper_bound_wei": "26359584898",
+      "l1_multiplier": 100,
+      "extra_reserve_usd": "0.05",
+      "conservative_total_usd": "0.07080596666155396807999750",
+      "checked_at": 1790756935.7329228
+    },
+    "prior_total_usd": "0.047149423922618862625",
+    "cumulative_conservative_usd": "0.1143241752052936711504319125",
+    "budget_limit_usd": "1",
+    "funding_counted_in_full": true
+  },
+  "local_validation": {
+    "focused_regression_passed": 178,
+    "mcp_after_static_card_sync_passed": 81,
+    "oracle_and_relay_passed": 37,
+    "anvil_zero_eth_buyer_passed": 1
+  },
+  "final_result": {
+    "block_number": 51983924,
+    "chain": "base",
+    "chain_id": 8453,
+    "findings": [],
+    "score": 100,
+    "summary": "Base mainnet is reachable through KOVA.",
+    "verdict": "pass"
+  },
+  "signed_result_verified": true,
+  "steps": [
+    {
+      "id": "summary",
+      "product_id": "prod-logos",
+      "capability_id": "logos.federation.summary@v1",
+      "source_hub": "https://logos.modelmarket.dev",
+      "status": "succeeded",
+      "price_usd": 0.0
+    },
+    {
+      "id": "network",
+      "product_id": "kova-network",
+      "capability_id": "kova.network.status@v1",
+      "source_hub": "https://independentai.network/hub",
+      "status": "succeeded",
+      "price_usd": 0.002,
+      "tx_hash": "0x8e4d3edbec6ab97e4c9bc7a6931b17582f9a29485b9e0b363d37d4fb2b08f857"
+    }
+  ]
+}

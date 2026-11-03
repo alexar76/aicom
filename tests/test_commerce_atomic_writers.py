@@ -53,7 +53,8 @@ def test_a_writer_that_fails_midway_leaves_nothing_for_the_next_commit(store, mo
     monkeypatch.setattr(store, "set_customer_plan", broken)
     with pytest.raises(RuntimeError):
         store.apply_stripe_webhook_event("evt_1", "checkout.session.completed", session,
-                                         payment_status="paid", session_status="complete")
+                                         payment_status="paid", session_status="complete",
+                                         amount_total=900, currency="usd")
     monkeypatch.undo()
     # Another request commits right after. The failed webhook's rows must not ride along.
     store.register_customer("other@example.test", "another-long-password")
@@ -61,5 +62,6 @@ def test_a_writer_that_fails_midway_leaves_nothing_for_the_next_commit(store, mo
     assert row is None, "half of a failed webhook was committed by the next request"
     # The event is still unprocessed, so Stripe's retry is applied in full.
     out = store.apply_stripe_webhook_event("evt_1", "checkout.session.completed", session,
-                                           payment_status="paid", session_status="complete")
+                                           payment_status="paid", session_status="complete",
+                                         amount_total=900, currency="usd")
     assert out == {"already_processed": False, "plan_upgraded": True}

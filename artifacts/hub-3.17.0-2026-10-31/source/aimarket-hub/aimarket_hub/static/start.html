@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--HEAD-->
+<style>
+  /* Page-specific bits only — the chrome comes from /assets/site.css (aimarket_hub/theme.py).
+     Served at /start by api.py. The page reads this hub's own manifest, so on a hub with
+     signup or top-up switched off it says so instead of offering a door that refuses. */
+  .start { max-width: 820px; margin: 0 auto; }
+  .langs { display: flex; gap: 6px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap; }
+  .langs button {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .8px; cursor: pointer;
+    background: rgba(2,3,10,.5); color: var(--faint); border: 1px solid var(--brd);
+    border-radius: 999px; padding: 5px 11px; min-height: 30px;
+  }
+  .langs button[aria-pressed="true"] { color: var(--cyan); border-color: var(--brd-hot); }
+  .start .card { margin-top: 16px; }
+  .start .card p { font-size: 15px; }
+  .trial-line { color: var(--good); font-family: var(--mono); font-size: 13px; margin-top: 12px; }
+  .keyout { font-size: 13px; word-break: break-all; white-space: pre-wrap; color: var(--good); }
+  .warn { color: var(--amber) !important; }
+  .status { font-family: var(--mono); font-size: 12.5px; color: var(--muted); min-height: 1.2em;
+            white-space: pre-wrap; overflow-wrap: anywhere; }
+  .status.err { color: var(--pink); }
+  .status.ok { color: var(--good); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .start input[type="text"], .start input[type="number"] {
+    font-family: var(--mono); font-size: 13px; color: var(--ink);
+    background: rgba(2,3,10,.72); border: 1px solid var(--brd); border-radius: 9px;
+    padding: 9px 12px; min-height: 40px; flex: 1 1 220px; min-width: 0;
+  }
+  .start input:focus-visible, .start button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  .start .btn[disabled] { opacity: .45; cursor: default; transform: none; filter: none; }
+  .start details summary { cursor: pointer; color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .start details[open] summary { margin-bottom: 10px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chips button {
+    font-family: var(--mono); font-size: 13px; cursor: pointer; min-height: 38px; min-width: 64px;
+    background: rgba(56,224,255,.07); color: var(--cyan); border: 1px solid var(--brd); border-radius: 9px;
+  }
+  .chips button[aria-pressed="true"] { background: rgba(56,224,255,.2); border-color: var(--brd-hot); }
+  .balance { font-family: var(--head); font-size: 26px; font-weight: 900; color: var(--cyan); }
+  .balance-l { font-family: var(--mono); font-size: 10px; color: var(--faint); text-transform: uppercase;
+               letter-spacing: 1.2px; }
+  .hint { font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+  .snip-wrap { position: relative; }
+  .snip-wrap pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px; font-family: var(--mono); font-size: 10px;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: rgba(2,3,10,.85);
+    border: 1px solid var(--brd); border-radius: 6px; padding: 5px 9px; cursor: pointer; min-height: 28px;
+  }
+  .copy-btn.done { color: var(--good); border-color: rgba(56,255,166,.4); }
+  .small { font-size: 13px !important; }
+  .learn-line { margin-top: 10px; }
+  .start > header a { color: var(--cyan); }
+  #provider dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 24px; }
+  #provider dt { color: var(--muted); }
+  #provider dd { margin: 0; color: var(--cyan); font-family: var(--mono); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<!--BACKDROP-->
+<!--NAV-->
+<div class="shell">
+<div class="start">
+  <header class="hero center">
+    <div class="langs" role="group" aria-label="Language" id="langs"></div>
+    <div class="eyebrow"><span class="pip"></span> <span data-i18n="eyebrow">Start · three steps</span></div>
+    <h1 data-i18n="h1">Connect your agent in a minute</h1>
+    <p class="tagline" data-i18n="tagline">One key works in Claude, Cursor, VS Code and any MCP client. Priced calls are paid from a prepaid balance, with no wallet step per call.</p>
+    <p class="trial-line" id="trial-line" hidden></p>
+    <p><a id="provider-entry" href="?role=provider" data-i18n="provider_entry">Publishing a service?</a></p>
+    <!--LEARN-->
+  </header>
+
+  <section class="card step" id="key" aria-labelledby="key-h">
+    <div class="step-n"><b>01</b> <span data-i18n="s1_n">Key</span></div>
+    <h3 id="key-h" data-i18n="s1_h">Get an API key</h3>
+    <p data-i18n="s1_p">No email, no password. The key starts at $0; while the balance is empty, the free calls still apply.</p>
+    <div class="row"><button class="btn" type="button" id="mint" data-i18n="s1_btn">Create a key</button></div>
+    <div id="keybox" hidden>
+      <div class="snip-wrap"><pre class="keyout" id="keytext"></pre></div>
+      <p class="warn small" data-i18n="s1_warn">Save it now: it is shown only once. Anyone with this key can spend its balance.</p>
+    </div>
+    <details id="have">
+      <summary data-i18n="s1_have">I already have a key</summary>
+      <div class="row">
+        <input type="text" id="havekey" autocomplete="off" spellcheck="false" placeholder="aimk_…" aria-label="API key">
+        <button class="btn btn-ghost" type="button" id="usekey" data-i18n="s1_use">Use this key</button>
+      </div>
+    </details>
+    <p class="status" id="keystatus" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="card step" id="connect" aria-labelledby="connect-h">
+    <div class="step-n"><b>02</b> <span data-i18n="s2_n">Connect</span></div>
+    <h3 id="connect-h" data-i18n="s2_h">Add it to your agent</h3>
+    <p data-i18n="s2_p">Paste the line for your client. The key travels in the connection header, so the model never sees it.</p>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <p class="hint" id="snip-hint"></p>
+    <div class="snip-wrap"><pre id="snippet"></pre></div>
+    <p data-i18n="s2_try">Then ask: “What is the weather in Berlin right now?”</p>
+    <p class="small" data-i18n="s2_nokey">No key yet? The same URL without the header works on the free calls.</p>
+  </section>
+
+  <section class="card step" id="provider" aria-labelledby="provider-h" hidden>
+    <h3 id="provider-h" data-i18n="provider_h">Provider requirements</h3>
+    <dl>
+      <dt data-i18n="provider_min">Required collateral</dt><dd id="provider-min">—</dd>
+      <dt data-i18n="provider_stake">Posted stake</dt><dd id="provider-stake">—</dd>
+      <dt data-i18n="provider_missing">Additional stake needed</dt><dd id="provider-missing">—</dd>
+      <dt data-i18n="provider_collateral">Locked collateral</dt><dd id="provider-collateral">—</dd>
+    </dl>
+    <p id="provider-status" class="status" role="status" aria-live="polite"></p>
+    <button class="btn btn-ghost" id="provider-refresh" type="button" data-i18n="provider_refresh">Refresh balances</button>
+    <p><a id="provider-continue" href="<!--PROVIDER_GUIDE-->" data-i18n="provider_continue">Continue to collateral and publication</a></p>
+  </section>
+
+  <section class="card step" id="topup" aria-labelledby="topup-h">
+    <div class="step-n"><b>03</b> <span data-i18n="s3_n">Balance</span></div>
+    <h3 id="topup-h" data-i18n="s3_h">Top up with USDC</h3>
+    <div>
+      <div class="balance-l" data-i18n="s3_bal">Balance</div>
+      <div class="balance" id="balance">—</div>
+    </div>
+    <p data-i18n="s3_p">From a browser wallet (MetaMask, Coinbase Wallet, Rabby…) holding USDC on Base and a few cents of ETH for gas. Two prompts: sign, then send. The credit lands on this key seconds after the transaction.</p>
+    <div class="chips" id="chips" role="group" aria-label="Amount, USD"></div>
+    <div class="row">
+      <input type="number" id="amount" min="0.01" step="0.01" value="5" aria-label="Amount, USD">
+      <button class="btn" type="button" id="pay" data-i18n="s3_btn">Pay with wallet</button>
+    </div>
+    <p class="hint" id="limits"></p>
+    <p class="status" id="paystatus" role="status" aria-live="polite"></p>
+    <p class="small" data-i18n="s3_note">The balance is prepaid credit on this hub. Calls with your key spend it; a separate stake command can lock it as provider collateral. Read all movements at GET /ai-market/v2/account/ledger with the same key. Unused credit is not refunded automatically.</p>
+  </section>
+</div>
+</div>
+<!--FOOTER-->
+<script>
+(function () {
+  "use strict";
+
+  var I18N = {
+    en: {
+      provider_entry: "Publishing a service?",
+      provider_title: "Prepare to publish your service",
+      provider_intro: "Create a key, check the admission requirements, fund the missing amount and return to the publication guide. Adding credit alone does not post collateral.",
+      provider_h: "Provider requirements",
+      provider_min: "Required collateral",
+      provider_stake: "Posted stake",
+      provider_missing: "Additional stake needed",
+      provider_collateral: "Locked collateral",
+      provider_refresh: "Refresh balances",
+      provider_continue: "Continue to collateral and publication",
+      provider_key: "Create or enter your key to see your own balances and the missing stake.",
+      provider_failed: "Could not load the policy. Refresh before funding; no amount is assumed.",
+      provider_mandate: "This account requires a mandate. Its API key cannot post collateral. Resolve the account policy before funding.",
+      provider_loading: "Loading requirements…",
+      eyebrow: "Start · three steps",
+      h1: "Connect your agent in a minute",
+      tagline: "One key works in Claude, Cursor, VS Code and any MCP client. Priced calls are paid from a prepaid balance, with no wallet step per call.",
+      learn: "First time here? A 5-minute lesson: from a free call to paying with a key ↗",
+      trial_hourly: "The first {n} priced calls each hour are free, with or without a key.",
+      trial_once: "The first {n} priced calls are free, with or without a key.",
+      s1_n: "Key", s1_h: "Get an API key",
+      s1_p: "No email, no password. The key starts at $0; while the balance is empty, the free calls still apply.",
+      s1_p_grant: "No email, no password. A new key comes with ${g} of credit while today's allowance lasts — enough for a first paid call. When the balance is empty, the free calls still apply.",
+      s1_btn: "Create a key", s1_busy: "Creating…",
+      s1_warn: "Save it now: it is shown only once. Anyone with this key can spend its balance.",
+      s1_have: "I already have a key", s1_use: "Use this key",
+      s1_closed: "This hub issues keys by hand: ask its operator for one.",
+      s1_off: "Prepaid keys are switched off on this hub. The free calls still work.",
+      s1_many: "Too many keys from your address. Try again in an hour.",
+      s1_bad: "That is not a key of this hub.",
+      s1_ready: "Key ready. Balance: ${b}",
+      s1_fail: "The hub did not answer: {e}",
+      s2_n: "Connect", s2_h: "Add it to your agent",
+      s2_p: "Paste the line for your client. The key travels in the connection header, so the model never sees it.",
+      s2_try: "Then ask: “What is the weather in Berlin right now?”",
+      s2_nokey: "No key yet? The same URL without the header works on the free calls.",
+      hint_cc: "Run in a terminal.",
+      hint_file: "File: {f}",
+      hint_desktop: "File: claude_desktop_config.json. Uses mcp-remote, which needs Node.js.",
+      hint_http: "Any HTTP client: the same key works on the REST API.",
+      hint_connector: "claude.ai or Claude Desktop: Settings → Connectors → Add custom connector, paste this URL. Any other client that takes only a URL (ChatGPT developer-mode connectors, agent platforms) takes it too. It contains your key: keep it as private as the key.",
+      s3_n: "Balance", s3_h: "Top up with USDC", s3_bal: "Balance",
+      s3_p: "From a browser wallet (MetaMask, Coinbase Wallet, Rabby…) holding USDC on Base and a few cents of ETH for gas. Two prompts: sign, then send. The credit lands on this key seconds after the transaction.",
+      s3_btn: "Pay with wallet",
+      s3_note: "The balance is prepaid credit on this hub. Calls with your key spend it; a separate stake command can lock it as provider collateral. Read all movements at GET /ai-market/v2/account/ledger with the same key. Unused credit is not refunded automatically.",
+      s3_limits: "From ${min} to ${max} per top-up.",
+      s3_nokey: "Create or enter a key first (step 01).",
+      s3_off: "USDC top-up is off on this hub: ask its operator to credit your key.",
+      p_nowallet: "No browser wallet found. Install MetaMask, Coinbase Wallet or Rabby, or top up from code with the aimarket-agent SDK (topup_quote, topup_redeem).",
+      p_amount: "Enter an amount between ${min} and ${max}.",
+      p_quote: "Asking the hub for a quote…",
+      p_chain: "Switching the wallet to {chain}…",
+      p_funds: "This wallet holds {have} USDC on this network; the top-up needs {need}.",
+      p_sign: "Sign in the wallet: {amount} USDC to {to}, valid until {until}.",
+      p_send: "Now send the transaction in the wallet (it pays a little ETH for gas).",
+      p_mined: "Waiting for the transaction… {tx}",
+      p_failed: "The transaction failed on chain. Nothing was charged except gas, and nothing was credited.",
+      p_redeem: "On chain. Crediting your key…",
+      p_done: "Credited ${c}. Balance: ${b}",
+      p_cancel: "Cancelled in the wallet. Nothing was paid.",
+      p_err: "Stopped: {e}",
+      p_resume: "Finishing an earlier top-up… {tx}",
+      p_later: "The hub has not confirmed it yet. The payment is safe: this page retries next time it opens, or POST the transaction hash to {url}."
+    },
+    ru: {
+      provider_entry: "Публикуете свой сервис?",
+      provider_title: "Подготовьте сервис к публикации",
+      provider_intro: "Создайте ключ, проверьте требования допуска, пополните недостающую сумму и вернитесь к инструкции публикации. Само пополнение не вносит залог.",
+      provider_h: "Требования к поставщику",
+      provider_min: "Требуемый залог",
+      provider_stake: "Внесённый залог",
+      provider_missing: "Осталось внести в залог",
+      provider_collateral: "Заблокировано в залоге",
+      provider_refresh: "Обновить балансы",
+      provider_continue: "К внесению залога и публикации",
+      provider_key: "Создайте или введите ключ, чтобы увидеть свои балансы и недостающий залог.",
+      provider_failed: "Не удалось загрузить требования. Обновите их до пополнения; сумма неизвестна.",
+      provider_mandate: "Аккаунт требует мандат. Его API-ключ не может внести залог. Разберитесь с политикой аккаунта до пополнения.",
+      provider_loading: "Загружаем требования…",
+      eyebrow: "Старт · три шага",
+      h1: "Подключите агента за минуту",
+      tagline: "Один ключ работает в Claude, Cursor, VS Code и любом MCP-клиенте. Платные вызовы списываются с предоплаченного баланса, без кошелька на каждый вызов.",
+      learn: "Впервые здесь? Урок на 5 минут: от бесплатного вызова до оплаты ключом ↗",
+      trial_hourly: "Первые {n} платных вызовов каждый час бесплатны, с ключом и без.",
+      trial_once: "Первые {n} платных вызовов бесплатны, с ключом и без.",
+      s1_n: "Ключ", s1_h: "Получите API-ключ",
+      s1_p: "Без почты и пароля. Ключ начинается с $0; пока баланс пуст, бесплатные вызовы по-прежнему действуют.",
+      s1_p_grant: "Без почты и пароля. Новый ключ получает ${g} на баланс, пока не исчерпан дневной лимит, — хватит на первый платный вызов. Когда баланс пуст, бесплатные вызовы по-прежнему работают.",
+      s1_btn: "Создать ключ", s1_busy: "Создаю…",
+      s1_warn: "Сохраните его сейчас: он показывается только один раз. Кто знает ключ, тот может тратить его баланс.",
+      s1_have: "У меня уже есть ключ", s1_use: "Использовать этот ключ",
+      s1_closed: "Этот хаб выдаёт ключи вручную: попросите ключ у оператора.",
+      s1_off: "Предоплаченные ключи на этом хабе выключены. Бесплатные вызовы работают.",
+      s1_many: "Слишком много ключей с вашего адреса. Попробуйте через час.",
+      s1_bad: "Это не ключ этого хаба.",
+      s1_ready: "Ключ готов. Баланс: ${b}",
+      s1_fail: "Хаб не ответил: {e}",
+      s2_n: "Подключение", s2_h: "Добавьте ключ в агента",
+      s2_p: "Вставьте строку для своего клиента. Ключ передаётся в заголовке подключения, поэтому модель его не видит.",
+      s2_try: "Потом спросите: «Какая сейчас погода в Берлине?»",
+      s2_nokey: "Ещё нет ключа? Тот же адрес без заголовка работает на бесплатных вызовах.",
+      hint_cc: "Выполните в терминале.",
+      hint_file: "Файл: {f}",
+      hint_desktop: "Файл: claude_desktop_config.json. Работает через mcp-remote, нужен Node.js.",
+      hint_http: "Любой HTTP-клиент: тот же ключ работает в REST API.",
+      hint_connector: "claude.ai или Claude Desktop: Настройки → Коннекторы → Добавить свой коннектор, вставьте этот адрес. Подходит и любому другому клиенту, который принимает только адрес (коннекторы ChatGPT в режиме разработчика, агентные платформы). В нём ваш ключ: храните его так же, как ключ.",
+      s3_n: "Баланс", s3_h: "Пополните в USDC", s3_bal: "Баланс",
+      s3_p: "Из браузерного кошелька (MetaMask, Coinbase Wallet, Rabby…) с USDC в сети Base и парой центов в ETH на газ. Два подтверждения: подпись, затем отправка. Баланс пополняется через несколько секунд после транзакции.",
+      s3_btn: "Оплатить кошельком",
+      s3_note: "Баланс — предоплаченный кредит этого Hub. Вызовы с вашим ключом тратят его; отдельная команда stake может заблокировать его как залог поставщика. Все движения: GET /ai-market/v2/account/ledger с тем же ключом. Неиспользованный кредит автоматически не возвращается.",
+      s3_limits: "От ${min} до ${max} за одно пополнение.",
+      s3_nokey: "Сначала создайте или введите ключ (шаг 01).",
+      s3_off: "Пополнение в USDC на этом хабе выключено: попросите оператора зачислить баланс на ваш ключ.",
+      p_nowallet: "Браузерный кошелёк не найден. Установите MetaMask, Coinbase Wallet или Rabby — или пополните из кода через SDK aimarket-agent (topup_quote, topup_redeem).",
+      p_amount: "Введите сумму от ${min} до ${max}.",
+      p_quote: "Запрашиваю у хаба счёт…",
+      p_chain: "Переключаю кошелёк на {chain}…",
+      p_funds: "В этом кошельке {have} USDC в этой сети; для пополнения нужно {need}.",
+      p_sign: "Подпишите в кошельке: {amount} USDC на {to}, действует до {until}.",
+      p_send: "Теперь отправьте транзакцию в кошельке (за газ спишется немного ETH).",
+      p_mined: "Жду транзакцию… {tx}",
+      p_failed: "Транзакция не прошла в сети. Кроме газа ничего не списано, и ничего не зачислено.",
+      p_redeem: "Транзакция в сети. Зачисляю на ключ…",
+      p_done: "Зачислено ${c}. Баланс: ${b}",
+      p_cancel: "Отменено в кошельке. Ничего не оплачено.",
+      p_err: "Остановлено: {e}",
+      p_resume: "Завершаю прошлое пополнение… {tx}",
+      p_later: "Хаб ещё не подтвердил. Платёж не потерян: страница повторит попытку при следующем открытии, или отправьте хеш транзакции POST-запросом на {url}."
+    },
+    es: {
+      provider_entry: "¿Publicas un servicio?",
+      provider_title: "Prepara la publicación de tu servicio",
+      provider_intro: "Crea una clave, consulta los requisitos de admisión, ingresa lo que falta y vuelve a la guía de publicación. Recargar no aporta garantía por sí solo.",
+      provider_h: "Requisitos del proveedor",
+      provider_min: "Garantía exigida",
+      provider_stake: "Garantía aportada",
+      provider_missing: "Garantía que falta",
+      provider_collateral: "Garantía bloqueada",
+      provider_refresh: "Actualizar saldos",
+      provider_continue: "Continuar con garantía y publicación",
+      provider_key: "Crea o introduce tu clave para ver tus saldos y la garantía que falta.",
+      provider_failed: "No se pudo cargar la política. Actualiza antes de ingresar fondos; no se presupone ningún importe.",
+      provider_mandate: "Esta cuenta requiere un mandato. Su clave API no puede aportar garantía. Resuelve la política antes de ingresar fondos.",
+      provider_loading: "Cargando requisitos…",
+      eyebrow: "Empezar · tres pasos",
+      h1: "Conecta tu agente en un minuto",
+      tagline: "Una sola clave funciona en Claude, Cursor, VS Code y cualquier cliente MCP. Las llamadas de pago se cobran de un saldo prepago, sin pasar por la billetera en cada llamada.",
+      learn: "¿Primera vez? Una lección de 5 minutos: de la llamada gratis al pago con clave ↗",
+      trial_hourly: "Las primeras {n} llamadas de pago de cada hora son gratis, con o sin clave.",
+      trial_once: "Las primeras {n} llamadas de pago son gratis, con o sin clave.",
+      s1_n: "Clave", s1_h: "Obtén una clave API",
+      s1_p: "Sin correo ni contraseña. La clave empieza en $0; mientras el saldo esté vacío, las llamadas gratuitas siguen valiendo.",
+      s1_p_grant: "Sin correo ni contraseña. Una clave nueva trae ${g} de crédito mientras dure el cupo diario, suficiente para una primera llamada de pago. Con el saldo vacío, las llamadas gratuitas siguen valiendo.",
+      s1_btn: "Crear clave", s1_busy: "Creando…",
+      s1_warn: "Guárdala ahora: solo se muestra una vez. Quien tenga esta clave puede gastar su saldo.",
+      s1_have: "Ya tengo una clave", s1_use: "Usar esta clave",
+      s1_closed: "Este hub emite las claves a mano: pídesela a su operador.",
+      s1_off: "Las claves prepago están desactivadas en este hub. Las llamadas gratuitas siguen funcionando.",
+      s1_many: "Demasiadas claves desde tu dirección. Inténtalo dentro de una hora.",
+      s1_bad: "Esa no es una clave de este hub.",
+      s1_ready: "Clave lista. Saldo: ${b}",
+      s1_fail: "El hub no respondió: {e}",
+      s2_n: "Conexión", s2_h: "Añádela a tu agente",
+      s2_p: "Pega la línea de tu cliente. La clave viaja en la cabecera de la conexión, así que el modelo nunca la ve.",
+      s2_try: "Luego pregunta: «¿Qué tiempo hace ahora en Berlín?»",
+      s2_nokey: "¿Aún sin clave? La misma URL sin la cabecera funciona con las llamadas gratuitas.",
+      hint_cc: "Ejecútalo en una terminal.",
+      hint_file: "Archivo: {f}",
+      hint_desktop: "Archivo: claude_desktop_config.json. Usa mcp-remote, que necesita Node.js.",
+      hint_http: "Cualquier cliente HTTP: la misma clave funciona en la API REST.",
+      hint_connector: "claude.ai o Claude Desktop: Ajustes → Conectores → Añadir conector personalizado, pega esta URL. También sirve en cualquier otro cliente que solo acepte una URL (conectores de ChatGPT en modo desarrollador, plataformas de agentes). Contiene tu clave: guárdala como la clave.",
+      s3_n: "Saldo", s3_h: "Recarga con USDC", s3_bal: "Saldo",
+      s3_p: "Desde una billetera del navegador (MetaMask, Coinbase Wallet, Rabby…) con USDC en Base y unos céntimos de ETH para el gas. Dos avisos: firmar y luego enviar. El crédito llega a esta clave segundos después de la transacción.",
+      s3_btn: "Pagar con billetera",
+      s3_note: "El saldo es crédito prepago en este Hub. Las llamadas con tu clave lo gastan; un comando stake separado puede bloquearlo como garantía del proveedor. Consulta los movimientos en GET /ai-market/v2/account/ledger con la misma clave. El crédito no usado no se devuelve automáticamente.",
+      s3_limits: "De ${min} a ${max} por recarga.",
+      s3_nokey: "Primero crea o introduce una clave (paso 01).",
+      s3_off: "La recarga con USDC está desactivada en este hub: pide a su operador que acredite tu clave.",
+      p_nowallet: "No se encontró una billetera en el navegador. Instala MetaMask, Coinbase Wallet o Rabby, o recarga desde código con el SDK aimarket-agent (topup_quote, topup_redeem).",
+      p_amount: "Introduce un importe entre ${min} y ${max}.",
+      p_quote: "Pidiendo una cotización al hub…",
+      p_chain: "Cambiando la billetera a {chain}…",
+      p_funds: "Esta billetera tiene {have} USDC en esta red; la recarga necesita {need}.",
+      p_sign: "Firma en la billetera: {amount} USDC a {to}, válido hasta {until}.",
+      p_send: "Ahora envía la transacción en la billetera (paga un poco de ETH de gas).",
+      p_mined: "Esperando la transacción… {tx}",
+      p_failed: "La transacción falló en la cadena. No se cobró nada salvo el gas, y no se acreditó nada.",
+      p_redeem: "En la cadena. Acreditando tu clave…",
+      p_done: "Acreditado ${c}. Saldo: ${b}",
+      p_cancel: "Cancelado en la billetera. No se pagó nada.",
+      p_err: "Detenido: {e}",
+      p_resume: "Terminando una recarga anterior… {tx}",
+      p_later: "El hub aún no lo ha confirmado. El pago está a salvo: esta página reintenta la próxima vez que se abra, o envía el hash de la transacción con POST a {url}."
+    },
+    fr: {
+      provider_entry: "Vous publiez un service ?",
+      provider_title: "Préparez la publication de votre service",
+      provider_intro: "Créez une clé, consultez les conditions d’admission, versez le montant manquant et revenez au guide de publication. Une recharge seule ne dépose pas de garantie.",
+      provider_h: "Conditions pour les fournisseurs",
+      provider_min: "Garantie requise",
+      provider_stake: "Garantie déposée",
+      provider_missing: "Garantie manquante",
+      provider_collateral: "Garantie bloquée",
+      provider_refresh: "Actualiser les soldes",
+      provider_continue: "Continuer vers la garantie et la publication",
+      provider_key: "Créez ou saisissez votre clé pour voir vos soldes et la garantie manquante.",
+      provider_failed: "Impossible de charger les règles. Actualisez avant de verser des fonds ; aucun montant n’est présumé.",
+      provider_mandate: "Ce compte exige un mandat. Sa clé API ne peut pas déposer de garantie. Résolvez la politique avant de verser des fonds.",
+      provider_loading: "Chargement des conditions…",
+      eyebrow: "Démarrer · trois étapes",
+      h1: "Connectez votre agent en une minute",
+      tagline: "Une seule clé fonctionne dans Claude, Cursor, VS Code et tout client MCP. Les appels payants sont débités d'un solde prépayé, sans passer par un portefeuille à chaque appel.",
+      learn: "Première fois ? Une leçon de 5 minutes : de l'appel gratuit au paiement par clé ↗",
+      trial_hourly: "Les {n} premiers appels payants de chaque heure sont gratuits, avec ou sans clé.",
+      trial_once: "Les {n} premiers appels payants sont gratuits, avec ou sans clé.",
+      s1_n: "Clé", s1_h: "Obtenez une clé API",
+      s1_p: "Sans e-mail ni mot de passe. La clé démarre à 0 $ ; tant que le solde est vide, les appels gratuits restent valables.",
+      s1_p_grant: "Sans e-mail ni mot de passe. Une nouvelle clé reçoit {g} $ de crédit tant que le quota du jour n'est pas épuisé, de quoi payer un premier appel. Solde vide, les appels gratuits restent valables.",
+      s1_btn: "Créer une clé", s1_busy: "Création…",
+      s1_warn: "Enregistrez-la maintenant : elle ne s'affiche qu'une fois. Quiconque possède cette clé peut dépenser son solde.",
+      s1_have: "J'ai déjà une clé", s1_use: "Utiliser cette clé",
+      s1_closed: "Ce hub délivre les clés manuellement : demandez-en une à son opérateur.",
+      s1_off: "Les clés prépayées sont désactivées sur ce hub. Les appels gratuits fonctionnent toujours.",
+      s1_many: "Trop de clés depuis votre adresse. Réessayez dans une heure.",
+      s1_bad: "Ce n'est pas une clé de ce hub.",
+      s1_ready: "Clé prête. Solde : {b} $",
+      s1_fail: "Le hub n'a pas répondu : {e}",
+      s2_n: "Connexion", s2_h: "Ajoutez-la à votre agent",
+      s2_p: "Collez la ligne de votre client. La clé voyage dans l'en-tête de la connexion : le modèle ne la voit jamais.",
+      s2_try: "Puis demandez : « Quel temps fait-il à Berlin en ce moment ? »",
+      s2_nokey: "Pas encore de clé ? La même URL sans l'en-tête fonctionne avec les appels gratuits.",
+      hint_cc: "À lancer dans un terminal.",
+      hint_file: "Fichier : {f}",
+      hint_desktop: "Fichier : claude_desktop_config.json. Passe par mcp-remote, qui nécessite Node.js.",
+      hint_http: "N'importe quel client HTTP : la même clé fonctionne sur l'API REST.",
+      hint_connector: "claude.ai ou Claude Desktop : Paramètres → Connecteurs → Ajouter un connecteur personnalisé, collez cette URL. Elle convient aussi à tout autre client qui n'accepte qu'une URL (connecteurs ChatGPT en mode développeur, plateformes d'agents). Elle contient votre clé : gardez-la aussi privée que la clé.",
+      s3_n: "Solde", s3_h: "Rechargez en USDC", s3_bal: "Solde",
+      s3_p: "Depuis un portefeuille de navigateur (MetaMask, Coinbase Wallet, Rabby…) contenant des USDC sur Base et quelques centimes d'ETH pour le gas. Deux confirmations : signer, puis envoyer. Le crédit arrive sur cette clé quelques secondes après la transaction.",
+      s3_btn: "Payer avec le portefeuille",
+      s3_note: "Le solde est du crédit prépayé sur ce Hub. Les appels avec votre clé le dépensent ; une commande stake distincte peut le bloquer comme garantie fournisseur. Consultez les mouvements avec GET /ai-market/v2/account/ledger et la même clé. Le crédit inutilisé n’est pas remboursé automatiquement.",
+      s3_limits: "De {min} $ à {max} $ par recharge.",
+      s3_nokey: "Créez ou saisissez d'abord une clé (étape 01).",
+      s3_off: "La recharge en USDC est désactivée sur ce hub : demandez à son opérateur de créditer votre clé.",
+      p_nowallet: "Aucun portefeuille de navigateur trouvé. Installez MetaMask, Coinbase Wallet ou Rabby, ou rechargez depuis le code avec le SDK aimarket-agent (topup_quote, topup_redeem).",
+      p_amount: "Saisissez un montant entre {min} $ et {max} $.",
+      p_quote: "Demande d'un devis au hub…",
+      p_chain: "Passage du portefeuille sur {chain}…",
+      p_funds: "Ce portefeuille détient {have} USDC sur ce réseau ; la recharge demande {need}.",
+      p_sign: "Signez dans le portefeuille : {amount} USDC vers {to}, valable jusqu'à {until}.",
+      p_send: "Envoyez maintenant la transaction dans le portefeuille (elle coûte un peu d'ETH en gas).",
+      p_mined: "En attente de la transaction… {tx}",
+      p_failed: "La transaction a échoué sur la chaîne. Rien n'a été débité hormis le gas, et rien n'a été crédité.",
+      p_redeem: "Sur la chaîne. Crédit de votre clé…",
+      p_done: "Crédité {c} $. Solde : {b} $",
+      p_cancel: "Annulé dans le portefeuille. Rien n'a été payé.",
+      p_err: "Arrêté : {e}",
+      p_resume: "Finalisation d'une recharge précédente… {tx}",
+      p_later: "Le hub ne l'a pas encore confirmé. Le paiement est en sécurité : cette page réessaie à sa prochaine ouverture, ou envoyez le hash de la transaction en POST à {url}."
+    },
+    zh: {
+      provider_entry: "要发布服务？",
+      provider_title: "准备发布你的服务",
+      provider_intro: "创建密钥，查看准入条件，补足所需金额，然后返回发布指南。充值本身不会提交抵押金。",
+      provider_h: "提供方要求",
+      provider_min: "所需抵押金",
+      provider_stake: "已提交抵押金",
+      provider_missing: "还需提交的抵押金",
+      provider_collateral: "已锁定抵押金",
+      provider_refresh: "刷新余额",
+      provider_continue: "继续提交抵押金并发布",
+      provider_key: "创建或输入密钥以查看自己的余额和所缺抵押金。",
+      provider_failed: "无法加载规则。充值前请刷新；不会假定所需金额。",
+      provider_mandate: "此账户要求授权委托，其 API 密钥无法提交抵押金。充值前请先解决账户规则。",
+      provider_loading: "正在加载要求…",
+      eyebrow: "开始 · 三步",
+      h1: "一分钟接入你的智能体",
+      tagline: "一个密钥即可用于 Claude、Cursor、VS Code 及任何 MCP 客户端。付费调用从预付余额中扣除，无需每次调用都操作钱包。",
+      learn: "第一次来？5 分钟课程：从免费调用到用密钥付款 ↗",
+      trial_hourly: "每小时前 {n} 次付费调用免费，有无密钥均可。",
+      trial_once: "前 {n} 次付费调用免费，有无密钥均可。",
+      s1_n: "密钥", s1_h: "获取 API 密钥",
+      s1_p: "无需邮箱和密码。密钥初始余额为 $0；余额为空时，免费调用依然有效。",
+      s1_p_grant: "无需邮箱和密码。在当日额度用完之前，新密钥附带 ${g} 余额，足够完成第一次付费调用。余额为空时，免费调用依然有效。",
+      s1_btn: "创建密钥", s1_busy: "创建中…",
+      s1_warn: "请立即保存：它只显示一次。持有此密钥的任何人都可以花费其余额。",
+      s1_have: "我已有密钥", s1_use: "使用此密钥",
+      s1_closed: "此枢纽手动发放密钥：请向其运营方申请。",
+      s1_off: "此枢纽未开启预付密钥。免费调用仍可使用。",
+      s1_many: "你的地址创建的密钥过多，请一小时后再试。",
+      s1_bad: "这不是本枢纽的密钥。",
+      s1_ready: "密钥已就绪。余额：${b}",
+      s1_fail: "枢纽没有响应：{e}",
+      s2_n: "接入", s2_h: "添加到你的智能体",
+      s2_p: "粘贴对应客户端的配置。密钥放在连接的请求头里，模型看不到它。",
+      s2_try: "然后问：“柏林现在天气怎么样？”",
+      s2_nokey: "还没有密钥？不带请求头的同一地址可使用免费调用。",
+      hint_cc: "在终端中运行。",
+      hint_file: "文件：{f}",
+      hint_desktop: "文件：claude_desktop_config.json。通过 mcp-remote 连接，需要 Node.js。",
+      hint_http: "任意 HTTP 客户端：同一密钥也适用于 REST API。",
+      hint_connector: "claude.ai 或 Claude Desktop：设置 → 连接器 → 添加自定义连接器，粘贴此网址。其他只接受网址的客户端（开发者模式下的 ChatGPT 连接器、智能体平台）也可以使用。网址中含有你的密钥：请像保管密钥一样保管它。",
+      s3_n: "余额", s3_h: "用 USDC 充值", s3_bal: "余额",
+      s3_p: "使用浏览器钱包（MetaMask、Coinbase Wallet、Rabby…），需持有 Base 网络上的 USDC 和少量用于 gas 的 ETH。两次确认：先签名，再发送。交易完成几秒后额度即到账。",
+      s3_btn: "用钱包支付",
+      s3_note: "余额是此 Hub 的预付额度。使用密钥调用会消耗额度；单独的 stake 命令可将其锁定为提供方抵押金。用同一密钥通过 GET /ai-market/v2/account/ledger 查看全部变动。未使用额度不会自动退款。",
+      s3_limits: "每次充值 ${min} 至 ${max}。",
+      s3_nokey: "请先创建或输入密钥（第 01 步）。",
+      s3_off: "此枢纽未开启 USDC 充值：请联系运营方为你的密钥充值。",
+      p_nowallet: "未找到浏览器钱包。请安装 MetaMask、Coinbase Wallet 或 Rabby，或用 aimarket-agent SDK（topup_quote、topup_redeem）在代码中充值。",
+      p_amount: "请输入 ${min} 至 ${max} 之间的金额。",
+      p_quote: "正在向枢纽请求报价…",
+      p_chain: "正在将钱包切换到 {chain}…",
+      p_funds: "此钱包在该网络上有 {have} USDC；本次充值需要 {need}。",
+      p_sign: "请在钱包中签名：向 {to} 支付 {amount} USDC，有效期至 {until}。",
+      p_send: "现在请在钱包中发送交易（需支付少量 ETH 作为 gas）。",
+      p_mined: "等待交易上链… {tx}",
+      p_failed: "交易在链上失败。除 gas 外未扣任何费用，也未到账。",
+      p_redeem: "已上链。正在为你的密钥入账…",
+      p_done: "已入账 ${c}。余额：${b}",
+      p_cancel: "已在钱包中取消，未支付任何费用。",
+      p_err: "已停止：{e}",
+      p_resume: "正在完成之前的充值… {tx}",
+      p_later: "枢纽尚未确认。付款是安全的：下次打开本页时会自动重试，或将交易哈希通过 POST 发送到 {url}。"
+    }
+  };
+  var LANGS = [["en", "EN"], ["ru", "RU"], ["es", "ES"], ["fr", "FR"], ["zh", "中文"]];
+
+  // Browser storage is a convenience here and may be missing (private windows, previews).
+  function store(kind) { try { return window[kind]; } catch (e) { return null; } }
+  function sget(kind, k) { var s = store(kind); try { return s ? s.getItem(k) : null; } catch (e) { return null; } }
+  function sset(kind, k, v) { var s = store(kind); try { if (s) { v === null ? s.removeItem(k) : s.setItem(k, v); } } catch (e) {} }
+
+  function pickLang() {
+    var q = (new URLSearchParams(location.search).get("lang") || "").toLowerCase();
+    if (I18N[q]) return q;
+    var saved = sget("localStorage", "start.lang");
+    if (saved && I18N[saved]) return saved;
+    var prefs = navigator.languages || [navigator.language || "en"];
+    for (var i = 0; i < prefs.length; i++) {
+      var code = String(prefs[i] || "").slice(0, 2).toLowerCase();
+      if (I18N[code]) return code;
+    }
+    return "en";
+  }
+  var lang = pickLang();
+  function t(key, vars) {
+    var text = (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
+    Object.keys(vars || {}).forEach(function (name) { text = text.split("{" + name + "}").join(String(vars[name])); });
+    return text;
+  }
+  function $(id) { return document.getElementById(id); }
+  function say(el, text, kind) { el.textContent = text || ""; el.className = "status" + (kind ? " " + kind : ""); }
+
+  var providerMode = new URLSearchParams(location.search).get("role") === "provider";
+  var providerPolicy = null;
+  var providerError = false;
+  var HUB = location.origin;
+  var state = { key: sget("sessionStorage", "start.key") || "", conf: null, tab: "claude-code", amount: 5 };
+
+  // ── language ─────────────────────────────────────────────────────────────
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) { el.textContent = t(el.getAttribute("data-i18n")); });
+    var learn = $("learn-link");
+    if (learn) learn.href = learn.getAttribute("data-school") + (lang === "en" ? "" : lang + "/") + "ai-pays-ai/";
+    var box = $("langs");
+    box.textContent = "";
+    LANGS.forEach(function (pair) {
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = pair[1]; b.lang = pair[0];
+      b.setAttribute("aria-pressed", pair[0] === lang ? "true" : "false");
+      b.addEventListener("click", function () { lang = pair[0]; sset("localStorage", "start.lang", lang); applyLang(); });
+      box.appendChild(b);
+    });
+    renderTrial(); renderGrant(); renderTabs(); renderLimits(); renderProvider();
+  }
+
+  function renderProvider() {
+    $("provider-entry").href = "?role=provider&lang=" + lang;
+    $("provider-entry").hidden = providerMode;
+    $("provider").hidden = !providerMode;
+    if (!providerMode) return;
+    document.querySelector('[data-i18n="h1"]').textContent = t("provider_title");
+    document.querySelector('[data-i18n="tagline"]').textContent = t("provider_intro");
+    $("connect").hidden = true;
+    $("topup").querySelector(".step-n b").textContent = "02";
+    var link = $("provider-continue"), url = new URL(link.getAttribute("href"), location.origin);
+    url.searchParams.set("lang", lang); link.href = url.href;
+    var p = providerPolicy;
+    [["provider-min", "min_stake_usd"], ["provider-stake", "stake_usd"],
+     ["provider-missing", "additional_stake_usd"], ["provider-collateral", "collateral_usd"]].forEach(function (pair) {
+      $(pair[0]).textContent = p && typeof p[pair[1]] === "number" ? "$" + money(p[pair[1]]) : "—";
+    });
+    say($("provider-status"), providerError ? t("provider_failed") : !p ? t("provider_loading") :
+      p.requires_mandate ? t("provider_mandate") : !state.key ? t("provider_key") : "", providerError ? "bad" : "");
+  }
+  function refreshProvider() {
+    if (!providerMode) return;
+    var key = state.key;
+    providerPolicy = null; providerError = false; renderProvider();
+    api("/ai-market/v2/supply/policy", { key: key }).then(function (r) {
+      if (key !== state.key) return;
+      providerError = r.status !== 200;
+      providerPolicy = providerError ? null : r.body;
+      renderProvider();
+    }, function () {
+      if (key !== state.key) return;
+      providerError = true; renderProvider();
+    });
+  }
+
+  // ── configuration from this hub's own manifest ───────────────────────────
+  function rails() { return (state.conf && state.conf.payment_rails) || {}; }
+  function creditsConf() { return rails().credits || {}; }
+  function topupConf() { return creditsConf().topup || {}; }
+
+  function renderTrial() {
+    var line = $("trial-line"), ft = (state.conf && state.conf.free_trial) || {};
+    if (!ft.enabled || !ft.max_invokes_per_visitor) { line.hidden = true; return; }
+    line.hidden = false;
+    line.textContent = t(ft.renews && ft.quota_window === "hourly" ? "trial_hourly" : "trial_once", { n: ft.max_invokes_per_visitor });
+  }
+  function renderGrant() {
+    // A hub that opens keys with a credit says how much; the step text says $0 otherwise.
+    var g = Number((rails().credits || {}).free_grant_usd || 0);
+    var p = document.querySelector('[data-i18n="s1_p"]');
+    if (p) p.textContent = g > 0 ? t("s1_p_grant", { g: money(g) }) : t("s1_p");
+  }
+  function renderLimits() {
+    var tc = topupConf();
+    $("limits").textContent = tc.enabled ? t("s3_limits", { min: money(tc.min_usd), max: money(tc.max_usd) }) : "";
+  }
+  function money(v) { var n = Number(v); return isFinite(n) ? (n < 1 ? n.toFixed(2) : String(Math.round(n * 100) / 100)) : "?"; }
+
+  // ── step 02: snippets ────────────────────────────────────────────────────
+  var TABS = [
+    ["claude-code", "Claude Code"], ["connector", "claude.ai · URL"], ["cursor", "Cursor"],
+    ["vscode", "VS Code"], ["desktop", "Desktop JSON"], ["http", "HTTP"]
+  ];
+  function snippet(tab, key) {
+    var url = HUB + "/mcp";
+    var k = key || "aimk_YOUR_KEY";
+    if (tab === "claude-code") {
+      return 'claude mcp add --transport http aimarket ' + url + ' --header "X-API-Key: ' + k + '"';
+    }
+    if (tab === "connector") {
+      // The connector box takes a URL and no header, so the key rides in the path.
+      return HUB + "/mcp/k/" + k;
+    }
+    if (tab === "cursor") {
+      return JSON.stringify({ mcpServers: { aimarket: { url: url, headers: { "X-API-Key": k } } } }, null, 2);
+    }
+    if (tab === "vscode") {
+      return JSON.stringify({ servers: { aimarket: { type: "http", url: url, headers: { "X-API-Key": k } } } }, null, 2);
+    }
+    if (tab === "desktop") {
+      return JSON.stringify({ mcpServers: { aimarket: {
+        command: "npx", args: ["-y", "mcp-remote", url, "--header", "X-API-Key:${AIMARKET_KEY}"],
+        env: { AIMARKET_KEY: k } } } }, null, 2);
+    }
+    return "curl -s " + HUB + "/ai-market/v2/invoke \\\n  -H 'X-API-Key: " + k + "' -H 'content-type: application/json' \\\n" +
+      "  -d '{\"product_id\":\"gaia.gateway\",\"capability_id\":\"gaia.weather.read@v1\"," +
+      "\"source_hub\":\"https://iot.modelmarket.dev\",\"input\":{\"city\":\"Berlin\"}}'";
+  }
+  function hintFor(tab) {
+    if (tab === "claude-code") return t("hint_cc");
+    if (tab === "connector") return t("hint_connector");
+    if (tab === "cursor") return t("hint_file", { f: "~/.cursor/mcp.json" });
+    if (tab === "vscode") return t("hint_file", { f: ".vscode/mcp.json" });
+    if (tab === "desktop") return t("hint_desktop");
+    return t("hint_http");
+  }
+  function renderTabs() {
+    var box = $("tabs");
+    box.textContent = "";
+    TABS.forEach(function (pair) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "tab" + (pair[0] === state.tab ? " active" : "");
+      b.setAttribute("role", "tab"); b.setAttribute("aria-selected", pair[0] === state.tab ? "true" : "false");
+      b.textContent = pair[1];
+      b.addEventListener("click", function () { state.tab = pair[0]; renderTabs(); });
+      box.appendChild(b);
+    });
+    $("snip-hint").textContent = hintFor(state.tab);
+    $("snippet").textContent = snippet(state.tab, state.key);
+  }
+
+  function addCopy(pre) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "copy-btn"; b.textContent = "copy";
+    b.addEventListener("click", function () {
+      if (!navigator.clipboard) return;
+      navigator.clipboard.writeText(pre.textContent).then(function () {
+        b.textContent = "copied"; b.classList.add("done");
+        setTimeout(function () { b.textContent = "copy"; b.classList.remove("done"); }, 1400);
+      }, function () {});
+    });
+    pre.parentNode.appendChild(b);
+  }
+
+  // ── step 01: the key ─────────────────────────────────────────────────────
+  function api(path, opts) {
+    opts = opts || {};
+    var headers = { "content-type": "application/json" };
+    if (opts.key) headers["X-API-Key"] = opts.key;
+    return fetch(HUB + path, { method: opts.method || "GET", headers: headers,
+                               body: opts.body ? JSON.stringify(opts.body) : undefined })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; }); });
+  }
+  function detail(body) {
+    var d = body && (body.detail || body.error);
+    return typeof d === "string" ? d : JSON.stringify(d || body || {});
+  }
+  function setKey(key) {
+    state.key = key;
+    sset("sessionStorage", "start.key", key || null);
+    renderTabs(); refreshBalance(); renderPay();
+  }
+  function refreshBalance() {
+    refreshProvider();
+    if (!state.key) { $("balance").textContent = "—"; return Promise.resolve(null); }
+    return api("/ai-market/v2/account", { key: state.key }).then(function (r) {
+      if (r.status !== 200) { $("balance").textContent = "—"; return null; }
+      $("balance").textContent = "$" + Number(r.body.balance_usd || 0).toFixed(4);
+      return r.body;
+    }, function () { return null; });
+  }
+  function mint() {
+    var btn = $("mint"), out = $("keystatus");
+    btn.disabled = true; btn.textContent = t("s1_busy"); say(out, "");
+    api("/ai-market/v2/accounts", { method: "POST", body: { label: "start-page" } }).then(function (r) {
+      btn.disabled = false; btn.textContent = t("s1_btn");
+      if (r.status === 200 && r.body.api_key) {
+        $("keytext").textContent = r.body.api_key;
+        $("keybox").hidden = false;
+        setKey(r.body.api_key);
+        say(out, t("s1_ready", { b: Number(r.body.balance_usd || 0).toFixed(2) }), "ok");
+      } else if (r.status === 403) {
+        say(out, t("s1_closed"), "err");
+      } else if (r.status === 429) {
+        say(out, t("s1_many"), "err");
+      } else if (r.status === 503) {
+        say(out, t("s1_off"), "err");
+      } else {
+        say(out, t("s1_fail", { e: detail(r.body) }), "err");
+      }
+    }, function (e) {
+      btn.disabled = false; btn.textContent = t("s1_btn");
+      say(out, t("s1_fail", { e: e && e.message ? e.message : String(e) }), "err");
+    });
+  }
+  function useKey() {
+    var key = ($("havekey").value || "").trim(), out = $("keystatus");
+    if (!/^[A-Za-z0-9_-]{8,128}$/.test(key)) { say(out, t("s1_bad"), "err"); return; }
+    api("/ai-market/v2/account", { key: key }).then(function (r) {
+      if (r.status === 200) {
+        setKey(key);
+        $("havekey").value = "";
+        say(out, t("s1_ready", { b: Number(r.body.balance_usd || 0).toFixed(4) }), "ok");
+      } else {
+        say(out, t("s1_bad"), "err");
+      }
+    }, function (e) { say(out, t("s1_fail", { e: String(e) }), "err"); });
+  }
+
+  // ── step 03: USDC top-up, EIP-3009 over the hub's own quote ─────────────
+  // Same construction as aimarket_agent.topup (typed_data + calldata): the wallet signs the
+  // authorization AND sends it, so the hub never holds a key or pays gas, and only an
+  // authorization over the quote's nonce is credited — to the key that asked for the quote.
+  var SELECTOR = "0xe3ee160e"; // transferWithAuthorization(address,address,uint256,uint256,uint256,bytes32,uint8,bytes32,bytes32)
+  function word(v) {
+    var hex = typeof v === "bigint" ? v.toString(16) : String(v).replace(/^0x/i, "");
+    return hex.padStart(64, "0").toLowerCase();
+  }
+  function calldata(msg, sig) {
+    var raw = sig.replace(/^0x/i, "");
+    if (raw.length !== 130) throw new Error("unexpected signature length");
+    var v = parseInt(raw.slice(128, 130), 16); if (v < 27) v += 27;
+    return SELECTOR + [msg.from, msg.to, BigInt(msg.value), BigInt(msg.validAfter), BigInt(msg.validBefore),
+                       msg.nonce, BigInt(v), raw.slice(0, 64), raw.slice(64, 128)].map(word).join("");
+  }
+  function short(a) { a = String(a || ""); return a.length > 14 ? a.slice(0, 6) + "…" + a.slice(-4) : a; }
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  var CHAINS = { 8453: { chainId: "0x2105", chainName: "Base", rpcUrls: ["https://mainnet.base.org"],
+                         nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+                         blockExplorerUrls: ["https://basescan.org"] } };
+
+  function renderPay() {
+    var tc = topupConf(), btn = $("pay"), out = $("paystatus");
+    var ready = !!(tc.enabled && state.key);
+    btn.disabled = !ready;
+    if (!tc.enabled) say(out, state.conf ? t("s3_off") : "");
+    else if (!state.key) say(out, t("s3_nokey"));
+    else if (out.textContent === t("s3_nokey")) say(out, "");
+  }
+  function renderChips() {
+    var box = $("chips");
+    box.textContent = "";
+    [1, 5, 20].forEach(function (n) {
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = "$" + n;
+      b.setAttribute("aria-pressed", Number($("amount").value) === n ? "true" : "false");
+      b.addEventListener("click", function () { $("amount").value = n; renderChips(); });
+      box.appendChild(b);
+    });
+  }
+
+  function waitReceipt(eth, tx) {
+    var started = Date.now();
+    function poll() {
+      return eth.request({ method: "eth_getTransactionReceipt", params: [tx] }).then(function (rc) {
+        if (rc && rc.status) return rc;
+        if (Date.now() - started > 300000) throw new Error("timeout");
+        return sleep(3000).then(poll);
+      });
+    }
+    return poll();
+  }
+  function redeem(nonce, tx, out) {
+    var tries = 0;
+    function attempt() {
+      tries += 1;
+      var opts = { method: "POST", body: { tx_hash: tx } };
+      if (state.key) opts.key = state.key;
+      return api("/ai-market/v2/topups/" + nonce, opts).then(function (r) {
+        if (r.status === 200 && r.body.success) {
+          sset("localStorage", "start.pending", null);
+          return refreshBalance().then(function (acct) {
+            var bal = acct ? acct.balance_usd : r.body.balance_usd;
+            say(out, t("p_done", { c: Number(r.body.credited_usd || 0).toFixed(2), b: Number(bal || 0).toFixed(4) }), "ok");
+          });
+        }
+        if (r.body && r.body.retryable && tries < 25) return sleep(6000).then(attempt);
+        if (r.body && r.body.retryable) {
+          say(out, t("p_later", { url: HUB + "/ai-market/v2/topups/" + nonce }), "err");
+          return;
+        }
+        sset("localStorage", "start.pending", null);
+        say(out, t("p_err", { e: detail(r.body) }), "err");
+      });
+    }
+    return attempt();
+  }
+
+  function pay() {
+    var out = $("paystatus"), tc = topupConf(), btn = $("pay");
+    var amount = Number($("amount").value);
+    if (!(amount >= Number(tc.min_usd) && amount <= Number(tc.max_usd))) {
+      say(out, t("p_amount", { min: money(tc.min_usd), max: money(tc.max_usd) }), "err"); return;
+    }
+    var eth = window.ethereum;
+    if (!eth || typeof eth.request !== "function") { say(out, t("p_nowallet"), "err"); return; }
+    btn.disabled = true;
+    var from, quote, msg;
+    eth.request({ method: "eth_requestAccounts" }).then(function (accounts) {
+      from = String(accounts && accounts[0] || "");
+      if (!/^0x[0-9a-fA-F]{40}$/.test(from)) throw new Error("no account");
+      say(out, t("p_quote"));
+      return api("/ai-market/v2/account/topup", { method: "POST", key: state.key, body: { amount_usd: amount } });
+    }).then(function (r) {
+      if (r.status !== 402 || !r.body.topup || !r.body.accepts) throw new Error(detail(r.body));
+      quote = r.body.topup;
+      var extra = r.body.accepts[0].extra || {};
+      var chainId = Number(quote.chain_id);
+      // The page asks for exactly what the hub quoted, and checks it is what the manifest says.
+      var published = topupConf();
+      if (published.pay_to && published.pay_to.toLowerCase() !== String(quote.pay_to).toLowerCase()) throw new Error("payTo mismatch");
+      if (published.asset_address && published.asset_address.toLowerCase() !== String(quote.asset_address).toLowerCase()) throw new Error("asset mismatch");
+      msg = { from: from, to: quote.pay_to, value: String(quote.amount_units), validAfter: "0",
+              validBefore: String(Math.floor(Number(quote.expires_at))), nonce: quote.nonce };
+      var typed = {
+        types: {
+          EIP712Domain: [{ name: "name", type: "string" }, { name: "version", type: "string" },
+                         { name: "chainId", type: "uint256" }, { name: "verifyingContract", type: "address" }],
+          TransferWithAuthorization: [{ name: "from", type: "address" }, { name: "to", type: "address" },
+                                      { name: "value", type: "uint256" }, { name: "validAfter", type: "uint256" },
+                                      { name: "validBefore", type: "uint256" }, { name: "nonce", type: "bytes32" }]
+        },
+        primaryType: "TransferWithAuthorization",
+        domain: { name: extra.name, version: String(extra.version), chainId: chainId, verifyingContract: quote.asset_address },
+        message: msg
+      };
+      var want = "0x" + chainId.toString(16);
+      return eth.request({ method: "eth_chainId" }).then(function (cur) {
+        if (String(cur).toLowerCase() === want) return null;
+        say(out, t("p_chain", { chain: (CHAINS[chainId] || {}).chainName || quote.network }));
+        return eth.request({ method: "wallet_switchEthereumChain", params: [{ chainId: want }] }).catch(function (e) {
+          if (e && e.code === 4902 && CHAINS[chainId]) return eth.request({ method: "wallet_addEthereumChain", params: [CHAINS[chainId]] });
+          throw e;
+        });
+      }).then(function () {
+        return eth.request({ method: "eth_call", params: [{ to: quote.asset_address, data: "0x70a08231" + word(from) }, "latest"] });
+      }).then(function (balHex) {
+        var have = BigInt(balHex || "0x0"), need = BigInt(quote.amount_units), unit = Math.pow(10, Number(quote.decimals || 6));
+        if (have < need) {
+          throw { shown: t("p_funds", { have: (Number(have) / unit).toFixed(2), need: (Number(need) / unit).toFixed(2) }) };
+        }
+        say(out, t("p_sign", { amount: Number(quote.amount_usd).toFixed(2), to: short(quote.pay_to),
+                                until: new Date(Number(quote.expires_at) * 1000).toLocaleTimeString() }));
+        return eth.request({ method: "eth_signTypedData_v4", params: [from, JSON.stringify(typed)] });
+      });
+    }).then(function (sig) {
+      say(out, t("p_send"));
+      return eth.request({ method: "eth_sendTransaction", params: [{ from: from, to: quote.asset_address, data: calldata(msg, sig) }] });
+    }).then(function (tx) {
+      sset("localStorage", "start.pending", JSON.stringify({ nonce: quote.nonce, tx: tx }));
+      say(out, t("p_mined", { tx: short(tx) }));
+      return waitReceipt(eth, tx).then(function (rc) {
+        if (rc.status !== "0x1") { sset("localStorage", "start.pending", null); throw { shown: t("p_failed") }; }
+        say(out, t("p_redeem"));
+        return redeem(quote.nonce, tx, out);
+      });
+    }).catch(function (e) {
+      if (e && e.shown) say(out, e.shown, "err");
+      else if (e && (e.code === 4001 || e.code === "ACTION_REJECTED")) say(out, t("p_cancel"), "err");
+      else say(out, t("p_err", { e: (e && e.message) ? e.message : String(e) }), "err");
+    }).then(function () { renderPay(); });
+  }
+
+  function resumePending() {
+    var raw = sget("localStorage", "start.pending");
+    if (!raw) return;
+    var p; try { p = JSON.parse(raw); } catch (e) { sset("localStorage", "start.pending", null); return; }
+    if (!p || !/^0x[0-9a-fA-F]{64}$/.test(String(p.nonce)) || !/^0x[0-9a-fA-F]{64}$/.test(String(p.tx))) {
+      sset("localStorage", "start.pending", null); return;
+    }
+    var out = $("paystatus");
+    say(out, t("p_resume", { tx: short(p.tx) }));
+    redeem(p.nonce, p.tx, out);
+  }
+
+  // ── boot ─────────────────────────────────────────────────────────────────
+  addCopy($("keytext")); addCopy($("snippet"));
+  $("provider-refresh").addEventListener("click", refreshBalance);
+  $("mint").addEventListener("click", mint);
+  $("usekey").addEventListener("click", useKey);
+  $("havekey").addEventListener("keydown", function (e) { if (e.key === "Enter") useKey(); });
+  $("pay").addEventListener("click", pay);
+  $("amount").addEventListener("input", renderChips);
+  renderChips();
+  applyLang();
+  renderPay();
+  fetch(HUB + "/.well-known/ai-market.json").then(function (r) { return r.json(); }).then(function (conf) {
+    state.conf = conf;
+    var cc = creditsConf();
+    if (!cc.enabled) { $("mint").disabled = true; say($("keystatus"), t("s1_off")); }
+    else if (cc.open_signup === false) { $("mint").disabled = true; say($("keystatus"), t("s1_closed")); }
+    renderTrial(); renderGrant(); renderLimits(); renderPay();
+    refreshBalance();
+    resumePending();
+  }, function () {});
+})();
+</script>
+</body>
+</html>

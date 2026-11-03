@@ -127,7 +127,7 @@ _GENERATED_HEADER = (
 _SAT_ENTRY = re.compile(r"^  - id: (\S+)\s*$")
 
 
-def satellite_map_mirror_text(src_rel: str, text: str) -> str:
+def satellite_map_mirror_text(src_rel: str, text: str, *, include_local_knowledge: bool = True) -> str:
     """The monitor's copy includes explicitly visible local/runtime components.
 
     Same rule as the knowledge bases — a component the reader cannot open is worse than one
@@ -139,9 +139,12 @@ def satellite_map_mirror_text(src_rel: str, text: str) -> str:
         s.get("id")
         for s in (yaml.safe_load(text) or {}).get("satellites", [])
         if isinstance(s, dict) and s.get("github_published") is False
-        and s.get("knowledge_visible") is not True
+        and not (include_local_knowledge and s.get("knowledge_visible") is True)
     }
-    out: list[str] = [_GENERATED_HEADER]
+    header = _GENERATED_HEADER if include_local_knowledge else (
+        "# GENERATED PUBLIC COPY — do not hand-edit. Closed satellite entries are omitted.\n"
+    )
+    out: list[str] = [header]
     skipping = False
     for line in text.splitlines(keepends=True):
         m = _SAT_ENTRY.match(line)

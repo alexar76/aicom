@@ -1,0 +1,273 @@
+{
+  "scope": "12 previously unidentified Base USDC operations; no new charges, refunds, or production writes",
+  "totals_atomic": {
+    "paid_delivery_failed": {
+      "count": 2,
+      "amount_atomic": 2000
+    },
+    "delivered": {
+      "count": 10,
+      "amount_atomic": 40000
+    }
+  },
+  "records": [
+    {
+      "transaction": "0xb73fc5dacdea3af759c0b3b2b1009dc0ac9e0ce2695f1978dc03cfb0953c5514",
+      "node": "modelmarket-hub",
+      "capability": "json.canonical@v1",
+      "amount_atomic": 1000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "paid_delivery_failed",
+      "delivery_evidence": {
+        "path": "docs/hestia-hub-market-rail.md:154",
+        "observation": "HTTP 502 after verified settlement; retry rejected as already spent. The later successful canonical call has a different tx and authorization nonce."
+      },
+      "invocation_ids": [],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "no_linked_refund_identified",
+      "refund_evidence": "No refund/obligation by original hash in the live Hub DB. Direct seller-to-buyer canonical USDC scan from the original block to 53449805 found four same-value transfers, all independently linked to distinct delivered GAIA purchases. Remaining direct transfers differ in amount and were not linked to the original payment."
+    },
+    {
+      "transaction": "0xaec3874639ca9d00ae285c7e1ad4246adc4baf8911ac0a921a216c5558d9b9ab",
+      "node": "modelmarket-hub",
+      "capability": "json.canonical@v1",
+      "amount_atomic": 1000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "docs/hestia-hub-market-rail.md:132",
+        "observation": "HTTP 200 with RFC 8785 canonical bytes and their SHA-256."
+      },
+      "invocation_ids": [
+        882
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    },
+    {
+      "transaction": "0x8982b8ac596d0192254017149bc2d1c050c05e838aba7fd5528de7776b0a2285",
+      "node": "modelmarket-hub",
+      "capability": "gaia.weather.read@v1",
+      "amount_atomic": 1000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "aimarket-hub/docs/evidence/codex-subcontract-2026-09-29.json:200",
+        "observation": "Archived completed pipeline includes this paid GAIA weather node and its signed reading."
+      },
+      "invocation_ids": [
+        1143
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    },
+    {
+      "transaction": "0xf974e08b83c1518bed93bfac457f98d7088d3ae6901af9421950d402fb0dc016",
+      "node": "modelmarket-hub",
+      "capability": "gaia.air.read@v1",
+      "amount_atomic": 1000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "aimarket-hub/docs/evidence/codex-subcontract-2026-09-29.json:270",
+        "observation": "Archived completed pipeline includes this paid GAIA air node and its signed reading."
+      },
+      "invocation_ids": [
+        1144
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    },
+    {
+      "transaction": "0x5ecc8cf51aec0618e730d130ce9d61003cbdccc0b1814d5a39d6c67228c2543e",
+      "node": "modelmarket-hub",
+      "capability": "gaia.weather.read@v1",
+      "amount_atomic": 1000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "aimarket-hub/docs/evidence/codex-one-call-2026-09-30.json:75",
+        "observation": "Archived completed pipeline includes this paid GAIA weather node and its signed reading."
+      },
+      "invocation_ids": [
+        1150
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    },
+    {
+      "transaction": "0x5ef82ffce3e6d7a5a4866cf492ae2db5b44df238b85ad361ab4641de61304fa1",
+      "node": "modelmarket-hub",
+      "capability": "gaia.air.read@v1",
+      "amount_atomic": 1000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "aimarket-hub/docs/evidence/codex-one-call-2026-09-30.json:145",
+        "observation": "Archived completed pipeline includes this paid GAIA air node and its signed reading."
+      },
+      "invocation_ids": [
+        1151
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    },
+    {
+      "transaction": "0xeba985a89e95ed7f637ca832c6bba3ed109cf731982272f749970c622590b272",
+      "node": "modelmarket-hub",
+      "capability": "weather.witness@v1",
+      "amount_atomic": 2000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "aimarket-hub/docs/evidence/witness-prepaid-mainnet-2026-09-30.json:124",
+        "observation": "Archived completed pipeline includes this paid weather witness result."
+      },
+      "invocation_ids": [
+        1171
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    },
+    {
+      "transaction": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70",
+      "node": "modelmarket-hub",
+      "capability": "gaia.weather.read@v1",
+      "amount_atomic": 1000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "paid_delivery_failed",
+      "delivery_evidence": {
+        "path": "docs/evidence/first-agent-call-live-paid-2026-10-31/original-paid-task-reverified.json",
+        "observation": "Provider execution succeeded and provider receipt verifies, but buyer-facing paid A2A Task stores a null result; replay of the same Task still shows null. Later successful paid calls had separate transactions.",
+        "live_task_id": "a2at_55f123548e7647c658d01a41",
+        "live_result_shapes": [
+          "NoneType"
+        ]
+      },
+      "invocation_ids": [
+        2568
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "no_linked_refund_identified",
+      "refund_evidence": "No refund/obligation by original hash in the live Hub DB. Direct seller-to-buyer canonical USDC scan from the original block to 53449805 found no transfers."
+    },
+    {
+      "transaction": "0x478637aabfeb2a2ab0a0627cd706a6d75862e894d478488cc34db15baf036de9",
+      "node": "modelmarket-hub",
+      "capability": "gaia.weather.read@v1",
+      "amount_atomic": 1000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "docs/evidence/first-agent-call-live-paid-2026-10-31/a2a-fixed/paid-task.json",
+        "observation": "Paid A2A result includes weather data; provider receipt verifies.",
+        "live_task_id": "a2at_eecf132e889478b8ca5a51cd",
+        "live_result_shapes": [
+          {
+            "reading": "dict",
+            "attestation": "dict"
+          }
+        ]
+      },
+      "invocation_ids": [
+        2576
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    },
+    {
+      "transaction": "0x6d1082db9b7fe841b5700a88c27c52e6e310077bc6a9eb5f811da391652ce342",
+      "node": "modelmarket-hub",
+      "capability": "gaia.weather.read@v1",
+      "amount_atomic": 1000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "docs/evidence/first-agent-call-live-paid-2026-10-31/mcp-paid/paid-response.json",
+        "observation": "Paid MCP response delivered weather data and verifiable provider receipt."
+      },
+      "invocation_ids": [
+        2577
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    },
+    {
+      "transaction": "0x0998c423bd7a4262648a731ae1ed3986beb0c0bbd3716f55f2986c84776bf832",
+      "node": "hub-attested",
+      "capability": "contradiction.scan@v1",
+      "amount_atomic": 9000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "docs/onchain-journal.md:1252",
+        "observation": "Cross-company audit completed with supported verdict. Attested live invocation 54 succeeded at payment timestamp for 0.009 USDC."
+      },
+      "invocation_ids": [
+        54
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    },
+    {
+      "transaction": "0xd8a41fb865beba51d9e795f556dc3b77e6ce5bb20a0dceb2e0691aa791997531",
+      "node": "hub-attested",
+      "capability": "claim.check@v1",
+      "amount_atomic": 22000,
+      "base_receipt_status": 1,
+      "authorization_nonce_matches": true,
+      "amount_matches": true,
+      "delivery_status": "delivered",
+      "delivery_evidence": {
+        "path": "docs/onchain-journal.md:1251",
+        "observation": "Cross-company audit completed with supported verdict. Attested live invocation 55 succeeded one second after payment timestamp for 0.022 USDC."
+      },
+      "invocation_ids": [
+        55
+      ],
+      "refund_ledger_matches": [],
+      "payout_obligation_matches": [],
+      "refund_status": "not_required_for_confirmed_delivery"
+    }
+  ],
+  "sources": {
+    "base": "hub-12-chain.json",
+    "apex": "modelmarket-hub-12-recheck.json",
+    "attested": "hub-attested-12-recheck.json",
+    "live_a2a_task_storage": "hub-12-a2a-current.json"
+  },
+  "refund_scope_limit": "No claim about unlinked refunds through third parties, other tokens, or off-chain payment rails."
+}

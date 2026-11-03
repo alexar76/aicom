@@ -1,0 +1,22 @@
+start 2026-10-31T16:42:02Z
+base = running image 4f08c5c5c617
+sha256:79627d045e1c092b9d75fbb7206da9dc69ebadc745063893de6d4f5fd488056b
+smoke ok: 5 files as built, 8 vectors, NUM-001 only for 1e400, SUBJ-001 for a nameless entry
+MOMUS release gate passed: 20261031T033115, 3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de
+WARDEN dist identical in base and new
+crawl running before: 0
+ Container histor-histor-postgres-1 Recreate 
+ Container histor-histor-postgres-1 Recreated 
+ Container histor-histor-1 Recreate 
+ Container histor-histor-1 Recreated 
+ Container histor-histor-postgres-1 Starting 
+ Container histor-histor-postgres-1 Started 
+ Container histor-histor-postgres-1 Waiting 
+ Container histor-histor-postgres-1 Healthy 
+ Container histor-histor-1 Starting 
+ Container histor-histor-1 Started 
+waiting for /health … ok
+{"ok":true,"service":"histor","version":"0.5.1","profile":"prod","store":"postgresql","tree_size":1326154,"crawl_running":false,"last_crawl_error":null}
+histor-histor-1 runs 79627d045e1c (histor-histor:mtl11-20261031)
+MOMUS quality binding -> 79627d045e1c (WARDEN unchanged, nothing re-measured)
+done 2026-10-31T16:42:17Z

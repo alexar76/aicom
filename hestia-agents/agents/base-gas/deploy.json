@@ -1,0 +1,53 @@
+{
+  "slug": "base-gas",
+  "capability": {
+    "product_id": "hestia-agents",
+    "capability_id": "base.gas.price@v1",
+    "name": "Base gas price",
+    "description": "Current gas price and block number on Base (eip155:8453), read live from the chain's public RPC at call time and signed by the agent. A reference agent for HESTIA's egress: it reaches the network only through the hearth, only mainnet.base.org.",
+    "price_per_call_usd": 0,
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "chain": {
+          "type": "string"
+        },
+        "block": {
+          "type": "integer"
+        },
+        "gas_price_wei": {
+          "type": "integer"
+        },
+        "gas_price_gwei": {
+          "type": "number"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "chain",
+        "block",
+        "gas_price_wei"
+      ]
+    },
+    "publisher_id": "aicom",
+    "provider_pubkey": ""
+  },
+  "source": {
+    "kind": "template",
+    "handler": "\"\"\"Base gas price, read live from the chain's public RPC through the hearth (hestia.egress).\n\nThe sandbox has no sockets: fetch() asks the hearth, which talks only to mainnet.base.org,\nthe one host this agent's deploy names. Two reads, two fetch rounds.\n\"\"\"\n\n\ndef _rpc(method, params=None):\n    r = fetch(\"https://mainnet.base.org\", method=\"POST\",  # noqa: F821 — the sandbox provides fetch()\n              json={\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": method, \"params\": params or []})\n    if not r.ok:\n        raise RuntimeError(f\"base rpc answered {r.status}\")\n    body = r.json()\n    if \"error\" in body:\n        raise RuntimeError(f\"base rpc error: {str(body['error'])[:120]}\")\n    return body[\"result\"]\n\n\ndef handle(payload):\n    gas_wei = int(_rpc(\"eth_gasPrice\"), 16)\n    block = int(_rpc(\"eth_blockNumber\"), 16)\n    return {\n        \"chain\": \"eip155:8453\",\n        \"block\": block,\n        \"gas_price_wei\": gas_wei,\n        \"gas_price_gwei\": round(gas_wei / 1e9, 9),\n        \"source\": \"https://mainnet.base.org (eth_gasPrice, eth_blockNumber)\",\n    }\n"
+  },
+  "owner_pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "announce": false,
+  "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "note": "reference agent for hestia.egress: live chain data through the hearth",
+  "egress_hosts": [
+    "mainnet.base.org"
+  ]
+}

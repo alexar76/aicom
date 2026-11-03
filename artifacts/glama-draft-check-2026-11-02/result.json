@@ -1,0 +1,46 @@
+{
+  "checksums": {
+    "servers.jsonl.gz": true,
+    "changes.jsonl.gz": true,
+    "extras_changes.jsonl.gz": true
+  },
+  "total_changes": 53159,
+  "excluded_entries": 4281,
+  "excluded_changes": 16890,
+  "filtered_changes": 36269,
+  "filtered_changed_entries": 11208,
+  "cohort": {
+    "entries": 11836,
+    "hosts": 7213,
+    "changed_hosts": 2976
+  },
+  "changed_once": 5289,
+  "seven_plus_entries": 1100,
+  "seven_plus_changes": 16123,
+  "description_touched": 22091,
+  "full_comparisons": 34066,
+  "name_input_pin_misses": 10293,
+  "input_schema_without_own_description": 6874,
+  "input_schema_without_own_description_entries": 3524,
+  "description_only": 8050,
+  "cosmetic": 557,
+  "word_bins": {
+    ">50": 2170,
+    "11-50": 2995,
+    "3-10": 1087,
+    "1-2": 1241
+  },
+  "directional": 962,
+  "versions": {
+    "Server": {
+      "known": 29516,
+      "same": 22409
+    },
+    "Registry": {
+      "known": 6702,
+      "same": 6501
+    }
+  },
+  "annotation_escalation_changes": 1250,
+  "annotation_escalation_entries": 912
+}

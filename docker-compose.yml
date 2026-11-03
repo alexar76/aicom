@@ -215,6 +215,7 @@ services:
       # [metis] Optional cognition gate — HTTP-only, fail-open (see docs/metis-integration.md)
       AIFACTORY_METIS_GATE: ${AIFACTORY_METIS_GATE:-auto}
       AIFACTORY_METIS_URL: ${AIFACTORY_METIS_URL:-}
+      AIFACTORY_METIS_API_KEY: ${AIFACTORY_METIS_API_KEY:-}
       AIFACTORY_METIS_GATE_STAGES: ${AIFACTORY_METIS_GATE_STAGES:-architect,methodologist}
       AIFACTORY_METIS_GATE_ROUTE: ${AIFACTORY_METIS_GATE_ROUTE:-fast}
       # Metis /v1/verify — full-product gate; allow up to 300s server + client.

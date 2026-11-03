@@ -2117,3 +2117,21 @@ def test_hub_down_reads_as_words_in_both_languages():
     assert "attested" in fail and "attested" in back and impact
     fail_ru, _, impact_ru = alert._describe("hub_up@attested", "https://modelmarket.dev", "ru")
     assert "attested" in fail_ru and impact_ru
+
+
+@pytest.mark.skipif(not hasattr(time, "tzset"), reason="time.tzset is POSIX-only")
+def test_ages_do_not_move_with_the_hosts_summer_time(monkeypatch):
+    """`time.mktime(...) + time.timezone` put summer timestamps an hour off on a host with
+    summer time; every age is now read as UTC whatever the host's zone."""
+    stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - 2 * 3600))   # NOW is in August
+    try:
+        for zone in ("UTC", "Europe/Berlin", "America/New_York", "Australia/Sydney"):
+            monkeypatch.setenv("TZ", zone)
+            time.tzset()
+            assert alert._hours_since_iso(stamp, NOW) == pytest.approx(2.0)
+            assert alert._hours_since_iso(stamp.replace("Z", "+00:00"), NOW) == pytest.approx(2.0)
+            assert alert._hours_since_iso(stamp[:19], NOW) == pytest.approx(2.0)
+            assert alert._hours_since_iso(stamp[:19] + "+03:00", NOW) == pytest.approx(5.0)  # 3 h earlier in UTC
+    finally:
+        monkeypatch.undo()
+        time.tzset()

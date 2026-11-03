@@ -33,10 +33,31 @@ def last_commit(repo: str) -> str | None:
     return hits[-1][1] + "Z" if hits else None
 
 
+def last_index(repo: str) -> int | None:
+    """The segment of the repository's last commit: borg writes index.<N> only when it commits."""
+    try:
+        found = [int(n[6:]) for n in os.listdir(repo) if n.startswith("index.") and n[6:].isdigit()]
+    except OSError:
+        return None
+    return max(found) if found else None
+
+
 def size_mb(repo: str) -> float:
+    """The repository as of its last commit.
+
+    Segments after the last index belong to a transaction that has not committed. They stay on
+    disk until the next borg session rolls them back, and they must not count: on 2026-11-01
+    attested's upload of 26 GB stopped at its 30 GB quota, its segments stood for three hours
+    and became a 30 GB weekly peak that held the shrink alert open over 3.7 GB that only grew.
+    """
+    committed = last_index(repo)
+    data = os.path.join(repo, "data") + os.sep
     total = 0
     for dirpath, _dirs, files in os.walk(repo):
         for name in files:
+            if (committed is not None and (dirpath + os.sep).startswith(data) and name.isdigit()
+                    and int(name) > committed):
+                continue
             try:
                 total += os.lstat(os.path.join(dirpath, name)).st_size
             except OSError:

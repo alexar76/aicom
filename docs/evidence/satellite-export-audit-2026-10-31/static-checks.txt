@@ -1,0 +1,42 @@
+$ bash -n scripts/mirror_satellites.sh scripts/publish_aicom_factory.sh
+exit=0
+$ .venv/bin/python -m ruff check --select E9,F63,F7,F82 scripts/aicom_publish_config.py scripts/audit_satellite_exports.py scripts/sync_knowledge_base.py scripts/write_published_satellite_map.py tests/test_satellite_local_exports.py
+All checks passed!
+exit=0
+$ bash scripts/verify_whitepaper_links.sh
+=== Satellite link audit (docs) ===
+=== Relative satellite links (404 on factory mirror) ===
+OK — none found
+
+=== Stale aicom/blob/main/<satellite> URLs ===
+OK — none found
+
+=== Links escaping their satellite root (404 in the satellite repo) ===
+OK — none found
+
+All checks passed.
+
+All link checks passed.
+exit=0
+$ .venv/bin/python scripts/sync_knowledge_base.py --check
+fact table: 54 components (source: scripts/satellite-map.yaml + scripts/ecosystem-runtime.yaml)
+
+  ok        docs/ecosystem/knowledge-base.md
+  ok        docs/ecosystem/knowledge-base-ru.md
+  ok        docs/ecosystem/knowledge-base-es.md
+  ok        docs/ecosystem/knowledge-base-fr.md
+  ok        docs/ecosystem/knowledge-base-zh.md
+  ok        atlas/atlas/ecosystem_context.py
+  ok        argus/src/ecosystem/knowledge.ts
+  ok        web/backend/services/support_rag_baseline.md
+
+  mirror ok alien-monitor/docs/ecosystem/knowledge-base.md
+  mirror ok alien-monitor/scripts/satellite-map.yaml
+
+  runtime   alien-monitor/backend/ecosystem_registry.py  (Alien Monitor AI bot) — reads live sources, nothing to inject
+  runtime   scripts/mirror_satellites.sh  (mirror / publish tooling) — reads live sources, nothing to inject
+  runtime   atlas/atlas/capability_awareness.py  (ATLAS Analyst surfaces — live from STATION_CATALOG at request time) — reads live sources, nothing to inject
+  runtime   logos/logos/app.py  (LOGOS assistant — live Hub GET /api/v1/federation/capabilities, not a static SKU list) — reads live sources, nothing to inject
+exit=0
+$ git diff --check
+exit=0

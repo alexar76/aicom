@@ -1,0 +1,14 @@
+2026-11-02T05:39:39Z
+sha256:d2f3b3dcea1e9f8f5de1006b05c2925adc2b8f28ca91eef71967412832270e88
+new image d2f3b3dcea1e FROM 914a930a9334
+MOMUS release gate passed: 20261102T042600, bcfc888d0c26d2dae131292ae30e27371810b24fda4cf0d3885e3596785fb6f9
+smoke ok: migration 019 last, RFC 9309 decisions, reader takes the policy, check note
+ Container histor-histor-1 Recreate 
+ Container histor-histor-1 Recreated 
+ Container histor-histor-1 Starting 
+ Container histor-histor-1 Started 
+ok: {"ok":true,"service":"histor","version":"0.5.1","profile":"prod","store":"postgresql","tree_size":1469910,"crawl_running":false,"last_crawl_error":"interrupted: the process restarted before the crawl finished"}
+MOMUS quality binding → d2f3b3dcea1e
+restarted the crawl the redeploy interrupted
+exit=0
+2026-11-02T05:40:14Z

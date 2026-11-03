@@ -1,0 +1,40 @@
+{
+  "id": "cmvwrml0x000wno480fbho0qo",
+  "playerId": "cmvwrg5px0000no48q8bpswx3",
+  "speciesId": "bruised-banana",
+  "source": "catch",
+  "stage": "awake",
+  "evolved": false,
+  "evolvedAt": null,
+  "feedCount": 0,
+  "lastFeedAt": null,
+  "hatchedAt": "2026-10-31T18:59:43.473Z",
+  "cell": "xn76c",
+  "hatchProofId": "0cee5f4d256951010a6f",
+  "catchProofId": "0cee5f4d256951010a6f",
+  "asleepAt": null,
+  "nickname": null,
+  "feeds": [],
+  "species": {
+    "id": "bruised-banana",
+    "name": "Bruised Banana",
+    "type": "snack",
+    "typeLabel": "Snack",
+    "diet": {
+      "productId": "gaia.gateway",
+      "capabilityId": "gaia.weather.read@v1",
+      "sourceHub": "https://iot.modelmarket.dev",
+      "label": "weather",
+      "input": {
+        "device_id": "om-wx-01"
+      }
+    },
+    "sceneId": "candy-dump",
+    "rarity": "common",
+    "packId": "snack-cult"
+  },
+  "hungry": true,
+  "asleep": false,
+  "feedReady": true,
+  "nextFeedAt": "2026-11-02T04:29:14.733Z"
+}

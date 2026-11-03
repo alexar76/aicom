@@ -39,6 +39,10 @@ OSV_BATCH = "https://api.osv.dev/v1/querybatch"
 OSV_VULN = "https://api.osv.dev/v1/vulns/"
 RANK = {"CRITICAL": 4, "HIGH": 3, "MODERATE": 2, "LOW": 1, "UNKNOWN": 0}
 
+
+class IncompleteScan(RuntimeError):
+    """Missing inventory or vulnerability data cannot establish a clean runtime."""
+
 # Read the version of every direct dependency out of a running Node container.
 # Direct dependencies only: that is what a redeploy actually changes, and pulling the
 # full transitive tree out of every container is minutes of work for noise.
@@ -51,11 +55,12 @@ function find(dir,depth){if(depth>3)return null;
     const r=find(path.join(dir,e.name),depth+1); if(r)return r;}}catch(e){}
   return null;}
 const root=find(process.cwd(),0)||find('/app',0)||find('/',0);
-if(!root){console.log('{}');process.exit(0)}
+if(!root){throw new Error('No Node application manifest found')}
 const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const out={};
 for(const name of Object.keys(pkg.dependencies||{})){
-  try{out[name]=JSON.parse(fs.readFileSync(path.join(root,'node_modules',name,'package.json'),'utf8')).version}catch(e){}
+  out[name]=JSON.parse(fs.readFileSync(path.join(root,'node_modules',name,'package.json'),'utf8')).version;
+  if(typeof out[name]!=='string'||!out[name])throw new Error('Missing installed dependency version');
 }
 console.log(JSON.stringify({root:root,name:pkg.name||null,deps:out}));
 """
@@ -68,11 +73,10 @@ def ssh(host: str, key: str | None, command: str) -> str:
     argv += [f"root@{host}", command]
     try:
         done = subprocess.run(argv, capture_output=True, text=True, timeout=180)
-    except subprocess.TimeoutExpired:
-        return ""
+    except (subprocess.TimeoutExpired, OSError) as exc:
+        raise IncompleteScan(f"SSH inventory unavailable for {host}") from exc
     if done.returncode != 0:
-        print(f"  ! {host}: {done.stderr.strip().splitlines()[-1] if done.stderr.strip() else 'ssh failed'}",
-              file=sys.stderr)
+        raise IncompleteScan(f"SSH inventory failed for {host} (exit {done.returncode})")
     return done.stdout
 
 
@@ -83,11 +87,21 @@ def containers(host: str, key: str | None) -> list[str]:
 
 def node_deps(host: str, key: str | None, container: str) -> dict:
     probe = shlex.quote(NODE_PROBE)
-    out = ssh(host, key, f"docker exec {shlex.quote(container)} node -e {probe} 2>/dev/null")
+    # An absent Node executable is a deliberate skip; failed exec/invalid metadata
+    # is an inventory error, even if other containers answered successfully.
+    shell = 'if command -v node >/dev/null 2>&1; then exec node -e "$1"; else printf \'{"skipped":"no-node"}\\n\'; fi'
+    out = ssh(host, key, f"docker exec {shlex.quote(container)} sh -c {shlex.quote(shell)} sh {probe}")
     try:
-        return json.loads(out.strip() or "{}")
-    except Exception:
+        data = json.loads(out)
+    except ValueError as exc:
+        raise IncompleteScan(f"Invalid Node inventory from {host}/{container}") from exc
+    if isinstance(data, dict) and data.get("skipped") == "no-node":
         return {}
+    if not isinstance(data, dict) or not isinstance(data.get("deps"), dict):
+        raise IncompleteScan(f"Missing Node inventory from {host}/{container}")
+    if any(not isinstance(n, str) or not n or not isinstance(v, str) or not v for n, v in data["deps"].items()):
+        raise IncompleteScan(f"Invalid dependency version from {host}/{container}")
+    return data
 
 
 def osv_lookup(pairs: list[tuple[str, str]]) -> dict[tuple[str, str], list[str]]:
@@ -101,12 +115,21 @@ def osv_lookup(pairs: list[tuple[str, str]]) -> dict[tuple[str, str], list[str]]
         req = urllib.request.Request(OSV_BATCH, data=body, headers={"Content-Type": "application/json"})
         try:
             with urllib.request.urlopen(req, timeout=120) as fh:
-                results = json.loads(fh.read()).get("results", [])
+                payload = json.loads(fh.read())
         except Exception as exc:
-            print(f"  ! OSV unreachable ({exc})", file=sys.stderr)
-            return hits
+            raise IncompleteScan("OSV query failed; runtime dependencies remain unchecked") from exc
+        results = payload.get("results") if isinstance(payload, dict) else None
+        if not isinstance(results, list) or len(results) != len(chunk):
+            raise IncompleteScan("OSV returned an incomplete batch")
         for key, result in zip(chunk, results):
-            ids = [v["id"] for v in (result.get("vulns") or [])]
+            if not isinstance(result, dict) or result.get("next_page_token"):
+                raise IncompleteScan("OSV returned an invalid or paginated result")
+            vulns = result.get("vulns", [])
+            if not isinstance(vulns, list) or any(
+                not isinstance(v, dict) or not isinstance(v.get("id"), str) or not v["id"] for v in vulns
+            ):
+                raise IncompleteScan("OSV returned invalid vulnerability identifiers")
+            ids = [v["id"] for v in vulns]
             if ids:
                 hits[key] = ids
     return hits
@@ -116,10 +139,15 @@ def severity(vid: str) -> str:
     try:
         with urllib.request.urlopen(OSV_VULN + vid, timeout=45) as fh:
             data = json.loads(fh.read())
-    except Exception:
-        return "UNKNOWN"
-    spec = (data.get("database_specific") or {}).get("severity")
-    return spec.upper() if isinstance(spec, str) and spec.upper() in RANK else "UNKNOWN"
+    except Exception as exc:
+        raise IncompleteScan(f"OSV advisory unavailable: {vid}") from exc
+    if not isinstance(data, dict) or data.get("id") != vid:
+        raise IncompleteScan(f"OSV advisory invalid: {vid}")
+    metadata = data.get("database_specific")
+    spec = metadata.get("severity") if isinstance(metadata, dict) else None
+    if not isinstance(spec, str) or spec.upper() not in RANK or spec.upper() == "UNKNOWN":
+        raise IncompleteScan(f"OSV advisory severity unavailable: {vid}")
+    return spec.upper()
 
 
 # Scratch copies and vendored trees are not deployable sources; comparing a live
@@ -157,7 +185,16 @@ def main() -> int:
     ap.add_argument("--level", default="high", choices=["critical", "high", "moderate", "low"])
     ap.add_argument("--json", help="write the full report here")
     args = ap.parse_args()
+    try:
+        return audit(args)
+    except IncompleteScan as exc:
+        print(f"INCOMPLETE: {exc}", file=sys.stderr)
+        if args.json:
+            Path(args.json).write_text(json.dumps({"status": "incomplete", "error": str(exc)}, indent=2)+"\n")
+        return 2
 
+
+def audit(args) -> int:
     root = Path(__file__).resolve().parent.parent
     report: list[dict] = []
     running: dict[tuple[str, str], list[str]] = {}
@@ -176,9 +213,7 @@ def main() -> int:
                 running.setdefault((pkg, ver), []).append(f"{host}/{name}")
 
     if not report:
-        print("no Node containers answered — nothing to check "
-              "(non-Node services need their own probe)")
-        return 0
+        raise IncompleteScan("No Node dependency inventory obtained; non-Node services require a separate probe")
 
     hits = osv_lookup(sorted(running))
     gate = RANK[args.level.upper()]
@@ -241,7 +276,7 @@ def main() -> int:
 
     if args.json:
         Path(args.json).write_text(json.dumps(
-            {"running": report, "vulnerable": blocking, "drift": drift}, indent=2))
+            {"status": "complete", "running": report, "vulnerable": blocking, "drift": drift}, indent=2))
         print(f"\nwrote {args.json}", file=sys.stderr)
 
     return 1 if blocking else 0

@@ -1,0 +1,88 @@
+{
+  "date": "2026-09-30",
+  "version": "3.12.0",
+  "wallet": "0x6e94c380d908531f9822035d6cc4c8d2b0186c9c",
+  "sponsor": "0x663e0c31925ead877fd9414c2e1862fa50b2650b",
+  "run_id": "paid_7f29b95f0ebf51092a52883053172f93",
+  "job_id": "job_4ca838ba5866031111ed1778",
+  "tx_hash": "0x633c83fcdf9dc2a086a218597068503df4165a230141f69e64fa0209d130e758",
+  "service_usdc": ".002",
+  "sponsor_fee_wei": "516795861906",
+  "buyer_gas_wei": "0",
+  "buyer_nonce_unchanged": true,
+  "buyer_native_balance_unchanged": true,
+  "message_only_signer": true,
+  "sdk_rpc_configured": false,
+  "controlled_reply_loss": true,
+  "cumulative_conservative_usd": "0.1183241752052936711504319125",
+  "sponsor_funding_already_counted_in_full": true,
+  "budget_limit_usd": "1",
+  "calls": [
+    {
+      "method": "POST",
+      "path": "/studio/prepare-pipeline"
+    },
+    {
+      "method": "POST",
+      "path": "/ai-market/v2/invoke"
+    },
+    {
+      "method": "GET",
+      "path": "/studio/paid-runs/paid_7f29b95f0ebf51092a52883053172f93/pipeline"
+    },
+    {
+      "method": "POST",
+      "path": "/ai-market/v2/invoke"
+    }
+  ],
+  "final_result": {
+    "block_number": 51984647,
+    "chain": "base",
+    "chain_id": 8453,
+    "findings": [],
+    "score": 100,
+    "summary": "Base mainnet is reachable through KOVA.",
+    "verdict": "pass"
+  },
+  "signed_result_verified": true,
+  "recovery_proof": {
+    "operation_id": "op_1b8b1cdfe08a509dc0bd6115b2a657d5",
+    "isolated_copy_recovered": true,
+    "production_ledgers_modified": false,
+    "new_payments": 0,
+    "new_provider_invokes": 0,
+    "status_reads": [
+      {
+        "method": "GET",
+        "operation_id": "op_1b8b1cdfe08a509dc0bd6115b2a657d5"
+      }
+    ],
+    "provider_result": {
+      "capability_id": "kova.network.status@v1",
+      "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "operation_id": "op_1b8b1cdfe08a509dc0bd6115b2a657d5",
+      "product_id": "kova-network",
+      "protocol": "PROVIDER-OP/1",
+      "result": {
+        "block_number": 51984647,
+        "chain": "base",
+        "chain_id": 8453,
+        "findings": [],
+        "score": 100,
+        "summary": "Base mainnet is reachable through KOVA.",
+        "verdict": "pass"
+      },
+      "result_signature": "SDpaLWz7Xvwpa4jVM515EFOVv3rtqUUH8skEbfXBShKDEQ8vuvgy6rraGxFNXJr9eOZevFArDr7Z3Hxk36BECQ==",
+      "signature": "4i9lfCn+KRuVi2NUW49E2DsnziK2nbFivGD+Ciex8VwFkBVZUFDXVedYIvgCSoU2H4ZaVhf7Rp7WLflOsl1lCA==",
+      "status": "completed"
+    }
+  },
+  "scope": "Live provider journal after restart; lost seller response simulated in an isolated database copy. Production ledgers were not altered.",
+  "provider_gateway_authenticated": true,
+  "local_validation": {
+    "recovery_payment_and_peer_tests": 76,
+    "recovery_and_pipeline_tests": 36,
+    "kova_operations_and_api_tests": 22,
+    "kova_bound_signature_followup_tests": 9
+  }
+}

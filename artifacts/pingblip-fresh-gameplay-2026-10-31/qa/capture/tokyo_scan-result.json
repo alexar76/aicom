@@ -1,0 +1,125 @@
+{
+  "recordedAt": 1793476637.398578,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "cell": "xn76c",
+    "layer": "weather",
+    "weather": {
+      "kind": "clear",
+      "temperatureC": 11.9,
+      "humidity": 73,
+      "windKmh": 1.8,
+      "precipitationMm": null,
+      "weatherCode": null,
+      "isNight": false,
+      "sceneId": "black-studio"
+    },
+    "hasPin": true,
+    "pin": {
+      "ok": true,
+      "capability_id": "atlas.nearest.read@v1",
+      "sku": "atlas.nearest.read@v1",
+      "generated_at": "2026-10-31T18:59:22.666854+00:00",
+      "query": {
+        "lat": 35.6762,
+        "lon": 139.6503,
+        "layers": [
+          "weather"
+        ],
+        "max_km": 2500,
+        "per_layer": false
+      },
+      "nearest": {
+        "id": "om-wx-tokyo",
+        "parent_id": null,
+        "layer": "weather",
+        "place": "Tokyo",
+        "lat": 35.6762,
+        "lon": 139.6503,
+        "live": true,
+        "mode": "live",
+        "source": "https://open-meteo.com (Open-Meteo Forecast API; CC BY 4.0 — attribution required; relayed via operator-run Open-Meteo instance http://open-meteo:8080)",
+        "headline": "11.9 °C",
+        "values": {
+          "temperature_c": 11.9,
+          "humidity_pct": 73,
+          "pressure_hpa": 1014.9,
+          "wind_mps": 0.5
+        },
+        "color": "#3dd6c6",
+        "reading_age_ms": 2290,
+        "distance_km": 0,
+        "point_invoke": {
+          "capability_id": "atlas.point.read@v1",
+          "product_id": "atlas.products",
+          "input": {
+            "point_id": "om-wx-tokyo",
+            "fresh": false
+          },
+          "invoke_path": "/ai-market/v2/invoke"
+        }
+      },
+      "distance_km": 0,
+      "layer": "weather",
+      "values": {
+        "temperature_c": 11.9,
+        "humidity_pct": 73,
+        "pressure_hpa": 1014.9,
+        "wind_mps": 0.5
+      },
+      "receipt": {
+        "algorithm": "sha256",
+        "digest": "858bed91516515fed4d8d9cc9d96c95460210959a994f2a6101123ff82d89c11",
+        "service": "atlas",
+        "version": "0.3.3",
+        "ts": "2026-10-31T18:59:22.667069+00:00",
+        "capability_id": "atlas.nearest.read@v1",
+        "signature_alg": "ed25519",
+        "signature_b64": "w2MIGLl/py8iMNiNZX13614maluoV2ltIEg8m/L9pxmqxBRltgRkcZB2QRZzo91UiR7oY01LbTgvfB/nJrmsAg==",
+        "public_key_b64": "p4dibtrb4RSgFvm8lF7xH6csSdpDp01XVVfhuiKfeBk=",
+        "pq_signature_alg": "ml-dsa-65",
+        "pq_signature_b64": "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",
+        "pq_public_key_b64": "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",
+        "signature_status": "signed"
+      },
+      "success": true,
+      "latency_ms": 0,
+      "price_usd": 0.03,
+      "routed_via": "https://modelmarket.dev",
+      "routing_fee_bps": 100,
+      "provenance_receipt": {
+        "receipt_id": "urn:uuid:2b192427-6fe1-4f5f-9888-7cd4c7a73d30",
+        "verify_url": "https://modelmarket.dev/ai-market/v2/p/provenance/verify/urn:uuid:2b192427-6fe1-4f5f-9888-7cd4c7a73d30",
+        "receipt_url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:2b192427-6fe1-4f5f-9888-7cd4c7a73d30",
+        "verifier_url": "https://verify.modelmarket.dev",
+        "awr_version": "2.0.0",
+        "issuer": "did:key:z6MkkCADReBRLTMEqSV7REQ399ujjFPb8UFBSryAC7SPv6LX",
+        "digest_sri": "sha256-3oiAC7XYejlj6CbOLLMjAi10RYOZW0rcjlTseSRcEfY="
+      }
+    },
+    "roster": [
+      {
+        "id": "bruised-banana",
+        "rarity": "common",
+        "owned": false,
+        "name": "Bruised Banana"
+      },
+      {
+        "id": "bag-golem",
+        "rarity": "uncommon",
+        "owned": false,
+        "name": "Bag Golem"
+      },
+      {
+        "id": "angry-dumpling",
+        "rarity": "common",
+        "owned": false,
+        "name": "Angry Dumpling"
+      }
+    ],
+    "proofId": "0cee5f4d256951010a6f",
+    "coverage": "live pin in range",
+    "creditsMilli": 510
+  }
+}

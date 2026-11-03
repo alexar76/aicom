@@ -6,7 +6,7 @@
 #   ./scripts/publish_pypi.sh aimarket-agent --dry-run
 #   ./scripts/publish_pypi.sh aimarket-agent --testpypi
 #
-# Requires: python3 -m pip install build twine cryptography==50.0.0
+# Requires: any installed Python 3.11+ (uv, Homebrew or python.org); the script builds in its own venv.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -131,7 +131,44 @@ if [[ "$PKG" != "$PKG_ARG" ]]; then
   echo "Resolved '$PKG_ARG' → monorepo path $PKG/"
 fi
 
-python3 -m pip install --quiet --upgrade pip build twine
+# ── Build Python ──────────────────────────────────────────────────────────────
+# macOS's `python3` is Xcode's 3.9, and almost every package here needs 3.11+: aimarket-hub's
+# setup.py runs ui_assets.py, whose `str | Path | None` annotations 3.9 cannot evaluate, so the
+# build died before it started (2026-11-01). The build therefore runs in a venv of an installed
+# Python that meets the package's requires-python floor (3.11 at least), kept between runs.
+# PUBLISH_PYTHON=/path/to/python picks the interpreter explicitly.
+floor="$(sed -nE 's/^requires-python *= *"[^0-9]*3\.([0-9]+).*/\1/p' "$ROOT/$PKG/pyproject.toml" | head -1)"
+(( ${floor:-0} >= 11 )) || floor=11
+pick_python() {
+  local c v
+  local -a candidates=()
+  # 3.12 first (the 3.17.0 hub release was built with it), the newest last; uv keeps its
+  # interpreters off PATH, so its folder is searched too.
+  for v in 12 13 11 14; do
+    candidates+=(python3.$v "$HOME"/.local/share/uv/python/cpython-3.$v*/bin/python3.$v
+                 /opt/homebrew/bin/python3.$v /usr/local/bin/python3.$v)
+  done
+  candidates+=(python3)
+  [[ -n "${PUBLISH_PYTHON:-}" ]] && candidates=("$PUBLISH_PYTHON")
+  for c in "${candidates[@]}"; do
+    command -v "$c" >/dev/null 2>&1 || continue
+    if "$c" -c "import sys; sys.exit(sys.version_info < (3, $floor))" 2>/dev/null; then
+      command -v "$c"
+      return 0
+    fi
+  done
+  return 1
+}
+if ! base_python="$(pick_python)"; then
+  echo "error: $PKG needs Python 3.$floor or newer and none was found (python3 here is $(python3 -V 2>&1))." >&2
+  echo "Install one (uv python install 3.12, or brew install python@3.12) or set PUBLISH_PYTHON." >&2
+  exit 2
+fi
+venv="${XDG_CACHE_HOME:-$HOME/.cache}/aicom-publish/venv-$("$base_python" -c 'import sys; print("%d.%d" % sys.version_info[:2])')"
+[[ -x "$venv/bin/python" ]] || "$base_python" -m venv "$venv"
+PY="$venv/bin/python"
+echo "== Build Python: $("$PY" -V 2>&1) ($venv) =="
+"$PY" -m pip install --quiet --upgrade pip build twine
 
 # ── Freshness gate ────────────────────────────────────────────────────────────
 # Is the version about to be published actually a NEW version? A distribution whose
@@ -147,7 +184,7 @@ python3 -m pip install --quiet --upgrade pip build twine
 if [[ "${SKIP_FRESHNESS_GATE:-0}" != "1" ]]; then
   _tree="${PKG%%/*}"
   echo "== Freshness gate ($_tree) =="
-  if ! python3 "$ROOT/scripts/verify_published_dist_freshness.py" "$_tree"; then
+  if ! "$PY" "$ROOT/scripts/verify_published_dist_freshness.py" "$_tree"; then
     echo "" >&2
     # The gate checks the whole $_tree tree, so the DIVERGED distribution can be another one in it
     # (2026-10-28: publishing aimarket-hub 3.16.1 stopped on aimarket-provenance 2.3.0, and the old
@@ -163,14 +200,14 @@ fi
 echo "== Build $PKG =="
 cd "$ROOT/$PKG"
 rm -rf dist build *.egg-info
-python3 -m build
-python3 -m twine check --strict dist/*
+"$PY" -m build
+"$PY" -m twine check --strict dist/*
 
 # PyPI refuses any file whose metadata carries `Private :: Do Not Upload` with a bare
 # "400 Bad Request" at upload time — after the dry run has said OK. Said here instead, by
 # name, so the dry run is the one that fails (aimarket-hestia, 2026-10-14).
 for wheel in dist/*.whl; do
-  if python3 -m zipfile -l "$wheel" >/dev/null 2>&1 && \
+  if "$PY" -m zipfile -l "$wheel" >/dev/null 2>&1 && \
      unzip -p "$wheel" '*.dist-info/METADATA' 2>/dev/null | grep -q '^Classifier: Private :: Do Not Upload'; then
     echo "ERROR $PKG is marked 'Private :: Do Not Upload' in pyproject.toml classifiers;" >&2
     echo "      PyPI rejects it. Remove that classifier only if this package is meant to be public." >&2
@@ -209,7 +246,7 @@ gate_hits=""
 for archive in dist/*.tar.gz dist/*.whl; do
   [[ -e "$archive" ]] || continue
   secret_python="$ROOT/.venv/bin/python"
-  [[ -x "$secret_python" ]] || secret_python="python3"
+  [[ -x "$secret_python" ]] || secret_python="$PY"
   if ! "$secret_python" -I "$ROOT/scripts/verify_distribution_secrets.py" "$archive"; then
     echo "error: distribution contents failed the secret gate — nothing uploaded" >&2
     exit 4
@@ -348,11 +385,11 @@ fi
 
 echo "== Upload to $REPO =="
 TWINE_USERNAME=__token__ TWINE_PASSWORD="$TOKEN" \
-  python3 -m twine upload $([[ "$VERBOSE" -eq 1 ]] && echo --verbose) --repository-url "$URL" dist/*
+  "$PY" -m twine upload $([[ "$VERBOSE" -eq 1 ]] && echo --verbose) --repository-url "$URL" dist/*
 
 echo "OK published $(basename "$PKG") to $REPO"
 if [[ "$REPO" == "pypi" ]]; then
-  name="$(python3 -c "
+  name="$("$PY" -c "
 import sys
 if sys.version_info >= (3, 11):
     import tomllib

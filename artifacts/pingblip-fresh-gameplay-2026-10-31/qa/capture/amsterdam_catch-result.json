@@ -1,0 +1,49 @@
+{
+  "recordedAt": 1793476536.694794,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "creature": {
+      "id": "cmvwrjyry000jno48rrmpse7k",
+      "playerId": "cmvwrg5px0000no48q8bpswx3",
+      "speciesId": "glaze-donut",
+      "source": "catch",
+      "stage": "awake",
+      "evolved": false,
+      "evolvedAt": null,
+      "feedCount": 0,
+      "lastFeedAt": null,
+      "hatchedAt": "2026-10-31T18:57:41.326Z",
+      "cell": "u173z",
+      "hatchProofId": "f116e8bb5ba6704657f2",
+      "catchProofId": "f116e8bb5ba6704657f2",
+      "asleepAt": null,
+      "nickname": null
+    },
+    "species": {
+      "id": "glaze-donut",
+      "name": "Glaze Donut",
+      "packId": "snack-cult",
+      "type": "snack",
+      "diet": {
+        "productId": "gaia.gateway",
+        "capabilityId": "gaia.weather.read@v1",
+        "sourceHub": "https://iot.modelmarket.dev",
+        "label": "weather",
+        "input": {
+          "device_id": "om-wx-01"
+        }
+      },
+      "sceneId": "candy-dump",
+      "spawn": {
+        "layers": [
+          "weather"
+        ],
+        "rarity": "common"
+      },
+      "starter": true
+    },
+    "already": false,
+    "creditsMilli": 590
+  }
+}

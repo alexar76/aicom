@@ -1,0 +1,23 @@
+{
+  "date_utc": "2026-11-03",
+  "factory": {
+    "host_alias": "factory-vps",
+    "container": "aicom-app-1",
+    "database": "/app/data/store/commerce.db",
+    "access": "SQLite mode=ro and query_only",
+    "stripe_secret_key_configured": false,
+    "stripe_webhook_secret_configured": false,
+    "active_server_processes_with_stripe_env": 0,
+    "checkout_session_rows": 0,
+    "webhook_event_rows": 0
+  },
+  "histor": {
+    "host_alias": "admin-vps",
+    "container": "histor-histor-1",
+    "access": "PostgreSQL read-only transaction",
+    "stripe_secret_key_configured": false,
+    "stripe_webhook_secret_configured": false,
+    "watch_payment_rows": 0
+  },
+  "stripe_provider_ledger_checked": false
+}

@@ -1,7 +1,8 @@
 # Slim build context — compose bind-mounts ./data at runtime over /app/data.
-# Keep small bootstrap files under data/config/ (see Dockerfile RUN cp …).
+# Keep only the public LLM bootstrap template (see Dockerfile RUN cp …).
 
 .git
+**/.git
 .gitignore
 .github
 .cursor
@@ -19,6 +20,15 @@
 
 # Docs / dev assets (not needed in runtime image)
 docs/
+artifacts/
+output/
+.internal/
+# Host credentials and agent state are never application source.
+**/.ssh/
+**/.aws/
+**/.codex/
+**/.agents/
+**/.runtime/
 *.md
 !README.md
 
@@ -27,6 +37,7 @@ tests/
 .test-venv
 **/.test-venv
 **/.venv
+**/.venv*/
 scripts/record_pipeline_demo_video.py
 scripts/capture_gallery_full_software.py
 
@@ -42,13 +53,12 @@ lottery/contracts/test-ledger/
 lottery/contracts/cache/
 lottery/contracts/broadcast/
 lottery/contracts/out/
+# Old ignored checkout used by a local coverage helper; canonical source is
+# /alien-monitor. Never ship its stale frontend dependencies in the root image.
+lottery/alien-monitor/
 
 # Heavy or host-owned tree (not needed inside the image layer)
 data/
-!data/config/
-!data/config/admin.json
-!data/config/admin_users.json
-!data/config/model_providers.example.yaml
 
 # Root lockfile is for host tooling (playwright); confuses Next workspace root in Docker builds.
 package-lock.json
@@ -72,6 +82,12 @@ docker-compose*.yml
 momus/data/
 treasury/data/
 **/data/
+# Re-include only the public bootstrap template after the recursive data rule.
+!data/
+data/**
+!data/config/
+data/config/**
+!data/config/model_providers.example.yaml
 **/*_signing_key
 **/*.key
 **/.env

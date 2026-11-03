@@ -1,0 +1,314 @@
+FFFFFFFFFFFFFF..F..                                                      [100%]
+=================================== FAILURES ===================================
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[artifacts/security-audit/host-inventory.json] _
+
+path = 'artifacts/security-audit/host-inventory.json'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only artifacts/security-audit/host-inventory.json would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('artifacts/security-audit/host-inventory.json')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[output/private-run/result.json] _
+
+path = 'output/private-run/result.json'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only output/private-run/result.json would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('output/private-run/result.json')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[.internal/audit/report.json] _
+
+path = '.internal/audit/report.json'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only .internal/audit/report.json would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('.internal/audit/report.json')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[.ssh/id_ed25519] _
+
+path = '.ssh/id_ed25519'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only .ssh/id_ed25519 would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('.ssh/id_ed25519')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[.aws/credentials] _
+
+path = '.aws/credentials'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only .aws/credentials would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('.aws/credentials')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[.codex/session.json] _
+
+path = '.codex/session.json'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only .codex/session.json would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('.codex/session.json')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[.agents/local-state.json] _
+
+path = '.agents/local-state.json'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only .agents/local-state.json would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('.agents/local-state.json')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[satellite/.git/config] _
+
+path = 'satellite/.git/config'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only satellite/.git/config would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('satellite/.git/config')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[satellite/.ssh/id_ed25519] _
+
+path = 'satellite/.ssh/id_ed25519'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only satellite/.ssh/id_ed25519 would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('satellite/.ssh/id_ed25519')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[satellite/.aws/credentials] _
+
+path = 'satellite/.aws/credentials'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only satellite/.aws/credentials would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('satellite/.aws/credentials')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[.venv-quality/lib/tool.py] _
+
+path = '.venv-quality/lib/tool.py'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only .venv-quality/lib/tool.py would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('.venv-quality/lib/tool.py')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[satellite/.venv-test/lib/tool.py] _
+
+path = 'satellite/.venv-test/lib/tool.py'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only satellite/.venv-test/lib/tool.py would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('satellite/.venv-test/lib/tool.py')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[examples/n8n-order-check/.runtime/n8n/state.json] _
+
+path = 'examples/n8n-order-check/.runtime/n8n/state.json'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only examples/n8n-order-check/.runtime/n8n/state.json would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('examples/n8n-order-check/.runtime/n8n/state.json')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_host_evidence_and_legacy_copies_never_enter_build_context[lottery/alien-monitor/frontend/package-lock.json] _
+
+path = 'lottery/alien-monitor/frontend/package-lock.json'
+
+    @pytest.mark.parametrize("path", [
+        "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+        ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+        ".codex/session.json", ".agents/local-state.json",
+        "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+        ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+        "examples/n8n-order-check/.runtime/n8n/state.json",
+        "lottery/alien-monitor/frontend/package-lock.json",
+    ])
+    def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+>       assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+E       AssertionError: host-only lottery/alien-monitor/frontend/package-lock.json would be baked into the image
+E       assert False
+E        +  where False = _dockerignore_excludes('lottery/alien-monitor/frontend/package-lock.json')
+
+tests/test_service_env_scope.py:723: AssertionError
+_ test_required_runtime_source_stays_in_build_context[data/config/admin.json] __
+
+path = 'data/config/admin.json'
+
+    @pytest.mark.parametrize("path", [
+        "security/vendor/deepmerge-safe/index.js", "web/backend/main.py",
+        "data/config/admin.json", "contracts/evm/lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
+        "warden/docs/data/measurements.json",
+    ])
+    def test_required_runtime_source_stays_in_build_context(path):
+>       assert not _dockerignore_excludes(path)
+E       AssertionError: assert not True
+E        +  where True = _dockerignore_excludes('data/config/admin.json')
+
+tests/test_service_env_scope.py:732: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[artifacts/security-audit/host-inventory.json]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[output/private-run/result.json]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[.internal/audit/report.json]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[.ssh/id_ed25519]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[.aws/credentials]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[.codex/session.json]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[.agents/local-state.json]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[satellite/.git/config]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[satellite/.ssh/id_ed25519]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[satellite/.aws/credentials]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[.venv-quality/lib/tool.py]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[satellite/.venv-test/lib/tool.py]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[examples/n8n-order-check/.runtime/n8n/state.json]
+FAILED tests/test_service_env_scope.py::test_host_evidence_and_legacy_copies_never_enter_build_context[lottery/alien-monitor/frontend/package-lock.json]
+FAILED tests/test_service_env_scope.py::test_required_runtime_source_stays_in_build_context[data/config/admin.json]
+15 failed, 4 passed, 130 deselected in 0.71s

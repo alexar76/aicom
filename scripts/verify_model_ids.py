@@ -63,6 +63,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import os
 import re
@@ -127,14 +128,17 @@ def _read_bounded(response) -> bytes:
 def _checked_key(value: str) -> str:
     # Keep the standalone host checker usable when copied without the package.
     # In a repository deployment it shares the compromised-key fingerprint guard.
-    root = str(Path(__file__).resolve().parents[1])
-    if root not in sys.path:
-        sys.path.insert(0, root)
-    try:
-        from security.compromised_credentials import reject_compromised_credential
-    except ImportError:
+    # Loaded by file path, not as `security.compromised_credentials`: importing the package runs
+    # security/__init__.py, which pulls in modules that need Python 3.10+ (audit_logger's
+    # `str | None` defaults). macOS python3 is 3.9, so the publish gate died with a TypeError
+    # whenever a provider key was set — and with no key it never got this far, which hid it.
+    guard = Path(__file__).resolve().parents[1] / "security" / "compromised_credentials.py"
+    if not guard.is_file():
         return value
-    reject_compromised_credential(value)
+    spec = importlib.util.spec_from_file_location("_compromised_credentials", guard)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.reject_compromised_credential(value)
     return value
 
 

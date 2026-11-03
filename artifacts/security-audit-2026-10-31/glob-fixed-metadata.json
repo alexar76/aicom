@@ -1,0 +1,155 @@
+{
+  "bugs": {
+    "url": "https://github.com/isaacs/node-glob/issues"
+  },
+  "dist": {
+    "shasum": "17a9838fb6502b6a32d2125fe55bff6a0960e2b7",
+    "tarball": "https://registry.npmjs.org/glob/-/glob-14.0.2.tgz",
+    "fileCount": 72,
+    "integrity": "sha512-vfMgTR2djMHPUchsJMLpZlYQvtjVL+mHpEr5wPpoCbQs2vr/FBNK+3Gnl9Ara1DSs4Aeg4eG9HiADb5/rkY/ZA==",
+    "signatures": [
+      {
+        "sig": "MEYCIQDksChlwwh5A07/ugBRLXgo9xSFmjpcDOnpAB1LY7KRagIhAP/uTra6bzRGoIgjv8wIi7fFpe2gErs+teUt9t1dxmZJ",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "sig": "MEUCIEBleELGILK3aQuBS+IZ1skTubJbwu0b5VJok6V7k1syAiEAtru9nwiNndfEHBh581U+sUvkN+uqFVqFEl8tG3FRgb0=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 1866718
+  },
+  "main": "./dist/commonjs/index.min.js",
+  "name": "glob",
+  "tshy": {
+    "exports": {
+      ".": {
+        "import": {
+          "types": "./dist/esm/index.d.ts",
+          "default": "./dist/esm/index.min.js"
+        },
+        "require": {
+          "types": "./dist/commonjs/index.d.ts",
+          "default": "./dist/commonjs/index.min.js"
+        }
+      },
+      "./raw": "./src/index.ts",
+      "./package.json": "./package.json"
+    },
+    "selfLink": false
+  },
+  "type": "module",
+  "types": "./dist/commonjs/index.d.ts",
+  "author": {
+    "url": "https://blog.izs.me/",
+    "name": "Isaac Z. Schlueter",
+    "email": "i@izs.me"
+  },
+  "module": "./dist/esm/index.min.js",
+  "engines": {
+    "node": "18 || 20 || >=22"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.min.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.min.js"
+      }
+    },
+    "./raw": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "funding": {
+    "url": "https://github.com/sponsors/isaacs"
+  },
+  "gitHead": "93957bfedf11019063804027a7a5ad40d64cbe4f",
+  "license": "BlueOak-1.0.0",
+  "scripts": {
+    "lint": "oxlint --fix src test",
+    "prof": "bash prof.sh",
+    "snap": "tap",
+    "test": "tap",
+    "bench": "bash benchmark.sh",
+    "format": "prettier --write .",
+    "prepare": "tshy && bash scripts/build.sh",
+    "preprof": "npm run prepare",
+    "presnap": "npm run prepare",
+    "pretest": "npm run prepare",
+    "typedoc": "typedoc",
+    "postlint": "npm run format",
+    "postsnap": "npm run lint",
+    "posttest": "npm run lint",
+    "prebench": "npm run prepare",
+    "profclean": "rm -f v8.log profile.txt",
+    "benchclean": "node benchclean.cjs",
+    "preversion": "npm test",
+    "test-regen": "npm run profclean && TEST_REGEN=1 node --no-warnings --loader ts-node/esm test/00-setup.ts",
+    "postversion": "npm publish",
+    "bench:docker": "bash bench-docker/bench.sh",
+    "prepublishOnly": "npm run benchclean; git push origin --follow-tags"
+  },
+  "_npmUser": {
+    "name": "isaacs",
+    "email": "i@izs.me"
+  },
+  "homepage": "https://github.com/isaacs/node-glob#readme",
+  "repository": {
+    "url": "git+ssh://git@github.com/isaacs/node-glob.git",
+    "type": "git"
+  },
+  "_npmVersion": "12.2.0",
+  "description": "the most correct and second fastest glob implementation in JavaScript",
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "isaacs",
+      "email": "i@izs.me"
+    }
+  ],
+  "_nodeVersion": "26.5.0",
+  "allowScripts": {
+    "minimatch": true,
+    "path-scurry": true,
+    "esbuild@0.28.2": true,
+    "file:../../path-scurry": true,
+    "file:../../../../developer/isaacs/minimatch": true
+  },
+  "dependencies": {
+    "minipass": "^7.1.3",
+    "minimatch": "^11.0.0",
+    "path-scurry": "^3.0.0"
+  },
+  "_hasShrinkwrap": false,
+  "devDependencies": {
+    "tap": "^21.8.0",
+    "tshy": "^4.1.3",
+    "memfs": "^4.80.0",
+    "mkdirp": "^3.0.1",
+    "oxlint": "^1.90.0",
+    "rimraf": "^6.1.3",
+    "esbuild": "^0.28.2",
+    "typedoc": "^0.28.20",
+    "prettier": "^3.9.10",
+    "@types/node": "^26.6.5",
+    "oxlint-tsgolint": "^7.0.2005"
+  },
+  "_npmOperationalInternal": {
+    "tmp": "tmp/glob_14.0.2_1793138820141_0.43202132311022834",
+    "host": "s3://npm-registry-packages-npm-production"
+  },
+  "_id": "glob@14.0.2",
+  "version": "14.0.2"
+}

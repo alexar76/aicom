@@ -1,0 +1,5028 @@
+{
+ "summary": {
+  "scraperwatch_tool_change_records": 98,
+  "verdicts": {
+   "same change in HISTOR": 64,
+   "HISTOR has no definitions in the window": 25,
+   "not seen as a change in HISTOR": 4,
+   "server instructions only (HISTOR does not record them)": 5
+  },
+  "items": 874,
+  "items_seen_by_histor": 738,
+  "status_transitions": 36,
+  "histor_changes_not_in_daily_diff": 5,
+  "not_in_daily_diff_reasons": {
+   "HISTOR lacks a definition at one of the two read times": 1,
+   "net difference": 4
+  }
+ },
+ "tool_changes": [
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://138-197-15-135.sslip.io/mcp",
+   "server": "io.sslip.138-197-15-135/hearth-onchain",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 8,
+   "items_seen_by_histor": 8,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: report_token",
+     "histor_first_new": "2026-10-31T03:24:37Z"
+    },
+    {
+     "item": "tool added: report_wallet",
+     "histor_first_new": "2026-10-31T03:24:37Z"
+    },
+    {
+     "item": "tool added: x402_seller_audit",
+     "histor_first_new": "2026-10-31T03:24:37Z"
+    },
+    {
+     "item": "tool added: x402_seller_scores",
+     "histor_first_new": "2026-10-31T03:24:37Z"
+    },
+    {
+     "item": "description changed: route $.description",
+     "histor_first_new": "2026-10-31T03:24:37Z"
+    },
+    {
+     "item": "inputSchema added: route $.inputSchema.properties.category",
+     "histor_first_new": "2026-10-31T03:24:37Z"
+    },
+    {
+     "item": "description changed: route_plus $.description",
+     "histor_first_new": "2026-10-31T03:24:37Z"
+    },
+    {
+     "item": "inputSchema added: route_plus $.inputSchema.properties.category",
+     "histor_first_new": "2026-10-31T03:24:37Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://agentbuffs.com/api/mcp",
+   "server": "com.agentbuffs/agentbuffs",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 9,
+   "items_seen_by_histor": 9,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: find_tools $.description",
+     "histor_first_new": "2026-10-31T21:27:17Z"
+    },
+    {
+     "item": "inputSchema changed: find_tools $.inputSchema.properties.auth.description",
+     "histor_first_new": "2026-10-31T21:27:17Z"
+    },
+    {
+     "item": "inputSchema changed: find_tools $.inputSchema.properties.use_case.enum",
+     "histor_first_new": "2026-10-31T11:54:40Z"
+    },
+    {
+     "item": "description changed: get_agent_picks $.description",
+     "histor_first_new": "2026-10-31T21:27:17Z"
+    },
+    {
+     "item": "inputSchema changed: get_agent_picks $.inputSchema.properties.auth.description",
+     "histor_first_new": "2026-10-31T21:27:17Z"
+    },
+    {
+     "item": "inputSchema changed: get_agent_picks $.inputSchema.properties.use_case.enum",
+     "histor_first_new": "2026-10-31T11:54:40Z"
+    },
+    {
+     "item": "description changed: report_outcome $.description",
+     "histor_first_new": "2026-10-31T21:27:17Z"
+    },
+    {
+     "item": "inputSchema added: report_outcome $.inputSchema.properties.dryRun",
+     "histor_first_new": "2026-10-31T14:25:37Z"
+    },
+    {
+     "item": "inputSchema changed: report_outcome $.inputSchema.properties.stage.description",
+     "histor_first_new": "2026-10-31T21:27:17Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://api.carwallet.co.za/mcp",
+   "server": "za.co.carwallet/carwallet-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 44,
+   "items": 34,
+   "items_seen_by_histor": 34,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "title changed: calculate_fleet_sars_roi $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: calculate_fleet_sars_roi $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: calculate_fleet_sars_roi $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "title changed: get_fuel_prices $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: get_fuel_prices $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "inputSchema changed: get_fuel_prices $.inputSchema.properties.region.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: get_fuel_prices $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "title changed: get_platform_metrics $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: get_platform_metrics $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: get_platform_metrics $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "title changed: get_product_catalog $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: get_product_catalog $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: get_product_catalog $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "title changed: get_sars_compliance_guide $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: get_sars_compliance_guide $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: get_sars_compliance_guide $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "title changed: get_sars_summary $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: get_sars_summary $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "inputSchema changed: get_sars_summary $.inputSchema.properties.tax_year.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "inputSchema changed: get_sars_summary $.inputSchema.properties.vehicle_id.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: get_sars_summary $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "title changed: get_service_records $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: get_service_records $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: get_service_records $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "title changed: list_fuel_logs $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: list_fuel_logs $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: list_fuel_logs $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "title changed: list_sars_trips $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: list_sars_trips $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "inputSchema changed: list_sars_trips $.inputSchema.properties.is_business.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: list_sars_trips $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "title changed: list_vehicles $.title",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "description changed: list_vehicles $.description",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    },
+    {
+     "item": "annotations changed: list_vehicles $.annotations",
+     "histor_first_new": "2026-10-31T11:12:21Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://api.givore.com/mcp/public",
+   "server": "com.givore/givore",
+   "op": "tools_changed",
+   "histor_reads_in_window": 6,
+   "items": 3,
+   "items_seen_by_histor": 3,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: get_listing $.description",
+     "histor_first_new": "2026-10-31T14:25:09Z"
+    },
+    {
+     "item": "annotations added: get_listing $.annotations.title",
+     "histor_first_new": "2026-10-31T14:25:09Z"
+    },
+    {
+     "item": "annotations added: search_listings $.annotations.title",
+     "histor_first_new": "2026-10-31T14:25:09Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://arcadeindex.io/mcp/catalog",
+   "server": "io.arcadeindex/catalog",
+   "op": "tools_changed",
+   "histor_reads_in_window": 6,
+   "items": 4,
+   "items_seen_by_histor": 4,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "outputSchema added: get_game $.outputSchema.anyOf[0].properties.game.anyOf[0].properties.field_sources.additionalProperties.anyOf[0].description",
+     "histor_first_new": "2026-11-01T06:23:36Z"
+    },
+    {
+     "item": "outputSchema removed: get_game $.outputSchema.anyOf[0].properties.game.anyOf[0].properties.field_sources.additionalProperties.anyOf[0].enum",
+     "histor_first_new": "2026-11-01T06:23:36Z"
+    },
+    {
+     "item": "outputSchema added: random_game $.outputSchema.anyOf[0].properties.game.anyOf[0].properties.field_sources.additionalProperties.anyOf[0].description",
+     "histor_first_new": "2026-11-01T06:23:36Z"
+    },
+    {
+     "item": "outputSchema removed: random_game $.outputSchema.anyOf[0].properties.game.anyOf[0].properties.field_sources.additionalProperties.anyOf[0].enum",
+     "histor_first_new": "2026-11-01T06:23:36Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://atatravel.cloud/mcp",
+   "server": "cloud.atatravel/travel-agency",
+   "op": "tools_changed",
+   "histor_reads_in_window": 20,
+   "items": 3,
+   "items_seen_by_histor": 3,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "inputSchema added: create_quote $.inputSchema.properties.bookingAssistance",
+     "histor_first_new": "2026-11-01T01:46:28Z"
+    },
+    {
+     "item": "inputSchema added: get_building_details $.inputSchema.properties.internalAgentKey",
+     "histor_first_new": "2026-11-01T01:46:28Z"
+    },
+    {
+     "item": "inputSchema added: search_property_catalog $.inputSchema.properties.internalAgentKey",
+     "histor_first_new": "2026-11-01T01:46:28Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://beliefstate.ai/v1/research/mcp",
+   "server": "ai.beliefstate/investor-research",
+   "op": "tools_changed",
+   "histor_reads_in_window": 31,
+   "items": 27,
+   "items_seen_by_histor": 27,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "outputSchema added: evaluate_belief_scenario $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.benchmark",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: evaluate_belief_scenario $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.comparison",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: evaluate_belief_scenario $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.research_return_study",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_belief $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.benchmark",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_belief $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.comparison",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_belief $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.research_return_study",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_belief_relationships $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.benchmark",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_belief_relationships $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.comparison",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_belief_relationships $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.research_return_study",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_brief $.outputSchema.anyOf[3].anyOf[1].properties.current_market_mark.properties.benchmark",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_brief $.outputSchema.anyOf[3].anyOf[1].properties.current_market_mark.properties.comparison",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_brief $.outputSchema.anyOf[3].anyOf[1].properties.current_market_mark.properties.research_return_study",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_brief $.outputSchema.anyOf[3].anyOf[2].properties.current_market_mark.properties.benchmark",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_brief $.outputSchema.anyOf[3].anyOf[2].properties.current_market_mark.properties.comparison",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_brief $.outputSchema.anyOf[3].anyOf[2].properties.current_market_mark.properties.research_return_study",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_research_visual $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.benchmark",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_research_visual $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.comparison",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: get_research_visual $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.research_return_study",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: list_research_visuals $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.benchmark",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: list_research_visuals $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.comparison",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: list_research_visuals $.outputSchema.anyOf[3].anyOf[0].properties.data.properties.current_market_mark.properties.research_return_study",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: refresh_market_data $.outputSchema.anyOf[3].anyOf[1].properties.current_market_mark.properties.benchmark",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: refresh_market_data $.outputSchema.anyOf[3].anyOf[1].properties.current_market_mark.properties.comparison",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: refresh_market_data $.outputSchema.anyOf[3].anyOf[1].properties.current_market_mark.properties.research_return_study",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: refresh_market_data $.outputSchema.anyOf[3].anyOf[2].properties.current_market_mark.properties.benchmark",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: refresh_market_data $.outputSchema.anyOf[3].anyOf[2].properties.current_market_mark.properties.comparison",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    },
+    {
+     "item": "outputSchema added: refresh_market_data $.outputSchema.anyOf[3].anyOf[2].properties.current_market_mark.properties.research_return_study",
+     "histor_first_new": "2026-11-01T01:57:27Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://bitcoinyield.co/api/mcp",
+   "server": "co.bitcoinyield/yields",
+   "op": "tools_changed",
+   "histor_reads_in_window": 62,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "inputSchema changed: list_offers $.inputSchema.properties.asset.enum",
+     "histor_first_new": "2026-10-31T03:22:06Z"
+    },
+    {
+     "item": "inputSchema changed: list_yields $.inputSchema.properties.asset.enum",
+     "histor_first_new": "2026-10-31T03:22:06Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://citedindex.com/mcp",
+   "server": "com.citedindex/mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: my_listings $.description",
+     "histor_first_new": "2026-10-31T06:52:55Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://crypto.api.trendsapi.ai/mcp",
+   "server": "ai.trendsapi/crypto",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "protocol": 2
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://dchub.cloud/mcp/claude",
+   "server": "cloud.dchub/mcp-server",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "inputSchema changed: get_facility $.inputSchema.properties.slug.description",
+     "histor_first_new": "2026-10-31T10:38:02Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://deed.page/mcp",
+   "server": "page.deed/deed-page",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 4,
+   "items_seen_by_histor": 4,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: add_domain $.description",
+     "histor_first_new": "2026-10-31T06:22:09Z"
+    },
+    {
+     "item": "description changed: get_upgrade_link $.description",
+     "histor_first_new": "2026-10-31T23:32:41Z"
+    },
+    {
+     "item": "inputSchema added: get_upgrade_link $.inputSchema.properties.interval",
+     "histor_first_new": "2026-10-31T05:51:30Z"
+    },
+    {
+     "item": "inputSchema changed: get_upgrade_link $.inputSchema.properties.upgrade_trigger.enum",
+     "histor_first_new": "2026-10-31T23:32:41Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://eigenheim-invest.de/mcp/",
+   "server": "io.github.magicSEO/eigenheim-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 6,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: get_market_overview $.description",
+     "histor_first_new": "2026-10-31T18:46:21Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://emberverse.ai/mcp",
+   "server": "ai.emberverse/emberverse",
+   "op": "tools_changed",
+   "histor_reads_in_window": 3,
+   "items": 4,
+   "items_seen_by_histor": 0,
+   "verdict": "not seen as a change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: art_post",
+     "histor_states": "NNN"
+    },
+    {
+     "item": "tool added: art_preview",
+     "histor_states": "NNN"
+    },
+    {
+     "item": "description changed: annex_pending $.description",
+     "histor_states": "NNN"
+    },
+    {
+     "item": "description changed: annex_propose $.description",
+     "histor_states": "NNN"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://env.agentlookups.ai/mcp",
+   "server": "ai.agentlookups/groundtruth",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: broadband_availability $.description",
+     "histor_first_new": "2026-10-31T15:18:07Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://fundinglandscape.com/api/mcp",
+   "server": "io.github.tettertotter/fundinglandscape",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-401": 2
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://ghlagencymcp.com/mcp",
+   "server": "io.github.mooshee/highlevel-agency-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 130,
+   "items_seen_by_histor": 130,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "title changed: ghl_agency_connection_health $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_agency_connection_health $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_connection_health $.inputSchema.properties.company",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_connection_health $.inputSchema.properties.context",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_connection_health $.inputSchema.properties.includeDoctor.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_connection_health $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_connection_health $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_agency_contexts $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_agency_contexts $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_contexts $.inputSchema.properties.context",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_contexts $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_contexts $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_agency_doctor $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_agency_doctor $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_doctor $.inputSchema.properties.company",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_doctor $.inputSchema.properties.context",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_doctor $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_doctor $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_agency_locations $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_agency_locations $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.company",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.context",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.location.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.location.maxLength",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.location.minLength",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_agency_locations $.inputSchema.properties.location.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_locations $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_locations $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_agency_tools_enable $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_agency_tools_enable $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_tools_enable $.inputSchema.properties.policyPreset.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema changed: ghl_agency_tools_enable $.inputSchema.required",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_enable $.annotations.idempotentHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_enable $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_enable $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_agency_tools_search $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_agency_tools_search $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_tools_search $.inputSchema.properties.category.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema changed: ghl_agency_tools_search $.inputSchema.properties.category.enum",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_tools_search $.inputSchema.properties.query.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema changed: ghl_agency_tools_search $.inputSchema.properties.query.maxLength",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_search $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_search $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_custom_values_audit $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_custom_values_audit $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_custom_values_audit $.inputSchema.properties.locationId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_custom_values_audit $.inputSchema.properties.locationId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_custom_values_audit $.inputSchema.properties.templates",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_custom_values_audit $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_custom_values_audit $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_domain_ssl_onboard $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_domain_ssl_onboard $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_domain_ssl_onboard $.inputSchema.properties.domain.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.domain.maxLength",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.domain.minLength",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.dryRun.default",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_domain_ssl_onboard $.inputSchema.properties.dryRun.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.funnelId",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_domain_ssl_onboard $.inputSchema.properties.locationId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.locationId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.previewId",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.stepId",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema changed: ghl_domain_ssl_onboard $.inputSchema.required",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_domain_ssl_onboard $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_domain_ssl_onboard $.annotations.idempotentHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_domain_ssl_onboard $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_phone_wallet_audit $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_phone_wallet_audit $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_phone_wallet_audit $.inputSchema.properties.locationId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_phone_wallet_audit $.inputSchema.properties.locationId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_phone_wallet_audit $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_phone_wallet_audit $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_site_builder_sync $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_site_builder_sync $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.dryRun.default",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_site_builder_sync $.inputSchema.properties.dryRun.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_site_builder_sync $.inputSchema.properties.funnelId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.funnelId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.input",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_site_builder_sync $.inputSchema.properties.locationId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.locationId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.mode",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.previewId",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_site_builder_sync $.inputSchema.properties.stepId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.stepId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema changed: ghl_site_builder_sync $.inputSchema.required",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_site_builder_sync $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_site_builder_sync $.annotations.idempotentHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_site_builder_sync $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_site_builder_sync $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_snapshot_diff_audit $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_snapshot_diff_audit $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_snapshot_diff_audit $.inputSchema.properties.locationId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_snapshot_diff_audit $.inputSchema.properties.locationId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_snapshot_diff_audit $.inputSchema.properties.snapshotExport",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_snapshot_diff_audit $.inputSchema.properties.snapshotId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_snapshot_diff_audit $.inputSchema.properties.snapshotId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema changed: ghl_snapshot_diff_audit $.inputSchema.required",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_snapshot_diff_audit $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_snapshot_diff_audit $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_user_role_governance $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_user_role_governance $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_user_role_governance $.inputSchema.properties.locationId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_user_role_governance $.inputSchema.properties.locationId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_user_role_governance $.inputSchema.properties.preset.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema changed: ghl_user_role_governance $.inputSchema.required",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_user_role_governance $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_user_role_governance $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "title changed: ghl_workflow_ivr_builder $.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "description changed: ghl_workflow_ivr_builder $.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.digits",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.dryRun.default",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_workflow_ivr_builder $.inputSchema.properties.dryRun.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.formId",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.forwardTo",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.greeting",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.input",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_workflow_ivr_builder $.inputSchema.properties.locationId.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.locationId.pattern",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.name",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.phone",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema added: ghl_workflow_ivr_builder $.inputSchema.properties.preset.description",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.previewId",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.publish",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.workflowId",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "inputSchema changed: ghl_workflow_ivr_builder $.inputSchema.required",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_workflow_ivr_builder $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_workflow_ivr_builder $.annotations.idempotentHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_workflow_ivr_builder $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    },
+    {
+     "item": "annotations changed: ghl_workflow_ivr_builder $.annotations.title",
+     "histor_first_new": "2026-10-31T13:17:02Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://gluecron.com/mcp",
+   "server": "com.gluecron/gluecron",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 3,
+   "items_seen_by_histor": 3,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: gluecron_create_deploy_token $.description",
+     "histor_first_new": "2026-11-01T01:21:53Z"
+    },
+    {
+     "item": "inputSchema added: gluecron_create_deploy_token $.inputSchema.properties.deliver",
+     "histor_first_new": "2026-11-01T01:21:53Z"
+    },
+    {
+     "item": "inputSchema added: gluecron_create_deploy_token $.inputSchema.properties.token_id",
+     "histor_first_new": "2026-11-01T01:21:53Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://google-trends.api.trendsmcp.ai/mcp",
+   "server": "ai.trendsmcp/google-trends",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "protocol": 2
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://koddeo.com/api/mcp",
+   "server": "com.koddeo/koddeo",
+   "op": "tools_changed",
+   "histor_reads_in_window": 26,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: boost_code $.description",
+     "histor_first_new": "2026-10-31T21:06:39Z"
+    },
+    {
+     "item": "description changed: subscribe_premium $.description",
+     "histor_first_new": "2026-10-31T21:06:39Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://lobstermatch.com/mcp",
+   "server": "com.lobstermatch/lobstermatch",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 6,
+   "items_seen_by_histor": 6,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: arena_accept",
+     "histor_first_new": "2026-10-31T20:45:56Z"
+    },
+    {
+     "item": "tool added: arena_challenge",
+     "histor_first_new": "2026-10-31T20:45:56Z"
+    },
+    {
+     "item": "tool added: arena_get",
+     "histor_first_new": "2026-10-31T20:45:56Z"
+    },
+    {
+     "item": "tool added: arena_leaderboard",
+     "histor_first_new": "2026-10-31T20:45:56Z"
+    },
+    {
+     "item": "tool added: arena_move",
+     "histor_first_new": "2026-10-31T20:45:56Z"
+    },
+    {
+     "item": "tool added: arena_rematch",
+     "histor_first_new": "2026-10-31T20:45:56Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.eqvps.com/mcp",
+   "server": "io.github.Poiuyhje/eqvps",
+   "op": "tools_changed",
+   "histor_reads_in_window": 61,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: list_plans $.description",
+     "histor_first_new": "2026-11-01T00:51:11Z"
+    },
+    {
+     "item": "description changed: order_vps $.description",
+     "histor_first_new": "2026-11-01T00:51:11Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.getfairquery.com/jobs/mcp",
+   "server": "com.getfairquery/company-jobs-feed-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 14,
+   "items_seen_by_histor": 14,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: jobs_check_open $.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "description changed: jobs_find_board $.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "description changed: jobs_get_board $.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "description changed: jobs_get_job $.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "description changed: jobs_list_seed_boards $.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "description changed: jobs_search_by_location $.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "title changed: jobs_search_companies $.title",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "description changed: jobs_search_companies $.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "inputSchema changed: jobs_search_companies $.inputSchema.properties.confirmOpen.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "inputSchema changed: jobs_search_companies $.inputSchema.properties.maxJobs.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "inputSchema changed: jobs_search_companies $.inputSchema.properties.useSeedList.description",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "annotations changed: jobs_search_companies $.annotations.idempotentHint",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "annotations changed: jobs_search_companies $.annotations.openWorldHint",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    },
+    {
+     "item": "annotations changed: jobs_search_companies $.annotations.title",
+     "histor_first_new": "2026-10-31T18:10:56Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.hail.so",
+   "server": "io.github.hail-hq/hail-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-401": 2
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.justdomain.ai/",
+   "server": "ai.justdomain/just-domain",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: search_domains $.description",
+     "histor_first_new": "2026-10-31T22:47:57Z"
+    },
+    {
+     "item": "outputSchema changed: search_domains $.outputSchema.properties.next_action.description",
+     "histor_first_new": "2026-10-31T22:47:57Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.kaiku.tech/mcp",
+   "server": "tech.kaiku/kaiku",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-401": 2
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.lexlint.org/mcp",
+   "server": "org.lexlint/lexlint",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 4,
+   "items_seen_by_histor": 4,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool removed: claim_trial_key",
+     "histor_first_new": "2026-11-01T02:52:49Z"
+    },
+    {
+     "item": "inputSchema added: run_lint $.inputSchema.properties.public_sector_functions",
+     "histor_first_new": "2026-11-01T02:52:49Z"
+    },
+    {
+     "item": "inputSchema added: set_profile $.inputSchema.properties.public_sector_functions",
+     "histor_first_new": "2026-11-01T02:52:49Z"
+    },
+    {
+     "item": "inputSchema added: upload_lint_run $.inputSchema.properties.public_sector_functions",
+     "histor_first_new": "2026-11-01T02:52:49Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.maxeds.org/mcp",
+   "server": "org.maxeds/salesbook",
+   "op": "tools_changed",
+   "histor_reads_in_window": 6,
+   "items": 4,
+   "items_seen_by_histor": 4,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: get_buying_windows $.description",
+     "histor_first_new": "2026-10-31T10:20:33Z"
+    },
+    {
+     "item": "inputSchema added: get_buying_windows $.inputSchema.properties.signal_type",
+     "histor_first_new": "2026-10-31T10:20:33Z"
+    },
+    {
+     "item": "inputSchema changed: get_buying_windows $.inputSchema.properties.window_type.description",
+     "histor_first_new": "2026-10-31T10:20:33Z"
+    },
+    {
+     "item": "inputSchema changed: get_buying_windows $.inputSchema.properties.window_type.enum",
+     "histor_first_new": "2026-10-31T10:20:33Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.mellowmountainradio.com/mcp",
+   "server": "com.mellowmountainradio.mcp/kazm",
+   "op": "tools_changed",
+   "histor_reads_in_window": 6,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: get_school_closures",
+     "histor_first_new": "2026-10-31T19:41:04Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.nanoodle.com/mcp",
+   "server": "io.github.nanoodlecom/nanoodle-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 71,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: humanize-comment $.description",
+     "histor_first_new": "2026-10-31T17:04:35Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.opedd.com/mcp",
+   "server": "com.opedd/opedd-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 71,
+   "items": 0,
+   "items_seen_by_histor": 0,
+   "verdict": "server instructions only (HISTOR does not record them)",
+   "details": []
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.quotewise.io/",
+   "server": "io.github.quotewise/mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "protocol": 1
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.retrodiffusion.ai/mcp",
+   "server": "ai.retrodiffusion/pixel-art",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "protocol": 1
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.sportstatsapi.com/mcp",
+   "server": "com.sportstatsapi/sports-data",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: get_match $.description",
+     "histor_first_new": "2026-10-31T14:03:47Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.storecanary.app/mcp",
+   "server": "io.github.erikras/store-canary",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 14,
+   "items_seen_by_histor": 14,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: check_exposure $.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "inputSchema changed: check_exposure $.inputSchema.properties.url.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "description changed: check_policies $.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "inputSchema changed: check_policies $.inputSchema.properties.url.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "description changed: check_products $.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "inputSchema changed: check_products $.inputSchema.properties.url.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "description changed: check_seo_basics $.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "inputSchema changed: check_seo_basics $.inputSchema.properties.url.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "description changed: check_speed $.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "inputSchema changed: check_speed $.inputSchema.properties.url.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "description changed: check_ssl $.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "inputSchema changed: check_ssl $.inputSchema.properties.url.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "description changed: check_store $.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    },
+    {
+     "item": "inputSchema changed: check_store $.inputSchema.properties.url.description",
+     "histor_first_new": "2026-10-31T16:54:31Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.switchapp.ai/mcp",
+   "server": "ai.switchapp/switch",
+   "op": "tools_changed",
+   "histor_reads_in_window": 30,
+   "items": 1,
+   "items_seen_by_histor": 0,
+   "verdict": "not seen as a change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: generate_video $.description",
+     "histor_states": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://metraipolis.com/mcp",
+   "server": "com.metraipolis/knowledge-commons",
+   "op": "tools_changed",
+   "histor_reads_in_window": 37,
+   "items": 3,
+   "items_seen_by_histor": 3,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "outputSchema changed: read_document $.outputSchema",
+     "histor_first_new": "2026-10-31T14:29:24Z"
+    },
+    {
+     "item": "inputSchema changed: search_archive $.inputSchema.properties.query.description",
+     "histor_first_new": "2026-10-31T14:29:24Z"
+    },
+    {
+     "item": "outputSchema changed: search_archive $.outputSchema",
+     "histor_first_new": "2026-10-31T14:29:24Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://neuronto.com/mcp",
+   "server": "com.neuronto/agents-tools-search-discovery-ard-registry",
+   "op": "tools_changed",
+   "histor_reads_in_window": 6,
+   "items": 4,
+   "items_seen_by_histor": 4,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: find_resource $.description",
+     "histor_first_new": "2026-11-01T01:43:50Z"
+    },
+    {
+     "item": "description changed: find_tool $.description",
+     "histor_first_new": "2026-11-01T01:43:50Z"
+    },
+    {
+     "item": "description changed: publish_resource $.description",
+     "histor_first_new": "2026-11-01T01:43:50Z"
+    },
+    {
+     "item": "inputSchema added: publish_resource $.inputSchema.properties.priority",
+     "histor_first_new": "2026-11-01T01:43:50Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://nightwatch-v1-api.onrender.com/mcp",
+   "server": "io.github.jamboree777/nightwatch",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: agent_inbox $.description",
+     "histor_first_new": "2026-10-31T10:27:52Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://nova.civai.co/mcp/agents/telegram-agent",
+   "server": "co.civai.nova/telegram-agent",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "protocol": 2
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://nymwell.com/mcp",
+   "server": "com.nymwell/mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 131,
+   "items_seen_by_histor": 131,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "title changed: apply_dns_preset $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: apply_dns_preset $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: apply_dns_to_domains $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: apply_dns_to_domains $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: cancel_registration $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: cancel_registration $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: cancel_transfer $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: cancel_transfer $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: change_domain_service $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: change_domain_service $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: check_domain $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: check_domain $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: check_domain $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: check_domain_eligibility $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: check_domain_eligibility $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: check_domain_eligibility $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: connected_apps $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: connected_apps $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: contact_support $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: contact_support $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: decide_approval $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: decide_approval $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: dns_templates $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: dns_templates $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: dns_zone_file $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: dns_zone_file $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: domain_info $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: domain_info $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: domain_moves $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: domain_moves $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: domain_page $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: domain_page $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: get_dashboard $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_dashboard $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_dashboard $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: get_domain $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_domain $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_domain $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: get_order $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_order $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_order $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: get_quote $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_quote $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_quote $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: get_registrant $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_registrant $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_registrant $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: get_tld_info $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_tld_info $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: get_tld_info $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_approvals $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_approvals $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_approvals $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_audit_events $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_audit_events $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_audit_events $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_dns_presets $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_dns_presets $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_dns_presets $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_dns_records $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_dns_records $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_dns_records $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_domain_services $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_domain_services $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_domain_services $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_domains $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_domains $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_domains $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_invoices $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_invoices $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_invoices $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_members $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_members $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_members $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_orders $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_orders $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_orders $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_transfers $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_transfers $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_transfers $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: list_unverified_contacts $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_unverified_contacts $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: list_unverified_contacts $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: manage_api_keys $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: manage_api_keys $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: manage_members $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: manage_members $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: managed_domain_plan $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: managed_domain_plan $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: nymwell_status $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: nymwell_status $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: nymwell_status $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: purchase_domain $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: purchase_domain $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: request_auth_code $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: request_auth_code $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: resend_contact_verification $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: resend_contact_verification $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: save_registrant $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: save_registrant $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: screen_domains $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: screen_domains $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: screen_domains $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: search_domains $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: search_domains $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: search_domains $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: set_auto_renew $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: set_auto_renew $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: set_contacts $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: set_contacts $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: set_domain_tags $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: set_domain_tags $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: set_nameservers $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: set_nameservers $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: set_record_note $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: set_record_note $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: stage_dns_change $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: stage_dns_change $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: submit_transfer $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: submit_transfer $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: suggest_domains $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: suggest_domains $.annotations.destructiveHint",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: suggest_domains $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: track_domain $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: track_domain $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: undo_dns_apply $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: undo_dns_apply $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: update_domain_settings $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: update_domain_settings $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "title changed: workspace_defaults $.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    },
+    {
+     "item": "annotations added: workspace_defaults $.annotations.title",
+     "histor_first_new": "2026-10-31T06:33:40Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://odilelabs.com/mcp",
+   "server": "com.odilelabs/odile",
+   "op": "tools_changed",
+   "histor_reads_in_window": 42,
+   "items": 33,
+   "items_seen_by_histor": 33,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: answer_call_question",
+     "histor_first_new": "2026-10-31T05:50:45Z"
+    },
+    {
+     "item": "tool added: call_business",
+     "histor_first_new": "2026-10-31T05:50:45Z"
+    },
+    {
+     "item": "tool added: get_call_result",
+     "histor_first_new": "2026-10-31T05:50:45Z"
+    },
+    {
+     "item": "tool added: get_replies",
+     "histor_first_new": "2026-10-31T14:24:16Z"
+    },
+    {
+     "item": "tool added: reply_to_business",
+     "histor_first_new": "2026-10-31T14:24:16Z"
+    },
+    {
+     "item": "description changed: buy_pack $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "inputSchema changed: buy_pack $.inputSchema.properties.pack.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "inputSchema changed: buy_pack $.inputSchema.properties.product.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "description changed: find_business_agent $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "inputSchema added: find_business_agent $.inputSchema.properties.number.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "description changed: get_agent_services $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: get_answering_line $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: get_answering_line_offer $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: get_direct_payment $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "inputSchema added: get_direct_payment $.inputSchema.properties.biz.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "inputSchema added: get_direct_payment $.inputSchema.properties.task_id.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "description changed: get_direct_usage $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: get_line_calls $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: get_line_messages $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: get_m2m_network $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: get_receptionist_benchmark $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: get_sip_address $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: send_to_business $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "inputSchema added: send_to_business $.inputSchema.properties.approval_id.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "inputSchema added: send_to_business $.inputSchema.properties.biz.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "inputSchema added: send_to_business $.inputSchema.properties.data.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "inputSchema added: send_to_business $.inputSchema.properties.message_id.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "inputSchema added: send_to_business $.inputSchema.properties.skill.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "inputSchema added: send_to_business $.inputSchema.properties.target.description",
+     "histor_first_new": "2026-10-31T03:48:13Z"
+    },
+    {
+     "item": "description changed: set_up_answering_line $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "inputSchema changed: set_up_answering_line $.inputSchema.properties.business_phone.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "inputSchema changed: set_up_answering_line $.inputSchema.properties.pack.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    },
+    {
+     "item": "description changed: try_answering_line $.description",
+     "histor_first_new": "2026-10-31T15:55:07Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://openmark.ai/mcp",
+   "server": "ai.openmark/openmark",
+   "op": "tools_changed",
+   "histor_reads_in_window": 6,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: export_openclaw_csv",
+     "histor_first_new": "2026-11-01T02:27:52Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://proceres.es/api/mcp",
+   "server": "es.proceres/proceres",
+   "op": "tools_changed",
+   "histor_reads_in_window": 71,
+   "items": 67,
+   "items_seen_by_histor": 67,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: simular_segunda_oportunidad",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: alegaciones_denuncia_trafico $.inputSchema.properties.ccaaInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: alegaciones_denuncia_trafico $.inputSchema.properties.ccaaOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: alegaciones_denuncia_trafico $.inputSchema.properties.municipioInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: alegaciones_denuncia_trafico $.inputSchema.properties.municipioOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: alegaciones_procedimiento_sancionador $.inputSchema.properties.ccaaInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: alegaciones_procedimiento_sancionador $.inputSchema.properties.ccaaOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: alegaciones_procedimiento_sancionador $.inputSchema.properties.municipioInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: alegaciones_procedimiento_sancionador $.inputSchema.properties.municipioOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: buscar_jurisprudencia $.inputSchema.properties.texto.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "title changed: carta_deudas $.title",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "description changed: carta_deudas $.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: carta_deudas $.inputSchema.properties.comisiones",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: carta_deudas $.inputSchema.properties.consumidor",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: carta_deudas $.inputSchema.properties.decretoSinMotivar",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: carta_deudas $.inputSchema.properties.destino.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: carta_deudas $.inputSchema.properties.diasAceptacion.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: carta_deudas $.inputSchema.properties.importe.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: carta_deudas $.inputSchema.properties.oficina",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: carta_deudas $.inputSchema.properties.otrasDeudas",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: carta_deudas $.inputSchema.properties.peticion.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: carta_deudas $.inputSchema.properties.servicioDePago",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: carta_deudas $.inputSchema.properties.tipo.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: carta_deudas $.inputSchema.properties.tipo.enum",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "annotations changed: carta_deudas $.annotations.title",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "description changed: catalogo_cartas_deudas $.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "description changed: catalogo_del_taller $.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: catalogo_del_taller $.inputSchema.properties.tipo.enum",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "description changed: catalogo_vias_procesales $.description",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: demanda_juzgado_social $.inputSchema.properties.caracteristicas",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: demanda_juzgado_social $.inputSchema.properties.contrato",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: demanda_juzgado_social $.inputSchema.properties.formaPago",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: demanda_juzgado_social $.inputSchema.properties.lugarTrabajo",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_de_via $.inputSchema.properties.acusacionPopular",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_de_via $.inputSchema.properties.ccaaInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_de_via $.inputSchema.properties.ccaaOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_de_via $.inputSchema.properties.municipioInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_de_via $.inputSchema.properties.municipioOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_de_via $.inputSchema.properties.pieDuplicado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: escrito_de_via $.inputSchema.properties.via.enum",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: escrito_del_taller $.inputSchema.properties.modulos.items.enum",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema changed: escrito_del_taller $.inputSchema.properties.tipo.enum",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_procesal $.inputSchema.properties.acusacionPopular",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_procesal $.inputSchema.properties.ccaaInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_procesal $.inputSchema.properties.ccaaOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_procesal $.inputSchema.properties.municipioInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_procesal $.inputSchema.properties.municipioOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: escrito_procesal $.inputSchema.properties.pieDuplicado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: hitos_ajg $.inputSchema.properties.ccaa",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: hitos_ajg $.inputSchema.properties.ccaaInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: hitos_ajg $.inputSchema.properties.municipio",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: hitos_ajg $.inputSchema.properties.municipioInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: oposicion_providencia_apremio $.inputSchema.properties.ccaaInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: oposicion_providencia_apremio $.inputSchema.properties.ccaaOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: oposicion_providencia_apremio $.inputSchema.properties.municipioInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: oposicion_providencia_apremio $.inputSchema.properties.municipioOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: papeleta_conciliacion $.inputSchema.properties.caracteristicas",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: papeleta_conciliacion $.inputSchema.properties.contrato",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: papeleta_conciliacion $.inputSchema.properties.formaPago",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: papeleta_conciliacion $.inputSchema.properties.lugarTrabajo",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: plazo_escrito_procesal $.inputSchema.properties.fase",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: recuperar_expediente $.inputSchema.properties.hitos.items.properties.fase",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: reposicion_contra_sancion_trafico $.inputSchema.properties.ccaaInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: reposicion_contra_sancion_trafico $.inputSchema.properties.ccaaOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: reposicion_contra_sancion_trafico $.inputSchema.properties.municipioInteresado",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: reposicion_contra_sancion_trafico $.inputSchema.properties.municipioOrgano",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    },
+    {
+     "item": "inputSchema added: responsabilidad_letrada $.inputSchema.properties.hitos.items.properties.fase",
+     "histor_first_new": "2026-10-31T22:19:11Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://radix.wiki/api/mcp",
+   "server": "wiki.radix/radix-wiki",
+   "op": "tools_changed",
+   "histor_reads_in_window": 72,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: send_feedback",
+     "histor_first_new": "2026-10-31T15:19:04Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://requstory.com/mcp",
+   "server": "com.requstory/mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 66,
+   "items": 0,
+   "items_seen_by_histor": 0,
+   "verdict": "server instructions only (HISTOR does not record them)",
+   "details": []
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://sapiensolutions.com/mcp",
+   "server": "com.sapiensolutions/site",
+   "op": "tools_changed",
+   "histor_reads_in_window": 62,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "outputSchema added: company $.outputSchema.properties.contact.properties.phone",
+     "histor_first_new": "2026-10-31T21:11:23Z"
+    },
+    {
+     "item": "outputSchema changed: company $.outputSchema.properties.contact.required",
+     "histor_first_new": "2026-10-31T21:11:23Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://space-kitty.com/mcp",
+   "server": "com.space-kitty/research-archive",
+   "op": "tools_changed",
+   "histor_reads_in_window": 19,
+   "items": 5,
+   "items_seen_by_histor": 5,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "inputSchema changed: create_discussion $.inputSchema.properties.title.pattern",
+     "histor_first_new": "2026-11-01T00:13:52Z"
+    },
+    {
+     "item": "description changed: get_dossier $.description",
+     "histor_first_new": "2026-10-31T18:13:35Z"
+    },
+    {
+     "item": "description changed: get_research_pack $.description",
+     "histor_first_new": "2026-10-31T18:13:35Z"
+    },
+    {
+     "item": "inputSchema changed: register_discussion_agent $.inputSchema.properties.name.pattern",
+     "histor_first_new": "2026-11-01T00:13:52Z"
+    },
+    {
+     "item": "inputSchema changed: search_archive $.inputSchema.properties.kind.enum",
+     "histor_first_new": "2026-11-01T00:13:52Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://spawnpop.com/mcp",
+   "server": "io.github.tinbox-labs/spawnpop",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-401": 2
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://stock.quicktiny.cn/api/mcp",
+   "server": "io.github.jcdreamjc/wudao-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 3,
+   "items": 1,
+   "items_seen_by_histor": 0,
+   "verdict": "not seen as a change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: auction_data $.description",
+     "histor_states": "NNN"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://veilpoint.ca/mcp",
+   "server": "ca.veilpoint/opportunity-exchange",
+   "op": "tools_changed",
+   "histor_reads_in_window": 6,
+   "items": 0,
+   "items_seen_by_histor": 0,
+   "verdict": "server instructions only (HISTOR does not record them)",
+   "details": []
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://www.ghlagencymcp.com/mcp",
+   "server": "com.ghlagencymcp/highlevel-agency-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 4,
+   "items": 130,
+   "items_seen_by_histor": 0,
+   "verdict": "not seen as a change in HISTOR",
+   "details": [
+    {
+     "item": "title changed: ghl_agency_connection_health $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_agency_connection_health $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_connection_health $.inputSchema.properties.company",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_connection_health $.inputSchema.properties.context",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_connection_health $.inputSchema.properties.includeDoctor.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_connection_health $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_connection_health $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_agency_contexts $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_agency_contexts $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_contexts $.inputSchema.properties.context",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_contexts $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_contexts $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_agency_doctor $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_agency_doctor $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_doctor $.inputSchema.properties.company",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_doctor $.inputSchema.properties.context",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_doctor $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_doctor $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_agency_locations $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_agency_locations $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.company",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.context",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.location.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.location.maxLength",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_locations $.inputSchema.properties.location.minLength",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_agency_locations $.inputSchema.properties.location.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_locations $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_locations $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_agency_tools_enable $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_agency_tools_enable $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_tools_enable $.inputSchema.properties.policyPreset.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema changed: ghl_agency_tools_enable $.inputSchema.required",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_enable $.annotations.idempotentHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_enable $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_enable $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_agency_tools_search $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_agency_tools_search $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_tools_search $.inputSchema.properties.category.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema changed: ghl_agency_tools_search $.inputSchema.properties.category.enum",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_agency_tools_search $.inputSchema.properties.query.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema changed: ghl_agency_tools_search $.inputSchema.properties.query.maxLength",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_search $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_agency_tools_search $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_custom_values_audit $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_custom_values_audit $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_custom_values_audit $.inputSchema.properties.locationId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_custom_values_audit $.inputSchema.properties.locationId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_custom_values_audit $.inputSchema.properties.templates",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_custom_values_audit $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_custom_values_audit $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_domain_ssl_onboard $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_domain_ssl_onboard $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_domain_ssl_onboard $.inputSchema.properties.domain.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.domain.maxLength",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.domain.minLength",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.dryRun.default",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_domain_ssl_onboard $.inputSchema.properties.dryRun.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.funnelId",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_domain_ssl_onboard $.inputSchema.properties.locationId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.locationId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.previewId",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_domain_ssl_onboard $.inputSchema.properties.stepId",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema changed: ghl_domain_ssl_onboard $.inputSchema.required",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_domain_ssl_onboard $.annotations.destructiveHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_domain_ssl_onboard $.annotations.idempotentHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_domain_ssl_onboard $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_phone_wallet_audit $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_phone_wallet_audit $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_phone_wallet_audit $.inputSchema.properties.locationId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_phone_wallet_audit $.inputSchema.properties.locationId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_phone_wallet_audit $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_phone_wallet_audit $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_site_builder_sync $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_site_builder_sync $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.dryRun.default",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_site_builder_sync $.inputSchema.properties.dryRun.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_site_builder_sync $.inputSchema.properties.funnelId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.funnelId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.input",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_site_builder_sync $.inputSchema.properties.locationId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.locationId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.mode",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.previewId",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_site_builder_sync $.inputSchema.properties.stepId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_site_builder_sync $.inputSchema.properties.stepId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema changed: ghl_site_builder_sync $.inputSchema.required",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_site_builder_sync $.annotations.destructiveHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_site_builder_sync $.annotations.idempotentHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_site_builder_sync $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_site_builder_sync $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_snapshot_diff_audit $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_snapshot_diff_audit $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_snapshot_diff_audit $.inputSchema.properties.locationId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_snapshot_diff_audit $.inputSchema.properties.locationId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_snapshot_diff_audit $.inputSchema.properties.snapshotExport",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_snapshot_diff_audit $.inputSchema.properties.snapshotId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_snapshot_diff_audit $.inputSchema.properties.snapshotId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema changed: ghl_snapshot_diff_audit $.inputSchema.required",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_snapshot_diff_audit $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_snapshot_diff_audit $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_user_role_governance $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_user_role_governance $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_user_role_governance $.inputSchema.properties.locationId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_user_role_governance $.inputSchema.properties.locationId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_user_role_governance $.inputSchema.properties.preset.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema changed: ghl_user_role_governance $.inputSchema.required",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_user_role_governance $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_user_role_governance $.annotations.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "title changed: ghl_workflow_ivr_builder $.title",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "description changed: ghl_workflow_ivr_builder $.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.digits",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.dryRun.default",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_workflow_ivr_builder $.inputSchema.properties.dryRun.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.formId",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.forwardTo",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.greeting",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.input",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_workflow_ivr_builder $.inputSchema.properties.locationId.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.locationId.pattern",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.name",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.phone",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema added: ghl_workflow_ivr_builder $.inputSchema.properties.preset.description",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.previewId",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.publish",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema removed: ghl_workflow_ivr_builder $.inputSchema.properties.workflowId",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "inputSchema changed: ghl_workflow_ivr_builder $.inputSchema.required",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_workflow_ivr_builder $.annotations.destructiveHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_workflow_ivr_builder $.annotations.idempotentHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_workflow_ivr_builder $.annotations.openWorldHint",
+     "histor_states": "NNNN"
+    },
+    {
+     "item": "annotations changed: ghl_workflow_ivr_builder $.annotations.title",
+     "histor_states": "NNNN"
+    }
+   ]
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://www.xpressflowsystems.com.ng/api/mcp",
+   "server": "ng.com.xpressflowsystems.www/esim-domains",
+   "op": "tools_changed",
+   "histor_reads_in_window": 37,
+   "items": 4,
+   "items_seen_by_histor": 4,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: create_cart_order $.description",
+     "histor_first_new": "2026-10-31T07:31:04Z"
+    },
+    {
+     "item": "description changed: create_esim_order $.description",
+     "histor_first_new": "2026-10-31T07:31:04Z"
+    },
+    {
+     "item": "description changed: get_cart_status $.description",
+     "histor_first_new": "2026-10-31T07:31:04Z"
+    },
+    {
+     "item": "description changed: get_order_status $.description",
+     "histor_first_new": "2026-10-31T07:31:04Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://138-197-15-135.sslip.io/mcp",
+   "server": "io.sslip.138-197-15-135/hearth-onchain",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 5,
+   "items_seen_by_histor": 5,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: ai_chat",
+     "histor_first_new": "2026-10-31T02:24:00Z"
+    },
+    {
+     "item": "tool added: evm_blocks",
+     "histor_first_new": "2026-10-31T02:24:00Z"
+    },
+    {
+     "item": "tool added: route",
+     "histor_first_new": "2026-10-31T02:54:19Z"
+    },
+    {
+     "item": "tool added: route_plus",
+     "histor_first_new": "2026-10-31T02:54:19Z"
+    },
+    {
+     "item": "inputSchema added: market_overview $.inputSchema.properties.trending",
+     "histor_first_new": "2026-10-31T01:53:38Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://agentbuffs.com/api/mcp",
+   "server": "com.agentbuffs/agentbuffs",
+   "op": "tools_changed",
+   "histor_reads_in_window": 46,
+   "items": 18,
+   "items_seen_by_histor": 18,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: get_agent_picks",
+     "histor_first_new": "2026-10-30T13:40:52Z"
+    },
+    {
+     "item": "description changed: find_tools $.description",
+     "histor_first_new": "2026-10-30T21:43:24Z"
+    },
+    {
+     "item": "inputSchema added: find_tools $.inputSchema.properties.auth",
+     "histor_first_new": "2026-10-30T21:43:24Z"
+    },
+    {
+     "item": "inputSchema changed: find_tools $.inputSchema.properties.client.description",
+     "histor_first_new": "2026-10-30T13:40:52Z"
+    },
+    {
+     "item": "inputSchema added: find_tools $.inputSchema.properties.model",
+     "histor_first_new": "2026-10-30T13:40:52Z"
+    },
+    {
+     "item": "description changed: get_install $.description",
+     "histor_first_new": "2026-10-30T13:40:52Z"
+    },
+    {
+     "item": "inputSchema changed: get_install $.inputSchema.properties.client.description",
+     "histor_first_new": "2026-10-30T13:40:52Z"
+    },
+    {
+     "item": "inputSchema added: get_install $.inputSchema.properties.model",
+     "histor_first_new": "2026-10-30T13:40:52Z"
+    },
+    {
+     "item": "description changed: report_outcome $.description",
+     "histor_first_new": "2026-10-30T13:40:52Z"
+    },
+    {
+     "item": "inputSchema added: report_outcome $.inputSchema.properties.callErrors",
+     "histor_first_new": "2026-10-30T11:09:21Z"
+    },
+    {
+     "item": "inputSchema added: report_outcome $.inputSchema.properties.criteriaVersion",
+     "histor_first_new": "2026-10-30T14:41:04Z"
+    },
+    {
+     "item": "inputSchema changed: report_outcome $.inputSchema.properties.failedAt.description",
+     "histor_first_new": "2026-10-30T11:09:21Z"
+    },
+    {
+     "item": "inputSchema changed: report_outcome $.inputSchema.properties.failedAt.enum",
+     "histor_first_new": "2026-10-30T11:09:21Z"
+    },
+    {
+     "item": "inputSchema added: report_outcome $.inputSchema.properties.helpedTask",
+     "histor_first_new": "2026-10-30T13:40:52Z"
+    },
+    {
+     "item": "inputSchema added: report_outcome $.inputSchema.properties.missingPieces",
+     "histor_first_new": "2026-10-30T11:09:21Z"
+    },
+    {
+     "item": "inputSchema changed: report_outcome $.inputSchema.properties.model.description",
+     "histor_first_new": "2026-10-30T13:40:52Z"
+    },
+    {
+     "item": "inputSchema added: report_outcome $.inputSchema.properties.stepsFollowable",
+     "histor_first_new": "2026-10-30T11:09:21Z"
+    },
+    {
+     "item": "inputSchema added: report_outcome $.inputSchema.properties.toolsAsListed",
+     "histor_first_new": "2026-10-30T11:09:21Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://agentropolis.io/api/mcp",
+   "server": "io.agentropolis/agentropolis",
+   "op": "tools_changed",
+   "histor_reads_in_window": 60,
+   "items": 3,
+   "items_seen_by_histor": 3,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: search_kits $.description",
+     "histor_first_new": "2026-10-30T23:36:51Z"
+    },
+    {
+     "item": "inputSchema added: search_kits $.inputSchema.properties.sponsored",
+     "histor_first_new": "2026-10-30T23:36:51Z"
+    },
+    {
+     "item": "outputSchema changed: search_kits $.outputSchema.properties.sponsored.description",
+     "histor_first_new": "2026-10-30T23:36:51Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://api.duvo.ai/v1/mcp",
+   "server": "io.github.duvoai/duvo",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-401": 1
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://api.femtos.xyz/mcp",
+   "server": "xyz.femtos/mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 58,
+   "items": 9,
+   "items_seen_by_histor": 9,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: get_builder $.description",
+     "histor_first_new": "2026-10-30T22:06:57Z"
+    },
+    {
+     "item": "inputSchema changed: get_builder $.inputSchema.properties.window.description",
+     "histor_first_new": "2026-10-30T22:06:57Z"
+    },
+    {
+     "item": "description changed: get_builder_fills $.description",
+     "histor_first_new": "2026-10-30T22:06:57Z"
+    },
+    {
+     "item": "description changed: get_builders $.description",
+     "histor_first_new": "2026-10-30T22:06:57Z"
+    },
+    {
+     "item": "inputSchema changed: get_builders $.inputSchema.properties.window.description",
+     "histor_first_new": "2026-10-30T22:06:57Z"
+    },
+    {
+     "item": "description changed: get_open_interest $.description",
+     "histor_first_new": "2026-10-31T01:38:09Z"
+    },
+    {
+     "item": "description changed: get_open_interest_cohorts $.description",
+     "histor_first_new": "2026-10-30T22:06:57Z"
+    },
+    {
+     "item": "description changed: get_open_interest_opens $.description",
+     "histor_first_new": "2026-10-31T01:38:09Z"
+    },
+    {
+     "item": "description changed: list_open_interest $.description",
+     "histor_first_new": "2026-10-30T22:06:57Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://api.xdata.kr/mcp",
+   "server": "kr.xdata/xdata-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "protocol": 2
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://ats-jobs-api.groundtruthtools.workers.dev/mcp",
+   "server": "io.github.groundtruthtools/ats-jobs-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 32,
+   "items": 18,
+   "items_seen_by_histor": 18,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: app_store_lookup",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: check_email",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: company_lookup",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: company_search",
+     "histor_first_new": "2026-10-30T21:22:15Z"
+    },
+    {
+     "item": "tool added: detect_tech_stack",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: domain_lookup",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: extract_page",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: federal_contracts",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: find_x402_api",
+     "histor_first_new": "2026-10-31T02:24:00Z"
+    },
+    {
+     "item": "tool added: hiring_summary",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: new_businesses",
+     "histor_first_new": "2026-10-30T20:21:50Z"
+    },
+    {
+     "item": "tool added: read_page",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: search_company_registry",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: search_hacker_news",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: search_papers",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: sec_financials",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "tool added: validate_vat",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    },
+    {
+     "item": "description changed: find_company_board $.description",
+     "histor_first_new": "2026-10-30T18:51:27Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://beliefstate.ai/v1/research/mcp",
+   "server": "ai.beliefstate/investor-research",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "ok-undigested": 59
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://billify.org/mcp/pay",
+   "server": "io.github.Ovindolo/billify-pay",
+   "op": "tools_changed",
+   "histor_reads_in_window": 5,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: confirm_delivery",
+     "histor_first_new": "2026-10-30T19:48:20Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://bitcoinyield.co/api/mcp",
+   "server": "co.bitcoinyield/yields",
+   "op": "tools_changed",
+   "histor_reads_in_window": 21,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "inputSchema changed: list_offers $.inputSchema.properties.asset.enum",
+     "histor_first_new": "2026-10-31T00:51:29Z"
+    },
+    {
+     "item": "inputSchema changed: list_yields $.inputSchema.properties.asset.enum",
+     "histor_first_new": "2026-10-31T00:51:29Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://bridges.morningbrief.link/mcp",
+   "server": "link.morningbrief/bridges",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 33,
+   "items_seen_by_histor": 33,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: find_bridges_nearby $.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: find_bridges_nearby $.inputSchema.properties.limit.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: find_bridges_nearby $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "description changed: find_low_clearance_bridges $.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: find_low_clearance_bridges $.inputSchema.properties.limit.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: find_low_clearance_bridges $.inputSchema.properties.under.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: find_low_clearance_bridges $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "description changed: get_bridge $.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: get_bridge $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "description changed: get_county_summaries $.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: get_county_summaries $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: get_state_summary $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "description changed: get_worst_bridges $.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: get_worst_bridges $.inputSchema.properties.limit.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: get_worst_bridges $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "description changed: list_bridges_in_county $.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: list_bridges_in_county $.inputSchema.properties.limit.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: list_bridges_in_county $.inputSchema.properties.offset.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: list_bridges_in_county $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "description changed: list_posted_or_closed_bridges $.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: list_posted_or_closed_bridges $.inputSchema.properties.limit.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: list_posted_or_closed_bridges $.inputSchema.properties.offset.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: list_posted_or_closed_bridges $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: screen_corridor $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "description changed: search_bridges $.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: search_bridges $.inputSchema.properties.condition.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: search_bridges $.inputSchema.properties.limit.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: search_bridges $.inputSchema.properties.offset.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: search_bridges $.inputSchema.properties.posting_status.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: search_bridges $.inputSchema.properties.scour_critical.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: search_bridges $.inputSchema.properties.year_max.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "inputSchema added: search_bridges $.inputSchema.properties.year_min.description",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    },
+    {
+     "item": "annotations changed: search_bridges $.annotations",
+     "histor_first_new": "2026-10-31T00:32:47Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://cestchaud.city/mcp",
+   "server": "city.cestchaud/paris",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "ok-undigested": 5
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://chucho.ai/mcp",
+   "server": "ai.chucho/chucho",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "ok-undigested": 59
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://citedindex.com/mcp",
+   "server": "com.citedindex/mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: my_listings $.description",
+     "histor_first_new": "2026-10-30T17:14:06Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://deed.page/mcp",
+   "server": "page.deed/deed-page",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 4,
+   "items_seen_by_histor": 4,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: site_visits",
+     "histor_first_new": "2026-10-30T12:11:33Z"
+    },
+    {
+     "item": "inputSchema changed: get_upgrade_link $.inputSchema.properties.upgrade_trigger.enum",
+     "histor_first_new": "2026-10-30T12:11:33Z"
+    },
+    {
+     "item": "description changed: publish_site $.description",
+     "histor_first_new": "2026-10-30T12:11:33Z"
+    },
+    {
+     "item": "description changed: set_badge $.description",
+     "histor_first_new": "2026-10-30T21:45:03Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://evlek.app/api/mcp",
+   "server": "app.evlek/mcp-server",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "ok-undigested": 5
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://gta6times.com/mcp",
+   "server": "com.gta6times/gta6times",
+   "op": "tools_changed",
+   "histor_reads_in_window": 42,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "outputSchema added: get_launch_countdown $.outputSchema.properties.phase",
+     "histor_first_new": "2026-10-30T13:26:06Z"
+    },
+    {
+     "item": "outputSchema added: get_launch_countdown $.outputSchema.properties.verdict",
+     "histor_first_new": "2026-10-30T13:26:06Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://jp-entity-evidence-production.mk-career-planning.workers.dev/mcp",
+   "server": "io.github.mk-career-planning/jp-entity-evidence",
+   "op": "tools_changed",
+   "histor_reads_in_window": 5,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: get_receipt $.description",
+     "histor_first_new": "2026-10-30T13:55:50Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://kneereplacementcost.co.uk/mcp",
+   "server": "uk.co.kneereplacementcost/site",
+   "op": "tools_changed",
+   "histor_reads_in_window": 5,
+   "items": 0,
+   "items_seen_by_histor": 0,
+   "verdict": "server instructions only (HISTOR does not record them)",
+   "details": []
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://knos.onrender.com/mcp",
+   "server": "io.github.drexthealpha/knos",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "ok-undigested": 32
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://marx.finance/mcp",
+   "server": "finance.marx/marx-finance",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-400": 2
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.brek.com/mcp",
+   "server": "io.github.leo9/brek",
+   "op": "tools_changed",
+   "histor_reads_in_window": 5,
+   "items": 61,
+   "items_seen_by_histor": 61,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.adults.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.adults.maximum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.adults.minimum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.adults.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.childrenAges.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.childrenAges.items.maximum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.childrenAges.items.minimum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.childrenAges.items.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.childrenAges.maxItems",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.adults.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.adults.maximum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.adults.minimum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.adults.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.childrenAges.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.childrenAges.items",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.childrenAges.maxItems",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.childrenAges.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.infants.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.infants.maximum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.infants.minimum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.roomArrangements.items.properties.infants.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.roomArrangements.maxItems",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.roomArrangements.minItems",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.rooms.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.rooms.maximum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: get_accommodation_offers $.inputSchema.properties.rooms.minimum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: get_accommodation_offers $.inputSchema.properties.rooms.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema added: get_accommodation_offers $.outputSchema.properties.message",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema added: get_accommodation_offers $.outputSchema.properties.requiredInput",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema removed: get_accommodation_offers $.outputSchema.properties.status.const",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema added: get_accommodation_offers $.outputSchema.properties.status.enum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: get_accommodation_offers $.outputSchema.properties.stay.properties.adults.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: get_accommodation_offers $.outputSchema.properties.stay.properties.children.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: get_accommodation_offers $.outputSchema.properties.stay.properties.childrenAges.items.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: get_accommodation_offers $.outputSchema.properties.stay.properties.roomArrangements.items.properties.adults.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: get_accommodation_offers $.outputSchema.properties.stay.properties.roomArrangements.items.properties.childrenAges.items.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: get_accommodation_offers $.outputSchema.properties.stay.properties.roomArrangements.items.properties.infants.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: get_accommodation_offers $.outputSchema.properties.stay.properties.rooms.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: search_accommodations $.inputSchema.properties.adults.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: search_accommodations $.inputSchema.properties.adults.maximum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: search_accommodations $.inputSchema.properties.adults.minimum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: search_accommodations $.inputSchema.properties.adults.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: search_accommodations $.inputSchema.properties.children.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: search_accommodations $.inputSchema.properties.children.maximum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: search_accommodations $.inputSchema.properties.children.minimum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: search_accommodations $.inputSchema.properties.children.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: search_accommodations $.inputSchema.properties.childrenAges.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: search_accommodations $.inputSchema.properties.childrenAges.items.maximum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: search_accommodations $.inputSchema.properties.childrenAges.items.minimum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: search_accommodations $.inputSchema.properties.childrenAges.items.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: search_accommodations $.inputSchema.properties.childrenAges.maxItems",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: search_accommodations $.inputSchema.properties.rooms.description",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: search_accommodations $.inputSchema.properties.rooms.maximum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema removed: search_accommodations $.inputSchema.properties.rooms.minimum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "inputSchema changed: search_accommodations $.inputSchema.properties.rooms.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: search_accommodations $.outputSchema.properties.requiredInput.items.enum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: search_accommodations $.outputSchema.properties.search.properties.adults.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: search_accommodations $.outputSchema.properties.search.properties.children.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: search_accommodations $.outputSchema.properties.search.properties.childrenAges.items.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: search_accommodations $.outputSchema.properties.search.properties.rooms.type",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    },
+    {
+     "item": "outputSchema changed: search_accommodations $.outputSchema.properties.status.enum",
+     "histor_first_new": "2026-10-30T17:11:56Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.btcdecoded.org/mcp",
+   "server": "org.btcdecoded/intelligence",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-401": 1
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.hail.so",
+   "server": "io.github.hail-hq/hail-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-401": 1
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.kaiku.tech/mcp",
+   "server": "tech.kaiku/kaiku",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-401": 1
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.lexlint.org/mcp",
+   "server": "org.lexlint/lexlint",
+   "op": "tools_changed",
+   "histor_reads_in_window": 60,
+   "items": 8,
+   "items_seen_by_histor": 8,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "inputSchema changed: run_lint $.inputSchema.properties.activities.description",
+     "histor_first_new": "2026-10-30T19:34:13Z"
+    },
+    {
+     "item": "inputSchema changed: run_lint $.inputSchema.properties.activities.items.enum",
+     "histor_first_new": "2026-10-30T19:34:13Z"
+    },
+    {
+     "item": "inputSchema changed: run_lint $.inputSchema.properties.activities_left_out.items.enum",
+     "histor_first_new": "2026-10-30T19:34:13Z"
+    },
+    {
+     "item": "inputSchema changed: set_profile $.inputSchema.properties.activities.description",
+     "histor_first_new": "2026-10-30T19:34:13Z"
+    },
+    {
+     "item": "inputSchema changed: set_profile $.inputSchema.properties.activities.items.enum",
+     "histor_first_new": "2026-10-30T19:34:13Z"
+    },
+    {
+     "item": "inputSchema changed: set_profile $.inputSchema.properties.activities_left_out.items.enum",
+     "histor_first_new": "2026-10-30T19:34:13Z"
+    },
+    {
+     "item": "inputSchema changed: upload_lint_run $.inputSchema.properties.activities.items.enum",
+     "histor_first_new": "2026-10-30T19:34:13Z"
+    },
+    {
+     "item": "inputSchema changed: upload_lint_run $.inputSchema.properties.activities_left_out.items.enum",
+     "histor_first_new": "2026-10-30T19:34:13Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.nanoodle.com/mcp",
+   "server": "io.github.nanoodlecom/nanoodle-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: humanize-comment $.description",
+     "histor_first_new": "2026-10-30T23:19:00Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.opedd.com/mcp",
+   "server": "com.opedd/opedd-mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: search_passages $.description",
+     "histor_first_new": "2026-10-30T15:43:58Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.storecanary.app/mcp",
+   "server": "io.github.erikras/store-canary",
+   "op": "tools_changed",
+   "histor_reads_in_window": 35,
+   "items": 7,
+   "items_seen_by_histor": 7,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "outputSchema added: check_exposure $.outputSchema.properties.reportUrl",
+     "histor_first_new": "2026-10-30T17:10:42Z"
+    },
+    {
+     "item": "outputSchema added: check_policies $.outputSchema.properties.reportUrl",
+     "histor_first_new": "2026-10-30T17:10:42Z"
+    },
+    {
+     "item": "outputSchema added: check_products $.outputSchema.properties.reportUrl",
+     "histor_first_new": "2026-10-30T17:10:42Z"
+    },
+    {
+     "item": "outputSchema added: check_seo_basics $.outputSchema.properties.reportUrl",
+     "histor_first_new": "2026-10-30T17:10:42Z"
+    },
+    {
+     "item": "outputSchema added: check_speed $.outputSchema.properties.reportUrl",
+     "histor_first_new": "2026-10-30T17:10:42Z"
+    },
+    {
+     "item": "outputSchema added: check_ssl $.outputSchema.properties.reportUrl",
+     "histor_first_new": "2026-10-30T17:10:42Z"
+    },
+    {
+     "item": "outputSchema added: check_store $.outputSchema.properties.reportUrl",
+     "histor_first_new": "2026-10-30T17:10:42Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.switchapp.ai/mcp",
+   "server": "ai.switchapp/switch",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "ok-undigested": 59
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.viridisconservation.com/ghg-ledger/mcp",
+   "server": "io.github.jdhart81/ghg-ledger",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "protocol": 1
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.viridisconservation.com/offsets/mcp",
+   "server": "io.github.jdhart81/agent-offset-clearinghouse",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "protocol": 2
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://odilelabs.com/mcp",
+   "server": "com.odilelabs/odile",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 0,
+   "items_seen_by_histor": 0,
+   "verdict": "server instructions only (HISTOR does not record them)",
+   "details": []
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://openbait.com/api/mcp",
+   "server": "com.openbait/lookalike-domains",
+   "op": "tools_changed",
+   "histor_reads_in_window": 5,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: check_lookalike_domains $.description",
+     "histor_first_new": "2026-10-31T08:45:41Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://pinsvit.com/api/v1/mcp",
+   "server": "com.pinsvit/api",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "ok-undigested": 5
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://proceres.es/api/mcp",
+   "server": "es.proceres/proceres",
+   "op": "tools_changed",
+   "histor_reads_in_window": 58,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: catalogo_del_taller $.description",
+     "histor_first_new": "2026-10-30T17:04:39Z"
+    },
+    {
+     "item": "inputSchema changed: escrito_del_taller $.inputSchema.properties.modulos.items.enum",
+     "histor_first_new": "2026-10-30T17:04:39Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://przetargowyjanusz.pl/mcp",
+   "server": "pl.przetargowyjanusz/tenders",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: list_top_winners",
+     "histor_first_new": "2026-10-30T12:35:54Z"
+    },
+    {
+     "item": "description changed: get_tender_results $.description",
+     "histor_first_new": "2026-10-30T16:38:00Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://requstory.com/mcp",
+   "server": "com.requstory/mcp",
+   "op": "tools_changed",
+   "histor_reads_in_window": 25,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: get_report_order",
+     "histor_first_new": "2026-10-30T23:05:19Z"
+    },
+    {
+     "item": "tool added: order_readiness_report",
+     "histor_first_new": "2026-10-30T23:05:19Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://sapiensolutions.com/mcp",
+   "server": "com.sapiensolutions/site",
+   "op": "tools_changed",
+   "histor_reads_in_window": 21,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "inputSchema changed: request_inquiry $.inputSchema.properties.line.description",
+     "histor_first_new": "2026-10-31T00:56:15Z"
+    },
+    {
+     "item": "inputSchema changed: request_inquiry $.inputSchema.properties.need.description",
+     "histor_first_new": "2026-10-31T00:56:15Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://secondlife.it/mcp",
+   "server": "it.secondlife/ripartire",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: free_services $.description",
+     "histor_first_new": "2026-10-30T17:56:25Z"
+    },
+    {
+     "item": "inputSchema changed: free_services $.inputSchema.properties.type.enum",
+     "histor_first_new": "2026-10-30T17:56:25Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://senado.sidneybissoli.com/mcp",
+   "server": "io.github.SidneyBissoli/senado-br-mcp-cloudflare",
+   "op": "tools_changed",
+   "histor_reads_in_window": 59,
+   "items": 6,
+   "items_seen_by_histor": 6,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: senado_discursos_senador $.description",
+     "histor_first_new": "2026-10-31T02:55:32Z"
+    },
+    {
+     "item": "description changed: senado_listar_senadores $.description",
+     "histor_first_new": "2026-10-31T00:54:44Z"
+    },
+    {
+     "item": "inputSchema removed: senado_listar_senadores $.inputSchema.properties.emExercicio.default",
+     "histor_first_new": "2026-10-31T00:54:44Z"
+    },
+    {
+     "item": "inputSchema changed: senado_listar_senadores $.inputSchema.properties.emExercicio.description",
+     "histor_first_new": "2026-10-31T00:54:44Z"
+    },
+    {
+     "item": "description changed: senado_reunioes_comissao $.description",
+     "histor_first_new": "2026-10-31T02:55:32Z"
+    },
+    {
+     "item": "inputSchema changed: senado_reunioes_comissao $.inputSchema.properties.dataFim.description",
+     "histor_first_new": "2026-10-31T02:55:32Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://spawnpop.com/mcp",
+   "server": "io.github.tinbox-labs/spawnpop",
+   "op": "tools_changed",
+   "histor_reads_in_window": 0,
+   "verdict": "HISTOR has no definitions in the window",
+   "histor_statuses": {
+    "http-401": 1
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://textforagents.com/products/meaning-contract-semantic-handshake/mcp",
+   "server": "com.textforagents/meaning-contract-semantic-handshake",
+   "op": "tools_changed",
+   "histor_reads_in_window": 5,
+   "items": 1,
+   "items_seen_by_histor": 1,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: handshake $.description",
+     "histor_first_new": "2026-10-30T19:29:07Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://www.slidphilabs.com/mcp",
+   "server": "io.github.ceedot-rock/slid-phi-labs",
+   "op": "tools_changed",
+   "histor_reads_in_window": 27,
+   "items": 9,
+   "items_seen_by_histor": 9,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "tool added: spl_warrant_release",
+     "histor_first_new": "2026-10-30T15:09:57Z"
+    },
+    {
+     "item": "tool added: spl_warrant_reserve",
+     "histor_first_new": "2026-10-30T15:09:57Z"
+    },
+    {
+     "item": "description changed: box_get $.description",
+     "histor_first_new": "2026-10-30T15:09:57Z"
+    },
+    {
+     "item": "description changed: box_search $.description",
+     "histor_first_new": "2026-10-30T15:09:57Z"
+    },
+    {
+     "item": "description changed: spl_quote $.description",
+     "histor_first_new": "2026-10-30T21:14:01Z"
+    },
+    {
+     "item": "inputSchema changed: spl_quote $.inputSchema.properties.bytes.description",
+     "histor_first_new": "2026-10-30T21:14:01Z"
+    },
+    {
+     "item": "inputSchema added: spl_warrant_receipt $.inputSchema.properties.reservation_id",
+     "histor_first_new": "2026-10-30T15:09:57Z"
+    },
+    {
+     "item": "description changed: spl_warrant_verify $.description",
+     "histor_first_new": "2026-10-30T15:09:57Z"
+    },
+    {
+     "item": "inputSchema added: spl_warrant_verify $.inputSchema.properties.usd",
+     "histor_first_new": "2026-10-30T15:09:57Z"
+    }
+   ]
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://www.soldcomps.io/mcp",
+   "server": "io.soldcomps/sold-comps",
+   "op": "tools_changed",
+   "histor_reads_in_window": 5,
+   "items": 2,
+   "items_seen_by_histor": 2,
+   "verdict": "same change in HISTOR",
+   "details": [
+    {
+     "item": "description changed: search_guides $.description",
+     "histor_first_new": "2026-10-30T21:13:45Z"
+    },
+    {
+     "item": "inputSchema changed: search_guides $.inputSchema.properties.topic.description",
+     "histor_first_new": "2026-10-30T21:13:45Z"
+    }
+   ]
+  }
+ ],
+ "status_transitions": [
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://43-134-36-21.duckdns.org/mcp/mcp",
+   "scraperwatch": "error -> timeout",
+   "transient": true,
+   "histor_near_prev": {
+    "connect": 1
+   },
+   "histor_near_cur": {
+    "timeout": 1
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://ainetcafe.com/mcp/memory?s=registry",
+   "scraperwatch": "ok -> timeout",
+   "transient": true,
+   "histor_near_prev": {
+    "ok": 1
+   },
+   "histor_near_cur": {
+    "ok": 1
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://api.brainiall.com/mcp/pronunciation/mcp",
+   "scraperwatch": "error -> ok",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://api.kaleto.ai/mcp",
+   "scraperwatch": "ok -> robots_disallowed",
+   "transient": null,
+   "histor_near_prev": {
+    "ok": 7
+   },
+   "histor_near_cur": {
+    "ok": 8
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://bids44-mcp-751110103074.asia-south1.run.app/mcp",
+   "scraperwatch": "ok -> robots_disallowed",
+   "transient": null,
+   "histor_near_prev": {
+    "ok": 1
+   },
+   "histor_near_cur": {
+    "http-503": 1
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://blinibot.ai/api/agents/mcp",
+   "scraperwatch": "error -> ok",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://databutler.dev/api/mcp/jp-vehicle-costs",
+   "scraperwatch": "ok -> auth_required",
+   "transient": null,
+   "histor_near_prev": {
+    "ok": 1
+   },
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://databutler.dev/api/mcp/uk-gov-process",
+   "scraperwatch": "ok -> auth_required",
+   "transient": null,
+   "histor_near_prev": {
+    "ok": 1
+   },
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://kryptoskatt-k4.vercel.app/api/mcp",
+   "scraperwatch": "auth_required -> ok",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://link-preview-api-z4nf.onrender.com/mcp",
+   "scraperwatch": "robots_disallowed -> ok",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp-javabin-archieve.fly.dev/mcp",
+   "scraperwatch": "ok -> timeout",
+   "transient": true,
+   "histor_near_prev": {
+    "ok": 1
+   },
+   "histor_near_cur": {
+    "ok": 1
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.boardroombob.com",
+   "scraperwatch": "error -> ok",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.meelion.com/",
+   "scraperwatch": "auth_required -> ok",
+   "transient": null,
+   "histor_near_prev": {
+    "http-403": 1
+   },
+   "histor_near_cur": {
+    "ok": 1
+   }
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.nexlab.net/mcp/air-route-atlas",
+   "scraperwatch": "auth_required -> timeout",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.nexlab.net/mcp/europe-rail-watch",
+   "scraperwatch": "auth_required -> timeout",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://mcp.nexlab.net/mcp/peer-research-papers",
+   "scraperwatch": "auth_required -> timeout",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://openeden-backend.onrender.com/sse",
+   "scraperwatch": "robots_disallowed -> ok",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://pal-full-catalog-remediation.onrender.com/mcp",
+   "scraperwatch": "robots_disallowed -> ok",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://pet-welcome-box.vercel.app/api/mcp",
+   "scraperwatch": "auth_required -> ok",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://theagentsbay.com/mcp/public/",
+   "scraperwatch": "ok -> robots_disallowed",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://unfoldip.com/mcp",
+   "scraperwatch": "auth_required -> timeout",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://wb.seller.bears.ru/mcp",
+   "scraperwatch": "timeout -> error",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://world.wukong.lol/mcp",
+   "scraperwatch": "timeout -> error",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://yangopen.com/mcp",
+   "scraperwatch": "auth_required -> ok",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://agentgas.online/mcp",
+   "scraperwatch": "ok -> robots_disallowed",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://api.brainiall.com/mcp/pronunciation/mcp",
+   "scraperwatch": "ok -> error",
+   "transient": true,
+   "histor_near_prev": {
+    "protocol": 1
+   },
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://api.correkt.com/mcp",
+   "scraperwatch": "ok -> error",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://hukuk.damdafa.com/mcp/server/sse",
+   "scraperwatch": "timeout -> auth_required",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.aerosend.io/mcp",
+   "scraperwatch": "auth_required -> timeout",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.boardroombob.com",
+   "scraperwatch": "ok -> error",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.meelion.com/",
+   "scraperwatch": "ok -> auth_required",
+   "transient": null,
+   "histor_near_prev": {
+    "ok": 1
+   },
+   "histor_near_cur": {
+    "http-403": 1
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://mcp.totto.org/mcp",
+   "scraperwatch": "timeout -> ok",
+   "transient": true,
+   "histor_near_prev": {
+    "ok": 1
+   },
+   "histor_near_cur": {
+    "ok": 1
+   }
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://social-mcp.connectedpaths.com/mcp",
+   "scraperwatch": "auth_required -> robots_disallowed",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://space-kitty.com/mcp",
+   "scraperwatch": "auth_required -> ok",
+   "transient": null,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://wb.seller.bears.ru/mcp",
+   "scraperwatch": "error -> timeout",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://world.wukong.lol/mcp",
+   "scraperwatch": "error -> timeout",
+   "transient": true,
+   "histor_near_prev": {},
+   "histor_near_cur": {}
+  }
+ ],
+ "histor_not_in_daily_diff": [
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://theagentsbay.com/mcp/public/",
+   "server": "io.github.sobuk2500-max/agent-bay",
+   "histor_changes": 1,
+   "why": "HISTOR lacks a definition at one of the two read times"
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://api.kaleto.ai/mcp",
+   "server": "ai.kaleto/mcp",
+   "histor_changes": 1,
+   "why": "net difference: search_providers.description, search_providers.inputSchema, search_providers.outputSchema"
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://senado.sidneybissoli.com/mcp",
+   "server": "io.github.SidneyBissoli/senado-br-mcp-cloudflare",
+   "histor_changes": 1,
+   "why": "net difference: senado_discursos_senador.description, senado_reunioes_comissao.description, senado_reunioes_comissao.inputSchema"
+  },
+  {
+   "day": "2026-10-31",
+   "endpoint": "https://radix.wiki/api/mcp",
+   "server": "wiki.radix/radix-wiki",
+   "histor_changes": 1,
+   "why": "net difference: create_page.inputSchema, edit_page.inputSchema"
+  },
+  {
+   "day": "2026-11-01",
+   "endpoint": "https://openbait.com/api/mcp",
+   "server": "com.openbait/lookalike-domains",
+   "histor_changes": 1,
+   "why": "net difference: check_lookalike_domains.description"
+  }
+ ]
+}

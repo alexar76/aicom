@@ -158,6 +158,12 @@ export AIFACTORY_METIS_GATE_BLOCK=1  # let a low-confidence verdict escalate (de
 | `AIFACTORY_METIS_PROBE_TIMEOUT` | `2` | `/health` probe timeout (s) |
 | `AIFACTORY_METIS_PROBE_TTL` | `60` | seconds to cache the detection result |
 
+In `docker-compose.yml` the URL and the key are passed through from the project's `.env`
+(`${AIFACTORY_METIS_URL:-}`, `${AIFACTORY_METIS_API_KEY:-}`); the `environment:` entries override
+`deploy/env/factory.env`, so set them in `.env`. The production factory (factory-vps) points at the
+public node since 2026-11-01: `AIFACTORY_METIS_URL=https://metis.modelmarket.dev` with the key the apex
+hub uses for `/v1/verify` (`401` without one).
+
 **Why auto-detect and not on-by-default-blocking?** Because independence must never be theoretical.
 A missing Metis costs one fast, cached health probe — never a per-stage timeout — and never a crash.
 Blocking is opt-in so an unreviewed Metis deployment can't silently stall the pipeline.

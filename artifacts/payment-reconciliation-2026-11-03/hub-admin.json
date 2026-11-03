@@ -1,0 +1,91 @@
+{
+  "snapshot_utc": "2026-11-03T06:46:19.717988+00:00",
+  "card_environment": {},
+  "x402": [],
+  "x402_receipt_gaps": [],
+  "x402_uncollected": [],
+  "seller_invoice_orphans": {
+    "error": "no such table: settle_invoices"
+  },
+  "seller_invoice_stats": {
+    "error": "no such table: settle_invoices"
+  },
+  "card": {
+    "error": "no such table: card_topups"
+  },
+  "card_candidates": {
+    "error": "no such table: card_topups"
+  },
+  "channels": [
+    {
+      "status": "expired",
+      "chain": "base",
+      "token": "USDC",
+      "n": 1,
+      "balance_cents": 100,
+      "deposit_cents": 100,
+      "used_cents": 0
+    },
+    {
+      "status": "settled",
+      "chain": "base",
+      "token": "USDC",
+      "n": 1,
+      "balance_cents": 100,
+      "deposit_cents": 100,
+      "used_cents": 0
+    }
+  ],
+  "channels_with_balance": [
+    {
+      "channel_id": "ch_2b0aaa5861914ed4",
+      "status": "settled",
+      "chain": "base",
+      "token": "USDC",
+      "balance_cents": 100,
+      "original_deposit_cents": 100,
+      "used_cents": 0,
+      "tx_hash": "",
+      "expires_at": "2026-06-20T21:15:51Z",
+      "escrow_channel": ""
+    },
+    {
+      "channel_id": "ch_04de1e45e29144da",
+      "status": "expired",
+      "chain": "base",
+      "token": "USDC",
+      "balance_cents": 100,
+      "original_deposit_cents": 100,
+      "used_cents": 0,
+      "tx_hash": "",
+      "expires_at": "2026-06-21T05:29:18Z",
+      "escrow_channel": ""
+    }
+  ],
+  "obligations": [],
+  "obligations_owed": [],
+  "obligation_duplicate_payouts": [],
+  "deposits": {
+    "error": "no such table: hub_deposits"
+  },
+  "deposit_candidates": {
+    "error": "no such table: hub_deposits"
+  },
+  "credit_holds": [],
+  "credit_held": [],
+  "channel_holds": [],
+  "channel_held": [],
+  "pipeline_refunds": {
+    "error": "no such table: pipeline_refunds"
+  },
+  "pipeline_refund_count": {
+    "error": "no such table: pipeline_refunds"
+  },
+  "verified_pending": [],
+  "credit_topups": [
+    {
+      "n": 0,
+      "amount_mc": null
+    }
+  ]
+}

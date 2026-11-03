@@ -1,0 +1,60 @@
+{
+  "version": "3.10.1",
+  "wheel_sha256": "32dd7e248a05f9c4052d7d3dd71470e6b3d183d73a786c7795f1e7f4b87c8d94",
+  "protocol": "SELLER-OP/1",
+  "guides": [
+    "en",
+    "ru",
+    "es",
+    "fr",
+    "zh"
+  ],
+  "older_wheel_preserved": true,
+  "mcp_free_run_id": "paid_20e4b10e6eafcb80199cce1b34a759e2",
+  "mcp_free_job_id": "job_78bb0fc253938109f00762c1",
+  "sdk_free_run_id": "paid_0d1a123a53176be3c66490aef8e35b46",
+  "sdk_free_requests": [
+    {
+      "method": "POST",
+      "path": "/studio/prepare-pipeline"
+    },
+    {
+      "method": "POST",
+      "path": "/ai-market/v2/invoke"
+    }
+  ],
+  "existing_paid_run_id": "paid_ce7dfb28ec21c0ffbc6f65884929aeec",
+  "existing_paid_job_id": "job_dd54651f9104c5c5ac31cc4e",
+  "paid_recovery_requests": [
+    {
+      "method": "GET",
+      "path": "/.well-known/ai-market.json"
+    },
+    {
+      "method": "GET",
+      "path": "/studio/paid-runs/paid_ce7dfb28ec21c0ffbc6f65884929aeec/pipeline"
+    }
+  ],
+  "new_mainnet_payments": 0,
+  "hub_receipts_verified": true,
+  "local_tests": {
+    "focused": 223,
+    "anvil": 6,
+    "independent_seller_anvil": 2,
+    "mainnet_independent_seller_test": false
+  },
+  "seller_quote_smoke": {
+    "sku": "weather.witness@v1",
+    "status": "preflight_refused",
+    "reason": "listing has no supported seller payout or token",
+    "http_status": 409,
+    "invoke_sent": false,
+    "payment_sent": false,
+    "invalid_token_rejected": true,
+    "recursive_pipeline_rejected": true
+  },
+  "production_migrations": [
+    44,
+    45
+  ]
+}

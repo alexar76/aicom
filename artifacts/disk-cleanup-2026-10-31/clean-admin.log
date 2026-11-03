@@ -1,0 +1,56 @@
+before: /dev/vda1        99G   90G  4.1G  96% /
+removed 'histor-20261025T035327Z.dump'
+removed 'histor-20261026T181252Z.dump'
+removed 'histor-20261027T035237Z.dump'
+removed 'histor-20261028T084932Z.dump'
+kept dumps: histor-20261029T034349Z.dump histor-20261030T061204Z.dump histor-20261031T034231Z.dump   keys tars: 7
+removed /var/backups/histor-v13-20261010
+removed '/root/dioscuri-tree-pre-20261017.tgz'
+removed /var/tmp/warden-0170-build
+removed /var/tmp/warden-0170-dist
+removed /var/tmp/warden-0170-dist2
+removed /var/tmp/warden-0170-label
+removed /var/tmp/warden-0180-dist
+removed /var/tmp/warden-0190-build
+removed /var/tmp/warden-0190-dist
+removed /var/tmp/warden-0190-label
+removed /var/tmp/warden-0200-build
+removed /var/tmp/warden-0200-label
+removed /var/tmp/warden-0210-build
+removed /var/tmp/warden-0210-label
+removed /var/tmp/warden-0220-build
+removed /var/tmp/warden-0220-label
+removed /var/tmp/warden-0221-build
+removed /var/tmp/warden-0221-label
+removed /var/tmp/histor-warden-446c2135f
+removed /var/tmp/histor-warden-446c2135f.tar
+removed /var/tmp/histor-warden-operator-build-446c2135f.py
+removed /var/tmp/histor-warden-operator-deploy-446c2135f.py
+removed /var/tmp/histor-warden-release-446c2135f
+removed /var/tmp/histor-warden-verify-446c2135f.py
+removed /var/tmp/histor-warden-metadata-231c6b061
+removed /var/tmp/histor-warden-metadata-4afe02438
+removed /var/tmp/histor-warden-metadata-ce1dd74ed
+removed /var/tmp/warden-screen-40d5f73.bundle
+removed /var/tmp/warden-screen-421fb2c.bundle
+removed /var/tmp/warden-screen-a635f19.bundle
+removed /var/tmp/warden-screen-image-probe.mjs
+removed /var/tmp/warden-screen-native-build-current-base.py
+removed /var/tmp/warden-screen-native-build.py
+removed /var/tmp/warden-screen-native-deploy-current-base.py
+removed /var/tmp/warden-screen-native-deploy.py
+removed /var/tmp/warden-screen-native-verdict.py
+removed /var/tmp/warden-screen-production-verify.py
+removed /var/tmp/warden-screen-release-a635f19
+removed /var/tmp/warden-screen-release-a635f19-current-base
+removed /var/tmp/warden-screen-release-a635f19.git
+rmi praxis:momus-18e20e76b526
+rmi praxis:momus-c946cfacf2f6
+rmi praxis:momus-a442460d16e3
+rmi praxis:momus-47c9e1fd8a39
+rmi praxis:momus-7105cc2e5778
+rmi warden:metadata-diagnostic-ce1dd74ed
+dangling: Total reclaimed space: 56.15kB
+builder: Total:	258kB
+apt cache cleaned
+after: /dev/vda1        99G   82G   13G  88% /

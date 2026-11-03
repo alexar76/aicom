@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "<stdin>", line 7, in <module>
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/tests/test_service_env_scope.py", line 474, in test_every_name_a_service_reads_reaches_it
+    assert not dropped, (
+           ^^^^^^^^^^^
+AssertionError: service_env.py would drop 3 name(s) that factory reads: ['AIMARKET_ORACLE_PAID_TIER_CREDENTIALS', 'AIMARKET_PEER_IDENTITY_ALIASES', 'CARGO_HOME'].
+Add each to SCOPES['factory'] in scripts/security/service_env.py, or, if the service must not get it, to DENY with the reason.

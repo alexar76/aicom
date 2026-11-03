@@ -1,0 +1,11 @@
+include README.md LICENSE pyproject.toml setup.py
+include terminal-home.html operator.html plugins-demo.html
+include hub-ui-i18n.json cap-descriptions-i18n.json studio-ui-i18n.json
+recursive-include tests *.py *.cjs
+prune docs
+include docs/search-evidence.md
+prune data
+prune dist
+prune build
+prune .venv
+global-exclude *.pyc __pycache__ .env *.key *.pem *.db *.sqlite *.sqlite3

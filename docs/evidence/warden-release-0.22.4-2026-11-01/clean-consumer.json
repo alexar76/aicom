@@ -1,0 +1,53 @@
+{
+  "archive": "aimarket-warden-0.22.4.tgz",
+  "sha256": "0cc2a7df08cec2522d09f2e64cbafc8809bf7f25368eff414b196b9b20c112a3",
+  "offline_install": true,
+  "install_scripts_disabled": true,
+  "runtime_dependencies": 0,
+  "library_import": true,
+  "cli_scan_exit": 0,
+  "mcp_initialize_version": "0.22.4",
+  "state_unchanged": true,
+  "release": {
+    "version": "0.22.4",
+    "buildDigest": "bcfc888d0c26d2dae131292ae30e27371810b24fda4cf0d3885e3596785fb6f9",
+    "ruleset": {
+      "version": "17",
+      "digest": "sha256-UOfK25xo6D8vrKEVfNFBTBVn5OspyaZut9vC9Z9Q5JE="
+    },
+    "devtoollab": {
+      "allow": false,
+      "codes": [
+        "TOOL_DEF_CROSS_TOOL"
+      ]
+    },
+    "clean": {
+      "allow": true,
+      "codes": []
+    },
+    "help": {
+      "status": 0,
+      "firstLine": "Usage: warden-mcp [command] [options]"
+    }
+  },
+  "control_published_0_22_3": {
+    "version": "0.22.3",
+    "buildDigest": "d7cc677ef85fb4c274b5247779dfd0362509cfb00913f4c3a7e385af4a3c6f83",
+    "ruleset": {
+      "version": "16",
+      "digest": "sha256-86y6iNc4R+LM5WmjSVxaCNgSMUEggeNOMQPUzq4L9n8="
+    },
+    "devtoollab": {
+      "allow": true,
+      "codes": []
+    },
+    "clean": {
+      "allow": true,
+      "codes": []
+    },
+    "help": {
+      "status": 0,
+      "firstLine": "Usage: warden-mcp [command] [options]"
+    }
+  }
+}

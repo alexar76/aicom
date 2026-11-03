@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-31T12:34:24.730917+00:00",
+  "package": "aimarket-hub",
+  "version": "3.17.0",
+  "deployment": {
+    "url": "https://modelmarket.dev",
+    "status": "healthy",
+    "image": "modelmarket-hub:3.17.0-20261031",
+    "previousContainer": "modelmarket-hub-security-prev-1793446253261318640",
+    "rollbackSnapshotRemote": "/root/security-rollbacks/modelmarket-hub-1793446253261318640/inspect.json",
+    "themisHealthy": true,
+    "catalogueRows": 280,
+    "signingIdentityPreserved": true,
+    "pluginsPreserved": 15,
+    "uiLanguages": [
+      "en",
+      "ru",
+      "es",
+      "fr",
+      "zh"
+    ]
+  },
+  "tests": {
+    "initialPassed": 3804,
+    "initialEnvironmentFailures": 37,
+    "localhostRerunPassed": 74,
+    "uniquePassed": 3841,
+    "skipped": 20,
+    "unresolvedFailures": 0
+  },
+  "liveSearch": {
+    "signedCatalogueOffers": 259,
+    "localCatalogueOffers": 4,
+    "observedOnlyBrowserCheck": true,
+    "mixedResultsBrowserCheck": true,
+    "languageSwitchPreservesObserved": true,
+    "selfTestRemoved": true,
+    "paymentTransactions": 0
+  },
+  "pypi": {
+    "status": "blocked_missing_project_token",
+    "latestPublicVersion": "3.16.5",
+    "targetVersion": "3.17.0",
+    "wheelAndSdistReady": true,
+    "requires": "Existing alexar76 project token via file path or PYPI_API_TOKEN; never in chat"
+  },
+  "githubWrites": 0
+}

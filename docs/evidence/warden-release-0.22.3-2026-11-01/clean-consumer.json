@@ -1,0 +1,39 @@
+{
+  "archive": "aimarket-warden-0.22.3.tgz",
+  "sha256": "183e60ef4435dbd63acb3c2c2299ee446241635aa5002316b8a6d16c903b50b7",
+  "offline_install": true,
+  "install_scripts_disabled": true,
+  "runtime_dependencies": 0,
+  "library_import": true,
+  "cli_scan_exit": 0,
+  "mcp_initialize_version": "0.22.3",
+  "state_unchanged": true,
+  "release": {
+    "version": "0.22.3",
+    "buildDigest": "d7cc677ef85fb4c274b5247779dfd0362509cfb00913f4c3a7e385af4a3c6f83",
+    "digest": "sha256-0myjesiTMvVJ9vLScE4PlNlO+d0Z8zmRzWqiB//+i30=",
+    "emptySet": "sha256-T1PNoYwrqgwDVLtfmj7L5e0Sq02OEbqHPC8RFhICuUU=",
+    "userAgent": {
+      "person": "warden-scan/0.22.3",
+      "github": "warden-scan/0.22.3 (ci; github-actions)",
+      "gitlab": "warden-scan/0.22.3 (ci; gitlab)",
+      "ci": "warden-scan/0.22.3 (ci)"
+    },
+    "help": {
+      "status": 0,
+      "firstLine": "Usage: warden-mcp [command] [options]"
+    }
+  },
+  "control_published_0_22_2": {
+    "version": "0.22.2",
+    "buildDigest": "3b6b074cf0be2415a049610d2908787d820b321ae68eb6d4837306dc9f5f16de",
+    "digestError": "MTL-SUBJ-003",
+    "emptySet": "MTL-SUBJ-002",
+    "userAgent": null,
+    "help": {
+      "status": 2,
+      "firstLine": "warden-mcp: Usage: warden-mcp wrap [--flow NAME] [flags] -- command [args] | pins status|approve|revoke --id ID"
+    }
+  },
+  "histor_digest_2026_11_01": "sha256-0myjesiTMvVJ9vLScE4PlNlO+d0Z8zmRzWqiB//+i30="
+}

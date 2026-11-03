@@ -1,0 +1,7 @@
+start 2026-10-31T16:33:27Z
+base = running image 4f08c5c5c617
+sha256:c800833ad9f3286e8b677c034e3e85510b44a7f5c35a2e7419bbfe125f4c5773
+Traceback (most recent call last):
+  File "/ctx/smoke.py", line 11, in <module>
+    from histor.subject import MtlError, build_subject, es_number, tool_set_digest
+ImportError: cannot import name 'es_number' from 'histor.subject' (/opt/venv/lib/python3.11/site-packages/histor/subject.py)

@@ -1,0 +1,64 @@
+{
+  "id": "GHSA-g3hv-75wg-m249",
+  "aliases": [
+    "CVE-2026-118764"
+  ],
+  "scope": {
+    "package": "minimatch",
+    "versions": [
+      "3.1.5",
+      "5.1.9"
+    ]
+  },
+  "status": "not_affected",
+  "justification": "vulnerable_code_not_present",
+  "impact_statement": "Upstream advisory describes firstPhasePreProcess with optimizationLevel >= 2. Exact installed 3.1.5/5.1.9 sources have neither that method nor optimizationLevel handling; adversarial **/../a/b patterns produce one globParts entry. Modern 9/10 instances were upgraded to 11.0.1. Raw OSV matches are retained; this is a local code-based disposition, not an upstream database correction.",
+  "source": "https://github.com/isaacs/minimatch/security/advisories/GHSA-g3hv-75wg-m249",
+  "evidence": [
+    {
+      "project": "cite-desks/emberline/frontend",
+      "path": "node_modules/filelist/node_modules/minimatch",
+      "version": "5.1.9",
+      "source_sha256": "1339bca8b70e33847860daa8fc3ccfa62487e143670da01a3b718d40d5fd424f",
+      "firstPhasePreProcess": "undefined",
+      "pattern_count": 1,
+      "milliseconds": 2.725917000000038
+    },
+    {
+      "project": "pingblip/memeforge",
+      "path": "node_modules/minimatch",
+      "version": "3.1.5",
+      "source_sha256": "746849f267c4868a53729225bd85c7dccd387712136fb305fcc0a3eadd4a3d9d",
+      "firstPhasePreProcess": "undefined",
+      "pattern_count": 1,
+      "milliseconds": 2.3341670000000363
+    },
+    {
+      "project": "pingblip/web",
+      "path": "node_modules/minimatch",
+      "version": "3.1.5",
+      "source_sha256": "746849f267c4868a53729225bd85c7dccd387712136fb305fcc0a3eadd4a3d9d",
+      "firstPhasePreProcess": "undefined",
+      "pattern_count": 1,
+      "milliseconds": 2.204250000000002
+    },
+    {
+      "project": "web/frontend",
+      "path": "node_modules/minimatch",
+      "version": "3.1.5",
+      "source_sha256": "746849f267c4868a53729225bd85c7dccd387712136fb305fcc0a3eadd4a3d9d",
+      "firstPhasePreProcess": "undefined",
+      "pattern_count": 1,
+      "milliseconds": 2.1213339999999903
+    },
+    {
+      "project": "contracts/zk",
+      "path": "node_modules/minimatch",
+      "version": "5.1.9",
+      "source_sha256": "1339bca8b70e33847860daa8fc3ccfa62487e143670da01a3b718d40d5fd424f",
+      "firstPhasePreProcess": "undefined",
+      "pattern_count": 1,
+      "milliseconds": 2.6903750000000173
+    }
+  ]
+}

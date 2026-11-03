@@ -478,3 +478,16 @@ def test_the_dry_run_lists_the_copy_without_compose_labels(rollout, engine, monk
     assert any(c.startswith("docker create --name modelmarket-hub-security-prev-") and "without Compose labels" in c
                for c in commands)
     assert any(c.startswith("docker rm modelmarket-hub-security-prev-") for c in commands)
+
+
+def test_rollback_masks_compose_labels_inherited_from_committed_image(rollout, engine, monkeypatch, capsys):
+    _composed(engine)
+    old = engine.named("modelmarket-hub")
+    engine.images[old["Image"]]["Config"]["Labels"].update(COMPOSE)
+    run(rollout, monkeypatch, *HUB_ARGS)
+    live = engine.named("modelmarket-hub")
+    kept = next(c for c in engine.containers.values() if c["Name"].startswith("/modelmarket-hub-security-prev-"))
+    assert live["Config"]["Labels"]["com.docker.compose.project"] == "signal-hunt"
+    assert kept["Config"]["Labels"]["com.docker.compose.project"] == ""
+    assert kept["Config"]["Labels"]["com.docker.compose.service"] == ""
+    assert not kept["State"]["Running"]

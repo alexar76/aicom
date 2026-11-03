@@ -710,6 +710,29 @@ def test_generated_env_files_never_enter_a_build_context(path):
     assert _dockerignore_excludes(path), f"{path} would be sent to `docker build` and baked by COPY . ."
 
 
+@pytest.mark.parametrize("path", [
+    "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
+    ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
+    ".codex/session.json", ".agents/local-state.json",
+    "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
+    ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
+    "examples/n8n-order-check/.runtime/n8n/state.json",
+    "lottery/alien-monitor/frontend/package-lock.json",
+    "data/config/admin.json", "data/config/admin_users.json", "data/config/model_providers.yaml",
+])
+def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
+    assert _dockerignore_excludes(path), f"host-only {path} would be baked into the image"
+
+
+@pytest.mark.parametrize("path", [
+    "security/vendor/deepmerge-safe/index.js", "web/backend/main.py",
+    "data/config/model_providers.example.yaml", "contracts/evm/lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
+    "warden/docs/data/measurements.json",
+])
+def test_required_runtime_source_stays_in_build_context(path):
+    assert not _dockerignore_excludes(path)
+
+
 # ── Every entry point writes the files before it starts anything ───────────────────────
 ENTRY_POINTS = {
     # file: regex for the compose invocations that need the generated files
