@@ -1,0 +1,84 @@
+{
+ "created": "2026-11-03T10:20:37.758989+00:00",
+ "modified": "2026-11-03T10:20:37.989731+00:00",
+ "id": 23914236,
+ "conceptrecid": "23914235",
+ "doi": "10.5281/zenodo.23914236",
+ "conceptdoi": "10.5281/zenodo.23914235",
+ "doi_url": "https://doi.org/10.5281/zenodo.23914236",
+ "metadata": {
+  "title": "Package-malware feeds on npm and PyPI: study data, 2026-10",
+  "doi": "10.5281/zenodo.23914236",
+  "publication_date": "2026-11-03",
+  "description": "<p>Data of an open study of package-malware feeds on npm and PyPI: OpenSSF <code>malicious-packages</code> with the tools its records name (GitHub's malware advisories among them) and Vulnetix's GCVE advisory database as it stood on 24 October 2026. It covers what the registries did about 242,072 flags (stage 1, a stratified sample of 7,483), how many of the flags registries left up are benign (stage 2, two model raters and human adjudication), what four open scanners catch and how many false alarms they raise (stage 3), and what each feed's records show and how feeds answer disputes (section 9).</p><p>The method was fixed before the results. No package file is included, and the names of packages read as benign are withheld. <code>code/verify_archive.py</code> recomputes every number from these files. The data are CC BY 4.0; the code inside the archive is MIT, as its README says.</p><p>Write-up: <a href=\"https://github.com/alexar76/aicom/blob/7ae8dbc407a736d8469e647e75a012b1e7d1bdfa/docs/malware-feed-accuracy.md\">https://github.com/alexar76/aicom/blob/7ae8dbc407a736d8469e647e75a012b1e7d1bdfa/docs/malware-feed-accuracy.md</a></p>",
+  "access_right": "open",
+  "creators": [
+   {
+    "name": "Artamokhov, Aleksandr",
+    "affiliation": null
+   }
+  ],
+  "keywords": [
+   "malware",
+   "npm",
+   "PyPI",
+   "software supply chain",
+   "threat intelligence",
+   "false positives",
+   "open data"
+  ],
+  "related_identifiers": [
+   {
+    "identifier": "https://github.com/alexar76/aicom/blob/7ae8dbc407a736d8469e647e75a012b1e7d1bdfa/docs/malware-feed-accuracy.md",
+    "relation": "isDocumentedBy",
+    "resource_type": "publication-report",
+    "scheme": "url"
+   }
+  ],
+  "version": "2026-10-29-v5",
+  "license": "cc-by-4.0",
+  "imprint_publisher": "Zenodo",
+  "upload_type": "dataset",
+  "prereserve_doi": {
+   "doi": "10.5281/zenodo.23914236",
+   "recid": 23914236
+  }
+ },
+ "title": "Package-malware feeds on npm and PyPI: study data, 2026-10",
+ "links": {
+  "self": "https://zenodo.org/api/records/23914236",
+  "html": "https://zenodo.org/records/23914236",
+  "doi": "https://doi.org/10.5281/zenodo.23914236",
+  "parent_doi": "https://doi.org/10.5281/zenodo.23914235",
+  "badge": "https://zenodo.org/badge/doi/10.5281%2Fzenodo.23914236.svg",
+  "conceptbadge": "https://zenodo.org/badge/doi/10.5281%2Fzenodo.23914235.svg",
+  "files": "https://zenodo.org/api/records/23914236/files",
+  "bucket": "https://zenodo.org/api/files/2a055a28-b1e8-42f2-bf24-4c6c60699d88",
+  "latest_draft": "https://zenodo.org/api/deposit/depositions/23914236",
+  "latest_draft_html": "https://zenodo.org/deposit/23914236",
+  "publish": "https://zenodo.org/api/deposit/depositions/23914236/actions/publish",
+  "edit": "https://zenodo.org/api/deposit/depositions/23914236/actions/edit",
+  "discard": "https://zenodo.org/api/deposit/depositions/23914236/actions/discard",
+  "newversion": "https://zenodo.org/api/deposit/depositions/23914236/actions/newversion",
+  "record": "https://zenodo.org/api/records/23914236",
+  "record_html": "https://zenodo.org/record/23914236",
+  "latest": "https://zenodo.org/api/records/23914236/versions/latest",
+  "latest_html": "https://zenodo.org/records/23914236/latest"
+ },
+ "record_id": 23914236,
+ "owner": 1954651,
+ "files": [
+  {
+   "id": "49c1af17-1bf5-456d-a821-03a796bedd7b",
+   "filename": "mfa-study-data-2026-10-29-v5.tar.gz",
+   "filesize": 664335,
+   "checksum": "9397a2b0badcd0f9f5eaed6a74a61e60",
+   "links": {
+    "self": "https://zenodo.org/api/records/23914236/files/49c1af17-1bf5-456d-a821-03a796bedd7b",
+    "download": "https://zenodo.org/api/records/23914236/draft/files/mfa-study-data-2026-10-29-v5.tar.gz/content"
+   }
+  }
+ ],
+ "state": "done",
+ "submitted": true
+}
