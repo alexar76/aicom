@@ -12,6 +12,7 @@ SITE_URL = os.environ.get('ATLAS_SITE_URL', 'https://ecosystem.modelmarket.dev')
 ASSET_PREFIX = os.environ.get('ATLAS_ASSET_PREFIX', '').rstrip('/')
 CONTENT = json.loads((ROOT / 'content.json').read_text())
 LANGUAGES = {'en': 'EN', 'ru': 'RU', 'es': 'ES', 'fr': 'FR', 'zh': '中文'}
+ONBOARDING_PATHS = ('build', 'invest', 'publish', 'buy')
 PROJECTS = [
     ('AICOM', 'build', 'https://magic-ai-factory.com/'),
     ('AIMarket', 'trade', 'https://modelmarket.dev/'),
@@ -46,6 +47,11 @@ def render(locale, c):
     alternates = ''.join(f'<link rel="alternate" hreflang="{l}" href="{SITE_URL}{route(l)}">' for l in LANGUAGES)
     lang_links = ''.join(f'<a href="{route(l)}" lang="{l}" hreflang="{l}" {"aria-current=page" if l == locale else ""}>{name}</a>' for l, name in LANGUAGES.items())
     factory_entry = PROJECTS[0][2] + f"?lang={locale}"
+    onboarding_links = ''.join(
+        f'<a href="https://use.modelmarket.dev/?path={path}&amp;lang={locale}#onboard">'
+        f'{e(c["onboarding"][path])} <span aria-hidden="true">↗</span></a>'
+        for path in ONBOARDING_PATHS
+    )
     role_links = [factory_entry, PROJECTS[1][2], PROJECTS[2][2]]
     roles = ''.join(f'<a class="role" href="{role_links[i]}"><span class="mono">0{i+1} / {e(role)}</span><h3>{e(name)}<span>↗</span></h3><p>{e(desc)}</p></a>' for i, (name, role, desc) in enumerate(c['roles']))
     steps = ''.join(f'<article><span class="step-no">0{i+1}</span><h3>{e(title)}</h3><p>{e(desc)}</p></article>' for i, (title, desc) in enumerate(c['steps']))
@@ -55,9 +61,9 @@ def render(locale, c):
 <html lang="{locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e8eee9">
 <title>{e(c['title'])} — AICOM Ecosystem</title><meta name="description" content="{e(c['intro'])}"><link rel="canonical" href="{url}">{alternates}<link rel="alternate" hreflang="x-default" href="{SITE_URL}/">
 <meta property="og:type" content="website"><meta property="og:title" content="{e(c['title'])}"><meta property="og:description" content="{e(c['intro'])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{SITE_URL}{ASSET_PREFIX}/assets/social.png"><meta name="twitter:card" content="summary">
-<link rel="icon" href="{ASSET_PREFIX}/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{ASSET_PREFIX}/fonts/fonts.css"><link rel="stylesheet" href="{ASSET_PREFIX}/assets/site.css?v=20261011-collaboration"><script type="module" src="{ASSET_PREFIX}/assets/site.js?v=20261011-rotate"></script><script type="module" src="{ASSET_PREFIX}/assets/scene.js?v=20261011-rotate"></script></head>
+<link rel="icon" href="{ASSET_PREFIX}/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{ASSET_PREFIX}/fonts/fonts.css"><link rel="stylesheet" href="{ASSET_PREFIX}/assets/site.css?v=20261103-onboarding"><script type="module" src="{ASSET_PREFIX}/assets/site.js?v=20261011-rotate"></script><script type="module" src="{ASSET_PREFIX}/assets/scene.js?v=20261011-rotate"></script></head>
 <body><a class="skip" href="#main">{e(c['skip'])}</a><header class="wrap"><a class="brand" href="{route(locale)}"><span class="brand-mark">✳</span><span>AICOM<span class="brand-sub">ECOSYSTEM</span></span></a><nav class="primary"><a href="#explore">{e(c['nav'][0])}</a><a href="#exchange">{e(c['nav'][1])}</a><a href="https://github.com/alexar76">{e(c['nav'][2])} ↗</a></nav><nav class="languages" aria-label="{e(c['language'])}">{lang_links}</nav></header>
-<main id="main"><section class="hero wrap"><div class="hero-copy"><p class="eyebrow">{e(c['eyebrow'])}</p><h1>{e(c['title'])}</h1><p class="intro">{e(c['intro'])}</p><div class="actions"><a class="button" href="#exchange">{e(c['cta'])}<span>↗</span></a><a class="text-link" href="{FACTORY_LANDING}{route(locale)}">{e(c['factory'])} ↗</a></div></div>
+<main id="main"><section class="hero wrap"><div class="hero-copy"><p class="eyebrow">{e(c['eyebrow'])}</p><h1>{e(c['title'])}</h1><p class="intro">{e(c['intro'])}</p><nav class="onboarding-links" aria-label="{e(c['onboardingLabel'])}">{onboarding_links}</nav><div class="actions"><a class="button" href="#exchange">{e(c['cta'])}<span>↗</span></a><a class="text-link" href="{FACTORY_LANDING}{route(locale)}">{e(c['factory'])} ↗</a></div></div>
 <div class="atlas"><div class="atlas-top mono"><span>ATLAS / 01</span></div><machine-scene mode="atlas" tabindex="0" role="group" aria-label="{e(c['title'])}" aria-describedby="atlas-scene-hint"><div class="fallback" aria-hidden="true"><i></i><i></i><i></i><b>✳</b></div></machine-scene><span class="map-label label-1">AICOM <small>01</small></span><span class="map-label label-2">AIMarket <small>02</small></span><span class="map-label label-3">HESTIA <small>03</small></span><div class="atlas-caption" id="atlas-scene-hint"><span>+</span><p>{e(c['caption'])}</p><span>XYZ ↗</span></div></div></section>
 <section class="roles-section wrap"><div class="section-heading"><h2>{e(c['roleTitle'])}</h2><p>{e(c['roleIntro'])}</p></div><div class="roles">{roles}</div></section>
 <section id="exchange" class="exchange"><div class="wrap"><p class="eyebrow">01 / {e(c['nav'][1])}</p><div class="section-heading"><h2>{e(c['flowTitle'])}</h2><p>{e(c['flowIntro'])}</p></div><div class="case-brief"><span class="mono">{e(c['briefLabel'])}</span><h3>{e(c['brief'])}</h3></div><div class="steps">{steps}</div><p class="case-outcome">{e(c['outcome'])}</p><p class="limit">{e(c['limit'])}</p><details class="case-proof"><summary>{e(c['proofTitle'])}</summary><p>{e(c['proof'])}</p></details><a class="text-link case-link" href="{FACTORY_LANDING}{route(locale)}#specialists">{e(c['factoryCase'])} ↗</a></div></section>

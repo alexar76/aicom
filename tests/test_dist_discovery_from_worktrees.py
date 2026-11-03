@@ -20,9 +20,11 @@ Offline: discovery only, with the PyPI lookup stubbed.
 from __future__ import annotations
 
 import importlib.util
+import io
 import json
 import re
 import subprocess
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -118,6 +120,51 @@ def test_verifier_json_run_has_rows(verifier_on_fake_repo, capsys) -> None:
     assert set(rows) == {"demo-alpha", "demo-beta"}
     assert rows["demo-alpha"]["imports"] == ["demo_alpha"], (
         "import names come from the same tree walk; an empty list here hides every collision")
+
+
+def test_verifier_compares_src_layout_trees(tmp_path) -> None:
+    """A tree with its package under src/ is compared too. It was skipped without a word, so
+    attested-memory 0.1.0 passed the gate with two changed files and PyPI refused the upload."""
+    mod = _load_verifier()
+    proj = tmp_path / "client"
+    _pyproject(proj, "demo-client")
+    (proj / "src" / "demo_client").mkdir(parents=True)
+    (proj / "src" / "demo_client" / "__init__.py").write_text("", encoding="utf-8")
+    (proj / "src" / "demo_client" / "actor.py").write_text("PROOF = 2\n", encoding="utf-8")
+    published = io.BytesIO()
+    with zipfile.ZipFile(published, "w") as wheel:
+        wheel.writestr("demo_client/__init__.py", "")
+        wheel.writestr("demo_client/actor.py", "PROOF = 1\n")
+    assert mod._compare(proj / "pyproject.toml", zipfile.ZipFile(published)) == ["~ demo_client/actor.py"]
+    assert mod._import_names(proj / "pyproject.toml") == {"demo_client"}
+
+
+def test_verifier_compares_package_data(tmp_path) -> None:
+    """Pages, translations and templates count as much as code. Only `.py` was compared, so the
+    hub page fixes made after aimarket-hub 3.17.0 left the gate saying "identical" (2026-11-03)."""
+    mod = _load_verifier()
+    proj = tmp_path / "hub"
+    _pyproject(proj, "demo-hub")
+    pkg = proj / "demo_hub"
+    (pkg / "templates").mkdir(parents=True)
+    (pkg / "__init__.py").write_text("", encoding="utf-8")
+    (pkg / "templates" / "page.html").write_text("<p>fixed</p>\n", encoding="utf-8")
+    (pkg / "schema.json").write_text("{}\n", encoding="utf-8")
+    # Authored beside pyproject.toml and copied into the package by the build, like
+    # aimarket-hub's terminal-home.html; git tracks no copy under demo_hub/static/.
+    (proj / "home.html").write_text("<main>new</main>\n", encoding="utf-8")
+    published = io.BytesIO()
+    with zipfile.ZipFile(published, "w") as wheel:
+        wheel.writestr("demo_hub/__init__.py", "")
+        wheel.writestr("demo_hub/templates/page.html", "<p>broken</p>\n")
+        wheel.writestr("demo_hub/schema.json", "{}\n")
+        wheel.writestr("demo_hub/static/home.html", "<main>old</main>\n")
+        wheel.writestr("demo_hub/static/generated.css", "made by the build\n")
+        wheel.writestr("demo_hub-0.1.0.dist-info/METADATA", "Name: demo-hub\n")
+    assert mod._compare(proj / "pyproject.toml", zipfile.ZipFile(published)) == [
+        "~ demo_hub/static/home.html  (against home.html beside pyproject.toml, bundled at build)",
+        "~ demo_hub/templates/page.html",
+    ], "an identical data file, a file only the build makes, and dist-info are not differences"
 
 
 def test_verifier_refuses_to_pass_when_it_found_nothing(tmp_path, monkeypatch, capsys) -> None:

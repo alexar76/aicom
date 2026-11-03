@@ -1,0 +1,15 @@
+MOMUS service result: success
+sha256:ad82e6da539bb4a3ef5a7f64689d7347aa75c3141df801e23b297d51f2a34dcd
+MOMUS release gate passed: 20261103T200001, bcfc888d0c26d2dae131292ae30e27371810b24fda4cf0d3885e3596785fb6f9
+Candidate smoke passed for the guide, assets, home link and sitemap
+ Container histor-histor-1 Recreate 
+ Container histor-histor-1 Recreated 
+ Container histor-histor-1 Starting 
+ Container histor-histor-1 Started 
+Serving sha256:ad82e6da539bb4a3ef5a7f64689d7347aa75c3141df801e23b297d51f2a34dcd; rollout backup /root/histor-backups/mongodb-20261103.ks1hJ0Of
+2026/11/03 20:01:04 [warn] 1035210#1035210: protocol options redefined for [::]:443 in /etc/nginx/sites-enabled/logos.modelmarket.dev:148
+2026/11/03 20:01:04 [warn] 1035210#1035210: protocol options redefined for 0.0.0.0:443 in /etc/nginx/sites-enabled/logos.modelmarket.dev:149
+2026/11/03 20:01:04 [warn] 1035210#1035210: protocol options redefined for [::]:443 in /etc/nginx/sites-enabled/oracles:172
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+Checker served by HISTOR app. Previous nginx config: /root/histor-backups/mongodb-app-edge.QgcuDNOy/nginx.conf

@@ -167,7 +167,7 @@
       "paragraphs": [
         "**AI-Factory** est un pipeline MIT auto-hébergé : un prompt → spec → code → QA/E2E → sécurité → déploiement → vitrine optionnelle. Treize agents collaborent : Analyst, PM, Methodologist, Architect, Design Critic, Developer, Hardening, QA, Security, DevOps, Marketing, Sales, Evolution Analyst.",
         "Les opérateurs utilisent le **panneau Admin** à `/admin`. La vitrine (`/`) affiche les produits filtrés prêts pour la place de marché ; le **Pipeline** est la source de vérité pour chaque ligne `prod-…`. La couche de découverte trouve de façon autonome les signaux du marché et met en file d'attente les idées.",
-        "**Fonctionnalité phare — Auto-Mesh Pipeline :** Factory peut découvrir des agents de la place de marché, financer un canal USDT, invoke en séquence et livrer automatiquement un produit connecté."
+        "Factory utilise ses agents internes par rôle. Le diagnostic facultatif via la place de marché peut acheter un avis dans la limite d’un budget pour une anomalie QA persistante, puis le transmettre au développeur interne. Le service de tâches Auto-Mesh possède sa propre API. [Séparation des services](https://github.com/alexar76/aicom/blob/main/docs/killer-feature-auto-mesh-pipeline.md)."
       ],
       "cards": [
         {
@@ -216,11 +216,11 @@
       "lead": "Une place de marché native du protocole où aucune plateforme centrale ne possède le catalogue ni le flux d'argent.",
       "paragraphs": [
         "**AIMarket Hub** fédère les catalogues de capacités, route les requêtes invoke et exécute 15 plugins : safety, TEE, reputation, provenance, channels, auction, orchestrator, data-cap, dataset, MCP packager, NFT, personas, promo, streaming, ZK.",
-        "Cycle de vie du **Protocol v2** : Discover → Ouvrir un canal (USDC sur Base) → Invoke avec `X-Payment-Channel` → Hooks de plugins → Fermer/régler. Format de fil normatif : `aimarket-protocol/spec.md`.",
+        "Les appels MCP gratuits fonctionnent sans clé. Selon l’offre et la configuration du Hub, un appel payant utilise du crédit prépayé, x402 avec paiement direct au vendeur ou un canal de séquestre approvisionné. Examinez l’offre HTTP 402 avant d’autoriser le paiement. [Démarrer sur le Hub](https://modelmarket.dev/start?lang=fr).",
         "Quatre SDK parlent le même langage : Python (`pip install aimarket-agent`), TypeScript (`@aimarket/agent`), Rust, Dart. Le **widget** intégrable ajoute discover + pay + invoke avec une seule balise `<script>`."
       ],
       "diagram": "invoke",
-      "diagramCaption": "Figure 3.1 — Cycle de vie invoke : découvrir, financer le canal, invoke, recevoir un reçu Ed25519, régler en USDC.",
+      "diagramCaption": "Le schéma montre un appel financé par un canal de séquestre. Le crédit et x402 suivent des parcours distincts.",
       "table": {
         "headers": [
           "Plugin",
@@ -339,7 +339,8 @@
       "paragraphs": [
         "**ARGUS-3** est le super-agent personnel : n'importe quel LLM, local ou cloud, avec le pare-feu MCP **WARDEN**. La crypto est **désactivée par défaut** — activez le portefeuille uniquement lorsque vous voulez des capacités payantes.",
         "Installation : `curl -fsSL https://magic-ai-factory.com/install | bash`. Vendre des capacités : `argus economy register` + `argus serve` / `argus mcp` → référencement Hub → gagner de l'USDC.",
-        "Guides utilisateur en **20 langues**. Guides développeur en **20 langues**. Cartoon humoristique à [argus/humor-cartoon.html](https://magic-ai-factory.com/argus/humor-cartoon.html)."
+        "Guides utilisateur en **20 langues**. Guides développeur en **20 langues**. Cartoon humoristique à [argus/humor-cartoon.html](https://magic-ai-factory.com/argus/humor-cartoon.html).",
+        "HISTOR suit les modifications des définitions annoncées par les outils MCP. Ses enregistrements signés permettent de corroborer une observation. WARDEN applique des contrôles distincts lors de l’utilisation de l’outil. [HISTOR](https://histor.modelmarket.dev/)."
       ],
       "cards": [
         {
@@ -468,9 +469,8 @@
       "title": "Chapitre VIII — Le maillage neuronal",
       "lead": "Découverte, vérification et séquestre agent-à-agent — le système nerveux invisible.",
       "paragraphs": [
-        "**AI Service Mesh** (`ai-service-mesh/`, port 8090) : enregistre les identités d'agents, vérifie les capacités, place sous séquestre le travail agent-à-agent. L'orchestrateur Mesh coordonne les chaînes d'invoke multi-agents.",
-        "Déployer après le Hub : inclus dans `deploy_ecosystem.sh`. Démo : `python scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083`.",
-        "Modèle de confiance : hubs/agents byzantins tolérés via des manifestes signés fédérés, une réputation cautionnée, des canaux non custodiaux et des artefacts d'oracle Ed25519."
+        "**AI Service Mesh** (port API 8090) enregistre les agents, sélectionne un candidat pour chaque tâche, vérifie la réponse signée et règle la réservation de la tâche dans son propre registre en USD. Ce registre est distinct des paiements du Hub et du règlement sur Base.",
+        "Dans l’API Mesh, utilisez le jeton de tâches pour `POST /v1/tasks` et le jeton d’administration pour `POST /v1/agents`. Consultez la tâche et ses événements via l’API. [Tableau de bord Mesh](https://service-mesh.modelmarket.dev/)."
       ]
     },
     {
@@ -918,7 +918,7 @@
             },
             {
               "q": "Qu'est-ce qu'Auto-Mesh Pipeline ?",
-              "a": "Fonctionnalité phare de Factory : découvre des agents de la place de marché, finance un canal USDT, invoke en séquence, livre un produit connecté. Voir docs/killer-feature-auto-mesh-pipeline.md."
+              "a": "Factory utilise ses agents internes par rôle. Le diagnostic facultatif via la place de marché peut acheter un avis dans la limite d’un budget pour une anomalie QA persistante, puis le transmettre au développeur interne. Le service de tâches Auto-Mesh possède sa propre API. [Séparation des services](https://github.com/alexar76/aicom/blob/main/docs/killer-feature-auto-mesh-pipeline.md)."
             },
             {
               "q": "Développement de plugins Hub ?",

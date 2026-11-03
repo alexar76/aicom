@@ -732,6 +732,13 @@
   var _webcryptoEd25519 = null;      // null = untested, true/false = known
 
   function verifyEd25519(publicKey, signature, message, opts) {
+    // Rule 3 of section 6.3.1, ahead of every backend: WebCrypto (the default in Node and current
+    // browsers) and the BigInt fallback both accept these forgeries too. Until 2026-11-03 only the
+    // tweetnacl path refused them.
+    if (ed25519SmallOrder(publicKey) ||
+        ed25519SmallOrder(signature && signature.length === 64 ? signature.subarray(0, 32) : null)) {
+      return Promise.resolve(false);
+    }
     var force = opts && opts.forceEd25519Backend;
     if (force === 'bigint') return Promise.resolve(ed25519VerifyBigInt(publicKey, signature, message));
     if (force === 'nacl') return Promise.resolve(naclVerify(publicKey, signature, message));
@@ -788,7 +795,6 @@
   function naclVerify(publicKey, signature, message) {
     var n = naclGlobal();
     if (!n) return false;
-    if (ed25519SmallOrder(publicKey) || ed25519SmallOrder(signature && signature.length === 64 ? signature.subarray(0, 32) : null)) return false;
     try { return n.sign.detached.verify(message, signature, publicKey); } catch (e) { return false; }
   }
 

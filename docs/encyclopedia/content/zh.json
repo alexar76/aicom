@@ -167,7 +167,7 @@
       "paragraphs": [
         "**AI-Factory** 是一条自托管的 MIT 流水线:一个 prompt → 规格 → 代码 → QA/E2E → 安全 → 部署 → 可选店面。十三个智能体协作:Analyst、PM、Methodologist、Architect、Design Critic、Developer、Hardening、QA、Security、DevOps、Marketing、Sales、Evolution Analyst。",
         "运营者在 `/admin` 使用**管理面板**。店面(`/`)展示筛选后的、可上架交易市场的产品;**Pipeline** 是每一条 `prod-…` 记录的真相之源。发现层自主寻找市场信号并将创意入队。",
-        "**杀手级功能——Auto-Mesh Pipeline:** Factory 能发现交易市场上的智能体、为一条 USDT 通道注资、按序 invoke,并自动交付一个互联的产品。"
+        "Factory 使用内部角色智能体。可选的市场诊断可以为持续存在的 QA 问题购买有预算上限的建议，再交给内部开发智能体。独立的 Auto-Mesh 任务服务有自己的 API。[实现边界](https://github.com/alexar76/aicom/blob/main/docs/killer-feature-auto-mesh-pipeline.md)。"
       ],
       "cards": [
         {
@@ -216,11 +216,11 @@
       "lead": "一个协议原生的交易市场,没有任何中心平台拥有其目录或资金流。",
       "paragraphs": [
         "**AIMarket Hub** 联邦化能力目录、路由 invoke 请求,并运行 15 个插件:safety、TEE、reputation、provenance、channels、auction、orchestrator、data-cap、dataset、MCP packager、NFT、personas、promo、streaming、ZK。",
-        "**Protocol v2** 生命周期:Discover → 开通道(Base 上的 USDC)→ 携带 `X-Payment-Channel` 的 Invoke → 插件钩子 → 关闭/结算。规范化的线格式:`aimarket-protocol/spec.md`。",
+        "免费 MCP 调用无需密钥。付费调用根据报价和 Hub 配置，可使用 Hub 预付余额、x402 直接向卖家付款或已充值的托管通道。授权付款前先检查 HTTP 402 报价。[从 Hub 开始](https://modelmarket.dev/start?lang=zh)。",
         "四个 SDK 说同一种语言:Python(`pip install aimarket-agent`)、TypeScript(`@aimarket/agent`)、Rust、Dart。可嵌入的 **widget** 用一个 `<script>` 标签即可加入 discover + pay + invoke。"
       ],
       "diagram": "invoke",
-      "diagramCaption": "图 3.1——Invoke 生命周期:发现、为通道注资、invoke、接收 Ed25519 收据、结算 USDC。",
+      "diagramCaption": "图中展示使用托管通道的调用流程。预付余额与 x402 使用各自的流程。",
       "table": {
         "headers": [
           "插件",
@@ -339,7 +339,8 @@
       "paragraphs": [
         "**ARGUS-3** 是个人超级智能体:任何 LLM,本地或云端,配备 **WARDEN** MCP 防火墙。加密**默认关闭**——只有当你想要付费能力时才启用钱包。",
         "安装:`curl -fsSL https://magic-ai-factory.com/install | bash`。售卖能力:`argus economy register` + `argus serve` / `argus mcp` → Hub 上架 → 赚取 USDC。",
-        "用户指南提供 **20 种语言**。开发者指南提供 **20 种语言**。幽默漫画见 [argus/humor-cartoon.html](https://magic-ai-factory.com/argus/humor-cartoon.html)。"
+        "用户指南提供 **20 种语言**。开发者指南提供 **20 种语言**。幽默漫画见 [argus/humor-cartoon.html](https://magic-ai-factory.com/argus/humor-cartoon.html)。",
+        "HISTOR 跟踪 MCP 工具公布的定义变化，签名记录可用于核实观测结果。使用工具时，WARDEN 会执行独立的运行时检查。[HISTOR](https://histor.modelmarket.dev/)。"
       ],
       "cards": [
         {
@@ -468,9 +469,8 @@
       "title": "第八章——神经网格",
       "lead": "智能体对智能体的发现、验证与托管——那看不见的神经系统。",
       "paragraphs": [
-        "**AI Service Mesh**(`ai-service-mesh/`,端口 8090):登记智能体身份、验证能力、为智能体间的工作提供托管。Mesh 编排器协调多智能体的 invoke 链。",
-        "在 Hub 之后部署:已包含在 `deploy_ecosystem.sh` 中。演示:`python scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083`。",
-        "信任模型:通过联邦化的已签名清单、带保证金的声誉、非托管通道、Ed25519 预言机工件来容忍拜占庭式的 hub/智能体。"
+        "**AI Service Mesh**（API 端口 8090）注册智能体，为任务发现候选者，验证签名响应，并在自己的美元账本中结算任务预留金额。该账本独立于 Hub 付款和 Base 结算。",
+        "调用 Mesh API 时，`POST /v1/tasks` 使用任务令牌，`POST /v1/agents` 使用管理员令牌。可通过 API 查看任务和事件。[Mesh 面板](https://service-mesh.modelmarket.dev/)。"
       ]
     },
     {
@@ -918,7 +918,7 @@
             },
             {
               "q": "什么是 Auto-Mesh Pipeline?",
-              "a": "Factory 的杀手级功能:发现交易市场上的智能体、为 USDT 通道注资、按序 invoke、交付互联产品。参见 docs/killer-feature-auto-mesh-pipeline.md。"
+              "a": "Factory 使用内部角色智能体。可选的市场诊断可以为持续存在的 QA 问题购买有预算上限的建议，再交给内部开发智能体。独立的 Auto-Mesh 任务服务有自己的 API。[实现边界](https://github.com/alexar76/aicom/blob/main/docs/killer-feature-auto-mesh-pipeline.md)。"
             },
             {
               "q": "Hub 插件开发?",

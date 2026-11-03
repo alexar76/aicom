@@ -66,7 +66,7 @@
         <h2>2. Запусти live</h2>
         <p style="color:var(--muted);margin:0 0 10px;font-size:0.92rem">Список федеративных пиров</p>
         <button class="btn btn-hot" type="button" id="run-demo">Список федеративных пиров</button>
-        <pre id="demo-out">Здесь будет вывод.</pre>
+        <pre id="demo-out">Здесь будет вывод.</pre><p class="note">Публичный список разделяет одобренных пиров и ожидающие заявки. Предпросмотр исключён из поиска и вызова. Наблюдаемые продавцы x402 находятся в отдельном каталоге.</p><p class="note"><a href="https://modelmarket.dev/hubs">Открыть раздел для операторов Hub</a></p>
       </div>
       <div class="panel">
         <h2>3. Colab · глубже</h2>
@@ -92,7 +92,7 @@
   </span>
 </div></footer>
 <script>
-window.SCHOOL_I18N = {"running": "Выполняю…", "demo_failed": "Мост /hub на этом хосте недоступен.", "demo_failed_hint": "Откройте ноутбук в Colab ниже — там те же вызовы идут на modelmarket.dev.", "pay_402": "402 Payment Required — в ответе перечислены способы оплаты. Проще всего: один ключ с modelmarket.dev/start, оплата с предоплаченного баланса.", "pay_ok": "выполнено бесплатно (пробные вызовы) — когда они кончатся, платит один ключ с баланса", "pay_refused": "хаб отказал в вызове — смотрите ответ", "pay_ways": "Способы оплаты:", "copied": "Скопировано"};
+window.SCHOOL_I18N = {"running": "Выполняю…", "demo_failed": "Мост /hub на этом хосте недоступен.", "demo_failed_hint": "Откройте ноутбук в Colab ниже — там те же вызовы идут на modelmarket.dev.", "pay_402": "402 Payment Required — в ответе перечислены способы оплаты. Проще всего: один ключ с modelmarket.dev/start, оплата с предоплаченного баланса.", "pay_ok": "Вызов выполнен без оплаты.", "pay_refused": "хаб отказал в вызове — смотрите ответ", "pay_ways": "Способы оплаты:", "copied": "Скопировано"};
 
 const HUB = "https://modelmarket.dev";
 const HUB_PROXY = "/hub";
@@ -144,12 +144,11 @@ async function schoolDemo(kind, outEl) {
       const t = await r.text();
       let d = {};
       try { d = JSON.parse(t); } catch (e) { d = {}; }
-      // Say which branch the learner is looking at. A 402 names every way to pay;
-      // the key comes first because it is the one a newcomer can use from here.
+      // Distinguish a successful unpaid call from a payment challenge or other error.
       const note = r.status === 402
         ? schoolText('pay_402', '402 Payment Required — the body lists the ways to pay.')
         : (r.status < 300
-            ? schoolText('pay_ok', 'served free (trial allowance)')
+            ? schoolText('pay_ok', 'served without payment')
             : schoolText('pay_refused', 'the hub refused this call — see the body'));
       const ways = (d.payment_ways || []).slice().sort((a, b) =>
         (a.rail === 'credits' ? -1 : 0) - (b.rail === 'credits' ? -1 : 0));
@@ -205,11 +204,15 @@ async function schoolDemo(kind, outEl) {
         fetch('https://atlas.modelmarket.dev/health').then(r => r.json())
       ]);
       const reading = (inv.output || {}).reading || {};
+      const attestation = (inv.output || {}).attestation || {};
+      if (!inv.ok || !reading.device_id || !attestation.algorithm) {
+        throw new Error('GAIA did not return an attested reading.');
+      }
       outEl.textContent = [
         `GAIA devices=${gh.devices} sim_control=${gh.sim_control}`,
-        `LIVE pin ${reading.device_id} · ${reading.model}`,
+        `relay ${reading.device_id} · ${reading.model}`,
         `values ${JSON.stringify(reading.values || {})}`,
-        `attestation ${(inv.output || {}).attestation?.algorithm || '—'}`,
+        `attestation ${attestation.algorithm}`,
         `ATLAS stations=${ah.stations} gaia=${ah.gaia}`
       ].join('\n');
     } else if (kind === 'federation_peers') {
@@ -218,13 +221,17 @@ async function schoolDemo(kind, outEl) {
         hubFetch('/ai-market/v2/federation/peers').then(r => r.json())
       ]);
       const peers = peersBody.peers || [];
+      const pending = peersBody.pending || [];
       outEl.textContent = [
         `hub ${wk.name} · federated ${wk.federated_capabilities_count}`,
         `peers ${peers.length}`,
         ...peers.slice(0, 6).map(p => {
           const d = p.declared || {};
           return `  ${p.url}\n    status=${p.status} caps=${p.capabilities_count} trust=${p.trust_score}\n    declared=${d.id || '—'}`;
-        })
+        }),
+        `public pending ${pending.length}`,
+        ...pending.slice(0, 6).map(p =>
+          `  ${p.name || p.url}\n    declared=${p.declared_capabilities} preview=${p.preview_capabilities}`)
       ].join('\n');
     } else if (kind === 'hybrid_seal') {
       const wk = await hubFetch('/.well-known/ai-market.json').then(r => r.json());
@@ -234,7 +241,7 @@ async function schoolDemo(kind, outEl) {
         `classical ${sig.algorithm} pk=${(sig.public_key || '').slice(0, 24)}…`,
         `pq ${sig.pq_algorithm} pq_value=${!!sig.pq_value}`,
         `hybrid_envelope ${hybrid}`,
-        hybrid ? 'gate: accept dual orbits' : 'gate: refuse — missing orbit'
+        'Shape check only. The Academy verifies both signatures.'
       ].join('\n');
     } else {
       outEl.textContent = 'Unknown demo: ' + kind;

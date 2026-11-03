@@ -167,7 +167,7 @@
       "paragraphs": [
         "**AI-Factory** es un pipeline MIT autoalojado: un prompt → spec → código → QA/E2E → seguridad → deploy → vitrina opcional. Trece agentes: Analyst, PM, Methodologist, Architect, Design Critic, Developer, Hardening, QA, Security, DevOps, Marketing, Sales, Evolution Analyst.",
         "Operadores usan el **Panel Admin** `/admin`. Vitrina (`/`) muestra catálogo filtrado; **Pipeline** es la fuente de verdad para cada `prod-…`. Discovery encuentra señales de mercado autónomamente.",
-        "**Killer feature — Auto-Mesh Pipeline:** Factory descubre agentes del marketplace, financia canal USDT, invoca en secuencia y envía producto conectado."
+        "Factory usa sus agentes internos por rol. El diagnóstico opcional del marketplace puede comprar asesoría con un presupuesto limitado para un hallazgo persistente de QA y entregarla al desarrollador interno. El servicio de tareas Auto-Mesh tiene su propia API. [Separación de servicios](https://github.com/alexar76/aicom/blob/main/docs/killer-feature-auto-mesh-pipeline.md)."
       ],
       "cards": [
         {
@@ -216,11 +216,11 @@
       "lead": "Un marketplace nativo de protocolo donde ninguna plataforma central posee el catálogo ni el flujo de dinero.",
       "paragraphs": [
         "**AIMarket Hub** federa catálogos de capabilities, enruta invoke y ejecuta 15 plugins: safety, TEE, reputation, provenance, channels, auction, orchestrator, data-cap, dataset, MCP packager, NFT, personas, promo, streaming, ZK.",
-        "**Protocol v2:** Discover → Open channel (USDC en Base) → Invoke con `X-Payment-Channel` → Plugin hooks → Close/settle.",
+        "Las llamadas MCP gratuitas funcionan sin clave. Las llamadas de pago pueden usar saldo prepago del Hub, x402 directo al vendedor o un canal de garantía financiado, según la oferta y la configuración del Hub. Examina la oferta HTTP 402 antes de autorizar el pago. [Empezar en el Hub](https://modelmarket.dev/start?lang=es).",
         "Cuatro SDKs: Python, TypeScript, Rust, Dart. Widget — discover + pay + invoke con un `<script>`."
       ],
       "diagram": "invoke",
-      "diagramCaption": "Fig. 3.1 — Ciclo de vida invoke: discover, canal, invoke, receipt Ed25519, settle USDC.",
+      "diagramCaption": "El esquema ilustra una llamada financiada con un canal de garantía. El saldo y x402 siguen rutas distintas.",
       "table": {
         "headers": [
           "Plugin",
@@ -339,7 +339,8 @@
       "paragraphs": [
         "**ARGUS-3** es el super-agente personal: cualquier LLM, local o en la nube, con cortafuegos MCP **WARDEN**. Cripto **desactivada por defecto**.",
         "Instalar: `curl -fsSL https://magic-ai-factory.com/install | bash`. Vender capabilities: `argus economy register` + `argus serve` → listado Hub → USDC.",
-        "Guías de usuario en **20 idiomas**. Guías de desarrollador en **20 idiomas**."
+        "Guías de usuario en **20 idiomas**. Guías de desarrollador en **20 idiomas**.",
+        "HISTOR sigue los cambios de las definiciones anunciadas de herramientas MCP. Sus registros firmados permiten corroborar una observación. WARDEN aplica verificaciones separadas cuando se usa la herramienta. [HISTOR](https://histor.modelmarket.dev/)."
       ],
       "cards": [
         {
@@ -468,9 +469,8 @@
       "title": "Capítulo VIII — La malla neural (Mesh)",
       "lead": "Descubrimiento, verificación y garantía agente-a-agente — el sistema nervioso invisible.",
       "paragraphs": [
-        "**AI Service Mesh** (puerto 8090): registra identidades, verifica capabilities, deja en garantía trabajo agente-a-agente. Incluido en `deploy_ecosystem.sh`.",
-        "Demo: `python scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083`.",
-        "Modelo de confianza: hubs/agentes bizantinos tolerados vía manifiestos firmados federados, reputación con fianza, canales sin custodia y artefactos Ed25519 de oráculos."
+        "**AI Service Mesh** (puerto de API 8090) registra agentes, encuentra un candidato para cada tarea, verifica la respuesta firmada y liquida la reserva de la tarea en su propio registro en USD. Este registro es independiente de los pagos del Hub y de la liquidación en Base.",
+        "En la API de Mesh usa un token de tareas para `POST /v1/tasks` y un token de administración para `POST /v1/agents`. Consulta la tarea y sus eventos por la API. [Panel de Mesh](https://service-mesh.modelmarket.dev/)."
       ]
     },
     {

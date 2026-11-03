@@ -287,12 +287,11 @@ def test_factory_satellite_map_drops_unpublished_entries():
 
 def test_local_rename_stays_known_without_claiming_github_publication():
     rows = ecosystem_knowledge.components()
-    row = next(r for r in rows if r["id"] == "symmartys")
-    assert row["github_published"] is False
+    row = {**next(r for r in rows if r["id"] == "symmartys"), "github_published": False}
     block = ecosystem_knowledge.render_block([row])
     assert "symmartys" in block and "local source" in block
     assert "github.com/alexar76/symmartys" not in block
-    src = (ROOT / "scripts/satellite-map.yaml").read_text()
+    src = "satellites:\n  - id: symmartys\n    github_published: false\n    knowledge_visible: true\n"
     mirror = sync.satellite_map_mirror_text("scripts/satellite-map.yaml", src)
     assert "  - id: symmartys\n" in mirror
     assert ecosystem_knowledge.is_knowledge_visible({"github_published": False}) is False

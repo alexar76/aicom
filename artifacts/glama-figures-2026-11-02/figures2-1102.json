@@ -1,0 +1,78 @@
+{
+ "servers_schema_pin": {
+  "changed_servers_full": 10644,
+  "every_change_missed": [
+   1507,
+   14.2
+  ],
+  "at_least_one_missed": [
+   4449,
+   41.8
+  ]
+ },
+ "param_moved_description_same": {
+  "changes": 6874,
+  "servers": 3524
+ },
+ "tool_description_only": {
+  "changes": 8050,
+  "digits_or_space_only": 557,
+  "words_moved": {
+   "51+": 2170,
+   "11-50": 2995,
+   "3-10": 1087,
+   "1-2": 1241
+  },
+  "adds_steering_word": [
+   962,
+   12.8
+  ]
+ },
+ "escalations": {
+  "all": 1251,
+  "gateway": 0,
+  "by_host_top": [
+   [
+    "package",
+    352
+   ],
+   [
+    "apibase.pro",
+    24
+   ],
+   [
+    "mcp.zovo.one",
+    20
+   ],
+   [
+    "api.gosummer.ai",
+    16
+   ],
+   [
+    "relay.straelo.com",
+    15
+   ]
+  ]
+ },
+ "escalation_example_keys": [
+  "tools",
+  "changedTools",
+  "escalations"
+ ],
+ "escalation_example": "{\"tools\": {\"accept_class_change\": {\"annotations\": {\"destructiveHint\": [null, false], \"openWorldHint\": [null, true], \"readOnlyHint\": [null, false], \"title\": [null, \"Accept a class change\"]}, \"members\": {\"securitySchemes\": \"added\", \"title\": \"added\"}}, \"accept_join_request\": {\"annotations\": {\"destructiveHint\": [null, false], \"openWorldHint\": [null, true], \"readOnlyHint\": [null, false], \"title\": [null, \"Accept a student\"]}, \"members\": {\"securitySchemes\": \"added\", \"title\": \"added\"}}, \"activate_diet_plan\": {\"annotations\": {\"destructiveHint\": [null, false], \"openWorldHint\": [null, true], \"readOnlyHint\": [null, false], \"title\": [null, \"Publish a diet plan\"]}, \"members\": {\"securitySchemes\": \"added\", \"title\": \"added\"}}, \"add_student_supplement\": {\"annotations\": {\"destructiveHint\": [null, false], \"openWorldHint\": [null, true], \"readOnlyHint\": [null, false], \"title\": [null, \"Add a supplement for a s",
+ "escalation_mentions": {
+  "readOnlyHint": 14540,
+  "destructiveHint": 13440
+ },
+ "escalations_checked": {
+  "changes": 1250,
+  "servers": 912,
+  "tools": 6042,
+  "servers_in_big_operators": 0,
+  "package_changes": 352,
+  "window": [
+   "2026-10-23T18:22:44Z",
+   "2026-11-02T07:19:53Z"
+  ]
+ }
+}

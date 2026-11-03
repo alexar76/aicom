@@ -1,6 +1,6 @@
 {
   "name": "@alexar76/awr-verify",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Verify an AWR/2 work receipt in Node or the browser with zero dependencies — W3C Verifiable Credential, eddsa-jcs-2022 over RFC 8785, did:key. One of three implementations passing the AWR/2 conformance suite.",
   "keywords": [
     "awr",
@@ -38,7 +38,7 @@
   "bugs": { "url": "https://github.com/alexar76/aicom/issues" },
   "publishConfig": { "access": "public" },
   "scripts": {
-    "test": "node test-receipt-url.js"
+    "test": "node test-receipt-url.js && node test-ed25519-small-order.js"
   },
   "dependencies": {},
   "devDependencies": {}

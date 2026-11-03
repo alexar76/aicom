@@ -11,8 +11,9 @@ extra were unreachable while five landing pages told people to install it) — b
 nothing compared the two.
 
 What this does: for every first-party pyproject.toml, read the declared name and version,
-fetch that exact version's wheel from PyPI, and compare every shipped `.py` byte for byte
-against the tree. A difference at the same version is a release blocker.
+fetch that exact version's wheel from PyPI, and compare every file its packages ship (code
+and data: pages, translations, templates) byte for byte against the tree. A difference at
+the same version is a release blocker.
 
 Usage:
     python3 scripts/verify_published_dist_freshness.py            # all first-party dists
@@ -108,16 +109,36 @@ def _wheel(url: str) -> zipfile.ZipFile | None:
         return None
 
 
+def _source_roots(proj: Path) -> list[Path]:
+    """Where the importable packages sit: next to pyproject.toml, or under src/ (src layout).
+
+    Looking only next to pyproject.toml skipped every src-layout distribution without a word:
+    attested-memory 0.1.0 differed from its tree in two files, the gate reported nothing, and the
+    upload of the same version reached PyPI and came back "400 Bad Request" (2026-11-03).
+    """
+    return [r for r in (proj.parent, proj.parent / "src") if r.is_dir()]
+
+
+def _sha256(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
 def _compare(proj: Path, wheel: zipfile.ZipFile) -> list[str]:
-    """Files the wheel ships that differ from, or are missing against, the tree."""
-    shipped_tops = {n.split("/")[0] for n in wheel.namelist() if n.endswith(".py")}
+    """Files the wheel ships that differ from, or are missing against, the tree.
+
+    Package data is compared too, not only `.py`. Until 2026-11-03 a change to a page, a
+    translation or a template read as "identical": two hub page fixes made after aimarket-hub
+    3.17.0 was published were invisible here, and only a byte compare of the built wheel found them.
+    """
+    shipped = [n for n in wheel.namelist() if not n.endswith("/")]
+    shipped_tops = {n.split("/")[0] for n in shipped if n.endswith(".py")}
     diff: list[str] = []
     for top in sorted(shipped_tops):
-        base = proj.parent / top
-        if not base.is_dir():
+        root = next((r for r in _source_roots(proj) if (r / top).is_dir()), None)
+        if root is None:
             continue
-        for py in sorted(base.rglob("*.py")):
-            rel = py.relative_to(proj.parent).as_posix()
+        for py in sorted((root / top).rglob("*.py")):
+            rel = py.relative_to(root).as_posix()
             # Tests are not part of every wheel; comparing them invents differences.
             if rel.startswith("tests/") or "/tests/" in f"/{rel}":
                 continue
@@ -126,8 +147,24 @@ def _compare(proj: Path, wheel: zipfile.ZipFile) -> list[str]:
             except KeyError:
                 diff.append(f"+ {rel}  (in the tree, absent from the published wheel)")
                 continue
-            if hashlib.sha256(published).hexdigest() != hashlib.sha256(py.read_bytes()).hexdigest():
+            if _sha256(published) != _sha256(py.read_bytes()):
                 diff.append(f"~ {rel}")
+        # Data the wheel ships under this package. Only what was published is compared: a data
+        # file in the tree may be left out of the wheel on purpose, and nothing here reads the
+        # build configuration that decides which.
+        for name in sorted(n for n in shipped if n.startswith(f"{top}/") and not n.endswith((".py", ".pyc"))):
+            source = root / name
+            note = ""
+            if not source.is_file():
+                # A build step may copy in an authored file kept beside pyproject.toml:
+                # aimarket-hub's setup.py bundles terminal-home.html and its i18n files
+                # into aimarket_hub/static/ui/, which git does not track.
+                source = proj.parent / Path(name).name
+                note = f"  (against {Path(name).name} beside pyproject.toml, bundled at build)"
+                if not source.is_file():
+                    continue  # generated at build time: nothing in the tree to compare with
+            if _sha256(wheel.read(name)) != _sha256(source.read_bytes()):
+                diff.append(f"~ {name}{note}")
     return diff
 
 
@@ -135,7 +172,8 @@ def _import_names(proj: Path) -> set[str]:
     """Top-level importable packages this distribution would install."""
     return {
         d.name
-        for d in proj.parent.iterdir()
+        for root in _source_roots(proj)
+        for d in root.iterdir()
         # Only the child's own name: its parents already passed _first_party_pyprojects(),
         # and the absolute parts include wherever the checkout happens to live.
         if d.is_dir() and (d / "__init__.py").is_file() and d.name != "tests"

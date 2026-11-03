@@ -1,0 +1,280 @@
+{
+ "top_hosts_by_changes": [
+  [
+   "gateway.pipeworx.io",
+   1916,
+   14573,
+   27.4
+  ],
+  [
+   "package",
+   0,
+   6518,
+   12.3
+  ],
+  [
+   "agent-observatory-sensor.nolimit-observatory.workers.dev",
+   2365,
+   2317,
+   4.4
+  ],
+  [
+   "remoshift.com",
+   1,
+   385,
+   0.7
+  ],
+  [
+   "fork.zone",
+   1,
+   355,
+   0.7
+  ],
+  [
+   "a2awire.com",
+   121,
+   174,
+   0.3
+  ]
+ ],
+ "all": {
+  "changes": 53159,
+  "servers": 15405,
+  "full": 47842,
+  "kinds": {
+   "text": [
+    22678,
+    42.7
+   ],
+   "noise": [
+    11151,
+    21.0
+   ],
+   "addrm": [
+    10857,
+    20.4
+   ],
+   "names": [
+    5317,
+    10.0
+   ],
+   "shape": [
+    1708,
+    3.2
+   ],
+   "output": [
+    1448,
+    2.7
+   ]
+  },
+  "descriptions_only_tool": [
+   18873,
+   35.5
+  ],
+  "descriptions_only_tool_or_param": [
+   22492,
+   42.3
+  ],
+  "tool_description_touched": [
+   33530,
+   63.1
+  ],
+  "tool_or_param_description_touched": [
+   39339,
+   74.0
+  ],
+  "schema_pin_misses": [
+   21477,
+   44.9,
+   "of full-detail changes"
+  ],
+  "name_pin_misses": [
+   36985,
+   77.3
+  ],
+  "param_only_tool_edits": [
+   99272,
+   6101,
+   "tool edits, servers"
+  ],
+  "version_remote": {
+   "changes": 46641,
+   "serverInfo_both": 46406,
+   "serverInfo_same": [
+    39299,
+    84.7
+   ],
+   "registry_both": 14691,
+   "registry_same": [
+    14377,
+    97.9
+   ]
+  },
+  "version_package": {
+   "changes": 6518,
+   "serverInfo_both": 6332,
+   "serverInfo_same": [
+    1106,
+    17.5
+   ],
+   "registry_both": 560,
+   "registry_same": [
+    145,
+    25.9
+   ]
+  },
+  "servers_changed_once": [
+   7640,
+   15405
+  ],
+  "servers_7plus": [
+   1543,
+   23084
+  ]
+ },
+ "without_two_operators": {
+  "changes": 36269,
+  "servers": 11208,
+  "full": 34066,
+  "kinds": {
+   "text": [
+    19382,
+    53.4
+   ],
+   "addrm": [
+    10848,
+    29.9
+   ],
+   "names": [
+    2203,
+    6.1
+   ],
+   "shape": [
+    1690,
+    4.7
+   ],
+   "output": [
+    1448,
+    4.0
+   ],
+   "noise": [
+    698,
+    1.9
+   ]
+  },
+  "descriptions_only_tool": [
+   8050,
+   22.2
+  ],
+  "descriptions_only_tool_or_param": [
+   11667,
+   32.2
+  ],
+  "tool_description_touched": [
+   22091,
+   60.9
+  ],
+  "tool_or_param_description_touched": [
+   25581,
+   70.5
+  ],
+  "schema_pin_misses": [
+   10293,
+   30.2,
+   "of full-detail changes"
+  ],
+  "name_pin_misses": [
+   23218,
+   68.2
+  ],
+  "param_only_tool_edits": [
+   26708,
+   3524,
+   "tool edits, servers"
+  ],
+  "version_remote": {
+   "changes": 29751,
+   "serverInfo_both": 29516,
+   "serverInfo_same": [
+    22409,
+    75.9
+   ],
+   "registry_both": 6702,
+   "registry_same": [
+    6501,
+    97.0
+   ]
+  },
+  "version_package": {
+   "changes": 6518,
+   "serverInfo_both": 6332,
+   "serverInfo_same": [
+    1106,
+    17.5
+   ],
+   "registry_both": 560,
+   "registry_same": [
+    145,
+    25.9
+   ]
+  },
+  "servers_changed_once": [
+   5289,
+   11208
+  ],
+  "servers_7plus": [
+   1100,
+   16123
+  ]
+ },
+ "remote_cohort": {
+  "pinned_first_day": 11836,
+  "changed": [
+   5920,
+   50.0
+  ],
+  "changed_beyond_noise": [
+   5852,
+   49.4
+  ],
+  "added_or_removed_tool": 1565
+ },
+ "remote_cohort_without_two_operators": {
+  "pinned_first_day": 9127,
+  "changed": [
+   3235,
+   35.4
+  ],
+  "changed_beyond_noise": [
+   3202,
+   35.1
+  ],
+  "added_or_removed_tool": 1561
+ },
+ "first_day": "2026-09-24T23:59:59Z",
+ "big_operator_endpoints": {
+  "agent-observatory-sensor.nolimit-observatory.workers.dev": 2365,
+  "gateway.pipeworx.io": 1916
+ },
+ "extras_changes": {
+  "changes": 74812,
+  "servers": 5162,
+  "from": "2026-10-23T18:22:44Z",
+  "until": "2026-11-02T07:19:53Z",
+  "escalations": 1251,
+  "escalation_servers": 913,
+  "escalation_sample": [
+   "checkout_link",
+   "designer_colorways",
+   "designer_designs",
+   "designer_stats",
+   "designer_submissions",
+   "designer_uploads",
+   "order_status",
+   "studio_credits",
+   "studio_options",
+   "studio_status",
+   "update_cart_item"
+  ]
+ }
+}

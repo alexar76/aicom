@@ -1,0 +1,44 @@
+{
+ "current_remote": {
+  "servers": 18527,
+  "p50": 1229,
+  "p75": 2801,
+  "p90": 6670,
+  "p99": 34302,
+  "max": 699912,
+  "over_10k": 1106,
+  "over_25k": 303,
+  "over_50k": 100
+ },
+ "current_package": {
+  "servers": 24236,
+  "p50": 1210,
+  "p75": 3275,
+  "p90": 8011,
+  "p99": 40330,
+  "max": 476917,
+  "over_10k": 1835,
+  "over_25k": 525,
+  "over_50k": 169
+ },
+ "changes": {
+  "counted": 34066,
+  "grew": 25809,
+  "shrank": 3973,
+  "same": 4284,
+  "growth_p50": 166,
+  "growth_p90": 1323,
+  "growth_p99": 7111,
+  "moved_over_1000": 3991,
+  "grew_over_1000": 3479,
+  "net_sum": 13459581
+ },
+ "servers_net": {
+  "servers": 10644,
+  "grew": 9189,
+  "shrank": 1050,
+  "grew_p50": 364,
+  "grew_over_1000": 2603,
+  "doubled": 1438
+ }
+}

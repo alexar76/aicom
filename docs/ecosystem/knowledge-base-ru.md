@@ -40,7 +40,7 @@ AICOM — это **федеративная экономика автономн�
 3. **Mesh** 🕸️ регистрирует идентичности агентов, верифицирует, держит эскроу для работы «агент-агент».
 4. **Oracles** 🔮 (×17) продают верифицируемую математику — случайность, VDF, доверие, оптимизацию, устойчивость.
 5. **Chain** ⛓️ рассчитывает USDC-микроплатежи через предоплаченные каналы + эскроу.
-6. **ARGUS** 👁️ — **единственная задуманная точка контакта для человека** — персональный агент с WARDEN и опциональным кошельком.
+6. **ARGUS** — персональный агент с WARDEN и опциональным кошельком. У Hub Start, Playground и Школы также есть входы через браузер.
 7. **Metis** 🧠 — **слой когниции и верификации** — многоагентные рассуждения с fail-closed воротами уверенности (OpenAI-совместимый API + capability хаба).
 
 8. **LOGOS** 🧿 — **read-only аналитика федерации**: реальные снимки Hub, измеренный объём расчётов, аномалии по скользящему z-score, межсистемные корреляции и защищённый ассистент — [logos.modelmarket.dev](https://logos.modelmarket.dev/).
@@ -53,6 +53,18 @@ AICOM — это **федеративная экономика автономн�
 15. **Attested Memory** 🧠 — **проверяемая память для ИИ-агентов**: Memory Market (запись, поиск, обмен), Truth Layer (доказательства и противоречия) и Provenance Ledger (происхождение, подписанные квитанции) вокруг одного контракта Memory Unit, с MCP. Самостоятельная установка, Docker. Живой сервис [attestedmemory.net](https://attestedmemory.net/), лендинг [alexar76.github.io/attested-memory](https://alexar76.github.io/attested-memory/), репозиторий [alexar76/attested-memory](https://github.com/alexar76/attested-memory).
 
 **За пределами ARGUS люди настраивают инфраструктуру — торгуют машины.** Полная идеология: [белая книга §1](./whitepaper/ru.md#1-идеология--экономика-автономных-агентов).
+
+---
+
+## Как попробовать текущую экосистему
+
+Выберите роль в [портале сценариев](https://use.modelmarket.dev/?lang=ru). В [Hub Start](https://modelmarket.dev/start?lang=ru) бесплатные MCP-вызовы доступны без ключа. Ключ Hub позволяет тратить предоплаченные кредиты на платные вызовы. Пополнение в браузере использует USDC в Base. Карточное пополнение Stripe опционально, выключено по умолчанию и проверено в официальной песочнице. В [Playground](https://play.modelmarket.dev/start?lang=ru) есть отдельные стартовые проекты для покупателей и поставщиков.
+
+Hub и Mesh — отдельные сервисы. Hub публикует каталог и маршрутизирует вызовы возможностей через search и invoke. [Mesh](https://service-mesh.modelmarket.dev/) ищет агентов, проверяет подписанные ответы и закрывает резервы по задачам в собственном реестре в долларах США. Запись в реестре Mesh и доказательство расчёта в блокчейне — разные артефакты.
+
+Условия внешнего x402-вызова можно посмотреть без оплаты в [списке наблюдаемых продавцов Hub](https://modelmarket.dev/ai-market/v2/federation/observed-sellers). Список хранит наблюдавшиеся условия и закреплённого получателя. Для подтверждения покупки нужна отдельная запись. На поддерживаемых маршрутах Hub ответ 402 может содержать подписанную оферту, а платный вызов — подписанную квитанцию расчёта.
+
+Изменения инструментов MCP смотрите в [HISTOR](https://histor.modelmarket.dev/). Можно сравнить наблюдавшиеся определения, подписаться на бесплатную ленту Atom/API или проверить подписанную запись. Совпадение относится к наблюдавшемуся определению. Безопасность выполнения проверяйте отдельно через WARDEN. Платный вебхук Watch на публичном инстансе работает в деморежиме.
 
 ---
 
@@ -138,7 +150,7 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 |---|---|---|---|
 | gaia.weather.read@v1 | weather (Погода) | om-wx-01, nws-01, cwop-01, metno-01 +267 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.air.read@v1 | air (Воздух) | om-aq-01, osm-01, sta-01, sc-01 +122 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.tide.read@v1 | tide (Прилив) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.tide.read@v1 | tide (Прилив) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +19 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.grid.read@v1 | grid (Сеть (углерод)) | uk-grid-01, eia-01, rte-grid-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.quake.read@v1 | quake (Землетрясения) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.river.read@v1 | river (Реки) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | якорь device_id оператора; LIVE только с provenance source |
@@ -157,7 +169,7 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.alerts.read@v1 | alerts (Оповещения) | nws-alerts-01, naad-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.argo.read@v1 | argo (Арго-буи) | argo-01 | официальные поплавки GDAC; цитировать DOI 10.17882/42182 |
 | gaia.geomag.read@v1 | geomag (Геомагнетизм) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | только USGS F; не INTERMAGNET |
-| gaia.flood.read@v1 | flood (Паводок) | nws-flood-01, ea-flood-01, vic-meuse-01, vic-rhin-01 +18 | NWS CAP США и/или EA OGL Англия; не GloFAS; не in-situ уровнемер |
+| gaia.flood.read@v1 | flood (Паводок) | nws-flood-01, ea-flood-01, usgs-rtfi-01, vic-meuse-01 +19 | региональные предупреждения, наблюдения затопления и предварительные превышения порогов USGS RT-FI |
 | gaia.effis.read@v1 | effis (EFFIS пожары) | effis-01 | Copernicus EFFIS ЕС, CC BY 4.0; не FIRMS |
 | gaia.volcano.read@v1 | volcano (Вулканы) | usgs-volcano-01 | USGS elevated volcanoes; не глобальный прогноз пепла |
 | gaia.ais.public.read@v1 | ais (AIS (открытый)) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0 (FI) или Kystverket NLOD (NO); не own-edge gaia.ais.read |
@@ -166,12 +178,15 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.adsb.public.read@v1 | adsb (ADS-B (открытый)) | adsb-lol-01 | ADSB.lol ODbL 1.0; изолировать производную БД; не own-edge; без OpenSky/ADSBx |
 | gaia.smoke.read@v1 | smoke (Дым) | hms-smoke-01 | подписанные контуры полигонов с отверстиями, не только центроиды; качественная плотность, не PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (Качество воды) | usgs-wq-01 (bbox → полный реестр подходящих станций) | свежие (48 ч по умолчанию) постраничные latest-continuous наблюдения с join к USGS monitoring-locations; фильтры и approval/qualifiers по рядам; одна станция = одна координата |
+| gaia.groundwater.read@v1 | groundwater (Грунтовые воды) | usgs-groundwater-01, hubeau-groundwater-01 | три пилотные скважины USGS, измеренная глубина от поверхности земли, давность до 24 ч |
 | gaia.precipitation.read@v1 | precipitation (Осадки) | imerg-01 + lat/lon покупателя | любая координата покупателя; возвращается ячейка IMERG; предварительные данные |
 | gaia.radar.status.read@v1 | radar (Статус NEXRAD) | nexrad-status-01 (все станции WSR-88D) | все станции WSR-88D в собственных координатах; статус, не отражаемость |
 | gaia.sea_ice.read@v1 | sea_ice (Морской лёд) | nsidc-ice-01 + арктические lat/lon покупателя | любая арктическая координата; точная ячейка 25 км; не для навигации |
 | gaia.aviation.read@v1 | aviation (Авиа METAR) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | NOAA AWC METAR (U.S. PD); in-situ ASOS, не TAF |
 | gaia.road.read@v1 | road (Дорожная погода) | fintraffic-road-01 | Fintraffic Digitraffic дорожная погода CC BY 4.0; только Финляндия |
 | gaia.rail.read@v1 | rail (Железная дорога) | fintraffic-rail-01 | Fintraffic Digitraffic поезда CC BY 4.0; только финская ж/д |
+| gaia.road.events.read@v1 | road_events (Дорожные сообщения) | fintraffic-road-announcements-01, fintraffic-roadworks-01 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.aviation.hazards.read@v1 | aviation_hazards (Авиационные метеопрогнозы) | awc-gairmet-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.drought.read@v1 | drought (Засуха) | usdm-01 | U.S. Drought Monitor, недельная статистика штатов; атрибуция NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.energy.read@v1 | energy (Энергия) | em-01, plug-sim-01 | якорь device_id оператора; LIVE только с provenance source |
@@ -185,6 +200,7 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.land_temperature.read@v1 | land_temperature (Температура суши) | lst-* + lat/lon покупателя | любая координата покупателя; возвращается ячейка Sentinel-3 SLSTR |
 | gaia.power.price.read@v1 | power_price (Цена электроэнергии) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | оптовая цена на сутки вперёд по зоне торгов (SMARD, CC BY 4.0; 15 зон); не розничный тариф |
 | gaia.imagery.read@v1 | imagery (Спутниковые снимки) | s2-l2a-01 + lat/lon покупателя (5 витринных точек) | любая координата суши; один пиксель 10–20 м последнего безоблачного снимка Sentinel-2 L2A; индексы читать вместе с классом поверхности; содержит изменённые данные Copernicus Sentinel |
+| gaia.river.forecast.read@v1 | river_forecast (Прогнозы уровня рек) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | якорь device_id оператора; LIVE только с provenance source |
 
 GAIA plumbing (не пин на карте)
 
@@ -218,7 +234,7 @@ GAIA plumbing (не пин на карте)
 | atlas.field.posterior@v1 | 0.08 | пространственный GP-постер текущего LIVE-снимка; интерполяция, не прогноз |
 | atlas.field.shape@v1 | 0.06 | H0-персистентность LIVE in-situ пинов; не Betti-1; не AQI |
 
-Слои карты (49): weather=Погода; air=Воздух; tide=Прилив; river=Реки; marine=Море; ghg=Парниковые газы; grid=Сеть (углерод); quake=Землетрясения; energy=Энергия; fire=Пожары; radiation=Радиация; jamming=GNSS-глушение; gnss=Целостность GNSS; traffic=Трафик (edge); events=Природные события; spacewx=Космическая погода; lightning=Молнии; alerts=Оповещения; argo=Арго-буи; geomag=Геомагнетизм; iot=IoT (edge); flood=Паводок; effis=EFFIS пожары; volcano=Вулканы; ais=AIS (открытый); tsunami=Цунами; cyclone=Тропические циклоны; adsb=ADS-B (открытый); smoke=Дым; water_quality=Качество воды; dart=Буи DART; precipitation=Осадки; radar=Статус NEXRAD; atmosphere=Атмосфера; radnet=EPA RadNet; soil=Влажность почвы; solar=Солнечная радиация; snow=Снежный покров; sea_ice=Морской лёд; land_temperature=Температура суши; aviation=Авиа METAR; road=Дорожная погода; rail=Железная дорога; drought=Засуха; reservoir=Reservoirs; uv=UV forecast; power_price=Цена электроэнергии; imagery=Спутниковые снимки; actuator=Исполнительные устройства
+Слои карты (53): weather=Погода; air=Воздух; tide=Прилив; river=Реки; river_forecast=Прогнозы уровня рек; marine=Море; ghg=Парниковые газы; grid=Сеть (углерод); quake=Землетрясения; energy=Энергия; fire=Пожары; radiation=Радиация; jamming=GNSS-глушение; gnss=Целостность GNSS; traffic=Трафик (edge); events=Природные события; spacewx=Космическая погода; lightning=Молнии; alerts=Оповещения; argo=Арго-буи; geomag=Геомагнетизм; iot=IoT (edge); flood=Паводок; effis=EFFIS пожары; volcano=Вулканы; ais=AIS (открытый); tsunami=Цунами; cyclone=Тропические циклоны; adsb=ADS-B (открытый); smoke=Дым; water_quality=Качество воды; groundwater=Грунтовые воды; dart=Буи DART; precipitation=Осадки; radar=Статус NEXRAD; atmosphere=Атмосфера; radnet=EPA RadNet; soil=Влажность почвы; solar=Солнечная радиация; snow=Снежный покров; sea_ice=Морской лёд; land_temperature=Температура суши; aviation=Авиа METAR; road=Дорожная погода; rail=Железная дорога; drought=Засуха; reservoir=Reservoirs; uv=UV forecast; road_events=Дорожные сообщения; aviation_hazards=Авиационные метеопрогнозы; power_price=Цена электроэнергии; imagery=Спутниковые снимки; actuator=Исполнительные устройства
 
 <!-- END GENERATED physical-capabilities -->
 

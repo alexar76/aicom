@@ -40,7 +40,7 @@ AICOM es una **economía federada de agentes autónomos**:
 3. **Mesh** 🕸️ registra identidades de agentes, verifica y mantiene el depósito en garantía del trabajo agente-a-agente.
 4. **Oracles** 🔮 (×17) venden matemática verificable — aleatoriedad, VDF, confianza, optimización, resiliencia.
 5. **Chain** ⛓️ liquida micropagos en USDC mediante canales prepagados + depósito en garantía.
-6. **ARGUS** 👁️ es el **único punto de contacto humano previsto** — agente personal con WARDEN y cartera opcional.
+6. **ARGUS** es el agente personal con WARDEN y cartera opcional. Hub Start, Playground y la Escuela también ofrecen acceso desde el navegador.
 7. **Metis** 🧠 es la **capa de cognición y verificación** — razonamiento multiagente con una puerta de confianza fail-closed (API compatible con OpenAI + capacidad del hub).
 
 8. **LOGOS** 🧿 es la **analítica federada de solo lectura**: snapshots reales del Hub, volumen de liquidación medido, anomalías por z-score móvil, correlaciones entre fuentes y asistente protegido — [logos.modelmarket.dev](https://logos.modelmarket.dev/).
@@ -53,6 +53,18 @@ AICOM es una **economía federada de agentes autónomos**:
 15. **Attested Memory** 🧠 es **memoria verificable para agentes de IA**: Memory Market (escribir, buscar, compartir), Truth Layer (evidencia y contradicciones) y Provenance Ledger (linaje, recibos firmados) sobre un contrato Memory Unit, con MCP. Autoalojado, Docker. En vivo en [attestedmemory.net](https://attestedmemory.net/), landing [alexar76.github.io/attested-memory](https://alexar76.github.io/attested-memory/), repo [alexar76/attested-memory](https://github.com/alexar76/attested-memory).
 
 **Más allá de ARGUS, los humanos configuran la infraestructura — las máquinas comercian.** Ideología completa: [libro blanco §1](./whitepaper/es.md#1-ideología--economía-de-agentes-autónomos).
+
+---
+
+## Cómo probar la versión actual
+
+Elige un rol en el [portal de casos de uso](https://use.modelmarket.dev/?lang=es). [Hub Start](https://modelmarket.dev/start?lang=es) admite llamadas MCP gratuitas sin clave. Una clave del Hub permite gastar crédito prepago en llamadas de pago. La recarga en el navegador usa USDC en Base. La recarga por tarjeta mediante Stripe es opcional, está desactivada por defecto y se verificó en el entorno oficial de pruebas. [Playground](https://play.modelmarket.dev/start?lang=es) tiene proyectos iniciales separados para compradores y proveedores.
+
+Hub y Mesh son servicios distintos. El Hub cataloga capacidades y dirige sus llamadas mediante search e invoke. [Mesh](https://service-mesh.modelmarket.dev/) descubre agentes, verifica respuestas firmadas y liquida las reservas de tareas en su propio registro en USD. Una anotación de Mesh y una prueba de liquidación en cadena son registros distintos.
+
+Consulta una oferta x402 externa sin pagar en la [lista de vendedores observados](https://modelmarket.dev/ai-market/v2/federation/observed-sellers). La lista registra las condiciones observadas y el destinatario fijado. Confirmar una compra requiere un registro adicional. En las rutas compatibles del Hub, la respuesta 402 puede incluir una oferta firmada y la llamada de pago, un recibo de liquidación firmado.
+
+Para seguir cambios en herramientas MCP, usa [HISTOR](https://histor.modelmarket.dev/). Compara definiciones observadas, sigue el canal gratuito Atom/API o comprueba el registro firmado. Una coincidencia corresponde a la definición observada. Evalúa la seguridad de ejecución por separado con WARDEN. El webhook de pago de Watch está en modo de demostración en la instancia pública.
 
 ---
 
@@ -136,7 +148,7 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 |---|---|---|---|
 | gaia.weather.read@v1 | weather (Clima) | om-wx-01, nws-01, cwop-01, metno-01 +267 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.air.read@v1 | air (Aire) | om-aq-01, osm-01, sta-01, sc-01 +122 | device_id anclado por el operador; LIVE solo con provenance source |
-| gaia.tide.read@v1 | tide (Marea) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | device_id anclado por el operador; LIVE solo con provenance source |
+| gaia.tide.read@v1 | tide (Marea) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +19 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.grid.read@v1 | grid (Red (carbono)) | uk-grid-01, eia-01, rte-grid-01 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.quake.read@v1 | quake (Sismos) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.river.read@v1 | river (Ríos) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | device_id anclado por el operador; LIVE solo con provenance source |
@@ -155,7 +167,7 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 | gaia.alerts.read@v1 | alerts (Alertas) | nws-alerts-01, naad-01 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.argo.read@v1 | argo (Flotadores Argo) | argo-01 | flotadores GDAC oficiales; citar DOI 10.17882/42182 |
 | gaia.geomag.read@v1 | geomag (Geomagnetismo) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | solo USGS F; no INTERMAGNET |
-| gaia.flood.read@v1 | flood (Inundación) | nws-flood-01, ea-flood-01, vic-meuse-01, vic-rhin-01 +18 | NWS CAP EE.UU. y/o EA OGL Inglaterra; no GloFAS; no un aforo in situ |
+| gaia.flood.read@v1 | flood (Inundación) | nws-flood-01, ea-flood-01, usgs-rtfi-01, vic-meuse-01 +19 | alertas regionales, inundación observada y superaciones provisionales de umbrales USGS RT-FI |
 | gaia.effis.read@v1 | effis (Incendios EFFIS) | effis-01 | Copernicus EFFIS UE, CC BY 4.0; no FIRMS |
 | gaia.volcano.read@v1 | volcano (Volcanes) | usgs-volcano-01 | volcanes elevados USGS; no un pronóstico global de ceniza |
 | gaia.ais.public.read@v1 | ais (AIS público) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0 (FI) o Kystverket NLOD (NO); no gaia.ais.read propio |
@@ -164,12 +176,15 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 | gaia.adsb.public.read@v1 | adsb (ADS-B público) | adsb-lol-01 | ADSB.lol ODbL 1.0; aislar BD derivada; no edge propio; sin OpenSky/ADSBx |
 | gaia.smoke.read@v1 | smoke (Humo) | hms-smoke-01 | anillos de polígono firmados con huecos, no solo centroides; densidad cualitativa, no PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (Calidad del agua) | usgs-wq-01 (bbox → registro completo de estaciones aptas) | observaciones latest-continuous frescas (48 h por defecto), paginadas y unidas a USGS monitoring-locations; filtros y approval/qualifiers; una estación = una coordenada |
+| gaia.groundwater.read@v1 | groundwater (Aguas subterráneas) | usgs-groundwater-01, hubeau-groundwater-01 | tres pozos piloto de USGS, profundidad medida desde la superficie local, datos de hasta 24 h |
 | gaia.precipitation.read@v1 | precipitation (Precipitación) | imerg-01 + lat/lon del comprador | cualquier coordenada del comprador; celda IMERG devuelta; preliminar |
 | gaia.radar.status.read@v1 | radar (Estado NEXRAD) | nexrad-status-01 (todos los sitios WSR-88D) | todos los sitios WSR-88D en sus coordenadas; estado, no reflectividad |
 | gaia.sea_ice.read@v1 | sea_ice (Hielo marino) | nsidc-ice-01 + lat/lon árticos del comprador | cualquier coordenada ártica; celda exacta de 25 km; no para navegación |
 | gaia.aviation.read@v1 | aviation (METAR aviación) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | METAR NOAA AWC (U.S. PD); pin ASOS in situ, no un TAF |
 | gaia.road.read@v1 | road (Clima vial) | fintraffic-road-01 | clima vial Fintraffic Digitraffic CC BY 4.0; solo carreteras finlandesas |
 | gaia.rail.read@v1 | rail (Tráfico ferroviario) | fintraffic-rail-01 | ubicaciones ferroviarias Fintraffic Digitraffic CC BY 4.0; solo FI |
+| gaia.road.events.read@v1 | road_events (Avisos viales) | fintraffic-road-announcements-01, fintraffic-roadworks-01 | device_id anclado por el operador; LIVE solo con provenance source |
+| gaia.aviation.hazards.read@v1 | aviation_hazards (Pronósticos de riesgos aéreos) | awc-gairmet-01 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.drought.read@v1 | drought (Sequía) | usdm-01 | U.S. Drought Monitor, stats semanales por estado; atribuir NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.energy.read@v1 | energy (Energía) | em-01, plug-sim-01 | device_id anclado por el operador; LIVE solo con provenance source |
@@ -183,6 +198,7 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 | gaia.land_temperature.read@v1 | land_temperature (Temperatura terrestre) | lst-* + lat/lon del comprador | cualquier coordenada del comprador; celda Sentinel-3 SLSTR devuelta |
 | gaia.power.price.read@v1 | power_price (Precio de la electricidad) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | precio mayorista del día siguiente por zona de oferta (SMARD, CC BY 4.0; 15 zonas); no es una tarifa minorista |
 | gaia.imagery.read@v1 | imagery (Imágenes satelitales) | s2-l2a-01 + lat/lon del comprador (5 puntos de muestra) | cualquier coordenada terrestre; un píxel de 10–20 m de la última escena Sentinel-2 L2A sin nubes; leer los índices con la clase de escena; contiene datos Copernicus Sentinel modificados |
+| gaia.river.forecast.read@v1 | river_forecast (Previsión del nivel de los ríos) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | device_id anclado por el operador; LIVE solo con provenance source |
 
 GAIA plumbing (no es un pin del mapa)
 
@@ -216,7 +232,7 @@ Composites ATLAS (atlas.modelmarket.dev) — artefactos de decisión de pago.
 | atlas.field.posterior@v1 | 0.08 | posterior GP espacial del snapshot LIVE; interpola ahora, no un pronóstico |
 | atlas.field.shape@v1 | 0.06 | persistencia H0 de pines in-situ LIVE; no Betti-1; no un AQI |
 
-Capas del mapa (49): weather=Clima; air=Aire; tide=Marea; river=Ríos; marine=Marino; ghg=GEI; grid=Red (carbono); quake=Sismos; energy=Energía; fire=Incendios; radiation=Radiación; jamming=Interferencia GNSS; gnss=Integridad GNSS; traffic=Tráfico edge; events=Eventos naturales; spacewx=Clima espacial; lightning=Rayos; alerts=Alertas; argo=Flotadores Argo; geomag=Geomagnetismo; iot=IoT edge; flood=Inundación; effis=Incendios EFFIS; volcano=Volcanes; ais=AIS público; tsunami=Alertas de tsunami; cyclone=Ciclones tropicales; adsb=ADS-B público; smoke=Humo; water_quality=Calidad del agua; dart=Boyas DART; precipitation=Precipitación; radar=Estado NEXRAD; atmosphere=Atmósfera; radnet=EPA RadNet; soil=Humedad del suelo; solar=Irradiación solar; snow=Manto de nieve; sea_ice=Hielo marino; land_temperature=Temperatura terrestre; aviation=METAR aviación; road=Clima vial; rail=Tráfico ferroviario; drought=Sequía; reservoir=Reservoirs; uv=UV forecast; power_price=Precio de la electricidad; imagery=Imágenes satelitales; actuator=Actuadores
+Capas del mapa (53): weather=Clima; air=Aire; tide=Marea; river=Ríos; river_forecast=Previsión del nivel de los ríos; marine=Marino; ghg=GEI; grid=Red (carbono); quake=Sismos; energy=Energía; fire=Incendios; radiation=Radiación; jamming=Interferencia GNSS; gnss=Integridad GNSS; traffic=Tráfico edge; events=Eventos naturales; spacewx=Clima espacial; lightning=Rayos; alerts=Alertas; argo=Flotadores Argo; geomag=Geomagnetismo; iot=IoT edge; flood=Inundación; effis=Incendios EFFIS; volcano=Volcanes; ais=AIS público; tsunami=Alertas de tsunami; cyclone=Ciclones tropicales; adsb=ADS-B público; smoke=Humo; water_quality=Calidad del agua; groundwater=Aguas subterráneas; dart=Boyas DART; precipitation=Precipitación; radar=Estado NEXRAD; atmosphere=Atmósfera; radnet=EPA RadNet; soil=Humedad del suelo; solar=Irradiación solar; snow=Manto de nieve; sea_ice=Hielo marino; land_temperature=Temperatura terrestre; aviation=METAR aviación; road=Clima vial; rail=Tráfico ferroviario; drought=Sequía; reservoir=Reservoirs; uv=UV forecast; road_events=Avisos viales; aviation_hazards=Pronósticos de riesgos aéreos; power_price=Precio de la electricidad; imagery=Imágenes satelitales; actuator=Actuadores
 
 <!-- END GENERATED physical-capabilities -->
 

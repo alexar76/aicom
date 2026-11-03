@@ -94,8 +94,8 @@ _EN_UI: dict[str, str] = {
     "course_source_github": "Source on GitHub",
     "course_what_you_build": "What you build",
     "course_labs_para": (
-        "Hands-on Python labs wired to the live AIMarket ecosystem — oracles, Hub, WARDEN, "
-        "or factory APIs. Includes graded exercises, Colab notebooks, and a certificate."
+        "Hands-on Python labs with local implementations, fixtures, or live checks where indicated. "
+        "Includes graded exercises, Colab notebooks, and a certificate."
     ),
     "course_also_explore": "Also explore",
     "course_dev_guides": "Developer guides",
@@ -105,9 +105,9 @@ _EN_UI: dict[str, str] = {
     "course_hub_eyebrow": "{n} academies · EN / RU / ES / FR / ZH · Colab",
     "course_hub_h1": "Learn the agent economy hands-on",
     "course_hub_lede": (
-        "Python courses with live labs on real AIMarket infrastructure — GAIA/ATLAS "
-        "sensors, Hub federation, hybrid signatures (PQC), oracles, MCP security, "
-        "USDC payment channels, and 3D visualization."
+        "Python courses on GAIA/ATLAS sensors, Hub federation, hybrid signatures (PQC), "
+        "oracles, MCP security, payment rails, and 3D visualization. "
+        "Practice locally before trying the documented live checks."
     ),
     "course_hub_full_portal": "Full course portal ↗",
     "course_hub_school_clips": "School · 5-min clips",

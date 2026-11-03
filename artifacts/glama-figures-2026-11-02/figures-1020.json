@@ -1,0 +1,268 @@
+{
+ "top_hosts_by_changes": [
+  [
+   "gateway.pipeworx.io",
+   1864,
+   4257,
+   17.9
+  ],
+  [
+   "agent-observatory-sensor.nolimit-observatory.workers.dev",
+   2365,
+   2317,
+   9.7
+  ],
+  [
+   "package",
+   0,
+   2278,
+   9.6
+  ],
+  [
+   "tanod.dev",
+   17,
+   72,
+   0.3
+  ],
+  [
+   "app.daedalmap.com",
+   14,
+   63,
+   0.3
+  ],
+  [
+   "nova.civai.co",
+   22,
+   55,
+   0.2
+  ]
+ ],
+ "all": {
+  "changes": 23821,
+  "servers": 9472,
+  "full": 21902,
+  "kinds": {
+   "text": [
+    12422,
+    52.1
+   ],
+   "addrm": [
+    5466,
+    22.9
+   ],
+   "noise": [
+    2799,
+    11.8
+   ],
+   "names": [
+    1919,
+    8.1
+   ],
+   "output": [
+    701,
+    2.9
+   ],
+   "shape": [
+    514,
+    2.2
+   ]
+  },
+  "descriptions_only_tool": [
+   6317,
+   26.5
+  ],
+  "descriptions_only_tool_or_param": [
+   8181,
+   34.3
+  ],
+  "tool_description_touched": [
+   14164,
+   59.5
+  ],
+  "tool_or_param_description_touched": [
+   18130,
+   76.1
+  ],
+  "schema_pin_misses": [
+   7833,
+   35.8,
+   "of full-detail changes"
+  ],
+  "name_pin_misses": [
+   16436,
+   75.0
+  ],
+  "param_only_tool_edits": [
+   81654,
+   4400,
+   "tool edits, servers"
+  ],
+  "version_remote": {
+   "changes": 21543,
+   "serverInfo_both": 0,
+   "serverInfo_same": [
+    0,
+    null
+   ],
+   "registry_both": 0,
+   "registry_same": [
+    0,
+    null
+   ]
+  },
+  "version_package": {
+   "changes": 2278,
+   "serverInfo_both": 0,
+   "serverInfo_same": [
+    0,
+    null
+   ],
+   "registry_both": 0,
+   "registry_same": [
+    0,
+    null
+   ]
+  },
+  "servers_changed_once": [
+   5862,
+   9472
+  ],
+  "servers_7plus": [
+   848,
+   9542
+  ]
+ },
+ "without_two_operators": {
+  "changes": 17247,
+  "servers": 6753,
+  "full": 16122,
+  "kinds": {
+   "text": [
+    9139,
+    53.0
+   ],
+   "addrm": [
+    5462,
+    31.7
+   ],
+   "names": [
+    1125,
+    6.5
+   ],
+   "output": [
+    701,
+    4.1
+   ],
+   "shape": [
+    514,
+    3.0
+   ],
+   "noise": [
+    306,
+    1.8
+   ]
+  },
+  "descriptions_only_tool": [
+   3463,
+   20.1
+  ],
+  "descriptions_only_tool_or_param": [
+   5327,
+   30.9
+  ],
+  "tool_description_touched": [
+   10701,
+   62.0
+  ],
+  "tool_or_param_description_touched": [
+   12350,
+   71.6
+  ],
+  "schema_pin_misses": [
+   4618,
+   28.6,
+   "of full-detail changes"
+  ],
+  "name_pin_misses": [
+   10660,
+   66.1
+  ],
+  "param_only_tool_edits": [
+   9121,
+   1839,
+   "tool edits, servers"
+  ],
+  "version_remote": {
+   "changes": 14969,
+   "serverInfo_both": 0,
+   "serverInfo_same": [
+    0,
+    null
+   ],
+   "registry_both": 0,
+   "registry_same": [
+    0,
+    null
+   ]
+  },
+  "version_package": {
+   "changes": 2278,
+   "serverInfo_both": 0,
+   "serverInfo_same": [
+    0,
+    null
+   ],
+   "registry_both": 0,
+   "registry_same": [
+    0,
+    null
+   ]
+  },
+  "servers_changed_once": [
+   3532,
+   6753
+  ],
+  "servers_7plus": [
+   487,
+   5357
+  ]
+ },
+ "remote_cohort": {
+  "pinned_first_day": 10929,
+  "changed": [
+   4926,
+   45.1
+  ],
+  "changed_beyond_noise": [
+   4897,
+   44.8
+  ],
+  "added_or_removed_tool": 1237
+ },
+ "remote_cohort_without_two_operators": {
+  "pinned_first_day": 8571,
+  "changed": [
+   2609,
+   30.4
+  ],
+  "changed_beyond_noise": [
+   2580,
+   30.1
+  ],
+  "added_or_removed_tool": 1237
+ },
+ "first_day": "2026-09-24T23:59:59Z",
+ "big_operator_endpoints": {
+  "gateway.pipeworx.io": 1864,
+  "agent-observatory-sensor.nolimit-observatory.workers.dev": 2365
+ },
+ "extras_changes": {
+  "changes": 1,
+  "servers": 1,
+  "from": "",
+  "until": "",
+  "escalations": 0,
+  "escalation_servers": 0,
+  "escalation_sample": null
+ }
+}

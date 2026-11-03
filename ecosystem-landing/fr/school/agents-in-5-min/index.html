@@ -81,7 +81,7 @@
         <h2>4. Votre agent, en direct</h2>
         <p style="color:var(--muted);margin:0 0 10px;font-size:0.92rem">Claude Code — une commande :</p>
         <div class="copy-row"><pre id="agent-cmd">claude mcp add --transport http aimarket https://modelmarket.dev/mcp</pre><button class="btn btn-ghost" type="button" id="copy-cmd">Copier</button></div>
-        <p class="note">Cursor, VS Code, Claude Desktop et claude.ai : la ligne pour chacun est sur la page de la clé. Les premiers appels payants de chaque heure sont gratuits ; ensuite, une clé paie chaque appel depuis un solde USDC prépayé.</p>
+        <p class="note">La page de la clé explique la configuration des clients. Vérifiez les conditions de l’essai en vigueur. Une clé approvisionnée règle les appels éligibles sur le crédit du Hub.</p>
         <div class="ctas"><a class="btn btn-primary" href="https://modelmarket.dev/start?lang=fr" target="_blank" rel="noopener">Obtenir une clé ↗</a></div>
       </div>
     </div>
@@ -99,7 +99,7 @@
   </span>
 </div></footer>
 <script>
-window.SCHOOL_I18N = {"running": "Exécution…", "demo_failed": "Le navigateur a bloqué l'appel live (cross-origin).", "demo_failed_hint": "Ouvrez le notebook Colab ci-dessous — les mêmes appels y fonctionnent.", "pay_402": "402 Payment Required — la réponse liste les moyens de payer. Le plus simple : une clé de modelmarket.dev/start, payée depuis un solde prépayé.", "pay_ok": "servi gratuitement (appels d'essai) — une fois épuisés, une clé paie depuis un solde prépayé", "pay_refused": "le hub a refusé cet appel — voir la réponse", "pay_ways": "Moyens de payer :", "copied": "Copié"};
+window.SCHOOL_I18N = {"running": "Exécution…", "demo_failed": "Le navigateur a bloqué l'appel live (cross-origin).", "demo_failed_hint": "Ouvrez le notebook Colab ci-dessous — les mêmes appels y fonctionnent.", "pay_402": "402 Payment Required — la réponse liste les moyens de payer. Le plus simple : une clé de modelmarket.dev/start, payée depuis un solde prépayé.", "pay_ok": "Appel traité sans paiement.", "pay_refused": "le hub a refusé cet appel — voir la réponse", "pay_ways": "Moyens de payer :", "copied": "Copié"};
 
 const HUB = "https://modelmarket.dev";
 const HUB_PROXY = "/hub";
@@ -151,12 +151,11 @@ async function schoolDemo(kind, outEl) {
       const t = await r.text();
       let d = {};
       try { d = JSON.parse(t); } catch (e) { d = {}; }
-      // Say which branch the learner is looking at. A 402 names every way to pay;
-      // the key comes first because it is the one a newcomer can use from here.
+      // Distinguish a successful unpaid call from a payment challenge or other error.
       const note = r.status === 402
         ? schoolText('pay_402', '402 Payment Required — the body lists the ways to pay.')
         : (r.status < 300
-            ? schoolText('pay_ok', 'served free (trial allowance)')
+            ? schoolText('pay_ok', 'served without payment')
             : schoolText('pay_refused', 'the hub refused this call — see the body'));
       const ways = (d.payment_ways || []).slice().sort((a, b) =>
         (a.rail === 'credits' ? -1 : 0) - (b.rail === 'credits' ? -1 : 0));
@@ -212,11 +211,15 @@ async function schoolDemo(kind, outEl) {
         fetch('https://atlas.modelmarket.dev/health').then(r => r.json())
       ]);
       const reading = (inv.output || {}).reading || {};
+      const attestation = (inv.output || {}).attestation || {};
+      if (!inv.ok || !reading.device_id || !attestation.algorithm) {
+        throw new Error('GAIA did not return an attested reading.');
+      }
       outEl.textContent = [
         `GAIA devices=${gh.devices} sim_control=${gh.sim_control}`,
-        `LIVE pin ${reading.device_id} · ${reading.model}`,
+        `relay ${reading.device_id} · ${reading.model}`,
         `values ${JSON.stringify(reading.values || {})}`,
-        `attestation ${(inv.output || {}).attestation?.algorithm || '—'}`,
+        `attestation ${attestation.algorithm}`,
         `ATLAS stations=${ah.stations} gaia=${ah.gaia}`
       ].join('\n');
     } else if (kind === 'federation_peers') {
@@ -225,13 +228,17 @@ async function schoolDemo(kind, outEl) {
         hubFetch('/ai-market/v2/federation/peers').then(r => r.json())
       ]);
       const peers = peersBody.peers || [];
+      const pending = peersBody.pending || [];
       outEl.textContent = [
         `hub ${wk.name} · federated ${wk.federated_capabilities_count}`,
         `peers ${peers.length}`,
         ...peers.slice(0, 6).map(p => {
           const d = p.declared || {};
           return `  ${p.url}\n    status=${p.status} caps=${p.capabilities_count} trust=${p.trust_score}\n    declared=${d.id || '—'}`;
-        })
+        }),
+        `public pending ${pending.length}`,
+        ...pending.slice(0, 6).map(p =>
+          `  ${p.name || p.url}\n    declared=${p.declared_capabilities} preview=${p.preview_capabilities}`)
       ].join('\n');
     } else if (kind === 'hybrid_seal') {
       const wk = await hubFetch('/.well-known/ai-market.json').then(r => r.json());
@@ -241,7 +248,7 @@ async function schoolDemo(kind, outEl) {
         `classical ${sig.algorithm} pk=${(sig.public_key || '').slice(0, 24)}…`,
         `pq ${sig.pq_algorithm} pq_value=${!!sig.pq_value}`,
         `hybrid_envelope ${hybrid}`,
-        hybrid ? 'gate: accept dual orbits' : 'gate: refuse — missing orbit'
+        'Shape check only. The Academy verifies both signatures.'
       ].join('\n');
     } else {
       outEl.textContent = 'Unknown demo: ' + kind;

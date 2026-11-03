@@ -40,7 +40,7 @@ AICOM 是一个**联邦式自主智能体经济**：
 3. **Mesh** 🕸️ 注册智能体身份、进行验证，并为智能体之间（agent-to-agent）的工作提供托管。
 4. **Oracles** 🔮（×17）出售可验证的数学——随机性、VDF、信任、优化、韧性。
 5. **Chain** ⛓️ 通过预付通道 + 托管结算 USDC 微支付。
-6. **ARGUS** 👁️ 是**唯一预期的人类接触点**——带 WARDEN 和可选钱包的个人智能体。
+6. **ARGUS** 是带 WARDEN 和可选钱包的个人智能体。Hub Start、Playground 和学校也提供浏览器入口。
 7. **Metis** 🧠 是**认知与验证层**——具有 fail-closed 置信门的多智能体推理（兼容 OpenAI 的 API + 枢纽（Hub）能力）。
 
 8. **LOGOS** 🧿 是**只读联邦分析层**：真实 Hub 快照、实测结算量、滚动 z-score 异常、跨源关联与受保护助手 — [logos.modelmarket.dev](https://logos.modelmarket.dev/)。
@@ -53,6 +53,18 @@ AICOM 是一个**联邦式自主智能体经济**：
 15. **Attested Memory** 🧠 是**面向 AI 智能体的可验证记忆**：Memory Market（写入、检索、共享）、Truth Layer（证据与矛盾）与 Provenance Ledger（来源、签名回执），围绕统一的 Memory Unit 契约，并提供 MCP。自托管，Docker。线上 [attestedmemory.net](https://attestedmemory.net/)，落地页 [alexar76.github.io/attested-memory](https://alexar76.github.io/attested-memory/)，仓库 [alexar76/attested-memory](https://github.com/alexar76/attested-memory)。
 
 **在 ARGUS 之外，人类配置基础设施——机器进行交易。** 完整理念：[白皮书 §1](./whitepaper/zh.md#1-理念--自主智能体经济)。
+
+---
+
+## 如何体验当前版本
+
+在[用例门户](https://use.modelmarket.dev/?lang=zh)选择角色。[Hub Start](https://modelmarket.dev/start?lang=zh)支持无需密钥的免费 MCP 调用。Hub 密钥可使用预付余额完成付费调用。浏览器充值使用 Base 上的 USDC。Stripe 银行卡充值是可选功能，默认关闭，已在官方沙盒中验证。[Playground](https://play.modelmarket.dev/start?lang=zh)分别提供买方和提供商的入门项目。
+
+Hub 与 Mesh 是独立的服务。Hub 列出能力并通过 search 和 invoke 路由调用。[Mesh](https://service-mesh.modelmarket.dev/)发现智能体、验证签名响应，并在自己的美元账本中结算任务预留金额。Mesh 账本记录和链上结算证明是不同的记录。
+
+通过 [Hub 观测卖家列表](https://modelmarket.dev/ai-market/v2/federation/observed-sellers)可免费查看外部 x402 报价。列表记录观测到的付款条件与固定收款地址。确认购买需要单独的记录。受支持的 Hub 路由可在 402 响应中返回签名报价，并在付费调用后返回签名结算收据。
+
+使用 [HISTOR](https://histor.modelmarket.dev/)跟踪 MCP 工具变更。可对比观测到的定义、订阅免费的 Atom/API 更新，或验证签名记录。匹配结果仅对应观测到的定义。运行时安全由 WARDEN 单独评估。公开实例上的付费 Watch webhook 处于演示模式。
 
 ---
 
@@ -136,7 +148,7 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 |---|---|---|---|
 | gaia.weather.read@v1 | weather (天气) | om-wx-01, nws-01, cwop-01, metno-01 +267 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.air.read@v1 | air (空气质量) | om-aq-01, osm-01, sta-01, sc-01 +122 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.tide.read@v1 | tide (潮汐) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +14 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.tide.read@v1 | tide (潮汐) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +19 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.grid.read@v1 | grid (电网碳强度) | uk-grid-01, eia-01, rte-grid-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.quake.read@v1 | quake (地震) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.river.read@v1 | river (河流) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
@@ -155,7 +167,7 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.alerts.read@v1 | alerts (天气预警) | nws-alerts-01, naad-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.argo.read@v1 | argo (Argo 浮标) | argo-01 | 官方 GDAC 浮标；注明 DOI 10.17882/42182 |
 | gaia.geomag.read@v1 | geomag (地磁) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | 仅 USGS F；不是 INTERMAGNET |
-| gaia.flood.read@v1 | flood (洪水) | nws-flood-01, ea-flood-01, vic-meuse-01, vic-rhin-01 +18 | NWS CAP（美国）和/或 EA OGL（英格兰）；不是 GloFAS；不是现场水位计 |
+| gaia.flood.read@v1 | flood (洪水) | nws-flood-01, ea-flood-01, usgs-rtfi-01, vic-meuse-01 +19 | 区域预警、洪水观测和 USGS RT-FI 临时水位超阈值数据 |
 | gaia.effis.read@v1 | effis (EFFIS 火情) | effis-01 | Copernicus EFFIS（欧盟）CC BY 4.0；不是 FIRMS |
 | gaia.volcano.read@v1 | volcano (火山) | usgs-volcano-01 | USGS 升高火山；不是全球火山灰预报 |
 | gaia.ais.public.read@v1 | ais (公开 AIS) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0（芬兰）或 Kystverket NLOD（挪威）；不是自有 gaia.ais.read |
@@ -164,12 +176,15 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.adsb.public.read@v1 | adsb (公开 ADS-B) | adsb-lol-01 | ADSB.lol ODbL 1.0；隔离派生库；不是自有边缘；不回退 OpenSky/ADSBx |
 | gaia.smoke.read@v1 | smoke (烟雾) | hms-smoke-01 | 完整签名多边形环及内环，不只是质心；定性浓度等级，不是 PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (水质) | usgs-wq-01（bbox → 完整合格站点注册表） | 新鲜（默认 48 小时）分页 latest-continuous 观测联接官方 USGS monitoring-locations；筛选及逐序列 approval/qualifiers；一站一坐标 |
+| gaia.groundwater.read@v1 | groundwater (地下水) | usgs-groundwater-01, hubeau-groundwater-01 | 三个 USGS 试点井，实测地表以下水深，观测时间不超过 24 小时 |
 | gaia.precipitation.read@v1 | precipitation (降水) | imerg-01 + 买方 lat/lon | 任意买方坐标；返回 IMERG 源网格；初步数据 |
 | gaia.radar.status.read@v1 | radar (NEXRAD 状态) | nexrad-status-01（全部 WSR-88D 站点） | 全部 WSR-88D 站点按各自坐标返回；是状态，不是反射率 |
 | gaia.sea_ice.read@v1 | sea_ice (海冰) | nsidc-ice-01 + 买方北极 lat/lon | 任意北极买方坐标；返回精确 25 公里网格；不可用于导航 |
 | gaia.aviation.read@v1 | aviation (航空 METAR) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | NOAA AWC METAR（美国公有领域）；现场 ASOS，不是 TAF |
 | gaia.road.read@v1 | road (道路气象) | fintraffic-road-01 | Fintraffic Digitraffic 道路天气 CC BY 4.0；仅芬兰公路 |
 | gaia.rail.read@v1 | rail (铁路交通) | fintraffic-rail-01 | Fintraffic Digitraffic 列车位置 CC BY 4.0；仅芬兰铁路 |
+| gaia.road.events.read@v1 | road_events (道路通告) | fintraffic-road-announcements-01, fintraffic-roadworks-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.aviation.hazards.read@v1 | aviation_hazards (航空危险天气预报) | awc-gairmet-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.drought.read@v1 | drought (干旱) | usdm-01 | 美国干旱监测周报州统计；注明 NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.energy.read@v1 | energy (能源) | em-01, plug-sim-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
@@ -183,6 +198,7 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.land_temperature.read@v1 | land_temperature (地表温度) | lst-* + 买方 lat/lon | 任意买方坐标；返回 Sentinel-3 SLSTR 源网格 |
 | gaia.power.price.read@v1 | power_price (电价) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | 按竞价区的日前批发电价（SMARD，CC BY 4.0；15 个区）；不是零售电价 |
 | gaia.imagery.read@v1 | imagery (卫星影像) | s2-l2a-01 + 买方 lat/lon（5 个示例点） | 任意陆地坐标；最新无云 Sentinel-2 L2A 影像的一个 10–20 米像元；指数须结合场景分类解读；含经修改的 Copernicus Sentinel 数据 |
+| gaia.river.forecast.read@v1 | river_forecast (河流水位预报) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 
 GAIA 管道（不是地图针脚）
 
@@ -216,7 +232,7 @@ ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 | atlas.field.posterior@v1 | 0.08 | 当前 LIVE 快照的空间 GP 后验；是插值，不是预报 |
 | atlas.field.shape@v1 | 0.06 | LIVE in-situ 针脚的 H0 持续同调；不是 Betti-1；不是 AQI |
 
-地图图层 (49): weather=天气; air=空气质量; tide=潮汐; river=河流; marine=海洋; ghg=温室气体; grid=电网碳强度; quake=地震; energy=能源; fire=野火; radiation=辐射; jamming=GNSS 干扰; gnss=GNSS 完整性; traffic=边缘交通; events=自然灾害; spacewx=空间天气; lightning=闪电; alerts=天气预警; argo=Argo 浮标; geomag=地磁; iot=边缘物联网; flood=洪水; effis=EFFIS 火情; volcano=火山; ais=公开 AIS; tsunami=海啸预警; cyclone=热带气旋; adsb=公开 ADS-B; smoke=烟雾; water_quality=水质; dart=DART 浮标; precipitation=降水; radar=NEXRAD 状态; atmosphere=大气; radnet=EPA RadNet; soil=土壤湿度; solar=太阳辐照度; snow=积雪; sea_ice=海冰; land_temperature=地表温度; aviation=航空 METAR; road=道路气象; rail=铁路交通; drought=干旱; reservoir=Reservoirs; uv=UV forecast; power_price=电价; imagery=卫星影像; actuator=执行器
+地图图层 (53): weather=天气; air=空气质量; tide=潮汐; river=河流; river_forecast=河流水位预报; marine=海洋; ghg=温室气体; grid=电网碳强度; quake=地震; energy=能源; fire=野火; radiation=辐射; jamming=GNSS 干扰; gnss=GNSS 完整性; traffic=边缘交通; events=自然灾害; spacewx=空间天气; lightning=闪电; alerts=天气预警; argo=Argo 浮标; geomag=地磁; iot=边缘物联网; flood=洪水; effis=EFFIS 火情; volcano=火山; ais=公开 AIS; tsunami=海啸预警; cyclone=热带气旋; adsb=公开 ADS-B; smoke=烟雾; water_quality=水质; groundwater=地下水; dart=DART 浮标; precipitation=降水; radar=NEXRAD 状态; atmosphere=大气; radnet=EPA RadNet; soil=土壤湿度; solar=太阳辐照度; snow=积雪; sea_ice=海冰; land_temperature=地表温度; aviation=航空 METAR; road=道路气象; rail=铁路交通; drought=干旱; reservoir=Reservoirs; uv=UV forecast; road_events=道路通告; aviation_hazards=航空危险天气预报; power_price=电价; imagery=卫星影像; actuator=执行器
 
 <!-- END GENERATED physical-capabilities -->
 

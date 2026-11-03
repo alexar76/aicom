@@ -167,7 +167,7 @@
       "paragraphs": [
         "**AI-Factory** — самостоятельно размещаемый MIT-пайплайн: один промпт → ТЗ → код → QA/E2E → безопасность → деплой → опциональная витрина. Тринадцать агентов: Analyst, PM, Methodologist, Architect, Design Critic, Developer, Hardening, QA, Security, DevOps, Marketing, Sales, Evolution Analyst.",
         "Операторы используют **Админ-панель** `/admin`. Витрина (`/`) — отфильтрованный каталог; **Pipeline** — источник правды для каждого `prod-…`. Discovery автономно находит рыночные сигналы.",
-        "**Killer feature — Auto-Mesh Pipeline:** Factory находит агентов маркетплейса, финансирует USDT-канал, вызывает последовательно и шипит связанный продукт."
+        "Factory использует внутренних агентов по ролям. Опциональная диагностика через маркетплейс может купить консультацию в пределах бюджета для устойчивой ошибки QA и передать её внутреннему разработчику. У отдельного сервиса задач Auto-Mesh собственный API. [Разделение сервисов](https://github.com/alexar76/aicom/blob/main/docs/killer-feature-auto-mesh-pipeline.md)."
       ],
       "cards": [
         {
@@ -216,11 +216,11 @@
       "lead": "Протокольный маркетплейс, где ни одна центральная платформа не владеет каталогом или денежным потоком.",
       "paragraphs": [
         "**AIMarket Hub** федеративно объединяет каталоги capabilities, маршрутизирует invoke и запускает 15 плагинов: safety, TEE, reputation, provenance, channels, auction, orchestrator, data-cap, dataset, MCP packager, NFT, personas, promo, streaming, ZK.",
-        "**Protocol v2:** Discover → Open channel (USDC на Base) → Invoke с `X-Payment-Channel` → Plugin hooks → Close/settle.",
+        "Бесплатные MCP-вызовы работают без ключа. Платные используют предоплаченный баланс Hub, прямой x402-платёж продавцу или пополненный канал эскроу в зависимости от предложения и настроек Hub. Перед оплатой проверьте условия в ответе HTTP 402. [Начать в Hub](https://modelmarket.dev/start?lang=ru).",
         "Четыре SDK: Python, TypeScript, Rust, Dart. Виджет — discover + pay + invoke одним `<script>`."
       ],
       "diagram": "invoke",
-      "diagramCaption": "Рис. 3.1 — Жизненный цикл invoke: discover, канал, invoke, Ed25519 receipt, settle USDC.",
+      "diagramCaption": "На схеме показан вызов через канал эскроу. Кредиты и x402 используют другие механизмы.",
       "table": {
         "headers": [
           "Плагин",
@@ -339,7 +339,8 @@
       "paragraphs": [
         "**ARGUS-3** — персональный супер-агент: любой LLM, локальный или облачный, с MCP-файрволом **WARDEN**. Крипто **выключена по умолчанию**.",
         "Установка: `curl -fsSL https://magic-ai-factory.com/install | bash`. Продажа capabilities: `argus economy register` + `argus serve` → листинг на Hub → USDC.",
-        "Руководства пользователя на **20 языках**. Руководства разработчика на **20 языках**."
+        "Руководства пользователя на **20 языках**. Руководства разработчика на **20 языках**.",
+        "HISTOR отслеживает изменения объявленных определений инструментов MCP. Подписанные записи позволяют подтвердить наблюдение. При использовании инструмента WARDEN выполняет отдельные проверки. [HISTOR](https://histor.modelmarket.dev/)."
       ],
       "cards": [
         {
@@ -468,9 +469,8 @@
       "title": "Глава VIII — Нейронная сеть (Mesh)",
       "lead": "Обнаружение, верификация и эскроу между агентами — невидимая нервная система.",
       "paragraphs": [
-        "**AI Service Mesh** (порт 8090): регистрация идентичностей, верификация capabilities, эскроу между агентами. Включён в `deploy_ecosystem.sh`.",
-        "Демо: `python scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083`.",
-        "Модель доверия: византийские хабы/агенты допускаются через федеративные подписанные манифесты, залоговую репутацию, некастодиальные каналы и Ed25519-артефакты оракулов."
+        "**AI Service Mesh** (порт API 8090) регистрирует агентов, подбирает кандидата для задачи, проверяет подписанный ответ и закрывает резерв задачи в собственном реестре в долларах США. Этот реестр отделён от платежей Hub и расчётов в Base.",
+        "В API Mesh используйте токен задач для `POST /v1/tasks` и токен администратора для `POST /v1/agents`. Задачу и её события можно проверить через API. [Панель Mesh](https://service-mesh.modelmarket.dev/)."
       ]
     },
     {

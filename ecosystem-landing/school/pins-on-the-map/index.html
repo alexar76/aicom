@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pins on the Live Map — AIMarket School</title>
-<meta name="description" content="Probe GAIA LIVE relays and ATLAS nearest pin — honesty, not vibes." />
+<meta name="description" content="Read a signed GAIA weather relay and inspect its source on ATLAS." />
 <link rel="canonical" href="https://edu.modelmarket.dev/pins-on-the-map/" />
 <link rel="alternate" hreflang="en" href="https://edu.modelmarket.dev/pins-on-the-map/" />
 <link rel="alternate" hreflang="ru" href="https://edu.modelmarket.dev/ru/pins-on-the-map/" />
@@ -16,13 +16,13 @@
 <meta property="og:site_name" content="AIMarket School" />
 <meta property="og:locale" content="en" />
 <meta property="og:title" content="Pins on the Live Map — AIMarket School" />
-<meta property="og:description" content="Probe GAIA LIVE relays and ATLAS nearest pin — honesty, not vibes." />
+<meta property="og:description" content="Read a signed GAIA weather relay and inspect its source on ATLAS." />
 <meta property="og:url" content="https://edu.modelmarket.dev/pins-on-the-map/" />
 <meta property="og:image" content="https://modeldev.modelmarket.dev/school/og/pins-on-the-map.png" />
 <meta property="og:image:alt" content="Pins on the Live Map — AIMarket School" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Pins on the Live Map — AIMarket School" />
-<meta name="twitter:description" content="Probe GAIA LIVE relays and ATLAS nearest pin — honesty, not vibes." />
+<meta name="twitter:description" content="Read a signed GAIA weather relay and inspect its source on ATLAS." />
 <meta name="twitter:image" content="https://modeldev.modelmarket.dev/school/og/pins-on-the-map.png" />
 <link href="../../fonts/fonts.css" rel="stylesheet" />
 <link rel="stylesheet" href="../school.css" />
@@ -44,7 +44,7 @@
 <div class="wrap section lesson-hero">
   <p class="eyebrow">Lesson 11 · ~5 min · free</p>
   <h1>Pins on the Live Map</h1>
-  <p class="lede" style="color:var(--muted);max-width:46ch">Probe GAIA LIVE relays and ATLAS nearest pin — honesty, not vibes.</p>
+  <p class="lede" style="color:var(--muted);max-width:46ch">Read a signed GAIA weather relay and inspect its source on ATLAS.</p>
   <div class="layout">
     <div>
       <div class="reel" id="reel">
@@ -66,7 +66,7 @@
         <h2>2. Try it live</h2>
         <p style="color:var(--muted);margin:0 0 10px;font-size:0.92rem">Read a LIVE weather pin</p>
         <button class="btn btn-hot" type="button" id="run-demo">Read a LIVE weather pin</button>
-        <pre id="demo-out">Output lands here.</pre>
+        <pre id="demo-out">Output lands here.</pre><p class="note">The weather example is an Open-Meteo relay. The attestation identifies the signed relay reading. Check the ATLAS station’s source and coverage separately.</p>
       </div>
       <div class="panel">
         <h2>3. Open Colab · go deeper</h2>
@@ -92,7 +92,7 @@
   </span>
 </div></footer>
 <script>
-window.SCHOOL_I18N = {"running": "Running…", "demo_failed": "Live hub bridge unavailable on this host.", "demo_failed_hint": "Open the Colab notebook below — the same calls run there against modelmarket.dev.", "pay_402": "402 Payment Required — the body lists the ways to pay. Easiest: one key from modelmarket.dev/start, paid from a prepaid balance.", "pay_ok": "served free (trial allowance) — once it is spent, one key pays from a prepaid balance", "pay_refused": "the hub refused this call — see the body", "pay_ways": "Ways to pay:", "copied": "Copied"};
+window.SCHOOL_I18N = {"running": "Running…", "demo_failed": "Live hub bridge unavailable on this host.", "demo_failed_hint": "Open the Colab notebook below — the same calls run there against modelmarket.dev.", "pay_402": "402 Payment Required — the body lists the ways to pay. Easiest: one key from modelmarket.dev/start, paid from a prepaid balance.", "pay_ok": "Served without payment.", "pay_refused": "the hub refused this call — see the body", "pay_ways": "Ways to pay:", "copied": "Copied"};
 
 const HUB = "https://modelmarket.dev";
 const HUB_PROXY = "/hub";
@@ -144,12 +144,11 @@ async function schoolDemo(kind, outEl) {
       const t = await r.text();
       let d = {};
       try { d = JSON.parse(t); } catch (e) { d = {}; }
-      // Say which branch the learner is looking at. A 402 names every way to pay;
-      // the key comes first because it is the one a newcomer can use from here.
+      // Distinguish a successful unpaid call from a payment challenge or other error.
       const note = r.status === 402
         ? schoolText('pay_402', '402 Payment Required — the body lists the ways to pay.')
         : (r.status < 300
-            ? schoolText('pay_ok', 'served free (trial allowance)')
+            ? schoolText('pay_ok', 'served without payment')
             : schoolText('pay_refused', 'the hub refused this call — see the body'));
       const ways = (d.payment_ways || []).slice().sort((a, b) =>
         (a.rail === 'credits' ? -1 : 0) - (b.rail === 'credits' ? -1 : 0));
@@ -205,11 +204,15 @@ async function schoolDemo(kind, outEl) {
         fetch('https://atlas.modelmarket.dev/health').then(r => r.json())
       ]);
       const reading = (inv.output || {}).reading || {};
+      const attestation = (inv.output || {}).attestation || {};
+      if (!inv.ok || !reading.device_id || !attestation.algorithm) {
+        throw new Error('GAIA did not return an attested reading.');
+      }
       outEl.textContent = [
         `GAIA devices=${gh.devices} sim_control=${gh.sim_control}`,
-        `LIVE pin ${reading.device_id} · ${reading.model}`,
+        `relay ${reading.device_id} · ${reading.model}`,
         `values ${JSON.stringify(reading.values || {})}`,
-        `attestation ${(inv.output || {}).attestation?.algorithm || '—'}`,
+        `attestation ${attestation.algorithm}`,
         `ATLAS stations=${ah.stations} gaia=${ah.gaia}`
       ].join('\n');
     } else if (kind === 'federation_peers') {
@@ -218,13 +221,17 @@ async function schoolDemo(kind, outEl) {
         hubFetch('/ai-market/v2/federation/peers').then(r => r.json())
       ]);
       const peers = peersBody.peers || [];
+      const pending = peersBody.pending || [];
       outEl.textContent = [
         `hub ${wk.name} · federated ${wk.federated_capabilities_count}`,
         `peers ${peers.length}`,
         ...peers.slice(0, 6).map(p => {
           const d = p.declared || {};
           return `  ${p.url}\n    status=${p.status} caps=${p.capabilities_count} trust=${p.trust_score}\n    declared=${d.id || '—'}`;
-        })
+        }),
+        `public pending ${pending.length}`,
+        ...pending.slice(0, 6).map(p =>
+          `  ${p.name || p.url}\n    declared=${p.declared_capabilities} preview=${p.preview_capabilities}`)
       ].join('\n');
     } else if (kind === 'hybrid_seal') {
       const wk = await hubFetch('/.well-known/ai-market.json').then(r => r.json());
@@ -234,7 +241,7 @@ async function schoolDemo(kind, outEl) {
         `classical ${sig.algorithm} pk=${(sig.public_key || '').slice(0, 24)}…`,
         `pq ${sig.pq_algorithm} pq_value=${!!sig.pq_value}`,
         `hybrid_envelope ${hybrid}`,
-        hybrid ? 'gate: accept dual orbits' : 'gate: refuse — missing orbit'
+        'Shape check only. The Academy verifies both signatures.'
       ].join('\n');
     } else {
       outEl.textContent = 'Unknown demo: ' + kind;

@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>活地图上的针脚 — AIMarket School</title>
-<meta name="description" content="探测 GAIA LIVE 中继与 ATLAS 最近针脚 — 诚实，不要 vibe。" />
+<meta name="description" content="读取 GAIA 中继的签名天气数据，并在 ATLAS 中查看其来源。" />
 <link rel="canonical" href="https://edu.modelmarket.dev/zh/pins-on-the-map/" />
 <link rel="alternate" hreflang="en" href="https://edu.modelmarket.dev/pins-on-the-map/" />
 <link rel="alternate" hreflang="ru" href="https://edu.modelmarket.dev/ru/pins-on-the-map/" />
@@ -16,13 +16,13 @@
 <meta property="og:site_name" content="AIMarket School" />
 <meta property="og:locale" content="zh" />
 <meta property="og:title" content="活地图上的针脚 — AIMarket School" />
-<meta property="og:description" content="探测 GAIA LIVE 中继与 ATLAS 最近针脚 — 诚实，不要 vibe。" />
+<meta property="og:description" content="读取 GAIA 中继的签名天气数据，并在 ATLAS 中查看其来源。" />
 <meta property="og:url" content="https://edu.modelmarket.dev/zh/pins-on-the-map/" />
 <meta property="og:image" content="https://modeldev.modelmarket.dev/school/og/pins-on-the-map.png" />
 <meta property="og:image:alt" content="活地图上的针脚 — AIMarket School" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="活地图上的针脚 — AIMarket School" />
-<meta name="twitter:description" content="探测 GAIA LIVE 中继与 ATLAS 最近针脚 — 诚实，不要 vibe。" />
+<meta name="twitter:description" content="读取 GAIA 中继的签名天气数据，并在 ATLAS 中查看其来源。" />
 <meta name="twitter:image" content="https://modeldev.modelmarket.dev/school/og/pins-on-the-map.png" />
 <link href="../../../fonts/fonts.css" rel="stylesheet" />
 <link rel="stylesheet" href="../../../school/school.css" />
@@ -44,7 +44,7 @@
 <div class="wrap section lesson-hero">
   <p class="eyebrow">第 11 课 · 约 5 分钟 · 免费</p>
   <h1>活地图上的针脚</h1>
-  <p class="lede" style="color:var(--muted);max-width:46ch">探测 GAIA LIVE 中继与 ATLAS 最近针脚 — 诚实，不要 vibe。</p>
+  <p class="lede" style="color:var(--muted);max-width:46ch">读取 GAIA 中继的签名天气数据，并在 ATLAS 中查看其来源。</p>
   <div class="layout">
     <div>
       <div class="reel" id="reel">
@@ -66,7 +66,7 @@
         <h2>2. 现场试跑</h2>
         <p style="color:var(--muted);margin:0 0 10px;font-size:0.92rem">读取 LIVE 天气针脚</p>
         <button class="btn btn-hot" type="button" id="run-demo">读取 LIVE 天气针脚</button>
-        <pre id="demo-out">输出显示在这里。</pre>
+        <pre id="demo-out">输出显示在这里。</pre><p class="note">天气示例使用 Open-Meteo 中继。证明对应中继签名的读数。请单独核对 ATLAS 站点的数据源和覆盖范围。</p>
       </div>
       <div class="panel">
         <h2>3. Colab · 深入</h2>
@@ -92,7 +92,7 @@
   </span>
 </div></footer>
 <script>
-window.SCHOOL_I18N = {"running": "正在运行…", "demo_failed": "浏览器拦截了实时调用（跨域）。", "demo_failed_hint": "请打开下方的 Colab 笔记本 — 同样的调用在那里可用。", "pay_402": "402 Payment Required——响应列出了付款方式。最简单：在 modelmarket.dev/start 获取一个密钥，从预付余额付款。", "pay_ok": "已免费执行（试用额度）——用完后由一个密钥从预付余额付款", "pay_refused": "枢纽拒绝了这次调用——请查看响应", "pay_ways": "付款方式：", "copied": "已复制"};
+window.SCHOOL_I18N = {"running": "正在运行…", "demo_failed": "浏览器拦截了实时调用（跨域）。", "demo_failed_hint": "请打开下方的 Colab 笔记本 — 同样的调用在那里可用。", "pay_402": "402 Payment Required——响应列出了付款方式。最简单：在 modelmarket.dev/start 获取一个密钥，从预付余额付款。", "pay_ok": "调用已完成，未付款。", "pay_refused": "枢纽拒绝了这次调用——请查看响应", "pay_ways": "付款方式：", "copied": "已复制"};
 
 const HUB = "https://modelmarket.dev";
 const HUB_PROXY = "/hub";
@@ -144,12 +144,11 @@ async function schoolDemo(kind, outEl) {
       const t = await r.text();
       let d = {};
       try { d = JSON.parse(t); } catch (e) { d = {}; }
-      // Say which branch the learner is looking at. A 402 names every way to pay;
-      // the key comes first because it is the one a newcomer can use from here.
+      // Distinguish a successful unpaid call from a payment challenge or other error.
       const note = r.status === 402
         ? schoolText('pay_402', '402 Payment Required — the body lists the ways to pay.')
         : (r.status < 300
-            ? schoolText('pay_ok', 'served free (trial allowance)')
+            ? schoolText('pay_ok', 'served without payment')
             : schoolText('pay_refused', 'the hub refused this call — see the body'));
       const ways = (d.payment_ways || []).slice().sort((a, b) =>
         (a.rail === 'credits' ? -1 : 0) - (b.rail === 'credits' ? -1 : 0));
@@ -205,11 +204,15 @@ async function schoolDemo(kind, outEl) {
         fetch('https://atlas.modelmarket.dev/health').then(r => r.json())
       ]);
       const reading = (inv.output || {}).reading || {};
+      const attestation = (inv.output || {}).attestation || {};
+      if (!inv.ok || !reading.device_id || !attestation.algorithm) {
+        throw new Error('GAIA did not return an attested reading.');
+      }
       outEl.textContent = [
         `GAIA devices=${gh.devices} sim_control=${gh.sim_control}`,
-        `LIVE pin ${reading.device_id} · ${reading.model}`,
+        `relay ${reading.device_id} · ${reading.model}`,
         `values ${JSON.stringify(reading.values || {})}`,
-        `attestation ${(inv.output || {}).attestation?.algorithm || '—'}`,
+        `attestation ${attestation.algorithm}`,
         `ATLAS stations=${ah.stations} gaia=${ah.gaia}`
       ].join('\n');
     } else if (kind === 'federation_peers') {
@@ -218,13 +221,17 @@ async function schoolDemo(kind, outEl) {
         hubFetch('/ai-market/v2/federation/peers').then(r => r.json())
       ]);
       const peers = peersBody.peers || [];
+      const pending = peersBody.pending || [];
       outEl.textContent = [
         `hub ${wk.name} · federated ${wk.federated_capabilities_count}`,
         `peers ${peers.length}`,
         ...peers.slice(0, 6).map(p => {
           const d = p.declared || {};
           return `  ${p.url}\n    status=${p.status} caps=${p.capabilities_count} trust=${p.trust_score}\n    declared=${d.id || '—'}`;
-        })
+        }),
+        `public pending ${pending.length}`,
+        ...pending.slice(0, 6).map(p =>
+          `  ${p.name || p.url}\n    declared=${p.declared_capabilities} preview=${p.preview_capabilities}`)
       ].join('\n');
     } else if (kind === 'hybrid_seal') {
       const wk = await hubFetch('/.well-known/ai-market.json').then(r => r.json());
@@ -234,7 +241,7 @@ async function schoolDemo(kind, outEl) {
         `classical ${sig.algorithm} pk=${(sig.public_key || '').slice(0, 24)}…`,
         `pq ${sig.pq_algorithm} pq_value=${!!sig.pq_value}`,
         `hybrid_envelope ${hybrid}`,
-        hybrid ? 'gate: accept dual orbits' : 'gate: refuse — missing orbit'
+        'Shape check only. The Academy verifies both signatures.'
       ].join('\n');
     } else {
       outEl.textContent = 'Unknown demo: ' + kind;

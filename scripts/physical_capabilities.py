@@ -72,6 +72,13 @@ _HONEST: dict[str, dict[str, str]] = {
         "fr": "observations latest-continuous fraîches (48 h par défaut), paginées et jointes à USGS monitoring-locations ; filtres et approval/qualifiers ; une station = une coordonnée",
         "zh": "新鲜（默认 48 小时）分页 latest-continuous 观测联接官方 USGS monitoring-locations；筛选及逐序列 approval/qualifiers；一站一坐标",
     },
+    "gaia.groundwater.read@v1": {
+        "en": "three USGS pilot wells, measured depth below the local land surface, 24h maximum sample age",
+        "ru": "три пилотные скважины USGS, измеренная глубина от поверхности земли, давность до 24 ч",
+        "es": "tres pozos piloto de USGS, profundidad medida desde la superficie local, datos de hasta 24 h",
+        "fr": "trois puits pilotes de l’USGS, profondeur mesurée depuis le sol local, données de 24 h maximum",
+        "zh": "三个 USGS 试点井，实测地表以下水深，观测时间不超过 24 小时",
+    },
     "gaia.dart.read@v1": {
         "en": "all active stations in the NDBC directory; gauge, not a tsunami warning",
         "ru": "все активные станции каталога NDBC; уровнемер, не предупреждение о цунами",
@@ -157,11 +164,11 @@ _HONEST: dict[str, dict[str, str]] = {
         "zh": "GOES GLM（CONUS）；不是 Blitzortung",
     },
     "gaia.flood.read@v1": {
-        "en": "NWS CAP US and/or UK EA OGL England; not GloFAS; not an in-situ gauge",
-        "ru": "NWS CAP США и/или EA OGL Англия; не GloFAS; не in-situ уровнемер",
-        "es": "NWS CAP EE.UU. y/o EA OGL Inglaterra; no GloFAS; no un aforo in situ",
-        "fr": "NWS CAP USA et/ou EA OGL Angleterre; pas GloFAS; pas un limnimètre",
-        "zh": "NWS CAP（美国）和/或 EA OGL（英格兰）；不是 GloFAS；不是现场水位计",
+        "en": "regional alerts, observed flood products, and USGS RT-FI provisional gage threshold exceedances",
+        "ru": "региональные предупреждения, наблюдения затопления и предварительные превышения порогов USGS RT-FI",
+        "es": "alertas regionales, inundación observada y superaciones provisionales de umbrales USGS RT-FI",
+        "fr": "alertes régionales, inondation observée et dépassements provisoires de seuil USGS RT-FI",
+        "zh": "区域预警、洪水观测和 USGS RT-FI 临时水位超阈值数据",
     },
     "gaia.ais.read@v1": {
         "en": "own-edge feeder; not Fintraffic public AIS",
