@@ -45,6 +45,7 @@ from atlas.stations import LAYER_META, STATION_CATALOG  # noqa: E402
 # Hub'Eau / eHYD / SMHI MetObs show up instead of only the oldest four ids.
 _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
     "river": (
+        "chmi-river-",
         # P12: representative LIVE meshes added alongside the GAIA relay wave.
         # Keep these before the older groups: the legend takes one device per
         # prefix and must make the new map coverage visible in every locale.
@@ -90,7 +91,9 @@ _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
         "metno-",
         "cwop-",
     ),
-    "tide": ("ea-tide-", "uhslc-", "noaa-tide-", "coops-"),
+    "tide": ("geonet-coastal-", "ea-tide-", "uhslc-", "noaa-tide-", "coops-"),
+    "radiation": ("bfs-odl-", "safecast-"),
+    "rail": ("entur-rail-", "fintraffic-rail-"),
     "air": ("hk-aqhi-", "sg-psi-", "be-aq-", "aurn-", "openaq-", "om-aq-", "sc-", "osm-"),
     "marine": ("fmi-marine-", "cdip-", "ndbc-", "om-marine-"),
     "snow": ("snotel-", "snow-"),

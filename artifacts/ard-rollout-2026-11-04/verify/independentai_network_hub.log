@@ -1,0 +1,36 @@
+ok    GET /.well-known/ard.json -> 200
+ok    media type application/ard+json
+ok    cacheable: public, max-age=3600
+ok    4 manifest entries
+ok    Link rel=ard on HEAD /: ['<https://independentai.network/hub/.well-known/ard.json>; rel="ard"']
+note  no did:web document (404): entries expected unsigned
+ok    application/ai-registry+json: unsigned, as a hub without did:web must be
+ok    application/a2a-agent-card+json: digest = sha256 of the bytes at https://independentai.network/hub/.well-known/agent-card.json
+ok    application/a2a-agent-card+json: unsigned, as a hub without did:web must be
+ok    application/mcp-server-card+json: digest = sha256 of the bytes at https://independentai.network/hub/.well-known/mcp/server-card.json
+ok    application/mcp-server-card+json: unsigned, as a hub without did:web must be
+ok    application/json: unsigned, as a hub without did:web must be
+ok    POST /ard/v1/search -> 200
+note  search 'weather': 5 results
+note  result sources: {'https://iot.modelmarket.dev': 2, 'https://modelmarket.dev': 1, 'https://atlas.modelmarket.dev': 2}
+ok    result urn:air:iot.modelmarket.dev:gaia.gateway:gaia.weather.read@v score 98
+ok    result gaia.weather.read@v1: digest = sha256 of the bytes at https://independentai.network/hub/ard/v1/capability?product_id=gaia.ga
+ok    result gaia.weather.read@v1: unsigned, as a hub without did:web must be
+ok    result urn:air:modelmarket.dev:weather-witness:weather.witness@v1 score 98
+ok    result weather.witness@v1: digest = sha256 of the bytes at https://independentai.network/hub/ard/v1/capability?product_id=weather
+ok    result weather.witness@v1: unsigned, as a hub without did:web must be
+ok    result urn:air:atlas.modelmarket.dev:atlas.products:atlas.fire.weat score 98
+ok    result atlas.fire.weather@v1: digest = sha256 of the bytes at https://independentai.network/hub/ard/v1/capability?product_id=atlas.p
+ok    result atlas.fire.weather@v1: unsigned, as a hub without did:web must be
+ok    result urn:air:iot.modelmarket.dev:gaia.gateway:gaia.spacewx.read@v score 73
+ok    result gaia.spacewx.read@v1: digest = sha256 of the bytes at https://independentai.network/hub/ard/v1/capability?product_id=gaia.ga
+ok    result gaia.spacewx.read@v1: unsigned, as a hub without did:web must be
+ok    result urn:air:atlas.modelmarket.dev:atlas.products:atlas.pv.irradi score 72
+ok    result atlas.pv.irradiance.record@v1: digest = sha256 of the bytes at https://independentai.network/hub/ard/v1/capability?product_id=atlas.p
+ok    result atlas.pv.irradiance.record@v1: unsigned, as a hub without did:web must be
+ok    GET /ard/v1/agents -> 200
+ok    agents page 2 continues in identifier order
+ok    POST /ard/v1/explore -> 200: [{'value': 'iot.modelmarket.dev', 'count': 64}, {'value': 'oracles.modelmarket.dev', 'count': 42}, {'value': 'independentai.network', 'count': 31}]
+ok    unknown filter -> 400 problem details
+ok    health 200
+ALL OK https://independentai.network/hub

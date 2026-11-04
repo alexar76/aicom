@@ -1,0 +1,38 @@
+ok    GET /.well-known/ard.json -> 200
+ok    media type application/ard+json
+ok    cacheable: public, max-age=3600
+ok    4 manifest entries
+ok    Link rel=ard on HEAD /: ['<https://uni.modelmarket.dev/.well-known/ard.json>; rel="ard"']
+ok    did id did:web:uni.modelmarket.dev
+ok    application/ai-registry+json: this hub's own entry carries a trustManifest
+ok    application/ai-registry+json: trustManifest subject = entry coordinates
+ok    application/ai-registry+json: detached EdDSA JWS verifies under the live did:web key
+ok    application/a2a-agent-card+json: digest = sha256 of the bytes at https://uni.modelmarket.dev/.well-known/agent-card.json
+ok    application/a2a-agent-card+json: this hub's own entry carries a trustManifest
+ok    application/a2a-agent-card+json: trustManifest subject = entry coordinates
+ok    application/a2a-agent-card+json: detached EdDSA JWS verifies under the live did:web key
+ok    application/mcp-server-card+json: digest = sha256 of the bytes at https://uni.modelmarket.dev/.well-known/mcp/server-card.json
+ok    application/mcp-server-card+json: this hub's own entry carries a trustManifest
+ok    application/mcp-server-card+json: trustManifest subject = entry coordinates
+ok    application/mcp-server-card+json: detached EdDSA JWS verifies under the live did:web key
+ok    application/json: this hub's own entry carries a trustManifest
+ok    application/json: trustManifest subject = entry coordinates
+ok    application/json: detached EdDSA JWS verifies under the live did:web key
+ok    POST /ard/v1/search -> 200
+note  search 'weather': 3 results
+note  result sources: {'https://uni.modelmarket.dev/sat/stoicheion': 1, 'https://uni.modelmarket.dev/sat/horizon': 2}
+ok    result urn:air:uni.modelmarket.dev:stoicheion:units.convert@v1 score 70
+ok    result units.convert@v1: digest = sha256 of the bytes at https://uni.modelmarket.dev/ard/v1/capability?product_id=stoicheion&ca
+ok    result units.convert@v1: a peer's listing, unsigned (source https://uni.modelmarket.dev/sat/stoicheion)
+ok    result urn:air:uni.modelmarket.dev:horizon:sensor.dewpoint@v1 score 70
+ok    result sensor.dewpoint@v1: digest = sha256 of the bytes at https://uni.modelmarket.dev/ard/v1/capability?product_id=horizon&capab
+ok    result sensor.dewpoint@v1: a peer's listing, unsigned (source https://uni.modelmarket.dev/sat/horizon)
+ok    result urn:air:uni.modelmarket.dev:horizon:sensor.heat-index@v1 score 70
+ok    result sensor.heat-index@v1: digest = sha256 of the bytes at https://uni.modelmarket.dev/ard/v1/capability?product_id=horizon&capab
+ok    result sensor.heat-index@v1: a peer's listing, unsigned (source https://uni.modelmarket.dev/sat/horizon)
+ok    GET /ard/v1/agents -> 200
+ok    agents page 2 continues in identifier order
+ok    POST /ard/v1/explore -> 200: [{'value': 'uni.modelmarket.dev', 'count': 92}]
+ok    unknown filter -> 400 problem details
+ok    health 200
+ALL OK https://uni.modelmarket.dev

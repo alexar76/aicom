@@ -158,10 +158,10 @@ GAIA (iot.modelmarket.dev) — device_id-anchored, ~$0.002 unless noted.
 |---|---|---|---|
 | gaia.weather.read@v1 | weather (Weather) | om-wx-01, nws-01, cwop-01, metno-01 +267 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.air.read@v1 | air (Air quality) | om-aq-01, osm-01, sta-01, sc-01 +122 | operator-anchored device_id; LIVE only with provenance source |
-| gaia.tide.read@v1 | tide (Tide) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +19 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.tide.read@v1 | tide (Tide) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +24 | fixed coastal gauges include New Zealand GeoNet water height above each local pressure sensor |
 | gaia.grid.read@v1 | grid (Grid carbon) | uk-grid-01, eia-01, rte-grid-01 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.quake.read@v1 | quake (Earthquakes) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | operator-anchored device_id; LIVE only with provenance source |
-| gaia.river.read@v1 | river (Rivers) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.river.read@v1 | river (Rivers) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +166 | fixed river gauges include Czech ČHMÚ preliminary stage and discharge paired by observation time |
 | gaia.marine.read@v1 | marine (Marine) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +26 | includes six FMI Baltic buoys with measured waves and same-time water temperature when available |
 | gaia.ghg.read@v1 | ghg (Greenhouse gas) | icos-htm-01, icos-zsf-01, icos-lin-01 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.fire.read@v1 | fire (Wildfire) | firms-fire-01 | cite NASA FIRMS; not a fire perimeter |
@@ -192,7 +192,7 @@ GAIA (iot.modelmarket.dev) — device_id-anchored, ~$0.002 unless noted.
 | gaia.sea_ice.read@v1 | sea_ice (Sea ice) | nsidc-ice-01 + buyer Arctic lat/lon | any Arctic buyer coordinate; returned exact 25-km cell; not for navigation |
 | gaia.aviation.read@v1 | aviation (Aviation METAR) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | NOAA AWC METAR (U.S. PD); in-situ ASOS pin, not a TAF |
 | gaia.road.read@v1 | road (Road weather) | fintraffic-road-01 | Fintraffic Digitraffic road weather CC BY 4.0; Finnish roads only |
-| gaia.rail.read@v1 | rail (Rail traffic) | fintraffic-rail-01 | Fintraffic Digitraffic rail locations CC BY 4.0; Finnish rail only |
+| gaia.rail.read@v1 | rail (Rail traffic) | fintraffic-rail-01, entur-rail-vyg-01 | Finnish train locations from Fintraffic Digitraffic (CC BY 4.0) and Norwegian Vy positions from Entur (NLOD) |
 | gaia.road.events.read@v1 | road_events (Road notices) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 | Fintraffic notices and works plus NDW incidents and closures within published validity, with source geometry |
 | gaia.aviation.hazards.read@v1 | aviation_hazards (Aviation hazard forecasts) | awc-gairmet-01 | NOAA CONUS G-AIRMET forecast geometry, issue and valid times |
 | gaia.drought.read@v1 | drought (Drought) | usdm-01 | U.S. Drought Monitor weekly state stats; attribute NDMC/USDA/NOAA/NASA |
@@ -209,6 +209,10 @@ GAIA (iot.modelmarket.dev) — device_id-anchored, ~$0.002 unless noted.
 | gaia.power.price.read@v1 | power_price (Power price) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | wholesale day-ahead price per bidding zone (SMARD, CC BY 4.0; 15 zones); not a retail tariff |
 | gaia.imagery.read@v1 | imagery (Satellite imagery) | s2-l2a-01 + buyer lat/lon (5 showcase pins) | any land coordinate; one 10–20 m pixel of the latest cloud-free Sentinel-2 L2A scene; read indices with the scene class; contains modified Copernicus Sentinel data |
 | gaia.river.forecast.read@v1 | river_forecast (River forecasts) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | NOAA NWPS forecast peak among available samples in the next 72h, local gauge datum, issue and valid times |
+| gaia.radiation.ambient.read@v1 | radiation (Radiation) | bfs-odl-01 | German BfS hourly validated gamma dose rate in nSv/h at station coordinates, up to 2h old |
+| gaia.hf.absorption.read@v1 | hf_absorption (HF radio absorption) | swpc-drap-01 | NOAA SWPC D-RAP modeled HF frequency threshold at 1 dB, 8,100 native 2° × 4° cells and a map overview of 900 cell maxima |
+| gaia.ocean.observations.read@v1 | ocean_obs (Ocean observations) | smhi-ocean-flinten16-8m, smhi-ocean-flinten16-2m, smhi-ocean-flinten7-8m, smhi-ocean-kalmar2-0m | SMHI Swedish coastal measurements of currents, salinity and oxygen with station depth and observation time, up to 3h old |
+| gaia.smoke.forecast.read@v1 | smoke_forecast (Smoke forecast) | eccc-smoke-seattle, eccc-smoke-toronto, eccc-smoke-calgary | ECCC FireWork next-hour modelled PM2.5 within a smoke plume at three pilot cells, with run and valid times |
 
 GAIA plumbing (not a map pin)
 
@@ -242,7 +246,7 @@ ATLAS composites (atlas.modelmarket.dev) — billable decision artifacts.
 | atlas.field.posterior@v1 | 0.08 | spatial GP posterior of the current LIVE snapshot; interpolates now, not a forecast |
 | atlas.field.shape@v1 | 0.06 | H0 persistence of LIVE in-situ pins; not Betti-1; not an AQI |
 
-Map layers (53): weather=Weather; air=Air quality; tide=Tide; river=Rivers; river_forecast=River forecasts; marine=Marine; ghg=Greenhouse gas; grid=Grid carbon; quake=Earthquakes; energy=Energy; fire=Wildfire; radiation=Radiation; jamming=GNSS jamming; gnss=GNSS integrity; traffic=Edge traffic; events=Natural events; spacewx=Space weather; lightning=Lightning; alerts=Weather alerts; argo=Argo floats; geomag=Geomagnetism; iot=Edge IoT; flood=Flood; effis=EFFIS fires; volcano=Volcanoes; ais=Public AIS; tsunami=Tsunami alerts; cyclone=Tropical cyclones; adsb=Public ADS-B; smoke=Smoke; water_quality=Water quality; groundwater=Groundwater; dart=DART gauges; precipitation=Precipitation; radar=NEXRAD status; atmosphere=Atmosphere; radnet=EPA RadNet; soil=Soil moisture; solar=Solar irradiation; snow=Snowpack; sea_ice=Sea ice; land_temperature=Land temperature; aviation=Aviation METAR; road=Road weather; rail=Rail traffic; drought=Drought; reservoir=Reservoirs; uv=UV forecast; road_events=Road notices; aviation_hazards=Aviation hazard forecasts; power_price=Power price; imagery=Satellite imagery; actuator=Actuators
+Map layers (56): ocean_obs=Ocean observations; smoke_forecast=Smoke forecast; hf_absorption=HF radio absorption; weather=Weather; air=Air quality; tide=Tide; river=Rivers; river_forecast=River forecasts; marine=Marine; ghg=Greenhouse gas; grid=Grid carbon; quake=Earthquakes; energy=Energy; fire=Wildfire; radiation=Radiation; jamming=GNSS jamming; gnss=GNSS integrity; traffic=Edge traffic; events=Natural events; spacewx=Space weather; lightning=Lightning; alerts=Weather alerts; argo=Argo floats; geomag=Geomagnetism; iot=Edge IoT; flood=Flood; effis=EFFIS fires; volcano=Volcanoes; ais=Public AIS; tsunami=Tsunami alerts; cyclone=Tropical cyclones; adsb=Public ADS-B; smoke=Smoke; water_quality=Water quality; groundwater=Groundwater; dart=DART gauges; precipitation=Precipitation; radar=NEXRAD status; atmosphere=Atmosphere; radnet=EPA RadNet; soil=Soil moisture; solar=Solar irradiation; snow=Snowpack; sea_ice=Sea ice; land_temperature=Land temperature; aviation=Aviation METAR; road=Road weather; rail=Rail traffic; drought=Drought; reservoir=Reservoirs; uv=UV forecast; road_events=Road notices; aviation_hazards=Aviation hazard forecasts; power_price=Power price; imagery=Satellite imagery; actuator=Actuators
 
 <!-- END GENERATED physical-capabilities -->
 

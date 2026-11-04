@@ -1,0 +1,44 @@
+ok    GET /.well-known/ard.json -> 200
+ok    media type application/ard+json
+ok    cacheable: public, max-age=3600
+ok    4 manifest entries
+ok    Link rel=ard on HEAD /: ['<https://hub.attestedmemory.net/.well-known/ard.json>; rel="ard"']
+ok    did id did:web:hub.attestedmemory.net
+ok    application/ai-registry+json: this hub's own entry carries a trustManifest
+ok    application/ai-registry+json: trustManifest subject = entry coordinates
+ok    application/ai-registry+json: detached EdDSA JWS verifies under the live did:web key
+ok    application/a2a-agent-card+json: digest = sha256 of the bytes at https://hub.attestedmemory.net/.well-known/agent-card.json
+ok    application/a2a-agent-card+json: this hub's own entry carries a trustManifest
+ok    application/a2a-agent-card+json: trustManifest subject = entry coordinates
+ok    application/a2a-agent-card+json: detached EdDSA JWS verifies under the live did:web key
+ok    application/mcp-server-card+json: digest = sha256 of the bytes at https://hub.attestedmemory.net/.well-known/mcp/server-card.json
+ok    application/mcp-server-card+json: this hub's own entry carries a trustManifest
+ok    application/mcp-server-card+json: trustManifest subject = entry coordinates
+ok    application/mcp-server-card+json: detached EdDSA JWS verifies under the live did:web key
+ok    application/json: this hub's own entry carries a trustManifest
+ok    application/json: trustManifest subject = entry coordinates
+ok    application/json: detached EdDSA JWS verifies under the live did:web key
+ok    POST /ard/v1/search -> 200
+note  search 'weather': 5 results
+note  result sources: {'https://iot.modelmarket.dev': 2, 'https://modelmarket.dev': 1, 'https://atlas.modelmarket.dev': 2}
+ok    result urn:air:iot.modelmarket.dev:gaia.gateway:gaia.weather.read@v score 98
+ok    result gaia.weather.read@v1: digest = sha256 of the bytes at https://hub.attestedmemory.net/ard/v1/capability?product_id=gaia.gatew
+ok    result gaia.weather.read@v1: a peer's listing, unsigned (source https://iot.modelmarket.dev)
+ok    result urn:air:modelmarket.dev:weather-witness:weather.witness@v1 score 98
+ok    result weather.witness@v1: digest = sha256 of the bytes at https://hub.attestedmemory.net/ard/v1/capability?product_id=weather-wi
+ok    result weather.witness@v1: a peer's listing, unsigned (source https://modelmarket.dev)
+ok    result urn:air:atlas.modelmarket.dev:atlas.products:atlas.fire.weat score 98
+ok    result atlas.fire.weather@v1: digest = sha256 of the bytes at https://hub.attestedmemory.net/ard/v1/capability?product_id=atlas.prod
+ok    result atlas.fire.weather@v1: a peer's listing, unsigned (source https://atlas.modelmarket.dev)
+ok    result urn:air:iot.modelmarket.dev:gaia.gateway:gaia.spacewx.read@v score 73
+ok    result gaia.spacewx.read@v1: digest = sha256 of the bytes at https://hub.attestedmemory.net/ard/v1/capability?product_id=gaia.gatew
+ok    result gaia.spacewx.read@v1: a peer's listing, unsigned (source https://iot.modelmarket.dev)
+ok    result urn:air:atlas.modelmarket.dev:atlas.products:atlas.pv.irradi score 72
+ok    result atlas.pv.irradiance.record@v1: digest = sha256 of the bytes at https://hub.attestedmemory.net/ard/v1/capability?product_id=atlas.prod
+ok    result atlas.pv.irradiance.record@v1: a peer's listing, unsigned (source https://atlas.modelmarket.dev)
+ok    GET /ard/v1/agents -> 200
+ok    agents page 2 continues in identifier order
+ok    POST /ard/v1/explore -> 200: [{'value': 'iot.modelmarket.dev', 'count': 64}, {'value': 'independentai.network', 'count': 33}, {'value': 'hestia.modelmarket.dev', 'count': 21}]
+ok    unknown filter -> 400 problem details
+ok    health 200
+ALL OK https://hub.attestedmemory.net

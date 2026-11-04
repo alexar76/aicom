@@ -148,10 +148,10 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 |---|---|---|---|
 | gaia.weather.read@v1 | weather (Clima) | om-wx-01, nws-01, cwop-01, metno-01 +267 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.air.read@v1 | air (Aire) | om-aq-01, osm-01, sta-01, sc-01 +122 | device_id anclado por el operador; LIVE solo con provenance source |
-| gaia.tide.read@v1 | tide (Marea) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +19 | device_id anclado por el operador; LIVE solo con provenance source |
+| gaia.tide.read@v1 | tide (Marea) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +24 | mareógrafos fijos, incluido GeoNet de Nueva Zelanda con altura del agua sobre cada sensor de presión local |
 | gaia.grid.read@v1 | grid (Red (carbono)) | uk-grid-01, eia-01, rte-grid-01 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.quake.read@v1 | quake (Sismos) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | device_id anclado por el operador; LIVE solo con provenance source |
-| gaia.river.read@v1 | river (Ríos) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | device_id anclado por el operador; LIVE solo con provenance source |
+| gaia.river.read@v1 | river (Ríos) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +166 | estaciones fluviales fijas, incluidas las observaciones preliminares de nivel y caudal de ČHMÚ en el mismo instante |
 | gaia.marine.read@v1 | marine (Marino) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +26 | incluye seis boyas bálticas del FMI con oleaje medido y temperatura del agua simultánea cuando esté disponible |
 | gaia.ghg.read@v1 | ghg (GEI) | icos-htm-01, icos-zsf-01, icos-lin-01 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.fire.read@v1 | fire (Incendios) | firms-fire-01 | citar NASA FIRMS; no es un perímetro de incendio |
@@ -182,7 +182,7 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 | gaia.sea_ice.read@v1 | sea_ice (Hielo marino) | nsidc-ice-01 + lat/lon árticos del comprador | cualquier coordenada ártica; celda exacta de 25 km; no para navegación |
 | gaia.aviation.read@v1 | aviation (METAR aviación) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | METAR NOAA AWC (U.S. PD); pin ASOS in situ, no un TAF |
 | gaia.road.read@v1 | road (Clima vial) | fintraffic-road-01 | clima vial Fintraffic Digitraffic CC BY 4.0; solo carreteras finlandesas |
-| gaia.rail.read@v1 | rail (Tráfico ferroviario) | fintraffic-rail-01 | ubicaciones ferroviarias Fintraffic Digitraffic CC BY 4.0; solo FI |
+| gaia.rail.read@v1 | rail (Tráfico ferroviario) | fintraffic-rail-01, entur-rail-vyg-01 | posiciones de trenes finlandeses de Fintraffic Digitraffic (CC BY 4.0) y de trenes noruegos de Vy de Entur (NLOD) |
 | gaia.road.events.read@v1 | road_events (Avisos viales) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 | avisos y obras de Fintraffic e incidentes y cierres de NDW dentro de su periodo de validez, con geometría de origen |
 | gaia.aviation.hazards.read@v1 | aviation_hazards (Pronósticos de riesgos aéreos) | awc-gairmet-01 | geometría de pronóstico G-AIRMET de NOAA para Estados Unidos continental, emisión y validez |
 | gaia.drought.read@v1 | drought (Sequía) | usdm-01 | U.S. Drought Monitor, stats semanales por estado; atribuir NDMC/USDA/NOAA/NASA |
@@ -199,6 +199,10 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 | gaia.power.price.read@v1 | power_price (Precio de la electricidad) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | precio mayorista del día siguiente por zona de oferta (SMARD, CC BY 4.0; 15 zonas); no es una tarifa minorista |
 | gaia.imagery.read@v1 | imagery (Imágenes satelitales) | s2-l2a-01 + lat/lon del comprador (5 puntos de muestra) | cualquier coordenada terrestre; un píxel de 10–20 m de la última escena Sentinel-2 L2A sin nubes; leer los índices con la clase de escena; contiene datos Copernicus Sentinel modificados |
 | gaia.river.forecast.read@v1 | river_forecast (Previsión del nivel de los ríos) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | máximo entre las muestras previstas por NOAA NWPS en 72 h, datum local, horas de emisión y máximo |
+| gaia.radiation.ambient.read@v1 | radiation (Radiación) | bfs-odl-01 | tasa de dosis gamma horaria validada del BfS alemán en nSv/h en las estaciones, con hasta 2 h de antigüedad |
+| gaia.hf.absorption.read@v1 | hf_absorption (Absorción de radio HF) | swpc-drap-01 | umbral de frecuencia HF de NOAA SWPC D-RAP a 1 dB, 8 100 celdas originales de 2° × 4° y 900 máximos en la vista general |
+| gaia.ocean.observations.read@v1 | ocean_obs (Observaciones oceánicas) | smhi-ocean-flinten16-8m, smhi-ocean-flinten16-2m, smhi-ocean-flinten7-8m, smhi-ocean-kalmar2-0m | mediciones costeras suecas del SMHI de corrientes, salinidad y oxígeno, con profundidad y hora de observación y hasta 3 h de antigüedad |
+| gaia.smoke.forecast.read@v1 | smoke_forecast (Pronóstico de humo) | eccc-smoke-seattle, eccc-smoke-toronto, eccc-smoke-calgary | pronóstico ECCC FireWork de PM2.5 para la próxima hora dentro de una pluma de humo en tres celdas piloto, con horas de ejecución y validez |
 
 GAIA plumbing (no es un pin del mapa)
 
@@ -232,7 +236,7 @@ Composites ATLAS (atlas.modelmarket.dev) — artefactos de decisión de pago.
 | atlas.field.posterior@v1 | 0.08 | posterior GP espacial del snapshot LIVE; interpola ahora, no un pronóstico |
 | atlas.field.shape@v1 | 0.06 | persistencia H0 de pines in-situ LIVE; no Betti-1; no un AQI |
 
-Capas del mapa (53): weather=Clima; air=Aire; tide=Marea; river=Ríos; river_forecast=Previsión del nivel de los ríos; marine=Marino; ghg=GEI; grid=Red (carbono); quake=Sismos; energy=Energía; fire=Incendios; radiation=Radiación; jamming=Interferencia GNSS; gnss=Integridad GNSS; traffic=Tráfico edge; events=Eventos naturales; spacewx=Clima espacial; lightning=Rayos; alerts=Alertas; argo=Flotadores Argo; geomag=Geomagnetismo; iot=IoT edge; flood=Inundación; effis=Incendios EFFIS; volcano=Volcanes; ais=AIS público; tsunami=Alertas de tsunami; cyclone=Ciclones tropicales; adsb=ADS-B público; smoke=Humo; water_quality=Calidad del agua; groundwater=Aguas subterráneas; dart=Boyas DART; precipitation=Precipitación; radar=Estado NEXRAD; atmosphere=Atmósfera; radnet=EPA RadNet; soil=Humedad del suelo; solar=Irradiación solar; snow=Manto de nieve; sea_ice=Hielo marino; land_temperature=Temperatura terrestre; aviation=METAR aviación; road=Clima vial; rail=Tráfico ferroviario; drought=Sequía; reservoir=Reservoirs; uv=UV forecast; road_events=Avisos viales; aviation_hazards=Pronósticos de riesgos aéreos; power_price=Precio de la electricidad; imagery=Imágenes satelitales; actuator=Actuadores
+Capas del mapa (56): ocean_obs=Observaciones oceánicas; smoke_forecast=Pronóstico de humo; hf_absorption=Absorción de radio HF; weather=Clima; air=Aire; tide=Marea; river=Ríos; river_forecast=Previsión del nivel de los ríos; marine=Marino; ghg=GEI; grid=Red (carbono); quake=Sismos; energy=Energía; fire=Incendios; radiation=Radiación; jamming=Interferencia GNSS; gnss=Integridad GNSS; traffic=Tráfico edge; events=Eventos naturales; spacewx=Clima espacial; lightning=Rayos; alerts=Alertas; argo=Flotadores Argo; geomag=Geomagnetismo; iot=IoT edge; flood=Inundación; effis=Incendios EFFIS; volcano=Volcanes; ais=AIS público; tsunami=Alertas de tsunami; cyclone=Ciclones tropicales; adsb=ADS-B público; smoke=Humo; water_quality=Calidad del agua; groundwater=Aguas subterráneas; dart=Boyas DART; precipitation=Precipitación; radar=Estado NEXRAD; atmosphere=Atmósfera; radnet=EPA RadNet; soil=Humedad del suelo; solar=Irradiación solar; snow=Manto de nieve; sea_ice=Hielo marino; land_temperature=Temperatura terrestre; aviation=METAR aviación; road=Clima vial; rail=Tráfico ferroviario; drought=Sequía; reservoir=Reservoirs; uv=UV forecast; road_events=Avisos viales; aviation_hazards=Pronósticos de riesgos aéreos; power_price=Precio de la electricidad; imagery=Imágenes satelitales; actuator=Actuadores
 
 <!-- END GENERATED physical-capabilities -->
 
