@@ -103,3 +103,19 @@ them from the compose image, dropping the door.
 `kit/` (round 1: Dockerfile, build.sh, patch_api.py, smoke.py, the two nginx edit scripts), `fix2/` (round 2),
 `verify_live.py`, `logs/` (build and roll logs of both rounds from each host), `verify/` (outside checks).
 Contexts: `/root/ard-20261104/` on each host.
+
+## Follow-up: links in the DAWN mail (2026-11-04, about 10:15Z server time)
+
+The feedback mail went out with "(https://histor.modelmarket.dev/datasets/mcp-protocol-eras-2026-11-01/)." and two URLs
+followed by a full stop; a mail client glued ")" and "." into the links, which answered 404. Server-side fixes, the clean
+addresses unchanged (200, no redirect):
+
+- **histor.modelmarket.dev** (admin-vps, `/etc/nginx/sites-available/histor.modelmarket.dev`): inside
+  `location ^~ /datasets/`, a trailing `) . , ;` is dropped with a 301 (`kit/histor_trailing_punct.py`; backup
+  `/root/histor.modelmarket.dev.pre-trailing-20261104`).
+- **modelmarket.dev** (factory-vps, `/etc/nginx/sites-available/modelmarket.dev`): `location = /.well-known/ard.json.`
+  301 to the manifest (`kit/apex_ard_trailing_dot.py`; backup `/root/ard-20261104/modelmarket.dev.pre-trailing-20261104`).
+- The GitHub link with a full stop is GitHub's to answer; it cannot be redirected from here.
+
+The repo copies (`histor/deploy/nginx/histor.modelmarket.dev.conf`, `deploy/nginx/modelmarket.dev.conf`) carry the
+same lines. Lesson: in plain-text mail never put a URL in parentheses or right before punctuation.

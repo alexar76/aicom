@@ -1,0 +1,20 @@
+sha256:ddbe2be17053513b9e2b0bfb6a5b633e094d9be9f9a5c712761a5e189d06fdc4
+MOMUS release gate passed: 20261104T032752, bcfc888d0c26d2dae131292ae30e27371810b24fda4cf0d3885e3596785fb6f9
+Traceback (most recent call last):
+  File "/tmp/tiles_smoke.py", line 71, in <module>
+    asyncio.run(smoke())
+    ~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.13/asyncio/runners.py", line 196, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/asyncio/runners.py", line 119, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/asyncio/base_events.py", line 726, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/tmp/tiles_smoke.py", line 42, in smoke
+    assert cp.status_code == 200 and cp.text == (await c.get("/checkpoint")).text, cp.status_code
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404
+EXIT=1

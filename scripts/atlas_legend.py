@@ -45,6 +45,7 @@ from atlas.stations import LAYER_META, STATION_CATALOG  # noqa: E402
 # Hub'Eau / eHYD / SMHI MetObs show up instead of only the oldest four ids.
 _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
     "river": (
+        "arso-river-",
         "chmi-river-",
         # P12: representative LIVE meshes added alongside the GAIA relay wave.
         # Keep these before the older groups: the legend takes one device per
@@ -91,11 +92,13 @@ _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
         "metno-",
         "cwop-",
     ),
-    "tide": ("geonet-coastal-", "ea-tide-", "uhslc-", "noaa-tide-", "coops-"),
+    "tide": ("kartverket-tide-", "geonet-coastal-", "ea-tide-", "uhslc-", "noaa-tide-", "coops-"),
+    "road_events": ("toronto-road-", "ndw-road-", "fintraffic-road-"),
     "radiation": ("bfs-odl-", "safecast-"),
     "rail": ("entur-rail-", "fintraffic-rail-"),
     "air": ("hk-aqhi-", "sg-psi-", "be-aq-", "aurn-", "openaq-", "om-aq-", "sc-", "osm-"),
-    "marine": ("fmi-marine-", "cdip-", "ndbc-", "om-marine-"),
+    "marine": ("ie-buoy-", "au-wave-", "fmi-marine-", "cdip-", "ndbc-", "om-marine-"),
+    "volcano": ("geonet-volcano-", "usgs-volcano-"),
     "snow": ("snotel-", "snow-"),
     "flood": ("vic-", "gfm-flood-", "nws-flood-", "ea-flood-"),
     "grid": ("rte-grid-", "uk-grid-"),
@@ -278,9 +281,8 @@ def _device_cell(layer: str) -> str:
     ids = [did for did, meta in STATION_CATALOG.items() if meta.get("layer") == layer]
     chosen: list[str] = []
     used: set[str] = set()
-    # Six weather examples make every P12 national mesh visible.  Other cells
-    # stay capped at four so the generated table remains easy to scan.
-    sample_limit = 6 if layer == "weather" else 4
+    # Keep the national weather, river and marine networks represented.
+    sample_limit = {"weather": 6, "river": 5, "marine": 6}.get(layer, 4)
     for pref in _LAYER_SAMPLE_PREFIXES.get(layer, ()):
         for did in ids:
             if did.startswith(pref) and did not in used:

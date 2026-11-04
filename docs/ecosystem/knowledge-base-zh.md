@@ -148,11 +148,11 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 |---|---|---|---|
 | gaia.weather.read@v1 | weather (天气) | om-wx-01, nws-01, cwop-01, metno-01 +267 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.air.read@v1 | air (空气质量) | om-aq-01, osm-01, sta-01, sc-01 +122 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.tide.read@v1 | tide (潮汐) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +24 | 固定沿岸测站，含新西兰 GeoNet 相对于各地压力传感器的水面高度 |
+| gaia.tide.read@v1 | tide (潮汐) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +29 | 固定沿岸站含 GeoNet 相对当地压力传感器的水位和挪威 Kartverket 的 NN2000 水位 |
 | gaia.grid.read@v1 | grid (电网碳强度) | uk-grid-01, eia-01, rte-grid-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.quake.read@v1 | quake (地震) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.river.read@v1 | river (河流) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +166 | 固定河流测站，含捷克 ČHMÚ 同一时刻的初步水位和流量观测 |
-| gaia.marine.read@v1 | marine (海洋) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +26 | 包括六座波罗的海 FMI 浮标，提供实测波浪及可用的同期水温 |
+| gaia.river.read@v1 | river (河流) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +170 | 固定河流测站含捷克 ČHMÚ 和斯洛文尼亚 ARSO 的同期初步水位和流量观测 |
+| gaia.marine.read@v1 | marine (海洋) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +33 | 包括 FMI 波罗的海、爱尔兰 Marine Institute 和澳大利亚 AODN/IMOS 浮标的海浪实测 |
 | gaia.ghg.read@v1 | ghg (温室气体) | icos-htm-01, icos-zsf-01, icos-lin-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.fire.read@v1 | fire (野火) | firms-fire-01 | 须注明 NASA FIRMS；不是火场周界 |
 | gaia.radiation.read@v1 | radiation (辐射) | safecast-01, safecast-tokyo, safecast-sf, safecast-denver +10 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
@@ -169,7 +169,7 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.geomag.read@v1 | geomag (地磁) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | 仅 USGS F；不是 INTERMAGNET |
 | gaia.flood.read@v1 | flood (洪水) | nws-flood-01, ea-flood-01, usgs-rtfi-01, vic-meuse-01 +19 | 区域预警、洪水观测和 USGS RT-FI 临时水位超阈值数据 |
 | gaia.effis.read@v1 | effis (EFFIS 火情) | effis-01 | Copernicus EFFIS（欧盟）CC BY 4.0；不是 FIRMS |
-| gaia.volcano.read@v1 | volcano (火山) | usgs-volcano-01 | USGS 升高火山；不是全球火山灰预报 |
+| gaia.volcano.read@v1 | volcano (火山) | usgs-volcano-01, geonet-volcano-01 | USGS 火山警戒状态以及新西兰 GeoNet 火山警戒级别和带时间戳的相机快照 |
 | gaia.ais.public.read@v1 | ais (公开 AIS) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0（芬兰）或 Kystverket NLOD（挪威）；不是自有 gaia.ais.read |
 | gaia.tsunami.read@v1 | tsunami (海啸预警) | nws-tsunami-01, ptwc-01 | NWS CAP 和/或 PTWC Atom 警报产品，不是验潮仪；空源=离线 |
 | gaia.cyclone.read@v1 | cyclone (热带气旋) | nhc-cyclone-01, jma-typhoon-01 | 仅 NHC/CPHC AL+EP+CP；不是 JTWC；不是 EONET；空季=离线 |
@@ -183,7 +183,7 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.aviation.read@v1 | aviation (航空 METAR) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | NOAA AWC METAR（美国公有领域）；现场 ASOS，不是 TAF |
 | gaia.road.read@v1 | road (道路气象) | fintraffic-road-01 | Fintraffic Digitraffic 道路天气 CC BY 4.0；仅芬兰公路 |
 | gaia.rail.read@v1 | rail (铁路交通) | fintraffic-rail-01, entur-rail-vyg-01 | Fintraffic Digitraffic 芬兰列车位置（CC BY 4.0）与 Entur 挪威 Vy 列车位置（NLOD） |
-| gaia.road.events.read@v1 | road_events (道路通告) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 | Fintraffic 道路通告与施工以及 NDW 事件与封路，均在公布有效期内并保留源几何形状 |
+| gaia.road.events.read@v1 | road_events (道路通告) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 +1 | Fintraffic、NDW 与多伦多公布的有效道路通告，保留源几何形状 |
 | gaia.aviation.hazards.read@v1 | aviation_hazards (航空危险天气预报) | awc-gairmet-01 | 美国本土 NOAA G-AIRMET 预报几何形状、发布时间和有效时间 |
 | gaia.drought.read@v1 | drought (干旱) | usdm-01 | 美国干旱监测周报州统计；注明 NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
@@ -203,6 +203,16 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.hf.absorption.read@v1 | hf_absorption (高频无线电吸收) | swpc-drap-01 | NOAA SWPC D-RAP 模拟短波吸收 1 dB 对应频率，8 100 个原始 2° × 4° 网格及地图总览的 900 个网格最大值 |
 | gaia.ocean.observations.read@v1 | ocean_obs (海洋观测) | smhi-ocean-flinten16-8m, smhi-ocean-flinten16-2m, smhi-ocean-flinten7-8m, smhi-ocean-kalmar2-0m | SMHI 瑞典沿岸海流、盐度和溶解氧实测数据，含测量深度和时间，观测距今不超过三小时 |
 | gaia.smoke.forecast.read@v1 | smoke_forecast (烟霾预报) | eccc-smoke-seattle, eccc-smoke-toronto, eccc-smoke-calgary | ECCC FireWork 对三个试点网格烟羽内下一小时 PM2.5 的预报，含起报和有效时间 |
+| gaia.bridge.clearance.read@v1 | bridge_clearance (桥下净空) | noaa-airgap-8726371, noaa-airgap-8545556, noaa-airgap-8575432 | NOAA PORTS 在美国三处桥梁参考点测得的水面净空初步观测 |
+| gaia.ocean.drifters.read@v1 | ocean_drifters (海洋漂流浮标) | aoml-drifters-01 | NOAA AOML OSMC 漂流浮标最近六小时的实测位置和海表温度 |
+| gaia.power.outages.read@v1 | power_outages (停电) | ukpn-live-faults-01 | 英国 UK Power Networks 当前停电事件，提供近似区域坐标、状态和预计恢复时间 |
+| gaia.bikeshare.read@v1 | bikeshare (共享单车) | toronto-bikeshare-01 | Bike Share Toronto GBFS 最近五分钟的车辆、空泊位和租还状态 |
+| gaia.ev.charging.read@v1 | ev_charging (电动车充电) | ndw-ev-charging-01 | NDW DOT-NL 充电接口可用数量与额定功率，支持区域查询及分页 |
+| gaia.fire.perimeters.read@v1 | wildfire_perimeters (野火边界) | bc-wildfire-01 | BC Wildfire 活跃火情与独立标注观测日期的官方边界 |
+| gaia.storm.reports.read@v1 | storm_reports (强风暴报告) | noaa-spc-storm-reports-01 | NOAA SPC 最近 24 小时的龙卷风、冰雹和强风初步报告 |
+| gaia.volcanic.ash.read@v1 | volcanic_ash (火山灰) | noaa-vaac-ash-01 | NOAA Washington VAAC 火山灰轮廓，含高度及观测与预报时效 |
+| gaia.fire.hotspots.read@v1 | fire_hotspots (澳大利亚热异常点) | dea-hotspots-01 | DEA 澳大利亚三小时卫星热异常，含查询区域与完整性标记 |
+| gaia.pollen.read@v1 | pollen (花粉实测) | ch-pollen-pbe, ch-pollen-pbs, ch-pollen-pbu, ch-pollen-pcf +11 | MeteoSwiss 自动站每小时实测七类空气花粉浓度 |
 
 GAIA 管道（不是地图针脚）
 
@@ -236,7 +246,7 @@ ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 | atlas.field.posterior@v1 | 0.08 | 当前 LIVE 快照的空间 GP 后验；是插值，不是预报 |
 | atlas.field.shape@v1 | 0.06 | LIVE in-situ 针脚的 H0 持续同调；不是 Betti-1；不是 AQI |
 
-地图图层 (56): ocean_obs=海洋观测; smoke_forecast=烟霾预报; hf_absorption=高频无线电吸收; weather=天气; air=空气质量; tide=潮汐; river=河流; river_forecast=河流水位预报; marine=海洋; ghg=温室气体; grid=电网碳强度; quake=地震; energy=能源; fire=野火; radiation=辐射; jamming=GNSS 干扰; gnss=GNSS 完整性; traffic=边缘交通; events=自然灾害; spacewx=空间天气; lightning=闪电; alerts=天气预警; argo=Argo 浮标; geomag=地磁; iot=边缘物联网; flood=洪水; effis=EFFIS 火情; volcano=火山; ais=公开 AIS; tsunami=海啸预警; cyclone=热带气旋; adsb=公开 ADS-B; smoke=烟雾; water_quality=水质; groundwater=地下水; dart=DART 浮标; precipitation=降水; radar=NEXRAD 状态; atmosphere=大气; radnet=EPA RadNet; soil=土壤湿度; solar=太阳辐照度; snow=积雪; sea_ice=海冰; land_temperature=地表温度; aviation=航空 METAR; road=道路气象; rail=铁路交通; drought=干旱; reservoir=Reservoirs; uv=UV forecast; road_events=道路通告; aviation_hazards=航空危险天气预报; power_price=电价; imagery=卫星影像; actuator=执行器
+地图图层 (66): ev_charging=电动车充电; wildfire_perimeters=野火边界; pollen=花粉实测; storm_reports=强风暴报告; volcanic_ash=火山灰; fire_hotspots=澳大利亚热异常点; power_outages=停电; bridge_clearance=桥下净空; ocean_drifters=海洋漂流浮标; bikeshare=共享单车; ocean_obs=海洋观测; smoke_forecast=烟霾预报; hf_absorption=高频无线电吸收; weather=天气; air=空气质量; tide=潮汐; river=河流; river_forecast=河流水位预报; marine=海洋; ghg=温室气体; grid=电网碳强度; quake=地震; energy=能源; fire=野火; radiation=辐射; jamming=GNSS 干扰; gnss=GNSS 完整性; traffic=边缘交通; events=自然灾害; spacewx=空间天气; lightning=闪电; alerts=天气预警; argo=Argo 浮标; geomag=地磁; iot=边缘物联网; flood=洪水; effis=EFFIS 火情; volcano=火山; ais=公开 AIS; tsunami=海啸预警; cyclone=热带气旋; adsb=公开 ADS-B; smoke=烟雾; water_quality=水质; groundwater=地下水; dart=DART 浮标; precipitation=降水; radar=NEXRAD 状态; atmosphere=大气; radnet=EPA RadNet; soil=土壤湿度; solar=太阳辐照度; snow=积雪; sea_ice=海冰; land_temperature=地表温度; aviation=航空 METAR; road=道路气象; rail=铁路交通; drought=干旱; reservoir=Reservoirs; uv=UV forecast; road_events=道路通告; aviation_hazards=航空危险天气预报; power_price=电价; imagery=卫星影像; actuator=执行器
 
 <!-- END GENERATED physical-capabilities -->
 

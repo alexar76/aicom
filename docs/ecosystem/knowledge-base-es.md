@@ -148,11 +148,11 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 |---|---|---|---|
 | gaia.weather.read@v1 | weather (Clima) | om-wx-01, nws-01, cwop-01, metno-01 +267 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.air.read@v1 | air (Aire) | om-aq-01, osm-01, sta-01, sc-01 +122 | device_id anclado por el operador; LIVE solo con provenance source |
-| gaia.tide.read@v1 | tide (Marea) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +24 | mareógrafos fijos, incluido GeoNet de Nueva Zelanda con altura del agua sobre cada sensor de presión local |
+| gaia.tide.read@v1 | tide (Marea) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +29 | mareógrafos fijos con alturas de GeoNet sobre sensores locales y niveles de Kartverket en NN2000 |
 | gaia.grid.read@v1 | grid (Red (carbono)) | uk-grid-01, eia-01, rte-grid-01 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.quake.read@v1 | quake (Sismos) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | device_id anclado por el operador; LIVE solo con provenance source |
-| gaia.river.read@v1 | river (Ríos) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +166 | estaciones fluviales fijas, incluidas las observaciones preliminares de nivel y caudal de ČHMÚ en el mismo instante |
-| gaia.marine.read@v1 | marine (Marino) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +26 | incluye seis boyas bálticas del FMI con oleaje medido y temperatura del agua simultánea cuando esté disponible |
+| gaia.river.read@v1 | river (Ríos) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +170 | estaciones fluviales fijas con medidas preliminares simultáneas de nivel y caudal de ČHMÚ en Chequia y ARSO en Eslovenia |
+| gaia.marine.read@v1 | marine (Marino) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +33 | incluye observaciones del oleaje de boyas bálticas FMI, irlandesas Marine Institute y australianas AODN/IMOS |
 | gaia.ghg.read@v1 | ghg (GEI) | icos-htm-01, icos-zsf-01, icos-lin-01 | device_id anclado por el operador; LIVE solo con provenance source |
 | gaia.fire.read@v1 | fire (Incendios) | firms-fire-01 | citar NASA FIRMS; no es un perímetro de incendio |
 | gaia.radiation.read@v1 | radiation (Radiación) | safecast-01, safecast-tokyo, safecast-sf, safecast-denver +10 | device_id anclado por el operador; LIVE solo con provenance source |
@@ -169,7 +169,7 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 | gaia.geomag.read@v1 | geomag (Geomagnetismo) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | solo USGS F; no INTERMAGNET |
 | gaia.flood.read@v1 | flood (Inundación) | nws-flood-01, ea-flood-01, usgs-rtfi-01, vic-meuse-01 +19 | alertas regionales, inundación observada y superaciones provisionales de umbrales USGS RT-FI |
 | gaia.effis.read@v1 | effis (Incendios EFFIS) | effis-01 | Copernicus EFFIS UE, CC BY 4.0; no FIRMS |
-| gaia.volcano.read@v1 | volcano (Volcanes) | usgs-volcano-01 | volcanes elevados USGS; no un pronóstico global de ceniza |
+| gaia.volcano.read@v1 | volcano (Volcanes) | usgs-volcano-01, geonet-volcano-01 | volcanes en alerta de USGS y niveles de GeoNet en Nueva Zelanda con imágenes fechadas |
 | gaia.ais.public.read@v1 | ais (AIS público) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0 (FI) o Kystverket NLOD (NO); no gaia.ais.read propio |
 | gaia.tsunami.read@v1 | tsunami (Alertas de tsunami) | nws-tsunami-01, ptwc-01 | producto CAP NWS y/o Atom PTWC, no un mareógrafo; vacío = offline |
 | gaia.cyclone.read@v1 | cyclone (Ciclones tropicales) | nhc-cyclone-01, jma-typhoon-01 | solo NHC/CPHC AL+EP+CP; no JTWC; no EONET; temporada vacía = offline |
@@ -183,7 +183,7 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 | gaia.aviation.read@v1 | aviation (METAR aviación) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | METAR NOAA AWC (U.S. PD); pin ASOS in situ, no un TAF |
 | gaia.road.read@v1 | road (Clima vial) | fintraffic-road-01 | clima vial Fintraffic Digitraffic CC BY 4.0; solo carreteras finlandesas |
 | gaia.rail.read@v1 | rail (Tráfico ferroviario) | fintraffic-rail-01, entur-rail-vyg-01 | posiciones de trenes finlandeses de Fintraffic Digitraffic (CC BY 4.0) y de trenes noruegos de Vy de Entur (NLOD) |
-| gaia.road.events.read@v1 | road_events (Avisos viales) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 | avisos y obras de Fintraffic e incidentes y cierres de NDW dentro de su periodo de validez, con geometría de origen |
+| gaia.road.events.read@v1 | road_events (Avisos viales) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 +1 | avisos de Fintraffic, NDW y Toronto dentro de su periodo de validez, con geometría de origen |
 | gaia.aviation.hazards.read@v1 | aviation_hazards (Pronósticos de riesgos aéreos) | awc-gairmet-01 | geometría de pronóstico G-AIRMET de NOAA para Estados Unidos continental, emisión y validez |
 | gaia.drought.read@v1 | drought (Sequía) | usdm-01 | U.S. Drought Monitor, stats semanales por estado; atribuir NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | device_id anclado por el operador; LIVE solo con provenance source |
@@ -203,6 +203,16 @@ GAIA (iot.modelmarket.dev) — anclado a device_id, ~$0.002 salvo nota.
 | gaia.hf.absorption.read@v1 | hf_absorption (Absorción de radio HF) | swpc-drap-01 | umbral de frecuencia HF de NOAA SWPC D-RAP a 1 dB, 8 100 celdas originales de 2° × 4° y 900 máximos en la vista general |
 | gaia.ocean.observations.read@v1 | ocean_obs (Observaciones oceánicas) | smhi-ocean-flinten16-8m, smhi-ocean-flinten16-2m, smhi-ocean-flinten7-8m, smhi-ocean-kalmar2-0m | mediciones costeras suecas del SMHI de corrientes, salinidad y oxígeno, con profundidad y hora de observación y hasta 3 h de antigüedad |
 | gaia.smoke.forecast.read@v1 | smoke_forecast (Pronóstico de humo) | eccc-smoke-seattle, eccc-smoke-toronto, eccc-smoke-calgary | pronóstico ECCC FireWork de PM2.5 para la próxima hora dentro de una pluma de humo en tres celdas piloto, con horas de ejecución y validez |
+| gaia.bridge.clearance.read@v1 | bridge_clearance (Gálibo de puentes) | noaa-airgap-8726371, noaa-airgap-8545556, noaa-airgap-8575432 | medición preliminar NOAA PORTS de la distancia del punto de referencia del puente al agua en tres sitios de EE. UU. |
+| gaia.ocean.drifters.read@v1 | ocean_drifters (Boyas a la deriva) | aoml-drifters-01 | posiciones observadas y temperatura superficial del mar de boyas a la deriva NOAA AOML OSMC de las últimas seis horas |
+| gaia.power.outages.read@v1 | power_outages (Cortes eléctricos) | ukpn-live-faults-01 | cortes vigentes de UK Power Networks con coordenadas aproximadas, estado y hora estimada de reposición |
+| gaia.bikeshare.read@v1 | bikeshare (Bicicletas compartidas) | toronto-bikeshare-01 | datos GBFS de estaciones Bike Share Toronto con bicicletas, anclajes libres y estado de alquiler y devolución de hasta cinco minutos |
+| gaia.ev.charging.read@v1 | ev_charging (Recarga de vehículos eléctricos) | ndw-ev-charging-01 | disponibilidad y potencia de conectores NDW DOT-NL, con área y paginación |
+| gaia.fire.perimeters.read@v1 | wildfire_perimeters (Perímetros de incendios) | bc-wildfire-01 | incendios activos de BC Wildfire y perímetros oficiales con fecha propia |
+| gaia.storm.reports.read@v1 | storm_reports (Avisos de tormentas observadas) | noaa-spc-storm-reports-01 | informes preliminares NOAA SPC de tornados, granizo y viento en las últimas 24 horas |
+| gaia.volcanic.ash.read@v1 | volcanic_ash (Ceniza volcánica) | noaa-vaac-ash-01 | contornos de ceniza NOAA Washington VAAC con altitud y vigencia de observación y pronóstico |
+| gaia.fire.hotspots.read@v1 | fire_hotspots (Focos térmicos de Australia) | dea-hotspots-01 | detecciones térmicas satelitales DEA en Australia durante tres horas, con área e indicador de completitud |
+| gaia.pollen.read@v1 | pollen (Polen medido) | ch-pollen-pbe, ch-pollen-pbs, ch-pollen-pbu, ch-pollen-pcf +11 | mediciones horarias de siete tipos de polen en estaciones automáticas de MeteoSwiss |
 
 GAIA plumbing (no es un pin del mapa)
 
@@ -236,7 +246,7 @@ Composites ATLAS (atlas.modelmarket.dev) — artefactos de decisión de pago.
 | atlas.field.posterior@v1 | 0.08 | posterior GP espacial del snapshot LIVE; interpola ahora, no un pronóstico |
 | atlas.field.shape@v1 | 0.06 | persistencia H0 de pines in-situ LIVE; no Betti-1; no un AQI |
 
-Capas del mapa (56): ocean_obs=Observaciones oceánicas; smoke_forecast=Pronóstico de humo; hf_absorption=Absorción de radio HF; weather=Clima; air=Aire; tide=Marea; river=Ríos; river_forecast=Previsión del nivel de los ríos; marine=Marino; ghg=GEI; grid=Red (carbono); quake=Sismos; energy=Energía; fire=Incendios; radiation=Radiación; jamming=Interferencia GNSS; gnss=Integridad GNSS; traffic=Tráfico edge; events=Eventos naturales; spacewx=Clima espacial; lightning=Rayos; alerts=Alertas; argo=Flotadores Argo; geomag=Geomagnetismo; iot=IoT edge; flood=Inundación; effis=Incendios EFFIS; volcano=Volcanes; ais=AIS público; tsunami=Alertas de tsunami; cyclone=Ciclones tropicales; adsb=ADS-B público; smoke=Humo; water_quality=Calidad del agua; groundwater=Aguas subterráneas; dart=Boyas DART; precipitation=Precipitación; radar=Estado NEXRAD; atmosphere=Atmósfera; radnet=EPA RadNet; soil=Humedad del suelo; solar=Irradiación solar; snow=Manto de nieve; sea_ice=Hielo marino; land_temperature=Temperatura terrestre; aviation=METAR aviación; road=Clima vial; rail=Tráfico ferroviario; drought=Sequía; reservoir=Reservoirs; uv=UV forecast; road_events=Avisos viales; aviation_hazards=Pronósticos de riesgos aéreos; power_price=Precio de la electricidad; imagery=Imágenes satelitales; actuator=Actuadores
+Capas del mapa (66): ev_charging=Recarga de vehículos eléctricos; wildfire_perimeters=Perímetros de incendios; pollen=Polen medido; storm_reports=Avisos de tormentas observadas; volcanic_ash=Ceniza volcánica; fire_hotspots=Focos térmicos de Australia; power_outages=Cortes eléctricos; bridge_clearance=Gálibo de puentes; ocean_drifters=Boyas a la deriva; bikeshare=Bicicletas compartidas; ocean_obs=Observaciones oceánicas; smoke_forecast=Pronóstico de humo; hf_absorption=Absorción de radio HF; weather=Clima; air=Aire; tide=Marea; river=Ríos; river_forecast=Previsión del nivel de los ríos; marine=Marino; ghg=GEI; grid=Red (carbono); quake=Sismos; energy=Energía; fire=Incendios; radiation=Radiación; jamming=Interferencia GNSS; gnss=Integridad GNSS; traffic=Tráfico edge; events=Eventos naturales; spacewx=Clima espacial; lightning=Rayos; alerts=Alertas; argo=Flotadores Argo; geomag=Geomagnetismo; iot=IoT edge; flood=Inundación; effis=Incendios EFFIS; volcano=Volcanes; ais=AIS público; tsunami=Alertas de tsunami; cyclone=Ciclones tropicales; adsb=ADS-B público; smoke=Humo; water_quality=Calidad del agua; groundwater=Aguas subterráneas; dart=Boyas DART; precipitation=Precipitación; radar=Estado NEXRAD; atmosphere=Atmósfera; radnet=EPA RadNet; soil=Humedad del suelo; solar=Irradiación solar; snow=Manto de nieve; sea_ice=Hielo marino; land_temperature=Temperatura terrestre; aviation=METAR aviación; road=Clima vial; rail=Tráfico ferroviario; drought=Sequía; reservoir=Reservoirs; uv=UV forecast; road_events=Avisos viales; aviation_hazards=Pronósticos de riesgos aéreos; power_price=Precio de la electricidad; imagery=Imágenes satelitales; actuator=Actuadores
 
 <!-- END GENERATED physical-capabilities -->
 

@@ -150,11 +150,11 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 |---|---|---|---|
 | gaia.weather.read@v1 | weather (Погода) | om-wx-01, nws-01, cwop-01, metno-01 +267 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.air.read@v1 | air (Воздух) | om-aq-01, osm-01, sta-01, sc-01 +122 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.tide.read@v1 | tide (Прилив) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +24 | среди стационарных береговых постов GeoNet в Новой Зеландии с высотой воды над местным датчиком давления |
+| gaia.tide.read@v1 | tide (Прилив) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +29 | среди береговых постов GeoNet с высотой над местными датчиками давления и Kartverket с уровнем в системе NN2000 |
 | gaia.grid.read@v1 | grid (Сеть (углерод)) | uk-grid-01, eia-01, rte-grid-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.quake.read@v1 | quake (Землетрясения) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.river.read@v1 | river (Реки) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +166 | среди стационарных речных постов ČHMÚ, где предварительные уровень и расход относятся к одному времени наблюдения |
-| gaia.marine.read@v1 | marine (Море) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +26 | включает шесть балтийских буёв FMI с замерами волн и температуры воды при совпадении времени |
+| gaia.river.read@v1 | river (Реки) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +170 | стационарные речные посты включают предварительные синхронные замеры уровня и расхода ČHMÚ в Чехии и ARSO в Словении |
+| gaia.marine.read@v1 | marine (Море) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +33 | включает замеры волн с балтийских буёв FMI, ирландских буёв Marine Institute и австралийских AODN/IMOS |
 | gaia.ghg.read@v1 | ghg (Парниковые газы) | icos-htm-01, icos-zsf-01, icos-lin-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.fire.read@v1 | fire (Пожары) | firms-fire-01 | цитировать NASA FIRMS; не периметр пожара |
 | gaia.radiation.read@v1 | radiation (Радиация) | safecast-01, safecast-tokyo, safecast-sf, safecast-denver +10 | якорь device_id оператора; LIVE только с provenance source |
@@ -171,7 +171,7 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.geomag.read@v1 | geomag (Геомагнетизм) | usgs-geomag-01, usgs-geomag-brw, usgs-geomag-bsl, usgs-geomag-cmo +10 | только USGS F; не INTERMAGNET |
 | gaia.flood.read@v1 | flood (Паводок) | nws-flood-01, ea-flood-01, usgs-rtfi-01, vic-meuse-01 +19 | региональные предупреждения, наблюдения затопления и предварительные превышения порогов USGS RT-FI |
 | gaia.effis.read@v1 | effis (EFFIS пожары) | effis-01 | Copernicus EFFIS ЕС, CC BY 4.0; не FIRMS |
-| gaia.volcano.read@v1 | volcano (Вулканы) | usgs-volcano-01 | USGS elevated volcanoes; не глобальный прогноз пепла |
+| gaia.volcano.read@v1 | volcano (Вулканы) | usgs-volcano-01, geonet-volcano-01 | повышенные статусы USGS и уровни GeoNet в Новой Зеландии со временем съёмки кадров |
 | gaia.ais.public.read@v1 | ais (AIS (открытый)) | fintraffic-ais-01, kystverket-ais-01 | Fintraffic CC BY 4.0 (FI) или Kystverket NLOD (NO); не own-edge gaia.ais.read |
 | gaia.tsunami.read@v1 | tsunami (Цунами) | nws-tsunami-01, ptwc-01 | NWS CAP и/или PTWC Atom, не мареограф; пустая лента = offline |
 | gaia.cyclone.read@v1 | cyclone (Тропические циклоны) | nhc-cyclone-01, jma-typhoon-01 | только NHC/CPHC AL+EP+CP; не JTWC; не EONET; пустой сезон = offline |
@@ -185,7 +185,7 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.aviation.read@v1 | aviation (Авиа METAR) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | NOAA AWC METAR (U.S. PD); in-situ ASOS, не TAF |
 | gaia.road.read@v1 | road (Дорожная погода) | fintraffic-road-01 | Fintraffic Digitraffic дорожная погода CC BY 4.0; только Финляндия |
 | gaia.rail.read@v1 | rail (Железная дорога) | fintraffic-rail-01, entur-rail-vyg-01 | финские поезда Fintraffic Digitraffic (CC BY 4.0) и норвежские поезда Vy из Entur (NLOD) |
-| gaia.road.events.read@v1 | road_events (Дорожные сообщения) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 | сообщения и работы Fintraffic, инциденты и перекрытия NDW в пределах опубликованных сроков, с исходной геометрией |
+| gaia.road.events.read@v1 | road_events (Дорожные сообщения) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 +1 | дорожные сообщения Fintraffic, NDW и Торонто в пределах опубликованных сроков, с исходной геометрией |
 | gaia.aviation.hazards.read@v1 | aviation_hazards (Авиационные метеопрогнозы) | awc-gairmet-01 | контуры прогноза NOAA G-AIRMET для континентальных США, время выпуска и действия |
 | gaia.drought.read@v1 | drought (Засуха) | usdm-01 | U.S. Drought Monitor, недельная статистика штатов; атрибуция NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | якорь device_id оператора; LIVE только с provenance source |
@@ -205,6 +205,16 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.hf.absorption.read@v1 | hf_absorption (Поглощение КВ радиоволн) | swpc-drap-01 | модельный порог частоты КВ NOAA SWPC D-RAP при 1 дБ, 8 100 исходных ячеек 2° × 4° и 900 максимумов для обзора карты |
 | gaia.ocean.observations.read@v1 | ocean_obs (Океанические наблюдения) | smhi-ocean-flinten16-8m, smhi-ocean-flinten16-2m, smhi-ocean-flinten7-8m, smhi-ocean-kalmar2-0m | прибрежные замеры течений, солёности и кислорода SMHI в Швеции с глубиной и временем измерения, давность до 3 ч |
 | gaia.smoke.forecast.read@v1 | smoke_forecast (Прогноз дыма) | eccc-smoke-seattle, eccc-smoke-toronto, eccc-smoke-calgary | прогноз PM2.5 на ближайший час в дымовом шлейфе ECCC FireWork для трёх ячеек, со временем расчёта и действия |
+| gaia.bridge.clearance.read@v1 | bridge_clearance (Просвет под мостами) | noaa-airgap-8726371, noaa-airgap-8545556, noaa-airgap-8575432 | предварительные замеры NOAA PORTS от контрольной точки моста до воды на трёх объектах США |
+| gaia.ocean.drifters.read@v1 | ocean_drifters (Дрейфующие буи) | aoml-drifters-01 | позиции и температура поверхности моря по замерам дрейфующих буёв NOAA AOML OSMC за последние шесть часов |
+| gaia.power.outages.read@v1 | power_outages (Отключения электричества) | ukpn-live-faults-01 | текущие отключения UK Power Networks с примерными координатами района, статусом и оценкой времени восстановления |
+| gaia.bikeshare.read@v1 | bikeshare (Велопрокат) | toronto-bikeshare-01 | данные станций Bike Share Toronto GBFS о велосипедах, свободных доках и доступности аренды и возврата за последние пять минут |
+| gaia.ev.charging.read@v1 | ev_charging (Зарядки электромобилей) | ndw-ev-charging-01 | доступность и мощность разъёмов NDW DOT-NL, с областью выборки и пагинацией |
+| gaia.fire.perimeters.read@v1 | wildfire_perimeters (Периметры природных пожаров) | bc-wildfire-01 | активные пожары BC Wildfire и опубликованные контуры с отдельной датой наблюдения |
+| gaia.storm.reports.read@v1 | storm_reports (Штормовые сообщения) | noaa-spc-storm-reports-01 | предварительные локальные сообщения NOAA SPC о торнадо, граде и шквалах за последние 24 часа |
+| gaia.volcanic.ash.read@v1 | volcanic_ash (Вулканический пепел) | noaa-vaac-ash-01 | контуры пепла NOAA Washington VAAC с высотой и отдельными сроками наблюдений и прогнозов |
+| gaia.fire.hotspots.read@v1 | fire_hotspots (Тепловые точки Австралии) | dea-hotspots-01 | спутниковые тепловые детекции DEA в Австралии за три часа с областью и признаком полноты |
+| gaia.pollen.read@v1 | pollen (Измерения пыльцы) | ch-pollen-pbe, ch-pollen-pbs, ch-pollen-pbu, ch-pollen-pcf +11 | почасовые замеры семи типов пыльцы на автоматических станциях MeteoSwiss |
 
 GAIA plumbing (не пин на карте)
 
@@ -238,7 +248,7 @@ GAIA plumbing (не пин на карте)
 | atlas.field.posterior@v1 | 0.08 | пространственный GP-постер текущего LIVE-снимка; интерполяция, не прогноз |
 | atlas.field.shape@v1 | 0.06 | H0-персистентность LIVE in-situ пинов; не Betti-1; не AQI |
 
-Слои карты (56): ocean_obs=Океанические наблюдения; smoke_forecast=Прогноз дыма; hf_absorption=Поглощение КВ радиоволн; weather=Погода; air=Воздух; tide=Прилив; river=Реки; river_forecast=Прогнозы уровня рек; marine=Море; ghg=Парниковые газы; grid=Сеть (углерод); quake=Землетрясения; energy=Энергия; fire=Пожары; radiation=Радиация; jamming=GNSS-глушение; gnss=Целостность GNSS; traffic=Трафик (edge); events=Природные события; spacewx=Космическая погода; lightning=Молнии; alerts=Оповещения; argo=Арго-буи; geomag=Геомагнетизм; iot=IoT (edge); flood=Паводок; effis=EFFIS пожары; volcano=Вулканы; ais=AIS (открытый); tsunami=Цунами; cyclone=Тропические циклоны; adsb=ADS-B (открытый); smoke=Дым; water_quality=Качество воды; groundwater=Грунтовые воды; dart=Буи DART; precipitation=Осадки; radar=Статус NEXRAD; atmosphere=Атмосфера; radnet=EPA RadNet; soil=Влажность почвы; solar=Солнечная радиация; snow=Снежный покров; sea_ice=Морской лёд; land_temperature=Температура суши; aviation=Авиа METAR; road=Дорожная погода; rail=Железная дорога; drought=Засуха; reservoir=Reservoirs; uv=UV forecast; road_events=Дорожные сообщения; aviation_hazards=Авиационные метеопрогнозы; power_price=Цена электроэнергии; imagery=Спутниковые снимки; actuator=Исполнительные устройства
+Слои карты (66): ev_charging=Зарядки электромобилей; wildfire_perimeters=Периметры природных пожаров; pollen=Измерения пыльцы; storm_reports=Штормовые сообщения; volcanic_ash=Вулканический пепел; fire_hotspots=Тепловые точки Австралии; power_outages=Отключения электричества; bridge_clearance=Просвет под мостами; ocean_drifters=Дрейфующие буи; bikeshare=Велопрокат; ocean_obs=Океанические наблюдения; smoke_forecast=Прогноз дыма; hf_absorption=Поглощение КВ радиоволн; weather=Погода; air=Воздух; tide=Прилив; river=Реки; river_forecast=Прогнозы уровня рек; marine=Море; ghg=Парниковые газы; grid=Сеть (углерод); quake=Землетрясения; energy=Энергия; fire=Пожары; radiation=Радиация; jamming=GNSS-глушение; gnss=Целостность GNSS; traffic=Трафик (edge); events=Природные события; spacewx=Космическая погода; lightning=Молнии; alerts=Оповещения; argo=Арго-буи; geomag=Геомагнетизм; iot=IoT (edge); flood=Паводок; effis=EFFIS пожары; volcano=Вулканы; ais=AIS (открытый); tsunami=Цунами; cyclone=Тропические циклоны; adsb=ADS-B (открытый); smoke=Дым; water_quality=Качество воды; groundwater=Грунтовые воды; dart=Буи DART; precipitation=Осадки; radar=Статус NEXRAD; atmosphere=Атмосфера; radnet=EPA RadNet; soil=Влажность почвы; solar=Солнечная радиация; snow=Снежный покров; sea_ice=Морской лёд; land_temperature=Температура суши; aviation=Авиа METAR; road=Дорожная погода; rail=Железная дорога; drought=Засуха; reservoir=Reservoirs; uv=UV forecast; road_events=Дорожные сообщения; aviation_hazards=Авиационные метеопрогнозы; power_price=Цена электроэнергии; imagery=Спутниковые снимки; actuator=Исполнительные устройства
 
 <!-- END GENERATED physical-capabilities -->
 
