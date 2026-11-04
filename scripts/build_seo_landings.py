@@ -25,10 +25,12 @@ import re
 import shutil
 import sys
 import textwrap
+import unicodedata
 import xml.etree.ElementTree as ET
 from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 from xml.dom import minidom
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -91,6 +93,11 @@ _EN_UI: dict[str, str] = {
     "oracle_hub_gaia_cta": "GAIA live ↗",
     "course_academy": "AIMarket Academy",
     "course_open_full": "Open full course ↗",
+    "course_read_guide": "Read the step-by-step guide",
+    "course_guide_markdown": "Download Markdown",
+    "course_back_catalog": "Back to the course",
+    "course_browse_guides": "Browse guides",
+    "course_labs_colab": "Labs and Colab ↗",
     "course_source_github": "Source on GitHub",
     "course_what_you_build": "What you build",
     "course_labs_para": (
@@ -780,17 +787,94 @@ def _fmt(template: str, **kwargs: Any) -> str:
         return template
 
 
+def _course_guide_sources(folder: str) -> dict[str, Path]:
+    docs = ROOT / "courses" / folder / "docs"
+    sources = {
+        lang: docs / ("step-by-step.md" if lang == "en" else f"step-by-step.{lang}.md")
+        for lang in LANGS
+    }
+    # The trimmed factory checkout only has the course catalogue.
+    return sources if all(source.is_file() for source in sources.values()) else {}
+
+
+def _course_guide_body(base: str, source: str, guide_path: str, source_locales: dict[str, str]) -> str:
+    from markdown_it import MarkdownIt
+
+    parser = MarkdownIt("commonmark", {"html": False}).enable("table")
+    env: dict[str, Any] = {}
+    tokens = parser.parse(source, env)
+    used_ids: set[str] = set()
+    for index, token in enumerate(tokens):
+        if token.type == "heading_open":
+            heading = "".join(child.content for child in tokens[index + 1].children or ()
+                              if child.type in {"text", "code_inline", "image"})
+            slug = "".join(
+                "-" if char == " " else char
+                for char in heading.lower().strip()
+                if char in "_- " or unicodedata.category(char)[0] in "LMN"
+            )
+            heading_id, serial = slug or "section", 0
+            while heading_id in used_ids:
+                serial += 1
+                heading_id = f"{slug or 'section'}-{serial}"
+            token.attrSet("id", heading_id)
+            used_ids.add(heading_id)
+        for child in token.children or ():
+            if child.type != "link_open":
+                continue
+            href = urlsplit(child.attrGet("href") or "")
+            target_lang = source_locales.get(href.path.removeprefix("./"))
+            if target_lang and not (href.scheme or href.netloc):
+                path = _link(base, target_lang, guide_path)
+                child.attrSet("href", path + ("#" + href.fragment if href.fragment else ""))
+    return parser.renderer.render(tokens, parser.options, env)
+
+
+def _write_course_guide(
+    base: str, cfg: dict[str, Any], lang: str, course_path: str,
+    title: str, description: str, sources: dict[str, Path],
+) -> None:
+    path = course_path + "guide/"
+    source = sources[lang].read_text(encoding="utf-8")
+    U = _ui(lang)
+    languages = " ".join(
+        f'<a class="btn" href="{html.escape(_link(base, locale, path))}" lang="{locale}" hreflang="{locale}" '
+        f'{"aria-current=page" if locale == lang else ""}>{locale.upper()}</a>'
+        for locale in LANGS
+    )
+    rendered = _course_guide_body(base, source, path, {item.name: loc for loc, item in sources.items()})
+    body = (
+        '<main class="wrap article course-guide">'
+        '<div class="hero-cta">'
+        f'<a class="btn" href="../">{html.escape(U("course_back_catalog"))}</a>'
+        f'<a class="btn" href="step-by-step.md" download>{html.escape(U("course_guide_markdown"))}</a>'
+        "</div>"
+        f'<nav class="hero-cta course-guide-languages" aria-label="{html.escape(U("langs_chip"))}">{languages}</nav>'
+        f'<div class="prose">{rendered}</div></main>'
+    )
+    output = _out_dir(lang) / path.strip("/")
+    _write(output / "index.html", _page_shell(
+        base=base, path=path, lang=lang, title=f"{title} · {U('course_read_guide')}",
+        description=description[:300], body=body, nav_current="/learn", og_type="article", cfg=cfg,
+    ))
+    _write(output / "step-by-step.md", source)
+
+
 def _build_learn(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
     courses = _load_courses()
     if not courses:
         return []
     by_folder = {c["folder"]: c for c in courses if c.get("folder")}
+    guide_sources = {folder: _course_guide_sources(folder) for folder in by_folder}
+    has_guides = any(guide_sources.values())
     ext = cfg.get("external", {})
     n = len(courses)
     # Canonical (en) sitemap paths, emitted once with hreflang alternates.
     urls: list[tuple[str, str]] = [("/learn/", "weekly")]
     for c in courses:
         urls.append((f"/learn/{c['folder']}/", "weekly"))
+        if guide_sources[c["folder"]]:
+            urls.append((f"/learn/{c['folder']}/guide/", "weekly"))
 
     for lang in LANGS:
         U = _ui(lang)
@@ -807,12 +891,21 @@ def _build_learn(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
             desc = _tr("courses", folder, lang, "description", en_desc)
 
             course_url = f"{ext.get('courses_portal', '').rstrip('/')}/{folder}/"
+            course_path = f"/learn/{folder}/"
+            sources = guide_sources[folder]
+            primary_url = "guide/" if sources else course_url
+            primary_label = U("course_read_guide" if sources else "course_open_full")
+            labs_link = (
+                f'<a class="btn" href="{html.escape(course_url)}">{html.escape(U("course_labs_colab"))}</a>'
+                if sources else ""
+            )
             body = (
                 f'<div class="wrap article"><p class="eyebrow">{html.escape(U("course_academy"))}</p>'
                 f"<h1>{html.escape(title)}</h1>"
                 f'<p class="lede">{html.escape(desc)}</p>'
                 f'<div class="hero-cta">'
-                f'<a class="btn primary" href="{html.escape(course_url)}">{html.escape(U("course_open_full"))}</a>'
+                f'<a class="btn primary" href="{html.escape(primary_url)}">{html.escape(primary_label)}</a>'
+                f"{labs_link}"
                 f'<a class="btn" href="https://github.com/alexar76/aimarket-courses/tree/main/{html.escape(folder)}">{html.escape(U("course_source_github"))}</a>'
                 f"</div>"
                 f'<section class="section"><h2>{html.escape(U("course_what_you_build"))}</h2><p>{html.escape(tagline)}</p>'
@@ -834,7 +927,7 @@ def _build_learn(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
             }
             html_out = _page_shell(
                 base=base,
-                path=f"/learn/{folder}/",
+                path=course_path,
                 lang=lang,
                 title=f"{title} — AIMarket Course",
                 description=desc[:300],
@@ -846,6 +939,8 @@ def _build_learn(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
                 cfg=cfg,
             )
             _write(out_root / "learn" / folder / "index.html", html_out)
+            if sources:
+                _write_course_guide(base, cfg, lang, course_path, title, desc, sources)
 
         # Hub — galaxy canvas + track filters + animated cards.
         track_blocks: list[str] = []
@@ -862,11 +957,16 @@ def _build_learn(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
                 labs = len(c.get("labs") or [])
                 modules = len(c.get("modules") or {})
                 ic = COURSE_ICONS.get(folder, "✦")
+                guide_link = (
+                    f'<p><a href="{html.escape(folder)}/guide/">{html.escape(U("course_read_guide"))}</a></p>'
+                    if guide_sources[folder] else ""
+                )
                 cards.append(
                     f'<article class="learn-card">'
                     f'<div class="ic" aria-hidden="true">{ic}</div>'
                     f'<h3><a href="{html.escape(folder)}/">{html.escape(title)}</a></h3>'
                     f"<p>{html.escape(tagline)}</p>"
+                    f"{guide_link}"
                     f'<div class="chips"><span class="chip hot">{modules} {html.escape(U("chip_modules"))}</span>'
                     f'<span class="chip">{labs} {html.escape(U("chip_labs"))}</span>'
                     f'<span class="chip">{html.escape(U("langs_chip"))}</span></div></article>'
@@ -882,6 +982,8 @@ def _build_learn(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
         eyebrow = _fmt(U("course_hub_eyebrow"), n=n)
         tracks_label = _fmt(U("course_hub_tracks"), n=n)
         meta_desc = _fmt(U("course_hub_meta_desc"), n=n)
+        browse_url = "#course-tracks" if has_guides else ext.get("courses_portal", "")
+        browse_label = U("course_browse_guides" if has_guides else "course_hub_full_portal")
         hub_body = (
             '<header class="learn-hero-stage">'
             '<canvas id="learn-galaxy" aria-hidden="true"></canvas>'
@@ -890,15 +992,15 @@ def _build_learn(base: str, cfg: dict[str, Any]) -> list[tuple[str, str]]:
             f"{html.escape(eyebrow)}</p>"
             f'<h1>{html.escape(U("course_hub_h1"))}</h1>'
             f'<p class="lede">{html.escape(U("course_hub_lede"))}</p>'
-            f'<div class="hero-cta"><a class="btn primary" href="{html.escape(ext.get("courses_portal", ""))}">'
-            f'{html.escape(U("course_hub_full_portal"))}</a>'
+            f'<div class="hero-cta"><a class="btn primary" href="{html.escape(browse_url)}">'
+            f'{html.escape(browse_label)}</a>'
             f'<a class="btn" href="{html.escape(_link(base, lang, "/school/"))}">'
             f'{html.escape(U("course_hub_school_clips"))}</a></div>'
             f'<div class="learn-meta"><span><b>{n}</b> {html.escape(U("course_hub_stat_academies"))}</span>'
             f'<span><b>4</b> {html.escape(U("course_hub_stat_tracks"))}</span>'
             f'<span><b>5</b> {html.escape(U("course_hub_stat_langs"))}</span></div></div>'
             "</header>"
-            f'<div class="wrap section"><h2>{html.escape(tracks_label)}</h2>'
+            f'<div id="course-tracks" class="wrap section"><h2>{html.escape(tracks_label)}</h2>'
             f'<div class="learn-filter" role="group" aria-label="Filter by track">'
             f'<button type="button" class="active" data-filter="all">{html.escape(U("course_hub_filter_all"))}</button>'
             f'<button type="button" data-filter="builder">{html.escape(U("course_hub_filter_builder"))}</button>'

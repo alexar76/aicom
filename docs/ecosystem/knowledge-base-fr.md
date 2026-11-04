@@ -152,7 +152,7 @@ GAIA (iot.modelmarket.dev) — ancré device_id, ~$0.002 sauf mention.
 | gaia.grid.read@v1 | grid (Réseau (carbone)) | uk-grid-01, eia-01, rte-grid-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.quake.read@v1 | quake (Séismes) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.river.read@v1 | river (Rivières) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
-| gaia.marine.read@v1 | marine (Marin) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
+| gaia.marine.read@v1 | marine (Marin) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +26 | inclut six bouées baltiques du FMI avec vagues mesurées et température de l’eau simultanée si disponible |
 | gaia.ghg.read@v1 | ghg (GES) | icos-htm-01, icos-zsf-01, icos-lin-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.fire.read@v1 | fire (Incendies) | firms-fire-01 | citer NASA FIRMS; pas un périmètre d'incendie |
 | gaia.radiation.read@v1 | radiation (Radiation) | safecast-01, safecast-tokyo, safecast-sf, safecast-denver +10 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
@@ -176,15 +176,15 @@ GAIA (iot.modelmarket.dev) — ancré device_id, ~$0.002 sauf mention.
 | gaia.adsb.public.read@v1 | adsb (ADS-B public) | adsb-lol-01 | ADSB.lol ODbL 1.0; isoler la BD dérivée; pas edge; pas OpenSky/ADSBx |
 | gaia.smoke.read@v1 | smoke (Fumée) | hms-smoke-01 | anneaux de polygones signés avec trous, pas seulement les centroïdes ; densité qualitative, pas PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (Qualité de l’eau) | usgs-wq-01 (bbox → registre complet des stations qualifiées) | observations latest-continuous fraîches (48 h par défaut), paginées et jointes à USGS monitoring-locations ; filtres et approval/qualifiers ; une station = une coordonnée |
-| gaia.groundwater.read@v1 | groundwater (Eaux souterraines) | usgs-groundwater-01, hubeau-groundwater-01 | trois puits pilotes de l’USGS, profondeur mesurée depuis le sol local, données de 24 h maximum |
+| gaia.groundwater.read@v1 | groundwater (Eaux souterraines) | usgs-groundwater-01, hubeau-groundwater-01 | USGS : profondeur sous le sol, Hub’Eau : profondeur depuis le repère et altitude NGF, 24 h maximum |
 | gaia.precipitation.read@v1 | precipitation (Précipitations) | imerg-01 + lat/lon acheteur | toute coordonnée acheteur ; cellule IMERG renvoyée ; préliminaire |
 | gaia.radar.status.read@v1 | radar (État NEXRAD) | nexrad-status-01 (tous les sites WSR-88D) | tous les sites WSR-88D à leurs coordonnées ; état, pas réflectivité |
 | gaia.sea_ice.read@v1 | sea_ice (Glace de mer) | nsidc-ice-01 + lat/lon arctique acheteur | toute coordonnée arctique ; cellule exacte de 25 km ; pas pour la navigation |
 | gaia.aviation.read@v1 | aviation (METAR aviation) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | METAR NOAA AWC (U.S. PD); pin ASOS in situ, pas un TAF |
 | gaia.road.read@v1 | road (Météo routière) | fintraffic-road-01 | météo routière Fintraffic Digitraffic CC BY 4.0 ; routes finlandaises seulement |
 | gaia.rail.read@v1 | rail (Trafic ferroviaire) | fintraffic-rail-01 | positions ferroviaires Fintraffic Digitraffic CC BY 4.0 ; rail FI seulement |
-| gaia.road.events.read@v1 | road_events (Avis routiers) | fintraffic-road-announcements-01, fintraffic-roadworks-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
-| gaia.aviation.hazards.read@v1 | aviation_hazards (Prévisions de risques aéronautiques) | awc-gairmet-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
+| gaia.road.events.read@v1 | road_events (Avis routiers) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 | avis et travaux Fintraffic et incidents et fermetures NDW dans leur période de validité, avec géométrie source |
+| gaia.aviation.hazards.read@v1 | aviation_hazards (Prévisions de risques aéronautiques) | awc-gairmet-01 | géométrie des prévisions G-AIRMET NOAA pour les États-Unis continentaux, émission et validité |
 | gaia.drought.read@v1 | drought (Sécheresse) | usdm-01 | U.S. Drought Monitor, stats hebdo par État ; créditer NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
 | gaia.energy.read@v1 | energy (Énergie) | em-01, plug-sim-01 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
@@ -194,11 +194,11 @@ GAIA (iot.modelmarket.dev) — ancré device_id, ~$0.002 sauf mention.
 | gaia.radnet.read@v1 | radnet (EPA RadNet) | radnet-* (les 140 moniteurs officiels) | les 140 coordonnées officielles des moniteurs EPA ; attribuer EPA RadNet |
 | gaia.soil_moisture.read@v1 | soil (Humidité du sol) | soil-* + lat/lon acheteur | toute coordonnée acheteur ; cellule source/requête CLMS renvoyée |
 | gaia.solar.read@v1 | solar (Irradiation solaire) | solar-* + lat/lon acheteur | toute coordonnée acheteur ; coordonnée source NASA POWER renvoyée |
-| gaia.snow.read@v1 | snow (Manteau neigeux) | snow-* + lat/lon acheteur en CONUS | toute coordonnée acheteur en CONUS ; cellule SNODAS exacte renvoyée |
+| gaia.snow.read@v1 | snow (Manteau neigeux) | snow-* + lat/lon acheteur en CONUS ; snotel-335, snotel-415 par ID | cellule SNODAS exacte en CONUS ou station SNOTEL fixe par device_id avec mesures appariées de profondeur et d’équivalent en eau |
 | gaia.land_temperature.read@v1 | land_temperature (Température terrestre) | lst-* + lat/lon acheteur | toute coordonnée acheteur ; cellule Sentinel-3 SLSTR renvoyée |
 | gaia.power.price.read@v1 | power_price (Prix de l'électricité) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | prix de gros du lendemain par zone de dépôt (SMARD, CC BY 4.0 ; 15 zones) ; pas un tarif de détail |
 | gaia.imagery.read@v1 | imagery (Imagerie satellite) | s2-l2a-01 + lat/lon acheteur (5 points vitrine) | toute coordonnée terrestre ; un pixel de 10–20 m de la dernière scène Sentinel-2 L2A sans nuages ; lire les indices avec la classe de scène ; contient des données Copernicus Sentinel modifiées |
-| gaia.river.forecast.read@v1 | river_forecast (Prévisions fluviales) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | device_id ancré par l'opérateur; LIVE seulement avec provenance source |
+| gaia.river.forecast.read@v1 | river_forecast (Prévisions fluviales) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | pic parmi les points prévus par NOAA NWPS dans les 72 h, repère local, heures d’émission et du pic |
 
 GAIA plumbing (pas un pin carte)
 

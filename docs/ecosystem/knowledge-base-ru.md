@@ -154,7 +154,7 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.grid.read@v1 | grid (Сеть (углерод)) | uk-grid-01, eia-01, rte-grid-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.quake.read@v1 | quake (Землетрясения) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.river.read@v1 | river (Реки) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.marine.read@v1 | marine (Море) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.marine.read@v1 | marine (Море) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +26 | включает шесть балтийских буёв FMI с замерами волн и температуры воды при совпадении времени |
 | gaia.ghg.read@v1 | ghg (Парниковые газы) | icos-htm-01, icos-zsf-01, icos-lin-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.fire.read@v1 | fire (Пожары) | firms-fire-01 | цитировать NASA FIRMS; не периметр пожара |
 | gaia.radiation.read@v1 | radiation (Радиация) | safecast-01, safecast-tokyo, safecast-sf, safecast-denver +10 | якорь device_id оператора; LIVE только с provenance source |
@@ -178,15 +178,15 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.adsb.public.read@v1 | adsb (ADS-B (открытый)) | adsb-lol-01 | ADSB.lol ODbL 1.0; изолировать производную БД; не own-edge; без OpenSky/ADSBx |
 | gaia.smoke.read@v1 | smoke (Дым) | hms-smoke-01 | подписанные контуры полигонов с отверстиями, не только центроиды; качественная плотность, не PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (Качество воды) | usgs-wq-01 (bbox → полный реестр подходящих станций) | свежие (48 ч по умолчанию) постраничные latest-continuous наблюдения с join к USGS monitoring-locations; фильтры и approval/qualifiers по рядам; одна станция = одна координата |
-| gaia.groundwater.read@v1 | groundwater (Грунтовые воды) | usgs-groundwater-01, hubeau-groundwater-01 | три пилотные скважины USGS, измеренная глубина от поверхности земли, давность до 24 ч |
+| gaia.groundwater.read@v1 | groundwater (Грунтовые воды) | usgs-groundwater-01, hubeau-groundwater-01 | USGS: глубина от земли, Hub’Eau: глубина от измерительной отметки и высота NGF, давность до 24 ч |
 | gaia.precipitation.read@v1 | precipitation (Осадки) | imerg-01 + lat/lon покупателя | любая координата покупателя; возвращается ячейка IMERG; предварительные данные |
 | gaia.radar.status.read@v1 | radar (Статус NEXRAD) | nexrad-status-01 (все станции WSR-88D) | все станции WSR-88D в собственных координатах; статус, не отражаемость |
 | gaia.sea_ice.read@v1 | sea_ice (Морской лёд) | nsidc-ice-01 + арктические lat/lon покупателя | любая арктическая координата; точная ячейка 25 км; не для навигации |
 | gaia.aviation.read@v1 | aviation (Авиа METAR) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | NOAA AWC METAR (U.S. PD); in-situ ASOS, не TAF |
 | gaia.road.read@v1 | road (Дорожная погода) | fintraffic-road-01 | Fintraffic Digitraffic дорожная погода CC BY 4.0; только Финляндия |
 | gaia.rail.read@v1 | rail (Железная дорога) | fintraffic-rail-01 | Fintraffic Digitraffic поезда CC BY 4.0; только финская ж/д |
-| gaia.road.events.read@v1 | road_events (Дорожные сообщения) | fintraffic-road-announcements-01, fintraffic-roadworks-01 | якорь device_id оператора; LIVE только с provenance source |
-| gaia.aviation.hazards.read@v1 | aviation_hazards (Авиационные метеопрогнозы) | awc-gairmet-01 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.road.events.read@v1 | road_events (Дорожные сообщения) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 | сообщения и работы Fintraffic, инциденты и перекрытия NDW в пределах опубликованных сроков, с исходной геометрией |
+| gaia.aviation.hazards.read@v1 | aviation_hazards (Авиационные метеопрогнозы) | awc-gairmet-01 | контуры прогноза NOAA G-AIRMET для континентальных США, время выпуска и действия |
 | gaia.drought.read@v1 | drought (Засуха) | usdm-01 | U.S. Drought Monitor, недельная статистика штатов; атрибуция NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | якорь device_id оператора; LIVE только с provenance source |
 | gaia.energy.read@v1 | energy (Энергия) | em-01, plug-sim-01 | якорь device_id оператора; LIVE только с provenance source |
@@ -196,11 +196,11 @@ GAIA (iot.modelmarket.dev) — якорь device_id, ~$0.002 если не ук�
 | gaia.radnet.read@v1 | radnet (EPA RadNet) | radnet-* (все 140 официальных мониторов) | все 140 официальных координат мониторов EPA; атрибуция EPA RadNet |
 | gaia.soil_moisture.read@v1 | soil (Влажность почвы) | soil-* + lat/lon покупателя | любая координата покупателя; возвращается исходная/расчётная ячейка CLMS |
 | gaia.solar.read@v1 | solar (Солнечная радиация) | solar-* + lat/lon покупателя | любая координата покупателя; возвращается координата источника NASA POWER |
-| gaia.snow.read@v1 | snow (Снежный покров) | snow-* + lat/lon покупателя в CONUS | любая координата покупателя в CONUS; возвращается точная ячейка SNODAS |
+| gaia.snow.read@v1 | snow (Снежный покров) | snow-* + lat/lon покупателя в CONUS; snotel-335, snotel-415 по ID | точная ячейка SNODAS по координатам в CONUS или парные замеры глубины и водного эквивалента на посту SNOTEL по device_id |
 | gaia.land_temperature.read@v1 | land_temperature (Температура суши) | lst-* + lat/lon покупателя | любая координата покупателя; возвращается ячейка Sentinel-3 SLSTR |
 | gaia.power.price.read@v1 | power_price (Цена электроэнергии) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | оптовая цена на сутки вперёд по зоне торгов (SMARD, CC BY 4.0; 15 зон); не розничный тариф |
 | gaia.imagery.read@v1 | imagery (Спутниковые снимки) | s2-l2a-01 + lat/lon покупателя (5 витринных точек) | любая координата суши; один пиксель 10–20 м последнего безоблачного снимка Sentinel-2 L2A; индексы читать вместе с классом поверхности; содержит изменённые данные Copernicus Sentinel |
-| gaia.river.forecast.read@v1 | river_forecast (Прогнозы уровня рек) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | якорь device_id оператора; LIVE только с provenance source |
+| gaia.river.forecast.read@v1 | river_forecast (Прогнозы уровня рек) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | пик среди доступных точек прогноза NOAA NWPS на 72 ч, местный нуль поста, время выпуска и пика |
 
 GAIA plumbing (не пин на карте)
 

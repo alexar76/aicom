@@ -1,0 +1,11 @@
+BEGIN
+SET
+  day_utc   |           source           | landing_requests 
+------------+----------------------------+------------------
+ 2026-11-04 | capture-conditions-article |                1
+ 2026-11-04 | google                     |                1
+ 2026-11-04 | paid-tagged                |                1
+ 2026-11-04 | shared-review-note         |                1
+(4 rows)
+
+COMMIT

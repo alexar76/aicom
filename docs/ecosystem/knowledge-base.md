@@ -162,7 +162,7 @@ GAIA (iot.modelmarket.dev) — device_id-anchored, ~$0.002 unless noted.
 | gaia.grid.read@v1 | grid (Grid carbon) | uk-grid-01, eia-01, rte-grid-01 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.quake.read@v1 | quake (Earthquakes) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.river.read@v1 | river (Rivers) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | operator-anchored device_id; LIVE only with provenance source |
-| gaia.marine.read@v1 | marine (Marine) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.marine.read@v1 | marine (Marine) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +26 | includes six FMI Baltic buoys with measured waves and same-time water temperature when available |
 | gaia.ghg.read@v1 | ghg (Greenhouse gas) | icos-htm-01, icos-zsf-01, icos-lin-01 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.fire.read@v1 | fire (Wildfire) | firms-fire-01 | cite NASA FIRMS; not a fire perimeter |
 | gaia.radiation.read@v1 | radiation (Radiation) | safecast-01, safecast-tokyo, safecast-sf, safecast-denver +10 | operator-anchored device_id; LIVE only with provenance source |
@@ -186,15 +186,15 @@ GAIA (iot.modelmarket.dev) — device_id-anchored, ~$0.002 unless noted.
 | gaia.adsb.public.read@v1 | adsb (Public ADS-B) | adsb-lol-01 | ADSB.lol ODbL 1.0; isolate derived DB; not own-edge; no OpenSky/ADSBx fallback |
 | gaia.smoke.read@v1 | smoke (Smoke) | hms-smoke-01 | full signed polygon rings + holes, not just centroids; qualitative density, not PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (Water quality) | usgs-wq-01 (bbox → complete qualified station registry) | fresh (48h default) paginated latest-continuous observations joined to the official USGS monitoring-locations registry; filters and per-series approval/qualifiers; one station = one coordinate |
-| gaia.groundwater.read@v1 | groundwater (Groundwater) | usgs-groundwater-01, hubeau-groundwater-01 | three USGS pilot wells, measured depth below the local land surface, 24h maximum sample age |
+| gaia.groundwater.read@v1 | groundwater (Groundwater) | usgs-groundwater-01, hubeau-groundwater-01 | USGS depth below ground, Hub’Eau depth from measuring reference and NGF elevation, up to 24h old |
 | gaia.precipitation.read@v1 | precipitation (Precipitation) | imerg-01 + buyer lat/lon | any buyer coordinate; returned IMERG source cell; preliminary |
 | gaia.radar.status.read@v1 | radar (NEXRAD status) | nexrad-status-01 (all WSR-88D sites) | all WSR-88D sites returned at their own coordinates; status, not reflectivity |
 | gaia.sea_ice.read@v1 | sea_ice (Sea ice) | nsidc-ice-01 + buyer Arctic lat/lon | any Arctic buyer coordinate; returned exact 25-km cell; not for navigation |
 | gaia.aviation.read@v1 | aviation (Aviation METAR) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | NOAA AWC METAR (U.S. PD); in-situ ASOS pin, not a TAF |
 | gaia.road.read@v1 | road (Road weather) | fintraffic-road-01 | Fintraffic Digitraffic road weather CC BY 4.0; Finnish roads only |
 | gaia.rail.read@v1 | rail (Rail traffic) | fintraffic-rail-01 | Fintraffic Digitraffic rail locations CC BY 4.0; Finnish rail only |
-| gaia.road.events.read@v1 | road_events (Road notices) | fintraffic-road-announcements-01, fintraffic-roadworks-01 | operator-anchored device_id; LIVE only with provenance source |
-| gaia.aviation.hazards.read@v1 | aviation_hazards (Aviation hazard forecasts) | awc-gairmet-01 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.road.events.read@v1 | road_events (Road notices) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 | Fintraffic notices and works plus NDW incidents and closures within published validity, with source geometry |
+| gaia.aviation.hazards.read@v1 | aviation_hazards (Aviation hazard forecasts) | awc-gairmet-01 | NOAA CONUS G-AIRMET forecast geometry, issue and valid times |
 | gaia.drought.read@v1 | drought (Drought) | usdm-01 | U.S. Drought Monitor weekly state stats; attribute NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | operator-anchored device_id; LIVE only with provenance source |
 | gaia.energy.read@v1 | energy (Energy) | em-01, plug-sim-01 | operator-anchored device_id; LIVE only with provenance source |
@@ -204,11 +204,11 @@ GAIA (iot.modelmarket.dev) — device_id-anchored, ~$0.002 unless noted.
 | gaia.radnet.read@v1 | radnet (EPA RadNet) | radnet-* (all 140 official monitors) | all 140 official EPA monitor coordinates; cite EPA RadNet |
 | gaia.soil_moisture.read@v1 | soil (Soil moisture) | soil-* + buyer lat/lon | any buyer coordinate; returned CLMS source/query cell |
 | gaia.solar.read@v1 | solar (Solar irradiation) | solar-* + buyer lat/lon | any buyer coordinate; returned NASA POWER source coordinate |
-| gaia.snow.read@v1 | snow (Snowpack) | snow-* + buyer CONUS lat/lon | any buyer coordinate in CONUS; returned exact SNODAS cell |
+| gaia.snow.read@v1 | snow (Snowpack) | snow-* + buyer CONUS lat/lon; snotel-335, snotel-415 by ID | exact SNODAS cell at any CONUS coordinate, or fixed SNOTEL station by device_id with paired measured depth and water equivalent |
 | gaia.land_temperature.read@v1 | land_temperature (Land temperature) | lst-* + buyer lat/lon | any buyer coordinate; returned Sentinel-3 SLSTR source cell |
 | gaia.power.price.read@v1 | power_price (Power price) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | wholesale day-ahead price per bidding zone (SMARD, CC BY 4.0; 15 zones); not a retail tariff |
 | gaia.imagery.read@v1 | imagery (Satellite imagery) | s2-l2a-01 + buyer lat/lon (5 showcase pins) | any land coordinate; one 10–20 m pixel of the latest cloud-free Sentinel-2 L2A scene; read indices with the scene class; contains modified Copernicus Sentinel data |
-| gaia.river.forecast.read@v1 | river_forecast (River forecasts) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | operator-anchored device_id; LIVE only with provenance source |
+| gaia.river.forecast.read@v1 | river_forecast (River forecasts) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | NOAA NWPS forecast peak among available samples in the next 72h, local gauge datum, issue and valid times |
 
 GAIA plumbing (not a map pin)
 

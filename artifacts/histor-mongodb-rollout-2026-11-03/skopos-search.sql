@@ -24,6 +24,9 @@ classified AS (
     SELECT day_utc, CASE
         WHEN path ~* '[?&](gclid|dclid|msclkid|gbraid|wbraid)='
           OR path ~* '[?&]utm_medium=(cpc|ppc|paidsearch|paid_search|paid)([&]|$)' THEN 'paid-tagged'
+        WHEN path ~ '[?&]from=capture-conditions-article(&|$)' THEN 'capture-conditions-article'
+        WHEN path ~ '[?&]from=shared-review-note(&|$)' THEN 'shared-review-note'
+        WHEN path ~ '[?&]from=axismcp-mongodb(&|$)' THEN 'axismcp-mongodb'
         WHEN referrer ~ '^(www\.)?google\.(com|[a-z]{2}|co\.[a-z]{2}|com\.[a-z]{2})$' THEN 'google'
         WHEN referrer IN ('bing.com', 'www.bing.com') THEN 'bing'
         WHEN referrer IN ('duckduckgo.com', 'www.duckduckgo.com', 'html.duckduckgo.com', 'lite.duckduckgo.com') THEN 'duckduckgo'

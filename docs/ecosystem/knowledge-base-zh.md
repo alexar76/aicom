@@ -152,7 +152,7 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.grid.read@v1 | grid (电网碳强度) | uk-grid-01, eia-01, rte-grid-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.quake.read@v1 | quake (地震) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.river.read@v1 | river (河流) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +163 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.marine.read@v1 | marine (海洋) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +20 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.marine.read@v1 | marine (海洋) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +26 | 包括六座波罗的海 FMI 浮标，提供实测波浪及可用的同期水温 |
 | gaia.ghg.read@v1 | ghg (温室气体) | icos-htm-01, icos-zsf-01, icos-lin-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.fire.read@v1 | fire (野火) | firms-fire-01 | 须注明 NASA FIRMS；不是火场周界 |
 | gaia.radiation.read@v1 | radiation (辐射) | safecast-01, safecast-tokyo, safecast-sf, safecast-denver +10 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
@@ -176,15 +176,15 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.adsb.public.read@v1 | adsb (公开 ADS-B) | adsb-lol-01 | ADSB.lol ODbL 1.0；隔离派生库；不是自有边缘；不回退 OpenSky/ADSBx |
 | gaia.smoke.read@v1 | smoke (烟雾) | hms-smoke-01 | 完整签名多边形环及内环，不只是质心；定性浓度等级，不是 PM2.5 |
 | gaia.water_quality.read@v1 | water_quality (水质) | usgs-wq-01（bbox → 完整合格站点注册表） | 新鲜（默认 48 小时）分页 latest-continuous 观测联接官方 USGS monitoring-locations；筛选及逐序列 approval/qualifiers；一站一坐标 |
-| gaia.groundwater.read@v1 | groundwater (地下水) | usgs-groundwater-01, hubeau-groundwater-01 | 三个 USGS 试点井，实测地表以下水深，观测时间不超过 24 小时 |
+| gaia.groundwater.read@v1 | groundwater (地下水) | usgs-groundwater-01, hubeau-groundwater-01 | USGS 为地表以下水深，Hub’Eau 为测量基准以下水深与 NGF 高程，观测时间不超过 24 小时 |
 | gaia.precipitation.read@v1 | precipitation (降水) | imerg-01 + 买方 lat/lon | 任意买方坐标；返回 IMERG 源网格；初步数据 |
 | gaia.radar.status.read@v1 | radar (NEXRAD 状态) | nexrad-status-01（全部 WSR-88D 站点） | 全部 WSR-88D 站点按各自坐标返回；是状态，不是反射率 |
 | gaia.sea_ice.read@v1 | sea_ice (海冰) | nsidc-ice-01 + 买方北极 lat/lon | 任意北极买方坐标；返回精确 25 公里网格；不可用于导航 |
 | gaia.aviation.read@v1 | aviation (航空 METAR) | metar-kjfk-01, metar-klga-01, metar-kbos-01, metar-kord-01 +10 | NOAA AWC METAR（美国公有领域）；现场 ASOS，不是 TAF |
 | gaia.road.read@v1 | road (道路气象) | fintraffic-road-01 | Fintraffic Digitraffic 道路天气 CC BY 4.0；仅芬兰公路 |
 | gaia.rail.read@v1 | rail (铁路交通) | fintraffic-rail-01 | Fintraffic Digitraffic 列车位置 CC BY 4.0；仅芬兰铁路 |
-| gaia.road.events.read@v1 | road_events (道路通告) | fintraffic-road-announcements-01, fintraffic-roadworks-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
-| gaia.aviation.hazards.read@v1 | aviation_hazards (航空危险天气预报) | awc-gairmet-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.road.events.read@v1 | road_events (道路通告) | fintraffic-road-announcements-01, fintraffic-roadworks-01, ndw-road-srti-01, ndw-road-closures-01 | Fintraffic 道路通告与施工以及 NDW 事件与封路，均在公布有效期内并保留源几何形状 |
+| gaia.aviation.hazards.read@v1 | aviation_hazards (航空危险天气预报) | awc-gairmet-01 | 美国本土 NOAA G-AIRMET 预报几何形状、发布时间和有效时间 |
 | gaia.drought.read@v1 | drought (干旱) | usdm-01 | 美国干旱监测周报州统计；注明 NDMC/USDA/NOAA/NASA |
 | gaia.uv.read@v1 | uv (UV forecast) | epa-uv-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.energy.read@v1 | energy (能源) | em-01, plug-sim-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
@@ -194,11 +194,11 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.radnet.read@v1 | radnet (EPA RadNet) | radnet-*（全部 140 个官方监测点） | 全部 140 个 EPA 官方监测点坐标；注明 EPA RadNet |
 | gaia.soil_moisture.read@v1 | soil (土壤湿度) | soil-* + 买方 lat/lon | 任意买方坐标；返回 CLMS 源/查询网格 |
 | gaia.solar.read@v1 | solar (太阳辐照度) | solar-* + 买方 lat/lon | 任意买方坐标；返回 NASA POWER 源坐标 |
-| gaia.snow.read@v1 | snow (积雪) | snow-* + CONUS 内买方 lat/lon | CONUS 内任意买方坐标；返回精确 SNODAS 网格 |
+| gaia.snow.read@v1 | snow (积雪) | snow-* + CONUS 内买方 lat/lon；按 ID 选择 snotel-335、snotel-415 | 美国本土任意坐标的精确 SNODAS 网格，或按 device_id 选择 SNOTEL 固定站的成对实测雪深与雪水当量 |
 | gaia.land_temperature.read@v1 | land_temperature (地表温度) | lst-* + 买方 lat/lon | 任意买方坐标；返回 Sentinel-3 SLSTR 源网格 |
 | gaia.power.price.read@v1 | power_price (电价) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | 按竞价区的日前批发电价（SMARD，CC BY 4.0；15 个区）；不是零售电价 |
 | gaia.imagery.read@v1 | imagery (卫星影像) | s2-l2a-01 + 买方 lat/lon（5 个示例点） | 任意陆地坐标；最新无云 Sentinel-2 L2A 影像的一个 10–20 米像元；指数须结合场景分类解读；含经修改的 Copernicus Sentinel 数据 |
-| gaia.river.forecast.read@v1 | river_forecast (河流水位预报) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.river.forecast.read@v1 | river_forecast (河流水位预报) | nwps-pttp1, nwps-rmdv2, nwps-vckm6, nwps-dlrt2 | NOAA NWPS 未来 72 小时可用预报点的峰值，采用测站基准，提供发布时间和峰值时间 |
 
 GAIA 管道（不是地图针脚）
 

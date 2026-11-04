@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Run as root on admin-vps. Pass a staging directory with the five source files
-# in their /opt/histor layout (histor/app.py and docs/landing/...).
+# Run as root on admin-vps with staged files in their /opt/histor layout.
+# Pass "review-note" as the second argument for the HTML and assets follow-up.
 set -euo pipefail
 
 [[ "$EUID" == 0 ]] || { echo "Run on admin-vps as root" >&2; exit 1; }
@@ -20,11 +20,26 @@ NEW_FILES=(
   docs/landing/assets/compare-tool-names.js
   docs/landing/assets/tool-comparison.css
 )
-FILES=("$APP" "$INDEX" "${NEW_FILES[@]}")
+REPLACED_FILES=("$APP" "$INDEX")
+ASSETS=("${NEW_FILES[@]:1}")
 declare -A BASE_HASHES=(
   ["$APP"]=d4780f8b376b8890aad8a9be5d235f3bcbbadc69f09c8685b009e6ec0f155685
   ["$INDEX"]=6563eff0acd5031489cc816db0f7e4d25cfd92e6edd0e06d512b63494bc212ad
 )
+if [[ "${2:-}" == review-note ]]; then
+  BASE=aicom-security:histor-histor-1-mongodb-20261103
+  BASE_ID=sha256:ad82e6da539bb4a3ef5a7f64689d7347aa75c3141df801e23b297d51f2a34dcd
+  CANDIDATE=aicom-security:histor-histor-1-mongodb-review-note-20261104
+  REPLACED_FILES=("docs/landing$GUIDE" docs/landing/assets/compare-tool-names.js docs/landing/assets/tool-comparison.css)
+  ASSETS=("${REPLACED_FILES[@]:1}")
+  NEW_FILES=()
+  BASE_HASHES=(
+    ["${REPLACED_FILES[0]}"]=299823edf1af3fd476cb887d5869f158fe93f1392b8cb13ec6c8ba1e7f69982d
+    ["${REPLACED_FILES[1]}"]=2d535a0bd5e79b495c8defd6a4c327da7565b0415ecbb12ccb0ef823f44ab77e
+    ["${REPLACED_FILES[2]}"]=ecc9839af9826ae76cd0d6e5ab74845e6707ae9f1aca8d2539a92012b33dfa0f
+  )
+fi
+FILES=("${REPLACED_FILES[@]}" "${NEW_FILES[@]}")
 COMPOSE=(docker compose -p histor --env-file .env -f docker-compose.yml -f "$COMPOSE_FILE")
 QUALITY=/usr/local/sbin/skopos-warden-quality
 BINDING=/var/lib/momus-quality/live-image.json
@@ -104,8 +119,9 @@ cleanup() {
     echo "Restoring prior HISTOR deployment from $BACKUP" >&2
     local restored=0
     cp -p "$BACKUP/$COMPOSE_FILE" "$COMPOSE_FILE" || restored=1
-    cp -p "$BACKUP/$APP" "$APP" || restored=1
-    cp -p "$BACKUP/$INDEX" "$INDEX" || restored=1
+    for f in "${REPLACED_FILES[@]}"; do
+      cp -p "$BACKUP/$f" "$f" || restored=1
+    done
     rm -f -- "${NEW_FILES[@]}" || restored=1
     "${COMPOSE[@]}" up -d --no-deps --no-build histor || restored=1
     wait_healthy && [[ "$(image_id)" == "$BASE_ID" ]] || restored=1
@@ -131,12 +147,13 @@ for f in "${FILES[@]}"; do
   [[ -s "$SOURCE/$f" ]] || fail "Missing staged file $f"
   install -D -m 0644 "$SOURCE/$f" "$WORK/$f"
 done
-cat > "$WORK/Dockerfile" <<DOCKERFILE
-FROM $BASE
-COPY --chown=root:root histor/app.py /app/histor/app.py
-COPY --chown=root:root docs/landing/ /app/docs/landing/
-LABEL aicom.histor.overlay=mongodb-20261103
-DOCKERFILE
+{
+  printf 'FROM %s\n' "$BASE"
+  for f in "${FILES[@]}"; do
+    printf 'COPY --chown=root:root %s /app/%s\n' "$f" "$f"
+  done
+  printf 'LABEL aicom.histor.overlay=%s\n' "${CANDIDATE##*:}"
+} > "$WORK/Dockerfile"
 docker build -q --network none -t "$CANDIDATE" "$WORK"
 candidate_id="$(docker image inspect --format '{{.Id}}' "$CANDIDATE")"
 for f in "${FILES[@]}"; do
@@ -186,7 +203,7 @@ PY
 [[ "$(image_id)" == "$BASE_ID" ]] && verify_binding "$BASE_ID" || fail "Live image changed during build"
 install -d -m 0700 /root/histor-backups
 BACKUP="$(mktemp -d /root/histor-backups/mongodb-20261103.XXXXXXXX)"
-cp -p --parents "$COMPOSE_FILE" "$APP" "$INDEX" "$BACKUP"
+cp -p --parents "$COMPOSE_FILE" "${REPLACED_FILES[@]}" "$BACKUP"
 if curl -fsS --max-time 4 "$LOCAL/health" | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin)["crawl_running"] else 1)'; then
   WAS_CRAWLING=1
 fi
@@ -200,7 +217,7 @@ curl -fsS --max-time 10 "$LOCAL$GUIDE" > "$WORK/guide.live"
 cmp -s "$WORK/guide.live" "$WORK/docs/landing${GUIDE}" || fail "Live guide mismatch"
 curl -fsS --max-time 10 "$LOCAL/sitemap-site.xml" | grep -F "<loc>$PUBLIC$GUIDE</loc>" >/dev/null ||
   fail "Live sitemap lacks the guide"
-for f in "${NEW_FILES[@]:1}"; do
+for f in "${ASSETS[@]}"; do
   asset_path="${f#docs/landing}"
   curl -fsS --max-time 10 "$LOCAL$asset_path" > "$WORK/asset.live"
   cmp -s "$WORK/asset.live" "$WORK/$f" || fail "Live asset mismatch for $asset_path"
