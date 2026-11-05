@@ -5,8 +5,10 @@
     … --send                                                       # sends
 
 What it says, and only that: at `scannedAt`, the MCP endpoint an agent declares served these tool
-definitions, and the published @aimarket/warden release found no blocking finding in them (score,
-counts, ruleset digest, a hash of the exact definitions). One feedback per agent, from WARDEN's
+definitions, and the published @aimarket/warden release named in WARDEN_VERSION found no blocking
+finding in them (score, counts, ruleset digest, a hash of the exact definitions). The report carries
+the fields EIP-8004 requires of a feedback file (agentRegistry, agentId, clientAddress, createdAt,
+value, valueDecimals) at its top level. One feedback per agent, from WARDEN's
 wallet (the operator, owner of agent 96684); the contract refuses feedback on our own agents.
 
 Agents with a blocking finding are NOT published: WARDEN has false positives, and a public
@@ -66,7 +68,12 @@ OUT = os.environ.get("WARDEN_FB_REPORTS", os.path.join(STATE, "feedback"))
 LOG = os.path.join(STATE, "feedback.log")
 PENDING = os.path.join(STATE, "feedback-pending.json")
 CLIENT = OPERATOR  # set from the key file in main()
-WARDEN_INTEGRITY = "sha512-jSdepve/mwTLCwrSmbQ3vJLGPSXBWvgIQcJFi3CVrcUqiiXBbSPjlClqMUGIaT0tEE/exRcPgfAPOUe1SyuXow=="
+#: The published release every scan must come from; tag2 on chain names its ruleset. Moving to a
+#: new release re-issues every live feedback (revoke + give) on the next run: see decide().
+WARDEN_VERSION = "0.23.0"
+RULESET_VERSION = "17"
+WARDEN_INTEGRITY = "sha512-xP9OV7bNhinFqAej0xu4IuAGyPVVsoQ79mRpaTB9ffnMxbCs/qbw1+/UXLAR9NykV4jDhT6fvc+VMHszsvgnWA=="
+REPORT_TYPE = "aimarket.warden-scan/v2"
 SELECTOR = keccak(text="giveFeedback(uint256,int128,uint8,string,string,string,string,bytes32)")[:4]
 
 
@@ -76,7 +83,18 @@ def canonical(obj) -> bytes:
 
 def report_for(row: dict, tools: list, scan: dict, scanned_at: str) -> dict:
     return {
-        "type": "aimarket.warden-scan/v1",
+        # What EIP-8004 requires of a feedback file, with the optional fields that match the
+        # on-chain call; the scan itself follows.
+        "agentRegistry": f"eip155:{CHAIN_ID}:{IDENTITY}",
+        "agentId": int(row["agent_id"]),
+        "clientAddress": f"eip155:{CHAIN_ID}:{CLIENT}",
+        "createdAt": scanned_at,
+        "value": int(row["score"]),
+        "valueDecimals": 0,
+        "tag1": "warden-scan",
+        "tag2": f"ruleset-v{RULESET_VERSION}",
+        "endpoint": row["url"],
+        "type": REPORT_TYPE,
         "issuer": {"name": "WARDEN", "agentRegistry": f"eip155:{CHAIN_ID}:{IDENTITY}",
                    "agentId": WARDEN_AGENT_ID, "wallet": CLIENT},
         "subject": {"agentRegistry": f"eip155:{CHAIN_ID}:{IDENTITY}", "agentId": int(row["agent_id"]),
@@ -96,7 +114,7 @@ def report_for(row: dict, tools: list, scan: dict, scanned_at: str) -> dict:
 
 def calldata(agent_id: int, value: int, endpoint: str, uri: str, digest: bytes) -> str:
     body = encode(["uint256", "int128", "uint8", "string", "string", "string", "string", "bytes32"],
-                  [agent_id, value, 0, "warden-scan", "ruleset-v8", endpoint, uri, digest])
+                  [agent_id, value, 0, "warden-scan", f"ruleset-v{RULESET_VERSION}", endpoint, uri, digest])
     return "0x" + (SELECTOR + body).hex()
 
 
@@ -183,9 +201,13 @@ def decide(scan: dict, tools_by_id: dict, scanned_at: str, excluded: set) -> tup
         rep = report_for(r, tools_by_id[aid], scan, scanned_at)
         if live:
             old = json.load(open(os.path.join(OUT, os.path.basename(prev["uri"]))))
-            if old["result"]["toolsSha256"] == rep["result"]["toolsSha256"]:
-                continue                   # same definitions, statement still true
-            actions.append(("revoke", r, "tool definitions changed"))
+            same_tools = old["result"]["toolsSha256"] == rep["result"]["toolsSha256"]
+            same_scanner = (old.get("type") == rep["type"]
+                            and old.get("scanner", {}).get("package") == rep["scanner"]["package"])
+            if same_tools and same_scanner:
+                continue                   # same definitions, same scanner: statement still true
+            actions.append(("revoke", r, "tool definitions changed" if not same_tools else
+                            f"rescanned with @aimarket/warden {WARDEN_VERSION} (ruleset v{RULESET_VERSION})"))
             name = f"warden-{aid}-{stamp}.json"
         else:
             name = f"warden-{aid}.json" if not os.path.exists(os.path.join(OUT, f"warden-{aid}.json")) \
@@ -261,6 +283,9 @@ def main() -> None:
     ap.add_argument("--tools")
     ap.add_argument("--key-file", required=True)
     ap.add_argument("--send", action="store_true")
+    ap.add_argument("--max-tx", type=int, default=MAX_TX_PER_RUN,
+                    help=f"transaction cap for this run (default {MAX_TX_PER_RUN}); raise it only after reading "
+                         "the dry run, e.g. once when a new WARDEN release re-issues every feedback")
     ap.add_argument("--revoke-all", action="store_true",
                     help="revoke every live feedback this key's wallet gave (moving to another wallet)")
     args = ap.parse_args()
@@ -270,8 +295,9 @@ def main() -> None:
         sys.exit("--scan and --tools are required")
 
     scan = json.load(open(args.scan))
-    if scan["warden"] != "0.8.2" or scan["ruleset"]["version"] != "8":
-        sys.exit("refusing: the scan must come from the published @aimarket/warden 0.8.2 (ruleset v8)")
+    if scan["warden"] != WARDEN_VERSION or scan["ruleset"]["version"] != RULESET_VERSION:
+        sys.exit(f"refusing: the scan must come from the published @aimarket/warden {WARDEN_VERSION} "
+                 f"(ruleset v{RULESET_VERSION})")
     tools_by_id = {}
     for line in open(args.tools):
         if line.strip():
@@ -292,8 +318,8 @@ def main() -> None:
     print(f"actions: {[(a, r['agent_id']) for a, r, _ in actions] or 'none'}")
     print(f"held for the owner (blocking findings): {[(r['agent_id'], r['title']) for r in held]}")
     print(f"unreachable this run (left as they are): {[r['agent_id'] for r in unreachable]}")
-    if len(actions) > MAX_TX_PER_RUN:
-        sys.exit(f"refusing: {len(actions)} transactions in one run (cap {MAX_TX_PER_RUN}); look first")
+    if len(actions) > args.max_tx:
+        sys.exit(f"refusing: {len(actions)} transactions in one run (cap {args.max_tx}); look first")
     if not actions:
         return
     if os.path.exists(PENDING):

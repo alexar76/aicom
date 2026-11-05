@@ -6,7 +6,7 @@
 #
 # Signs with WARDEN's feedback-only wallet (/etc/warden-feedback/wallet.json, created on this host,
 # never copied off it). Steps: 8004scan's active, endpoint-verified Base agents with MCP →
-# initialize + tools/list on each → the published @aimarket/warden 0.8.2 → reports written where
+# initialize + tools/list on each → the published @aimarket/warden (WARDEN_VERSION in feedback.py) → reports written where
 # nginx serves them → feedback.py. A short public summary goes to last-run.json, which the alerter
 # on not-my-vps turns into a Telegram message (the bot token stays there).
 set -euo pipefail
