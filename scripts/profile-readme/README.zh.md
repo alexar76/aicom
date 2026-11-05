@@ -44,26 +44,6 @@
   <sub>可缩放的 3D 生态图谱——<a href="https://monitor.modelmarket.dev/">Alien Monitor</a></sub>
 </p>
 
-<p align="center">
-  <a href="assets/ecosystem-overview.svg">
-    <img src="assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；ACEX 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦；Attested Memory 保存可验证的智能体记忆；eSIM 运营者通过 x402 向智能体销售，并把签名的交付收据带到 Hub；SYMMARTYS 通过 Hub 出售商业查询：欧盟增值税号、LEI、欧洲央行参考汇率、制裁名单查询和时间戳证明；域名运营者按报价通过 x402 在 Openprovider 或 Porkbun Sandbox 上为智能体注册域名。" width="900">
-  </a>
-</p>
-
-<p align="center">
-  <sub>资金与信任主干——点击图表查看完整尺寸。</sub>
-</p>
-
-<p align="center">
-  <a href="https://oracles.modelmarket.dev">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png" alt="Oracles——智能体经济中的十七种可验证数学能力：Platon 随机性、Chronos VDF、Lattice、Murmuration、Lumen、Colony、Turing、Percola、Fermat、Ablation、Landauer、Sortes、Gauss、Aestus、Betti、Kantor、Fourier——每项都有实时 3D 宇宙视觉效果" width="900">
-  </a>
-</p>
-
-<p align="center">
-  <sub><b>Oracles</b>——智能体付费购买的签名随机性、延迟、共识与信任数学 · <a href="https://oracles.modelmarket.dev"><b>实时门户</b></a> · <a href="https://github.com/alexar76/oracles">GitHub</a></sub>
-</p>
-
 ---
 
 ### 接下来，根据你的身份选择
@@ -174,11 +154,20 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 下方每个仓库都**仅出现在一个**分组中——即它在流水线中扮演的角色。如果你只知道名称，请跳转至 [A–Z 索引](#az)。
 
 <details>
-<summary><b>🗺️ 生态系统地图</b>——以连线呈现资金与信任主干（点击展开）</summary>
+<summary><b>🗺️ 生态系统地图</b>——资金与信任主干图、其连线以及预言机家族（点击展开）</summary>
 <br/>
 
-> 概览图位于**本 README 顶部**。GitHub Mermaid 会截断节点标签，因此地图保留为 SVG。
-> 可缩放 3D 版本：[Alien Monitor](https://monitor.modelmarket.dev/)。
+> GitHub Mermaid 会截断节点标签，因此地图采用 SVG。可缩放 3D 版本：[Alien Monitor](https://monitor.modelmarket.dev/)。
+
+<p align="center">
+  <a href="assets/ecosystem-overview.svg">
+    <img src="assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；ACEX 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦；Attested Memory 保存可验证的智能体记忆；eSIM 运营者通过 x402 向智能体销售，并把签名的交付收据带到 Hub；SYMMARTYS 通过 Hub 出售商业查询：欧盟增值税号、LEI、欧洲央行参考汇率、制裁名单查询和时间戳证明；域名运营者按报价通过 x402 在 Openprovider 或 Porkbun Sandbox 上为智能体注册域名。" width="900">
+  </a>
+</p>
+
+<p align="center">
+  <sub>资金与信任主干——点击图表查看完整尺寸。</sub>
+</p>
 
 | 从 | 到 | 流程 |
 | --- | --- | --- |
@@ -190,7 +179,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | Oracles ×17 | Hub | 签名的可验证数学 |
 | GAIA | Hub | 具有证明（attestation）的物理世界读数 |
 | eSIM 运营者套件 | Hub | 签名报价 · 联邦节点或运营者自己的枢纽 · 买家签名的交付收据 → `deliveries_30d` |
-| [SYMMARTYS](https://symmartys.modelmarket.dev/) | Hub | VIES 增值税号 · GLEIF LEI · 欧洲央行参考汇率 · 欧盟 / OFAC / 英国制裁名单查询（含联合国认定） · OpenTimestamps 时间戳证明 · 公司登记册（挪威 · 法国 · 捷克 · 芬兰）· EORI · RDAP · 工作日 · 锚定比特币的网页快照 · 带死人开关的定时器——每个回答都与来源、获取时间和 SHA-256 一起签名；只通过枢纽出售 |
+| SYMMARTYS | Hub | VIES 增值税号 · GLEIF LEI · 欧洲央行参考汇率 · 欧盟 / OFAC / 英国制裁名单查询（含联合国认定） · OpenTimestamps 时间戳证明 · 公司登记册（挪威 · 法国 · 捷克 · 芬兰）· EORI · RDAP · 工作日 · 锚定比特币的网页快照 · 带死人开关的定时器——每个回答都与来源、获取时间和 SHA-256 一起签名；只通过枢纽出售 |
 | ATLAS | GAIA | 覆盖这些读数的行星级传感器地图 |
 | Cite desks | ATLAS / Hub | 购买 `atlas.*` / `gaia.*` 的聚焦 B2B 证据产品 |
 | METIS | Hub | 验证认知 |
@@ -206,6 +195,16 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | 只读快照 · 异常 · 洞察 |
 | Alien Monitor | Hub | 实时 3D 图谱 |
 | ARGUS / 智能体 | Attested Memory | 写入 · 检索 · 共享 |
+
+<p align="center">
+  <a href="https://oracles.modelmarket.dev">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png" alt="Oracles——智能体经济中的十七种可验证数学能力：Platon 随机性、Chronos VDF、Lattice、Murmuration、Lumen、Colony、Turing、Percola、Fermat、Ablation、Landauer、Sortes、Gauss、Aestus、Betti、Kantor、Fourier——每项都有实时 3D 宇宙视觉效果" width="900">
+  </a>
+</p>
+
+<p align="center">
+  <sub><b>Oracles</b>——智能体付费购买的签名随机性、延迟、共识与信任数学 · <a href="https://oracles.modelmarket.dev"><b>实时门户</b></a> · <a href="https://github.com/alexar76/oracles">GitHub</a></sub>
+</p>
 
 </details>
 

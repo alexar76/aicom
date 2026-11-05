@@ -44,26 +44,6 @@
   <sub>Graphe 3D zoomable de l’écosystème — <a href="https://monitor.modelmarket.dev/">Alien Monitor</a></sub>
 </p>
 
-<p align="center">
-  <a href="assets/ecosystem-overview.svg">
-    <img src="assets/ecosystem-overview.svg" alt="Vue d’ensemble de l’écosystème : Factory déploie sur HESTIA ; HESTIA annonce au Hub ; Oracles et METIS alimentent Hub ; ARGUS consomme ; ACEX finance ; SKOPOS observe ; MOMUS cherche ; Treasury paie ; LOGOS analyse la fédération ; Attested Memory garde une mémoire vérifiable pour les agents ; les opérateurs eSIM vendent aux agents via x402 et apportent au Hub des reçus de livraison signés ; SYMMARTYS vend via le Hub des vérifications pour le commerce : TVA de l’UE, LEI, taux de référence de la BCE, filtrage des listes de sanctions et preuves d’horodatage ; les opérateurs de domaines enregistrent pour un agent un domaine coté via x402 sur Openprovider ou Porkbun Sandbox." width="900">
-  </a>
-</p>
-
-<p align="center">
-  <sub>Colonne vertébrale de l’argent et de la confiance — cliquez sur le diagramme pour l’afficher en taille réelle.</sub>
-</p>
-
-<p align="center">
-  <a href="https://oracles.modelmarket.dev">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png" alt="Oracles — dix-sept capacités mathématiques vérifiables pour l’économie des agents : Platon randomness, Chronos VDF, Lattice, Murmuration, Lumen, Colony, Turing, Percola, Fermat, Ablation, Landauer, Sortes, Gauss, Aestus, Betti, Kantor, Fourier — chacune avec des visuels cosmiques 3D LIVE" width="900">
-  </a>
-</p>
-
-<p align="center">
-  <sub><b>Oracles</b> — agents de mathématiques signées pour l’aléatoire, le délai, le consensus et la confiance, payés à l’usage · <a href="https://oracles.modelmarket.dev"><b>portail LIVE</b></a> · <a href="https://github.com/alexar76/oracles">GitHub</a></sub>
-</p>
-
 ---
 
 ### Ensuite, si vous savez qui vous êtes
@@ -174,10 +154,20 @@ Un seul pipeline, dans l’ordre où la confiance et l’argent circulent réell
 Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu’il joue dans ce pipeline. Si vous ne connaissez qu’un nom, passez à l’[index A–Z](#az).
 
 <details>
-<summary><b>🗺️ Carte de l’écosystème</b> — la colonne vertébrale de l’argent et de la confiance sous forme d’arêtes (cliquez pour développer)</summary>
+<summary><b>🗺️ Carte de l’écosystème</b> — le diagramme de la colonne vertébrale de l’argent et de la confiance, ses arêtes et la famille d’oracles (cliquez pour développer)</summary>
 <br/>
 
-> Le diagramme d’ensemble se trouve **en haut de ce README**. GitHub Mermaid tronque les libellés des nœuds ; la carte reste donc au format SVG. Vue 3D zoomable : [Alien Monitor](https://monitor.modelmarket.dev/).
+> GitHub Mermaid tronque les libellés des nœuds ; la carte est donc au format SVG. Vue 3D zoomable : [Alien Monitor](https://monitor.modelmarket.dev/).
+
+<p align="center">
+  <a href="assets/ecosystem-overview.svg">
+    <img src="assets/ecosystem-overview.svg" alt="Vue d’ensemble de l’écosystème : Factory déploie sur HESTIA ; HESTIA annonce au Hub ; Oracles et METIS alimentent Hub ; ARGUS consomme ; ACEX finance ; SKOPOS observe ; MOMUS cherche ; Treasury paie ; LOGOS analyse la fédération ; Attested Memory garde une mémoire vérifiable pour les agents ; les opérateurs eSIM vendent aux agents via x402 et apportent au Hub des reçus de livraison signés ; SYMMARTYS vend via le Hub des vérifications pour le commerce : TVA de l’UE, LEI, taux de référence de la BCE, filtrage des listes de sanctions et preuves d’horodatage ; les opérateurs de domaines enregistrent pour un agent un domaine coté via x402 sur Openprovider ou Porkbun Sandbox." width="900">
+  </a>
+</p>
+
+<p align="center">
+  <sub>Colonne vertébrale de l’argent et de la confiance — cliquez sur le diagramme pour l’afficher en taille réelle.</sub>
+</p>
 
 | De | Vers | Flux |
 | --- | --- | --- |
@@ -189,7 +179,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | Oracles ×17 | Hub | mathématiques vérifiables signées |
 | GAIA | Hub | lectures attestées du monde physique |
 | Kit d'opérateur eSIM | Hub | offres signées · un nœud de fédération ou le propre hub de l'opérateur · reçus de livraison signés par les acheteurs → `deliveries_30d` |
-| [SYMMARTYS](https://symmartys.modelmarket.dev/) | Hub | TVA via VIES · LEI via GLEIF · taux de référence de la BCE · filtrage des listes de sanctions UE / OFAC / Royaume-Uni (désignations de l'ONU comprises) · preuves d'horodatage OpenTimestamps · registres des sociétés (NO · FR · CZ · FI) · EORI · RDAP · jours ouvrés · captures web ancrées dans Bitcoin · minuteurs avec interrupteur d'homme mort — chaque réponse signée avec sa source, son heure de récupération et son SHA-256 ; vendu uniquement via le hub |
+| SYMMARTYS | Hub | TVA via VIES · LEI via GLEIF · taux de référence de la BCE · filtrage des listes de sanctions UE / OFAC / Royaume-Uni (désignations de l'ONU comprises) · preuves d'horodatage OpenTimestamps · registres des sociétés (NO · FR · CZ · FI) · EORI · RDAP · jours ouvrés · captures web ancrées dans Bitcoin · minuteurs avec interrupteur d'homme mort — chaque réponse signée avec sa source, son heure de récupération et son SHA-256 ; vendu uniquement via le hub |
 | ATLAS | GAIA | carte planétaire des capteurs couvrant ces lectures |
 | Cite desks | ATLAS / Hub | produits B2B d’évidence qui achètent `atlas.*` / `gaia.*` |
 | METIS | Hub | vérification de la cognition |
@@ -205,6 +195,16 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | instantanés en lecture seule · anomalies · analyses |
 | Alien Monitor | Hub | graphe 3D LIVE |
 | ARGUS / agents | Attested Memory | écrire · chercher · partager |
+
+<p align="center">
+  <a href="https://oracles.modelmarket.dev">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png" alt="Oracles — dix-sept capacités mathématiques vérifiables pour l’économie des agents : Platon randomness, Chronos VDF, Lattice, Murmuration, Lumen, Colony, Turing, Percola, Fermat, Ablation, Landauer, Sortes, Gauss, Aestus, Betti, Kantor, Fourier — chacune avec des visuels cosmiques 3D LIVE" width="900">
+  </a>
+</p>
+
+<p align="center">
+  <sub><b>Oracles</b> — agents de mathématiques signées pour l’aléatoire, le délai, le consensus et la confiance, payés à l’usage · <a href="https://oracles.modelmarket.dev"><b>portail LIVE</b></a> · <a href="https://github.com/alexar76/oracles">GitHub</a></sub>
+</p>
 
 </details>
 

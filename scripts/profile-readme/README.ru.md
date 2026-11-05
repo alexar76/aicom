@@ -44,26 +44,6 @@
   <sub>Масштабируемый 3D-граф экосистемы — <a href="https://monitor.modelmarket.dev/">Alien Monitor</a></sub>
 </p>
 
-<p align="center">
-  <a href="assets/ecosystem-overview.svg">
-    <img src="assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory деплоит на HESTIA; HESTIA анонсирует в Hub; Oracles и METIS снабжают Hub; ARGUS потребляет; ACEX финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию; Attested Memory хранит проверяемую память агентов; eSIM-операторы продают агентам по x402 и приносят в Hub подписанные квитанции о доставке; SYMMARTYS продаёт через Hub справки для торговли: НДС-номера ЕС, LEI, справочные курсы ЕЦБ, проверку по санкционным спискам и доказательства метки времени; операторы доменов регистрируют агенту домен по котировке через x402 на Openprovider или Porkbun Sandbox." width="900">
-  </a>
-</p>
-
-<p align="center">
-  <sub>Магистраль денег и доверия — нажмите на схему, чтобы открыть её полностью.</sub>
-</p>
-
-<p align="center">
-  <a href="https://oracles.modelmarket.dev">
-    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png" alt="Oracles — семнадцать верифицируемых математических возможностей для экономики агентов: Platon randomness, Chronos VDF, Lattice, Murmuration, Lumen, Colony, Turing, Percola, Fermat, Ablation, Landauer, Sortes, Gauss, Aestus, Betti, Kantor, Fourier — каждая с живой космической 3D-визуализацией" width="900">
-  </a>
-</p>
-
-<p align="center">
-  <sub><b>Oracles</b> — подписанная случайность, задержка, консенсус и математика доверия, за которые платят агенты · <a href="https://oracles.modelmarket.dev"><b>живой портал</b></a> · <a href="https://github.com/alexar76/oracles">GitHub</a></sub>
-</p>
-
 ---
 
 ### Куда дальше — в зависимости от вашей цели
@@ -182,11 +162,20 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 вам известно только название, перейдите к [указателю A–Z](#az).
 
 <details>
-<summary><b>🗺️ Карта экосистемы</b> — магистраль денег и доверия в виде связей (нажмите, чтобы раскрыть)</summary>
+<summary><b>🗺️ Карта экосистемы</b> — схема магистрали денег и доверия, её связи и семейство оракулов (нажмите, чтобы раскрыть)</summary>
 <br/>
 
-> Обзорная схема находится **в начале этого README**. GitHub Mermaid обрезает подписи узлов, поэтому
-> карта остаётся в SVG. Масштабируемое 3D-представление: [Alien Monitor](https://monitor.modelmarket.dev/).
+> GitHub Mermaid обрезает подписи узлов, поэтому карта сделана в SVG. Масштабируемое 3D-представление: [Alien Monitor](https://monitor.modelmarket.dev/).
+
+<p align="center">
+  <a href="assets/ecosystem-overview.svg">
+    <img src="assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory деплоит на HESTIA; HESTIA анонсирует в Hub; Oracles и METIS снабжают Hub; ARGUS потребляет; ACEX финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию; Attested Memory хранит проверяемую память агентов; eSIM-операторы продают агентам по x402 и приносят в Hub подписанные квитанции о доставке; SYMMARTYS продаёт через Hub справки для торговли: НДС-номера ЕС, LEI, справочные курсы ЕЦБ, проверку по санкционным спискам и доказательства метки времени; операторы доменов регистрируют агенту домен по котировке через x402 на Openprovider или Porkbun Sandbox." width="900">
+  </a>
+</p>
+
+<p align="center">
+  <sub>Магистраль денег и доверия — нажмите на схему, чтобы открыть её полностью.</sub>
+</p>
 
 | Откуда | Куда | Поток |
 | --- | --- | --- |
@@ -198,7 +187,7 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | Oracles ×17 | Hub | подписанная верифицируемая математика |
 | GAIA | Hub | аттестованные показания физического мира |
 | Кит eSIM-оператора | Hub | подписанные предложения · узел федерации или собственный хаб оператора · подписанные квитанции покупателей о доставке → `deliveries_30d` |
-| [SYMMARTYS](https://symmartys.modelmarket.dev/) | Hub | НДС через VIES · LEI через GLEIF · справочные курсы ЕЦБ · проверка по санкционным спискам ЕС / OFAC / Великобритании (включая санкции ООН) · доказательства метки времени OpenTimestamps · реестры компаний (NO · FR · CZ · FI) · EORI · RDAP · рабочие дни · снимки страниц с привязкой к Биткоину · таймеры с dead man's switch — каждый ответ подписан вместе с источником, временем получения и SHA-256; продаётся только через хаб |
+| SYMMARTYS | Hub | НДС через VIES · LEI через GLEIF · справочные курсы ЕЦБ · проверка по санкционным спискам ЕС / OFAC / Великобритании (включая санкции ООН) · доказательства метки времени OpenTimestamps · реестры компаний (NO · FR · CZ · FI) · EORI · RDAP · рабочие дни · снимки страниц с привязкой к Биткоину · таймеры с dead man's switch — каждый ответ подписан вместе с источником, временем получения и SHA-256; продаётся только через хаб |
 | ATLAS | GAIA | планетарная карта датчиков поверх этих показаний |
 | Cite desks | ATLAS / Hub | узкие B2B evidence-продукты, покупающие `atlas.*` / `gaia.*` |
 | METIS | Hub | верификация когнитивного слоя |
@@ -214,6 +203,16 @@ git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everythi
 | Hub / MOMUS / SKOPOS / Treasury | LOGOS | снимки только для чтения · аномалии · аналитические выводы |
 | Alien Monitor | Hub | живой 3D-граф |
 | ARGUS / агенты | Attested Memory | запись · поиск · обмен |
+
+<p align="center">
+  <a href="https://oracles.modelmarket.dev">
+    <img src="https://raw.githubusercontent.com/alexar76/alexar76/main/assets/oracles-hero.png" alt="Oracles — семнадцать верифицируемых математических возможностей для экономики агентов: Platon randomness, Chronos VDF, Lattice, Murmuration, Lumen, Colony, Turing, Percola, Fermat, Ablation, Landauer, Sortes, Gauss, Aestus, Betti, Kantor, Fourier — каждая с живой космической 3D-визуализацией" width="900">
+  </a>
+</p>
+
+<p align="center">
+  <sub><b>Oracles</b> — подписанная случайность, задержка, консенсус и математика доверия, за которые платят агенты · <a href="https://oracles.modelmarket.dev"><b>живой портал</b></a> · <a href="https://github.com/alexar76/oracles">GitHub</a></sub>
+</p>
 
 </details>
 
