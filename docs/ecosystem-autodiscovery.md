@@ -145,7 +145,11 @@ The webhook is *not* the path by which a node appears; federation discovery is.
 - **Pinned-key trust chain** — capabilities only index when the manifest signature
   verifies against a key that is either previously pinned or operator-vouched, and
   the manifest's signed `generated_at` must be fresh (`AIMARKET_MANIFEST_MAX_AGE_S`,
-  default 7 days) to bound replay of a captured manifest over plaintext HTTP. A
+  default 7 days) to bound replay of a captured manifest over plaintext HTTP. Since
+  2026-11-04 (hub migration 066) it must also be no older than the newest manifest
+  already verified from that peer under the same key, so nobody can feed the hub an
+  older manifest of a peer it has already crawled; an operator clears the record
+  with `aimarket peers --reset-catalogue-time <url>` if a peer's clock went back. A
   peer changing its key mid-stream is rejected (takeover protection). NOTE: a
   pinned **http** seed (e.g. Platon on a raw IP) still carries IP-hijack replay
   risk bounded by the freshness window — prefer https for pinned seeds where the

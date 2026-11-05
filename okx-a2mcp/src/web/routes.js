@@ -6,7 +6,7 @@ import express from "express";
 import { failure } from "../a2mcp.js";
 import { readFileSync } from "node:fs";
 import { LANGS } from "./i18n/index.js";
-import { ASSETS, TOOL_IDS, renderIndex, renderNotFound, renderTool, robots, sitemap } from "./pages.js";
+import { ASSETS, TOOL_IDS, renderIndex, renderNearbySensors, renderNotFound, renderTool, robots, sitemap } from "./pages.js";
 
 // Scripts only from this origin; styles and fonts only from this origin (the hub serves
 // /assets/*); the form talks to this origin only. Nothing may frame the page.
@@ -88,6 +88,8 @@ export function mountTools(app, { services, allow, callerIdOf, origin, verificat
   // Mounted at /tools, so "/tools" and "/tools/" both arrive here as "/": the URL tells them apart.
   r.get("/", (req, res) => (req.originalUrl.split("?")[0] === "/tools"
     ? res.redirect(301, "/tools/") : html(res, 200, renderIndex("en", opts))));
+  r.get("/nearby-sensors", (_req, res) => html(res, 200, renderNearbySensors(opts)));
+  r.get("/nearby-sensors/", (_req, res) => res.redirect(301, "/tools/nearby-sensors"));
   r.get("/:a", (req, res) => {
     const a = req.params.a;
     if (isLang(a)) return res.redirect(301, `/tools/${a}/`);

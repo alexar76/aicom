@@ -7,10 +7,12 @@
 // when the hub's design changes.
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { HUB_TOOLS } from "../hub.js";
 import { priceOf } from "../x402.js";
 import { EXAMPLES } from "./examples.js";
 import { HTML_LANG, LANGS, OG_LOCALE, STRINGS } from "./i18n/index.js";
 
+export const NEARBY_SENSORS_PATH = "/tools/nearby-sensors";
 export const TOOL_IDS = ["tool-list-cost", "x402-check", "mcp-diff", "warden-scan", "histor-check"];
 /** Services that also have a free A2MCP door for agents (src/services.js). */
 const FREE_FOR_AGENTS = new Set(["warden-scan", "histor-check", "tool-list-cost"]);
@@ -152,6 +154,10 @@ export function renderIndex(lang, { origin, verification = "" }) {
 <section class="tool-grid" aria-label="${esc(t.site.tools)}">
 ${cards}
 </section>
+<section class="section" lang="en">
+<h2 class="section-title">Find public sensors near a point</h2>
+<p><a href="${NEARBY_SENSORS_PATH}">ATLAS nearby sensors API</a> · x402 · ${esc(HUB_TOOLS["nearby-sensors"].price)} per call</p>
+</section>
 <section class="section">
 <h2 class="section-title">${esc(t.index.howTitle)}</h2>
 <div class="grid how-grid">${how}</div>
@@ -285,6 +291,41 @@ ${agents(lang, id, origin)}
                 path: pathFor(lang, id), origin, verification, alternates, jsonLd, body, data });
 }
 
+export function renderNearbySensors({ origin, verification = "" }) {
+  const tool = HUB_TOOLS["nearby-sensors"];
+  const title = "Nearby public sensors API with x402 · ATLAS";
+  const body = `<header class="hero">
+<span class="eyebrow">ATLAS · x402 API</span>
+<h1><span class="grad">Find public sensors near a point</span></h1>
+<p class="tagline">${esc(tool.description)}</p>
+<p>${esc(tool.price)} in USDC on Base per paid call.</p>
+</header>
+<section class="section">
+<h2 class="section-title">Request sensors for a location</h2>
+<p>Send latitude and longitude. Use <code>layers</code> to select sensor types and <code>max_km</code> to limit the distance. The gateway asks ATLAS for the closest eligible sensor in each requested layer.</p>
+<pre><code>${esc(`curl -i -X POST '${origin}/x402/nearby-sensors' \\
+  -H 'Content-Type: application/json' \\
+  -d '${JSON.stringify(tool.example)}'`)}</code></pre>
+<p>An unsigned request returns HTTP 402 with the payment terms. An x402 client can use those terms to authorize the payment and retry.</p>
+<h2 class="section-title">Read the result</h2>
+<p>A successful paid response includes the ATLAS result and the receipt returned by the Hub. This abbreviated example uses illustrative data. The distance and readings come from the stations found for your request.</p>
+<pre><code>${esc(JSON.stringify({
+  status: "ok",
+  service: "nearby-sensors",
+  capability_id: tool.capability_id,
+  result: { ok: true, hit_count: 1, nearest_by_layer: { weather: { distance_km: 2.4 } } },
+  receipt: "<Hub receipt omitted>",
+}, null, 2))}</code></pre>
+<p><a href="/x402/openapi.json">x402 API reference</a> · <a href="${esc(tool.source_hub)}">Explore ATLAS</a></p>
+</section>`;
+  return page({
+    lang: "en", title, description: tool.description, path: NEARBY_SENSORS_PATH, origin, verification,
+    alternates: [["en", NEARBY_SENSORS_PATH]], body,
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: title,
+      description: tool.description, url: origin + NEARBY_SENSORS_PATH },
+  });
+}
+
 export function renderNotFound(lang, { origin }) {
   const t = STRINGS[lang];
   const links = TOOL_IDS.map((id) => `<li><a href="${esc(pathFor(lang, id))}">${esc(t.tools[id].name)}</a></li>`).join("");
@@ -301,6 +342,7 @@ export function sitemap(origin) {
       `<xhtml:link rel="alternate" hreflang="${HTML_LANG[l]}" href="${esc(origin + pathFor(l, id))}"/>`).join("");
     for (const l of LANGS) urls.push(`<url><loc>${esc(origin + pathFor(l, id))}</loc>${alts}</url>`);
   }
+  urls.push(`<url><loc>${esc(origin + NEARBY_SENSORS_PATH)}</loc></url>`);
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.join("\n")}

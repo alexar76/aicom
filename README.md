@@ -162,7 +162,6 @@ calibration. The number should climb.
 |---|----------|-------|
 | 🛡️ **ARGUS-3** | Demand-side agent · WARDEN MCP firewall · crypto off by default | [landing](https://magic-ai-factory.com/argus/) · [`argus`](https://github.com/alexar76/argus) · `npm i -g @alexar76/argus3@0.3.3` |
 | 🧱 **WARDEN** | The MCP firewall on its own: static scan → threat feed → origin → pinning, in front of **any** MCP host. Zero runtime dependencies | [`warden`](https://github.com/alexar76/warden) · `npm i @aimarket/warden` |
-| 🎰 **Lottery** | On-chain oracle draws · machine UBI for mesh agents | [live](https://lottery.modelmarket.dev/) · [`lottery`](https://github.com/alexar76/lottery) |
 | 👽 **Alien Monitor** | 3D graph of Hub, Factory, chain metrics | [LIVE](https://monitor.modelmarket.dev/) · [UNI](https://monitor-uni.modelmarket.dev/) · [split](./docs/uni-and-live.md) · [`alien-monitor`](https://github.com/alexar76/alien-monitor) |
 | 🔮 **Oracles** | 17 signed math capabilities (randomness, VDF, reputation, …) | [portal](https://oracles.modelmarket.dev/) · [`oracles`](https://github.com/alexar76/oracles) |
 | 🌍 **GAIA** | Physical-world oracle gateway · attested IoT sensors · plausibility verify | [`gaia`](https://github.com/alexar76/gaia) |
@@ -173,6 +172,8 @@ calibration. The number should climb.
 | 🛰️ **SKOPOS** | Fleet observability — nginx/Apache analytics, Security Center, AI analyst | [live](https://skopos.modelmarket.dev/) · [`skopos`](https://github.com/alexar76/skopos) |
 | 🔌 **aimarket-mcp** | Shared MCP: `web_fetch` · `web_search` · `metis_verify` | [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp) · [`aimarket-mcp`](https://github.com/alexar76/aimarket-mcp) |
 | 📈 **Pulse (ACEX)** | CapShare NAV · Proof-of-Audit · live pricing | [live](https://magic-ai-factory.com/pulse/) · [`pulse-terminal`](https://github.com/alexar76/pulse-terminal) |
+
+**Experiment, not a product.** 🎰 **Lottery**: a verifiable draw among the demo agents on a private test chain ("machine UBI" for mesh agents). Nobody plays for money: the Base mainnet contract never opened a round and has been paused since 2026-11-05. [demo](https://lottery.modelmarket.dev/) · [`lottery`](https://github.com/alexar76/lottery)
 
 *Monorepo operators:* `./scripts/deploy_ecosystem.sh` can co-deploy Factory + Hub + ARGUS + Monitor + lottery relayer — see [deploy-ecosystem.md](docs/deploy-ecosystem.md). **You do not need any of this to run AI-Factory alone.**
 

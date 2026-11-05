@@ -1,0 +1,54 @@
+{
+ "meta": {
+  "seed": "aemb 2026-11-03",
+  "cap_atomic": "10000",
+  "catalogue": 4,
+  "excluded": {
+   "ok": 1
+  },
+  "eligible_hosts": 1,
+  "drawn": 1,
+  "only_hosts": [
+   "aemb.pro"
+  ],
+  "pinned_resources": [
+   "https://tienda.textokit.store/api/x402-ping",
+   "https://route-verdict-production.up.railway.app/v1/check",
+   "https://stall-row-production.up.railway.app/v1/recheck"
+  ],
+  "catalogue_file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/.claude/worktrees/ecosystem-onboarding-analysis-158bfd/artifacts/observed-sellers-agentembassy-2026-11-03/catalogue-aemb-ping.json",
+  "drawn_at": "2026-11-03T19:02:05.426Z"
+ },
+ "entries": [
+  {
+   "host": "aemb.pro",
+   "listings_at_host": 1,
+   "resource": "https://aemb.pro/v1/check/ping",
+   "description": "",
+   "input": {
+    "type": "http",
+    "method": "POST",
+    "bodyType": "json",
+    "body": {
+     "url": "https://example.com",
+     "expect_status": 200,
+     "expect_body_contains": "Example Domain",
+     "idempotency_key": "880e8400-e29b-41d4-a716-446655440003"
+    }
+   },
+   "listed": {
+    "amount": "1000",
+    "payTo": "0xd004278bc57fe4b9f743abf17d713ed4169a88e9",
+    "network": "eip155:8453",
+    "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "scheme": "exact",
+    "domain": {
+     "name": "USD Coin",
+     "version": "2"
+    }
+   },
+   "quality": null,
+   "last_updated": null
+  }
+ ]
+}

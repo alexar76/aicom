@@ -1,0 +1,146 @@
+[
+ {
+  "x402Version": 2,
+  "resource": "https://aemb.pro/v1/check/ping",
+  "type": "http",
+  "serviceName": "Agent Embassy",
+  "description": "",
+  "accepts": [
+   {
+    "scheme": "exact",
+    "network": "eip155:8453",
+    "amount": "1000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payTo": "0xD004278bC57FE4B9F743ABf17d713ed4169A88E9",
+    "maxTimeoutSeconds": 300,
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    }
+   }
+  ],
+  "extensions": {
+   "bazaar": {
+    "manifestUrl": "https://aemb.pro/.well-known/x402.json",
+    "info": {
+     "input": {
+      "type": "http",
+      "method": "POST",
+      "bodyType": "json",
+      "body": {
+       "url": "https://example.com",
+       "expect_status": 200,
+       "expect_body_contains": "Example Domain",
+       "idempotency_key": "880e8400-e29b-41d4-a716-446655440003"
+      }
+     },
+     "output": {
+      "type": "json",
+      "example": {
+       "receipt_version": "embassy-receipt/2",
+       "receipt_id": "emb_jkl012",
+       "account": "0x1111111111111111111111111111111111111111",
+       "tool": "check_url_custom",
+       "chain": [
+        "request",
+        "authorization",
+        "action",
+        "proof",
+        "liability_boundary"
+       ],
+       "status": "complete",
+       "verdict": "pass"
+      }
+     }
+    },
+    "schema": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "type": "object",
+     "properties": {
+      "input": {
+       "type": "object",
+       "properties": {
+        "type": {
+         "type": "string",
+         "const": "http"
+        },
+        "method": {
+         "type": "string",
+         "enum": [
+          "POST",
+          "PUT",
+          "PATCH"
+         ]
+        },
+        "bodyType": {
+         "type": "string",
+         "enum": [
+          "json",
+          "form-data",
+          "text"
+         ]
+        },
+        "body": {
+         "type": "object",
+         "properties": {
+          "url": {
+           "type": "string",
+           "description": "HTTPS URL to check (max 2000 chars; no credentials in URL). Fetched once; up to 3 redirects followed, 10s timeout, 1MB body cap"
+          },
+          "expect_status": {
+           "type": "number",
+           "description": "Expected HTTP status code; truncated to an integer. Defaults to 200 when omitted"
+          },
+          "expect_body_contains": {
+           "type": "string",
+           "description": "Substring that must appear in the response body (max 5000 chars). Skipped when empty or omitted"
+          },
+          "expect_json_path": {
+           "type": "string",
+           "description": "Dot-separated path into the JSON body, e.g. 'data.price' (max 500 chars). Only evaluated when set"
+          },
+          "expect_json_equals": {
+           "description": "Expected value at expect_json_path; compared by canonical JSON equality. Defaults to null when omitted"
+          },
+          "idempotency_key": {
+           "type": "string",
+           "description": "Idempotency key: UUID v4, client-generated, one per logical request. Replaying the same key on this tool returns the original receipt \u2014 the action is not re-run, and the first request's receipt wins even if you resend different inputs. Published example keys are rejected. Keys are scoped per tool and per payer account: a key never returns another wallet's receipt."
+          }
+         },
+         "required": [
+          "url",
+          "idempotency_key"
+         ]
+        }
+       },
+       "required": [
+        "type",
+        "method",
+        "bodyType",
+        "body"
+       ],
+       "additionalProperties": false
+      },
+      "output": {
+       "type": "object",
+       "properties": {
+        "type": {
+         "type": "string"
+        },
+        "example": {
+         "type": "object"
+        }
+       },
+       "required": [
+        "type"
+       ]
+      }
+     },
+     "required": [
+      "input"
+     ]
+    }
+   }
+  }
+ }
+]

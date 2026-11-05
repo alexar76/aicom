@@ -106,7 +106,7 @@ test("sitemap lists every page in every language with alternates; robots names i
   try {
     const xml = await (await call("/tools/sitemap.xml")).text();
     const locs = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
-    assert.equal(locs.length, LANGS.length * (TOOL_IDS.length + 1));
+    assert.equal(locs.length, LANGS.length * (TOOL_IDS.length + 1) + 1);
     for (const loc of locs) assert.equal((await call(loc.replace("https://modelmarket.dev", ""))).status, 200, loc);
     const robots = await (await call("/tools/robots.txt")).text();
     assert.match(robots, /^User-agent: \*\nAllow: \//);
