@@ -1,0 +1,69 @@
+--- docker-compose.yml.bak-20261104-egress	2026-11-01 01:00:52.903439546 -0400
++++ docker-compose.yml	2026-11-04 07:12:05.559131098 -0500
+@@ -43,7 +43,7 @@
+       DISABLE_WORKSPACE_CREATION: ${DISABLE_WORKSPACE_CREATION:-false}
+       DO_NOT_TRACK: "1"
+       MULTICA_VCS_INTEGRATION_ENABLED: "false"
+-    networks: [db, app]
++    networks: [db, app, agent]
+     restart: unless-stopped
+     logging: *logging
+ 
+@@ -77,7 +77,7 @@
+         MULTICA_VERSION: ${MULTICA_CLI_VERSION:?}
+         OPENCODE_VERSION: ${OPENCODE_VERSION:?}
+     container_name: multica-daemon
+-    depends_on: [backend]
++    depends_on: [backend, egress]
+     env_file:
+       - path: ./secrets/agent.env
+         required: false
+@@ -88,10 +88,17 @@
+       MULTICA_AGENT_RUNTIME_NAME: attested-deepseek
+       MULTICA_DAEMON_MAX_CONCURRENT_TASKS: "2"
+       MULTICA_DAEMON_AUTO_UPDATE: "false"
++      # Egress only through the allowlist proxy (2026-11-04): the agent network has no route out.
++      HTTPS_PROXY: http://egress:8888
++      https_proxy: http://egress:8888
++      HTTP_PROXY: http://egress:8888
++      http_proxy: http://egress:8888
++      NO_PROXY: backend,localhost,127.0.0.1
++      no_proxy: backend,localhost,127.0.0.1
+     volumes:
+       - daemon_home:/home/node
+       - ./promo:/home/node/promo:ro   # PromoMaterials texts (read-only for the agent)
+-    networks: [app]
++    networks: [agent]
+     mem_limit: 3g
+     cpus: 2
+     pids_limit: 1024
+@@ -100,9 +107,29 @@
+     restart: unless-stopped
+     logging: *logging
+ 
++  # Egress allowlist proxy for the agent runtime (2026-11-04): tinyproxy refuses every host not in egress/allow.
++  egress:
++    image: multica-egress:20261104
++    build: { context: ./egress }
++    container_name: multica-egress
++    networks: [agent, app]
++    read_only: true
++    tmpfs: ["/tmp", "/run"]
++    mem_limit: 128m
++    cpus: 0.5
++    pids_limit: 128
++    security_opt: ["no-new-privileges:true"]
++    cap_drop: [ALL]
++    restart: unless-stopped
++    logging: *logging
++
+ networks:
+   db: { internal: true }
+   app: {}
++  agent:
++    internal: true
++    ipam:
++      config: [{ subnet: 10.250.0.0/24 }]
+ 
+ volumes:
+   pgdata:

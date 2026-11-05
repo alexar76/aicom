@@ -1,0 +1,30 @@
+{
+  "archive": "aimarket-warden-0.23.0.tgz",
+  "sha256": "833841f2aab89df4c51b5f84385ad69c8ffd7dcf5a7725ec0eb4ebabe594b7ee",
+  "buildDigest": "7f31b219db203e7b3bfbcf22551e03a02e23b10feac7f31df4f7c248b182ead1",
+  "offline_install": true,
+  "install_scripts_disabled": true,
+  "runtime_dependencies": 0,
+  "cli_scan_exit": 0,
+  "mcp_initialize_version": "0.23.0",
+  "help_exit": 0,
+  "state_unchanged": true,
+  "opencode": {
+    "hooks": [
+      "chat.message",
+      "config",
+      "event",
+      "shell.env",
+      "tool.execute.after",
+      "tool.execute.before"
+    ],
+    "stripped": true,
+    "before": false,
+    "afterOutside": false,
+    "afterCredential": true
+  },
+  "control_published_0_22_4": {
+    "version": "0.22.4",
+    "opencode_import": "return new ERR_PACKAGE_PATH_NOT_EXPORTED("
+  }
+}

@@ -1,0 +1,31 @@
+#!/bin/sh
+# order-task: the only Multica commands the order agent may run (Vulnetix-class review, 2026-11-05).
+#
+#   order-task get <issue>    print the issue as JSON, only if it is assigned to the order agent
+#   order-task done <issue>   set that issue to done without starting a run
+#
+# Installed root-owned in a folder the agent user cannot write; the agent's OpenCode permissions allow only
+# these two forms (no redirects, no $ or backticks). Before this, `multica issue get *` let a prompt-injected
+# agent read any task in the workspace into the summary the buyer receives, and close any task.
+set -eu
+ORDER_AGENT_ID="${ORDER_AGENT_ID_OVERRIDE_FOR_TESTS:-0ac4ba96-4066-4c8d-bfb9-690ee0c98d3e}"
+usage() { echo "usage: order-task get|done <issue id>" >&2; exit 2; }
+[ $# -eq 2 ] || usage
+case "$1" in get|done) ;; *) usage ;; esac
+id=$2
+case "$id" in
+  MY-*) n=${id#MY-}; case "$n" in ''|*[!0-9]*) usage ;; esac; [ ${#n} -le 7 ] || usage ;;
+  *) [ ${#id} -eq 36 ] || usage; case "$id" in *[!0-9a-f-]*) usage ;; esac ;;
+esac
+json=$(multica issue get "$id" --output json) || { echo "order-task: cannot read $id" >&2; exit 1; }
+owner=$(printf '%s' "$json" | jq -r '"\(.assignee_type) \(.assignee_id)"') || { echo "order-task: unreadable answer" >&2; exit 1; }
+if [ "$owner" != "agent $ORDER_AGENT_ID" ]; then
+  echo "order-task: $id is not a task of the order agent" >&2
+  exit 3
+fi
+if [ "$1" = get ]; then
+  printf '%s\n' "$json"
+else
+  multica issue status "$id" done --no-start >/dev/null
+  echo "done: $id"
+fi

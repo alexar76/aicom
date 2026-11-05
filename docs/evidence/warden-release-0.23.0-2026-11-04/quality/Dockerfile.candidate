@@ -1,0 +1,18 @@
+# WARDEN 0.23.0 for HISTOR: the running HISTOR image (tiles-20261104, WARDEN 0.22.4) with its vendored
+# WARDEN replaced by the verified npm archive, and the WARDEN source of the same commit where the
+# trusted recipe (warden/deploy/Dockerfile.histor) puts it. Nothing of HISTOR's own code changes.
+# Both folders are emptied first, so nothing of 0.22.4 survives next to 0.23.0. Modes are set in the
+# staging tree (dirs 0755, files 0644), so COPY needs no --chmod. BuildKit resolves a bare image id as
+# a Docker Hub name, so the base is named by its tag; stage-candidate.py checks that the tag is
+# sha256:7dba8eba51a6… (the running HISTOR image) before building.
+FROM aicom-security:histor-histor-1-tiles-20261104
+USER 0:0
+RUN rm -rf /app/scanner/node_modules/@aimarket/warden /opt/warden-source/src
+COPY package/ /app/scanner/node_modules/@aimarket/warden/
+COPY src/ /opt/warden-source/src/
+LABEL skopos.source.commit="2f0dd7dd2e994855118240d032fc6fbffa1820d2" \
+      aicom.histor.overlay="warden-0230-20261104" \
+      org.aimarket.release.candidate="warden-0.23.0" \
+      org.aimarket.release.warden-build="7f31b219db203e7b3bfbcf22551e03a02e23b10feac7f31df4f7c248b182ead1"
+USER 65532:65532
+RUN node --input-type=module -e "import {readFileSync} from 'node:fs'; const p=JSON.parse(readFileSync('/app/scanner/node_modules/@aimarket/warden/package.json','utf8')); if(p.name!=='@aimarket/warden'||p.version!=='0.23.0') process.exit(1)"

@@ -397,6 +397,7 @@ PUBLIC_FACTORY_ROOTS = frozenset([
     'llm',
     'main.py',
     'marketplace_taxonomy.py',
+    'multica',  # Multica setup manuals + community skill + agents pack (DEV.to / Show and tell)
     'npm-reserve',
     'okx-a2mcp',  # OKX.AI A2MCP edge for HISTOR + WARDEN (deploy/nginx apex /a2mcp)
     'orchestrator',

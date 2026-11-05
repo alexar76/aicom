@@ -26,7 +26,7 @@ Project maintainers are responsible for clarifying and enforcing this policy and
 
 ## Reporting
 
-Report CoC incidents privately to maintainers at **alexar76@rambler.ru**. Include links, screenshots, and context where possible.
+Report CoC incidents privately to maintainers at **qwezzy721@gmail.com**. Include links, screenshots, and context where possible.
 
 ## Attribution
 

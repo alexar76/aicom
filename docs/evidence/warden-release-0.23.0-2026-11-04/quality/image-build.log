@@ -1,0 +1,51 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.48kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/aicom-security:histor-histor-1-tiles-20261104
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/5] FROM docker.io/library/aicom-security:histor-histor-1-tiles-20261104@sha256:7dba8eba51a6daed4c176e00eba5f2452c3624628982544ce72fe74cdaa92d09
+#5 resolve docker.io/library/aicom-security:histor-histor-1-tiles-20261104@sha256:7dba8eba51a6daed4c176e00eba5f2452c3624628982544ce72fe74cdaa92d09 0.1s done
+#5 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 4.05MB 0.1s done
+#4 DONE 0.1s
+
+#5 [1/5] FROM docker.io/library/aicom-security:histor-histor-1-tiles-20261104@sha256:7dba8eba51a6daed4c176e00eba5f2452c3624628982544ce72fe74cdaa92d09
+#5 DONE 1.1s
+
+#6 [2/5] RUN rm -rf /app/scanner/node_modules/@aimarket/warden /opt/warden-source/src
+#6 DONE 0.3s
+
+#7 [3/5] COPY package/ /app/scanner/node_modules/@aimarket/warden/
+#7 DONE 0.2s
+
+#8 [4/5] COPY src/ /opt/warden-source/src/
+#8 DONE 0.2s
+
+#9 [5/5] RUN node --input-type=module -e "import {readFileSync} from 'node:fs'; const p=JSON.parse(readFileSync('/app/scanner/node_modules/@aimarket/warden/package.json','utf8')); if(p.name!=='@aimarket/warden'||p.version!=='0.23.0') process.exit(1)"
+#9 DONE 0.4s
+
+#10 exporting to image
+#10 exporting layers
+#10 exporting layers 0.8s done
+#10 exporting manifest sha256:99aad44a5850e3e6730e9b8e3cff76e77ca8f528a3d7aed43fdecdb5f958f40f 0.1s done
+#10 exporting config sha256:2def07130e7874ffb692cfe84fdafc5551ff1c9f6f9fd2e172a7f6b674f3c7ff 0.1s done
+#10 exporting attestation manifest sha256:716f1230b60609982c92aa4bbf8d672bf8f47b2eb515bd2abeb3786a524e45a5 0.1s done
+#10 exporting manifest list sha256:3fce01b38ec8645e7e81298d150ef143a11fe46fda9dbcd67dd1a28fe3130d1e
+#10 exporting manifest list sha256:3fce01b38ec8645e7e81298d150ef143a11fe46fda9dbcd67dd1a28fe3130d1e 0.0s done
+#10 naming to docker.io/library/aicom-security:histor-histor-1-wd-20261104 done
+#10 unpacking to docker.io/library/aicom-security:histor-histor-1-wd-20261104
+#10 unpacking to docker.io/library/aicom-security:histor-histor-1-wd-20261104 0.3s done
+#10 DONE 1.4s

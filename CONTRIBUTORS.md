@@ -2,7 +2,7 @@
 
 ## Maintainers
 
-- **AI Commons / AI-Factory** — primary maintainers ([alexar76@rambler.ru](mailto:alexar76@rambler.ru))
+- **AI Commons / AI-Factory** — primary maintainers ([qwezzy721@gmail.com](mailto:qwezzy721@gmail.com))
 
 ## Community contributors
 

@@ -1,0 +1,17 @@
+[project]
+name = "multica-provider"
+version = "0.2.0"
+description = "Sells long Multica agent jobs on an AIMarket hub as an order and a result capability."
+requires-python = ">=3.11"
+license = "Apache-2.0"
+dependencies = ["fastapi>=0.110", "uvicorn>=0.29", "httpx>=0.27", "cryptography>=42", "psycopg[binary]>=3.2"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

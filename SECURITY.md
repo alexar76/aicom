@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-**Do not open a public issue.** Email `alexar76@rambler.ru`.
+**Do not open a public issue.** Email `qwezzy721@gmail.com`.
 
 We aim to acknowledge within 72 hours. Coordinated disclosure: we ask for up
 to 90 days to ship a fix before public write-up. Credit is given on request.

@@ -1795,7 +1795,7 @@ print(f"""# Security Policy — {name}
 
 **Do not open a public issue for security bugs.**
 
-Email: **alexar76@rambler.ru**
+Email: **qwezzy721@gmail.com**
 
 We acknowledge within 48 hours and share a fix timeline.
 
@@ -1868,7 +1868,7 @@ EOF
 
 ## Maintainers
 
-- **AI Commons / AI-Factory** — primary maintainers ([alexar76@rambler.ru](mailto:alexar76@rambler.ru))
+- **AI Commons / AI-Factory** — primary maintainers ([qwezzy721@gmail.com](mailto:qwezzy721@gmail.com))
 
 ## Contributing
 
