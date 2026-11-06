@@ -208,3 +208,24 @@ Owner: «пропиши гелиосу тот же токен что и вжик
 `python3 rollout_container.py attested-memory-hub-hub-1 --health http://127.0.0.1:9084/ai-market/v2/health --set
 NAME=<old value>` for the three variables (old values are in the rollback snapshot rollout_container keeps); the
 listings disappear from the hub when the provider is gone (route check) or can be removed by the operator.
+
+## Where to buy, in the listing (2026-11-05, owner: «Note in description»)
+
+Calls that other hubs forward to the attested hub arrive as trial calls: 192 in 30 days, none paid. So the
+provider's rule stays: no buyer the hub can name, no order. The two listings now say where they are sold:
+
+- `github.digest.order@v1`: «Sold on hub.attestedmemory.net only: a call routed from another hub arrives without the
+  buyer's identity and is refused before any charge.»
+- `github.digest.result@v1`: «Only the buyer account that placed the order can read it, on hub.attestedmemory.net».
+
+The wording is descriptive, with no instruction-like phrases that our reviewer and buyers' guards flag.
+`desc-20261105/` holds `Dockerfile` and `app.py`. Image `multica-provider:20261105` is FROM the running
+`20261104b` with only `app.py` replaced. The live `app.py` equalled the repo's previous version, 6ce6a3aa536d…;
+the new one is 833cca25a3ac…. Tests: 48 passed. The offline smoke showed both notes and that the app builds.
+
+- 12:27:45Z (server clock): no queued orders. `/opt/multica/docker-compose.yml` (backup `docker-compose.yml.bak-20261105-desc`) names
+  the new image, and the provider was recreated. On start it re-registered both listings: `/healthz` shows
+  `published: 2`.
+- hub.attestedmemory.net's manifest carries both notes. modelmarket.dev federates them on its next hourly crawl
+  (`AIMARKET_CRAWL_INTERVAL_S=3600`).
+- Rollback: the compose backup, then `docker compose up -d --no-deps --no-build provider`.

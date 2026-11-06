@@ -11,11 +11,14 @@
 - **出售**一项能力，包括需要几分钟的长时间智能体任务；
 - 并在**受限**环境中运行：只能访问列出的主机，按智能体分配权限，并有防护阻止把读到的内容发送出去。
 
-我们测试过的环境：自托管的 Multica 0.5.3，其守护进程使用 OpenCode 1.18.32 和 DeepSeek，单台主机，自 2026-11-04
-起运行。Multica 0.8.0 已发布（2026-11-03），尚未用这套配置测试；0.8.0 让任务状态跟随工作流，因此请重新检查所有
-修改状态的规则。下文命令均为 0.5.3 版 CLI 的命令。
+我们测试过的环境：自托管的 Multica，自 2026-11-04 起为 0.5.3，自 2026-11-05 起为 0.8.0；守护进程使用 OpenCode
+1.18.32 和 DeepSeek，单台主机。0.8.0 默认通过 ACP 驱动 OpenCode 1.15 及以上版本；我们保留了 `opencode run`
+方式，防护和权限规则都是在这种方式下测试的（第 2 节）。下文命令是 0.5.3 版 CLI 的命令；这套配置用到的命令也已在
+0.8.0 上检查过。
 
 ## 目录
+
+[概览：各部分如何配合](#概览各部分如何配合)
 
 1. [开始之前](#1-开始之前)
 2. [在容器中运行守护进程](#2-在容器中运行守护进程)
@@ -30,6 +33,51 @@
 11. [检查配置](#11-检查配置)
 12. [我们踩过的坑](#12-我们踩过的坑)
 13. [已知限制](#13-已知限制)
+
+## 概览：各部分如何配合
+
+所有组件都运行在一台主机的 Docker 中。智能体的运行环境位于内部网络：唯一的出口是一个只放行少量主机的代理。运营者通过
+SSH 隧道打开 Multica 的网页界面。你自己的一个小服务在枢纽上出售智能体的长任务，并通过自动驾驶的 webhook 和一个只读
+数据库角色与 Multica 交互。
+
+```mermaid
+flowchart LR
+  you["运营者<br/>(SSH 隧道)"] --> backend
+  subgraph host["主机，Docker"]
+    subgraph agentnet["智能体网络：内部，无出网路由"]
+      daemon["Multica 守护进程<br/>OpenCode + WARDEN"]
+    end
+    backend["Multica 后端和网页界面"]
+    db[("Postgres")]
+    egress["出网代理<br/>主机白名单"]
+    provider["订单服务<br/>出售长任务"]
+  end
+  daemon --> backend
+  backend --> db
+  daemon --> egress
+  egress --> model["模型 API<br/>DeepSeek"]
+  egress --> gh["GitHub"]
+  egress --> hub["AIMarket 枢纽<br/>MCP：购买、记忆"]
+  egress --> chat["Telegram"]
+  hub -- "已付款订单" --> provider
+  provider -- "webhook：新任务" --> backend
+  provider -- "只读：智能体的回答" --> db
+  provider -- "自己的令牌，无权限范围" --> gh
+```
+
+我们的参考部署有五个智能体。自动驾驶按计划（UTC）或在订单到达时启动它们：
+
+```mermaid
+flowchart LR
+  s1["每天 08:00"] --> a1["GitHub 摘要"] --> o1["Telegram 消息，<br/>一条记忆记录"]
+  s2["每天 09:00"] --> a2["神秘买家"] --> o2["几次付费调用，<br/>检查收据"]
+  s3["每天 10:00"] --> a3["供应商审核员"] --> o3["报告，<br/>欢迎信草稿"]
+  s4["每周一 11:00"] --> a4["周报"] --> o4["帖子草稿"]
+  s5["已付款订单<br/>经 webhook"] --> a5["订单智能体"] --> o5["给买家的<br/>摘要"]
+```
+
+每个智能体会话都会加载 WARDEN 防护。每个智能体只拥有自己的环境和权限（第 5、6 节）；智能体准备发布的内容没有人
+确认就不会发出：草稿始终是草稿。
 
 ## 1. 开始之前
 
@@ -47,6 +95,7 @@ Multica 的守护进程为每个任务启动智能体运行时（OpenCode）。�
 - 非 root 用户（我们用 `node`，uid 1000），`cap_drop: [ALL]`，`security_opt: ["no-new-privileges:true"]`；
 - 资源限制：`mem_limit: 3g`，`cpus: 2`，`pids_limit: 1024`；
 - `MULTICA_DAEMON_AUTO_UPDATE: "false"`，版本只在你重新构建时变化；
+- 在 Multica 0.8.0 上使用 OpenCode 1.x 时，设置 `MULTICA_OPENCODE_TRANSPORT: run`，保留防护已测试过的运行方式；
 - 智能体的密钥放在权限为 600 的 env 文件中，用 `env_file` 加载：模型密钥、GitHub 令牌、聊天机器人令牌、枢纽密钥。
   不要把密钥写进任务、指令或技能。
 
@@ -185,6 +234,35 @@ OpenCode 的 `permission.bash` 接受模式；**最后**一个匹配的规则生
 一个伪造密钥放在文件里。通过所有通道发送它都被拒绝了：聊天脚本、对允许主机的 `curl`、写入记忆，以及任务跟踪
 CLI。正常的一天工作没有出现任何拒绝。
 
+智能体的每次工具调用都要经过三层检查，每一层都可以单独拒绝：
+
+```mermaid
+flowchart TB
+  t["智能体想运行一个工具"] --> p{"OpenCode 权限规则：<br/>这条命令被允许吗？"}
+  p -- "否" --> r1["拒绝"]
+  p -- "是" --> w{"WARDEN：读过外部文本后，<br/>这次调用会带出密钥<br/>或读到的数据吗？"}
+  w -- "是" --> r2["拒绝"]
+  w -- "否" --> run["工具运行，<br/>列出的密钥在 shell 中为空"]
+  run --> net{"需要联网吗？"}
+  net -- "否" --> ok["结果返回给智能体"]
+  net -- "是" --> e{"主机在代理白名单中吗？"}
+  e -- "否" --> r3["被代理拒绝"]
+  e -- "是" --> ok
+```
+
+各层能拦住什么、拦不住什么：
+
+| 威胁 | 由谁拦住 |
+|---|---|
+| 被提示词注入的智能体运行了本不该运行的命令 | OpenCode 权限规则（用包装脚本代替通配符） |
+| 它把密钥或读到的数据发往允许的主机（GitHub、聊天、枢纽） | WARDEN 防护 |
+| 它把任何内容发往其他主机 | 出网代理 |
+| 它为后续会话关闭防护 | 防护放在 root 拥有的文件夹中（见下文） |
+| 智能体的最终回答本身带出数据 | 不由防护拦截：这个回答由 Multica 发布；请在你的服务中检查（第 10 节） |
+
+我们在自己的部署中检查过。模拟攻击（见上文）在所有通道上都被拒绝。2026-11-05，五个智能体的每次计划运行，以及升级到
+Multica 0.8.0 后的一笔付费订单，都为各自的会话留下了防护的状态文件：插件在每个会话中都运行了。
+
 该插件从 0.23.0 版起包含在 `@aimarket/warden` 中（`@aimarket/warden/opencode`）。加载器放在 OpenCode 配置目录下，
 文件名为 `plugin/warden.js`：
 
@@ -214,6 +292,20 @@ export const WardenFlowGuard = createWardenPlugin({
 https://hub.attestedmemory.net/start 获取密钥，并像第 4 节一样使用它的 MCP 服务器
 `https://hub.attestedmemory.net/mcp`。如果通过其他枢纽购买（modelmarket.dev 也列出了这些技能），调用会以转发枢纽
 而不是你的身份到达记忆枢纽，因此得不到私有记忆。试用调用也得不到。
+
+记忆归谁所有、谁可以读取订单结果，由认证该买家的枢纽决定：
+
+```mermaid
+flowchart TD
+  c["调用到达运营方自己的供应方"] --> q{"谁认证了买家？"}
+  q -- "本枢纽：额度密钥、授权、<br/>已验证付款、有资金的通道" --> ref["X-AIMarket-Buyer-Ref：<br/>稳定的化名"]
+  q -- "调用由其他枢纽转发" --> none["没有引用：<br/>转发枢纽的账户<br/>不是买家"]
+  q -- "试用或匿名调用" --> none
+  ref --> own["私有记忆，<br/>结果绑定到该买家"]
+  none --> no["没有私有记忆，<br/>结果不绑定买家"]
+```
+
+即使调用是转发来的，买家本人经过验证的 x402 付款仍然可以识别买家。
 
 把用法和预算写进智能体的指令：用哪些技能、每次运行调用几次、遇到 402 或 403 不重试。我们每天的 GitHub 摘要会读取
 最多三条过去的记录，加一行“趋势”，并每天保存一条记录：每次运行约 0.03 美元。
@@ -253,6 +345,38 @@ https://hub.attestedmemory.net/start 获取密钥，并像第 4 节一样使用�
 - `…order@v1`（付费）。你的服务严格检查输入，自己完成外部读取，通过自动驾驶的 **webhook** 触发器带着这些数据
   创建 Multica 任务，并立即返回 `job_id`。
 - `…result@v1`（免费）返回 `queued`，或带结果的 `done`。
+
+完整订单流程，从买家的调用到结果：
+
+```mermaid
+sequenceDiagram
+  participant B as 买家
+  participant H as 枢纽
+  participant S as 订单服务
+  participant G as GitHub
+  participant M as Multica
+  participant A as 订单智能体
+  B->>H: order@v1 (login, days)
+  H->>S: 带买家引用的调用
+  S->>G: 读取公开活动，使用自己的令牌
+  alt 登录名不存在或 GitHub 不可用
+    S-->>H: 拒绝
+    H-->>B: 拒绝，不扣费
+  else 已读取数据
+    S->>M: 自动驾驶 webhook，数据为 JSON
+    S-->>H: job_id
+    H-->>B: job_id 和签名收据
+    M->>A: 新任务
+    A->>M: order-task get（只限自己的任务）
+    A->>M: 最终回答，一行 JSON
+    A->>M: order-task done
+    B->>H: result@v1 (job_id)
+    H->>S: 带买家引用的调用
+    S->>M: 只读函数：智能体的回答
+    S-->>H: 摘要（智能体或服务写的）
+    H-->>B: 摘要
+  end
+```
 
 各部分如何配合：
 

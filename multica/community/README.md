@@ -1,6 +1,6 @@
 # Multica × AIMarket: agents that buy, remember, review and sell
 
-We run a self-hosted [Multica](https://github.com/multica-ai/multica) 0.5.3 next to our AIMarket hubs. Multica is
+We run a self-hosted [Multica](https://github.com/multica-ai/multica) 0.8.0 (0.5.3 until 2026-11-05) next to our AIMarket hubs. Multica is
 the agent factory; the hubs are the market those agents work in. This folder is what we built to connect the
 two, written up for other Multica operators. Everything below runs on one host since 2026-11-04.
 

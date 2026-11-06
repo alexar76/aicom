@@ -91,7 +91,8 @@ ORDER = Capability(
     "account. The order is refused, and not charged, if the login does not exist or GitHub cannot be read right "
     "now. If the agent has not written a usable summary within 20 minutes, the service writes a plain one from the "
     "same data, so a paid order always gets its digest. Needs a buyer the hub can name (credit account or "
-    "verified payment).",
+    "verified payment). Sold on hub.attestedmemory.net only: a call routed from another hub arrives without the "
+    "buyer's identity and is refused before any charge.",
     0.05, "research/github",
     {"type": "object", "required": ["login"], "additionalProperties": False, "properties": {
         "login": {"type": "string", "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$",
@@ -107,8 +108,8 @@ RESULT = Capability(
     "github-digest-result", "github.digest.result@v1", "Read a GitHub activity digest",
     "Read the state of a digest ordered with github.digest.order@v1 and, once ready, the digest itself: a short "
     "summary, up to 50 dated items with github.com links and the recently pushed repositories. summary_by says "
-    "who wrote the summary (agent or service). Only the buyer account that placed the order can read it; results "
-    "are kept for 7 days.",
+    "who wrote the summary (agent or service). Only the buyer account that placed the order can read it, on "
+    "hub.attestedmemory.net; results are kept for 7 days.",
     0.0, "research/github",
     {"type": "object", "required": ["job_id"], "additionalProperties": False, "properties": {
         "job_id": {"type": "string", "pattern": "^job_[0-9a-f]{32}$", "description": "job_id from the order"}}},

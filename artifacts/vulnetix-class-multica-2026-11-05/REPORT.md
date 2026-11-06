@@ -13,7 +13,7 @@ order agent's OpenCode permissions, and the shared daemon on attested. Also the 
 |---|---|---|---|
 | 1 | medium | The order agent's allowlist reached every task in the workspace and allowed redirects | LIVE on attested since 07:35Z |
 | 2 | medium | The agent user can rename the folder that holds the WARDEN plugin | LIVE on attested since 08:04Z |
-| 3 | low | The attested hub's public manifest still shows container addresses (http://multica-provider:8090 and 4 more) | fix in the repo since 11-05, live on modelmarket.dev only |
+| 3 | low | The attested hub's public manifest showed container addresses for 14 capabilities of 5 services | LIVE on modelmarket.dev 06:03Z and hub.attestedmemory.net 09:04Z |
 | 4 | medium (latent) | A call another hub routes here on its own key would make all of that hub's buyers one Attested Memory owner | LIVE on hub.attestedmemory.net since 07:38Z; other hubs run no memory provider |
 
 ### 1. Order agent: every task reachable, redirects allowed
@@ -201,6 +201,25 @@ Times are attested's clock (UTC). The alerter had nothing open, and no Multica t
   `.config/opencode/plugin` and `.config/opencode/warden` in the volume, recreate the daemon.
 - The manual said "a root-owned, read-only mount". In all five languages it now says to mount the folder writable
   but owned by root, and why.
+
+**attested hub manifest (finding 3), 09:04Z (owner: «7-1 делай»).**
+
+- Before: the public manifest at https://hub.attestedmemory.net listed 265 tools. 14 of them showed a container
+  address on plain http: memory-market (6), truth-layer (4), provenance-ledger (2), multica-provider (2).
+- The live `catalog.py` (sha256 a4b259587d17…) differs from the repo. `published_invoke_url` from the repo's
+  bbe3dad45, with its two imports, went into the live file, and the manifest line now calls it. The diff is that
+  function plus one line. Image `attested-memory-hub:mgw-20261105`, FROM the running `rbh-20261105`; files in
+  `attested-hub-mgw/` here. The offline smoke passed with the hub's own `AIMARKET_INVOKE_HOST_GATEWAY` (6 address
+  cases, file = build context).
+- `rollout_container.py ... --image attested-memory-hub:mgw-20261105` gave healthy. The previous container is kept as
+  `attested-memory-hub-hub-1-security-prev-1793869453352088108`; public health 200.
+- After: 265 tools, no container address left. The 14 show `https://hub.attestedmemory.net/ai-market/v2/invoke`, all
+  still `live`. Routing still goes to the containers: a free read of MY-66's result through the hub answered 200,
+  `done`, `summary_by: agent`.
+- Compose (backup `docker-compose.yml.bak-20261105-mgw`) names `mgw-20261105` for the hub, so compose and the live
+  container match again.
+- Rollback: `rollout_container.py attested-memory-hub-hub-1 --image attested-memory-hub:rbh-20261105 --health
+  http://127.0.0.1:9084/ai-market/v2/health`, and the compose backup.
 
 ## Checked and clean
 

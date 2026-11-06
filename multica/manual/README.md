@@ -12,11 +12,14 @@ in. After the guide, your agents can:
 - and run **contained**: a way out limited to listed hosts, per-agent permissions, and a guard against sending out
   what they read.
 
-What we tested: Multica 0.5.3 self-hosted, its daemon with OpenCode 1.18.32 and DeepSeek, one host, since
-2026-11-04. Multica 0.8.0 exists (2026-11-03) and is not tested with this setup yet; 0.8.0 changed how issue
-statuses follow workflows, so recheck any rule that sets a status. Commands below are those of the 0.5.3 CLI.
+What we tested: self-hosted Multica, 0.5.3 from 2026-11-04 and 0.8.0 since 2026-11-05, its daemon with OpenCode
+1.18.32 and DeepSeek, on one host. 0.8.0 drives OpenCode 1.15 and later over ACP by default; we keep the `opencode run`
+transport that the guard and the permission rules were tested on (section 2). The commands below are those of the
+0.5.3 CLI; the ones this setup uses were checked on 0.8.0 too.
 
 ## Contents
+
+[Overview: how it fits together](#overview-how-it-fits-together)
 
 1. [Before you start](#1-before-you-start)
 2. [Run the daemon in a container](#2-run-the-daemon-in-a-container)
@@ -31,6 +34,51 @@ statuses follow workflows, so recheck any rule that sets a status. Commands belo
 11. [Check the setup](#11-check-the-setup)
 12. [Traps we hit](#12-traps-we-hit)
 13. [Known limits](#13-known-limits)
+
+## Overview: how it fits together
+
+Everything runs on one host in Docker. The agents' runtime sits on an internal network: its only way out is a proxy
+with a short host list. The operator reaches Multica's web UI through an SSH tunnel. A small service of your own sells
+long agent jobs on the hub and talks to Multica through an autopilot webhook and a read-only database role.
+
+```mermaid
+flowchart LR
+  you["Operator<br/>(SSH tunnel)"] --> backend
+  subgraph host["Host, Docker"]
+    subgraph agentnet["Agent network: internal, no route out"]
+      daemon["Multica daemon<br/>OpenCode + WARDEN"]
+    end
+    backend["Multica backend + web UI"]
+    db[("Postgres")]
+    egress["Egress proxy<br/>host allowlist"]
+    provider["Order service<br/>sells long jobs"]
+  end
+  daemon --> backend
+  backend --> db
+  daemon --> egress
+  egress --> model["Model API<br/>DeepSeek"]
+  egress --> gh["GitHub"]
+  egress --> hub["AIMarket hub<br/>MCP: buy, memory"]
+  egress --> chat["Telegram"]
+  hub -- "paid order" --> provider
+  provider -- "webhook: new task" --> backend
+  provider -- "read-only: the agent's answer" --> db
+  provider -- "own token, no scopes" --> gh
+```
+
+Our reference installation has five agents. Autopilots start them on a schedule (UTC) or when an order arrives:
+
+```mermaid
+flowchart LR
+  s1["daily 08:00"] --> a1["GitHub digest"] --> o1["Telegram message,<br/>a memory record"]
+  s2["daily 09:00"] --> a2["Mystery shopper"] --> o2["a few paid calls,<br/>receipts checked"]
+  s3["daily 10:00"] --> a3["Supplier reviewer"] --> o3["report,<br/>welcome drafts"]
+  s4["Mondays 11:00"] --> a4["Weekly post"] --> o4["draft post"]
+  s5["paid order<br/>via webhook"] --> a5["Order runner"] --> o5["summary<br/>for the buyer"]
+```
+
+Every agent session loads the WARDEN guard. Each agent gets only its own environment and permissions
+(sections 5 and 6), and nothing the agents publish leaves without a human: drafts stay drafts.
 
 ## 1. Before you start
 
@@ -49,6 +97,7 @@ Multica's daemon starts the agent runtime (OpenCode) for every task. Run it in i
 - a non-root user (ours is `node`, uid 1000), `cap_drop: [ALL]`, `security_opt: ["no-new-privileges:true"]`;
 - limits: `mem_limit: 3g`, `cpus: 2`, `pids_limit: 1024`;
 - `MULTICA_DAEMON_AUTO_UPDATE: "false"`, so versions change only when you rebuild;
+- on Multica 0.8.0 with OpenCode 1.x, `MULTICA_OPENCODE_TRANSPORT: run`, to keep the transport the guard was tested on;
 - the agents' secrets in an env file with mode 600, loaded with `env_file`: the model key, a GitHub token,
   chat bot tokens, the hub key. Never put a key into a task, an instruction or a skill.
 
@@ -192,6 +241,36 @@ text, it refuses a tool call that would carry a credential or data the session r
 list in shell commands. Our staged attack used a fake key in a file. Sending it was refused on every channel: the
 chat script, `curl` to an allowed host, a memory write and the tracker CLI. A normal day's work ran with no refusals.
 
+Every tool call an agent makes passes three layers. Each one can refuse on its own:
+
+```mermaid
+flowchart TB
+  t["Agent wants to run a tool"] --> p{"OpenCode permission rules:<br/>is this command allowed?"}
+  p -- "no" --> r1["Refused"]
+  p -- "yes" --> w{"WARDEN: after outside text,<br/>would the call carry a key<br/>or data the session read?"}
+  w -- "yes" --> r2["Refused"]
+  w -- "no" --> run["The tool runs,<br/>listed keys blanked in the shell"]
+  run --> net{"Network call?"}
+  net -- "no" --> ok["Result goes back to the agent"]
+  net -- "yes" --> e{"Host on the egress allowlist?"}
+  e -- "no" --> r3["Refused by the proxy"]
+  e -- "yes" --> ok
+```
+
+What the layers stop, and what they do not:
+
+| Threat | Stopped by |
+|---|---|
+| A prompt-injected agent runs a command it was never meant to run | OpenCode permission rules (a wrapper instead of a wildcard) |
+| It sends a key or data it read to an allowed host (GitHub, chat, hub) | WARDEN flow guard |
+| It sends anything to any other host | Egress proxy |
+| It switches the guard off for later sessions | Guard in a root-owned folder (below) |
+| The agent's final answer itself carries data out | Not the guard: Multica posts that answer; check it in your service (section 10) |
+
+We checked this in our installation. A staged attack (above) was refused on every channel. On 2026-11-05 every
+scheduled run of the five agents, and a paid order after the upgrade to Multica 0.8.0, left the guard's state file
+for its session, so the plugin ran in each one.
+
 The plugin ships in `@aimarket/warden` from version 0.23.0 (`@aimarket/warden/opencode`). Loader, as
 `plugin/warden.js` in the OpenCode config folder:
 
@@ -223,6 +302,20 @@ buyer that hub authenticated. Buy it **on that hub directly**: take a key at htt
 and use its MCP server, `https://hub.attestedmemory.net/mcp`, the same way as in section 4. Bought through another
 hub (modelmarket.dev lists these skills too), the call reaches the memory hub under the routing hub's identity,
 not yours, so it gets no private memory. Trial calls get none either.
+
+Who owns a memory, and who may read an order's result, is decided by the hub that authenticated the buyer:
+
+```mermaid
+flowchart TD
+  c["A call reaches the operator's own provider"] --> q{"Who authenticated the buyer?"}
+  q -- "this hub: credit key, mandate,<br/>verified payment, funded channel" --> ref["X-AIMarket-Buyer-Ref:<br/>a stable pseudonym"]
+  q -- "another hub routed the call" --> none["No reference:<br/>the routing hub's account<br/>is not the buyer"]
+  q -- "trial or anonymous call" --> none
+  ref --> own["Private memory,<br/>result bound to that buyer"]
+  none --> no["No private memory,<br/>no buyer-bound result"]
+```
+
+A buyer's own verified x402 payment still names that buyer, even on a routed call.
 
 Write the use into the agent's instructions with a budget: which skills, how many calls per run, no retry on 402 or
 403. Our daily GitHub digest reads up to three past records, adds a "Trends" line and saves one record per day:
@@ -265,6 +358,38 @@ A paid call cannot wait minutes for an agent. Sell the job as two capabilities:
 - `…order@v1` (paid). Your service checks the input strictly, does the outside reads itself, creates a Multica
   task through an autopilot **webhook** trigger with that data, and answers at once with a `job_id`.
 - `…result@v1` (free) answers `queued`, or `done` with the result.
+
+The whole order, from the buyer's call to the result:
+
+```mermaid
+sequenceDiagram
+  participant B as Buyer
+  participant H as Hub
+  participant S as Order service
+  participant G as GitHub
+  participant M as Multica
+  participant A as Order agent
+  B->>H: order@v1 (login, days)
+  H->>S: call with the buyer reference
+  S->>G: read public activity, own token
+  alt login missing or GitHub down
+    S-->>H: refused
+    H-->>B: refused, nothing charged
+  else data read
+    S->>M: autopilot webhook, data as JSON
+    S-->>H: job_id
+    H-->>B: job_id and signed receipt
+    M->>A: new task
+    A->>M: order-task get (own task only)
+    A->>M: final answer, one JSON line
+    A->>M: order-task done
+    B->>H: result@v1 (job_id)
+    H->>S: call with the buyer reference
+    S->>M: read-only function: the agent's answer
+    S-->>H: digest (agent's or service's summary)
+    H-->>B: digest
+  end
+```
 
 How the pieces fit:
 

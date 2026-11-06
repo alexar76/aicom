@@ -12,12 +12,14 @@ trabajan. Al terminar la guía, tus agentes podrán:
 - y funcionar **acotados**: salida a la red solo hacia hosts de una lista, permisos por agente y una protección contra
   el envío hacia fuera de lo que han leído.
 
-Lo que probamos: Multica 0.5.3 autoalojado, su daemon con OpenCode 1.18.32 y DeepSeek, un solo host, desde el
-2026-11-04. Existe Multica 0.8.0 (2026-11-03) y aún no está probado con esta configuración; en 0.8.0 los estados de
-las tareas siguen los flujos de trabajo, así que revisa cualquier regla que cambie un estado. Los comandos de abajo
-son los de la CLI 0.5.3.
+Lo que probamos: Multica autoalojado, 0.5.3 desde el 2026-11-04 y 0.8.0 desde el 2026-11-05, su daemon con OpenCode
+1.18.32 y DeepSeek, en un solo host. 0.8.0 maneja OpenCode 1.15 y posteriores por ACP por defecto; mantenemos el modo
+`opencode run`, en el que se probaron la protección y las reglas de permisos (sección 2). Los comandos de abajo son los
+de la CLI 0.5.3; los que usa esta configuración se comprobaron también en 0.8.0.
 
 ## Contenido
+
+[Panorama: cómo encaja todo](#panorama-cómo-encaja-todo)
 
 1. [Antes de empezar](#1-antes-de-empezar)
 2. [El daemon en un contenedor](#2-el-daemon-en-un-contenedor)
@@ -32,6 +34,53 @@ son los de la CLI 0.5.3.
 11. [Comprueba la configuración](#11-comprueba-la-configuración)
 12. [Trampas en las que caímos](#12-trampas-en-las-que-caímos)
 13. [Límites conocidos](#13-límites-conocidos)
+
+## Panorama: cómo encaja todo
+
+Todo funciona en un solo host con Docker. El entorno de los agentes está en una red interna: su única salida es un
+proxy con una lista corta de hosts. El operador abre la interfaz web de Multica por un túnel SSH. Un pequeño servicio
+propio vende trabajos largos de agentes en el hub y habla con Multica mediante el webhook de un autopiloto y un rol de
+base de datos de solo lectura.
+
+```mermaid
+flowchart LR
+  you["Operador<br/>(túnel SSH)"] --> backend
+  subgraph host["Host, Docker"]
+    subgraph agentnet["Red de agentes: interna, sin salida"]
+      daemon["Daemon de Multica<br/>OpenCode + WARDEN"]
+    end
+    backend["Backend e interfaz web de Multica"]
+    db[("Postgres")]
+    egress["Proxy de salida<br/>lista de hosts"]
+    provider["Servicio de pedidos<br/>vende trabajos largos"]
+  end
+  daemon --> backend
+  backend --> db
+  daemon --> egress
+  egress --> model["API del modelo<br/>DeepSeek"]
+  egress --> gh["GitHub"]
+  egress --> hub["Hub AIMarket<br/>MCP: compras, memoria"]
+  egress --> chat["Telegram"]
+  hub -- "pedido pagado" --> provider
+  provider -- "webhook: nueva tarea" --> backend
+  provider -- "solo lectura: la respuesta del agente" --> db
+  provider -- "token propio, sin permisos" --> gh
+```
+
+Nuestra instalación de referencia tiene cinco agentes. Los autopilotos los arrancan según un horario (UTC) o cuando
+llega un pedido:
+
+```mermaid
+flowchart LR
+  s1["a diario 08:00"] --> a1["Resumen de GitHub"] --> o1["mensaje en Telegram,<br/>un registro de memoria"]
+  s2["a diario 09:00"] --> a2["Comprador misterioso"] --> o2["unas llamadas de pago,<br/>recibos comprobados"]
+  s3["a diario 10:00"] --> a3["Revisor de proveedores"] --> o3["informe,<br/>borradores de bienvenida"]
+  s4["los lunes 11:00"] --> a4["Publicación semanal"] --> o4["borrador de publicación"]
+  s5["pedido pagado<br/>por webhook"] --> a5["Agente de pedidos"] --> o5["resumen<br/>para el comprador"]
+```
+
+Cada sesión de agente carga la protección WARDEN. Cada agente recibe solo su propio entorno y sus permisos
+(secciones 5 y 6), y nada de lo que preparan los agentes sale sin una persona: los borradores siguen siendo borradores.
 
 ## 1. Antes de empezar
 
@@ -51,6 +100,7 @@ El daemon de Multica arranca el runtime del agente (OpenCode) en cada tarea. Eje
   `security_opt: ["no-new-privileges:true"]`;
 - límites: `mem_limit: 3g`, `cpus: 2`, `pids_limit: 1024`;
 - `MULTICA_DAEMON_AUTO_UPDATE: "false"`, para que las versiones solo cambien al reconstruir;
+- en Multica 0.8.0 con OpenCode 1.x, `MULTICA_OPENCODE_TRANSPORT: run`, para mantener el modo en que se probó la protección;
 - los secretos de los agentes en un archivo env con permisos 600, cargado con `env_file`: la clave del modelo, un
   token de GitHub, los tokens del bot de chat, la clave del hub. Nunca pongas una clave en una tarea, una instrucción
   o una habilidad.
@@ -199,6 +249,36 @@ También vacía en los comandos de shell las claves que indiques. En nuestro ata
 un archivo. Su envío fue rechazado por todos los canales: el script de chat, `curl` a un host permitido, una escritura
 en memoria y la CLI del gestor de tareas. Un día normal de trabajo transcurrió sin ningún rechazo.
 
+Cada llamada a una herramienta que hace un agente pasa por tres capas, y cada una puede rechazarla por sí sola:
+
+```mermaid
+flowchart TB
+  t["El agente quiere usar una herramienta"] --> p{"Reglas de permisos de OpenCode:<br/>¿está permitido este comando?"}
+  p -- "no" --> r1["Rechazado"]
+  p -- "sí" --> w{"WARDEN: tras leer texto externo,<br/>¿llevaría la llamada una clave<br/>o datos leídos?"}
+  w -- "sí" --> r2["Rechazado"]
+  w -- "no" --> run["La herramienta se ejecuta,<br/>las claves listadas vacías en el shell"]
+  run --> net{"¿Llamada a la red?"}
+  net -- "no" --> ok["El resultado vuelve al agente"]
+  net -- "sí" --> e{"¿Host en la lista del proxy?"}
+  e -- "no" --> r3["Rechazado por el proxy"]
+  e -- "sí" --> ok
+```
+
+Qué detienen las capas y qué no:
+
+| Amenaza | Lo detiene |
+|---|---|
+| A un agente con una inyección de prompt le hacen ejecutar un comando que no debía | Reglas de permisos de OpenCode (un envoltorio en lugar de un comodín) |
+| Envía una clave o datos leídos a un host permitido (GitHub, chat, hub) | Protección WARDEN |
+| Envía algo a cualquier otro host | Proxy de salida |
+| Desactiva la protección para las sesiones siguientes | Protección en una carpeta propiedad de root (abajo) |
+| La propia respuesta final del agente saca datos | No la protección: esa respuesta la publica Multica; compruébala en tu servicio (sección 10) |
+
+Lo comprobamos en nuestra instalación. El ataque de prueba (arriba) fue rechazado por todos los canales. El 2026-11-05,
+cada ejecución programada de los cinco agentes y un pedido pagado tras pasar a Multica 0.8.0 dejaron el archivo de
+estado de la protección para su sesión: el plugin funcionó en cada una.
+
 El plugin viene en `@aimarket/warden` a partir de la versión 0.23.0 (`@aimarket/warden/opencode`). Cargador, como
 `plugin/warden.js` en la carpeta de configuración de OpenCode:
 
@@ -233,6 +313,21 @@ https://hub.attestedmemory.net/start y usa su servidor MCP, `https://hub.atteste
 sección 4. Si se compra a través de otro hub (modelmarket.dev también lista estas habilidades), la llamada llega al
 hub de memoria con la identidad del hub que la enruta, no con la tuya, y no obtiene memoria privada. Las llamadas de
 prueba tampoco.
+
+Quién es el dueño de una memoria, y quién puede leer el resultado de un pedido, lo decide el hub que autenticó al
+comprador:
+
+```mermaid
+flowchart TD
+  c["Una llamada llega a un proveedor propio del operador"] --> q{"¿Quién autenticó al comprador?"}
+  q -- "este hub: clave de crédito, mandato,<br/>pago verificado, canal con fondos" --> ref["X-AIMarket-Buyer-Ref:<br/>un seudónimo estable"]
+  q -- "otro hub enrutó la llamada" --> none["Sin referencia:<br/>la cuenta del hub que enruta<br/>no es el comprador"]
+  q -- "llamada de prueba o anónima" --> none
+  ref --> own["Memoria privada,<br/>resultado ligado a ese comprador"]
+  none --> no["Sin memoria privada,<br/>sin resultado ligado al comprador"]
+```
+
+Un pago x402 verificado del propio comprador sigue identificándolo, incluso en una llamada enrutada.
 
 Escribe el uso en las instrucciones del agente con un presupuesto: qué habilidades, cuántas llamadas por ejecución,
 sin reintentos ante 402 o 403. Nuestro resumen diario de GitHub lee hasta tres registros anteriores, añade una línea
@@ -277,6 +372,38 @@ Una llamada de pago no puede esperar minutos a un agente. Vende el trabajo como 
   una tarea en Multica mediante un disparador **webhook** de un autopiloto con esos datos y responde de inmediato con
   un `job_id`.
 - `…result@v1` (gratis) responde `queued`, o `done` con el resultado.
+
+El pedido completo, desde la llamada del comprador hasta el resultado:
+
+```mermaid
+sequenceDiagram
+  participant B as Comprador
+  participant H as Hub
+  participant S as Servicio de pedidos
+  participant G as GitHub
+  participant M as Multica
+  participant A as Agente de pedidos
+  B->>H: order@v1 (login, days)
+  H->>S: llamada con la referencia del comprador
+  S->>G: lee la actividad pública, token propio
+  alt el login no existe o GitHub no responde
+    S-->>H: rechazado
+    H-->>B: rechazado, sin cobro
+  else datos leídos
+    S->>M: webhook del autopiloto, datos en JSON
+    S-->>H: job_id
+    H-->>B: job_id y recibo firmado
+    M->>A: nueva tarea
+    A->>M: order-task get (solo su propia tarea)
+    A->>M: respuesta final, una línea JSON
+    A->>M: order-task done
+    B->>H: result@v1 (job_id)
+    H->>S: llamada con la referencia del comprador
+    S->>M: función de solo lectura: la respuesta del agente
+    S-->>H: resumen (del agente o del servicio)
+    H-->>B: resumen
+  end
+```
 
 Cómo encajan las piezas:
 

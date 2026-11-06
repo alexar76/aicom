@@ -1,0 +1,7 @@
+# Multica daemon: the running security image with only the Multica CLI/daemon binary replaced by 0.8.0
+# (checksum-verified from the v0.8.0 release, 2026-11-05). OpenCode 1.18.32, WARDEN, tools and entrypoint unchanged.
+FROM aicom-security:multica-daemon-hc-live-20261031
+USER root
+COPY multica /usr/local/bin/multica
+RUN chmod 0755 /usr/local/bin/multica
+USER node
