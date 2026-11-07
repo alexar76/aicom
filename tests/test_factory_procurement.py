@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import asyncio
-import importlib.util
 import json
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -13,6 +12,7 @@ import httpx
 import pytest
 from cryptography.exceptions import InvalidSignature
 
+from aimarket_hub import signing
 from core import pipeline_cost_guard as costs
 from core.procurement_contract import PurchasePolicy, accept_report, build_requests, source_file
 from core.procurement_receipt import checked_charge
@@ -20,9 +20,6 @@ from core.procurement_store import PurchaseStore, micros
 from orchestrator.procurement import prepare_diagnosis, record_diagnosis_outcome
 
 REPO = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("_procurement_hub_signing", REPO / "aimarket-hub/aimarket_hub/signing.py")
-signing = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(signing)
 
 
 @pytest.fixture
