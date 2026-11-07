@@ -1,0 +1,34 @@
+[
+  {
+    "candidate": "local-security-audit",
+    "returncode": 0,
+    "resolved": [
+      {
+        "name": "git2",
+        "version": "0.21.0",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "manifest_path": "/Users/alex/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/git2-0.21.0/Cargo.toml"
+      },
+      {
+        "name": "glib",
+        "version": "0.18.5",
+        "source": null,
+        "manifest_path": "/private/tmp/aicom-security-audit-20261107/rust-fixed-root/security/vendor-rust/glib/Cargo.toml"
+      }
+    ],
+    "source_relative_patch_preserved": true
+  },
+  {
+    "candidate": "tauri-template",
+    "returncode": 0,
+    "resolved": [
+      {
+        "name": "glib",
+        "version": "0.18.5",
+        "source": null,
+        "manifest_path": "/private/tmp/aicom-security-audit-20261107/rust-fixed-root/generated-tauri/src-tauri/vendor/glib/Cargo.toml"
+      }
+    ],
+    "source_relative_patch_preserved": true
+  }
+]

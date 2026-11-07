@@ -1,0 +1,18 @@
+[
+  {
+    "path": "escrow-signer/requirements.lock",
+    "pins": 23,
+    "direct_references": [
+      "escrow-signer/Dockerfile:12 COPY requirements.lock",
+      "escrow-signer/Dockerfile:13 pip install --require-hashes -r requirements.lock"
+    ]
+  },
+  {
+    "path": "deploy/erc-8004/requirements.lock",
+    "pins": 23,
+    "direct_references": [
+      "deploy/erc-8004/install_refresh.sh:17 scp requirements.lock",
+      "deploy/erc-8004/install_refresh.sh:24 pip install --require-hashes -r requirements.lock"
+    ]
+  }
+]

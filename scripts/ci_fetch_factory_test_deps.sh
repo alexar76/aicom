@@ -63,6 +63,8 @@ EOF
 
 clone_if_missing acex acex
 clone_if_missing aimarket-hub aimarket-hub
+# physical_capabilities / knowledge sync import atlas.products + atlas.stations
+clone_if_missing atlas atlas
 ensure_hub_prod_forbidden_gate
 
 if [[ ! -d plugins/aimarket-mcp-packager ]]; then

@@ -1,0 +1,10 @@
+[Unit]
+Description=HISTOR: daily tool-set digest cross-check with CrawlCheck, 12:00 UTC
+
+[Timer]
+OnCalendar=*-*-* 12:00:00 UTC
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

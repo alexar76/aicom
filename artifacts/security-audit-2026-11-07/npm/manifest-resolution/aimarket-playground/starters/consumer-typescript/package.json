@@ -1,0 +1,18 @@
+{
+  "name": "aimarket-consumer",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test dist/test.js",
+    "discover": "npm run build && node dist/cli.js",
+    "invoke": "npm run build && node dist/cli.js --invoke"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}

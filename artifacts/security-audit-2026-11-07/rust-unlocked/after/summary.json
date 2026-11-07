@@ -1,0 +1,42 @@
+{
+  "scanned_at_utc": "2026-11-07T12:17:14.436065+00:00",
+  "method": "Downloaded whole public OSV ecosystem archives; all manifest matching offline; no dependency inventory transmitted",
+  "manifest_count": 2,
+  "package_versions": 538,
+  "versions_by_ecosystem": {
+    "crates.io": 538
+  },
+  "affected_package_versions": 4,
+  "raw_advisory_ids": 5,
+  "unique_vulnerabilities_alias_deduplicated": 4,
+  "severity_unique_vulnerabilities": {
+    "MODERATE": 1,
+    "UNKNOWN": 3
+  },
+  "severity_rows": {
+    "MODERATE": 1,
+    "UNKNOWN": 4
+  },
+  "parse_error_count": 0,
+  "matching_error_count": 0,
+  "unresolved_requirement_count": 0,
+  "datasets": [
+    {
+      "ecosystem": "crates.io",
+      "advisories_read": 3055,
+      "advisories_matching": 5,
+      "archive_sha256": "b876ea4aa37d11a7f212e49e3837726d0bf73e8e26680c577a55348ddd91b644",
+      "archive_bytes": 3799768,
+      "cache_path": "/private/tmp/aicom-security-audit-20261107/crates.io.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/crates.io/all.zip"
+    }
+  ],
+  "limits": [
+    "Source manifest versions only; runtime deployed versions not checked",
+    "Unpinned requirements and manifest-only dependencies are not fully resolved",
+    "Optional/dev/platform dependencies included; reachability not established",
+    "Go third-party dependencies absent in only go.mod; declared Go stdlib version checked",
+    "OS images, browsers, Android/Maven, compiler, system and GitHub Actions dependencies not covered by these datasets",
+    "No malicious-code behavioral analysis; known public OSV advisories only"
+  ]
+}

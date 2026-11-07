@@ -314,6 +314,20 @@ FACTORY_LOCAL_EXCLUDES = [
     "artifacts/disk-cleanup-2026-11-02",
     "artifacts/emberline-web-index-2026-11-01",
     "artifacts/skopos-own-traffic-2026-11-01",
+    # 2026-11-06/07 fleet ops / hub / lottery evidence: private IPs and a raw
+    # key-shaped seed in a dind log. Stay on Gitea; factory secret scan refuses them.
+    "artifacts/security-audit-2026-11-06",
+    "artifacts/backup-admin-repair-2026-11-07",
+    "artifacts/backup-dedup-2026-11-07",
+    "artifacts/fleet-resource-check-2026-11-07",
+    "artifacts/fleet-resource-check-2026-11-07-after-lottery",
+    "artifacts/hub-interop-remediation-2026-11-07",
+    "artifacts/hub-knocking-diagnostics-2026-11-07",
+    "artifacts/hub-knocking-log-audit-2026-11-07",
+    "artifacts/hub-security-recheck-2026-11-07",
+    "artifacts/lottery-migration-2026-11-07",
+    # Untracked local conformance probe; rsync would otherwise ship host literals.
+    "tests/test_protocol_conformance_transport.py",
     # A public ECDSA test vector (rfc6979 secp521r1) whose test private key trips
     # gitleaks' generic-api-key rule and stops the pre-publish scan. The vendored
     # patch and its other files publish; this fixture stays on Gitea.

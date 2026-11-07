@@ -1,0 +1,16 @@
+.................................s...................................... [ 11%]
+........................................................................ [ 23%]
+........................................................................ [ 35%]
+........................................................................ [ 47%]
+........................................................................ [ 59%]
+........................................................................ [ 71%]
+........................................................................ [ 83%]
+........................................................................ [ 95%]
+..............................                                           [100%]
+=============================== warnings summary ===============================
+aimarket-bridges/tests/test_langchain.py: 15 warnings
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-bridges/tests/test_langchain.py:252: LangGraphDeprecatedSinceV10: create_react_agent has been moved to `langchain.agents`. Please update your import to `from langchain.agents import create_agent`. Deprecated in LangGraph V1.0 to be removed in V2.0.
+    return create_react_agent(model, tools), model
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+605 passed, 1 skipped, 15 warnings in 12.17s

@@ -1,0 +1,8 @@
+{
+  "source_manifest": "desktop-integrations/ai-stack-migration-assistant/package.json",
+  "tested_candidate_exact_except_for_omitted_dependencies": {
+    "@aimarket/agent": "github:alexar76/aimarket-sdks#main"
+  },
+  "full_extension_install_or_build_verified": false,
+  "baseline_resolution_note": "npm10.9.4 normal resolver failed in Arborist peer handling; isolated tooling graph resolved with --legacy-peer-deps. SDK omitted explicitly, not claimed checked."
+}

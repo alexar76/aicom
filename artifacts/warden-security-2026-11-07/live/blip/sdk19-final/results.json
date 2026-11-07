@@ -1,0 +1,370 @@
+{
+  "at": "2026-11-07T20:15:55.680Z",
+  "node": "v22.23.4",
+  "sdk": "1.32.1",
+  "scope": "Independent official SDK; actual server processes directly and through Warden; synthetic local tool calls only",
+  "servers": [
+    {
+      "id": "warden",
+      "modes": [
+        {
+          "mode": "direct",
+          "checks": [
+            {
+              "name": "nonempty tools/list",
+              "pass": true
+            },
+            {
+              "name": "synthetic tool succeeds",
+              "pass": true
+            },
+            {
+              "name": "unknown tool refused",
+              "pass": true
+            },
+            {
+              "name": "session survives refused call",
+              "pass": true
+            }
+          ],
+          "serverInfo": {
+            "name": "warden",
+            "title": "WARDEN MCP security firewall",
+            "version": "0.23.1-dev.20261107.1"
+          },
+          "toolCount": 9,
+          "digest": "c2fb2f087e533f45cea599505299c158a7355540c64c476a323d5f46ef9ee79d",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"canonical\": \"{\\\"a\\\":\\\"ёж 🛡\\\",\\\"z\\\":1}\"\n}"
+              }
+            ],
+            "structuredContent": {
+              "canonical": "{\"a\":\"ёж 🛡\",\"z\":1}"
+            }
+          },
+          "elapsedMs": 1833,
+          "pass": true
+        },
+        {
+          "mode": "wrapped",
+          "checks": [
+            {
+              "name": "nonempty tools/list",
+              "pass": true
+            },
+            {
+              "name": "synthetic tool succeeds",
+              "pass": true
+            },
+            {
+              "name": "unknown tool refused",
+              "pass": true
+            },
+            {
+              "name": "session survives refused call",
+              "pass": true
+            }
+          ],
+          "serverInfo": {
+            "name": "warden",
+            "title": "WARDEN MCP security firewall",
+            "version": "0.23.1-dev.20261107.1"
+          },
+          "toolCount": 9,
+          "digest": "c2fb2f087e533f45cea599505299c158a7355540c64c476a323d5f46ef9ee79d",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"canonical\": \"{\\\"a\\\":\\\"ёж 🛡\\\",\\\"z\\\":1}\"\n}"
+              }
+            ],
+            "structuredContent": {
+              "canonical": "{\"a\":\"ёж 🛡\",\"z\":1}"
+            }
+          },
+          "elapsedMs": 5616,
+          "pass": true
+        }
+      ],
+      "toolListParity": true
+    },
+    {
+      "id": "filesystem",
+      "modes": [
+        {
+          "mode": "direct",
+          "checks": [
+            {
+              "name": "nonempty tools/list",
+              "pass": true
+            },
+            {
+              "name": "synthetic tool succeeds",
+              "pass": true
+            },
+            {
+              "name": "unknown tool refused",
+              "pass": true
+            },
+            {
+              "name": "session survives refused call",
+              "pass": true
+            }
+          ],
+          "serverInfo": {
+            "name": "secure-filesystem-server",
+            "version": "2.2.0"
+          },
+          "toolCount": 16,
+          "digest": "0d610691206ba9eaab8f9736ca4310271464f47d430ff71bc36e3f07af95cc54",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "WARDEN interop fixture: ёж 🛡\n"
+              }
+            ],
+            "structuredContent": {
+              "content": "WARDEN interop fixture: ёж 🛡\n"
+            }
+          },
+          "elapsedMs": 3101,
+          "pass": true
+        },
+        {
+          "mode": "wrapped",
+          "checks": [
+            {
+              "name": "nonempty tools/list",
+              "pass": true
+            },
+            {
+              "name": "synthetic tool succeeds",
+              "pass": true
+            },
+            {
+              "name": "unknown tool refused",
+              "pass": true
+            },
+            {
+              "name": "session survives refused call",
+              "pass": true
+            }
+          ],
+          "serverInfo": {
+            "name": "secure-filesystem-server",
+            "version": "2.2.0"
+          },
+          "toolCount": 16,
+          "digest": "0d610691206ba9eaab8f9736ca4310271464f47d430ff71bc36e3f07af95cc54",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "WARDEN interop fixture: ёж 🛡\n"
+              }
+            ],
+            "structuredContent": {
+              "content": "WARDEN interop fixture: ёж 🛡\n"
+            }
+          },
+          "elapsedMs": 5726,
+          "pass": true
+        }
+      ],
+      "toolListParity": true
+    },
+    {
+      "id": "memory",
+      "modes": [
+        {
+          "mode": "direct",
+          "checks": [
+            {
+              "name": "nonempty tools/list",
+              "pass": true
+            },
+            {
+              "name": "synthetic tool succeeds",
+              "pass": true
+            },
+            {
+              "name": "unknown tool refused",
+              "pass": true
+            },
+            {
+              "name": "session survives refused call",
+              "pass": true
+            }
+          ],
+          "serverInfo": {
+            "name": "memory-server",
+            "version": "2.1.0"
+          },
+          "toolCount": 9,
+          "digest": "b90b2a5b24f007f69e0578bc60d805c498efed07d8b7d509ec2c79d8551115dd",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"entities\": [],\n  \"relations\": []\n}"
+              }
+            ],
+            "structuredContent": {
+              "entities": [],
+              "relations": []
+            }
+          },
+          "elapsedMs": 2978,
+          "pass": true
+        },
+        {
+          "mode": "wrapped",
+          "checks": [
+            {
+              "name": "nonempty tools/list",
+              "pass": true
+            },
+            {
+              "name": "synthetic tool succeeds",
+              "pass": true
+            },
+            {
+              "name": "unknown tool refused",
+              "pass": true
+            },
+            {
+              "name": "session survives refused call",
+              "pass": true
+            }
+          ],
+          "serverInfo": {
+            "name": "memory-server",
+            "version": "2.1.0"
+          },
+          "toolCount": 9,
+          "digest": "b90b2a5b24f007f69e0578bc60d805c498efed07d8b7d509ec2c79d8551115dd",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"entities\": [],\n  \"relations\": []\n}"
+              }
+            ],
+            "structuredContent": {
+              "entities": [],
+              "relations": []
+            }
+          },
+          "elapsedMs": 5482,
+          "pass": true
+        }
+      ],
+      "toolListParity": true
+    },
+    {
+      "id": "sequential-thinking",
+      "modes": [
+        {
+          "mode": "direct",
+          "checks": [
+            {
+              "name": "nonempty tools/list",
+              "pass": true
+            },
+            {
+              "name": "synthetic tool succeeds",
+              "pass": true
+            },
+            {
+              "name": "unknown tool refused",
+              "pass": true
+            },
+            {
+              "name": "session survives refused call",
+              "pass": true
+            }
+          ],
+          "serverInfo": {
+            "name": "sequential-thinking-server",
+            "version": "2.1.1"
+          },
+          "toolCount": 1,
+          "digest": "d20bbcb12a025a95938cd6569df48edf4f27d88139474e55e42f96a31338233a",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"thoughtNumber\": 1,\n  \"totalThoughts\": 1,\n  \"nextThoughtNeeded\": false,\n  \"branches\": [],\n  \"thoughtHistoryLength\": 1\n}"
+              }
+            ],
+            "structuredContent": {
+              "thoughtNumber": 1,
+              "totalThoughts": 1,
+              "nextThoughtNeeded": false,
+              "branches": [],
+              "thoughtHistoryLength": 1
+            }
+          },
+          "elapsedMs": 2205,
+          "pass": true
+        },
+        {
+          "mode": "wrapped",
+          "checks": [
+            {
+              "name": "nonempty tools/list",
+              "pass": true
+            },
+            {
+              "name": "synthetic tool succeeds",
+              "pass": true
+            },
+            {
+              "name": "unknown tool refused",
+              "pass": true
+            },
+            {
+              "name": "session survives refused call",
+              "pass": true
+            }
+          ],
+          "serverInfo": {
+            "name": "sequential-thinking-server",
+            "version": "2.1.1"
+          },
+          "toolCount": 1,
+          "digest": "d20bbcb12a025a95938cd6569df48edf4f27d88139474e55e42f96a31338233a",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"thoughtNumber\": 1,\n  \"totalThoughts\": 1,\n  \"nextThoughtNeeded\": false,\n  \"branches\": [],\n  \"thoughtHistoryLength\": 1\n}"
+              }
+            ],
+            "structuredContent": {
+              "thoughtNumber": 1,
+              "totalThoughts": 1,
+              "nextThoughtNeeded": false,
+              "branches": [],
+              "thoughtHistoryLength": 1
+            }
+          },
+          "elapsedMs": 4021,
+          "pass": true
+        }
+      ],
+      "toolListParity": true
+    }
+  ],
+  "summary": {
+    "servers": 4,
+    "exchanges": 8,
+    "passed": 8,
+    "toolListParity": 4
+  }
+}

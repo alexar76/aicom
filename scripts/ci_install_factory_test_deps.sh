@@ -12,3 +12,7 @@ fi
 if [[ -f acex/pyproject.toml ]]; then
   pip install --no-cache-dir -e ./acex
 fi
+
+if [[ -f atlas/pyproject.toml ]]; then
+  pip install --no-cache-dir -e ./atlas
+fi

@@ -1,0 +1,55 @@
+{
+  "observed_at": "2026-11-07T11:57:58.188585+00:00",
+  "note": "Desktop candidate excludes mutable GitHub SDK; this is dev-tooling resolution only. Other candidates are exact source manifest copies.",
+  "results": [
+    {
+      "manifest": "create-aimarket-agent/npm/templates/base/package.json",
+      "resolve_rc": 0,
+      "audit_rc": 0,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "vulnerabilities": {},
+      "error": null
+    },
+    {
+      "manifest": "aimarket-playground/starters/consumer-typescript/package.json",
+      "resolve_rc": 0,
+      "audit_rc": 0,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "vulnerabilities": {},
+      "error": null
+    },
+    {
+      "manifest": "packaging/templates/full_stack_react_express/package.json",
+      "resolve_rc": 0,
+      "audit_rc": 0,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "vulnerabilities": {},
+      "error": null
+    },
+    {
+      "manifest": "desktop-integrations/ai-stack-migration-assistant/package.json",
+      "resolve_rc": 1
+    }
+  ]
+}

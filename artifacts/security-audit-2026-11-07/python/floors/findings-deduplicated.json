@@ -1,0 +1,3869 @@
+[
+  {
+    "ids": [
+      "BIT-pillow-2023-50447",
+      "CVE-2023-50447",
+      "GHSA-3f63-hfp8-52jq",
+      "PYSEC-2026-457"
+    ],
+    "severity": "CRITICAL",
+    "summary": "Arbitrary Code Execution in Pillow",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "10.2.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-3f63-hfp8-52jq",
+      "https://osv.dev/vulnerability/PYSEC-2026-457"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-58367",
+      "GHSA-mw26-5g2v-hqw3",
+      "PYSEC-2026-327"
+    ],
+    "severity": "CRITICAL",
+    "summary": "DeepDiff Class Pollution in Delta class leading to DoS, Remote Code Execution, and more",
+    "packages": [
+      "PyPI:deepdiff@6.7.0"
+    ],
+    "paths": [
+      "relay-scout-fix/pyproject.toml"
+    ],
+    "fixed": [
+      "8.6.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-mw26-5g2v-hqw3",
+      "https://osv.dev/vulnerability/PYSEC-2026-327"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-68664",
+      "GHSA-c67j-w6g6-q2cm",
+      "PYSEC-2026-373"
+    ],
+    "severity": "CRITICAL",
+    "summary": "LangChain serialization injection vulnerability enables secret extraction in dumps/loads APIs",
+    "packages": [
+      "PyPI:langchain-core@1.0"
+    ],
+    "paths": [
+      "aimarket-bridges/pyproject.toml"
+    ],
+    "fixed": [
+      "0.3.81",
+      "1.2.5"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-c67j-w6g6-q2cm",
+      "https://osv.dev/vulnerability/PYSEC-2026-373"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112900",
+      "CVE-2026-112900",
+      "GHSA-w889-685w-c8fh"
+    ],
+    "severity": "CRITICAL",
+    "summary": "Pillow: Argument Injection in Ghostscript call, potentially leading into RCE",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-w889-685w-c8fh"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112398",
+      "CVE-2026-112398",
+      "GHSA-5x8w-8jj5-q52h",
+      "PYSEC-2026-4330"
+    ],
+    "severity": "CRITICAL",
+    "summary": "Pillow: Heap buffer overflow in FlashPix (FPX) JPEG decoding leads to code execution",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-5x8w-8jj5-q52h",
+      "https://osv.dev/vulnerability/PYSEC-2026-4330"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112403",
+      "CVE-2026-112403",
+      "GHSA-8g5g-8vmr-9782",
+      "PYSEC-2026-4332"
+    ],
+    "severity": "CRITICAL",
+    "summary": "Pillow: Heap buffer overflow in ImagingJpegDecode",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-8g5g-8vmr-9782",
+      "https://osv.dev/vulnerability/PYSEC-2026-4332"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112393",
+      "CVE-2026-112393",
+      "GHSA-332p-7hrc-92wf"
+    ],
+    "severity": "CRITICAL",
+    "summary": "Pillow: Heap buffer overflow in _tiffWriteProc when saving TIFF to BytesIO",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-332p-7hrc-92wf"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102268",
+      "GHSA-ffc3-869f-jxw9",
+      "PYSEC-2026-4145"
+    ],
+    "severity": "CRITICAL",
+    "summary": "PyJWT: Asymmetric-PEM detection bypass: whitespace/line-ending-mutated public keys skip the HS/asymmetric confusion guard",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.14.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-ffc3-869f-jxw9",
+      "https://osv.dev/vulnerability/PYSEC-2026-4145"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-5241",
+      "GHSA-fgcw-684q-jj6r",
+      "PYSEC-2026-2290"
+    ],
+    "severity": "CRITICAL",
+    "summary": "huggingface/transformers: Arbitrary Code Execution During Model Initialization in the LightGlue Model Loading Path",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "5.5.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-fgcw-684q-jj6r",
+      "https://osv.dev/vulnerability/PYSEC-2026-2290"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44827",
+      "GHSA-j7w6-vpvq-j3gm",
+      "PYSEC-2026-41"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:diffusers@0.32.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "0.38.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2026-41"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-24762",
+      "GHSA-2jv5-9r88-3w3p",
+      "GHSA-qf9m-vfgh-m389",
+      "PYSEC-2024-38",
+      "PYSEC-2026-1850"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:fastapi@0.100",
+      "PyPI:fastapi@0.109",
+      "PyPI:fastapi@0.109.0"
+    ],
+    "paths": [
+      "logos/pyproject.toml",
+      "metis/pyproject.toml",
+      "packaging/templates/full_stack_fastapi/requirements.txt",
+      "relay-scout-fix/pyproject.toml"
+    ],
+    "fixed": [
+      "0.109.1",
+      "9d34ad0ee8a0dfbbcce06f76c2d5d851085024fc"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2024-38"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-45768",
+      "PYSEC-2025-183"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2025-183"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-14920",
+      "PYSEC-2025-211"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2025-211"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-14921",
+      "PYSEC-2025-212"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2025-212"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-14924",
+      "PYSEC-2025-213"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2025-213"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-14926",
+      "PYSEC-2025-214"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2025-214"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-14927",
+      "PYSEC-2025-215"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2025-215"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-14928",
+      "PYSEC-2025-216"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2025-216"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-14929",
+      "PYSEC-2025-217"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2025-217"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-14930",
+      "PYSEC-2025-218"
+    ],
+    "severity": "HIGH",
+    "summary": "",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2025-218"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-112902",
+      "GHSA-xvh5-g6gv-559v"
+    ],
+    "severity": "HIGH",
+    "summary": " Pillow: Memory disclosure and segfault in libtiff encoder via crafted TIFF tags",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xvh5-g6gv-559v"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-69112",
+      "GHSA-4j2p-28q2-5m79",
+      "PYSEC-2026-3804"
+    ],
+    "severity": "HIGH",
+    "summary": "Accelerate path traversal and denial of service via sharded checkpoint weight_map entries",
+    "packages": [
+      "PyPI:accelerate@1.2.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4j2p-28q2-5m79",
+      "https://osv.dev/vulnerability/PYSEC-2026-3804"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-33155",
+      "GHSA-54jj-px8x-5w5q",
+      "PYSEC-2026-2445"
+    ],
+    "severity": "HIGH",
+    "summary": "DeepDiff has Memory Exhaustion DoS through SAFE_TO_IMPORT",
+    "packages": [
+      "PyPI:deepdiff@6.7.0"
+    ],
+    "paths": [
+      "relay-scout-fix/pyproject.toml"
+    ],
+    "fixed": [
+      "8.6.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-54jj-px8x-5w5q",
+      "https://osv.dev/vulnerability/PYSEC-2026-2445"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-53981",
+      "GHSA-59g5-xgcq-4qw3",
+      "PYSEC-2026-1851"
+    ],
+    "severity": "HIGH",
+    "summary": "Denial of service (DoS) via deformation `multipart/form-data` boundary",
+    "packages": [
+      "PyPI:python-multipart@0.0.12"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml"
+    ],
+    "fixed": [
+      "0.0.18"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-59g5-xgcq-4qw3",
+      "https://osv.dev/vulnerability/PYSEC-2026-1851"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-11394",
+      "GHSA-hxxf-235m-72v3",
+      "PYSEC-2024-229"
+    ],
+    "severity": "HIGH",
+    "summary": "Deserialization of Untrusted Data in Hugging Face Transformers",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.48.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-hxxf-235m-72v3",
+      "https://osv.dev/vulnerability/PYSEC-2024-229"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-11392",
+      "GHSA-qxrp-vhvm-j765",
+      "PYSEC-2024-227"
+    ],
+    "severity": "HIGH",
+    "summary": "Deserialization of Untrusted Data in Hugging Face Transformers",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.48.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-qxrp-vhvm-j765",
+      "https://osv.dev/vulnerability/PYSEC-2024-227"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-11393",
+      "GHSA-wrfc-pvp9-mr9g",
+      "PYSEC-2024-228"
+    ],
+    "severity": "HIGH",
+    "summary": "Deserialization of Untrusted Data in Hugging Face Transformers",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.48.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-wrfc-pvp9-mr9g",
+      "https://osv.dev/vulnerability/PYSEC-2024-228"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44513",
+      "GHSA-98h9-4798-4q5v",
+      "PYSEC-2026-40"
+    ],
+    "severity": "HIGH",
+    "summary": "Diffusers has a `trust_remote_code` bypass via `custom_pipeline` and local custom components",
+    "packages": [
+      "PyPI:diffusers@0.32.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "0.38.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-98h9-4798-4q5v",
+      "https://osv.dev/vulnerability/PYSEC-2026-40"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-45804",
+      "GHSA-7wx4-6vff-v64p",
+      "PYSEC-2026-2446"
+    ],
+    "severity": "HIGH",
+    "summary": "Diffusers: TOCTOU Trust Remote Code Bypass",
+    "packages": [
+      "PyPI:diffusers@0.32.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "0.38.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-7wx4-6vff-v64p",
+      "https://osv.dev/vulnerability/PYSEC-2026-2446"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-2099",
+      "GHSA-qq3j-4f4f-9583",
+      "PYSEC-2025-40"
+    ],
+    "severity": "HIGH",
+    "summary": "Hugging Face Transformers Regular Expression Denial of Service",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.49.0",
+      "4.50.0",
+      "8cb522b4190bd556ce51be04942720650b1a3e57"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-qq3j-4f4f-9583",
+      "https://osv.dev/vulnerability/PYSEC-2025-40"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-1839",
+      "GHSA-69w3-r845-3855",
+      "PYSEC-2026-2288"
+    ],
+    "severity": "HIGH",
+    "summary": "HuggingFace Transformers allows for arbitrary code execution in the `Trainer` class",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "5.0.0",
+      "5.0.0rc3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-69w3-r845-3855",
+      "https://osv.dev/vulnerability/PYSEC-2026-2288"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-4372",
+      "GHSA-29pf-2h5f-8g72",
+      "PYSEC-2026-2289"
+    ],
+    "severity": "HIGH",
+    "summary": "HuggingFace transformers vulnerable to remote code execution",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "5.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-29pf-2h5f-8g72",
+      "https://osv.dev/vulnerability/PYSEC-2026-2289"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-34070",
+      "GHSA-qh6h-p6c9-ff54",
+      "PYSEC-2026-2193"
+    ],
+    "severity": "HIGH",
+    "summary": "LangChain Core has Path Traversal vulnerabilites in legacy `load_prompt` functions",
+    "packages": [
+      "PyPI:langchain-core@1.0"
+    ],
+    "paths": [
+      "aimarket-bridges/pyproject.toml"
+    ],
+    "fixed": [
+      "1.2.22"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-qh6h-p6c9-ff54",
+      "https://osv.dev/vulnerability/PYSEC-2026-2193"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-65106",
+      "GHSA-6qv9-48xg-fc7f",
+      "PYSEC-2026-1518"
+    ],
+    "severity": "HIGH",
+    "summary": "LangChain Vulnerable to Template Injection via Attribute Access in Prompt Templates",
+    "packages": [
+      "PyPI:langchain-core@1.0"
+    ],
+    "paths": [
+      "aimarket-bridges/pyproject.toml"
+    ],
+    "fixed": [
+      "0.3.80",
+      "1.0.7"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-6qv9-48xg-fc7f",
+      "https://osv.dev/vulnerability/PYSEC-2026-1518"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-44843",
+      "GHSA-pjwx-r37v-7724",
+      "PYSEC-2026-2564"
+    ],
+    "severity": "HIGH",
+    "summary": "LangChain vulnerable to unsafe deserialization of attacker-controlled objects through overly broad `load()` allowlists",
+    "packages": [
+      "PyPI:langchain-core@1.0"
+    ],
+    "paths": [
+      "aimarket-bridges/pyproject.toml"
+    ],
+    "fixed": [
+      "0.3.85",
+      "1.3.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-pjwx-r37v-7724",
+      "https://osv.dev/vulnerability/PYSEC-2026-2564"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-28277",
+      "GHSA-g48c-2wqr-h844",
+      "PYSEC-2026-83"
+    ],
+    "severity": "HIGH",
+    "summary": "LangGraph checkpoint loading has unsafe msgpack deserialization",
+    "packages": [
+      "PyPI:langgraph@1.0"
+    ],
+    "paths": [
+      "aimarket-bridges/pyproject.toml"
+    ],
+    "fixed": [
+      "1.0.10",
+      "1.0.10rc1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-g48c-2wqr-h844",
+      "https://osv.dev/vulnerability/PYSEC-2026-83"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-53365",
+      "GHSA-j975-95f5-7wqh",
+      "PYSEC-2026-1618"
+    ],
+    "severity": "HIGH",
+    "summary": "MCP Python SDK has Unhandled Exception in Streamable HTTP Transport, Leading to Denial of Service",
+    "packages": [
+      "PyPI:mcp@1.6"
+    ],
+    "paths": [
+      "plugins/aimarket-mcp-packager/pyproject.toml",
+      "plugins/aimarket-mcp-packager/requirements-mcp.txt",
+      "plugins/aimarket-oracle-gateway/pyproject.toml",
+      "plugins/aimarket-oracle-gateway/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.10.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-j975-95f5-7wqh",
+      "https://osv.dev/vulnerability/PYSEC-2026-1618"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-53366",
+      "GHSA-3qhf-m339-9g5v",
+      "PYSEC-2026-1616"
+    ],
+    "severity": "HIGH",
+    "summary": "MCP Python SDK vulnerability in the FastMCP Server causes validation error, leading to DoS",
+    "packages": [
+      "PyPI:mcp@1.6"
+    ],
+    "paths": [
+      "plugins/aimarket-mcp-packager/pyproject.toml",
+      "plugins/aimarket-mcp-packager/requirements-mcp.txt",
+      "plugins/aimarket-oracle-gateway/pyproject.toml",
+      "plugins/aimarket-oracle-gateway/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.9.4"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-3qhf-m339-9g5v",
+      "https://osv.dev/vulnerability/PYSEC-2026-1616"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-52869",
+      "GHSA-jpw9-pfvf-9f58",
+      "PYSEC-2026-3482"
+    ],
+    "severity": "HIGH",
+    "summary": "MCP Python SDK: HTTP transports serve session requests without verifying the authenticated principal",
+    "packages": [
+      "PyPI:mcp@1.10",
+      "PyPI:mcp@1.6"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml",
+      "aimarket-mcp/requirements-mcp.txt",
+      "plugins/aimarket-mcp-packager/pyproject.toml",
+      "plugins/aimarket-mcp-packager/requirements-mcp.txt",
+      "plugins/aimarket-oracle-gateway/pyproject.toml",
+      "plugins/aimarket-oracle-gateway/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.27.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jpw9-pfvf-9f58",
+      "https://osv.dev/vulnerability/PYSEC-2026-3482"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-59950",
+      "GHSA-vj7q-gjh5-988w",
+      "PYSEC-2026-3483"
+    ],
+    "severity": "HIGH",
+    "summary": "MCP Python SDK: WebSocket server transport does not support Host/Origin validation",
+    "packages": [
+      "PyPI:mcp@1.10",
+      "PyPI:mcp@1.6"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml",
+      "aimarket-mcp/requirements-mcp.txt",
+      "plugins/aimarket-mcp-packager/pyproject.toml",
+      "plugins/aimarket-mcp-packager/requirements-mcp.txt",
+      "plugins/aimarket-oracle-gateway/pyproject.toml",
+      "plugins/aimarket-oracle-gateway/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.28.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-vj7q-gjh5-988w",
+      "https://osv.dev/vulnerability/PYSEC-2026-3483"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-66416",
+      "GHSA-9h52-p55h-vw2f",
+      "PYSEC-2026-1617"
+    ],
+    "severity": "HIGH",
+    "summary": "Model Context Protocol (MCP) Python SDK does not enable DNS rebinding protection by default",
+    "packages": [
+      "PyPI:mcp@1.10",
+      "PyPI:mcp@1.6"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml",
+      "aimarket-mcp/requirements-mcp.txt",
+      "plugins/aimarket-mcp-packager/pyproject.toml",
+      "plugins/aimarket-mcp-packager/requirements-mcp.txt",
+      "plugins/aimarket-oracle-gateway/pyproject.toml",
+      "plugins/aimarket-oracle-gateway/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.23.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9h52-p55h-vw2f",
+      "https://osv.dev/vulnerability/PYSEC-2026-1617"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-59204",
+      "CVE-2026-59204",
+      "GHSA-vjc4-5qp5-m44j",
+      "PYSEC-2026-3496"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow JPEG2000 tiled decode retains a growing scratch buffer and can be used for denial of service",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-vjc4-5qp5-m44j",
+      "https://osv.dev/vulnerability/PYSEC-2026-3496"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-96640",
+      "CVE-2026-96640",
+      "GHSA-mrfp-p49p-3hf2"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow PDF append accepts malformed shared page-tree DAG causing resource exhaustion",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-mrfp-p49p-3hf2"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-55379",
+      "CVE-2026-55379",
+      "GHSA-45hq-cxwh-f6vc",
+      "PYSEC-2026-2255"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow `BdfFontFile`: `Image.new()` called without `_decompression_bomb_check()` — bomb protection bypass via font loading",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-45hq-cxwh-f6vc",
+      "https://osv.dev/vulnerability/PYSEC-2026-2255"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-55380",
+      "CVE-2026-55380",
+      "GHSA-phj9-mv4w-65pm",
+      "PYSEC-2026-2256"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow `GdImageFile._open()`: image dimensions accepted without `_decompression_bomb_check()`",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-phj9-mv4w-65pm",
+      "https://osv.dev/vulnerability/PYSEC-2026-2256"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-54059",
+      "CVE-2026-54059",
+      "GHSA-8v84-f9pq-wr9x",
+      "PYSEC-2026-2253"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow `PcfFontFile._load_bitmaps()`: `Image.frombytes()` called without `_decompression_bomb_check()` — bomb protection bypass via PCF font loading",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-8v84-f9pq-wr9x",
+      "https://osv.dev/vulnerability/PYSEC-2026-2253"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2024-28219",
+      "CVE-2024-28219",
+      "GHSA-44wm-f244-xhp3",
+      "PYSEC-2026-1793"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow buffer overflow vulnerability",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "10.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-44wm-f244-xhp3",
+      "https://osv.dev/vulnerability/PYSEC-2026-1793"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112399",
+      "CVE-2026-112399",
+      "GHSA-5xm2-6676-qcp9"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: APNG background disposal allocates full canvas before decompression bomb check",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-5xm2-6676-qcp9"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-59205",
+      "CVE-2026-59205",
+      "GHSA-9hw9-ch79-4vh6",
+      "PYSEC-2026-3453"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Controlled heap out-of-bounds write in Pillow `ImageCmsTransform.apply()` via output mode mismatch",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9hw9-ch79-4vh6",
+      "https://osv.dev/vulnerability/PYSEC-2026-3453"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-59200",
+      "CVE-2026-59200",
+      "GHSA-jjj6-mw9f-p565",
+      "PYSEC-2026-3495"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Decompression Bomb DoS via PdfParser.PdfStream.decode()",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jjj6-mw9f-p565",
+      "https://osv.dev/vulnerability/PYSEC-2026-3495"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-96637",
+      "CVE-2026-96637",
+      "GHSA-g842-9rc4-69pw",
+      "PYSEC-2026-4338"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Decompression bomb check bypass in SpiderImagePlugin.seek() leads to unbounded allocation DoS",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-g842-9rc4-69pw",
+      "https://osv.dev/vulnerability/PYSEC-2026-4338"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112402",
+      "CVE-2026-112402",
+      "GHSA-7mwm-ghpf-9vrm",
+      "PYSEC-2026-4331"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Double free in ImagingScaleAffine on calloc failure via Image.transform",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-7mwm-ghpf-9vrm",
+      "https://osv.dev/vulnerability/PYSEC-2026-4331"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112400",
+      "CVE-2026-112400",
+      "GHSA-65qm-jvmh-6pqg"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: GIF seek keeps rejected size after DecompressionBombError, allowing DoS",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-65qm-jvmh-6pqg"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-96778",
+      "CVE-2026-96778",
+      "GHSA-g7cr-3p24-7wf7"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Heap buffer overflow writing JPEG comment after ICC profile fills buffer",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-g7cr-3p24-7wf7"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-59199",
+      "CVE-2026-59199",
+      "GHSA-6r8x-57c9-28j4",
+      "PYSEC-2026-3451"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Heap out-of-bounds write `Image.paste()` / `Image.crop()` via signed coordinate overflow",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-6r8x-57c9-28j4",
+      "https://osv.dev/vulnerability/PYSEC-2026-3451"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-59197",
+      "CVE-2026-59197",
+      "GHSA-xj96-63gp-2gmr",
+      "PYSEC-2026-3454"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Heap out-of-bounds write in `ImageFilter.RankFilter` via integer overflow in `ImagingExpand`",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xj96-63gp-2gmr",
+      "https://osv.dev/vulnerability/PYSEC-2026-3454"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-96644",
+      "CVE-2026-96644",
+      "GHSA-9v9v-9qvf-h2hj",
+      "PYSEC-2026-4343"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Heap over-read in WMF/EMF rendering via 16-bit dimension truncation (Windows builds)",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9v9v-9qvf-h2hj",
+      "https://osv.dev/vulnerability/PYSEC-2026-4343"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112390",
+      "CVE-2026-112390",
+      "GHSA-22hg-r758-rrw9"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Infinite loop in MIC n_frames when the embedded TIFF",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-22hg-r758-rrw9"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112406",
+      "CVE-2026-112406",
+      "GHSA-f2g6-542v-9j58"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Infinite loop in PdfParser.rewrite_pages on page tree Parent cycle",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-f2g6-542v-9j58"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112893",
+      "CVE-2026-112893",
+      "GHSA-j4m9-6w36-pw47"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Invalid free in FreeType glyph rendering when a stroker is active",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-j4m9-6w36-pw47"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112892",
+      "CVE-2026-112892",
+      "GHSA-gg2r-wvfm-q9rx"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: MSP RLE decoder expands a tiny file into unbounded memory",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-gg2r-wvfm-q9rx"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112392",
+      "CVE-2026-112392",
+      "GHSA-27h8-gf7j-v5hc",
+      "PYSEC-2026-4326"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: NULL dereference in ImagingExpand via rank filters on zero-size images",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-27h8-gf7j-v5hc",
+      "https://osv.dev/vulnerability/PYSEC-2026-4326"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112404",
+      "CVE-2026-112404",
+      "GHSA-c6hw-5grf-ff96"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: OOB read in TiffDecode.c tile and RGBA paths leaks heap memory into pixels",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-c6hw-5grf-ff96"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112397",
+      "CVE-2026-112397",
+      "GHSA-58r4-6rv3-gfh8",
+      "PYSEC-2026-4329"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Out-of-bounds access in _imagingmorph on a zero-width image",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-58r4-6rv3-gfh8",
+      "https://osv.dev/vulnerability/PYSEC-2026-4329"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-54058",
+      "CVE-2026-54058",
+      "GHSA-62p4-gmf7-7g93",
+      "PYSEC-2026-3493"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Out-of-bounds read via attacker-controlled row stride on Pillow's mmap path (McIdas AREA files)",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-62p4-gmf7-7g93",
+      "https://osv.dev/vulnerability/PYSEC-2026-3493"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112394",
+      "CVE-2026-112394",
+      "GHSA-4558-3h8r-v8xp",
+      "PYSEC-2026-4327"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: P;2L and P;4L decoders may read 1 to 3 bytes past the passed buffer size",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4558-3h8r-v8xp",
+      "https://osv.dev/vulnerability/PYSEC-2026-4327"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112894",
+      "CVE-2026-112894",
+      "GHSA-jg86-v3jv-hrpm"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Quadratic-time DoS in PDF save_all (PdfParser.next_object_id)",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jg86-v3jv-hrpm"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112901",
+      "CVE-2026-112901",
+      "GHSA-xgh8-jp6q-p5x8",
+      "PYSEC-2026-4335"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: ReDoS in XbmImagePlugin: 512-byte file stalls Image.open() for minutes",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xgh8-jp6q-p5x8",
+      "https://osv.dev/vulnerability/PYSEC-2026-4335"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112896",
+      "CVE-2026-112896",
+      "GHSA-pchr-8j38-3x4p",
+      "PYSEC-2026-4334"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: TIFF encoder ColorMap plane-size mismatch causes a heap out-of-bounds read",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-pchr-8j38-3x4p",
+      "https://osv.dev/vulnerability/PYSEC-2026-4334"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-96642",
+      "CVE-2026-96642",
+      "GHSA-3j72-p6qg-6xp7",
+      "PYSEC-2026-4341"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: TarIO negative size field causes infinite CPU-spin loop",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-3j72-p6qg-6xp7",
+      "https://osv.dev/vulnerability/PYSEC-2026-4341"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112897",
+      "CVE-2026-112897",
+      "GHSA-q45j-58j2-45rg"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: TiffDecode returns uninitialized memory as pixels for short JPEG strips",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-q45j-58j2-45rg"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112895",
+      "CVE-2026-112895",
+      "GHSA-p4wg-p73j-c528"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: Unbounded recursion parsing a PDF page tree or trailer chain (incomplete fix for CVE-2026-42310)",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-p4wg-p73j-c528"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-54060",
+      "CVE-2026-54060",
+      "GHSA-5x94-69rx-g8h2",
+      "PYSEC-2026-2254"
+    ],
+    "severity": "HIGH",
+    "summary": "Pillow: `FontFile.compile()`: `Image.new()` called without `_decompression_bomb_check()`",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-5x94-69rx-g8h2",
+      "https://osv.dev/vulnerability/PYSEC-2026-2254"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102275",
+      "GHSA-x33g-cr3x-6449",
+      "PYSEC-2026-4183"
+    ],
+    "severity": "HIGH",
+    "summary": "PyJWT accepts inconsistent OKP x/d JWKs, causing public/private key identity confusion",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.15.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-x33g-cr3x-6449",
+      "https://osv.dev/vulnerability/PYSEC-2026-4183"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-32597",
+      "GHSA-752w-5fwx-jx9f",
+      "PYSEC-2026-120"
+    ],
+    "severity": "HIGH",
+    "summary": "PyJWT accepts unknown `crit` header extensions",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.12.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-752w-5fwx-jx9f",
+      "https://osv.dev/vulnerability/PYSEC-2026-120"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-pxh4-856f-4h89"
+    ],
+    "severity": "HIGH",
+    "summary": "PyJWT: HS256/384/512 verify accepts empty HMAC key via oct JWK (PyJWK/PyJWKClient) enabling token forgery",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.14.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-pxh4-856f-4h89"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102271",
+      "GHSA-p4g4-x82p-q773",
+      "PYSEC-2026-4149"
+    ],
+    "severity": "HIGH",
+    "summary": "PyJWT: Public keys in DER form are accepted as HMAC secrets, bypassing the CVE-2022-29217 guard",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.14.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-p4g4-x82p-q773",
+      "https://osv.dev/vulnerability/PYSEC-2026-4149"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-48526",
+      "GHSA-xgmm-8j9v-c9wx",
+      "PYSEC-2026-179"
+    ],
+    "severity": "HIGH",
+    "summary": "PyJWT: Public-key JWK accepted as HMAC secret enables forged HS256 tokens when mixed families are allowed",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.13.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xgmm-8j9v-c9wx",
+      "https://osv.dev/vulnerability/PYSEC-2026-179"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102267",
+      "GHSA-9v7f-9g4p-ffgj",
+      "PYSEC-2026-4144"
+    ],
+    "severity": "HIGH",
+    "summary": "PyJWT: PyJWKClient follows redirects when fetching JWKS",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.14.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9v7f-9g4p-ffgj",
+      "https://osv.dev/vulnerability/PYSEC-2026-4144"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2023-50782",
+      "GHSA-3ww4-gg4f-jr7f",
+      "PYSEC-2026-1283"
+    ],
+    "severity": "HIGH",
+    "summary": "Python Cryptography package vulnerable to Bleichenbacher timing oracle attack",
+    "packages": [
+      "PyPI:cryptography@41"
+    ],
+    "paths": [
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "dolos/pyproject.toml"
+    ],
+    "fixed": [
+      "42.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-3ww4-gg4f-jr7f",
+      "https://osv.dev/vulnerability/PYSEC-2026-1283"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-24486",
+      "GHSA-wp53-j4wj-2cfg",
+      "PYSEC-2026-1852"
+    ],
+    "severity": "HIGH",
+    "summary": "Python-Multipart has Arbitrary File Write via Non-Default Configuration",
+    "packages": [
+      "PyPI:python-multipart@0.0.12",
+      "PyPI:python-multipart@0.0.18"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "requirements.txt"
+    ],
+    "fixed": [
+      "0.0.22"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-wp53-j4wj-2cfg",
+      "https://osv.dev/vulnerability/PYSEC-2026-1852"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-47874",
+      "GHSA-f96h-pmfr-66vw",
+      "PYSEC-2026-1943"
+    ],
+    "severity": "HIGH",
+    "summary": "Starlette Denial of service (DoS) via multipart/form-data",
+    "packages": [
+      "PyPI:starlette@0.37"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml"
+    ],
+    "fixed": [
+      "0.40.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-f96h-pmfr-66vw",
+      "https://osv.dev/vulnerability/PYSEC-2026-1943"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-48818",
+      "GHSA-wqp7-x3pw-xc5r",
+      "PYSEC-2026-2281"
+    ],
+    "severity": "HIGH",
+    "summary": "Starlette: SSRF and NTLM credential theft via UNC paths in StaticFiles on Windows",
+    "packages": [
+      "PyPI:starlette@0.37"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml"
+    ],
+    "fixed": [
+      "1.1.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-wqp7-x3pw-xc5r",
+      "https://osv.dev/vulnerability/PYSEC-2026-2281"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-54283",
+      "GHSA-82w8-qh3p-5jfq",
+      "PYSEC-2026-249"
+    ],
+    "severity": "HIGH",
+    "summary": "Starlette: request.form() limits silently ignored for application/x-www-form-urlencoded enable DoS",
+    "packages": [
+      "PyPI:starlette@0.37"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml"
+    ],
+    "fixed": [
+      "1.3.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-82w8-qh3p-5jfq",
+      "https://osv.dev/vulnerability/PYSEC-2026-249"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-9856",
+      "GHSA-xrqw-3rrv-vx5w",
+      "PYSEC-2026-3929"
+    ],
+    "severity": "HIGH",
+    "summary": "Transformers save_pretrained path traversal allows arbitrary file writes through chat template names",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "5.10.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-xrqw-3rrv-vx5w",
+      "https://osv.dev/vulnerability/PYSEC-2026-3929"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-537c-gmf6-5ccf"
+    ],
+    "severity": "HIGH",
+    "summary": "Vulnerable OpenSSL included in cryptography wheels",
+    "packages": [
+      "PyPI:cryptography@41",
+      "PyPI:cryptography@42",
+      "PyPI:cryptography@43.0",
+      "PyPI:cryptography@43.0.0",
+      "PyPI:cryptography@44",
+      "PyPI:cryptography@44.0.0"
+    ],
+    "paths": [
+      "ai-service-mesh/backend/pyproject.toml",
+      "aimarket-agent/pyproject.toml",
+      "aimarket-hub/pyproject.toml",
+      "aimarket-playground/pyproject.toml",
+      "atlas/backend/requirements.txt",
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "basanos/pyproject.toml",
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "create-aimarket-agent/pyproject.toml",
+      "create-aimarket-agent/src/create_aimarket_agent/templates/base/pyproject.toml",
+      "dolos/pyproject.toml",
+      "hestia-agents/pyproject.toml",
+      "hestia/pyproject.toml",
+      "histor/pyproject.toml",
+      "lottery/relayer/pyproject.toml",
+      "multica/provider/pyproject.toml",
+      "oracles/core/pyproject.toml",
+      "oracles/oracles/platon/backend/pyproject.toml",
+      "pantheon/server/requirements.txt",
+      "platon/backend/pyproject.toml",
+      "signal-hunt/pyproject.toml",
+      "skopos/pyproject.toml",
+      "skopos/requirements.txt",
+      "themis/pyproject.toml"
+    ],
+    "fixed": [
+      "48.0.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-537c-gmf6-5ccf"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-26130",
+      "GHSA-6vqw-3v5j-54x4",
+      "PYSEC-2024-225"
+    ],
+    "severity": "HIGH",
+    "summary": "cryptography NULL pointer dereference with pkcs12.serialize_key_and_certificates when called with a non-matching certificate and private key and an hmac_hash override",
+    "packages": [
+      "PyPI:cryptography@41",
+      "PyPI:cryptography@42"
+    ],
+    "paths": [
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "dolos/pyproject.toml",
+      "multica/provider/pyproject.toml"
+    ],
+    "fixed": [
+      "42.0.4",
+      "97d231672763cdb5959a3b191e692a362f1b9e55"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-6vqw-3v5j-54x4",
+      "https://osv.dev/vulnerability/PYSEC-2024-225"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-26007",
+      "GHSA-r6ph-v2qm-q3c2",
+      "PYSEC-2026-2141"
+    ],
+    "severity": "HIGH",
+    "summary": "cryptography Vulnerable to a Subgroup Attack Due to Missing Subgroup Validation for SECT Curves",
+    "packages": [
+      "PyPI:cryptography@41",
+      "PyPI:cryptography@42",
+      "PyPI:cryptography@43.0",
+      "PyPI:cryptography@43.0.0",
+      "PyPI:cryptography@44",
+      "PyPI:cryptography@44.0.0"
+    ],
+    "paths": [
+      "ai-service-mesh/backend/pyproject.toml",
+      "aimarket-agent/pyproject.toml",
+      "aimarket-hub/pyproject.toml",
+      "aimarket-playground/pyproject.toml",
+      "atlas/backend/requirements.txt",
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "basanos/pyproject.toml",
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "create-aimarket-agent/pyproject.toml",
+      "create-aimarket-agent/src/create_aimarket_agent/templates/base/pyproject.toml",
+      "dolos/pyproject.toml",
+      "hestia-agents/pyproject.toml",
+      "hestia/pyproject.toml",
+      "histor/pyproject.toml",
+      "lottery/relayer/pyproject.toml",
+      "multica/provider/pyproject.toml",
+      "oracles/core/pyproject.toml",
+      "oracles/oracles/platon/backend/pyproject.toml",
+      "pantheon/server/requirements.txt",
+      "platon/backend/pyproject.toml",
+      "signal-hunt/pyproject.toml",
+      "skopos/pyproject.toml",
+      "skopos/requirements.txt",
+      "themis/pyproject.toml"
+    ],
+    "fixed": [
+      "46.0.5"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-r6ph-v2qm-q3c2",
+      "https://osv.dev/vulnerability/PYSEC-2026-2141"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2023-38325",
+      "GHSA-cf7p-gm2m-833m",
+      "PYSEC-2023-112"
+    ],
+    "severity": "HIGH",
+    "summary": "cryptography mishandles SSH certificates",
+    "packages": [
+      "PyPI:cryptography@41"
+    ],
+    "paths": [
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "dolos/pyproject.toml"
+    ],
+    "fixed": [
+      "41.0.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-cf7p-gm2m-833m",
+      "https://osv.dev/vulnerability/PYSEC-2023-112"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2023-49083",
+      "GHSA-jfhm-5ghh-2f97",
+      "PYSEC-2023-254"
+    ],
+    "severity": "HIGH",
+    "summary": "cryptography vulnerable to NULL-dereference when loading PKCS7 certificates",
+    "packages": [
+      "PyPI:cryptography@41"
+    ],
+    "paths": [
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "dolos/pyproject.toml"
+    ],
+    "fixed": [
+      "41.0.6",
+      "f09c261ca10a31fe41b1262306db7f8f1da0e48a"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jfhm-5ghh-2f97",
+      "https://osv.dev/vulnerability/PYSEC-2023-254"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-69247",
+      "GHSA-g6cj-pr64-35w5",
+      "PYSEC-2026-3552"
+    ],
+    "severity": "HIGH",
+    "summary": "cryptography: PKCS#7 EnvelopedData decryption exposes a Bleichenbacher oracle through distinguishable errors and timing",
+    "packages": [
+      "PyPI:cryptography@44",
+      "PyPI:cryptography@44.0.0"
+    ],
+    "paths": [
+      "ai-service-mesh/backend/pyproject.toml",
+      "aimarket-agent/pyproject.toml",
+      "aimarket-hub/pyproject.toml",
+      "aimarket-playground/pyproject.toml",
+      "atlas/backend/requirements.txt",
+      "basanos/pyproject.toml",
+      "create-aimarket-agent/pyproject.toml",
+      "create-aimarket-agent/src/create_aimarket_agent/templates/base/pyproject.toml",
+      "hestia-agents/pyproject.toml",
+      "hestia/pyproject.toml",
+      "histor/pyproject.toml",
+      "oracles/core/pyproject.toml",
+      "oracles/oracles/platon/backend/pyproject.toml",
+      "pantheon/server/requirements.txt",
+      "platon/backend/pyproject.toml",
+      "signal-hunt/pyproject.toml",
+      "skopos/pyproject.toml",
+      "skopos/requirements.txt",
+      "themis/pyproject.toml"
+    ],
+    "fixed": [
+      "50.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-g6cj-pr64-35w5",
+      "https://osv.dev/vulnerability/PYSEC-2026-3552"
+    ]
+  },
+  {
+    "ids": [
+      "A-299477569",
+      "ASB-A-299477569",
+      "CVE-2023-4863",
+      "CVE-2023-5129",
+      "GHSA-j7hp-h8jx-5ppr",
+      "PYSEC-2026-1794",
+      "RUSTSEC-2023-0060",
+      "RUSTSEC-2023-0061"
+    ],
+    "severity": "HIGH",
+    "summary": "libwebp: OOB write in BuildHuffmanTable",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "10.0.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-j7hp-h8jx-5ppr",
+      "https://osv.dev/vulnerability/PYSEC-2026-1794"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-69249",
+      "GHSA-jwv3-5hgf-82ww",
+      "PYSEC-2026-3553"
+    ],
+    "severity": "HIGH",
+    "summary": "python-cryptography: Duplicate self-signed intermediates can cause exponential path-building",
+    "packages": [
+      "PyPI:cryptography@41",
+      "PyPI:cryptography@42",
+      "PyPI:cryptography@43.0",
+      "PyPI:cryptography@43.0.0",
+      "PyPI:cryptography@44",
+      "PyPI:cryptography@44.0.0"
+    ],
+    "paths": [
+      "ai-service-mesh/backend/pyproject.toml",
+      "aimarket-agent/pyproject.toml",
+      "aimarket-hub/pyproject.toml",
+      "aimarket-playground/pyproject.toml",
+      "atlas/backend/requirements.txt",
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "basanos/pyproject.toml",
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "create-aimarket-agent/pyproject.toml",
+      "create-aimarket-agent/src/create_aimarket_agent/templates/base/pyproject.toml",
+      "dolos/pyproject.toml",
+      "hestia-agents/pyproject.toml",
+      "hestia/pyproject.toml",
+      "histor/pyproject.toml",
+      "lottery/relayer/pyproject.toml",
+      "multica/provider/pyproject.toml",
+      "oracles/core/pyproject.toml",
+      "oracles/oracles/platon/backend/pyproject.toml",
+      "pantheon/server/requirements.txt",
+      "platon/backend/pyproject.toml",
+      "signal-hunt/pyproject.toml",
+      "skopos/pyproject.toml",
+      "skopos/requirements.txt",
+      "themis/pyproject.toml"
+    ],
+    "fixed": [
+      "49.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jwv3-5hgf-82ww",
+      "https://osv.dev/vulnerability/PYSEC-2026-3553"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-42561",
+      "GHSA-pp6c-gr5w-3c5g",
+      "PYSEC-2026-3039"
+    ],
+    "severity": "HIGH",
+    "summary": "python-multipart has Denial of Service via unbounded multipart part headers",
+    "packages": [
+      "PyPI:python-multipart@0.0.12",
+      "PyPI:python-multipart@0.0.18"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "requirements.txt"
+    ],
+    "fixed": [
+      "0.0.27"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-pp6c-gr5w-3c5g",
+      "https://osv.dev/vulnerability/PYSEC-2026-3039"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-53539",
+      "GHSA-5rvq-cxj2-64vf",
+      "PYSEC-2026-3036"
+    ],
+    "severity": "HIGH",
+    "summary": "python-multipart: Quadratic-time querystring parsing with semicolon separators causes CPU denial of service",
+    "packages": [
+      "PyPI:python-multipart@0.0.12",
+      "PyPI:python-multipart@0.0.18"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "requirements.txt"
+    ],
+    "fixed": [
+      "0.0.30"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-5rvq-cxj2-64vf",
+      "https://osv.dev/vulnerability/PYSEC-2026-3036"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-111171",
+      "CVE-2026-40072",
+      "GHSA-5hr4-253g-cpx2",
+      "PYSEC-2026-3414"
+    ],
+    "severity": "HIGH",
+    "summary": "web3.py: SSRF via CCIP Read (EIP-3668) OffchainLookup URL handling",
+    "packages": [
+      "PyPI:web3@6",
+      "PyPI:web3@6.0.0"
+    ],
+    "paths": [
+      "alien-monitor/backend/requirements.txt",
+      "dolos/pyproject.toml"
+    ],
+    "fixed": [
+      "7.15.0",
+      "8.0.0b2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-5hr4-253g-cpx2",
+      "https://osv.dev/vulnerability/PYSEC-2026-3414"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-5197",
+      "GHSA-9356-575x-2w9m",
+      "PYSEC-2026-1983"
+    ],
+    "severity": "MODERATE",
+    "summary": "Hugging Face Transformers Regular Expression Denial of Service (ReDoS) vulnerability",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.53.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9356-575x-2w9m",
+      "https://osv.dev/vulnerability/PYSEC-2026-1983"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-6638",
+      "GHSA-59p9-h35m-wg4g",
+      "PYSEC-2026-1981"
+    ],
+    "severity": "MODERATE",
+    "summary": "Hugging Face Transformers is vulnerable to ReDoS through its MarianTokenizer",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.53.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-59p9-h35m-wg4g",
+      "https://osv.dev/vulnerability/PYSEC-2026-1981"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-6051",
+      "GHSA-rcv9-qm8p-9p6j",
+      "PYSEC-2026-1988"
+    ],
+    "severity": "MODERATE",
+    "summary": "Hugging Face Transformers library has Regular Expression Denial of Service",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.53.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rcv9-qm8p-9p6j",
+      "https://osv.dev/vulnerability/PYSEC-2026-1988"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-6921",
+      "GHSA-4w7r-h757-3r74",
+      "PYSEC-2026-1980"
+    ],
+    "severity": "MODERATE",
+    "summary": "Hugging Face Transformers vulnerable to Regular Expression Denial of Service (ReDoS) in the AdamWeightDecay optimizer",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.53.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4w7r-h757-3r74",
+      "https://osv.dev/vulnerability/PYSEC-2026-1980"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-40087",
+      "GHSA-926x-3r5x-gfhw",
+      "PYSEC-2026-2563"
+    ],
+    "severity": "MODERATE",
+    "summary": "LangChain has incomplete f-string validation in prompt templates",
+    "packages": [
+      "PyPI:langchain-core@1.0"
+    ],
+    "paths": [
+      "aimarket-bridges/pyproject.toml"
+    ],
+    "fixed": [
+      "0.3.84",
+      "1.2.28"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-926x-3r5x-gfhw",
+      "https://osv.dev/vulnerability/PYSEC-2026-2563"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-59951",
+      "GHSA-84m7-p3x7-pcfv"
+    ],
+    "severity": "MODERATE",
+    "summary": "MCP Python SDK: Unbounded Session Accumulation in StreamableHTTP Transport Enables Resource Exhaustion",
+    "packages": [
+      "PyPI:mcp@1.10"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml",
+      "aimarket-mcp/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.30.0",
+      "2.2.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-84m7-p3x7-pcfv"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-116686",
+      "GHSA-rwrf-2pqf-9j8j"
+    ],
+    "severity": "MODERATE",
+    "summary": "Model Context Protocol Python SDK: Client fetched server-chosen $ref URLs while validating tool results against output schemas",
+    "packages": [
+      "PyPI:mcp@1.10"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml",
+      "aimarket-mcp/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.30.0",
+      "2.2.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rwrf-2pqf-9j8j"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-116685",
+      "GHSA-5h93-6whr-6q8j"
+    ],
+    "severity": "MODERATE",
+    "summary": "Model Context Protocol Python SDK: HTTP client transports followed cross-origin redirects carrying custom headers and bodies",
+    "packages": [
+      "PyPI:mcp@1.10"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml",
+      "aimarket-mcp/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.30.0",
+      "2.2.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-5h93-6whr-6q8j"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-116684",
+      "GHSA-w4fh-qvv9-3v23"
+    ],
+    "severity": "MODERATE",
+    "summary": "Model Context Protocol Python SDK: Server bearer-token authentication accepts tokens issued for a different resource server",
+    "packages": [
+      "PyPI:mcp@1.10"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml",
+      "aimarket-mcp/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.30.0",
+      "2.2.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-w4fh-qvv9-3v23"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-0727",
+      "GHSA-9v9h-cgj8-h64p",
+      "PYSEC-2026-1285"
+    ],
+    "severity": "MODERATE",
+    "summary": "Null pointer dereference in PKCS12 parsing",
+    "packages": [
+      "PyPI:cryptography@41",
+      "PyPI:cryptography@42"
+    ],
+    "paths": [
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "dolos/pyproject.toml",
+      "multica/provider/pyproject.toml"
+    ],
+    "fixed": [
+      "42.0.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-9v9h-cgj8-h64p",
+      "https://osv.dev/vulnerability/PYSEC-2026-1285"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-59198",
+      "CVE-2026-59198",
+      "GHSA-fj7v-r99m-22gq",
+      "PYSEC-2026-3494"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow TGA RLE encoder can serialize up to ~57 KB of adjacent heap data into generated images",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-fj7v-r99m-22gq",
+      "https://osv.dev/vulnerability/PYSEC-2026-3494"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-42310",
+      "CVE-2026-42310",
+      "GHSA-r73j-pqj5-w3x7",
+      "PYSEC-2026-2874"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow has a PDF Parsing Trailer Infinite Loop (DoS)",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.2.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-r73j-pqj5-w3x7",
+      "https://osv.dev/vulnerability/PYSEC-2026-2874"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-42308",
+      "CVE-2026-42308",
+      "GHSA-wjx4-4jcj-g98j",
+      "PYSEC-2026-165"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow has an integer overflow when processing fonts",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.2.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-wjx4-4jcj-g98j",
+      "https://osv.dev/vulnerability/PYSEC-2026-165"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112395",
+      "CVE-2026-112395",
+      "GHSA-462x-pgg6-55fp"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow tiled-TIFF decoder reads past tile buffer in copy4 (Unpack.c:1290)",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-462x-pgg6-55fp"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-96638",
+      "CVE-2026-96638",
+      "GHSA-24rc-8hj2-v98c"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow: BMP RLE decoder memory-amplification DoS via unbounded delta escape / absolute mode",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-24rc-8hj2-v98c"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-96636",
+      "CVE-2026-96636",
+      "GHSA-p8hx-v2p6-rp84",
+      "PYSEC-2026-4337"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow: Decompression-bomb protection bypass via multi-frame seek() in MPO and DCX (MpoImageFile.seek / DcxImageFile.seek)",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-p8hx-v2p6-rp84",
+      "https://osv.dev/vulnerability/PYSEC-2026-4337"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-112899",
+      "GHSA-vx6w-vv9f-6gvg"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow: EPS load(scale) lets Ghostscript render past the decompression bomb limit",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-vx6w-vv9f-6gvg"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112898",
+      "CVE-2026-112898",
+      "GHSA-rfgq-q3w2-pmv2"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow: Image.quantize() with empty palette leaks uninitialized stack memory",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rfgq-q3w2-pmv2"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112391",
+      "CVE-2026-112391",
+      "GHSA-254f-3936-288h"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow: PdfParser can recurse without limit in get_value() and linearize_page_tree()",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-254f-3936-288h"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112401",
+      "CVE-2026-112401",
+      "GHSA-74r2-7ff9-mjj2"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow: Quadratic GIF comment concatenation allows DoS in Image.open()",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-74r2-7ff9-mjj2"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-112891",
+      "CVE-2026-112891",
+      "GHSA-fc9g-5qg7-mf45"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow: Quadratic GIF comment copying during save",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-fc9g-5qg7-mf45"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-96641",
+      "CVE-2026-96641",
+      "GHSA-4rm8-3hmm-39fg",
+      "PYSEC-2026-4340"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow: Reachable undefined behavior in native integer operations, potentially leading to denial of service or logic integrity compromise",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "13.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4rm8-3hmm-39fg",
+      "https://osv.dev/vulnerability/PYSEC-2026-4340"
+    ]
+  },
+  {
+    "ids": [
+      "BIT-pillow-2026-55798",
+      "CVE-2026-55798",
+      "GHSA-4x4j-2g7c-83w6",
+      "PYSEC-2026-2257"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pillow: WindowsViewer.get_command() OS command injection via unescaped shell path",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "12.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-4x4j-2g7c-83w6",
+      "https://osv.dev/vulnerability/PYSEC-2026-2257"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-48522",
+      "GHSA-993g-76c3-p5m4",
+      "PYSEC-2026-175"
+    ],
+    "severity": "MODERATE",
+    "summary": "PyJWKClient: missing scheme allowlist enables CVE-2024-21643-class SSRF + token forgery via file://, ftp://, data: schemes",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.13.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-993g-76c3-p5m4",
+      "https://osv.dev/vulnerability/PYSEC-2026-175"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-48523",
+      "GHSA-jq35-7prp-9v3f",
+      "PYSEC-2026-176"
+    ],
+    "severity": "MODERATE",
+    "summary": "PyJWT: Algorithm allow-list bypass when decoding with `PyJWK` / `PyJWKClient` keys",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.12.1",
+      "2.13.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jq35-7prp-9v3f",
+      "https://osv.dev/vulnerability/PYSEC-2026-176"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102274",
+      "GHSA-w6j9-cwv2-h6wq",
+      "PYSEC-2026-4152"
+    ],
+    "severity": "MODERATE",
+    "summary": "PyJWT: Malformed RSA JWK aborts parsing of an entire JWK Set",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.14.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-w6j9-cwv2-h6wq",
+      "https://osv.dev/vulnerability/PYSEC-2026-4152"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102269",
+      "GHSA-hxm8-2xgr-2p9m",
+      "PYSEC-2026-4147"
+    ],
+    "severity": "MODERATE",
+    "summary": "PyJWT: Non-canonical signature segments enable raw-token revocation bypass",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.14.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-hxm8-2xgr-2p9m",
+      "https://osv.dev/vulnerability/PYSEC-2026-4147"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101917",
+      "GHSA-2gx3-rcp4-g85q",
+      "PYSEC-2026-4140"
+    ],
+    "severity": "MODERATE",
+    "summary": "PyJWT: PyJWKClient still amplifies unauthenticated JWKS fetches on unknown kid values (incomplete fix of CVE-2026-48524)",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.14.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2gx3-rcp4-g85q",
+      "https://osv.dev/vulnerability/PYSEC-2026-4140"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-102270",
+      "GHSA-jwrc-g2q2-pq5p",
+      "PYSEC-2026-4148"
+    ],
+    "severity": "MODERATE",
+    "summary": "PyJWT: ReDoS vulnerability when calling the `is_pem_format` function.",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.14.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jwrc-g2q2-pq5p",
+      "https://osv.dev/vulnerability/PYSEC-2026-4148"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-48525",
+      "GHSA-w7vc-732c-9m39",
+      "PYSEC-2026-178"
+    ],
+    "severity": "MODERATE",
+    "summary": "PyJWT: Unauthenticated DoS via unbounded Base64URL decoding of unused payload segment in b64=false detached JWS",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.13.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-w7vc-732c-9m39",
+      "https://osv.dev/vulnerability/PYSEC-2026-178"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-101918",
+      "GHSA-42vr-xj54-vc7v",
+      "PYSEC-2026-4141"
+    ],
+    "severity": "MODERATE",
+    "summary": "PyJWT: Unauthenticated RecursionError DoS in pre-verification payload parse (PyJWKClient.get_signing_key_from_jwt / verify_signature=False)",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.15.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-42vr-xj54-vc7v",
+      "https://osv.dev/vulnerability/PYSEC-2026-4141"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-3772",
+      "GHSA-mr82-8j83-vxmv",
+      "PYSEC-2026-1812"
+    ],
+    "severity": "MODERATE",
+    "summary": "Pydantic regular expression denial of service",
+    "packages": [
+      "PyPI:pydantic@2",
+      "PyPI:pydantic@2.0",
+      "PyPI:pydantic@2.0.0"
+    ],
+    "paths": [
+      "aimarket-mcp/requirements-mcp.txt",
+      "dioscuri/scripts/requirements-screenshot.txt",
+      "logos/pyproject.toml",
+      "metis/pyproject.toml",
+      "plugins/aimarket-oracle-gateway/pyproject.toml",
+      "plugins/aimarket-oracle-gateway/requirements-mcp.txt"
+    ],
+    "fixed": [
+      "1.10.13",
+      "2.4.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-mr82-8j83-vxmv",
+      "https://osv.dev/vulnerability/PYSEC-2026-1812"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-48710",
+      "GHSA-86qp-5c8j-p5mr",
+      "PYSEC-2026-161",
+      "X41-2026-002"
+    ],
+    "severity": "MODERATE",
+    "summary": "Starlette has missing Host header validation that poisons request.url.path, bypassing path-based security checks",
+    "packages": [
+      "PyPI:starlette@0.37"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml"
+    ],
+    "fixed": [
+      "1.0.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-86qp-5c8j-p5mr",
+      "https://osv.dev/vulnerability/PYSEC-2026-161"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-54121",
+      "GHSA-2c2j-9gv5-cj73",
+      "PYSEC-2026-1941"
+    ],
+    "severity": "MODERATE",
+    "summary": "Starlette has possible denial-of-service vector when parsing large files in multipart forms",
+    "packages": [
+      "PyPI:starlette@0.37"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml"
+    ],
+    "fixed": [
+      "0.47.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2c2j-9gv5-cj73",
+      "https://osv.dev/vulnerability/PYSEC-2026-1941"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-48817",
+      "GHSA-x746-7m8f-x49c",
+      "PYSEC-2026-2280"
+    ],
+    "severity": "MODERATE",
+    "summary": "Starlette: Arbitrary HTTP method dispatched to `HTTPEndpoint` attributes via `getattr`",
+    "packages": [
+      "PyPI:starlette@0.37"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml"
+    ],
+    "fixed": [
+      "1.1.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-x746-7m8f-x49c",
+      "https://osv.dev/vulnerability/PYSEC-2026-2280"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-54282",
+      "GHSA-jp82-jpqv-5vv3",
+      "PYSEC-2026-248"
+    ],
+    "severity": "MODERATE",
+    "summary": "Starlette: Unvalidated request path concatenated into authority poisons request.url.hostname",
+    "packages": [
+      "PyPI:starlette@0.37"
+    ],
+    "paths": [
+      "aimarket-mcp/pyproject.toml"
+    ],
+    "fixed": [
+      "1.3.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jp82-jpqv-5vv3",
+      "https://osv.dev/vulnerability/PYSEC-2026-248"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-12720",
+      "GHSA-6rvg-6v2m-4j46",
+      "PYSEC-2026-1982"
+    ],
+    "severity": "MODERATE",
+    "summary": "Transformers Regular Expression Denial of Service (ReDoS) vulnerability",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.48.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-6rvg-6v2m-4j46",
+      "https://osv.dev/vulnerability/PYSEC-2026-1982"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-1194",
+      "GHSA-fpwr-67px-3qhx",
+      "PYSEC-2026-1984"
+    ],
+    "severity": "MODERATE",
+    "summary": "Transformers Regular Expression Denial of Service (ReDoS) vulnerability",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.50.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-fpwr-67px-3qhx",
+      "https://osv.dev/vulnerability/PYSEC-2026-1984"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-3933",
+      "GHSA-37mw-44qp-f5jm",
+      "PYSEC-2026-1977"
+    ],
+    "severity": "MODERATE",
+    "summary": "Transformers is vulnerable to ReDoS attack through its DonutProcessor class",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.52.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-37mw-44qp-f5jm",
+      "https://osv.dev/vulnerability/PYSEC-2026-1977"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-3264",
+      "GHSA-jjph-296x-mrcr",
+      "PYSEC-2026-1985"
+    ],
+    "severity": "MODERATE",
+    "summary": "Transformers vulnerable to ReDoS attack through its get_imports() function",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.51.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jjph-296x-mrcr",
+      "https://osv.dev/vulnerability/PYSEC-2026-1985"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-3263",
+      "GHSA-q2wp-rjmx-x6x9",
+      "PYSEC-2026-1987"
+    ],
+    "severity": "MODERATE",
+    "summary": "Transformers's ReDoS vulnerability in get_configuration_file can lead to catastrophic backtracking",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.51.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-q2wp-rjmx-x6x9",
+      "https://osv.dev/vulnerability/PYSEC-2026-1987"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-34073",
+      "GHSA-m959-cc7f-wv43",
+      "PYSEC-2026-35"
+    ],
+    "severity": "MODERATE",
+    "summary": "cryptography has incomplete DNS name constraint enforcement on peer names",
+    "packages": [
+      "PyPI:cryptography@41",
+      "PyPI:cryptography@42",
+      "PyPI:cryptography@43.0",
+      "PyPI:cryptography@43.0.0",
+      "PyPI:cryptography@44",
+      "PyPI:cryptography@44.0.0"
+    ],
+    "paths": [
+      "ai-service-mesh/backend/pyproject.toml",
+      "aimarket-agent/pyproject.toml",
+      "aimarket-hub/pyproject.toml",
+      "aimarket-playground/pyproject.toml",
+      "atlas/backend/requirements.txt",
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "basanos/pyproject.toml",
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "create-aimarket-agent/pyproject.toml",
+      "create-aimarket-agent/src/create_aimarket_agent/templates/base/pyproject.toml",
+      "dolos/pyproject.toml",
+      "hestia-agents/pyproject.toml",
+      "hestia/pyproject.toml",
+      "histor/pyproject.toml",
+      "lottery/relayer/pyproject.toml",
+      "multica/provider/pyproject.toml",
+      "oracles/core/pyproject.toml",
+      "oracles/oracles/platon/backend/pyproject.toml",
+      "pantheon/server/requirements.txt",
+      "platon/backend/pyproject.toml",
+      "signal-hunt/pyproject.toml",
+      "skopos/pyproject.toml",
+      "skopos/requirements.txt",
+      "themis/pyproject.toml"
+    ],
+    "fixed": [
+      "46.0.6"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-m959-cc7f-wv43",
+      "https://osv.dev/vulnerability/PYSEC-2026-35"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-114609",
+      "GHSA-rw7v-4hrq-x6r9"
+    ],
+    "severity": "MODERATE",
+    "summary": "fpdf2 implicitly loads external URLs and local image paths when rendering attacker-controlled content",
+    "packages": [
+      "PyPI:fpdf2@2.8.2"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml"
+    ],
+    "fixed": [
+      "2.8.8"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-rw7v-4hrq-x6r9"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-114610",
+      "GHSA-wqw6-wpr3-45rh"
+    ],
+    "severity": "MODERATE",
+    "summary": "fpdf2: Exponential SVG '<use>' expansion causes CPU and memory exhaustion in 'FPDF.image()'",
+    "packages": [
+      "PyPI:fpdf2@2.8.2"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml"
+    ],
+    "fixed": [
+      "2.8.8"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-wqw6-wpr3-45rh"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-h4gh-qq45-vh27"
+    ],
+    "severity": "MODERATE",
+    "summary": "pyca/cryptography has a vulnerable OpenSSL included in cryptography wheels",
+    "packages": [
+      "PyPI:cryptography@41",
+      "PyPI:cryptography@42",
+      "PyPI:cryptography@43.0",
+      "PyPI:cryptography@43.0.0"
+    ],
+    "paths": [
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "dolos/pyproject.toml",
+      "lottery/relayer/pyproject.toml",
+      "multica/provider/pyproject.toml"
+    ],
+    "fixed": [
+      "43.0.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-h4gh-qq45-vh27"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-71176",
+      "GHSA-6w46-j5rx-g56g",
+      "PYSEC-2026-1845"
+    ],
+    "severity": "MODERATE",
+    "summary": "pytest has vulnerable tmpdir handling",
+    "packages": [
+      "PyPI:pytest@7",
+      "PyPI:pytest@8",
+      "PyPI:pytest@8.0",
+      "PyPI:pytest@8.3",
+      "PyPI:pytest@8.3.0",
+      "PyPI:pytest@8.3.3"
+    ],
+    "paths": [
+      "ai-service-mesh/backend/pyproject.toml",
+      "aimarket-agent/pyproject.toml",
+      "aimarket-bridges/pyproject.toml",
+      "aimarket-hub/pyproject.toml",
+      "aimarket-mcp/pyproject.toml",
+      "aimarket-playground/pyproject.toml",
+      "atlas/backend/requirements-dev.txt",
+      "atlas/pyproject.toml",
+      "attested/attested-deal/pyproject.toml",
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "attested/attested-memory-hub/memory-market/pyproject.toml",
+      "attested/attested-memory-hub/provenance-ledger/pyproject.toml",
+      "attested/attested-memory-hub/truth-layer/pyproject.toml",
+      "attested/attested-meter/pyproject.toml",
+      "attested/attested-prove/pyproject.toml",
+      "awr/emitters/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "basanos/pyproject.toml",
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "courses/3d-data-viz-course/pyproject.toml",
+      "courses/agent-economy-course/pyproject.toml",
+      "courses/ai-factory-course/pyproject.toml",
+      "courses/federation-peer-hubs-course/pyproject.toml",
+      "courses/gaia-atlas-sensors-course/pyproject.toml",
+      "courses/mathematics-of-trust-course/pyproject.toml",
+      "courses/mcp-security-course/pyproject.toml",
+      "courses/optimization-with-proofs-course/pyproject.toml",
+      "courses/orchestration-course/pyproject.toml",
+      "courses/physics-inspired-computing-course/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "courses/smart-contracts-course/pyproject.toml",
+      "courses/verifiable-randomness-course/pyproject.toml",
+      "create-aimarket-agent/pyproject.toml",
+      "create-aimarket-agent/src/create_aimarket_agent/templates/base/pyproject.toml",
+      "dolos/pyproject.toml",
+      "expert-memory-market/pyproject.toml",
+      "gaia/pyproject.toml",
+      "helios/pyproject.toml",
+      "hestia-agents/pyproject.toml",
+      "hestia/pyproject.toml",
+      "histor/pyproject.toml",
+      "logos/pyproject.toml",
+      "lottery/relayer/pyproject.toml",
+      "metis/pyproject.toml",
+      "momus/pyproject.toml",
+      "multica/provider/pyproject.toml",
+      "oracles/core/pyproject.toml",
+      "oracles/oracles/ablation/pyproject.toml",
+      "oracles/oracles/aestus/pyproject.toml",
+      "oracles/oracles/betti/pyproject.toml",
+      "oracles/oracles/chronos/pyproject.toml",
+      "oracles/oracles/colony/pyproject.toml",
+      "oracles/oracles/fermat/pyproject.toml",
+      "oracles/oracles/fourier/pyproject.toml",
+      "oracles/oracles/gauss/pyproject.toml",
+      "oracles/oracles/kantor/pyproject.toml",
+      "oracles/oracles/landauer/pyproject.toml",
+      "oracles/oracles/lattice/pyproject.toml",
+      "oracles/oracles/lumen/pyproject.toml",
+      "oracles/oracles/murmuration/pyproject.toml",
+      "oracles/oracles/oracle-family/pyproject.toml",
+      "oracles/oracles/percola/pyproject.toml",
+      "oracles/oracles/platon/backend/pyproject.toml",
+      "oracles/oracles/sortes/pyproject.toml",
+      "oracles/oracles/turing/pyproject.toml",
+      "personal-attested-memory/pyproject.toml",
+      "platon/backend/pyproject.toml",
+      "plugins/aimarket-auction/pyproject.toml",
+      "plugins/aimarket-channels/pyproject.toml",
+      "plugins/aimarket-data-cap/pyproject.toml",
+      "plugins/aimarket-dataset/pyproject.toml",
+      "plugins/aimarket-mcp-packager/pyproject.toml",
+      "plugins/aimarket-nft/pyproject.toml",
+      "plugins/aimarket-oracle-gateway/pyproject.toml",
+      "plugins/aimarket-orchestrator/pyproject.toml",
+      "plugins/aimarket-personas/pyproject.toml",
+      "plugins/aimarket-promo/pyproject.toml",
+      "plugins/aimarket-reputation/pyproject.toml",
+      "plugins/aimarket-safety/pyproject.toml",
+      "plugins/aimarket-streaming/pyproject.toml",
+      "plugins/aimarket-tee/pyproject.toml",
+      "plugins/aimarket-zk/pyproject.toml",
+      "relay-scout-fix/pyproject.toml",
+      "signal-hunt/pyproject.toml",
+      "skopos/pyproject.toml",
+      "symmartys/pyproject.toml",
+      "themis/pyproject.toml",
+      "treasury/pyproject.toml"
+    ],
+    "fixed": [
+      "9.0.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-6w46-j5rx-g56g",
+      "https://osv.dev/vulnerability/PYSEC-2026-1845"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-28684",
+      "GHSA-mf9w-mj56-hr94",
+      "PYSEC-2026-2270"
+    ],
+    "severity": "MODERATE",
+    "summary": "python-dotenv: Symlink following in set_key allows arbitrary file overwrite via cross-device rename fallback",
+    "packages": [
+      "PyPI:python-dotenv@1.0.0"
+    ],
+    "paths": [
+      "alien-monitor/backend/requirements.txt"
+    ],
+    "fixed": [
+      "1.2.2"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-mf9w-mj56-hr94",
+      "https://osv.dev/vulnerability/PYSEC-2026-2270"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-40347",
+      "GHSA-mj87-hwqh-73pj",
+      "PYSEC-2026-3038"
+    ],
+    "severity": "MODERATE",
+    "summary": "python-multipart affected by Denial of Service via large multipart preamble or epilogue data",
+    "packages": [
+      "PyPI:python-multipart@0.0.12",
+      "PyPI:python-multipart@0.0.18"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "requirements.txt"
+    ],
+    "fixed": [
+      "0.0.26"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-mj87-hwqh-73pj",
+      "https://osv.dev/vulnerability/PYSEC-2026-3038"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-26013",
+      "GHSA-2g6r-c272-w58r",
+      "PYSEC-2026-2562"
+    ],
+    "severity": "LOW",
+    "summary": "LangChain affected by SSRF via image_url token counting in ChatOpenAI.get_num_tokens_from_messages",
+    "packages": [
+      "PyPI:langchain-core@1.0"
+    ],
+    "paths": [
+      "aimarket-bridges/pyproject.toml"
+    ],
+    "fixed": [
+      "1.2.11"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-2g6r-c272-w58r",
+      "https://osv.dev/vulnerability/PYSEC-2026-2562"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-48524",
+      "GHSA-fhv5-28vv-h8m8",
+      "PYSEC-2026-177"
+    ],
+    "severity": "LOW",
+    "summary": "PyJWKClient unbounded JWKS endpoint requests via attacker-controlled kid values (DoS)",
+    "packages": [
+      "PyPI:pyjwt@2.9.0"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml"
+    ],
+    "fixed": [
+      "2.13.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-fhv5-28vv-h8m8",
+      "https://osv.dev/vulnerability/PYSEC-2026-177"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2025-3777",
+      "GHSA-phhr-52qp-3mj4",
+      "PYSEC-2026-1986"
+    ],
+    "severity": "LOW",
+    "summary": "Transformers's Improper Input Validation vulnerability can be exploited through username injection",
+    "packages": [
+      "PyPI:transformers@4.46.0"
+    ],
+    "paths": [
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "4.52.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-phhr-52qp-3mj4",
+      "https://osv.dev/vulnerability/PYSEC-2026-1986"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-v8gr-m533-ghj9"
+    ],
+    "severity": "LOW",
+    "summary": "Vulnerable OpenSSL included in cryptography wheels",
+    "packages": [
+      "PyPI:cryptography@41"
+    ],
+    "paths": [
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "dolos/pyproject.toml"
+    ],
+    "fixed": [
+      "41.0.4"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-v8gr-m533-ghj9"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2024-12797",
+      "GHSA-79v4-65xg-pq4g",
+      "PYSEC-2026-1284"
+    ],
+    "severity": "LOW",
+    "summary": "Vulnerable OpenSSL included in cryptography wheels",
+    "packages": [
+      "PyPI:cryptography@42",
+      "PyPI:cryptography@43.0",
+      "PyPI:cryptography@43.0.0",
+      "PyPI:cryptography@44",
+      "PyPI:cryptography@44.0.0"
+    ],
+    "paths": [
+      "ai-service-mesh/backend/pyproject.toml",
+      "aimarket-agent/pyproject.toml",
+      "aimarket-hub/pyproject.toml",
+      "aimarket-playground/pyproject.toml",
+      "atlas/backend/requirements.txt",
+      "basanos/pyproject.toml",
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "create-aimarket-agent/pyproject.toml",
+      "create-aimarket-agent/src/create_aimarket_agent/templates/base/pyproject.toml",
+      "hestia-agents/pyproject.toml",
+      "hestia/pyproject.toml",
+      "histor/pyproject.toml",
+      "lottery/relayer/pyproject.toml",
+      "multica/provider/pyproject.toml",
+      "oracles/core/pyproject.toml",
+      "oracles/oracles/platon/backend/pyproject.toml",
+      "pantheon/server/requirements.txt",
+      "platon/backend/pyproject.toml",
+      "signal-hunt/pyproject.toml",
+      "skopos/pyproject.toml",
+      "skopos/requirements.txt",
+      "themis/pyproject.toml"
+    ],
+    "fixed": [
+      "44.0.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-79v4-65xg-pq4g",
+      "https://osv.dev/vulnerability/PYSEC-2026-1284"
+    ]
+  },
+  {
+    "ids": [
+      "GHSA-jm77-qphf-c4w8"
+    ],
+    "severity": "LOW",
+    "summary": "pyca/cryptography's wheels include vulnerable OpenSSL",
+    "packages": [
+      "PyPI:cryptography@41"
+    ],
+    "paths": [
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "dolos/pyproject.toml"
+    ],
+    "fixed": [
+      "41.0.3"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-jm77-qphf-c4w8"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-53537",
+      "GHSA-vffw-93wf-4j4q",
+      "PYSEC-2026-3041"
+    ],
+    "severity": "LOW",
+    "summary": "python-multipart: Content-Disposition parameter smuggling via RFC 2231/5987 extended parameters",
+    "packages": [
+      "PyPI:python-multipart@0.0.12",
+      "PyPI:python-multipart@0.0.18"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "requirements.txt"
+    ],
+    "fixed": [
+      "0.0.30"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-vffw-93wf-4j4q",
+      "https://osv.dev/vulnerability/PYSEC-2026-3041"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-53540",
+      "GHSA-v9pg-7xvm-68hf",
+      "PYSEC-2026-3040"
+    ],
+    "severity": "LOW",
+    "summary": "python-multipart: Negative Content-Length in parse_form buffers the entire body in memory",
+    "packages": [
+      "PyPI:python-multipart@0.0.12",
+      "PyPI:python-multipart@0.0.18"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "requirements.txt"
+    ],
+    "fixed": [
+      "0.0.31"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-v9pg-7xvm-68hf",
+      "https://osv.dev/vulnerability/PYSEC-2026-3040"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-53538",
+      "GHSA-6jv3-5f52-599m",
+      "PYSEC-2026-3037"
+    ],
+    "severity": "LOW",
+    "summary": "python-multipart: Semicolon treated as querystring field separator enables parameter smuggling",
+    "packages": [
+      "PyPI:python-multipart@0.0.12",
+      "PyPI:python-multipart@0.0.18"
+    ],
+    "paths": [
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "requirements.txt"
+    ],
+    "fixed": [
+      "0.0.30"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/GHSA-6jv3-5f52-599m",
+      "https://osv.dev/vulnerability/PYSEC-2026-3037"
+    ]
+  },
+  {
+    "ids": [
+      "PYSEC-2023-175"
+    ],
+    "severity": "UNKNOWN",
+    "summary": "",
+    "packages": [
+      "PyPI:pillow@10.0",
+      "PyPI:pillow@10.0.0"
+    ],
+    "paths": [
+      "helios/pyproject.toml",
+      "requirements-local-image.txt"
+    ],
+    "fixed": [
+      "10.0.1"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2023-175"
+    ]
+  },
+  {
+    "ids": [
+      "CVE-2026-69248",
+      "GHSA-m2h6-j472-rp4c",
+      "PYSEC-2026-3554"
+    ],
+    "severity": "UNKNOWN",
+    "summary": "python-cryptography verifier accepts wildcard DNS names allowing escape from permittedSubtrees",
+    "packages": [
+      "PyPI:cryptography@41",
+      "PyPI:cryptography@42",
+      "PyPI:cryptography@43.0",
+      "PyPI:cryptography@43.0.0",
+      "PyPI:cryptography@44",
+      "PyPI:cryptography@44.0.0"
+    ],
+    "paths": [
+      "ai-service-mesh/backend/pyproject.toml",
+      "aimarket-agent/pyproject.toml",
+      "aimarket-hub/pyproject.toml",
+      "aimarket-playground/pyproject.toml",
+      "atlas/backend/requirements.txt",
+      "attested/attested-memory-hub/clients/python/pyproject.toml",
+      "awr/reference/python/pyproject.toml",
+      "basanos/pyproject.toml",
+      "cite-desks/emberline/backend/pyproject.toml",
+      "cite-desks/kernel/pyproject.toml",
+      "courses/pqc-hybrid-signing-course/pyproject.toml",
+      "create-aimarket-agent/pyproject.toml",
+      "create-aimarket-agent/src/create_aimarket_agent/templates/base/pyproject.toml",
+      "dolos/pyproject.toml",
+      "hestia-agents/pyproject.toml",
+      "hestia/pyproject.toml",
+      "histor/pyproject.toml",
+      "lottery/relayer/pyproject.toml",
+      "multica/provider/pyproject.toml",
+      "oracles/core/pyproject.toml",
+      "oracles/oracles/platon/backend/pyproject.toml",
+      "pantheon/server/requirements.txt",
+      "platon/backend/pyproject.toml",
+      "signal-hunt/pyproject.toml",
+      "skopos/pyproject.toml",
+      "skopos/requirements.txt",
+      "themis/pyproject.toml"
+    ],
+    "fixed": [
+      "49.0.0"
+    ],
+    "advisory_urls": [
+      "https://osv.dev/vulnerability/PYSEC-2026-3554"
+    ]
+  }
+]

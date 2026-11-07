@@ -1,0 +1,81 @@
+{
+  "startedAt": "2026-11-07T20:01:55.543Z",
+  "finishedAt": "2026-11-07T20:01:56.730Z",
+  "version": "0.23.1-dev.20261107.1",
+  "node": "v22.23.4",
+  "scope": "Live public MCP initialize and tools/list only; no tools/call, credentials or user data",
+  "rows": [
+    {
+      "id": "deepwiki",
+      "url": "https://mcp.deepwiki.com/mcp",
+      "status": "scanned",
+      "toolCount": 3,
+      "serverInfo": {
+        "name": "DeepWiki",
+        "version": "4.0.2"
+      },
+      "protocolVersion": "2025-06-18",
+      "allow": true,
+      "score": 0.9,
+      "findings": [
+        {
+          "gate": "pinning",
+          "severity": "info",
+          "code": "TOOL_DEF_UNPINNED",
+          "message": "Server \"deepwiki\" has no pinned tool-def snapshot yet; it will be pinned on approval.",
+          "advisory": true
+        }
+      ],
+      "capturedSha256": "d94fb6fd242ca166c480b18b46efc6fc89bc9fc3f52bc40ea3e409076f936e30",
+      "durationMs": 1043
+    },
+    {
+      "id": "microsoft-learn",
+      "url": "https://learn.microsoft.com/api/mcp",
+      "status": "scanned",
+      "toolCount": 3,
+      "serverInfo": {
+        "name": "Microsoft Learn MCP Server",
+        "version": "1.0.0"
+      },
+      "protocolVersion": "2025-06-18",
+      "allow": true,
+      "score": 0.9,
+      "findings": [
+        {
+          "gate": "pinning",
+          "severity": "info",
+          "code": "TOOL_DEF_UNPINNED",
+          "message": "Server \"microsoft-learn\" has no pinned tool-def snapshot yet; it will be pinned on approval.",
+          "advisory": true
+        }
+      ],
+      "capturedSha256": "15031a48ab7f4a9562299a795e0fd88413b56ecdb158f5b85619b027e9b5b79d",
+      "durationMs": 1091
+    },
+    {
+      "id": "cloudflare-docs",
+      "url": "https://docs.mcp.cloudflare.com/mcp",
+      "status": "scanned",
+      "toolCount": 2,
+      "serverInfo": {
+        "name": "docs-ai-search",
+        "version": "0.5.0"
+      },
+      "protocolVersion": "2025-06-18",
+      "allow": true,
+      "score": 0.9,
+      "findings": [
+        {
+          "gate": "pinning",
+          "severity": "info",
+          "code": "TOOL_DEF_UNPINNED",
+          "message": "Server \"cloudflare-docs\" has no pinned tool-def snapshot yet; it will be pinned on approval.",
+          "advisory": true
+        }
+      ],
+      "capturedSha256": "298d40bf911346c05baa029a835a0409fe7217123d0a8b0decbcc3af8fd77763",
+      "durationMs": 593
+    }
+  ]
+}

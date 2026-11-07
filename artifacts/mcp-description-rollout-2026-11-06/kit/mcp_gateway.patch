@@ -1,0 +1,51 @@
+diff --git a/aimarket-hub/aimarket_hub/mcp_gateway.py b/aimarket-hub/aimarket_hub/mcp_gateway.py
+index 3ff8522e7..44db69402 100644
+--- a/aimarket-hub/aimarket_hub/mcp_gateway.py
++++ b/aimarket-hub/aimarket_hub/mcp_gateway.py
+@@ -65,7 +65,9 @@ PROTOCOL_VERSION = "2025-03-26"
+ #: back; any other request is answered with the newest, which is what the spec prescribes.
+ SUPPORTED_PROTOCOL_VERSIONS = ("2025-06-18", "2025-03-26", "2024-11-05")
+ SERVER_NAME = "aimarket-hub-mcp"
+-SERVER_VERSION = "1.2.0"
++#: Raise it whenever tool definitions change, so clients and registries can tell a release
++#: from a silent edit. It stood at 1.2.0 from July to November 2026 while the tools changed many times.
++SERVER_VERSION = "1.3.0"
+ 
+ INSTRUCTIONS = (
+     "AIMarket hub: live, signed real-world data and verifiable computation, sold per call "
+@@ -495,10 +497,10 @@ _DIRECT_BY_NAME = {spec["name"]: spec for spec in DIRECT_TOOLS}
+ 
+ def _trial_phrase() -> str:
+     try:
+-        from aimarket_hub.sandbox_trials import max_per_visitor, sandbox_enabled
++        from aimarket_hub.sandbox_trials import sandbox_enabled
+ 
+         if sandbox_enabled():
+-            return f" The first {max_per_visitor()} priced calls per caller are free."
++            return " The first few priced calls per caller are free."
+     except Exception:  # noqa: BLE001 - a description must never break tools/list
+         pass
+     return ""
+@@ -521,11 +523,21 @@ def _direct_tool_card_entry(spec: dict[str, Any]) -> dict[str, Any]:
+ 
+ 
+ def _direct_tool_definition(spec: dict[str, Any], cap: Any) -> dict[str, Any]:
++    """A direct tool as ``tools/list`` advertises it.
++
++    The description says whether the tool is paid and leaves out the amounts. Price and
++    trial size are catalogue and runtime settings. While they were part of the text, every
++    price edit changed the tool definitions, and a client that pins definitions (WARDEN,
++    ARGUS, mcp-scan) reads that as a possible rug pull and stops using the server until a
++    person re-approves it. Our own ARGUS went without this hub that way for days in
++    November 2026. The current price stays where an agent needs it: in ``market_search``
++    matches and in the payment options a call returns once the trial is spent.
++    """
+     try:
+         price = float(getattr(cap, "price_per_call_usd", 0.0) or 0.0)
+     except (TypeError, ValueError):
+         price = 0.0
+-    cost = f" Costs ${price:.4g} per call." if price > 0 else " Free."
++    cost = " Paid per call; market_search shows the current price." if price > 0 else " Free."
+     return {
+         "name": spec["name"],
+         "description": spec["summary"] + cost + (_trial_phrase() if price > 0 else ""),

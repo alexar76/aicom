@@ -9,7 +9,7 @@
 
 services:
   docker-dind:
-    image: docker:27.4.0-dind-rootless
+    image: docker:29.9.3-dind-rootless
     privileged: false
     environment:
       DOCKER_TLS_CERTDIR: /certs

@@ -1,0 +1,75 @@
+PyPI: read 26816 public advisories; matched 0
+{
+  "scanned_at_utc": "2026-11-07T12:15:06.676380+00:00",
+  "method": "Downloaded whole public OSV ecosystem archives; all manifest matching offline; no dependency inventory transmitted",
+  "manifest_count": 0,
+  "package_versions": 116,
+  "versions_by_ecosystem": {
+    "PyPI": 116
+  },
+  "affected_package_versions": 0,
+  "raw_advisory_ids": 0,
+  "unique_vulnerabilities_alias_deduplicated": 0,
+  "severity_unique_vulnerabilities": {},
+  "severity_rows": {},
+  "parse_error_count": 0,
+  "matching_error_count": 0,
+  "unresolved_requirement_count": 0,
+  "datasets": [
+    {
+      "ecosystem": "PyPI",
+      "advisories_read": 26816,
+      "advisories_matching": 0,
+      "archive_sha256": "f5d6c7ce7a207b2246f0d3092c774f09e17683ea719f493dcead90b76261c465",
+      "archive_bytes": 37661109,
+      "cache_path": "/private/tmp/aicom-security-audit-20261107/PyPI.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/PyPI/all.zip"
+    }
+  ],
+  "limits": [
+    "Source manifest versions only; runtime deployed versions not checked",
+    "Unpinned requirements and manifest-only dependencies are not fully resolved",
+    "Optional/dev/platform dependencies included; reachability not established",
+    "Go third-party dependencies absent in only go.mod; declared Go stdlib version checked",
+    "OS images, browsers, Android/Maven, compiler, system and GitHub Actions dependencies not covered by these datasets",
+    "No malicious-code behavioral analysis; known public OSV advisories only"
+  ]
+}
+PyPI: read 26816 public advisories; matched 0
+{
+  "scanned_at_utc": "2026-11-07T12:15:12.317407+00:00",
+  "method": "Downloaded whole public OSV ecosystem archives; all manifest matching offline; no dependency inventory transmitted",
+  "manifest_count": 0,
+  "package_versions": 37,
+  "versions_by_ecosystem": {
+    "PyPI": 37
+  },
+  "affected_package_versions": 0,
+  "raw_advisory_ids": 0,
+  "unique_vulnerabilities_alias_deduplicated": 0,
+  "severity_unique_vulnerabilities": {},
+  "severity_rows": {},
+  "parse_error_count": 0,
+  "matching_error_count": 0,
+  "unresolved_requirement_count": 0,
+  "datasets": [
+    {
+      "ecosystem": "PyPI",
+      "advisories_read": 26816,
+      "advisories_matching": 0,
+      "archive_sha256": "f5d6c7ce7a207b2246f0d3092c774f09e17683ea719f493dcead90b76261c465",
+      "archive_bytes": 37661109,
+      "cache_path": "/private/tmp/aicom-security-audit-20261107/PyPI.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/PyPI/all.zip"
+    }
+  ],
+  "limits": [
+    "Source manifest versions only; runtime deployed versions not checked",
+    "Unpinned requirements and manifest-only dependencies are not fully resolved",
+    "Optional/dev/platform dependencies included; reachability not established",
+    "Go third-party dependencies absent in only go.mod; declared Go stdlib version checked",
+    "OS images, browsers, Android/Maven, compiler, system and GitHub Actions dependencies not covered by these datasets",
+    "No malicious-code behavioral analysis; known public OSV advisories only"
+  ]
+}
+DECLARATIONS 102 FILES 60

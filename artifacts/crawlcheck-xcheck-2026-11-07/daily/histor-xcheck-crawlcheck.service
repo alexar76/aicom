@@ -1,0 +1,12 @@
+[Unit]
+Description=HISTOR: daily tool-set digest cross-check with CrawlCheck (publishes under /datasets/xcheck-crawlcheck/)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Optional: the URL of the shared server list once CrawlCheck publishes one.
+Environment=THEIRS_LIST_URL=https://crawlcheck.io/data/xcheck/histor/latest.jsonl
+ExecStart=/opt/histor-xcheck/run.sh
+User=root
+Nice=10

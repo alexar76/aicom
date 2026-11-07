@@ -1,0 +1,19 @@
+sha256:5a0d14488470f1c89b013c0c3ec5d2f72fc05f948f9b2eedb887d320e03a832d
+MOMUS release gate passed: 20261106T032905, 7f31b219db203e7b3bfbcf22551e03a02e23b10feac7f31df4f7c248b182ead1
+Traceback (most recent call last):
+  File "/tmp/mtl12_smoke.py", line 64, in <module>
+    asyncio.run(smoke())
+    ~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.13/asyncio/runners.py", line 196, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/asyncio/runners.py", line 119, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/asyncio/base_events.py", line 726, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/tmp/mtl12_smoke.py", line 58, in smoke
+    assert (await c.get("/log/checkpoint")).status_code == 200  # the tiles overlay is still there
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

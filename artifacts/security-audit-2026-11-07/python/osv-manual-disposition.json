@@ -1,0 +1,15 @@
+{
+  "id": "PYSEC-2024-311",
+  "aliases": [
+    "CVE-2024-47813",
+    "GHSA-7qmx-3fpx-r45m",
+    "RUSTSEC-2024-0439"
+  ],
+  "package": "wasmtime",
+  "version": "49.0.0",
+  "issue": "Repeated last_affected events without new introduced; retained raw matcher error",
+  "decision": "not affected",
+  "evidence": "Version49.0.0 exceeds every listed affected version (last25.0.1), not in affected.versions; official upstream advisory explicitly enumerates affected19.0.0 through25.0.1 and patched21.0.2,22.0.1,23.0.3,24.0.1,25.0.2.",
+  "source": "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-7qmx-3fpx-r45m",
+  "checked_date": "2026-11-07"
+}

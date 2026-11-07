@@ -1,0 +1,101 @@
+{
+  "startedAt": "2026-11-07T06:11:50.226Z",
+  "expectedModelHash": "fbd11eee9e2da8120163bd009e594c0ec9628bd06cfdc8d9377c5c9bdb0f49b2",
+  "assets": [
+    {
+      "url": "https://pingblip.com/models/caramel-bust.glb?v=fbd11eee9e",
+      "localFile": "pingblip/memeforge/public/models/caramel-bust.glb",
+      "bytes": 511652,
+      "sha256": "fbd11eee9e2da8120163bd009e594c0ec9628bd06cfdc8d9377c5c9bdb0f49b2",
+      "status": 200
+    },
+    {
+      "url": "https://forge.pingblip.com/models/caramel-bust.glb?v=fbd11eee9e",
+      "localFile": "pingblip/memeforge/public/models/caramel-bust.glb",
+      "bytes": 511652,
+      "sha256": "fbd11eee9e2da8120163bd009e594c0ec9628bd06cfdc8d9377c5c9bdb0f49b2",
+      "status": 200
+    },
+    {
+      "url": "https://pingblip.com/dex/caramel-bust.webp",
+      "localFile": "pingblip/world/public/dex/caramel-bust.webp",
+      "bytes": 18084,
+      "sha256": "2b1e80083b4b52663522754daf667dd27516a78abd26b44542a3d14fdda9d4c8",
+      "status": 200
+    },
+    {
+      "url": "https://forge.pingblip.com/dex/caramel-bust.webp",
+      "localFile": "pingblip/world/public/dex/caramel-bust.webp",
+      "bytes": 18084,
+      "sha256": "2b1e80083b4b52663522754daf667dd27516a78abd26b44542a3d14fdda9d4c8",
+      "status": 200
+    },
+    {
+      "url": "https://world.pingblip.com/dex/caramel-bust.webp",
+      "localFile": "pingblip/world/public/dex/caramel-bust.webp",
+      "bytes": 18084,
+      "sha256": "2b1e80083b4b52663522754daf667dd27516a78abd26b44542a3d14fdda9d4c8",
+      "status": 200
+    },
+    {
+      "url": "https://world.pingblip.com/dex/og/caramel-bust.jpg",
+      "localFile": "pingblip/world/public/dex/og/caramel-bust.jpg",
+      "bytes": 14157,
+      "sha256": "e870aaa3cfc30b0d9cd3c2ebbd6b838018aceb3cdfa1a2a628df7fd442c75b10",
+      "status": 200
+    }
+  ],
+  "browsers": [
+    {
+      "app": "bench",
+      "url": "https://pingblip.com/bench?lang=en",
+      "pageErrors": [],
+      "consoleErrors": [],
+      "assetResponses": [
+        {
+          "url": "https://pingblip.com/models/caramel-bust.glb?v=fbd11eee9e",
+          "status": 200,
+          "sha256": "fbd11eee9e2da8120163bd009e594c0ec9628bd06cfdc8d9377c5c9bdb0f49b2"
+        }
+      ],
+      "canvas": {
+        "x": 79,
+        "y": 53,
+        "width": 576,
+        "height": 897
+      },
+      "goldPixelFraction": 0.3910585439118048
+    },
+    {
+      "app": "forge",
+      "url": "https://forge.pingblip.com/forge?pack=sugar-riot&mascot=caramel-bust&lang=en",
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_SOCKET_NOT_CONNECTED"
+      ],
+      "assetResponses": [
+        {
+          "url": "https://forge.pingblip.com/models/caramel-bust.glb?v=fbd11eee9e",
+          "status": 200,
+          "sha256": "fbd11eee9e2da8120163bd009e594c0ec9628bd06cfdc8d9377c5c9bdb0f49b2"
+        }
+      ],
+      "canvas": {
+        "x": 0,
+        "y": 53.5,
+        "width": 802.859375,
+        "height": 862
+      },
+      "goldPixelFraction": 0.24905301527152668
+    }
+  ],
+  "world": {
+    "url": "https://world.pingblip.com/shelf/caramel-bust?lang=en",
+    "ogUrl": "https://world.pingblip.com/shelf/caramel-bust/opengraph-image?v=fbd11eee9e",
+    "ogBytes": 262581,
+    "ogSha256": "588bdd5884ed36dceadc21808a156e689abdfae9f5b2fc9f4f0c5c18e65f3172",
+    "pageErrors": []
+  },
+  "passed": true,
+  "finishedAt": "2026-11-07T06:12:09.195Z"
+}

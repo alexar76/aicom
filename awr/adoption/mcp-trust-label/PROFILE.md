@@ -1,7 +1,7 @@
 # MTL — MCP Trust Label
 
 **Profile of:** AWR/2 (`awr/SPEC.md`, version 2.0.0)
-**Version:** MTL/1 (1.1.0, 2026-10-31; see "Revision 1.1" below)
+**Version:** MTL/1 (1.2.0, 2026-11-06; see "Revision 1.2" and "Revision 1.1" below)
 **Status:** Draft profile, seeking implementation experience
 **License:** MIT
 **Profile namespace:** `https://verify.modelmarket.dev/ns/awr/mtl/v1`
@@ -69,6 +69,27 @@ Appendix B, and — where the statement is behavioural — by executing it. Noth
 from documentation or comments. The checks were re-run on 2026-07-31 (18:19–18:30 UTC) while
 revising this document; every codebase named is under active development, so a reviewer should
 re-run them rather than trust the prose.
+
+### Revision 1.2 (2026-11-06)
+
+1.1 changed which tool sets have a digest but left the `mtl` member of the descriptor at `"1"`, so
+that no 1.0 digest moved. The cost showed in a record. A 1.0 label that found a set not
+digestible (`MTL-NUM-001` for a fraction) is still in the log, and the same set has a digest under
+1.1. Nothing in the label said which rules decided it. A third party also asked a record to keep
+two cases apart under one "unknown": a declaration nobody read, and one that was read and that the
+canonical form declined (GenAI-Security-Project/agent-control-standard#38, 2026-11-06).
+
+1.2 adds two label members and changes no digest (§6.3):
+
+- `profileRevision`: the revision of this document the issuer followed (`"1.2.0"`), on every label.
+  A label without it was issued before 1.2, and it does not say whether 1.0 or 1.1 decided it. An
+  issuer may publish its changeover: HISTOR moved to 1.1 at 2026-10-31T16:42Z.
+- `noDigest`: for a side without a tool-set digest, why, from a closed list. `not_observed`: no
+  tool set was read. `not_digestible`: a set was read and this revision declined to digest it. The
+  profile's code is given where it has one. `not_digestible` is a statement about the revision that
+  made it, so a continuity label carries the prior side's `profileRevision` with it (§7.4).
+
+A 1.1 verifier ignores both members (§6.3, unknown members), so 1.2 labels verify unchanged.
 
 ### Revision 1.1 (2026-10-31)
 
@@ -545,6 +566,7 @@ would have to grant one the other's authority.
   "observedAt": "2026-07-30T09:00:00Z",
   "reproducibility": "deterministic",
   "server": { "name": "com.example/weather", "registry": "urn:awr:mtl:1:registry:example" },
+  "profileRevision": "1.2.0",
   "toolSet": { "count": 2, "digestSRI": "sha256-9+Gp…=" },
   "scope": "…",
   "patternSet": { "id": "urn:…", "digestSRI": "sha256-…=" },
@@ -563,7 +585,16 @@ would have to grant one the other's authority.
 - `server` **MUST** restate `server.name` and `server.registry` from the MSD, so a registry can
   read the label without holding the descriptor. It is not evidence of anything: only §4.6's
   recomputation binds the label to a server.
+- `profileRevision` (since 1.2) **MUST** be the revision of this document the issuer followed, as
+  `major.minor.patch` (`"1.2.0"`). It names the rules that decided the digest and every reason. A
+  reader **MUST NOT** assume a revision for a label that lacks it.
 - `toolSet` **MUST** restate `count`, and **MUST** restate `digestSRI` when the MSD carried one.
+- `toolSet.noDigest` (since 1.2) **MUST** be present when a tool set was read and has no digest:
+  `{"reason": "not_digestible", "code": "<the §11 code>"}`. `reason` is from a closed list:
+  `not_observed` (no tool set was read) or `not_digestible` (a set was read and this revision
+  declined to digest it). `code` is omitted only when the issuer does not know it. It is never a
+  default. A consumer **MUST NOT** treat the two reasons as one: the gate may act alike on both,
+  but a record keeps them apart.
 - `scope` **MUST** be a human-readable string stating, in plain words, what was and was not
   examined. It **MUST NOT** claim more than the method's §7 definition permits. It exists
   because a registry's UI will be read by people, and the honest sentence must travel inside
@@ -637,7 +668,8 @@ and nothing in the label establishes that the retrieval happened (§13.5).
 `fail` is excluded because there is no proposition to be false. A server that cannot be reached
 has not been shown to be anything.
 
-**Required members.** `toolSet.digestSRI` on `pass`. `reasons` on `inconclusive`.
+**Required members.** `toolSet.digestSRI` on `pass`. `reasons` on `inconclusive`, and since 1.2
+`toolSet.noDigest` (`not_digestible`) when the set was read but not digested.
 `evidence` **MUST** include `{"kind": "mtl-subject-descriptor"}` and, on `pass`,
 `{"kind": "mtl-tool-set"}`.
 
@@ -764,6 +796,13 @@ the same `server.name` and `server.registry`.
 - `unchangedSince` **MUST** be present on `pass`: the `observedAt` of the earliest label in the
   unbroken chain of `pass` continuity labels the issuer is asserting.
 - `evidence` **MUST** include `{"kind": "mtl-prior-label"}` carrying the same digest.
+- `noDigest` (since 1.2) **MUST** be present when either side has no tool-set digest. It is an
+  object with a `current` and/or `prior` member, each `{"reason", "code"?, "profileRevision"?}` as
+  in §6.3. `current` is `not_observed` when the current observation failed. The `prior` side is
+  stated relative to the revision its own label names. That label's `profileRevision` is copied
+  when it has one and omitted when it has none, never guessed. A prior `not_digestible` from an
+  older revision may have a digest under this one, and a consumer **SHOULD** re-observe rather than
+  carry it forward.
 
 **Outcomes.**
 

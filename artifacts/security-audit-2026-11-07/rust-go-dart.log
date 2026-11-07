@@ -1,0 +1,59 @@
+Go: read 9914 public advisories; matched 0
+Pub: read 14 public advisories; matched 0
+crates.io: read 3055 public advisories; matched 0
+{
+  "scanned_at_utc": "2026-11-07T11:57:51.042247+00:00",
+  "method": "Downloaded whole public OSV ecosystem archives; all manifest matching offline; no dependency inventory transmitted",
+  "manifest_count": 17,
+  "package_versions": 623,
+  "versions_by_ecosystem": {
+    "Go": 1,
+    "Pub": 158,
+    "crates.io": 464
+  },
+  "affected_package_versions": 0,
+  "raw_advisory_ids": 0,
+  "unique_vulnerabilities_alias_deduplicated": 0,
+  "severity_unique_vulnerabilities": {},
+  "severity_rows": {},
+  "parse_error_count": 0,
+  "matching_error_count": 0,
+  "unresolved_requirement_count": 0,
+  "datasets": [
+    {
+      "ecosystem": "Go",
+      "advisories_read": 9914,
+      "advisories_matching": 0,
+      "archive_sha256": "6201b73424849a8ca613d2b9d2ff601796b2a833e81a81a3b2d30cddb6cf5cd9",
+      "archive_bytes": 12828902,
+      "cache_path": "/private/tmp/aicom-security-audit-20261107/Go.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/Go/all.zip"
+    },
+    {
+      "ecosystem": "Pub",
+      "advisories_read": 14,
+      "advisories_matching": 0,
+      "archive_sha256": "e19f6fa83938e3b5e203086a99ea97da4a676cf645521c137f20ca352701e815",
+      "archive_bytes": 25896,
+      "cache_path": "/private/tmp/aicom-security-audit-20261107/Pub.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/Pub/all.zip"
+    },
+    {
+      "ecosystem": "crates.io",
+      "advisories_read": 3055,
+      "advisories_matching": 0,
+      "archive_sha256": "b876ea4aa37d11a7f212e49e3837726d0bf73e8e26680c577a55348ddd91b644",
+      "archive_bytes": 3799768,
+      "cache_path": "/private/tmp/aicom-security-audit-20261107/crates.io.zip",
+      "download_url": "https://osv-vulnerabilities.storage.googleapis.com/crates.io/all.zip"
+    }
+  ],
+  "limits": [
+    "Source manifest versions only; runtime deployed versions not checked",
+    "Unpinned requirements and manifest-only dependencies are not fully resolved",
+    "Optional/dev/platform dependencies included; reachability not established",
+    "Go third-party dependencies absent in only go.mod; declared Go stdlib version checked",
+    "OS images, browsers, Android/Maven, compiler, system and GitHub Actions dependencies not covered by these datasets",
+    "No malicious-code behavioral analysis; known public OSV advisories only"
+  ]
+}

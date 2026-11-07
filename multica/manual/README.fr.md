@@ -310,6 +310,121 @@ dossier de configuration : sur un montage en lecture seule il s'arrête sur une 
 dossier où il n'a pas le droit d'écrire. Vérifiez ensuite avec `opencode debug config`, en tant qu'utilisateur de l'agent, que le plugin
 est chargé.
 
+### Exemple : la protection pour tous les agents
+
+Voici notre installation en service : Multica 0.8.0, OpenCode 1.18.32 et WARDEN 0.23.0. Les fichiers de `warden/`
+sont les fichiers du plugin du paquet npm `@aimarket/warden@0.23.0`, inchangés (20 fichiers). Chaque commande
+ci-dessous a d'abord été exécutée sur notre hôte.
+
+Le chargeur, enregistré sous `warden.js` à côté de `docker-compose.yml` :
+
+```js
+// opencode-guard/plugin/warden.js: the WARDEN flow guard for every agent on this daemon.
+// Export only the plugin: OpenCode calls every exported function as one.
+import { createWardenPlugin } from '../warden/opencode-plugin.js';
+
+export const WardenFlowGuard = createWardenPlugin({
+  block: 'data',
+  // Keys only the OpenCode process needs; shell commands get them blank.
+  stripEnv: ['DEEPSEEK_API_KEY', 'AIMARKET_API_KEY'],
+});
+```
+
+Sur l'hôte, en root. Le paquet est vérifié avec la somme de contrôle que publie npm :
+
+```bash
+cd /opt/multica                    # the folder with docker-compose.yml; warden.js (the loader) is here
+T=$(mktemp -d)
+curl -fsSL -o "$T/warden.tgz" https://registry.npmjs.org/@aimarket/warden/-/warden-0.23.0.tgz
+echo "e9fe195e36ce559d9e543e8eb3fd4bcd729fe434  $T/warden.tgz" | sha1sum -c -
+tar -xzf "$T/warden.tgz" -C "$T"
+install -d -o root -g root -m 755 opencode-guard opencode-guard/plugin opencode-guard/warden
+install -o root -g root -m 644 "$T"/package/dist/opencode-plugin.js "$T"/package/dist/flow-guard*.js opencode-guard/warden/
+install -o root -g root -m 644 warden.js opencode-guard/plugin/warden.js
+rm -rf "$T"
+```
+
+Le résultat :
+
+```
+opencode-guard/                root:root 755
+├── plugin/
+│   └── warden.js              root:root 644   the loader above
+└── warden/                    root:root 755
+    ├── opencode-plugin.js     root:root 644
+    └── flow-guard*.js         root:root 644   19 files
+```
+
+Le démon dans `docker-compose.yml` (seulement les lignes qui comptent ici) :
+
+```yaml
+services:
+  daemon:
+    environment:
+      MULTICA_DAEMON_AUTO_UPDATE: "false"
+      OPENCODE_CONFIG_DIR: /opt/opencode-guard   # every OpenCode session loads plugin/ from here
+      MULTICA_OPENCODE_TRANSPORT: run            # Multica 0.8.0 with OpenCode 1.x: the transport the guard was tested on
+    volumes:
+      - daemon_home:/home/node
+      - ./opencode-guard:/opt/opencode-guard     # root-owned; not :ro, OpenCode stops on a read-only config folder
+```
+
+Si une ancienne copie de la protection se trouve dans le dossier personnel du démon (`~/.config/opencode/plugin`
+et `~/.config/opencode/warden` dans son volume), retirez-la d'abord, sinon la protection se charge deux fois. Puis
+recréez le démon pendant qu'aucune tâche ne tourne :
+
+```bash
+docker compose up -d --no-deps --force-recreate daemon
+```
+
+Vérifications, en tant qu'utilisateur de l'agent :
+
+```bash
+# 1. Sessions load the guard from the root-owned folder, and only from there.
+docker exec -u node -w /tmp multica-daemon sh -c 'opencode debug config | jq -c .plugin'
+#    ["file:///opt/opencode-guard/plugin/warden.js"]
+
+# 2. Still loaded with another home folder, as if ~/.config had been renamed.
+docker exec -u node -w /tmp multica-daemon sh -c 'mkdir -p /tmp/h && HOME=/tmp/h opencode debug config | jq -c .plugin; rm -rf /tmp/h'
+
+# 3. Nothing on the guard's path is writable by the agent user: every line must say "ok".
+docker exec -u node multica-daemon sh -c 'for p in /opt /opt/opencode-guard /opt/opencode-guard/plugin /opt/opencode-guard/warden; do [ -w "$p" ] && echo "WRITABLE: $p" || echo "ok: $p"; done'
+
+# 4. A real session runs the guard: the newest state files carry the current time.
+docker exec -u node -w /tmp multica-daemon opencode run "Reply with the single word OK."
+docker exec -u node multica-daemon sh -c 'ls -lt ~/.local/state/warden/claude-code/flow | head -3'
+```
+
+La protection s'applique à tous les agents du démon, y compris ceux qui ont leur propre `OPENCODE_CONFIG_CONTENT` :
+notre agent de commandes en a un, et ses sessions écrivent aussi l'état de la protection.
+
+### Runtimes Codex
+
+Les agents qui tournent sur Codex au lieu d’OpenCode reçoivent la même garde par les hooks de commande de Codex. Elle
+est dans le code local de WARDEN, pas encore publiée. Détails et schémas :
+[WARDEN pour Codex](https://github.com/alexar76/warden/blob/main/docs/codex.fr.md).
+
+- Codex n’a pas de « demander » : un hook qui répond `ask` compte comme en échec, et Codex lance l’appel. L’adaptateur
+  ne demande donc jamais. Une question devient un refus ou un passage journalisé (`WARDEN_CODEX_BLOCK=data`, par
+  défaut, ou `all`), et tout échec de la garde refuse.
+- Installez-la en hooks gérés : le `codex-hooks/` construit dans `/opt/warden-codex`, et `codex-hooks/requirements.toml`
+  comme `/etc/codex/requirements.toml`, le tout à root. `allow_managed_hooks_only = true` empêche un agent d’ajouter son
+  propre hook.
+- Dans le service du démon dans compose, montez les deux en lecture seule et réglez le mode :
+
+```yaml
+    environment:
+      WARDEN_CODEX_BLOCK: data
+    volumes:
+      - ./warden-codex:/opt/warden-codex:ro
+      - ./codex/requirements.toml:/etc/codex/requirements.toml:ro
+```
+
+- Tenez la clé du modèle hors des commandes shell avec `shell_environment_policy` (`exclude`), et coupez la recherche
+  web intégrée de Codex : elle ne lance aucun hook, la garde ne voit donc pas ce qu’elle apporte.
+- Vérifiez avec `scripts/codex-live-check.sh` du dépôt WARDEN : une attaque mise en scène avec une fausse clé, entièrement
+  sur localhost.
+
 ## 7. Mémoire entre les exécutions
 
 Les agents commencent chaque tâche de zéro. Attested Memory leur donne une mémoire payée à l'appel :

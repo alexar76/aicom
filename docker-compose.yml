@@ -18,12 +18,12 @@
 
 services:
   data-init:
-    image: alpine:3.19
+    image: alpine:3.24
     user: "0:0"
     # Ensure bind-mount ownership matches the non-root UID inside `app`.
     # `chown` is a no-op when already correct; runs once and exits.
     # No network — pulls only the alpine base, which the operator already
-    # has from prior pulls (or can pin via `image: alpine:3.19@sha256:...`).
+    # has from prior pulls (or can pin via `image: alpine:3.24@sha256:...`).
     command: >
       sh -c "set -e;
              install -d -o 10001 -g 10001 -m 0750 /data /data/secrets /data/logs /data/state /data/config /data/funnel /data/logs/marketing;
@@ -41,7 +41,7 @@ services:
   # `app` cannot CAP_CHOWN. Reclaim product trees after host-side rsync/scp.
   # find is a no-op when everything is already uid 10001.
   data-keep:
-    image: alpine:3.19
+    image: alpine:3.24
     user: "0:0"
     network_mode: none
     restart: unless-stopped

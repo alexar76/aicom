@@ -285,6 +285,115 @@ export const WardenFlowGuard = createWardenPlugin({
 让 OpenCode 使用它。挂载时要可写，但所有者是 root，智能体用户无法写入。OpenCode 1.18.32 启动时会往每个配置
 文件夹写入 `.gitignore`：在只读挂载上它会报错退出，而对无权写入的文件夹则会跳过。然后以智能体用户身份运行 `opencode debug config`，确认插件已加载。
 
+### 示例：为所有智能体启用防护
+
+这是我们正在运行的配置：Multica 0.8.0、OpenCode 1.18.32 和 WARDEN 0.23.0。`warden/` 中的文件是 npm 包
+`@aimarket/warden@0.23.0` 的插件文件，未作修改（共 20 个）。下面的每条命令都先在我们的主机上运行过。
+
+加载器，保存为 `docker-compose.yml` 旁边的 `warden.js`：
+
+```js
+// opencode-guard/plugin/warden.js: the WARDEN flow guard for every agent on this daemon.
+// Export only the plugin: OpenCode calls every exported function as one.
+import { createWardenPlugin } from '../warden/opencode-plugin.js';
+
+export const WardenFlowGuard = createWardenPlugin({
+  block: 'data',
+  // Keys only the OpenCode process needs; shell commands get them blank.
+  stripEnv: ['DEEPSEEK_API_KEY', 'AIMARKET_API_KEY'],
+});
+```
+
+在主机上以 root 运行。安装包会用 npm 公布的校验和进行核对：
+
+```bash
+cd /opt/multica                    # the folder with docker-compose.yml; warden.js (the loader) is here
+T=$(mktemp -d)
+curl -fsSL -o "$T/warden.tgz" https://registry.npmjs.org/@aimarket/warden/-/warden-0.23.0.tgz
+echo "e9fe195e36ce559d9e543e8eb3fd4bcd729fe434  $T/warden.tgz" | sha1sum -c -
+tar -xzf "$T/warden.tgz" -C "$T"
+install -d -o root -g root -m 755 opencode-guard opencode-guard/plugin opencode-guard/warden
+install -o root -g root -m 644 "$T"/package/dist/opencode-plugin.js "$T"/package/dist/flow-guard*.js opencode-guard/warden/
+install -o root -g root -m 644 warden.js opencode-guard/plugin/warden.js
+rm -rf "$T"
+```
+
+结果：
+
+```
+opencode-guard/                root:root 755
+├── plugin/
+│   └── warden.js              root:root 644   the loader above
+└── warden/                    root:root 755
+    ├── opencode-plugin.js     root:root 644
+    └── flow-guard*.js         root:root 644   19 files
+```
+
+`docker-compose.yml` 中的守护进程（只列出这里相关的行）：
+
+```yaml
+services:
+  daemon:
+    environment:
+      MULTICA_DAEMON_AUTO_UPDATE: "false"
+      OPENCODE_CONFIG_DIR: /opt/opencode-guard   # every OpenCode session loads plugin/ from here
+      MULTICA_OPENCODE_TRANSPORT: run            # Multica 0.8.0 with OpenCode 1.x: the transport the guard was tested on
+    volumes:
+      - daemon_home:/home/node
+      - ./opencode-guard:/opt/opencode-guard     # root-owned; not :ro, OpenCode stops on a read-only config folder
+```
+
+如果守护进程主目录中还有旧的防护副本（其卷中的 `~/.config/opencode/plugin` 和 `~/.config/opencode/warden`），
+先把它移走，否则防护会加载两次。然后在没有任务运行时重建守护进程：
+
+```bash
+docker compose up -d --no-deps --force-recreate daemon
+```
+
+以智能体用户身份检查：
+
+```bash
+# 1. Sessions load the guard from the root-owned folder, and only from there.
+docker exec -u node -w /tmp multica-daemon sh -c 'opencode debug config | jq -c .plugin'
+#    ["file:///opt/opencode-guard/plugin/warden.js"]
+
+# 2. Still loaded with another home folder, as if ~/.config had been renamed.
+docker exec -u node -w /tmp multica-daemon sh -c 'mkdir -p /tmp/h && HOME=/tmp/h opencode debug config | jq -c .plugin; rm -rf /tmp/h'
+
+# 3. Nothing on the guard's path is writable by the agent user: every line must say "ok".
+docker exec -u node multica-daemon sh -c 'for p in /opt /opt/opencode-guard /opt/opencode-guard/plugin /opt/opencode-guard/warden; do [ -w "$p" ] && echo "WRITABLE: $p" || echo "ok: $p"; done'
+
+# 4. A real session runs the guard: the newest state files carry the current time.
+docker exec -u node -w /tmp multica-daemon opencode run "Reply with the single word OK."
+docker exec -u node multica-daemon sh -c 'ls -lt ~/.local/state/warden/claude-code/flow | head -3'
+```
+
+防护作用于守护进程上的所有智能体，包括有自己 `OPENCODE_CONFIG_CONTENT` 的智能体：我们的订单智能体就有，它的会话
+同样会写入防护状态。
+
+### Codex 运行时
+
+用 Codex 而不是 OpenCode 运行的智能体，通过 Codex 的命令钩子获得同一个守卫。它在 WARDEN 的本地源码中，尚未发布。
+详情和示意图：[用于 Codex 的 WARDEN](https://github.com/alexar76/warden/blob/main/docs/codex.zh.md)。
+
+- Codex 没有“询问”：回答 `ask` 的钩子被视为失败，Codex 会照常执行调用。因此适配器从不询问。询问会变成拒绝或记录在案
+  的放行（`WARDEN_CODEX_BLOCK=data` 为默认，或 `all`），守卫的任何故障都会拒绝。
+- 将其安装为托管钩子：把构建好的 `codex-hooks/` 放到 `/opt/warden-codex`，把 `codex-hooks/requirements.toml` 作为
+  `/etc/codex/requirements.toml`，全部归 root 所有。`allow_managed_hooks_only = true` 让智能体无法添加自己的钩子。
+- 在 compose 的守护进程服务中，把两者只读挂载并设置模式：
+
+```yaml
+    environment:
+      WARDEN_CODEX_BLOCK: data
+    volumes:
+      - ./warden-codex:/opt/warden-codex:ro
+      - ./codex/requirements.toml:/etc/codex/requirements.toml:ro
+```
+
+- 用 `shell_environment_policy`（`exclude`）把模型密钥挡在 shell 命令之外，并关闭 Codex 内置的网页搜索：它不运行
+  钩子，守卫看不到它带来的内容。
+- 用 WARDEN 仓库中的 `scripts/codex-live-check.sh` 检查：一次使用假密钥的模拟攻击，全部在 localhost 上进行。
+
 ## 7. 运行之间的记忆
 
 智能体每个任务都从零开始。Attested Memory 提供按次付费的记忆：hub.attestedmemory.net 上的 `memory.write@v1`、

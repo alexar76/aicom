@@ -64,8 +64,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Docker *client* only — talks to the DinD sidecar via DOCKER_HOST (see docker-compose.dind.yml).
 # Needed so full_software auto-publish can `docker compose up` the generated stack.
-COPY --from=docker:27.4.0-cli /usr/local/bin/docker /usr/local/bin/docker
-COPY --from=docker:27.4.0-cli /usr/local/libexec/docker/cli-plugins/docker-compose /usr/local/libexec/docker/cli-plugins/docker-compose
+COPY --from=docker:29.9.3-cli /usr/local/bin/docker /usr/local/bin/docker
+COPY --from=docker:29.9.3-cli /usr/local/libexec/docker/cli-plugins/docker-compose /usr/local/libexec/docker/cli-plugins/docker-compose
 
 # ── Optional local Docker engine in the app image (opt-in via --build-arg) ─
 # Default: NOT installed. When INCLUDE_DOCKER_SANDBOX=1, also install docker.io

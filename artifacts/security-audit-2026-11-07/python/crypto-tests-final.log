@@ -1,0 +1,139 @@
+.........EEEEEEEEEEEEEEE................................                 [100%]
+==================================== ERRORS ====================================
+___________ ERROR at setup of test_invoke_single_sends_verify_block ____________
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 84
+  def test_invoke_single_sends_verify_block(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:84
+_________ ERROR at setup of test_invoke_single_omits_verify_by_default _________
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 96
+  def test_invoke_single_omits_verify_by_default(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:96
+____ ERROR at setup of test_run_threads_verify_and_defaults_intent_to_task _____
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 107
+  def test_run_threads_verify_and_defaults_intent_to_task(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:107
+_ ERROR at setup of test_run_keeps_explicit_intent_and_callers_dict_unmutated __
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 115
+  def test_run_keeps_explicit_intent_and_callers_dict_unmutated(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:115
+______________ ERROR at setup of test_run_omits_verify_by_default ______________
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 124
+  def test_run_omits_verify_by_default(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:124
+__ ERROR at setup of test_invoke_single_passes_verification_envelope_through ___
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 134
+  def test_invoke_single_passes_verification_envelope_through(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:134
+_______ ERROR at setup of test_invoke_single_lifts_envelope_from_receipt _______
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 146
+  def test_invoke_single_lifts_envelope_from_receipt(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:146
+_______ ERROR at setup of test_run_surfaces_envelope_in_results_and_bom ________
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 159
+  def test_run_surfaces_envelope_in_results_and_bom(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:159
+___________ ERROR at setup of test_get_verification_returns_hub_body ___________
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 185
+  def test_get_verification_returns_hub_body(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:185
+___ ERROR at setup of test_get_verification_never_raises_on_transport_error ____
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 191
+  def test_get_verification_never_raises_on_transport_error(httpx_mock):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:191
+_ ERROR at setup of test_wait_for_verification_backs_off_exponentially_to_cap __
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 199
+  def test_wait_for_verification_backs_off_exponentially_to_cap(httpx_mock, monkeypatch):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:199
+____ ERROR at setup of test_wait_for_verification_returns_refunded_verdict _____
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 210
+  def test_wait_for_verification_returns_refunded_verdict(httpx_mock, monkeypatch):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:210
+___ ERROR at setup of test_wait_for_verification_unknown_nonce_is_definitive ___
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 223
+  def test_wait_for_verification_unknown_nonce_is_definitive(httpx_mock, monkeypatch):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:223
+____ ERROR at setup of test_wait_for_verification_retries_transport_errors _____
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 232
+  def test_wait_for_verification_retries_transport_errors(httpx_mock, monkeypatch):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:232
+____ ERROR at setup of test_wait_for_verification_honors_max_wait_deadline _____
+file /Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py, line 242
+  def test_wait_for_verification_honors_max_wait_deadline(httpx_mock, monkeypatch):
+E       fixture 'httpx_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-agent/tests/test_agent_verify.py:242
+=========================== short test summary info ============================
+ERROR aimarket-agent/tests/test_agent_verify.py::test_invoke_single_sends_verify_block
+ERROR aimarket-agent/tests/test_agent_verify.py::test_invoke_single_omits_verify_by_default
+ERROR aimarket-agent/tests/test_agent_verify.py::test_run_threads_verify_and_defaults_intent_to_task
+ERROR aimarket-agent/tests/test_agent_verify.py::test_run_keeps_explicit_intent_and_callers_dict_unmutated
+ERROR aimarket-agent/tests/test_agent_verify.py::test_run_omits_verify_by_default
+ERROR aimarket-agent/tests/test_agent_verify.py::test_invoke_single_passes_verification_envelope_through
+ERROR aimarket-agent/tests/test_agent_verify.py::test_invoke_single_lifts_envelope_from_receipt
+ERROR aimarket-agent/tests/test_agent_verify.py::test_run_surfaces_envelope_in_results_and_bom
+ERROR aimarket-agent/tests/test_agent_verify.py::test_get_verification_returns_hub_body
+ERROR aimarket-agent/tests/test_agent_verify.py::test_get_verification_never_raises_on_transport_error
+ERROR aimarket-agent/tests/test_agent_verify.py::test_wait_for_verification_backs_off_exponentially_to_cap
+ERROR aimarket-agent/tests/test_agent_verify.py::test_wait_for_verification_returns_refunded_verdict
+ERROR aimarket-agent/tests/test_agent_verify.py::test_wait_for_verification_unknown_nonce_is_definitive
+ERROR aimarket-agent/tests/test_agent_verify.py::test_wait_for_verification_retries_transport_errors
+ERROR aimarket-agent/tests/test_agent_verify.py::test_wait_for_verification_honors_max_wait_deadline
+41 passed, 15 errors in 1.14s

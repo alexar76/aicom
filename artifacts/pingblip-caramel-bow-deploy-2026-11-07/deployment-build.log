@@ -1,0 +1,979 @@
+docker-compose.yml: OK
+.env: OK
+tar: web/src/data/model-versions.json: time stamp 2026-11-07 00:51:43 is 3272.482304285 s in the future
+memeforge/public/models/caramel-bust.glb: OK
+memeforge/public/dex/caramel-bust.webp: OK
+memeforge/public/dex/rendered-from.json: OK
+memeforge/scripts/blender/generate_chrome_sugar.py: OK
+memeforge/scripts/check-seated.mjs: OK
+memeforge/src/data/model-versions.json: OK
+web/src/data/model-versions.json: OK
+world/public/dex/caramel-bust.webp: OK
+world/public/dex/og/caramel-bust.jpg: OK
+docker-compose.yml: OK
+.env: OK
+ Image aicom-seo:pingblip-pingblip-5aa4bce94 Building 
+ Image aicom-seo:pingblip-world-5aa4bce94 Building 
+ Image aicom-security:pingblip-forge-1-hc-live-20261031 Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.18kB done
+#1 DONE 0.0s
+
+#2 [pingblip internal] load build definition from Dockerfile
+#2 transferring dockerfile: 2.62kB done
+#2 DONE 0.0s
+
+#3 [world internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.16kB done
+#3 DONE 0.0s
+
+#4 [forge internal] load build definition from Dockerfile
+#4 transferring dockerfile: 1.17kB done
+#4 DONE 0.1s
+
+#5 [world internal] load metadata for docker.io/library/node:22.23.4-bookworm-slim
+#5 DONE 0.1s
+
+#6 [pingblip internal] load .dockerignore
+#6 transferring context: 566B done
+#6 DONE 0.0s
+
+#7 [forge internal] load .dockerignore
+#7 transferring context: 175B done
+#7 DONE 0.0s
+
+#8 [forge  1/12] FROM docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
+#8 resolve docker.io/library/node:22.23.4-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da 0.0s done
+#8 CACHED
+
+#9 [pingblip internal] load build context
+#9 ...
+
+#10 [world internal] load build context
+#10 transferring context: 52.08kB 0.1s done
+#10 DONE 0.1s
+
+#9 [pingblip internal] load build context
+#9 transferring context: 578.38kB 0.1s done
+#9 DONE 0.2s
+
+#11 [forge  2/10] WORKDIR /app
+#11 DONE 0.2s
+
+#12 [pingblip  2/12] WORKDIR /pingblip
+#12 CACHED
+
+#13 [pingblip  3/21] RUN apt-get update   && apt-get install -y --no-install-recommends openssl ca-certificates   && rm -rf /var/lib/apt/lists/*
+#13 CACHED
+
+#14 [pingblip  4/21] COPY shared ./shared
+#14 CACHED
+
+#15 [world  3/12] RUN apt-get update   && apt-get install -y --no-install-recommends ca-certificates   && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [world  4/12] COPY shared ./shared
+#16 CACHED
+
+#12 [world  2/12] WORKDIR /pingblip
+#12 CACHED
+
+#17 [forge internal] load build context
+#17 ...
+
+#18 [world  5/12] COPY memeforge/src/data ./memeforge/src/data
+#18 DONE 0.5s
+
+#17 [forge internal] load build context
+#17 ...
+
+#19 [pingblip  5/21] COPY memeforge/src/data ./memeforge/src/data
+#19 DONE 0.6s
+
+#17 [forge internal] load build context
+#17 ...
+
+#20 [world  6/12] WORKDIR /pingblip/world
+#20 DONE 0.3s
+
+#21 [pingblip  6/21] COPY memeforge/src/components/three ./memeforge/src/components/three
+#21 DONE 0.4s
+
+#17 [forge internal] load build context
+#17 ...
+
+#22 [world  7/12] COPY world/package.json world/package-lock.json* ./
+#22 DONE 0.7s
+
+#17 [forge internal] load build context
+#17 ...
+
+#23 [pingblip  7/21] COPY memeforge/scripts/build-model-versions.mjs ./memeforge/scripts/build-model-versions.mjs
+#23 DONE 0.8s
+
+#17 [forge internal] load build context
+#17 ...
+
+#24 [pingblip  8/21] COPY memeforge/vendor ./memeforge/vendor
+#24 DONE 0.5s
+
+#17 [forge internal] load build context
+#17 ...
+
+#25 [pingblip  9/21] WORKDIR /pingblip/web
+#25 DONE 0.2s
+
+#17 [forge internal] load build context
+#17 ...
+
+#26 [pingblip 10/21] COPY web/package.json web/package-lock.json ./
+#26 DONE 0.2s
+
+#17 [forge internal] load build context
+#17 ...
+
+#27 [pingblip 11/21] COPY web/prisma ./prisma
+#27 DONE 0.3s
+
+#17 [forge internal] load build context
+#17 transferring context: 140.68MB 4.9s done
+#17 DONE 5.0s
+
+#28 [forge  3/10] RUN apt-get update   && apt-get install -y --no-install-recommends openssl ca-certificates   && rm -rf /var/lib/apt/lists/*
+#28 2.139 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#28 2.193 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#28 2.194 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#28 2.555 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#28 2.823 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#28 2.983 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [361 kB]
+#28 4.838 Fetched 9400 kB in 3s (3343 kB/s)
+#28 4.838 Reading package lists...
+#28 6.381 Reading package lists...
+#28 7.983 Building dependency tree...
+#28 8.338 Reading state information...
+#28 9.021 The following additional packages will be installed:
+#28 9.024   libssl3
+#28 9.105 The following NEW packages will be installed:
+#28 9.111   ca-certificates libssl3 openssl
+#28 9.197 0 upgraded, 3 newly installed, 0 to remove and 3 not upgraded.
+#28 9.197 Need to get 3643 kB of archives.
+#28 9.197 After this operation, 8955 kB of additional disk space will be used.
+#28 9.197 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libssl3 amd64 3.0.22-1~deb12u2 [2040 kB]
+#28 9.282 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 openssl amd64 3.0.22-1~deb12u2 [1442 kB]
+#28 9.305 Get:3 http://deb.debian.org/debian-security bookworm-security/main amd64 ca-certificates all 20250419~deb12u2 [161 kB]
+#28 10.16 debconf: delaying package configuration, since apt-utils is not installed
+#28 10.29 Fetched 3643 kB in 0s (22.6 MB/s)
+#28 10.42 Selecting previously unselected package libssl3:amd64.
+#28 10.42 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6096 files and directories currently installed.)
+#28 10.63 Preparing to unpack .../libssl3_3.0.22-1~deb12u2_amd64.deb ...
+#28 10.67 Unpacking libssl3:amd64 (3.0.22-1~deb12u2) ...
+#28 11.13 Selecting previously unselected package openssl.
+#28 11.13 Preparing to unpack .../openssl_3.0.22-1~deb12u2_amd64.deb ...
+#28 11.14 Unpacking openssl (3.0.22-1~deb12u2) ...
+#28 11.52 Selecting previously unselected package ca-certificates.
+#28 11.53 Preparing to unpack .../ca-certificates_20250419~deb12u2_all.deb ...
+#28 11.53 Unpacking ca-certificates (20250419~deb12u2) ...
+#28 ...
+
+#29 [world  8/12] RUN npm install --legacy-peer-deps
+#29 ...
+
+#28 [forge  3/10] RUN apt-get update   && apt-get install -y --no-install-recommends openssl ca-certificates   && rm -rf /var/lib/apt/lists/*
+#28 11.94 Setting up libssl3:amd64 (3.0.22-1~deb12u2) ...
+#28 12.01 Setting up openssl (3.0.22-1~deb12u2) ...
+#28 12.09 Setting up ca-certificates (20250419~deb12u2) ...
+#28 12.45 debconf: unable to initialize frontend: Dialog
+#28 12.45 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#28 12.45 debconf: falling back to frontend: Readline
+#28 12.47 debconf: unable to initialize frontend: Readline
+#28 12.47 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#28 12.47 debconf: falling back to frontend: Teletype
+#28 ...
+
+#30 [pingblip 12/21] RUN npm ci --legacy-peer-deps
+#30 ...
+
+#28 [forge  3/10] RUN apt-get update   && apt-get install -y --no-install-recommends openssl ca-certificates   && rm -rf /var/lib/apt/lists/*
+#28 14.37 Updating certificates in /etc/ssl/certs...
+#28 16.86 148 added, 0 removed; done.
+#28 17.15 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#28 17.50 Processing triggers for ca-certificates (20250419~deb12u2) ...
+#28 17.54 Updating certificates in /etc/ssl/certs...
+#28 19.84 0 added, 0 removed; done.
+#28 19.84 Running hooks in /etc/ca-certificates/update.d...
+#28 19.85 done.
+#28 DONE 20.7s
+
+#30 [pingblip 12/21] RUN npm ci --legacy-peer-deps
+#30 ...
+
+#31 [forge  4/10] COPY package.json package-lock.json ./
+#31 DONE 0.2s
+
+#30 [pingblip 12/21] RUN npm ci --legacy-peer-deps
+#30 ...
+
+#32 [forge  5/10] COPY vendor ./vendor
+#32 DONE 0.2s
+
+#29 [world  8/12] RUN npm install --legacy-peer-deps
+#29 ...
+
+#33 [forge  6/10] COPY prisma ./prisma
+#33 DONE 0.2s
+
+#29 [world  8/12] RUN npm install --legacy-peer-deps
+#29 ...
+
+#34 [forge  7/10] RUN npm ci --legacy-peer-deps
+#34 ...
+
+#30 [pingblip 12/21] RUN npm ci --legacy-peer-deps
+#30 37.60 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#30 ...
+
+#29 [world  8/12] RUN npm install --legacy-peer-deps
+#29 47.28 
+#29 47.28 added 53 packages, and audited 54 packages in 44s
+#29 47.28 
+#29 47.28 13 packages are looking for funding
+#29 47.28   run `npm fund` for details
+#29 47.28 
+#29 47.28 found 0 vulnerabilities
+#29 47.29 npm notice
+#29 47.29 npm notice New major version of npm available! 10.9.9 -> 12.2.2
+#29 47.29 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+#29 47.29 npm notice To update run: npm install -g npm@12.2.2
+#29 47.29 npm notice
+#29 DONE 50.9s
+
+#30 [pingblip 12/21] RUN npm ci --legacy-peer-deps
+#30 ...
+
+#35 [world  9/12] COPY world .
+#35 DONE 1.5s
+
+#34 [forge  7/10] RUN npm ci --legacy-peer-deps
+#34 ...
+
+#36 [world 10/12] COPY memeforge/public/fonts ./public/fonts
+#36 DONE 0.2s
+
+#34 [forge  7/10] RUN npm ci --legacy-peer-deps
+#34 ...
+
+#37 [world 11/12] RUN ln -sfn /pingblip/world/node_modules /pingblip/node_modules
+#37 DONE 1.2s
+
+#30 [pingblip 12/21] RUN npm ci --legacy-peer-deps
+#30 ...
+
+#38 [world 12/12] RUN npm run build
+#38 1.038 
+#38 1.038 > pingblip-world@1.0.0 build
+#38 1.038 > next build
+#38 1.038 
+#38 4.136 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#38 4.139 This information is used to shape Next.js' roadmap and prioritize features.
+#38 4.139 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#38 4.139 https://nextjs.org/telemetry
+#38 4.139 
+#38 4.437    ▲ Next.js 15.5.28
+#38 4.437 
+#38 4.727    Creating an optimized production build ...
+#38 ...
+
+#34 [forge  7/10] RUN npm ci --legacy-peer-deps
+#34 37.54 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#34 ...
+
+#30 [pingblip 12/21] RUN npm ci --legacy-peer-deps
+#30 83.40 
+#30 83.40 > pingblip@1.0.0 postinstall
+#30 83.40 > prisma generate
+#30 83.40 
+#30 85.51 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#30 85.51 For more information, see: https://pris.ly/prisma-config
+#30 85.51 
+#30 86.28 Prisma schema loaded from prisma/schema.prisma
+#30 87.96 ┌─────────────────────────────────────────────────────────┐
+#30 87.96 │  Update available 6.16.2 -> 8.0.0-rc.33                 │
+#30 87.96 │                                                         │
+#30 87.96 │  This is a major update - please follow the guide at    │
+#30 87.96 │  https://pris.ly/d/major-version-upgrade                │
+#30 87.96 │                                                         │
+#30 87.96 │  Run the following to update                            │
+#30 87.96 │    npm i --save-dev prisma@latest                       │
+#30 87.96 │    npm i @prisma/client@latest                          │
+#30 87.96 └─────────────────────────────────────────────────────────┘
+#30 87.96 
+#30 87.96 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 925ms
+#30 87.96 
+#30 87.96 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#30 87.96 
+#30 87.96 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+#30 87.96 
+#30 88.09 npm notice
+#30 88.09 npm notice New major version of npm available! 10.9.9 -> 12.2.2
+#30 88.09 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+#30 88.09 npm notice To update run: npm install -g npm@12.2.2
+#30 88.09 npm notice
+#30 88.09 
+#30 88.09 added 424 packages, and audited 425 packages in 1m
+#30 88.09 
+#30 88.09 153 packages are looking for funding
+#30 88.09   run `npm fund` for details
+#30 88.09 
+#30 88.09 found 0 vulnerabilities
+#30 DONE 89.4s
+
+#34 [forge  7/10] RUN npm ci --legacy-peer-deps
+#34 ...
+
+#39 [pingblip 13/21] COPY web .
+#39 DONE 1.2s
+
+#38 [world 12/12] RUN npm run build
+#38 ...
+
+#40 [pingblip 14/21] RUN rm -rf public/models public/fonts public/dex
+#40 DONE 0.8s
+
+#38 [world 12/12] RUN npm run build
+#38 ...
+
+#41 [pingblip 15/21] COPY memeforge/public/fonts ./public/fonts
+#41 DONE 0.1s
+
+#42 [pingblip 16/21] COPY memeforge/public/models ./public/models
+#42 DONE 1.4s
+
+#34 [forge  7/10] RUN npm ci --legacy-peer-deps
+#34 ...
+
+#43 [pingblip 17/21] COPY world/public/dex ./public/dex
+#43 DONE 0.3s
+
+#34 [forge  7/10] RUN npm ci --legacy-peer-deps
+#34 ...
+
+#44 [pingblip 18/21] RUN ln -sfn /pingblip/web/node_modules /pingblip/node_modules
+#44 DONE 1.0s
+
+#38 [world 12/12] RUN npm run build
+#38 ...
+
+#45 [pingblip 19/21] RUN npx prisma generate && npm run build
+#45 4.539 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#45 4.539 For more information, see: https://pris.ly/prisma-config
+#45 4.539 
+#45 5.337 Prisma schema loaded from prisma/schema.prisma
+#45 ...
+
+#34 [forge  7/10] RUN npm ci --legacy-peer-deps
+#34 78.09 
+#34 78.09 > memeforge@1.0.0 postinstall
+#34 78.09 > prisma generate
+#34 78.09 
+#34 80.44 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#34 80.44 For more information, see: https://pris.ly/prisma-config
+#34 80.44 
+#34 81.17 Prisma schema loaded from prisma/schema.prisma
+#34 82.05 ┌─────────────────────────────────────────────────────────┐
+#34 82.05 │  Update available 6.16.2 -> 8.0.0-rc.33                 │
+#34 82.05 │                                                         │
+#34 82.05 │  This is a major update - please follow the guide at    │
+#34 82.05 │  https://pris.ly/d/major-version-upgrade                │
+#34 82.05 │                                                         │
+#34 82.05 │  Run the following to update                            │
+#34 82.05 │    npm i --save-dev prisma@latest                       │
+#34 82.05 │    npm i @prisma/client@latest                          │
+#34 82.05 └─────────────────────────────────────────────────────────┘
+#34 82.05 
+#34 82.05 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 371ms
+#34 82.05 
+#34 82.05 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#34 82.05 
+#34 82.05 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+#34 82.05 
+#34 82.14 
+#34 82.14 added 424 packages, and audited 425 packages in 1m
+#34 82.15 
+#34 82.15 151 packages are looking for funding
+#34 82.15   run `npm fund` for details
+#34 82.15 
+#34 82.15 found 0 vulnerabilities
+#34 82.15 npm notice
+#34 82.15 npm notice New major version of npm available! 10.9.9 -> 12.2.2
+#34 82.15 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+#34 82.15 npm notice To update run: npm install -g npm@12.2.2
+#34 82.15 npm notice
+#34 DONE 82.7s
+
+#46 [forge  8/10] COPY . .
+#46 DONE 1.5s
+
+#45 [pingblip 19/21] RUN npx prisma generate && npm run build
+#45 6.556 
+#45 6.556 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 668ms
+#45 6.556 
+#45 6.556 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#45 6.556 
+#45 6.556 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+#45 6.556 
+#45 6.946 
+#45 6.946 > pingblip@1.0.0 prebuild
+#45 6.946 > npm run test:dependency-security && node scripts/link-assets.mjs
+#45 6.946 
+#45 7.344 
+#45 7.344 > pingblip@1.0.0 test:dependency-security
+#45 7.344 > node ../memeforge/vendor/next-root-glob/test.cjs
+#45 7.344 
+#45 7.689 TAP version 13
+#45 7.692 # Subtest: Next uses the adapter and no vulnerable glob packages remain
+#45 7.693 ok 1 - Next uses the adapter and no vulnerable glob packages remain
+#45 7.694   ---
+#45 7.694   duration_ms: 14.751962
+#45 7.694   type: 'test'
+#45 7.694   ...
+#45 7.695 # Subtest: Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+#45 7.695 ok 2 - Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+#45 7.696   ---
+#45 7.696   duration_ms: 49.85649
+#45 7.696   type: 'test'
+#45 7.696   ...
+#45 7.696 # Subtest: deeply nested brace and parenthesis patterns do not exhaust the stack
+#45 7.697 ok 3 - deeply nested brace and parenthesis patterns do not exhaust the stack
+#45 7.697   ---
+#45 7.697   duration_ms: 114.518068
+#45 7.697   type: 'test'
+#45 7.697   ...
+#45 7.699 1..3
+#45 7.699 # tests 3
+#45 7.699 # suites 0
+#45 7.699 # pass 3
+#45 7.699 # fail 0
+#45 7.700 # cancelled 0
+#45 7.700 # skipped 0
+#45 7.700 # todo 0
+#45 7.700 # duration_ms 201.761021
+#45 7.815 link-assets: public/{models,fonts,dex} already linked
+#45 8.853 model versions: 80 sculpts, none changed
+#45 8.871 
+#45 8.871 > pingblip@1.0.0 build
+#45 8.871 > prisma generate && next build
+#45 8.871 
+#45 10.91 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#45 10.91 For more information, see: https://pris.ly/prisma-config
+#45 10.91 
+#45 ...
+
+#38 [world 12/12] RUN npm run build
+#38 42.94  ✓ Compiled successfully in 30.0s
+#38 42.95    Linting and checking validity of types ...
+#38 ...
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 3.819 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#47 3.819 For more information, see: https://pris.ly/prisma-config
+#47 3.819 
+#47 4.734 Prisma schema loaded from prisma/schema.prisma
+#47 5.714 
+#47 5.714 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 411ms
+#47 5.714 
+#47 5.714 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#47 5.714 
+#47 5.714 Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+#47 5.714 
+#47 ...
+
+#38 [world 12/12] RUN npm run build
+#38 56.01    Collecting page data ...
+#38 ...
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 6.119 
+#47 6.119 > memeforge@1.0.0 prebuild
+#47 6.119 > npm run test:dependency-security && node scripts/check-shared-imports.mjs && node scripts/build-model-versions.mjs && node scripts/check-models.mjs --strict && node scripts/check-fit.mjs && node scripts/check-horns.mjs && node scripts/check-seated.mjs && node scripts/check-tails.mjs && node scripts/check-twins.mjs && node scripts/check-dex.mjs
+#47 6.119 
+#47 6.495 
+#47 6.495 > memeforge@1.0.0 test:dependency-security
+#47 6.495 > node vendor/next-root-glob/test.cjs
+#47 6.495 
+#47 7.022 TAP version 13
+#47 7.025 # Subtest: Next uses the adapter and no vulnerable glob packages remain
+#47 7.027 ok 1 - Next uses the adapter and no vulnerable glob packages remain
+#47 7.027   ---
+#47 7.027   duration_ms: 20.668302
+#47 7.027   type: 'test'
+#47 7.027   ...
+#47 7.029 # Subtest: Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+#47 7.029 ok 2 - Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+#47 7.029   ---
+#47 7.029   duration_ms: 47.701958
+#47 7.029   type: 'test'
+#47 7.029   ...
+#47 7.029 # Subtest: deeply nested brace and parenthesis patterns do not exhaust the stack
+#47 7.030 ok 3 - deeply nested brace and parenthesis patterns do not exhaust the stack
+#47 7.030   ---
+#47 7.030   duration_ms: 227.487209
+#47 7.030   type: 'test'
+#47 7.030   ...
+#47 7.031 1..3
+#47 7.033 # tests 3
+#47 7.033 # suites 0
+#47 7.033 # pass 3
+#47 7.033 # fail 0
+#47 7.033 # cancelled 0
+#47 7.033 # skipped 0
+#47 7.033 # todo 0
+#47 7.033 # duration_ms 321.197215
+#47 7.171 check-shared-imports: 29 shared files, every "@/" import resolves in every app (not in this build context: web, world).
+#47 8.365 model versions: 80 sculpts, none changed
+#47 8.520 check-models: all 80 figurines present in public/models
+#47 ...
+
+#38 [world 12/12] RUN npm run build
+#38 61.97    Generating static pages (0/198) ...
+#38 ...
+
+#45 [pingblip 19/21] RUN npx prisma generate && npm run build
+#45 12.00 Prisma schema loaded from prisma/schema.prisma
+#45 13.41 
+#45 13.41 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 745ms
+#45 13.41 
+#45 13.41 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#45 13.41 
+#45 13.41 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+#45 13.41 
+#45 16.04 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#45 16.04 This information is used to shape Next.js' roadmap and prioritize features.
+#45 16.04 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#45 16.04 https://nextjs.org/telemetry
+#45 16.04 
+#45 16.34    ▲ Next.js 15.5.28
+#45 16.34 
+#45 16.58    Creating an optimized production build ...
+#45 ...
+
+#38 [world 12/12] RUN npm run build
+#38 64.93    Generating static pages (49/198) 
+#38 68.23    Generating static pages (98/198) 
+#38 83.04    Generating static pages (148/198) 
+#38 103.7  ✓ Generating static pages (198/198)
+#38 104.2    Finalizing page optimization ...
+#38 104.2    Collecting build traces ...
+#38 104.9 
+#38 104.9 Route (app)                                       Size  First Load JS
+#38 104.9 ┌ ƒ /                                          2.62 kB         109 kB
+#38 104.9 ├ ƒ /_not-found                                  136 B         103 kB
+#38 104.9 ├ ƒ /forge                                       729 B         107 kB
+#38 104.9 ├ ƒ /forge/how                                   729 B         107 kB
+#38 104.9 ├ ƒ /forge/packs                                 711 B         107 kB
+#38 104.9 ├ ƒ /guide                                       729 B         107 kB
+#38 104.9 ├ ○ /icon.svg                                      0 B            0 B
+#38 104.9 ├ ○ /opengraph-image                             136 B         103 kB
+#38 104.9 ├ ƒ /packs                                       729 B         107 kB
+#38 104.9 ├ ● /packs/[id]                                  729 B         107 kB
+#38 104.9 ├   ├ /packs/alley-beasts
+#38 104.9 ├   ├ /packs/candle-pit
+#38 104.9 ├   ├ /packs/snack-cult
+#38 104.9 ├   └ [+7 more paths]
+#38 104.9 ├ ƒ /proof                                       711 B         107 kB
+#38 104.9 ├ ○ /robots.txt                                  136 B         103 kB
+#38 104.9 ├ ƒ /rules                                       711 B         107 kB
+#38 104.9 ├ ƒ /shelf                                     1.88 kB         108 kB
+#38 104.9 ├ ● /shelf/[id]                                  729 B         107 kB
+#38 104.9 ├   ├ /shelf/goblin-frog
+#38 104.9 ├   ├ /shelf/dumpster-raccoon
+#38 104.9 ├   ├ /shelf/chonk-capy
+#38 104.9 ├   └ [+77 more paths]
+#38 104.9 ├ ● /shelf/[id]/opengraph-image                  136 B         103 kB
+#38 104.9 ├   ├ /shelf/goblin-frog/opengraph-image
+#38 104.9 ├   ├ /shelf/dumpster-raccoon/opengraph-image
+#38 104.9 ├   ├ /shelf/chonk-capy/opengraph-image
+#38 104.9 ├   └ [+77 more paths]
+#38 104.9 ├ ○ /sitemap.xml                                 136 B         103 kB
+#38 104.9 ├ ƒ /stations                                    729 B         107 kB
+#38 104.9 ├ ● /stations/[id]                               729 B         107 kB
+#38 104.9 ├   ├ /stations/gaia
+#38 104.9 ├   ├ /stations/atlas
+#38 104.9 ├   ├ /stations/sortes
+#38 104.9 ├   └ [+7 more paths]
+#38 104.9 └ ƒ /world                                     1.15 kB         107 kB
+#38 104.9 + First Load JS shared by all                   103 kB
+#38 104.9   ├ chunks/255-b1e2483a7e02feee.js             46.6 kB
+#38 104.9   ├ chunks/4bd1b696-c023c6e3521b1417.js        54.2 kB
+#38 104.9   └ other shared chunks (total)                1.92 kB
+#38 104.9 
+#38 104.9 
+#38 104.9 ƒ Middleware                                   34.3 kB
+#38 104.9 
+#38 104.9 ○  (Static)   prerendered as static content
+#38 104.9 ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+#38 104.9 ƒ  (Dynamic)  server-rendered on demand
+#38 104.9 
+#38 DONE 105.3s
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 ...
+
+#48 [world] exporting to image
+#48 exporting layers
+#48 ...
+
+#45 [pingblip 19/21] RUN npx prisma generate && npm run build
+#45 115.0  ✓ Compiled successfully in 98s
+#45 115.1    Linting and checking validity of types ...
+#45 134.8 
+#45 134.8 ./src/app/api/live/route.ts
+#45 134.8 2:22  Warning: 'requirePlayer' is defined but never used.  @typescript-eslint/no-unused-vars
+#45 134.8 
+#45 134.8 ./src/app/api/shelf/route.ts
+#45 134.8 4:22  Warning: 'requirePlayer' is defined but never used.  @typescript-eslint/no-unused-vars
+#45 134.8 
+#45 134.8 ./src/app/proof/[id]/opengraph-image.tsx
+#45 134.8 151:14  Warning: Unused eslint-disable directive (no problems were reported from '@next/next/no-img-element').
+#45 134.8 
+#45 134.8 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+#45 153.8    Collecting page data ...
+#45 168.1    Generating static pages (0/196) ...
+#45 172.9    Generating static pages (49/196) 
+#45 175.4    Generating static pages (98/196) 
+#45 ...
+
+#48 [world] exporting to image
+#48 exporting layers 114.7s done
+#48 exporting manifest sha256:fb6d5a2601db47124417c418f5d8ca22a2f7319c017dce4a3393c3c6303df989
+#48 exporting manifest sha256:fb6d5a2601db47124417c418f5d8ca22a2f7319c017dce4a3393c3c6303df989 2.6s done
+#48 exporting config sha256:2a13469f24f84c4bab27fcf5e56dd8e77691aa17cd6940a5b1ffc39aeb7d8152
+#48 exporting config sha256:2a13469f24f84c4bab27fcf5e56dd8e77691aa17cd6940a5b1ffc39aeb7d8152 0.2s done
+#48 exporting attestation manifest sha256:c1890d9e7c524da851b812c360155d4ff34afc8e1173234ea27066e937ef5958
+#48 exporting attestation manifest sha256:c1890d9e7c524da851b812c360155d4ff34afc8e1173234ea27066e937ef5958 0.2s done
+#48 exporting manifest list sha256:83877d69aa8a093102fca418becf09640bc905d6a1a4cc6f57406803305ac04a 0.2s done
+#48 naming to docker.io/library/aicom-seo:pingblip-world-5aa4bce94
+#48 naming to docker.io/library/aicom-seo:pingblip-world-5aa4bce94 done
+#48 unpacking to docker.io/library/aicom-seo:pingblip-world-5aa4bce94
+#48 ...
+
+#45 [pingblip 19/21] RUN npx prisma generate && npm run build
+#45 184.7    Generating static pages (147/196) 
+#45 ...
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 171.7 80 sculpts x 13 canvas shapes
+#47 171.7 
+#47 171.7 worst NDC reach (1.000 = touching the edge; target fill 0.840)
+#47 171.7   before this pass : 1.612   <-- cropped
+#47 171.7   after            : 0.840
+#47 171.7 
+#47 171.7 per-shape margin spread (max - min limiting reach across all 80 sculpts)
+#47 171.7   forge hero, phone          0.8400 .. 0.8400  spread 0.0000
+#47 171.7   forge hero, narrow phone   0.8400 .. 0.8400  spread 0.0000
+#47 171.7   forge hero, desktop        0.8400 .. 0.8400  spread 0.0000
+#47 171.7   bench, phone 48vh          0.8400 .. 0.8400  spread 0.0000
+#47 171.7   bench, desktop half        0.8400 .. 0.8400  spread 0.0000
+#47 171.7   map roster card            0.8400 .. 0.8400  spread 0.0000
+#47 171.7   wizard stage               0.8400 .. 0.8400  spread 0.0000
+#47 171.7   phone 320 hero             0.8400 .. 0.8400  spread 0.0000
+#47 171.7   phone 360 hero             0.8400 .. 0.8400  spread 0.0000
+#47 171.7   phone 390 hero             0.8400 .. 0.8400  spread 0.0000
+#47 171.7   phone 430 hero             0.8400 .. 0.8400  spread 0.0000
+#47 171.7   phone landscape            0.8400 .. 0.8400  spread 0.0000
+#47 171.7   tablet 768 hero            0.8400 .. 0.8400  spread 0.0000
+#47 171.7 
+#47 171.7 OK: every sculpt stays in frame through the full idle cycle, centred, equal margins.
+#47 172.1 check-horns: skipped — shared/ is not in this build context
+#47 ...
+
+#45 [pingblip 19/21] RUN npx prisma generate && npm run build
+#45 196.7  ✓ Generating static pages (196/196)
+#45 199.8    Finalizing page optimization ...
+#45 199.8    Collecting build traces ...
+#45 ...
+
+#48 [world] exporting to image
+#48 unpacking to docker.io/library/aicom-seo:pingblip-world-5aa4bce94 34.0s done
+#48 DONE 152.2s
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 ...
+
+#49 [world] resolving provenance for metadata file
+#49 DONE 0.0s
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 ...
+
+#45 [pingblip 19/21] RUN npx prisma generate && npm run build
+#45 218.3 
+#45 218.3 Route (app)                                   Size  First Load JS
+#45 218.3 ┌ ○ /                                      46.6 kB         682 kB
+#45 218.3 ├ ○ /_not-found                              225 B         103 kB
+#45 218.3 ├ ○ /admin                                 5.54 kB         112 kB
+#45 218.3 ├ ƒ /admin/funnel                            165 B         106 kB
+#45 218.3 ├ ƒ /api/admin/funnel                        225 B         103 kB
+#45 218.3 ├ ƒ /api/admin/overview                      225 B         103 kB
+#45 218.3 ├ ƒ /api/admin/players                       225 B         103 kB
+#45 218.3 ├ ƒ /api/admin/players/[id]                  225 B         103 kB
+#45 218.3 ├ ƒ /api/auth/admin                          225 B         103 kB
+#45 218.3 ├ ƒ /api/auth/admin/logout                   225 B         103 kB
+#45 218.3 ├ ƒ /api/bench                               225 B         103 kB
+#45 218.3 ├ ƒ /api/catch                               225 B         103 kB
+#45 218.3 ├ ƒ /api/credits                             225 B         103 kB
+#45 218.3 ├ ƒ /api/egg                                 225 B         103 kB
+#45 218.3 ├ ƒ /api/events                              225 B         103 kB
+#45 218.3 ├ ƒ /api/feed                                225 B         103 kB
+#45 218.3 ├ ƒ /api/finale                              225 B         103 kB
+#45 218.3 ├ ƒ /api/hatch                               225 B         103 kB
+#45 218.3 ├ ƒ /api/live                                225 B         103 kB
+#45 218.3 ├ ƒ /api/merkle                              225 B         103 kB
+#45 218.3 ├ ƒ /api/proof/[id]                          225 B         103 kB
+#45 218.3 ├ ƒ /api/scan                                225 B         103 kB
+#45 218.3 ├ ƒ /api/session                             225 B         103 kB
+#45 218.3 ├ ƒ /api/shelf                               225 B         103 kB
+#45 218.3 ├ ƒ /api/station                             225 B         103 kB
+#45 218.3 ├ ƒ /api/watch                               225 B         103 kB
+#45 218.3 ├ ○ /bench                                 7.93 kB         647 kB
+#45 218.3 ├ ○ /clip                                  1.07 kB         538 kB
+#45 218.3 ├ ○ /finale                                1.47 kB         634 kB
+#45 218.3 ├ ƒ /go/[video]                              225 B         103 kB
+#45 218.3 ├ ○ /guide                                 1.38 kB         209 kB
+#45 218.3 ├ ○ /how                                   1.73 kB         210 kB
+#45 218.3 ├ ○ /look                                  1.35 kB         634 kB
+#45 218.3 ├ ○ /map                                    4.6 kB         637 kB
+#45 218.3 ├ ƒ /proof/[id]                            2.08 kB         204 kB
+#45 218.3 ├ ƒ /proof/[id]/opengraph-image              225 B         103 kB
+#45 218.3 ├ ○ /robots.txt                              225 B         103 kB
+#45 218.3 ├ ○ /rules                                   736 B         203 kB
+#45 218.3 ├ ● /s/[species]                             936 B         104 kB
+#45 218.3 ├   ├ /s/goblin-frog
+#45 218.3 ├   ├ /s/dumpster-raccoon
+#45 218.3 ├   ├ /s/chonk-capy
+#45 218.3 ├   └ [+77 more paths]
+#45 218.3 ├ ● /s/[species]/opengraph-image             225 B         103 kB
+#45 218.3 ├   ├ /s/goblin-frog/opengraph-image
+#45 218.3 ├   ├ /s/dumpster-raccoon/opengraph-image
+#45 218.3 ├   ├ /s/chonk-capy/opengraph-image
+#45 218.3 ├   └ [+77 more paths]
+#45 218.3 ├ ○ /shelf                                 1.18 kB         203 kB
+#45 218.3 └ ○ /stations                              2.84 kB         208 kB
+#45 218.3 + First Load JS shared by all               103 kB
+#45 218.3   ├ chunks/1255-dc3ddf72a1dc71a7.js        46.6 kB
+#45 218.3   ├ chunks/4bd1b696-f785427dddbba9fb.js    54.2 kB
+#45 218.3   └ other shared chunks (total)            1.93 kB
+#45 218.3 
+#45 218.3 
+#45 218.3 ○  (Static)   prerendered as static content
+#45 218.3 ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+#45 218.3 ƒ  (Dynamic)  server-rendered on demand
+#45 218.3 
+#45 DONE 220.2s
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 ...
+
+#50 [pingblip 20/21] RUN chmod +x docker/entrypoint.sh
+#50 DONE 0.9s
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 ...
+
+#51 [pingblip 21/21] RUN chown -R node:node /pingblip
+#51 ...
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 324.4 80 sculpts checked
+#47 324.4 OK: every feature touches the sculpt it belongs to.
+#47 328.9 80 models inspected; 39 tail parts across 15 creatures checked
+#47 328.9 OK: all tail surfaces are closed.
+#47 335.3 80 sculpts checked
+#47 335.3 OK: no mirrored pair is inside itself.
+#47 335.5 80 sculpts checked
+#47 335.5 OK: every preview is of the sculpt that ships with it.
+#47 335.6 
+#47 335.6 > memeforge@1.0.0 build
+#47 335.6 > prisma generate && next build
+#47 335.6 
+#47 338.5 warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+#47 338.5 For more information, see: https://pris.ly/prisma-config
+#47 338.5 
+#47 339.4 Prisma schema loaded from prisma/schema.prisma
+#47 340.6 
+#47 340.6 ✔ Generated Prisma Client (v6.16.2) to ./node_modules/@prisma/client in 573ms
+#47 340.6 
+#47 340.6 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#47 340.6 
+#47 340.6 Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+#47 340.6 
+#47 344.1 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#47 344.1 This information is used to shape Next.js' roadmap and prioritize features.
+#47 344.1 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#47 344.1 https://nextjs.org/telemetry
+#47 344.1 
+#47 344.3    ▲ Next.js 15.5.28
+#47 344.3    - Experiments (use with caution):
+#47 344.3      · serverActions
+#47 344.3 
+#47 344.6    Creating an optimized production build ...
+#47 ...
+
+#51 [pingblip 21/21] RUN chown -R node:node /pingblip
+#51 DONE 214.6s
+
+#52 [pingblip] exporting to image
+#52 exporting layers
+#52 ...
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 578.2  ✓ Compiled successfully in 3.8min
+#47 578.2    Linting and checking validity of types ...
+#47 591.2 
+#47 591.2 ./src/app/page.tsx
+#47 591.2 77:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#47 591.2 
+#47 591.2 ./src/components/forge/Constructor.tsx
+#47 591.2 64:6  Warning: React Hook useEffect has a missing dependency: 'pickPack'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+#47 591.2 295:27  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#47 591.2 
+#47 591.2 ./src/components/forge/ForgeClient.tsx
+#47 591.2 31:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#47 591.2 
+#47 591.2 ./src/components/packs/PackCatalog.tsx
+#47 591.2 101:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#47 591.2 153:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#47 591.2 
+#47 591.2 ./src/components/packs/PackPlate.tsx
+#47 591.2 92:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+#47 591.2 
+#47 591.2 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+#47 603.7    Collecting page data ...
+#47 615.9    Generating static pages (0/23) ...
+#47 617.9    Generating static pages (5/23) 
+#47 617.9    Generating static pages (11/23) 
+#47 618.5    Generating static pages (17/23) 
+#47 618.9  ✓ Generating static pages (23/23)
+#47 621.8    Finalizing page optimization ...
+#47 621.8    Collecting build traces ...
+#47 ...
+
+#52 [pingblip] exporting to image
+#52 exporting layers 198.9s done
+#52 exporting manifest sha256:2fe854d66ddc9c9d6da8630cda533ec7af32ea3e0d79cff5906320d51a2aad97 0.0s done
+#52 exporting config sha256:2207b1f44f098bc6bec8a886c7d89108b994e687186835bf04044781abe7c8da 0.0s done
+#52 exporting attestation manifest sha256:fe67265abeeb88b965d70ddd5e10aef0c2c0fcd5570db8c58ba7d60743d014cf 0.0s done
+#52 exporting manifest list sha256:7b9154c2058c4e7c772f32fefaf1eceb425228719110f572e0f2c779b375b5c9 0.0s done
+#52 naming to docker.io/library/aicom-seo:pingblip-pingblip-5aa4bce94 done
+#52 unpacking to docker.io/library/aicom-seo:pingblip-pingblip-5aa4bce94
+#52 ...
+
+#47 [forge  9/10] RUN npx prisma generate && npm run build
+#47 645.7 
+#47 645.7 Route (app)                                 Size  First Load JS
+#47 645.7 ┌ ○ /                                    1.74 kB         558 kB
+#47 645.7 ├ ○ /_not-found                            160 B         103 kB
+#47 645.7 ├ ○ /admin                               1.97 kB         123 kB
+#47 645.7 ├ ƒ /api/admin/overview                    160 B         103 kB
+#47 645.7 ├ ƒ /api/admin/payouts                     160 B         103 kB
+#47 645.7 ├ ƒ /api/auth/admin                        160 B         103 kB
+#47 645.7 ├ ƒ /api/auth/guest                        160 B         103 kB
+#47 645.7 ├ ƒ /api/auth/logout                       160 B         103 kB
+#47 645.7 ├ ƒ /api/auth/telegram                     160 B         103 kB
+#47 645.7 ├ ƒ /api/checkout                          160 B         103 kB
+#47 645.7 ├ ƒ /api/compose                           160 B         103 kB
+#47 645.7 ├ ƒ /api/compositions                      160 B         103 kB
+#47 645.7 ├ ƒ /api/media/[file]                      160 B         103 kB
+#47 645.7 ├ ƒ /api/packs                             160 B         103 kB
+#47 645.7 ├ ƒ /api/referral                          160 B         103 kB
+#47 645.7 ├ ƒ /api/session                           160 B         103 kB
+#47 645.7 ├ ƒ /api/webhook/telegram                  160 B         103 kB
+#47 645.7 ├ ○ /dashboard                           2.56 kB         124 kB
+#47 645.7 ├ ƒ /export/[id]                         2.71 kB         124 kB
+#47 645.7 ├ ○ /forge                               45.5 kB         602 kB
+#47 645.7 ├ ○ /packs                               2.12 kB         558 kB
+#47 645.7 ├ ƒ /packs/[slug]                        1.69 kB         558 kB
+#47 645.7 └ ○ /robots.txt                            160 B         103 kB
+#47 645.7 + First Load JS shared by all             103 kB
+#47 645.7   ├ chunks/255-b1e2483a7e02feee.js       46.6 kB
+#47 645.7   ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+#47 645.7   └ other shared chunks (total)          1.92 kB
+#47 645.7 
+#47 645.7 
+#47 645.7 ○  (Static)   prerendered as static content
+#47 645.7 ƒ  (Dynamic)  server-rendered on demand
+#47 645.7 
+#47 DONE 648.3s
+
+#52 [pingblip] exporting to image
+#52 ...
+
+#53 [forge 10/10] RUN chmod +x docker/entrypoint.sh
+#53 DONE 1.0s
+
+#52 [pingblip] exporting to image
+#52 ...
+
+#54 [forge] exporting to image
+#54 exporting layers
+#54 ...
+
+#52 [pingblip] exporting to image
+#52 unpacking to docker.io/library/aicom-seo:pingblip-pingblip-5aa4bce94 97.7s done
+#52 DONE 296.9s
+
+#54 [forge] exporting to image
+#54 ...
+
+#55 [pingblip] resolving provenance for metadata file
+#55 DONE 0.1s
+
+#54 [forge] exporting to image
+#54 exporting layers 174.5s done
+#54 exporting manifest sha256:9133e6476cb85fdad01d6c15501ad94c01b3cf19d32847941524354ec086bb9e 0.0s done
+#54 exporting config sha256:46379c1bf58081b473ba6e1d18168ef256f276f3371c386aa912cc771fd72745 0.0s done
+#54 exporting attestation manifest sha256:6e2a426399306b91af089d58538d90b8645c786590eab467b01ba39c55129f00 0.0s done
+#54 exporting manifest list sha256:10a73117913adb40a77c8abdc574725de1e33a403404dc3b5506d2c184066a91 0.0s done
+#54 naming to docker.io/library/aicom-security:pingblip-forge-1-hc-live-20261031 done
+#54 unpacking to docker.io/library/aicom-security:pingblip-forge-1-hc-live-20261031
+#54 unpacking to docker.io/library/aicom-security:pingblip-forge-1-hc-live-20261031 40.7s done
+#54 DONE 215.3s
+
+#56 [forge] resolving provenance for metadata file
+#56 DONE 0.0s
+ Image aicom-seo:pingblip-pingblip-5aa4bce94 Built 
+ Image aicom-security:pingblip-forge-1-hc-live-20261031 Built 
+ Image aicom-seo:pingblip-world-5aa4bce94 Built 
+time="2026-11-07T00:13:23-05:00" level=warning msg="volume \"blip_pgdata\" already exists but was created for project \"blip\" (expected \"pingblip\"). Use `external: true` to use an existing volume"
+time="2026-11-07T00:13:23-05:00" level=warning msg="volume \"blip_forge-data\" already exists but was created for project \"blip\" (expected \"pingblip\"). Use `external: true` to use an existing volume"
+ Container pingblip-forge-1 Recreate 
+ Container pingblip-pingblip-1 Recreate 
+ Container pingblip-world-1 Recreate 
+ Container pingblip-forge-1 Recreated 
+ Container pingblip-pingblip-1 Recreated 
+ Container pingblip-world-1 Recreated 
+ Container pingblip-forge-1 Starting 
+ Container pingblip-pingblip-1 Starting 
+ Container pingblip-world-1 Starting 
+ Container pingblip-forge-1 Started 
+ Container pingblip-pingblip-1 Started 
+ Container pingblip-world-1 Started 
+ Container pingblip-pingblip-1 Waiting 
+ Container pingblip-world-1 Waiting 
+ Container pingblip-forge-1 Waiting 
+ Container pingblip-forge-1 Healthy 
+ Container pingblip-world-1 Healthy 
+ Container pingblip-pingblip-1 Healthy 
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+docker-compose.yml: OK
+.env: OK
+NAME                  IMAGE                                                                     COMMAND                  SERVICE    CREATED          STATUS                PORTS
+pingblip-forge-1      aicom-security:pingblip-forge-1-hc-live-20261031                          "./docker/entrypoint…"   forge      20 seconds ago   Up 17 seconds         127.0.0.1:3081->3000/tcp
+pingblip-pingblip-1   aicom-seo:pingblip-pingblip-5aa4bce94                                     "./docker/entrypoint…"   pingblip   20 seconds ago   Up 16 seconds         127.0.0.1:3080->3000/tcp
+pingblip-postgres-1   sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab   "docker-entrypoint.s…"   postgres   6 days ago       Up 6 days (healthy)   127.0.0.1:5434->5432/tcp
+pingblip-world-1      aicom-seo:pingblip-world-5aa4bce94                                        "docker-entrypoint.s…"   world      20 seconds ago   Up 16 seconds         127.0.0.1:3082->3000/tcp
+DEPLOY_OK

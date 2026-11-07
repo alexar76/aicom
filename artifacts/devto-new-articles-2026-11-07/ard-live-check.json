@@ -1,0 +1,216 @@
+{
+  "checkedAt": "2026-11-07T14:22:29.479718+00:00",
+  "results": [
+    {
+      "url": "https://modelmarket.dev/.well-known/ard.json",
+      "finalUrl": "https://modelmarket.dev/.well-known/ard.json",
+      "status": 200,
+      "contentType": "application/ard+json",
+      "data": {
+        "entries": [
+          {
+            "description": "The capabilities this AIMarket hub sells and indexes from admitted peer hubs. ARD lookup: POST /search, POST /explore, GET /agents. Calls and payment use AIMarket Protocol v2.",
+            "displayName": "modelmarket.dev catalogue",
+            "identifier": "urn:air:modelmarket.dev:registry:catalogue",
+            "tags": [
+              "aimarket",
+              "registry"
+            ],
+            "trustManifest": {
+              "identity": "did:web:modelmarket.dev",
+              "issuedAt": "2026-11-07T03:17:16Z",
+              "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDp3ZWI6bW9kZWxtYXJrZXQuZGV2I2h1Yi1lZDI1NTE5In0..ES5sClzqGAts_KBYrq7q73O1l7U0GLPr1E05sqWUb27tJ_fckzSuE84xbmAEj9saHPkZ_CqQCojfKzQGinJcCg",
+              "subject": {
+                "identifier": "urn:air:modelmarket.dev:registry:catalogue",
+                "type": "application/ai-registry+json"
+              }
+            },
+            "type": "application/ai-registry+json",
+            "url": "https://modelmarket.dev/ard/v1"
+          },
+          {
+            "description": "This hub as an A2A agent: catalogue search and paid calls as Tasks.",
+            "digest": "sha256:59007ec660d7461e85296102b554c7b55c93eadb4d3889c341a9bab77ee4e7fb",
+            "displayName": "modelmarket.dev (A2A)",
+            "identifier": "urn:air:modelmarket.dev:agent:a2a",
+            "trustManifest": {
+              "identity": "did:web:modelmarket.dev",
+              "issuedAt": "2026-11-07T03:17:16Z",
+              "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDp3ZWI6bW9kZWxtYXJrZXQuZGV2I2h1Yi1lZDI1NTE5In0..ur9S-MBOmc1kHBa5K97rGQzLwqUA20UKEplqJKdhc-B1U4dTNnUao6_Mu6mwrVyUYROgjJxRrXivqzw1qbWNDw",
+              "subject": {
+                "digest": "sha256:59007ec660d7461e85296102b554c7b55c93eadb4d3889c341a9bab77ee4e7fb",
+                "identifier": "urn:air:modelmarket.dev:agent:a2a",
+                "type": "application/a2a-agent-card+json"
+              }
+            },
+            "type": "application/a2a-agent-card+json",
+            "url": "https://modelmarket.dev/.well-known/agent-card.json"
+          },
+          {
+            "description": "This hub as an MCP server: catalogue search and every listed capability as a tool.",
+            "digest": "sha256:b10471f76f10eb15529526bce0ec6fd9f867cf4480db9185ffa0501383e8fd05",
+            "displayName": "modelmarket.dev (MCP)",
+            "identifier": "urn:air:modelmarket.dev:mcp:gateway",
+            "trustManifest": {
+              "identity": "did:web:modelmarket.dev",
+              "issuedAt": "2026-11-07T03:17:16Z",
+              "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDp3ZWI6bW9kZWxtYXJrZXQuZGV2I2h1Yi1lZDI1NTE5In0..AzAAprrxfAUYOrx5NZ_sTzIlDM-cO44tUC4XoRZTBp9BTdkU369-RK35z2y-KGhoAOzfuHSi-HnbQGyXZiODBg",
+              "subject": {
+                "digest": "sha256:b10471f76f10eb15529526bce0ec6fd9f867cf4480db9185ffa0501383e8fd05",
+                "identifier": "urn:air:modelmarket.dev:mcp:gateway",
+                "type": "application/mcp-server-card+json"
+              }
+            },
+            "type": "application/mcp-server-card+json",
+            "url": "https://modelmarket.dev/.well-known/mcp/server-card.json"
+          },
+          {
+            "description": "AIMarket discovery document (draft-artamokhov-dawn-marketplace-discovery): the hub's signing key, its signed catalogue and its admitted peers. It carries its own Ed25519 signature and is re-signed every minute, so it is not pinned by digest.",
+            "displayName": "modelmarket.dev discovery document",
+            "identifier": "urn:air:modelmarket.dev:index:agent-marketplace",
+            "trustManifest": {
+              "identity": "did:web:modelmarket.dev",
+              "issuedAt": "2026-11-07T03:17:16Z",
+              "signature": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDp3ZWI6bW9kZWxtYXJrZXQuZGV2I2h1Yi1lZDI1NTE5In0..9vuIBf5iHCvCoHJCVy5ta6n659PV5uA-fBFZrm78ddrHkMt7LnuCQQP3M_LtaySMJh8TQIJkb-x3IYtFaVaOCg",
+              "subject": {
+                "identifier": "urn:air:modelmarket.dev:index:agent-marketplace",
+                "type": "application/json"
+              }
+            },
+            "type": "application/json",
+            "url": "https://modelmarket.dev/.well-known/agent-marketplace"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://modelmarket.dev/.well-known/did.json",
+      "finalUrl": "https://modelmarket.dev/.well-known/did.json",
+      "status": 200,
+      "contentType": "application/did+json",
+      "data": {
+        "@context": [
+          "https://www.w3.org/ns/did/v1",
+          "https://w3id.org/security/suites/jws-2020/v1"
+        ],
+        "assertionMethod": [
+          "did:web:modelmarket.dev#hub-ed25519"
+        ],
+        "id": "did:web:modelmarket.dev",
+        "verificationMethod": [
+          {
+            "controller": "did:web:modelmarket.dev",
+            "id": "did:web:modelmarket.dev#hub-ed25519",
+            "publicKeyJwk": {
+              "crv": "Ed25519",
+              "kty": "OKP",
+              "x": "lUgnD6FKzGU0gMaTVjtKzUbtIKd_aRqI3Kzn12vQio0"
+            },
+            "type": "JsonWebKey2020"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://modelmarket.dev/ard/v1/agents?limit=1",
+      "error": "HTTP Error 400: Bad Request"
+    },
+    {
+      "url": "https://modelmarket.dev/ard/v1",
+      "finalUrl": "https://modelmarket.dev/ard/v1",
+      "status": 200,
+      "contentType": "application/json",
+      "data": {
+        "registry": "https://modelmarket.dev/ard/v1",
+        "manifest": "https://modelmarket.dev/.well-known/ard.json",
+        "endpoints": {
+          "search": {
+            "method": "POST",
+            "url": "https://modelmarket.dev/ard/v1/search"
+          },
+          "explore": {
+            "method": "POST",
+            "url": "https://modelmarket.dev/ard/v1/explore"
+          },
+          "agents": {
+            "method": "GET",
+            "url": "https://modelmarket.dev/ard/v1/agents"
+          }
+        },
+        "federation": {
+          "supported": [
+            "auto",
+            "referrals",
+            "none"
+          ],
+          "note": "This hub copies the catalogues of the peers it admits (AIMarket federation), so 'auto' and 'none' both answer from the local index, which already holds the admitted peers' entries; no query is forwarded. 'referrals' adds no referrals for now."
+        },
+        "filterTerms": [
+          "type",
+          "tags",
+          "capabilities",
+          "publisher",
+          "identifier",
+          "trustManifest.identity"
+        ],
+        "facetFields": [
+          "type",
+          "tags",
+          "capabilities",
+          "publisher"
+        ],
+        "score": "relevance of the hub's catalogue search (lexical and multilingual concepts), 0..100",
+        "signing": {
+          "identity": "did:web:modelmarket.dev",
+          "algorithm": "EdDSA",
+          "didDocument": "https://modelmarket.dev/.well-known/did.json"
+        },
+        "protocol": "aimarket-v2"
+      }
+    },
+    {
+      "url": "https://independentai.network/.well-known/ard.json",
+      "finalUrl": "https://independentai.network/hub/.well-known/ard.json",
+      "status": 200,
+      "contentType": "application/ard+json",
+      "data": {
+        "entries": [
+          {
+            "description": "The capabilities this AIMarket hub sells and indexes from admitted peer hubs. ARD lookup: POST /search, POST /explore, GET /agents. Calls and payment use AIMarket Protocol v2.",
+            "displayName": "Independent AI Hub catalogue",
+            "identifier": "urn:air:independentai.network:registry:catalogue",
+            "tags": [
+              "aimarket",
+              "registry"
+            ],
+            "type": "application/ai-registry+json",
+            "url": "https://independentai.network/hub/ard/v1"
+          },
+          {
+            "description": "This hub as an A2A agent: catalogue search and paid calls as Tasks.",
+            "digest": "sha256:309b9e8ee38981baa6b3ee5dfde0c6f0bbd75bd621c9fb4e07318bcb54dc69fe",
+            "displayName": "Independent AI Hub (A2A)",
+            "identifier": "urn:air:independentai.network:agent:a2a",
+            "type": "application/a2a-agent-card+json",
+            "url": "https://independentai.network/hub/.well-known/agent-card.json"
+          },
+          {
+            "description": "This hub as an MCP server: catalogue search and every listed capability as a tool.",
+            "digest": "sha256:b10471f76f10eb15529526bce0ec6fd9f867cf4480db9185ffa0501383e8fd05",
+            "displayName": "Independent AI Hub (MCP)",
+            "identifier": "urn:air:independentai.network:mcp:gateway",
+            "type": "application/mcp-server-card+json",
+            "url": "https://independentai.network/hub/.well-known/mcp/server-card.json"
+          },
+          {
+            "description": "AIMarket discovery document (draft-artamokhov-dawn-marketplace-discovery): the hub's signing key, its signed catalogue and its admitted peers. It carries its own Ed25519 signature and is re-signed every minute, so it is not pinned by digest.",
+            "displayName": "Independent AI Hub discovery document",
+            "identifier": "urn:air:independentai.network:index:agent-marketplace",
+            "type": "application/json",
+            "url": "https://independentai.network/hub/.well-known/agent-marketplace"
+          }
+        ]
+      }
+    }
+  ]
+}

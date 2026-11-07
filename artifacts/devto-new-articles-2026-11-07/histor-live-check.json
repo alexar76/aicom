@@ -1,0 +1,101 @@
+{
+  "checkedAt": "2026-11-07T14:35:59.694509+00:00",
+  "results": [
+    {
+      "url": "https://histor.modelmarket.dev/api/v1/servers?state=undigested&limit=1",
+      "status": 200,
+      "data": {
+        "total": 766,
+        "offset": 0,
+        "limit": 1,
+        "servers": [
+          {
+            "id": "c9287ef25e3c2431",
+            "name": "io.github.WellApp-ai/well-mcp",
+            "title": "Well",
+            "endpoint": "https://api.wellapp.ai/v1/mcp",
+            "transport": "streamable-http",
+            "version": "0.2.1",
+            "repository": "https://github.com/WellApp-ai/well-mcp",
+            "website": "https://docs.wellapp.ai/mcp/introduction",
+            "delisted": false,
+            "skipReason": null,
+            "lastStatus": "too-large",
+            "lastDetail": "response exceeded 3145728 bytes",
+            "lastAttempt": "2026-11-07T03:21:44Z",
+            "lastObserved": "2026-10-20T21:55:11Z",
+            "toolCount": 311,
+            "subjectDigest": "sha256-x9YRsNZupD3iYESCrdpIHdVlDg2fwYWdIwnl8DmGuNs=",
+            "toolSetDigest": null,
+            "firstPinned": "2026-09-23T11:07:30Z",
+            "unchangedSince": "2026-10-20T21:55:11Z",
+            "observations": 45,
+            "attempts": 66,
+            "changes": 19,
+            "blockMatches": 0,
+            "adviseMatches": 59,
+            "recordMatches": 0,
+            "state": "unknown",
+            "badgeText": "not digestible",
+            "classifierModel": null,
+            "classifierFlags": null,
+            "packageVersion": null,
+            "packageSignals": null,
+            "toolExtrasDigest": null,
+            "noDigest": {
+              "reason": "not_digestible"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://histor.modelmarket.dev/api/v1/servers?state=unobserved&limit=1",
+      "status": 200,
+      "data": {
+        "total": 44265,
+        "offset": 0,
+        "limit": 1,
+        "servers": [
+          {
+            "id": "0b2cf857a0c0aa97",
+            "name": "ac.snag/snag",
+            "title": null,
+            "endpoint": "https://mcp.snag.ac/mcp",
+            "transport": "streamable-http",
+            "version": "1.0.0",
+            "repository": null,
+            "website": null,
+            "delisted": false,
+            "skipReason": null,
+            "lastStatus": "http-401",
+            "lastDetail": "",
+            "lastAttempt": "2026-11-06T18:12:32Z",
+            "lastObserved": null,
+            "toolCount": null,
+            "subjectDigest": null,
+            "toolSetDigest": null,
+            "firstPinned": null,
+            "unchangedSince": null,
+            "observations": 0,
+            "attempts": 64,
+            "changes": 0,
+            "blockMatches": null,
+            "adviseMatches": null,
+            "recordMatches": null,
+            "state": "unknown",
+            "badgeText": "not observed",
+            "classifierModel": null,
+            "classifierFlags": null,
+            "packageVersion": null,
+            "packageSignals": null,
+            "toolExtrasDigest": null,
+            "noDigest": {
+              "reason": "not_observed"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

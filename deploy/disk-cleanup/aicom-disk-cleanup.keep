@@ -1,0 +1,8 @@
+# Images aicom-disk-cleanup never removes, whatever their age or tag: one shell glob per line, matched against
+# the repository (histor-node) or the full reference (histor-node:22). install.sh adds these lines to
+# /etc/aicom-disk-cleanup.keep and keeps the host's own; add an image here when a program starts it with
+# `docker run` and it carries no org.modelmarket.keep label.
+#
+# HISTOR package sandbox (histor/sandbox/install.sh; histor_observe.IMAGES and RUNTIMES): started per run.
+histor-node
+histor-python

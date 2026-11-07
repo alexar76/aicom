@@ -5,7 +5,11 @@ modelmarket.dev publishes about its sellers (signed manifest, federation peers, 
 with the previous run, and checks every new or changed listing for broken schemas, prompt injection (WARDEN's static
 scan and threat list), what a buyer would hand over (credentials, tokens, personal data, URLs, code, paths), and
 address and price problems. The model writes the human report from `report.json` and pastes the facts block
-(`report.md`) unchanged. Description: `docs/multica-use-cases.ru.md`, section 5.
+(`report.md`) unchanged. Welcome drafts to outside authors may use only each item's `letter_points`: high and
+medium findings and schema defects. WARDEN's advisory word matches (`advisory: true`, such as "instead of" or
+"API key") stay in the owner's report and never reach a letter. An outside source gets a letter only when it has an
+https address under a public name and, for a peer, the hub has read it at least once (`welcome`,
+`no_welcome_reason`); the rest, such as probes of the hub's address checks, are counted on one line. Description: `docs/multica-use-cases.ru.md`, section 5.
 
 - `review.mjs` — the checker (Node 22, no dependencies besides an unpacked `@aimarket/warden` ≥ 0.23.0).
 - `run.sh` — downloads the three documents with curl and runs the checker; state in

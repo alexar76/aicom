@@ -1,0 +1,33 @@
+........................................................................ [ 20%]
+........s............................................................... [ 40%]
+........................................................................ [ 61%]
+........................................................................ [ 81%]
+.................................................................        [100%]
+=============================== warnings summary ===============================
+../../../../../../../private/tmp/aicom-python-security-20261107/lib/python3.12/site-packages/websockets/legacy/__init__.py:6
+  /private/tmp/aicom-python-security-20261107/lib/python3.12/site-packages/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.12.13-final-0 _______________
+
+Name                 Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------
+dolos/__init__.py        1      0      0      0   100%
+dolos/__main__.py      107     10      8      2    90%   42-46, 73-84, 230
+dolos/abis.py           41      3     20      1    93%   32, 55-56
+dolos/attacks.py       155      3     34      1    98%   176, 245-246
+dolos/findings.py      109      0      6      1    99%   135->exit
+dolos/fixloop.py       172      7     40      6    94%   89->94, 90->89, 92-93, 207-208, 226-227, 263, 293->296
+dolos/forkchain.py     126      8     24      3    93%   103, 107-108, 119-120, 128, 135-136
+dolos/harness.py       110      7     30      5    91%   74, 150, 152, 156-157, 176-178
+dolos/intel.py          91      1     28      1    98%   183
+dolos/llm.py           221     14     78     13    90%   202->204, 204->exit, 262, 265-275, 277->282, 290, 296, 335->337, 387, 414, 418, 422, 469
+dolos/memos.py         131      5     32      1    96%   52->54, 55-57, 158-159
+dolos/submit.py         51      0     18      0   100%
+dolos/watch.py          90     17     16      1    83%   76-77, 80, 165-179, 183
+----------------------------------------------------------------
+TOTAL                 1405     75    334     35    94%
+Required test coverage of 90% reached. Total coverage: 93.56%
+352 passed, 1 skipped, 1 warning in 41.42s

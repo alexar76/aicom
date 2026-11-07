@@ -23,7 +23,7 @@
 
 services:
   docker-dind:
-    image: docker:27.4.0-dind
+    image: docker:29.9.3-dind
     # ⚠️  privileged grants near-root host access — see the file header above
     # for the host-escape risk and rootless/separate-host mitigations.
     privileged: true

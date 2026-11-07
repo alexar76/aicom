@@ -1,0 +1,193 @@
+{
+  "at": "2026-11-07T14:25:09.790833+00:00",
+  "search": {
+    "results": [
+      {
+        "identifier": "urn:air:iot.modelmarket.dev:gaia.gateway:gaia.weather.read@v1",
+        "displayName": "gaia.weather.read",
+        "type": "application/vnd.aimarket.capability+json",
+        "url": "https://modelmarket.dev/ard/v1/capability?product_id=gaia.gateway&capability_id=gaia.weather.read%40v1&source_hub=https%3A%2F%2Fiot.modelmarket.dev",
+        "version": "v1",
+        "digest": "sha256:ba27fb0aae61ff31334165cca03e75a9f7857bf8310b0393941796dcfb764b0a",
+        "score": 76,
+        "source": "https://iot.modelmarket.dev"
+      },
+      {
+        "identifier": "urn:air:atlas.modelmarket.dev:atlas.products:atlas.fire.weather@v1",
+        "displayName": "atlas.fire.weather",
+        "type": "application/vnd.aimarket.capability+json",
+        "url": "https://modelmarket.dev/ard/v1/capability?product_id=atlas.products&capability_id=atlas.fire.weather%40v1&source_hub=https%3A%2F%2Fatlas.modelmarket.dev",
+        "version": "v1",
+        "digest": "sha256:c177a207b2ae2baa33481c48b1c181dad2634e34c9ad320efc0a154a0084d1a6",
+        "score": 73,
+        "source": "https://atlas.modelmarket.dev"
+      },
+      {
+        "identifier": "urn:air:iot.modelmarket.dev:gaia.gateway:gaia.storm.reports.read@v1",
+        "displayName": "gaia.storm.reports.read",
+        "type": "application/vnd.aimarket.capability+json",
+        "url": "https://modelmarket.dev/ard/v1/capability?product_id=gaia.gateway&capability_id=gaia.storm.reports.read%40v1&source_hub=https%3A%2F%2Fiot.modelmarket.dev",
+        "version": "v1",
+        "digest": "sha256:380e3c1157e00917722fc9bb7e6874e6319097b9f8bff6636bf0f5af2e89b10c",
+        "score": 69,
+        "source": "https://iot.modelmarket.dev"
+      }
+    ],
+    "nextPageToken": "eyJvIjozLCJxIjoiZTkyMDYzYzdlOWMwYTdmZiJ9"
+  },
+  "descriptor": {
+    "a2a": {
+      "agent_card": "https://modelmarket.dev/.well-known/agent-card.json"
+    },
+    "access_mode": "paid",
+    "capability_id": "gaia.weather.read@v1",
+    "catalogue": "https://modelmarket.dev/ai-market/v2/manifest",
+    "description": "Current weather (temperature, humidity, pressure, wind) at a place: pass latitude+longitude or city (e.g. \"Tokyo\"); GAIA reads the nearest live Open-Meteo relay within 75 km, or refuses. Ed25519-attested. An exact device_id overrides the place: om-wx-01, nws-01, Met \u00c9ireann met-ie-01, SMHI MetObs smhi-wx-*-01 (CC BY 4.0), MET Norway Frost frost-*-01 (in-situ, not METAR), DMI dmi-*-01, Singapore NEA sg-wx-*-01 (Open Data Licence), HKO hko-wx-*-01 (DATA.GOV.HK attribution), AEMET aemet-wx-*-01 (Fuente: AEMET), MeteoSwiss ch-wx-*-01 (CC BY 4.0), CWA cwa-wx-*-01 (OGDL 1.0), M\u00e9t\u00e9o-France mf-wx-*-01 (Etalab OL 2.0), Estonia ee-wx-*-01 (CC BY 4.0), Iceland is-wx-*-01 (ODC-By), GeoSphere Austria at-wx-*-01 (CC BY 4.0), Lithuania lt-wx-*-01 (CC BY-SA 4.0), Latvia lv-wx-*-01 (CC0-1.0), JMA AMeDAS jp-wx-*-01 (Public Data License), CHMU cz-wx-*-01 (CC BY 4.0), or KMA kr-wx-*-01 (Public Nuri Type 1; needs GAIA_KMA_SERVICE_KEY) when live. Demo-site simulators ws-01/ws-02 answer only to their device_id (and to an empty call on a simulator-only GAIA).",
+    "discovery": "https://modelmarket.dev/.well-known/agent-marketplace",
+    "display_name": "gaia.weather.read",
+    "hub": "https://modelmarket.dev",
+    "identifier": "urn:air:iot.modelmarket.dev:gaia.gateway:gaia.weather.read@v1",
+    "input_schema": {
+      "anyOf": [
+        {
+          "required": [
+            "latitude",
+            "longitude"
+          ]
+        },
+        {
+          "required": [
+            "lat",
+            "lon"
+          ]
+        },
+        {
+          "required": [
+            "lat",
+            "lng"
+          ]
+        },
+        {
+          "required": [
+            "city"
+          ]
+        },
+        {
+          "required": [
+            "place"
+          ]
+        },
+        {
+          "required": [
+            "location"
+          ]
+        },
+        {
+          "required": [
+            "device_id"
+          ]
+        }
+      ],
+      "properties": {
+        "city": {
+          "default": "Berlin",
+          "description": "city name, e.g. Tokyo / \u0422\u043e\u043a\u0438\u043e / \u6771\u4eac; add the state or country after a comma when the name is shared (\"Paris, Texas\"). GAIAs with a gazetteer take any populated place (see gaia.place.resolve@v1)",
+          "type": "string"
+        },
+        "device_id": {
+          "description": "exact relay id; overrides the place (sim ws-01/ws-02 only this way)",
+          "type": "string"
+        },
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "invoke": {
+      "body": {
+        "capability_id": "gaia.weather.read@v1",
+        "input": {},
+        "product_id": "gaia.gateway",
+        "source_hub": "https://iot.modelmarket.dev"
+      },
+      "method": "POST",
+      "url": "https://modelmarket.dev/ai-market/v2/invoke"
+    },
+    "mcp": {
+      "endpoint": "https://modelmarket.dev/mcp",
+      "tool": "gaia.gateway.gaia.weather.read@v1"
+    },
+    "name": "gaia.gateway.gaia.weather.read@v1",
+    "output_schema": {
+      "properties": {
+        "attestation": {
+          "description": "Ed25519 device signature over the reading canonical",
+          "type": "object"
+        },
+        "reading": {
+          "description": "device_id/model/site/seq/ts/values/units",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "price_per_call_usd": 0.001,
+    "product_id": "gaia.gateway",
+    "protocol": "aimarket-v2",
+    "routed_price_usd": 0.00101,
+    "routing_fee_bps": 100,
+    "source_hub": "https://iot.modelmarket.dev",
+    "source_hub_name": "GAIA \u2014 physical-world oracle gateway",
+    "version": "v1"
+  },
+  "agents": {
+    "entries": [
+      {
+        "identifier": "urn:air:agent-exec.448c.org:agent-exec.448c.org:attest",
+        "displayName": "attest",
+        "type": "application/vnd.aimarket.capability+json",
+        "url": "https://modelmarket.dev/ard/v1/capability?product_id=agent-exec.448c.org&capability_id=attest&source_hub=https%3A%2F%2Fagent-exec.448c.org",
+        "description": "POST /attest -- Pay to have us fetch a URL from OUR vantage point and return a signed, timestamped attestation of what we saw -- hash, byte count, status and headers, never the body. Retrievable afterwards for free at GET /attest/{id}, so it can be cited to a third party who never paid us. Complaints, questions, quote requests, or a service you wish we had: POST https://agent-exec.448c.org/feedback -- free, no account. Every report is read and analysed daily; there is no individual reply.",
+        "capabilities": [
+          "agent-exec.448c.org.attest@v1"
+        ],
+        "version": "v1",
+        "digest": "sha256:67d229adcb209b918b2c9eb62ae7e86d35d1969a01a0e4774a7d9144d6616313",
+        "metadata": {
+          "aimarket": {
+            "protocol": "aimarket-v2",
+            "product_id": "agent-exec.448c.org",
+            "capability_id": "attest",
+            "source_hub": "https://agent-exec.448c.org",
+            "price_per_call_usd": 0.008,
+            "access_mode": "paid",
+            "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+          }
+        },
+        "tags": [
+          "agents",
+          "attestation",
+          "code-execution",
+          "directory",
+          "dns",
+          "email",
+          "key-claims",
+          "risk-checks",
+          "sandbox",
+          "storage",
+          "url-watch",
+          "x402"
+        ]
+      }
+    ],
+    "nextPageToken": "eyJvIjoxLCJxIjoiZDFhNTVjYmYzN2UxMGYxNiJ9"
+  }
+}

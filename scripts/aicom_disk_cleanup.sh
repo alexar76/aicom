@@ -15,6 +15,10 @@
 #     of their repository, that are not a base image (local or official), and that no compose file on the host names. The newest-per-repository rule keeps the
 #     last good image of a service that is down at the moment (2026-10: a stopped Alien Monitor lost its only image
 #     to `docker system prune -a` and served 502); `docker rmi` without -f refuses anything still in use;
+#     an image also stays when something on the host still needs it although nothing runs it right now: it carries
+#     the label org.modelmarket.keep or org.modelmarket.histor.sandbox, /etc/aicom-disk-cleanup.keep lists it, or a
+#     unit, cron table or program on the host names it (2026-11-02/03: the HISTOR package sandbox, which starts
+#     histor-node:22 and :24 per run, lost them on pingblip and competing-lab and every npm observation failed);
 #   - systemd journal beyond 200 MB, apt cache, pip / npm / go build caches of root.
 # It never touches volumes, running or non-rollback containers, backups, databases or anything under /root
 # except the caches named above. Log: /var/log/aicom-disk-cleanup.log.
@@ -23,6 +27,7 @@ LOG=/var/log/aicom-disk-cleanup.log
 STAMP=/var/lib/aicom-disk-cleanup/last-full-run
 DISK_TRIGGER_PCT="${DISK_TRIGGER_PCT:-85}"
 KEEP_DAYS="${KEEP_DAYS:-14}"
+KEEP_FILE="${KEEP_FILE:-/etc/aicom-disk-cleanup.keep}"
 DRY=0; IF_NEEDED=0
 for a in "$@"; do
   case "$a" in
@@ -72,19 +77,58 @@ if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
   # Newest image id per repository, by creation time.
   newest=$(docker images --no-trunc --format '{{.Repository}} {{.ID}} {{.CreatedAt}}' | grep -v '^<none>' \
              | sort -k1,1 -k3,4r | awk '!seen[$1]++ {print $2}' | sort -u)
+  # Images the host lists as kept: /etc/aicom-disk-cleanup.keep, one shell glob per line matched against the
+  # repository or the full reference (histor-node, histor-node:22, ghcr.io/org/*), # starts a comment.
+  keep_globs=()
+  if [[ -r $KEEP_FILE ]]; then
+    while read -r g _; do [[ -z $g || $g == \#* ]] || keep_globs+=("$g"); done < "$KEEP_FILE"
+  fi
+  listed() { local g; for g in "${keep_globs[@]}"; do [[ $1 == $g || ${1%:*} == $g ]] && return 0; done; return 1; }
+  kept() { [[ $DRY == 1 ]] && log "  keep $1: $2"; return 0; }
+
+  cands=()
   while read -r ref id created; do
     [[ $ref == "<none>:<none>" ]] && continue
     # Base images stay: builds and the HISTOR sandbox pin them by tag (overlay-base, *-security-base, hubbase-*,
-    # histor-python) and the official ones would only be pulled again.
-    [[ ${ref%:*} =~ (^|[/_-])base([_-]|$)|hubbase|histor-python|(^|/)(python|node|nginx|alpine|debian|ubuntu|postgres|redis|busybox|golang|rust)$ ]] && continue
+    # histor-python, histor-node) and the official ones would only be pulled again.
+    [[ ${ref%:*} =~ (^|[/_-])base([_-]|$)|hubbase|histor-python|histor-node|(^|/)(python|node|nginx|alpine|debian|ubuntu|postgres|redis|busybox|golang|rust)$ ]] && continue
     grep -qx "$id" <<< "$used" && continue
     grep -qx "$id" <<< "$newest" && continue
     grep -qxF "$ref" <<< "$named" && continue
     grep -qxF "${ref%:latest}" <<< "$named" && continue
     t=$(date -d "${created% *}" +%s 2>/dev/null) || continue
     (( now - t > keep_s )) || continue
-    run docker rmi "$ref"
+    listed "$ref" && { kept "$ref" "listed in $KEEP_FILE"; continue; }
+    labels=$(docker image inspect -f '{{json .Config.Labels}}' "$id" 2>/dev/null)
+    [[ $labels =~ \"org\.modelmarket\.(keep|histor\.sandbox)\" ]] && { kept "$ref" "label"; continue; }
+    cands+=("$ref")
   done < <(docker images --no-trunc --format '{{.Repository}}:{{.Tag}} {{.ID}} {{.CreatedAt}}')
+
+  # References: a program that runs `docker run histor-node:22` needs that image although no container and no
+  # compose file holds it. Search units, cron tables, /usr/local programs and the scripts and configs under
+  # /opt, /srv, /root and /home (not git trees, virtualenvs, node_modules or backups) for each candidate's
+  # reference, and for its repository alone when the tag is latest. Only the matched references are printed.
+  referenced=""
+  if (( ${#cands[@]} )); then
+    pats=$(for r in "${cands[@]}"; do echo "$r"; [[ $r == *:latest ]] && echo "${r%:latest}"; done)
+    referenced=$(
+      { find /etc/systemd/system /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly \
+             /var/spool/cron /usr/local/bin /usr/local/sbin -maxdepth 3 -type f -size -2M 2>/dev/null
+        find /etc -maxdepth 1 -type f \( -name crontab -o -name '*.env' \) 2>/dev/null
+        find /opt /srv /root /home -maxdepth 5 \
+             \( -name .git -o -name node_modules -o -name 'venv*' -o -name .venv -o -name site-packages \
+                -o -name __pycache__ -o -name 'aicom-backups' -o -name backups \) -prune -o \
+             -type f -size -1M \( -name '*.sh' -o -name '*.py' -o -name '*.env' -o -name '.env' -o -name '*.service' \
+                -o -name '*.timer' -o -name '*.conf' -o -name '*.json' -o -name '*.toml' -o -name '*.ini' \
+                -o -name '*.y*ml' -o -name Makefile -o -name '*.mjs' -o -name '*.js' \) -print 2>/dev/null
+      } | tr '\n' '\0' | xargs -0 -r grep -hoswF -f <(printf '%s\n' "$pats") 2>/dev/null | sort -u)
+  fi
+  for ref in "${cands[@]}"; do
+    if grep -qxF "$ref" <<< "$referenced" || { [[ $ref == *:latest ]] && grep -qxF "${ref%:latest}" <<< "$referenced"; }; then
+      kept "$ref" "named by a program or unit on this host"; continue
+    fi
+    run docker rmi "$ref"
+  done
   run docker image prune -f
 fi
 

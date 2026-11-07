@@ -1,0 +1,1175 @@
+[
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000637",
+    "package": "aimarket-oracle-core",
+    "summary": "Oracle client address and paid tier can be forged by hosts on the same private network in aimarket-oracle-core",
+    "details": "If you run an oracle built on aimarket-oracle-core where hosts or containers you do not control share a private network with it, any of them can reset its rate limit with every request and, when you list the hub in ORACLE_TRUSTED_PAYMENT_PROXIES, claim the paid tier without paying. The rate-limit key and the paid-tier check (tiers.PaidTierPolicy.is_paid) both use app.client_key, which is X-Real-IP, or the right-most X-Forwarded-For entry. 0.6.2 reads those headers only when the TCP peer is a loopback, private or link-local address (app.peer_is_local_proxy). A neighbour container on the same Docker network, which the 0.6.0 source itself names as a direct caller, is such a peer: it can send X-Real-IP with the hub's address and an X-Payment-Channel header and be served as the paying hub. In 0.2.0 through 0.6.0 a caller on any network could (GCVE-110-VULN-PYPI-2026-000632). ORACLE_PAID_TIER_SECRET is not affected. Affects 0.2.0 through 0.6.2. Fixed in 0.6.3, which trusts those headers only from the peers in ORACLE_TRUSTED_PROXIES (loopback by default), so a neighbour is keyed on its own address and cannot claim the hub's.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "oracle_core.app"
+            },
+            {
+              "path": "oracle_core.tiers"
+            },
+            {
+              "path": "aimarket-oracle-core",
+              "symbols": [
+                "oracle_core.app.peer_is_local_proxy",
+                "oracle_core.app.client_key",
+                "oracle_core.tiers.PaidTierPolicy.is_paid"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-oracle-core",
+          "purl": "pkg:pypi/aimarket-oracle-core"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.2.0"
+              },
+              {
+                "fixed": "0.6.3"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000640",
+    "package": "aimarket-mcp",
+    "summary": "Keyless aimarket-mcp server treats a same-user or non-Linux reverse proxy as a local caller",
+    "details": "If you run the aimarket-mcp HTTP server without AIMARKET_MCP_KEY behind a reverse proxy, tunnel or port forward on the same host, and that proxy runs as the same user as the server or the host is not Linux, every caller of the proxy can use the server's tools, including web_fetch and market_invoke, which spends your AIMARKET_API_KEY balance. A keyless server answers only callers it judges local (server._auth_ok). The test added in 0.6.3 (server._caller_is_this_user) tells a proxy from a local client only by the owner of its socket in /proc/net/tcp: a proxy running as the server's user, for example nginx and the server both running as root in one container or pod, passes it, and where /proc/net/tcp does not exist (macOS, Windows) every caller passes it. Earlier versions are exposed to the same proxy as well (GCVE-110-PYPI-2026-018883, GCVE-110-VULN-PYPI-2026-000612). Affects 0.1.0 through 0.6.3. Fixed in 0.6.4, which refuses keyless HTTP callers unless AIMARKET_MCP_LOCAL_RELAY=1 is set, and on hosts without /proc/net/tcp also requires AIMARKET_MCP_LOCAL_UNVERIFIED=1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "aimarket_mcp.server",
+              "symbols": [
+                "aimarket_mcp.server._auth_ok",
+                "aimarket_mcp.server._caller_is_this_user"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-mcp",
+          "purl": "pkg:pypi/aimarket-mcp"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.6.4"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000616",
+    "package": "skopos-fleet",
+    "summary": "SSH host key not checked when skopos-fleet pushes remediation commits",
+    "details": "If you run skopos-fleet 0.2.0 with an SSH remediation remote (SKOPOS_AGENT_REPO_URL) and an SSH key, anyone in a network position between SKOPOS and the remote can impersonate the git server, receive the pushed remediation commits and answer fetches with its own: remediation.git_push.GitPusher._git runs ssh with StrictHostKeyChecking=no and UserKnownHostsFile=/dev/null for every remote. Fixed in 0.2.1 for remotes whose host name has a dot in it: those are pinned on first use (StrictHostKeyChecking=accept-new) in SKOPOS's known_hosts (SKOPOS_KNOWN_HOSTS) and refused if the key changes. A loopback remote, and every single-label name, is still pushed to without a host-key check (GCVE-110-VULN-PYPI-2026-000639). The collector's own SSH host-key default is GCVE-110-PYPI-2026-021896. Affects 0.2.0.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "skopos.remediation.git_push",
+              "symbols": [
+                "skopos.remediation.git_push.GitPusher._git"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "skopos-fleet",
+          "purl": "pkg:pypi/skopos-fleet"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.2.0"
+              },
+              {
+                "fixed": "0.2.1"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:55:07Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000641",
+    "package": "aimarket-metis",
+    "summary": "Keyless Metis server treats a same-user or non-Linux reverse proxy as a local caller",
+    "details": "If you run aimarket-metis without METIS_API_KEY behind a reverse proxy, tunnel or port forward on the same host, and that proxy runs as the same user as the server or the host is not Linux, every caller of the proxy can run verifications (POST /v1/verify, /v1/verify/stream, /aimarket/invoke) that spend your model budget. A keyless server answers only callers it judges local (metis.api.auth.local_caller). The test added in 0.2.3 (metis.api.auth._caller_is_this_user) tells a proxy from a local client only by the owner of its socket in /proc/net/tcp: a proxy running as the server's user passes it, and where /proc/net/tcp does not exist (macOS, Windows) every caller passes it. Earlier versions are exposed to the same proxy as well (GCVE-110-VULN-PYPI-2026-000613). Affects 0.2.0 through 0.2.4. Fixed in 0.2.5, which refuses keyless HTTP callers unless METIS_LOCAL_RELAY=1 is set, and on hosts without /proc/net/tcp also requires METIS_LOCAL_UNVERIFIED=1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "metis.api.auth",
+              "symbols": [
+                "metis.api.auth.verify_api_key",
+                "metis.api.auth.local_caller",
+                "metis.api.auth._caller_is_this_user"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-metis",
+          "purl": "pkg:pypi/aimarket-metis"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.2.0"
+              },
+              {
+                "fixed": "0.2.5"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  },
+  {
+    "id": "GCVE-110-PYPI-2026-020712",
+    "package": "aimarket-hestia",
+    "summary": "Incorrect authorization of owner code rights in aimarket-hestia",
+    "details": "If you run aimarket-hestia 0.1.0 or 0.1.1 and have enabled open owner code (HESTIA_OPEN_OWNER_CODE) under the WebAssembly runtime, owners who self-registered while it was on can run code in a plain host process after you switch to the default stub runtime, which is not a sandbox. Their stored may_run_code flag is trusted at deploy (_principal, _admit_owner_deploy) without checking the current runtime, a restart brings their handlers back as host child processes (restore_stub_tenants), and an operator's routine POST /v1/owners update of such a key writes the right back and reactivates it. An installation that never enabled open owner code is not exposed. Fixed in 0.1.2: an open-signup key runs code only under the wasm runtime, whatever is stored, at deploy, at restore and after every owner update, and losing the right stops the owner's running handlers. Affects 0.1.0 and 0.1.1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "hestia.app"
+            },
+            {
+              "path": "hestia.app_routes.owners"
+            },
+            {
+              "path": "hestia.app_routes.tenants"
+            },
+            {
+              "path": "hestia.config"
+            },
+            {
+              "path": "aimarket-hestia",
+              "symbols": [
+                "hestia.app.build_app._admit_owner_deploy",
+                "hestia.app.build_app._principal",
+                "hestia.app.restore_stub_tenants",
+                "hestia.app_routes.owners.admit_owner"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-hestia",
+          "purl": "pkg:pypi/aimarket-hestia"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.1.2"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:55:07Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000636",
+    "package": "aimarket-platon",
+    "summary": "Platon rate limit key can be forged by hosts on the same private network in aimarket-platon",
+    "details": "If you run aimarket-platon on a network that hosts or containers you do not control can also reach (a LAN, a shared Docker network, a Kubernetes namespace), any of them can reset the per-client rate limit on the paid ask completion (POST /api/ask and the platon.ask@v1 capability) with every request and spend your model budget past the 30-a-minute ceiling. The server binds 0.0.0.0 by default and keys the limit on X-Real-IP, or the right-most X-Forwarded-For entry. 0.1.5 reads those headers only when the TCP peer is a loopback, private or link-local address (main._from_local_proxy, main._key_from), on the assumption that such a peer is your reverse proxy. A neighbour on a private network is such a peer, so it still names its own key. In 0.1.0 through 0.1.3 a caller on any network could (GCVE-110-VULN-PYPI-2026-000615). Affects 0.1.0 through 0.1.5. Fixed in 0.1.6, which trusts those headers only from the peers in PLATON_TRUSTED_PROXIES (loopback by default), for both the HTTP and the websocket key.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "platon.main",
+              "symbols": [
+                "platon.main._from_local_proxy",
+                "platon.main._key_from",
+                "platon.main._client_key",
+                "platon.main._ws_client_key"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-platon",
+          "purl": "pkg:pypi/aimarket-platon"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.1.6"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000631",
+    "package": "aimarket-mcp",
+    "summary": "Server-side request forgery through DNS rebinding and NAT64 addresses in aimarket-mcp web_fetch",
+    "details": "If you run aimarket-mcp 0.1.0 through 0.6.1 and let callers you do not fully trust use the web_fetch tool (over the stdio server or the HTTP server's tools/call), including a model following a prompt injection, they can make the server fetch addresses inside your network, such as 169.254.169.254 or an internal web service, and read the page text it returns. security.validate_url refuses private, loopback, link-local and reserved addresses, but the request is then made by name, so httpx resolves the host a second time and a name that answers public for the check and private a moment later is fetched (DNS rebinding). In 0.1.0 through 0.3.0 this holds for every URL. From 0.4.0 security.pin_target pins plain HTTP to the checked address, but https:// URLs are still requested by name, and the client honours HTTPS_PROXY, ALL_PROXY and SSL_CERT_FILE, so behind a TLS-inspecting egress proxy, which resolves the name itself and re-signs with a CA the server trusts, an internal https page is returned too; without such a proxy the certificate check fails and the error still tells which internal addresses accept TLS connections. In every affected version the check also treats the NAT64 prefix 64:ff9b::/96 and 6to4 as public, so on a host that routes them an IPv6 literal carrying a private IPv4 address passes. Fixed in 0.6.2: every request goes to the checked address with the name in Host and TLS SNI, proxy and CA environment variables are ignored, and IPv4-mapped, 6to4 and NAT64 addresses are judged by the IPv4 address they carry. The same weakness in aimarket-signal-hunt is GCVE-110-PYPI-2026-021946. Affects 0.1.0 through 0.6.1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "aimarket_mcp.security"
+            },
+            {
+              "path": "aimarket_mcp.tools"
+            },
+            {
+              "path": "aimarket-mcp",
+              "symbols": [
+                "aimarket_mcp.tools.web_fetch",
+                "aimarket_mcp.security.safe_get",
+                "aimarket_mcp.security.pin_target",
+                "aimarket_mcp.security._is_private_ip"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-mcp",
+          "purl": "pkg:pypi/aimarket-mcp"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.6.2"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-28T01:50:52Z"
+  },
+  {
+    "id": "GCVE-110-PYPI-2026-004375",
+    "package": "aimarket-hub",
+    "summary": "Server-side request forgery in aimarket-hub federated invoke",
+    "details": "If you run aimarket-hub 3.0.0 through 3.2.1 and federate with other hubs, a peer in your peer table can make your hub send requests carrying your callers' invoke input to a URL the peer chooses, and return the answer through your hub. The federated invoke path of POST /ai-market/v2/invoke posts to the mcp_endpoint URL in the peer's well-known document (api.create_app, invoke). In 3.0.0 nothing checks that URL, so it can be an address only your hub can reach. 3.1.0 sends it through outbound_http.safe_get and safe_post, which refuse internal addresses and pin the address, but any public host still passes. Through 3.2.0 only peers that describe themselves as oracle-like are routed this way; from 3.2.1 (_peer_invoke_endpoint) every peer is. Fixed in 3.7.0: the hub posts only to an endpoint on the same origin as the peer's registered URL, and otherwise to the peer's own /ai-market/v2/invoke. Affects 3.0.0 through 3.2.1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "aimarket_hub.api",
+              "symbols": [
+                "aimarket_hub.api._peer_invoke_endpoint",
+                "aimarket_hub.api.create_app",
+                "aimarket_hub.api.create_app.invoke"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-hub",
+          "purl": "pkg:pypi/aimarket-hub"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "3.0.0"
+              },
+              {
+                "fixed": "3.7.0"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:45:37Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000630",
+    "package": "aimarket-platon",
+    "summary": "Platon world writes accepted from any caller when no steer token is set",
+    "details": "If you run aimarket-platon 0.1.0 through 0.1.3 without PLATON_STEER_TOKEN and outside production mode, which is the default, anyone who can reach its port can steer and project the shared world (POST /api/steer, /api/project, the beacon checkpoint, the platon.steer@v1 and platon.project@v1 capabilities behind POST /ai-market/invoke, and the websocket writes): main._write_authorized returns true for every request, and the server binds 0.0.0.0 by default (config.Settings.host), so a developer who runs it locally opens it to their network. Source version 0.1.4 (commit 1c8944d, never published to PyPI) accepts only callers it judges local, which a reverse proxy on the same host passes. Fixed in 0.1.5 for callers on other hosts and for a proxy that runs as a different user on Linux: without a token, writes need a loopback caller whose socket belongs to the server's user, unless PLATON_PUBLIC_WRITES=1 opens them on purpose. A proxy running as the same user, or any proxy on macOS or Windows, is still treated as local (GCVE-110-VULN-PYPI-2026-000643). The rate limit on the same server is GCVE-110-VULN-PYPI-2026-000615. Affects 0.1.0 through 0.1.3.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "platon.main",
+              "symbols": [
+                "platon.main._write_authorized",
+                "platon.main.steer",
+                "platon.main.project",
+                "platon.main.ai_market_invoke"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-platon",
+          "purl": "pkg:pypi/aimarket-platon"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.1.5"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-28T01:50:52Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000613",
+    "package": "aimarket-metis",
+    "summary": "Metis verification endpoints serve every caller when no API key is set",
+    "details": "If you run aimarket-metis 0.2.0 through 0.2.2 without METIS_API_KEY, callers you did not intend can run verifications that spend your model budget (POST /v1/verify, /v1/verify/stream, /aimarket/invoke and the coordinator server). In 0.2.0 and 0.2.1, with production mode off (the default), metis.api.auth.verify_api_key skips authentication for every caller, and metis serve binds 0.0.0.0 by default, so anyone who can reach the port is served. 0.2.2 answers only callers it judges local (a loopback peer and Host, no forwarding header, no cross-site Origin), which a reverse proxy on the same host passes, so every caller of such a proxy is still served. Fixed in 0.2.3 for a proxy that runs as a different user on Linux: the caller's socket must belong to the server's user. A proxy running as the same user, or any proxy on macOS or Windows, is still treated as local (GCVE-110-VULN-PYPI-2026-000641). Affects 0.2.0 through 0.2.2.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "metis.api.auth"
+            },
+            {
+              "path": "metis.coordinator_server"
+            },
+            {
+              "path": "aimarket-metis",
+              "symbols": [
+                "metis.api.auth.verify_api_key",
+                "metis.api.auth.local_caller",
+                "metis.coordinator_server.create_coordinator_app"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-metis",
+          "purl": "pkg:pypi/aimarket-metis"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.2.0"
+              },
+              {
+                "fixed": "0.2.3"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:55:07Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000644",
+    "package": "skopos-fleet",
+    "summary": "Anyone who reaches the login page can lock the operator out of the skopos-fleet dashboard",
+    "details": "If the skopos-fleet dashboard login is reachable by people who should not operate it, any of them can keep you from signing in. In 0.2.1 every failed login also counts against a budget shared by all addresses (auth_store.register_failed_login), and 30 failures within 15 minutes (SKOPOS_LOGIN_GLOBAL_MAX_ATTEMPTS) lock the login for every address for SKOPOS_LOGIN_LOCKOUT_SECONDS (300 by default). Sending 30 wrong passwords every five minutes keeps the login closed, including during an incident the dashboard is meant to help with. 0.2.2 turns the shared budget into pacing, but still keys each address's lockout on a value the client controls: with the Streamlit releases it requires (1.66.1 and later) the session has no request object, so the peer lookup (app_auth._websocket_peer) finds nothing and the key is the client's X-Real-IP, or the shared value unknown when none is sent. Five failed logins without that header lock out every browser that reaches the dashboard directly, and a forged X-Real-IP locks out the operator's own address. A browser that is already signed in and holds a valid session cookie is let in without the login form. The shared budget was added in 0.2.1 to bound password guessing (GCVE-110-PYPI-2026-021896). Affects 0.2.1 and 0.2.2. Fixed in 0.2.3, which keys the lockout on the connection's own peer address and trusts forwarding headers only from SKOPOS_TRUSTED_PROXIES (loopback by default).",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "skopos.auth_store",
+              "symbols": [
+                "skopos.auth_store.register_failed_login",
+                "skopos.auth_store.login_lockout_remaining_seconds"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "skopos-fleet",
+          "purl": "pkg:pypi/skopos-fleet"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.2.1"
+              },
+              {
+                "fixed": "0.2.3"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000633",
+    "package": "aimarket-logos",
+    "summary": "Logos rate limit keyed on a client-supplied address header in aimarket-logos",
+    "details": "If you run aimarket-logos 0.1.0 or 0.2.0, anyone who can reach its port directly can reset its rate limit with every request and spend your model budget through the language-model backed POST /api/v1/ask and /api/v1/chat routes past LOGOS_RATE_MAX. The limit is keyed on X-Real-IP, or an X-Forwarded-For entry, from any peer (app._client_key), and the logos entry point binds 0.0.0.0 (logos.main), although the code assumes it is reachable only through an edge proxy. Fixed in 0.2.1 for callers on public networks: the headers count only when the TCP peer is a loopback, private or link-local address. A caller on a private network the app shares with others is still trusted (GCVE-110-VULN-PYPI-2026-000638). Affects 0.1.0 and 0.2.0.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "logos.app",
+              "symbols": [
+                "logos.app._client_key",
+                "logos.app.create_app"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-logos",
+          "purl": "pkg:pypi/aimarket-logos"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.2.1"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-28T01:49:28Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000632",
+    "package": "aimarket-oracle-core",
+    "summary": "Oracle client address and paid tier taken from client-supplied headers in aimarket-oracle-core",
+    "details": "If you run an oracle built on aimarket-oracle-core 0.2.0 through 0.6.0 where callers can reach its port without going through your reverse proxy, any of them can reset its rate limit with every request and, when you list the hub in ORACLE_TRUSTED_PAYMENT_PROXIES (from 0.3.0), claim the paid tier without paying. The rate-limit key and the paid-tier check (tiers.PaidTierPolicy.is_paid) both use app.client_key, which is X-Real-IP, or an X-Forwarded-For entry, from whichever peer sent the request, so sending X-Real-IP with the hub's address and an X-Payment-Channel header is served as the paying hub. A listed loopback address also admitted every caller relayed by an nginx on the same host, which sends no X-Real-IP by default. Fixed in 0.6.2 (0.6.1 was not published to PyPI) for callers on public networks: the headers count only when the TCP peer is a loopback, private or link-local address, and a loopback address never counts as a payment proxy. A caller on a private network the oracle shares with others is still trusted (GCVE-110-VULN-PYPI-2026-000637). ORACLE_PAID_TIER_SECRET is not affected. Affects 0.2.0 through 0.6.0.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "oracle_core.app"
+            },
+            {
+              "path": "oracle_core.tiers"
+            },
+            {
+              "path": "aimarket-oracle-core",
+              "symbols": [
+                "oracle_core.app.client_key",
+                "oracle_core.tiers.PaidTierPolicy.is_paid",
+                "oracle_core.tiers._ip_allowed"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-oracle-core",
+          "purl": "pkg:pypi/aimarket-oracle-core"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.2.0"
+              },
+              {
+                "fixed": "0.6.2"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-28T01:50:52Z"
+  },
+  {
+    "id": "GCVE-110-PYPI-2026-018883",
+    "package": "aimarket-mcp",
+    "summary": "Missing authentication by default in aimarket-mcp HTTP server",
+    "details": "If you run the aimarket-mcp HTTP server 0.1.0 through 0.6.0 without AIMARKET_MCP_KEY, anyone who can reach its port can call its tools without credentials, including web_fetch and market_invoke, which spends your AIMARKET_API_KEY balance. The server binds every interface (0.0.0.0) by default, and server._auth_ok accepts every request when no key and no production marker is set. Fixed in 0.6.1 for callers on other hosts: the server binds 127.0.0.1 by default and, without a key, answers only callers it judges local, unless AIMARKET_MCP_PUBLIC=1 opens it on purpose. Callers relayed by a reverse proxy on the same host are still served (GCVE-110-VULN-PYPI-2026-000612, GCVE-110-VULN-PYPI-2026-000640). Affects 0.1.0 through 0.6.0.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "aimarket_mcp.server",
+              "symbols": [
+                "aimarket_mcp.server._auth_ok",
+                "aimarket_mcp.server._peer_is_loopback",
+                "aimarket_mcp.server.handle_rpc",
+                "aimarket_mcp.server.main"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-mcp",
+          "purl": "pkg:pypi/aimarket-mcp"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.6.1"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:55:07Z"
+  },
+  {
+    "id": "GCVE-110-PYPI-2026-022091",
+    "package": "aimarket-histor",
+    "summary": "Sandbox observer misses persistence writes in aimarket-histor",
+    "details": "If you rely on aimarket-histor 0.2.0 through 0.3.1 to report what a third-party package does when installed and run, a package can make persistence changes the report omits and still be marked complete. It can write a file elsewhere and rename or link it onto a shell start-up file, authorized_keys or an autostart unit, because rename, renameat2, link, linkat, symlink, symlinkat and creat are not traced (sandbox/install.sh), or drop a .pth file or patch a sibling package under /work, which sandbox/histor_observe.py read_trace never reports. A package published to a registry HISTOR crawls can therefore obtain a clean, complete observation. The sandbox directory ships in the sdist only. Fixed in 0.4.1: those calls are traced and judged like writes, .pth and sitecustomize files outside /tmp and code written into the installed package after install are reported as persistence, and a trace runtime without those calls makes the run incomplete. Affects 0.2.0 through 0.3.1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "sandbox.histor_observe",
+              "symbols": [
+                "sandbox.histor_observe.read_trace",
+                "sandbox.histor_observe.run",
+                "sandbox.histor_observe.observe"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-histor",
+          "purl": "pkg:pypi/aimarket-histor"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.2.0"
+              },
+              {
+                "fixed": "0.4.1"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:45:37Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000612",
+    "package": "aimarket-mcp",
+    "summary": "Keyless aimarket-mcp server answers the callers of a reverse proxy on the same host",
+    "details": "If you run the aimarket-mcp HTTP server 0.6.1 or 0.6.2 without AIMARKET_MCP_KEY behind a reverse proxy on the same host, every caller of the proxy can use the server's tools, including web_fetch and market_invoke, which spends your AIMARKET_API_KEY balance. Without a key the server answers only callers it judges local (server._auth_ok: a loopback peer, a loopback Host, no forwarding header and no cross-site Origin), and nginx's default proxy_pass meets all four; the maintainer reproduced it through nginx against 0.6.2. Fixed in 0.6.3 for a proxy that runs as a different user on Linux: the caller's socket must belong to the server's user. A proxy running as the same user, or any proxy on macOS or Windows, is still treated as local (GCVE-110-VULN-PYPI-2026-000640). Affects 0.6.1 and 0.6.2; earlier versions answered every caller (GCVE-110-PYPI-2026-018883).",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "aimarket_mcp.server",
+              "symbols": [
+                "aimarket_mcp.server._auth_ok",
+                "aimarket_mcp.server._peer_is_loopback"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-mcp",
+          "purl": "pkg:pypi/aimarket-mcp"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.6.1"
+              },
+              {
+                "fixed": "0.6.3"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:55:07Z"
+  },
+  {
+    "id": "GCVE-110-PYPI-2026-021897",
+    "package": "helios-broadcast",
+    "summary": "Queue producers can publish videos without operator approval in helios-broadcast",
+    "details": "If you run helios-broadcast 0.1.0 or 0.2.0 and other processes or people can append to its ingest queue file (HELIOS_QUEUE_PATH), any of them can publish a video as public on your YouTube channel without the helios approve step, even with auto-approve off, including an already-rendered file under the configured file roots. ingest.ingest_external_queue copies each line's youtube object into the job unvalidated, and worker.process_job passes its privacy value to the YouTube upload as privacyStatus. Fixed in 0.2.1: every upload is private, ingest drops a requested privacy and logs that it did, and only helios approve (or auto-approve) makes a video public. Affects 0.1.0 and 0.2.0.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "helios.ingest"
+            },
+            {
+              "path": "helios.queue"
+            },
+            {
+              "path": "helios.worker"
+            },
+            {
+              "path": "helios.youtube.upload"
+            },
+            {
+              "path": "helios-broadcast",
+              "symbols": [
+                "helios.ingest.ingest_external_queue",
+                "helios.queue.QueueStore.enqueue",
+                "helios.worker.process_job",
+                "helios.youtube.upload.upload_job",
+                "helios.youtube.upload.upload_video"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "helios-broadcast",
+          "purl": "pkg:pypi/helios-broadcast"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.2.1"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:45:37Z"
+  },
+  {
+    "id": "GCVE-110-PYPI-2026-021946",
+    "package": "aimarket-signal-hunt",
+    "summary": "Server-side request forgery in aimarket-signal-hunt peer probe",
+    "details": "If you run aimarket-signal-hunt 0.1.0 or 0.1.1, a federation peer can make it send requests to addresses inside your network and learn whether they answered: each peer chooses its own URL, FederationClient._probe_peer requests it, and the status and latency are shown to any session in the round evidence. 0.1.0 checks nothing and follows redirects. 0.1.1 checks the resolved addresses (federation.probe_target) but then requests the name again, so DNS rebinding reaches internal addresses; the client also honours HTTPS_PROXY and SSL_CERT_FILE, so behind a TLS-inspecting proxy a rebound https URL is fetched too. Fixed in 0.1.2: the probe connects to the checked address with the name in Host and TLS SNI, ignores proxy environment variables and refuses NAT64, 6to4 and IPv4-mapped forms of private addresses. Affects 0.1.0 and 0.1.1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "signal_hunt.federation",
+              "symbols": [
+                "signal_hunt.federation.probe_target",
+                "signal_hunt.federation.FederationClient._probe_peer",
+                "signal_hunt.federation.FederationClient._enrich_peers_with_latency",
+                "signal_hunt.federation.FederationClient.snapshot"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-signal-hunt",
+          "purl": "pkg:pypi/aimarket-signal-hunt"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.1.2"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:45:37Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000635",
+    "package": "aimarket-hestia",
+    "summary": "Domain proof fetch connects to internal addresses in aimarket-hestia",
+    "details": "If you run aimarket-hestia 0.1.0 through 0.1.2, an owner binding a domain (POST /v1/owners/me/domain) can make your server open connections to port 443 of addresses inside your network and learn from the error it returns whether they accept connections. domains.https_proofs calls domains.require_public, which refuses a domain resolving to anything but global addresses, then requests https://<domain>/.well-known/hestia-owner.json by name, so a domain that rebinds to a private address after the check is contacted. require_public also treats the NAT64 prefix 64:ff9b::/96 as public, so on a host that routes it a domain resolving to the NAT64 form of a private IPv4 address passes. The client honours HTTPS_PROXY, ALL_PROXY and SSL_CERT_FILE, so behind a TLS-inspecting egress proxy the GET reaches the internal service. The path is fixed and only owner_pubkeys is read from the answer, but the 403 names the exception, which tells a refused connection, a timeout and a TLS failure apart. Fixed in 0.1.3: the fetch goes to the checked address with the domain in Host and TLS SNI, proxy and CA environment variables are ignored, and IPv4-mapped, 6to4 and NAT64 addresses are judged by the IPv4 address they carry. Affects 0.1.0 through 0.1.2.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "hestia.domains",
+              "symbols": [
+                "hestia.domains.https_proofs",
+                "hestia.domains.require_public",
+                "hestia.domains.prove"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-hestia",
+          "purl": "pkg:pypi/aimarket-hestia"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.1.3"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-28T01:49:28Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000615",
+    "package": "aimarket-platon",
+    "summary": "Platon rate limit keyed on a client-supplied address header in aimarket-platon",
+    "details": "If you run aimarket-platon 0.1.0 through 0.1.3 where callers you do not control can reach its port directly, any of them can reset the per-client rate limit on the paid ask completion (POST /api/ask and the platon.ask@v1 capability) with every request and spend your model budget past the 30-a-minute ceiling. The limit is keyed on X-Real-IP, or the right-most X-Forwarded-For entry, read from any peer (main._client_key, main._ws_client_key), and the server binds 0.0.0.0 by default. The fix was made in source version 0.1.4 (commit 1c8944d), which was never published to PyPI; 0.1.5 is the first release with it, and reads the headers only when the TCP peer is a loopback, private or link-local address. That stops callers on public networks. A caller on a private network the server shares with others is still trusted (GCVE-110-VULN-PYPI-2026-000636). Affects 0.1.0 through 0.1.3.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "platon.main",
+              "symbols": [
+                "platon.main._client_key",
+                "platon.main._ws_client_key",
+                "platon.main.ask"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-platon",
+          "purl": "pkg:pypi/aimarket-platon"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.1.5"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:45:37Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000642",
+    "package": "aimarket-treasury",
+    "summary": "Keyless Treasury service treats a same-user or non-Linux reverse proxy as a local caller",
+    "details": "If you run aimarket-treasury without TREASURY_CLIENT_TOKEN behind a reverse proxy, tunnel or port forward on the same host, and that proxy runs as the same user as the service or the host is not Linux, every caller of the proxy can use the routes that decide and move money (POST /authorize, /deposit, /vault/fund, /vault/reserve, /vault/top-up and /explain). A keyless service answers only callers it judges local (treasury.service._local_caller). The test added in 0.1.3 (treasury.service._caller_is_this_user) tells a proxy from a local client only by the owner of its socket in /proc/net/tcp: a proxy running as the service's user passes it, and where /proc/net/tcp does not exist (macOS, Windows) every caller passes it. Earlier versions answered every caller (GCVE-110-VULN-PYPI-2026-000614). Affects 0.1.0 through 0.1.3. Fixed in 0.1.4, which refuses keyless callers unless TREASURY_LOCAL_RELAY=1 is set, and on hosts without /proc/net/tcp also requires TREASURY_LOCAL_UNVERIFIED=1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "treasury.service",
+              "symbols": [
+                "treasury.service._local_caller",
+                "treasury.service._caller_is_this_user"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-treasury",
+          "purl": "pkg:pypi/aimarket-treasury"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.1.4"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000639",
+    "package": "skopos-fleet",
+    "summary": "SSH host key not checked when skopos-fleet pushes remediation commits to a single-label remote",
+    "details": "If your skopos-fleet remediation remote (SKOPOS_AGENT_REPO_URL) is an SSH URL whose host is a single-label name, such as a Gitea container called gitea, SKOPOS pushes to it with StrictHostKeyChecking=no and UserKnownHostsFile=/dev/null and accepts any host key (remediation.git_push.GitPusher._git). Whoever can answer for that name can receive the pushed remediation commits and serve its own on fetch: a single-label name can be completed by the resolver's search domains to a host on another network, and on a Docker bridge any neighbour container, which has CAP_NET_RAW by default, can take over the git server's address by ARP spoofing. 0.2.1 checks the host key for other remotes but treats every single-label name as a container on this host (remediation.git_push.ssh_remote_is_local). In 0.2.0 no remote was checked (GCVE-110-VULN-PYPI-2026-000616). Affects 0.2.0 and 0.2.1. Fixed in 0.2.2, which checks every remote's host key (StrictHostKeyChecking=accept-new against SKOPOS_KNOWN_HOSTS) and skips the check only for a loopback remote when SKOPOS_GIT_SKIP_HOST_KEY_LOOPBACK is set.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "skopos.remediation.git_push",
+              "symbols": [
+                "skopos.remediation.git_push.ssh_remote_is_local",
+                "skopos.remediation.git_push.GitPusher._git"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "skopos-fleet",
+          "purl": "pkg:pypi/skopos-fleet"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.2.0"
+              },
+              {
+                "fixed": "0.2.2"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000638",
+    "package": "aimarket-logos",
+    "summary": "Logos rate limit key can be forged by hosts on the same private network in aimarket-logos",
+    "details": "If you run aimarket-logos where hosts or containers you do not control share a private network with it, any of them can reset its rate limit with every request and spend your model budget through the language-model backed POST /api/v1/ask and /api/v1/chat routes past LOGOS_RATE_MAX. Through 0.2.1 the logos entry point always binds 0.0.0.0 (logos.main), and the limit is keyed on X-Real-IP, or an X-Forwarded-For entry (app._client_key). 0.2.1 reads those headers only when the TCP peer is a loopback, private or link-local address (app._from_local_proxy). A neighbour on a private network is such a peer, so it still names its own key. In 0.1.0 and 0.2.0 a caller on any network could (GCVE-110-VULN-PYPI-2026-000633). Affects 0.1.0 through 0.2.1. Fixed in 0.2.2, which trusts those headers only from the peers in LOGOS_TRUSTED_PROXIES (loopback by default) and binds 127.0.0.1 unless LOGOS_HOST is set.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "logos.app"
+            },
+            {
+              "path": "logos.main"
+            },
+            {
+              "path": "aimarket-logos",
+              "symbols": [
+                "logos.app._from_local_proxy",
+                "logos.app._client_key",
+                "logos.main.main"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-logos",
+          "purl": "pkg:pypi/aimarket-logos"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.2.2"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000643",
+    "package": "aimarket-platon",
+    "summary": "Keyless Platon server treats a same-user or non-Linux reverse proxy as a local writer",
+    "details": "If you run aimarket-platon without PLATON_STEER_TOKEN, outside production mode, behind a reverse proxy, tunnel or port forward on the same host, and that proxy runs as the same user as the server or the host is not Linux, every caller of the proxy can steer and project the shared world (POST /api/steer, /api/project, the beacon checkpoint, the platon.steer@v1 and platon.project@v1 capabilities and the websocket writes). Without a token the server accepts writes only from callers it judges local (main._write_authorized, main._local_caller). The test added in 0.1.5 (main._caller_is_this_user) tells a proxy from a local client only by the owner of its socket in /proc/net/tcp: a proxy running as the server's user passes it, and where /proc/net/tcp does not exist (macOS, Windows) every caller passes it. Earlier versions accepted every writer (GCVE-110-VULN-PYPI-2026-000630). Affects 0.1.0 through 0.1.5. Fixed in 0.1.6, which refuses keyless writers unless PLATON_LOCAL_RELAY=1 is set, and on hosts without /proc/net/tcp also requires PLATON_LOCAL_UNVERIFIED=1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "platon.main",
+              "symbols": [
+                "platon.main._write_authorized",
+                "platon.main._local_caller",
+                "platon.main._caller_is_this_user"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-platon",
+          "purl": "pkg:pypi/aimarket-platon"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.1.6"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000614",
+    "package": "aimarket-treasury",
+    "summary": "Treasury payout routes accept every caller when no client token is set",
+    "details": "If you run aimarket-treasury 0.1.0 or 0.1.1 without TREASURY_CLIENT_TOKEN, anyone who can reach the service can use the routes that decide and move money (POST /authorize, /deposit, /vault/fund, /vault/reserve, /vault/top-up and /explain): with production mode off (the default), service._require_client lets every caller through, and the service binds 0.0.0.0 (treasury.service.main). A caller can obtain a treasury-signed authorization decision for a finding it submits, add budget to the vault, reserve funds against a finding and request a top-up, which corrupts the vault's balance and journal. Settlement is simulated in these releases, and an authorization still needs a valid scanner signature and the external-verifier quorum. Fixed in 0.1.3 (0.1.2 was not published to PyPI) for callers on other hosts and for a proxy that runs as a different user on Linux: without a token the routes answer only a loopback caller whose socket belongs to the service's user. A proxy running as the same user, or any proxy on macOS or Windows, is still treated as local (GCVE-110-VULN-PYPI-2026-000642). Affects 0.1.0 and 0.1.1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "treasury.service",
+              "symbols": [
+                "treasury.service.build_app",
+                "treasury.service.main"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-treasury",
+          "purl": "pkg:pypi/aimarket-treasury"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.1.3"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-27T22:45:37Z"
+  },
+  {
+    "id": "GCVE-110-VULN-PYPI-2026-000634",
+    "package": "aimarket-atlas",
+    "summary": "Watchbox webhook delivery connects to internal addresses by name in aimarket-atlas",
+    "details": "If you run aimarket-atlas 0.1.2 through 0.3.1 and let subscribers set watchbox webhooks, a subscriber can make your server send signed watchbox POSTs to addresses inside your network, at a path it chooses, and read from the watchbox log (GET /api/v1/watchboxes/{id}/log) the status code or exception of each attempt. watchboxes._validate_webhook refuses only IP literals and a few local names. In 0.1.2 delivery (delivery.DeliveryLoop._deliver) resolves nothing, so a name that points at a private address is contacted. In 0.3.0 and 0.3.1 delivery._non_public_resolution checks the name once and each of up to five attempts then posts by name, so a name that rebinds to a private address after the check is contacted. The delivery client honours HTTPS_PROXY, ALL_PROXY and SSL_CERT_FILE, so behind a TLS-inspecting egress proxy, which resolves the name itself and re-signs with a CA the server trusts, the POST reaches the internal service; without such a proxy it stops at the certificate check, and the logged error still maps which internal addresses and ports accept connections. Fixed in 0.3.2: every attempt resolves and checks the name and posts to the address that passed, with the name in Host and TLS SNI, so a proxy is asked to connect to that address only. Affects 0.1.2 through 0.3.1.",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "atlas.delivery"
+            },
+            {
+              "path": "atlas.watchboxes"
+            },
+            {
+              "path": "aimarket-atlas",
+              "symbols": [
+                "atlas.delivery.DeliveryLoop._deliver",
+                "atlas.delivery._non_public_resolution",
+                "atlas.watchboxes._validate_webhook"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "aimarket-atlas",
+          "purl": "pkg:pypi/aimarket-atlas"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.2"
+              },
+              {
+                "fixed": "0.3.2"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-10-28T01:49:28Z"
+  },
+  {
+    "id": "GCVE-110-PYPI-2026-021896",
+    "package": "skopos-fleet",
+    "summary": "SSH host keys not verified by default and login lockout bypass in skopos-fleet",
+    "details": "If you run skopos-fleet 0.1.0 through 0.1.4 with SKOPOS_SSH_STRICT_HOST_KEYS unset, anyone in a network position between the collector and a monitored host can impersonate that host: the collector accepts any SSH host key (paramiko.AutoAddPolicy, no known_hosts), so the impersonator reads the commands it sends and returns forged log and probe output to your security dashboard (CWE-295). 0.1.5 verifies host keys by default against SKOPOS's known_hosts. Separately, in 0.1.0 through 0.2.2 the dashboard's failed-login lockout is keyed on input the client controls (the browser session through 0.1.4, the left-most X-Forwarded-For value in 0.1.5, and X-Real-IP from 0.2.0), so anyone who can reach the login page can guess the dashboard password without being locked out (CWE-307). 0.2.1 and 0.2.2 try to key the lockout on the connection's peer, but with the Streamlit releases they require (1.66.1 and later) the peer lookup (app_auth._websocket_peer) finds nothing and falls back to X-Real-IP; 0.2.1's budget shared by all addresses bounds guessing but lets anyone lock you out (GCVE-110-VULN-PYPI-2026-000644), and 0.2.2 replaces it with per-attempt pacing that parallel sessions avoid. Affects 0.1.0 through 0.2.2. Fixed in 0.2.3, which keys the lockout on the connection's own peer address and trusts forwarding headers only from SKOPOS_TRUSTED_PROXIES (loopback by default).",
+    "affected": [
+      {
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "skopos.ssh"
+            },
+            {
+              "path": "skopos.app_auth"
+            },
+            {
+              "path": "skopos-fleet",
+              "symbols": [
+                "skopos.ssh.run_command",
+                "skopos.app_auth._client_ip",
+                "skopos.app_auth._check_login_lockout",
+                "skopos.app_auth._register_failed_login"
+              ]
+            }
+          ]
+        },
+        "package": {
+          "ecosystem": "PyPI",
+          "name": "skopos-fleet",
+          "purl": "pkg:pypi/skopos-fleet"
+        },
+        "ranges": [
+          {
+            "events": [
+              {
+                "introduced": "0.1.0"
+              },
+              {
+                "fixed": "0.2.3"
+              }
+            ],
+            "type": "ECOSYSTEM"
+          }
+        ]
+      }
+    ],
+    "modified": "2026-11-01T05:31:23Z"
+  }
+]

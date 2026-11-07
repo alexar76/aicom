@@ -100,8 +100,11 @@ if command -v docker >/dev/null 2>&1; then
       warnings+=("postgres in $name is not accepting connections: not dumped, files kept raw")
       continue
     fi
+    # --rsyncable: a plain gzip stream changes from the first changed row onward, so borg found
+    # nothing to share between nights and stored the whole dump again. On admin-vps that was HISTOR's
+    # 3.25 GB dump, 3.1 GB of new data a night, and the 30 GB quota ran out on 2026-11-07.
     if docker exec "$name" sh -c 'export PGPASSWORD="${POSTGRES_PASSWORD:-}"; if [ -n "${POSTGRES_PASSWORD_FILE:-}" ]; then export PGPASSWORD="$(cat "$POSTGRES_PASSWORD_FILE")"; fi; exec pg_dumpall -w -U "${POSTGRES_USER:-postgres}" --clean --if-exists' \
-         2> "$STAGE/pg/$name.err" | gzip -1n > "$STAGE/pg/$name.sql.gz" \
+         2> "$STAGE/pg/$name.err" | gzip -1n --rsyncable > "$STAGE/pg/$name.sql.gz" \
          && gzip -t "$STAGE/pg/$name.sql.gz"; then
       pg_count=$((pg_count + 1))
       rm -f "$STAGE/pg/$name.err"
@@ -114,7 +117,7 @@ if command -v docker >/dev/null 2>&1; then
   done < <(docker ps --format '{{.Names}} {{.Image}}')
 fi
 if systemctl is-active --quiet postgresql 2>/dev/null; then
-  if (cd / && runuser -u postgres -- pg_dumpall --clean --if-exists) 2> "$STAGE/pg/host.err" | gzip -1n > "$STAGE/pg/host-postgresql.sql.gz" \
+  if (cd / && runuser -u postgres -- pg_dumpall --clean --if-exists) 2> "$STAGE/pg/host.err" | gzip -1n --rsyncable > "$STAGE/pg/host-postgresql.sql.gz" \
       && gzip -t "$STAGE/pg/host-postgresql.sql.gz"; then
     pg_count=$((pg_count + 1)); rm -f "$STAGE/pg/host.err"
     echo "pp:/var/lib/postgresql" >> "$exclude_list"

@@ -1,0 +1,1165 @@
+EEEEEEEEEEEEEEEEEEEEE                                                    [100%]
+==================================== ERRORS ====================================
+__________ ERROR at setup of test_health_exposes_treasury_pubkey_only __________
+
+self = <Coroutine test_health_exposes_treasury_pubkey_only>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_____________ ERROR at setup of test_authorize_pays_valid_finding ______________
+
+self = <Coroutine test_authorize_pays_valid_finding>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+__________ ERROR at setup of test_authorize_refuses_tampered_finding ___________
+
+self = <Coroutine test_authorize_refuses_tampered_finding>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_______________ ERROR at setup of test_deposit_forfeit_endpoint ________________
+
+self = <Coroutine test_deposit_forfeit_endpoint>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_______________ ERROR at setup of test_ledger_records_decisions ________________
+
+self = <Coroutine test_ledger_records_decisions>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_the_vault_is_attached_when_the_sandbox_rail_can_be_reached _
+
+fixturedef = <FixtureDef argname='_no_kernel_socket_table' scope='function' baseid='tests'>
+request = <SubRequest '_no_kernel_socket_table' for <Function test_the_vault_is_attached_when_the_sandbox_rail_can_be_reached>>
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -> object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+                return (yield)
+            if not _is_coroutine_or_asyncgen(fixturedef.func):
+>               return (yield)
+                        ^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_________ ERROR at setup of test_a_held_fallback_leaves_the_vault_off __________
+
+fixturedef = <FixtureDef argname='_no_kernel_socket_table' scope='function' baseid='tests'>
+request = <SubRequest '_no_kernel_socket_table' for <Function test_a_held_fallback_leaves_the_vault_off>>
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -> object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+                return (yield)
+            if not _is_coroutine_or_asyncgen(fixturedef.func):
+>               return (yield)
+                        ^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_tokenless_payout_routes_refuse_all_but_this_machine[93.184.216.34-http://localhost-headers0] _
+
+self = <Coroutine test_tokenless_payout_routes_refuse_all_but_this_machine[93.184.216.34-http://localhost-headers0]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_tokenless_payout_routes_refuse_all_but_this_machine[127.0.0.1-http://treasury.example-headers1] _
+
+self = <Coroutine test_tokenless_payout_routes_refuse_all_but_this_machine[127.0.0.1-http://treasury.example-headers1]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_tokenless_payout_routes_refuse_all_but_this_machine[127.0.0.1-http://localhost-headers2] _
+
+self = <Coroutine test_tokenless_payout_routes_refuse_all_but_this_machine[127.0.0.1-http://localhost-headers2]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_tokenless_payout_routes_refuse_all_but_this_machine[127.0.0.1-http://localhost-headers3] _
+
+self = <Coroutine test_tokenless_payout_routes_refuse_all_but_this_machine[127.0.0.1-http://localhost-headers3]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[self-False-403] _
+
+self = <Coroutine test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[self-False-403]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[self-True-200] _
+
+self = <Coroutine test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[self-True-200]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[other-True-403] _
+
+self = <Coroutine test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[other-True-403]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[absent-True-403] _
+
+self = <Coroutine test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[absent-True-403]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_tokenless_payout_routes_refused_where_the_socket_owner_cannot_be_read _
+
+self = <Coroutine test_tokenless_payout_routes_refused_where_the_socket_owner_cannot_be_read>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_token_and_production_take_precedence_over_local_opt_ins[False-operator-secret--403] _
+
+self = <Coroutine test_token_and_production_take_precedence_over_local_opt_ins[False-operator-secret--403]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_token_and_production_take_precedence_over_local_opt_ins[False-operator-secret-wrong-secret-403] _
+
+self = <Coroutine test_token_and_production_take_precedence_over_local_opt_ins[False-operator-secret-wrong-secret-403]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_token_and_production_take_precedence_over_local_opt_ins[False-operator-secret-operator-secret-200] _
+
+self = <Coroutine test_token_and_production_take_precedence_over_local_opt_ins[False-operator-secret-operator-secret-200]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_token_and_production_take_precedence_over_local_opt_ins[True---503] _
+
+self = <Coroutine test_token_and_production_take_precedence_over_local_opt_ins[True---503]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+_ ERROR at setup of test_token_and_production_take_precedence_over_local_opt_ins[True-operator-secret-operator-secret-200] _
+
+self = <Coroutine test_token_and_production_take_precedence_over_local_opt_ins[True-operator-secret-operator-secret-200]>
+
+    def setup(self) -> None:
+        runner_fixture_id = f"_{self._loop_scope}_scoped_runner"
+        if runner_fixture_id not in self.fixturenames:
+            self.fixturenames.append(runner_fixture_id)
+>       return super().setup()
+               ^^^^^^^^^^^^^^^
+
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv-quality/lib/python3.12/site-packages/pytest_asyncio/plugin.py:730: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests/conftest.py:7: in _no_kernel_socket_table
+    import treasury.service as _m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """Treasury FastAPI service — the only process that can release a bounty.
+    
+    Endpoints:
+        GET  /health                       — liveness + treasury pubkey (never the private key)
+        POST /authorize {finding, verdicts, deposit_posted_usd}
+                                            — re-verify everything and return a signed Decision
+        POST /deposit    {finding, verdicts, deposit_posted_usd}
+                                            — rule on a claim's deposit (refund vs forfeit)
+        GET  /ledger?limit=                — recent decisions/claims (read-only audit tail)
+    
+    The treasury key is loaded from ``TREASURY_KEY_PATH`` and stays inside this process. The service
+    reconstructs a :class:`momus.economics.PayoutGate` with a KeyRing whose ``scanner`` slot is set to
+    the finding's declared scanner pubkey (read-only, for the independence check) — but authorization
+    is signed with the treasury key alone.
+    """
+    
+    from __future__ import annotations
+    
+    import hmac
+    import ipaddress
+    import os
+    import sys
+    from typing import Any
+    
+    from fastapi import FastAPI, HTTPException, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from oracle_core.app import client_key
+    from oracle_core.ratelimit import RateLimiter
+    from pydantic import BaseModel, Field
+    
+>   from momus.config import crypto_enabled, is_prod
+E   ModuleNotFoundError: No module named 'momus.config'
+
+treasury/service.py:31: ModuleNotFoundError
+=========================== short test summary info ============================
+ERROR tests/test_treasury_service.py::test_health_exposes_treasury_pubkey_only
+ERROR tests/test_treasury_service.py::test_authorize_pays_valid_finding - Mod...
+ERROR tests/test_treasury_service.py::test_authorize_refuses_tampered_finding
+ERROR tests/test_treasury_service.py::test_deposit_forfeit_endpoint - ModuleN...
+ERROR tests/test_treasury_service.py::test_ledger_records_decisions - ModuleN...
+ERROR tests/test_treasury_service.py::test_the_vault_is_attached_when_the_sandbox_rail_can_be_reached
+ERROR tests/test_treasury_service.py::test_a_held_fallback_leaves_the_vault_off
+ERROR tests/test_treasury_service.py::test_tokenless_payout_routes_refuse_all_but_this_machine[93.184.216.34-http://localhost-headers0]
+ERROR tests/test_treasury_service.py::test_tokenless_payout_routes_refuse_all_but_this_machine[127.0.0.1-http://treasury.example-headers1]
+ERROR tests/test_treasury_service.py::test_tokenless_payout_routes_refuse_all_but_this_machine[127.0.0.1-http://localhost-headers2]
+ERROR tests/test_treasury_service.py::test_tokenless_payout_routes_refuse_all_but_this_machine[127.0.0.1-http://localhost-headers3]
+ERROR tests/test_treasury_service.py::test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[self-False-403]
+ERROR tests/test_treasury_service.py::test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[self-True-200]
+ERROR tests/test_treasury_service.py::test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[other-True-403]
+ERROR tests/test_treasury_service.py::test_tokenless_payout_requires_explicit_tcp_trust_and_matching_owner[absent-True-403]
+ERROR tests/test_treasury_service.py::test_tokenless_payout_routes_refused_where_the_socket_owner_cannot_be_read
+ERROR tests/test_treasury_service.py::test_token_and_production_take_precedence_over_local_opt_ins[False-operator-secret--403]
+ERROR tests/test_treasury_service.py::test_token_and_production_take_precedence_over_local_opt_ins[False-operator-secret-wrong-secret-403]
+ERROR tests/test_treasury_service.py::test_token_and_production_take_precedence_over_local_opt_ins[False-operator-secret-operator-secret-200]
+ERROR tests/test_treasury_service.py::test_token_and_production_take_precedence_over_local_opt_ins[True---503]
+ERROR tests/test_treasury_service.py::test_token_and_production_take_precedence_over_local_opt_ins[True-operator-secret-operator-secret-200]
+21 errors in 1.34s

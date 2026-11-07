@@ -31,7 +31,7 @@ said 15.5.7 while the container ran 15.5.4. See scripts/deployed_versions.py.
 A bare run includes every first-party subtree, including independently released products.
 Pinned upstream checkouts under .upstreams are skipped unless scanned explicitly.
 
-It reads npm lockfiles/exact manifest pins, requirements*.txt, pyproject.toml exact
+It reads npm lockfiles/exact manifest pins, requirements*.txt/requirements*.lock, pyproject.toml exact
 pins, uv.lock, Cargo.lock, pubspec.lock and go.mod. Unresolved version ranges need a
 lockfile; this is not a dependency resolver.
 A manifest it cannot read is an incomplete scan (exit 2), never a clean one.
@@ -303,7 +303,7 @@ def collect(root: Path, respect_independent: bool = True):
                 got = pyproject_packages(base / name)
             elif name == "go.mod":
                 got = go_packages(base / name)
-            elif name.startswith("requirements") and name.endswith(".txt"):
+            elif name.startswith("requirements") and name.endswith((".txt", ".lock")):
                 got = pip_packages(base / name)
             elif name == "uv.lock":
                 got = uv_packages(base / name)

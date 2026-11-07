@@ -14,7 +14,8 @@ cd "$(dirname "$0")/../.."
 deploy/erc-8004/install_refresh.sh admin-vps
 ssh admin-vps 'grep -m1 "\"version\"" /opt/warden-feedback/node/node_modules/@aimarket/warden/package.json'
 echo "--- dry run (nothing is sent) ---"
-ssh admin-vps 'DRY=1 /opt/warden-feedback/warden_feedback_refresh.sh' | tail -n 25
+# A plan above the per-run cap (20) makes the dry run exit 1; still show it and ask (11-05: 39 actions).
+ssh admin-vps 'DRY=1 /opt/warden-feedback/warden_feedback_refresh.sh' | tail -n 25 || true
 read -r -p "Send these transactions from WARDEN's feedback wallet? Type yes: " ok
 [ "$ok" = yes ] || { echo "nothing sent"; exit 0; }
 ssh admin-vps 'set -e

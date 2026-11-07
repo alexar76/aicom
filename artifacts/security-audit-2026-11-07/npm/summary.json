@@ -1,0 +1,71 @@
+{
+  "observed_at": "2026-11-07T12:07:24.136348+00:00",
+  "source_inventory": {
+    "tracked_manifests": 65,
+    "tracked_lockfiles": 40,
+    "extra_ignored_lockfiles": 3
+  },
+  "npm_registry": {
+    "tracked_clean_lockfiles": 40,
+    "tracked_counts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0
+    },
+    "errors": 0
+  },
+  "lock_consistency": {
+    "before_passed": 37,
+    "after_passed": 40,
+    "count": 40
+  },
+  "repairs": [
+    {
+      "paths": [
+        "ai-service-mesh/frontend/package-lock.json",
+        "alien-monitor/frontend/package-lock.json",
+        "pingblip/world/package-lock.json"
+      ],
+      "change": "restore six omitted bundled dependency records in each lockfile",
+      "existing_package_records_changed": 0
+    },
+    {
+      "path": "desktop-integrations/ai-stack-migration-assistant/package.json",
+      "change": "replace deprecated vsce2 with official @vscode/vsce4.1.0 and override minimatch>=7 to11.0.1",
+      "scope": "isolated dev-tool graph; mutable GitHub SDK excluded explicitly",
+      "candidate_before_npm_package_node_counts": {
+        "high": 2,
+        "moderate": 8,
+        "total": 10
+      },
+      "candidate_after_npm_package_node_counts": {
+        "high": 0,
+        "moderate": 0,
+        "total": 0
+      },
+      "candidate_normal_peer_resolution": "pass after initial npm10 Arborist failure worked around by seed resolution",
+      "candidate_npm_ls": "pass",
+      "validation": [
+        "TypeScript ESLint parser+plugin",
+        "modern minimatch API/glob inclusion",
+        "vsce4.1.0 CLI",
+        "real disposable VSIX package"
+      ],
+      "candidate_build_node_requirement": ">=22 per official @vscode/vsce4.1.0 metadata; tested Node22.22.1"
+    }
+  ],
+  "unresolved": [
+    {
+      "path": "desktop-integrations/ai-stack-migration-assistant/package.json",
+      "issue": "SDK github:alexar76/aimarket-sdks#main has no immutable resolved lock; scaffold lacks tsconfig; full extension install/build not claimed"
+    },
+    {
+      "path": "docs/distribution/product-npm-fixes-2026-10-21/prod-bdb1634806de/frontend/package-lock.json",
+      "issue": "historical ignored snapshot follow-redirects1.16.1 HIGH GHSA-mrwp-f3q8-3g9p preserved as evidence"
+    }
+  ],
+  "publication": false,
+  "cache_location": "/private/tmp/aicom-security-audit-20261107/npm-registry-cache"
+}

@@ -173,6 +173,17 @@ def test_pins_with_extras_are_scanned(scan, tmp_path):
                         ("PyPI", "psycopg", "3.3.4")}
 
 
+def test_requirements_lock_pins_block_vulnerable_deployment(scan, monkeypatch, tmp_path):
+    """The hash-pinned signer/deployer install inputs must reach the OSV gate."""
+    tree = write(tmp_path, {"signer/requirements.lock":
+        "django==2.2.0 \\\n    --hash=sha256:0123456789abcdef\n"})
+    calls = osv(monkeypatch, batch=HIT, advisories={"GHSA-synthetic": {
+        "id": "GHSA-synthetic", "database_specific": {"severity": "HIGH"}}})
+    assert gate(scan, monkeypatch, tree) == 1
+    query = json.loads(calls[0].data)["queries"]
+    assert query == [{"package": {"ecosystem": "PyPI", "name": "django"}, "version": "2.2.0"}]
+
+
 def test_uv_cargo_and_pub_lockfiles_are_read(scan, tmp_path):
     if scan.tomllib is None:
         pytest.skip("no TOML parser on this interpreter")
@@ -188,6 +199,7 @@ BROKEN = {
         "package-lock.json": '{"lockfileVersion": 3, "packages": {"node_modules/next": {"version": "15.5.4"},}}'},
     "package-lock that is not an object": {"package-lock.json": "[]"},
     "pin the parser cannot read": {"requirements.txt": "flask===2.0.1\n"},
+    "requirements.lock pin the parser cannot read": {"requirements.lock": "flask===2.0.1\n"},
     "uv.lock that is not TOML": {"uv.lock": 'version = 1\n[[package]\nname = "x"\n'},
     "uv.lock with an unknown source": {"uv.lock": '[[package]]\nname = "x"\nversion = "1"\nsource = { svn = "x" }\n'},
     "Cargo.lock with an unknown source": {"Cargo.lock": '[[package]]\nname = "x"\nversion = "1"\nsource = "svn+x"\n'},

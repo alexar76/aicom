@@ -34,7 +34,7 @@ dependencies = [
     # Ed25519 only.  Everything else -- JCS, base58btc, multibase, SRI, did:key -- is
     # implemented here against the standard library so that the reference implementation
     # has no opinion it did not write down.
-    "cryptography>=41",
+    "cryptography>=50.0.2",
 ]
 
 [project.optional-dependencies]

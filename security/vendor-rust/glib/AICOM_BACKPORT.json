@@ -1,0 +1,17 @@
+{
+  "base_crate": "glib",
+  "base_version": "0.18.5",
+  "source_url": "https://static.crates.io/crates/glib/glib-0.18.5.crate",
+  "source_sha256": "233daaf6e83ae6a12a52055f568f9d7cf4671dabb78ff9560ab6da230ce00ee5",
+  "upstream_fix": "https://github.com/gtk-rs/gtk-rs-core/commit/b5a4071e439bef2b5eea76c3aa25e5ae84839e34",
+  "upstream_patch_sha256": "a742bf59f1b00af0f434623b34e2fd969dc8697d37c796efdf909dd9eb19b854",
+  "advisory_ids": [
+    "RUSTSEC-2024-0429",
+    "GHSA-wrw7-89jp-8q8g"
+  ],
+  "patched_runtime_files": [
+    "src/variant_iter.rs"
+  ],
+  "license": "MIT (preserved LICENSE and COPYRIGHT)",
+  "note": "The registry version is intentionally unchanged. Local Cargo path patch backports exact upstream two-line mutation fix; raw advisory range matches remain meaningful until code-based disposition."
+}

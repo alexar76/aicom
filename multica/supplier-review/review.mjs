@@ -42,6 +42,26 @@ export function hostOf(url) {
   }
 }
 
+/**
+ * Why an outside source gets no welcome letter, or null when it can get one. An author's address is https under a
+ * public name; anything else (http, a bare IP, a name without a dot, a user name in the address) is no one to
+ * write to. On 2026-11-06 sixty-nine such pending peers were announced in under four hours, probes of the hub's
+ * address checks (rebinding names, 127.0.0.1@host, redirects to 169.254.169.254, internal ports).
+ */
+export function noWelcomeReason(source) {
+  let u;
+  try {
+    u = new URL(String(source));
+  } catch {
+    return 'no_public_name';
+  }
+  if (u.protocol !== 'https:') return 'not_https';
+  if (u.username || u.password) return 'credentials_in_address';
+  const h = u.hostname;
+  if (!h.includes('.') || h.startsWith('[') || /^\d{1,3}(?:\.\d{1,3}){3}$/.test(h)) return 'no_public_name';
+  return null;
+}
+
 export function isOurs(url) {
   const host = hostOf(url);
   // A bare container name (no dot) is reachable only inside the hub's own host.
@@ -305,7 +325,9 @@ export async function loadWarden(dir) {
 const POLICY = { blockAtSeverity: 'high', sensitiveToolPatterns: [], allowUnknownServers: true, pinToolDefs: false };
 
 function wardenSeverity(f) {
-  if (f.advisory) return 'low';
+  // An advisory match is a word, not a finding: "instead of", "API key", "secrets". WARDEN rates some of them info
+  // ("instead of"), and that rating stays; none rises above low.
+  if (f.advisory) return f.severity === 'info' ? 'info' : 'low';
   return f.severity === 'critical' || f.severity === 'high' ? 'high' : 'medium';
 }
 
@@ -320,8 +342,21 @@ export async function wardenFindings(warden, tool, server) {
   const ref = { id: String(server.id ?? ''), name: String(server.name ?? server.id ?? ''), transport: 'http', url: String(server.url ?? '') };
   const scanned = await warden.staticScan.evaluate({ server: ref, tools: [def], prior: [], policy: POLICY });
   const listed = await warden.threat.evaluate({ server: ref, tools: [], prior: [], policy: POLICY });
-  return [...scanned.findings, ...listed.findings].map((f) =>
-    finding('injection', f.code, wardenSeverity(f), f.gate === 'static-scan' ? 'text' : 'seller identity', clip(f.message, 400)));
+  return [...scanned.findings, ...listed.findings].map((f) => ({
+    ...finding('injection', f.code, wardenSeverity(f), f.gate === 'static-scan' ? 'text' : 'seller identity', clip(f.message, 400)),
+    ...(f.advisory ? { advisory: true } : {}),
+  }));
+}
+
+/**
+ * What a welcome letter may raise with the author: real problems (high or medium) and schema defects, never an
+ * advisory WARDEN match. Those matches are weak signals for the owner's report. Asking an author to reword around
+ * them teaches evasion and can make a good description worse: textokit's "remove secrets and personal data before
+ * submitting" matched the credential pattern (2026-11-04 drafts).
+ */
+export function letterPoints(findings) {
+  return findings.filter((f) => !f.advisory && f.severity !== 'info'
+    && (f.severity === 'high' || f.severity === 'medium' || f.check === 'schema'));
 }
 
 // ── the run ────────────────────────────────────────────────────────────────────────────────
@@ -411,7 +446,7 @@ export async function review({ manifest, peers, observed, state, now, warden }) 
     }
     items.push({
       kind: 'peer', status, key: p.url, source: p.url, ours: isOurs(p.url), source_name: p.name || hostOf(p.url),
-      peer_status: p.status, capabilities: p.capabilities_count ?? null, categories: p.categories ?? [],
+      peer_status: p.status, capabilities: p.capabilities_count ?? null, categories: p.categories ?? [], last_crawl: p.last_crawl || null,
       changed_fields: status === 'changed' ? changedFields(was?.view, fingerprintedView(view)) : [],
       description: clip(view.description), worst: worst(findings), findings: sortFindings(findings),
     });
@@ -450,13 +485,28 @@ export async function review({ manifest, peers, observed, state, now, warden }) 
 
   const severity = { high: 0, medium: 0, low: 0, info: 0 };
   for (const it of items) for (const f of it.findings) severity[f.severity] += 1;
+  // The only findings a welcome letter may use; the model is told to take nothing else from `findings`.
+  for (const it of items) {
+    it.letter_points = letterPoints(it.findings);
+    // A peer the hub never managed to read has no catalogue to welcome; on 2026-11-06 that was every https probe
+    // (webhook.site, httpbin and tinyurl redirects, example.com). A real hub is read within hours; if its first day
+    // goes unread, its entry shows up again as changed once it publishes a description.
+    it.no_welcome_reason = it.ours ? null
+      : noWelcomeReason(it.source) ?? (it.kind === 'peer' && !it.last_crawl ? 'not_reached' : null);
+  }
   const bySource = new Map();
   for (const it of items) {
-    const s = bySource.get(it.source) ?? { source: it.source, name: it.source_name, ours: it.ours, items: 0, new: 0, changed: 0, high: 0, medium: 0 };
+    const s = bySource.get(it.source) ?? {
+      source: it.source, name: it.source_name, ours: it.ours, items: 0, new: 0, changed: 0, high: 0, medium: 0, letter_points: 0,
+      welcome: !it.ours && !it.no_welcome_reason, no_welcome_reason: it.no_welcome_reason,
+    };
     s.items += 1;
     if (it.status === 'new') s.new += 1;
     if (it.status === 'changed') s.changed += 1;
     for (const f of it.findings) if (f.severity === 'high' || f.severity === 'medium') s[f.severity] += 1;
+    s.letter_points += it.letter_points.length;
+    // One item a letter can be about is enough for the source to get one.
+    if (!it.ours && !it.no_welcome_reason) Object.assign(s, { welcome: true, no_welcome_reason: null });
     bySource.set(it.source, s);
   }
   // A baseline run shows every outside item and only the problems among ours; a later run shows every new or changed item.
@@ -499,28 +549,46 @@ export function factsMarkdown(report) {
   lines.push(`Находки: серьёзных ${f.high}, средних ${f.medium}, мелких ${f.low}, справочных ${f.info}.`);
   lines.push('');
   // A baseline lists only what has a high or medium finding; a later run lists every new or changed item.
-  const worth = report.baseline ? report.items.filter((it) => it.worst === 'high' || it.worst === 'medium') : report.items;
+  const listed = report.baseline ? report.items.filter((it) => it.worst === 'high' || it.worst === 'medium') : report.items;
+  // Items from outside addresses nobody can write to (probes of the hub) are counted on one line, not listed.
+  const unaddressed = listed.filter((it) => it.no_welcome_reason);
+  const worth = listed.filter((it) => !it.no_welcome_reason);
   const shown = worth.slice(0, MAX_ITEMS_MD);
   for (const it of shown) {
     const head = `- **${mdEscape(it.name || it.source_name || it.key)}** — ${it.kind === 'listing' ? 'навык' : it.kind === 'peer' ? `хаб (${it.peer_status})` : 'x402-маршрут'}, ${it.status}, ${it.ours ? 'наш' : 'внешний'}: ${mdEscape(it.source)}${it.price_usd != null ? `, $${it.price_usd}` : ''}`;
     lines.push(head);
     if (it.changed_fields?.length) lines.push(`  - изменилось: ${mdEscape(it.changed_fields.join(', '))}`);
     const notable = it.findings.filter((x) => x.severity === 'high' || x.severity === 'medium');
-    const low = it.findings.filter((x) => x.severity === 'low');
-    const info = it.findings.filter((x) => x.severity === 'info');
+    const low = it.findings.filter((x) => x.severity === 'low' && !x.advisory);
+    const info = it.findings.filter((x) => x.severity === 'info' && !x.advisory);
+    const patterns = it.findings.filter((x) => x.advisory);
     if (!notable.length && !low.length) lines.push('  - проблем не найдено');
     for (const x of notable) lines.push(`  - ${x.severity}: ${x.code} (${mdEscape(x.where)}) — ${mdEscape(x.detail)}`);
     if (low.length) lines.push(`  - мелкое: ${[...new Set(low.map((x) => x.code))].join(', ')}`);
     if (info.length) lines.push(`  - к сведению: ${[...new Set(info.map((x) => x.code))].join(', ')}`);
+    if (patterns.length) lines.push(`  - совпадения шаблонов WARDEN, слабый сигнал, не для письма автору: ${[...new Set(patterns.map((x) => x.code))].join(', ')}`);
+    if (!it.ours && it.letter_points?.length) lines.push(`  - для письма автору: ${[...new Set(it.letter_points.map((x) => x.code))].join(', ')}`);
   }
   if (worth.length > shown.length) lines.push(`- …и ещё ${worth.length - shown.length} в report.json`);
+  if (unaddressed.length) {
+    const why = { not_https: 'не https', no_public_name: 'без публичного имени', credentials_in_address: 'с учётными данными в адресе', not_reached: 'хаб ни разу не открылся' };
+    const reasons = {};
+    for (const it of unaddressed) reasons[it.no_welcome_reason] = (reasons[it.no_welcome_reason] ?? 0) + 1;
+    const sev = (s) => unaddressed.reduce((n, it) => n + it.findings.filter((x) => x.severity === s).length, 0);
+    lines.push(`- ${unaddressed.length} внешних позиций с ${new Set(unaddressed.map((it) => it.source)).size} адресов, которым не пишем `
+      + `(${Object.entries(reasons).map(([k, n]) => `${why[k] ?? k}: ${n}`).join(', ')}) — похоже на пробы хаба; `
+      + `находок серьёзных ${sev('high')}, средних ${sev('medium')}; каждая в report.json`);
+  }
   if (report.baseline) {
-    const quiet = report.items.length - worth.length;
+    const quiet = report.items.length - listed.length;
     if (quiet) lines.push(`- ${quiet} внешних позиций только с мелкими замечаниями или без них — в report.json`);
   }
   if (report.itemsOmitted) lines.push(`- ${report.itemsOmitted} наших позиций без серьёзных и средних находок не показаны`);
   lines.push('');
-  lines.push('Источники вне экосистемы: ' + (report.sources.filter((s) => !s.ours).map((s) => `${mdEscape(s.name)} (${s.items})`).join(', ') || 'нет'));
+  const outside = report.sources.filter((s) => !s.ours);
+  const welcome = outside.filter((s) => s.welcome);
+  lines.push('Источники вне экосистемы: ' + (welcome.map((s) => `${mdEscape(s.name)} (${s.items})`).join(', ') || 'нет')
+    + (outside.length > welcome.length ? `; адресов, которым не пишем: ${outside.length - welcome.length}` : ''));
   return lines.join('\n') + '\n';
 }
 
