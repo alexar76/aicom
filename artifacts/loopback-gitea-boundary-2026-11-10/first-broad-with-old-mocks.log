@@ -1,0 +1,584 @@
+........................................................................ [ 31%]
+........................................................................ [ 63%]
+.........................................FF.....................F.ssss.s [ 95%]
+F..........                                                              [100%]
+=================================== FAILURES ===================================
+_____________ TestCostPlus.test_a_root_over_a2a_opens_the_same_job _____________
+aimarket-hub/tests/test_subcontract_example.py:255: in test_a_root_over_a2a_opens_the_same_job
+    from aimarket_agent.a2a import A2AClient, task_result, task_state
+E   ModuleNotFoundError: No module named 'aimarket_agent'
+__ TestCostPlus.test_a_root_that_fails_over_a2a_still_shows_the_bill_it_paid ___
+aimarket-hub/tests/test_subcontract_example.py:283: in test_a_root_that_fails_over_a2a_still_shows_the_bill_it_paid
+    from aimarket_agent.a2a import A2AClient, task_state
+E   ModuleNotFoundError: No module named 'aimarket_agent'
+________________________ TestParts.test_the_http_layer _________________________
+aimarket-hub/tests/test_subcontract_example.py:549: in test_the_http_layer
+    server = ThreadingHTTPServer(("127.0.0.1", 0), witness_server.make_handler(witness))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/socketserver.py:457: in __init__
+    self.server_bind()
+/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/http/server.py:140: in server_bind
+    socketserver.TCPServer.server_bind(self)
+/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/socketserver.py:478: in server_bind
+    self.socket.bind(self.server_address)
+E   PermissionError: [Errno 1] Operation not permitted
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:299 NEW Ed25519 signing key generated at /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-28/test_the_http_layer0/h. Back it up now. An existing peer identity requires explicit trust reconciliation.
+_ test_a_token_issued_to_another_product_with_the_same_capability_id_is_refused _
+  + Exception Group Traceback (most recent call last):
+  |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/_utils.py", line 85, in create_collapsing_task_group
+  |     async with anyio.create_task_group() as tg:
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/runner.py", line 353, in from_call
+    |     result: TResult | None = func()
+    |                              ^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/runner.py", line 245, in <lambda>
+    |     lambda: runtest_hook(item=item, **kwds),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_caller.py", line 197, in __call__
+    |     return self._hookexec(
+    |            ^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_manager.py", line 183, in _hookexec
+    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 195, in _multicall
+    |     raise exception
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 167, in _multicall
+    |     teardown.throw(exception)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/logging.py", line 850, in pytest_runtest_call
+    |     yield
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 167, in _multicall
+    |     teardown.throw(exception)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/capture.py", line 900, in pytest_runtest_call
+    |     return (yield)
+    |             ^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 167, in _multicall
+    |     teardown.throw(exception)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 64, in run_old_style_hookwrapper
+    |     return result.get_result()
+    |            ^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_result.py", line 103, in get_result
+    |     raise exc.with_traceback(tb)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 49, in run_old_style_hookwrapper
+    |     res = yield
+    |           ^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 167, in _multicall
+    |     teardown.throw(exception)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 64, in run_old_style_hookwrapper
+    |     return result.get_result()
+    |            ^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_result.py", line 103, in get_result
+    |     raise exc.with_traceback(tb)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 49, in run_old_style_hookwrapper
+    |     res = yield
+    |           ^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 167, in _multicall
+    |     teardown.throw(exception)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/skipping.py", line 268, in pytest_runtest_call
+    |     return (yield)
+    |             ^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 147, in _multicall
+    |     res = hook_impl.function(*args)
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/runner.py", line 179, in pytest_runtest_call
+    |     item.runtest()
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/python.py", line 1720, in runtest
+    |     self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_caller.py", line 197, in __call__
+    |     return self._hookexec(
+    |            ^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_manager.py", line 183, in _hookexec
+    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 195, in _multicall
+    |     raise exception
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 167, in _multicall
+    |     teardown.throw(exception)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 64, in run_old_style_hookwrapper
+    |     return result.get_result()
+    |            ^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_result.py", line 103, in get_result
+    |     raise exc.with_traceback(tb)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 49, in run_old_style_hookwrapper
+    |     res = yield
+    |           ^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/pluggy/_execution.py", line 147, in _multicall
+    |     res = hook_impl.function(*args)
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/python.py", line 166, in pytest_pyfunc_call
+    |     result = testfunction(**testargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_subcontract_example.py", line 709, in test_a_token_issued_to_another_product_with_the_same_capability_id_is_refused
+    |     world.client.post("/ai-market/v2/invoke", headers={"X-API-Key": attacker_key},
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py", line 556, in post
+    |     return super().post(
+    |            ^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 1157, in post
+    |     return self.request(
+    |            ^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py", line 455, in request
+    |     return super().request(
+    |            ^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 837, in request
+    |     return self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 926, in send
+    |     response = self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 954, in _send_handling_auth
+    |     response = self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 991, in _send_handling_redirects
+    |     response = self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 1027, in _send_single_request
+    |     response = transport.handle_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py", line 354, in handle_request
+    |     raise exc
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py", line 351, in handle_request
+    |     portal.call(self.app, scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/anyio/from_thread.py", line 340, in call
+    |     return cast(T_Retval, self.start_task_soon(func, *args).result())
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    |     return self.__get_result()
+    |            ^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    |     raise self._exception
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/anyio/from_thread.py", line 265, in _call_func
+    |     retval = await retval_or_awaitable
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/applications.py", line 1163, in __call__
+    |     await super().__call__(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/applications.py", line 96, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    |     raise exc
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/ard.py", line 53, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 193, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/middleware.py", line 283, in _invoke_metrics_middleware
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 168, in call_next
+    |     raise app_exc from app_exc.__cause__ or app_exc.__context__
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 193, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/middleware.py", line 115, in _x402_middleware
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 168, in call_next
+    |     raise app_exc from app_exc.__cause__ or app_exc.__context__
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 193, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/middleware.py", line 84, in _canonical_link_middleware
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 168, in call_next
+    |     raise app_exc from app_exc.__cause__ or app_exc.__context__
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 193, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/middleware.py", line 50, in _security_headers_middleware
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 168, in call_next
+    |     raise app_exc from app_exc.__cause__ or app_exc.__context__
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/cors.py", line 88, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/idempotency.py", line 252, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/routing.py", line 670, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 2734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 1780, in handle
+    |     await self.original_router.handle(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 2789, in handle
+    |     await included_router._handle_selected(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 1800, in _handle_selected
+    |     await original_route.handle(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 1279, in handle
+    |     await app(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 158, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 144, in app
+    |     response = await f(request)
+    |                ^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 706, in app
+    |     raw_response = await run_endpoint_function(
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 352, in run_endpoint_function
+    |     return await dependant.call(**values)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke.py", line 322, in invoke
+    |     result = await _invoke_core(
+    |              ^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke.py", line 384, in _invoke_core
+    |     return await _invoke_local(d, call)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_admission.py", line 83, in _invoke_local
+    |     return await _local_deliver(d, call, local)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py", line 26, in _local_deliver
+    |     result = await _local_execute(d, call, local)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py", line 72, in _local_execute
+    |     result = await _local_call_provider(d, call, local)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py", line 218, in _local_call_provider
+    |     ir = await safe_post(
+    |                ^^^^^^^^^^
+    | TypeError: test_a_token_issued_to_another_product_with_the_same_capability_id_is_refused.<locals>.safe_post() got an unexpected keyword argument 'allow_loopback'
+    +------------------------------------
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_subcontract_example.py", line 709, in test_a_token_issued_to_another_product_with_the_same_capability_id_is_refused
+    world.client.post("/ai-market/v2/invoke", headers={"X-API-Key": attacker_key},
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py", line 556, in post
+    return super().post(
+           ^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 1157, in post
+    return self.request(
+           ^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py", line 455, in request
+    return super().request(
+           ^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 837, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 926, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 954, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 991, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/httpx/_client.py", line 1027, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py", line 354, in handle_request
+    raise exc
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py", line 351, in handle_request
+    portal.call(self.app, scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/anyio/from_thread.py", line 340, in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/anyio/from_thread.py", line 265, in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/ard.py", line 53, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/middleware.py", line 283, in _invoke_metrics_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/middleware.py", line 115, in _x402_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/middleware.py", line 84, in _canonical_link_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/middleware.py", line 50, in _security_headers_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/idempotency.py", line 252, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke.py", line 322, in invoke
+    result = await _invoke_core(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke.py", line 384, in _invoke_core
+    return await _invoke_local(d, call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_admission.py", line 83, in _invoke_local
+    return await _local_deliver(d, call, local)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py", line 26, in _local_deliver
+    result = await _local_execute(d, call, local)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py", line 72, in _local_execute
+    result = await _local_call_provider(d, call, local)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py", line 218, in _local_call_provider
+    ir = await safe_post(
+               ^^^^^^^^^^
+TypeError: test_a_token_issued_to_another_product_with_the_same_capability_id_is_refused.<locals>.safe_post() got an unexpected keyword argument 'allow_loopback'
+
+The above exception was the direct cause of the following exception:
+aimarket-hub/tests/test_subcontract_example.py:709: in test_a_token_issued_to_another_product_with_the_same_capability_id_is_refused
+    world.client.post("/ai-market/v2/invoke", headers={"X-API-Key": attacker_key},
+.venv-quality/lib/python3.12/site-packages/starlette/testclient.py:556: in post
+    return super().post(
+.venv-quality/lib/python3.12/site-packages/httpx/_client.py:1157: in post
+    return self.request(
+.venv-quality/lib/python3.12/site-packages/starlette/testclient.py:455: in request
+    return super().request(
+.venv-quality/lib/python3.12/site-packages/httpx/_client.py:837: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-quality/lib/python3.12/site-packages/httpx/_client.py:926: in send
+    response = self._send_handling_auth(
+.venv-quality/lib/python3.12/site-packages/httpx/_client.py:954: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv-quality/lib/python3.12/site-packages/httpx/_client.py:991: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-quality/lib/python3.12/site-packages/httpx/_client.py:1027: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-quality/lib/python3.12/site-packages/starlette/testclient.py:354: in handle_request
+    raise exc
+.venv-quality/lib/python3.12/site-packages/starlette/testclient.py:351: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/Users/alex/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv-quality/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-quality/lib/python3.12/site-packages/fastapi/applications.py:1163: in __call__
+    await super().__call__(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/starlette/applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+aimarket-hub/aimarket_hub/hub_routes/ard.py:53: in __call__
+    await self.app(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:193: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket-hub/aimarket_hub/hub_routes/middleware.py:283: in _invoke_metrics_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:168: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:193: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket-hub/aimarket_hub/hub_routes/middleware.py:115: in _x402_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:168: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:193: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket-hub/aimarket_hub/hub_routes/middleware.py:84: in _canonical_link_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:168: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:193: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket-hub/aimarket_hub/hub_routes/middleware.py:50: in _security_headers_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:168: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/cors.py:88: in __call__
+    await self.app(scope, receive, send)
+aimarket-hub/aimarket_hub/idempotency.py:252: in __call__
+    await self.app(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+.venv-quality/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/starlette/routing.py:670: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/fastapi/routing.py:2734: in app
+    await route.handle(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/fastapi/routing.py:1780: in handle
+    await self.original_router.handle(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/fastapi/routing.py:2789: in handle
+    await included_router._handle_selected(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/fastapi/routing.py:1800: in _handle_selected
+    await original_route.handle(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/fastapi/routing.py:1279: in handle
+    await app(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/fastapi/routing.py:158: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+.venv-quality/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+.venv-quality/lib/python3.12/site-packages/fastapi/routing.py:144: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+.venv-quality/lib/python3.12/site-packages/fastapi/routing.py:706: in app
+    raw_response = await run_endpoint_function(
+.venv-quality/lib/python3.12/site-packages/fastapi/routing.py:352: in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket-hub/aimarket_hub/hub_routes/invoke.py:322: in invoke
+    result = await _invoke_core(
+aimarket-hub/aimarket_hub/hub_routes/invoke.py:384: in _invoke_core
+    return await _invoke_local(d, call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_admission.py:83: in _invoke_local
+    return await _local_deliver(d, call, local)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py:26: in _local_deliver
+    result = await _local_execute(d, call, local)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py:72: in _local_execute
+    result = await _local_call_provider(d, call, local)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py:218: in _local_call_provider
+    ir = await safe_post(
+E   TypeError: test_a_token_issued_to_another_product_with_the_same_capability_id_is_refused.<locals>.safe_post() got an unexpected keyword argument 'allow_loopback'
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:299 NEW Ed25519 signing key generated at /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-28/test_a_token_issued_to_another0/hub-0/key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+WARNING  aimarket_hub.api:api.py:400 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+=============================== warnings summary ===============================
+.venv-quality/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+.venv-quality/lib/python3.12/site-packages/starlette/testclient.py:53
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+.venv-quality/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED aimarket-hub/tests/test_subcontract_example.py::TestCostPlus::test_a_root_over_a2a_opens_the_same_job
+FAILED aimarket-hub/tests/test_subcontract_example.py::TestCostPlus::test_a_root_that_fails_over_a2a_still_shows_the_bill_it_paid
+FAILED aimarket-hub/tests/test_subcontract_example.py::TestParts::test_the_http_layer
+FAILED aimarket-hub/tests/test_subcontract_example.py::test_a_token_issued_to_another_product_with_the_same_capability_id_is_refused
+4 failed, 218 passed, 5 skipped, 3 warnings in 29.05s

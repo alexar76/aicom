@@ -1,0 +1,333 @@
+{
+  "date_client": "2026-11-10",
+  "prepared_at_utc": "2026-11-10T20:04:50.090340+00:00",
+  "preparation_network_requests": 0,
+  "github_coordination": "Root controls current quota, exact Obsidian probe and Treasury/Search. This worker does not request api.github.com until root allocates specific reads.",
+  "targets": [
+    {
+      "key": "obsidian-readme",
+      "exact_url": "https://api.github.com/repos/2233admin/obsidian-llm-wiki/readme",
+      "priority": 1,
+      "prior_evidence": {
+        "index": "artifacts/external-components-2026-11-10/products/followup-http-index.json",
+        "body": "artifacts/external-components-2026-11-10/products/raw/obsidian-readme.raw",
+        "captured_at_utc": "2026-11-10T19:39:39.552742+00:00",
+        "status": 403,
+        "sha256": "9fa66ef96734ac76fa91ca8090247e0851182d172c4cb49ca7417d46bb4ed968",
+        "bytes_valid": true,
+        "sha256_valid": true
+      },
+      "reason": "github_core_quota",
+      "body_evidence": {
+        "github_rate_limit_message": true,
+        "cloudflare_managed_challenge": false
+      },
+      "previous_rate_headers": {
+        "X-RateLimit-Remaining": "0",
+        "X-RateLimit-Reset": "1794337597",
+        "X-RateLimit-Resource": "core"
+      },
+      "previous_reset_utc": "2026-11-10T19:06:37+00:00",
+      "previous_reset_before_capture": true,
+      "rate_header_limit": "Old reset is before the recorded capture; do not infer recovery from time. Current quota plus bounded real target response required.",
+      "expected_new_evidence": "Resolve closest remaining foreign Attested candidate: exact owner/domain/package links; distinguish dependency/client code from comparison list, generic memory term or unrelated app.",
+      "novelty_rule": "Recovery is a new primary read/artifact, not a new external relationship or publication. Compare literal content, author/event date and target with prior baseline.",
+      "assignment": "root_quota_probe_then_allocated_detail",
+      "status": "content_recovered_via_publisher_web_and_raw_REST_still_quota403",
+      "prohibited": [
+        "CAPTCHA or managed challenge solving",
+        "robots bypass",
+        "IP/proxy/account/authentication switching",
+        "GitHub or other external writes"
+      ],
+      "analysis": "obsidian-analysis.json"
+    },
+    {
+      "key": "courses-curation-pr",
+      "exact_url": "https://api.github.com/repos/EbookFoundation/free-programming-books/pulls/13394",
+      "priority": 2,
+      "prior_evidence": {
+        "index": "artifacts/external-components-2026-11-10/products/followup-http-index.json",
+        "body": "artifacts/external-components-2026-11-10/products/raw/courses-curation-pr.raw",
+        "captured_at_utc": "2026-11-10T19:39:42.792119+00:00",
+        "status": 403,
+        "sha256": "9fa66ef96734ac76fa91ca8090247e0851182d172c4cb49ca7417d46bb4ed968",
+        "bytes_valid": true,
+        "sha256_valid": true
+      },
+      "reason": "github_core_quota",
+      "body_evidence": {
+        "github_rate_limit_message": true,
+        "cloudflare_managed_challenge": false
+      },
+      "previous_rate_headers": {
+        "X-RateLimit-Remaining": "0",
+        "X-RateLimit-Reset": "1794337597",
+        "X-RateLimit-Resource": "core"
+      },
+      "previous_reset_utc": "2026-11-10T19:06:37+00:00",
+      "previous_reset_before_capture": true,
+      "rate_header_limit": "Old reset is before the recorded capture; do not infer recovery from time. Current quota plus bounded real target response required.",
+      "expected_new_evidence": "Verify historical PR author, merged/merged_at/merged_by and title/body. Separate owner submission accepted by a foreign list from unsolicited review or learner use.",
+      "novelty_rule": "Recovery is a new primary read/artifact, not a new external relationship or publication. Compare literal content, author/event date and target with prior baseline.",
+      "assignment": "root_quota_probe_then_allocated_detail",
+      "status": "content_recovered_via_publisher_GitHub_web_REST_not_recovered",
+      "prohibited": [
+        "CAPTCHA or managed challenge solving",
+        "robots bypass",
+        "IP/proxy/account/authentication switching",
+        "GitHub or other external writes"
+      ],
+      "analysis": "course-curation-analysis.json"
+    },
+    {
+      "key": "courses-curation-commit",
+      "exact_url": "https://api.github.com/repos/EbookFoundation/free-programming-books/commits/b197a1cf7f8c62153dacc22a351253ae88ec840c",
+      "priority": 3,
+      "prior_evidence": {
+        "index": "artifacts/external-components-2026-11-10/products/followup-http-index.json",
+        "body": "artifacts/external-components-2026-11-10/products/raw/courses-curation-commit.raw",
+        "captured_at_utc": "2026-11-10T19:39:43.044396+00:00",
+        "status": 403,
+        "sha256": "9fa66ef96734ac76fa91ca8090247e0851182d172c4cb49ca7417d46bb4ed968",
+        "bytes_valid": true,
+        "sha256_valid": true
+      },
+      "reason": "github_core_quota",
+      "body_evidence": {
+        "github_rate_limit_message": true,
+        "cloudflare_managed_challenge": false
+      },
+      "previous_rate_headers": {
+        "X-RateLimit-Remaining": "0",
+        "X-RateLimit-Reset": "1794337597",
+        "X-RateLimit-Resource": "core"
+      },
+      "previous_reset_utc": "2026-11-10T19:06:37+00:00",
+      "previous_reset_before_capture": true,
+      "rate_header_limit": "Old reset is before the recorded capture; do not infer recovery from time. Current quota plus bounded real target response required.",
+      "expected_new_evidence": "Verify exact pinned commit author/committer and changed files/patch for moving the AIMarket Courses link into MOOC. A curation diff is documentation, not runtime integration.",
+      "novelty_rule": "Recovery is a new primary read/artifact, not a new external relationship or publication. Compare literal content, author/event date and target with prior baseline.",
+      "assignment": "root_quota_probe_then_allocated_detail",
+      "status": "content_recovered_via_publisher_GitHub_web_REST_not_recovered",
+      "prohibited": [
+        "CAPTCHA or managed challenge solving",
+        "robots bypass",
+        "IP/proxy/account/authentication switching",
+        "GitHub or other external writes"
+      ],
+      "analysis": "course-curation-analysis.json"
+    },
+    {
+      "key": "attested-apiev-apis",
+      "exact_url": "https://api.github.com/repos/api-evangelist/attestedmemory-net/contents/apis.yml",
+      "priority": 4,
+      "prior_evidence": {
+        "index": "artifacts/external-components-2026-11-10/products/followup-http-index.json",
+        "body": "artifacts/external-components-2026-11-10/products/raw/attested-apiev-apis.raw",
+        "captured_at_utc": "2026-11-10T19:39:43.282587+00:00",
+        "status": 403,
+        "sha256": "9fa66ef96734ac76fa91ca8090247e0851182d172c4cb49ca7417d46bb4ed968",
+        "bytes_valid": true,
+        "sha256_valid": true
+      },
+      "reason": "github_core_quota",
+      "body_evidence": {
+        "github_rate_limit_message": true,
+        "cloudflare_managed_challenge": false
+      },
+      "previous_rate_headers": {
+        "X-RateLimit-Remaining": "0",
+        "X-RateLimit-Reset": "1794337597",
+        "X-RateLimit-Resource": "core"
+      },
+      "previous_reset_utc": "2026-11-10T19:06:37+00:00",
+      "previous_reset_before_capture": true,
+      "rate_header_limit": "Old reset is before the recorded capture; do not infer recovery from time. Current quota plus bounded real target response required.",
+      "expected_new_evidence": "Read literal apis.yml if it exists: harvest provenance, own original URLs, generated artifact references. Generated profile/specs are not use of the Attested service.",
+      "novelty_rule": "Recovery is a new primary read/artifact, not a new external relationship or publication. Compare literal content, author/event date and target with prior baseline.",
+      "assignment": "root_quota_probe_then_allocated_detail",
+      "status": "actual_published_artifact_recovered_original_GitHub_location_unverified",
+      "prohibited": [
+        "CAPTCHA or managed challenge solving",
+        "robots bypass",
+        "IP/proxy/account/authentication switching",
+        "GitHub or other external writes"
+      ],
+      "analysis": "apis-profile-analysis.json"
+    },
+    {
+      "key": "treasury-search",
+      "exact_url": "https://api.github.com/search/repositories?q=%22aimarket-treasury%22+in%3Areadme+-user%3Aalexar76&per_page=30",
+      "priority": 5,
+      "prior_evidence": {
+        "index": "artifacts/external-components-2026-11-10/core/github-search-index.json",
+        "body": "artifacts/external-components-2026-11-10/core/bodies/github-search-5.body",
+        "captured_at_utc": "2026-11-10T19:39:33.451973+00:00",
+        "status": 403,
+        "sha256": "9fa66ef96734ac76fa91ca8090247e0851182d172c4cb49ca7417d46bb4ed968",
+        "bytes_valid": true,
+        "sha256_valid": true
+      },
+      "reason": "github_quota_body_resource_not_captured",
+      "body_evidence": {
+        "github_rate_limit_message": true,
+        "cloudflare_managed_challenge": false
+      },
+      "previous_rate_headers": null,
+      "previous_reset_utc": null,
+      "previous_reset_before_capture": null,
+      "rate_header_limit": "No rate/reset headers were preserved for this source; do not invent one or borrow another resource's reset.",
+      "expected_new_evidence": "Restore previously unread exact README-search result. Post-filter owner and exact identity; a successful zero only covers this query, not the entire Treasury user base.",
+      "novelty_rule": "Recovery is a new primary read/artifact, not a new external relationship or publication. Compare literal content, author/event date and target with prior baseline.",
+      "assignment": "root_search_bucket",
+      "status": "same_query_recovered_by_root_HTTP200_zero_results",
+      "prohibited": [
+        "CAPTCHA or managed challenge solving",
+        "robots bypass",
+        "IP/proxy/account/authentication switching",
+        "GitHub or other external writes"
+      ],
+      "recovery_source": "artifacts/external-matrix-gaps-2026-11-10/root/plan-2-search-index.json",
+      "recovery_url": "https://api.github.com/search/repositories?q=%22aimarket-treasury%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "query_same": true,
+      "page_size_change": "30 to100; encoding differs, literal URLs not identical",
+      "total_count": 0,
+      "scope": "This repository/README query only, not global absence of users or HTTP consumers."
+    },
+    {
+      "key": "undercode-factory",
+      "exact_url": "https://undercodenews.com/aicom-factory-just-updated-video/",
+      "priority": 6,
+      "prior_evidence": {
+        "index": "artifacts/external-components-2026-11-10/core/foreign-source-index.json",
+        "body": "artifacts/external-components-2026-11-10/core/bodies/undercode-factory.body",
+        "captured_at_utc": "2026-11-10T19:39:23.126373+00:00",
+        "status": 403,
+        "sha256": "a640807638c602951700e0454e104edfc60bf33b6cbbd4b379c29b76a36f65fc",
+        "bytes_valid": true,
+        "sha256_valid": true
+      },
+      "reason": "cloudflare_managed_challenge",
+      "body_evidence": {
+        "github_rate_limit_message": false,
+        "cloudflare_managed_challenge": true
+      },
+      "previous_rate_headers": null,
+      "previous_reset_utc": null,
+      "previous_reset_before_capture": null,
+      "rate_header_limit": "No rate/reset headers were preserved for this source; do not invent one or borrow another resource's reset.",
+      "expected_new_evidence": "Known Factory release-note coverage; recover primary body and literal source href, metadata date and disclosure. Not a new hands-on review merely because accessible again.",
+      "novelty_rule": "Recovery is a new primary read/artifact, not a new external relationship or publication. Compare literal content, author/event date and target with prior baseline.",
+      "assignment": "one_ordinary_public_GET_authorized_by_root",
+      "status": "still_managed_challenge_after_one_ordinary_retry",
+      "prohibited": [
+        "CAPTCHA or managed challenge solving",
+        "robots bypass",
+        "IP/proxy/account/authentication switching",
+        "GitHub or other external writes"
+      ],
+      "recovery_evidence": {
+        "key": "undercode-factory",
+        "url": "https://undercodenews.com/aicom-factory-just-updated-video/",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:05:28.138177+00:00",
+        "status": 403,
+        "final_url": "https://undercodenews.com/aicom-factory-just-updated-video/",
+        "content_type": "text/html; charset=UTF-8",
+        "bytes": 5709,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:07:35 GMT",
+          "Server": "cloudflare",
+          "cf-mitigated": "challenge"
+        },
+        "body_file": "raw/undercode-factory.raw",
+        "sha256": "12eb7349ab8c57640ff919bb6bf866f1cb2d2e1492e5020507ec8f565813247e",
+        "cloudflare_managed_challenge": true
+      }
+    },
+    {
+      "key": "esim-socket",
+      "exact_url": "https://socket.dev/npm/package/%40aimarket/esim-rails",
+      "priority": 7,
+      "prior_evidence": {
+        "index": "artifacts/external-components-2026-11-10/products/sources-http-index.json",
+        "body": "artifacts/external-components-2026-11-10/products/raw/esim-socket.raw",
+        "captured_at_utc": "2026-11-10T19:38:07.070926+00:00",
+        "status": 403,
+        "sha256": "626dda74f468bdeaa45f2ef84ca05abcb2426794a579d063a8bc7369f36ddafd",
+        "bytes_valid": true,
+        "sha256_valid": true
+      },
+      "reason": "cloudflare_managed_challenge",
+      "body_evidence": {
+        "github_rate_limit_message": false,
+        "cloudflare_managed_challenge": true
+      },
+      "previous_rate_headers": null,
+      "previous_reset_utc": null,
+      "previous_reset_before_capture": null,
+      "rate_header_limit": "No rate/reset headers were preserved for this source; do not invent one or borrow another resource's reset.",
+      "expected_new_evidence": "Read the exact package analysis page and distinguish automated npm metadata/static analysis from a user's eSIM operator deployment or review.",
+      "novelty_rule": "Recovery is a new primary read/artifact, not a new external relationship or publication. Compare literal content, author/event date and target with prior baseline.",
+      "assignment": "one_ordinary_public_GET_authorized_by_root",
+      "status": "still_managed_challenge_after_one_ordinary_retry",
+      "prohibited": [
+        "CAPTCHA or managed challenge solving",
+        "robots bypass",
+        "IP/proxy/account/authentication switching",
+        "GitHub or other external writes"
+      ],
+      "recovery_evidence": {
+        "key": "esim-socket",
+        "url": "https://socket.dev/npm/package/%40aimarket/esim-rails",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:05:28.750600+00:00",
+        "status": 403,
+        "final_url": "https://socket.dev/npm/package/%40aimarket/esim-rails",
+        "content_type": "text/html; charset=UTF-8",
+        "bytes": 5663,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:07:35 GMT",
+          "Server": "cloudflare",
+          "cf-mitigated": "challenge"
+        },
+        "body_file": "raw/esim-socket.raw",
+        "sha256": "22f2b4abbc4766814259b10a1a80df4fa71ef09164d75d5e987f07e5d039d093",
+        "cloudflare_managed_challenge": true
+      }
+    }
+  ],
+  "integration_decision_rules": {
+    "runtime_or_dependency_candidate": "Exact namespace/domain plus implementation import/dependency/endpoint call in foreign source; README claim alone remains unverified execution.",
+    "documentation_or_comparison": "Link, source list or curation metadata with no implementation path is a reference, not integration.",
+    "generated_profile": "API directory/spec/schema generation and harvest provenance are automated profiling, not user deployment.",
+    "unrelated_homonym": "Generic attested memory or shared product name without our owner/domain/package markers is excluded.",
+    "unread": "403/challenge/quota is unknown; never counted as absence or successful source verification."
+  },
+  "updated_at_utc": "2026-11-10T20:12:33.441121+00:00",
+  "github_core_latest_control": {
+    "index": "artifacts/external-matrix-gaps-2026-11-10/root/plan-3-core-probe-index.json",
+    "key": "obsidian-readme-retry",
+    "url": "https://api.github.com/repos/2233admin/obsidian-llm-wiki/readme",
+    "method": "GET",
+    "observed_at_utc": "2026-11-10T20:04:23.202147+00:00",
+    "status": 403,
+    "final_url": "https://api.github.com/repos/2233admin/obsidian-llm-wiki/readme",
+    "content_type": "application/json; charset=utf-8",
+    "headers": {
+      "Date": "Tue, 10 Nov 2026 19:06:30 GMT",
+      "X-RateLimit-Limit": "60",
+      "X-RateLimit-Remaining": "0",
+      "X-RateLimit-Reset": "1794337597",
+      "X-RateLimit-Resource": "core"
+    },
+    "truncated": false,
+    "file": "obsidian-readme-retry.raw",
+    "bytes": 279,
+    "sha256": "9fa66ef96734ac76fa91ca8090247e0851182d172c4cb49ca7417d46bb4ed968",
+    "interpretation": "REST control remains403/core0; old Date/reset cannot be used as proof of recovery. Public publisher pages were separately available, without login/challenge."
+  }
+}

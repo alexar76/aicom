@@ -1,0 +1,35 @@
+{
+  "root_gets": 4,
+  "all_saved_bodies_sha256_valid": true,
+  "checks": [
+    {
+      "name": "agent-router-list",
+      "status": 200,
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "name": "verify-mcp-hub",
+      "status": 200,
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "name": "hlido-passport",
+      "status": 200,
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "name": "ietf-ard-own",
+      "status": 200,
+      "sha256_match": true,
+      "bytes_match": true
+    }
+  ],
+  "root_query_submissions": 20,
+  "root_unique_queries": 20,
+  "agent_router_scope": "Search snippet contains modelmarket.dev; primary HTML and web-open contain loading shell only. No current listing confirmed.",
+  "ietf_ard_scope": "Own letter by Aleksandr; other visible thread reply is to original ARD authors, not a response endorsing AICOM. Excluded as new independent mention.",
+  "hlido_scope": "Known priorreview/passport; repeated primary reading not new mention."
+}

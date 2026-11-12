@@ -1,0 +1,201 @@
+{
+  "scope": "Reduced independent arithmetic model, synthetic fixtures; not AIMarket counts or upstream execution",
+  "synthetic_cases": {
+    "below_floor_no_deductions": {
+      "gross_calls": 49,
+      "gross_payers": 3,
+      "net_calls": 49,
+      "net_payers": 3,
+      "router_calls_deducted": 0,
+      "refund_calls_deducted": 0,
+      "funded_calls_deducted": 0,
+      "reason": "settlement_required",
+      "unproven_lane": true,
+      "callable": true
+    },
+    "one_router_purchase_zero_self_funding": {
+      "gross_calls": 50,
+      "gross_payers": 4,
+      "net_calls": 49,
+      "net_payers": 3,
+      "router_calls_deducted": 1,
+      "refund_calls_deducted": 0,
+      "funded_calls_deducted": 0,
+      "reason": "settlement_self_funded",
+      "unproven_lane": false,
+      "callable": false
+    },
+    "one_refund_zero_self_funding": {
+      "gross_calls": 50,
+      "gross_payers": 3,
+      "net_calls": 49,
+      "net_payers": 3,
+      "router_calls_deducted": 0,
+      "refund_calls_deducted": 1,
+      "funded_calls_deducted": 0,
+      "reason": "settlement_self_funded",
+      "unproven_lane": false,
+      "callable": false
+    },
+    "one_self_funded_payment": {
+      "gross_calls": 50,
+      "gross_payers": 3,
+      "net_calls": 49,
+      "net_payers": 3,
+      "router_calls_deducted": 0,
+      "refund_calls_deducted": 0,
+      "funded_calls_deducted": 1,
+      "reason": "settlement_self_funded",
+      "unproven_lane": false,
+      "callable": false
+    },
+    "net_floor_cleared": {
+      "gross_calls": 51,
+      "gross_payers": 4,
+      "net_calls": 50,
+      "net_payers": 3,
+      "router_calls_deducted": 1,
+      "refund_calls_deducted": 0,
+      "funded_calls_deducted": 0,
+      "reason": "eligible",
+      "unproven_lane": false,
+      "callable": true
+    }
+  },
+  "live_observation": {
+    "origin": "https://modelmarket.dev",
+    "fetched_at": 1794248039060,
+    "payToByNetwork": {
+      "eip155:8453": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a"
+    },
+    "health": 1,
+    "routable": true,
+    "paid_routes": [
+      {
+        "route": "/x402/histor-check",
+        "price": 0.001,
+        "priceKnown": true,
+        "routerDispatchReason": "settlement_self_funded",
+        "routerDispatchByChain": {
+          "base": {
+            "eligible": false,
+            "reason": "settlement_self_funded",
+            "detail": "below the settlement floor"
+          }
+        },
+        "executeViaCallableNow": false
+      },
+      {
+        "route": "/x402/warden-scan",
+        "price": 0.001,
+        "priceKnown": true,
+        "routerDispatchReason": "settlement_self_funded",
+        "routerDispatchByChain": {
+          "base": {
+            "eligible": false,
+            "reason": "settlement_self_funded",
+            "detail": "below the settlement floor"
+          }
+        },
+        "executeViaCallableNow": false
+      },
+      {
+        "route": "/x402/air-quality-now",
+        "price": 0.001,
+        "priceKnown": true,
+        "routerDispatchReason": "settlement_self_funded",
+        "routerDispatchByChain": {
+          "base": {
+            "eligible": false,
+            "reason": "settlement_self_funded",
+            "detail": "below the settlement floor"
+          }
+        },
+        "executeViaCallableNow": false
+      },
+      {
+        "route": "/x402/weather-now",
+        "price": 0.001,
+        "priceKnown": true,
+        "routerDispatchReason": "settlement_self_funded",
+        "routerDispatchByChain": {
+          "base": {
+            "eligible": false,
+            "reason": "settlement_self_funded",
+            "detail": "below the settlement floor"
+          }
+        },
+        "executeViaCallableNow": false
+      },
+      {
+        "route": "/x402/x402-check",
+        "price": 0.003,
+        "priceKnown": true,
+        "routerDispatchReason": "settlement_self_funded",
+        "routerDispatchByChain": {
+          "base": {
+            "eligible": false,
+            "reason": "settlement_self_funded",
+            "detail": "below the settlement floor"
+          }
+        },
+        "executeViaCallableNow": false
+      },
+      {
+        "route": "/x402/mcp-diff",
+        "price": 0.003,
+        "priceKnown": true,
+        "routerDispatchReason": "settlement_self_funded",
+        "routerDispatchByChain": {
+          "base": {
+            "eligible": false,
+            "reason": "settlement_self_funded",
+            "detail": "below the settlement floor"
+          }
+        },
+        "executeViaCallableNow": false
+      },
+      {
+        "route": "/x402/nearby-sensors",
+        "price": 0.03,
+        "priceKnown": true,
+        "routerDispatchReason": "settlement_self_funded",
+        "routerDispatchByChain": {
+          "base": {
+            "eligible": false,
+            "reason": "settlement_self_funded",
+            "detail": "below the settlement floor"
+          }
+        },
+        "executeViaCallableNow": false
+      },
+      {
+        "route": "/x402/fair-random",
+        "price": 0.006,
+        "priceKnown": true,
+        "routerDispatchReason": "settlement_self_funded",
+        "routerDispatchByChain": {
+          "base": {
+            "eligible": false,
+            "reason": "settlement_self_funded",
+            "detail": "below the settlement floor"
+          }
+        },
+        "executeViaCallableNow": false
+      }
+    ]
+  },
+  "policy_comparison": {
+    "funding_source_byte_identical_to_30_oct": true,
+    "current_sha256": "15978a7b2163fc66971b534ad8e35abe36a856d919cdcde2dc339375de0b9564",
+    "old_source_commit": "48aff2412cd297da40eaadf3f61f25a5b1be2a68",
+    "current_source_commit": "81a674d1a3cf7fdbbcc04f4da366c144ccd393f7"
+  },
+  "limits": [
+    "No private wallet evidence read",
+    "No exact AIMarket deduction attributed",
+    "Runtime SOR_MIN_SETTLED_TX/SOR_MIN_DISTINCT_PAYERS env not publicly verified; 50/3 are source defaults",
+    "Live unproven ceiling0.05 observed on unrelated route rows, not inferred solely from source",
+    "Historical receipt order alone cannot reconstruct the retained pool before or after that transaction"
+  ]
+}

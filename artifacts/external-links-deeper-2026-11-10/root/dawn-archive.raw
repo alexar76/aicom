@@ -1,0 +1,810 @@
+<!DOCTYPE html> 
+<html data-bs-theme="auto" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Search IETF mail list archives">
+    <title>dawn</title>
+
+    
+
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.57.2/fontawesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.57.2/mlarchive/css/bootstrap_custom.css">
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.57.2/mlarchive/css/styles.css">
+
+    <script type="text/javascript" src="https://static.ietf.org/mailarchive/2.57.2/mlarchive/js/bs-theme.js"></script>
+
+    
+
+    
+
+</head>
+
+<body class="">
+
+<!-- Container -->
+<div id="container">
+
+    <header class="navbar navbar-expand-md navbar-dark fixed-top px-3 py-0">
+        <div class="container-fluid">
+            <a class="navbar-brand p-0" href="/">
+                <img alt="IETF Logo" src="https://static.ietf.org/mailarchive/2.57.2/mlarchive/images/ietflogo-small-transparent.png">
+                <span class="navbar-text d-none d-md-inline-block">
+                
+                Mail Archive
+                
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-main" aria-controls="navbar-main" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            
+            <div id="navbar-main" class="navbar-header collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item d-none d-lg-inline">
+                        <a class="nav-link" href="https://www.ietf.org/search/">Search www.ietf.org</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-inline">
+                        <a class="nav-link" href="https://datatracker.ietf.org">Search Datatracker</a>
+                    </li>
+		            <li class="nav-item d-none d-lg-inline navbar-text pipe"></li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbar-help" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
+                        <div class="dropdown-menu" aria-labelledby="navbar-help">
+                            <a class="dropdown-item" href="/arch/help/">Search Syntax</a>
+                            <a class="dropdown-item" href="/docs/api-reference/">API Reference</a>
+                        </div>
+                    </li>
+
+                    
+                    
+                    
+                    
+                    
+                    <li class="nav-item dropdown me-2">
+                        <a id="nav-settings-anchor" class="nav-link dropdown-toggle" href="#" id="navbar-settings" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbar-settings">
+                            <li><a id="toggle-static" class="dropdown-item" href="#">Turn Static Mode On</a></li>
+                        </ul>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item">
+                        
+                            <a class="nav-link" href="/oidc/authenticate/" rel="nofollow">Sign in</a>
+                        
+                    </li>
+                    
+                </ul>
+            </div> <!-- navbar-header -->
+            
+        </div> <!-- container-fluid -->
+    </header>
+
+            <!-- 
+            <noscript>
+                <p class="navbar-text"><small>Enable Javascript for full functionality.</small></p>
+            </noscript>
+            -->
+
+        <!-- Django Messages -->
+        
+
+
+    <!-- Content -->
+    <div id="content">
+        
+
+    <div id="msg-container">
+        <div id="sidebar">
+            <div id="search-filters">
+                
+                    <p class="text-center">Viewing List:<br><span class="browse-list-name"><b>dawn</b></span></p>
+                    <hr>
+                
+                <h5 class="mt-4">FILTER BY TIME</h5>
+                <ul class="filter-options" tabindex="-1">
+                  <li class="filter-item"><a class="selected" href="?">Anytime</a></li>
+                  <li class="filter-item"><a class="None" href="?qdr=d">Past day</a></li>
+                  <li class="filter-item"><a class="None" href="?qdr=w">Past week</a></li>
+                  <li class="filter-item"><a class="None" href="?qdr=m">Past month</a></li>
+                  <li class="filter-item"><a class="None" href="?qdr=y">Past year</a></li>
+                </ul>
+                <div id="filter-box" class="js-off">
+                    
+
+                    <h5 class="mt-4">FILTER BY FROM</h5>
+                    <div id="from-filter" class="filter" tabindex="-1">
+                        <form id="from-filter-form">
+                        <ul class="filter-options" tabindex="-1">
+                         
+                        </ul>
+                        </form>
+                    </div> <!-- from-filter -->
+                </div> <!-- filter-box -->
+            </div> <!-- search-filters -->
+            
+            <div id="message">
+              
+            </div>
+            
+            
+  <div class="footer bg-body">
+      <p class="small text-center">v2.57.2 | <a href="https://github.com/ietf-tools/mailarch/issues">Report a Bug</a> | <a href="mailto:tools-help@ietf.org">By Email</a> | <a href="https://status.ietf.org">System Status</a></p>
+  </div>
+
+
+        </div> <!-- sidebar -->
+
+        <div id="msg-components">
+        
+            <nav id="toolbar-left" class="navbar navbar-light bg-body-tertiary rounded shadow-sm float-start toolbar">
+              <ul class="navbar-nav me-auto">
+                <li id="toggle-filters" class="nav-item">
+                  <a href="#" class="nav-link"><i class="fa fa-chevron-left toggle-pane" aria-hidden="true"></i></a>
+                </li>
+              </ul>
+            </nav>
+
+            <nav id="toolbar" class="navbar navbar-expand-md navbar-light bg-body-tertiary rounded shadow-sm toolbar">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-stretch" id="myNavbar">
+                        <ul class="navbar-nav mx-2 flex-shrink-0">
+                            
+                            <!-- <li><a id="clear-sort" href="#">Clear Sort</a></li> -->
+                            
+                                <li class="nav-item"><a class="nav-link active" href="/arch/browse/dawn/?">Date</a></li>
+                                <li class="nav-item"><a id="gbt-link" class="nav-link" href="/arch/browse/dawn/?gbt=1">Thread</a></li>
+                            
+                        </ul>
+                        
+                        <form name="search-form" id="id_search_form" class="ms-3 my-auto flex-grow-1" method="get">
+                            <div class="input-group input-group-sm w-100">
+                                
+                                    <input type="search" name="q" spellcheck="false" placeholder="Search dawn" class="form-control" id="id_q" value="">
+                                
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary" type="submit">
+                                        <span class="fa fa-search" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#export-modal">Export</a></li>
+                        </ul> <!-- nav navbar-nav -->
+
+                    </div> <!-- myNavbar -->
+                </div> <!-- container-fluid -->
+            </nav> <!-- toolbar -->
+    
+            
+            <div id="msg-panes">
+                <div id="list-pane">
+                    
+                    
+                        <div class="header sortable">
+                            <a id="sort-button-subject" class="unsorted sortbutton" href="#">Subject<i class="fa fa-sort" aria-hidden="true"></i></a>
+                        </div><div class="header sortable">
+                            <a id="sort-button-frm" class="unsorted sortbutton" href="#">From<i class="fa fa-sort" aria-hidden="true"></i></a>
+                        </div><div class="header sortable">
+                            <a id="sort-button-date" class="unsorted sortbutton" href="#">Date<i class="fa fa-sort" aria-hidden="true"></i></a>
+                        </div><div class="header sortable d-none">
+                            <a id="sort-button-email_list" class="unsorted sortbutton" href="#">List<i class="fa fa-sort" aria-hidden="true"></i></a>
+                        </div>
+                    
+
+                    <div id="msg-list" class="msg-list wrapper no-preview" tabindex="-1" data-results-per-page="" data-queryid="" data-queryset-offset="0" data-selected-offset="None" data-export-token="zGorwhIthubuNyu6" data-browse-list="dawn" data-gbt="" data-static-off-url="/arch/browse/dawn/" data-static-on-url="/arch/browse/static/dawn/">
+                        <div class="table msg-table xtable">
+                            <div class="xtbody">
+                                
+                                    
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-0">
+            <span>[Dawn] Preparing for the DAWN session at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/E_2oc1R97aI3h16r04f2K_rnxnE/">[Dawn] Preparing for the DAWN session at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Frank Brockners (fbrockne)</div>
+        <div class="xtd date-col">2026-11-10</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/E_2oc1R97aI3h16r04f2K_rnxnE/</div>
+        <div class="xtd id-col d-none">3860228</div>
+        <div class="xtd thread-col d-none">2305109</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-3">
+            <span>[Dawn] Re: Local LLM API discovery: use cases and a runnable demo</span><a class="msg-detail" href="/arch/msg/dawn/h7tnyQU_mS16Qi9A1fbwp3P6gWw/">[Dawn] Re: Local LLM API discovery: use cases and a runnable demo</a>
+        </div>
+        <div class="xtd from-col">Behcet Sarikaya</div>
+        <div class="xtd date-col">2026-11-09</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/h7tnyQU_mS16Qi9A1fbwp3P6gWw/</div>
+        <div class="xtd id-col d-none">3859530</div>
+        <div class="xtd thread-col d-none">2299733</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-2">
+            <span>[Dawn] Re: Local LLM API discovery: use cases and a runnable demo</span><a class="msg-detail" href="/arch/msg/dawn/NgFh3RJ2HT-axm8Oxdi365Uz-B0/">[Dawn] Re: Local LLM API discovery: use cases and a runnable demo</a>
+        </div>
+        <div class="xtd from-col">Lori Jakab (lojakab)</div>
+        <div class="xtd date-col">2026-11-05</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/NgFh3RJ2HT-axm8Oxdi365Uz-B0/</div>
+        <div class="xtd id-col d-none">3856229</div>
+        <div class="xtd thread-col d-none">2299733</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-4">
+            <span>[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/O5zyK8yaqRaHTWyKAUUs-sYGN0E/">[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Frank Brockners (fbrockne)</div>
+        <div class="xtd date-col">2026-11-05</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/O5zyK8yaqRaHTWyKAUUs-sYGN0E/</div>
+        <div class="xtd id-col d-none">3856179</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-1">
+            <span>[Dawn] Local LLM API discovery: use cases and a runnable demo</span><a class="msg-detail" href="/arch/msg/dawn/by6pgAn9UcoGb4r-rcpV027lmnk/">[Dawn] Local LLM API discovery: use cases and a runnable demo</a>
+        </div>
+        <div class="xtd from-col">Du Chenguang</div>
+        <div class="xtd date-col">2026-11-05</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/by6pgAn9UcoGb4r-rcpV027lmnk/</div>
+        <div class="xtd id-col d-none">3856081</div>
+        <div class="xtd thread-col d-none">2299733</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-3">
+            <span>[Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery</span><a class="msg-detail" href="/arch/msg/dawn/sIMH9X7I30g1m7_1klGddVM8Kb4/">[Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery</a>
+        </div>
+        <div class="xtd from-col">Girish Konda</div>
+        <div class="xtd date-col">2026-11-05</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/sIMH9X7I30g1m7_1klGddVM8Kb4/</div>
+        <div class="xtd id-col d-none">3855923</div>
+        <div class="xtd thread-col d-none">2299617</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-3">
+            <span>[Dawn] Re: How should we determine the minimum public discovery information?</span><a class="msg-detail" href="/arch/msg/dawn/rbzoecOi-g6zl_M4qMqIPnitdIo/">[Dawn] Re: How should we determine the minimum public discovery information?</a>
+        </div>
+        <div class="xtd from-col">安勍(莳逸)</div>
+        <div class="xtd date-col">2026-11-05</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/rbzoecOi-g6zl_M4qMqIPnitdIo/</div>
+        <div class="xtd id-col d-none">3855886</div>
+        <div class="xtd thread-col d-none">2299705</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-6">
+            <span>[Dawn] 回复: revision to suggested Appendix C (was RE: Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/HJsS5N-NXpoMoaqGo7h5-XaqO_c/">[Dawn] 回复: revision to suggested Appendix C (was RE: Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">yangyuanyuan (M)</div>
+        <div class="xtd date-col">2026-11-05</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/HJsS5N-NXpoMoaqGo7h5-XaqO_c/</div>
+        <div class="xtd id-col d-none">3855879</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-3">
+            <span>[Dawn] Re: DAWN Use Case Discussion (Remote Meeting Monday 9th November)</span><a class="msg-detail" href="/arch/msg/dawn/UZqJUrIrE9m4sem8HDXhYYmu0jE/">[Dawn] Re: DAWN Use Case Discussion (Remote Meeting Monday 9th November)</a>
+        </div>
+        <div class="xtd from-col">Linda Dunbar</div>
+        <div class="xtd date-col">2026-11-05</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/UZqJUrIrE9m4sem8HDXhYYmu0jE/</div>
+        <div class="xtd id-col d-none">3855865</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-6">
+            <span>[Dawn] Re: revision to suggested Appendix C (was RE: Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/SynpLoJ922z2LooNwxQnlHEPvG0/">[Dawn] Re: revision to suggested Appendix C (was RE: Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Linda Dunbar</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/SynpLoJ922z2LooNwxQnlHEPvG0/</div>
+        <div class="xtd id-col d-none">3855686</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-2">
+            <span>[Dawn] DAWN Use Case Discussion (Remote Meeting Monday 9th November)</span><a class="msg-detail" href="/arch/msg/dawn/nwY18V25uW36wxntThEMV2mQpb0/">[Dawn] DAWN Use Case Discussion (Remote Meeting Monday 9th November)</a>
+        </div>
+        <div class="xtd from-col">King, Daniel</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/nwY18V25uW36wxntThEMV2mQpb0/</div>
+        <div class="xtd id-col d-none">3855450</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-3">
+            <span>[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/LVGAB38Ii0XR-PQTV0j4wQySyyI/">[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Mirja Kuehlewind</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/LVGAB38Ii0XR-PQTV0j4wQySyyI/</div>
+        <div class="xtd id-col d-none">3855438</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-2">
+            <span>[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/JHYj2Rh75a9FCA_M94NgRlWrCrk/">[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Frank Brockners (fbrockne)</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/JHYj2Rh75a9FCA_M94NgRlWrCrk/</div>
+        <div class="xtd id-col d-none">3855282</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-0">
+            <span>[Dawn] DAWN agenda for IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/ituf_-g2f5V3_10_fg9do6HXxTc/">[Dawn] DAWN agenda for IETF 127</a>
+        </div>
+        <div class="xtd from-col">Frank Brockners (fbrockne)</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/ituf_-g2f5V3_10_fg9do6HXxTc/</div>
+        <div class="xtd id-col d-none">3855263</div>
+        <div class="xtd thread-col d-none">2302088</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-3">
+            <span>[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/aFFFrmj0_IDcNw7207OVBIaOhDc/">[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Mirja Kuehlewind (IETF)</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/aFFFrmj0_IDcNw7207OVBIaOhDc/</div>
+        <div class="xtd id-col d-none">3855196</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-0">
+            <span>[Dawn] Registrant-Published Agent Discovery using SRP (RFC 9665)</span><a class="msg-detail" href="/arch/msg/dawn/8G4r8r_8VxkKc4VQ-TAZmaC2eDA/">[Dawn] Registrant-Published Agent Discovery using SRP (RFC 9665)</a>
+        </div>
+        <div class="xtd from-col">Jiankang Yao</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/8G4r8r_8VxkKc4VQ-TAZmaC2eDA/</div>
+        <div class="xtd id-col d-none">3855121</div>
+        <div class="xtd thread-col d-none">2302041</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-1">
+            <span>[Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery</span><a class="msg-detail" href="/arch/msg/dawn/2zTrEQqFmZ2bbki3rs33CT8shVU/">[Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery</a>
+        </div>
+        <div class="xtd from-col">Александр Артамохов</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/2zTrEQqFmZ2bbki3rs33CT8shVU/</div>
+        <div class="xtd id-col d-none">3855111</div>
+        <div class="xtd thread-col d-none">2301773</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-1">
+            <span>[Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery</span><a class="msg-detail" href="/arch/msg/dawn/EInPLeuJXvQhWcyrj-pka2gkNws/">[Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery</a>
+        </div>
+        <div class="xtd from-col">Aijun Wang</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/EInPLeuJXvQhWcyrj-pka2gkNws/</div>
+        <div class="xtd id-col d-none">3854948</div>
+        <div class="xtd thread-col d-none">2301773</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-2">
+            <span>[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/8QeCqLFHh5koPaTfH_qJ9B-dPTo/">[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Aijun Wang</div>
+        <div class="xtd date-col">2026-11-04</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/8QeCqLFHh5koPaTfH_qJ9B-dPTo/</div>
+        <div class="xtd id-col d-none">3854902</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-1">
+            <span>[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/iPzE5i4DRnciuC2ZknBUSRm0Tds/">[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Junjie Bu</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/iPzE5i4DRnciuC2ZknBUSRm0Tds/</div>
+        <div class="xtd id-col d-none">3854696</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-0">
+            <span>[Dawn] New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery</span><a class="msg-detail" href="/arch/msg/dawn/6PAuYWoAtcq0vO-PztlxQmfZ5qQ/">[Dawn] New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery</a>
+        </div>
+        <div class="xtd from-col">Junjie Bu</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/6PAuYWoAtcq0vO-PztlxQmfZ5qQ/</div>
+        <div class="xtd id-col d-none">3854660</div>
+        <div class="xtd thread-col d-none">2301773</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-2">
+            <span>[Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery</span><a class="msg-detail" href="/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8/">[Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery</a>
+        </div>
+        <div class="xtd from-col">Linda Dunbar</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8/</div>
+        <div class="xtd id-col d-none">3854655</div>
+        <div class="xtd thread-col d-none">2299617</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-3">
+            <span>[Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery</span><a class="msg-detail" href="/arch/msg/dawn/R1Ga6qDX0E2jy7aHNWkeyAsu2AM/">[Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery</a>
+        </div>
+        <div class="xtd from-col">Linda Dunbar</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/R1Ga6qDX0E2jy7aHNWkeyAsu2AM/</div>
+        <div class="xtd id-col d-none">3854615</div>
+        <div class="xtd thread-col d-none">2299617</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-6">
+            <span>[Dawn] Re: FW: I-D Action: draft-farrel-dawn-terminology-05.txt</span><a class="msg-detail" href="/arch/msg/dawn/DWLGNxTsh2NSIla3_Iy2UhaHds4/">[Dawn] Re: FW: I-D Action: draft-farrel-dawn-terminology-05.txt</a>
+        </div>
+        <div class="xtd from-col">Hesham Moussa</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/DWLGNxTsh2NSIla3_Iy2UhaHds4/</div>
+        <div class="xtd id-col d-none">3854420</div>
+        <div class="xtd thread-col d-none">2293698</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-6">
+            <span>[Dawn] 回复: revision to suggested Appendix C (was RE: Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/1RBKfVJ9vXZgwaONZS_J-9cZb90/">[Dawn] 回复: revision to suggested Appendix C (was RE: Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">yangyuanyuan (M)</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/1RBKfVJ9vXZgwaONZS_J-9cZb90/</div>
+        <div class="xtd id-col d-none">3854213</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-1">
+            <span>[Dawn] DAWN Use Case Discussion – Meeting Availability (Was Re: revision to Appendix C</span><a class="msg-detail" href="/arch/msg/dawn/X6Plh64DUEA6mGqW6midc4bYr74/">[Dawn] DAWN Use Case Discussion – Meeting Availability (Was Re: revision to Appendix C</a>
+        </div>
+        <div class="xtd from-col">King, Daniel</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/X6Plh64DUEA6mGqW6midc4bYr74/</div>
+        <div class="xtd id-col d-none">3854146</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-5">
+            <span>[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</span><a class="msg-detail" href="/arch/msg/dawn/V6GOPJkXKJBGpntww8a19qyLCnI/">[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</a>
+        </div>
+        <div class="xtd from-col">Frank Brockners (fbrockne)</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/V6GOPJkXKJBGpntww8a19qyLCnI/</div>
+        <div class="xtd id-col d-none">3854143</div>
+        <div class="xtd thread-col d-none">2297578</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-5">
+            <span>[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</span><a class="msg-detail" href="/arch/msg/dawn/XVKeM_KF52HLxI29ox7YXEkMoyM/">[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</a>
+        </div>
+        <div class="xtd from-col">Artur Hecker</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/XVKeM_KF52HLxI29ox7YXEkMoyM/</div>
+        <div class="xtd id-col d-none">3854089</div>
+        <div class="xtd thread-col d-none">2297578</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-0">
+            <span>[Dawn] Re: revision to suggested Appendix C (was RE: Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/0MFZcX0FokeMsDU__poO768FJc4/">[Dawn] Re: revision to suggested Appendix C (was RE: Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Quick, Matthew</div>
+        <div class="xtd date-col">2026-11-03</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/0MFZcX0FokeMsDU__poO768FJc4/</div>
+        <div class="xtd id-col d-none">3853873</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-4">
+            <span>[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</span><a class="msg-detail" href="/arch/msg/dawn/PKQt1-Vp_Wrx_2iNO8Y4V7Z3uwE/">[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</a>
+        </div>
+        <div class="xtd from-col">Adrian Farrel</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/PKQt1-Vp_Wrx_2iNO8Y4V7Z3uwE/</div>
+        <div class="xtd id-col d-none">3853476</div>
+        <div class="xtd thread-col d-none">2297578</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-5">
+            <span>[Dawn] Re: FW: I-D Action: draft-farrel-dawn-terminology-05.txt</span><a class="msg-detail" href="/arch/msg/dawn/YrHMfJ_9av9shFiGflHt5aSa5wE/">[Dawn] Re: FW: I-D Action: draft-farrel-dawn-terminology-05.txt</a>
+        </div>
+        <div class="xtd from-col">Muhammad Awais Jadoon</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/YrHMfJ_9av9shFiGflHt5aSa5wE/</div>
+        <div class="xtd id-col d-none">3853192</div>
+        <div class="xtd thread-col d-none">2293698</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-0">
+            <span>[Dawn] New draft: Locality in Agent Discovery</span><a class="msg-detail" href="/arch/msg/dawn/31d6ba6QaxIfN7z_NOXY3tGwziE/">[Dawn] New draft: Locality in Agent Discovery</a>
+        </div>
+        <div class="xtd from-col">Osama Abboud</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/31d6ba6QaxIfN7z_NOXY3tGwziE/</div>
+        <div class="xtd id-col d-none">3853056</div>
+        <div class="xtd thread-col d-none">2300784</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-3">
+            <span>[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</span><a class="msg-detail" href="/arch/msg/dawn/lU1wvmPXg82otFvTx6zaV2khwYc/">[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</a>
+        </div>
+        <div class="xtd from-col">Frank Brockners (fbrockne)</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/lU1wvmPXg82otFvTx6zaV2khwYc/</div>
+        <div class="xtd id-col d-none">3852951</div>
+        <div class="xtd thread-col d-none">2297578</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-2">
+            <span>[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</span><a class="msg-detail" href="/arch/msg/dawn/vcygMA9N6w1Cg3sFaLNExk3NaAg/">[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</a>
+        </div>
+        <div class="xtd from-col">Adrian Farrel</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/vcygMA9N6w1Cg3sFaLNExk3NaAg/</div>
+        <div class="xtd id-col d-none">3852913</div>
+        <div class="xtd thread-col d-none">2297578</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-0">
+            <span>[Dawn] FW: New Version Notification for draft-mozleywilliams-dawn-dnsaid-00.txt</span><a class="msg-detail" href="/arch/msg/dawn/TK9iZ9pO0D4S3efSkbjegNn2bA0/">[Dawn] FW: New Version Notification for draft-mozleywilliams-dawn-dnsaid-00.txt</a>
+        </div>
+        <div class="xtd from-col">Jim Mozley</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/TK9iZ9pO0D4S3efSkbjegNn2bA0/</div>
+        <div class="xtd id-col d-none">3852904</div>
+        <div class="xtd thread-col d-none">2300701</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-1">
+            <span>[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</span><a class="msg-detail" href="/arch/msg/dawn/2RC4kj6jPVbjFLBIZdnW61AfcUk/">[Dawn] Re: New Version Notification for draft-farrel-dawn-terminology-06.txt</a>
+        </div>
+        <div class="xtd from-col">Frank Brockners (fbrockne)</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/2RC4kj6jPVbjFLBIZdnW61AfcUk/</div>
+        <div class="xtd id-col d-none">3852816</div>
+        <div class="xtd thread-col d-none">2297578</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-3">
+            <span>[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</span><a class="msg-detail" href="/arch/msg/dawn/_86Lw7LAMzUHcjrxB0BxnoHgd4g/">[Dawn] Re: Call for Presentations: DAWN Working Group at IETF 127</a>
+        </div>
+        <div class="xtd from-col">Frank Brockners (fbrockne)</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/_86Lw7LAMzUHcjrxB0BxnoHgd4g/</div>
+        <div class="xtd id-col d-none">3852792</div>
+        <div class="xtd thread-col d-none">2296669</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-0">
+            <span>[Dawn] About the DAWN charter</span><a class="msg-detail" href="/arch/msg/dawn/EFmwgnuukscABvacJiulowm2uss/">[Dawn] About the DAWN charter</a>
+        </div>
+        <div class="xtd from-col">Eric Vyncke (evyncke)</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/EFmwgnuukscABvacJiulowm2uss/</div>
+        <div class="xtd id-col d-none">3852681</div>
+        <div class="xtd thread-col d-none">2300578</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-2">
+            <span>[Dawn] 回复: How should we determine the minimum public discovery information?</span><a class="msg-detail" href="/arch/msg/dawn/lqKM0Cjb716AcxwLOvW-PM3pT7Y/">[Dawn] 回复: How should we determine the minimum public discovery information?</a>
+        </div>
+        <div class="xtd from-col">Du Chenguang</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/lqKM0Cjb716AcxwLOvW-PM3pT7Y/</div>
+        <div class="xtd id-col d-none">3852523</div>
+        <div class="xtd thread-col d-none">2299705</div>
+    </div>
+
+    <div class="xtr">
+        <div class="xtd subj-col depth-2">
+            <span>[Dawn] 回复: How should we determine the minimum public discovery information?</span><a class="msg-detail" href="/arch/msg/dawn/GbumKwLL1oy3I7h7GFmgAkNJAkQ/">[Dawn] 回复: How should we determine the minimum public discovery information?</a>
+        </div>
+        <div class="xtd from-col">Du Chenguang</div>
+        <div class="xtd date-col">2026-11-02</div>
+        <div class="xtd list-col d-none">dawn</div>
+        <div class="xtd score-col d-none"></div>
+        <div class="xtd url-col d-none">/arch/msg/dawn/GbumKwLL1oy3I7h7GFmgAkNJAkQ/</div>
+        <div class="xtd id-col d-none">3852519</div>
+        <div class="xtd thread-col d-none">2299705</div>
+    </div>
+
+                                
+                            </div>
+                        </div> <!-- msg-table -->
+                    </div> <!-- msg-list -->
+
+                    <div id="msg-list-controls">
+                        <div id="message-count" class="list-control">765 Messages</div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="list-control page-nav">
+                            
+                            <span class="current-page">Page 1 of 20</span>
+                            <a class="float-end" href="/arch/browse/dawn/?page=2">Next</a>
+                        </div>
+                        <div id="toggle-preview"><a href="#"><i class="fa fa-chevron-down toggle-pane" aria-hidden="true"></i></a></div>
+                    </div> <!-- msg-list-controls -->
+                </div> <!-- list-pane -->
+                
+                <div id="splitter-pane" class="draggable js-off"></div>
+                
+                <div class="view-pane js-off"></div>
+            </div> <!-- msg-panes -->
+        </div> <!-- msg-components -->
+        <!-- debug_toolbar_here -->
+    </div> <!-- msg-container -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="export-modal" tabindex="-1" role="dialog" aria-labelledby="export-modal-title" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="export-modal-title">Archive Export</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            
+            <div class="export-text">
+              
+                <p>You must be logged in to export messages.</p>
+              
+            </div>
+            <div class="export-spinner">
+              <i class="fa fa-spinner fa-spin fa-3x"></i>
+            </div>
+          </div> <!-- modal-body -->
+          <div class="modal-footer">
+              <a class="btn btn-secondary export-link disabled" href="/arch/export/mbox/?email_list=dawn&amp;token=zGorwhIthubuNyu6">Mbox</a>
+              <a class="btn btn-secondary export-link disabled" href="/arch/export/maildir/?email_list=dawn&amp;token=zGorwhIthubuNyu6">Maildir</a>
+              <a class="btn btn-secondary export-link disabled" href="/arch/export/url/?email_list=dawn&amp;token=zGorwhIthubuNyu6">URLs</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    </div>
+    <!-- END Content -->
+
+
+    
+
+</div> <!-- END Container -->
+
+
+
+<script src="https://static.ietf.org/mailarchive/2.57.2/jquery/js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="https://static.ietf.org/mailarchive/2.57.2/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.57.2/jquery.cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.57.2/mlarchive/js/base.js"></script>
+
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.57.2/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.57.2/jquery.query/jquery.query.js"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.57.2/mlarchive/js/mailarch.js"></script>
+
+
+<!-- debug_toolbar_here -->
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a587122aad63d5d8',t:'MTc5NDMzNDgyNA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a587122aad63d5d8',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,343 @@
+{
+  "written_at_utc": "2026-11-10T19:10:23.093340+00:00",
+  "scope_ru": "Технические входящие ссылки и независимые упоминания HISTOR/WARDEN; дельта к 9 ноября и утреннему срезу 10 ноября.",
+  "read_only": true,
+  "public_get_count": 31,
+  "http_status_counts": {
+    "200": 29,
+    "308": 1,
+    "404": 1
+  },
+  "web_search_query_count": 16,
+  "web_open_count": 3,
+  "findings": [
+    {
+      "id": "T01",
+      "component": "HISTOR MTL/1",
+      "source_url": "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6757834108",
+      "source_capture_key": "acs-comments",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:04:31.556893+00:00",
+      "classification": "external_technical_reply",
+      "ownership": "third_party_account_kenneives",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "new_comment_after_9nov",
+      "observation_ru": "kenneives исправил своё прежнее описание MTL/1: по его сообщению MTL/1 1.1 одинаково обрабатывает дроби и целые >2^53 с профилем AgentAvow; остаются 1e400 и отсутствующий description. Это признание технической поправки, не принятие стандарта, dependency или новый backlink.",
+      "targets": [
+        {
+          "kind": "mention_reply",
+          "target": "alexar76 / HISTOR MTL/1 1.1",
+          "html_backlink": false
+        }
+      ],
+      "event_dates": [
+        "2026-11-10T03:07:41Z"
+      ],
+      "evidence_files": [
+        "acs-comments.raw"
+      ]
+    },
+    {
+      "id": "T02",
+      "component": "HISTOR dataset",
+      "source_url": "https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions",
+      "source_capture_key": "hf-dataset-page",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:07:58.150432+00:00",
+      "classification": "self_published_external_platform",
+      "ownership": "alexar76_on_huggingface",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "previous_viewer_error_not_reproduced",
+      "observation_ru": "В HTML отсутствует прежняя DatasetGenerationError. is-valid показывает viewer=true; splits перечисляет восемь configs с failed=[] и pending=[]. Чтение changes/train offset=0 length=1 вернуло HTTP200 и одну строку без truncated cells. Полный датасет и все строки не проверены; HTML по-прежнему помечает viewer-partial.",
+      "targets": [
+        {
+          "kind": "html_href",
+          "target": "https://histor.modelmarket.dev",
+          "html_backlink": true
+        },
+        {
+          "kind": "html_href",
+          "target": "https://github.com/alexar76/histor",
+          "html_backlink": true
+        }
+      ],
+      "event_dates": [],
+      "evidence_files": [
+        "hf-dataset-page.raw",
+        "hf-viewer-is-valid.raw",
+        "hf-viewer-splits.raw",
+        "hf-changes-one-row.raw"
+      ]
+    },
+    {
+      "id": "T03",
+      "component": "HISTOR",
+      "source_url": "https://theagentforge.io/t/github.com%2Falexar76%2Fhistor",
+      "source_capture_key": "histor-house-page",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:05:45.961397+00:00",
+      "classification": "external_automated_handshake",
+      "ownership": "third_party_house_tester",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "new_current_version_since_saved_9nov_api",
+      "observation_ru": "Текущая первичная page JSON содержит house-tester для 0.6.1 от 9 ноября и прежний 0.5.2. У нового отчёта taskCategory=mcp-handshake, ownerHouse=true, один owner, corroborated=false, verdict=insufficient. Это обновлённый автоматический тест одного оператора; поисковый снимок всё ещё показывает 0.5.2.",
+      "targets": [
+        {
+          "kind": "identifier",
+          "target": "github.com/alexar76/histor",
+          "html_backlink": false
+        }
+      ],
+      "event_dates": [
+        "2026-11-09T07:04:13.251Z"
+      ],
+      "evidence_files": [
+        "histor-house-page.raw",
+        "histor-house-check.raw"
+      ]
+    },
+    {
+      "id": "T04",
+      "component": "HISTOR extras digest",
+      "source_url": "https://crawlcheck.io/spec/mcp-lockfile#jcs-v1",
+      "source_capture_key": "crawlcheck-spec",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:04:30.154117+00:00",
+      "classification": "external_format_compatibility",
+      "ownership": "third_party_crawlcheck",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "reconfirmed_existing_case",
+      "observation_ru": "Основной текст спецификации и fixture не изменились с 9 ноября. Extras fixture буквально равен текущему toolExtrasDigest HISTOR для CrawlCheck. На этой странице нет href на наш домен; совместимость и влияние подтверждены прежним внешним ответом, а не новой ссылкой.",
+      "targets": [
+        {
+          "kind": "compatible_value",
+          "target": "HISTOR toolExtrasDigest",
+          "html_backlink": false
+        }
+      ],
+      "event_dates": [
+        "2026-11-07"
+      ],
+      "evidence_files": [
+        "crawlcheck-spec.raw",
+        "crawlcheck-fixture.raw",
+        "histor-crawlcheck.raw",
+        "registry-comments.raw",
+        "owasp-comments.raw"
+      ]
+    },
+    {
+      "id": "T05",
+      "component": "HISTOR dataset",
+      "source_url": "https://github.com/Paraphern/rugsnare",
+      "source_capture_key": "rugsnare-readme",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:04:30.143063+00:00",
+      "classification": "external_dataset_citation_and_reported_reuse",
+      "ownership": "third_party_paraphern",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "same_bytes_as_9nov",
+      "observation_ru": "README содержит прямую DOI-ссылку и предметный разбор HISTOR: автор сравнивает свой watch corpus с датасетом. README побайтово совпадает со вчерашним. Это известное независимое цитирование/сообщение об использовании данных; runtime-интеграция из README не установлена.",
+      "targets": [
+        {
+          "kind": "markdown_link",
+          "target": "https://doi.org/10.5281/zenodo.23512760",
+          "html_backlink": true
+        }
+      ],
+      "event_dates": [
+        "snapshot 2026-09-24 through 2026-10-20"
+      ],
+      "evidence_files": [
+        "rugsnare-readme.raw"
+      ]
+    },
+    {
+      "id": "T06",
+      "component": "HISTOR",
+      "source_url": "https://scraperwatch.com/mcp-changes/",
+      "source_capture_key": "scraperwatch-slash",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:05:45.482339+00:00",
+      "classification": "external_comparison_backlink",
+      "ownership": "third_party_scraperwatch",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "reconfirmed_historical_comparison",
+      "observation_ru": "Раздел Outside check сохраняет точный HTML href на HISTOR и сопоставление записей за 31 октября/1 ноября. Ниже опубликована поправка robots parser 2 ноября, и издатель предупреждает, что прежние counts до удаления. Без завершающего слеша source GET вернул 308; адрес со слешем 200.",
+      "targets": [
+        {
+          "kind": "html_href",
+          "target": "https://histor.modelmarket.dev",
+          "html_backlink": true
+        }
+      ],
+      "event_dates": [
+        "2026-11-01",
+        "2026-11-02"
+      ],
+      "evidence_files": [
+        "scraperwatch-slash.raw"
+      ]
+    },
+    {
+      "id": "T07",
+      "component": "HISTOR",
+      "source_url": "https://github.com/AgentAvow/AgentAvow/blob/main/docs/standards/tool-manifest-digest-vectors-v1/README.md",
+      "source_capture_key": "agentavow-v1-readme",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:06:33.542592+00:00",
+      "classification": "promised_link_not_observed",
+      "ownership": "third_party_agentavow",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "no_added_link_in_checked_readmes",
+      "observation_ru": "8 ноября kenneives просил разрешения сослаться на независимую сверку. 10 ноября в issue добавлен наш ответ, не новый внешний ответ. В текущих main README и v1 README нет HISTOR/alexar76/modelmarket URL. Обещание не считается уже размещённой ссылкой; весь репозиторий на содержимое не прочитан.",
+      "targets": [],
+      "event_dates": [
+        "2026-11-08T00:00:33Z",
+        "2026-11-10T17:58:32Z"
+      ],
+      "evidence_files": [
+        "agentavow-v1-readme.raw",
+        "agentavow-readme.raw",
+        "agentavow-comments.raw"
+      ]
+    },
+    {
+      "id": "T08",
+      "component": "HISTOR",
+      "source_url": "https://index.canopii.dev/server/io.github.alexar76/histor",
+      "source_capture_key": "canopii-histor",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:05:45.485386+00:00",
+      "classification": "external_automated_catalog_backlink",
+      "ownership": "third_party_canopii",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "first_primary_capture_of_prior_search_candidate",
+      "observation_ru": "Карточка доступна и содержит точный HTML href к репозиторию HISTOR. URL уже был в поисковых материалах 9 ноября; первым обнаружением его не объявляем. Версия 0.6.1 и собственный детерминированный score каталога не доказывают использование tools/call или безопасность.",
+      "targets": [
+        {
+          "kind": "html_href",
+          "target": "https://github.com/alexar76/histor",
+          "html_backlink": true
+        }
+      ],
+      "event_dates": [
+        "structured datePublished 2026-10-31T11:26:30.208Z",
+        "structured dateModified 2026-11-05T06:49:52.767Z"
+      ],
+      "evidence_files": [
+        "canopii-histor.raw"
+      ]
+    },
+    {
+      "id": "T09",
+      "component": "HISTOR",
+      "source_url": "https://mcpwatch-zeta.vercel.app/servers/io.github.alexar76__histor/",
+      "source_capture_key": "mcpwatch-histor",
+      "source_http_status": 404,
+      "checked_at_utc": "2026-11-10T19:05:45.484768+00:00",
+      "classification": "search_candidate_unavailable",
+      "ownership": "third_party_mcpwatch",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "direct_get_404",
+      "observation_ru": "Поисковый кандидат при прямом чтении ответил HTTP404. Это отказ данной внешней карточки в одном срезе; доступность самого HISTOR из него не выводится.",
+      "targets": [],
+      "event_dates": [],
+      "evidence_files": [
+        "mcpwatch-histor.raw"
+      ]
+    },
+    {
+      "id": "T10",
+      "component": "HISTOR dataset",
+      "source_url": "https://openalex.org/W7223029314",
+      "source_capture_key": "openalex",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:04:32.448635+00:00",
+      "classification": "metadata_indexing",
+      "ownership": "third_party_index_of_author_deposit",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "zero_indexed_citations_reconfirmed",
+      "observation_ru": "OpenAlex возвращает cited_by_count=0 для concept DOI, связанного с HISTOR. Нулевой счётчик этой записи не исключает GitHub README и другие неиндексированные цитирования.",
+      "targets": [
+        {
+          "kind": "api_metadata_url",
+          "target": "https://doi.org/10.5281/zenodo.23512759",
+          "html_backlink": false
+        }
+      ],
+      "event_dates": [],
+      "evidence_files": [
+        "openalex.raw"
+      ]
+    },
+    {
+      "id": "T11",
+      "component": "HISTOR",
+      "source_url": "https://github.com/basitalisandhu/agent-skills-state-2026/pull/14",
+      "source_capture_key": "pr14",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:04:31.877629+00:00",
+      "classification": "own_submission_unmerged",
+      "ownership": "alexar76_submission_on_external_repo",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "unchanged_open",
+      "observation_ru": "PR14 остаётся open, merged=false; updated_at по-прежнему 28 октября. Текущий main README не содержит HISTOR или alexar76. Это наше непринятое предложение, не принятая внешняя ссылка.",
+      "targets": [],
+      "event_dates": [
+        "2026-10-28T09:48:32Z"
+      ],
+      "evidence_files": [
+        "pr14.raw",
+        "skills-readme.raw"
+      ]
+    },
+    {
+      "id": "T12",
+      "component": "HISTOR",
+      "source_url": "https://github.com/rufat325/heldfast",
+      "source_capture_key": "heldfast-readme",
+      "source_http_status": 200,
+      "checked_at_utc": "2026-11-10T19:04:30.150832+00:00",
+      "classification": "outbound_relation_only_in_checked_file",
+      "ownership": "third_party_heldfast",
+      "confidence": "high",
+      "delta_vs_fresh_baseline": "no_histor_reference_in_checked_readme",
+      "observation_ru": "В прочитанном полном README heldfast нет HISTOR, alexar76 или нашего URL. Наше сопоставление с heldfast не превращается автоматически во входящую ссылку от heldfast. Отсутствие по всему репозиторию/сайту не заявляется.",
+      "targets": [],
+      "event_dates": [],
+      "evidence_files": [
+        "heldfast-readme.raw"
+      ]
+    }
+  ],
+  "comparison": {
+    "acs_saved_count_9nov": 25,
+    "acs_saved_count_10nov": 26,
+    "acs_new_comments": [
+      {
+        "id": 6757834108,
+        "author": "kenneives",
+        "created_at": "2026-11-10T03:07:41Z",
+        "url": "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6757834108"
+      }
+    ],
+    "rugsnare_readme_same_bytes_as_9nov": true,
+    "crawlcheck_fixture_same_bytes_as_9nov": true,
+    "crawlcheck_spec_main_same_as_9nov": true,
+    "fixture_extras_digest": "sha256-G44DGgW7+rp9YjMAaEG80Tm5RFoke8eYkrE6nGk69y8=",
+    "histor_extras_digest": "sha256-G44DGgW7+rp9YjMAaEG80Tm5RFoke8eYkrE6nGk69y8=",
+    "fixture_matches_current_histor_extras": true,
+    "histor_record_lastObserved": "2026-11-10T17:58:31Z",
+    "hf_changes_returned_rows": 1,
+    "hf_changes_truncated_cells": [],
+    "hf_page_DatasetGenerationError_occurrences": 0
+  },
+  "limits_ru": [
+    "Публичные аккаунты третьих сторон не являются доказательством человеческой личности или коммерческой независимости.",
+    "Произвольный интернет, закрытые репозитории/аналитика, полный GitHub code search и production-исполнение чужого кода не охвачены.",
+    "Перепечатки, автокаталоги, авторские submissions, независимый технический ответ и использование пакета различаются.",
+    "Downloads HF=295 на момент API-чтения — платформенный счётчик в окне, не 295 независимых пользователей; метрики каталогов не считаются собственной телеметрией.",
+    "Не отправлялись сообщения, GitHub writes, платежи, tools/call; чужие пакеты не устанавливались."
+  ]
+}

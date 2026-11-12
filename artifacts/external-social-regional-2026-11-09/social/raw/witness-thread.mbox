@@ -1,0 +1,181 @@
+From alexar76@rambler.ru Mon Nov  2 13:05:32 2026
+From: =?utf-8?b?0JDQu9C10LrRgdCw0L3QtNGAINCQ0YDRgtCw0LzQvtGF0L7Qsg==?=
+ <alexar76@rambler.ru>
+To: participate@lists.witness-network.org
+Subject:
+ [Participate] Log request: histor.modelmarket.dev/log (staging, 10qps list)
+Date: Fri, 30 Oct 2026 09:51:40 +0000
+Message-ID: <fe36a50dbac1255dbc038358dedaceab@mail.rambler.ru>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============6157318989957565607=="
+
+--===============6157318989957565607==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello, I would like to request that HISTOR's log be added to the staging witn=
+ess network, on the 10qps list. vkey histor.modelmarket.dev/log+ad3ca066+AfXp=
+kWqXVW93sChXnhKsNzvGLTFAAredl1jLlEjbr4wU qpd 144 contact alexar76@rambler.ru =
+Origin line: histor.modelmarket.dev/log (equal to the vkey key name). Key typ=
+e 0x01, Ed25519. Checkpoint: https://histor.modelmarket.dev/checkpoint https:=
+//histor.modelmarket.dev/checkpoint Add-checkpoint rate: one request per witn=
+ess every 10 minutes (144 per day), from a timer on the log's host. The log o=
+nly grows; consistency proofs are served at https://histor.modelmarket.dev/ap=
+i/v1/log/proof/consistency?first=3D&second=3D https://histor.modelmarket.dev/=
+api/v1/log/proof/consistency?first=3D&second=3D and the witness client handle=
+s 409 by resubmitting from the witness's size. What it is: HISTOR is a public=
+, append-only log of the tool definitions that MCP (Model Context Protocol) s=
+ervers listed in the official MCP registry actually serve. Each observation b=
+ecomes a signed statement, and the statements are leaves of an RFC 9162 Merkl=
+e tree (currently about 1.29 million leaves, growing by a few thousand a day)=
+. The format is specified at https://github.com/alexar76/histor/blob/main/doc=
+s/spec/transparency-log.md https://github.com/alexar76/histor/blob/main/docs/=
+spec/transparency-log.md with test vectors; the checkpoint and note formats w=
+ere checked byte for byte against golang.org/x/mod/sumdb/note and github.com/=
+transparency-dev/formats/note. Intended users: MCP clients and security tooli=
+ng that want to check whether the tool definitions they received are the ones=
+ the server serves to everyone (split-view detection for tool definitions), a=
+nd researchers using the weekly open dataset (doi:10.5281/zenodo.23512759). W=
+itness cosignatures are what would turn the log's own signed heads into evide=
+nce that it shows everyone the same tree. Load versus utility: 144 add-checkp=
+oint requests per witness per day, small checkpoints, no burst. Expected life=
+time: long-lived; the log has run since September 2026 and the origin and key=
+ will not change. The same instance also implements c2sp.org/tlog-witness htt=
+ps://histor.modelmarket.dev/witness/v1, https://histor.modelmarket.dev/witnes=
+s/v1, key histor.modelmarket.dev/witness+87df9f83+BHmgo3SRWlaehFMgWBDIOWFgs1V=
+2YQS+ufBcg/ht6kw/). It is not offered as a network witness yet; if that would=
+ be useful once it has run for a while, I would be glad to discuss it separat=
+ely. Thank you, Aleksandr Artamokhov
+
+
+
+--===============6157318989957565607==
+Content-Type: text/html
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="attachment.html"
+MIME-Version: 1.0
+
+PGRpdj5IZWxsbyw8YnI+PGJyPkkgd291bGQgbGlrZSB0byByZXF1ZXN0IHRoYXQgSElTVE9SJ3Mg
+bG9nIGJlIGFkZGVkIHRvIHRoZSBzdGFnaW5nIHdpdG5lc3MgbmV0d29yaywgb24gdGhlIDEwcXBz
+IGxpc3QuPGJyPjxicj52a2V5IGhpc3Rvci5tb2RlbG1hcmtldC5kZXYvbG9nK2FkM2NhMDY2K0Fm
+WHBrV3FYVlc5M3NDaFhuaEtzTnp2R0xURkFBcmVkbDFqTGxFamJyNHdVPGJyPnFwZCAxNDQ8YnI+
+Y29udGFjdCBhbGV4YXI3NkByYW1ibGVyLnJ1PGJyPjxicj5PcmlnaW4gbGluZTogaGlzdG9yLm1v
+ZGVsbWFya2V0LmRldi9sb2cgKGVxdWFsIHRvIHRoZSB2a2V5IGtleSBuYW1lKS4gS2V5IHR5cGUg
+MHgwMSwgRWQyNTUxOS48YnI+Q2hlY2twb2ludDogPGEgaHJlZj0iaHR0cHM6Ly9oaXN0b3IubW9k
+ZWxtYXJrZXQuZGV2L2NoZWNrcG9pbnQiIHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3BlbmVyIiBk
+YXRhLW1jZS1ocmVmPSJodHRwczovL2hpc3Rvci5tb2RlbG1hcmtldC5kZXYvY2hlY2twb2ludCI+
+aHR0cHM6Ly9oaXN0b3IubW9kZWxtYXJrZXQuZGV2L2NoZWNrcG9pbnQ8L2E+PGJyPjxicj5BZGQt
+Y2hlY2twb2ludCByYXRlOiBvbmUgcmVxdWVzdCBwZXIgd2l0bmVzcyBldmVyeSAxMCBtaW51dGVz
+ICgxNDQgcGVyIGRheSksIGZyb20gYSB0aW1lciBvbiB0aGUgbG9nJ3MgaG9zdC4gVGhlIGxvZyBv
+bmx5IGdyb3dzOyBjb25zaXN0ZW5jeSBwcm9vZnMgYXJlIHNlcnZlZCBhdCA8YSBocmVmPSJodHRw
+czovL2hpc3Rvci5tb2RlbG1hcmtldC5kZXYvYXBpL3YxL2xvZy9wcm9vZi9jb25zaXN0ZW5jeT9m
+aXJzdD0mYW1wO3NlY29uZD0iIHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3BlbmVyIiBkYXRhLW1j
+ZS1ocmVmPSJodHRwczovL2hpc3Rvci5tb2RlbG1hcmtldC5kZXYvYXBpL3YxL2xvZy9wcm9vZi9j
+b25zaXN0ZW5jeT9maXJzdD0mYW1wO3NlY29uZD0iPmh0dHBzOi8vaGlzdG9yLm1vZGVsbWFya2V0
+LmRldi9hcGkvdjEvbG9nL3Byb29mL2NvbnNpc3RlbmN5P2ZpcnN0PSZhbXA7c2Vjb25kPTwvYT4g
+YW5kIHRoZSB3aXRuZXNzIGNsaWVudCBoYW5kbGVzIDQwOSBieSByZXN1Ym1pdHRpbmcgZnJvbSB0
+aGUgd2l0bmVzcydzIHNpemUuPGJyPjxicj5XaGF0IGl0IGlzOiBISVNUT1IgaXMgYSBwdWJsaWMs
+IGFwcGVuZC1vbmx5IGxvZyBvZiB0aGUgdG9vbCBkZWZpbml0aW9ucyB0aGF0IE1DUCAoTW9kZWwg
+Q29udGV4dCBQcm90b2NvbCkgc2VydmVycyBsaXN0ZWQgaW4gdGhlIG9mZmljaWFsIE1DUCByZWdp
+c3RyeSBhY3R1YWxseSBzZXJ2ZS4gRWFjaCBvYnNlcnZhdGlvbiBiZWNvbWVzIGEgc2lnbmVkIHN0
+YXRlbWVudCwgYW5kIHRoZSBzdGF0ZW1lbnRzIGFyZSBsZWF2ZXMgb2YgYW4gUkZDIDkxNjIgTWVy
+a2xlIHRyZWUgKGN1cnJlbnRseSBhYm91dCAxLjI5IG1pbGxpb24gbGVhdmVzLCBncm93aW5nIGJ5
+IGEgZmV3IHRob3VzYW5kIGEgZGF5KS4gVGhlIGZvcm1hdCBpcyBzcGVjaWZpZWQgYXQgPGEgaHJl
+Zj0iaHR0cHM6Ly9naXRodWIuY29tL2FsZXhhcjc2L2hpc3Rvci9ibG9iL21haW4vZG9jcy9zcGVj
+L3RyYW5zcGFyZW5jeS1sb2cubWQiIHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3BlbmVyIiBkYXRh
+LW1jZS1ocmVmPSJodHRwczovL2dpdGh1Yi5jb20vYWxleGFyNzYvaGlzdG9yL2Jsb2IvbWFpbi9k
+b2NzL3NwZWMvdHJhbnNwYXJlbmN5LWxvZy5tZCI+aHR0cHM6Ly9naXRodWIuY29tL2FsZXhhcjc2
+L2hpc3Rvci9ibG9iL21haW4vZG9jcy9zcGVjL3RyYW5zcGFyZW5jeS1sb2cubWQ8L2E+IHdpdGgg
+dGVzdCB2ZWN0b3JzOyB0aGUgY2hlY2twb2ludCBhbmQgbm90ZSBmb3JtYXRzIHdlcmUgY2hlY2tl
+ZCBieXRlIGZvciBieXRlIGFnYWluc3QgZ29sYW5nLm9yZy94L21vZC9zdW1kYi9ub3RlIGFuZCBn
+aXRodWIuY29tL3RyYW5zcGFyZW5jeS1kZXYvZm9ybWF0cy9ub3RlLjxicj48YnI+SW50ZW5kZWQg
+dXNlcnM6IE1DUCBjbGllbnRzIGFuZCBzZWN1cml0eSB0b29saW5nIHRoYXQgd2FudCB0byBjaGVj
+ayB3aGV0aGVyIHRoZSB0b29sIGRlZmluaXRpb25zIHRoZXkgcmVjZWl2ZWQgYXJlIHRoZSBvbmVz
+IHRoZSBzZXJ2ZXIgc2VydmVzIHRvIGV2ZXJ5b25lIChzcGxpdC12aWV3IGRldGVjdGlvbiBmb3Ig
+dG9vbCBkZWZpbml0aW9ucyksIGFuZCByZXNlYXJjaGVycyB1c2luZyB0aGUgd2Vla2x5IG9wZW4g
+ZGF0YXNldCAoZG9pOjEwLjUyODEvemVub2RvLjIzNTEyNzU5KS4gV2l0bmVzcyBjb3NpZ25hdHVy
+ZXMgYXJlIHdoYXQgd291bGQgdHVybiB0aGUgbG9nJ3Mgb3duIHNpZ25lZCBoZWFkcyBpbnRvIGV2
+aWRlbmNlIHRoYXQgaXQgc2hvd3MgZXZlcnlvbmUgdGhlIHNhbWUgdHJlZS48YnI+PGJyPkxvYWQg
+dmVyc3VzIHV0aWxpdHk6IDE0NCBhZGQtY2hlY2twb2ludCByZXF1ZXN0cyBwZXIgd2l0bmVzcyBw
+ZXIgZGF5LCBzbWFsbCBjaGVja3BvaW50cywgbm8gYnVyc3QuPGJyPjxicj5FeHBlY3RlZCBsaWZl
+dGltZTogbG9uZy1saXZlZDsgdGhlIGxvZyBoYXMgcnVuIHNpbmNlIFNlcHRlbWJlciAyMDI2IGFu
+ZCB0aGUgb3JpZ2luIGFuZCBrZXkgd2lsbCBub3QgY2hhbmdlLjxicj48YnI+VGhlIHNhbWUgaW5z
+dGFuY2UgYWxzbyBpbXBsZW1lbnRzIGMyc3Aub3JnL3Rsb2ctd2l0bmVzcyA8YSBocmVmPSJodHRw
+czovL2hpc3Rvci5tb2RlbG1hcmtldC5kZXYvd2l0bmVzcy92MSwiIHRhcmdldD0iX2JsYW5rIiBy
+ZWw9Im5vb3BlbmVyIiBkYXRhLW1jZS1ocmVmPSJodHRwczovL2hpc3Rvci5tb2RlbG1hcmtldC5k
+ZXYvd2l0bmVzcy92MSwiPmh0dHBzOi8vaGlzdG9yLm1vZGVsbWFya2V0LmRldi93aXRuZXNzL3Yx
+LDwvYT4ga2V5IGhpc3Rvci5tb2RlbG1hcmtldC5kZXYvd2l0bmVzcys4N2RmOWY4MytCSG1nbzNT
+UldsYWVoRk1nV0JESU9XRmdzMVYyWVFTK3VmQmNnL2h0Nmt3LykuIEl0IGlzIG5vdCBvZmZlcmVk
+IGFzIGEgbmV0d29yayB3aXRuZXNzIHlldDsgaWYgdGhhdCB3b3VsZCBiZSB1c2VmdWwgb25jZSBp
+dCBoYXMgcnVuIGZvciBhIHdoaWxlLCBJIHdvdWxkIGJlIGdsYWQgdG8gZGlzY3VzcyBpdCBzZXBh
+cmF0ZWx5Ljxicj48YnI+VGhhbmsgeW91LDxicj5BbGVrc2FuZHIgQXJ0YW1va2hvdjwvZGl2Pg==
+
+--===============6157318989957565607==--
+
+
+From rgdd@glasklarteknik.se Wed Nov  4 10:18:14 2026
+From: Rasmus Dahlberg <rgdd@glasklarteknik.se>
+To: participate@lists.witness-network.org
+Subject: [Participate] Re: Log request: histor.modelmarket.dev/log (staging,
+ 10qps list)
+Date: Wed, 04 Nov 2026 11:18:10 +0100
+Message-ID: <r42r7mwjy7rsdlfpaqyx5h47w35u5y6wfnzlpgg3hvq2gvcc5x@lgvcokdzodlc>
+In-Reply-To: <fe36a50dbac1255dbc038358dedaceab@mail.rambler.ru>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============7295738675752437241=="
+
+--===============7295738675752437241==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Howdy, you log is now available in the staging list.  Welcome!
+
+  https://staging.witness-network.org/log-list-10qps-4klogs.1
+
+-Rasmus
+
+On Fri, Oct 30, 2026 at 09:51:38AM +0000, =D0=90=D0=BB=D0=B5=D0=BA=D1=81=D0=
+=B0=D0=BD=D0=B4=D1=80 =D0=90=D1=80=D1=82=D0=B0=D0=BC=D0=BE=D1=85=D0=BE=D0=B2 =
+via Participate wrote:
+> Hello, I would like to request that HISTOR's log be added to the staging wi=
+tness network, on the 10qps list. vkey histor.modelmarket.dev/log+ad3ca066+Af=
+XpkWqXVW93sChXnhKsNzvGLTFAAredl1jLlEjbr4wU qpd 144 contact alexar76@rambler.r=
+u Origin line: histor.modelmarket.dev/log (equal to the vkey key name). Key t=
+ype 0x01, Ed25519. Checkpoint: https://histor.modelmarket.dev/checkpoint http=
+s://histor.modelmarket.dev/checkpoint Add-checkpoint rate: one request per wi=
+tness every 10 minutes (144 per day), from a timer on the log's host. The log=
+ only grows; consistency proofs are served at https://histor.modelmarket.dev/=
+api/v1/log/proof/consistency?first=3D&second=3D https://histor.modelmarket.de=
+v/api/v1/log/proof/consistency?first=3D&second=3D and the witness client hand=
+les 409 by resubmitting from the witness's size. What it is: HISTOR is a publ=
+ic, append-only log of the tool definitions that MCP (Model Context Protocol)=
+ servers listed in the official MCP registry actually serve. Each observation=
+ becomes a signed statement, and the statements are leaves of an RFC 9162 Mer=
+kle tree (currently about 1.29 million leaves, growing by a few thousand a da=
+y). The format is specified at https://github.com/alexar76/histor/blob/main/d=
+ocs/spec/transparency-log.md https://github.com/alexar76/histor/blob/main/doc=
+s/spec/transparency-log.md with test vectors; the checkpoint and note formats=
+ were checked byte for byte against golang.org/x/mod/sumdb/note and github.co=
+m/transparency-dev/formats/note. Intended users: MCP clients and security too=
+ling that want to check whether the tool definitions they received are the on=
+es the server serves to everyone (split-view detection for tool definitions),=
+ and researchers using the weekly open dataset (doi:10.5281/zenodo.23512759).=
+ Witness cosignatures are what would turn the log's own signed heads into evi=
+dence that it shows everyone the same tree. Load versus utility: 144 add-chec=
+kpoint requests per witness per day, small checkpoints, no burst. Expected li=
+fetime: long-lived; the log has run since September 2026 and the origin and k=
+ey will not change. The same instance also implements c2sp.org/tlog-witness h=
+ttps://histor.modelmarket.dev/witness/v1, https://histor.modelmarket.dev/witn=
+ess/v1, key histor.modelmarket.dev/witness+87df9f83+BHmgo3SRWlaehFMgWBDIOWFgs=
+1V2YQS+ufBcg/ht6kw/). It is not offered as a network witness yet; if that wou=
+ld be useful once it has run for a while, I would be glad to discuss it separ=
+ately. Thank you, Aleksandr Artamokhov
+
+> _______________________________________________
+> Participate mailing list -- participate@lists.witness-network.org
+> To unsubscribe send an email to participate-leave@lists.witness-network.org
+
+
+--===============7295738675752437241==--
+
+

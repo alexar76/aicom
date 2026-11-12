@@ -1,0 +1,23 @@
+{
+  "archivedCaseName": "test_predecessor_negative_control_reproduces_status_zero_false_success",
+  "excludedFromCI": true,
+  "format": "aicom.agent-historical-negative-controls/v1",
+  "nativeArchivedCasePassed": true,
+  "negativeCaseCount": 1,
+  "oldMainGitBlob": "78df95d7ff58942c0d9bfa8471f1d93654038729",
+  "predecessor": "6f86974",
+  "realLegacyAnvilOldObservations": {
+    "missingGetterErrorObserved": true,
+    "nonce": 0,
+    "revertLogCount": 2,
+    "round1PaidBy": 0
+  },
+  "receiptStatusZero": {
+    "assertionsProvedByPassedActualMainControl": {
+      "oldFalseBoughtLogCount": 2,
+      "oldRound7Sends": 1,
+      "oldRound8Sends": 1
+    },
+    "role": "Expected reproduction of old false-success behavior, not an old product PASS."
+  }
+}

@@ -1,0 +1,16 @@
+[Unit]
+Description=Renew fixed secretless QA capability lease
+After=docker.service
+RequiresMountsFor=/opt/multica/opencode-guard /var/lib/docker/volumes/multica_daemon_home/_data
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+ExecStart=/usr/bin/python3 /opt/multica/opencode-guard/qa-adapter/renew-lease.py --apply
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/multica/opencode-guard /var/lib/docker/volumes/multica_daemon_home/_data/.local/state/warden

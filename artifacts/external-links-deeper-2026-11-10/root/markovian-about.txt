@@ -1,0 +1,296 @@
+markovianprotocol.com/witness
+
+This is a witness for transparency logs (https://c2sp.org/tlog-witness).
+Before it signs a log's latest state, it checks the log's signature against
+a key it already holds, and checks that the new version only adds to every
+version it signed before.
+
+Log keys can be Ed25519 or, since 26 October 2026, ML-DSA-44 (signed
+as in https://c2sp.org/tlog-cosignature). This witness cosigns in Ed25519.
+
+Verifier key:
+
+  markovianprotocol.com/witness+41b8827f+BJKLl8rBYM0oUxSaWh9rjTldTprEpYj/SWVIGgacA9XC
+
+What a signature from this witness means: at the time it signed, this
+witness saw this state, the log's signature checked out against the pinned
+key, and the log only grew from everything this witness signed for it
+before. That's all. It says nothing about whether what's in the log is true.
+
+When it refuses, and the code it answers with:
+  404  a log it doesn't know
+  403  a signature that doesn't check out against the pinned key
+  409  an out-of-date starting size (the reply says the size we have)
+  422  a version that doesn't follow from what we signed: a different
+       fingerprint at a size we already signed, a size-0 state whose
+       fingerprint isn't the empty-log one (SHA-256("")), a fingerprint
+       not written in standard base64, or a log smaller than one we
+       already signed
+
+Updates are all-or-nothing, so this witness never signs two conflicting
+versions of the same log. If a log offers a second fingerprint for a size
+we already signed, we keep both signed notes and publish them at
+/equivocations. Refusing is what the protocol asks for, but the pair is the
+only evidence that outlasts the request.
+
+Endpoints:
+  POST https://witness.markovianprotocol.com/add-checkpoint
+  GET  https://witness.markovianprotocol.com/checkpoints
+  GET  https://witness.markovianprotocol.com/equivocations
+  GET  https://witness.markovianprotocol.com/
+/history
+  GET  https://witness.markovianprotocol.com/
+/checkpoint
+The same endpoints are reachable under https://markovianprotocol.com/witness/...
+
+Which logs it signs for: it follows three witness-network.org lists, refreshed
+every hour: testing/log-list.1 and both staging lists (log-list-10qps-4klogs.1 and
+log-list-100qps-40klogs.1) from transparency-dev/witness-network. New logs on those
+lists get added automatically. A log that's already set up is never removed or
+re-keyed because a list changed. Being set up means this witness will accept and
+sign states the log sends it; it doesn't mean this witness goes and fetches them.
+
+How often a fetched log gets signed: the fetcher is scheduled every 15 minutes, but
+each run goes through every log in turn, and a big one takes longer than 15 minutes.
+So the real gap is longer than the schedule, and longest for the busiest logs. Over
+the 30 hours to 2026-09-17, on the fastest-growing log here (Android's google1p APK
+log, 29 signatures), it was 15 minutes at best, 38 typically, 225 at worst. Don't
+take that from this page: every signature is served with its time at /history, so
+you can measure the gap for any log here yourself.
+
+Logs this witness signs for, with the keys it holds:
+
+  alalaai.ru/api/kt/v1+a0f52e4b+ATXb0OtL11Ghs0cbDyTjNOVcXjMWid4f2/Z05os7JDxp
+    sends us its states (tlog-witness protocol)
+
+  android.transparency.goog/google1p/apk/2026/1+fc654374+ATr9NQE0gvOtVfj5cCStUzdlflEp3oZoNHD8pImzPj5O
+    fetched from https://www.gstatic.com/android/binary_transparency/google1p/apk/2026/02/
+    key taken from transparency-dev/witness-network lists/staging/log-list-10qps-4klogs.1; monitor from android/android-binary-transparency verifier README
+
+  android.transparency.goog/mainline/modules/2026/1+1a8e4064+AfwnHm59rNQTJICchMd7a2W5PQa7nC5h2gTEfq3fhCEI
+    fetched from https://www.gstatic.com/android/binary_transparency/mainline/2026/02/
+    key taken from transparency-dev/witness-network lists/staging/log-list-10qps-4klogs.1; monitor from android/android-binary-transparency verifier README
+
+  apertrue.photo/witness/production+03cfa386+AVHItNDu7TwYuYl5pxDxmCKbwaz+zwxcOBk+YRbn6fuD
+    sends us its states (tlog-witness protocol)
+
+  api.riskrouter.eu/tlog/evidence-v2+05e20636+AZsv9x6CMqcAlnY+GmAtkFthrxjtaGKnVpQEH9ZAkL7J
+    sends us its states (tlog-witness protocol)
+
+  arcaeon.io/witness/v1+7d23e5e3+AelW+r1GQ7NZu3A3sP+cxm/DTaE99Q6AUHHMR5PI53tl
+    sends us its states (tlog-witness protocol)
+
+  arche2025h1.staging.ct.transparency.dev+ba2f06c0+AU0vHmlGCS/PdN8b2OaGmKprLI8HKM+dJ472xgFYh15f
+    fetched from https://storage.googleapis.com/static-ct-staging-arche2025h1-bucket/
+    key taken from transparency-dev/witness-network lists/testing/log-list.1; monitor from gstatic all_logs_list v3
+
+  arche2025h2.staging.ct.transparency.dev+9fcb9171+AaSfJnU/wl/0HR4cTkeJgQ5lk26N43sChTQMeFV14VOj
+    fetched from https://storage.googleapis.com/static-ct-staging-arche2025h2-bucket/
+    key taken from transparency-dev/witness-network lists/testing/log-list.1; monitor from gstatic all_logs_list v3
+
+  arche2026h1.staging.ct.transparency.dev+706e1366+AVK//LIrBodyJVW1ZUUDud5pN8iUm8+li//WcrInnF4D
+    fetched from https://storage.googleapis.com/static-ct-staging-arche2026h1-bucket/
+    key taken from transparency-dev/witness-network lists/testing/log-list.1; monitor from gstatic all_logs_list v3
+
+  assurance-staging.tjs.net+29d17394+AcQjLaX1CvWjlHuTQ5DlVj8CjtG49DL5Vo6cN0zlohUX
+    sends us its states (tlog-witness protocol)
+
+  attestz.com.au/checkpoints+c89011ec+AaVxEw9UeSBniRBJhoJSsTT8RLB7Zm5UdKZC5kSoQJHl
+    sends us its states (tlog-witness protocol)
+
+  caja.box/K+0436e498+AWxE2/qfXNdS8IQNHZMclm32r0bXYvgJn6QZtFpHco5v
+    sends us its states (tlog-witness protocol)
+
+  caja.box/P+07bc5e90+ATOdnisk3MO0DQEs5IaPic9ToZ0NmWQpkpqCU78TLabC
+    sends us its states (tlog-witness protocol)
+
+  coachandhorses2026h1.staging.certificate.transparency.goog+3295e0b0+AY2+QOFlhz9eatgixbbGBrt5xgL3gmbYXxRaEGJ9fvm1
+    sends us its states (tlog-witness protocol)
+
+  coachandhorses2026h2.staging.certificate.transparency.goog+37fa92e9+Aa7pqTEYIhJ1Y8DKUA9Ql+vHM3jwSgqQg57LzXNRcDtA
+    sends us its states (tlog-witness protocol)
+
+  coachandhorses2027h1.staging.certificate.transparency.goog+e0aaadf5+AU4J5dVe/5rDp3pslxcB6dQCo9SOcFskvSVKREYTpGj8
+    sends us its states (tlog-witness protocol)
+
+  coachandhorses2027h2.staging.certificate.transparency.goog+ccc1c2f8+AeYGXB5TSNt8MslhSaA9KKe88VoLtdh2a3til3ww2dGL
+    sends us its states (tlog-witness protocol)
+
+  edge.bluefox.ai/transparency/reliance/v1+dde62350+ATjbXC50KK3XMDTkI4H79Q+TshwWsnwhJ3wDuw3ZvFzO
+    sends us its states (tlog-witness protocol)
+
+  fulcrumlayer.io/witnessed-log/v1/m5CJYf0Ts4ywjJXeFPtlukIvrl3NqTahAdzKZ4cSkvI+22c43aca+AbFl8/zTg5IVBAyHqDASCJyHL5nAiagBMs6SZ1rNW3Lo
+    sends us its states (tlog-witness protocol)
+
+  gblin.digital/receipts-log+00c6e18c+AY8/YnCHXTnsECT2EGv0M5RTqlVvFobctLv3WSihYkoG
+    sends us its states (tlog-witness protocol)
+
+  github.com/project-oak/git-ratchet+f3ccfdb4+Bj5lr8ad2g206WEVKaIspOryeWXOdyWG5cXQAid44v7QIrSFx9vLB+lGkzzmr+RQEqikH6u0xOWTD2n2KABQ/5IycbgS4KYX1ekwyVXGOBOMVMAheFT8kg6FL7tNKWh7mVMqBGbxTQh8aZGOQ6pyjsw+OhvNUuB1QhYwVhQgIoeWiUEI4jd3rY8Ks/S99U7pTld8O6tE/gSdu/LE3nUUN784oxFADFD3A1JpZnUrQi1WIMF1cQyXLxJBIFhmvRMszTblYnWn6memJJThPhsnZ22WngqV/So6LnXnGmuody4JE2ksrKK5KXYkgXi9VHP+fMxeRAFcDkT1uQOLZ+v5JPnxhmjLIBNh+PnD1LF9REp6hc1XqGtzD64m5LFFasiwvItPqg0laN6nEmTBLXWocDsVpUi8OREBI9i+jXKUTSUmD26o6NOekrJeqPonL9/feNlTz7YLnnagXofTRkbDijXEMiXbsvI7XAaLvnCBw6n5Cyyl+SL/rogWuSgdZKLH4SvhdZhCKXEsl0p24uCyuEkeTWKjvJ9LWFBe403U8RR+My9iw/3zA8Q0xCBSM+AYGK4zJF1cHHdOWs12BKSffY0s8qww/qWnV+56nCV+InNE55WwSt6rThZJTGsIqlMYFV55Nrg//CH6wpE7TMLBsz4ZI/pIXLUy5Ik63rd7KFQK7/5i3BVoYS4L2meI+XBDIZH7EPRTPFBqOfLrpQIb1ZuKjmOEtyQLCrFrLcSbTgGfJH243o/VKqhNEfP5ZgQcu8l4iI2DNjjcdx50A59zaUzI1GaM1X5rZvVT9ng+46E8SuF+cG9G8rOSiR+J07uWe/p5ULQFekbt8wmZt2wBXd3UPLAlzCzDhhuwAAzYIqFLbPjdYywEybDyZpuJBVGauS7LO+DtJlsE8azS6g6FKMqYHS7rQRNwqYQM6boo3+5+giirG+XiFe+/URxekD0l6S9YlNvUnqwp3EnGnPb/0Lr7VWzuLjpW4zBQgig2sTO659lzghWuX7Is8wGPz/XG8UyPleagRwIdpVlCAf4XTA9z93UWbxZ8I9Y8u2VXtZI9iimPcn5j3qH09gjv0RIaIeiElc6r9kHznb7cCwXH5BwqFz7ID2VKlLOmuLoqmeXiwkuTOmEFuP98NFzYDUxldpS1PEuASxpaPfUfBrfUYkxTYoO9dZHm0KWE6z47dq+efh0woM1nyhPWxZVAdrv07IPxG+tX5M/aikzYWUza4vXR8ATPsHrZ9kQ3b1CasbjQp+AHaM9P88lrN9rTeb3YpIzQwFNqwU5YBLkfuTr+1GLghPwwNC6X4erq2FAbjOVeNOrpyN87sPyJ2glDtvafm55FWvljBlytQSsvk8VuY4gRvk9Rkl1tnMGsR91t3ukc/c0I0lScT1FLfVx5W3xQkojypC2Sg4lzeF4QaSC/m3CNou57rKmzJ+Tj87u+5WuI2PH2PSBhBOAETSwl09BUXSprYrE3rXZwl8HLo2lcpK1pd66FJQ++3QVkHmle3MKmQe580Mk2sPlaVrecdATD906KLtbscgLJQrEUBT4OgKCwJamwaSdflgeH351VIIONQNg+UqrOF7wqWECC8kbj3BQxAsln3bY9mVZeUVihOF0tn+0iVIyct+PGKjEjVFvF6XxW/5wFHtu6yNia4UhgPoiXKfgFxTr4aZEkG4iPIJoVDXHLm7MHmKDCWFvwFCZ7Tfh0Wmymm7LDcXkT38IiS30G/tuWi48OM93EKjhXruk=
+    sends us its states (tlog-witness protocol)
+
+  histor.modelmarket.dev/log+ad3ca066+AfXpkWqXVW93sChXnhKsNzvGLTFAAredl1jLlEjbr4wU
+    sends us its states (tlog-witness protocol)
+
+  humancollab.si/log+82a72f07+Adi/JGanZWPqBq4//O4rs7ZZy6AByPOLdtPzZhzmk0te
+    sends us its states (tlog-witness protocol)
+
+  idt.jesseahawkins.com/log+058d956b+AUQaM40MzBEcgzpLS5SZAjKigqYYTB+hbJwHZFTPuyUh
+    sends us its states (tlog-witness protocol)
+
+  juf.ct.ipng.ch/ct-witness-exporter+eab4aa3c+AfPC/SDS/7trbhBLF2MUU1GoKrWxyl+W2n8BlX8hG7J5
+    sends us its states (tlog-witness protocol)
+
+  keys.enigm.dev/v1+06c61fb2+AcBPl120wgVJe9QWPfa8Pazv3kG99wFcZvr316Msrab6
+    sends us its states (tlog-witness protocol)
+
+  keyserver.geomys.org+16b31509+ARLJ+pmTj78HzTeBj04V+LVfB+GFAQyrg54CRIju7Nn8
+    fetched from https://keyserver.geomys.org/tlog/
+    key taken from transparency-dev/witness-network lists/testing/log-list.1
+
+  log.333.eco/origin+f3d66572+AXi0v2hiHpHIJ+jLtTsRr8Oy0xQsAOONP3DTlQIPd7QF
+    sends us its states (tlog-witness protocol)
+
+  log.frem.sh+4e9c5de6+AcfzmSNWSmxIklo06ELrJzqR8VNCsdV3Sz9pFqL+5lH+
+    fetched from https://log.frem.sh/
+    key taken from transparency-dev/witness-network lists/staging/log-list-10qps-4klogs.1; pinned manually 2026-09-16
+
+  log.traceseal.io+bcbcecc8+AR4pimAaGABPMPkqgxneIOqI7qSXBGtEJnXFr1Wevm1B
+    fetched from https://log.traceseal.io/
+    key taken from https://log.traceseal.io/ (operator's own page)
+
+  log.veil.rip/staging-1+0fe1ede5+Afp4VCeQqMwhvKPNrh/pQ5nFDVRAMsSOnXtpgK51DD/z
+    sends us its states (tlog-witness protocol)
+
+  log.veil.rip/test-1+3a203129+ARuvMXX36YtXtrD2XXeF9TgCFSnQ3sYHGMrT6G6cWLLX
+    sends us its states (tlog-witness protocol)
+
+  log2025-1.rekor.sigstore.dev+cf119915+AbfK5adZJxsI323FwGD2AJJ9F4i89cfDuLdGJBIYntuO
+    sends us its states (tlog-witness protocol)
+
+  log2025-alpha3.rekor.sigstage.dev+d3d3a70c+AZQ93VXPMmj9uZj7U/7CefQ9yy8RgYFv6mKzOseipjqp
+    sends us its states (tlog-witness protocol)
+
+  log2026-1.us-east4.rekor.sigstage.dev+3a727147+AbgD80fRkVDJLei3IO3XKcuwuGLPvoMUNhRUz1QVIRnz
+    sends us its states (tlog-witness protocol)
+
+  markovianprotocol.com/log+0302c6c8+ATkpOWo95UuEiW2EhNZAol4f0CS8hMluJfPcTSzrr03v
+    our own log. DEMO: self-witnessing has no independence value;
+    this cosignature is excluded from the independent-witness count
+    the log publishes.
+
+  mcpverify.ai/archive/v1+f5d9c8d0+AZ0GwtwS941FiviqZwM4j/UKN/YiUO3rZawJimXMIfMc
+    sends us its states (tlog-witness protocol)
+
+  notbefore.net/log+8b627e7f+AfPQekreiy4JUcf8TEcJs4Mj00EHL7JvHUSSLXeyZVLs
+    fetched from https://notbefore.net/
+    key taken from transparency-dev/witness-network lists/staging/log-list-10qps-4klogs.1; pinned manually 2026-09-16
+
+  nous-lang.org/envelope/5fe20ff38bf251d0d1d21865cced8d9e60cb808546dc27d608bee9c88701d4ff+0d1ddb5d+AYWf42KPdJuChdrjpOVssCNl82NNcT7LsOkdMAgcT/xz
+    sends us its states (tlog-witness protocol)
+
+  octetproof.com/vaults/v1/dev+af8670a8+AUT4sHLAQsEkQC322W3fsoWQXPMbmCzIGXP1b+KiUV/W
+    sends us its states (tlog-witness protocol)
+
+  parcelyard2026h2.prod.certificate.transparency.goog+f4630bfe+AWouhTkWdiXEtTKSFnEEhHDPEbXcbqlU9jBHy0WRUmuu
+    sends us its states (tlog-witness protocol)
+
+  parcelyard2027h1.prod.certificate.transparency.goog+4e1a7d41+AWEIHJCHYZujgUTOSAGS2v4kV1k8VbFJ2J81M7TS9rEB
+    sends us its states (tlog-witness protocol)
+
+  parcelyard2027h2.prod.certificate.transparency.goog+9cf6be9f+Ae7FBxZ9jT49G7JOWEbVokl2DYCFmrupN+NyZX/0rhHS
+    sends us its states (tlog-witness protocol)
+
+  plumbersarms2026h2.prod.certificate.transparency.goog+6c1aa0ce+ASYjyZkW6msIfpIZ3qK7n07ShttUNpbw4EbaKCtHwIS2
+    sends us its states (tlog-witness protocol)
+
+  plumbersarms2027h1.prod.certificate.transparency.goog+ecc62866+AYye1MubK7uroero+2RwN6M+I0KQ4f3fRRtF3Qo6ZlsI
+    sends us its states (tlog-witness protocol)
+
+  plumbersarms2027h2.prod.certificate.transparency.goog+dcbf16c3+AVTRjsgf05nepf0R0D7B8i03lNChQFwmZW6toYsSmrxr
+    sends us its states (tlog-witness protocol)
+
+  pqc27-a1.us-east4.rekor.sigstage.dev+c9a9945c+BoV6yId5G0DGEajPkfNkL25be3pgRFX6Aog6KXL+XTIaD7LUmvKEdiFLvqsxK0ZNhw/bSttAViccB3osGWmUcrNuJ4Dn8JQ76+AaMWG88igmXIk0qaXhOl4qn0bOXK13Mbs+d2N0oinX1821uBmNSopQtWkGrQS0OaTFUZjJ3i6Ge9SFK4oIFK/DlcnYFuoMiyyUx5YYeS6IdJG/En65fXYfUtk9CSgusgXsEhZGXII05u2XEwEa7RGi9vtaBqZqiFFbL73NGpdKaf4+veIoh265WTQynstqJHGREUaE1YZJQXHmBJGPcpn5pGQayQyiv6HsODcrBxHClXidIzZYDz0FRKr8+qaYnGz+GFgWLst0zRrYFpgHI/94Xm4tle7PRsmwDDmdV79pTwGhwO0A88Y7fpbd3eTgk75yMPQcoPSNXU2RJhsGsdiP6jjhy40PgayTWwzTHE5jCJUMYTUHJ/oUnxO3mj09ZxwIv01m6kOINX4zb2bGgidcfIWXtvdW1Oq9KB3YIxIGghqjyMQGHkSNK3W4iUQd/kSz9VkCfsVW65fzDSLS0XhBsFZf0JasyZ9EsmGp81wD9bMu3M+2UK015fpiN1yCi+B4O4ltUfQeZnl5tO44DsuF9O4nZBAY/7F4e8duFLrnClLfKN/arm6/+4VaUSZMuAl5HokSH3tdqDVDiKZRNJJAPhRSzX+Y6N4g52gWo2Q9/tXYc2MBICuC3ufwP7qzoAX/1iIwu/06EXrpFu9udX1Dw8YdQfEhSVWIJXvY64xH+NkJmt8dxK3PrnZF8jE7iVf3HWBb4FaTMBeCVgLYdbjqvYC+ZPCnhLDyNqm+I4LhjDd9y29IION9jw/Yz3IhgDGo8exXVllKZHlhMmMrbWDr23oeGpGze8ATBB7pWxO2Gc30qMi5njwGI8h8BbSGvzz21+u/tVxyY8pNoqF1BIbhz5K//iEKMLZaQexojfFhz0uatBGlBcX+9KnT7M7bTRKjjZ8iYD58V0dx+Vx+zmGkd6RHrjGUzAXLArxEfnhKWozTBOUq4IrpXuT+ROlsCvMGs+07CnVDb8LqCNqz9gmEu0scq6WiY3woV4PC8ZuC88mkUXrqF4yENTuOs+ppA7hkHVRnalT6UqCzfO+h/NhTUVS7Bo1Clz7lMNZyEks7rv46L9E7gMVivq43AYm722WgMNAEtP1y6kL5adEJiYUw81wdWn2C9GAHacXWpFGyh4PZeUjrseMQo9WRbgmq/qCvFkpgTSIDjewBJvwOt8Gb3WrBjUxJut1MN0QKw+IMLahrPj8fbdbEWdO+rc29ihxYbaiU8kr8wm8NV7kPRF8/fl1vkRfDun/GXhW9zZ7C3wVODObH8N226sV5qjSWR8+THCr4COucB914F3OAaEe1W8EcSisezdfff7yOAW4rq/pb8i1a6pyzKzR5RKwZPbwQugZYEUxPpq//xDWreMLYxvkeFtRoaVb0F9e/ulHuO1r08MyoSr0RGCJQVqElvaxErrljJwcRmsH2nQoMOeQMiNA8Jx8Ct96hrTpHHw70A0vDDfSl3Ve0HJIMzORJFTnwLXD9nQka1QwFdKkSaGMOfKj8refzGnS7IAQJiu3R0B9/KRkk+7jZI9c6nqjID3Op0Mw14j9KVHhHGQm/JA2twoYF+FMeSHA6k9F4t+Tq3xvK8Y3cTBXSHjEuszUBvKFAdM0H6X5dCwJcfzI5ywVxOOMDfEbJ+xv5YFuPVFSDBePa05v8lcw=
+    sends us its states (tlog-witness protocol)
+
+  quantum.alalaai.ru/api/kt/v1+69645dc5+ARR7CsRDnPui/xh70DjD42QB1D5hiv5HIUOj4clqCQMe
+    sends us its states (tlog-witness protocol)
+
+  sciencejournal.ai/log/38afcdfdfd80b94913d9565037c9f42140f6da726a22a6cfce46ab0f8472ca11+0be4e5d9+AZ2C9GwcSR2c9Tg3Ve1hquJ6DYhZ6N0gx2V6NAL5yeKX
+    sends us its states (tlog-witness protocol)
+
+  sigsum.org/v1/tree/1643169b32bef33a3f54f8a353b87c475d19b6223cbb106390d10a29978e1cba+57f71a6a+AUfkgWBtisunR6awU9bC0ZFgX7EiF11BChICqRQwq845
+    fetched from https://serviceberry.tlog.stagemole.eu/
+    key taken from https://serviceberry.tlog.stagemole.eu/about
+
+  sigsum.org/v1/tree/44ad38f8226ff9bd27629a41e55df727308d0a1cd8a2c31d3170048ac1dd22a1+682b49db+AQ7H4WhDEZsSA3enOROsasvC0D2CQy4sNrhBsJqVhB8l
+    sends us its states (tlog-witness protocol)
+
+  sigsum.org/v1/tree/4e89cc51651f0d95f3c6127c15e1a42e3ddf7046c5b17b752689c402e773bb4d+778629b1+AUZEryq9QPSJWgA7yjUPnVkSqzAaScd/E+W22QXCCl/m
+    fetched from https://test.sigsum.org/barreleye/
+    key taken from transparency-dev/witness-network lists/testing/log-list.1; instance doc git.glasklar.is sigsum-logs barreleye.md
+
+  sigsum.org/v1/tree/e93cb678c04cc52e4da380c4b19cfa14062032a722da254c65cbd95e7e76321d+c6279f6d+Ae3din1x8uLDUC6N8XgsRfxj5BmBw23kv3Aq2y6nVHHd
+    fetched from https://driftwood.tlog.devmole.eu/
+    key taken from https://driftwood.tlog.devmole.eu/about
+
+  thelemail.com/keys+76ead63c+ASduViYkPgYHzuTuDnuTdEkjR/DIprnavuFA3vom4YZT
+    sends us its states (tlog-witness protocol)
+
+  transparency.syngraphe.org/countersign/v1+57c78c5b+AWCOEr/7863suzb/aa/f26wzDDa1iyNm7qBIIjaghUnk
+    sends us its states (tlog-witness protocol)
+
+  tribeunal.com/log/v1+1864d425+ARZ+dcbAv0uh5QsOa2oqYAMZUrFHvgkIk84T7QqVkyu4
+    sends us its states (tlog-witness protocol)
+
+  trooth.co/witness-log/v1+06471ca9+AY9UdmLMbCX5Ib3ksDeoE8x3CburcWGJE9eJiPiYP5sZ
+    sends us its states (tlog-witness protocol)
+
+  vindex.gopherwatch.org+af4f4f3a+AYlEp21ErzmKZa+aqhjC8BQteyEtsVwmLzblkzHxn8et
+    fetched from https://vindex.gopherwatch.org/outputlog/
+    key taken from https://vindex.gopherwatch.org/ and transparency-dev/witness-network lists/testing/log-list.1
+
+  whisper.online/ledger+8a3a5df0+AackwSi920iTu5AW3cOBaibI0RFtt4zT9Ox8mygciGm4
+    sends us its states (tlog-witness protocol)
+
+  whisper.online/ledger/g2+d40e573a+Ae6UmGCJyl5tkzI8AKhLKCqJ/3dxPEg6t+FdVVK4EwJt
+    sends us its states (tlog-witness protocol)
+
+  www.honesty.tools/receipts+fcd79bdd+AUF/J2nQKn90Ba52NjK0jqgIYayocRQGAYsK7PUdD7+C
+    sends us its states (tlog-witness protocol)
+
+Rollback protection:
+
+  Once an hour this witness writes (log name, size, fingerprint) for every
+  log it has signed into markovianprotocol.com/log, whose states seven outside
+  witnesses sign and which is stamped into Bitcoin. On startup it reads the
+  newest of those back, proves it's in a state that meets that 4-of-7 rule,
+  and for each log keeps whichever mark is higher, published or stored.
+  Recovery only ever raises a mark, so restoring an older witness.db can't
+  lower one. An empty database is refused rather than trusted from scratch.
+  If a published fingerprint contradicts what's stored at the same size,
+  that log is held at 503 until an operator sorts it out.
+
+  Because the marks are hourly, recovering from them alone could reopen up to
+  an hour of progress. So recovery also asks each log it can fetch for its
+  own current state, and raises the mark to that only if the state checks out
+  against the pinned key and the log proves the mark is part of it. That's
+  safe in the same one direction: a mark is a floor, it's stored without our
+  signature, and a log that overstates its own size here can only make this
+  witness refuse that log until it serves the version it signed. Logs that
+  only send to us can't be asked, so they keep the one-hour gap. A log
+  already held for contradicting itself is never raised.
+
+  State of that check: confirmed (re-checked hourly; last 2026-11-10T17:21:43Z)
+  leaf 14022, published 2026-11-10T16:20:01Z, checkpoint size 14026; 31 origins at or above the mark
+
+Who runs it: Colin Winter, Markovian Protocol (SigmaSynth LLC),
+hello@markovianprotocol.com. It runs on a Hetzner Cloud virtual machine in
+Finland (2 vCPU, 4 GB, Ubuntu 22.04), the same machine as the Markovian
+Protocol log, and is paid for by its operator; there is no outside funding.
+It has run since 19 July 2026; its state moved with it to this machine on
+25 July. A second server checks the log it shares the machine with every
+hour. While we do intend to keep it up and running for the foreseeable
+future, it is run on a best-effort basis. This means it might break, be
+unavailable, or even have its state rolled back.
+
+Contact: hello@markovianprotocol.com

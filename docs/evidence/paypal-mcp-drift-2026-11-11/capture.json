@@ -1,0 +1,279 @@
+{
+  "packages": {
+    "@paypal/mcp": "1.8.1",
+    "@paypal/agent-toolkit": "1.11.0",
+    "@modelcontextprotocol/sdk": "1.32.2"
+  },
+  "runtime": {
+    "node": "v22.23.4",
+    "platform": "linux",
+    "architecture": "arm64",
+    "timezone": "UTC"
+  },
+  "isolation": {
+    "uid": 65534,
+    "effectiveCapabilities": 0,
+    "noNewPrivileges": true,
+    "interfaces": [
+      "lo"
+    ],
+    "networkError": "ENETUNREACH",
+    "writeProbes": {
+      "/tmp": "EROFS",
+      "/replay": "EROFS"
+    }
+  },
+  "protocolVersion": "2025-03-26",
+  "server": {
+    "name": "PayPal",
+    "version": "1.11.0"
+  },
+  "args": [
+    "--tools=transactions.list",
+    "--paypal-environment=sandbox"
+  ],
+  "methods": [
+    "initialize",
+    "notifications/initialized",
+    "tools/list"
+  ],
+  "lists": [
+    {
+      "process": 1,
+      "request": 1,
+      "receivedAt": "2026-11-11T15:01:29.643Z",
+      "tools": [
+        {
+          "name": "list_transactions",
+          "description": "\nList transactions from PayPal.\n\nThis tool is used to list transactions with optional filtering parameters within a date range of 31 days. This tool can also be used to list details of a transaction given the transaction ID.\n\n- The start_date and end_date should be specified in ISO8601 date and time format. Example dates: 1996-12-19T16:39:57-08:00, 1985-04-12T23:20:50.52Z, 1990-12-31T23:59:60Z\n- The transaction_status accepts the following 4 values:\n    1. \"D\" - represents denied transactions.\n    2. \"P\" - represents pending transactions.\n    3. \"S\" - represents successful transactions.\n    4. \"V\" - represents transactions that were reversed.\n- The transaction_id is the unique identifier for the transaction.\n",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "transaction_id": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "not": {}
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{12,255}$"
+                      }
+                    ],
+                    "description": "The ID of the transaction to retrieve."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The ID of the transaction to retrieve.",
+                "default": null
+              },
+              "transaction_status": {
+                "type": "string",
+                "enum": [
+                  "D",
+                  "P",
+                  "S",
+                  "V"
+                ],
+                "default": "S"
+              },
+              "start_date": {
+                "type": "string",
+                "description": "Filters the transactions in the response by a start date and time, in ISO8601 date and time format. Seconds are required. Fractional seconds are optional.",
+                "default": "2026-10-11T15:01:29.637Z"
+              },
+              "end_date": {
+                "type": "string",
+                "description": "Filters the transactions in the response by an end date and time, in ISO8601 date and time format. Seconds are required. Fractional seconds are optional. The maximum supported range is 31 days.",
+                "default": "2026-11-11T15:01:29.639Z"
+              },
+              "search_months": {
+                "type": "number",
+                "description": "Number of months to search back for a transaction by ID. Default is 12 months.",
+                "default": 12
+              },
+              "page_size": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 500,
+                "default": 100
+              },
+              "page": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 10000,
+                "default": 1
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        }
+      ]
+    },
+    {
+      "process": 1,
+      "request": 2,
+      "receivedAt": "2026-11-11T15:01:29.710Z",
+      "tools": [
+        {
+          "name": "list_transactions",
+          "description": "\nList transactions from PayPal.\n\nThis tool is used to list transactions with optional filtering parameters within a date range of 31 days. This tool can also be used to list details of a transaction given the transaction ID.\n\n- The start_date and end_date should be specified in ISO8601 date and time format. Example dates: 1996-12-19T16:39:57-08:00, 1985-04-12T23:20:50.52Z, 1990-12-31T23:59:60Z\n- The transaction_status accepts the following 4 values:\n    1. \"D\" - represents denied transactions.\n    2. \"P\" - represents pending transactions.\n    3. \"S\" - represents successful transactions.\n    4. \"V\" - represents transactions that were reversed.\n- The transaction_id is the unique identifier for the transaction.\n",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "transaction_id": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "not": {}
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{12,255}$"
+                      }
+                    ],
+                    "description": "The ID of the transaction to retrieve."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The ID of the transaction to retrieve.",
+                "default": null
+              },
+              "transaction_status": {
+                "type": "string",
+                "enum": [
+                  "D",
+                  "P",
+                  "S",
+                  "V"
+                ],
+                "default": "S"
+              },
+              "start_date": {
+                "type": "string",
+                "description": "Filters the transactions in the response by a start date and time, in ISO8601 date and time format. Seconds are required. Fractional seconds are optional.",
+                "default": "2026-10-11T15:01:29.707Z"
+              },
+              "end_date": {
+                "type": "string",
+                "description": "Filters the transactions in the response by an end date and time, in ISO8601 date and time format. Seconds are required. Fractional seconds are optional. The maximum supported range is 31 days.",
+                "default": "2026-11-11T15:01:29.707Z"
+              },
+              "search_months": {
+                "type": "number",
+                "description": "Number of months to search back for a transaction by ID. Default is 12 months.",
+                "default": 12
+              },
+              "page_size": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 500,
+                "default": 100
+              },
+              "page": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 10000,
+                "default": 1
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        }
+      ]
+    },
+    {
+      "process": 2,
+      "request": 1,
+      "receivedAt": "2026-11-11T15:01:38.107Z",
+      "tools": [
+        {
+          "name": "list_transactions",
+          "description": "\nList transactions from PayPal.\n\nThis tool is used to list transactions with optional filtering parameters within a date range of 31 days. This tool can also be used to list details of a transaction given the transaction ID.\n\n- The start_date and end_date should be specified in ISO8601 date and time format. Example dates: 1996-12-19T16:39:57-08:00, 1985-04-12T23:20:50.52Z, 1990-12-31T23:59:60Z\n- The transaction_status accepts the following 4 values:\n    1. \"D\" - represents denied transactions.\n    2. \"P\" - represents pending transactions.\n    3. \"S\" - represents successful transactions.\n    4. \"V\" - represents transactions that were reversed.\n- The transaction_id is the unique identifier for the transaction.\n",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "transaction_id": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "not": {}
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{12,255}$"
+                      }
+                    ],
+                    "description": "The ID of the transaction to retrieve."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The ID of the transaction to retrieve.",
+                "default": null
+              },
+              "transaction_status": {
+                "type": "string",
+                "enum": [
+                  "D",
+                  "P",
+                  "S",
+                  "V"
+                ],
+                "default": "S"
+              },
+              "start_date": {
+                "type": "string",
+                "description": "Filters the transactions in the response by a start date and time, in ISO8601 date and time format. Seconds are required. Fractional seconds are optional.",
+                "default": "2026-10-11T15:01:38.106Z"
+              },
+              "end_date": {
+                "type": "string",
+                "description": "Filters the transactions in the response by an end date and time, in ISO8601 date and time format. Seconds are required. Fractional seconds are optional. The maximum supported range is 31 days.",
+                "default": "2026-11-11T15:01:38.106Z"
+              },
+              "search_months": {
+                "type": "number",
+                "description": "Number of months to search back for a transaction by ID. Default is 12 months.",
+                "default": 12
+              },
+              "page_size": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 500,
+                "default": 100
+              },
+              "page": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 10000,
+                "default": 1
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        }
+      ]
+    }
+  ]
+}

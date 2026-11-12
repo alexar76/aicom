@@ -44,7 +44,7 @@ Contrats sur Base **MAINNET** (démo) : [onchain-journal.md](onchain-journal.md)
 git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && ./start.sh
 ```
 
-Depuis le dépôt public, `./start.sh` lance la Factory (une clé LLM dans `.env`). Votre propre hub s’installe à part : `pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "Mon hub"` → `aimarket serve`. Les niveaux `--full` et `--everything` construisent les satellites avec la Factory et ne fonctionnent que depuis le monorepo complet.
+Depuis le dépôt public, `./start.sh` lance la Factory avec Prometheus et Grafana. Ouvrez la Factory à l’adresse `http://localhost:9080`. Ajoutez une clé LLM dans `.env` pour utiliser les agents IA. Sans clé, la Factory utilise des modèles prédéfinis. Pour lancer votre propre hub, utilisez `pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "Mon hub"` → `aimarket serve`. Les modes `--full` et `--everything` construisent les satellites avec la Factory et nécessitent le monorepo complet.
 
 ## Documentation
 

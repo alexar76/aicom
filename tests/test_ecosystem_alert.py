@@ -1901,6 +1901,57 @@ def test_a_full_receiver_pages(monkeypatch):
     assert bad == ["backup_receiver_disk"]
 
 
+def _two_receivers(monkeypatch, second):
+    """PingBlip keeps most repositories; competing-lab keeps admin-vps (since 2026-11-10)."""
+    def get(url, *a, **k):
+        if "competing" in url:
+            return second
+        return (200, _backup_status(NOW), "")
+    monkeypatch.setattr(alert, "_get", get)
+
+
+def test_a_backup_kept_on_a_second_receiver_counts_as_fresh(monkeypatch):
+    iso = lambda t: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+    second = _backup_status(NOW, repos={"admin-vps": {"last_commit": iso(NOW - 3 * 3600), "size_mb": 35000}},
+                            own={"label": "competing-lab", "finished_at": iso(NOW - 4 * 3600), "ok": True, "errors": []})
+    _two_receivers(monkeypatch, (200, second, ""))
+    checks = alert.probe_backups("https://pingblip/s.json,https://competing-lab.example/s.json",
+                                 ["factory-vps", "indep", "admin-vps", "competing-lab"], now=NOW)
+    assert all(c.ok for c in checks), [c for c in checks if not c.ok]
+    names = {c.name for c in checks}
+    assert {"backup_status_published", "backup_status_published[competing-lab.example]",
+            "backup_receiver_disk", "backup_receiver_disk[competing-lab.example]",
+            "backup_fresh[admin-vps]"} <= names
+
+
+def test_an_unreadable_second_receiver_pages_itself_but_calls_nothing_missing(monkeypatch):
+    _two_receivers(monkeypatch, (502, None, "bad gateway"))
+    bad = [c.name for c in alert.probe_backups("https://pingblip/s.json,https://competing-lab.example/s.json",
+                                               ["factory-vps", "admin-vps"], now=NOW) if not c.ok]
+    assert bad == ["backup_status_published[competing-lab.example]"]
+
+
+def test_the_newest_commit_wins_when_two_receivers_report_a_label(monkeypatch):
+    iso = lambda t: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+    second = _backup_status(NOW, repos={"indep": {"last_commit": iso(NOW - 60 * 3600), "size_mb": 100}})
+    _two_receivers(monkeypatch, (200, second, ""))
+    bad = [c.name for c in alert.probe_backups("https://pingblip/s.json,https://competing-lab.example/s.json",
+                                               now=NOW) if not c.ok]
+    assert bad == []
+
+
+def test_a_repository_on_two_receivers_while_it_moves_is_checked_once(monkeypatch):
+    iso = lambda t: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+    second = _backup_status(NOW, repos={"factory-vps": {"last_commit": iso(NOW - 3600), "size_mb": 90,
+                                                        "size_mb_peak_7d": 90}})
+    _two_receivers(monkeypatch, (200, second, ""))
+    first = _backup_status(NOW)
+    first["repos"]["factory-vps"]["size_mb_peak_7d"] = 800
+    monkeypatch.setattr(alert, "_get", lambda url, *a, **k: (200, second, "") if "competing" in url else (200, first, ""))
+    names = [c.name for c in alert.probe_backups("https://pingblip/s.json,https://competing-lab.example/s.json", now=NOW)]
+    assert names.count("backup_not_shrunk[factory-vps]") == 1
+
+
 def test_the_backup_checks_have_both_languages():
     for key in ("backup_status_published", "backup_fresh", "backup_receiver_disk"):
         assert key in alert._EN and key in alert._RU

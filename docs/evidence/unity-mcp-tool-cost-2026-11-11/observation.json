@@ -1,0 +1,81 @@
+{
+  "checkedDateUtc": "2026-11-11",
+  "upstreamIssue": "https://github.com/CoplayDev/unity-mcp/issues/1482",
+  "upstreamIssueStatus": "open",
+  "upstreamStableRelease": "https://github.com/CoplayDev/unity-mcp/releases/tag/v10.3.0",
+  "pypiRelease": "https://pypi.org/project/mcpforunityserver/10.3.0/#files",
+  "wheel": {
+    "filename": "mcpforunityserver-10.3.0-py3-none-any.whl",
+    "url": "https://files.pythonhosted.org/packages/02/11/7255ee2c1863db01ccf873eab26a1789512844d9c90b89468c9b2fec738c/mcpforunityserver-10.3.0-py3-none-any.whl",
+    "sha256": "89d8cc1227f7ed253e36e817880cf521799c27d4b83f61d159e1776a04a6f6c7",
+    "size": 330750,
+    "pypiPublishingCommit": "7129df936b844bc60987998100deb49de56659af"
+  },
+  "historServerRecord": "https://histor.modelmarket.dev/api/v1/servers/c92ce8ceb0ed7dbd",
+  "historServerRecordResponseSha256": "35e3dfdc886e46671cfbfc1bd487df51dcc9811e79db9c66b3a84fe31151472d",
+  "toolListArchive": "https://histor.modelmarket.dev/api/v1/toolsets/sha256-nHVV%2FbiN4rTp4sh0Fa60j%2FNfU0qlLRm56zp%2FQ4w2nHU%3D",
+  "toolListFileSha256": "0673089f66f6c7a4a61096694d2f43a2f8bd9415f9214f0adbcfd11a6c6acb24",
+  "toolSetDigest": "sha256-nHVV/biN4rTp4sh0Fa60j/NfU0qlLRm56zp/Q4w2nHU=",
+  "toolCount": 48,
+  "historContinuityLabel": "https://histor.modelmarket.dev/api/v1/labels/urn:uuid:c06611cf-7619-476c-8c64-a44554cf1117",
+  "historContinuityLeafIndex": 1836729,
+  "historCostRecord": "https://histor.modelmarket.dev/api/v1/cost/toolsets/sha256-nHVV%2FbiN4rTp4sh0Fa60j%2FNfU0qlLRm56zp%2FQ4w2nHU%3D",
+  "historCostResponseSha256": "e307d073ca70ed6f8dc8402d684400ec49ec627defa21caea6717ac15f93f5ce",
+  "matchesPublicCostRecord": true,
+  "transport": "stdio",
+  "editor": "not attached in the HISTOR package sandbox",
+  "observations": [
+    {
+      "from": "2026-11-08T20:37:31Z",
+      "until": "2026-11-08T20:37:31Z",
+      "count": 1,
+      "packageVersion": "10.3.0",
+      "serverVersion": "3.4.11",
+      "protocolVersion": "2025-06-18",
+      "toolSetDigest": "sha256-nHVV/biN4rTp4sh0Fa60j/NfU0qlLRm56zp/Q4w2nHU=",
+      "launch": {
+        "observer": "4",
+        "image": "histor-python@sha256:72a3591957ea282a17a4fbd69ba9c641037d3b12488d3d896c4e4016c153d82a",
+        "imageTag": "histor-python:3.12",
+        "runtime": "runsc",
+        "entry": "script mcp-for-unity",
+        "network": "no route out"
+      }
+    },
+    {
+      "from": "2026-10-28T07:15:03Z",
+      "until": "2026-11-02T06:25:11Z",
+      "count": 2,
+      "packageVersion": "10.3.0",
+      "serverVersion": "3.4.11",
+      "protocolVersion": "2025-06-18",
+      "toolSetDigest": "sha256-nHVV/biN4rTp4sh0Fa60j/NfU0qlLRm56zp/Q4w2nHU=",
+      "launch": {
+        "observer": "4",
+        "image": "histor-python@sha256:72a3591957ea282a17a4fbd69ba9c641037d3b12488d3d896c4e4016c153d82a",
+        "imageTag": "histor-python:3.12",
+        "runtime": "runsc",
+        "entry": "script mcp-for-unity",
+        "network": "no route out"
+      }
+    }
+  ],
+  "counterVersions": {
+    "histor": "0.8.0",
+    "tiktoken": "0.14.0",
+    "rfc8785": "0.1.4"
+  },
+  "tokenizer": "o200k_base",
+  "expectedTotals": {
+    "sent": 23686,
+    "names": 217,
+    "descriptions": 7277,
+    "inputSchemas": 15941,
+    "structure": 251,
+    "outputSchemas": 1941,
+    "listed": 25770
+  },
+  "expectedSyntheticProblems": [
+    "input schemas +1,664 tokens (+10.4%), over the 10% allowed"
+  ]
+}

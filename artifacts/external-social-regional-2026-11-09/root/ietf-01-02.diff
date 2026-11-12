@@ -1,0 +1,1147 @@
+--- draft-cui-dawn-mdi-model-01
++++ draft-cui-dawn-mdi-model-02
+@@ -4,12 +4,13 @@
+ 
+ DAWN                                                              Y. Cui
+ Internet-Draft                                       Tsinghua University
+-Intended status: Informational                           1 November 2026
+-Expires: 5 May 2027
++Intended status: Informational                                    K. Yao
++Expires: 6 May 2027                                         China Mobile
++                                                         2 November 2026
+ 
+ 
+ Minimum Public Discovery Information: Requirements and Common Semantics
+-                      draft-cui-dawn-mdi-model-01
++                      draft-cui-dawn-mdi-model-02
+ 
+ Abstract
+ 
+@@ -52,17 +53,15 @@
+ 
+ 
+ 
+-
+-Cui                        Expires 5 May 2027                   [Page 1]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+-   Discussion of this document takes place on the Discovery of Agents,
+-   Workloads, and Named entities Working Group mailing list
+-   (dawn@ietf.org), which is archived at
+-   https://mailarchive.ietf.org/arch/browse/dawn.
++Cui & Yao                  Expires 6 May 2027                   [Page 1]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
++   Discussion of this document takes place on the Discovery of Agents
++   With Names Working Group mailing list (dawn@ietf.org), which is
++   archived at https://mailarchive.ietf.org/arch/browse/dawn.
+ 
+    Source for this draft and an issue tracker can be found at
+    https://github.com/nxbrowning/MDI.
+@@ -82,7 +81,7 @@
+    time.  It is inappropriate to use Internet-Drafts as reference
+    material or to cite them other than as "work in progress."
+ 
+-   This Internet-Draft will expire on 5 May 2027.
++   This Internet-Draft will expire on 6 May 2027.
+ 
+ Copyright Notice
+ 
+@@ -102,39 +101,39 @@
+ 
+    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   4
+-   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   5
++   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   4
+    3.  Scope and Non-Goals . . . . . . . . . . . . . . . . . . . . .   5
+    4.  Design Principles . . . . . . . . . . . . . . . . . . . . . .   6
+-   5.  Information in the Discovery Flow . . . . . . . . . . . . . .   7
++   5.  Information in the Discovery Flow . . . . . . . . . . . . . .   6
+    6.  Determining What Is Minimal . . . . . . . . . . . . . . . . .   9
+-
+-
+-
+-Cui                        Expires 5 May 2027                   [Page 2]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    7.  Applying the Procedure  . . . . . . . . . . . . . . . . . . .  10
++
++
++
++Cui & Yao                  Expires 6 May 2027                   [Page 2]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    8.  MDI Information Model . . . . . . . . . . . . . . . . . . . .  14
+      8.1.  Structure . . . . . . . . . . . . . . . . . . . . . . . .  15
+      8.2.  Elements  . . . . . . . . . . . . . . . . . . . . . . . .  16
+      8.3.  Information Beyond the Minimum  . . . . . . . . . . . . .  18
+      8.4.  Services  . . . . . . . . . . . . . . . . . . . . . . . .  19
+-     8.5.  Minimal Constraints . . . . . . . . . . . . . . . . . . .  19
+-   9.  Binding Expectations  . . . . . . . . . . . . . . . . . . . .  20
++     8.5.  Minimal Constraints . . . . . . . . . . . . . . . . . . .  20
++   9.  Binding Expectations  . . . . . . . . . . . . . . . . . . . .  21
+    10. Security Considerations . . . . . . . . . . . . . . . . . . .  22
+    11. Privacy Considerations  . . . . . . . . . . . . . . . . . . .  23
+-   12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  23
+-   13. Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  23
+-   14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  24
+-     14.1.  Normative References . . . . . . . . . . . . . . . . . .  24
++   12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  24
++   13. Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  24
++   14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
++     14.1.  Normative References . . . . . . . . . . . . . . . . . .  25
+      14.2.  Informative References . . . . . . . . . . . . . . . . .  25
+    Appendix A.  Illustrative JSON Example  . . . . . . . . . . . . .  27
+    Appendix B.  Mapping Notes  . . . . . . . . . . . . . . . . . . .  28
+    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  30
+-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  30
++   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  30
+ 
+ 1.  Introduction
+ 
+@@ -164,16 +163,16 @@
+    The DAWN charter [DAWN-CHARTER] places this information at the center
+    of the working group's scope: discovery is limited to a client
+    requesting and obtaining the minimum public discovery information for
+-
+-
+-
+-Cui                        Expires 5 May 2027                   [Page 3]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    an AI resource (for example, its type, reachability information,
++
++
++
++Cui & Yao                  Expires 6 May 2027                   [Page 3]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    communication protocol, and services) within a local network, within
+    an organization, or between cooperating parties with trust
+    relationships over the public Internet.  The charter assigns this
+@@ -214,22 +213,6 @@
+    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+    capitals, as shown here.
+ 
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                   [Page 4]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+ 2.  Terminology
+ 
+    This document uses the terms defined in
+@@ -238,6 +221,15 @@
+    Information, Discovery Scope, Discoverable Object, Capability Card,
+    Trust Indicator, and, centrally, Minimum Discoverable Information
+    (MDI); readers are assumed to be familiar with that document.  The
++
++
++
++Cui & Yao                  Expires 6 May 2027                   [Page 4]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    elements defined here are the normalized slots through which a
+    minimal subset of an entity's Properties is conveyed as Discovery
+    Information.
+@@ -279,19 +271,21 @@
+    discovery that the DAWN charter scopes [DAWN-CHARTER].  It does NOT
+    define:
+ 
+-
+-
+-Cui                        Expires 5 May 2027                   [Page 5]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    *  a discovery, query, resolution, or transport protocol, and it does
+       not bind MDI to DNS or to any other carrier;
+ 
+    *  a wire format, serialization, or schema; representations are
+       illustrative (Appendix A);
++
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                   [Page 5]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
+ 
+    *  a new capability card, or a replacement for any existing
+       descriptor;
+@@ -323,7 +317,9 @@
+    Thin core, rich references:  MDI is a header.  Rich or sensitive
+       structures -- capability cards, proofs, certificates, policy
+       documents -- are referenced, not embedded, and fetched only when
+-      needed.
++      needed.  A binding can carry small items beyond the minimum, such
++      as coarse capability labels, directly as an Extension
++      (Section 8.3).
+ 
+    Discovery-time only:  MDI carries what lets a discovering party
+       identify an entity, decide whether follow-up is worthwhile, and
+@@ -333,23 +329,21 @@
+    mainly-static, or dynamic, and validity information is first-class --
+    but detailed cache behavior belongs to bindings (Section 9).
+ 
+-
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                   [Page 6]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+ 5.  Information in the Discovery Flow
+ 
+    Discovery moves information through four stages, and each stage holds
+    different information:
+ 
+    Publication:  A publisher makes information about an entity available
++
++
++
++Cui & Yao                  Expires 6 May 2027                   [Page 6]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+       to a discovery system.  The publisher can be the entity or a
+       system that maintains information on its behalf, such as an
+       orchestration system [I-D.dunbar-dawn-infra-assisted-discovery].
+@@ -372,7 +366,8 @@
+       return results.  The client supplies some of it in its query, such
+       as a name, a protocol, or a scope; other mechanisms can supply the
+       rest, such as context derived from the client's network
+-      attachment.
++      attachment.  Depending on the mechanism, a lookup can enumerate a
++      scope or target a narrower set.
+ 
+    Response:  The MDI instances returned for the entities found,
+       interpreted together with known context and binding rules.
+@@ -391,22 +386,21 @@
+ 
+                 Figure 1: Information in the discovery flow
+ 
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                   [Page 7]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    This document proposes that MDI be considered at publication as well
+    as in the response.  The individual terminology draft
+    [I-D.farrel-dawn-terminology] defines MDI by what an entity needs to
+    provide to become discoverable and describes a lookup that returns
+    it, and the individual requirements draft
+    [I-D.king-dawn-requirements] asks each mechanism to define the MDI
++
++
++
++Cui & Yao                  Expires 6 May 2027                   [Page 7]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    "that every discoverable entity provides"; the charter defines
+    discovery by what a client obtains.  The model of Section 8 describes
+    MDI instances at both points: published MDI instances, which
+@@ -450,22 +444,26 @@
+    complete system".  This document defines no registration mechanism
+    (Section 3).
+ 
+-
+-
+-Cui                        Expires 5 May 2027                   [Page 8]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    The MVD and MDI can share attributes, such as a protocol that a
+    client asks for and a response reports, and each has items the other
+    lacks, such as a search scope in the input and endpoints in MDI.  The
+    sources of the input, how it is conveyed, and how it corresponds to
+    published information are stated for each deployment context and
+-   binding.  The individual use-cases draft [I-D.kay-dawn-use-cases]
+-   leaves to the DAWN architecture which query properties belong in the
+-   minimum (Section 13).
++
++
++
++Cui & Yao                  Expires 6 May 2027                   [Page 8]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
++   binding.  A catalog reached through an Endpoint whose purpose is
++   continuing discovery can return MDI instances for the resources it
++   lists; how it selects them is outside this document (Section 3).  The
++   individual use-cases draft [I-D.kay-dawn-use-cases] leaves to the
++   DAWN architecture which query properties belong in the minimum
++   (Section 13).
+ 
+ 6.  Determining What Is Minimal
+ 
+@@ -509,7 +507,9 @@
+ 
+ 
+ 
+-Cui                        Expires 5 May 2027                   [Page 9]
++
++
++Cui & Yao                  Expires 6 May 2027                   [Page 9]
+  
+ Internet-Draft    Minimum Public Discovery Information     November 2026
+@@ -538,7 +538,11 @@
+ 7.  Applying the Procedure
+ 
+    This section applies Section 6 to the three deployment contexts of
+-   the charter.
++   the charter.  The charter's examples enumerate all agents in a scope;
++   a lookup can also return a narrower set, such as the agents that
++   speak one protocol, and the analysis applies to each result in the
++   same way.  The DNS-based mechanisms below are representative; the
++   same model applies to registry and catalog interfaces.
+ 
+    Local network:  The charter's example is "discover all agents in this
+       shop".  The client knows only its network attachment and possibly
+@@ -550,28 +554,6 @@
+       it.
+ 
+    Within an organization:  The charter's example is "discover all
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 10]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+       agents available to employees within their employer's
+       infrastructure".  In the case tested here, the client is attached
+       to the organization's network, possibly through a VPN, and can
+@@ -581,6 +563,15 @@
+       Section 5.2).  Representative mechanisms extend those of the other
+       two contexts: DNS-SD beyond the link, through Discovery Proxies
+       [RFC8766] or registration with the Service Registration Protocol
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 10]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+       (SRP) [RFC9665], as [I-D.jakab-dawn-agent-discovery-mdns]
+       describes for enterprise campus and branch networks, and DNS
+       records in internal zones, which the individual draft
+@@ -620,15 +611,6 @@
+    | Agent protocol | Client cannot  | The query, when | Needed in    |
+    |                | talk to the    | the binding     | every        |
+    |                | endpoint       | ties the        | context      |
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 11]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    |                |                | protocol to it  |              |
+    +----------------+----------------+-----------------+--------------+
+    | Endpoint       | Next step      | Protocol or     | Needed in    |
+@@ -638,10 +620,21 @@
+    +----------------+----------------+-----------------+--------------+
+    | Freshness      | Stale data not | Record lifetime | Needed in    |
+    |                | recognized     |                 | every        |
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 11]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    |                |                |                 | context      |
+    +----------------+----------------+-----------------+--------------+
+-   | Entity type    | Mostly covered | Partly          | Left to the  |
+-   |                | by the purpose |                 | WG           |
++   | Entity type    | Kinds of       | Carrier name or | When kinds   |
++   |                | resource       | Endpoint        | are told     |
++   |                | cannot be told | purpose, via    | apart        |
++   |                | apart          | the binding     |              |
+    +----------------+----------------+-----------------+--------------+
+    | Display name   | Only a person  | DNS-SD instance | When a       |
+    |                | choosing is    | name            | person       |
+@@ -677,15 +670,6 @@
+    +----------------+----------------+-----------------+--------------+
+    | Scope or       | Nothing; the   | Query and       | Beyond the   |
+    | audience hint  | audience       | deployment      | minimum      |
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 12]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    |                | applies to the |                 |              |
+    |                | lookup         |                 |              |
+    +----------------+----------------+-----------------+--------------+
+@@ -693,6 +677,15 @@
+    |                | fails and the  | connection      | minimum      |
+    |                | client tries   |                 |              |
+    |                | another result |                 |              |
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 12]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    +----------------+----------------+-----------------+--------------+
+ 
+           Table 1: Derivation for the three deployment contexts
+@@ -700,7 +693,8 @@
+    In the Result column, "Protection goal" marks an obligation on the
+    binding (Section 9), "Left to the WG" marks a question in Section 13,
+    and "Beyond the minimum" marks information a client does not need for
+-   its next step, which is therefore not part of MDI (Section 8.3).
++   its next step, which is therefore not part of MDI (Section 8.3).  The
++   Other source column reflects the representative mechanisms above.
+ 
+    The results are the same in all three contexts; what differs is where
+    the client gets each item.  On a local network, each result carries
+@@ -719,12 +713,14 @@
+    Stable Identifier matters when results are correlated, as when a
+    client within an organization sees the same agent both through
+    multicast DNS on its link and through a Discovery Proxy
+-   (Section 8.5).  Entity type is largely covered by the endpoint
+-   purpose, and services by Endpoint protocols and Entity Type; both are
+-   asked in Section 13.  Information beyond the minimum can help but is
+-   not needed: the client chooses by protocol and type, learns the
+-   details from the description, and learns availability at the follow-
+-   up connection.
++   (Section 8.5).  Entity type matters when the client has to tell kinds
++   of AI resource apart to choose its next step, and is usually implied
++   by the carrier, such as a well-known name, or by the endpoint
++   purpose.  Whether services are covered by Endpoint protocols and
++   Entity Type is asked in Section 13.  Information beyond the minimum
++   can help but is not needed for this initial step: the client chooses
++   by protocol and type, learns the details from the description, and
++   learns availability at the follow-up connection.
+ 
+    Where the results are meant for an audience, as "available to
+    employees" and "for all its customers/members" suggest, the
+@@ -737,7 +733,11 @@
+ 
+ 
+ 
+-Cui                        Expires 5 May 2027                  [Page 13]
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 13]
+  
+ Internet-Draft    Minimum Public Discovery Information     November 2026
+@@ -754,8 +754,8 @@
+ 
+    Compared with REQ-PROP-1 of the individual requirements draft
+    [I-D.king-dawn-requirements], reachability and protocol are needed in
+-   every context, security parameters (an authentication hint) under a
+-   condition, and type and services are questions for the working group.
++   every context, type and security parameters (an authentication hint)
++   under a condition, and services are a question for the working group.
+ 
+ 8.  MDI Information Model
+ 
+@@ -768,15 +768,16 @@
+       from the carrier lifetime; a binding whose carrier provides no
+       lifetime MUST carry it.
+ 
+-   *  Entity type, left to the working group, is the mandatory Entity
+-      Type until the question in Section 13 is decided.  Services are
+-      covered by Endpoint protocols and Entity Type (Section 8.4).
+-
+    *  Information needed only under a condition becomes an element with
+-      Status MAY: Display Name, Authentication Hint, and Stable
+-      Identifier.  A publisher cannot always know whether the condition
+-      holds for a given consumer; a binding or profile for deployments
+-      where it holds can make the element MUST.
++      Status MAY: Entity Type, Display Name, Authentication Hint, and
++      Stable Identifier.  A publisher cannot always know whether the
++      condition holds for a given consumer; a binding or profile for
++      deployments where it holds can make the element MUST; for example,
++      a binding for exchange between gateways or catalogs can make the
++      Stable Identifier MUST.
++
++   *  Services, left to the working group, are covered by Endpoint
++      protocols and Entity Type (Section 8.4).
+ 
+    *  Origin is a protection goal, met by the binding (Section 9), and
+       is not an element.
+@@ -793,8 +794,7 @@
+ 
+ 
+ 
+-
+-Cui                        Expires 5 May 2027                  [Page 14]
++Cui & Yao                  Expires 6 May 2027                  [Page 14]
+  
+ Internet-Draft    Minimum Public Discovery Information     November 2026
+@@ -828,7 +828,7 @@
+      |             digest? }                        (1..n)
+      |- freshness { version?, valid-from?,
+      |              valid-until?, refresh-hint? }   (0..1)
+-     |- entity-type                                 (1)
++     |- entity-type                                 (0..1)
+      |- display-name                                (0..n)
+      |- authentication-hint { scheme, metadata? }   (0..n)
+      |- stable-identifier                           (0..1)
+@@ -841,17 +841,17 @@
+    A Reference is a typed pointer, used by the Authentication Hint and
+    by information beyond the minimum: the ref-type says how to interpret
+    the locator, and the optional digest is an integrity digest over the
+-   object the locator identifies (Section 8.5).
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 15]
++   object the locator identifies (Section 8.5).  Information carried
++   directly, rather than through a Reference, is covered by the
++   integrity protection of the binding (Section 9).
++
++
++
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 15]
+  
+ Internet-Draft    Minimum Public Discovery Information     November 2026
+@@ -873,7 +873,8 @@
+     |                |        |               | context; carrier      |
+     |                |        |               | lifetime              |
+     +----------------+--------+---------------+-----------------------+
+-    | Entity Type    | MUST   | static        | Left to the WG        |
++    | Entity Type    | MAY    | static        | When kinds are told   |
++    |                |        |               | apart                 |
+     +----------------+--------+---------------+-----------------------+
+     | Display Name   | MAY    | static        | When a person chooses |
+     +----------------+--------+---------------+-----------------------+
+@@ -904,16 +905,16 @@
+       service instance name or a DNS owner name, which lets a client
+       tell results apart and refer back to them.  It is often implicit
+       in the carrier and is interpreted within its naming scope
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 16]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+       (Section 8.5).  One resource can be found under several Names, for
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 16]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+       example one per protocol, and a Name can change, as when multicast
+       DNS renames an instance after a conflict.  A Name that the binding
+       states to be stable also serves as the Stable Identifier; such a
+@@ -933,43 +934,52 @@
+       A2A or MCP; the protocol negotiated on the underlying TLS or QUIC
+       connection, such as an HTTP version identified by ALPN [RFC7301],
+       is different information unless the agent protocol runs directly
+-      over TLS or QUIC.  The purpose member says what the follow-up is:
+-      retrieving a description of the resource (for example, an agent
+-      card), interacting with the resource, or continuing discovery at
+-      another discovery service, such as a catalog.  When the purpose is
+-      not carried, the binding states how it follows from the protocol.
+-      An Endpoint for description retrieval is how MDI points to a
+-      fuller capability description, such as a Capability Card; its
+-      protocols member names the agent protocol of the described
+-      resource, the description is fetched as the locator implies (for
+-      an https URI, with an HTTP GET), and the Endpoint can carry a
+-      digest of the description.  An entity can have Endpoints with
+-      different protocols and purposes.
++      over TLS or QUIC.  A protocols value can name a version or
++      versions of the agent protocol; where it does not, the binding
++      states how a client learns which version to use, for example from
++      the description or through the protocol's own negotiation.  The
++      purpose member says what the follow-up is: retrieving a
++      description of the resource (for example, an agent card),
++      interacting with the resource, or continuing discovery at another
++      discovery service, such as a catalog.  When the purpose is not
++      carried, the binding states how it follows from the protocol.  An
++      Endpoint for description retrieval is how MDI points to a fuller
++      capability description, such as a Capability Card; its protocols
++      member names the agent protocol of the described resource, the
++      description is fetched as the locator implies (for an https URI,
++      with an HTTP GET), and the Endpoint can carry a digest of the
++      description.  An entity can have Endpoints with different
++      protocols and purposes.
+ 
+    Freshness:  Version, validity window, and refresh hint for the
+-      instance.
+-
+-   The following element is left to the working group.
++      instance.  A version need not change when the resource's
++      description changes; the digest of a description Endpoint changes
++      when the description does (Section 8.5).
++
++   The following elements are needed under the conditions that Section 7
++   states.
+ 
+    Entity Type:  The kind of AI resource: for example an individual
++
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 17]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+       named agent or a service such as a catalog that furthers
+       discovery, the two kinds the charter names [DAWN-CHARTER], or
+       another AI resource such as an AI inference service
+       [I-D.farrel-dawn-terminology].  It lets a client triage before
+-      fetching anything.  The value space is left to DAWN, bindings, or
+-      profiles to define.
+-
+-   The following elements are needed under the conditions that Section 7
+-   states.
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 17]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
++      fetching anything, and is needed when the client has to tell kinds
++      of AI resource apart to choose its next step.  It is usually
++      implied by the carrier, such as a well-known name, or by the
++      Endpoint purpose, and the binding states how.  The value space is
++      left to DAWN, bindings, or profiles to define.
+ 
+    Display Name:  A short human-readable name or description for a
+       person choosing among results, with no machine semantics.  In DNS-
+@@ -986,7 +996,9 @@
+    Stable Identifier:  A name for the resource itself that stays the
+       same across results, protocols, and time within its naming scope,
+       so that a client can correlate results and recognize the resource
+-      later.  Like a Name, it is a name, not a verified identity, key,
++      later.  Where the naming scope is itself globally unique, such as
++      a DNS domain or a URN namespace, the Stable Identifier is globally
++      unique.  Like a Name, it is a name, not a verified identity, key,
+       or proof.
+ 
+    Extension:  An extension named by a binding, profile, or future
+@@ -1005,6 +1017,17 @@
+    carries it does so as an Extension, with the following meanings:
+ 
+    Capability Summary:  Coarse, machine-readable capability tags for
++
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 18]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+       discovery-time filtering and triage; they are not sufficient for
+       selection, negotiation, authorization, or invocation.  The value
+       space is not yet defined (Section 8.4).
+@@ -1019,14 +1042,6 @@
+    Scope Hint:  An opaque hint about discovery scope, audience,
+       jurisdiction, or visibility.  It is not access control
+       (Section 11).
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 18]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+ 
+    Operational Hint:  A coarse availability or health class, or a
+       Reference to richer operational state, or both.
+@@ -1060,6 +1075,16 @@
+    places out of scope.  Whether this reading of "services" is right is
+    asked in Section 13.
+ 
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 19]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+ 8.5.  Minimal Constraints
+ 
+    The following rules are part of the model.  A binding MAY tighten
+@@ -1076,15 +1101,6 @@
+        match as carried as the default.  A Name distinguishes results
+        only within its naming scope and stability period, and one
+        resource may be found under several Names.  The host name at
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 19]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+        which an endpoint is reached (such as an SVCB TargetName) belongs
+        to the Endpoint locator and names a host, even where the same
+        string is also a Name.  Correlating results to one resource
+@@ -1118,6 +1134,14 @@
+        object whose digest does not match.  How a digest value
+        identifies its algorithm is defined by the binding.
+ 
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 20]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    5.  A consumer MUST ignore unrecognized Extensions; their presence is
+        not an error.  As an exception, a binding MAY mark an Extension
+        as mandatory, as SVCB does with its "mandatory" key ([RFC9460]);
+@@ -1134,14 +1158,6 @@
+    are expected in separate documents.  A binding that carries MDI MUST
+    specify:
+ 
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 20]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    Encoding:  How each element is encoded and which value space it uses,
+       defined by the binding, a profile, or a future registry.  Which
+       values are implicit and how they are derived from the carrier or
+@@ -1154,12 +1170,13 @@
+       Name and Stable Identifier it carries, and whether it carries a
+       Stable Identifier at all.  For each Endpoint, how the locator is
+       assembled, how the purpose is determined when it is not carried,
+-      and, where connection-level protocols are also carried, how they
+-      are kept apart from the protocols member.  For an Endpoint for
+-      description retrieval, which object a digest covers.  For
+-      Endpoints whose purpose is continuing discovery, the maximum
+-      referral depth, how loops are detected, and the naming scope of
+-      the results obtained there.
++      how protocol versions are expressed or learned, and, where
++      connection-level protocols are also carried, how they are kept
++      apart from the protocols member.  For an Endpoint for description
++      retrieval, which object a digest covers.  For Endpoints whose
++      purpose is continuing discovery, the maximum referral depth, how
++      loops are detected, and the naming scope of the results obtained
++      there.
+ 
+    Integrity and origin:  How the integrity and origin of the MDI it
+       conveys are protected, including how carried values are bound to
+@@ -1173,6 +1190,15 @@
+       any, applies where a serving system generates the content from
+       unauthenticated sources, as a Discovery Proxy does.  Whether
+       information relayed by a catalog or other intermediary is verified
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 21]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+       to the original publisher or only to the intermediary.  How a
+       consumer treats failed verification, removed elements, and expired
+       information, and what successful verification establishes and what
+@@ -1188,16 +1214,6 @@
+       result is assembled from several records, with the earliest
+       applicable expiry prevailing, and how stale or replayed
+       information is detected.
+-
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 21]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+ 
+    A binding MUST protect the integrity of all MDI it conveys, as the
+    charter requires [DAWN-CHARTER]; what meets this requirement where
+@@ -1229,6 +1245,17 @@
+       Reference locates assurance material but confers none until that
+       material is verified by procedures defined elsewhere.
+ 
++
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 22]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    *  Protection comes from the binding and the carrier, value by value.
+       Integrity and origin, including protection against the removal of
+       optional elements, are properties of the binding and carrier (for
+@@ -1247,15 +1274,6 @@
+       authentication metadata, is supplied by an unverified party, and
+       following it carries the usual risks of contacting an untrusted
+       party.  The usual dereferencing protections apply, such as limits
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 22]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+       on redirects and response sizes.  Which addresses a client
+       connects to is a matter of deployment policy, applied to the
+       addresses a locator resolves to at connection time, including
+@@ -1287,6 +1305,14 @@
+    entity correlates that entity as a Stable Identifier does, and a key
+    shared by a publisher links the entities it publishes.
+ 
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 23]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    Results obtained under an audience restriction carry no marker of it;
+    a cache, intermediary, or consumer that passes them outside that
+    audience discloses internal names, endpoints, and topology.  A
+@@ -1304,23 +1330,14 @@
+ 
+    Input from the working group is sought on the following questions:
+ 
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 23]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    *  Is the procedure of Section 6 an acceptable basis for deciding
+       what belongs in the minimum public discovery information?  Are the
+-      results of Section 7 right, including the conditions under which a
+-      display name, an authentication hint, or a Stable Identifier is
+-      needed, and is the information that Table 1 places beyond the
+-      minimum correctly left out of MDI?  If so, should this document
+-      keep naming that information for bindings (Section 8.3), or leave
+-      it to bindings and profiles?
++      results of Section 7 right, including the conditions under which
++      an entity type, a display name, an authentication hint, or a
++      Stable Identifier is needed, and is the information that Table 1
++      places beyond the minimum correctly left out of MDI?  If so,
++      should this document keep naming that information for bindings
++      (Section 8.3), or leave it to bindings and profiles?
+ 
+    *  Should MDI be defined only by what a client obtains, or also at
+       publication?  This document proposes both points, with Status
+@@ -1337,10 +1354,21 @@
+       such an audience public in the charter's sense?
+ 
+    *  How should the charter's examples "type" and "services" be read?
+-      Entity Type can remain MUST or follow from the endpoint purpose.
+-      This document covers services by the protocols of Endpoints and by
+-      Entity Type, and places coarse labels (Capability Summary) beyond
+-      the minimum (Section 8.4); is that right?
++      This document makes Entity Type conditional and usually implied by
++      the carrier or the Endpoint purpose, covers services by the
++      protocols of Endpoints and by Entity Type, and places coarse
++      labels (Capability Summary) beyond the minimum (Section 8.4); is
++      that right?
++
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 24]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
+ 
+    *  Where an agent's advertisement or registration is not
+       authenticated to its operator, as with multicast DNS, a Discovery
+@@ -1361,15 +1389,6 @@
+               Farrel, A., Yao, K., Schott, R., and N. Williams,
+               "Terminology for the Discovery of Agents With Names
+               (DAWN)", Work in Progress, Internet-Draft, draft-farrel-
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 24]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+               dawn-terminology-06, 28 October 2026,
+               <https://datatracker.ietf.org/doc/html/draft-farrel-dawn-
+               terminology-06>.
+@@ -1398,6 +1417,16 @@
+               <https://datatracker.ietf.org/doc/html/draft-akhavain-
+               moussa-dawn-problem-statement-05>.
+ 
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 25]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+    [I-D.blwm-dawn-common-discovery-parameters]
+               Brockners, F., Jakab, L., Williams, N., and J. Mozley,
+               "Common Agent DNS Discovery Parameters", Work in Progress,
+@@ -1413,20 +1442,6 @@
+               October 2026, <https://datatracker.ietf.org/doc/html/
+               draft-dunbar-dawn-infra-assisted-discovery-02>.
+ 
+-
+-
+-
+-
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 25]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    [I-D.jakab-dawn-agent-discovery-mdns]
+               Jakab, L. and F. Brockners, "Zero-Configuration Agent
+               Discovery", Work in Progress, Internet-Draft, draft-jakab-
+@@ -1460,6 +1475,15 @@
+    [I-D.mozleywilliams-dnsop-dnsaid]
+               Mozley, J., Williams, N., Sarikaya, B., Schott, R., and J.
+               Damick, "DNS for AI Discovery", Work in Progress,
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 26]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
++
+               Internet-Draft, draft-mozleywilliams-dnsop-dnsaid-02, 27
+               May 2026, <https://datatracker.ietf.org/doc/html/draft-
+               mozleywilliams-dnsop-dnsaid-02>.
+@@ -1471,19 +1495,6 @@
+               2026, <https://datatracker.ietf.org/doc/html/draft-zhang-
+               dawn-agent-discovery-framework-09>.
+ 
+-
+-
+-
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 26]
+--
+-Internet-Draft    Minimum Public Discovery Information     November 2026
+-
+-
+    [I-D.zhang-dawn-bgp-style-federated-discovery]
+               Zhang, B., "Federated Agent Metadata Synchronization
+               Protocol (FAMS-P)", Work in Progress, Internet-Draft,
+@@ -1524,18 +1535,7 @@
+ 
+ 
+ 
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-Cui                        Expires 5 May 2027                  [Page 27]
++Cui & Yao                  Expires 6 May 2027                  [Page 27]
+  
+ Internet-Draft    Minimum Public Discovery Information     November 2026
+@@ -1564,9 +1564,9 @@
+ 
+ Appendix B.  Mapping Notes
+ 
+-   The table sketches where the mandatory elements of MDI, the Stable
+-   Identifier, the description Endpoint, and Freshness surface in the
+-   DNS and DNS-SD parameters proposed in
++   The table sketches where the mandatory elements of MDI, Entity Type,
++   the Stable Identifier, the description Endpoint, and Freshness
++   surface in the DNS and DNS-SD parameters proposed in
+    [I-D.blwm-dawn-common-discovery-parameters] for SVCB records
+    ([RFC9460]) and DNS-SD TXT records, as used by
+    [I-D.jakab-dawn-agent-discovery-mdns], and in the generic well-known-
+@@ -1592,7 +1592,7 @@
+ 
+ 
+ 
+-Cui                        Expires 5 May 2027                  [Page 28]
++Cui & Yao                  Expires 6 May 2027                  [Page 28]
+  
+ Internet-Draft    Minimum Public Discovery Information     November 2026
+@@ -1649,7 +1649,7 @@
+ 
+ 
+ 
+-Cui                        Expires 5 May 2027                  [Page 29]
++Cui & Yao                  Expires 6 May 2027                  [Page 29]
+  
+ Internet-Draft    Minimum Public Discovery Information     November 2026
+@@ -1694,7 +1694,23 @@
+    This work builds on the DAWN terminology, requirements, problem
+    statement, and gap-analysis documents.
+ 
+-Author's Address
++   Thanks to Aleksandr Artamokhov and Siyu Deng for their comments on
++   protocol versions, description changes, and Entity Type, and to
++   Riccardo Di Nuzzo for checking the procedure against draft-dinuzzo-
++   best-protocol.
++
++Authors' Addresses
++
++
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 30]
+++
++Internet-Draft    Minimum Public Discovery Information     November 2026
++
+ 
+    Yong Cui
+    Tsinghua University
+@@ -1705,5 +1721,46 @@
+    URI:   http://www.cuiyong.net/
+ 
+ 
+-
+-Cui                        Expires 5 May 2027                  [Page 30]
++   Kehan Yao
++   China Mobile
++   China
++   Email: yaokehan@chinamobile.com
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++Cui & Yao                  Expires 6 May 2027                  [Page 31]

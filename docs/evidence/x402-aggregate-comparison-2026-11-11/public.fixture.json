@@ -1,0 +1,46 @@
+{
+  "aggregate": {
+    "schema": "aimarket.x402-example-replay-aggregate/v1",
+    "dataOrigin": "synthetic",
+    "scope": {
+      "network": "eip155:8453",
+      "resourceId": "synthetic-swap-public",
+      "fromDate": "2026-01-01",
+      "untilDate": "2026-01-08"
+    },
+    "comparison": {
+      "method": "public-jcs-sha256",
+      "exampleId": "example-v1",
+      "publicExampleSha256": "8c1627b3cb699b5b8101ffb4bced2e8316dde59eca290b5b9e057103a602ef04"
+    },
+    "counts": {
+      "settledPayments": 6,
+      "externalSettledPayments": 4,
+      "externalPayers": 3,
+      "exampleMatchedPayers": 1,
+      "exampleMatches": 2,
+      "exampleMismatches": 1,
+      "unclassified": 1
+    }
+  },
+  "example": {"asset": "fixture-token", "amountAtomic": "1234", "options": {"mode": "demo", "route": "fixture"}},
+  "syntheticOperatorSettlements": 2,
+  "syntheticPayments": [
+    {
+      "syntheticPayerId": "toy-a",
+      "input": {"asset": "fixture-token", "amountAtomic": "1234", "options": {"mode": "demo", "route": "fixture"}},
+      "expected": "exampleMatches"
+    },
+    {
+      "syntheticPayerId": "toy-a",
+      "input": {"options": {"route": "fixture", "mode": "demo"}, "amountAtomic": "1234", "asset": "fixture-token"},
+      "expected": "exampleMatches"
+    },
+    {
+      "syntheticPayerId": "toy-b",
+      "input": {"asset": "fixture-token", "amountAtomic": "1235", "options": {"mode": "demo", "route": "fixture"}},
+      "expected": "exampleMismatches"
+    },
+    {"syntheticPayerId": "toy-c", "input": null, "expected": "unclassified"}
+  ]
+}

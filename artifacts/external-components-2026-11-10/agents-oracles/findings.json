@@ -1,0 +1,307 @@
+{
+  "checked_at_utc": "2026-11-10T19:41:31.463741+00:00",
+  "scope": "15agent/oracle families; public read only",
+  "findings": [
+    {
+      "id": "A01",
+      "families": [
+        "oracles_platon"
+      ],
+      "classification": "internal_dependency_graph_not_external_adoption",
+      "confidence": "high for captured graph and package attribution; graph counts indicative",
+      "sources": [
+        {
+          "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-oracle-core/versions/0.6.4:dependents",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:35:32.978830+00:00",
+          "body_file": "oracle-core-dependents.raw",
+          "bytes": 74,
+          "sha256": "8c18ce3133df457c6f4612c8f61ef549731d0c0a0de1bc9b7302c88b4ea5545e",
+          "truncated": false
+        },
+        {
+          "url": "https://deps.dev/_/s/pypi/p/aimarket-oracle-core/v/0.6.4/dependents",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:36:14.981792+00:00",
+          "body_file": "oracle-core-dependent-names.raw",
+          "bytes": 1728,
+          "sha256": "fa8ce6e82121fbbb84aec9dea63bf5cdda0679ab649d354b109744a902bda663",
+          "truncated": false
+        },
+        {
+          "url": "https://pypi.org/pypi/aimarket-emporion/json",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:39:41.114454+00:00",
+          "body_file": "emporion-legacy-metadata.raw",
+          "bytes": 31814,
+          "sha256": "2c1602c7fa432d0e6d5b8d7a0a5768b5b8eb27a23415ed97cadef34ce555fd4c",
+          "truncated": false
+        }
+      ],
+      "observation_ru": "Версия aimarket-oracle-core0.6.4 имеет20 direct dependents в этом графе. Все20 относятся к экосистеме:19имён буквально совпали с local pyproject metadata, legacy aimarket-emporion ссылается на github.com/alexar76/emporion. Это не20 внешних внедрений. Platon0.1.6 graph показывает0.",
+      "novelty": "Current bounded attribution of known internal graph; no new independent operator"
+    },
+    {
+      "id": "A02",
+      "families": [
+        "momus"
+      ],
+      "classification": "internal_dependency",
+      "confidence": "high",
+      "sources": [
+        {
+          "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-momus/versions/0.2.0:dependents",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:36:15.797506+00:00",
+          "body_file": "momus-dependents.raw",
+          "bytes": 72,
+          "sha256": "1834bfa4f136dbf7b04febc05bb7d7c0b07ae7cabdc8e1e8593fb4718fc06e2d",
+          "truncated": false
+        },
+        {
+          "url": "https://deps.dev/_/s/pypi/p/aimarket-momus/v/0.2.0/dependents",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:37:07.052305+00:00",
+          "body_file": "momus-dependent-names.raw",
+          "bytes": 232,
+          "sha256": "dc3cae9ffe02c94629c67ef86dd9f100866259ed6ebade8806b2917b9aca25cd",
+          "truncated": false
+        }
+      ],
+      "observation_ru": "Единственный direct dependent MOMUS0.2.0 — aimarket-treasury0.1.0, наш отдельный payer. Внешний dependent не установлен.",
+      "novelty": "Reconfirmed internal relation"
+    },
+    {
+      "id": "A03",
+      "families": [
+        "momus"
+      ],
+      "classification": "known_homonym_excluded",
+      "confidence": "high for explicit README wording; no beneficial-owner verification",
+      "sources": [
+        {
+          "url": "https://api.github.com/repos/igor-holt/momus",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:36:14.981568+00:00",
+          "body_file": "momus-candidate-meta.raw",
+          "bytes": 5057,
+          "sha256": "d717407fa67e5024e7c9124095ecd22d3c613167c6c013720230f7bd94aacee2",
+          "truncated": false
+        },
+        {
+          "url": "https://api.github.com/repos/igor-holt/momus/commits/main",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:36:14.980895+00:00",
+          "body_file": "momus-candidate-commit.raw",
+          "bytes": 83899,
+          "sha256": "abe3ab54d267ef8552591ee0e5dfc47b021ab3ebc7f53bcd83fe03aa9fbc2dff",
+          "truncated": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/igor-holt/momus/1ac416e4c2e2f92c23209db977166eccafcde2be/README.md",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:37:07.051351+00:00",
+          "body_file": "momus-candidate-readme.raw",
+          "bytes": 1289,
+          "sha256": "aa595efbae59eac964f5efeca3903d8458b3c8e6f02634ab8fce420cada98329",
+          "truncated": false
+        },
+        {
+          "url": "https://api.github.com/repos/igor-holt/momus/git/trees/1ac416e4c2e2f92c23209db977166eccafcde2be?recursive=1",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:37:07.052106+00:00",
+          "body_file": "momus-candidate-tree.raw",
+          "bytes": 7609,
+          "sha256": "bff0f0f43276fffbfe99749c8fc3a58824195ab277b8efa5f8e0adbeae4bbbfc",
+          "truncated": false
+        }
+      ],
+      "public_url": "https://github.com/igor-holt/momus/blob/1ac416e4c2e2f92c23209db977166eccafcde2be/README.md",
+      "pinned_commit": "1ac416e4c2e2f92c23209db977166eccafcde2be",
+      "commit_date": "2026-10-22T16:43:42Z",
+      "observation_ru": "Genesis Conductor MOMUS Igor Holt прямо пишет, что не является alexar76 red-team satellite. Его README попадает в identity search именно из-за этого различения. Не интеграция и не новый кандидат: исключение было известно в октябре.",
+      "novelty": "Known October exclusion, primary re-read only"
+    },
+    {
+      "id": "A04",
+      "families": [
+        "metis",
+        "hestia",
+        "atlas",
+        "gaia",
+        "oracle_gateway",
+        "mcp_gateway",
+        "logos",
+        "skopos",
+        "oracles_platon"
+      ],
+      "classification": "bounded_zero_indexed_reverse_dependencies",
+      "confidence": "high for version-scoped API fields only",
+      "observation_ru": "Девять прочитанных package-version graphs вернули0 dependents: METIS, HESTIA, ATLAS, GAIA, оба gateway, LOGOS, SKOPOS и Platon alias. Это индексированные зависимости конкретных версий, не число пользователей и не исключение HTTP calls.",
+      "source_keys": [
+        "metis-dependents",
+        "hestia-dependents",
+        "atlas-dependents",
+        "gaia-dependents",
+        "oracle-gateway-dependents",
+        "mcp-gateway-dependents",
+        "logos-dependents",
+        "skopos-dependents",
+        "platon-dependents"
+      ],
+      "novelty": "Current graph snapshot, no independent adoption confirmed"
+    },
+    {
+      "id": "A05",
+      "families": [
+        "argus",
+        "themis",
+        "basanos",
+        "dolos"
+      ],
+      "classification": "dependency_index_gap",
+      "confidence": "high for404; no usage inference",
+      "sources": [
+        {
+          "url": "https://api.deps.dev/v3alpha/systems/npm/packages/%40alexar76%2Fargus3/versions/0.3.6:dependents",
+          "status": 404,
+          "retrieved_at_utc": "2026-11-10T19:35:32.360944+00:00",
+          "body_file": "argus-dependents.raw",
+          "bytes": 20,
+          "sha256": "076cb8618eef86300acb57c70030bf17b14c447a7efa2e0e34fc1dbc7f73fa10",
+          "truncated": false
+        },
+        {
+          "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-themis/versions/0.1.0:dependents",
+          "status": 404,
+          "retrieved_at_utc": "2026-11-10T19:36:15.550037+00:00",
+          "body_file": "themis-dependents.raw",
+          "bytes": 20,
+          "sha256": "076cb8618eef86300acb57c70030bf17b14c447a7efa2e0e34fc1dbc7f73fa10",
+          "truncated": false
+        },
+        {
+          "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-basanos/versions/0.1.0:dependents",
+          "status": 404,
+          "retrieved_at_utc": "2026-11-10T19:36:15.807801+00:00",
+          "body_file": "basanos-dependents.raw",
+          "bytes": 20,
+          "sha256": "076cb8618eef86300acb57c70030bf17b14c447a7efa2e0e34fc1dbc7f73fa10",
+          "truncated": false
+        },
+        {
+          "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-dolos/versions/0.1.0:dependents",
+          "status": 404,
+          "retrieved_at_utc": "2026-11-10T19:36:16.042475+00:00",
+          "body_file": "dolos-dependents.raw",
+          "bytes": 20,
+          "sha256": "076cb8618eef86300acb57c70030bf17b14c447a7efa2e0e34fc1dbc7f73fa10",
+          "truncated": false
+        }
+      ],
+      "observation_ru": "Текущие version graphs ARGUS0.3.6, THEMIS0.1.0, BASANOS0.1.0 и DOLOS0.1.0 ответили404. Это отсутствие данного ответа индекса; нулевое использование из него не выводится.",
+      "novelty": "Scope limitation"
+    },
+    {
+      "id": "A06",
+      "families": [
+        "hephaestus",
+        "argus",
+        "themis",
+        "oracle_gateway",
+        "mcp_gateway"
+      ],
+      "classification": "fingerprint_disambiguation",
+      "confidence": "high for local metadata",
+      "observation_ru": "HEPHAESTUS package private:true. ARGUS и oracle gateway — stdio packages. modelmarket.dev/mcp — maintained hosted Hub interface, не доказательство запуска aimarket-mcp package. Для THEMIS standalone public API origin в прочитанном README не установлен. Общий Hub URL без specific capability/package недостаточен для attribution.",
+      "evidence_file": "inventory.json",
+      "novelty": "Audit precision, not an external finding"
+    },
+    {
+      "id": "A07",
+      "families": [
+        "metis",
+        "argus",
+        "hestia",
+        "themis",
+        "hephaestus",
+        "atlas",
+        "gaia",
+        "oracles_platon",
+        "oracle_gateway",
+        "mcp_gateway",
+        "momus",
+        "basanos",
+        "dolos",
+        "logos",
+        "skopos"
+      ],
+      "classification": "bounded_external_discovery",
+      "confidence": "bounded",
+      "sources": [
+        {
+          "url": "https://api.github.com/search/repositories?q=alexar76%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:35:32.360142+00:00",
+          "body_file": "github-external-readmes.raw",
+          "bytes": 67394,
+          "sha256": "2c83ad884b8b90fb77d25ca7b7518740ed2e90b821eedce32cd90076daecbaa8",
+          "truncated": false
+        },
+        {
+          "url": "https://api.github.com/search/commits?q=%22metis.modelmarket.dev%22%20-author%3Aalexar76&per_page=100",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:38:39.505648+00:00",
+          "body_file": "commits-metis-origin.raw",
+          "bytes": 55,
+          "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+          "truncated": false
+        },
+        {
+          "url": "https://api.github.com/search/commits?q=%22iot.modelmarket.dev%22%20-author%3Aalexar76&per_page=100",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:38:39.506020+00:00",
+          "body_file": "commits-iot-origin.raw",
+          "bytes": 55,
+          "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+          "truncated": false
+        },
+        {
+          "url": "https://api.github.com/search/commits?q=%22atlas.modelmarket.dev%22%20-author%3Aalexar76&per_page=100",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:38:39.506153+00:00",
+          "body_file": "commits-atlas-origin.raw",
+          "bytes": 55,
+          "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+          "truncated": false
+        },
+        {
+          "url": "https://api.github.com/search/commits?q=%22hestia.modelmarket.dev%22%20OR%20%22forge.modelmarket.dev%22%20-author%3Aalexar76&per_page=100",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T19:38:40.157192+00:00",
+          "body_file": "commits-forge-hestia-origins.raw",
+          "bytes": 55,
+          "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+          "truncated": false
+        }
+      ],
+      "observation_ru": "README full_name sets12/12 совпадают с самым свежим baseline; added/removed пусты. Четыре commit-message запроса по Metis/IOT/ATLAS/Hestia+Forge origins дали0 при incomplete_results=false. Возвращённые web batches в основном содержат собственные статьи, зеркала, каталоги, package diff indexes и одноимённые проекты; нового независимого review/code candidate не подтверждено.",
+      "novelty": "No new independent code/review confirmed"
+    }
+  ],
+  "new_independent_runtime_confirmed": false,
+  "new_independent_review_confirmed": false,
+  "primary_gets": 27,
+  "status_counts": {
+    "200": 23,
+    "404": 4
+  },
+  "limits": [
+    "Search/README/commit-message discovery is not authenticated global code search.",
+    "HTTP integrations can exist with no package dependency; origin strings were included in per-family web queries and5priority origins also in4commit queries.",
+    "Absence in returned batches is not proof of absence on the internet or in private/unindexed code.",
+    "Version-scoped deps.dev counts are indicative;404is not0users.",
+    "Third-party identities and beneficial ownership were not independently verified.",
+    "No packages installed, foreign code run, authentication used, messages sent, external writes, invokes, or payments."
+  ]
+}

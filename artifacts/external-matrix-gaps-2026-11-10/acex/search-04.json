@@ -1,0 +1,26 @@
+{
+  "captured_at_utc": "2026-11-10T20:05:48.404Z",
+  "queries": [
+    {
+      "id": "jupiter-config",
+      "dimension": "config",
+      "q": "\"ACEX_JUPITER_QUOTE_URL\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev"
+    },
+    {
+      "id": "solana-program",
+      "dimension": "solana",
+      "q": "\"9BkXiRFMB5bAMMqAXxTzaLPYspiGxoUTEeX8kih9ne73\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev"
+    },
+    {
+      "id": "pulse-contract",
+      "dimension": "evm",
+      "q": "\"0x0A70AA84903ecB2E0aF5c435AFd9EDd178559E47\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev"
+    },
+    {
+      "id": "capital-names",
+      "dimension": "terms",
+      "q": "\"LiquidityMesh\" \"CapSense\" \"ACEX\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:github-wiki-see.page -site:glama.ai -site:odel.app"
+    }
+  ],
+  "result": "acex/docs/jupiter-routing.md at main · alexar76/acex · GitHub (https://ithub.global.ssl.fastly.net/alexar76/acex/blob/main/docs/jupiter-routing.md)\nciteturn52search0 [wordlim: 200] Crawled: 3 months ago; `ACEX_JUPITER_QUOTE_URL`  | `https://quote-api.jup.ag/v6/quote`\n\n# Jupiter routing (Solana)\n\nACEX uses Jupiter v6 for CapShare ↔ USDC swaps on Solana instead of an on-chain AMM (EVM uses `PulseAMM`).\n\n## Client\n\nPython helper: `integrations/jupiter.py`\n    \n    from acex.integrations.jupiter import fetch_jupiter_quote, build_swap_plan\n    \n    quote = await fetch_jupiter_quote(\n        input_mint=cap_share_mint,\n        output_mint=usdc_mint,\n        amount=1_000_000,  # base units\n        slippage_bps=50,\n    )\n    plan = build_swap_plan(quote, user_public_key=\"...\")\n\n## Environment\n\nVariable  | Default\n--- | ---\n`ACEX_JUPITER_QUOTE_URL`  | `https://quote-api.jup.ag/v6/quote`\n`ACEX_JUPITER_SWAP_URL`  | `https://quote-api.jup.ag/v6/swap`\n`ACEX_SOLANA_USDC_MINT`  | mainnet USDC\n\n## Pulse Terminal flow\n\n  1. `GET /api/v2/capital/pricing?chain=solana` — index + share reference prices\n  2. Jupiter quote for execution size\n  3. Wallet signs swap tx from Jupiter `/swap` response\n\nSee Pulse Terminal.\n"
+}

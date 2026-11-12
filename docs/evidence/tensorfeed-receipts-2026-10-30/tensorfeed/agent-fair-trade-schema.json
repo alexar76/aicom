@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tensorfeed.ai/.well-known/agent-fair-trade-schema.json",
+  "title": "Agent Fair-Trade Agreement",
+  "description": "An open, voluntary standard for API publishers that are fair to AI agents. Self-publish a /.well-known/agent-fair-trade.json conforming to this schema. There is no certification authority and no fee. Adoption is the certification.",
+  "type": "object",
+  "required": [
+    "version",
+    "publisher",
+    "self_description",
+    "no_charge_guarantees",
+    "receipts",
+    "pricing",
+    "data_license"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the AFTA standard the publisher conforms to.",
+      "examples": ["1.0"]
+    },
+    "name": { "type": "string" },
+    "abbrev": { "type": "string" },
+    "publisher": {
+      "type": "object",
+      "required": ["name", "url"],
+      "properties": {
+        "name": { "type": "string" },
+        "legal_entity": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "contact": { "type": "string" },
+        "manifesto_page": { "type": "string", "format": "uri" },
+        "source_repo": { "type": "string", "format": "uri" }
+      }
+    },
+    "self_description": {
+      "type": "string",
+      "description": "Canonical 30-50 word description of the publisher's AFTA posture. Should be repeated verbatim across llms.txt, OpenAPI info.description, README, and any agent-facing surface."
+    },
+    "no_charge_guarantees": {
+      "type": "array",
+      "description": "List of conditions under which the publisher pledges not to charge for a paid API call.",
+      "items": {
+        "type": "object",
+        "required": ["id", "description"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Stable identifier for the guarantee. Common values: 5xx, circuit_breaker, schema_validation_failure, stale_data, rate_limited, depleted_balance.",
+            "examples": ["5xx", "circuit_breaker", "schema_validation_failure", "stale_data"]
+          },
+          "description": { "type": "string" },
+          "code": {
+            "type": "string",
+            "description": "Pointer to the source location that enforces this guarantee. Strongly recommended."
+          },
+          "verifiable_via": {
+            "type": "string",
+            "description": "How an agent or auditor can verify this guarantee in production (URL, endpoint, or test procedure)."
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "freshness_slas": {
+      "description": "Per-endpoint freshness commitments. Either an inline array (recommended) or a URL pointing to a live registry. Inline form lets an agent reason about staleness without a separate fetch.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["endpoint"],
+            "properties": {
+              "endpoint": { "type": "string", "description": "Path of the premium endpoint." },
+              "max_age_seconds": {
+                "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }],
+                "description": "Maximum acceptable data age. null means the endpoint is compute-only or returns immutable historical data, with no staleness applicable."
+              },
+              "reason": {
+                "type": "string",
+                "description": "SHOULD-include. Human-readable rationale for this SLA. Helps agents understand why the threshold is what it is and helps auditors evaluate whether the commitment is being honored. Example: 'composed system-prompt of current world state; 5-10 min freshness'."
+              }
+            }
+          }
+        },
+        { "type": "string", "format": "uri", "description": "URL to a live SLA registry returning the same array shape." }
+      ]
+    },
+    "receipts": {
+      "type": "object",
+      "description": "Cryptographic receipt commitment. Required even if 'signed' is false (in which case the publisher must explicitly declare the absence).",
+      "required": ["signed"],
+      "properties": {
+        "signed": { "type": "boolean" },
+        "algorithm": { "type": "string", "examples": ["EdDSA", "ECDSA-P256"] },
+        "curve": { "type": "string", "examples": ["Ed25519", "P-256"] },
+        "canonical_form": { "type": "string", "description": "Identifier for the canonical-JSON form used to compute signatures." },
+        "public_key_url": { "type": "string", "format": "uri" },
+        "verify_endpoint": { "type": "string", "format": "uri" },
+        "fields_signed": { "type": "array", "items": { "type": "string" } },
+        "rotation_policy": { "type": "string" }
+      }
+    },
+    "pricing": {
+      "type": "object",
+      "required": ["transparent", "listed_at"],
+      "properties": {
+        "transparent": { "type": "boolean" },
+        "listed_at": { "type": "string", "format": "uri" },
+        "currency": { "type": "string" },
+        "network": { "type": "string", "description": "EIP-155 chain ID, e.g. eip155:8453 for Base mainnet, or 'fiat' if not on-chain." },
+        "network_name": { "type": "string" },
+        "rail_rationale": { "type": "string", "description": "Why this payment rail was chosen, particularly for fairness to AI agents." }
+      }
+    },
+    "data_license": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "examples": ["inference-only", "training-allowed", "training-with-attribution", "custom"]
+        },
+        "description": { "type": "string" },
+        "terms_url": { "type": "string", "format": "uri" }
+      }
+    },
+    "deprecation": {
+      "type": "object",
+      "properties": {
+        "notice_days": { "type": "integer", "minimum": 0 },
+        "channel": { "type": "string", "format": "uri" },
+        "policy": { "type": "string" }
+      }
+    },
+    "sanctions": {
+      "type": "object",
+      "properties": {
+        "screening": { "type": "string" }
+      }
+    },
+    "adoption": {
+      "type": "object",
+      "properties": {
+        "open_invitation": { "type": "string" },
+        "current_adopters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["site"],
+            "properties": {
+              "site": { "type": "string" },
+              "adopted_at": { "type": "string", "format": "date" },
+              "manifest": { "type": "string", "format": "uri", "description": "URL of the adopter's own /.well-known/agent-fair-trade.json. Recommended so an agent can verify the adopter is actually serving a manifest at the claimed location." },
+              "receipt_key": { "type": "string", "format": "uri", "description": "URL of the adopter's published Ed25519 public JWK. Lets agents verify receipts the adopter signs." },
+              "manifesto": { "type": "string", "format": "uri", "description": "URL of the adopter's human-readable manifesto page." },
+              "note": { "type": "string", "description": "Free-form note about the adopter's relationship to the standard or any federation membership." }
+            }
+          }
+        },
+        "network_federation": {
+          "type": "object",
+          "description": "Adopters that share a payment rail can federate trust at the credit level. Sister sites in a federation accept each other's bearer tokens via a server-to-server reserve + commit handshake, so the user experience is reciprocal access on a single token. Each site signs its own receipts with its own keypair; the federation does NOT share private keys.",
+          "properties": {
+            "description": { "type": "string" },
+            "rail_endpoints": {
+              "type": "object",
+              "description": "Server-to-server endpoints each federation member exposes (or that one member hosts on behalf of the federation). Required shape (post-2026-05-05): validate atomically debits and returns a per-call reservation_id; commit consumes the reservation, restoring credits on a no-charge result. The reservation_id binding closes the federation double-spend race identified in the 2026-05-05 AFTA security audit.",
+              "properties": {
+                "validate": { "type": "string", "description": "Path or signature of the validate endpoint. MUST atomically debit the credit balance and return a reservation_id with a TTL of at least 5 minutes." },
+                "commit": { "type": "string", "description": "Path or signature of the commit endpoint. MUST accept the reservation_id from validate and consume it. On a no-charge result, MUST restore the reserved credits to the balance. SHOULD reject calls whose token or cost differ from the validated reservation as reservation_mismatch." },
+                "auth_header": { "type": "string", "description": "Auth scheme for the rail (typically a constant-time-compared shared secret)." },
+                "ledger": { "type": "string", "description": "Where no-charge events are recorded. Recommended pattern: each site keeps a local copy AND mirrors to the host's ledger via the no_charge_reason field on commit, so audit endpoints work without a round-trip and the network ledger stays correct." },
+                "race_safety": { "type": "string", "description": "Optional: human-readable description of the race-safety properties of the rail." }
+              }
+            },
+            "current_federation": {
+              "type": "array",
+              "description": "Active federations. A federation is a set of sites sharing one credit ledger.",
+              "items": {
+                "type": "object",
+                "required": ["host", "members"],
+                "properties": {
+                  "host": { "type": "string", "description": "The site that hosts the credit ledger." },
+                  "members": { "type": "array", "items": { "type": "string" }, "description": "All sites in the federation, including the host." },
+                  "established": { "type": "string", "format": "date" },
+                  "note": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "lastUpdated": { "type": "string", "format": "date" }
+  },
+  "$defs_recommendations": {
+    "_comment": "Non-normative implementation guidance. Not part of the validation schema; here for adopter authors to read.",
+    "discovery_surfaces": "Adopters SHOULD also expose an agent_fair_trade.network block on /api/meta (or equivalent discovery endpoint) listing the federation's sister sites with manifest + manifesto + receipt_key URLs. Lets agents discover the whole network from any single entry point without a separate /.well-known fetch.",
+    "local_and_network_ledger": "Federation members SHOULD maintain a LOCAL no-charge ledger AND mirror events to the host's ledger via the commit endpoint's no_charge_reason field. The local copy backs the member's own /api/payment/no-charge-stats audit endpoint without round-trips; the network copy gives the host a complete view of failures across the federation. Both ledgers describe the same events from different vantage points.",
+    "freshness_sla_reasons": "freshness_slas[].reason is SHOULD-include. The cost is one short string per endpoint; the value is that future you, future auditors, and future agents understand why the threshold is what it is.",
+    "key_rotation": "Federation members SHOULD announce key rotations at least 30 days in advance and serve both old and new public keys at /.well-known/<site>-receipt-key.json during the rotation window."
+  }
+}

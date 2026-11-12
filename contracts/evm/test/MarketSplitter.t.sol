@@ -220,4 +220,28 @@ contract MarketSplitterTest is Test {
         vm.prank(BUYER);
         splitter.pay(IERC20(address(usdc)), SELLER, PRICE, CAP);
     }
+
+    // ---- a stray payment (audit 2026-11-11, contracts-2) ------------------------
+
+    function test_a_stray_transfer_goes_to_the_operator_to_refund_and_nowhere_else() public {
+        // A stock x402 client pays payTo directly: USDC lands here without a split.
+        vm.prank(BUYER);
+        usdc.transfer(address(splitter), PRICE);
+        assertEq(usdc.balanceOf(address(splitter)), PRICE);
+
+        vm.expectEmit(true, true, false, true, address(splitter));
+        emit MarketSplitter.StraySwept(address(usdc), OPERATOR, PRICE);
+        vm.prank(address(0xBAD));                     // anyone may trigger it
+        assertEq(splitter.sweepStray(IERC20(address(usdc))), PRICE);
+        assertEq(usdc.balanceOf(OPERATOR), PRICE, "the operator holds it to refund the buyer");
+        assertEq(usdc.balanceOf(address(0xBAD)), 0, "the caller gets nothing");
+        assertEq(usdc.balanceOf(address(splitter)), 0);
+    }
+
+    function test_there_is_nothing_to_sweep_after_a_split() public {
+        vm.prank(BUYER);
+        splitter.pay(IERC20(address(usdc)), SELLER, PRICE, CAP);
+        vm.expectRevert(MarketSplitter.NothingReceived.selector);
+        splitter.sweepStray(IERC20(address(usdc)));
+    }
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI 晚报</title>
+    <link rel="icon" type="image/svg+xml" href="static/favicon.svg?v=20260428-icon1" />
+    <link rel="icon" type="image/png" sizes="32x32" href="static/favicon-32x32.png?v=20260428-icon1" />
+    <link rel="icon" type="image/png" sizes="16x16" href="static/favicon-16x16.png?v=20260428-icon1" />
+    <link rel="apple-touch-icon" href="static/apple-touch-icon.png?v=20260428-icon1" />
+    <link rel="preload" href="static/GoogleSans-Variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="stylesheet" href="static/styles.css?v=20260428-daily-v6" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <div class="topbar-copy">
+          <p class="eyebrow">Daily AI Briefing</p>
+          <h1>AI 晚报</h1>
+          <p class="hero-copy">每天一页。先给判断，再给链接，再把完整正文留给还想继续往下读的人。</p>
+        </div>
+        <div class="topbar-side">
+          <nav class="site-nav" aria-label="site sections">
+            <a class="site-nav-link" href="/">首页</a>
+            <a class="site-nav-link is-active" href="/daily/">AI 晚报</a>
+            <a class="site-nav-link" href="/paper/">Paper Hub</a>
+          </nav>
+          <div class="header-meta" aria-label="Daily report stats">
+            <div class="stat stat-update">
+              <small>latest report</small>
+              <span id="last-updated">—</span>
+            </div>
+            <div class="stat" aria-label="报告数量">
+              <small>reports</small>
+              <span id="report-count">0</span>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section>
+        <div id="report-list" class="report-list"></div>
+      </section>
+    </main>
+    <script src="static/app.js?v=20260428-daily-v6"></script>
+  </body>
+</html>

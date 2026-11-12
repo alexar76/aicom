@@ -1,0 +1,34 @@
+{
+  "reviewer": "independent exfil_paths agent",
+  "financial_actions": 0,
+  "network_actions": 0,
+  "temporary_ephemeral_key_only": true,
+  "reviewed_sha256": {
+    "run_paid_cycle.py": "cc09759c6622ce036dcfc441ac1ec7b189777d833d2b5ca90cacc9fac90c6991",
+    "review/payment_guards.py": "7df8931d128303d487debbf9fc0999938914a6e142114b3bd2505c081aa09804",
+    "targets.json": "454f43955a536531acaca1db680fdc159480448e2d0a4d3ecc7a3246fdac3a88",
+    "review/test_runner_journal_independent.py": "80b40a08a81cb0dadce37b1dbaa442dfa63f8806c99b527b4e486988632ec5f0"
+  },
+  "stable_during_test": true,
+  "test_exit_code": 0,
+  "test_output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.093s\n\nOK\n",
+  "decision": "green for root-serialized three fixed exact payments at these hashes",
+  "approved_principal_atomic_total": 13000,
+  "approved_eth_fee_cap_wei_per_cycle": "10000000000000",
+  "approved_eth_fee_cap_wei_total": "30000000000000",
+  "confirmed_fix": "Reserve principal and conservative fee envelope before signing/exposing EIP-3009 authorization; count authorization-only prior attempts.",
+  "confirmed_properties": [
+    "Pinned full-object hybrid offer and status signatures; pinned hybrid normal receipt",
+    "Exact chain, token, payee, principal and EIP-712 USD Coin v2 domain",
+    "Immutable operation, wallet, tx and input binding; ASCII digest matches server",
+    "Signed transaction hash and raw bytes fsynced before broadcast_attempted fsync and single send",
+    "Resume neither loads key nor signs nor broadcasts; uncertain same hash retained",
+    "Actual signed offer minimum confirmation policy and invoice mining deadline",
+    "No production database or live wallet access in independent tests"
+  ],
+  "qualifications": [
+    "If an authorization-only attempt was exposed to eth_estimateGas, treat it as potentially relayable and reconcile the same invoice; do not create a replacement payment.",
+    "Worst-case fee is an explicit approved ETH envelope with 100x current L1 estimate, not a dynamic USD price promise.",
+    "Post-cycle live ledger inspection must be performed separately without extracting secrets."
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "acceptedPythonTree": "234e2c58d59df39e63adbc5608eb73789064d635",
+  "addedOriginalPythonBlobs": 20,
+  "allLatestRuffFindings": 0,
+  "bashSyntaxExitCode": 0,
+  "bashSyntaxScript": "scripts/sync_physical_sensor_catalogs.sh",
+  "coverageMethod": "Full baseline plus exact-blob deltas14,4,2ledger,12nonledger,2RPC,4financial additions; not a repeated6616-file full run.",
+  "declaredLotteryDependencyChecks": [
+    {
+      "requirement": "web3>=7.15,<8",
+      "resolvedVersion": "7.16.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "eth-account>=0.14,<0.15",
+      "resolvedVersion": "0.14.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "eth-abi>=5.0.1,<6",
+      "resolvedVersion": "5.2.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "httpx>=0.26",
+      "resolvedVersion": "0.28.1",
+      "satisfied": true
+    },
+    {
+      "requirement": "pyyaml>=6.0",
+      "resolvedVersion": "6.0.3",
+      "satisfied": true
+    },
+    {
+      "requirement": "fastapi>=0.162.0",
+      "resolvedVersion": "0.162.2",
+      "satisfied": true
+    },
+    {
+      "requirement": "uvicorn[standard]>=0.27",
+      "resolvedVersion": "0.54.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "cryptography>=50.0.2",
+      "resolvedVersion": "50.0.2",
+      "satisfied": true
+    }
+  ],
+  "derivedFinalEligiblePythonFiles": 6288,
+  "docsOnlyGate": {
+    "changedRequiredInput": [
+      "docs/add-gaia-atlas-sensor.md"
+    ],
+    "gateInputFiles": 627,
+    "inputsUnchangedFrom3d83To49508": true,
+    "nativeExitCode": 0,
+    "optionalAllRerun": false,
+    "realMap": {
+      "actualAuditPaths": 68,
+      "exactMapAgreement": true,
+      "expectedMirrorExcludedPaths": 68,
+      "mapSha256": "64d57e3b4ffe56b0fbc53df3456ea75c32f806045dc8857d93409d7d2c580964",
+      "pyyaml": "6.0.2",
+      "satelliteEntries": 60,
+      "warnings": ""
+    }
+  },
+  "earlierDocsGateInputsAndSensorConfigsUnchanged": true,
+  "earlierFocusedTestsAndDependencyBodiesUnchanged": true,
+  "finalPythonBlobs": 6616,
+  "focusedTests": {
+    "lotteryDrawAndCancel": {
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "tests": 30
+    },
+    "sensorsCatalogAndCLI": {
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "tests": 19
+    }
+  },
+  "format": "aicom.python.current-frozen-source-continuity/v2",
+  "initialSocketDiagnosticsRetained": "lottery-results and lottery-socket-diagnostic preserve a denied urllib3 import-time IPv6 loopback bind; final harness permits only that exact local port0 capability probe.",
+  "intermediateTree": "3d83e57ca3f27340bd78671bbf880c0f1e8028b2",
+  "latestFinancialFourActuallyLinted": 4,
+  "latestFinancialFourAddedPaths": [
+    "artifacts/hub-real-payments-2026-11-08/diagnosis/read_factory_error_codes.py",
+    "artifacts/hub-real-payments-2026-11-08/refund_factory.py",
+    "artifacts/hub-real-payments-2026-11-08/review/test_refund_factory.py",
+    "artifacts/hub-real-payments-2026-11-08/run_paid_ledger_selected.py"
+  ],
+  "latestFinancialFourModifiedPaths": [],
+  "latestFinancialFourPrivacyBound": [
+    {
+      "file": "artifacts/hub-real-payments-2026-11-08/diagnosis/read_factory_error_codes.py",
+      "gitBlob": "1e001918231dd17dc230e04f549945ac52b400a2",
+      "sourceSha256": "f1eaaa3093e12f355a70b0f0bb9014874ddfea14081489851867dfc8ef7cbc3c"
+    },
+    {
+      "file": "artifacts/hub-real-payments-2026-11-08/refund_factory.py",
+      "gitBlob": "fea5ff31f6212e2407a6fde086531a98696ed262",
+      "sourceSha256": "454849c9b40d8e24df47a64805aac65c166dfe8596fa50162857d908205a1da8"
+    },
+    {
+      "file": "artifacts/hub-real-payments-2026-11-08/review/test_refund_factory.py",
+      "gitBlob": "8415160b7170cba56dbea7a6b65af11f12a232b9",
+      "sourceSha256": "90e7b219e74dbf7597e4d837cbb3c970cb5e6ab2be7516c3933c7fe8ca008e61"
+    },
+    {
+      "file": "artifacts/hub-real-payments-2026-11-08/run_paid_ledger_selected.py",
+      "gitBlob": "171bfd8ef01bfbe6ca665fa0d69c16245da6963e",
+      "sourceSha256": "06866acf0c94cb99df91ee6d0ada91615920e68d43c91c874dffc05d132c4978"
+    }
+  ],
+  "latestFinancialFourRemovedPaths": [],
+  "latestLedgerActuallyLinted": 2,
+  "latestNonLedgerActuallyLinted": 12,
+  "latestRPCActuallyLinted": 2,
+  "localOnlySocketCapabilityProbes": [
+    {
+      "operation": "IPv6 loopback bind on ephemeral port0",
+      "producer": "urllib3.util.connection._has_ipv6 import-time capability probe"
+    }
+  ],
+  "localTemporaryFilesCreated": false,
+  "lotteryResolvedLockCanonicalSha256": "24605066a8ff7b2a88d8ad3f4b43d11e8126e29964951bfeae844f19cc308b6e",
+  "modifiedOriginalPythonBlobs": 16,
+  "noLocalProjectExecution": true,
+  "noOOM": true,
+  "originalActuallyLinted": 6268,
+  "originalFullStaticGateTree": "2e78a143c4cc77636c4a1c146987b5488b48d42d",
+  "originalPythonBlobs": 6596,
+  "originalUnchangedExclusions": 328,
+  "outboundConnectOrDNSAttempts": 0,
+  "ownedContainersRemaining": 0,
+  "passed": true,
+  "previousCombinedProofSha256": "c3bfb045dc004309326350f384b56f475635caa436ef5c33484fa9479ab7cdf6",
+  "previousFullyCoveredPythonTree": "49508ba53479427b1e874da74a2020e4dbde1bcc",
+  "removedPythonBlobs": [],
+  "ruffVersion": "0.15.15",
+  "rules": [
+    "E9",
+    "F63",
+    "F7",
+    "F82"
+  ],
+  "runtimeScopeLimitation": "Earlier application suites retain frozen measured identities. The49 public-package offline tests and supported lottery dependency proofs remain unchanged through this tree. The four latest financial source additions received static checks only in this gate; separate synthetic refund tests are maintained by the independent reviewer. No live refund, executor, ledger, diagnosis, RPC, SSH or payment action was invoked by these static gates.",
+  "selectedFocusedSourceProof": {
+    "actualFiles": 49,
+    "allMatched": true,
+    "expectedFiles": 49,
+    "format": "aicom.selected-source-git-blob-proof/v1",
+    "nativeBlobManifestSha256": "9b4628e5cf0f57160ae6288b090709e54ead75fb13cdbc3dedb080578e5f9612",
+    "sourceContentMapSha256": "e227cd2ecbfbaaa8c99bd398b54f39feee2b368a49f1e49e69c647c1c2bd8731",
+    "tree": "3d83e57ca3f27340bd78671bbf880c0f1e8028b2"
+  },
+  "sensorTestDependencyScope": "Declared pytest/PyYAML constraints for local catalog/CLI units; full sensor service dependency installation is not asserted.",
+  "sourceUnchanged": true,
+  "syncScriptExecuted": false,
+  "unchangedOriginalPythonBlobs": 6580
+}

@@ -1,0 +1,325 @@
+{
+  "mode": "full",
+  "provenance": {
+    "buildTools": [
+      {
+        "name": "build",
+        "version": "1.6.1"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "pyproject_hooks",
+        "version": "1.3.3"
+      },
+      {
+        "name": "setuptools",
+        "version": "84.2.1"
+      },
+      {
+        "name": "wheel",
+        "version": "0.48.0"
+      }
+    ],
+    "entryPoint": "aimarket.plugins:provenance=aimarket_provenance.plugin:ProvenancePlugin",
+    "installedPythonFileHashes": {
+      "__init__.py": "d205e232181aab9a98e8d81ad44469fcbf14d831c37d0990cd230c481bbc68d8",
+      "_awr.py": "7af378d2d39d61aaceae5b7928d1f98209445bfd66a06b88aab36369cce65efd",
+      "_signing_key_storage.py": "42c94badd9da18a7c50f1adf05d3d9a818bfcec647111da72e61699c59603541",
+      "anchoring.py": "6efa03fae67ba4d27905191ce57cdcf57d7063d9b2d6574a5e2913051df92a2f",
+      "api.py": "2ecb7b55227246fc254322ee3eb0e73554f834a845b7616dc485109d198e2c80",
+      "backfill.py": "ca7ad888d962007c4381354d1d07d5a7bd14c998f78fee7e1fbddb36566cccf9",
+      "legacy.py": "6c378c5497faeab1ff5246ea5334622e94e85ca5822f1592d423358be82955a6",
+      "plugin.py": "44086483f743bb900750a3885ebdb3de21cf95385e5f9ea20f7f443cbe058c6a",
+      "receipt.py": "816a7f0c3343faea3503696d057e2d7a4955636bec2f4de7c660544f0ffea749",
+      "storage.py": "84b63c77c002b384f968d8bf4621e741d1fd738f691ae8390b76b00cb475d174",
+      "verifier.py": "e6ad1da0e7fe07a79eb156ca212ee86785b3a2956c5150a45c8d4a2d2cb0f0dc"
+    },
+    "name": "aimarket-provenance",
+    "sourceDateEpoch": 946684800,
+    "sourceFileHashes": {
+      ".gitignore": "681653e9e6d7d082cfe69cea2f6130ac4225c3c74f18377f00efbbfe5c263959",
+      "CONTRIBUTORS.md": "ec705abb009a086658bafba329dd1f0a81fa2e608dcbdeef7d47d93ec59c66c9",
+      "LICENSE": "e7e97143da6979addfc208e5606219b593f9982831e0f2e4b6408d5c0a655eed",
+      "MANIFEST.in": "f726730ae3bd5ae4169e7a75229cecfaea4a512df8ed407d8be89b684c4e75d9",
+      "README.md": "bfa57f2e62cb929ed4e4bd712c5823c69d593627c273ac7e8dba329941f3a6e5",
+      "SECURITY.md": "705e2bb700ba32cb9ec815ab9b84442bbda7fe2b57300e56baf439e80c43a849",
+      "aimarket_provenance/__init__.py": "d205e232181aab9a98e8d81ad44469fcbf14d831c37d0990cd230c481bbc68d8",
+      "aimarket_provenance/_awr.py": "7af378d2d39d61aaceae5b7928d1f98209445bfd66a06b88aab36369cce65efd",
+      "aimarket_provenance/_signing_key_storage.py": "42c94badd9da18a7c50f1adf05d3d9a818bfcec647111da72e61699c59603541",
+      "aimarket_provenance/anchoring.py": "6efa03fae67ba4d27905191ce57cdcf57d7063d9b2d6574a5e2913051df92a2f",
+      "aimarket_provenance/api.py": "2ecb7b55227246fc254322ee3eb0e73554f834a845b7616dc485109d198e2c80",
+      "aimarket_provenance/backfill.py": "ca7ad888d962007c4381354d1d07d5a7bd14c998f78fee7e1fbddb36566cccf9",
+      "aimarket_provenance/legacy.py": "6c378c5497faeab1ff5246ea5334622e94e85ca5822f1592d423358be82955a6",
+      "aimarket_provenance/plugin.py": "44086483f743bb900750a3885ebdb3de21cf95385e5f9ea20f7f443cbe058c6a",
+      "aimarket_provenance/receipt.py": "816a7f0c3343faea3503696d057e2d7a4955636bec2f4de7c660544f0ffea749",
+      "aimarket_provenance/storage.py": "84b63c77c002b384f968d8bf4621e741d1fd738f691ae8390b76b00cb475d174",
+      "aimarket_provenance/verifier.py": "e6ad1da0e7fe07a79eb156ca212ee86785b3a2956c5150a45c8d4a2d2cb0f0dc",
+      "docs/receipt-format.md": "33d5644e3aaf0045334b1b705b8a93ece0d5a7e4c1d41e858c7eb6c0cfb05d6d",
+      "docs/sdk-integration.md": "47684d4710aed6ad9b94303647f6541ecde0342f53936e2799b214276de84df0",
+      "docs/user-cases.md": "0f20278193b7c788aec523278323fdcc5ce4fd00fe9e016ff0185616ff0c44ae",
+      "docs/user-guide.md": "f65d89bea5e934442c49b4fc3aa351f5681c442008b024d77c5ac0eb11141c2d",
+      "docs/value.md": "1ed0a485dda291ec75917a03dc83ef543a28e18bb7e122f5f95e479898b354b8",
+      "pyproject.toml": "bfc4c021a2ec4a2bee5ed463459bba5bb028eb1e02f5c267f9f925aadac2769c",
+      "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests/conftest.py": "ed8c0c666e41f04a5a9484c8de7862892a84bf87935b08a029f40ef9d24173bf",
+      "tests/test_awr_dependency.py": "7e70f32c95da5a97015103dfaec3f90f66e58b2084679e0a84059b9afbed1b62",
+      "tests/test_legacy_verification.py": "c121c098ebb3715be4eb266cae5f357b43587b0aa00d5bce18db88a4a795fd86",
+      "tests/test_provenance_plugin.py": "944fdec1fe5792c7ce556ea9cc9e2cb6bd877022a14d01f245c31aaec000be6e",
+      "tests/test_receipt.py": "09c77d8c26435e17ac3b3198e84e70eabb3bf682c13eb3a78e4a6b3a303f856f",
+      "tests/test_storage.py": "f8a04d7cead80e718c9967dcd8c93643db962017820289c01d88bffc7186117d",
+      "tests/test_verifier.py": "1166131721a8a71171e85d1c2c9a995d11fb92fbabee003aa626f64da517e4de"
+    },
+    "sourcePayloadUnchanged": true,
+    "sourceProject": "aimarket-hub/plugins/aimarket-provenance",
+    "sourceSnapshot": "source-v4",
+    "version": "2.3.1",
+    "wheel": "aimarket_provenance-2.3.1-py3-none-any.whl",
+    "wheelSha256": "b95afc0e1f594d5f7a3ecbaafe3b64ba47d6ed7111c1be67ff5d547539bc7f73"
+  },
+  "python": "3.13.18 (main, Oct 28 2026, 02:02:09) [GCC 14.2.0]",
+  "site": "blip",
+  "sourceSnapshot": "source-v4",
+  "requirementsSha256": "5cef6783a59a263f112e8937e888b859058328029ab9f9537f84848850b2bde2",
+  "installed": [
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5"
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0"
+    },
+    {
+      "name": "anyio",
+      "version": "4.14.2"
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0"
+    },
+    {
+      "name": "awr",
+      "version": "2.0.0"
+    },
+    {
+      "name": "bitarray",
+      "version": "3.10.0"
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.19"
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1"
+    },
+    {
+      "name": "ckzg",
+      "version": "2.1.8"
+    },
+    {
+      "name": "click",
+      "version": "8.4.2"
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.2"
+    },
+    {
+      "name": "cytoolz",
+      "version": "1.1.0"
+    },
+    {
+      "name": "dilithium-py",
+      "version": "1.4.0"
+    },
+    {
+      "name": "eth_abi",
+      "version": "5.2.0"
+    },
+    {
+      "name": "eth-account",
+      "version": "0.13.7"
+    },
+    {
+      "name": "eth-hash",
+      "version": "0.8.0"
+    },
+    {
+      "name": "eth-keyfile",
+      "version": "0.8.1"
+    },
+    {
+      "name": "eth-keys",
+      "version": "0.7.0"
+    },
+    {
+      "name": "eth-rlp",
+      "version": "2.2.0"
+    },
+    {
+      "name": "eth-typing",
+      "version": "6.0.0"
+    },
+    {
+      "name": "eth-utils",
+      "version": "6.0.0"
+    },
+    {
+      "name": "fastapi",
+      "version": "0.162.0"
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0"
+    },
+    {
+      "name": "hexbytes",
+      "version": "1.3.1"
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9"
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "name": "idna",
+      "version": "3.18"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.0"
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1"
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.45.2"
+    },
+    {
+      "name": "packaging",
+      "version": "26.3"
+    },
+    {
+      "name": "parsimonious",
+      "version": "0.10.0"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0"
+    },
+    {
+      "name": "prometheus_client",
+      "version": "0.26.0"
+    },
+    {
+      "name": "pycparser",
+      "version": "3.0"
+    },
+    {
+      "name": "pycryptodome",
+      "version": "3.23.0"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.13.4"
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.46.4"
+    },
+    {
+      "name": "Pygments",
+      "version": "2.20.0"
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1"
+    },
+    {
+      "name": "pytest-asyncio",
+      "version": "1.4.0"
+    },
+    {
+      "name": "pytest-httpx",
+      "version": "0.36.2"
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0"
+    },
+    {
+      "name": "regex",
+      "version": "2026.7.19"
+    },
+    {
+      "name": "rlp",
+      "version": "4.1.0"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3"
+    },
+    {
+      "name": "starlette",
+      "version": "1.3.1"
+    },
+    {
+      "name": "toolz",
+      "version": "1.1.0"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0"
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.2"
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.52.1"
+    }
+  ],
+  "foundry": {
+    "foundry": {
+      "tag": "v1.9.0",
+      "asset": "foundry_v1.9.0_linux_amd64.tar.gz",
+      "sha256": "8d17599b42e3139f1a9c171be3798c4ed8e743ae17b84cc3435e57bf2a51ae99",
+      "registryDigest": "sha256:8d17599b42e3139f1a9c171be3798c4ed8e743ae17b84cc3435e57bf2a51ae99",
+      "binaries": {
+        "forge": "26fc0c5ef0574f543acf496674160fe9a2175922ae44fd32f46ee2d09fdff4bc",
+        "cast": "cae9d8a3e9a2c2f121879f39498472fee8a767318fc26ff7e3c73908133fdaa4",
+        "anvil": "cc6b5239d4c0cacc6a5086619eee1e4a9ec6aa7a21bf1df631ebaa7816139d16",
+        "chisel": "bc7c3a1d62f477c3f6895de5bb62f65037f02b539c804afa0781552731715abd"
+      }
+    },
+    "solc": {
+      "version": "0.8.28",
+      "filename": "solc-linux-amd64-v0.8.28+commit.7893614a",
+      "sha256": "9a0fb7e0db2c0641dbae1c5cc645dc686820c83af516226abb1c0a2f76636f25"
+    }
+  },
+  "openzeppelin": {
+    "name": "@openzeppelin/contracts",
+    "version": "5.6.1",
+    "integrity": "sha512-Ly6SlsVJ3mj+b18W3R8gNufB7dTICT105fJhodGAGgyC2oqnBAhqSiNDJ8V8DLY05cCz81GLI0CU5vNYA1EC/w==",
+    "tarballSha256": "bd202ef9a2fd09f6005edc18437b4d3090841d0f676c01c814ee9608581d2e63",
+    "erc20Sha256": "50f34ae16a067a41c2c1091445d11d63788e54c717677cb6d6b0e4cdea2ad21d"
+  },
+  "runnerSha256": "31988eb032e0e0a45cf20e945f845d4386d4609f952bdc2b794dd5d0a764fd8e",
+  "sourceFiles": 574,
+  "hubFileCount": 45
+}

@@ -1,0 +1,78 @@
+{
+  "commands": [
+    {
+      "durationSeconds": 1290.281,
+      "errors": 0,
+      "failures": 0,
+      "passed": 1021,
+      "skipped": 0,
+      "stage": "hub-relevant-v4",
+      "tests": 1021
+    },
+    {
+      "durationSeconds": 29.91,
+      "errors": 0,
+      "failures": 0,
+      "passed": 2,
+      "skipped": 0,
+      "stage": "hub-chain-v4",
+      "tests": 2
+    },
+    {
+      "durationSeconds": 13.775,
+      "errors": 0,
+      "failures": 0,
+      "passed": 64,
+      "skipped": 0,
+      "stage": "protocol-main-v4",
+      "tests": 64
+    },
+    {
+      "durationSeconds": 5.738,
+      "errors": 0,
+      "failures": 0,
+      "passed": 4,
+      "skipped": 0,
+      "stage": "protocol-wire-v4",
+      "tests": 4
+    }
+  ],
+  "gitTree": "1400f9f8e6f0b104298835b1f9bcfd35f4a75aa3",
+  "globalSourceFiles": 10101,
+  "globalSourceMappingSha256": "7085e9f236ccd276b89a3f864421751fb468f9da18b17b05376ffccb40068f16",
+  "hubCases": 1023,
+  "isolation": {
+    "capDropAll": true,
+    "cpu": 2.0,
+    "exitCode": 0,
+    "memoryBytes": 2147483648,
+    "network": "none",
+    "noNewPrivileges": true,
+    "noSwap": true,
+    "oomKilled": false,
+    "publishedPorts": 0,
+    "readonlyRoot": true,
+    "runtime": "runsc",
+    "sourceReadonly": true,
+    "uid": "1000:1000"
+  },
+  "limitations": [
+    "This is the explicit45-file Hub selection and68protocol cases; it does not claim every aicom project or every supported Python version was tested.",
+    "Earlier failed/incomplete harness and dependency attempts remain separate and are not overwritten.",
+    "Synthetic temporary databases and generated key files are excluded from evidence exports."
+  ],
+  "passed": true,
+  "pilotIncludedInMainCount": false,
+  "pilotPassed": 7,
+  "protocolCases": 68,
+  "provenanceWheelSha256": "b95afc0e1f594d5f7a3ecbaafe3b64ba47d6ed7111c1be67ff5d547539bc7f73",
+  "requirementsSha256": "5cef6783a59a263f112e8937e888b859058328029ab9f9537f84848850b2bde2",
+  "runnerSha256": "31988eb032e0e0a45cf20e945f845d4386d4609f952bdc2b794dd5d0a764fd8e",
+  "site": "blip",
+  "sourceManifestSha256": "0115299f67eabeb219c68725ff53b7944cf220a784345e7ce07359a4e5b53836",
+  "testStatusVectorsSha256": "2c9f9b9e948c55bfabfcc2c0ee292e6109c466368033b6d19805674fc3e5885b",
+  "testedSourceFiles": 574,
+  "testedSourceMatchesGlobalWitness": true,
+  "testedSourceUnchanged": true,
+  "uniqueMainCases": 1091
+}

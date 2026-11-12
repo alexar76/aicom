@@ -1,0 +1,354 @@
+[
+  {
+    "id": 1,
+    "query": {
+      "q": "site:x.com (\"metis.modelmarket.dev\" OR \"@alexar76/argus3\" OR \"aimarket-metis\")"
+    },
+    "response_file": "search-01.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 2,
+    "query": {
+      "q": "site:x.com (\"attestedmemory.net\" OR \"domain-operator-kit\" OR \"esim-operator-kit\")"
+    },
+    "response_file": "search-01.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 3,
+    "query": {
+      "q": "site:reddit.com (\"modelmarket.dev\" OR \"@aimarket/agent\" OR \"aimarket-hub\")"
+    },
+    "response_file": "search-01.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 4,
+    "query": {
+      "q": "site:reddit.com (\"PingBlip\" OR \"aimarket-courses\" OR \"attestedmemory.net\")"
+    },
+    "response_file": "search-01.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 5,
+    "query": {
+      "q": "site:bsky.app (\"github.com/alexar76\" OR \"attestedmemory.net\" OR \"pingblip.com\")"
+    },
+    "response_file": "search-02.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 6,
+    "query": {
+      "q": "(\"aimarket-metis\" OR \"@aimarket/esim-rails\" OR \"hestia.modelmarket.dev\") (site:mastodon.social OR site:fosstodon.org OR site:infosec.exchange)"
+    },
+    "response_file": "search-02.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 7,
+    "query": {
+      "q": "site:news.ycombinator.com (\"aimarket-courses\" OR \"esim-operator-kit\" OR \"metis.modelmarket.dev\")"
+    },
+    "response_file": "search-02.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 8,
+    "query": {
+      "q": "site:lobste.rs (\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"github.com/alexar76\")"
+    },
+    "response_file": "search-02.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 9,
+    "query": {
+      "q": "site:linkedin.com/posts (\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"aimarket-courses\")"
+    },
+    "response_file": "search-03.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 10,
+    "query": {
+      "q": "site:linkedin.com (\"ARGUS-3\" \"alexar76\" OR \"METIS\" \"AIMarket\")"
+    },
+    "response_file": "search-03.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 11,
+    "query": {
+      "q": "site:t.me (\"PingBlip\" OR \"attestedmemory.net\" OR \"esim-operator-kit\")"
+    },
+    "response_file": "search-03.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 12,
+    "query": {
+      "q": "site:youtube.com (\"AIMarket\" \"alexar76\" OR \"PingBlip\" \"review\")"
+    },
+    "response_file": "search-03.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 13,
+    "query": {
+      "q": "site:dev.to (\"aimarket-metis\" OR \"@alexar76/argus3\" OR \"hestia.modelmarket.dev\") -site:dev.to/alexar76"
+    },
+    "response_file": "search-04.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 14,
+    "query": {
+      "q": "site:dev.to (\"attestedmemory.net\" OR \"@aimarket/esim-rails\" OR \"domain-operator-kit\") -site:dev.to/alexar76"
+    },
+    "response_file": "search-04.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 15,
+    "query": {
+      "q": "site:dev.to (\"aimarket-courses\" OR \"aimarket-school\" OR \"cite-desks\") -site:dev.to/alexar76"
+    },
+    "response_file": "search-04.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 16,
+    "query": {
+      "q": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"aimarket-metis\") (site:community.openai.com OR site:discuss.huggingface.co OR site:forum.cursor.com OR site:community.latenode.com)"
+    },
+    "response_file": "search-04.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 17,
+    "query": {
+      "q": "site:x.com (\"iot.modelmarket.dev\" OR \"atlas.modelmarket.dev\" OR \"aimarket-gaia-gateway\" OR \"aimarket-atlas\")"
+    },
+    "response_file": "search-05.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 18,
+    "query": {
+      "q": "site:reddit.com (\"aimarket-gaia\" OR \"atlas.modelmarket.dev\" OR \"hestia.modelmarket.dev\")"
+    },
+    "response_file": "search-05.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 19,
+    "query": {
+      "q": "site:bsky.app (\"aimarket-metis\" OR \"iot.modelmarket.dev\" OR \"@alexar76/argus3\")"
+    },
+    "response_file": "search-05.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 20,
+    "query": {
+      "q": "\"modelmarket.dev\" (site:fosstodon.org OR site:infosec.exchange OR site:mastodon.world OR site:discuss.systems)"
+    },
+    "response_file": "search-05.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 21,
+    "query": {
+      "q": "site:t.me (\"edu.modelmarket.dev\" OR \"aimarket-courses\" OR \"create-aimarket-agent\")"
+    },
+    "response_file": "search-06.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 22,
+    "query": {
+      "q": "site:linkedin.com (\"SYMMARTYS\" OR \"HEPHAESTUS\" \"modelmarket\" OR \"Attested Memory\" \"alexar76\")"
+    },
+    "response_file": "search-06.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 23,
+    "query": {
+      "q": "site:youtube.com (\"create-aimarket-agent\" OR \"esim-operator-kit\" OR \"attestedmemory.net\")"
+    },
+    "response_file": "search-06.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 24,
+    "query": {
+      "q": "(\"aimarket-metis\" OR \"attested-memory\" \"alexar76\" OR \"modelmarket.dev\") (site:lemmy.world OR site:programming.dev OR site:discuss.python.org OR site:discourse.julialang.org)"
+    },
+    "response_file": "search-06.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 25,
+    "query": {
+      "q": "\"QuincyGB\" \"AIMarket\" -site:github.com -site:libhunt.com"
+    },
+    "response_file": "search-07.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": false,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 26,
+    "query": {
+      "q": "\"martinpisacreta\" \"modelmarket.dev\" -site:github.com"
+    },
+    "response_file": "search-07.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": false,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 27,
+    "query": {
+      "q": "\"build_ai_infra\" (site:x.com OR site:twitter.com)"
+    },
+    "response_file": "search-07.json",
+    "role": "index_control_not_independent_social_evidence",
+    "batch_error": false,
+    "batch_empty": false,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 28,
+    "query": {
+      "q": "\"modelmarket.dev\" -site:modelmarket.dev"
+    },
+    "response_file": "search-07.json",
+    "role": "index_control_not_independent_social_evidence",
+    "batch_error": false,
+    "batch_empty": false,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 29,
+    "query": {
+      "q": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"PingBlip\") (site:tgstat.com OR site:tgstat.ru OR site:telemetr.me OR site:telemetr.io)"
+    },
+    "response_file": "search-08.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 30,
+    "query": {
+      "q": "site:t.me/s (\"aimarket-metis\" OR \"AIMarket Courses\" OR \"attestedmemory.net\" OR \"PingBlip\")"
+    },
+    "response_file": "search-08.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 31,
+    "query": {
+      "q": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"aimarket-metis\") (site:hashnode.com OR site:hashnode.dev OR site:hackernoon.com)"
+    },
+    "response_file": "search-08.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  },
+  {
+    "id": 32,
+    "query": {
+      "q": "(\"AIMarket\" \"alexar76\" OR \"hestia.modelmarket.dev\" OR \"iot.modelmarket.dev\") (site:bsky.app OR site:mastodon.social OR site:fosstodon.org)"
+    },
+    "response_file": "search-08.json",
+    "role": "targeted_social_or_community_search",
+    "batch_error": false,
+    "batch_empty": true,
+    "limit": "Combined response does not establish exhaustive per-query execution; platform non-indexing and search broadening remain possible."
+  }
+]

@@ -1,0 +1,7 @@
+# Deny-all starting point. Add only exact operator-approved hosts for this QA job.
+# Examples of syntax, not an approved service list:
+# ^openrouter\.ai$
+# ^dev\.example\.com$
+# ^prod\.example\.com$
+# Do not add wildcard domains, arbitrary SSH destinations, or the npm registry here.
+# Build dependencies into the QA image instead of installing them during a job.

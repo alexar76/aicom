@@ -1,0 +1,410 @@
+{
+  "date_client": "2026-11-10",
+  "generated_at_utc": "2026-11-10T20:31:57.686719+00:00",
+  "baseline": [
+    "artifacts/external-social-regional-2026-11-09/social/report.ru.md",
+    "artifacts/external-social-regional-deeper-2026-11-09/social/report.ru.md",
+    "artifacts/external-links-2026-11-10/social/report.ru.md",
+    "artifacts/external-links-deeper-2026-11-10/reviews/summary.md",
+    "artifacts/external-components-2026-11-10/products/summary.md"
+  ],
+  "counts": {
+    "web_query_strings": 32,
+    "platform_targeted_queries": 30,
+    "index_controls": 2,
+    "web_batches": 8,
+    "native_or_primary_GETs": 26,
+    "http_statuses": {
+      "200": 24,
+      "403": 2
+    },
+    "new_attributed_independent_social_posts": 0,
+    "new_confirmed_reviews": 0,
+    "new_confirmed_adoptions": 0,
+    "hn_new_comment_ids": 0,
+    "bsky_new_external_reply_uris_in_four_threads": 0,
+    "dev_new_external_comment_ids_in_two_ID_baselines": 0,
+    "new_own_DEV_articles": 1,
+    "new_visible_own_Telegram_posts": 8,
+    "newly_primary_read_historical_outside_reader_comments_not_attributed_to_us": 2
+  },
+  "identity_rule": "Exact namespace/domain/repository/product in context; homonyms and incidental history/Bitwarden matches excluded. Accounts are not verified people, customers or independent owners.",
+  "coverage": {
+    "X_Twitter": "Targeted indexed search only; no login/native account search. No new attributable outside result in returned sample.",
+    "LinkedIn": "Indexed posts/profile search with product markers; no authenticated feed or private comments.",
+    "Reddit": {
+      "evidence": {
+        "key": "reddit-attested",
+        "url": "https://www.reddit.com/search.json?q=%22attestedmemory.net%22&sort=new&limit=100&type=link",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:23:11.437419+00:00",
+        "status": 403,
+        "final_url": "https://www.reddit.com/search.json?q=%22attestedmemory.net%22&sort=new&limit=100&type=link",
+        "content_type": "text/html",
+        "bytes": 189908,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:25:18 GMT",
+          "Server": "snooserv",
+          "Retry-After": "0"
+        },
+        "body_file": "raw/reddit-attested.raw",
+        "sha256": "13bcba13bd1bad5aace04e8a76880b710337a8d595224967e874401832cc203c"
+      },
+      "status": "403 unread; not zero mentions"
+    },
+    "Bluesky": {
+      "search_evidence": {
+        "key": "bsky-search-attested",
+        "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=attestedmemory.net&limit=100&sort=latest",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:23:10.307784+00:00",
+        "status": 403,
+        "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=attestedmemory.net&limit=100&sort=latest",
+        "content_type": "text/html",
+        "bytes": 2334,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:25:17 GMT",
+          "Server": "BunnyCDN-AMS1-883"
+        },
+        "body_file": "raw/bsky-search-attested.raw",
+        "sha256": "8609fbf6d25103698c09480062dd212a9f8e8acbc3d320f599bd871cef1a7048"
+      },
+      "search_status": "403 unread",
+      "feed_and_reply_delta": "bsky-reply-delta.json"
+    },
+    "Mastodon": [
+      {
+        "evidence": {
+          "key": "mastodon-attested",
+          "url": "https://mastodon.social/api/v2/search?q=attestedmemory.net&type=statuses&limit=40",
+          "method": "GET",
+          "read_at_utc": "2026-11-10T20:23:10.589994+00:00",
+          "status": 200,
+          "final_url": "https://mastodon.social/api/v2/search?q=attestedmemory.net&type=statuses&limit=40",
+          "content_type": "application/json; charset=utf-8",
+          "bytes": 60,
+          "truncated": false,
+          "public_headers": {
+            "Date": "Tue, 10 Nov 2026 19:25:17 GMT",
+            "Server": "Mastodon"
+          },
+          "body_file": "raw/mastodon-attested.raw",
+          "sha256": "6c769b1bfc572dd460befe5cd8db98bc85d2e811de19cc385acdc3dac12296df"
+        },
+        "statuses_returned": 0,
+        "scope": "One public instance search; not all fediverse/remote/private posts."
+      },
+      {
+        "evidence": {
+          "key": "mastodon-metis",
+          "url": "https://mastodon.social/api/v2/search?q=aimarket-metis&type=statuses&limit=40",
+          "method": "GET",
+          "read_at_utc": "2026-11-10T20:23:11.014413+00:00",
+          "status": 200,
+          "final_url": "https://mastodon.social/api/v2/search?q=aimarket-metis&type=statuses&limit=40",
+          "content_type": "application/json; charset=utf-8",
+          "bytes": 60,
+          "truncated": false,
+          "public_headers": {
+            "Date": "Tue, 10 Nov 2026 19:25:18 GMT",
+            "Server": "Mastodon"
+          },
+          "body_file": "raw/mastodon-metis.raw",
+          "sha256": "6c769b1bfc572dd460befe5cd8db98bc85d2e811de19cc385acdc3dac12296df"
+        },
+        "statuses_returned": 0,
+        "scope": "One public instance search; not all fediverse/remote/private posts."
+      }
+    ],
+    "HN": {
+      "searches": [
+        {
+          "evidence": {
+            "key": "hn-search-metis",
+            "url": "https://hn.algolia.com/api/v1/search_by_date?query=%22aimarket-metis%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "method": "GET",
+            "read_at_utc": "2026-11-10T20:23:05.866536+00:00",
+            "status": 200,
+            "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=%22aimarket-metis%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "content_type": "application/json",
+            "bytes": 360,
+            "truncated": false,
+            "public_headers": {
+              "Date": "Tue, 10 Nov 2026 19:25:13 GMT",
+              "Server": "Google Frontend"
+            },
+            "body_file": "raw/hn-search-metis.raw",
+            "sha256": "98baa4cef0aa32ba131b436a9513943799bb8e94a282c7b448919224ed263a43"
+          },
+          "query": "\"aimarket-metis\"",
+          "hits": 0,
+          "scope": "Exact quoted package/domain query over public HN index; not all brands or unindexed discussions."
+        },
+        {
+          "evidence": {
+            "key": "hn-search-argus",
+            "url": "https://hn.algolia.com/api/v1/search_by_date?query=%22%40alexar76%2Fargus3%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "method": "GET",
+            "read_at_utc": "2026-11-10T20:23:06.400207+00:00",
+            "status": 200,
+            "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=%22%40alexar76%2Fargus3%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "content_type": "application/json",
+            "bytes": 368,
+            "truncated": false,
+            "public_headers": {
+              "Date": "Tue, 10 Nov 2026 19:25:13 GMT",
+              "Server": "Google Frontend"
+            },
+            "body_file": "raw/hn-search-argus.raw",
+            "sha256": "30bdb82c6e23b492dbde5d6f7f0373fef70d52912765bd693d0db3048d2955a5"
+          },
+          "query": "\"@alexar76/argus3\"",
+          "hits": 0,
+          "scope": "Exact quoted package/domain query over public HN index; not all brands or unindexed discussions."
+        },
+        {
+          "evidence": {
+            "key": "hn-search-esim",
+            "url": "https://hn.algolia.com/api/v1/search_by_date?query=%22%40aimarket%2Fesim-rails%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "method": "GET",
+            "read_at_utc": "2026-11-10T20:23:06.934304+00:00",
+            "status": 200,
+            "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=%22%40aimarket%2Fesim-rails%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "content_type": "application/json",
+            "bytes": 376,
+            "truncated": false,
+            "public_headers": {
+              "Date": "Tue, 10 Nov 2026 19:25:14 GMT",
+              "Server": "Google Frontend"
+            },
+            "body_file": "raw/hn-search-esim.raw",
+            "sha256": "67a69d3ddcfd66874460c14307f5ec13d975018ec0ad619c2ffb239bb0ec84fe"
+          },
+          "query": "\"@aimarket/esim-rails\"",
+          "hits": 0,
+          "scope": "Exact quoted package/domain query over public HN index; not all brands or unindexed discussions."
+        },
+        {
+          "evidence": {
+            "key": "hn-search-courses",
+            "url": "https://hn.algolia.com/api/v1/search_by_date?query=%22aimarket-courses%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "method": "GET",
+            "read_at_utc": "2026-11-10T20:23:07.555334+00:00",
+            "status": 200,
+            "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=%22aimarket-courses%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "content_type": "application/json",
+            "bytes": 364,
+            "truncated": false,
+            "public_headers": {
+              "Date": "Tue, 10 Nov 2026 19:25:15 GMT",
+              "Server": "Google Frontend"
+            },
+            "body_file": "raw/hn-search-courses.raw",
+            "sha256": "5dc5cb691b97387fcda09cb2b2880fbb87d6fd1526bdb8065df58bf03fb0adb0"
+          },
+          "query": "\"aimarket-courses\"",
+          "hits": 0,
+          "scope": "Exact quoted package/domain query over public HN index; not all brands or unindexed discussions."
+        },
+        {
+          "evidence": {
+            "key": "hn-search-pingblip",
+            "url": "https://hn.algolia.com/api/v1/search_by_date?query=%22pingblip.com%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "method": "GET",
+            "read_at_utc": "2026-11-10T20:23:08.753797+00:00",
+            "status": 200,
+            "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=%22pingblip.com%22&hitsPerPage=100&typoTolerance=false&advancedSyntax=true",
+            "content_type": "application/json",
+            "bytes": 368,
+            "truncated": false,
+            "public_headers": {
+              "Date": "Tue, 10 Nov 2026 19:25:16 GMT",
+              "Server": "Google Frontend"
+            },
+            "body_file": "raw/hn-search-pingblip.raw",
+            "sha256": "959455f21845d4d685acb6293f413692527240e943627b51248d3022b18e47bd"
+          },
+          "query": "\"pingblip.com\"",
+          "hits": 0,
+          "scope": "Exact quoted package/domain query over public HN index; not all brands or unindexed discussions."
+        }
+      ],
+      "known_thread_delta": "hn-thread-delta.json"
+    },
+    "Lobsters": {
+      "evidence": {
+        "key": "lobsters-domain",
+        "url": "https://lobste.rs/search?q=%22modelmarket.dev%22&what=stories&order=newest",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:23:12.169195+00:00",
+        "status": 200,
+        "final_url": "https://lobste.rs/search?q=%22modelmarket.dev%22&what=stories&order=newest",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 4909,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:25:19 GMT"
+        },
+        "body_file": "raw/lobsters-domain.raw",
+        "sha256": "3f64294349dd696c1632529bbca2754f42bcb43619e324a6d18a8ca5c4fc0cde"
+      },
+      "visible_result": "0 stories for selected domain query; page says punctuation stripped",
+      "scope": "Search stories only, not all comments"
+    },
+    "Telegram": {
+      "native_own_channel": "telegram-own-distribution.json",
+      "other_channel_indexes": "Queries29/30 cover t.me/s,TGStat,Telemetr; no new attributable result in returned combined response."
+    },
+    "YouTube": "Targeted indexed external-author searches only; no logged-in comments/Analytics or new audience metrics.",
+    "DEV": {
+      "own_thread_deltas": "dev-comment-delta.json",
+      "known_foreign_post": "quincy-outside-discussion.json"
+    },
+    "Hashnode_HackerNoon": "Exact product/domain query31; no new attributable publication in returned response. Own blogs/copies are not independent reviews."
+  },
+  "known_external_contact": {
+    "HN": {
+      "comment_id": 50205750,
+      "author": "ITAltitudes",
+      "created_at": "2026-10-23T07:55:37Z",
+      "url": "https://news.ycombinator.com/item?id=50205750",
+      "classification": "known_external_technical_question_about_polling",
+      "novelty": "unchanged IDs/content context; not a new November reply"
+    },
+    "DEV": "Known Marketplace/Textokit/AgentEmbassy discussions retained; selected ID snapshots unchanged, no global claim for all76 articles."
+  },
+  "outside_historical_comments": {
+    "article_url": "https://dev.to/quincygb/eighteen-routes-five-conversations-one-bug-a-customer-found-for-us-6lm",
+    "author": "quincygb",
+    "published_at": "2026-10-25T05:50:27Z",
+    "article_evidence": {
+      "key": "quincygb-outside-article",
+      "url": "https://dev.to/api/articles/4913651",
+      "method": "GET",
+      "read_at_utc": "2026-11-10T20:26:12.991854+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/articles/4913651",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 10069,
+      "truncated": false,
+      "public_headers": {
+        "Date": "Tue, 10 Nov 2026 19:28:20 GMT",
+        "Server": "Heroku"
+      },
+      "body_file": "raw/quincygb-outside-article.raw",
+      "sha256": "cec0d47936e171bf5c80ecf1080880a383a61c31e7013d54196fdde89116dd00"
+    },
+    "comments_evidence": {
+      "key": "quincygb-outside-comments",
+      "url": "https://dev.to/api/comments?a_id=4913651",
+      "method": "GET",
+      "read_at_utc": "2026-11-10T20:26:13.380659+00:00",
+      "status": 200,
+      "final_url": "https://dev.to/api/comments?a_id=4913651",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 2176,
+      "truncated": false,
+      "public_headers": {
+        "Date": "Tue, 10 Nov 2026 19:28:20 GMT",
+        "Server": "Heroku"
+      },
+      "body_file": "raw/quincygb-outside-comments.raw",
+      "sha256": "5e44ab2238f31d0671a34fe67edb0a3933dfbf4d85c7c0505c50df8006c539ad"
+    },
+    "article_classification": "known_foreign_operator_post_mentions_AIMarket_outreach_not_new_adoption",
+    "article_novelty": "Known Oct29 article capture; reconfirmed, not newly published.",
+    "reader_comments": [
+      {
+        "id": "3ip9h",
+        "author": "indie_ship_log",
+        "created_at": "2026-10-25T07:26:38Z",
+        "url": "https://dev.to/quincygb/eighteen-routes-five-conversations-one-bug-a-customer-found-for-us-6lm#comment-3ip9h",
+        "exact_ecosystem_marker_matches": [],
+        "classification": "historical_reader_comment_about_Quincys_bug_not_attributed_product_feedback_for_our_ecosystem"
+      },
+      {
+        "id": "3j0ef",
+        "author": "robertpaschal",
+        "created_at": "2026-10-25T16:20:17Z",
+        "url": "https://dev.to/quincygb/eighteen-routes-five-conversations-one-bug-a-customer-found-for-us-6lm#comment-3j0ef",
+        "exact_ecosystem_marker_matches": [],
+        "classification": "historical_reader_comment_about_Quincys_bug_not_attributed_product_feedback_for_our_ecosystem"
+      }
+    ],
+    "reader_comment_novelty": "IDs absent in checked prior baseline, but both events Oct25 and neither body names our ecosystem.",
+    "scope": "Two newly documented primary comment reads, not two new AICOM mentions/reviews/users."
+  },
+  "own_distribution": {
+    "DEV_new_articles": [
+      {
+        "id": 4993724,
+        "url": "https://dev.to/alexar76/we-added-ard-discovery-to-six-hubs-and-found-a-broken-signed-search-result-3nlp",
+        "published_at": "2026-11-10T14:00:00Z",
+        "author": "alexar76"
+      }
+    ],
+    "Telegram_new_visible_posts": [
+      {
+        "post_id": "just_for_agents/403",
+        "url": "https://t.me/just_for_agents/403",
+        "published_at": "2026-11-10T05:20:53+00:00"
+      },
+      {
+        "post_id": "just_for_agents/404",
+        "url": "https://t.me/just_for_agents/404",
+        "published_at": "2026-11-10T08:08:27+00:00"
+      },
+      {
+        "post_id": "just_for_agents/405",
+        "url": "https://t.me/just_for_agents/405",
+        "published_at": "2026-11-10T08:08:27+00:00"
+      },
+      {
+        "post_id": "just_for_agents/406",
+        "url": "https://t.me/just_for_agents/406",
+        "published_at": "2026-11-10T08:08:27+00:00"
+      },
+      {
+        "post_id": "just_for_agents/407",
+        "url": "https://t.me/just_for_agents/407",
+        "published_at": "2026-11-10T08:08:27+00:00"
+      },
+      {
+        "post_id": "just_for_agents/408",
+        "url": "https://t.me/just_for_agents/408",
+        "published_at": "2026-11-10T15:08:29+00:00"
+      },
+      {
+        "post_id": "just_for_agents/409",
+        "url": "https://t.me/just_for_agents/409",
+        "published_at": "2026-11-10T17:00:41+00:00"
+      },
+      {
+        "post_id": "just_for_agents/410",
+        "url": "https://t.me/just_for_agents/410",
+        "published_at": "2026-11-10T17:22:29+00:00"
+      }
+    ],
+    "Bluesky_added_own_post_uris": [],
+    "scope": "Own publishing and broadcast IDs, not independent responses or user acquisition."
+  },
+  "search_limit": "Seven targeted combined batches empty; control/known-contact batch returned old catalog and Quincy sources. Search success/empty is not exhaustive platform coverage.",
+  "limits": [
+    "All32 queries and26 GET are bounded public research, not the whole internet or closed groups.",
+    "Comment deltas use IDs/URIs. Metadata counters are not substituted where prior reply snapshots are absent.",
+    "Four selected Bluesky trees and six own DEV threads read; all remaining lifetime discussions not re-read.",
+    "Bluesky search/Reddit403 left unknown; no bypass, login, consent or CAPTCHA execution.",
+    "Telegram older posts leave a20post window; absence from this page is not deletion.",
+    "Two newly read Quincy comments have no exact project identity and are excluded from direct ecosystem feedback."
+  ],
+  "external_writes": false,
+  "github_writes": false,
+  "github_CORE_requests": 0,
+  "messages": false,
+  "logins": false,
+  "payments_or_tools_call": false,
+  "foreign_code_execution": false,
+  "capture_integrity": "capture-integrity.json"
+}

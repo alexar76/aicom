@@ -1,0 +1,51 @@
+{
+  "at": "2026-11-07T22:51:54.783Z",
+  "method": "Synthetic decision replay; Codex hook entry and OpenCode decision resolution, not a model attack-success or full OpenCode plugin lifecycle experiment",
+  "profiles": [
+    {
+      "adapter": "codex",
+      "mode": "all",
+      "exitCode": 0,
+      "signal": null,
+      "scenarios": 28,
+      "delivered": [],
+      "passed": true
+    },
+    {
+      "adapter": "codex",
+      "mode": "data",
+      "exitCode": 0,
+      "signal": null,
+      "scenarios": 28,
+      "delivered": [
+        "mcp-push-without-credential",
+        "unlabeled-collaborator",
+        "unlabeled-invite-email"
+      ],
+      "passed": true
+    },
+    {
+      "adapter": "opencode",
+      "mode": "all",
+      "exitCode": 0,
+      "signal": null,
+      "scenarios": 28,
+      "delivered": [],
+      "passed": true
+    },
+    {
+      "adapter": "opencode",
+      "mode": "data",
+      "exitCode": 0,
+      "signal": null,
+      "scenarios": 28,
+      "delivered": [
+        "mcp-push-without-credential",
+        "unlabeled-collaborator",
+        "unlabeled-invite-email"
+      ],
+      "passed": true
+    }
+  ],
+  "passed": true
+}

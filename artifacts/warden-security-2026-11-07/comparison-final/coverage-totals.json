@@ -1,0 +1,89 @@
+{
+  "note": "Mixed/overlapping labelled and unlabelled cohorts. These totals are coverage and signal-volume metadata, not attack accuracy or false-positive rates.",
+  "totals": {
+    "blip": {
+      "warden-published": {
+        "scheduled": 18110,
+        "ok": 18110,
+        "errors": 0,
+        "highCritical": 2461,
+        "anyDefinitionSignal": 8832,
+        "advisoryOnly": 6371
+      },
+      "mcp-audit": {
+        "scheduled": 18110,
+        "ok": 18108,
+        "errors": 2,
+        "highCritical": 1787,
+        "anyDefinitionSignal": 4181,
+        "advisoryOnly": 2394
+      },
+      "mcp-shield": {
+        "scheduled": 18110,
+        "ok": 18078,
+        "errors": 32,
+        "highCritical": 6003,
+        "anyDefinitionSignal": 8017,
+        "advisoryOnly": 2014
+      },
+      "truecopy": {
+        "scheduled": 18110,
+        "ok": 18110,
+        "errors": 0,
+        "highCritical": 591,
+        "anyDefinitionSignal": 973,
+        "advisoryOnly": 382
+      },
+      "mcpsentry": {
+        "scheduled": 18110,
+        "ok": 18110,
+        "errors": 0,
+        "highCritical": 2183,
+        "anyDefinitionSignal": 7483,
+        "advisoryOnly": 5300
+      }
+    },
+    "attested": {
+      "warden-published": {
+        "scheduled": 18110,
+        "ok": 18110,
+        "errors": 0,
+        "highCritical": 2461,
+        "anyDefinitionSignal": 8832,
+        "advisoryOnly": 6371
+      },
+      "mcp-audit": {
+        "scheduled": 18110,
+        "ok": 18108,
+        "errors": 2,
+        "highCritical": 1787,
+        "anyDefinitionSignal": 4181,
+        "advisoryOnly": 2394
+      },
+      "mcp-shield": {
+        "scheduled": 18110,
+        "ok": 18079,
+        "errors": 31,
+        "highCritical": 6003,
+        "anyDefinitionSignal": 8017,
+        "advisoryOnly": 2014
+      },
+      "truecopy": {
+        "scheduled": 18110,
+        "ok": 18110,
+        "errors": 0,
+        "highCritical": 591,
+        "anyDefinitionSignal": 973,
+        "advisoryOnly": 382
+      },
+      "mcpsentry": {
+        "scheduled": 18110,
+        "ok": 18110,
+        "errors": 0,
+        "highCritical": 2183,
+        "anyDefinitionSignal": 7483,
+        "advisoryOnly": 5300
+      }
+    }
+  }
+}

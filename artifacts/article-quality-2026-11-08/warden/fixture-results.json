@@ -1,0 +1,211 @@
+{
+  "mode": "offline renderer fixture, not a production measurement",
+  "comparison": "full Python dictionary equality; no diagnostic hash substitutes for a pin",
+  "tool": "weather_now",
+  "cases": [
+    {
+      "case": "Baseline",
+      "price_usd": 0.001,
+      "trial_quota": 5,
+      "trial_enabled": true,
+      "equal_to_baseline": true,
+      "definition": {
+        "name": "weather_now",
+        "description": "Current weather at a place: temperature (\u00b0C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Meteo relay within 75 km, with a signed receipt. Pass latitude and longitude, or a city. Paid per call; market_search shows the current price. The first few priced calls per caller are free.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "latitude": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90,
+              "description": "Latitude in degrees."
+            },
+            "longitude": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180,
+              "description": "Longitude in degrees."
+            },
+            "city": {
+              "type": "string",
+              "description": "A city instead of coordinates, e.g. \"Tokyo\"; many spellings work (\u0422\u043e\u043a\u0438\u043e, \u6771\u4eac)."
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "Price edit",
+      "price_usd": 0.05,
+      "trial_quota": 5,
+      "trial_enabled": true,
+      "equal_to_baseline": true,
+      "definition": {
+        "name": "weather_now",
+        "description": "Current weather at a place: temperature (\u00b0C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Meteo relay within 75 km, with a signed receipt. Pass latitude and longitude, or a city. Paid per call; market_search shows the current price. The first few priced calls per caller are free.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "latitude": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90,
+              "description": "Latitude in degrees."
+            },
+            "longitude": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180,
+              "description": "Longitude in degrees."
+            },
+            "city": {
+              "type": "string",
+              "description": "A city instead of coordinates, e.g. \"Tokyo\"; many spellings work (\u0422\u043e\u043a\u0438\u043e, \u6771\u4eac)."
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "Allowance edit",
+      "price_usd": 0.001,
+      "trial_quota": 9,
+      "trial_enabled": true,
+      "equal_to_baseline": true,
+      "definition": {
+        "name": "weather_now",
+        "description": "Current weather at a place: temperature (\u00b0C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Meteo relay within 75 km, with a signed receipt. Pass latitude and longitude, or a city. Paid per call; market_search shows the current price. The first few priced calls per caller are free.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "latitude": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90,
+              "description": "Latitude in degrees."
+            },
+            "longitude": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180,
+              "description": "Longitude in degrees."
+            },
+            "city": {
+              "type": "string",
+              "description": "A city instead of coordinates, e.g. \"Tokyo\"; many spellings work (\u0422\u043e\u043a\u0438\u043e, \u6771\u4eac)."
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "Paid to free",
+      "price_usd": 0.0,
+      "trial_quota": 5,
+      "trial_enabled": true,
+      "equal_to_baseline": false,
+      "definition": {
+        "name": "weather_now",
+        "description": "Current weather at a place: temperature (\u00b0C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Meteo relay within 75 km, with a signed receipt. Pass latitude and longitude, or a city. Free.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "latitude": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90,
+              "description": "Latitude in degrees."
+            },
+            "longitude": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180,
+              "description": "Longitude in degrees."
+            },
+            "city": {
+              "type": "string",
+              "description": "A city instead of coordinates, e.g. \"Tokyo\"; many spellings work (\u0422\u043e\u043a\u0438\u043e, \u6771\u4eac)."
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "Trial switched off",
+      "price_usd": 0.001,
+      "trial_quota": 5,
+      "trial_enabled": false,
+      "equal_to_baseline": false,
+      "definition": {
+        "name": "weather_now",
+        "description": "Current weather at a place: temperature (\u00b0C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Meteo relay within 75 km, with a signed receipt. Pass latitude and longitude, or a city. Paid per call; market_search shows the current price.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "latitude": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90,
+              "description": "Latitude in degrees."
+            },
+            "longitude": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180,
+              "description": "Longitude in degrees."
+            },
+            "city": {
+              "type": "string",
+              "description": "A city instead of coordinates, e.g. \"Tokyo\"; many spellings work (\u0422\u043e\u043a\u0438\u043e, \u6771\u4eac)."
+            }
+          }
+        }
+      }
+    }
+  ],
+  "all_direct_tools": [
+    {
+      "tool": "weather_now",
+      "positive_price_and_quota_invariant": true
+    },
+    {
+      "tool": "air_quality_now",
+      "positive_price_and_quota_invariant": true
+    },
+    {
+      "tool": "nearby_sensors",
+      "positive_price_and_quota_invariant": true
+    },
+    {
+      "tool": "fair_random",
+      "positive_price_and_quota_invariant": true
+    },
+    {
+      "tool": "x402_check",
+      "positive_price_and_quota_invariant": true
+    }
+  ],
+  "sources": [
+    {
+      "path": "aimarket-hub/aimarket_hub/mcp_gateway.py",
+      "sha256": "bcb3d88c3f762dbe359473145e14aa0caf5cc7ca2bc42ce336f86ce9ceacfc82"
+    },
+    {
+      "path": "aimarket-hub/tests/test_mcp_stranger_path.py",
+      "sha256": "9051521e69a6fc643147c6a05a73e2618f3ef4b3bc6593450f4c08c05027b926"
+    },
+    {
+      "path": "argus/src/mcp/host.ts",
+      "sha256": "f47898ee18744300fdb80864b879e6534184288ad1a7603d5f988a7621348923"
+    },
+    {
+      "path": "argus/src/channels/http.ts",
+      "sha256": "8bb2c05d0fcbfb62f4986415eae4246d51bc76c7942dc26e8018c6d82d010c28"
+    },
+    {
+      "path": "argus/src/cli/commands/warden.ts",
+      "sha256": "06137e084beb5285e4ccf3737c36a945a709f9ecec99ffbd5d78412d75371863"
+    }
+  ]
+}

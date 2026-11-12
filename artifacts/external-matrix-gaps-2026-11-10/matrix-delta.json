@@ -1,0 +1,172 @@
+{
+  "generated_at_utc": "2026-11-10T20:14:52.527329+00:00",
+  "baseline_matrix": "../external-components-2026-11-10/component-matrix.json",
+  "component_updates": [
+    {
+      "component_id": "acex",
+      "status": "previous_native_readme_gap_resolved_no_candidates",
+      "observed_at_utc": "2026-11-10T20:05:32.838845+00:00",
+      "source_captures": [
+        {
+          "key": "readme-acex",
+          "url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%2Facex%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "body": "root/readme-acex.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "key": "imports-acex",
+          "url": "https://api.github.com/search/repositories?q=%22acex.integrations%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "body": "root/imports-acex.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "key": "contract-audit-pool",
+          "url": "https://api.github.com/search/commits?q=%22AgentAuditPool%22%20-user%3Aalexar76&per_page=100",
+          "body": "root/contract-audit-pool.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "key": "contract-listing",
+          "url": "https://api.github.com/search/commits?q=%22AgentListingRegistry%22%20-user%3Aalexar76&per_page=100",
+          "body": "root/contract-listing.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "key": "config-jupiter",
+          "url": "https://api.github.com/search/repositories?q=%22ACEX_JUPITER_QUOTE_URL%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "body": "root/config-jupiter.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        }
+      ],
+      "new_confirmed_foreign_import_api_call_or_config": false,
+      "remaining_scope_limit": "README/commit messages only; full code search and private or unindexed clients remain unknown."
+    },
+    {
+      "component_id": "pulse-terminal",
+      "status": "previous_native_readme_gap_resolved_no_candidates",
+      "observed_at_utc": "2026-11-10T20:05:34.043229+00:00",
+      "source_captures": [
+        {
+          "key": "readme-pulse",
+          "url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%2Fpulse-terminal%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "body": "root/readme-pulse.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "key": "url-pulse",
+          "url": "https://api.github.com/search/commits?q=%22magic-ai-factory.com%2Fpulse%22%20-user%3Aalexar76&per_page=100",
+          "body": "root/url-pulse.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        }
+      ],
+      "new_confirmed_foreign_import_api_call_or_config": false,
+      "remaining_scope_limit": "README/commit messages only; full code search and private or unindexed clients remain unknown."
+    },
+    {
+      "component_id": "escrow-signer",
+      "status": "previous_native_readme_gap_resolved_no_candidates",
+      "observed_at_utc": "2026-11-10T20:05:33.386501+00:00",
+      "source_captures": [
+        {
+          "key": "readme-escrow",
+          "url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%2Fescrow-signer%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "body": "root/readme-escrow.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "key": "config-escrow",
+          "url": "https://api.github.com/search/commits?q=%22AIMARKET_ESCROW_SIGNER_URL%22%20-user%3Aalexar76%20-author%3Aalexar76&per_page=100",
+          "body": "root/config-escrow.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        }
+      ],
+      "new_confirmed_foreign_import_api_call_or_config": false,
+      "remaining_scope_limit": "README/commit messages only; full code search and private or unindexed clients remain unknown."
+    },
+    {
+      "component_id": "treasury",
+      "status": "previous_native_readme_gap_resolved_no_candidates",
+      "observed_at_utc": "2026-11-10T20:04:20.157551+00:00",
+      "source_captures": [
+        {
+          "key": "readme-treasury",
+          "url": "https://api.github.com/search/repositories?q=%22aimarket-treasury%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "body": "root/readme-treasury.raw",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        }
+      ],
+      "new_confirmed_foreign_import_api_call_or_config": false,
+      "remaining_scope_limit": "README/commit messages only; full code search and private or unindexed clients remain unknown."
+    },
+    {
+      "component_id": "aimarket-courses",
+      "status": "primary_publisher_content_recovered",
+      "notes": "Official GitHub web PR13394 and pinned commit read; historical portal-link curation, not a new runtime use or new listing.",
+      "evidence_file": "recovery/findings.json",
+      "new_confirmed_foreign_import_api_call_or_config": false
+    },
+    {
+      "component_id": "attested-memory",
+      "status": "primary_publisher_content_recovered_and_candidate_examined",
+      "notes": "APIs.io literal published YAML read at artifacts.apis.io; generated registry harvest. Obsidian README plus linked raw/compiled example have no unique ecosystem markers.",
+      "evidence_file": "recovery/findings.json",
+      "new_confirmed_foreign_import_api_call_or_config": false
+    },
+    {
+      "component_id": "attested",
+      "status": "family_recovery_reference",
+      "notes": "See attested-memory family recovery; wrapper not a separate integration.",
+      "evidence_file": "recovery/findings.json",
+      "new_confirmed_foreign_import_api_call_or_config": false
+    },
+    {
+      "component_id": "esim-kit",
+      "status": "public_source_still_challenge_blocked",
+      "notes": "Socket ordinary one-shot GET still403 managed challenge; source remains unread.",
+      "evidence_file": "recovery/findings.json",
+      "new_confirmed_foreign_import_api_call_or_config": false
+    },
+    {
+      "component_id": "aicom",
+      "status": "public_source_still_challenge_blocked",
+      "notes": "UNDERCODE ordinary one-shot GET still403 managed challenge; no fresh reading or new review.",
+      "evidence_file": "recovery/findings.json",
+      "new_confirmed_foreign_import_api_call_or_config": false
+    }
+  ],
+  "search_gaps_resolved": 4,
+  "search_requests_completed": 10,
+  "new_confirmed_foreign_import_api_call_or_config": 0,
+  "github_core_api_restored": false,
+  "remaining_access_gaps": [
+    "GitHub CORE REST quota: one repeat403; same-source public pages were read separately.",
+    "UNDERCODE and Socket managed challenges remain403.",
+    "grep.app normal one-shot retry429; no complete code-index negative evidence."
+  ],
+  "evidence_files": [
+    "root/findings.json",
+    "acex/coverage.json",
+    "pulse-escrow/coverage.json",
+    "recovery/findings.json"
+  ]
+}

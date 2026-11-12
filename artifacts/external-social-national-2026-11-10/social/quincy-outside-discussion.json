@@ -1,0 +1,61 @@
+{
+  "article_url": "https://dev.to/quincygb/eighteen-routes-five-conversations-one-bug-a-customer-found-for-us-6lm",
+  "author": "quincygb",
+  "published_at": "2026-10-25T05:50:27Z",
+  "article_evidence": {
+    "key": "quincygb-outside-article",
+    "url": "https://dev.to/api/articles/4913651",
+    "method": "GET",
+    "read_at_utc": "2026-11-10T20:26:12.991854+00:00",
+    "status": 200,
+    "final_url": "https://dev.to/api/articles/4913651",
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 10069,
+    "truncated": false,
+    "public_headers": {
+      "Date": "Tue, 10 Nov 2026 19:28:20 GMT",
+      "Server": "Heroku"
+    },
+    "body_file": "raw/quincygb-outside-article.raw",
+    "sha256": "cec0d47936e171bf5c80ecf1080880a383a61c31e7013d54196fdde89116dd00"
+  },
+  "comments_evidence": {
+    "key": "quincygb-outside-comments",
+    "url": "https://dev.to/api/comments?a_id=4913651",
+    "method": "GET",
+    "read_at_utc": "2026-11-10T20:26:13.380659+00:00",
+    "status": 200,
+    "final_url": "https://dev.to/api/comments?a_id=4913651",
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 2176,
+    "truncated": false,
+    "public_headers": {
+      "Date": "Tue, 10 Nov 2026 19:28:20 GMT",
+      "Server": "Heroku"
+    },
+    "body_file": "raw/quincygb-outside-comments.raw",
+    "sha256": "5e44ab2238f31d0671a34fe67edb0a3933dfbf4d85c7c0505c50df8006c539ad"
+  },
+  "article_classification": "known_foreign_operator_post_mentions_AIMarket_outreach_not_new_adoption",
+  "article_novelty": "Known Oct29 article capture; reconfirmed, not newly published.",
+  "reader_comments": [
+    {
+      "id": "3ip9h",
+      "author": "indie_ship_log",
+      "created_at": "2026-10-25T07:26:38Z",
+      "url": "https://dev.to/quincygb/eighteen-routes-five-conversations-one-bug-a-customer-found-for-us-6lm#comment-3ip9h",
+      "exact_ecosystem_marker_matches": [],
+      "classification": "historical_reader_comment_about_Quincys_bug_not_attributed_product_feedback_for_our_ecosystem"
+    },
+    {
+      "id": "3j0ef",
+      "author": "robertpaschal",
+      "created_at": "2026-10-25T16:20:17Z",
+      "url": "https://dev.to/quincygb/eighteen-routes-five-conversations-one-bug-a-customer-found-for-us-6lm#comment-3j0ef",
+      "exact_ecosystem_marker_matches": [],
+      "classification": "historical_reader_comment_about_Quincys_bug_not_attributed_product_feedback_for_our_ecosystem"
+    }
+  ],
+  "reader_comment_novelty": "IDs absent in checked prior baseline, but both events Oct25 and neither body names our ecosystem.",
+  "scope": "Two newly documented primary comment reads, not two new AICOM mentions/reviews/users."
+}

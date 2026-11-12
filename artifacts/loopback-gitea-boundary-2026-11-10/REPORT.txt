@@ -1,0 +1,38 @@
+Loopback / gateway boundary before Gitea publication — 2026-11-10
+
+The user requested staging, committing and pushing all current changes to Gitea.
+Automatic approval review rejected publication of the first loopback change:
+invoke=True enabled the configured private host-gateway rewrite for a legacy
+loopback listing without a private-invocation grant. The new comment incorrectly
+claimed the rewrite remained gated. No rejected push was retried unchanged.
+
+Safer implementation:
+- local_delivery passes invoke=private_invoke_authorized(cap), preserving the
+  existing exact-URL grant requirement for private hosts and gateway rewrites.
+- A separate allow_loopback path requires the explicit local-publish opt-in and
+  accepts only exact 127.0.0.1, localhost and ::1 HTTP(S) targets.
+- localhost is pinned directly to 127.0.0.1 without DNS; its Host/TLS SNI survive.
+  No environment proxies or redirects are used on this path.
+- Internal-token and buyer-reference headers retain their private grant checks.
+- Operator-authorized loopback URLs still support the configured gateway path.
+
+Endpoint regressions exercise actual invoke handling with an in-process
+MockTransport, hostile localhost DNS and a configured operator gateway.
+Against isolated source from rejected snapshot f333e3892, four assertions fail
+and four positive/negative controls pass: rejected-commit-regressions.log.
+The copied module path and absence of the new helper were checked before that
+run, preventing an editable installation from importing the fixed workspace.
+
+All eight endpoint cases pass on corrected code. The broader validation passes
+222 tests, with five existing optional-fixture skips: after.log. It includes
+publish boundaries, internal tokens, gateway routing, outbound pinning,
+federated invoke, subcontracting and cross-company examples. Two old test
+transport mocks now accept the new optional keyword; assertions are unchanged.
+An earlier broad run with these outdated mocks is retained separately.
+
+Validation command (existing Python 3.12 environment, no dependency installation):
+PYTHONPATH=aimarket-hub:aimarket-agent:awr/reference/python .venv-quality/bin/python -m pytest -c aimarket-hub/pyproject.toml -o addopts= aimarket-hub/tests/test_publish_network_boundary.py aimarket-hub/tests/test_capability_internal_token.py aimarket-hub/tests/test_invoke_host_gateway.py aimarket-hub/tests/test_outbound_pinning.py aimarket-hub/tests/test_federated_invoke.py aimarket-hub/tests/test_subcontract_example.py aimarket-hub/tests/test_cross_company_direct.py aimarket-hub/tests/test_cross_company_example.py -q --tb=short
+
+Source diff whitespace and Ruff E9/F63/F7/F82 checks passed. No production,
+authentication, remote configuration, DNS or GitHub state was changed. These
+local source corrections are the safer alternative prepared for Gitea review.

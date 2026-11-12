@@ -1,0 +1,82 @@
+[Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery
+Mail Archive
+Search www.ietf.org
+Search Datatracker
+Help
+Search Syntax
+API Reference
+Settings
+Turn Static Mode On
+Sign in
+Date
+Thread
+[Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery
+Александр Артамохов <alexar76@rambler.ru>
+Wed, 04 November  2026 10:13 UTC
+Received: from mxout2.rambler.ru (mxout2.rambler.ru [81.19.78.101])	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))	(No client certificate requested)	by mx.ietf.org (Postfix) with ESMTPS id 4C40347	for <dawn@ietf.org>; Wed, 04 Nov 2026 10:13:24 +0000 (UTC)
+Authentication-Results: mx.ietf.org;	dkim=pass header.d=rambler.ru header.s=mail header.b=e3sr1Wki;	spf=pass (mx.ietf.org: domain of alexar76@rambler.ru designates 81.19.78.101 as permitted sender) smtp.mailfrom=alexar76@rambler.ru;	dmarc=pass (policy=quarantine) header.from=rambler.ru
+Received: from localhost (0vm0069.prod.mail.rambler.tech [10.132.224.39])	by mxout2.rambler.ru (Postfix) with ESMTP id 0E820912A66;	Wed,  4 Nov 2026 13:13:17 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rambler.ru; s=mail;	t=1793787197; bh=dpy/DHjjZaSTTPUBJ3gec+fZnWsU5Vb1g4GffaeAXPs=;	h=Date:In-Reply-To:References:Reply-To:From:To:Subject;	b=e3sr1WkiokVCoptIyJVFG3i5N6SZwQuCKZipqLdNpLY5cyFADbXu3yj3Xb+7991YP	 iFcpX9tP2R6/qecAdKxll0DfRmaGLMVO7Hg+A/jEetSCdLpxaykmeFA6V57GOrXgTw	 7MCYMZjBibuewb6szK0nlceloMTK6ftrBWQMhAg8=
+Date: Wed, 04 Nov 2026 10:13:16 +0000
+Mime-Version: 1.0
+Message-Id: <b5415d9bc947bbf521ff203ca2ffe755@mail.rambler.ru>
+In-Reply-To: <CAHu+Kg5k6JD-MUYF1F7w+mpi4uzU6W4yq83subD_RGEDQDDFmg@mail.gmail.com>
+References: <CAHu+Kg5k6JD-MUYF1F7w+mpi4uzU6W4yq83subD_RGEDQDDFmg@mail.gmail.com>
+From: Александр Артамохов <alexar76@rambler.ru>
+To: dawn@ietf.org, jbu@google.com
+Content-Transfer-Encoding: 7bit
+X-Mailer: Rambler Compose (2.9.2), https://mail.rambler.ru
+Content-Type: multipart/alternative; boundary="==bound.0.63681858149253d779a75e6bf123f25c.mail.rambler.ru=="
+X-Spamd-Bar: ----------------------
+Message-ID-Hash: 3WKVSBI5VF6B4IG7MGCLCDPASS5UZW7G
+X-Message-ID-Hash: 3WKVSBI5VF6B4IG7MGCLCDPASS5UZW7G
+X-MailFrom: alexar76@rambler.ru
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; loop; banned-address; emergency; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; digests; suspicious-header
+X-Mailman-Version: 3.3.10
+Precedence: list
+Reply-To: Александр Артамохов <alexar76@rambler.ru>
+Subject: [Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery
+List-Id: "The list is for discussion of the scope, use cases, requirements, and solutions for discovery of entities (e.g., tasks, AI agents, or endpoints) using IETF technologies." <dawn.ietf.org>
+Archived-At: <https://mailarchive.ietf.org/arch/msg/dawn/2zTrEQqFmZ2bbki3rs33CT8shVU>
+List-Archive: <https://mailarchive.ietf.org/arch/browse/dawn>
+List-Help: <mailto:dawn-request@ietf.org?subject=help>
+List-Owner: <mailto:dawn-owner@ietf.org>
+List-Post: <mailto:dawn@ietf.org>
+List-Subscribe: <mailto:dawn-join@ietf.org>
+List-Unsubscribe: <mailto:dawn-leave@ietf.org>
+Junjie, all, We implemented the manifest and lookup parts on the AIMarket hubs we run, as another way into catalogues that otherwise speak our own protocol: /.well-known/ard.json, the "ard" link relation, POST /search, POST /explore and GET /agents, with publisher trustManifests under did:web. For example:
+https://modelmarket.dev/.well-known/ard.json
+.
+https://modelmarket.dev/.well-known/ard.json
+. How our catalogue maps onto ARD entries:
+https://github.com/alexar76/aimarket-hub/blob/main/docs/ard.md
+.
+https://github.com/alexar76/aimarket-hub/blob/main/docs/ard.md
+. Some notes from doing that: 1. The CDDL in section 5 of draft-bu-dawn-ard-discovery-00 does not compile with the cddl tool: it redefines "any" and "null", which the RFC 8610 prelude already defines. With those lines removed, and the url/data group choice written as two map alternatives (the tool stops on it inside the entry map), our manifest, a list page, a search request and a search response validate. Because of the open "* tstr => any" member, the CDDL cannot express that an entry carries exactly one of url and data. 2. Prose and CDDL differ on what is required: the trustManifest "subject" and "signature" are MUST in section 3.5 and optional in the CDDL, and "query.text" is MUST for /search (4.2.2.1) but optional in "query-model". 3. The DNS owner names differ between the documents: initial-contact 4.2.1 uses
+_index._agents.example.com
+, while discovery 4.1 refers to _entries._agents and _search._agents. 4. "Detached JWS" could say whether the payload enters the signing input base64url-encoded (RFC 7515, Appendix F) or unencoded (RFC 7797, b64=false). A test vector would settle it. We used Appendix F. 5. ES256 is mandatory to implement. A publisher whose key is Ed25519 signs with EdDSA, and an ES256-only verifier will reject it. Making EdDSA (RFC 8037) mandatory to implement as well would spare such publishers a second key. 6. (identifier, version) is the deduplication key, but "version" is optional and rarely moves in practice: in our records of public MCP servers, 81.3% of tool-definition changes kept the same serverInfo.version
+https://histor.modelmarket.dev/datasets/mcp-protocol-eras-2026-11-01/
+)
+https://histor.modelmarket.dev/datasets/mcp-protocol-eras-2026-11-01/
+) The digest is the reliable change signal and might deserve a SHOULD. 7. GET /agents: the response body and the filter syntax in the query string are not specified. We return {"entries": [...], "nextPageToken": ...} and read a repeated parameter as OR. 8. search-result-item has no version member, while a signed result's trustManifest subject includes version and section 3.5.1 has verifiers match the subject against the entry. A registry that returns only the listed members leaves its signed results unverifiable; we ran into this in our first deployment. Adding "? version" to search-result-item would close it. Aleksandr Artamokhov
+03.11.2026, 22:23, Junjie Bu < mailto:jbu=40google.com@dmarc.ietf.org
+jbu=40google.com@dmarc.ietf.org
+>
+Hi, We have submitted a set of drafts documenting an open framework, Agentic Resource Discovery (ARD), for publishing and discovering agent capabilities (such as MCP servers, additional agents, skills, plugins, and APIs) across diverse networks:
+[Dawn] New drafts: Agentic Resource Discovery (AR…
+Junjie Bu
+[Dawn] Re: New drafts: Agentic Resource Discovery…
+Aijun Wang
+[Dawn] Re: New drafts: Agentic Resource Discovery…
+Александр Артамохов
+Hide Navigation Bar
+Date
+Thread
+Date
+Thread
+v2.46.0 |
+Report a Bug
+|
+By Email
+|
+System Status

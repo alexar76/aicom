@@ -242,8 +242,18 @@ fn sol_funding_and_payouts_preserve_amount_destinations_signers_and_replay_guard
     let r = round(RoundStatus::Open, *winner.key);
     let v = vault();
     let sys = system();
-    let fund_accounts = vec![
+    // contracts-7: an outside sponsor cannot fund — a cancel would hand its lamports to the
+    // treasury. The authority (the operator's tithe) can.
+    let stranger_fund = vec![
         benefactor.clone(),
+        cfg.clone(),
+        r.clone(),
+        v.clone(),
+        sys.clone(),
+    ];
+    assert!(run(stranger_fund, instruction::Fund { amount: 2500 }.data()).is_err());
+    let fund_accounts = vec![
+        authority.clone(),
         cfg.clone(),
         r.clone(),
         v.clone(),
@@ -254,7 +264,7 @@ fn sol_funding_and_payouts_preserve_amount_destinations_signers_and_replay_guard
         instruction::Fund { amount: 2500 }.data(),
     )
     .unwrap();
-    assert_eq!(benefactor.lamports(), 997_500);
+    assert_eq!(authority.lamports(), 997_500);
     assert_eq!(v.lamports(), 908_380);
     assert_eq!(read::<Round>(&r).funding, 7500);
     assert_eq!(read::<LotteryConfig>(&cfg).total_funding, 2500);
@@ -307,7 +317,7 @@ fn sol_funding_and_payouts_preserve_amount_destinations_signers_and_replay_guard
         transfers.lock().unwrap().as_slice(),
         [
             Transfer {
-                from: *benefactor.key,
+                from: *authority.key,
                 to: *v.key,
                 amount: 2500,
                 pda_signed: false

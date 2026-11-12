@@ -1,0 +1,304 @@
+{
+  "written_at_utc": "2026-11-10T19:25:49.582270+00:00",
+  "scope": "Third-party public code, data reuse, research citations and design discussions for HISTOR/WARDEN",
+  "baseline": "10 November evening review.ru.md plus 9 November and October exact evidence",
+  "read_only": true,
+  "web_queries_attempted": 20,
+  "primary_gets": 35,
+  "status_counts": {
+    "200": 32,
+    "404": 1,
+    "429": 2
+  },
+  "pinned_commits": {
+    "rugsnare": "2efbfbae28e3b506c40aa33719804ab5c2f4f8c9",
+    "crawlcheck": "6103cac17a0821d99fdd1acabca7ee56092e2a26",
+    "traits": "d28c0c79dfc7aecb94c40acbbc8109ecee26d2ab"
+  },
+  "findings": [
+    {
+      "id": "S01",
+      "classification": "third_party_technical_discussion_using_reported_data",
+      "component": "HISTOR",
+      "source": {
+        "url": "https://api.github.com/repos/omnigent-ai/omnigent/issues/comments/6476897924",
+        "status": 200,
+        "captured_at_utc": "2026-11-10T19:20:32.486909+00:00",
+        "body_file": "omnigent-comment.raw",
+        "sha256": "d891c7da5dda32861794923a873f309d5a30a5730dc857ba74ae37dca4087f19"
+      },
+      "public_url": "https://github.com/omnigent-ai/omnigent/issues/12030#issuecomment-6476897924",
+      "author": "Paraphern",
+      "date": "2026-10-28T18:11:53Z",
+      "ownership": "same third-party RugSnare account already known; no human/beneficial-owner verification",
+      "confidence": "high for presence/content; no implementation claim",
+      "novelty": "New exact comment ID in inspected local evidence; historical event, not new operator or November event. Root exact-ID audit found only the current branch.",
+      "finding_ru": "Paraphern использует HISTOR ~45% как аргумент за fingerprint в per-harness allowlist и verify-at-spawn. Это самостоятельное использование наших опубликованных данных в design discussion, одновременно продвижение собственного RugSnare. В комментарии нет прямого href на HISTOR и нет свидетельства принятия рекомендации Omnigent.",
+      "targets": [
+        {
+          "kind": "plain_mention",
+          "value": "HISTOR public count ~45%",
+          "backlink": false
+        }
+      ],
+      "runtime_or_dependency": false
+    },
+    {
+      "id": "S02",
+      "classification": "third_party_profile_analysis_and_correction",
+      "component": "HISTOR MTL/1",
+      "source": {
+        "url": "https://raw.githubusercontent.com/Paraphern/rugsnare/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/audits/drift-watch/comparison-dominion-captures.md",
+        "status": 200,
+        "captured_at_utc": "2026-11-10T19:20:32.487932+00:00",
+        "body_file": "rugsnare-comparison.raw",
+        "sha256": "b30a50dbaf01097b89d8e1da07d29c0a4c1b6d6de5e3c83c1075fce024d28569"
+      },
+      "public_url": "https://github.com/Paraphern/rugsnare/blob/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/audits/drift-watch/comparison-dominion-captures.md",
+      "pinned_commit": "2efbfbae28e3b506c40aa33719804ab5c2f4f8c9",
+      "date": "document addendum 2026-10-25; correction 2026-10-26",
+      "ownership": "same known third-party RugSnare project",
+      "confidence": "high for captured document; historical profile statements",
+      "novelty": "Known URL already in October/November raw discussion evidence; deeper direct reading of the document, not a new discovered backlink.",
+      "finding_ru": "Публичный comparison-doc сопоставляет PIN-SPEC, Dominion и MTL/1 по field set, sort unit, floats и extras; прямая ссылка на наш PROFILE. Поправка 26 октября признаёт расширенный scope toolExtrasDigest. Таблица всё ещё отражает старый отказ MTL/1 от дробей и не описывает MTL/1 1.1; её нельзя цитировать как текущую спецификацию.",
+      "targets": [
+        {
+          "kind": "markdown_link",
+          "value": "https://github.com/alexar76/aicom/blob/main/awr/adoption/mcp-trust-label/PROFILE.md",
+          "backlink": true
+        }
+      ],
+      "runtime_or_dependency": false
+    },
+    {
+      "id": "S03",
+      "classification": "public_third_party_draft_not_counted_as_posted_reply",
+      "component": "HISTOR data cross-check",
+      "source": {
+        "url": "https://raw.githubusercontent.com/Paraphern/rugsnare/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/tools/reply-3431-crosscheck-2026-10-26.md",
+        "status": 200,
+        "captured_at_utc": "2026-11-10T19:19:23.275227+00:00",
+        "body_file": "rugsnare-reply3431.raw",
+        "sha256": "cce65a58d5fef007707e3e8aec1f255d26a29fbf5e8fac4470073ff52957da20"
+      },
+      "public_url": "https://github.com/Paraphern/rugsnare/blob/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/tools/reply-3431-crosscheck-2026-10-26.md",
+      "pinned_commit": "2efbfbae28e3b506c40aa33719804ab5c2f4f8c9",
+      "date": "2026-10-26 draft",
+      "ownership": "same known third-party RugSnare project",
+      "confidence": "high for text; publication not established by draft",
+      "novelty": "New direct file examination of an already known cross-check relationship",
+      "finding_ru": "Draft признаёт воспроизведение замечаний alexar76 по шести загрязнённым pins и описывает re-pin с чистых stands; благодарит за package_observations и предлагает фиксировать launch args/network. Это подтверждение наличия инженерного материала у внешнего проекта, но черновик не посчитан отдельным опубликованным ответом, запуском reader или новой интеграцией.",
+      "runtime_or_dependency": false
+    },
+    {
+      "id": "S04",
+      "classification": "external_package_scanning_and_labeling",
+      "component": "WARDEN",
+      "source": {
+        "url": "https://api.github.com/repos/isotope13-dev/traits-dev/commits/d28c0c79dfc7aecb94c40acbbc8109ecee26d2ab",
+        "status": 200,
+        "captured_at_utc": "2026-11-10T19:19:22.839888+00:00",
+        "body_file": "traits-warden-commit.raw",
+        "sha256": "0682d9c14bd9ab9d5541a074178b7964a1a6784512563bba4aab58eb36eaf506"
+      },
+      "public_url": "https://github.com/isotope13-dev/traits-dev/commit/d28c0c79dfc7aecb94c40acbbc8109ecee26d2ab",
+      "pinned_commit": "d28c0c79dfc7aecb94c40acbbc8109ecee26d2ab",
+      "date": "2026-10-21T20:15:23Z",
+      "ownership": "known third-party isotope13-dev / cyclotron account; model attribution disclosed in commit",
+      "confidence": "high for commit evidence; scan not rerun",
+      "novelty": "Same known d28c0c79 commit from 9 November baseline; not new",
+      "finding_ru": "Commit классифицирует tarball WARDEN0.18.0 и указывает SHA256 и verify-side public-key context. Это внешний анализ пакета, не runtime import или dependency; модель в commit указана самим автором. Нового commit по точному запросу WARDEN не найдено.",
+      "runtime_or_dependency": false
+    },
+    {
+      "id": "S05",
+      "classification": "bounded_negative_dependency_and_reader_inspection",
+      "component": "WARDEN/HISTOR in RugSnare CI",
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/Paraphern/rugsnare/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/product/package.json",
+          "status": 200,
+          "captured_at_utc": "2026-11-10T19:19:23.746071+00:00",
+          "body_file": "rugsnare-product-package.raw",
+          "sha256": "b4e9b9bcfedc09e30ee16893d150d69defc4784955605b3eb682b78ce3773b5b"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Paraphern/rugsnare/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/.github/workflows/weekly-drift-audit.yml",
+          "status": 200,
+          "captured_at_utc": "2026-11-10T19:19:23.782569+00:00",
+          "body_file": "rugsnare-weekly-workflow.raw",
+          "sha256": "b1dc1f03cabf15fbbada13cf4c649212b9517a70aa57d4535f8e628320d3f5fa"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Paraphern/rugsnare/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/audits/run-weekly-audit.mjs",
+          "status": 200,
+          "captured_at_utc": "2026-11-10T19:22:09.448567+00:00",
+          "body_file": "rugsnare-weekly-runner.raw",
+          "sha256": "93d6824f8c3e3339ca6510c4d43bf757bd74517d63caa78e38425fa9c644e307"
+        }
+      ],
+      "public_urls": [
+        "https://github.com/Paraphern/rugsnare/blob/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/product/package.json",
+        "https://github.com/Paraphern/rugsnare/blob/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/.github/workflows/weekly-drift-audit.yml",
+        "https://github.com/Paraphern/rugsnare/blob/2efbfbae28e3b506c40aa33719804ab5c2f4f8c9/audits/run-weekly-audit.mjs"
+      ],
+      "pinned_commit": "2efbfbae28e3b506c40aa33719804ab5c2f4f8c9",
+      "ownership": "known third-party RugSnare project",
+      "confidence": "high for these exact files only",
+      "novelty": "Deeper bounded source reading, no new runtime integration found",
+      "finding_ru": "product/package.json1.6.0 не объявляет dependencies/devDependencies. Weekly workflow устанавливает rugsnare; прочитанный runner берёт watch-list, ставит npm packages и запускает собственные scan/diff. В этих трёх файлах нет WARDEN/HISTOR imports, API URL или читателя датасета. Это не поиск по всем исходникам и не исключение vendoring/других HTTP путей.",
+      "runtime_or_dependency": false
+    },
+    {
+      "id": "S06",
+      "classification": "bounded_negative_research_citation_inspection",
+      "component": "HISTOR in CrawlCheck papers",
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/emmanuelorta/crawlcheck-core/6103cac17a0821d99fdd1acabca7ee56092e2a26/paper/robots-shadowing.tex",
+          "status": 200,
+          "captured_at_utc": "2026-11-10T19:19:23.877490+00:00",
+          "body_file": "crawlcheck-paper-robots.raw",
+          "sha256": "979c2d16cb14dcac1b7c113d4a8c11d97e1a6c14812bb153cff79ce20f83b3fe"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/emmanuelorta/crawlcheck-core/6103cac17a0821d99fdd1acabca7ee56092e2a26/paper/agent-safety-benchmark.tex",
+          "status": 200,
+          "captured_at_utc": "2026-11-10T19:19:24.182485+00:00",
+          "body_file": "crawlcheck-paper-safety.raw",
+          "sha256": "fbcf33d0efdf9e41810e74e62f920547290f0e2d5b82b2d3c33c14f4d36bdc32"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/emmanuelorta/crawlcheck-core/6103cac17a0821d99fdd1acabca7ee56092e2a26/sdk/test/fixtures/continuity-gen.mjs",
+          "status": 200,
+          "captured_at_utc": "2026-11-10T19:19:24.194220+00:00",
+          "body_file": "crawlcheck-continuity-gen.raw",
+          "sha256": "ddeb39fdb6410a34202f452d5732c88144566a41640ee3df025d7f54ad6a0ed9"
+        }
+      ],
+      "public_urls": [
+        "https://github.com/emmanuelorta/crawlcheck-core/blob/6103cac17a0821d99fdd1acabca7ee56092e2a26/paper/robots-shadowing.tex",
+        "https://github.com/emmanuelorta/crawlcheck-core/blob/6103cac17a0821d99fdd1acabca7ee56092e2a26/paper/agent-safety-benchmark.tex",
+        "https://github.com/emmanuelorta/crawlcheck-core/blob/6103cac17a0821d99fdd1acabca7ee56092e2a26/sdk/test/fixtures/continuity-gen.mjs"
+      ],
+      "pinned_commit": "6103cac17a0821d99fdd1acabca7ee56092e2a26",
+      "ownership": "known third-party CrawlCheck project",
+      "confidence": "high for exact-text absence in these complete files",
+      "novelty": "New bounded examination; known compatible fixture remains a previous result",
+      "finding_ru": "В двух опубликованных .tex papers и fixture generator нет точных HISTOR/alexar76/DOI/domain identifiers. Следовательно, эти материалы не добавляют независимое цитирование/reader к уже подтверждённому совместимому fixture. Hosted implementation и остальные файлы не исследованы полностью; witness связь проверяет корневая ветка.",
+      "runtime_or_dependency": false
+    },
+    {
+      "id": "S07",
+      "classification": "public_search_scope_and_exclusions",
+      "component": "WARDEN/HISTOR code/data reuse",
+      "confidence": "bounded",
+      "novelty": "No new exact runtime/dependency candidate confirmed",
+      "finding_ru": "Семь README searches: exact WARDEN/domain/package/extrasDigest дают0, dataset/DOI дают только известный RugSnare; MTL/1 MCP дал24 широких кандидата и не использовался для вывода об использовании без exact identifiers. Четыре commit searches: WARDEN даёт прежний traits-dev, domain/dataset0, числовой DOI fragment3 ложных совпадения SHA/счётчика. Forks WARDEN/HISTOR возвращают пустые списки. Это не authenticated code search и не доказательство отсутствия пользователей.",
+      "evidence_files": [
+        "repos-warden.raw",
+        "repos-histor-domain.raw",
+        "repos-histor-dataset.raw",
+        "repos-histor-doi.raw",
+        "repos-mtl-mcp.raw",
+        "repos-extrasdigest.raw",
+        "repos-histor-package.raw",
+        "commits-warden.raw",
+        "commits-histor-domain.raw",
+        "commits-histor-dataset.raw",
+        "commits-histor-doi.raw",
+        "warden-forks.raw",
+        "histor-forks.raw"
+      ],
+      "runtime_or_dependency": false
+    }
+  ],
+  "search_summary": [
+    {
+      "key": "repos-warden",
+      "url": "https://api.github.com/search/repositories?q=%22%40aimarket%2Fwarden%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "total_count": 0,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "repos-histor-domain",
+      "url": "https://api.github.com/search/repositories?q=%22histor.modelmarket.dev%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "total_count": 0,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "repos-histor-dataset",
+      "url": "https://api.github.com/search/repositories?q=%22histor-mcp-tool-definitions%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "total_count": 1,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "repos-histor-doi",
+      "url": "https://api.github.com/search/repositories?q=%2223512760%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "total_count": 1,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "commits-warden",
+      "url": "https://api.github.com/search/commits?q=%22%40aimarket%2Fwarden%22%20-author%3Aalexar76&per_page=100",
+      "total_count": 1,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "commits-histor-domain",
+      "url": "https://api.github.com/search/commits?q=%22histor.modelmarket.dev%22%20-author%3Aalexar76&per_page=100",
+      "total_count": 0,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "commits-histor-dataset",
+      "url": "https://api.github.com/search/commits?q=%22histor-mcp-tool-definitions%22%20-author%3Aalexar76&per_page=100",
+      "total_count": 0,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "repos-mtl-mcp",
+      "url": "https://api.github.com/search/repositories?q=%22MTL%2F1%22%20MCP%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "total_count": 24,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "repos-extrasdigest",
+      "url": "https://api.github.com/search/repositories?q=%22toolExtrasDigest%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "total_count": 0,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "repos-histor-package",
+      "url": "https://api.github.com/search/repositories?q=%22aimarket-histor%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "total_count": 0,
+      "incomplete_results": false,
+      "link_header": null
+    },
+    {
+      "key": "commits-histor-doi",
+      "url": "https://api.github.com/search/commits?q=%2223512760%22%20-author%3Aalexar76&per_page=100",
+      "total_count": 3,
+      "incomplete_results": false,
+      "link_header": null
+    }
+  ],
+  "limits": [
+    "No authenticated GitHub code search; README search is not code search.",
+    "grep.app both endpoints returned429; no challenge bypass or retry.",
+    "traits-dev recursive tree reached local5000001byte limit; incomplete JSON was not searched or used for absence.",
+    "Hypothesized root RugSnare package.json returned404; only the real product/package.json supports dependency observation.",
+    "One four-query web batch included non-retryable codeberg.org robots block; coverage of that batch is partial.",
+    "No external code was executed, packages installed, messages sent, GitHub writes, payments or tools/call performed.",
+    "No newly confirmed runtime integration or external dependency in this bounded pass."
+  ]
+}

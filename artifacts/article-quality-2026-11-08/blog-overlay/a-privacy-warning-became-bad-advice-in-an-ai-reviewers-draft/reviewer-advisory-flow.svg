@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="830" viewBox="0 0 1100 830" role="img">
+<title>An advisory signal lost its flag</title><desc>Before and after projection of one informational advisory match. The repaired report preserves advisory true and info severity, keeps the match in findings, and excludes it from letter_points. The model still sees the report and humans review drafts.</desc>
+<rect width="100%" height="100%" fill="#f8f6f1"/>
+<text x="44" y="69.44" font-family="Arial,Helvetica,sans-serif" font-size="41" font-weight="700" fill="#272b36">An advisory signal lost its flag</text>
+<text x="44" y="117.84" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="400" fill="#626576">One informational match, reduced to the fields at issue</text>
+<text x="44" y="174.68" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700" fill="#ad514a">BEFORE</text>
+<rect x="44" y="198" width="480" height="140" rx="14" fill="#ffffff" stroke="#d9d5ca" stroke-width="2"/>
+<rect x="44" y="390" width="480" height="140" rx="14" fill="#ffffff" stroke="#ad514a" stroke-width="2"/>
+<rect x="44" y="582" width="480" height="140" rx="14" fill="#ffffff" stroke="#d9d5ca" stroke-width="2"/>
+<text x="67" y="242.36" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="700" fill="#272b36">Scanner result</text>
+<text x="67" y="284.68" font-family="'Andale Mono',monospace" font-size="27" font-weight="400" fill="#272b36">severity: &quot;info&quot;</text>
+<text x="67" y="322.68" font-family="'Andale Mono',monospace" font-size="27" font-weight="400" fill="#272b36">advisory: true</text>
+<path d="M284 350 L284 376" stroke="#ad514a" stroke-width="3" fill="none"/>
+<path d="M284 376 L275 366" stroke="#ad514a" stroke-width="3" fill="none"/>
+<path d="M284 376 L293 366" stroke="#ad514a" stroke-width="3" fill="none"/>
+<text x="67" y="434.36" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="700" fill="#272b36">Report finding</text>
+<text x="67" y="476.68" font-family="'Andale Mono',monospace" font-size="27" font-weight="400" fill="#272b36">severity: &quot;low&quot;</text>
+<text x="67" y="514.68" font-family="'Andale Mono',monospace" font-size="27" font-weight="400" fill="#ad514a">advisory omitted</text>
+<path d="M284 542 L284 568" stroke="#ad514a" stroke-width="3" fill="none"/>
+<path d="M284 568 L275 558" stroke="#ad514a" stroke-width="3" fill="none"/>
+<path d="M284 568 L293 558" stroke="#ad514a" stroke-width="3" fill="none"/>
+<text x="67" y="626.36" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="700" fill="#272b36">Draft input</text>
+<text x="67" y="669.84" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="400" fill="#ad514a">all findings available</text>
+<text x="67" y="706.00" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="400" fill="#626576">no separate advice subset</text>
+<text x="576" y="174.68" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700" fill="#247869">AFTER</text>
+<rect x="576" y="198" width="480" height="140" rx="14" fill="#ffffff" stroke="#d9d5ca" stroke-width="2"/>
+<rect x="576" y="390" width="480" height="140" rx="14" fill="#ffffff" stroke="#247869" stroke-width="2"/>
+<rect x="576" y="582" width="480" height="140" rx="14" fill="#ffffff" stroke="#d9d5ca" stroke-width="2"/>
+<text x="599" y="242.36" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="700" fill="#272b36">Scanner result</text>
+<text x="599" y="284.68" font-family="'Andale Mono',monospace" font-size="27" font-weight="400" fill="#272b36">severity: &quot;info&quot;</text>
+<text x="599" y="322.68" font-family="'Andale Mono',monospace" font-size="27" font-weight="400" fill="#272b36">advisory: true</text>
+<path d="M816 350 L816 376" stroke="#247869" stroke-width="3" fill="none"/>
+<path d="M816 376 L807 366" stroke="#247869" stroke-width="3" fill="none"/>
+<path d="M816 376 L825 366" stroke="#247869" stroke-width="3" fill="none"/>
+<text x="599" y="434.36" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="700" fill="#272b36">Report finding</text>
+<text x="599" y="476.68" font-family="'Andale Mono',monospace" font-size="27" font-weight="400" fill="#272b36">severity: &quot;info&quot;</text>
+<text x="599" y="514.68" font-family="'Andale Mono',monospace" font-size="27" font-weight="400" fill="#247869">advisory: true</text>
+<path d="M816 542 L816 568" stroke="#247869" stroke-width="3" fill="none"/>
+<path d="M816 568 L807 558" stroke="#247869" stroke-width="3" fill="none"/>
+<path d="M816 568 L825 558" stroke="#247869" stroke-width="3" fill="none"/>
+<text x="599" y="626.36" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="700" fill="#272b36">Advice contract</text>
+<text x="599" y="669.84" font-family="'Andale Mono',monospace" font-size="26" font-weight="400" fill="#247869">letter_points: []</text>
+<text x="599" y="706.00" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="400" fill="#626576">match stays in full report</text>
+<text x="44" y="790.68" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="400" fill="#626576">The model still reads the full report; drafts need human review.</text>
+</svg>

@@ -1,0 +1,30 @@
+/Users/alex/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/alex/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/alex/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/alex/Library/Python/3.9/lib/python/site-packages/google/api_core/_python_version_support.py:242: FutureWarning: You are using a non-supported Python version (3.9.6). Google will not post any further updates to google.api_core supporting this Python version. Please upgrade to the latest Python version, or at least Python 3.11, and then update google.api_core.
+  warnings.warn(message, FutureWarning)
+UPLOADED PB76 VS1UegLPJWU
+UPLOADED PB77 4l5LKHXKH_E
+UPLOADED PB78 ZeQKt3_Sjzk
+UPLOADED PB79 FEyqTDJwfdc
+UPLOADED PB80 XUeVnfIS7xY
+UPLOADED PB81 7RClerdkL9w
+PROCESSING 6
+PROCESSING 6
+PROCESSING 5
+PROCESSING 4
+SCHEDULED PB76 2026-11-18T13:00:00Z
+SCHEDULED PB77 2026-11-18T19:00:00Z
+SCHEDULED PB78 2026-11-19T13:00:00Z
+SCHEDULED PB79 2026-11-19T19:00:00Z
+SCHEDULED PB80 2026-11-20T13:00:00Z
+SCHEDULED PB81 2026-11-20T19:00:00Z
+Traceback (most recent call last):
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/pingblip-series-2026-11-10/publish.py", line 378, in <module>
+    verify(youtube, state, partial=args.action in ['partial', 'verify-partial'])
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/pingblip-series-2026-11-10/publish.py", line 319, in verify
+    assert set(video['snippet'].get('tags', [])) == set(tags)
+AssertionError

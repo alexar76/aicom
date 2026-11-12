@@ -1,0 +1,21 @@
+test_failed_read_diagnostics_do_not_retain_params_or_response_body (__main__.RpcRegressions.test_failed_read_diagnostics_do_not_retain_params_or_response_body) ... ok
+test_read_fallback_requires_correct_chain_before_data (__main__.RpcRegressions.test_read_fallback_requires_correct_chain_before_data) ... ok
+test_send_and_estimate_never_retry_or_use_fallback (__main__.RpcRegressions.test_send_and_estimate_never_retry_or_use_fallback) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.007s
+
+OK
+{
+  "inputGitTree": "49508ba53479427b1e874da74a2020e4dbde1bcc",
+  "sourceSha256": "7512a509092ff1d2a8e7bc320c31323ce8806b7c76dcaab252f19bca85ba1c43",
+  "cases": 3,
+  "errors": 0,
+  "failures": 0,
+  "success": true,
+  "network": "none",
+  "httpTransport": "in-memory FakeClient only",
+  "realRunnerInit": false,
+  "walletOrCredentialAccess": false,
+  "repoSourceEdits": false
+}

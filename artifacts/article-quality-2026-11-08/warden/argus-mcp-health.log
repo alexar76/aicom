@@ -1,0 +1,48 @@
+
+ RUN  v4.1.12 /Users/alex/Desktop/ai_tests/aicompany/aicom/argus
+
+ ❯ test/mcp-health.test.ts (9 tests | 1 failed) 5073ms
+     × /health counts servers and keeps status "ok"; /status names them behind the token 5013ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/mcp-health.test.ts > /health and /status > /health counts servers and keeps status "ok"; /status names them behind the token
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/mcp-health.test.ts:154:3
+    152|
+    153| describe('/health and /status', () => {
+    154|   it('/health counts servers and keeps status "ok"; /status names them…
+       |   ^
+    155|     const port = await freePort();
+    156|     const states = [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+Error: listen EPERM: operation not permitted 127.0.0.1
+ ❯ Server.setupListenHandle [as _listen2] node:net:1918:21
+ ❯ listenInCluster node:net:1997:12
+ ❯ node:net:2206:7
+ ❯ process.processTicksAndRejections node:internal/process/task_queues:89:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'EPERM', errno: -1, syscall: 'listen', address: '127.0.0.1' }
+This error originated in "test/mcp-health.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "/health counts servers and keeps status "ok"; /status names them behind the token". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+     Errors  1 error
+   Start at  08:39:27
+   Duration  8.58s (transform 1.03s, setup 0ms, import 3.23s, tests 5.07s, environment 0ms)
+

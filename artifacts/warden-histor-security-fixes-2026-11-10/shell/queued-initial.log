@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/warden-histor-security-fixes-2026-11-10/shell/check_retry_helpers.py", line 186, in <module>
+    check('retry_cross.sh: reads current caps and workers after readiness wait',
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/warden-histor-security-fixes-2026-11-10/shell/check_retry_helpers.py", line 116, in check
+    assertion(Path(folder))
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/warden-histor-security-fixes-2026-11-10/shell/check_retry_helpers.py", line 187, in <lambda>
+    lambda p: normal(p, 'retry_cross.sh', queued=True))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/warden-histor-security-fixes-2026-11-10/shell/check_retry_helpers.py", line 142, in normal
+    assert '-i' in run and run[run.index('--cpus') + 1] == '1.5'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

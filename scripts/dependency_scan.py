@@ -92,22 +92,36 @@ def npm_packages(lock: Path) -> set[tuple[str, str, str]]:
         raise IncompleteScan(f"cannot parse {lock}") from exc
     if not isinstance(data, dict):
         raise IncompleteScan(f"cannot parse {lock}")
+    packages = data.get("packages")
+    dependencies = data.get("dependencies")
+    if packages is not None and not isinstance(packages, dict) \
+            or dependencies is not None and not isinstance(dependencies, dict):
+        raise IncompleteScan(f"cannot parse {lock}: dependency entries must be objects")
+    if data.get("lockfileVersion") in (2, 3) and not isinstance(packages, dict) \
+            or packages is None and dependencies is None:
+        raise IncompleteScan(f"cannot parse {lock}: missing resolved dependency graph")
     found: set[tuple[str, str, str]] = set()
     # lockfileVersion 2/3
-    for path, meta in (data.get("packages") or {}).items():
-        if not path or not isinstance(meta, dict):
-            continue  # "" is the project itself
+    for path, meta in (packages or {}).items():
+        if not isinstance(meta, dict):
+            raise IncompleteScan(f"cannot parse {lock}: unreadable package entry")
+        if not path or meta.get("link"):
+            continue  # "" is the project itself; workspace links have no registry version.
         version = meta.get("version")
         name = meta.get("name") or path.split("node_modules/")[-1]
-        if version and name and not meta.get("link"):
-            found.add(("npm", name, version))
+        if not isinstance(version, str) or not version or not isinstance(name, str) or not name:
+            raise IncompleteScan(f"cannot parse {lock}: {path} has no resolved name/version")
+        found.add(("npm", name, version))
     # lockfileVersion 1
     def walk_deps(deps):
+        if deps is not None and not isinstance(deps, dict):
+            raise IncompleteScan(f"cannot parse {lock}: dependency entries must be objects")
         for name, meta in (deps or {}).items():
-            if isinstance(meta, dict) and meta.get("version"):
-                found.add(("npm", name, meta["version"]))
-                walk_deps(meta.get("dependencies"))
-    walk_deps(data.get("dependencies"))
+            if not isinstance(meta, dict) or not isinstance(meta.get("version"), str) or not meta["version"]:
+                raise IncompleteScan(f"cannot parse {lock}: {name} has no resolved version")
+            found.add(("npm", name, meta["version"]))
+            walk_deps(meta.get("dependencies"))
+    walk_deps(dependencies)
     return found
 
 
@@ -455,6 +469,8 @@ def main() -> int:
         return 2
     print(f"{len(packages)} distinct (ecosystem, package, version) across the tree", file=sys.stderr)
     if not packages:
+        if args.json:
+            Path(args.json).write_text("[]\n")
         print("no manifests found")
         return 0
 
@@ -464,6 +480,8 @@ def main() -> int:
         print(f"INCOMPLETE: {exc}", file=sys.stderr)
         return 2
     if not hits:
+        if args.json:
+            Path(args.json).write_text("[]\n")
         print("\nOK: OSV reports no known vulnerability for any pinned dependency.")
         return 0
 

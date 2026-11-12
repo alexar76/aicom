@@ -33,7 +33,12 @@ async function buy(k) {
  const count=Buffer.alloc(4);count.writeUInt32LE(10);
  await send(ix('buy_tickets',[rw(buyer.publicKey,true),ro(config),rw(k.round),rw(k.ticket),rw(k.vault),system],count),[buyer]);
 }
-async function fund(k) { await send(ix('fund',[rw(benefactor.publicKey,true),rw(config),rw(k.round),rw(k.vault),system],u64(10_000)),[benefactor]); }
+// Only the authority or the treasury may fund (audit 2026-11-11, contracts-7): a stranger's
+// funding would go to the treasury on cancel. The stranger is refused, the treasury funds.
+// The legacy build that --expect-close-failure runs against predates that check, so the stranger is
+// refused only on the current build (review of 2026-11-11).
+const LEGACY_RUN=process.argv.includes('--expect-close-failure');
+async function fund(k) { if(!LEGACY_RUN) await reject(ix('fund',[rw(benefactor.publicKey,true),rw(config),rw(k.round),rw(k.vault),system],u64(10_000)),[benefactor]); await send(ix('fund',[rw(treasury.publicKey,true),rw(config),rw(k.round),rw(k.vault),system],u64(10_000)),[treasury]); }
 async function close(k,extraSystem) {
  await send(ix('close_vault',[rw(authority.publicKey,true),ro(config),ro(k.round),rw(k.vault),...(extraSystem?[system]:[])]));
 }

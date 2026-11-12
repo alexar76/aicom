@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HISTOR open data: MCP tool definitions and how they change</title>
+<meta name="description" content="Weekly snapshots of a public transparency log of Model Context Protocol (MCP) servers: every remote server in the official MCP registry and every npm/PyPI MCP package HISTOR observes, the exact tool definitions each one served, every recorded change field by field, WARDEN pattern scans and advisory classifier verdicts. JSON Lines (gzip) with a manifest signed by the log&#x27;s key.">
+<link rel="canonical" href="https://histor.modelmarket.dev/datasets/">
+<meta property="og:type" content="website"><meta property="og:title" content="HISTOR open data: MCP tool definitions and how they change">
+<meta property="og:description" content="Weekly snapshots of a public transparency log of Model Context Protocol (MCP) servers: every remote server in the official MCP registry and every npm/PyPI MCP package HISTOR observes, the exact tool definitions each one served, every recorded change field by field, WARDEN pattern scans and advisory classifier verdicts. JSON Lines (gzip) with a manifest signed by the log&#x27;s key."><meta property="og:url" content="https://histor.modelmarket.dev/datasets/">
+<meta property="og:image" content="https://histor.modelmarket.dev/assets/og.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://histor.modelmarket.dev/assets/og.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Dataset",
+ "name": "HISTOR: MCP tool definitions and how they change",
+ "description": "Weekly snapshots of a public transparency log of Model Context Protocol (MCP) servers: every remote server in the official MCP registry and every npm/PyPI MCP package HISTOR observes, the exact tool definitions each one served, every recorded change field by field, WARDEN pattern scans and advisory classifier verdicts. JSON Lines (gzip) with a manifest signed by the log's key.",
+ "url": "https://histor.modelmarket.dev/datasets/",
+ "sameAs": [
+  "https://doi.org/10.5281/zenodo.23512759",
+  "https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions"
+ ],
+ "identifier": "https://doi.org/10.5281/zenodo.23512759",
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "isAccessibleForFree": true,
+ "creator": {
+  "@type": "Person",
+  "name": "Aleksandr Artamokhov"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "name": "HISTOR",
+  "url": "https://histor.modelmarket.dev"
+ },
+ "keywords": [
+  "Model Context Protocol",
+  "MCP",
+  "AI agents",
+  "tool poisoning",
+  "prompt injection",
+  "AI security",
+  "transparency log",
+  "software supply chain"
+ ],
+ "temporalCoverage": "2026-09-24/2026-11-09",
+ "dateModified": "2026-11-09T09:20:04Z",
+ "version": "2026-11-09",
+ "variableMeasured": [
+  "tool definitions",
+  "tool definition changes",
+  "pattern matches"
+ ],
+ "distribution": [
+  {
+   "@type": "DataDownload",
+   "name": "servers.jsonl.gz",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/servers.jsonl.gz",
+   "encodingFormat": "application/gzip"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "toolsets.jsonl.gz",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/toolsets.jsonl.gz",
+   "encodingFormat": "application/gzip"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "changes.jsonl.gz",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/changes.jsonl.gz",
+   "encodingFormat": "application/gzip"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "scans.jsonl.gz",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/scans.jsonl.gz",
+   "encodingFormat": "application/gzip"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "classifications.jsonl.gz",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/classifications.jsonl.gz",
+   "encodingFormat": "application/gzip"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "tool_extras.jsonl.gz",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/tool_extras.jsonl.gz",
+   "encodingFormat": "application/gzip"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "extras_changes.jsonl.gz",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/extras_changes.jsonl.gz",
+   "encodingFormat": "application/gzip"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "package_observations.jsonl.gz",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/package_observations.jsonl.gz",
+   "encodingFormat": "application/gzip"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "manifest.json",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/manifest.json",
+   "encodingFormat": "application/json"
+  },
+  {
+   "@type": "DataDownload",
+   "name": "README.md",
+   "contentUrl": "https://histor.modelmarket.dev/datasets/2026-11-09/README.md",
+   "encodingFormat": "text/markdown"
+  }
+ ],
+ "isBasedOn": "https://github.com/alexar76/histor"
+}
+</script>
+<style>
+:root{--bg:#05080d;--panel:#0b111b;--ink:#efe9dc;--muted:#9aa6b8;--line:rgba(255,255,255,.09);--accent:#ffd58a;--link:#5fe3ff}
+@media (prefers-color-scheme: light){:root{--bg:#fbfaf7;--panel:#fff;--ink:#16181d;--muted:#5a6270;--line:rgba(0,0,0,.1);--accent:#8a5a00;--link:#00609a}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:40px 16px 64px}a{color:var(--link)}
+h1{font-size:clamp(26px,4vw,38px);line-height:1.15;margin:0 0 12px}h2{font-size:21px;margin:36px 0 10px}
+.lead{color:var(--muted);max-width:760px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:24px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}.stat b{display:block;font-size:24px;color:var(--accent)}
+.stat span{color:var(--muted);font-size:14px}table{width:100%;border-collapse:collapse;font-size:15px}
+.tw{overflow-x:auto}td,th{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-x:auto}
+.cite{background:var(--panel);border-left:3px solid var(--accent);padding:12px 16px;border-radius:6px}ul{padding-left:20px}
+p code,li code{overflow-wrap:anywhere}.cite a{overflow-wrap:anywhere}
+@media (max-width:640px){th:nth-child(4),td:nth-child(4){display:none}td,th{padding:8px 6px}table{font-size:14px}td code{font-size:13px;overflow-wrap:anywhere}}
+</style></head><body><main>
+<h1>MCP tool definitions and how they change</h1>
+<p class="lead">HISTOR reads the tool list of every remote MCP server in the official MCP registry once a day, and runs every
+new version of npm and PyPI MCP packages in a sandbox. Once a week the whole record is published here as files:
+what each server advertised, and every change, field by field. Free under CC BY 4.0.</p>
+<div class="stats">
+<div class="stat"><b>96,101</b><span>listed servers and packages</span></div>
+<div class="stat"><b>112,557</b><span>distinct tool lists</span></div>
+<div class="stat"><b>73,198</b><span>recorded changes</span></div>
+<div class="stat"><b>16,758</b><span>servers changed at least once</span></div>
+</div>
+<h2>Latest snapshot: 2026-11-09</h2>
+<div class="tw"><table><thead><tr><th>File</th><th>Rows</th><th>Size</th><th>What</th></tr></thead><tbody>
+<tr><td><a href="2026-11-09/servers.jsonl.gz"><code>servers.jsonl.gz</code></a></td><td class="n">103,271</td><td class="n">22.8 MB</td><td>One row per listed server: endpoint, transport, status, tool count, the digest of its current tool list.</td></tr><tr><td><a href="2026-11-09/toolsets.jsonl.gz"><code>toolsets.jsonl.gz</code></a></td><td class="n">112,557</td><td class="n">1,586.1 MB</td><td>Every tool list a server served (name, description and schemas, as served), current ones and every one a change replaced.</td></tr><tr><td><a href="2026-11-09/changes.jsonl.gz"><code>changes.jsonl.gz</code></a></td><td class="n">73,198</td><td class="n">76.4 MB</td><td>Every recorded change: tools added, removed and modified, field by field, with the signed label.</td></tr><tr><td><a href="2026-11-09/scans.jsonl.gz"><code>scans.jsonl.gz</code></a></td><td class="n">26,235</td><td class="n">1.8 MB</td><td>WARDEN pattern matches per tool list (rules in pattern-set.json). Leads to read, not verdicts.</td></tr><tr><td><a href="2026-11-09/classifications.jsonl.gz"><code>classifications.jsonl.gz</code></a></td><td class="n">4,194</td><td class="n">233 kB</td><td>Advisory LLM readings of tool lists. Not reproducible, so never in the signed log.</td></tr><tr><td><a href="2026-11-09/tool_extras.jsonl.gz"><code>tool_extras.jsonl.gz</code></a></td><td class="n">147,528</td><td class="n">61.2 MB</td><td>What each tool carried beyond those: annotations (readOnlyHint, destructiveHint…), _meta, title, icons. Since 2026-10-22.</td></tr><tr><td><a href="2026-11-09/extras_changes.jsonl.gz"><code>extras_changes.jsonl.gz</code></a></td><td class="n">180,931</td><td class="n">19.2 MB</td><td>Every change to those members, annotation by annotation, with the tools that dropped readOnlyHint.</td></tr><tr><td><a href="2026-11-09/package_observations.jsonl.gz"><code>package_observations.jsonl.gz</code></a></td><td class="n">227,788</td><td class="n">18.8 MB</td><td>Every run of an npm/PyPI package with the version it ran and the list it served. Versions since 2026-10-26.</td></tr><tr><td><a href="2026-11-09/manifest.json"><code>manifest.json</code></a></td><td class="n"></td><td class="n"></td><td>Counts and SHA-256 of every file, signed by the log&#x27;s key, with the tree head of the snapshot.</td></tr><tr><td><a href="2026-11-09/README.md"><code>README.md</code></a></td><td class="n"></td><td class="n"></td><td>The dataset card: fields, loading, citation, what the data does not say.</td></tr>
+</tbody></table></div>
+<p><b>New here?</b> Start with <code>servers.jsonl.gz</code> (one row per listed server) and <code>changes.jsonl.gz</code>
+(one row per recorded change, field by field); <code>toolsets.jsonl.gz</code> is the large one — every distinct tool list in full.
+Sizes are in the table.</p>
+<p>The same files: <a href="https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions">Hugging Face</a> (one tag per snapshot) ·
+<a href="https://doi.org/10.5281/zenodo.23512759">Zenodo</a> (a DOI per archived snapshot; the record names its date, and <a href="latest/">latest/</a> here may be newer) ·
+<a href="latest/">latest/</a> always points at the newest snapshot.</p>
+<h2>Load it</h2>
+<pre>from datasets import load_dataset   # Hugging Face, typed changes configuration
+changes = load_dataset("alexar76/histor-mcp-tool-definitions", name="changes", split="train")</pre>
+<pre>-- DuckDB: the servers whose tool lists changed most often
+SELECT s.name, count(*) AS changes
+FROM 'https://histor.modelmarket.dev/datasets/latest/changes.jsonl.gz' c
+JOIN 'https://histor.modelmarket.dev/datasets/latest/servers.jsonl.gz' s ON s.id = c.serverId
+GROUP BY s.name ORDER BY changes DESC LIMIT 20;</pre>
+<pre>import pandas as pd
+servers = pd.read_json("https://histor.modelmarket.dev/datasets/latest/servers.jsonl.gz", lines=True)</pre>
+<h2>Cite</h2>
+<p class="cite">Artamokhov, A. (2026). <i>HISTOR snapshot 2026-11-02: MCP tool definitions and how they change</i> [Data set].
+Zenodo. <a href="https://doi.org/10.5281/zenodo.23884408">https://doi.org/10.5281/zenodo.23884408</a></p>
+<p>The latest snapshot, 2026-11-09, is not on Zenodo yet; the citation above is the newest one that is. To cite 2026-11-09 itself, give its signed manifest: <a href="2026-11-09/manifest.json">https://histor.modelmarket.dev/datasets/2026-11-09/manifest.json</a>.</p>
+<p>Cite the snapshot you counted on: the same query gives other numbers on another snapshot. <a href="https://doi.org/10.5281/zenodo.23512759">doi:10.5281/zenodo.23512759</a> stands for all of them and always opens the newest.</p>
+<h2>Check it</h2>
+<p><code>manifest.json</code> lists the SHA-256 of every file and is signed (Ed25519) by the log's key
+<code>did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9</code>, with the signed tree head the snapshot was taken under. Any label in it can be
+proven against the live log: <a href="https://histor.modelmarket.dev/">https://histor.modelmarket.dev</a>. Code: <a href="https://github.com/alexar76/histor">https://github.com/alexar76/histor</a>.</p>
+<h2>All snapshots</h2>
+<ul><li><a href="2026-11-09/">2026-11-09</a> · 96,101 servers · 73,198 changes</li><li><a href="2026-11-02/">2026-11-02</a> · 90,863 servers · 53,159 changes · <a href="https://doi.org/10.5281/zenodo.23884408">doi:10.5281/zenodo.23884408</a></li><li><a href="2026-10-26/">2026-10-26</a> · 85,913 servers · 31,660 changes · <a href="https://doi.org/10.5281/zenodo.23884119">doi:10.5281/zenodo.23884119</a></li><li><a href="2026-10-25/">2026-10-25</a> · 85,437 servers · 30,151 changes · <a href="https://doi.org/10.5281/zenodo.23881379">doi:10.5281/zenodo.23881379</a></li><li><a href="2026-10-20/">2026-10-20</a> · 81,879 servers · 23,821 changes · <a href="https://doi.org/10.5281/zenodo.23512760">doi:10.5281/zenodo.23512760</a></li></ul>
+<h2>What it does not say</h2>
+<ul>
+<li>A tool list is what a server showed an anonymous client on that day; servers that need a key show less or nothing.</li>
+<li>A change is a change in the definitions, not a judgement. Most are ordinary releases.</li>
+<li>Pattern matches and classifier flags are text worth reading, not proof that a server is malicious.</li>
+<li>A server operator who wants out of future snapshots can open an issue on <a href="https://github.com/alexar76/histor">https://github.com/alexar76/histor</a>.</li>
+</ul>
+</main></body></html>

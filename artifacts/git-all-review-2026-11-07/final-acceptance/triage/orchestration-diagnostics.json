@@ -1,0 +1,28 @@
+{
+  "finalBothHostsPassed": true,
+  "format": "aicom.independent-triage.orchestration-diagnostics/v1",
+  "initialSealAssertionsCorrected": [
+    {
+      "hosts": [
+        "attested"
+      ],
+      "issue": "Archive inventory paths are not restricted to /tmp/*.tgz; verified allowed archive filename forms."
+    },
+    {
+      "hosts": [
+        "attested",
+        "blip"
+      ],
+      "issue": "Historical Warden source-file hash fields require their retained producer witness; V4 intentionally omits docs/data files. No claim that all old24 hashes were recomputed."
+    },
+    {
+      "hosts": [
+        "attested",
+        "blip"
+      ],
+      "issue": "Input manifest digest values are nested sha256/gitBlob objects; normalized sha256 field before exact1761-file comparison."
+    }
+  ],
+  "nativeScannerResultsUnaffected": true,
+  "sourceNeverMutated": true
+}

@@ -68,6 +68,14 @@ def dispatch_pages_workflow(org: str, repo: str, *, workflow_file: str = "pages.
     token = _token()
     if not token:
         return False, "missing GH_PAT or GITHUB_TOKEN"
+    # Repos with a landing but no pages.yml yet (or a PAT without workflow scope
+    # that never pushed one) answer 404 on dispatch. Treat that as skip, not fail.
+    meta_url = f"https://api.github.com/repos/{org}/{repo}/actions/workflows/{workflow_file}"
+    status, raw = _request("GET", meta_url, token)
+    if status == 404:
+        return True, f"no {workflow_file} on the remote — skip dispatch"
+    if status != 200:
+        return False, f"workflow lookup HTTP {status}: {raw[:200]}"
     url = f"https://api.github.com/repos/{org}/{repo}/actions/workflows/{workflow_file}/dispatches"
     status, raw = _request("POST", url, token, {"ref": "main"})
     if status == 204:

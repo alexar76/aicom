@@ -1,0 +1,142 @@
+{
+  "format": "aicom.dual-host-acceptance/v1",
+  "date": "2026-11-08",
+  "execution": "Attested and Blip, Docker runsc gVisor; runtime tests network none, UID/GID 1000, read-only source and dependencies",
+  "testsPerHost": {
+    "wardenFull": 1574,
+    "wardenFocusedOverlapping": 262,
+    "hubProtocolUnique": 1091,
+    "lateAttestedAndUni": 136,
+    "kovaCallbacks": 19,
+    "aegisCallbacks": 19,
+    "blogPostsBuilt": 70,
+    "sensorCatalogCli": 19,
+    "lotteryDeclaredDependencies": 30,
+    "paymentGuardSuiteLatest": 30,
+    "fakeRpcScenarios": 3,
+    "syntheticReadonlyLedger": 1,
+    "syntheticRefund": 18
+  },
+  "python": {
+    "baselineCandidateBlobs": 6596,
+    "baselineLinted": 6268,
+    "currentBlobs": 6616,
+    "currentEligible": 6288,
+    "originalExclusions": 328,
+    "additionalExclusions": 0,
+    "rules": [
+      "E9",
+      "F63",
+      "F7",
+      "F82"
+    ],
+    "findings": 0,
+    "method": "Complete baseline plus exact Git-verified changed-file deltas, not a repeated full run",
+    "subsequentCommandsLinted": [
+      14,
+      4,
+      2,
+      12,
+      2,
+      4
+    ],
+    "noPythonDeletions": true
+  },
+  "requiredDocsOnlyGate": {
+    "exitCode": 0,
+    "satelliteEntries": 60,
+    "paths": 68,
+    "realPyYaml": true,
+    "exactInputs": 627
+  },
+  "optionalAllFileLinksDiagnostic": {
+    "exitCode": 1,
+    "affectedFiles": 26,
+    "reason": "Export-context links; retained diagnostic, not a universal link pass"
+  },
+  "mainSecretScan": {
+    "tool": "Gitleaks 8.30.1, pinned image; default rules, decoding enabled, no broad suppressions",
+    "exportedChangedFiles": 1761,
+    "inputFileHashMapSha256": "0208daa22207578dc71193d81d902256b57789f135bdd5ee1c796531915d3aff",
+    "bytesPerHost": 132675712,
+    "nativeFindingsPerHost": 783,
+    "nativeExitCodePerHost": 1,
+    "canonicalSafeFindingsSha256": "6a69b68029f9ebe5a54994d7d38707245d1218cdd5f59de6460ec219df9e8947",
+    "bothComplete": true,
+    "timedOut": false,
+    "oomKilled": false,
+    "independentContextReview": {
+      "reviewed": 783,
+      "unresolved": 0,
+      "operationalCredentialsIdentified": 0,
+      "proofSha256": "9f9f08786b83e7719e01f55ff80b00622b7475ed095164acdb8677f92d5ef1b4"
+    },
+    "gzipDuplicatesVerifiedPerHost": 4,
+    "rawMatchAndSecretValuesExported": false
+  },
+  "privacy": {
+    "withheldOriginals": 61,
+    "originalsPreservedLocally": true,
+    "originalsAbsentFromGitAndFinalExports": true,
+    "contentFreeIdentityReceipts": true,
+    "knownFuturePrivateCaptureGuards": true
+  },
+  "cleanup": {
+    "ownedRuntimeContainersRemoved": true,
+    "temporaryFixtureDatabasesAndSigningKeysRemoved": true,
+    "knownLocalPilotOutputsAbsent": true,
+    "matchingLocalTestProcesses": 0,
+    "preexistingLocalDependenciesAndCoveragePreserved": true,
+    "newFinancialArtifactPythonCachesRemoved": true
+  },
+  "localExecution": "Native Git, file editing, hashing, archive and SSH transport only; no local project interpreter, npm, build, tests or server",
+  "publication": {
+    "author": "alexar76",
+    "article": "https://dev.to/alexar76/five-mcp-security-scanners-on-the-same-tool-definitions-5gmp",
+    "reportLanguages": [
+      "en",
+      "ru",
+      "es",
+      "fr",
+      "zh"
+    ],
+    "publishedMeasurementsRemainFrozen": true
+  },
+  "npm": {
+    "published": "0.23.0",
+    "testedDevelopmentSource": "0.23.1-dev.20261108",
+    "newReleasePublished": false,
+    "registryReceipt": "npm-registry.json"
+  },
+  "scopeLimit": "Selected runtime suites and the required repository static gates; not exhaustive behavioral certification of every monorepo project",
+  "finalization": "Final index union must preserve all accepted Python/config blobs. Remaining source and safe metadata receive a dual-host secret scan before native Git commit/push to canonical Gitea; all private originals stay local.",
+  "laterParallelChanges": {
+    "pythonCoverageTree": "234e2c58d59df39e63adbc5608eb73789064d635",
+    "allSourceDeltasStaticPass": true,
+    "behaviorChangesCoveredByFocusedTests": [
+      "GAIA/ATLAS packaged catalogs and sensor CLI",
+      "Lottery inherited Drawing cancellation",
+      "Financial guard/RPC/ledger/refund helpers with synthetic fixtures"
+    ],
+    "historCompose": "Real YAML parse and default-value assertion only",
+    "productionPaymentsOrRefundsMadeByThisAcceptance": false
+  },
+  "baseSourceCommit": "9a0fe8f444fbb94b7be10ee0446a7588fc80f4a5",
+  "baseSourceTree": "6bdb19b5b8ec21f01c29903ab6f09f5150042ade",
+  "currentPythonAcceptedTree": "234e2c58d59df39e63adbc5608eb73789064d635",
+  "configurationAcceptedCommit": "3cce0bd06c986387bfe187723cfe43c1002d43dc",
+  "wardenSourceIdentity": {
+    "testedFiles": 448,
+    "currentExactMatches": 447,
+    "onlyLaterDifference": "CHANGELOG.md documentation; implementation and test inputs unchanged"
+  },
+  "additionalSecretScan": {
+    "tree": "a28992b01d0cce221b443042ac702f545ba2a38a",
+    "files": 161,
+    "nativeFindingsPerHost": 1,
+    "nativeExitCode": 1,
+    "reviewedAs": "Public EVM asset contract address; independent code/data-flow proof",
+    "unresolved": 0,
+    "finalRemainingIndexDelta": "Scanned on both hosts before commit; exact tree and native result recorded in commit message and remote closing receipts"
+  }
+}

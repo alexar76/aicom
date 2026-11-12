@@ -1,0 +1,114 @@
+{
+  "observed_at_utc": "2026-11-10T19:28:12.980476+00:00",
+  "public_get_attempts": 35,
+  "saved_bodies": 34,
+  "status_counts": {
+    "200": 33,
+    "network_error": 1,
+    "404": 1
+  },
+  "all_saved_hashes_and_lengths_valid": true,
+  "mcp3431_delta": [
+    {
+      "id": 6769594382,
+      "author": "Hamza-Abili",
+      "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6769594382",
+      "created_at": "2026-11-10T14:13:54Z"
+    }
+  ],
+  "agentmesh561_new_comments": 0,
+  "owasp_pr21_exact_ecosystem_references_in_changed_patches": [],
+  "findings": [
+    {
+      "id": "R01",
+      "classification": "verified_external_witness_interoperability",
+      "novelty": "reconfirmed_known_2026-11-04_and_07_connections",
+      "sources": [
+        "https://crawlcheck.io/witness/b588375bae81fe1143b42f1ec690a1890007318081ccbcb7b7986f580a79347b/checkpoint",
+        "https://witness.markovianprotocol.com/checkpoints"
+      ],
+      "target": "histor.modelmarket.dev/log",
+      "observation_ru": "Два внешних сайта публикуют один head size 1975254 и одинаковый root; подписи HISTOR и обоих свидетелей проверены с отвергающим изменение отрицательным контролем. Ключи взяты из issuer и собственных публикаций свидетелей.",
+      "evidence": [
+        "checkpoint-verification.json",
+        "crawlcheck-histor-checkpoint.raw",
+        "markovian-checkpoints.raw",
+        "crawlcheck-witness-machine.raw",
+        "markovian-about.raw"
+      ],
+      "confidence": "high_for_signature_and_equal_head",
+      "limit_ru": "Уже известные связи, staging; подписи не проверяют истинность содержимого журнала или реальное применение его читателями. Чтения не включали отправку checkpoint."
+    },
+    {
+      "id": "R02",
+      "classification": "related_external_implementation_without_ecosystem_attribution",
+      "novelty": "new_comment_2026-11-10",
+      "sources": [
+        "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/3431#issuecomment-6769594382",
+        "https://github.com/Hamza-Abili/opencode-integrity"
+      ],
+      "observation_ru": "Новый комментарий Hamza-Abili об OpenCode plugin; в текущем README нет HISTOR/alexar76/aimarket/warden/Paraphern. В ответе назван Paraphern, но наша компонента не подключена и напрямую не названа.",
+      "evidence": [
+        "mcp3431-comments.raw",
+        "opencode-readme.raw",
+        "opencode-repo.raw"
+      ],
+      "confidence": "high_for_checked_text",
+      "limit_ru": "Тематический отклик в общей ветке, не наша runtime-интеграция; содержимое всех файлов репозитория не прочитано."
+    },
+    {
+      "id": "R03",
+      "classification": "own_submission_inside_external_proposal_not_external_adoption",
+      "novelty": "fresh_external_review_activity_but_no_new_ecosystem_reference",
+      "sources": [
+        "https://github.com/OWASP/MCP-Security-Testing-Guide/pull/21"
+      ],
+      "observation_ru": "PR intelligent-ears открыт, не merged; review9Nov и revision10Nov обсуждают общий proposed SUPP-06. Единственное точное представление HISTOR в пяти комментариях принадлежит самому alexar76. Diff не содержит наших exact identifiers.",
+      "evidence": [
+        "owasp-pr21.raw",
+        "owasp-pr21-comments.raw",
+        "owasp-pr21-files.raw",
+        "owasp-pr21-commits.raw"
+      ],
+      "confidence": "high",
+      "limit_ru": "Похожая архитектура и продолжающийся review не устанавливают принятие HISTOR, влияние нашего сообщения или внедрение."
+    },
+    {
+      "id": "R04",
+      "classification": "external_coursework_reference_not_verified_execution",
+      "novelty": "newly_examined_exact_issue",
+      "sources": [
+        "https://github.com/S-AI-Projects/free-programming-books/issues/5"
+      ],
+      "target": "https://alexar76.github.io/aimarket-courses/",
+      "event_at_utc": "2026-11-03T14:36:46Z",
+      "observation_ru": "Открытая учебная задача стороннего fork перечисляет AIMarket Courses среди трех примеров для parser checker. Declared student branch API отвечает No commit found; exact task PR search total_count=0.",
+      "evidence": [
+        "courses-issue5.raw",
+        "courses-repo.raw",
+        "courses-assigned-branch-checker.raw",
+        "courses-task-prs.raw"
+      ],
+      "confidence": "high_for_task_and_bounded_checks",
+      "limit_ru": "Это задача на метаданные каталога, не прохождение наших курсов и не доказанный работающий parser; другие ветки/PR со смененными названиями не исключены."
+    },
+    {
+      "id": "R05",
+      "classification": "self_authored_draft_cross_references",
+      "novelty": "bounded_negative_control",
+      "sources": [
+        "https://datatracker.ietf.org/doc/draft-artamokhov-dawn-marketplace-discovery/referencedby/",
+        "https://datatracker.ietf.org/doc/draft-artamokhov-dawn-index-federation/referencedby/"
+      ],
+      "observation_ru": "Каждая referenced-by страница перечисляет только наш второй companion draft.",
+      "evidence": [
+        "mdi-referencedby.raw",
+        "federation-referencedby.raw"
+      ],
+      "confidence": "high_for_displayed_index",
+      "limit_ru": "IETF индекс эвристический и сам не охватывает title-only references; отсутствие всех внешних цитирований не утверждается."
+    }
+  ],
+  "network_limit": "staging.witness-network.org TLS handshake failed under standard verification; official raw GitHub source list read instead, with exact HISTOR key. No TLS verification disabled.",
+  "search_limit": "MTL/1 lexical search matched mTLS and other names; broad top100 results are not evidence of component use. No authenticated code search was used."
+}

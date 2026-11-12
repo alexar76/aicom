@@ -1,0 +1,45 @@
+{
+  "generated_at_utc": "2026-11-10T20:14:52.740035+00:00",
+  "matrix_counts": {
+    "bounded_family_search": 52,
+    "excluded_or_reference": 8,
+    "supplementary_bounded_search": 1
+  },
+  "new_confirmed_external_runtime_integrations": 0,
+  "new_confirmed_independent_product_reviews": 0,
+  "new_confirmed_external_package_dependencies": 0,
+  "known_external_source_derivative": "https://github.com/th3artfuldodger/enterprise-factory",
+  "known_course_references": [
+    "https://github.com/EbookFoundation/free-programming-books/blob/main/courses/free-courses-en.md",
+    "https://thelearningstandard.org/news/how-autonomous-ai-agents-are-redefining-student-research-skills"
+  ],
+  "internal_dependency_counts_do_not_sum_to_external_users": {
+    "aimarket-hub": 15,
+    "aimarket-agent": 1,
+    "aimarket-oracle-core": 20,
+    "aimarket-momus": 1
+  },
+  "coverage_files": [
+    "core/coverage.json",
+    "agents-oracles/coverage.json",
+    "products/coverage.json",
+    "root/coverage.json"
+  ],
+  "findings_files": [
+    "core/findings.json",
+    "agents-oracles/findings.json",
+    "products/findings.json",
+    "root/findings.json"
+  ],
+  "status": "bounded_pass_complete_with_recorded_index_and_rate_limits",
+  "latest_follow_up": {
+    "delta_file": "../external-matrix-gaps-2026-11-10/matrix-delta.json",
+    "historical_observations_preserved": true,
+    "search_gaps_resolved": 4,
+    "remaining_access_gaps": [
+      "GitHub CORE REST quota: one repeat403; same-source public pages were read separately.",
+      "UNDERCODE and Socket managed challenges remain403.",
+      "grep.app normal one-shot retry429; no complete code-index negative evidence."
+    ]
+  }
+}

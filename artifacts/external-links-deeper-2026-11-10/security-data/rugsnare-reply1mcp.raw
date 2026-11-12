@@ -1,0 +1,24 @@
+# Драфт-ответ xizhibei в 1mcp-app/agent#694 (2026-10-26)
+
+Куда: https://github.com/1mcp-app/agent/issues/694#issuecomment-6418955670
+Автор: Paraphern. Отвечает на вопрос мейнтейнера: «распишите, как видите интеграцию и что 1MCP должен экспонировать».
+
+Тон: инженерный эскиз, конкретика, без маркетинга. Это прямой вопрос мейнтейнера — здесь уместно описать rugsnare-сторону подробно.
+
+---
+
+## Текст (EN)
+
+Happy to sketch it. The short version: 1MCP is the single point where upstream truth is visible through the gateway, so it becomes the capture point; rugsnare stays the verifier and grader on the client side. Concretely, four things 1MCP would expose, cheapest first:
+
+1. **Tool→upstream attribution.** The aggregator already knows which upstream serves each tool. Surfacing that mapping (in the aggregate surface, or via a meta tool) is what turns "the aggregate shifted" into "upstream X changed" — without it, a diff over the merged surface can't name the party that moved.
+
+2. **A per-upstream surface digest, computed at connect and re-computed on every upstream change** (`tools/list` result or `listChanged` notification). If the digest is over `{name, description, inputSchema}` per tool, name-sorted, SHA-256 ([PIN-SPEC §3.2](https://github.com/Paraphern/rugsnare/blob/main/docs/PIN-SPEC.md)), it is byte-compatible with client-side pins from any implementation — we've verified cross-implementation digest equality over a live endpoint, and just finished a field-level cross-check against an independent registry-scale capture where 25 of 34 snapshot versions matched field-by-field. 1MCP has the tool lists in hand at connect, so this is a hash, not a new capture pipeline.
+
+3. **A first-class change event, persisted:** `upstream X: surface a1b2… -> c3d4… at T`. Today an aggregator upgrade silently shifts the merged surface; one log line per upstream turns that into an auditable event users can point at.
+
+4. **A pins export:** the full per-tool records per upstream (JSON), not just digests. That's what `rugsnare diff` consumes directly — it grades each change (BREAKING / LOOSENED / NEW / GONE / annotation flips) and returns exit 1, so an aggregator release can gate its own CI: pin every upstream as 1MCP sees them, diff on the next release.
+
+What rugsnare brings on top: the live proxy already pins and diffs direct stdio/HTTP servers and catches undeclared tools and result injection at call time; against 1MCP the same engine verifies the gateway's published digests through an independent connection (recompute, compare — trust but verify) and grades the per-upstream deltas for humans.
+
+Minimal phase 1, if you want the smallest useful slice: (1) the attribution mapping and (2) the change event with digests. Everything else builds on those two. Happy to co-design the export shape here or in a dedicated issue — we'll consume whatever 1MCP emits.

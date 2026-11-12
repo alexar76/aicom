@@ -1,0 +1,131 @@
+{
+  "acceptedPythonTree": "49508ba53479427b1e874da74a2020e4dbde1bcc",
+  "addedOriginalPythonBlobs": 16,
+  "allLatestRuffFindings": 0,
+  "bashSyntaxExitCode": 0,
+  "bashSyntaxScript": "scripts/sync_physical_sensor_catalogs.sh",
+  "coverageMethod": "Full baseline plus exact-blob deltas14,4,2ledger,12nonledger,2RPC; not a repeated6612-file full run.",
+  "declaredLotteryDependencyChecks": [
+    {
+      "requirement": "web3>=7.15,<8",
+      "resolvedVersion": "7.16.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "eth-account>=0.14,<0.15",
+      "resolvedVersion": "0.14.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "eth-abi>=5.0.1,<6",
+      "resolvedVersion": "5.2.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "httpx>=0.26",
+      "resolvedVersion": "0.28.1",
+      "satisfied": true
+    },
+    {
+      "requirement": "pyyaml>=6.0",
+      "resolvedVersion": "6.0.3",
+      "satisfied": true
+    },
+    {
+      "requirement": "fastapi>=0.162.0",
+      "resolvedVersion": "0.162.2",
+      "satisfied": true
+    },
+    {
+      "requirement": "uvicorn[standard]>=0.27",
+      "resolvedVersion": "0.54.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "cryptography>=50.0.2",
+      "resolvedVersion": "50.0.2",
+      "satisfied": true
+    }
+  ],
+  "derivedFinalEligiblePythonFiles": 6284,
+  "docsOnlyGate": {
+    "changedRequiredInput": [
+      "docs/add-gaia-atlas-sensor.md"
+    ],
+    "gateInputFiles": 627,
+    "inputsUnchangedFrom3d83To49508": true,
+    "nativeExitCode": 0,
+    "optionalAllRerun": false,
+    "realMap": {
+      "actualAuditPaths": 68,
+      "exactMapAgreement": true,
+      "expectedMirrorExcludedPaths": 68,
+      "mapSha256": "64d57e3b4ffe56b0fbc53df3456ea75c32f806045dc8857d93409d7d2c580964",
+      "pyyaml": "6.0.2",
+      "satelliteEntries": 60,
+      "warnings": ""
+    }
+  },
+  "finalPythonBlobs": 6612,
+  "focusedTests": {
+    "lotteryDrawAndCancel": {
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "tests": 30
+    },
+    "sensorsCatalogAndCLI": {
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "tests": 19
+    }
+  },
+  "format": "aicom.python.current-frozen-source-continuity/v1",
+  "initialSocketDiagnosticsRetained": "lottery-results and lottery-socket-diagnostic preserve a denied urllib3 import-time IPv6 loopback bind; final harness permits only that exact local port0 capability probe.",
+  "intermediateTree": "3d83e57ca3f27340bd78671bbf880c0f1e8028b2",
+  "latestLedgerActuallyLinted": 2,
+  "latestNonLedgerActuallyLinted": 12,
+  "latestRPCActuallyLinted": 2,
+  "localOnlySocketCapabilityProbes": [
+    {
+      "operation": "IPv6 loopback bind on ephemeral port0",
+      "producer": "urllib3.util.connection._has_ipv6 import-time capability probe"
+    }
+  ],
+  "localTemporaryFilesCreated": false,
+  "lotteryResolvedLockCanonicalSha256": "24605066a8ff7b2a88d8ad3f4b43d11e8126e29964951bfeae844f19cc308b6e",
+  "modifiedOriginalPythonBlobs": 16,
+  "noLocalProjectExecution": true,
+  "noOOM": true,
+  "originalActuallyLinted": 6268,
+  "originalFullStaticGateTree": "2e78a143c4cc77636c4a1c146987b5488b48d42d",
+  "originalPythonBlobs": 6596,
+  "originalUnchangedExclusions": 328,
+  "outboundConnectOrDNSAttempts": 0,
+  "ownedContainersRemaining": 0,
+  "passed": true,
+  "previousFullyCoveredPythonTree": "a28992b01d0cce221b443042ac702f545ba2a38a",
+  "removedPythonBlobs": [],
+  "ruffVersion": "0.15.15",
+  "rules": [
+    "E9",
+    "F63",
+    "F7",
+    "F82"
+  ],
+  "runtimeScopeLimitation": "Earlier application suites retain frozen measured identities. Newly changed public package behavior was covered by49 focused offline tests, not a full application-suite rerun. Financial executor/ledger actions were never invoked by these static gates; separate independent synthetic fixture receipts cover those helpers.",
+  "selectedFocusedSourceProof": {
+    "actualFiles": 49,
+    "allMatched": true,
+    "expectedFiles": 49,
+    "format": "aicom.selected-source-git-blob-proof/v1",
+    "nativeBlobManifestSha256": "9b4628e5cf0f57160ae6288b090709e54ead75fb13cdbc3dedb080578e5f9612",
+    "sourceContentMapSha256": "e227cd2ecbfbaaa8c99bd398b54f39feee2b368a49f1e49e69c647c1c2bd8731",
+    "tree": "3d83e57ca3f27340bd78671bbf880c0f1e8028b2"
+  },
+  "sensorTestDependencyScope": "Declared pytest/PyYAML constraints for local catalog/CLI units; full sensor service dependency installation is not asserted.",
+  "sourceUnchanged": true,
+  "syncScriptExecuted": false,
+  "unchangedOriginalPythonBlobs": 6580
+}

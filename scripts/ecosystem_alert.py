@@ -62,9 +62,10 @@ Environment (values never come from argv — argv is world-readable in `ps`):
     AICOM_ALERT_DEPOSIT_HUBS     hubs whose top-up wallet the hub watches, comma-separated ("" = off).
                                  Named one by one, so NOT filtered by the scope, e.g.
                                  https://hub.attestedmemory.net,https://independentai.network/hub
-    AICOM_ALERT_BACKUP_URL       the backup receiver's status.json ("" = off)
+    AICOM_ALERT_BACKUP_URL       the backup receivers' status.json, comma-separated ("" = off);
+                                 a label is fresh when any receiver has it fresh
     AICOM_ALERT_BACKUP_HOSTS     backup labels that must be there, comma-separated
-                                 (default: whatever the receiver reports)
+                                 (default: whatever the receivers report)
     AICOM_ALERT_SKOPOS_URL       SKOPOS's read-only findings export, for every host's disk
                                  and whether it still reports ("" = off)
     AICOM_ALERT_SKOPOS_TOKEN     SKOPOS's export token (X-Skopos-Export-Token; secret)
@@ -710,52 +711,85 @@ def probe_backups(url: str, expected: list[str] | None = None, timeout: float = 
     tenants each lived on one disk. Now every host sends an encrypted backup every night, and
     the receiver, which cannot open them, publishes when each repository last took a commit
     (and its own outgoing backup under `own`). A backup that quietly stopped is what this
-    catches — nobody looks at backups until the day they are needed."""
+    catches — nobody looks at backups until the day they are needed.
+
+    `url` may name several receivers, comma-separated (since 2026-11-10 admin-vps backs up to
+    competing-lab, everyone else to PingBlip). A label is fresh when any receiver has it fresh.
+    The first receiver's own checks keep their plain names, the others' carry its host. When a
+    receiver cannot be read, a label missing from the others is not called missing: it may be
+    on the one we could not read, and that receiver's own check already pages."""
     now = time.time() if now is None else now
-    status, body, err = _get(url, timeout)
-    if status != 200 or not isinstance(body, dict):
-        return [Check("backup_status_published", False, f"{url} -> {err or status}")]
-    age = _hours_since_iso(str(body.get("generated_at", "")), now)
-    if age is None or age > BACKUP_STATUS_STALE_HOURS:
-        return [Check("backup_status_published", False,
-                      f"unreadable generated_at: {body.get('generated_at')!r}" if age is None
-                      else f"STALE: published {age:.1f}h ago (status timer dead?)")]
-    checks = [Check("backup_status_published", True, f"published {age * 60:.0f} min ago")]
+    urls = [u.strip() for u in url.split(",") if u.strip()]
+    checks: list[Check] = []
+    disks: list[Check] = []
     last: dict[str, str] = {}
-    for label, row in (body.get("repos") or {}).items():
-        last[str(label)] = str((row or {}).get("last_commit") or "")
-    own = body.get("own") if isinstance(body.get("own"), dict) else None
-    own_errors: list[str] = []
-    if own and own.get("label"):
-        last[str(own["label"])] = str(own.get("finished_at") or "") if own.get("ok") else ""
-        own_errors = [str(e) for e in own.get("errors") or []]
-    for label, row in (body.get("repos") or {}).items():
-        size, peak = (row or {}).get("size_mb"), (row or {}).get("size_mb_peak_7d")
-        if isinstance(size, (int, float)) and isinstance(peak, (int, float)) and peak > 0:
-            # Repos are append-only and no longer compacted automatically, so they only grow;
-            # a drop means segments were compacted away — after a mass delete, the moment it
-            # became final.
-            kept = size >= BACKUP_MIN_SIZE_RATIO * peak
-            checks.append(Check(f"backup_not_shrunk[{label}]", kept,
-                                f"{size:.0f} MB of a {peak:.0f} MB weekly peak"))
+    own_errors: dict[str, list[str]] = {}
+    unreadable = False
+    for i, receiver in enumerate(urls):
+        tag = "" if i == 0 else f"[{_host_of(receiver)}]"
+        status, body, err = _get(receiver, timeout)
+        if status != 200 or not isinstance(body, dict):
+            checks.append(Check("backup_status_published" + tag, False, f"{receiver} -> {err or status}"))
+            unreadable = True
+            continue
+        age = _hours_since_iso(str(body.get("generated_at", "")), now)
+        if age is None or age > BACKUP_STATUS_STALE_HOURS:
+            checks.append(Check("backup_status_published" + tag, False,
+                                f"unreadable generated_at: {body.get('generated_at')!r}" if age is None
+                                else f"STALE: published {age:.1f}h ago (status timer dead?)"))
+            unreadable = True
+            continue
+        checks.append(Check("backup_status_published" + tag, True, f"published {age * 60:.0f} min ago"))
+        seen: dict[str, str] = {}
+        for label, row in (body.get("repos") or {}).items():
+            seen[str(label)] = str((row or {}).get("last_commit") or "")
+        own = body.get("own") if isinstance(body.get("own"), dict) else None
+        if own and own.get("label"):
+            seen[str(own["label"])] = str(own.get("finished_at") or "") if own.get("ok") else ""
+            own_errors[str(own["label"])] = [str(e) for e in own.get("errors") or []]
+        for label, when in seen.items():
+            before = last.get(label)
+            if before is None or _newer_iso(when, before, now):
+                last[label] = when
+        for label, row in (body.get("repos") or {}).items():
+            size, peak = (row or {}).get("size_mb"), (row or {}).get("size_mb_peak_7d")
+            if f"backup_not_shrunk[{label}]" in {c.name for c in checks}:
+                continue  # a repository being moved shows on two receivers; the first one speaks
+            if isinstance(size, (int, float)) and isinstance(peak, (int, float)) and peak > 0:
+                # Repos are append-only and no longer compacted automatically, so they only grow;
+                # a drop means segments were compacted away — after a mass delete, the moment it
+                # became final.
+                kept = size >= BACKUP_MIN_SIZE_RATIO * peak
+                checks.append(Check(f"backup_not_shrunk[{label}]", kept,
+                                    f"{size:.0f} MB of a {peak:.0f} MB weekly peak"))
+        free = body.get("free_gb")
+        if isinstance(free, (int, float)):
+            disks.append(Check("backup_receiver_disk" + tag, free >= BACKUP_MIN_FREE_GB,
+                               f"{free:.0f} GB free on the receiver"))
+    if unreadable and len(urls) == 1:
+        return checks
     for label in (expected if expected else sorted(last)):
         if label not in last:
-            checks.append(Check(f"backup_fresh[{label}]", False, "no repository on the receiver"))
+            if not unreadable:
+                checks.append(Check(f"backup_fresh[{label}]", False, "no repository on the receiver"))
             continue
         hours = _hours_since_iso(last[label], now) if last[label] else None
         ok = hours is not None and hours <= BACKUP_STALE_HOURS
         if ok:
             detail = f"last backup {hours:.1f}h ago"
-        elif own and label == own.get("label") and own_errors:
-            detail = "last run failed: " + "; ".join(own_errors)[:200]
+        elif own_errors.get(label):
+            detail = "last run failed: " + "; ".join(own_errors[label])[:200]
         else:
             detail = "never" if hours is None else f"STALE: last backup {hours:.1f}h ago"
         checks.append(Check(f"backup_fresh[{label}]", ok, detail))
-    free = body.get("free_gb")
-    if isinstance(free, (int, float)):
-        checks.append(Check("backup_receiver_disk", free >= BACKUP_MIN_FREE_GB,
-                            f"{free:.0f} GB free on the receiver"))
-    return checks
+    return checks + disks
+
+
+def _newer_iso(a: str, b: str, now: float) -> bool:
+    """Is timestamp `a` more recent than `b`? An empty or unreadable one is never newer."""
+    ha = _hours_since_iso(a, now) if a else None
+    hb = _hours_since_iso(b, now) if b else None
+    return ha is not None and (hb is None or ha < hb)
 
 
 def probe_fleet(url: str, token: str, timeout: float = 20.0, now: float | None = None) -> list[Check]:

@@ -1,0 +1,15 @@
+{
+  "scope": "Private candidate test-copy correction; no public publication or Git push occurred",
+  "originalsPreservedLocally": true,
+  "mistakenCopies": [
+    "artifacts/hub-public-endpoints-audit-2026-11-08/live/factory-vps-log-details.json",
+    "artifacts/hub-public-endpoints-audit-2026-11-08/live/competing-lab-log-details.json"
+  ],
+  "removedFromBothTestHosts": true,
+  "removalVerifiedByFilesystemAbsence": true,
+  "scannerStartedBeforeRemoval": false,
+  "reasonScannerHadNotStarted": "Initial launcher failed before docker create due to malformed chown option; no scanner container existed",
+  "oldTree": "85de0c9b7687f40df2e0e3f59d3cd1635bcdc298",
+  "correctedTree": "ab46922f863e3f7148d757e9ccf4c72ec60202bb",
+  "prevention": "Final privacy review must inspect the sealed Git tree itself, followed by export of those exact blobs, rather than reviewing a changing filesystem list"
+}

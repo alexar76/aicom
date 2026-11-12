@@ -1,0 +1,58 @@
+{
+  "upstream": "https://github.com/multica-ai/multica",
+  "ref": "v0.8.0",
+  "archive_sha256": "0ea424eb2ca198c630f4b12c38d637d7943f43f0015d57077c5946659d865928",
+  "patch_sha256": "15454678c08acfc6ae979417eef00b7834eb9046b414203178efbdd8c8f0561d",
+  "files": [
+    {
+      "path": "server/internal/daemon/aicom_output_redaction_test.go",
+      "before_sha256": null,
+      "after_sha256": "4d3d3a2f6cbe7b833538098e30bf41fbf74a16c48bcf2b63860726efe36d30a0"
+    },
+    {
+      "path": "server/internal/daemon/client.go",
+      "before_sha256": "4e423eff0e49462a426c627f9eb02a0ce2d0104062ea38bf8d1de02d0175c3a6",
+      "after_sha256": "da788eb3b7fd254eca99943dd17767beb3232cd0ade05d411d546a83f410aa61"
+    },
+    {
+      "path": "server/internal/daemon/daemon.go",
+      "before_sha256": "980a25b078f4da9cc36ca8b2b7598956b9014f3ee0b89bca5e73dbe1c491584a",
+      "after_sha256": "7c5a69371eaedd930ae3eafb3c529542a0627453c8335d4e9978ddca31ba9ebb"
+    },
+    {
+      "path": "server/internal/daemon/terminal_report_queue.go",
+      "before_sha256": "00677647d9f267e17ebd51f77f499c4d1f3da9a4490a5245ed53f876a0dd63b3",
+      "after_sha256": "778e10ebd36a6b05be7713fea1d5c9c8da98641d3405bbd0a1b416bc69e278fa"
+    },
+    {
+      "path": "server/internal/handler/aicom_output_redaction_test.go",
+      "before_sha256": null,
+      "after_sha256": "abc205c88ea160d9f7603ad30ac6b566d0b435373f9c17d76810738d6f6b7ee6"
+    },
+    {
+      "path": "server/internal/handler/daemon.go",
+      "before_sha256": "85a7a52140b8868b117a21f85dac9fec896ff5e4f2709677b22323d2dadfe2b5",
+      "after_sha256": "af82dee69a42d30a8266bfba3cb94fe1510445ba6972c4421155fe4589e3f37f"
+    },
+    {
+      "path": "server/internal/service/aicom_output_redaction_test.go",
+      "before_sha256": null,
+      "after_sha256": "bf8d54af53fea2f23103f6f87abecfa3465d802b12fc65e89b14fdf872d0ccc5"
+    },
+    {
+      "path": "server/internal/service/task.go",
+      "before_sha256": "86280bedd32a7015816ffdd27f5bfb10a90bc397a7462c52dd5075bb0d7d748b",
+      "after_sha256": "242f5e0e8d9439c08ea6bda7b887b3a2dcd3d45ee63c9febf4b5cc9c6a8bb8ae"
+    },
+    {
+      "path": "server/pkg/redact/aicom_json_test.go",
+      "before_sha256": null,
+      "after_sha256": "732e6bf8756d038b97e2f9d39dc46ab1b25ca58922bbb8e17d34116a80dde9df"
+    },
+    {
+      "path": "server/pkg/redact/json.go",
+      "before_sha256": null,
+      "after_sha256": "526c6cc54e947b70d84a1c551ef02eefc27d8f16c3277e07e780420422dd98ef"
+    }
+  ]
+}

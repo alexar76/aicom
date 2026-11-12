@@ -1,0 +1,47 @@
+{
+  "primaryProducts": [
+    {
+      "id": "warden-published",
+      "package": "@aimarket/warden",
+      "version": "0.23.0",
+      "ruleset": 17
+    },
+    {
+      "id": "mcp-audit",
+      "package": "mcp-audit-scanner[mcp]",
+      "version": "0.28.0"
+    },
+    {
+      "id": "mcp-shield",
+      "package": "mcp-shield",
+      "version": "1.0.4"
+    },
+    {
+      "id": "truecopy",
+      "package": "@askalf/truecopy",
+      "version": "0.10.5",
+      "engine": "@askalf/redstamp0.7.5"
+    },
+    {
+      "id": "mcpsentry",
+      "package": "@roshan6335/mcpsentry",
+      "version": "0.1.5"
+    }
+  ],
+  "supplemental": [
+    {
+      "id": "warden-candidate19",
+      "package": "@aimarket/warden",
+      "version": "0.23.1-dev.20261107.1",
+      "ruleset": 19,
+      "posthoc": true
+    },
+    {
+      "id": "warden-v18",
+      "package": "@aimarket/warden",
+      "ruleset": 18,
+      "supplementalHistorOnly": true
+    }
+  ],
+  "note": "Published npm0.23.0 is the primary Warden baseline. Candidate19.1 remains frozen; later wrapper-only.2 validation is a separate experiment."
+}

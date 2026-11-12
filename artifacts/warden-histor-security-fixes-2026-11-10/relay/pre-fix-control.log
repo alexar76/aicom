@@ -1,0 +1,67 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_redirect_is_returned_as_error_without_followup[https://other.fixture.invalid/capture-302] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107f04fb0>
+tmp_path = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-79/test_redirect_is_returned_as_e0')
+status = 302, target = 'https://other.fixture.invalid/capture'
+
+    @pytest.mark.parametrize("status", [301, 302, 303, 307, 308])
+    @pytest.mark.parametrize("target", ["https://other.fixture.invalid/capture", "http://other.fixture.invalid/capture",
+                                      "https://api.fixture.invalid/other"])
+    def test_redirect_is_returned_as_error_without_followup(monkeypatch, tmp_path, status, target):
+        transport, reply, sleeps = run_relay(monkeypatch, tmp_path, [status], target)
+>       assert len(transport.requests) == 1
+E       assert 2 == 1
+E        +  where 2 = len([<urllib.request.Request object at 0x107eac0b0>, <urllib.request.Request object at 0x10783ca40>])
+E        +    where [<urllib.request.Request object at 0x107eac0b0>, <urllib.request.Request object at 0x10783ca40>] = <relay_regressions_fixture.MemoryTransport object at 0x107f07110>.requests
+
+artifacts/warden-histor-security-fixes-2026-11-10/relay/pre-fix-control/relay_regressions_fixture.py:89: AssertionError
+----------------------------- Captured stdout call -----------------------------
+relay up: model operator-model, budget $1.00, spent so far $0.0000
+relay stopped: spent $0.0000
+_ test_redirect_is_returned_as_error_without_followup[http://other.fixture.invalid/capture-302] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107f07770>
+tmp_path = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-79/test_redirect_is_returned_as_e1')
+status = 302, target = 'http://other.fixture.invalid/capture'
+
+    @pytest.mark.parametrize("status", [301, 302, 303, 307, 308])
+    @pytest.mark.parametrize("target", ["https://other.fixture.invalid/capture", "http://other.fixture.invalid/capture",
+                                      "https://api.fixture.invalid/other"])
+    def test_redirect_is_returned_as_error_without_followup(monkeypatch, tmp_path, status, target):
+        transport, reply, sleeps = run_relay(monkeypatch, tmp_path, [status], target)
+>       assert len(transport.requests) == 1
+E       assert 2 == 1
+E        +  where 2 = len([<urllib.request.Request object at 0x107e28e00>, <urllib.request.Request object at 0x107e28980>])
+E        +    where [<urllib.request.Request object at 0x107e28e00>, <urllib.request.Request object at 0x107e28980>] = <relay_regressions_fixture.MemoryTransport object at 0x107f078c0>.requests
+
+artifacts/warden-histor-security-fixes-2026-11-10/relay/pre-fix-control/relay_regressions_fixture.py:89: AssertionError
+----------------------------- Captured stdout call -----------------------------
+relay up: model operator-model, budget $1.00, spent so far $0.0000
+relay stopped: spent $0.0000
+_ test_redirect_is_returned_as_error_without_followup[https://api.fixture.invalid/other-302] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107e291c0>
+tmp_path = PosixPath('/private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-79/test_redirect_is_returned_as_e2')
+status = 302, target = 'https://api.fixture.invalid/other'
+
+    @pytest.mark.parametrize("status", [301, 302, 303, 307, 308])
+    @pytest.mark.parametrize("target", ["https://other.fixture.invalid/capture", "http://other.fixture.invalid/capture",
+                                      "https://api.fixture.invalid/other"])
+    def test_redirect_is_returned_as_error_without_followup(monkeypatch, tmp_path, status, target):
+        transport, reply, sleeps = run_relay(monkeypatch, tmp_path, [status], target)
+>       assert len(transport.requests) == 1
+E       assert 2 == 1
+E        +  where 2 = len([<urllib.request.Request object at 0x107eaee10>, <urllib.request.Request object at 0x107eac770>])
+E        +    where [<urllib.request.Request object at 0x107eaee10>, <urllib.request.Request object at 0x107eac770>] = <relay_regressions_fixture.MemoryTransport object at 0x107e295b0>.requests
+
+artifacts/warden-histor-security-fixes-2026-11-10/relay/pre-fix-control/relay_regressions_fixture.py:89: AssertionError
+----------------------------- Captured stdout call -----------------------------
+relay up: model operator-model, budget $1.00, spent so far $0.0000
+relay stopped: spent $0.0000
+=========================== short test summary info ============================
+FAILED artifacts/warden-histor-security-fixes-2026-11-10/relay/pre-fix-control/relay_regressions_fixture.py::test_redirect_is_returned_as_error_without_followup[https://other.fixture.invalid/capture-302]
+FAILED artifacts/warden-histor-security-fixes-2026-11-10/relay/pre-fix-control/relay_regressions_fixture.py::test_redirect_is_returned_as_error_without_followup[http://other.fixture.invalid/capture-302]
+FAILED artifacts/warden-histor-security-fixes-2026-11-10/relay/pre-fix-control/relay_regressions_fixture.py::test_redirect_is_returned_as_error_without_followup[https://api.fixture.invalid/other-302]
+3 failed, 21 deselected in 0.82s

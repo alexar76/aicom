@@ -1,0 +1,4765 @@
+{
+  "date_client": "2026-11-10",
+  "network_requests": 0,
+  "identity": "alexar76",
+  "mapping_is_local_declaration_not_live_remote_verification": true,
+  "counts": {
+    "mapping_entries": 60,
+    "github_published_declared_entries": 54,
+    "github_unpublished_declared_entries": 6,
+    "published_component_or_collection_entries_excluding_profile_and_wikis": 51,
+    "profile_entries": 1,
+    "wiki_entries": 2,
+    "own_public_hosts_in_selected_maintained_sources": 36,
+    "shared_hosting_origins_with_identity_scoped_targets": 2
+  },
+  "components": [
+    {
+      "id": "aimarket-courses",
+      "repo": "aimarket-courses",
+      "paths": [
+        "courses"
+      ],
+      "homepage": "https://alexar76.github.io/aimarket-courses/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 18
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-courses",
+      "description": "13 hands-on AIMarket academy courses — orchestration, oracles, MCP security, agent economy, GAIA/ATLAS, federation, PQC (en/ru/es/fr/zh)."
+    },
+    {
+      "id": "aimarket-school",
+      "repo": "aimarket-school",
+      "paths": [
+        "school"
+      ],
+      "homepage": "https://edu.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 46
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-school",
+      "description": "AIMarket School — 13 free clip lessons (Try-it + Colab) that on-ramp into the academies. Live portal: edu.modelmarket.dev"
+    },
+    {
+      "id": "profile",
+      "repo": "alexar76",
+      "paths": [
+        "scripts/profile-readme/README.md",
+        "scripts/profile-readme/assets/"
+      ],
+      "homepage": "https://github.com/alexar76",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "profile",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 72
+      },
+      "repository_target": "https://github.com/alexar76/alexar76",
+      "description": "GitHub profile README — ecosystem map for alexar76."
+    },
+    {
+      "id": "aimarket-desktop",
+      "repo": "aimarket-desktop",
+      "paths": [
+        "desktop-integrations"
+      ],
+      "homepage": "https://alexar76.github.io/aicom/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 98
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-desktop",
+      "description": "10 desktop & IDE apps for AIMarket — Flutter, Tauri, and VS Code in one Melos monorepo."
+    },
+    {
+      "id": "aimarket-sdks",
+      "repo": "aimarket-sdks",
+      "paths": [
+        "aimarket-sdks"
+      ],
+      "homepage": "https://alexar76.github.io/aicom/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 121
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-sdks",
+      "description": "Official AIMarket client SDKs — Dart, TypeScript, and Rust."
+    },
+    {
+      "id": "pulse-terminal",
+      "repo": "pulse-terminal",
+      "paths": [
+        "apps/pulse-terminal"
+      ],
+      "homepage": "https://magic-ai-factory.com/pulse/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 143
+      },
+      "repository_target": "https://github.com/alexar76/pulse-terminal",
+      "description": "Pulse Terminal — ACEX capital markets dashboard with live agent pricing."
+    },
+    {
+      "id": "acex",
+      "repo": "acex",
+      "paths": [
+        "acex"
+      ],
+      "homepage": "https://alexar76.github.io/aicom/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 161
+      },
+      "repository_target": "https://github.com/alexar76/acex",
+      "description": "ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents."
+    },
+    {
+      "id": "ai-service-mesh",
+      "repo": "ai-service-mesh",
+      "paths": [
+        "ai-service-mesh"
+      ],
+      "homepage": "https://service-mesh.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 185
+      },
+      "repository_target": "https://github.com/alexar76/ai-service-mesh",
+      "description": "AI Service Mesh — autonomous agent discovery, verification, escrow, and payments."
+    },
+    {
+      "id": "aimarket-hub",
+      "repo": "aimarket-hub",
+      "paths": [
+        "aimarket-hub"
+      ],
+      "homepage": "https://modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 202
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-hub",
+      "description": "AIMarket Hub — federated capability catalog, channels, invoke API, and plugins."
+    },
+    {
+      "id": "aimarket-widget",
+      "repo": "aimarket-widget",
+      "paths": [
+        "aimarket-widget"
+      ],
+      "homepage": "https://modelmarket.dev/widget/demo",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 217
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-widget",
+      "description": "Embeddable AIMarket storefront widget — drop-in JS/CSS for any website."
+    },
+    {
+      "id": "aimarket-oracle-gateway",
+      "repo": "aimarket-oracle-gateway",
+      "paths": [
+        "plugins/aimarket-oracle-gateway"
+      ],
+      "homepage": "https://glama.ai/mcp/servers/alexar76/aimarket-oracle-gateway",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 232
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-oracle-gateway",
+      "description": "MCP server: verifiable oracle services (Platon VRF, Chronos VDF, LUMEN reputation) for AI agents — pay-per-call over the AIMarket protocol, every result independently verifiable."
+    },
+    {
+      "id": "linkedin-profile-coach",
+      "repo": "linked-in-profile-coach",
+      "paths": [
+        "coach"
+      ],
+      "homepage": "https://alexar76.github.io/linked-in-profile-coach/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 258
+      },
+      "repository_target": "https://github.com/alexar76/linked-in-profile-coach",
+      "description": "LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support."
+    },
+    {
+      "id": "aicom-landing",
+      "repo": "aicom-landing",
+      "paths": [
+        "aicom-landing"
+      ],
+      "homepage": "https://magic-ai-factory.com/landing-page-generation/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 279
+      },
+      "repository_target": "https://github.com/alexar76/aicom-landing",
+      "description": "AI landing generator — one prompt → self-contained HTML in ~30-60s (MIT, 20 style presets)."
+    },
+    {
+      "id": "aimarket-protocol",
+      "repo": "aimarket-protocol",
+      "paths": [
+        "aimarket-protocol"
+      ],
+      "homepage": "https://alexar76.github.io/aicom/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 294
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-protocol",
+      "description": "AIMarket Protocol v2 — open specs, JSON schemas, and test vectors."
+    },
+    {
+      "id": "protocol-v2-from-spec-rs",
+      "repo": "protocol-v2-from-spec-rs",
+      "paths": [
+        "protocol-v2-from-spec-rs"
+      ],
+      "homepage": null,
+      "github_published_declared": false,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 313
+      },
+      "description": "Second-pass checks of AIMarket Protocol v2 manifest and federation announce, written in Rust from spec.md and test-vectors only. Stays in the monorepo. Does not count as an independent implementation: the author is the protocol editor.\n"
+    },
+    {
+      "id": "protocol-v2-receipt-from-spec",
+      "repo": "protocol-v2-receipt-from-spec",
+      "paths": [
+        "protocol-v2-receipt-from-spec"
+      ],
+      "homepage": null,
+      "github_published_declared": false,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 328
+      },
+      "description": "Second implementation of AIMarket Protocol v2 receipt checks, written from spec.md and test-vectors only. Stays in the monorepo. Does not count as an independent implementation: the author is the protocol editor.\n"
+    },
+    {
+      "id": "protocol-v2-federator-go",
+      "repo": "protocol-v2-federator-go",
+      "paths": [
+        "protocol-v2-federator-go"
+      ],
+      "homepage": null,
+      "github_published_declared": false,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 343
+      },
+      "description": "Directory-node federator for AIMarket Protocol v2, written in Go from spec.md, schemas and test-vectors for an outside operator to run with their own key. Stays in the monorepo. While AICOM authors it, it is not an independent implementation under GOVERNANCE.md.\n"
+    },
+    {
+      "id": "aimarket-agent",
+      "repo": "aimarket-agent",
+      "paths": [
+        "aimarket-agent"
+      ],
+      "homepage": "https://alexar76.github.io/aicom/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 359
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-agent",
+      "description": "Python client for discovering and invoking AIMarket hub capabilities."
+    },
+    {
+      "id": "aimarket-bridges",
+      "repo": "aimarket-bridges",
+      "paths": [
+        "aimarket-bridges"
+      ],
+      "homepage": "https://modeldev.modelmarket.dev/bridges/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 373
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-bridges",
+      "description": "AIMarket capabilities as native tools for LangChain/LangGraph, CrewAI, and AutoGen — signed receipts, budget caps, free trial."
+    },
+    {
+      "id": "aimarket-plugins",
+      "repo": "aimarket-plugins",
+      "paths": [
+        "plugins:plugins",
+        "aimarket-hub/plugins/aimarket-provenance"
+      ],
+      "homepage": "https://alexar76.github.io/aicom/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 411
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-plugins",
+      "description": "15 AIMarket hub plugins — TEE escrow, channels, reputation, safety, and more."
+    },
+    {
+      "id": "aicom-wiki",
+      "repo": "aicom.wiki",
+      "paths": [
+        "scripts/wiki-gitea"
+      ],
+      "homepage": null,
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "wiki",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 433
+      },
+      "repository_target": "https://github.com/alexar76/aicom.wiki",
+      "description": "Documentation wiki for AI-Factory and the AIMarket ecosystem."
+    },
+    {
+      "id": "argus-wiki",
+      "repo": "argus.wiki",
+      "paths": [
+        "scripts/wiki-argus"
+      ],
+      "homepage": null,
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "wiki",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 451
+      },
+      "repository_target": "https://github.com/alexar76/argus.wiki",
+      "description": "Documentation wiki for ARGUS-3 — install, WARDEN, channels, economy, Arena."
+    },
+    {
+      "id": "alien-monitor",
+      "repo": "alien-monitor",
+      "paths": [
+        "alien-monitor"
+      ],
+      "homepage": "https://monitor.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 469
+      },
+      "repository_target": "https://github.com/alexar76/alien-monitor",
+      "description": "Alien Monitor — real-time 3D ecosystem pulse visualizer with AI assistant."
+    },
+    {
+      "id": "platon",
+      "repo": "platon",
+      "paths": [
+        "platon"
+      ],
+      "homepage": "https://oracles.modelmarket.dev/platon/umbral/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 487
+      },
+      "repository_target": "https://github.com/alexar76/platon",
+      "description": "Platon UMBRAL — educational cave app for oracle #1: 32D dynamical shadow oracle with live AIMarket backend and holographic cockpit."
+    },
+    {
+      "id": "oracles",
+      "repo": "oracles",
+      "paths": [
+        "oracles"
+      ],
+      "homepage": "https://oracles.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 515
+      },
+      "repository_target": "https://github.com/alexar76/oracles",
+      "description": "Verifiable AI-economy oracles — 17 signed capabilities (Platon randomness, Chronos VDF, Lumen reputation, Turing, Fourier and more) on shared oracle-core."
+    },
+    {
+      "id": "aicom-products",
+      "repo": "aicom-products",
+      "paths": [
+        "aicom-products"
+      ],
+      "homepage": "https://github.com/alexar76/aicom-products",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 543
+      },
+      "repository_target": "https://github.com/alexar76/aicom-products",
+      "description": "Selective catalog of full AI-Factory products (prod-*) — shell from monorepo, trees published on demand."
+    },
+    {
+      "id": "lottery",
+      "repo": "lottery",
+      "paths": [
+        "lottery"
+      ],
+      "homepage": "https://lottery.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 569
+      },
+      "repository_target": "https://github.com/alexar76/lottery",
+      "description": "AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner."
+    },
+    {
+      "id": "argus",
+      "repo": "argus",
+      "paths": [
+        "argus"
+      ],
+      "homepage": "https://magic-ai-factory.com/argus/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 607
+      },
+      "repository_target": "https://github.com/alexar76/argus",
+      "description": "ARGUS-3 — wallet-native, security-hardened personal agent; demand-side reference client and the reference host for the WARDEN MCP firewall (@aimarket/warden, a separate package) plus native AIMarket consumer/provider. Owner-locked Telegram, multi-provider, autonomous offline."
+    },
+    {
+      "id": "warden",
+      "repo": "warden",
+      "paths": [
+        "warden"
+      ],
+      "homepage": "https://warden.modelmarket.dev",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 655
+      },
+      "repository_target": "https://github.com/alexar76/warden",
+      "description": "WARDEN — MCP security firewall: vets an MCP server's tool definitions against static-scan rules, a signed threat feed, origin and tool-def pinning before any tool reaches the model. Zero-dependency TypeScript library."
+    },
+    {
+      "id": "theoros",
+      "repo": "theoros",
+      "paths": [
+        "theoros"
+      ],
+      "homepage": "https://alexar76.github.io/theoros/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 716
+      },
+      "repository_target": "https://github.com/alexar76/theoros",
+      "description": "THEOROS — Agent Sovereignty Canon. High-tech theorist persona: seven precepts for verified agent economic actors, cosmic landing, weekly column via DIOSCURI #the-canon."
+    },
+    {
+      "id": "dioscuri",
+      "repo": "dioscuri",
+      "paths": [
+        "dioscuri"
+      ],
+      "homepage": "https://alexar76.github.io/dioscuri/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 743
+      },
+      "repository_target": "https://github.com/alexar76/dioscuri",
+      "description": "DIOSCURI — one mind, two heavens. Twin community agents: CASTOR rides Telegram, POLLUX holds Discord. Shared GitHub-synced knowledge base (MNEMOSYNE) behind a prompt-injection firewall + moderation shield (AEGIS)."
+    },
+    {
+      "id": "hephaestus",
+      "repo": "hephaestus",
+      "paths": [
+        "hephaestus"
+      ],
+      "homepage": "https://forge.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 797
+      },
+      "repository_target": "https://github.com/alexar76/hephaestus",
+      "description": "HEPHAESTUS — the forge: compose capability chains from the live signed AIMarket catalogue, price the graph before you spend, run it, and keep a signed bill of materials with hop-level blame."
+    },
+    {
+      "id": "helios",
+      "repo": "helios",
+      "paths": [
+        "helios"
+      ],
+      "homepage": "https://alexar76.github.io/helios/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 833
+      },
+      "repository_target": "https://github.com/alexar76/helios",
+      "description": "HELIOS — self-hosted broadcast pipeline for the AIMarket ecosystem. Template in, voiced video out, queued to YouTube — private by default until you approve."
+    },
+    {
+      "id": "aimarket-mcp",
+      "repo": "aimarket-mcp",
+      "paths": [
+        "aimarket-mcp"
+      ],
+      "homepage": "https://glama.ai/mcp/servers/alexar76/aimarket-mcp",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 876
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-mcp",
+      "description": "Ecosystem MCP gateway — web fetch/search + Metis verify behind one SSRF-hardened MCP endpoint (Streamable-HTTP). Consumed by Metis and ARGUS via the aimarket-web preset."
+    },
+    {
+      "id": "metis",
+      "repo": "metis",
+      "paths": [
+        "metis"
+      ],
+      "homepage": "https://alexar76.github.io/metis/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 908
+      },
+      "repository_target": "https://github.com/alexar76/metis",
+      "description": "Metis (μῆτις) — distributed cognitive layer over any LLM. Understanding Council → confidence gate (fail-closed) → layered MoA → verifier-with-retry, with DGPD depth gating, memory, economy metering, and an OpenAI-compatible API. A loosely-coupled ecosystem peer: runs fully standalone; every ecosystem hook is optional."
+    },
+    {
+      "id": "skopos",
+      "repo": "skopos",
+      "paths": [
+        "skopos"
+      ],
+      "homepage": null,
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 956
+      },
+      "repository_target": "https://github.com/alexar76/skopos",
+      "description": "SKOPOS (Σκοπός) — self-hosted nginx analytics and fleet security for the AICOM ecosystem. SSH log collection, Security Center with 3D threat map, scan history, and an AI agent with voice input."
+    },
+    {
+      "id": "atlas",
+      "repo": "atlas",
+      "paths": [
+        "atlas"
+      ],
+      "homepage": "https://alexar76.github.io/atlas/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1007
+      },
+      "repository_target": "https://github.com/alexar76/atlas",
+      "description": "ATLAS — planetary physical-sensor map over GAIA (LIVE/SIM layers including fire, flood, lightning, alerts, EFFIS, volcano) with Hub composites situation.brief / fire.weather / nearest / watchbox, DeepSeek Analyst, and Alien Monitor embed."
+    },
+    {
+      "id": "gaia",
+      "repo": "gaia",
+      "paths": [
+        "gaia"
+      ],
+      "homepage": "https://alexar76.github.io/gaia/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1042
+      },
+      "repository_target": "https://github.com/alexar76/gaia",
+      "description": "GAIA — physical-world oracle gateway: Ed25519-attested gaia.*.read@v1 relays (weather, FIRMS, GLM lightning, NWS flood/alerts, EFFIS, volcano, EONET, SWPC, GNSS jamming) plus window/verify. LIVE only with provenance."
+    },
+    {
+      "id": "momus",
+      "repo": "momus",
+      "paths": [
+        "momus"
+      ],
+      "homepage": "https://alexar76.github.io/momus/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1082
+      },
+      "repository_target": "https://github.com/alexar76/momus",
+      "description": "MOMUS — autonomous adversarial-audit (red team) satellite: safe, read-only conformance probes against the ecosystem's own components, emitted as Ed25519-signed findings; a separate Treasury role pays bounties only on independent verification."
+    },
+    {
+      "id": "treasury",
+      "repo": "treasury",
+      "paths": [
+        "treasury"
+      ],
+      "homepage": "https://alexar76.github.io/treasury/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1120
+      },
+      "repository_target": "https://github.com/alexar76/treasury",
+      "description": "MOMUS Treasury — the separate payer role that releases red-team bounties only on independent verification; MOMUS finds and signs, the Treasury (its own key) pays."
+    },
+    {
+      "id": "logos",
+      "repo": "logos",
+      "paths": [
+        "logos",
+        "oracles/core"
+      ],
+      "homepage": "https://alexar76.github.io/logos/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1154
+      },
+      "repository_target": "https://github.com/alexar76/logos",
+      "description": "LOGOS — federation analytics engine. Cross-hub query, anomaly detection, NL insights via Metis council. The analytical brain of the AIMarket federation. One node, every insight.\n"
+    },
+    {
+      "id": "signal-hunt",
+      "repo": "signal-hunt",
+      "paths": [
+        "signal-hunt"
+      ],
+      "homepage": "https://alexar76.github.io/signal-hunt/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1194
+      },
+      "repository_target": "https://github.com/alexar76/signal-hunt",
+      "description": "Signal Hunt — federation-native investigation game and educational laboratory over real AIMarket Hub telemetry. Observe measured symptoms, commit a diagnosis, prove it with a reproducible Brier-score verdict. Each round is a live lab on federation literacy. Live data only; no seeded anomalies.\n"
+    },
+    {
+      "id": "aimarket-playground",
+      "repo": "aimarket-playground",
+      "paths": [
+        "aimarket-playground"
+      ],
+      "homepage": "https://play.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1236
+      },
+      "repository_target": "https://github.com/alexar76/aimarket-playground",
+      "description": "Zero-setup guided AIMarket golden path: GAIA invoke, Metis verification, signed Hub receipt, and Alien Monitor handoff."
+    },
+    {
+      "id": "create-aimarket-agent",
+      "repo": "create-aimarket-agent",
+      "paths": [
+        "create-aimarket-agent"
+      ],
+      "homepage": "https://alexar76.github.io/create-aimarket-agent/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1274
+      },
+      "repository_target": "https://github.com/alexar76/create-aimarket-agent",
+      "description": "Standalone CLI that scaffolds tested AIMarket Protocol v2 capability providers with manifests and Docker packaging."
+    },
+    {
+      "id": "themis",
+      "repo": "themis",
+      "paths": [
+        "themis"
+      ],
+      "homepage": "https://alexar76.github.io/themis/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1310
+      },
+      "repository_target": "https://github.com/alexar76/themis",
+      "description": "THEMIS — publish-time admission gate for AIMarket: signed approve/review/reject for AI-agent supply-chain procurement (not Metis, not WARDEN)."
+    },
+    {
+      "id": "hestia",
+      "repo": "hestia",
+      "paths": [
+        "hestia"
+      ],
+      "homepage": "https://alexar76.github.io/hestia/",
+      "github_published_declared": true,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1351
+      },
+      "repository_target": "https://github.com/alexar76/hestia",
+      "description": "HESTIA — the hosted runtime: isolated, for AIMarket capability providers on the operator’s machines. Not a Hub catalogue, not a job board, not Factory. Agents appear only after a signed deploy onto this host."
+    },
+    {
+      "id": "histor",
+      "repo": "histor",
+      "paths": [
+        "histor"
+      ],
+      "homepage": "https://alexar76.github.io/histor/",
+      "github_published_declared": true,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1395
+      },
+      "repository_target": "https://github.com/alexar76/histor",
+      "description": "HISTOR — public transparency log of MCP tool definitions: reads what remote MCP endpoints in the official registry advertise (never calls a tool), signs it as MTL/1 labels, appends them to an RFC 9162 Merkle log, and answers /check: is what a client received what was observed? Never calls a server safe."
+    },
+    {
+      "id": "symmartys",
+      "repo": "symmartys",
+      "paths": [
+        "symmartys"
+      ],
+      "homepage": "https://symmartys.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1448
+      },
+      "repository_target": "https://github.com/alexar76/symmartys",
+      "description": "SYMMARTYS — public-record facts for agents that trade: EU VAT (VIES), legal entities (GLEIF LEI), company registers, EORI, domains (RDAP), ECB rates, sanctions lists (OFAC with wallets, EU, UK), business days, Bitcoin timestamps, web evidence captures and dead man's switch timers — every answer signed with its source, fetch time and SHA-256."
+    },
+    {
+      "id": "escrow-signer",
+      "repo": "escrow-signer",
+      "paths": [
+        "escrow-signer"
+      ],
+      "homepage": "https://alexar76.github.io/escrow-signer/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1504
+      },
+      "repository_target": "https://github.com/alexar76/escrow-signer",
+      "description": "HORKOS holds the only key authorized in AIMarketEscrow.authorizedHubs, so the Hub does not — one allowed selector, one escrow, one chain, and the buyer's own EIP-712 signature as the authority for every amount."
+    },
+    {
+      "id": "basanos",
+      "repo": "basanos",
+      "paths": [
+        "basanos"
+      ],
+      "homepage": "https://basanos.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1535
+      },
+      "repository_target": "https://github.com/alexar76/basanos",
+      "description": "BASANOS checks ecosystem Solidity at a pinned commit — Ed25519-signed PASS/REVIEW/FAIL verdicts with evidence and an operator playbook. (Assurance, not insurance or admission.)"
+    },
+    {
+      "id": "dolos",
+      "repo": "dolos",
+      "paths": [
+        "dolos"
+      ],
+      "homepage": "https://dolos.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1574
+      },
+      "repository_target": "https://github.com/alexar76/dolos",
+      "description": "DOLOS — dynamic EVM red team for the UNI bubble: fork-isolated exploit txs, Ed25519 findings, sandbox fix-loop only."
+    },
+    {
+      "id": "attested",
+      "repo": "attested",
+      "paths": [
+        "attested"
+      ],
+      "homepage": "",
+      "github_published_declared": false,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1624
+      },
+      "description": "Attested Memory family — Hub (Memory Market, Truth, Provenance), SaaS Gateway (billing/entitlements via KOVA) and the Deal / Meter / Prove SaaS products with their shared operator console. Lives under attested/ in the monorepo.\n"
+    },
+    {
+      "id": "attested-memory",
+      "repo": "attested-memory",
+      "paths": [
+        "attested/attested-memory-hub",
+        "personal-attested-memory",
+        "team-memory-os",
+        "expert-memory-market"
+      ],
+      "homepage": "https://attestedmemory.net/",
+      "github_published_declared": true,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1678
+      },
+      "repository_target": "https://github.com/alexar76/attested-memory",
+      "description": "Attested Memory — verifiable memory for AI agents: Memory Market (write, search, share), Truth Layer (evidence and contradictions) and Provenance Ledger (lineage, hybrid-signed receipts) around one Memory Unit contract, with an MCP endpoint. Self-hosted, Docker.\n"
+    },
+    {
+      "id": "pingblip",
+      "repo": "pingblip",
+      "paths": [
+        "pingblip"
+      ],
+      "homepage": "",
+      "github_published_declared": false,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1741
+      },
+      "description": "PingBlip — creature loop on AIMarket rails (hatch/feed/scan/catch) with a free MemeForge GLB gateway. Lives under pingblip/ in the monorepo (web + shared + memeforge).\n"
+    },
+    {
+      "id": "cite-desks",
+      "repo": "cite-desks",
+      "paths": [
+        "cite-desks"
+      ],
+      "homepage": "https://desk.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1780
+      },
+      "repository_target": "https://github.com/alexar76/cite-desks",
+      "description": "Cite desks — independent evidence desks on AIMarket rails. One parent repo: shared kernel plus Emberline (fire), Tideline (flood), Solrecord (PV), Seamark (Nordic AIS), Plinth (site) and Smokeproof (HMS smoke), each a nested project with its own README. Family landing: desk.modelmarket.dev. Not an AIMarket brand surface.\n"
+    },
+    {
+      "id": "esim-kit",
+      "repo": "esim-operator-kit",
+      "paths": [
+        "esim-kit"
+      ],
+      "homepage": "https://esim.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1826
+      },
+      "repository_target": "https://github.com/alexar76/esim-operator-kit",
+      "description": "Onboard any eSIM operator, including ones already selling. They offer travel eSIMs to people and AI agents on AIMarket rails and get paid however they already take payment. Storefront in 5 languages. Demo: esim.modelmarket.dev.\n"
+    },
+    {
+      "id": "domain-kit",
+      "repo": "domain-operator-kit",
+      "paths": [
+        "domain-kit"
+      ],
+      "homepage": null,
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1867
+      },
+      "repository_target": "https://github.com/alexar76/domain-operator-kit",
+      "description": "Independent domain operators: signed domains.*@v1 quotes, fixed markup, registration, renewal and DNS. Openprovider, Porkbun Sandbox or HTTP suppliers; x402 USDC on Base and a buyer-side Vercel connector. Pre-live: both sandbox pilots passed; production payments and Vercel remain unverified."
+    },
+    {
+      "id": "emberline",
+      "repo": "emberline",
+      "paths": [
+        "cite-desks"
+      ],
+      "homepage": "https://emberlinedesk.com/",
+      "github_published_declared": false,
+      "publication_field_explicit": true,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1905
+      },
+      "description": "Emberline — Fire Evidence Desk (nested under cite-desks/). GitHub parent is alexar76/cite-desks, not a standalone emberline repo.\n"
+    },
+    {
+      "id": "use-cases-portal",
+      "repo": "use-cases-portal",
+      "paths": [
+        "use-cases-portal"
+      ],
+      "homepage": "https://use.modelmarket.dev/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1927
+      },
+      "repository_target": "https://github.com/alexar76/use-cases-portal",
+      "description": "AIMarket use-cases portal — public wow, onboarding (See·Buy·Publish·Build·Invest), live rails, and 7 direction boards with 12 idea pages (3D previews). Static site, five languages, honest LIVE vs SIM. Live host use.modelmarket.dev; Pages landing (docs/landing/) at alexar76.github.io/use-cases-portal.\n"
+    },
+    {
+      "id": "aicom",
+      "repo": "aicom",
+      "paths": [
+        "."
+      ],
+      "homepage": "https://magic-ai-factory.com/",
+      "github_published_declared": true,
+      "publication_field_explicit": false,
+      "role": "component_or_collection",
+      "provenance": {
+        "file": "scripts/satellite-map.yaml",
+        "line": 1963
+      },
+      "repository_target": "https://github.com/alexar76/aicom",
+      "description": "AI-Factory — autonomous pipeline that designs, builds, tests, and publishes products."
+    }
+  ],
+  "own_public_hosts": [
+    {
+      "host": "alexar76.github.io",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 18
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 98
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 121
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 161
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 258
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 294
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 359
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 411
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 716
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 743
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 833
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 908
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1007
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1042
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1082
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1120
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1154
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1194
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1274
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1310
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1351
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1395
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1504
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 344
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 345
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 354
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 360
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 546
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 602
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 614
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 616
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 623
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 630
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 637
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 644
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 651
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 658
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 665
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 673
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 680
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 688
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 703
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 710
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 725
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 732
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 796
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 832
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 846
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 847
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 848
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 849
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 858
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 859
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 860
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 861
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 862
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 869
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 870
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 925
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 926
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 970
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 971
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 973
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 976
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 978
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 980
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 983
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 985
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 988
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 991
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 994
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 997
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 998
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 999
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1011
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "atlas.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 351
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 688
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 979
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "attestedmemory.net",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1678
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 356
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 651
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "basanos.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1535
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 357
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 658
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 990
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "desk.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1780
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 810
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1010
+        }
+      ]
+    },
+    {
+      "host": "dolos.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1574
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 358
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 665
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 993
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "ecosystem.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 3
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "host": "edu.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 46
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 12
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 307
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 824
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 839
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1013
+        }
+      ]
+    },
+    {
+      "host": "emberlinedesk.com",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1905
+        }
+      ]
+    },
+    {
+      "host": "esim.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1826
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 695
+        }
+      ]
+    },
+    {
+      "host": "forge.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 797
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 525
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 966
+        }
+      ]
+    },
+    {
+      "host": "forge.pingblip.com",
+      "provenance": [
+        {
+          "file": "pingblip/README.md",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "host": "hestia.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 355
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 388
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 644
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 987
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "histor.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 353
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 461
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 602
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 982
+        }
+      ]
+    },
+    {
+      "host": "hunt.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 703
+        }
+      ]
+    },
+    {
+      "host": "iot.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 350
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 405
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 680
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 977
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "logos.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 349
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 673
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 975
+        }
+      ]
+    },
+    {
+      "host": "lottery.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 569
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 574
+        }
+      ]
+    },
+    {
+      "host": "magic-ai-factory.com",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 143
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 279
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 607
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1963
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 9
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 12
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 337
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 504
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 581
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 588
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 944
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 962
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 969
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1161
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "metis.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 348
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 630
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 974
+        }
+      ]
+    },
+    {
+      "host": "modeldev.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 373
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 7
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 10
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 12
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 362
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 761
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 824
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 910
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1160
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 202
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 217
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 9
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 12
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 346
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 347
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 518
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 525
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 595
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 602
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 964
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 965
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "pantheon/README.md",
+          "line": 137
+        }
+      ]
+    },
+    {
+      "host": "momus.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 359
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 725
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 732
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 996
+        }
+      ]
+    },
+    {
+      "host": "monitor.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 469
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 525
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 588
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 595
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 602
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 616
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 623
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 630
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 637
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 644
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 658
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 665
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 680
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 688
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 695
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 717
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 725
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 739
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1008
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1233
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1237
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "oracles.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 487
+        },
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 515
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 425
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 434
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 435
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 436
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 437
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 438
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 439
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 440
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 441
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 442
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 443
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 444
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 445
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 446
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 447
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 448
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 449
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 450
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 560
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 567
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 968
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "pantheon/README.md",
+          "line": 129
+        },
+        {
+          "file": "pantheon/README.md",
+          "line": 138
+        }
+      ]
+    },
+    {
+      "host": "pingblip.com",
+      "provenance": [
+        {
+          "file": "pingblip/README.md",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "host": "play.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1236
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 332
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 532
+        }
+      ]
+    },
+    {
+      "host": "pulse.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 746
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1009
+        }
+      ]
+    },
+    {
+      "host": "service-mesh.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 185
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 343
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 546
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        }
+      ]
+    },
+    {
+      "host": "skopos.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 352
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 392
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 717
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 981
+        }
+      ]
+    },
+    {
+      "host": "symmartys.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1448
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "host": "trace.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "pantheon/README.md",
+          "line": 230
+        }
+      ]
+    },
+    {
+      "host": "use.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 1927
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 7
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 710
+        }
+      ]
+    },
+    {
+      "host": "verify.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1001
+        }
+      ]
+    },
+    {
+      "host": "warden.modelmarket.dev",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 655
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 595
+        }
+      ]
+    },
+    {
+      "host": "world.pingblip.com",
+      "provenance": [
+        {
+          "file": "pingblip/README.md",
+          "line": 19
+        }
+      ]
+    }
+  ],
+  "shared_hosting_origins": [
+    {
+      "host": "github.com",
+      "identity_scope": "/alexar76/",
+      "provenance": [
+        {
+          "file": "scripts/satellite-map.yaml",
+          "line": 543
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 9
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 11
+        },
+        {
+          "file": "scripts/github-io/index.html",
+          "line": 13
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 319
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 320
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 333
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 363
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 373
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 373
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 417
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 426
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 427
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 434
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 469
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 476
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 483
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 504
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 511
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 518
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 525
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 525
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 532
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 539
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 539
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 546
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 553
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 560
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 567
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 574
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 581
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 588
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 595
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 595
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 602
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 614
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 616
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 616
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 623
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 623
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 630
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 630
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 637
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 637
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 637
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 644
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 651
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 658
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 665
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 673
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 673
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 680
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 680
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 688
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 688
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 695
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 703
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 703
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 710
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 717
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 717
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 725
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 732
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 739
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 746
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 746
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 753
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 761
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 768
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 775
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 782
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 789
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 796
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 803
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 810
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 832
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 839
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 851
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 870
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 910
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 927
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 940
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 948
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 959
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 960
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 961
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 963
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 967
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 972
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 984
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 986
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 989
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 992
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 995
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1000
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1012
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1014
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 1246
+        },
+        {
+          "file": "pantheon/README.md",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "host": "raw.githubusercontent.com",
+      "identity_scope": "/alexar76/",
+      "provenance": [
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 430
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 434
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 435
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 436
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 437
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 438
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 439
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 440
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 441
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 442
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 443
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 444
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 445
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 446
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 447
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 448
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 449
+        },
+        {
+          "file": "ecosystem-landing/index.html",
+          "line": 450
+        }
+      ]
+    }
+  ],
+  "maintained_entry_targets": [
+    {
+      "url": "https://ecosystem.modelmarket.dev/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 4
+      }
+    },
+    {
+      "url": "https://ecosystem.modelmarket.dev/ru/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 3
+      }
+    },
+    {
+      "url": "https://ecosystem.modelmarket.dev/es/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 3
+      }
+    },
+    {
+      "url": "https://ecosystem.modelmarket.dev/fr/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 3
+      }
+    },
+    {
+      "url": "https://ecosystem.modelmarket.dev/zh/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 3
+      }
+    },
+    {
+      "url": "https://ecosystem.modelmarket.dev/assets/social.png",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 4
+      }
+    },
+    {
+      "url": "https://use.modelmarket.dev/?path=build&lang=en#onboard",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 7
+      }
+    },
+    {
+      "url": "https://use.modelmarket.dev/?path=invest&lang=en#onboard",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 7
+      }
+    },
+    {
+      "url": "https://use.modelmarket.dev/?path=publish&lang=en#onboard",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 7
+      }
+    },
+    {
+      "url": "https://use.modelmarket.dev/?path=buy&lang=en#onboard",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 7
+      }
+    },
+    {
+      "url": "https://modeldev.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 12
+      }
+    },
+    {
+      "url": "https://magic-ai-factory.com/?lang=en",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 12
+      }
+    },
+    {
+      "url": "https://modelmarket.dev/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 12
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/hestia",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 989
+      }
+    },
+    {
+      "url": "https://modeldev.modelmarket.dev/#specialists",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 10
+      }
+    },
+    {
+      "url": "https://metis.modelmarket.dev/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 11
+      }
+    },
+    {
+      "url": "https://attestedmemory.net/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 651
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/warden",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 595
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/themis",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 986
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/gaia",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 680
+      }
+    },
+    {
+      "url": "https://logos.modelmarket.dev/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 11
+      }
+    },
+    {
+      "url": "https://esim.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 695
+      }
+    },
+    {
+      "url": "https://symmartys.modelmarket.dev/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 11
+      }
+    },
+    {
+      "url": "https://edu.modelmarket.dev/ai-pays-ai/",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 12
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/alexar76.github.io",
+      "provenance": {
+        "file": "scripts/github-io/index.html",
+        "line": 13
+      }
+    },
+    {
+      "url": "https://edu.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1013
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 959
+      }
+    },
+    {
+      "url": "https://play.modelmarket.dev/start",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 332
+      }
+    },
+    {
+      "url": "https://magic-ai-factory.com",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 962
+      }
+    },
+    {
+      "url": "https://service-mesh.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 546
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/dioscuri/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 970
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/helios/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 973
+      }
+    },
+    {
+      "url": "https://modelmarket.dev",
+      "provenance": {
+        "file": "pantheon/README.md",
+        "line": 137
+      }
+    },
+    {
+      "url": "https://modelmarket.dev/studio/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 965
+      }
+    },
+    {
+      "url": "https://metis.modelmarket.dev",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 974
+      }
+    },
+    {
+      "url": "https://logos.modelmarket.dev",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 975
+      }
+    },
+    {
+      "url": "https://iot.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 977
+      }
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 979
+      }
+    },
+    {
+      "url": "https://skopos.modelmarket.dev",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 981
+      }
+    },
+    {
+      "url": "https://histor.modelmarket.dev",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 982
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/themis/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 985
+      }
+    },
+    {
+      "url": "https://hestia.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 987
+      }
+    },
+    {
+      "url": "https://basanos.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 990
+      }
+    },
+    {
+      "url": "https://dolos.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 993
+      }
+    },
+    {
+      "url": "https://momus.modelmarket.dev",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 996
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/treasury/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 998
+      }
+    },
+    {
+      "url": "https://modeldev.modelmarket.dev/bridges/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 761
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/en.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://magic-ai-factory.com/argus/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 969
+      }
+    },
+    {
+      "url": "https://monitor.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1008
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/oracles/blob/main/docs/crypto-maturity.en.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 427
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 968
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/oracles",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 560
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/platon.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 434
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=platon",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 567
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/platon/umbral",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 567
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/platon",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 567
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=chronos",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 435
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/chronos.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 435
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=lattice",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 436
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/lattice.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 436
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=murmuration",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 437
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/murmuration.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 437
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=lumen",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 438
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/lumen.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 438
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=colony",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 439
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/colony.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 439
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=turing",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 440
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/turing.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 440
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=percola",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 441
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/percola.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 441
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=fermat",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 442
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/fermat.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 442
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=ablation",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 443
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/ablation.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 443
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=landauer",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 444
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/landauer.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 444
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=sortes",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 445
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/sortes.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 445
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=gauss",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 446
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/gauss.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 446
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=aestus",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 447
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/aestus.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 447
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=betti",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 448
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/betti.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 448
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=kantor",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 449
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/kantor.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 449
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/?o=fourier",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 450
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/alexar76/oracles/main/frontend/public/media/fourier.webm",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 450
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-oracle-gateway",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 469
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-mcp",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 476
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-plugins",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 782
+      }
+    },
+    {
+      "url": "https://magic-ai-factory.com/iq",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 504
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom-products",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 963
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-hub",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 518
+      }
+    },
+    {
+      "url": "https://forge.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 966
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/hephaestus",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 967
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/hephaestus#documentation",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 525
+      }
+    },
+    {
+      "url": "https://play.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 532
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-playground",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 532
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/create-aimarket-agent",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 539
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/create-aimarket-agent#quick-start",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 539
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/ai-service-mesh",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 546
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/ai-service-mesh/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 546
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-protocol",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 553
+      }
+    },
+    {
+      "url": "https://lottery.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 574
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/lottery",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 574
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom-landing",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 581
+      }
+    },
+    {
+      "url": "https://magic-ai-factory.com/landing-page-generation/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 581
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/argus",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 588
+      }
+    },
+    {
+      "url": "https://warden.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 595
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/warden/blob/main/docs/mcp-survey.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 595
+      }
+    },
+    {
+      "url": "https://modelmarket.dev/tools/warden-scan",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 595
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/histor/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 983
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/histor",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 984
+      }
+    },
+    {
+      "url": "https://monitor.modelmarket.dev/?node=histor",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 602
+      }
+    },
+    {
+      "url": "https://modelmarket.dev/tools/histor-check",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 602
+      }
+    },
+    {
+      "url": "https://histor.modelmarket.dev/datasets/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 602
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/theoros/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 971
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/theoros",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 972
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/dioscuri",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 927
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/dioscuri-integration.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 616
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/helios",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 623
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/helios-integration.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 623
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/metis/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 630
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/metis",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 630
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/metis-integration.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 630
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/themis/console/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 637
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.en.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 637
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/supply-chain-admission.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 637
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/hestia/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 988
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/attested-memory/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 651
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/attested-memory",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 651
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/basanos/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 991
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/basanos",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 992
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/dolos/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 994
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/dolos",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 995
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/logos",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 673
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/logos/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 976
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/logos#readme",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 673
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/gaia/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 978
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/iot-physical-oracles.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 680
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/atlas/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 980
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/atlas",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 688
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/atlas/blob/main/docs/GUIDE.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 688
+      }
+    },
+    {
+      "url": "https://esim.modelmarket.dev/kit",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 695
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/esim-operator-kit",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 695
+      }
+    },
+    {
+      "url": "https://monitor.modelmarket.dev/?node=modelmarket-dev-demo-esim-seller",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 695
+      }
+    },
+    {
+      "url": "https://hunt.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 703
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/signal-hunt/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 703
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/signal-hunt",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 703
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/signal-hunt/blob/main/docs/GUIDE.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 703
+      }
+    },
+    {
+      "url": "https://use.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 710
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/use-cases-portal/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 710
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/use-cases-portal",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 710
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/skopos",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 717
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/skopos-integration.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 717
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/momus/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 997
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/momus",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 725
+      }
+    },
+    {
+      "url": "https://momus.modelmarket.dev/treasury",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 732
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/treasury",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 732
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/alien-monitor",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 739
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/pulse-terminal",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 746
+      }
+    },
+    {
+      "url": "https://pulse.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1009
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/acex",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 746
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-widget",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 753
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-bridges",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 761
+      }
+    },
+    {
+      "url": "https://modeldev.modelmarket.dev/guides/aimarket-bridges/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 761
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-sdks",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 768
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-desktop",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 775
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/tree/main/contracts",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 789
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/escrow-signer/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 999
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/escrow-signer",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1000
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/linked-in-profile-coach",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 803
+      }
+    },
+    {
+      "url": "https://desk.modelmarket.dev/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1010
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/cite-desks",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 810
+      }
+    },
+    {
+      "url": "https://modeldev.modelmarket.dev/school/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 824
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-courses",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1012
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1011
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-school",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1014
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/orchestration-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 846
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/agent-economy-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 847
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/mcp-security-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 848
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/ai-factory-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 849
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-courses/tree/main/orchestration-course/labs",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 851
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/verifiable-randomness-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 858
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/mathematics-of-trust-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 859
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/optimization-with-proofs-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 860
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/smart-contracts-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 861
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/physics-inspired-computing-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 862
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/3d-data-viz-course/",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 869
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aimarket-agent",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 870
+      }
+    },
+    {
+      "url": "https://modeldev.modelmarket.dev/api/public/ecosystem-status",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1160
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/production-metrics.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 910
+      }
+    },
+    {
+      "url": "https://verify.modelmarket.dev",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1001
+      }
+    },
+    {
+      "url": "https://magic-ai-factory.com/api/public/ecosystem-status",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1161
+      }
+    },
+    {
+      "url": "https://monitor.modelmarket.dev/api/topology",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1233
+      }
+    },
+    {
+      "url": "https://monitor.modelmarket.dev/api/public/dioscuri-collab",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1237
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/en.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://magic-ai-factory.com/argus/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/dioscuri/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/themis/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://basanos.modelmarket.dev/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://dolos.modelmarket.dev/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://modelmarket.dev/studio/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://iot.modelmarket.dev/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://attestedmemory.net/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/treasury/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://service-mesh.modelmarket.dev/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://modeldev.modelmarket.dev/bridges/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/helios/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://monitor.modelmarket.dev/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/oracles/blob/main/docs/crypto-maturity.en.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/platon/umbral\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/platon\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/theoros/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/theoros\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/orchestration-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/agent-economy-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/mcp-security-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/ai-factory-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/verifiable-randomness-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/mathematics-of-trust-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/optimization-with-proofs-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/smart-contracts-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/physics-inspired-computing-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://alexar76.github.io/aimarket-courses/3d-data-viz-course/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://modeldev.modelmarket.dev/api/public/ecosystem-status\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/production-metrics.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://hestia.modelmarket.dev/\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-ru.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/ru.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/ru.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-ru.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-es.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/es.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/es.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-es.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-fr.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/fr.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/fr.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-fr.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-zh.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/zh.md\\",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/zh.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-zh.md",
+      "provenance": {
+        "file": "ecosystem-landing/index.html",
+        "line": 1246
+      }
+    },
+    {
+      "url": "https://pingblip.com",
+      "provenance": {
+        "file": "pingblip/README.md",
+        "line": 18
+      }
+    },
+    {
+      "url": "https://world.pingblip.com",
+      "provenance": {
+        "file": "pingblip/README.md",
+        "line": 19
+      }
+    },
+    {
+      "url": "https://forge.pingblip.com",
+      "provenance": {
+        "file": "pingblip/README.md",
+        "line": 20
+      }
+    },
+    {
+      "url": "https://github.com/alexar76/theoros/blob/main/CANON.md",
+      "provenance": {
+        "file": "pantheon/README.md",
+        "line": 15
+      }
+    },
+    {
+      "url": "https://oracles.modelmarket.dev/family",
+      "provenance": {
+        "file": "pantheon/README.md",
+        "line": 138
+      }
+    },
+    {
+      "url": "https://trace.modelmarket.dev/**",
+      "provenance": {
+        "file": "pantheon/README.md",
+        "line": 230
+      }
+    }
+  ],
+  "supplementary_nonmapped_surfaces": [
+    {
+      "name": "PANTHEON / The Human Trace",
+      "url": "https://trace.modelmarket.dev/",
+      "source": "pantheon/README.md:230"
+    },
+    {
+      "name": "PingBlip game, world and forge",
+      "urls": [
+        "https://pingblip.com",
+        "https://world.pingblip.com",
+        "https://forge.pingblip.com"
+      ],
+      "source": "pingblip/README.md:18"
+    },
+    {
+      "name": "Independent AI products",
+      "url": "https://independentai.network",
+      "source": "docs/growth/external-mentions-2026-10-26.ru.md:128",
+      "note": "Historical audit identity marker; not separately counted as a satellite/component."
+    }
+  ],
+  "limits": [
+    "60 mapping entries are not 60 independent products or operators; profile, wikis, historical aliases and collections are present.",
+    "github_published defaults to true in the local map; this script does not assert remote existence.",
+    "Hosts come from selected maintained entry sources, not a full domain/DNS inventory.",
+    "A local declaration or first-party crosslink is not an external endorsement."
+  ]
+}

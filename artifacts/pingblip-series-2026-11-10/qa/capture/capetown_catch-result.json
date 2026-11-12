@@ -1,0 +1,54 @@
+{
+  "recordedAt": 1794343804.441012,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "creature": {
+      "id": "cmwb3wken008sn548ck5t1xxu",
+      "playerId": "cmw9lkshs0052n548w23eywq3",
+      "speciesId": "heel-golem",
+      "source": "catch",
+      "stage": "awake",
+      "evolved": false,
+      "evolvedAt": null,
+      "feedCount": 0,
+      "lastFeedAt": null,
+      "hatchedAt": "2026-11-10T19:52:11.087Z",
+      "cell": "k3vp5",
+      "hatchProofId": "c63307141f8dbea957c2",
+      "catchProofId": "c63307141f8dbea957c2",
+      "asleepAt": null,
+      "nickname": null
+    },
+    "species": {
+      "id": "heel-golem",
+      "name": "Heel Golem",
+      "packId": "velvet-vault",
+      "type": "velvet",
+      "diet": {
+        "productId": "prod-sortes",
+        "capabilityId": "sortes.draw@v1",
+        "sourceHub": "https://oracles.modelmarket.dev/family",
+        "label": "a signed draw",
+        "input": {
+          "alpha": "blip-velvet",
+          "num_bytes": 32
+        }
+      },
+      "sceneId": "velvet-room",
+      "spawn": {
+        "layers": [
+          "weather"
+        ],
+        "weather": [
+          "clear",
+          "night"
+        ],
+        "rarity": "rare"
+      },
+      "starter": false
+    },
+    "already": false,
+    "creditsMilli": 310
+  }
+}

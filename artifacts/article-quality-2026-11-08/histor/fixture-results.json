@@ -1,0 +1,96 @@
+{
+  "kind": "offline implementation fixtures, not a production survey",
+  "source10": "8e0763168^",
+  "source11": "8e0763168",
+  "currentDigestSourceByteIdenticalTo11": true,
+  "rows": [
+    {
+      "fixture": "integer default 1",
+      "1.0": {
+        "digest": "sha256-vDASNPpc1n+dZbhoIRtpiDMU8eh96ukIeyHbhL4UOvI=",
+        "status": "digested"
+      },
+      "1.1": {
+        "digest": "sha256-vDASNPpc1n+dZbhoIRtpiDMU8eh96ukIeyHbhL4UOvI=",
+        "status": "digested"
+      }
+    },
+    {
+      "fixture": "fraction 0.5",
+      "1.0": {
+        "status": "declined",
+        "code": "MTL-NUM-001"
+      },
+      "1.1": {
+        "digest": "sha256-sIkKM1gFvjvHtnPc4ZRYq5TB1gGc+OwUBxLz8yS5VQ4=",
+        "status": "digested"
+      }
+    },
+    {
+      "fixture": "exponent 1e21",
+      "1.0": {
+        "status": "declined",
+        "code": "MTL-NUM-001"
+      },
+      "1.1": {
+        "digest": "sha256-+sCB7Rqp9Tj95FTvDAleq/KUJgwEpbnQrNh3cPP8odg=",
+        "status": "digested"
+      }
+    },
+    {
+      "fixture": "integer 2^53 + 1",
+      "1.0": {
+        "status": "declined",
+        "code": "AWR-CANON-002"
+      },
+      "1.1": {
+        "digest": "sha256-XfVJMyfcIuqYzyzGaBRwXDbH6+WUeYVrpRRqfgDKoaA=",
+        "status": "digested"
+      }
+    },
+    {
+      "fixture": "empty tool list",
+      "1.0": {
+        "status": "declined",
+        "code": "MTL-SUBJ-002"
+      },
+      "1.1": {
+        "digest": "sha256-T1PNoYwrqgwDVLtfmj7L5e0Sq02OEbqHPC8RFhICuUU=",
+        "status": "digested"
+      }
+    },
+    {
+      "fixture": "repeated tool names",
+      "1.0": {
+        "status": "declined",
+        "code": "MTL-SUBJ-003"
+      },
+      "1.1": {
+        "digest": "sha256-ykPcs9+4CodaIUa4OzaeHCvO0de691w/cYJzPj/OTCg=",
+        "status": "digested"
+      }
+    },
+    {
+      "fixture": "entry without a name",
+      "1.0": {
+        "status": "declined",
+        "code": "MTL-SUBJ-001"
+      },
+      "1.1": {
+        "status": "declined",
+        "code": "MTL-SUBJ-001"
+      }
+    },
+    {
+      "fixture": "overflow 1e400",
+      "1.0": {
+        "status": "declined",
+        "code": "MTL-NUM-001"
+      },
+      "1.1": {
+        "status": "declined",
+        "code": "MTL-NUM-001"
+      }
+    }
+  ]
+}

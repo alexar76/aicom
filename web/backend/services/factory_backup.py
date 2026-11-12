@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import shutil
 import sqlite3
 import stat
@@ -51,7 +52,7 @@ _SKIP_DIR_NAMES = frozenset(
 )
 
 # Optional top-level dirs under data/ (heavy ephemeral previews).
-_DEFAULT_SKIP_TOP_LEVEL = frozenset({"sandboxes", _RESTORE_UPLOADS_DIR})
+_DEFAULT_SKIP_TOP_LEVEL = frozenset({"sandboxes"})
 
 _MAX_FILES = 200_000
 _MAX_FILE_BYTES = 512 * 1024 * 1024
@@ -88,14 +89,13 @@ def build_factory_backup_zip(*, include_sandboxes: bool = False) -> tuple[Path, 
 
     try:
         with zipfile.ZipFile(tmp_path, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as zf:
-            for dirpath, dirnames, filenames in os.walk(root, topdown=True, followlinks=False):
+            for dirpath, dirnames, filenames, dir_fd in os.fwalk(root, topdown=True, follow_symlinks=False):
                 rel_dir = Path(dirpath).relative_to(root)
                 pruned: list[str] = []
                 for d in sorted(dirnames):
-                    if (
-                        not include_sandboxes
-                        and d in _DEFAULT_SKIP_TOP_LEVEL
-                        and len(rel_dir.parts) == 0
+                    if len(rel_dir.parts) == 0 and (
+                        d in _PRESERVE_TOP_LEVEL
+                        or (not include_sandboxes and d in _DEFAULT_SKIP_TOP_LEVEL)
                     ):
                         skipped_top_level.append(d)
                         continue
@@ -113,24 +113,38 @@ def build_factory_backup_zip(*, include_sandboxes: bool = False) -> tuple[Path, 
                         )
                         break
                     fpath = Path(dirpath) / name
-                    if not fpath.is_file():
-                        continue
+                    # Generated code can contain symlinks. Open relative to the
+                    # walked directory descriptor so a path swap cannot redirect
+                    # the read outside data/. O_NONBLOCK also avoids blocking on
+                    # a FIFO before fstat rejects non-regular files.
                     try:
-                        size_bytes = fpath.stat().st_size
+                        fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=dir_fd)
                     except OSError:
                         continue
-                    if size_bytes > _MAX_FILE_BYTES:
-                        skipped_large.append(
-                            {
-                                "path": str(fpath.relative_to(root)),
-                                "size_bytes": size_bytes,
-                                "reason": f"file larger than {_MAX_FILE_BYTES} bytes",
-                            }
-                        )
-                        continue
-                    arc = fpath.relative_to(root).as_posix()
-                    zf.write(fpath, arcname=arc)
-                    file_count += 1
+                    with os.fdopen(fd, "rb") as source:
+                        source_stat = os.fstat(source.fileno())
+                        if not stat.S_ISREG(source_stat.st_mode):
+                            continue
+                        size_bytes = source_stat.st_size
+                        if size_bytes > _MAX_FILE_BYTES:
+                            skipped_large.append(
+                                {
+                                    "path": str(fpath.relative_to(root)),
+                                    "size_bytes": size_bytes,
+                                    "reason": f"file larger than {_MAX_FILE_BYTES} bytes",
+                                }
+                            )
+                            continue
+                        arc = fpath.relative_to(root).as_posix()
+                        date_time = datetime.fromtimestamp(source_stat.st_mtime).timetuple()[:6]
+                        if not 1980 <= date_time[0] <= 2107:
+                            date_time = (1980, 1, 1, 0, 0, 0)
+                        info = zipfile.ZipInfo(arc, date_time=date_time)
+                        info.compress_type = zipfile.ZIP_DEFLATED
+                        info.external_attr = source_stat.st_mode << 16
+                        with zf.open(info, "w", force_zip64=True) as target:
+                            shutil.copyfileobj(source, target)
+                        file_count += 1
                 if file_count >= _MAX_FILES:
                     break
 
@@ -245,6 +259,14 @@ def _restore_uploads_dir() -> Path:
     return d
 
 
+def _restore_upload_path(token: str) -> Path:
+    # Only tokens minted by save_restore_upload may select a ZIP. In particular,
+    # reject traversal before restore's finally block can delete that path.
+    if not isinstance(token, str) or re.fullmatch(r"[0-9a-f]{32}", token) is None:
+        raise ValueError("Invalid restore token")
+    return _restore_uploads_dir() / f"{token}.zip"
+
+
 def _read_backup_manifest(zf: zipfile.ZipFile) -> dict[str, Any]:
     try:
         raw = zf.read("_BACKUP_MANIFEST.json")
@@ -285,27 +307,32 @@ def _validate_zip_member_path(dest_real: Path, name: str) -> None:
 
 
 def safe_extract_zip(zf: zipfile.ZipFile, dest: Path) -> None:
-    """Extract backup ZIP into dest with ZipSlip/symlink guards (Python 3.12+ data filter)."""
+    """Extract a validated backup and preserve ordinary Unix permission bits."""
     dest_real = dest.resolve()
     dest_real.mkdir(parents=True, exist_ok=True)
-    for info in zf.infolist():
+    members = zf.infolist()
+    for info in members:
         _validate_zip_member(dest_real, info)
-    try:
-        zf.extractall(dest_real, filter="data")
-    except TypeError:
-        # filter= requires Python 3.12+; members are pre-validated above.
-        zf.extractall(dest_real)
+    zf.extractall(dest_real)
+    # ZipFile does not restore stored permissions. Without this a 0600 secret
+    # becomes 0644 (under a normal umask), and executable product scripts stop
+    # working. Apply directory modes last so a read-only parent cannot block
+    # extraction or a child's chmod. Never restore setuid/setgid/sticky bits.
+    for info in sorted(members, key=lambda item: (item.is_dir(), -len(Path(item.filename).parts))):
+        mode = (info.external_attr >> 16) & 0xFFFF
+        if info.create_system == 3 and mode:
+            (dest_real / info.filename).chmod(stat.S_IMODE(mode) & 0o777)
 
 
 def inspect_backup_zip(zip_path: Path) -> dict[str, Any]:
     """Read manifest and file stats from an uploaded backup ZIP."""
     with zipfile.ZipFile(zip_path, "r") as zf:
         manifest = _read_backup_manifest(zf)
-        names = [n for n in zf.namelist() if not n.endswith("/")]
-        total_uncompressed = sum(zf.getinfo(n).file_size for n in names if n in zf.namelist())
+        files = [info for info in zf.infolist() if not info.is_dir()]
+        total_uncompressed = sum(info.file_size for info in files)
     return {
         "backup_manifest": manifest,
-        "archive_files": len(names),
+        "archive_files": len(files),
         "archive_bytes_uncompressed": total_uncompressed,
     }
 
@@ -379,7 +406,7 @@ def save_restore_upload(content: bytes) -> tuple[str, Path]:
 
 
 def preview_restore(token: str) -> dict[str, Any]:
-    path = _restore_uploads_dir() / f"{token}.zip"
+    path = _restore_upload_path(token)
     if not path.is_file():
         raise FileNotFoundError("Upload expired or not found — upload the ZIP again")
     backup = inspect_backup_zip(path)
@@ -417,7 +444,7 @@ def _clear_data_root_for_restore(root: Path) -> list[str]:
     for child in list(root.iterdir()):
         if child.name in _PRESERVE_TOP_LEVEL:
             continue
-        if child.is_dir():
+        if child.is_dir() and not child.is_symlink():
             shutil.rmtree(child, ignore_errors=False)
         else:
             child.unlink(missing_ok=True)
@@ -436,7 +463,7 @@ def restore_factory_from_upload(
     Leaves ``data/backups/`` and ``data/_restore_uploads/`` intact; writes a pre-restore
     ZIP into ``data/backups/`` when requested.
     """
-    upload_path = _restore_uploads_dir() / f"{token}.zip"
+    upload_path = _restore_upload_path(token)
     if not upload_path.is_file():
         raise FileNotFoundError("Upload expired or not found — upload the ZIP again")
 
@@ -469,7 +496,7 @@ def restore_factory_from_upload(
             removed = _clear_data_root_for_restore(root)
             copied = 0
             for item in staging.iterdir():
-                if item.name.startswith("_BACKUP_"):
+                if item.name.startswith("_BACKUP_") or item.name in _PRESERVE_TOP_LEVEL:
                     continue
                 dest = root / item.name
                 if item.is_dir():

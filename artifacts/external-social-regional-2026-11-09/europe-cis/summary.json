@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-09",
+  "scope": [
+    "RU/CIS",
+    "France",
+    "Germany",
+    "Spain",
+    "Portuguese-speaking sites",
+    "Czechia",
+    "Turkey"
+  ],
+  "new_independent_regional_reviews": 0,
+  "new_reader_discussions_confirmed": 0,
+  "known_reconfirmed": {
+    "source": "https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/",
+    "date": "2026-10-22",
+    "comments": "closed;API[]"
+  },
+  "excluded_false_positive": {
+    "source": "https://habr.com/ru/amp/publications/1076614/",
+    "reason": "Links W3OSC/skill-warden;no exact alexar76/modelmarket markers"
+  },
+  "native_search_limitations": [
+    "Habr two exact queriesHTTP400 BadRequestUrl;not a zero-result finding",
+    "Radyz WP exact domain search misses even a known page because source link not in content",
+    "MCP Catalog known page GET timeout"
+  ],
+  "queries_proposed": 25,
+  "web_batches_returned": 7,
+  "primary_gets": 10,
+  "external_writes": false,
+  "auth_changes": false,
+  "report": "report.ru.md",
+  "verification": "verification.json"
+}

@@ -1,0 +1,88 @@
+{
+  "caseDifferences": [],
+  "comparedHostCaseObservations": 2182,
+  "comparedUniqueCases": 1091,
+  "dependencyLockMatchesFinalSource": true,
+  "dependencyLockSha256": "3ad84a7b3257d308b9ab184d7c97389bc13894fbc99e9d3f9215757e2d95e7b6",
+  "evidenceSha256": {
+    "attestedSummary": "cf5ec1f85278a7608ea50f1b2c1c56d8bdba616d8c230ef008300a962f88539d",
+    "blipSummary": "0a82b0c16057bbb7395326aa76c95dc52f9e88f36882deb4c4a8c029377a2f53"
+  },
+  "exactRawCaseIdMatches": 1088,
+  "generatedRandomFixtureBytesCompared": false,
+  "gitTree": "1400f9f8e6f0b104298835b1f9bcfd35f4a75aa3",
+  "gzipMtimeAliases": [
+    {
+      "attestedRawIdSha256": "4a92fec4a6b866f3dff15ec09263b8ab1ec8f97a24b95d4ac0c712122918a94c",
+      "blipRawIdSha256": "72120d08bdd1e39fc817a4111c516cbd86e2fad99c13dc8674433aedceef52fb",
+      "differingByteCount": 1,
+      "function": "tests.test_crawler_stream_security::test_bounded_reader_keeps_normal_json_working",
+      "gzipMembers": 1,
+      "onlyMtimeBytesDiffer": true,
+      "stage": "hub-relevant-v4"
+    },
+    {
+      "attestedRawIdSha256": "1387107afd9c4756c9f8bd08dae326baff1812e6a2989fe5d6c9461253599cf2",
+      "blipRawIdSha256": "574e86b7a6b091f8d4a2991d6606cb862d0f07ee4acdc17f0a9df741ae631b98",
+      "differingByteCount": 2,
+      "function": "tests.test_outbound_capped_post::test_invalid_or_unsupported_compression_is_closed",
+      "gzipMembers": 2,
+      "onlyMtimeBytesDiffer": true,
+      "stage": "hub-relevant-v4"
+    },
+    {
+      "attestedRawIdSha256": "83da39c3490a30ef9503332b7d285a5b29d3aaa7e4b147301dee4dc001d9a43f",
+      "blipRawIdSha256": "c4aec10e5e193a7caa76db0d7b9f8d07fd4d71a7673556bae18ef19fc1a95eac",
+      "differingByteCount": 1,
+      "function": "tests.test_outbound_capped_post::test_invalid_or_unsupported_compression_is_closed",
+      "gzipMembers": 1,
+      "onlyMtimeBytesDiffer": true,
+      "stage": "hub-relevant-v4"
+    }
+  ],
+  "passed": true,
+  "perStage": {
+    "hub-chain-v4": {
+      "cases": 2,
+      "differentCanonical": 0,
+      "matchedCanonical": 2,
+      "mtimeOnlyAliases": 0,
+      "rawIdsMatched": 2
+    },
+    "hub-relevant-v4": {
+      "cases": 1021,
+      "differentCanonical": 0,
+      "matchedCanonical": 1021,
+      "mtimeOnlyAliases": 3,
+      "rawIdsMatched": 1018
+    },
+    "protocol-main-v4": {
+      "cases": 64,
+      "differentCanonical": 0,
+      "matchedCanonical": 64,
+      "mtimeOnlyAliases": 0,
+      "rawIdsMatched": 64
+    },
+    "protocol-wire-v4": {
+      "cases": 4,
+      "differentCanonical": 0,
+      "matchedCanonical": 4,
+      "mtimeOnlyAliases": 0,
+      "rawIdsMatched": 4
+    }
+  },
+  "same574TestedSourceFiles": true,
+  "sameCanonicalCaseIdsAndStatuses": true,
+  "sameImageAndDependencyAndPluginIdentities": true,
+  "sameRawCollectedCaseIds": false,
+  "scope": "1088 raw case IDs/statuses match exactly. For3 gzip.compress cases, only decoded gzip-header MTIME bytes differ; these are zeroed solely for report pairing. No source or test result is changed. Randomized fixture bytes and durations are not compared.",
+  "sites": [
+    "blip",
+    "attested"
+  ],
+  "sourceMappingSha256": "7085e9f236ccd276b89a3f864421751fb468f9da18b17b05376ffccb40068f16",
+  "sourceVectorSha256": {
+    "attested": "d3cdbdef98742ac63cf7aea5f9e91ad45667c5ced52589d24b46c4ad1641cbe3",
+    "blip": "2c9f9b9e948c55bfabfcc2c0ee292e6109c466368033b6d19805674fc3e5885b"
+  }
+}

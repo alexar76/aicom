@@ -98,6 +98,15 @@ def test_complete_clean_answer_passes(scan, monkeypatch, tmp_path):
     assert gate(scan, monkeypatch, write(tmp_path, DJANGO)) == 0
 
 
+@pytest.mark.parametrize("files,batch", [({}, {"results": []}), (DJANGO, {"results": [{}]})])
+def test_clean_scan_replaces_stale_json_findings(scan, monkeypatch, tmp_path, files, batch):
+    report = tmp_path / "report.json"
+    report.write_text('[{"id":"old-finding"}]')
+    osv(monkeypatch, batch=batch)
+    assert gate(scan, monkeypatch, write(tmp_path, files), "--json", str(report)) == 0
+    assert json.loads(report.read_text()) == []
+
+
 # -- Manifests: whatever cannot be read must not come out as "no manifests found".
 
 UV_LOCK = """\
@@ -198,6 +207,15 @@ BROKEN = {
     "package-lock with a trailing comma": {
         "package-lock.json": '{"lockfileVersion": 3, "packages": {"node_modules/next": {"version": "15.5.4"},}}'},
     "package-lock that is not an object": {"package-lock.json": "[]"},
+    "package-lock missing dependency graph": {"package-lock.json": "{}"},
+    "package-lock v3 missing packages": {"package-lock.json": '{"lockfileVersion":3,"dependencies":{}}'},
+    "package-lock with packages array": {"package-lock.json": '{"lockfileVersion":3,"packages":[]}'},
+    "package-lock v3 missing resolved version": {
+        "package-lock.json": '{"lockfileVersion":3,"packages":{"node_modules/next":{}}}'},
+    "package-lock v1 missing resolved version": {
+        "package-lock.json": '{"lockfileVersion":1,"dependencies":{"next":{}}}'},
+    "package-lock nested v1 missing resolved version": {
+        "package-lock.json": '{"lockfileVersion":1,"dependencies":{"next":{"version":"1.0.0","dependencies":{"react":{}}}}}'},
     "pin the parser cannot read": {"requirements.txt": "flask===2.0.1\n"},
     "requirements.lock pin the parser cannot read": {"requirements.lock": "flask===2.0.1\n"},
     "uv.lock that is not TOML": {"uv.lock": 'version = 1\n[[package]\nname = "x"\n'},

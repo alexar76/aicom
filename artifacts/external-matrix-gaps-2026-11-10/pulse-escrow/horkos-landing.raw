@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HORKOS — the signer that refuses</title>
+<meta name="description" content="HORKOS holds the only key authorized in AIMarketEscrow.authorizedHubs, so the Hub does not. One allowed selector, one escrow, one chain — and the buyer's own EIP-712 signature as the authority for every amount." />
+<link rel="alternate" hreflang="en" href="https://alexar76.github.io/escrow-signer/?lang=en" />
+<link rel="alternate" hreflang="ru" href="https://alexar76.github.io/escrow-signer/?lang=ru" />
+<link rel="alternate" hreflang="es" href="https://alexar76.github.io/escrow-signer/?lang=es" />
+<link rel="alternate" hreflang="fr" href="https://alexar76.github.io/escrow-signer/?lang=fr" />
+<link rel="alternate" hreflang="zh" href="https://alexar76.github.io/escrow-signer/?lang=zh" />
+<link rel="alternate" hreflang="x-default" href="https://alexar76.github.io/escrow-signer/" />
+<meta property="og:title" content="HORKOS — the signer that refuses" />
+<meta property="og:description" content="One selector. One escrow. One chain. The buyer's signature is the authority; everything else is a refusal with a name." />
+<style>
+:root{
+  --bg:#f7f8fa; --panel:#ffffff; --ink:#12161d; --dim:#5a6472; --faint:#8b95a4;
+  --brd:#dfe3ea; --teal:#0f8f86; --violet:#6b4fd8; --amber:#a86a00; --red:#b3352c;
+  --pass:#0f8f86; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif;
+  --grid:rgba(18,22,29,.05);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#080a0e; --panel:#0e1218; --ink:#e6ebf2; --dim:#9aa6b6; --faint:#5f6b7c;
+    --brd:#1c232d; --teal:#3ddbc6; --violet:#a08cff; --amber:#ffc266; --red:#ff6b5e;
+    --pass:#3ddbc6; --grid:rgba(230,235,242,.05);
+  }
+}
+:root[data-theme=dark]{
+  --bg:#080a0e; --panel:#0e1218; --ink:#e6ebf2; --dim:#9aa6b6; --faint:#5f6b7c;
+  --brd:#1c232d; --teal:#3ddbc6; --violet:#a08cff; --amber:#ffc266; --red:#ff6b5e;
+  --pass:#3ddbc6; --grid:rgba(230,235,242,.05);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:44px 44px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:18px 0;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand b{font-size:19px;letter-spacing:.18em;font-family:var(--mono)}
+.brand span{color:var(--faint);font-size:12px;font-family:var(--mono)}
+.controls{display:flex;gap:8px;align-items:center}
+.langs{display:flex;gap:2px;padding:3px;border:1px solid var(--brd);border-radius:9px;background:var(--panel)}
+.langs button{background:none;border:0;cursor:pointer;color:var(--faint);font-family:var(--mono);
+  font-size:11px;padding:5px 8px;border-radius:6px;letter-spacing:.06em}
+.langs button[aria-pressed=true]{background:var(--teal);color:var(--bg)}
+.langs button:hover{color:var(--teal)}
+.langs button[aria-pressed=true]:hover{color:var(--bg)}
+.theme{background:var(--panel);border:1px solid var(--brd);border-radius:9px;cursor:pointer;
+  color:var(--dim);font-family:var(--mono);font-size:11px;padding:7px 10px}
+
+h1{font-size:clamp(30px,5.4vw,50px);line-height:1.08;margin:14px 0 10px;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--teal)}
+.lede{font-size:clamp(15px,2.1vw,19px);color:var(--dim);max-width:66ch;margin:0 0 22px}
+.oath{font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.04em;margin-bottom:6px}
+
+section{margin:52px 0}
+h2{font-size:clamp(19px,2.6vw,25px);margin:0 0 8px;letter-spacing:-.01em}
+h2 .n{font-family:var(--mono);color:var(--violet);font-size:.62em;margin-right:10px;letter-spacing:.1em}
+.sub{color:var(--dim);max-width:70ch;margin:0 0 20px}
+
+.card{background:var(--panel);border:1px solid var(--brd);border-radius:14px;padding:20px}
+.grid{display:grid;gap:14px}
+@media(min-width:760px){.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr 1fr}}
+
+.stats{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:700px){.stats{grid-template-columns:repeat(5,1fr)}}
+.stat{background:var(--panel);border:1px solid var(--brd);border-radius:12px;padding:14px}
+.stat b{display:block;font-family:var(--mono);font-size:26px;color:var(--teal);line-height:1.1}
+.stat span{display:block;font-size:11.5px;color:var(--faint);margin-top:4px;letter-spacing:.02em}
+
+/* ── the gate ─────────────────────────────────────────────────────────────── */
+.gate{position:relative;border:1px solid var(--brd);border-radius:14px;background:var(--panel);
+  overflow:hidden;height:352px}
+.gate svg{display:block;width:100%;height:100%}
+.slot-label{font-family:var(--mono);font-size:10px;fill:var(--faint)}
+.pass-label{font-family:var(--mono);font-size:11px;fill:var(--pass)}
+.refuse-label{font-family:var(--mono);font-size:10px;fill:var(--red)}
+.wall{stroke:var(--violet);stroke-width:2;fill:none}
+.slot{stroke:var(--pass);stroke-width:2;fill:none}
+.tx text{font-family:var(--mono);font-size:11px}
+.tx.bad text{fill:var(--red)}
+.tx.good text{fill:var(--pass)}
+.tx rect{fill:none;stroke-width:1}
+.tx.bad rect{stroke:var(--red);opacity:.55}
+.tx.good rect{stroke:var(--pass)}
+.tx{animation:travel 7s linear infinite}
+.tx.bad{animation-name:travel-bounce}
+@keyframes travel{
+  0%{transform:translateX(0);opacity:0}
+  10%{opacity:1}
+  88%{opacity:1}
+  100%{transform:translateX(700px);opacity:0}
+}
+@keyframes travel-bounce{
+  0%{transform:translateX(0);opacity:0}
+  12%{opacity:1}
+  52%{transform:translateX(346px);opacity:1}
+  62%{transform:translateX(320px) rotate(-6deg);opacity:.8}
+  100%{transform:translateX(150px) rotate(-18deg);opacity:0}
+}
+@media (prefers-reduced-motion:reduce){.tx{animation:none;opacity:1}}
+
+.ladder{display:grid;gap:8px}
+.rule{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start;
+  border-left:2px solid var(--brd);padding:7px 0 7px 12px}
+.rule:hover{border-left-color:var(--teal)}
+.rule code{font-family:var(--mono);font-size:11.5px;color:var(--violet)}
+.rule p{margin:0;font-size:14px;color:var(--dim)}
+.rule p b{color:var(--ink);font-weight:600}
+
+.warn{border-left:3px solid var(--amber);background:var(--panel);border-radius:0 12px 12px 0;
+  padding:16px 18px}
+.warn h3{margin:0 0 6px;font-size:15px;color:var(--amber);font-family:var(--mono);letter-spacing:.04em}
+.warn p{margin:0;color:var(--dim);font-size:14.5px}
+
+pre{background:var(--panel);border:1px solid var(--brd);border-radius:12px;padding:16px;
+  overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.7;margin:0}
+pre .c{color:var(--faint)}
+pre .k{color:var(--violet)}
+pre .s{color:var(--teal)}
+
+footer{border-top:1px solid var(--brd);margin-top:60px;padding:22px 0 40px;color:var(--faint);
+  font-size:13px;display:flex;gap:18px;flex-wrap:wrap;justify-content:space-between}
+footer a{color:var(--dim);text-decoration:none;border-bottom:1px solid var(--brd)}
+footer a:hover{color:var(--teal)}
+.addr{font-family:var(--mono);font-size:11.5px;color:var(--faint);word-break:break-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand"><b>HORKOS</b><span>ὅρκος · escrow-policy-signer</span></div>
+  <div class="controls">
+    <div class="langs" role="group" aria-label="Language">
+      <button data-lang="en" aria-pressed="true">EN</button><button data-lang="ru" aria-pressed="false">RU</button><button data-lang="es" aria-pressed="false">ES</button><button data-lang="fr" aria-pressed="false">FR</button><button data-lang="zh" aria-pressed="false">ZH</button>
+    </div>
+    <button class="theme" id="theme" data-i18n="theme">theme</button>
+  </div>
+</header>
+
+<p class="oath" data-i18n="oath">In Hesiod, Horkos is the child of Strife — the oath, and the punishment of whoever swears falsely.</p>
+<h1><span data-i18n="h1a">The signer that</span> <em data-i18n="h1b">refuses</em></h1>
+<p class="lede" data-i18n="lede">It holds the only key authorized in <code>AIMarketEscrow.authorizedHubs</code>, so the Hub does not. One allowed selector. One escrow. One chain. And for every amount, the authority is the buyer's own EIP-712 signature — re-verified here against state this process read itself.</p>
+
+<div class="gate" id="gate" aria-hidden="true"></div>
+<!-- The gate's two captions live here rather than inside the drawing code, so English stays in
+     the markup and the five-language parity test covers them like every other string. -->
+<div hidden>
+  <span data-i18n="gatefits">the only thing that fits</span>
+  <span data-i18n="gaterest">everything else leaves with a reason code</span>
+</div>
+
+<section>
+  <div class="stats">
+    <div class="stat"><b>1</b><span data-i18n="s1">allowed selector</span></div>
+    <div class="stat"><b>292</b><span data-i18n="s2">bytes of canonical calldata</span></div>
+    <div class="stat"><b>26</b><span data-i18n="s3">named refusal rules</span></div>
+    <div class="stat"><b>118</b><span data-i18n="s4">tests</span></div>
+    <div class="stat"><b>1</b><span data-i18n="s5">dependency</span></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">01</span><span data-i18n="t1">What it will sign</span></h2>
+  <p class="sub" data-i18n="p1">Exactly one shape: a canonical <code>debitChannel</code> call, selector <code>0xf7becd80</code> derived at boot from its signature string and never written down as a literal, to the one pinned escrow, on chain 8453, with <code>value == 0</code>. Not <code>settleChannel</code>. Not a token transfer. Not <code>setHubAuthorization</code>. Not a contract creation.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h3 style="margin:0 0 8px;font-size:15px" data-i18n="c1h">The amount is not the Hub's to decide</h3>
+      <p style="margin:0;color:var(--dim);font-size:14.5px" data-i18n="c1p">The digest is rebuilt here from the calldata plus <code>token</code> and <code>nonce</code> read from <code>getChannel</code>, with this service's own address substituted for the <code>hub</code> field — exactly as the contract does. A signature minted for another hub, at another nonce, or by anyone who is not the channel's depositor is refused.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin:0 0 8px;font-size:15px" data-i18n="c2h">Its own view of chain</h3>
+      <p style="margin:0;color:var(--dim);font-size:14.5px" data-i18n="c2p">Every fact it checks is one the caller would like to supply, so none of them comes from the request: the channel's depositor, token, balance and nonce, whether the receipt was already collected, and whether this key is still an authorized hub. Read over endpoints the caller does not configure. A read that fails is unavailability, never “false”.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">02</span><span data-i18n="t2">The refusal ladder</span></h2>
+  <p class="sub" data-i18n="p2">Moving the key out of the Hub buys almost nothing on its own: the Hub sends <code>{to, data, chainId, gas, value}</code>, and a naive signer signs whatever it is handed. All the value is in the refusals, so each one has a name, a status code and a test that asserts nothing was signed and nothing was broadcast.</p>
+  <div class="ladder" id="ladder"></div>
+</section>
+
+<section>
+  <h2><span class="n">03</span><span data-i18n="t3">What it does not fix</span></h2>
+  <div class="warn">
+    <h3 data-i18n="w1h">residual risk</h3>
+    <p data-i18n="w1p">A compromised Hub can still collect for work it did not do — up to the velocity caps, using signatures buyers really produced. Every field the contract checks sits inside the depositor's digest, so such a request is indistinguishable from a legitimate one. It shrinks with smaller caps, a shorter authorization TTL, and buyers signing per invocation instead of in advance. It cannot be closed inside a signer, and a security page that omitted it would be marketing.</p>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="warn" style="border-left-color:var(--violet)">
+      <h3 data-i18n="w2h" style="color:var(--violet)">the key is also the payee</h3>
+      <p data-i18n="w2p"><code>settleChannel</code> pays <code>ch.hub</code>, which is this key — so revenue accumulates here rather than in the treasury. Sweeping it is a separate, deliberate operator action.</p>
+    </div>
+    <div class="warn" style="border-left-color:var(--violet)">
+      <h3 data-i18n="w3h" style="color:var(--violet)">griefing is free in dollars</h3>
+      <p data-i18n="w3p">Burning a receipt or grinding a nonce costs no USDC at all, so the money caps cannot see it. The count caps are the only bound, which is why they exist separately — and why the fee ceiling is a third, independent number denominated in the key's ETH.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">04</span><span data-i18n="t4">Plan before you submit</span></h2>
+  <p class="sub" data-i18n="p4">Broadcasting requires four independent things, and no single mistake starts moving money. Plan mode is not a stub: it builds the exact calldata and runs it through <code>eth_call</code> against live contract state, so it answers “would this be accepted right now?” without a transaction existing.</p>
+<pre><span class="c"># nothing broadcasts from the request path, in any strategy</span>
+docker exec modelmarket-hub python -m aimarket_hub.escrow_bridge.cli <span class="k">plan</span>
+docker exec modelmarket-hub python -m aimarket_hub.escrow_bridge.cli <span class="k">submit</span> --yes
+
+<span class="c"># the four gates, in order</span>
+AIMARKET_ESCROW_BRIDGE_ENABLED=<span class="s">1</span>
+AIMARKET_ESCROW_SUBMIT_STRATEGY=<span class="s">external</span>
+AIMARKET_ESCROW_SUBMIT_CONFIRM=<span class="s">i-understand-this-moves-funds</span>
+<span class="c">--yes</span>  <span class="c"># the operator is present for THIS run</span></pre>
+</section>
+
+<footer>
+  <div>
+    <div class="addr">0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1 · Base 8453</div>
+    <div class="addr">escrow 0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb</div>
+  </div>
+  <div>
+    <a href="https://github.com/alexar76/escrow-signer">GitHub</a> ·
+    <a href="https://modelmarket.dev">modelmarket.dev</a> ·
+    <span data-i18n="mit">MIT</span>
+  </div>
+</footer>
+
+</div>
+<script>
+/* ── i18n ──────────────────────────────────────────────────────────────────────
+   English is NOT in this dictionary: it lives in the markup above, so the page a
+   crawler reads and the page a reader sees are the same document, and the English
+   copy can never drift from a translation of itself. */
+const DICT = {
+  ru:{
+    theme:"тема",
+    oath:"У Гесиода Хоркос — дитя Эриды: клятва и кара для того, кто клянётся ложно.",
+    h1a:"Подписант, который", h1b:"отказывает",
+    lede:"Он держит единственный ключ, авторизованный в <code>AIMarketEscrow.authorizedHubs</code>, чтобы его не держал Hub. Один разрешённый селектор. Один эскроу. Одна сеть. А полномочие на любую сумму даёт EIP-712 подпись самого покупателя — перепроверенная здесь против состояния, которое этот процесс прочитал сам.",
+    s1:"разрешённый селектор", s2:"байта каноничного calldata", s3:"именованных правил отказа", s4:"тестов", s5:"зависимость",
+    t1:"Что он подпишет",
+    p1:"Ровно одну форму: каноничный вызов <code>debitChannel</code>, селектор <code>0xf7becd80</code>, вычисленный при старте из строки подписи и никогда не записанный константой, на один закреплённый эскроу, в сети 8453, с <code>value == 0</code>. Не <code>settleChannel</code>. Не перевод токена. Не <code>setHubAuthorization</code>. Не создание контракта.",
+    c1h:"Сумму решает не Hub",
+    c1p:"Дайджест собирается здесь заново: из calldata плюс <code>token</code> и <code>nonce</code>, прочитанные через <code>getChannel</code>, и с подстановкой собственного адреса сервиса в поле <code>hub</code> — точно как делает контракт. Подпись, выписанная для другого хаба, на другом nonce или не depositor'ом канала, отклоняется.",
+    c2h:"Своя картина цепочки",
+    c2p:"Каждый факт, который он проверяет, — это факт, который вызывающий охотно подсказал бы, поэтому ни один не берётся из запроса: depositor канала, токен, баланс и nonce, была ли квитанция уже собрана, остаётся ли этот ключ авторизованным хабом. Читается через узлы, которые вызывающий не настраивает. Неудавшееся чтение — это недоступность, а не «нет».",
+    t2:"Лестница отказов",
+    p2:"Вынести ключ из Hub само по себе почти ничего не даёт: Hub присылает <code>{to, data, chainId, gas, value}</code>, и наивный подписант подпишет что дали. Вся ценность в отказах — поэтому у каждого есть имя, код ответа и тест, который проверяет, что ничего не подписано и ничего не отправлено.",
+    t3:"Чего он не лечит",
+    w1h:"остаточный риск",
+    w1p:"Скомпрометированный Hub всё ещё может собрать деньги за невыполненную работу — в пределах лимитов и только по суммам, которые покупатели действительно подписали. Все поля, которые проверяет контракт, входят в дайджест depositor'а, поэтому такая заявка неотличима от честной. Риск уменьшают меньшие лимиты, короткий срок жизни авторизации и подпись на каждый вызов вместо подписи заранее. Внутри подписанта это не закрывается, и страница безопасности, которая об этом молчит, — реклама.",
+    w2h:"ключ ещё и получатель",
+    w2p:"<code>settleChannel</code> платит <code>ch.hub</code>, то есть этому ключу, — выручка копится здесь, а не в казне. Перевод в казну — отдельное осознанное действие оператора.",
+    w3h:"грифинг ничего не стоит в деньгах",
+    w3p:"Выжечь квитанцию или перебрать nonce не стоит ни одного USDC, поэтому денежные лимиты этого не видят. Единственная граница — лимиты по количеству, и потому они заданы отдельно; а потолок по газу — третья независимая величина, номинированная в ETH этого ключа.",
+    t4:"Сначала plan, потом submit",
+    p4:"Чтобы что-то ушло в сеть, нужны четыре независимых условия, и ни одна одиночная ошибка не начинает двигать деньги. Режим plan — не заглушка: он собирает точный calldata и прогоняет его через <code>eth_call</code> по живому состоянию контракта, отвечая «прошло бы это сейчас?» без транзакции.",
+    gatefits:"единственное, что проходит",
+    gaterest:"всё остальное уходит с кодом причины",
+    mit:"MIT",
+  },
+  es:{
+    theme:"tema",
+    oath:"En Hesíodo, Horkos es hijo de la Discordia: el juramento, y el castigo de quien jura en falso.",
+    h1a:"El firmante que", h1b:"rechaza",
+    lede:"Guarda la única clave autorizada en <code>AIMarketEscrow.authorizedHubs</code>, para que no la guarde el Hub. Un selector permitido. Un depósito en garantía. Una red. Y la autoridad sobre cada importe es la firma EIP-712 del propio comprador, verificada aquí de nuevo contra un estado que este proceso leyó por su cuenta.",
+    s1:"selector permitido", s2:"bytes de calldata canónico", s3:"reglas de rechazo con nombre", s4:"pruebas", s5:"dependencia",
+    t1:"Qué firma",
+    p1:"Exactamente una forma: una llamada canónica a <code>debitChannel</code>, selector <code>0xf7becd80</code> derivado al arrancar de su cadena de firma y nunca escrito como literal, al único depósito fijado, en la red 8453, con <code>value == 0</code>. No <code>settleChannel</code>. No una transferencia de token. No <code>setHubAuthorization</code>. No la creación de un contrato.",
+    c1h:"El importe no lo decide el Hub",
+    c1p:"El digest se reconstruye aquí con el calldata más <code>token</code> y <code>nonce</code> leídos de <code>getChannel</code>, y con la dirección propia del servicio en el campo <code>hub</code>, igual que hace el contrato. Una firma emitida para otro hub, con otro nonce, o por quien no es el depositor del canal, se rechaza.",
+    c2h:"Su propia visión de la cadena",
+    c2p:"Cada hecho que comprueba es uno que el llamante querría suministrar, así que ninguno viene de la petición: el depositor del canal, el token, el saldo y el nonce, si el recibo ya fue cobrado, y si esta clave sigue siendo un hub autorizado. Leídos por endpoints que el llamante no configura. Una lectura que falla es indisponibilidad, nunca «falso».",
+    t2:"La escalera de rechazos",
+    p2:"Sacar la clave del Hub, por sí solo, compra casi nada: el Hub envía <code>{to, data, chainId, gas, value}</code> y un firmante ingenuo firma lo que le pongan. Todo el valor está en los rechazos: cada uno tiene nombre, código de estado y una prueba que afirma que no se firmó ni se difundió nada.",
+    t3:"Lo que no arregla",
+    w1h:"riesgo residual",
+    w1p:"Un Hub comprometido puede seguir cobrando por trabajo no realizado, hasta los límites de velocidad, con firmas que los compradores produjeron de verdad. Todos los campos que comprueba el contrato están dentro del digest del depositor, así que esa petición es indistinguible de una legítima. Disminuye con límites más pequeños, un TTL de autorización más corto y compradores que firman por invocación. No se puede cerrar dentro de un firmante, y una página de seguridad que lo omitiera sería publicidad.",
+    w2h:"la clave es también la beneficiaria",
+    w2p:"<code>settleChannel</code> paga a <code>ch.hub</code>, que es esta clave: los ingresos se acumulan aquí y no en la tesorería. Barrerlos es una acción aparte y deliberada del operador.",
+    w3h:"el griefing no cuesta dinero",
+    w3p:"Quemar un recibo o moler un nonce no cuesta ningún USDC, así que los límites monetarios no lo ven. Los límites por número son la única cota, y por eso están aparte; el techo de comisión es una tercera cifra independiente, denominada en el ETH de esta clave.",
+    t4:"Primero plan, después submit",
+    p4:"Difundir exige cuatro condiciones independientes, y ningún error aislado empieza a mover dinero. El modo plan no es un stub: construye el calldata exacto y lo pasa por <code>eth_call</code> contra el estado real del contrato, respondiendo «¿se aceptaría ahora?» sin que exista transacción.",
+    gatefits:"lo único que encaja",
+    gaterest:"todo lo demás se va con un código de motivo",
+    mit:"MIT",
+  },
+  fr:{
+    theme:"thème",
+    oath:"Chez Hésiode, Horkos est l'enfant de la Discorde : le serment, et le châtiment de qui jure faussement.",
+    h1a:"Le signataire qui", h1b:"refuse",
+    lede:"Il détient la seule clé autorisée dans <code>AIMarketEscrow.authorizedHubs</code>, pour que le Hub ne la détienne pas. Un sélecteur autorisé. Un séquestre. Une chaîne. Et l'autorité sur chaque montant est la signature EIP-712 de l'acheteur lui-même, revérifiée ici contre un état que ce processus a lu par lui-même.",
+    s1:"sélecteur autorisé", s2:"octets de calldata canonique", s3:"règles de refus nommées", s4:"tests", s5:"dépendance",
+    t1:"Ce qu'il signe",
+    p1:"Exactement une forme : un appel canonique à <code>debitChannel</code>, sélecteur <code>0xf7becd80</code> dérivé au démarrage de sa chaîne de signature et jamais écrit en littéral, vers le seul séquestre épinglé, sur la chaîne 8453, avec <code>value == 0</code>. Pas <code>settleChannel</code>. Pas un transfert de jeton. Pas <code>setHubAuthorization</code>. Pas la création d'un contrat.",
+    c1h:"Le montant n'appartient pas au Hub",
+    c1p:"Le digest est reconstruit ici à partir du calldata plus <code>token</code> et <code>nonce</code> lus via <code>getChannel</code>, avec l'adresse propre du service à la place du champ <code>hub</code>, exactement comme le fait le contrat. Une signature émise pour un autre hub, à un autre nonce, ou par quelqu'un qui n'est pas le depositor du canal, est refusée.",
+    c2h:"Sa propre vue de la chaîne",
+    c2p:"Chaque fait qu'il vérifie est un fait que l'appelant aimerait fournir : aucun ne vient donc de la requête — le depositor du canal, le jeton, le solde et le nonce, si le reçu a déjà été encaissé, si cette clé est toujours un hub autorisé. Lus via des endpoints que l'appelant ne configure pas. Une lecture qui échoue est une indisponibilité, jamais un « non ».",
+    t2:"L'échelle des refus",
+    p2:"Sortir la clé du Hub n'achète presque rien en soi : le Hub envoie <code>{to, data, chainId, gas, value}</code> et un signataire naïf signe ce qu'on lui tend. Toute la valeur est dans les refus : chacun a un nom, un code de statut et un test qui affirme que rien n'a été signé ni diffusé.",
+    t3:"Ce qu'il ne corrige pas",
+    w1h:"risque résiduel",
+    w1p:"Un Hub compromis peut toujours encaisser un travail non rendu, dans la limite des plafonds de vitesse, avec des signatures que les acheteurs ont réellement produites. Tous les champs vérifiés par le contrat sont dans le digest du depositor : une telle requête est indiscernable d'une requête légitime. Cela diminue avec des plafonds plus bas, un TTL d'autorisation plus court et des acheteurs qui signent par invocation. Cela ne se ferme pas dans un signataire, et une page de sécurité qui l'omettrait serait du marketing.",
+    w2h:"la clé est aussi la bénéficiaire",
+    w2p:"<code>settleChannel</code> paie <code>ch.hub</code>, c'est-à-dire cette clé : les recettes s'accumulent ici et non dans la trésorerie. Les balayer est une action distincte et délibérée de l'opérateur.",
+    w3h:"le griefing ne coûte rien en argent",
+    w3p:"Brûler un reçu ou moudre un nonce ne coûte aucun USDC : les plafonds monétaires ne le voient pas. Les plafonds en nombre sont la seule borne, d'où leur existence séparée ; et le plafond de frais est une troisième grandeur indépendante, libellée dans l'ETH de cette clé.",
+    t4:"D'abord plan, ensuite submit",
+    p4:"Diffuser exige quatre conditions indépendantes, et aucune erreur isolée ne met de l'argent en mouvement. Le mode plan n'est pas un stub : il construit le calldata exact et le passe par <code>eth_call</code> contre l'état réel du contrat, répondant « serait-ce accepté maintenant ? » sans qu'aucune transaction existe.",
+    gatefits:"la seule chose qui passe",
+    gaterest:"tout le reste repart avec un code de refus",
+    mit:"MIT",
+  },
+  zh:{
+    theme:"主题",
+    oath:"在赫西俄德笔下，霍尔科斯是纷争之女的孩子：誓言，以及对妄誓者的惩罚。",
+    h1a:"会说不的", h1b:"签名者",
+    lede:"它持有唯一在 <code>AIMarketEscrow.authorizedHubs</code> 中获授权的私钥，这样枢纽就不必持有。一个允许的选择器，一个托管合约，一条链。而每一笔金额的授权，来自买方自己的 EIP-712 签名 —— 在这里对照本进程自行读取的状态重新验证。",
+    s1:"个允许的选择器", s2:"字节规范 calldata", s3:"条具名拒绝规则", s4:"项测试", s5:"个依赖",
+    t1:"它会签什么",
+    p1:"只有一种形态：对 <code>debitChannel</code> 的规范调用，选择器 <code>0xf7becd80</code> 在启动时由签名字符串推导，绝不写成字面量；发往唯一固定的托管合约，链 8453，且 <code>value == 0</code>。不签 <code>settleChannel</code>，不签代币转账，不签 <code>setHubAuthorization</code>，不签合约创建。",
+    c1h:"金额不由枢纽决定",
+    c1p:"摘要在此重建：取自 calldata，加上通过 <code>getChannel</code> 读到的 <code>token</code> 与 <code>nonce</code>，并像合约那样把 <code>hub</code> 字段替换为本服务自己的地址。为别的枢纽签发、用错 nonce，或并非该通道 depositor 所签的签名，都会被拒绝。",
+    c2h:"它自己的链上视角",
+    c2p:"它核对的每个事实，都是调用方乐于「代为提供」的事实，因此没有一个取自请求：通道的 depositor、代币、余额与 nonce，收据是否已被领取，这把私钥是否仍是获授权枢纽。全部通过调用方无法配置的节点读取。读取失败意味着不可用，而绝不意味着「否」。",
+    t2:"拒绝阶梯",
+    p2:"仅把私钥移出枢纽，本身几乎没有收益：枢纽发来 <code>{to, data, chainId, gas, value}</code>，天真的签名服务照签不误。价值全在拒绝之中，因此每条拒绝都有名字、状态码，以及一项断言「什么都没签、什么都没广播」的测试。",
+    t3:"它不能解决什么",
+    w1h:"残余风险",
+    w1p:"被攻破的枢纽仍能就未交付的工作收款 —— 上限是速度额度，且只限买方确实签署过的金额。合约核对的每个字段都在 depositor 的摘要里，因此这样的请求与正当请求无法区分。缩小它的办法是更小的额度、更短的授权有效期，以及买方按次签名。这在签名服务内部无法关闭，而一个隐去此事的安全页面只是宣传。",
+    w2h:"这把私钥同时也是收款方",
+    w2p:"<code>settleChannel</code> 支付给 <code>ch.hub</code>，也就是这把私钥 —— 收入积累在这里而不是金库。归集到金库是运维者另一个刻意的动作。",
+    w3h:"捣乱在金钱上是免费的",
+    w3p:"烧毁一张收据或研磨一个 nonce 不花任何 USDC，所以金额额度看不见它。按次数的额度是唯一约束，这正是它们单独存在的理由；而手续费上限是第三个独立数值，以这把私钥的 ETH 计价。",
+    t4:"先 plan，再 submit",
+    p4:"广播需要四个彼此独立的条件，任何单一失误都不会让资金开始流动。plan 模式不是占位实现：它构造出准确的 calldata，并用 <code>eth_call</code> 对照合约的真实状态运行，在不产生任何交易的情况下回答「现在这笔会被接受吗？」。",
+    gatefits:"唯一能通过的东西",
+    gaterest:"其余一律带着拒绝原因码离开",
+    mit:"MIT",
+  },
+};
+
+const RULES = [
+  ["R1","<b>Auth.</b> Constant-time bearer compare. No part of either token is ever logged, including on a 401."],
+  ["R4","<b>value == 0</b>, compiled in, never configurable. This one rule removes “sign a plain ETH transfer” from the surface entirely."],
+  ["R6","<b>to == the pinned escrow.</b> An absent or empty <code>to</code> is refused explicitly: several signing libraries serialise it as a contract creation."],
+  ["R8","<b>One selector</b>, computed at boot from the signature string. This blocks <code>settleChannel</code>, <code>transfer</code>, <code>approve</code>, <code>transferOwnership</code>, <code>withdrawOpex</code> and any Multicall batching of them."],
+  ["R9","<b>Strict decode.</b> Fixed 292 bytes, offset word 160, length word 65, 31 zero pad bytes, no trailing bytes."],
+  ["R10","<b>Re-encode and compare.</b> Byte equality with what arrived — without it every field check above is a parser differential."],
+  ["R11","<b>Field bands.</b> Whole cents only, a non-zero receipt and channel id, a deadline inside [now+60s, now+24h]. The contract has no zero-amount check: a zero debit burns a receipt id contract-wide and bumps the nonce."],
+  ["R12","<b>Low-s and v ∈ {27,28}.</b> Refusing costs nothing; broadcasting a guaranteed revert pins the Hub's row in SUBMITTED and blocks every later nonce on that channel."],
+  ["R13","<b>Chain identity.</b> chain id, domain separator, token decimals, and that this key is still an authorized hub. Any failure refuses everything until it passes."],
+  ["R14","<b>Channel state</b> from <code>getChannel</code>: exists, open, not expiring, balance ≥ amount, the pinned token, and not bound to another hub."],
+  ["R16","<b>The depositor's signature</b>, rebuilt with our own address as <code>hub</code> and the nonce read from chain."],
+  ["R17","<b>Idempotency</b> on the contract's own once-only key. A retry with a different gas hint is the same request and returns the original hash."],
+  ["R18","<b>Its own gas estimate.</b> The Hub's number is advisory and ignored; a hint above the hard cap is logged as a tamper signal rather than clamped away."],
+  ["R20","<b>Atomic reserve</b> — the cap check, the row and the nonce in one transaction, committed before the key is touched. Never SELECT-then-INSERT."],
+  ["R21","<b>Simulate</b> the exact call; any revert releases the reservation instead of broadcasting."],
+  ["R24","<b>Release</b> only past the deadline, with the receipt read as unused and no receipt for any recorded hash. Never on a failed HTTP response."],
+  ["R25","<b>Monotone clock.</b> A clock stepped back to empty the 24h window halts signing instead of opening the gate."],
+  ["R26","<b>Boot reconciliation.</b> It starts refusing and stays there until the books verify and every unresolved row is classified from chain evidence."],
+];
+
+function renderLadder(){
+  document.getElementById("ladder").innerHTML = RULES.map(([id,txt]) =>
+    `<div class="rule"><code>${id}</code><p>${txt}</p></div>`).join("");
+}
+
+/* ── the gate: drawn, not downloaded ─────────────────────────────────────────
+   A stream of candidate calls approaches a wall with one slot in it. Everything
+   whose first four bytes are not 0xf7becd80 is deflected and carries away the
+   reason code it earned. Pure SVG + CSS keyframes, so it also runs where
+   requestAnimationFrame does not. */
+const REFUSED = [
+  ["0xa9059cbb", "to_not_escrow"],
+  ["0xfd3d3199", "selector_not_allowed"],
+  ["0x095ea7b3", "selector_not_allowed"],
+  ["0x34640839", "selector_not_allowed"],
+  ["0x00000000", "calldata_length"],
+  ["0xf7becd80", "value_not_zero"],
+  ["0xf7becd80", "signature_not_depositor"],
+  ["0xf7becd80", "cap_units_24h"],
+];
+function gateText(key){
+  const el = document.querySelector(`[data-i18n="${key}"]`);
+  return el ? el.textContent : "";
+}
+function renderGate(){
+  const W = 900, H = 340, wallX = 470, slotY = 172, lane = 37;
+  // Everything allowed travels ON the slot's line; every refusal travels on a lane above or
+  // below it and is deflected at the wall. The geometry is the argument: one line gets
+  // through, and it is the line the slot was cut for.
+  const above = REFUSED.slice(0, 4), below = REFUSED.slice(4);
+  const bad = [];
+  above.forEach((c, i) => bad.push([c, slotY - (i + 1) * lane, i * 0.9]));
+  below.forEach((c, i) => bad.push([c, slotY + (i + 1) * lane, 0.45 + i * 0.9]));
+  // The reason code sits UNDER the selector box rather than beside it: the longest codes
+  // (`signature_not_depositor`) are wider than the distance to the wall, so a label placed
+  // alongside crossed the very barrier the picture is about.
+  const badRows = bad.map(([c, y, delay]) => `<g class="tx bad" style="animation-delay:${delay.toFixed(2)}s">
+      <rect x="8" y="${y - 13}" width="104" height="20" rx="5"></rect>
+      <text x="16" y="${y + 2}">${c[0]}</text>
+      <text x="10" y="${y + 17}" class="refuse-label">${c[1]}</text>
+    </g>`).join("");
+  const goodRows = [0, 2.4, 4.8].map(delay => `<g class="tx good" style="animation-delay:${delay}s">
+      <rect x="8" y="${slotY - 12}" width="104" height="21" rx="5"></rect>
+      <text x="16" y="${slotY + 3}">0xf7becd80</text>
+      <text x="122" y="${slotY + 3}" class="pass-label">signed</text>
+    </g>`).join("");
+  document.getElementById("gate").innerHTML = `
+  <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img"
+       aria-label="Candidate calls meeting a wall with a single slot: only the allowed selector passes">
+    <path class="wall" d="M${wallX} 10 L${wallX} ${slotY - 18}"></path>
+    <path class="wall" d="M${wallX} ${slotY + 18} L${wallX} ${H - 10}"></path>
+    <path class="slot" d="M${wallX - 10} ${slotY - 18} L${wallX + 10} ${slotY - 18}
+                          M${wallX - 10} ${slotY + 18} L${wallX + 10} ${slotY + 18}"></path>
+    <text class="slot-label" x="${wallX + 22}" y="20">${gateText("gatefits")}</text>
+    <text class="slot-label" x="${wallX + 22}" y="36">0xf7becd80 · value 0 · chain 8453</text>
+    <text class="slot-label" x="${wallX + 22}" y="${H - 22}">debitChannel(bytes32,uint256,bytes32,uint256,bytes)</text>
+    <text class="slot-label" x="${wallX + 22}" y="${H - 8}">${gateText("gaterest")}</text>
+    ${badRows}
+    ${goodRows}
+  </svg>`;
+}
+
+/* ── wiring ─────────────────────────────────────────────────────────────────── */
+const EN = {};
+document.querySelectorAll("[data-i18n]").forEach(el => { EN[el.dataset.i18n] = el.innerHTML; });
+
+function setLang(lang){
+  const dict = lang === "en" ? EN : Object.assign({}, EN, DICT[lang] || {});
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const v = dict[el.dataset.i18n];
+    if (v !== undefined) el.innerHTML = v;
+  });
+  document.documentElement.lang = lang;
+  document.querySelectorAll(".langs button").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  renderGate();   // the drawing carries two translated captions
+  try { localStorage.setItem("horkos-lang", lang); } catch (e) {}
+}
+document.querySelectorAll(".langs button").forEach(b =>
+  b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+const params = new URLSearchParams(location.search);
+let lang = params.get("lang");
+if (!lang) { try { lang = localStorage.getItem("horkos-lang"); } catch (e) {} }
+if (!lang) lang = (navigator.language || "en").slice(0, 2);
+if (!(lang === "en" || DICT[lang])) lang = "en";
+
+const theme = document.getElementById("theme");
+function applyTheme(t){
+  if (t) document.documentElement.setAttribute("data-theme", t);
+  else document.documentElement.removeAttribute("data-theme");
+  try { t ? localStorage.setItem("horkos-theme", t) : localStorage.removeItem("horkos-theme"); } catch (e) {}
+}
+theme.addEventListener("click", () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  applyTheme(cur === "dark" ? "light" : cur === "light" ? null : "dark");
+});
+try { const saved = localStorage.getItem("horkos-theme"); if (saved) applyTheme(saved); } catch (e) {}
+
+renderLadder();
+renderGate();
+setLang(lang);
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "runner_sha256": "7512a509092ff1d2a8e7bc320c31323ce8806b7c76dcaab252f19bca85ba1c43",
+  "decision": "green",
+  "actual_network_calls": 0,
+  "actual_signing_or_transfers": 0,
+  "focused_cases": [
+    {
+      "case": "eth_sendRawTransaction HTTP403",
+      "network_calls": 1,
+      "fallback_or_retry": false,
+      "diagnostics_exclude_params": true
+    },
+    {
+      "case": "eth_estimateGas HTTP403",
+      "network_calls": 1,
+      "fallback_or_retry": false,
+      "diagnostics_exclude_params": true
+    },
+    {
+      "case": "receipt HTTP403 fallback",
+      "rpc_calls": 4,
+      "fallback_chain_checked": true,
+      "ok": true
+    }
+  ]
+}

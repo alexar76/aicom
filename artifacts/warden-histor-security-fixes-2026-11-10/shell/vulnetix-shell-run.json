@@ -1,0 +1,43 @@
+{
+  "exit_code": 0,
+  "version": "4.24.6",
+  "rule": "VNX-BASH-001",
+  "files": [
+    {
+      "file": "warden/scripts/scanner-comparison/hosts/retry_set.sh",
+      "sha256": "ad5c2238688b897cffac79cc665ade402be36fc15eb573f88cbd820b62fdb210"
+    },
+    {
+      "file": "warden/scripts/scanner-comparison/hosts/retry_cross.sh",
+      "sha256": "ef2ed8a664268f363a9f3f02ac6968f8b0418384357716744d5144eb10bf0a73"
+    }
+  ],
+  "local_offline": true,
+  "command": [
+    "/tmp/aicom-vulnetix-native/vulnetix",
+    "sast",
+    "--path",
+    "/tmp/aicom-retry-fixed-sast",
+    "--depth",
+    "20",
+    "--rule-id",
+    "VNX-BASH-001",
+    "--disable-memory",
+    "--no-cache",
+    "--no-malscan",
+    "--no-ci-package-analysis",
+    "--no-shell-package-analysis",
+    "--no-vex",
+    "--reachability",
+    "off",
+    "--snippet-context",
+    "0",
+    "--no-analytics",
+    "--no-banner",
+    "--no-progress",
+    "--fail-on",
+    "high",
+    "-o",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/warden-histor-security-fixes-2026-11-10/shell/vulnetix-shell.sarif"
+  ]
+}

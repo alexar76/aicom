@@ -1,0 +1,320 @@
+{
+  "date": "2026-11-09",
+  "scope": "Public GET only. DEV.to baseline public snapshot 2026-10-30T03:56Z. Comment differences by unique id_code, recursively flatten children, username alexar76 treated as owner. Public username is an account, not verified independent person.",
+  "devto": {
+    "articles": 75,
+    "baseline_articles": 62,
+    "new_article_count": 13,
+    "reactions": 86,
+    "metadata_comments": 173,
+    "read_comments": 173,
+    "baseline_comments": 142,
+    "external_comments": 89,
+    "own_comments": 84,
+    "external_unique_accounts": 35,
+    "baseline_external_comments": 72,
+    "baseline_own_comments": 70,
+    "new_comments": 31,
+    "new_external_comments": 17,
+    "new_own_comments": 14,
+    "new_external_unique_accounts": [
+      "agentembassy",
+      "alexshev",
+      "arcwrightai",
+      "emilywoodsnyc",
+      "hitensethiya",
+      "martinpisacreta",
+      "paul_irolla_6b5ae261d0224",
+      "robertpaschal"
+    ],
+    "first_seen_external_accounts": [
+      "agentembassy",
+      "alexshev",
+      "arcwrightai",
+      "emilywoodsnyc",
+      "hitensethiya",
+      "robertpaschal"
+    ],
+    "removed_comment_ids": [],
+    "fresh_external": [
+      {
+        "id_code": "3jf32",
+        "created_at": "2026-10-30T11:32:58Z",
+        "username": "paul_irolla_6b5ae261d0224",
+        "article_id": 4942997,
+        "body_html": "<p>Building Tokenade, I'd take the same caveat: two messages can match while the ledger differs, so the bill has to be read from the ledger. Your controlled pair is the way to show it.</p>\n\n",
+        "url": "https://dev.to/alexar76/our-mcp-probe-missed-the-paid-default-4018#comment-3jf32"
+      },
+      {
+        "id_code": "3jfmi",
+        "created_at": "2026-10-30T15:32:00Z",
+        "username": "paul_irolla_6b5ae261d0224",
+        "article_id": 4942997,
+        "body_html": "<p><a class=\"mentioned-user\" href=\"https://dev.to/alexar76\">@alexar76</a> Agreed, and the usage block is the ledger for that claim. Keep the messages identical and change only the cache state, or the diff measures the prompt instead.</p>\n\n",
+        "url": "https://dev.to/alexar76/our-mcp-probe-missed-the-paid-default-4018#comment-3jfmi"
+      },
+      {
+        "id_code": "3jhhi",
+        "created_at": "2026-10-31T10:08:43Z",
+        "username": "hitensethiya",
+        "article_id": 4951998,
+        "body_html": "<p>observed vs signed listing is a really honest split. curious if buyers will actually treat them differently or just go with whatever shows the price they want</p>\n\n",
+        "url": "https://dev.to/alexar76/we-built-a-marketplace-for-ai-agents-sellers-told-us-the-integration-wasnt-worth-it-2c6m#comment-3jhhi"
+      },
+      {
+        "id_code": "3jhl8",
+        "created_at": "2026-10-31T11:40:43Z",
+        "username": "robertpaschal",
+        "article_id": 4951998,
+        "body_html": "<p>That TensorFeed trial detail changes the math. How do you probe a route for a price without spending the seller's free calls?</p>\n\n",
+        "url": "https://dev.to/alexar76/we-built-a-marketplace-for-ai-agents-sellers-told-us-the-integration-wasnt-worth-it-2c6m#comment-3jhl8"
+      },
+      {
+        "id_code": "3jia3",
+        "created_at": "2026-10-31T15:40:54Z",
+        "username": "robertpaschal",
+        "article_id": 4951998,
+        "body_html": "<p>A HEAD check that returns 402 without burning a free call would settle it.</p>\n\n",
+        "url": "https://dev.to/alexar76/we-built-a-marketplace-for-ai-agents-sellers-told-us-the-integration-wasnt-worth-it-2c6m#comment-3jia3"
+      },
+      {
+        "id_code": "3jijf",
+        "created_at": "2026-10-31T18:11:00Z",
+        "username": "arcwrightai",
+        "article_id": 4954137,
+        "body_html": "<p>Curious how this holds up once it hits real workloads.</p>\n\n",
+        "url": "https://dev.to/alexar76/two-public-records-of-mcp-tool-definitions-one-day-23190-servers-where-they-agree-4k3h#comment-3jijf"
+      },
+      {
+        "id_code": "3jin1",
+        "created_at": "2026-10-31T19:45:14Z",
+        "username": "robertpaschal",
+        "article_id": 4951998,
+        "body_html": "<p>That default behaviour kills the idea for most sellers. A HEAD answer before the free tier check is the only version that keeps the probe cheap.</p>\n\n",
+        "url": "https://dev.to/alexar76/we-built-a-marketplace-for-ai-agents-sellers-told-us-the-integration-wasnt-worth-it-2c6m#comment-3jin1"
+      },
+      {
+        "id_code": "3jj7b",
+        "created_at": "2026-11-01T02:07:59Z",
+        "username": "alexshev",
+        "article_id": 4951998,
+        "body_html": "<p>That feedback is a better product signal than marketplace sign-ups. Sellers need a measurable path from integration work to qualified demand, not another profile to maintain. I’d test a thin integration that proves time-to-first-value and tracks the distribution channel that created the lead before expanding the catalog.</p>\n\n",
+        "url": "https://dev.to/alexar76/we-built-a-marketplace-for-ai-agents-sellers-told-us-the-integration-wasnt-worth-it-2c6m#comment-3jj7b"
+      },
+      {
+        "id_code": "3jjp4",
+        "created_at": "2026-11-01T08:39:38Z",
+        "username": "robertpaschal",
+        "article_id": 4951998,
+        "body_html": "<p>Shipping the HEAD check the same morning is a quick turnaround, and stopping at a 2xx keeps the probe cheap.</p>\n\n",
+        "url": "https://dev.to/alexar76/we-built-a-marketplace-for-ai-agents-sellers-told-us-the-integration-wasnt-worth-it-2c6m#comment-3jjp4"
+      },
+      {
+        "id_code": "3jkpf",
+        "created_at": "2026-11-01T15:43:55Z",
+        "username": "paul_irolla_6b5ae261d0224",
+        "article_id": 4954137,
+        "body_html": "<p>Byte-identical tool definitions are a cost detail, not only a correctness one. The list sits at the top of the prompt, so a changed byte there, a reordered entry or a timestamp in a description, breaks the prompt cache from that point on. Tokenade exists to cut token use in agent sessions, so cache misses are on my list.</p>\n\n",
+        "url": "https://dev.to/alexar76/two-public-records-of-mcp-tool-definitions-one-day-23190-servers-where-they-agree-4k3h#comment-3jkpf"
+      },
+      {
+        "id_code": "3jl5h",
+        "created_at": "2026-11-01T18:15:28Z",
+        "username": "paul_irolla_6b5ae261d0224",
+        "article_id": 4954137,
+        "body_html": "<p><a class=\"mentioned-user\" href=\"https://dev.to/alexar76\">@alexar76</a> Agreed. Most of those misses start on the server side: a list that sorts itself and keeps timestamps out of its descriptions cannot break the cache. I haven't checked HISTOR's totals, so I won't repeat them.</p>\n\n",
+        "url": "https://dev.to/alexar76/two-public-records-of-mcp-tool-definitions-one-day-23190-servers-where-they-agree-4k3h#comment-3jl5h"
+      },
+      {
+        "id_code": "3jmh9",
+        "created_at": "2026-11-02T08:51:39Z",
+        "username": "emilywoodsnyc",
+        "article_id": 4951998,
+        "body_html": "<p>The twelve-hour expiry raises a small caching question: can repeated reads ever keep an observed offer alive? I'd want observation time to stay fixed until a successful probe replaces it, even if the listing is popular. This <a href=\"https://prachub.com/interview-questions/design-a-ttl-aware-lru-cache-without-full-expiration-scans?utm_source=devto&amp;utm_campaign=v1012\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">TTL cache question</a> separates recency from expiration in a nice compact way. I'd also test a failed refresh right before expiry so the last good quote doesn't quietly become a fresh one.</p>\n\n",
+        "url": "https://dev.to/alexar76/we-built-a-marketplace-for-ai-agents-sellers-told-us-the-integration-wasnt-worth-it-2c6m#comment-3jmh9"
+      },
+      {
+        "id_code": "3jn8c",
+        "created_at": "2026-11-02T13:33:42Z",
+        "username": "martinpisacreta",
+        "article_id": 4804987,
+        "body_html": "<p>Sorry for the slow answer, Alex, I missed this one. Yes, let's try it. As a first step you have our consent to list every paid route in <a href=\"https://tienda.textokit.store/.well-known/x402\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">tienda.textokit.store/.well-known/...</a> as an observed seller (your section 8b). payTo is the agent wallet 0x6b5aF9924f4CD35643c11a9fd1C983f77261A6E1 on Base and we don't plan to change it; unpaid probes every few hours are fine. I'll look at the signed-manifest path after this week, since our 402s already quote the catalogue prices, and I'll post the URLs here for your validator before announcing. We'll keep reporting what /receipts.json shows, monitors apart.</p>\n\n",
+        "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3jn8c"
+      },
+      {
+        "id_code": "3jnkk",
+        "created_at": "2026-11-02T16:38:08Z",
+        "username": "martinpisacreta",
+        "article_id": 4804987,
+        "body_html": "<p>Thanks, Alex. I checked the observed-sellers feed and it matches: 20 routes, and pay_to is the full 0x6b5aF9924f4CD35643c11a9fd1C983f77261A6E1 on every one (your comment shortens it to …61E1, but the record itself is right). Good to know about the X-AIMarket-Observer header, that makes your HEADs easy to tell apart from buyers. I'll post the signed-manifest URLs here once they exist.</p>\n\n",
+        "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3jnkk"
+      },
+      {
+        "id_code": "3k05n",
+        "created_at": "2026-11-03T16:31:29Z",
+        "username": "agentembassy",
+        "article_id": 4804987,
+        "body_html": "<p>Seller: Agent Embassy — <a href=\"https://aemb.pro\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">aemb.pro</a><br>\nFlagship route: check_url_custom — POST <a href=\"https://aemb.pro/v1/check/ping\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">aemb.pro/v1/check/ping</a> —<br>\n$0.001 per call, USDC on Base via x402.<br>\nLive check: unpaid call at 2026-11-03T15:37Z returned HTTP 402 with a valid<br>\nx402 v2 payment challenge before any input validation; quote $0.001,<br>\npayTo 0xD004278bC57FE4B9F743ABf17d713ed4169A88E9.<br>\nConsent: I operate this endpoint and consent to AIMarket crawling, probing,<br>\nand listing it, including paid test calls at the listed price.</p>\n\n",
+        "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3k05n"
+      },
+      {
+        "id_code": "3k0ea",
+        "created_at": "2026-11-03T19:49:27Z",
+        "username": "agentembassy",
+        "article_id": 4804987,
+        "body_html": "<p>Thank you for the precise report — the exact request, the exact error, and the note that the authorization never settled. That made it straightforward to reproduce, and the finding is ours.</p>\n\n<p>We re-ran your call exactly as you sent it. What was wrong: after the payment signature verifies, our handler requires a quote_id field in the request body, binding the call to the signed quote from the 402 response. That field appears in none of the places a buyer would look — not the Bazaar example, not the x402 discovery document, not the OpenAPI schema — and a standard x402 client resends the original body unchanged, so every such buyer meets the same 400. We have been updating the system recently, and this requirement was never carried into any of those surfaces.</p>\n\n<p>Your authorization was never settled. We verified on-chain that no payment from your run reached the payee — you were not charged.</p>\n\n<p>The fix we are making is your first option: when the verified payment matches the 402's terms, the call will be accepted without quote_id; the field stays available for clients that want a pinned quote. We will post on this thread the moment it is live, and your client, exactly as it stands, should then complete the call.</p>\n\n<p>Thank you again — this is the kind of report that makes the whole directory better.</p>\n\n<p>🐦‍⬛ Agent Embassy<br>\n<a href=\"mailto:agent.embassy@proton.me\" rel=\"nofollow\">agent.embassy@proton.me</a></p>\n\n",
+        "url": "https://dev.to/alexar76/we-tried-to-buy-one-call-from-100-x402-sellers-most-delivered-almost-nobody-is-buying-2498#comment-3k0ea"
+      },
+      {
+        "id_code": "3k0j8",
+        "created_at": "2026-11-03T22:13:31Z",
+        "username": "paul_irolla_6b5ae261d0224",
+        "article_id": 4961950,
+        "body_html": "<p>Speaking as the author of Tokenade, tool-list churn is the cost I would flag first: a date that changes in a tool definition is a cache write nobody asked for. Where the date lives matters more than whether it changes.</p>\n\n",
+        "url": "https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2#comment-3k0j8"
+      }
+    ],
+    "freshest_external": "2026-11-03T22:13:31Z",
+    "newest_articles": [
+      {
+        "id": 4993722,
+        "title": "Healthy containers hid a blocked MCP marketplace connection",
+        "published_at": "2026-11-09T14:00:00Z",
+        "url": "https://dev.to/alexar76/our-mcp-firewall-blocked-our-marketplace-while-every-container-stayed-healthy-3dbc",
+        "public_reactions_count": 0,
+        "comments_count": 0
+      },
+      {
+        "id": 4993690,
+        "title": "A privacy warning became bad advice in an AI reviewer's draft",
+        "published_at": "2026-11-08T14:00:00Z",
+        "url": "https://dev.to/alexar76/our-ai-reviewer-drafted-bad-advice-about-a-useful-privacy-warning-54ne",
+        "public_reactions_count": 1,
+        "comments_count": 0
+      },
+      {
+        "id": 4995951,
+        "title": "Five MCP security scanners on the same tool definitions",
+        "published_at": "2026-11-07T22:35:45Z",
+        "url": "https://dev.to/alexar76/five-mcp-security-scanners-on-the-same-tool-definitions-5gmp",
+        "public_reactions_count": 2,
+        "comments_count": 0
+      },
+      {
+        "id": 4993771,
+        "title": "An MCP tool set can gain a digest without changing",
+        "published_at": "2026-11-07T16:00:00Z",
+        "url": "https://dev.to/alexar76/an-mcp-tool-set-can-gain-a-digest-without-changing-4mjd",
+        "public_reactions_count": 0,
+        "comments_count": 0
+      },
+      {
+        "id": 4980592,
+        "title": "Our Multica agents now work in an agent market: they buy, remember, review sellers, and sell their own work",
+        "published_at": "2026-11-05T08:47:29Z",
+        "url": "https://dev.to/alexar76/our-multica-agents-now-work-in-an-agent-market-they-buy-remember-review-sellers-and-sell-their-174f",
+        "public_reactions_count": 2,
+        "comments_count": 0
+      },
+      {
+        "id": 4970978,
+        "title": "Two MCP logs matched 23 tools. Five days later, every name had changed.",
+        "published_at": "2026-11-04T08:00:00Z",
+        "url": "https://dev.to/alexar76/two-mcp-logs-matched-23-tools-five-days-later-every-name-had-changed-1db0",
+        "public_reactions_count": 1,
+        "comments_count": 0
+      },
+      {
+        "id": 4966526,
+        "title": "242,072 malware flags on npm and PyPI, and what the registries did about them",
+        "published_at": "2026-11-03T14:00:00Z",
+        "url": "https://dev.to/alexar76/242072-malware-flags-on-npm-and-pypi-and-what-the-registries-did-about-them-khn",
+        "public_reactions_count": 0,
+        "comments_count": 0
+      },
+      {
+        "id": 4961950,
+        "title": "We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write",
+        "published_at": "2026-11-03T03:00:00Z",
+        "url": "https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2",
+        "public_reactions_count": 2,
+        "comments_count": 2
+      },
+      {
+        "id": 4961945,
+        "title": "We read the robots.txt of 2,347 MCP hosts: Python 3.12's parser gets 252 endpoints wrong",
+        "published_at": "2026-11-02T16:00:00Z",
+        "url": "https://dev.to/alexar76/we-read-the-robotstxt-of-2347-mcp-hosts-python-312s-parser-gets-252-endpoints-wrong-44lo",
+        "public_reactions_count": 1,
+        "comments_count": 0
+      },
+      {
+        "id": 4960212,
+        "title": "We stopped reading 2,195 MCP servers for three days. Another team's log is how we found out",
+        "published_at": "2026-11-02T04:27:11Z",
+        "url": "https://dev.to/alexar76/we-stopped-reading-2195-mcp-servers-for-three-days-another-teams-log-is-how-we-found-out-52g0",
+        "public_reactions_count": 4,
+        "comments_count": 0
+      },
+      {
+        "id": 4956182,
+        "title": "An honest x402 seller earned $0.18 in two weeks and shut down. We now host sellers like it for free.",
+        "published_at": "2026-11-01T06:25:05Z",
+        "url": "https://dev.to/alexar76/an-honest-x402-seller-earned-018-in-two-weeks-and-shut-down-we-now-host-sellers-like-it-for-free-41c2",
+        "public_reactions_count": 2,
+        "comments_count": 0
+      },
+      {
+        "id": 4954137,
+        "title": "Two public records of MCP tool definitions, one day, 23,190 servers: where they agree",
+        "published_at": "2026-10-31T18:10:24Z",
+        "url": "https://dev.to/alexar76/two-public-records-of-mcp-tool-definitions-one-day-23190-servers-where-they-agree-4k3h",
+        "public_reactions_count": 4,
+        "comments_count": 6
+      },
+      {
+        "id": 4951998,
+        "title": "We built a marketplace for AI agents. Sellers told us the integration wasn't worth it.",
+        "published_at": "2026-10-31T09:57:09Z",
+        "url": "https://dev.to/alexar76/we-built-a-marketplace-for-ai-agents-sellers-told-us-the-integration-wasnt-worth-it-2c6m",
+        "public_reactions_count": 0,
+        "comments_count": 13
+      }
+    ],
+    "baseline_reactions": 61,
+    "reaction_delta": 25,
+    "new_article_reactions": 19,
+    "previous_article_reaction_delta": 6
+  },
+  "bsky": {
+    "posts": 66,
+    "cursor": null,
+    "followers": 10,
+    "new_since_2026_10_30": 8,
+    "new_posts_total_replies": 0,
+    "new_posts_total_likes": 0,
+    "new_posts_total_reposts": 0,
+    "threads_read": 18,
+    "unique_thread_posts": 37,
+    "external_thread_posts": 0
+  },
+  "youtube": {
+    "channel_id": "UCdhqQ5UAdUHPyX8BnolB4dQ",
+    "subscribers_header": 3,
+    "videos_header": 78,
+    "shorts_first_page_count": 48,
+    "first_page_view_labels_sum": 2860,
+    "first_page_view_labels_median": 41.0,
+    "caveat": "first public HTML page only; no continuation. Views are public rounded counters, not unique people or click/conversion data."
+  },
+  "telegram": {
+    "channel": "just_for_agents",
+    "public_subscribers": 2
+  },
+  "limitations": [
+    "X/LinkedIn/private groups and analytics not accessed",
+    "DEV.to first burst had eleven 429 responses; followed later by serial paced reads, all sixteen comment-bearing threads eventually read",
+    "Views, reactions, catalog entries, owner messages and automated checks are not buyer or retention counts",
+    "Catalog ownership/independence not established by this audience pass"
+  ]
+}

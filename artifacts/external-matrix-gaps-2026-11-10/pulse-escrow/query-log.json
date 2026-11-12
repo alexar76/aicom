@@ -1,0 +1,119 @@
+{
+  "web_queries": [
+    {
+      "family": "pulse",
+      "kind": "repo",
+      "q": "\"alexar76/pulse-terminal\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev"
+    },
+    {
+      "family": "pulse",
+      "kind": "origin",
+      "q": "\"pulse.modelmarket.dev\" -site:modelmarket.dev -site:dev.to"
+    },
+    {
+      "family": "pulse",
+      "kind": "embed_origin",
+      "q": "\"magic-ai-factory.com/pulse\" -site:magic-ai-factory.com -site:github.com/alexar76 -site:dev.to"
+    },
+    {
+      "family": "pulse",
+      "kind": "config",
+      "q": "\"VITE_PULSE_API_URL\" \"capital/pricing\" -site:github.com/alexar76"
+    },
+    {
+      "family": "pulse",
+      "kind": "route",
+      "q": "\"/api/v2/capital/pricing\" -site:github.com/alexar76 -site:modelmarket.dev -site:magic-ai-factory.com"
+    },
+    {
+      "family": "pulse",
+      "kind": "product",
+      "q": "\"Pulse Terminal\" \"ACEX\" -site:github.com/alexar76 -site:modelmarket.dev -site:dev.to"
+    },
+    {
+      "family": "escrow",
+      "kind": "repo",
+      "q": "\"alexar76/escrow-signer\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev"
+    },
+    {
+      "family": "escrow",
+      "kind": "identity",
+      "q": "\"HORKOS\" \"AIMarketEscrow\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev"
+    },
+    {
+      "family": "escrow",
+      "kind": "service",
+      "q": "\"escrow-policy-signer\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev"
+    },
+    {
+      "family": "escrow",
+      "kind": "config",
+      "q": "\"AIMARKET_ESCROW_SIGNER_URL\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev"
+    },
+    {
+      "family": "escrow",
+      "kind": "protocol",
+      "q": "\"DebitAuthorization(bytes32 channelId,address hub,address token,uint256 amount,bytes32 receiptId,uint256 nonce,uint256 deadline)\""
+    },
+    {
+      "family": "escrow",
+      "kind": "selector",
+      "q": "\"0xf7becd80\" \"AIMarket\" -site:github.com/alexar76 -site:dev.to"
+    }
+  ],
+  "github_queries_prepared": [
+    {
+      "kind": "repositories",
+      "query": "\"alexar76/pulse-terminal\" in:readme -user:alexar76",
+      "state": "executed_by_root_with_coordinated_quota",
+      "result_evidence": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/readme-pulse.raw"
+    },
+    {
+      "kind": "commits",
+      "query": "\"AIMARKET_ESCROW_SIGNER_URL\" -author:alexar76",
+      "state": "executed_by_root_with_coordinated_quota",
+      "result_evidence": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/config-escrow.raw"
+    }
+  ],
+  "github_queries_observed": [
+    {
+      "key": "readme-pulse",
+      "url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%2Fpulse-terminal%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "observed_at_utc": "2026-11-10T20:04:19.106030+00:00",
+      "status": 200,
+      "total_count": 0,
+      "incomplete_results": false,
+      "shared_evidence_file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/readme-pulse.raw"
+    },
+    {
+      "key": "readme-escrow",
+      "url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%2Fescrow-signer%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+      "observed_at_utc": "2026-11-10T20:04:19.606346+00:00",
+      "status": 200,
+      "total_count": 0,
+      "incomplete_results": false,
+      "shared_evidence_file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/readme-escrow.raw"
+    },
+    {
+      "key": "config-escrow",
+      "url": "https://api.github.com/search/commits?q=%22AIMARKET_ESCROW_SIGNER_URL%22%20-user%3Aalexar76%20-author%3Aalexar76&per_page=100",
+      "observed_at_utc": "2026-11-10T20:05:33.386501+00:00",
+      "status": 200,
+      "total_count": 0,
+      "incomplete_results": false,
+      "shared_evidence_file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/config-escrow.raw"
+    },
+    {
+      "key": "url-pulse",
+      "url": "https://api.github.com/search/commits?q=%22magic-ai-factory.com%2Fpulse%22%20-user%3Aalexar76&per_page=100",
+      "observed_at_utc": "2026-11-10T20:05:34.043229+00:00",
+      "status": 200,
+      "total_count": 0,
+      "incomplete_results": false,
+      "shared_evidence_file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/url-pulse.raw"
+    }
+  ],
+  "web_query_count": 12,
+  "github_query_count": 4,
+  "total_query_executions": 16
+}

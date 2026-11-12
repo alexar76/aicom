@@ -1,0 +1,112 @@
+{
+  "fetchedAt": "2026-11-07T19:44:12.823Z",
+  "pins": [
+    {
+      "name": "mcp-shield",
+      "registry": "npm",
+      "version": "1.0.4",
+      "integrity": "sha512-AHCzG16zoWVVOo1qrCXgQeXYWu/IqV44h0YMx2FzyydMZpsD9jGAR3JJr8zCFml6MHGi1CrWax0ytcdNiDyU/Q==",
+      "tarball": "https://registry.npmjs.org/mcp-shield/-/mcp-shield-1.0.4.tgz",
+      "dependencies": {
+        "ora": "^8.2.0",
+        "boxen": "^8.0.1",
+        "chalk": "^5.4.1",
+        "json5": "^2.2.3",
+        "dotenv": "^16.4.5",
+        "fs-extra": "^11.3.0",
+        "commander": "^12.0.0",
+        "log-update": "^6.1.0",
+        "node-fetch": "^3.3.2",
+        "log-symbols": "^7.0.0",
+        "@anthropic-ai/sdk": "^0.18.0",
+        "@modelcontextprotocol/sdk": "^1.9.0"
+      },
+      "scripts": {
+        "build": "tsc",
+        "start": "node dist/index.js"
+      }
+    },
+    {
+      "name": "@askalf/truecopy",
+      "registry": "npm",
+      "version": "0.10.5",
+      "integrity": "sha512-PPPI0iMplML/hYFGZYkITwroO+T9IOO4SWxv3JnJjCfy+2r+ARH69onPuf79k2bZjS5sNY0Bx6332/xLDE1CDg==",
+      "tarball": "https://registry.npmjs.org/@askalf/truecopy/-/truecopy-0.10.5.tgz",
+      "engines": {
+        "node": ">=20"
+      },
+      "dependencies": {
+        "@askalf/redstamp": "https://github.com/askalf/redstamp/releases/download/v0.7.5/askalf-redstamp-0.7.5.tgz"
+      },
+      "scripts": {
+        "demo": "node demo/demo.mjs",
+        "fuzz": "node fuzz/run.mjs",
+        "test": "node --test"
+      }
+    },
+    {
+      "name": "@roshan6335/mcpsentry",
+      "registry": "npm",
+      "version": "0.1.5",
+      "integrity": "sha512-j/zBbF41kXUX83AN7F2oJaKmJsid1+/sVnQxf4k26g2KfnbzfgDMRFZcecbEudkbewRasHmFc/SzskbH7UqVOw==",
+      "tarball": "https://registry.npmjs.org/@roshan6335/mcpsentry/-/mcpsentry-0.1.5.tgz",
+      "engines": {
+        "node": ">=18"
+      },
+      "dependencies": {
+        "chalk": "^5.3.0",
+        "commander": "^12.1.0"
+      },
+      "scripts": {
+        "dev": "tsx src/cli.ts",
+        "build": "tsc",
+        "start": "node dist/cli.js"
+      }
+    },
+    {
+      "name": "mcp-audit-scanner",
+      "registry": "pypi",
+      "version": "0.28.0",
+      "requiresPython": ">=3.11",
+      "files": [
+        {
+          "filename": "mcp_audit_scanner-0.28.0-py3-none-any.whl",
+          "url": "https://files.pythonhosted.org/packages/42/a5/a0afe7c3383b35654d07c349235bb85df3813b8b377aea8c87e7515f368a/mcp_audit_scanner-0.28.0-py3-none-any.whl",
+          "sha256": "ffe5a24a93aeb7fc15b200ee995864655685b24aa8d3af35d5fba4242034da1d",
+          "uploadedAt": "2026-11-06T16:18:16.598671Z"
+        },
+        {
+          "filename": "mcp_audit_scanner-0.28.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/de/d0/410762424ac657c50e0decc8773523bbe1977c9df4aa80cfd4f32c6160ff/mcp_audit_scanner-0.28.0.tar.gz",
+          "sha256": "fcbe825e818c4bf11238f0ce6298362a1161cb90fccf4ee76d8e7f360ba00756",
+          "uploadedAt": "2026-11-06T16:18:18.377266Z"
+        }
+      ],
+      "requiresDist": [
+        "idna>=3.15",
+        "packaging>=21.0",
+        "platformdirs>=3.0",
+        "pydantic<3.0,>=2.0",
+        "pyyaml<7.0,>=6.0",
+        "reportlab>=4.5.1",
+        "rich<16.0,>=13.0",
+        "typer<1.0,>=0.12",
+        "watchdog<7.0,>=4.0",
+        "cryptography<51.0,>=46.0.6; extra == \"attestation\"",
+        "sigstore<5.0,>=4.2.0; extra == \"attestation\"",
+        "bandit>=1.7; extra == \"dev\"",
+        "jsonschema>=4.0; extra == \"dev\"",
+        "mypy>=1.10; extra == \"dev\"",
+        "playwright>=1.40; extra == \"dev\"",
+        "pyinstaller>=6.0; extra == \"dev\"",
+        "pytest-asyncio>=0.23; extra == \"dev\"",
+        "pytest>=8.0; extra == \"dev\"",
+        "ruff>=0.4; extra == \"dev\"",
+        "urllib3>=2.7.0; extra == \"dev\"",
+        "httpx<1.0,>=0.27; extra == \"mcp\"",
+        "mcp>=1.0; extra == \"mcp\"",
+        "cyclonedx-python-lib<12.0,>=7.0; extra == \"sbom\""
+      ]
+    }
+  ]
+}

@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root" data-accent="amber" data-density="default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I opened a live agent marketplace. The receipts were the product. — Web Pulse</title>
+    <meta name="description" content="A developer launched AIMarket Hub, a live public marketplace at modelmarket.dev where AI agents can discover, invoke, and receive signed receipts for third-part">
+    <link rel="canonical" href="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product">
+    
+<link rel="alternate" hreflang="en" href="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product">
+<link rel="alternate" hreflang="x-default" href="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product">
+
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/icon-192.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+    <meta name="theme-color" content="#c8431f">
+    
+    
+    <link rel="webmcp" href="/.well-known/mcp.json">
+    <meta name="webmcp" content="/.well-known/mcp.json">
+    <meta name="ai-agents" content="enabled">
+    <meta name="ai-catalog" content="/.well-known/ai-catalog.json">
+    <script type="application/webmcp+json">
+    {
+      "version": "1.0",
+      "name": "wpnews",
+      "description": "AI/tech news index with searchable articles, topics, and entities.",
+      "tools": [
+        {"name": "search_news", "description": "Full-text search across AI/tech articles. Input: q (string), lang (en|uk), limit (int)."},
+        {"name": "open_topic", "description": "Open a topic page by slug. Input: slug (string)."},
+        {"name": "open_entity", "description": "Open an entity profile by name. Input: name (string)."},
+        {"name": "view_trending", "description": "View trending articles. Input: days (1|7|30)."},
+        {"name": "get_api_docs", "description": "Open API documentation."}
+      ]
+    }
+    </script>
+    
+    <link rel="preload" href="/static/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <link rel="stylesheet" href="/static/css/inter.da1832ad52.css">
+    <link rel="stylesheet" href="/static/css/tokens.1104340ab3.css">
+    <link rel="stylesheet" href="/static/css/site.c694106576.css">
+    <link rel="preconnect" href="https://www.google.com">
+    <link rel="dns-prefetch" href="https://api.wpnews.pro">
+    <link rel="search" type="application/opensearchdescription+xml" title="Web Pulse" href="https://wpnews.pro/opensearch.xml">
+    <link rel="alternate" type="application/rss+xml" title="Web Pulse RSS" href="https://wpnews.pro/feed/rss">
+    <link rel="alternate" type="application/atom+xml" title="Web Pulse Atom Feed" href="https://wpnews.pro/feed/atom">
+    <link rel="alternate" type="application/feed+json" title="Web Pulse JSON Feed" href="https://wpnews.pro/feed/json">
+
+    
+    <link rel="service" type="application/json" title="Heartbeat" href="https://wpnews.pro/feed/heartbeat">
+    <link rel="service" type="application/json" title="Latest articles" href="https://wpnews.pro/feed/latest.json">
+    <link rel="service" type="text/markdown" title="Today's AI events" href="https://wpnews.pro/ai-events/today.md">
+    <link rel="service" type="application/xml" title="OAI-PMH" href="https://wpnews.pro/oai">
+    <link rel="alternate" type="text/markdown" title="llms-full.txt" href="https://wpnews.pro/llms-full.txt">
+
+    
+    <meta property="og:site_name" content="Web Pulse">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="I opened a live agent marketplace. The receipts were the product. — Web Pulse">
+    <meta property="og:description" content="A developer launched AIMarket Hub, a live public marketplace at modelmarket.dev where AI agents can discover, invoke, and receive signed receipts for third-part">
+    <meta property="og:url" content="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product">
+    <meta property="og:image" content="https://wpnews.pro/og/i-opened-a-live-agent-marketplace-the-receipts-were-the-product.png">
+
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="I opened a live agent marketplace. The receipts were the product. — Web Pulse">
+    <meta name="twitter:description" content="A developer launched AIMarket Hub, a live public marketplace at modelmarket.dev where AI agents can discover, invoke, and receive signed receipts for third-part">
+    <meta name="twitter:image" content="https://wpnews.pro/og/i-opened-a-live-agent-marketplace-the-receipts-were-the-product.png">
+
+    
+    
+
+    
+    
+
+    
+
+<link rel="prefetch" href="https://wpnews.pro/news/autonomous-treasury-agents-how-trovata-built-an-ai-native-solution-on-amazon-and">
+<link rel="prefetch" href="https://wpnews.pro/news/a-chain-id-is-not-authorization-saax-discovery-to-testnet-finance">
+<link rel="prefetch" href="https://wpnews.pro/news/coingecko-cuts-x402-crypto-data-costs-by-50-to-0-005-per-call">
+<link rel="prefetch" href="https://wpnews.pro/news/mirantis-launches-agent-platform-for-governed-ai-agents-on-kubernetes">
+
+
+
+<link rel="prefetch" href="https://wpnews.pro/ai-events/today.md">
+<link rel="prefetch" href="https://wpnews.pro/feed/latest.json">
+<link rel="prefetch" href="https://wpnews.pro/research/topic/ai-agents">
+<link rel="prefetch" href="https://wpnews.pro/research/topic/ai-products">
+<link rel="prefetch" href="https://wpnews.pro/research/topic/ai-tools">
+
+
+
+
+
+<meta name="citation_title" content="I opened a live agent marketplace. The receipts were the product.">
+<meta name="citation_author" content="wpnews.pro">
+<meta name="citation_publication_date" content="2026-09-15">
+<meta name="citation_online_date" content="2026-09-15">
+<meta name="citation_journal_title" content="Web Pulse">
+<meta name="citation_publisher" content="Web Pulse">
+<meta name="citation_language" content="en">
+<meta name="citation_abstract_html_url" content="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product">
+<meta name="citation_fulltext_html_url" content="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product">
+<meta name="citation_keywords" content="ai-agents; ai-products; ai-tools; ai-infrastructure; ai-startups">
+
+
+<meta name="DC.title" content="I opened a live agent marketplace. The receipts were the product.">
+<meta name="DC.creator" content="wpnews.pro">
+<meta name="DC.date" content="2026-09-15">
+<meta name="DC.publisher" content="Web Pulse">
+<meta name="DC.identifier" content="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product">
+<meta name="DC.format" content="text/html">
+<meta name="DC.language" content="en">
+<meta name="DC.rights" content="Original source: https://dev.to/alexar76/i-opened-a-live-agent-marketplace-the-receipts-were-the-product-4hl1">
+
+
+<meta name="article:topic" content="ai-agents">
+<meta name="article:sentiment" content="neutral">
+<link rel="alternate" type="text/markdown" title="Markdown" href="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product.md">
+<link rel="alternate" type="application/json" title="JSON-LD" href="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product.json">
+<link rel="alternate" type="text/plain" title="Plain text" href="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product.txt">
+
+
+
+
+<link rel="cite-as" href="https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product">
+<link rel="alternate" type="application/x-bibtex" title="BibTeX citation" href="https://wpnews.pro/cite/i-opened-a-live-agent-marketplace-the-receipts-were-the-product?format=bibtex">
+<link rel="alternate" type="application/x-research-info-systems" title="RIS citation" href="https://wpnews.pro/cite/i-opened-a-live-agent-marketplace-the-receipts-were-the-product?format=ris">
+<link rel="alternate" type="application/json" title="Citation metadata" href="https://wpnews.pro/cite/i-opened-a-live-agent-marketplace-the-receipts-were-the-product?format=json">
+
+
+
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@id": "https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product#article", "@type": "NewsArticle", "about": [{"@type": "Person", "name": "AIMarket Hub"}, {"@type": "Organization", "name": "modelmarket.dev"}, {"@type": "Organization", "name": "MCP", "sameAs": ["https://modelcontextprotocol.io/"]}, {"@type": "Organization", "name": "USDC"}, {"@type": "Organization", "name": "Base"}, {"@type": "Organization", "name": "LangGraph"}, {"@type": "Organization", "name": "CrewAI"}, {"@type": "Organization", "name": "aimarket-hub"}], "articleBody": "Most \u201cagent economy\u201d posts sell you a framework, a Discord, or a token. I wanted the boring thing: **a public catalog where an agent can find a tool, call it, and keep a receipt** \u2014 without me standing in the loop. That surface is live. It is called **AIMarket Hub**. The URL is modelmarket.dev. Crypto stays off this title on purpose. The shape here is discover \u2192 invoke \u2192 receipt. Counted **2026-09-15** from `/ai-market/v2/stats/live`: | Invokes | **710** (704 ok \u2014 99.2%) | | External / self | 700 / 10 | | Federated hubs | **14** | | Capabilities | **177** | | p50 latency (24h) | **90 ms** | | Revenue / hour | **$0.0010** | That last number is the honesty tax. This is not Uniswap. It is a small live market that already meters calls. The screenshots below are the product, not a mock. *The terminal. EN UI. MCP remote in the same chrome: `https://modelmarket.dev/mcp`.* **If your agent stack only works inside a demo transcript, you don\u0027t have a market \u2014 you have a screenshot.** A market needs supply, demand, a place they meet, a price, and a way to fail out loud. The Hub is that place. Frameworks are how you *talk* to it. We already wrote the 15-minute \u201clist your own HTTP tool\u201d walkthrough (publish-and-earn) and the two-tool MCP door (Hub MCP). This piece is narrower: **open the live terminal and read what it is actually doing.** `source_hub`. HTTP **402** is a product feature, not an error page: Channel \u2192 Invoke \u2192 Receipt \u2192 Settle. Settlement exists (USDC on Base, small demo funds). You do not need a wallet to *watch* the feed or run a free trial. *EXT = someone else paid. One weather row at 475 ms is free and red \u2014 fail loud, not a painted success.* When I loaded the page, the tape was not a synthetic demo reel. It was: | capability | hub | price | latency | |---|---|---|---| | `gaia.weather.read@v1` | iot.modelmarket.dev | $0.001 | ~80\u201397 ms | | `sortes.draw@v1` | oracles family | $0.006 | 18 ms | | `murmuration.aggregate@v1` | oracles family | $0.002 | 48 ms | Weather dominates. That is honest demand, not a balanced pie chart. Sortes is the verifiable-draw capability other live surfaces actually spend. This article is not those products. One failed weather call sits in the same list as the successes. Pretty dashboards that hide the red row are cosplay. The decoder strip above the table is the same grammar: `capability_id` \u2192 route `[LOCAL/FED]` \u2192 traffic `[EXT/SELF]` \u2192 `$` \u2192 ms \u2192 \u2713/\u2717. *Match, not autocomplete theatre. Prices and \u201cclick to try free\u201d on the same card.* I typed **fair randomness for a lottery**. Back came, among others: `sortes.verify@v1` \u2014 verify an ECVRF proof offline \u00b7 `platon.beacon@v1` \u2014 hash-chained randomness beacon \u00b7 `platon.random@v1` \u2014 signed chaos-VRF \u00b7 Search is a **catalogue**. It is not a lottery. Read the description before you spend a trial. The Hub already has a free-trial path (a handful of invokes per visitor per hour) so you can feel a receipt before any wallet. Same box accepts other intents the landing already suggests: *wildfire brief near a facility*, *protect a ship from navigation spoofing*. Those are live SKUs with their own honesty footnotes. This article does not tour them. Three doors. Pick one. Do not install seventeen servers. | Door | What it is | |---|---| | **Terminal** | modelmarket.dev \u2014 search, try, watch the feed | | **MCP** | `https://modelmarket.dev/mcp` \u2014 two tools:`market_search` ,`market_invoke` | | **CLI** | `pip install aimarket-hub` \u2014 publish your own capability | If you want agents inside LangGraph/CrewAI to see the catalogue as native tools, that is a two-line bridge. If you want to *list* an endpoint you already have, that is the 15-minute article. This page is the room those posts assume is real. Production listing still has gates (publish token, signed provider responses, supply-security). Start on the public terminal or a local hub. Don\u0027t paste a localhost `invoke_url` at prod and act surprised. If a market that fails loud and keeps receipts is your kind of borin", "articleSection": "AI Agents", "author": {"@id": "https://wpnews.pro/author/alex", "@type": "Person", "name": "Alex", "url": "https://wpnews.pro/author/alex"}, "citation": {"@type": "CreativeWork", "url": "https://dev.to/alexar76/i-opened-a-live-agent-marketplace-the-receipts-were-the-product-4hl1"}, "dateModified": "2026-09-15T11:43:30+00:00", "datePublished": "2026-09-15T11:19:16+00:00", "description": "A developer launched AIMarket Hub, a live public marketplace at modelmarket.dev where AI agents can discover, invoke, and receive signed receipts for third-party capabilities. As of September 15, 2026, the hub reported 710 invocations (99.2% success), 177 capabilities across 14 federated hubs, a 90 ms median latency, and roughly $0.0010 in revenue per hour, with settlement handled in USDC on Base. The project exposes three access paths \u2014 a web terminal, an MCP endpoint with market_search and market_invoke tools, and a Python CLI \u2014 and deliberately keeps failed calls visible alongside successful ones.", "headline": "I opened a live agent marketplace. The receipts were the product.", "identifier": {"@type": "PropertyValue", "propertyID": "wpnews-slug", "value": "i-opened-a-live-agent-marketplace-the-receipts-were-the-product"}, "image": [{"@type": "ImageObject", "height": 630, "url": "https://wpnews.pro/og/i-opened-a-live-agent-marketplace-the-receipts-were-the-product.png", "width": 1200}], "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": {"@type": "CreativeWork", "url": "https://dev.to/alexar76/i-opened-a-live-agent-marketplace-the-receipts-were-the-product-4hl1"}, "keywords": "ai-agents, ai-products, ai-tools, ai-infrastructure, ai-startups", "mainEntityOfPage": {"@id": "https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product", "@type": "WebPage"}, "mentions": [{"@type": "Person", "name": "AIMarket Hub"}, {"@type": "Organization", "name": "modelmarket.dev"}, {"@type": "Organization", "name": "MCP", "sameAs": ["https://modelcontextprotocol.io/"]}, {"@type": "Organization", "name": "USDC"}, {"@type": "Organization", "name": "Base"}, {"@type": "Organization", "name": "LangGraph"}, {"@type": "Organization", "name": "CrewAI"}, {"@type": "Organization", "name": "aimarket-hub"}], "publisher": {"@id": "https://wpnews.pro/#organization"}, "sdPublisher": {"@type": "Organization", "name": "wpnews.pro editorial pipeline", "url": "https://wpnews.pro/about"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": [".art__title", ".art__lede"]}, "timeRequired": "PT4M", "url": "https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product", "wordCount": 726}, {"@id": "https://wpnews.pro/#organization", "@type": "Organization", "description": "AI \u0026 developer infrastructure news. Sourced. Dated. Versioned.", "logo": {"@type": "ImageObject", "height": 192, "url": "https://wpnews.pro/static/icon-192.png", "width": 192}, "name": "Web Pulse", "url": "https://wpnews.pro"}, {"@id": "https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product", "@type": "WebPage", "breadcrumb": {"@id": "https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product#breadcrumb"}, "isPartOf": {"@id": "https://wpnews.pro/#website"}, "name": "I opened a live agent marketplace. The receipts were the product.", "primaryImageOfPage": {"@type": "ImageObject", "url": "https://wpnews.pro/og/i-opened-a-live-agent-marketplace-the-receipts-were-the-product.png"}, "url": "https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product"}, {"@id": "https://wpnews.pro/#website", "@type": "WebSite", "name": "Web Pulse", "publisher": {"@id": "https://wpnews.pro/#organization"}, "url": "https://wpnews.pro"}, {"@id": "https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product#breadcrumb", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "item": "https://wpnews.pro", "name": "Home", "position": 1}, {"@type": "ListItem", "item": "https://wpnews.pro/news", "name": "News", "position": 2}, {"@type": "ListItem", "item": "https://wpnews.pro/topics/ai-agents", "name": "Ai Agents", "position": 3}, {"@type": "ListItem", "item": "https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product", "name": "I opened a live agent marketplace. The receipts were the pro", "position": 4}]}]}</script>
+
+
+    <script>
+    // Register service worker for offline + cache
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js', {scope: '/'}).catch(function(){});
+    }
+    // Apply stored theme ASAP to avoid flash
+    (function(){
+      var t=localStorage.getItem('wpnews_theme');
+      var html=document.getElementById('html-root');
+      if(t==='dark') html.classList.add('dark');
+      else if(t==='light') html.classList.add('light');
+    })();
+    document.addEventListener('DOMContentLoaded',function(){
+      var themeBtn=document.getElementById('theme-toggle');
+
+      // Dark-mode toggle
+      if(themeBtn){
+        function _syncIcon(){
+          var isDark=document.getElementById('html-root').classList.contains('dark')||
+            (!document.getElementById('html-root').classList.contains('light')&&
+              window.matchMedia('(prefers-color-scheme:dark)').matches);
+          themeBtn.textContent=isDark?'☀':'🌙';
+          themeBtn.setAttribute('aria-label',isDark?'Switch to light mode':'Switch to dark mode');
+        }
+        _syncIcon();
+        themeBtn.addEventListener('click',function(){
+          var html=document.getElementById('html-root');
+          var isDark=html.classList.contains('dark')||
+            (!html.classList.contains('light')&&window.matchMedia('(prefers-color-scheme:dark)').matches);
+          if(isDark){
+            html.classList.remove('dark'); html.classList.add('light');
+            localStorage.setItem('wpnews_theme','light');
+          } else {
+            html.classList.remove('light'); html.classList.add('dark');
+            localStorage.setItem('wpnews_theme','dark');
+          }
+          _syncIcon();
+        });
+      }
+
+      // Bookmarks badge
+      (function(){
+        function updateBadge(){
+          var badge=document.getElementById('nav-bm-badge');
+          if(!badge) return;
+          try{
+            var bms=JSON.parse(localStorage.getItem('wpnews_bookmarks')||'[]');
+            var n=bms.length;
+            badge.textContent=n>99?'99+':String(n);
+            badge.classList.toggle('visible',n>0);
+          } catch(e){}
+        }
+        updateBadge();
+        window.addEventListener('bookmarks-changed',updateBadge);
+        window.addEventListener('storage',function(e){if(e.key==='wpnews_bookmarks')updateBadge();});
+
+        // Reading history badge
+        function updateHistoryBadge(){
+          var badge=document.getElementById('nav-history-badge');
+          if(!badge) return;
+          try{
+            var read=JSON.parse(localStorage.getItem('wpnews_read')||'[]');
+            var n=read.length;
+            if(n>0){ badge.textContent=String(n>99?'99+':n); badge.style.display=''; }
+            else { badge.style.display='none'; }
+          } catch(e){}
+        }
+        updateHistoryBadge();
+        window.addEventListener('storage',function(e){if(e.key==='wpnews_read')updateHistoryBadge();});
+      })();
+
+      // Mobile nav toggle
+      (function(){
+        var btn=document.getElementById('nav-toggle');
+        var nav=document.getElementById('site-nav');
+        if(!btn||!nav) return;
+        btn.addEventListener('click',function(){
+          var open=nav.classList.toggle('is-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          btn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        });
+        // Close on Escape
+        document.addEventListener('keydown',function(e){
+          if(e.key==='Escape'&&nav.classList.contains('is-open')){
+            nav.classList.remove('is-open');
+            btn.setAttribute('aria-expanded','false');
+            btn.setAttribute('aria-label','Open navigation menu');
+            btn.focus();
+          }
+        });
+        // Close when clicking outside
+        document.addEventListener('click',function(e){
+          if(nav.classList.contains('is-open')&&!nav.contains(e.target)&&e.target!==btn&&!btn.contains(e.target)){
+            nav.classList.remove('is-open');
+            btn.setAttribute('aria-expanded','false');
+            btn.setAttribute('aria-label','Open navigation menu');
+          }
+        });
+      })();
+
+    });
+    </script>
+</head>
+<body>
+    <div class="reading-progress-bar" id="reading-progress" aria-hidden="true"></div>
+    <a href="#main" class="skip-link">Skip to content</a>
+    
+<nav class="tabs" aria-label="Primary">
+  <a class="tabs__title" href="/">wpnews</a>
+  <a class="tab active" href="/">news</a>
+  <a class="tab" href="/trending">trending</a>
+  <a class="tab" href="/topics">topics</a>
+  <a class="tab" href="/entities">entities</a>
+  <a class="tab" href="/entities/graph">graph</a>
+  <a class="tab" href="/api">api</a>
+  <a class="tab" href="/mcp/setup">mcp</a>
+  
+  <a class="tab" href="/compare">compare</a>
+  <a class="tab" href="/research">research</a>
+  <a class="tab" href="/pricing">pricing</a>
+  <a class="tab" href="/stats">stats</a>
+  <a class="tab" href="/search">search</a>
+  <span class="tabs__spacer"></span>
+  <div class="tabs__right">
+    <span class="dim" id="js-clock">—</span>
+    <span class="live">live</span>
+  </div>
+</nav>
+    <main id="main">
+        
+
+
+
+
+
+
+<main class="wrap">
+
+  
+  <div class="crumbs">
+    <span class="cmd">cd</span>
+    <span class="path">/news/ai-agents/i-opened-a-live-agent-marketplace-th…</span>
+    <span class="sep">·</span>
+    <a href="/">home</a>
+    <span class="sep">›</span>
+    <a href="/topics">topics</a>
+    <span class="sep">›</span>
+    <a href="/topics/ai-agents">ai-agents</a>
+    <span class="sep">›</span>
+    <span class="here">article</span>
+  </div>
+
+  
+  <section class="art" itemscope itemtype="https://schema.org/NewsArticle">
+    <div class="art__head">
+      <span class="tag">[ARTICLE · art-130128]</span>
+      <span><span class="k">src=</span><a class="v" href="https://dev.to/alexar76/i-opened-a-live-agent-marketplace-the-receipts-were-the-product-4hl1" rel="nofollow noopener external" target="_blank" itemprop="publisher" title="Read the original at dev.to">dev.to ↗</a></span>
+      
+      <span><span class="k">pub=</span><span class="v"><time datetime="2026-09-15T11:19:16+00:00" itemprop="datePublished" data-noreltime>2026-09-15T11:19Z</time></span></span>
+      
+      <span><span class="k">topic=</span><span class="v">ai-agents</span></span>
+      <span><span class="k">verified=</span><span class="verified">true</span></span>
+      <span><span class="k">sentiment=</span><span class="sent neutral">· neutral</span></span>
+    </div>
+    <h1 class="art__title" itemprop="headline">I opened a live agent marketplace. The receipts were the product.</h1>
+    
+    <p class="art__lede" itemprop="description">A developer launched AIMarket Hub, a live public marketplace at modelmarket.dev where AI agents can discover, invoke, and receive signed receipts for third-party capabilities. As of September 15, 2026, the hub reported 710 invocations (99.2% success), 177 capabilities across 14 federated hubs, a 90 ms median latency, and roughly $0.0010 in revenue per hour, with settlement handled in USDC on Base. The project exposes three access paths — a web terminal, an MCP endpoint with market_search and market_invoke tools, and a Python CLI — and deliberately keeps failed calls visible alongside successful ones.</p>
+    
+    <div class="art__meta">
+      
+      <span class="item"><span class="k">by</span><span class="v" itemprop="author">Alex</span></span>
+      <span class="item"><span class="k">read</span><span class="v">4 min</span></span>
+      <span class="item"><span class="k">views</span><span class="v">31</span></span>
+      <span class="item"><span class="k">published</span><span class="v">Sep 15, 2026</span></span>
+      <button onclick="navigator.clipboard&amp;&amp;navigator.clipboard.writeText(location.href);this.textContent='$ copied ✓';setTimeout(()=&gt;this.textContent='$ copy permalink',1500);">$ copy permalink</button>
+      <a href="https://dev.to/alexar76/i-opened-a-live-agent-marketplace-the-receipts-were-the-product-4hl1" target="_blank" rel="external noopener" style="display:inline-block;"><button>$ source</button></a>
+      <a href="/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product.json" target="_blank"><button>$ cite (json)</button></a>
+    </div>
+  </section>
+
+  
+
+  
+  <div class="art__grid">
+
+    <div class="art__body" itemprop="articleBody">
+      
+      <p>Most “agent economy” posts sell you a framework, a Discord, or a token.</p>
+<p>I wanted the boring thing: <strong>a public catalog where an agent can find a tool, call it, and keep a receipt</strong> — without me standing in the loop.</p>
+<p>That surface is live. It is called <strong>AIMarket Hub</strong>. The URL is <a href="https://modelmarket.dev">modelmarket.dev</a>. Crypto stays off this title on purpose. The shape here is discover → invoke → receipt.</p>
+<pre><code>Counted **2026-09-15** from [`/ai-market/v2/stats/live`](https://modelmarket.dev/ai-market/v2/stats/live):
+
+| Invokes | **710** (704 ok — 99.2%) | 
+</code></pre>
+<p>| External / self | 700 / 10 |
+| Federated hubs | <strong>14</strong> |
+| Capabilities | <strong>177</strong> |
+| p50 latency (24h) | <strong>90 ms</strong> |
+| Revenue / hour | <strong>$0.0010</strong> |</p>
+<p>That last number is the honesty tax. This is not Uniswap. It is a small live market that already meters calls. The screenshots below are the product, not a mock.</p>
+<p><em>The terminal. EN UI. MCP remote in the same chrome: <code>https://modelmarket.dev/mcp</code>.</em></p>
+<p><strong>If your agent stack only works inside a demo transcript, you don't have a market — you have a screenshot.</strong></p>
+<p>A market needs supply, demand, a place they meet, a price, and a way to fail out loud. The Hub is that place. Frameworks are how you <em>talk</em> to it.</p>
+<p>We already wrote the 15-minute “list your own HTTP tool” walkthrough (<a href="https://dev.to/alexar76/i-made-my-api-discoverable-to-ai-agents-and-got-it-paid-per-call-in-15-minutes-4kin">publish-and-earn</a>) and the two-tool MCP door (<a href="https://dev.to/alexar76/i-connected-one-mcp-server-it-searched-a-live-marketplace-and-returned-a-signed-weather-receipt-204e">Hub MCP</a>). This piece is narrower: <strong>open the live terminal and read what it is actually doing.</strong></p>
+<p><code>source_hub</code>.
+HTTP <strong>402</strong> is a product feature, not an error page: Channel → Invoke → Receipt → Settle. Settlement exists (USDC on Base, small demo funds). You do not need a wallet to <em>watch</em> the feed or run a free trial.</p>
+<p><em>EXT = someone else paid. One weather row at 475 ms is free and red — fail loud, not a painted success.</em></p>
+<p>When I loaded the page, the tape was not a synthetic demo reel. It was:</p>
+<table role="table" data-cols="4">
+<thead>
+<tr>
+<th scope="col" data-col="0">capability</th>
+<th scope="col" data-col="1">hub</th>
+<th scope="col" data-col="2">price</th>
+<th scope="col" data-col="3">latency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-col="0" data-label="capability"><code>gaia.weather.read@v1</code></td>
+<td data-col="1" data-label="hub">iot.modelmarket.dev</td>
+<td data-col="2" data-label="price">$0.001</td>
+<td data-col="3" data-label="latency">~80–97 ms</td>
+</tr>
+<tr>
+<td data-col="0" data-label="capability"><code>sortes.draw@v1</code></td>
+<td data-col="1" data-label="hub">oracles family</td>
+<td data-col="2" data-label="price">$0.006</td>
+<td data-col="3" data-label="latency">18 ms</td>
+</tr>
+<tr>
+<td data-col="0" data-label="capability"><code>murmuration.aggregate@v1</code></td>
+<td data-col="1" data-label="hub">oracles family</td>
+<td data-col="2" data-label="price">$0.002</td>
+<td data-col="3" data-label="latency">48 ms</td>
+</tr>
+</tbody>
+</table>
+<p>Weather dominates. That is honest demand, not a balanced pie chart. Sortes is the verifiable-draw capability other live surfaces actually spend. This article is not those products. One failed weather call sits in the same list as the successes. Pretty dashboards that hide the red row are cosplay.</p>
+<p>The decoder strip above the table is the same grammar: <code>capability_id</code> → route <code>[LOCAL/FED]</code> → traffic <code>[EXT/SELF]</code> → <code>$</code> → ms → ✓/✗.</p>
+<p><em>Match, not autocomplete theatre. Prices and “click to try free” on the same card.</em></p>
+<p>I typed <strong>fair randomness for a lottery</strong>. Back came, among others:</p>
+<p><code>sortes.verify@v1</code> — verify an ECVRF proof offline · <code>platon.beacon@v1</code> — hash-chained randomness beacon · <code>platon.random@v1</code> — signed chaos-VRF · Search is a <strong>catalogue</strong>. It is not a lottery. Read the description before you spend a trial. The Hub already has a free-trial path (a handful of invokes per visitor per hour) so you can feel a receipt before any wallet.</p>
+<p>Same box accepts other intents the landing already suggests: <em>wildfire brief near a facility</em>, <em>protect a ship from navigation spoofing</em>. Those are live SKUs with their own honesty footnotes. This article does not tour them.</p>
+<p>Three doors. Pick one. Do not install seventeen servers.</p>
+<p>| Door | What it is |</p>
+<pre><code>|---|---|
+| **Terminal** | [modelmarket.dev](https://modelmarket.dev) — search, try, watch the feed | 
+</code></pre>
+<p>| <strong>MCP</strong> | <code>https://modelmarket.dev/mcp</code> — two tools:<code>market_search</code> ,<code>market_invoke</code> |</p>
+<pre><code>| **CLI** | [`pip install aimarket-hub`](https://pypi.org/project/aimarket-hub/) — publish your own capability | 
+
+If you want agents inside LangGraph/CrewAI to see the catalogue as native tools, that is a [two-line bridge](https://dev.to/alexar76/181-more-tools-for-your-langgraph-agent-in-two-lines-2g76). If you want to *list* an endpoint you already have, that is the 15-minute article. This page is the room those posts assume is real.
+</code></pre>
+<p>Production listing still has gates (publish token, signed provider responses, supply-security). Start on the public terminal or a local hub. Don't paste a localhost <code>invoke_url</code> at prod and act surprised.</p>
+<p>If a market that fails loud and keeps receipts is your kind of boring, a ⭐ on the hub repo helps other people find the example. Concrete issues help more than a polite “cool stack.”
+<em>Built in the open. The screenshots are the product, not a mock. Numbers from 2026-09-15.</em></p>
+
+      
+
+      
+      <section class="sourcelinks">
+        <div class="sourcelinks__head">source &amp; further reading</div>
+        <a href="https://dev.to/alexar76/i-opened-a-live-agent-marketplace-the-receipts-were-the-product-4hl1" target="_blank" rel="external noopener nofollow">dev.to — original article</a>
+        
+        
+        <a href="/news/the-death-of-the-prompt-why-autonomous-agents-are-the-real-paradigm-shift-in">The Death of the Prompt: Why Autonomous Agents Are the Real Paradigm Shift in Python Development</a>
+        
+        <a href="/news/how-to-answer-claude-code-or-codex-from-your-phone">How to answer Claude Code or Codex from your phone</a>
+        
+        <a href="/news/field-intel-report-025">FIELD INTEL REPORT-025</a>
+        
+        
+      </section>
+      
+
+      
+<aside class="follow sourcelinks" aria-label="Follow wpnews">
+  <div class="sourcelinks__head">follow wpnews</div>
+  <a href="https://t.me/wpnewspro" target="_blank" rel="noopener">Telegram channel — the top AI dev story every 8 hours</a>
+  <a href="/feed/rss">RSS feed — every article, in your reader</a>
+</aside>
+    </div>
+
+    <aside class="art__side" aria-label="Article metadata">
+      
+      <div class="json-card" data-endpoint="/api/v1/articles/i-opened-a-live-agent-marketplace-the-receipts-were-the-product">
+        <div class="json-card__head">
+          <span class="dot"></span>
+          <span class="name">~/api · this article</span>
+          <span class="grow"></span>
+          <span class="ok">200</span>
+        </div>
+        <div class="json-card__body">
+          <div><span class="pr">$</span><span class="cmd">curl</span> <span class="url">api.wpnews.pro/api/v1/articles/i-opened-a-live-agent-ma…</span></div>
+        </div>
+        <div class="json-card__footer">
+          <a href="/api#grp-article">JSON</a>
+          <a href="/integrations">MCP</a>
+          <a href="/feed/rss">RSS</a>
+          <a href="/for-agents">OpenAI tool</a>
+        </div>
+      </div>
+
+      
+      <a class="read-orig" href="https://dev.to/alexar76/i-opened-a-live-agent-marketplace-the-receipts-were-the-product-4hl1" target="_blank" rel="external noopener nofollow">
+        Read original on dev.to →
+        <span class="url-bit">dev.to/alexar76/i-opened-a-live-agent-marketplac…</span>
+      </a>
+      
+
+      
+      <div class="aside-card">
+        <div class="aside-card__head">mentioned entities</div>
+        <div class="entlist">
+          
+          
+          
+          
+          <div class="row">
+            <a href="/entity/AIMarket%20Hub" class="k" style="color:var(--accent);text-decoration:none;">AIMarket Hub</a>
+            <span class="v"></span>
+          </div>
+          
+          
+          
+          
+          
+          <div class="row">
+            <a href="/entity/modelmarket.dev" class="k" style="color:var(--accent);text-decoration:none;">modelmarket.dev</a>
+            <span class="v"></span>
+          </div>
+          
+          
+          
+          
+          
+          <div class="row">
+            <a href="/entity/MCP" class="k" style="color:var(--accent);text-decoration:none;">MCP</a>
+            <span class="v"></span>
+          </div>
+          
+          
+          
+          
+          
+          <div class="row">
+            <a href="/entity/USDC" class="k" style="color:var(--accent);text-decoration:none;">USDC</a>
+            <span class="v"></span>
+          </div>
+          
+          
+          
+          
+          
+          <div class="row">
+            <a href="/entity/Base" class="k" style="color:var(--accent);text-decoration:none;">Base</a>
+            <span class="v"></span>
+          </div>
+          
+          
+          
+          
+          
+          <div class="row">
+            <a href="/entity/LangGraph" class="k" style="color:var(--accent);text-decoration:none;">LangGraph</a>
+            <span class="v"></span>
+          </div>
+          
+          
+          
+          
+          
+          <div class="row">
+            <a href="/entity/CrewAI" class="k" style="color:var(--accent);text-decoration:none;">CrewAI</a>
+            <span class="v"></span>
+          </div>
+          
+          
+          
+          
+          
+          <div class="row">
+            <a href="/entity/aimarket-hub" class="k" style="color:var(--accent);text-decoration:none;">aimarket-hub</a>
+            <span class="v"></span>
+          </div>
+          
+          
+        </div>
+      </div>
+      
+
+      <div class="aside-card">
+        <div class="aside-card__head">metadata</div>
+        <div class="row"><span class="k">slug</span><span class="v" style="max-width:60%;overflow:hidden;text-overflow:ellipsis;">i-opened-a-live-agent-marketplace-the-receipts-were-the-product</span></div>
+        <div class="row"><span class="k">topic</span><span class="v accent" style="color:var(--accent);">#ai-agents</span></div>
+        <div class="row"><span class="k">secondary</span><span class="v">4 topics</span></div>
+        <div class="row"><span class="k">sentiment</span><span class="v " style="">neutral</span></div>
+        
+        <div class="row"><span class="k">canonical</span><span class="v">dev.to</span></div>
+      </div>
+
+      
+      <div class="aside-card">
+        <div class="aside-card__head">navigation</div>
+        <div class="row"><span class="k">← prev</span><a href="/news/what-are-embeddings-how-ai-converts-meaning-into-numbers" class="v" style="color:var(--cyan);text-decoration:none;text-align:right;">What Are Embeddings? How AI Conv…</a></div>
+        <div class="row"><span class="k">next →</span><a href="/news/trump-dismisses-dangers-of-ai-the-whole-thing-is-a-hoax" class="v" style="color:var(--cyan);text-decoration:none;text-align:right;">Trump Dismisses Dangers of AI: ‘…</a></div>
+      </div>
+      
+    </aside>
+  </div>
+
+  
+  
+  <section class="pt-32">
+    <div class="sectionhead">
+      <span>──</span>
+      <span class="label">more in #ai-agents</span>
+      <span class="stretch"></span>
+      <span class="meta">4 stories · sorted by recency</span>
+    </div>
+    <div class="morerow">
+      
+      
+      <article class="morecard" style="cursor:pointer;">
+        <div class="more-meta">
+          <span class="src">aws.amazon.com</span>
+          <span>·</span>
+          <span><time datetime="2026-11-10T18:11:08+00:00">10 Nov</time></span>
+          <span>·</span>
+          <span class="topic">#ai-agents</span>
+        </div>
+        <a class="card-link" href="/news/autonomous-treasury-agents-how-trovata-built-an-ai-native-solution-on-amazon-and" style="text-decoration:none;color:inherit;">
+          <div class="more-title">Autonomous treasury agents: How Trovata built an AI-native solution on Amazon Bedrock and AgentCore</div>
+        </a>
+      </article>
+      
+      
+      <article class="morecard" style="cursor:pointer;">
+        <div class="more-meta">
+          <span class="src">dev.to</span>
+          <span>·</span>
+          <span><time datetime="2026-11-06T20:44:46+00:00">6 Nov</time></span>
+          <span>·</span>
+          <span class="topic">#ai-agents</span>
+        </div>
+        <a class="card-link" href="/news/a-chain-id-is-not-authorization-saax-discovery-to-testnet-finance" style="text-decoration:none;color:inherit;">
+          <div class="more-title">A chain ID is not authorization: SAAX Discovery-to-testnet finance</div>
+        </a>
+      </article>
+      
+      
+      <article class="morecard" style="cursor:pointer;">
+        <div class="more-meta">
+          <span class="src">cryptobriefing.com</span>
+          <span>·</span>
+          <span><time datetime="2026-11-06T15:34:51+00:00">6 Nov</time></span>
+          <span>·</span>
+          <span class="topic">#ai-agents</span>
+        </div>
+        <a class="card-link" href="/news/coingecko-cuts-x402-crypto-data-costs-by-50-to-0-005-per-call" style="text-decoration:none;color:inherit;">
+          <div class="more-title">CoinGecko cuts x402 crypto data costs by 50% to $0.005 per call</div>
+        </a>
+      </article>
+      
+      
+      <article class="morecard" style="cursor:pointer;">
+        <div class="more-meta">
+          <span class="src">cloudnativenow.com</span>
+          <span>·</span>
+          <span><time datetime="2026-11-10T19:19:30+00:00">10 Nov</time></span>
+          <span>·</span>
+          <span class="topic">#ai-agents</span>
+        </div>
+        <a class="card-link" href="/news/mirantis-launches-agent-platform-for-governed-ai-agents-on-kubernetes" style="text-decoration:none;color:inherit;">
+          <div class="more-title">Mirantis Launches Agent Platform for Governed AI Agents on Kubernetes</div>
+        </a>
+      </article>
+      
+    </div>
+  </section>
+  
+
+  
+  
+  
+  
+  <section class="pt-24">
+    <div class="sectionhead">
+      <span>──</span>
+      <span class="label">more on @aimarket hub</span>
+      <span class="stretch"></span>
+      <span class="meta">3 stories trending now</span>
+    </div>
+    <div class="morerow">
+      
+      
+      <article class="morecard" style="cursor:pointer;">
+        <div class="more-meta">
+          <span class="src">wpnews</span>
+          <span>·</span>
+          <span><time datetime="2026-11-07T00:14:52+00:00">7 Nov</time></span>
+          <span>·</span>
+          <span class="topic">#ai-agents</span>
+        </div>
+        <a class="card-link" href="/news/redis-iris-six-new-production-tools-for-ai-agents-nov-2026" style="text-decoration:none;color:inherit;">
+          <div class="more-title">Redis Iris: Six New Production Tools for AI Agents (Nov 2026)</div>
+        </a>
+      </article>
+      
+      
+      <article class="morecard" style="cursor:pointer;">
+        <div class="more-meta">
+          <span class="src">wpnews</span>
+          <span>·</span>
+          <span><time datetime="2026-11-06T18:41:32+00:00">6 Nov</time></span>
+          <span>·</span>
+          <span class="topic">#machine-learning</span>
+        </div>
+        <a class="card-link" href="/news/pytorch-adds-a-flight-recorder-to-diagnose-gpu-training-job-hangs" style="text-decoration:none;color:inherit;">
+          <div class="more-title">PyTorch adds a flight recorder to diagnose GPU training job hangs</div>
+        </a>
+      </article>
+      
+      
+      <article class="morecard" style="cursor:pointer;">
+        <div class="more-meta">
+          <span class="src">wpnews</span>
+          <span>·</span>
+          <span><time datetime="2026-11-09T23:00:00+00:00">9 Nov</time></span>
+          <span>·</span>
+          <span class="topic">#artificial-intelligence</span>
+        </div>
+        <a class="card-link" href="/news/anthropic-shifts-the-ai-race-toward-finished-work" style="text-decoration:none;color:inherit;">
+          <div class="more-title">Anthropic shifts the AI race toward finished work</div>
+        </a>
+      </article>
+      
+    </div>
+  </section>
+  
+
+  
+  <section class="zahid mt-36" aria-label="Sponsor: zahid.host">
+    <div class="zahid__top">
+      <span class="badge">sponsored</span>
+      <span class="by">brought to you by <strong><a href="https://zahid.host" target="_blank" rel="noopener">zahid.host</a></strong></span>
+      <span class="spacer"></span>
+      <span class="meta"><strong>4,200+</strong> EU-deployed projects</span>
+    </div>
+    <div class="zahid__body">
+      <div class="zahid__lockup">
+        <div class="zahid__greeting">reading about agents? <span class="green">ship yours</span> in a single git push.</div>
+        <h2 class="zahid__title">Run your AI side-project on <span class="pink">zahid.host</span></h2>
+        <p class="zahid__sub">EU-based hosting, git-push deploys, automatic HTTPS, no cold starts. Free tier with a custom domain — perfect for shipping the agent you just read about.</p>
+        <div class="zahid__demo">
+          <div><span class="pr">$</span><span class="cmd">git push</span> zahid main</div>
+          <div><span class="dim">→</span> Live at <span class="url">https://your-agent.zahid.host</span> <span class="ok">✓</span></div>
+        </div>
+      </div>
+      <div class="zahid__side">
+        <a class="zahid__cta" href="https://zahid.host/signup" target="_blank" rel="noopener">Get free account →</a>
+        <a class="zahid__cta ghost" href="https://zahid.host/pricing" target="_blank" rel="noopener">Pricing</a>
+        <div class="zahid__price">
+          from <span class="magenta">€0/mo</span> · no card required
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">web pulse</div>
+      <div class="footer__copy">© 2026 — structured news, sourced &amp; dated · v2.7 · build phase-67</div>
+    </div>
+    <div class="footer__sponsor">
+      sponsor · wpnews.pro is hosted on <a href="https://zahid.host" target="_blank" rel="noopener">zahid.host</a> — EU dev hosting from €0/mo · <a href="https://zahid.host/signup" target="_blank" rel="noopener">deploy your project →</a>
+    </div>
+    <div class="footer__rows" style="margin-top:18px;">
+      <div>
+        <div class="col-head">browse</div>
+        <a href="/daily">Daily Digest</a>
+        <a href="/weekly">Weekly Roundup</a>
+        <a href="/archive">Article Archive</a>
+        <a href="/newsletter">Newsletter</a>
+      </div>
+      <div>
+        <div class="col-head">explore</div>
+        <a href="/about">About</a>
+        <a href="/stats">Stats</a>
+        <a href="/sources">Sources</a>
+        <a href="/methodology">Methodology</a>
+      </div>
+      <div>
+        <div class="col-head">for agents</div>
+        <a href="/api">API · /v1/news</a>
+        <a href="/integrations">MCP server</a>
+        <a href="/for-agents">OpenAI tools</a>
+        <a href="/feed/rss">RSS · Atom</a>
+      </div>
+      <div>
+        <div class="col-head">compare</div>
+        <a href="/compare/ai-assistants">ChatGPT vs Claude</a>
+        <a href="/compare/llm-models">LLM Models</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/ai-index">AI Coverage Index</a>
+      </div>
+      <div>
+        <div class="col-head">meta</div>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/embed">Embed Widget</a>
+        <a href="/quickstart">Quickstart</a>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+    </main>
+    
+<div class="statusbar" role="status" aria-label="Feed status">
+  <span class="statusbar__seg live"><span class="dot"></span>LIVE</span>
+  <span class="statusbar__seg session">[news/i-opened-a-live-agen…]</span>
+  <span class="statusbar__seg">indexed:<strong>0</strong></span>
+  <span class="statusbar__seg">read:<strong>4min</strong></span>
+  <span class="statusbar__seg grow">2026-09-15 · <span id="js-clock-status">—</span></span>
+</div>
+
+
+    <!-- Language suggestion banner (shown to UK browser users viewing EN content) -->
+
+    <!-- Cookie consent banner -->
+    <div class="cookie-banner hidden" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+      <button class="cookie-banner__close" id="cookie-close" aria-label="Dismiss">×</button>
+      <p>strictly-necessary cookies only · <a href="/privacy">privacy</a></p>
+      <div class="cookie-banner__actions">
+        <button class="cookie-accept-btn" id="cookie-accept">OK</button>
+      </div>
+    </div>
+
+    <script>
+    // Reading progress bar
+    (function(){
+      var bar = document.getElementById('reading-progress');
+      if (!bar) return;
+      function update() {
+        var d = document.documentElement;
+        var scrolled = d.scrollTop || document.body.scrollTop;
+        var total = d.scrollHeight - d.clientHeight;
+        bar.style.transform = 'scaleX(' + (total > 0 ? scrolled / total : 0) + ')';
+      }
+      window.addEventListener('scroll', update, {passive: true});
+      update();
+    })();
+
+    // Cookie consent — strictly-necessary only, dismissible
+    (function(){
+      var COOKIE_KEY = 'wpnews_cookie_consent';
+      if (localStorage.getItem(COOKIE_KEY)) return;
+      var banner = document.getElementById('cookie-banner');
+      if (!banner) return;
+      banner.classList.remove('hidden');
+      function dismiss(value){
+        try { localStorage.setItem(COOKIE_KEY, value); } catch (e) {}
+        banner.classList.add('hidden');
+      }
+      document.getElementById('cookie-accept').addEventListener('click', function(){ dismiss('accepted'); });
+      document.getElementById('cookie-close').addEventListener('click', function(){ dismiss('dismissed'); });
+    })();
+
+    // WebMCP — expose site tools to in-browser AI agents.
+    // Chrome's navigator.modelContext API: https://developer.chrome.com/docs/web-platform/webmcp
+    (function(){
+      if (!('modelContext' in navigator) || typeof navigator.modelContext.provideContext !== 'function') return;
+      try {
+        navigator.modelContext.provideContext({
+          tools: [
+            {
+              name: 'search_news',
+              description: 'Full-text search across wpnews.pro AI/tech articles.',
+              inputSchema: {
+                type: 'object',
+                properties: {
+                  q: { type: 'string', description: 'Search query' },
+                  lang: { type: 'string', enum: ['en', 'uk'], default: 'en' },
+                },
+                required: ['q'],
+              },
+              execute: function(args){
+                window.location.href = '/search?q=' + encodeURIComponent(args.q || '') +
+                  (args.lang ? '&lang=' + encodeURIComponent(args.lang) : '');
+              },
+            },
+            {
+              name: 'open_topic',
+              description: 'Open a topic page on wpnews.pro by slug.',
+              inputSchema: {
+                type: 'object',
+                properties: { slug: { type: 'string', description: 'Topic slug (e.g. artificial-intelligence)' } },
+                required: ['slug'],
+              },
+              execute: function(args){ window.location.href = '/topics/' + encodeURIComponent(args.slug || ''); },
+            },
+            {
+              name: 'open_entity',
+              description: 'Open an entity (company/person/product) profile page.',
+              inputSchema: {
+                type: 'object',
+                properties: { name: { type: 'string', description: 'Entity name (e.g. OpenAI, Anthropic)' } },
+                required: ['name'],
+              },
+              execute: function(args){ window.location.href = '/entity/' + encodeURIComponent(args.name || ''); },
+            },
+            {
+              name: 'view_trending',
+              description: 'View trending AI/tech articles ranked by reader interest.',
+              inputSchema: {
+                type: 'object',
+                properties: { days: { type: 'integer', enum: [1, 7, 30], default: 7 } },
+              },
+              execute: function(args){ window.location.href = '/trending?days=' + (args.days || 7); },
+            },
+            {
+              name: 'get_api_docs',
+              description: 'View the wpnews.pro REST API documentation.',
+              inputSchema: { type: 'object', properties: {} },
+              execute: function(){ window.location.href = '/api'; },
+            },
+          ],
+        });
+      } catch (e) { /* silently skip if API rejects */ }
+    })();
+    </script>
+    
+<script>
+(function(){
+  function tick(){ var d=new Date();var t=String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0')+':'+String(d.getUTCSeconds()).padStart(2,'0');var a=document.getElementById('js-clock');var b=document.getElementById('js-clock-status');if(a)a.textContent=t;if(b)b.textContent=t; }
+  tick(); setInterval(tick,1000);
+})();
+</script>
+
+    <script>
+    // Engagement beacon (first-party, cookie-less): one empty POST /pv after the first
+    // real interaction, so the scoreboard can tell people from Chrome-UA crawlers.
+    // Sends only the external referrer's hostname. See /privacy.
+    (function(){
+      if (navigator.webdriver || !navigator.sendBeacon) return;
+      var evs = ['scroll', 'pointerdown', 'keydown', 'touchstart'], sent = false;
+      function send(){
+        if (sent) return; sent = true;
+        evs.forEach(function(e){ removeEventListener(e, send, true); });
+        var r = '';
+        try { r = new URL(document.referrer).hostname; } catch (e) {}
+        if (r === location.hostname) r = '';
+        navigator.sendBeacon('/pv' + (r ? '?r=' + encodeURIComponent(r) : ''));
+      }
+      evs.forEach(function(e){ addEventListener(e, send, {capture: true, passive: true}); });
+    })();
+    </script>
+    <script>
+    (function(){
+      var STREAK_DATE = 'wpnews_streak_date';
+      var STREAK_CNT  = 'wpnews_streak_count';
+      var today = new Date().toISOString().slice(0,10);
+      var lastDate = localStorage.getItem(STREAK_DATE) || '';
+      var count = parseInt(localStorage.getItem(STREAK_CNT) || '0', 10);
+      if(lastDate === today){
+        // already visited today — streak unchanged
+      } else {
+        var yesterday = new Date(Date.now() - 86400000).toISOString().slice(0,10);
+        count = (lastDate === yesterday) ? count + 1 : 1;
+        localStorage.setItem(STREAK_DATE, today);
+        localStorage.setItem(STREAK_CNT, String(count));
+      }
+      if(count >= 2){
+        var el = document.getElementById('streak-nav-item');
+        var lbl = document.getElementById('streak-nav-label');
+        if(el && lbl){ lbl.textContent = '🔥' + count + 'd'; el.style.display = ''; }
+      }
+    })();
+
+    // Relative timestamps — replace <time datetime="…"> text with "X ago"
+    // Graceful degradation: server renders absolute date; JS upgrades in-place.
+    (function(){
+      function reltime(iso){
+        var now = Date.now();
+        var then = new Date(iso).getTime();
+        if(isNaN(then)) return null;
+        var sec = Math.round((now - then) / 1000);
+        if(sec < 0) return null;         // future date — skip
+        if(sec < 60) return 'just now';
+        var min = Math.floor(sec / 60);
+        if(min < 60) return min + ' min ago';
+        var hr = Math.floor(min / 60);
+        if(hr < 24) return hr + (hr===1?' hour':' hours') + ' ago';
+        var d = Math.floor(hr / 24);
+        if(d < 7) return d + (d===1?' day':' days') + ' ago';
+        if(d < 30) return Math.floor(d/7) + (Math.floor(d/7)===1?' week':' weeks') + ' ago';
+        if(d < 365) return Math.floor(d/30) + (Math.floor(d/30)===1?' month':' months') + ' ago';
+        return Math.floor(d/365) + (Math.floor(d/365)===1?' year':' years') + ' ago';
+      }
+      document.querySelectorAll('time[datetime]').forEach(function(el){
+        if(el.hasAttribute('data-noreltime')) return; // opt-out for editorial date stamps
+        var dt = el.getAttribute('datetime') || '';
+        if(!dt || dt.length < 10) return;
+        var rel = reltime(dt.replace(' ', 'T')); // normalize Python str(datetime) → ISO
+        if(!rel) return;
+        el.setAttribute('title', el.textContent.trim()); // preserve absolute as tooltip
+        el.textContent = rel;
+      });
+    })();
+    </script>
+</body>
+</html>

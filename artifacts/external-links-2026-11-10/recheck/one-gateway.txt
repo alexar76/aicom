@@ -1,0 +1,152 @@
+AIMarket on the x402 market · 1gateway
+1gateway
+Home
+홈
+Developers
+개발자
+Dev
+개발자
+Developer docs
+개발자 문서
+How it works
+작동 방식
+Quick start
+시작하기
+Endpoints
+엔드포인트
+MCP
+MCP
+FAQ
+FAQ
+Market
+마켓
+Reports
+리포트
+EN
+KO
+한국어
+English
+‹
+Market
+마켓
+AIMarket
+modelmarket.dev
+Uptime 7d
+7일 가동률
+100.0%
+25 checks
+측정 25회
+p50
+520 ms
+p95
+1,596 ms
+Median price
+가격 중간값
+$0.001
+7 routes
+API 7개
+Search route, method, network…
+API 경로·메서드·네트워크로 검색
+Route
+API
+Uptime 7d
+7일 가동률
+p50
+p95
+Price
+가격
+Networks
+네트워크
+Checks
+측정 수
+POST /x402/air-quality-now
+100.0%
+630 ms
+1,596 ms
+$0.001
+eip155:8453
+6
+POST /x402/fair-random
+100.0%
+615 ms
+884 ms
+$0.006
+eip155:8453
+3
+POST /x402/histor-check
+100.0%
+467 ms
+1,022 ms
+$0.001
+eip155:8453
+6
+POST /x402/mcp-diff
+100.0%
+452 ms
+452 ms
+$0.003
+eip155:8453
+1
+POST /x402/nearby-sensors
+100.0%
+520 ms
+1,780 ms
+$0.030
+eip155:8453
+4
+POST /x402/warden-scan
+100.0%
+640 ms
+737 ms
+$0.001
+eip155:8453
+4
+POST /x402/weather-now
+100.0%
+437 ms
+437 ms
+$0.001
+eip155:8453
+1
+No route measurements yet.
+아직 API별 측정값이 없습니다.
+Routes will appear here as measurements become available.
+측정 데이터가 모이면 API가 이곳에 표시됩니다.
+No matching results.
+조건에 맞는 항목이 없습니다.
+Try another word or category.
+다른 검색어나 카테고리를 골라 보세요.
+Clear filters
+필터 초기화
+7 routes
+7개 API
+Previous page
+이전 페이지
+Next page
+다음 페이지
+How we measure
+측정 방법
+Every 5 minutes we send one unpaid request to the next routes in our index, the same request any client makes before paying. We never sign or pay.
+5분마다 색인의 다음 API들에 결제 없는 요청을 한 번씩 보냅니다. 어떤 클라이언트든 결제 전에 보내는 것과 같은 요청이고, 서명이나 결제는 하지 않습니다.
+A check counts as up when the answer is HTTP 402 with a valid x402 quote. A route may legitimately answer differently to an empty request, so a low number is a signal to look closer and not a verdict.
+HTTP 402와 올바른 x402 견적이 오면 정상으로 셉니다. 빈 요청에 다르게 답하도록 만든 API도 있어서, 낮은 수치는 판정이 아니라 더 살펴볼 신호입니다.
+One service gets at most one probe per hour. Latency uses successful checks from the last 7 days. Our own service is excluded.
+한 서비스는 1시간에 최대 한 번만 호출합니다. 응답 속도는 최근 7일의 성공한 측정만 씁니다. 우리 서비스는 측정에서 제외합니다.
+Only our own measurements appear here: no third-party rankings, buyer counts or revenue.
+여기 나오는 값은 우리가 직접 잰 것뿐입니다. 제3자 순위, 구매자 수, 매출은 넣지 않습니다.
+To have a service removed, or to report an error, write to
+contact@1gateway.dev
+.
+서비스 제외 요청이나 오류 신고는
+contact@1gateway.dev
+로 보내 주세요.
+1gateway
+Home
+홈
+Developers
+개발자
+Market
+마켓
+Reports
+리포트
+contact@1gateway.dev

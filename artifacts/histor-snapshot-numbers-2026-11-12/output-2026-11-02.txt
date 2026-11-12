@@ -1,0 +1,12 @@
+changes.jsonl.gz manifest: {"sha256": "9c90605fe9fa935d339e4959889d2bceff570088f8eebb25866ae0ab0bb3eef0", "bytes": 56543429, "rows": 53159} | ours: sha256-nJBgX+n6k10znklZiJ0rzv9 9c90605fe9fa935d
+extras_changes.jsonl.gz manifest: {"sha256": "66fa0a1f1334e9dd901f1f601bb1d97c444d489b1e5a42555ba821a6e072817e", "bytes": 8022911, "rows": 74812} | ours: sha256-ZvoKHxM06d2QHx9gG7HZfER 66fa0a1f1334e9dd
+servers.jsonl.gz manifest: {"sha256": "fc9759a4166f7c1241ae8c40a7f9aa8aad1d1404bebd9802a7e2b7c409cddc68", "bytes": 21166266, "rows": 96923} | ours: sha256-/JdZpBZvfBJBroxAp/mqiq0 fc9759a4166f7c12
+servers in snapshot: 96923 Counter({'package': 52235, 'remote': 44688})
+remote: changes 46641, with both server versions 46406, at an unchanged serverInfo.version 39299 (84.7%); servers with a change 12090, of them with one at an unchanged version 10466 (86.6%); description-only 17989/41812; extras changes 73585
+package: changes 6518, with both server versions 6332, at an unchanged serverInfo.version 1106 (17.5%); servers with a change 3315, of them with one at an unchanged version 649 (19.6%); description-only 884/6030; extras changes 1227
+remote hosts with a change 7112 with one at an unchanged version 5714 (80.3%)
+total changes 53159
+top hosts by remote changes: [('gateway.pipeworx.io', 14573, '31.2%'), ('agent-observatory-sensor.nolimit-observa', 2317, '5.0%'), ('remoshift.com', 385, '0.8%')]
+remote hosts with a description-only change: 2799 of 7112 (39.4%)
+remote hosts with an extras change: 2163 ; of them never a contract change: 104
+remote hosts in snapshot: 27947

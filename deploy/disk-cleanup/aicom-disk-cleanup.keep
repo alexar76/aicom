@@ -6,3 +6,11 @@
 # HISTOR package sandbox (histor/sandbox/install.sh; histor_observe.IMAGES and RUNTIMES): started per run.
 histor-node
 histor-python
+
+# Malware-feed accuracy study, stage 3 scanners on the sandbox host (research/malware-feed-accuracy/keep):
+# started per run with `docker run`; mfa-study-keep also holds and reloads them.
+mfa-py-scanners
+mfa-ossgadget
+mfa-packj
+mfa-malcontent
+cgr.dev/chainguard/malcontent

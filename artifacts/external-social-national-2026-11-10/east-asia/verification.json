@@ -1,0 +1,433 @@
+{
+  "verified_at_utc": "2026-11-10T20:31:28.715134+00:00",
+  "mode": "offline verification of saved responses; no network requests",
+  "primary_get_count": 10,
+  "http_status_counts": {
+    "200": 9,
+    "502": 1
+  },
+  "all_body_hashes_and_lengths_valid": true,
+  "body_integrity": [
+    {
+      "key": "qiita-other-domain",
+      "body_file": "qiita-other-domain.raw",
+      "status": 200,
+      "expected_bytes": 2,
+      "actual_bytes": 2,
+      "expected_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "actual_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified": true,
+      "truncated": false
+    },
+    {
+      "key": "qiita-attested",
+      "body_file": "qiita-attested.raw",
+      "status": 200,
+      "expected_bytes": 2,
+      "actual_bytes": 2,
+      "expected_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "actual_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified": true,
+      "truncated": false
+    },
+    {
+      "key": "zenn-domain-articles",
+      "body_file": "zenn-domain-articles.raw",
+      "status": 200,
+      "expected_bytes": 32,
+      "actual_bytes": 32,
+      "expected_sha256": "d4f90a120d0023c59f83c209d0bb9b0951195e69946776f8952d074b145e4922",
+      "actual_sha256": "d4f90a120d0023c59f83c209d0bb9b0951195e69946776f8952d074b145e4922",
+      "verified": true,
+      "truncated": false
+    },
+    {
+      "key": "zenn-attested-scraps",
+      "body_file": "zenn-attested-scraps.raw",
+      "status": 200,
+      "expected_bytes": 30,
+      "actual_bytes": 30,
+      "expected_sha256": "55194e7c67621902a6aea6f7f3a68c7f56e32c77ef810ca4263905718375618f",
+      "actual_sha256": "55194e7c67621902a6aea6f7f3a68c7f56e32c77ef810ca4263905718375618f",
+      "verified": true,
+      "truncated": false
+    },
+    {
+      "key": "gitee-identity",
+      "body_file": "gitee-identity.raw",
+      "status": 200,
+      "expected_bytes": 2,
+      "actual_bytes": 2,
+      "expected_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "actual_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified": true,
+      "truncated": false
+    },
+    {
+      "key": "naver-hub",
+      "body_file": "naver-hub.raw",
+      "status": 200,
+      "expected_bytes": 290025,
+      "actual_bytes": 290025,
+      "expected_sha256": "402ad7aebdfa387a63951050e9702acb39d7b73c8d74d363a02387969606fcca",
+      "actual_sha256": "402ad7aebdfa387a63951050e9702acb39d7b73c8d74d363a02387969606fcca",
+      "verified": true,
+      "truncated": false
+    },
+    {
+      "key": "naver-attested",
+      "body_file": "naver-attested.raw",
+      "status": 200,
+      "expected_bytes": 111335,
+      "actual_bytes": 111335,
+      "expected_sha256": "b6847333e60783de9a8e2069d31dfd8a97db4bb94123a3ce84458299b44b6f24",
+      "actual_sha256": "b6847333e60783de9a8e2069d31dfd8a97db4bb94123a3ce84458299b44b6f24",
+      "verified": true,
+      "truncated": false
+    },
+    {
+      "key": "qiita-known-cost-comments",
+      "body_file": "qiita-known-cost-comments.raw",
+      "status": 200,
+      "expected_bytes": 6421,
+      "actual_bytes": 6421,
+      "expected_sha256": "d380c1f3e82bac5316d321628683574289078548c5f8e5d95c3812bbb5215edd",
+      "actual_sha256": "d380c1f3e82bac5316d321628683574289078548c5f8e5d95c3812bbb5215edd",
+      "verified": true,
+      "truncated": false
+    },
+    {
+      "key": "pingblip-itch-profile",
+      "body_file": "pingblip-itch-profile.raw",
+      "status": 200,
+      "expected_bytes": 10641,
+      "actual_bytes": 10641,
+      "expected_sha256": "817d949358eb6a5fe947277ffc7b84f7085ea230eb2752364d696121e68ff20c",
+      "actual_sha256": "817d949358eb6a5fe947277ffc7b84f7085ea230eb2752364d696121e68ff20c",
+      "verified": true,
+      "truncated": false
+    },
+    {
+      "key": "paper-vault-education-list",
+      "body_file": "paper-vault-education-list.raw",
+      "status": 502,
+      "expected_bytes": 0,
+      "actual_bytes": 0,
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true,
+      "truncated": false
+    }
+  ],
+  "literal_edges": [
+    {
+      "source": "https://search.naver.com/search.naver?query=%22modelmarket.dev%22",
+      "source_key": "naver-hub",
+      "target": "https://github.com/alexar76/aimarket-school",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:23:33.237788+00:00",
+      "relation": "search_index_result_not_endorsement",
+      "target_read_in_this_branch": false,
+      "limitation": "Search href is not a local author's recommendation; archive target is a generic index candidate, not a verified product review."
+    },
+    {
+      "source": "https://search.naver.com/search.naver?query=%22modelmarket.dev%22",
+      "source_key": "naver-hub",
+      "target": "https://pub.dev/packages/aimarket_agent",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:23:33.237788+00:00",
+      "relation": "search_index_result_not_endorsement",
+      "target_read_in_this_branch": false,
+      "limitation": "Search href is not a local author's recommendation; archive target is a generic index candidate, not a verified product review."
+    },
+    {
+      "source": "https://search.naver.com/search.naver?query=%22modelmarket.dev%22",
+      "source_key": "naver-hub",
+      "target": "https://pypi.org/project/aimarket-hub/",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:23:33.237788+00:00",
+      "relation": "search_index_result_not_endorsement",
+      "target_read_in_this_branch": false,
+      "limitation": "Search href is not a local author's recommendation; archive target is a generic index candidate, not a verified product review."
+    },
+    {
+      "source": "https://search.naver.com/search.naver?query=%22modelmarket.dev%22",
+      "source_key": "naver-hub",
+      "target": "https://dev.to/alexar76/our-multica-agents-now-work-in-an-agent-market-they-buy-remember-review-sellers-and-sell-their-174f",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:23:33.237788+00:00",
+      "relation": "search_index_result_not_endorsement",
+      "target_read_in_this_branch": false,
+      "limitation": "Search href is not a local author's recommendation; archive target is a generic index candidate, not a verified product review."
+    },
+    {
+      "source": "https://search.naver.com/search.naver?query=%22modelmarket.dev%22",
+      "source_key": "naver-hub",
+      "target": "https://www.npmjs.com/package/@aimarket/esim-rails",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:23:33.237788+00:00",
+      "relation": "search_index_result_not_endorsement",
+      "target_read_in_this_branch": false,
+      "limitation": "Search href is not a local author's recommendation; archive target is a generic index candidate, not a verified product review."
+    },
+    {
+      "source": "https://search.naver.com/search.naver?query=%22modelmarket.dev%22",
+      "source_key": "naver-hub",
+      "target": "https://mcpverify.ai/archive",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:23:33.237788+00:00",
+      "relation": "search_index_result_not_endorsement",
+      "target_read_in_this_branch": false,
+      "limitation": "Search href is not a local author's recommendation; archive target is a generic index candidate, not a verified product review."
+    },
+    {
+      "source": "https://search.naver.com/search.naver?query=%22attestedmemory.net%22",
+      "source_key": "naver-attested",
+      "target": "https://github.com/alexar76/attested-memory",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:23:33.651963+00:00",
+      "relation": "search_index_result_not_endorsement",
+      "target_read_in_this_branch": false,
+      "limitation": "Search href is not a local author's recommendation; archive target is a generic index candidate, not a verified product review."
+    },
+    {
+      "source": "https://search.naver.com/search.naver?query=%22attestedmemory.net%22",
+      "source_key": "naver-attested",
+      "target": "https://dev.to/alexar76/our-multica-agents-now-work-in-an-agent-market-they-buy-remember-review-sellers-and-sell-their-174f",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:23:33.651963+00:00",
+      "relation": "search_index_result_not_endorsement",
+      "target_read_in_this_branch": false,
+      "limitation": "Search href is not a local author's recommendation; archive target is a generic index candidate, not a verified product review."
+    },
+    {
+      "source": "https://pingblip.itch.io/",
+      "source_key": "pingblip-itch-profile",
+      "target": "https://pingblip.com/",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:24:41.509649+00:00",
+      "relation": "own_profile_distribution",
+      "target_read_in_this_branch": false,
+      "limitation": "Href verified; target not fetched in this branch. PingBlip game was read in today's products audit."
+    },
+    {
+      "source": "https://pingblip.itch.io/",
+      "source_key": "pingblip-itch-profile",
+      "target": "https://pingblip.itch.io/pingblip",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:24:41.509649+00:00",
+      "relation": "own_profile_distribution",
+      "target_read_in_this_branch": false,
+      "limitation": "Href verified; target not fetched in this branch. PingBlip game was read in today's products audit."
+    },
+    {
+      "source": "https://pingblip.itch.io/",
+      "source_key": "pingblip-itch-profile",
+      "target": "https://itch.io/profile/pingblip",
+      "literal_html_href_verified": true,
+      "retrieved_at_utc": "2026-11-10T20:24:41.509649+00:00",
+      "relation": "own_profile_distribution",
+      "target_read_in_this_branch": false,
+      "limitation": "Href verified; target not fetched in this branch. PingBlip game was read in today's products audit."
+    }
+  ],
+  "all_selected_hrefs_present": true,
+  "native_api_results": [
+    {
+      "key": "qiita-other-domain",
+      "url": "https://qiita.com/api/v2/items?query=modelmarket.dev%20-user%3Aqwezzy721&per_page=100&page=1",
+      "status": 200,
+      "retrieved_at_utc": "2026-11-10T20:23:32.088473+00:00",
+      "returned_count": 0,
+      "response": [],
+      "state": "explicit_empty_native_response",
+      "limit": "Only this query/endpoint at capture time; no inference about all authors, all markers, or national audience."
+    },
+    {
+      "key": "qiita-attested",
+      "url": "https://qiita.com/api/v2/items?query=attestedmemory.net&per_page=100&page=1",
+      "status": 200,
+      "retrieved_at_utc": "2026-11-10T20:23:32.099576+00:00",
+      "returned_count": 0,
+      "response": [],
+      "state": "explicit_empty_native_response",
+      "limit": "Only this query/endpoint at capture time; no inference about all authors, all markers, or national audience."
+    },
+    {
+      "key": "zenn-domain-articles",
+      "url": "https://zenn.dev/api/search?q=modelmarket.dev&source=articles&order=latest",
+      "status": 200,
+      "retrieved_at_utc": "2026-11-10T20:23:32.104043+00:00",
+      "returned_count": 0,
+      "response": {
+        "articles": [],
+        "next_page": null
+      },
+      "state": "explicit_empty_native_response",
+      "limit": "Only this query/endpoint at capture time; no inference about all authors, all markers, or national audience."
+    },
+    {
+      "key": "zenn-attested-scraps",
+      "url": "https://zenn.dev/api/search?q=attestedmemory.net&source=scraps&order=latest",
+      "status": 200,
+      "retrieved_at_utc": "2026-11-10T20:23:32.972567+00:00",
+      "returned_count": 0,
+      "response": {
+        "scraps": [],
+        "next_page": null
+      },
+      "state": "explicit_empty_native_response",
+      "limit": "Only this query/endpoint at capture time; no inference about all authors, all markers, or national audience."
+    },
+    {
+      "key": "gitee-identity",
+      "url": "https://gitee.com/api/v5/search/repositories?q=alexar76&per_page=100&page=1",
+      "status": 200,
+      "retrieved_at_utc": "2026-11-10T20:23:33.219927+00:00",
+      "returned_count": 0,
+      "response": [],
+      "state": "explicit_empty_native_response",
+      "limit": "Only this query/endpoint at capture time; no inference about all authors, all markers, or national audience."
+    }
+  ],
+  "qiita_baseline_file": "artifacts/external-social-regional-2026-11-09/east-asia/raw/qiita-cost-comments.raw",
+  "qiita_id_sets_equal": true,
+  "qiita_comment_comparison": [
+    {
+      "id": "7f36425cc245927fc95c",
+      "author": "qwezzy721",
+      "created_at": "2026-10-24T19:23:47+09:00",
+      "updated_at": "2026-11-03T00:37:01+09:00",
+      "body_sha256": "678b2fb568e68c723448a6d54f4a550782e0922b05b057dbce885c3f45525f37",
+      "body_equal_baseline": true,
+      "created_at_equal_baseline": true,
+      "updated_at_equal_baseline": true,
+      "ownership": "ecosystem_author"
+    },
+    {
+      "id": "a71ae02460f429b7606e",
+      "author": "Skillselion",
+      "created_at": "2026-10-24T17:10:34+09:00",
+      "updated_at": "2026-10-24T17:10:34+09:00",
+      "body_sha256": "7f6a6e5781260699387a073dae8028f8c94a28901bc06eb989944cd5f969441b",
+      "body_equal_baseline": true,
+      "created_at_equal_baseline": true,
+      "updated_at_equal_baseline": true,
+      "ownership": "external_account_no_affiliation_established"
+    }
+  ],
+  "search_response_files": [
+    {
+      "file": "search-01.json",
+      "bytes": 30424,
+      "sha256": "05ed0895794ac85049a2fe17583a74e3d1e4cb086d4a24f30e17308b566db3fc",
+      "response_characters": 14856,
+      "query_ids": [
+        "EA01",
+        "EA02",
+        "EA03",
+        "EA04"
+      ],
+      "contains_robots_block": false,
+      "empty_returned_batch": false
+    },
+    {
+      "file": "search-02.json",
+      "bytes": 27973,
+      "sha256": "19326d94f4bccee88b2518ac83ecc794868bff670068745d48cc65696d70e81b",
+      "response_characters": 20699,
+      "query_ids": [
+        "EA05",
+        "EA06",
+        "EA07",
+        "EA08"
+      ],
+      "contains_robots_block": false,
+      "empty_returned_batch": false
+    },
+    {
+      "file": "search-03.json",
+      "bytes": 30724,
+      "sha256": "57058f7d9e34a9e696da2d90808624eb08c0ad6672177aa23d38e192b5ab2b56",
+      "response_characters": 29438,
+      "query_ids": [
+        "EA09",
+        "EA10",
+        "EA11",
+        "EA12"
+      ],
+      "contains_robots_block": false,
+      "empty_returned_batch": false
+    },
+    {
+      "file": "search-04.json",
+      "bytes": 649,
+      "sha256": "517d840b684b41983129a7bfbbbf763a07b33c296d3630e07ea9d0237ce7d9df",
+      "response_characters": 618,
+      "query_ids": [
+        "EA13",
+        "EA14",
+        "EA15",
+        "EA16"
+      ],
+      "contains_robots_block": true,
+      "empty_returned_batch": false
+    },
+    {
+      "file": "search-05.json",
+      "bytes": 27094,
+      "sha256": "edb761334eafd61959c9b9c8ca4cff6297fae3c5f37a441c23591205116b1ddd",
+      "response_characters": 25211,
+      "query_ids": [
+        "EA17",
+        "EA18",
+        "EA19",
+        "EA20"
+      ],
+      "contains_robots_block": true,
+      "empty_returned_batch": false
+    },
+    {
+      "file": "search-06.json",
+      "bytes": 71,
+      "sha256": "1048ddaf93c0dfa7b1304db3ffef722f4a37db0018ad2c63d0062118c5d92b42",
+      "response_characters": 67,
+      "query_ids": [
+        "EA21",
+        "EA22",
+        "EA23",
+        "EA24"
+      ],
+      "contains_robots_block": false,
+      "empty_returned_batch": true
+    },
+    {
+      "file": "search-07.json",
+      "bytes": 28560,
+      "sha256": "4a7d993411c1ff5b50328e960f88dd38ab67a3fb94af95b0bbd96582ba942608",
+      "response_characters": 27022,
+      "query_ids": [
+        "EA25",
+        "EA26",
+        "EA27",
+        "EA28"
+      ],
+      "contains_robots_block": false,
+      "empty_returned_batch": false
+    },
+    {
+      "file": "search-08.json",
+      "bytes": 31179,
+      "sha256": "b12922896be0738a00a2af02e30f6bc56f1f31cc0f27464e2f5a750cabb94228",
+      "response_characters": 29921,
+      "query_ids": [
+        "EA29",
+        "EA30",
+        "EA31",
+        "EA32"
+      ],
+      "contains_robots_block": false,
+      "empty_returned_batch": false
+    }
+  ]
+}

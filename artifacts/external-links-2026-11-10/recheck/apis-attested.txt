@@ -1,0 +1,1573 @@
+Attested Memory API — Docs, OpenAPI & Kin Score | APIs.io
+Providers
+APIs
+Browse
+Taxonomy
+Tags
+Industries
+Areas
+Topics
+Business Architecture
+Business Capabilities
+Applications
+Use Cases & Features
+Use Cases
+Features
+Geography
+Regions
+Countries
+Governance
+Regulations
+Market
+Venture Capital
+Secondary Market
+API Estates
+Gartner Magic Quadrants
+Markets
+Artifacts
+Specifications
+OpenAPI
+OpenAPI Extensions
+OpenAPI Overlays
+HTTP Headers
+Schemas
+JSON Structure
+AsyncAPI
+GraphQL
+JSON-LD
+Vocabularies
+Standards
+Usage
+Examples
+Collections
+Arazzo Workflows
+Event Channels
+Webhooks
+Errors
+Agents & Governance
+Agent Registry
+MCP Servers
+A2A Agent Cards
+Agent Discovery
+Agent Skills
+llms.txt
+AI Catalog
+Rules
+Signals
+Security
+Security Posture
+OAuth Scopes
+Agentic Access
+Commercial
+Plans
+Rate Limits
+Service Levels
+FinOps
+Kin Score
+Stack
+Platform
+Developers
+Developer Docs
+Agent Playground
+Changelog
+Trust Layer
+The Trust Layer
+Onboarding
+Agent Signup
+Blueprint
+Insights
+Analytics
+Search Terms
+APIs.io
+About
+On-Premise
+Newsletter
+Support
+GitHub
+Blog
+Add your API
+Home
+Providers
+Attested Memory
+Attested Memory
+Attested Memory provides verifiable context for people, teams, and autonomous agents through a SaaS platform that stores durable knowledge with cryptographic identity, truth state, and provenance. It offers personal, team, and expert memory products, USDC‑settled transactions, escrow, metering, and proof capabilities, all federated via the KOVA hub and integrated with the open AIMarket ecosystem.
+Attested Memory publishes 56 API contracts indexed on the
+APIs.io
+network, including A2a API, Accounts API, Acex Capital API, and 53 more. Tagged areas include Company, Software-as-a-Service, Verifiable Memory, AI Agents, and USDC.
+The Attested Memory catalog on APIs.io includes 1 JSON-LD context and 1 Spectral governance ruleset.
+Attested Memory’s developer surface includes documentation, getting-started guide, and 15 more developer resources.
+🌐 Visit website
+📡 Profile data on GitHub
+32.5
+/100
+thin
+▬ flat
+Agent
+35
+/100
+agent ready
+Full breakdown ↓
+scored 2026-11-06 · rubric v0.27.0 ·
+Show this score on your site →
+Access
+Paid
+Open
+7
+published contracts
+8
+Agent Skills
+Company
+Software-as-a-Service
+Verifiable Memory
+AI Agents
+USDC
+On this page
+Kin Score
+FAQ
+☀ Get your badge
+Standards
+3
+APIs
+56
+Agent Skills
+8
+Pricing
+Pricing Plans
+1
+Rate Limits
+1
+Vocabularies
+1
+Spectral Rules
+1
+JSON Schema
+32
+Security Posture
+2
+Scopes
+1
+Agentic Access
+1
+Resources
+17
+apis.yml
+Kin Score
+Kin Score
+How this is scored →
+scored 2026-11-06 · rubric v0.27.0
+50
+Contract Quality
+16
+Developer Ergonomics
+32
+Access Clarity
+0
+Operational Transparency
+22
+Contract Governance
+71
+Discoverability
+21
+Regulatory Posture
+35
+Agent
+Composite quality — 32.5/100
+· thin
+Contract Quality
+10.6
+/ 21
+Developer Ergonomics
+2.6
+/ 17
+Access Clarity
+5.4
+/ 17
+Operational Transparency
+0.0
+/ 11
+Contract Governance
+2.2
+/ 10
+Discoverability
+6.1
+/ 9
+Regulatory Posture
+3.1
+/ 15
+Agent readiness — 35/100
+· agent ready
+Machine-Readable Contract
+18
+/ 18
+Agentic Access Contract
+10
+/ 10
+Documented Reversibility
+0
+/ 6
+MCP Server
+12
+/ 12
+Machine-Readable Auth
+0
+/ 10
+Idempotency
+0
+/ 9
+Stable Error Semantics
+8
+/ 8
+Request/Response Examples
+0
+/ 7
+Rate-Limit Signaling
+7
+/ 7
+Typed Event Surface
+0
+/ 6
+Agent Skills
+5
+/ 5
+Well-Known Catalog
+0
+/ 4
+Consent & Bot Identity
+0
+/ 3
+A2A Agent Card
+8
+/ 8
+Dry-Run / Simulate Mode
+0
+/ 4
+Delegated User Identity
+0
+/ 6
+Protected Resource Metadata
+0
+/ 5
+Registration Without a Human
+0
+/ 6
+Agentic Commerce Well-Known Document
+0
+/ 5
+Pagination
+5
+/ 5
+Distinct Operations
+0
+/ 3
+MCP Tool Quality
+6
+/ 6
+Regulatory Posture applies to this provider.
+Its tags matched the
+Horizontal (data, software, accessibility, platform)
+regime, so
+    Regulatory Posture carries 15 points of the composite.
+    If this regime is wrong for your business, say so on your
+provider repo
+— the
+applicability map
+is public and we will correct it.
+Create-or-Update Ergonomics could not be measured.
+We hold no machine-readable contract for
+    this provider to read, so there is nothing to measure a write surface against. Excluded rather than scored zero:
+    never-measured and measured-empty are different facts. Publishing an OpenAPI is what makes this facet — and
+    several others — scorable at all.
+The six quality facets above are damped to 85 points between them
+,
+    because the conditional facet above carries the other
+    15. That is why each facet's contribution is shown against a damped
+    maximum: raising a quality facet moves the composite by 85% of its nominal
+    weight, not 100%. The full arithmetic is at
+apis.io/rating/
+.
+Show this score on your site.
+It updates itself when the score changes. Paste this where you link to your API docs:
+<a href="https://apis.io/providers/attestedmemory-net/"><img src="https://apis.io/badge/attestedmemory-net/card.svg" alt="Attested Memory on APIs.io — Kin Score by API Evangelist"></a>
+Other styles, a README pill and a shields.io endpoint are on
+the badge page
+.
+Raise your score.
+Agent readiness — checks not met, largest first (exact, from this profile):
+Machine-Readable Auth
++10 pts
+— a served openid-configuration/oauth-authorization-server carrying `issuer` (served), else the securitySchemes class in the provider OpenAPIs — bound (mutualTLS, DPoP, Signature) > negotiable (oauth2 authorizationCode/clientCredentials, openIdConnect) > bearer (http bearer, apiKey)
+Idempotency
++9 pts
+— OpenAPI mutating operations declare an idempotency key — a header, a request-body property, or a named de-duplication token whose own description says so (verified); else common[].type matches /idempoten/i (documented)
+Request/Response Examples
++7 pts
+— share of operations carrying request/response examples; else an Examples / Code Samples link
+Registration Without a Human
++6 pts
+— a `registration_endpoint` in the served RFC 8414 / OIDC discovery document
+Delegated User Identity
++6 pts
+— a served discovery document listing authorization_code in grant_types_supported (served), else an oauth2 authorizationCode flow or openIdConnect declared in an OpenAPI (documented)
+Typed Event Surface
++6 pts
+— AsyncAPI document, OR webhooks/callbacks objects in the as-published OpenAPI, OR common[].type includes Webhooks
+7 more unmet checks in the Agent Readiness table above.
+Kin Score — facets with the most composite points still available (weight × headroom):
+Developer Ergonomics
+scores 15.5 — up to +16.9 composite points
+Access Clarity
+scores 31.6 — up to +13.7 composite points
+Operational Transparency
+scores 0.0 — up to +13.0 composite points
+Each check links to what satisfies it. Publish the artifact, or
+tell us where it already lives
+, and the score moves on the next scoring run.
+Improve this rating
+by publishing the missing artifacts — every area above can be raised, and the full rubric is at
+apis.io/rating/
+.
+Every facet and dimension name above is a link
+: it opens that measurement's own page — what it means, the exact checks that feed it, how the whole catalog distributes on it, and the providers at the top of it. This rating is computed from the provider profile at
+artifacts.apis.io/attestedmemory-net/apis.yml
+: open an issue on
+github.com/api-evangelist/attestedmemory-net
+to ask a question or point us at an artifact you publish.
+Submit an artifact on GitHub — free →
+Manage your own listing — the Influence plan, $499/mo →
+Standards implemented
+3
+Standards this provider implements or carries. De facto ones are profiled and measured by the
+API Commons
+; formal ones come from the
+standards directory
+and are linked by the provider's own tags. The evidence column says how each claim was established — not that it was made.
+Agent2Agent
+measured
+— observed by APIs.io (conformant)
+Model Context Protocol (MCP)
+measured
+— observed by APIs.io (documented)
+OpenAPI
+measured
+— observed by APIs.io (published)
+APIs
+56
+Individual APIs this provider publishes, each with its own machine-readable definition.
+Attested Memory Store API
+Memory store API.
+Attested Memory A2a API
+The a2a API from Attested Memory — 2 operation(s) for a2a.
+Attested Memory Accounts API
+The Accounts API from Attested Memory — 3 operation(s) for accounts.
+Attested Memory Acex Capital API
+The acex-capital API from Attested Memory — 10 operation(s) for acex-capital.
+Attested Memory Admin API
+The Admin API from Attested Memory — 15 operation(s) for admin.
+Attested Memory Ai Market API
+The Ai Market API from Attested Memory — 4 operation(s) for ai market.
+Attested Memory Assets API
+The Assets API from Attested Memory — 1 operation(s) for assets.
+Attested Memory Attested Memory Hub — AIMarket Hub V3 API
+The Attested Memory Hub — AIMarket Hub V3 API from Attested Memory — 1 operation(s) for attested memory hub — aimarket hub v3.
+Attested Memory Billing API
+The Billing API from Attested Memory — 3 operation(s) for billing.
+Attested Memory Bonds API
+The Bonds API from Attested Memory — 3 operation(s) for bonds.
+Attested Memory Cap Descriptions I18n.json API
+The Cap Descriptions I18n.json API from Attested Memory — 1 operation(s) for cap descriptions i18n.json.
+Attested Memory Capabilities API
+The Capabilities API from Attested Memory — 1 operation(s) for capabilities.
+Attested Memory Challenges API
+The Challenges API from Attested Memory — 1 operation(s) for challenges.
+Attested Memory Clients API
+The Clients API from Attested Memory — 3 operation(s) for clients.
+Attested Memory Deals API
+The Deals API from Attested Memory — 7 operation(s) for deals.
+Attested Memory Developers API
+The Developers API from Attested Memory — 1 operation(s) for developers.
+Attested Memory Disputes API
+The Disputes API from Attested Memory — 2 operation(s) for disputes.
+Attested Memory Examples API
+The Examples API from Attested Memory — 1 operation(s) for examples.
+Attested Memory Gate API
+The Gate API from Attested Memory — 1 operation(s) for gate.
+Attested Memory Healthz API
+The Healthz API from Attested Memory — 1 operation(s) for healthz.
+Attested Memory Hub Ui I18n.json API
+The Hub Ui I18n.json API from Attested Memory — 1 operation(s) for hub ui i18n.json.
+Attested Memory Hub V2 API
+The hub-v2 API from Attested Memory — 88 operation(s) for hub-v2.
+Attested Memory Hubs API
+The Hubs API from Attested Memory — 1 operation(s) for hubs.
+Attested Memory Keys API
+The Keys API from Attested Memory — 4 operation(s) for keys.
+Attested Memory Listings API
+The Listings API from Attested Memory — 4 operation(s) for listings.
+Attested Memory Live API
+The Live API from Attested Memory — 1 operation(s) for live.
+Attested Memory MCP API
+The mcp API from Attested Memory — 4 operation(s) for mcp.
+Attested Memory Memory API
+The Memory API from Attested Memory — 4 operation(s) for memory.
+Attested Memory Meter API
+The Meter API from Attested Memory — 4 operation(s) for meter.
+Attested Memory Metrics API
+The Metrics API from Attested Memory — 1 operation(s) for metrics.
+Attested Memory Nullifiers API
+The Nullifiers API from Attested Memory — 6 operation(s) for nullifiers.
+Attested Memory Operator API
+The Operator API from Attested Memory — 2 operation(s) for operator.
+Attested Memory Passports API
+The Passports API from Attested Memory — 4 operation(s) for passports.
+Attested Memory Payouts API
+The Payouts API from Attested Memory — 1 operation(s) for payouts.
+Attested Memory Plans API
+The Plans API from Attested Memory — 1 operation(s) for plans.
+Attested Memory Plugins API
+The Plugins API from Attested Memory — 1 operation(s) for plugins.
+Attested Memory Prices API
+The Prices API from Attested Memory — 1 operation(s) for prices.
+Attested Memory Products API
+The Products API from Attested Memory — 1 operation(s) for products.
+Attested Memory Publishers API
+The Publishers API from Attested Memory — 5 operation(s) for publishers.
+Attested Memory Publishing API
+The Publishing API from Attested Memory — 1 operation(s) for publishing.
+Attested Memory Read API
+The Read API from Attested Memory — 1 operation(s) for read.
+Attested Memory Receipts API
+The Receipts API from Attested Memory — 3 operation(s) for receipts.
+Attested Memory Settlements API
+The Settlements API from Attested Memory — 1 operation(s) for settlements.
+Attested Memory Slots API
+The Slots API from Attested Memory — 1 operation(s) for slots.
+Attested Memory Start API
+The Start API from Attested Memory — 1 operation(s) for start.
+Attested Memory Stats API
+The Stats API from Attested Memory — 1 operation(s) for stats.
+Attested Memory Studio API
+The Studio API from Attested Memory — 11 operation(s) for studio.
+Attested Memory Studio Ui I18n.json API
+The Studio Ui I18n.json API from Attested Memory — 1 operation(s) for studio ui i18n.json.
+Attested Memory Team Memories API
+The Team Memories API from Attested Memory — 2 operation(s) for team memories.
+Attested Memory Team Search API
+The Team Search API from Attested Memory — 1 operation(s) for team search.
+Attested Memory Teams API
+The Teams API from Attested Memory — 7 operation(s) for teams.
+Attested Memory Trials API
+The Trials API from Attested Memory — 3 operation(s) for trials.
+Attested Memory .well Known API
+The .well Known API from Attested Memory — 4 operation(s) for .well known.
+Attested Memory Widget API
+The Widget API from Attested Memory — 2 operation(s) for widget.
+Attested Memory World API
+The World API from Attested Memory — 2 operation(s) for world.
+Attested Memory X402 API
+The X402 API from Attested Memory — 1 operation(s) for x402.
+Scroll for all 56
+Agent Skills
+8
+Packaged agent skills for driving this provider's APIs from an AI assistant.
+attestedmemory-net-api
+AGENT SKILL
+attestedmemory-net-deal
+AGENT SKILL
+attestedmemory-net-hub
+AGENT SKILL
+attestedmemory-net-market
+AGENT SKILL
+attestedmemory-net-memory
+AGENT SKILL
+attestedmemory-net-meter
+AGENT SKILL
+attestedmemory-net-prove
+AGENT SKILL
+attestedmemory-net-teams
+AGENT SKILL
+Scroll for all 8
+Attested Memory API pricing
+Prices published by Attested Memory, read 2026-11-02 from
+attestedmemory.net/billing
+.
+Plan
+Price
+Personal
+$12/ month
+Teams
+$49/ month
+Market
+$29/ 7 days
+Plan details, limits and sources →
+Pricing Plans
+1
+Published pricing tiers and plan structures.
+Attestedmemory Net Plans Pricing
+3 plans
+PLANS
+Rate Limits
+1
+Documented rate limits and quota policies.
+Attestedmemory Net Rate Limits
+0 limits
+RATE LIMITS
+Semantic Vocabularies
+1
+JSON-LD contexts and semantic vocabularies used across these APIs.
+Attestedmemory Net Context
+60 classes · 120 properties
+JSON-LD
+Spectral Rules
+1
+Spectral governance rulesets for linting and validating these APIs.
+Attested Memory API Rules
+36 rules ·
+29 errors
+6 warnings
+1 info
+SPECTRAL
+JSON Schema
+32
+Standalone JSON Schema definitions for this provider's data models.
+AnnounceRequest
+6 properties
+JSON SCHEMA
+AuthorizeRequest
+3 properties
+JSON SCHEMA
+BindRequest
+3 properties
+JSON SCHEMA
+BondRequest
+4 properties
+JSON SCHEMA
+CaptureRequest
+2 properties
+JSON SCHEMA
+ChallengeRequest
+3 properties
+JSON SCHEMA
+ChannelOpenRequest
+7 properties
+JSON SCHEMA
+ConfirmRequest
+1 properties
+JSON SCHEMA
+DealRequest
+11 properties
+JSON SCHEMA
+DisputeRequest
+2 properties
+JSON SCHEMA
+EvidenceRequest
+3 properties
+JSON SCHEMA
+InvokeRequest
+9 properties
+JSON SCHEMA
+IpoRequest
+7 properties
+JSON SCHEMA
+MemberRequest
+2 properties
+JSON SCHEMA
+MemoryRequest
+3 properties
+JSON SCHEMA
+OrderRequest
+2 properties
+JSON SCHEMA
+OwnPriceRequest
+4 properties
+JSON SCHEMA
+PassportRequest
+2 properties
+JSON SCHEMA
+PermissionViolationRequest
+6 properties
+JSON SCHEMA
+PriceRequest
+5 properties
+JSON SCHEMA
+PublisherRequest
+3 properties
+JSON SCHEMA
+ReadRequest
+1 properties
+JSON SCHEMA
+ReceiptRequest
+5 properties
+JSON SCHEMA
+ReceiptVerifyRequest
+5 properties
+JSON SCHEMA
+ScopeRequest
+4 properties
+JSON SCHEMA
+TeamCreate
+1 properties
+JSON SCHEMA
+TeamMember
+2 properties
+JSON SCHEMA
+TeamMemory
+5 properties
+JSON SCHEMA
+TeamRequest
+1 properties
+JSON SCHEMA
+TrialRequest
+3 properties
+JSON SCHEMA
+VerifyRequest
+2 properties
+JSON SCHEMA
+WorldRequest
+3 properties
+JSON SCHEMA
+Scroll for all 32
+Security Posture
+2
+Authentication, domain security, vulnerability disclosure, and trust-center signals.
+Attestedmemory Net Authentication
+0 schemes
+SECURITY
+Attestedmemory Net Domain Security
+TLSv1.3 · HSTS
+SECURITY
+Scopes
+1
+OAuth scopes governing access to this provider's APIs.
+Attestedmemory Net Scopes
+OAuth 2.0 · no documented scopes
+0 scopes
+SCOPES
+Agentic Access
+1
+Recommended x-agentic-access execution contracts for AI agents.
+Attestedmemory Net Agentic Access
+317 operations · 137 acting · 6 human-in-the-loop
+317 operations · 137 acting
+AGENTIC
+Resources
+Get Started
+2
+Portal, sign-up, and the first successful call
+DeveloperPortal
+DeveloperPortal
+GettingStarted
+GettingStarted
+Documentation
+1
+Reference material describing how the API behaves
+Documentation
+Documentation
+Agent Surfaces
+3
+MCP servers, agent skills, and machine-readable catalogs
+AgenticAccess
+AgenticAccess
+LLMsTxt
+LLMsTxt
+WellKnown
+WellKnown
+Design & Contract
+6
+Pagination, idempotency, versioning, errors, and events
+Spectral
+Spectral
+JSONLD
+JSONLD
+Vocabulary
+Vocabulary
+DataModel
+DataModel
+ErrorCatalog
+ErrorCatalog
+Conformance
+Conformance
+Access & Security
+1
+Authentication, authorization, and security posture
+DomainSecurity
+DomainSecurity
+Commercial
+1
+Pricing, plans, and the legal terms of use
+Plans
+Plans
+Company
+1
+The organization behind the API
+Website
+Website
+Other
+2
+Properties that don't map to a standard resource type
+AgentCard
+AgentCard
+Hosts
+Hosts
+Source (apis.yml)
+apis.yml
+YAML
+JSON
+Download
+Raw ↑
+Copy
+aid: attestedmemory-net
+name: Attested Memory
+accessModel:
+  pricing: paid
+  onboarding: open
+  trial: false
+  try_now: false
+  public: true
+  gated: none
+  gated_source:
+  - onboarding
+  label: Paid · Open access
+  confidence: medium
+  source:
+  - plans
+  - authentication
+  - security
+  generated: '2026-11-06'
+  method: derived
+image: https://attestedmemory.net/attested-social.png
+description: Attested Memory provides verifiable context for people, teams, and autonomous agents through a SaaS platform
+  that stores durable knowledge with cryptographic identity, truth state, and provenance. It offers personal, team, and expert
+  memory products, USDC‑settled transactions, escrow, metering, and proof capabilities, all federated via the KOVA hub and
+  integrated with the open AIMarket ecosystem.
+url: https://artifacts.apis.io/attestedmemory-net/apis.yml
+x-type: company
+x-source: harvest:mcp-registry
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-11-02 (modular-v1; was harvest)
+specificationVersion: '0.20'
+created: '2026-11-02'
+modified: '2026-11-02'
+tags:
+- Company
+- Software-as-a-Service
+- Verifiable Memory
+- AI Agents
+- USDC
+tags_raw:
+- Company
+- SaaS
+- Verifiable Memory
+- AI Agents
+- USDC
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
+common:
+- type: AgenticAccess
+  url: agentic-access/attestedmemory-net-agentic-access.yml
+- type: Plans
+  url: plans/attestedmemory-net-plans-pricing.yml
+- type: Spectral
+  url: rules/attestedmemory-net-rules.yml
+- type: JSONLD
+  url: json-ld/attestedmemory-net-context.jsonld
+- type: Vocabulary
+  url: vocabulary/attestedmemory-net-vocabulary.yml
+- type: DataModel
+  url: data-model/attestedmemory-net-data-model.yml
+- type: ErrorCatalog
+  url: errors/attestedmemory-net-problem-types.yml
+- type: Conformance
+  url: conformance/attestedmemory-net-conformance.yml
+- type: LLMsTxt
+  url: llms/attestedmemory-net-llms.txt
+- type: AgentCard
+  url: a2a/attestedmemory-net-a2a.yml
+- type: WellKnown
+  url: well-known/attestedmemory-net-well-known.yml
+- type: Hosts
+  url: hosts/attestedmemory-net-hosts.yml
+- type: DomainSecurity
+  url: security/attestedmemory-net-domain-security.yml
+- type: Website
+  url: https://attestedmemory.net/
+- type: Documentation
+  url: https://attestedmemory.net/docs
+- type: DeveloperPortal
+  url: https://attestedmemory.net/developers
+- type: GettingStarted
+  url: https://attestedmemory.net/start
+- type: UseCases
+  url: https://attestedmemory.net/use-cases
+apis:
+- name: Attested Memory Store API
+  description: Memory store API.
+  humanURL: https://attestedmemory.net/memory
+  baseURL: https://attestedmemory.net/memory
+  aid: attestedmemory-net:attested-memory-store-api
+- aid: attestedmemory-net:attestedmemory-net-a2a-api
+  name: Attested Memory A2a API
+  description: The a2a API from Attested Memory — 2 operation(s) for a2a.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - A2A
+  tags_raw:
+  - a2a
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-a2a-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-accounts-api
+  name: Attested Memory Accounts API
+  description: The Accounts API from Attested Memory — 3 operation(s) for accounts.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Account
+  tags_raw:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-accounts-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-acex-capital-api
+  name: Attested Memory Acex Capital API
+  description: The acex-capital API from Attested Memory — 10 operation(s) for acex-capital.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - acex-capital
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-acex-capital-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-admin-api
+  name: Attested Memory Admin API
+  description: The Admin API from Attested Memory — 15 operation(s) for admin.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Admin
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-admin-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-ai-market-api
+  name: Attested Memory Ai Market API
+  description: The Ai Market API from Attested Memory — 4 operation(s) for ai market.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Ai Market
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-ai-market-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-assets-api
+  name: Attested Memory Assets API
+  description: The Assets API from Attested Memory — 1 operation(s) for assets.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Assets
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-assets-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-attested-memory-hub-aimarket-hub-v3-api
+  name: Attested Memory Attested Memory Hub — AIMarket Hub V3 API
+  description: The Attested Memory Hub — AIMarket Hub V3 API from Attested Memory — 1 operation(s) for attested memory hub
+    — aimarket hub v3.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags: []
+  tags_raw:
+  - Attested Memory Hub — AIMarket Hub V3
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-attested-memory-hub-aimarket-hub-v3-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-billing-api
+  name: Attested Memory Billing API
+  description: The Billing API from Attested Memory — 3 operation(s) for billing.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-billing-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-bonds-api
+  name: Attested Memory Bonds API
+  description: The Bonds API from Attested Memory — 3 operation(s) for bonds.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Bonds
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-bonds-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-cap-descriptions-i18n-json-api
+  name: Attested Memory Cap Descriptions I18n.json API
+  description: The Cap Descriptions I18n.json API from Attested Memory — 1 operation(s) for cap descriptions i18n.json.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Cap Descriptions I18n.json
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-cap-descriptions-i18n-json-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+
+
+# --- truncated at 32 KB (176 KB total) ---
+# Full source: https://artifacts.apis.io/attestedmemory-net/apis.yml
+Attested Memory API — frequently asked questions
+Does Attested Memory have an API?
+Yes. APIs.io lists 56 APIs from Attested Memory, including Attested Memory Store API, Attested Memory A2a API and Attested Memory Accounts API, and 53 more.
+Is there an OpenAPI specification for the Attested Memory API?
+Yes. APIs.io indexes 55 OpenAPI specifications for Attested Memory, each linked for download from this page.
+How do I authenticate with the Attested Memory API?
+Attested Memory documents its authentication (0 schemes). The details are profiled on APIs.io as Attestedmemory Net Authentication.
+How much does the Attested Memory API cost?
+Attested Memory publishes its prices; its Personal plan is $12/ month as of 2026-11-02. APIs.io lists 3 pricing plans for Attested Memory, with each plan's price, limits and inclusions under Pricing on this page.
+Is the Attested Memory API ready for AI agents?
+Attested Memory has a Kin Score of 32.5 out of 100 (thin) and an Agent Readiness score of 34.7 (agent-ready), scored by API Evangelist on 2026-11-06.
+Work with this as data
+Every provider here is available over the APIs.io API and to AI agents over MCP.
+MCP server
+One button, every client — Claude, Cursor, VS Code and the rest.
+https://apis.io/mcp
+Tools for providers
+9 MCP tools reach this
+find_providers
+Browse and filter every provider in the catalog.
+get_provider_artifacts
+Every artifact this provider publishes, grouped by type.
+get_provider_operations
+Every operation across all of their OpenAPIs — one call instead of parsing every spec.
+get_provider_tools
+Every MCP tool they ship, with the operation each wraps.
+get_provider_evidence
+How each part of their score was established. Free — the basis for a claim should not sit behind it.
+get_provider_rating
+PRO — composite, band, trend and facet scores.
+apis_io_search
+START HERE — APIs, providers and tags for one query, each with its total.
+resolve
+Turn a domain, URL or GitHub org into the provider it belongs to.
+find_cohorts
+Every scored population of providers in the catalog.
+All 92 tools →
+Call it yourself
+curl for this page
+This provider
+curl "https://apis.io/api/v1/providers/attestedmemory-net"
+All providers
+curl "https://apis.io/api/v1/providers?limit=25"
+Every operation they expose
+curl "https://apis.io/api/v1/providers/attestedmemory-net/operations?limit=25"
+How their score was established
+curl "https://apis.io/api/v1/providers/attestedmemory-net/evidence"
+Calls without
+X-API-Key
+need no key. Calls with it need a paid plan —
+get a key
+.
+Get an API key
+Free tier, no form to fill in. Signing in shares your email address with us — we
+      store it to create your key and to recognise you if you sign in with another
+      provider. See our
+Privacy Policy
+and
+Terms
+.
+GitHub
+Google
+LinkedIn
+A second provider on the same verified email joins the account you already have.
+© APIs.io
+APIs.json
+API Commons
+API Evangelist
+Terms
+Privacy

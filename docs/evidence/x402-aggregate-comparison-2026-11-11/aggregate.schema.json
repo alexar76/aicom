@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "x402 example-replay aggregate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "dataOrigin", "scope", "comparison", "counts"],
+  "properties": {
+    "schema": {"const": "aimarket.x402-example-replay-aggregate/v1"},
+    "dataOrigin": {"enum": ["synthetic", "seller-reported"]},
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["network", "resourceId", "fromDate", "untilDate"],
+      "properties": {
+        "network": {"const": "eip155:8453"},
+        "resourceId": {"$ref": "#/$defs/publicId"},
+        "fromDate": {"$ref": "#/$defs/utcDate"},
+        "untilDate": {"$ref": "#/$defs/utcDate"}
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "exampleId"],
+      "properties": {
+        "method": {"enum": ["public-jcs-sha256", "private-jcs-hmac-sha256"]},
+        "exampleId": {"$ref": "#/$defs/publicId"},
+        "publicExampleSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$", "maxLength": 64}
+      },
+      "if": {"properties": {"method": {"const": "public-jcs-sha256"}}},
+      "then": {"required": ["publicExampleSha256"]},
+      "else": {"properties": {"publicExampleSha256": false}}
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["settledPayments", "externalSettledPayments", "externalPayers", "exampleMatchedPayers",
+                   "exampleMatches", "exampleMismatches", "unclassified"],
+      "properties": {
+        "settledPayments": {"$ref": "#/$defs/count"},
+        "externalSettledPayments": {"$ref": "#/$defs/count"},
+        "externalPayers": {"$ref": "#/$defs/count"},
+        "exampleMatchedPayers": {"$ref": "#/$defs/count"},
+        "exampleMatches": {"$ref": "#/$defs/count"},
+        "exampleMismatches": {"$ref": "#/$defs/count"},
+        "unclassified": {"$ref": "#/$defs/count"}
+      }
+    }
+  },
+  "$defs": {
+    "publicId": {
+      "type": "string", "pattern": "^[a-z][a-z0-9-]*[a-z0-9]$", "minLength": 2, "maxLength": 80,
+      "not": {"pattern": "[^a-z0-9-]"}
+    },
+    "utcDate": {"type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$", "maxLength": 10},
+    "count": {"type": "integer", "minimum": 0, "maximum": 9007199254740991}
+  }
+}

@@ -1,0 +1,173 @@
+alexar76/aimarket-plugins · MCP 服务 · MCP 服务器 · Anclum
+ESC
+↑
+↓
+选择
+↵
+打开
+⌘K
+唤起
+首页
+MCP
+AI
+榜单
+更多
+智能体
+任务
+对比
+专区
+客户端与 CLI
+搜索
+独立运营 · 不出售排名位置
+ ·
+我们怎么评估工具 →
+Anclum
+MCP 服务
+Agent 技能
+AI 工具
+AI 智能体
+按任务
+浏览
+对比
+专区
+客户端与 CLI
+榜单
+⌘K
+提交收录
+English
+首页
+/
+MCP 目录
+/
+AI 与模型工具
+/
+其他 AI 工具
+A
+alexar76/aimarket-plugins
+15 个 AIMarket 枢纽插件——TEE 托管、频道、信誉、安全等。
+MIT 许可证
+·
+SECURITY.md ✓
+☆ 收藏
+在 GitHub 查看 ↗
+链接已于 2026-11-03 核查 · HTTP 200 · 打开的是厂商自己的官网
+我们没有从
+该仓库
+取到可核对的安装命令，也没有公开的远端端点。这两样都没有时，我们不出配置——编一条出来比不给更糟。
+各客户端的接法 →
+★ 数取值
+2 ★ ·
+alexar76/aimarket-plugins
+· 取自该仓库的 GitHub 页面 · （2026-11-09 20:00:47 核对）
+来源明细
+收录自 punkpeye/awesome-mcp-servers 榜单（我们从中收集的条目之一） · 条目类型：MCP 服务
+收录与活跃
+收录于 2026-10-09 · 最近见到 2026-11-10 · 共见到 60 次 · 被 32 个来源列出
+评分构成
+综合分 3,203 · 2 ★ · 32 个来源 · mcp
+常见问题（答案都来自我们的记录）
+它适合谁 / 用来做什么？
+我们把它归在这些标签下: MCP 服务。标签来自条目自身，不是我们强加的分类。
+谁维护它、还在更新吗？
+仓库
+alexar76/aimarket-plugins
+；我们收录于 2026-10-09；最近见到 2026-11-10。这里没有"官方认证"或"质量评级"——我们只记录来源与时间。
+第三方质量标记
+> 🔄 Synced from a monorepo — but with a live history. aimarket-plugins mirrors t
+以下摘录自该仓库的 README（片段） ·
+在 GitHub 读完整 README →
+> canonical AI-Factory monorepo. History here is append-only (no force-push).
+> Pull requests are welcome — merged PRs are imported back into the monorepo
+> and re-synced here, so your contribution becomes canonical.
+> 💬 Issues · Pull requests both welcome.
+# AIMarket Hub Plugins
+> Ecosystem: AICOM overview & live demos · Community: Discord · Pollux · Telegram · Castor
+15 protocol plugins extend hub invoke, settlement, compliance, and data planes without forking core.
+Verifiable math lives in the separate oracles monorepo (Platon, Chronos, Murmuration, Lumen, …) — listed on the hub like any capability. aimarket-reputation scores sellers; Lumen oracle supplies PageRank/EigenTrust-style trust artifacts agents can invoke and audit.
+## Install
+PyPI (top-5): docs/install.md
+| Package | PyPI status |
+| aimarket-hub | ✅ 3.0.0 |
+| aimarket-tee, aimarket-channels, aimarket-reputation | ✅ 2.0.0 |
+| aimarket-safety, aimarket-mcp-packager | ⏳ pending (PyPI new-project rate limit — install from source until published) |
+| aimarket-zk | ⏳ monorepo only — pip install -e plugins/aimarket-zk until PyPI publish |
+Docker: all 15 plugins ship in the production hub image — ./scripts/deployhub.sh from the factory monorepo.
+Source: pip install -e plugins/aimarket-tee after cloning this repo.
+## TEE Escrow
+Smart-contract escrow in a Trusted Execution Environment — buyer funds stay held until attested invoke succeeds; seller is paid only on proof; failures refund on-channel.
+| What | aimarket-tee + provenance + safety → hold → invoke → release/refund |
+| Why | Micropay scale with both-side protection — no human escrow desk |
+| Deep dive | docs/killer-feature-tee-escrow.md · Ecosystem capabilities |
+## MCP server — aimarket-mcp-packager
+One of the 15 plugins is a full Model Context Protocol server — stdio transport, built on the official MCP Python SDK. aimarket-mcp-packager turns any AIMarket capability into a self-hosted MCP product (Docker image, MCP manifest, and a ready claudedesktopconfig.json) that runs in Claude Desktop, Cursor, Glama, or any stdio MCP client.
+| Run | python plugins/aimarket-mcp-packager/mcpstdioserver.py (stdio) · docker build from repo root |
+| Tools | packagecapability · generatedockerfile · generateclaudedesktopconfig |
+| Registry | Listed on Glama (score badge above) — see aimarket-mcp-packager/ for the server, glama.json, and Dockerfile |
+## MCP server — aimarket-oracle-gateway (standalone repo)
+A second MCP server ships as its own satellite repo alexar76/aimarket-oracle-gateway for Glama indexing. aimarket-oracle-gateway exposes Platon randomness, Chronos VDF, and LUMEN reputation as agent-callable tools — pay-per-call over AIMarket, every result independently verifiable.
+| Run | AIMARKETHUBURL=https://modelmarket.dev python mcpstdioserver.py |
+| Tools | getrandom · computevdf · getreputationscores · listoraclecapabilities · … |
+| Registry | — glama.json + Dockerfile |
+## Plugin index
+| Plugin | Role |
+| aimarket-safety | Pre-invoke policy, signed reject |
+收录徽章（可选）
+想把收录标记放进 README 就复制这行，可选，不影响收录。
+[![Listed on Anclum](https://anclum.com/badge/listed.svg)](https://anclum.com/zh/s/alexar76-aimarket-plugins/)
+复制
+来源
+awesome
+       ·
+https://github.com/alexar76/aimarket-plugins
+按领域浏览
+MCP 服务
+Traction
+2 ★
+收录来源
+32 个独立来源
+收录于
+今天
+安全策略
+该仓库根目录有
+SECURITY.md
+（我们只核文件存在，未核内容）
+同类里的其他东西
+Magick
+项目
+LiuHong6/awesome-short-drama-skills
+项目
+kartalbas/setup-ai-core
+项目
+brutal-45/Brutal-ai
+项目
+mixpeek/amux
+项目
+kortix-ai/suna
+项目
+同类推荐
+juspay/neurolink
+MCP 服务
+rohitg00/kubectl-mcp-server
+MCP 服务
+microsoft/playwright-mcp
+MCP 服务
+nwiizo/tfmcp
+MCP 服务
+WayStation-ai/mcp
+MCP 服务
+julien040/anyquery
+MCP 服务
+全部 6,221 →
+所属领域与标签
+MCP 服务
+6,221 条
+MCP 服务端
+6,541 条
+入选精选清单
+6,615 条
+有 README
+6,110 条
+每个标签都能点进去看同类的全部条目。数字是当前库里的真实条数。
+浏览全部领域 →
+← 返回索引
+内容聚合自公开来源，链接于 2026-11-03 核查，失效的已标注。

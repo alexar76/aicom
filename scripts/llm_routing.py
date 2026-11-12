@@ -332,16 +332,13 @@ def cmd_scan(_args: argparse.Namespace) -> int:
         ssh = h.get("ssh", "")
         entry: dict[str, Any] = {"label": h.get("label"), "ssh": ssh, "checks": []}
         try:
+            command = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8"]
+            if h.get("identity_file"):
+                identity = os.path.expandvars(os.path.expanduser(str(h["identity_file"])))
+                command += ["-i", identity, "-o", "IdentitiesOnly=yes"]
+            command += [ssh, "docker ps --format '{{.Names}}' 2>/dev/null | head -30"]
             proc = subprocess.run(
-                [
-                    "ssh",
-                    "-o",
-                    "BatchMode=yes",
-                    "-o",
-                    "ConnectTimeout=8",
-                    ssh,
-                    "docker ps --format '{{.Names}}' 2>/dev/null | head -30",
-                ],
+                command,
                 capture_output=True,
                 text=True,
                 timeout=15,

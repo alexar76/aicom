@@ -1,0 +1,46 @@
+{
+  "format": "aicom.late-helper-ruff-delta/v1",
+  "pythonFiles": 9,
+  "scope": "Nine late audit helpers only; no application source, credentials or production data",
+  "command": [
+    "/deps/bin/ruff",
+    "check",
+    ".",
+    "--isolated",
+    "--no-cache",
+    "--select",
+    "E9,F63,F7,F82",
+    "--extend-exclude",
+    "create-aimarket-agent/src/create_aimarket_agent/templates",
+    "--extend-exclude",
+    "docs/evidence",
+    "--output-format",
+    "json"
+  ],
+  "pythonRules": [
+    "E9",
+    "F63",
+    "F7",
+    "F82"
+  ],
+  "manifestSha256": "366c6dd9617cea75442ab499ba779b6b204c585128e2575a1ebbbf58111ff5ae",
+  "sourceHashes": {
+    "artifacts/article-quality-2026-11-08/histor/check_fixtures.py": "6747306a9de39f14ac734c38ece1e9f27fa006fec1b092398c662644593ddb26",
+    "artifacts/article-quality-2026-11-08/histor/make_figures.py": "fd66d85352ef2e6daadec182afc7964047b1a38a43133ebfc706680d068e69b8",
+    "artifacts/article-quality-2026-11-08/histor/mtl_1_0_snapshot.py": "07b335e96237402e03571cfd4cd639bbe77617f7bb5d9ee3e4cd71bbd5193617",
+    "artifacts/article-quality-2026-11-08/histor/mtl_1_1_snapshot.py": "92b03c88589a06dbc433f1ca0f77cd6fb5c840b9e31e9d1ed729dfbb7e00cc99",
+    "artifacts/article-quality-2026-11-08/histor/reproduce_digest.py": "3dd8b0d1dd3fc761f69188a491b65491bfee4e829c65f817ddc4d5f11319bbdb",
+    "artifacts/hub-public-endpoints-audit-2026-11-08/live/verify_authority_and_gets.py": "f0b6626484ba522bf405da768a00522cabf3350ab8f15cdda4798d9d495e4f57",
+    "artifacts/hub-public-endpoints-audit-2026-11-08/live/verify_secondary_public.py": "09d294d4d27ce6d66b2bb383073289a643d54a0d0be3bc73819333bef445cc6d",
+    "artifacts/hub-public-endpoints-audit-2026-11-08/reverify_primary_public.py": "34eefaebe0a3540a667b4e38f6ef63b880e6812c1aabcf3712ed75c3ae2e4722",
+    "artifacts/hub-public-endpoints-audit-2026-11-08/verify_public_after.py": "02b5db9ee703258599ccecf7de1ede82990080ceac8db387088673f9bfd3404c"
+  },
+  "sourceUnchanged": true,
+  "exitCode": 0,
+  "seconds": 0.291,
+  "findings": [],
+  "uid": 1000,
+  "gid": 1000,
+  "noLocalProjectExecution": true,
+  "passed": true
+}

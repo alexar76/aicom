@@ -1,0 +1,42 @@
+[
+  {
+    "key": "hn-item",
+    "url": "https://hn.algolia.com/api/v1/items/50193565",
+    "checked_at_utc": "2026-11-09T20:01:52.768561+00:00",
+    "status": 200,
+    "final_url": "https://hn.algolia.com/api/v1/items/50193565",
+    "file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-social-regional-2026-11-09/social/raw/hn-item.raw",
+    "bytes": 1362,
+    "sha256": "2829b375b4b9ca9e26e150849b1ebea16512b103ff7580b5921e33ddc393dcd0"
+  },
+  {
+    "key": "reddit-search",
+    "url": "https://www.reddit.com/search.json?q=%22modelmarket.dev%22&sort=new&limit=100&type=link",
+    "checked_at_utc": "2026-11-09T20:01:52.770653+00:00",
+    "status": 403,
+    "error": "HTTP Error 403: Blocked",
+    "file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-social-regional-2026-11-09/social/raw/reddit-search.raw",
+    "bytes": 189908,
+    "sha256": "13bcba13bd1bad5aace04e8a76880b710337a8d595224967e874401832cc203c"
+  },
+  {
+    "key": "bsky-search",
+    "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=modelmarket.dev&limit=100&sort=latest",
+    "checked_at_utc": "2026-11-09T20:01:52.774505+00:00",
+    "status": 403,
+    "error": "HTTP Error 403: Forbidden",
+    "file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-social-regional-2026-11-09/social/raw/bsky-search.raw",
+    "bytes": 2334,
+    "sha256": "8609fbf6d25103698c09480062dd212a9f8e8acbc3d320f599bd871cef1a7048"
+  },
+  {
+    "key": "mastodon-search",
+    "url": "https://mastodon.social/api/v2/search?q=modelmarket.dev&type=statuses&limit=40",
+    "checked_at_utc": "2026-11-09T20:01:53.138604+00:00",
+    "status": 200,
+    "final_url": "https://mastodon.social/api/v2/search?q=modelmarket.dev&type=statuses&limit=40",
+    "file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-social-regional-2026-11-09/social/raw/mastodon-search.raw",
+    "bytes": 60,
+    "sha256": "6c769b1bfc572dd460befe5cd8db98bc85d2e811de19cc385acdc3dac12296df"
+  }
+]

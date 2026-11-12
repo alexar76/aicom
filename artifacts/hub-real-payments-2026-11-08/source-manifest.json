@@ -1,0 +1,55 @@
+{
+  "status": "reviewed_client_and_readonly_helper_no_agent_financial_execution",
+  "files": {
+    "run_paid_cycle.py": "7512a509092ff1d2a8e7bc320c31323ce8806b7c76dcaab252f19bca85ba1c43",
+    "targets.json": "454f43955a536531acaca1db680fdc159480448e2d0a4d3ecc7a3246fdac3a88",
+    "read_paid_ledger.py": "138a1eb6d8203d7926b05689252b39ba2c106735ec8243d337db6baa638ca8ab",
+    "review/payment_guards.py": "7df8931d128303d487debbf9fc0999938914a6e142114b3bd2505c081aa09804",
+    "review/test_payment_guards.py": "83e4e9bae337340028f442a9102717c3b6703f59811dd8fa87a9d0634efcb966",
+    "review/test_read_paid_ledger.py": "d3cb1256faaabd9d1dec5c3fcd42a6d4efe823513dc389fc92fe16251199f58d",
+    "review/test_runner_journal_independent.py": "80b40a08a81cb0dadce37b1dbaa442dfa63f8806c99b527b4e486988632ec5f0",
+    "review/protocol-review.md": "4fbfd535d3145e0d4579c51c9e2907111dc0e6ed8fc16932449101fc1a9aa292",
+    "refund_factory.py": "454849c9b40d8e24df47a64805aac65c166dfe8596fa50162857d908205a1da8",
+    "review/test_refund_factory.py": "90e7b219e74dbf7597e4d837cbb3c970cb5e6ab2be7516c3933c7fe8ca008e61"
+  },
+  "checks": {
+    "guard_and_journal_cases": 30,
+    "scoped_ledger_fixture_cases": 1,
+    "agent_live_quotes": 0,
+    "agent_key_loads": 0,
+    "agent_broadcasts": 0,
+    "agent_paid_invokes": 0,
+    "refund_exact_proof_cases": 18,
+    "refund_independent_crash_cases": 2
+  },
+  "limits": {
+    "chain_id": 8453,
+    "principal_atomic_total": 13000,
+    "fee_per_tx_wei": "10000000000000",
+    "fee_total_wei": "30000000000000"
+  },
+  "runner_reviews": [
+    "review/independent-runner-review.json",
+    "review/independent-rpc-fallback-review.json"
+  ],
+  "ledger_helper_qualification": "legacy3.16x402receipt_idmayempty;completedcachedoperationreceiptlinkisrequired",
+  "runner_compatibility_history": [
+    {
+      "sha256": "cc09759c6622ce036dcfc441ac1ec7b189777d833d2b5ca90cacc9fac90c6991",
+      "reason": "Factory transaction broadcast acknowledged; subsequent receiptreadHTTP403; originalsource retained",
+      "source": "review/run_paid_cycle-cc09759-before-rpc-compat.py.txt"
+    }
+  ],
+  "rpc_compatibility": {
+    "user_agent": "aicom-paid-cycle-verifier/1",
+    "read_only_pool": [
+      "publicnode",
+      "base-official",
+      "drpc-public"
+    ],
+    "send_or_estimate_fallback": false,
+    "safe_diagnostics_only": true
+  },
+  "refund_review": "review/independent-refund-review.json",
+  "refund_scope": "originalFactory2000atomiconly;operatorgasbudgetseparate1e13wei;FactoryfullcycleFAILpreserved"
+}

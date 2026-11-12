@@ -204,6 +204,42 @@ FACTORY_LOCAL_EXCLUDES = [
     # the public summaries and source links remain available separately.
     "docs/evidence/external-use-pass4-2026-10-30/social/lobsters-native-stories.html",
     "docs/evidence/**/social/raw",
+    # External scrape dumps (API tokens / session literals in raw bodies).
+    # Summaries stay in the factory; Gitea keeps the full monorepo copies.
+    "artifacts/external-signals-2026-11-09/audience/raw",
+    "artifacts/external-links-deeper-2026-11-10/code/bodies",
+    # Operator migration / fleet audits embed private host literals. Gitea keeps
+    # the full trees; the trimmed factory must not.
+    "artifacts/admin-vps-backup-move-2026-11-10",
+    "artifacts/admin-vps-migration-audit-2026-11-10",
+    "artifacts/ecosystem-audit-2026-11-10",
+    "artifacts/histor-migration-2026-11-10",
+    "artifacts/hub-functional-recheck-2026-11-08",
+    "artifacts/hub-public-endpoints-audit-2026-11-08",
+    "artifacts/mfa-stage3-restore-2026-11-09",
+    "artifacts/multica-qa-runner-2026-11-10",
+    "artifacts/multica-security-2026-11-10",
+    "artifacts/sandbox-images-2026-11-08",
+    # GitHub pre-receive rejects >100 MB blobs; these evidence packs stay on Gitea only.
+    # 2026-11-12 factory push: npm.zip 210 MB; changes.jsonl.gz 73 MB (warn).
+    "artifacts/warden-histor-security-2026-11-10",
+    "artifacts/histor-hf-viewer-fix-2026-11-09",
+    # Operator HISTOR AI Catalog rollout kit embeds the private host; Gitea only.
+    "artifacts/histor-ai-catalog-rollout-2026-11-12",
+    "docs/evidence/histor-migration-check-2026-11-11",
+    # pytest tracebacks print the API keys the tests mint in temporary hub databases (aimk_…, 14 of them).
+    # They are not real keys, but the token gate rightly refuses literals; Gitea keeps the logs.
+    "docs/evidence/tensorfeed-receipts-2026-10-30/deploy/full-suite-live-v1-*.log",
+    # Raw page and search bodies scraped on 2026-11-10 carry private host literals; the summaries publish.
+    "artifacts/external-components-2026-11-10/core/bodies",
+    "artifacts/external-components-2026-11-10/products/raw",
+    "artifacts/external-matrix-gaps-2026-11-10/root/obsidian-readme-retry.raw",
+    # Operator scripts and notes that name the HISTOR host (moved 2026-11-11) and the LLM
+    # routing hosts. They run from the monorepo; the public factory does not need them.
+    "scripts/deploy_histor.sh",
+    "scripts/llm_fleet.yaml",
+    "scripts/switch_llm_profile.sh",
+    "docs/llm-routing-profiles.md",
     "data/channels.db",  # local SQLite runtime — never mirror to public factory
     "data/uni_settlements.jsonl",  # local settlement dump — not source
     "data/water_quality_history.json",  # local sensor history dump — not source

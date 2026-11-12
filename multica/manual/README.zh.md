@@ -16,6 +16,9 @@
 方式，防护和权限规则都是在这种方式下测试的（第 2 节）。下文命令是 0.5.3 版 CLI 的命令；这套配置用到的命令也已在
 0.8.0 上检查过。
 
+> **一条命令。** [`operator-kit/onboard.sh`](../operator-kit/README.md) 在您的 Multica 自托管目录旁完成第 2、3、4、6 节的
+> 配置并逐项检查：`sudo ./onboard.sh --dir /opt/multica`。本手册说明它做了什么以及为什么。
+
 ## 目录
 
 [概览：各部分如何配合](#概览各部分如何配合)
@@ -103,34 +106,50 @@ Multica 的守护进程为每个任务启动智能体运行时（OpenCode）。�
 
 ## 3. 限制对外访问
 
-读取他人文本（issue、网页、卖家回复）的智能体可能被诱导把数据发出去。不要给它直接出网的路由：把守护进程放进
-Docker 内部网络，由代理决定它能访问哪些主机。
+部署状态（2026-11-10）：我们的 Multica 主机 **attested** 已启用新增防火墙限制。网络验收单独记录在
+[部署记录](../../artifacts/multica-security-2026-11-10/deployment.json)中；仅启用规则不能证明所有绕过测试通过。
+此状态不代表同事在 `178.62.243.71` 上的安装。
+
+网络限制属于 **Multica 部署层**：Docker 网络、出口代理和宿主机防火墙。WARDEN 检查工具调用，不会安装网络规则。
+守护进程只接入智能体内部网络；代理另外接入可访问互联网的网络，后端通过内部地址提供服务。代理环境变量可被命令
+忽略，因此单靠这些变量不能阻止直接连接。
 
 ```yaml
+# Topology excerpt only; use the reviewed overlay in ../security/egress/.
 services:
   daemon:
     networks: [agent]
     environment:
       HTTPS_PROXY: http://egress:8888
+      https_proxy: http://egress:8888
       HTTP_PROXY: http://egress:8888
+      http_proxy: http://egress:8888
       NO_PROXY: backend,localhost,127.0.0.1
+      no_proxy: backend,localhost,127.0.0.1
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+  backend:
+    networks: [app, agent]
   egress:
-    build: { context: ./egress }      # tinyproxy
     networks: [agent, app]
     read_only: true
-    tmpfs: ["/tmp", "/run"]
     cap_drop: [ALL]
 networks:
   agent:
-    internal: true                    # no route out, no outside DNS
+    internal: true
+    enable_ipv6: false
     ipam: { config: [{ subnet: 10.250.0.0/24 }] }
+  app: {}
 ```
 
-守护进程仍需访问 Multica 后端：把后端也加入 `agent` 网络。
+这只是拓扑片段，不是完整部署。合并 Compose 文件时必须**替换**守护进程原有网络列表：保留 `app` 并添加 `agent`
+仍会留下直接出口。选择不与其他栈冲突的子网。[出口工具包](../security/egress/README.md)提供已审阅的 overlay、代理
+配置、宿主机规则计划和验证命令。它要求运营者提供准确的主机清单；本文不猜测 TONmobile 的 prod/dev 地址。智能体
+不得修改这些文件，也不要向宿主机发布代理端口。
 
-`tinyproxy.conf`：
+`tinyproxy.conf` 的相关选项：
 
-```
+```text
 Port 8888
 Listen 0.0.0.0
 Allow 10.250.0.0/24
@@ -141,19 +160,34 @@ Filter "/etc/tinyproxy/allow"
 ConnectPort 443
 ```
 
-`allow`：每行一个主机，首尾都要锚定，否则 `github.com.example.net` 也会匹配：
+`allow` 每行一个首尾锚定的主机名。以下是**无法使用的占位符**，必须替换为已核实的模型 API 和 QA 环境主机：
 
-```
-^api\.deepseek\.com$
-^models\.dev$
-^github\.com$
-^api\.github\.com$
-^api\.telegram\.org$
-^modelmarket\.dev$
+```text
+^model-api\.operator\.invalid$
+^tonmobile-dev\.operator\.invalid$
+^tonmobile-prod\.operator\.invalid$
 ```
 
-`models.dev` 是 OpenCode 的模型目录。只添加智能体需要的主机。列表中的主机仍然是一条通道（持有 GitHub 令牌的智能体
-可以往 GitHub 写入），这正是第 6 节要解决的。
+Multica 后端应保持内部地址。构建镜像时安装依赖；QA 默认不需要放开整个 npm 注册表或任意 GitHub SSH。必须读取
+Git 时，使用单独的只读获取服务或明确受限的传输方式，不向智能体提供写入凭据。
+
+宿主机必须拒绝智能体子网的直接连接，仅允许代理和准确的后端端点。既要覆盖**宿主机 INPUT**，包括 Docker 网关
+（例如报告中的接收器 `172.18.0.1:9999`），也要覆盖转发流量。Docker 使用 **iptables 后端**时，将转发限制放入
+`DOCKER-USER`，在 Docker 的放行规则之前执行；追加到 `FORWARD` 末尾不够。**nftables 后端没有 `DOCKER-USER`**，
+应使用自行管理的 input/forward 基础链及经过核实的优先级。不要修改 Docker 自有表，也不要认为 UFW 单独覆盖容器。
+必须明确禁用并验证 IPv6，或配置等效且经过测试的规则。
+
+还要核实实际 DNS 路径：需要解析内部服务名，但任意外部 DNS 查询不得经 Docker 内置解析器或宿主机转发器泄出；
+必要时单独限制该解析器。`internal: true` 本身不能证明 DNS 和宿主机套接字不可访问。`ConnectPort 443` 只限制
+CONNECT，不限制普通 HTTP 的目标端口；代理自身的出站规则也必须覆盖这种绕过。
+
+允许的主机仍是泄漏通道：Multica 评论、模型请求和 Git 操作都能携带数据。CONNECT 代理无法检查加密请求体。保持
+主机列表简短、权限最小，并将秘密移出智能体可读的文件和环境；最终结果必须在存储前检查（第 6 节）。
+官方参考：[Docker iptables](https://docs.docker.com/engine/network/firewall-iptables/)、
+[Docker nftables](https://docs.docker.com/engine/network/firewall-nftables/)、
+[Docker 防火墙/UFW](https://docs.docker.com/engine/network/packet-filtering-firewalls/)、
+[Docker DNS](https://docs.docker.com/engine/network/#dns-services) 和
+[Tinyproxy 配置](https://tinyproxy.github.io/#documentation)。
 
 ## 4. 连接枢纽：购买技能
 
@@ -229,39 +263,115 @@ OpenCode 的 `permission.bash` 接受模式；**最后**一个匹配的规则生
 
 ## 6. 保护智能体：用于 OpenCode 的 WARDEN
 
-[WARDEN](https://github.com/alexar76/warden) 的 flow guard 是一个 OpenCode 插件。会话读过外部文本后，如果某个工具
-调用会带出密钥或会话读到的数据，它会拒绝该调用。它还会在 shell 命令中清空你列出的密钥。在我们的模拟攻击中，
-一个伪造密钥放在文件里。通过所有通道发送它都被拒绝了：聊天脚本、对允许主机的 `curl`、写入记忆，以及任务跟踪
-CLI。正常的一天工作没有出现任何拒绝。
+部署状态（2026-11-10）：我们的 **attested** 安装已运行经过审阅的 WARDEN 本地构建和修补后的 Multica 守护进程/
+后端。生产钩子检查通过 9/9；保留的干净会话 canary 被拒绝。已核实二进制哈希、backend/UI 健康及迁移未变。参见
+[部署记录](../../artifacts/multica-security-2026-11-10/deployment.json)。这**不是新的 npm 发布**，也不验证同事的
+`178.62.243.71`/0.24.0 安装或完整 TONM-14 测试。下文有关已知模式和输出路径的限制仍然适用。
 
-智能体的每次工具调用都要经过三层检查，每一层都可以单独拒绝：
+[WARDEN](https://github.com/alexar76/warden) 的 flow guard 检查工具调用。历史上的 OpenCode 0.23.0 集成在记录
+外部文本后执行泄漏检查，并清空 shell 中选定的环境变量。伪造密钥测试先读取 GitHub，再读取凭据文件；聊天脚本、
+对允许主机的 `curl`、记忆写入和跟踪器 CLI 都被拒绝。记录的一次正常任务没有拒绝。这些观察不能证明干净会话或
+其他运行时版本也受到保护。
+
+报告中的 0.24.0 故障暴露了这一缺口：`multica issue get` 没有被识别为外部文本，仅读取 `.env` 不会启动泄漏检查。
+2026-11-10 的本地源码修改将已识别秘密的检查与该触发条件分开，并增加 Multica/QA 报告来源识别。必须在选定运行时
+构建并验证；修改源码不会自动更新 npm 或已安装的守护进程。不要用 `npx` 或失败的 `curl` 故意触发保护。`curl`
+超时时，接收器可能已经收到请求体。
+
+WARDEN 的代码中不出现 Multica 的名字。`playwright-report/` 和 `test-results/` 内的读取默认即为外部文本；Multica
+CLI 通过运营者策略成为外部来源。请以随附的片段 `warden/examples/policies/multica.flow-policy.json` 为基础（npm 包中
+自下一个版本起提供），它标记 `multica issue get`、`issue list`、`issue search` 和 `issue comment list`。没有它，
+Multica 的输出被视为运营者自己的数据。用同样方式添加你自己的命令前缀和报告目录（此处为 QA 报告目录
+`reports/`）；这些规则只增加不信任，不会授权动作：
+
+```json
+{
+  "mode": "deny",
+  "untrustedSources": {
+    "commands": [
+      ["multica", "issue", "get"], ["multica", "issue", "list"],
+      ["multica", "issue", "search"], ["multica", "issue", "comment", "list"]
+    ],
+    "paths": ["reports"]
+  }
+}
+```
+
+如果智能体把报告写在克隆旁边（任务工作区根目录），请在同一策略中加入 `"projectRoots": [".."]`：否则读取外部文本后，这类写入会被视为项目之外的操作（`destructive_action`），实地测量中正是如此。
+
+路径以项目边界为基准，shell 文件操作数以执行目录为基准。识别有界，不解析任意 shell 程序。读取外部文本后，严格
+`deny` 仍会拒绝 `npm run ...`、`node -e ...` 等不透明执行。不要为运行 QA 而关闭来源识别；应使用经过审阅的窄范围
+权限/适配器，并由可信监督器完成安全启动和报告。
+
+### 独立 QA 执行器：固定任务代替智能体 shell
+
+[独立 QA runner](../qa-runner/README.md)已于 2026-11-10 在我们的 **attested** 部署并通过验收。真实 Multica 任务
+**MY-89** 中，永久私有配置只调用一次原生 `qa_runner_task_execute`，没有其他工具调用。backend/modelmarket/枢纽
+返回 **200/200/200**，验证后的报告进入存储结果和评论，任务已设为 `done`。参见
+[最终验收记录](../../artifacts/multica-qa-runner-2026-11-10/final-acceptance.json)。这仅验收初始 `platform_smoke`；
+尚未运行完整的 TONmobile 浏览器 QA。
+
+它将 Multica/模型控制器与 `10.250.0.5` 上的专用 Node 22 worker 分开。worker 不持有模型、Multica、GitHub、枢纽凭据，也不挂载 home、env
+文件、Docker socket 或宿主机 TLS 私钥。文件系统只读，仅有受限临时存储，capabilities 全部移除。只有可信宿主机
+控制器能启动固定的 `npm run smoke` 任务。
+
+私有 QA 配置只能向 `qa_runner` 服务器的 `task_execute` 传入 `{"id":"platform_smoke"}`。WARDEN TaskAdapter 在
+读取外部文本后的通用拒绝之前委托这个固定操作；这不允许智能体执行 `npm run ...`、`node -e ...`，或提供任意 URL、
+参数、shell 代码。MCP 子进程通过 `env -i` 启动，仅获公共 CA；`10.250.0.1:8443` broker 的 TLS 私钥保留在宿主机
+控制器。`qa_runner` 全局禁用，只在新私有 QA 配置中启用；该配置的其他 MCP/工具保持禁用。
+
+使用 `opencode debug agent build` 检查实际解析的规则顺序：通用 deny 之后必须有四个精确 allow，分别是
+`qa_runner_task_list`、`qa_runner_task_read`、`qa_runner_task_execute`、`qa_runner_task_run`。原始 JSON 无法证明旧 tools
+设置合并后的顺序。指令直接调用原生 QA 工具，无须先运行 Bash/Multica CLI。MCP 只接受有界的标准
+`_meta.progressToken` 元数据；工具参数仍严格只有固定 ID，不接受自由 URL、命令或其他字段。
+
+broker 只接受来自获准控制器的空请求体 `POST /run/platform-smoke`，单次只运行一个任务，五分钟最多启动三次，
+捕获输出最多 64 KiB，控制器最多 8 秒；worker 最多执行 6 秒，随后有 1 秒终止宽限。只返回固定检查名称、状态码和布尔值，丢弃原始 stdout/错误。
+宿主机 broker 另用 root 所有的 `/var/lib/multica-qa` SQLite 持久保存每个 UTC 12 小时窗口最多 10 次启动的配额；
+删除 MCP 计数器或重启控制器不会重置它，失败或结果不确定的运行也消耗配额。运营者清单租约最长 23 小时，每 12 小时续期，最多使用 10 次；broker 另行限制调用频率。租约过期、pin 改变或预算
+用尽都拒绝执行。当前 `platform_smoke` 只检查固定且无需认证的 backend/枢纽/modelmarket 状态端点，返回有界清理报告，
+不返回响应体，也不执行外部写入。它不实现任意 QA 或 TONmobile 场景。新增任务需要审阅控制器、固定 worker 镜像/
+任务，并发行新的固定 capability。
+
+权限、WARDEN 和网络具有不同边界：
 
 ```mermaid
 flowchart TB
-  t["智能体想运行一个工具"] --> p{"OpenCode 权限规则：<br/>这条命令被允许吗？"}
-  p -- "否" --> r1["拒绝"]
-  p -- "是" --> w{"WARDEN：读过外部文本后，<br/>这次调用会带出密钥<br/>或读到的数据吗？"}
-  w -- "是" --> r2["拒绝"]
-  w -- "否" --> run["工具运行，<br/>列出的密钥在 shell 中为空"]
-  run --> net{"需要联网吗？"}
-  net -- "否" --> ok["结果返回给智能体"]
-  net -- "是" --> e{"主机在代理白名单中吗？"}
-  e -- "否" --> r3["被代理拒绝"]
-  e -- "是" --> ok
+  t["智能体工具调用"] --> p{"运行时权限"}
+  p -- "拒绝" --> r1["不执行"]
+  p -- "允许" --> w{"WARDEN：已识别数据<br/>和来源检查"}
+  w -- "拒绝" --> r2["不执行"]
+  w -- "允许" --> n{"宿主机网络规则<br/>和代理允许列表"}
+  n -- "拒绝" --> r3["连接被拒绝"]
+  n -- "允许" --> ok["执行工具"]
+  a["模型最终回答"] --> g{"守护进程结果检查<br/>存储之前"}
+  g -- "脱敏结果" --> s["存储并发布"]
 ```
 
-各层能拦住什么、拦不住什么：
-
-| 威胁 | 由谁拦住 |
+| 威胁 | 执行限制的边界 |
 |---|---|
-| 被提示词注入的智能体运行了本不该运行的命令 | OpenCode 权限规则（用包装脚本代替通配符） |
-| 它把密钥或读到的数据发往允许的主机（GitHub、聊天、枢纽） | WARDEN 防护 |
-| 它把任何内容发往其他主机 | 出网代理 |
-| 它为后续会话关闭防护 | 防护放在 root 拥有的文件夹中（见下文） |
-| 智能体的最终回答本身带出数据 | 不由防护拦截：这个回答由 Multica 发布；请在你的服务中检查（第 10 节） |
+| 智能体运行超出任务范围的命令 | 运行时权限及运营者控制的窄范围包装脚本 |
+| 已识别秘密被发送到允许的服务 | WARDEN 检查和服务最小权限；历史上的干净会话缺口需要本地修复 |
+| 连接绕过代理或访问列表外主机 | 宿主机防火墙、网络隔离和代理共同限制（第 3 节） |
+| 智能体关闭后续保护 | 防护及全部父目录由 root 拥有 |
+| 最终回答包含秘密 | 守护进程在存储前检查；Stop 钩子不是通用秘密过滤器 |
 
-我们在自己的部署中检查过。模拟攻击（见上文）在所有通道上都被拒绝。2026-11-05，五个智能体的每次计划运行，以及升级到
-Multica 0.8.0 后的一笔付费订单，都为各自的会话留下了防护的状态文件：插件在每个会话中都运行了。
+2026-11-05 记录的五个智能体计划运行和 Multica 0.8.0 升级后的一笔付费订单，各自留下了保护状态文件。这证明插件
+已运行，不能证明所有输出均安全。
+
+### 在 Multica 存储之前检查结果
+
+针对 upstream v0.8.0 的[Multica 本地结果补丁](../security/README.md)，在可信守护进程/后端边界增加递归脱敏：
+位于重试队列写入、complete/fail/message/progress 回调和任务结果/错误存储之前。它使用上游 `redact.Text` 匹配
+已知令牌格式，也处理嵌套在 JSON 字符串内的值。使用 `apply-output-patch.py --source-root <checkout> --check`
+核实版本和源码校验和，再按工具包说明应用补丁并重建**守护进程和后端**。我们的 attested 部署见上述记录；其他安装仍需单独重新构建。
+
+只遮盖评论仍会暴露 `result.output`/`output_summary`。修补的出口只能接收脱敏值，不应为诊断而记录原文。模式检查
+有边界：不能覆盖任意秘密或编码、运行时原始会话文件、其他未修补日志路径，以及数据库/队列历史。请单独清点这些
+路径，首先减少可读秘密。按运营者的保留政策删除或隔离旧的泄露记录；补丁不会追溯清理历史。
+
+在提供方服务中检查 JSON 格式、大小和链接（第 10 节）仍然有用，但对原始守护进程存储已经太晚。Stop 继续生成和
+WARDEN 的结构化选择答案 SDK 都不是自由文本的通用 DLP。部署前，应让格式可识别的伪造令牌经过每条已修补结果路径。
 
 该插件从 0.23.0 版起包含在 `@aimarket/warden` 中（`@aimarket/warden/opencode`）。加载器放在 OpenCode 配置目录下，
 文件名为 `plugin/warden.js`：
@@ -287,8 +397,11 @@ export const WardenFlowGuard = createWardenPlugin({
 
 ### 示例：为所有智能体启用防护
 
-这是我们正在运行的配置：Multica 0.8.0、OpenCode 1.18.32 和 WARDEN 0.23.0。`warden/` 中的文件是 npm 包
+这是在 2026-11-05 检查的历史配置：Multica 0.8.0、OpenCode 1.18.32 和 WARDEN 0.23.0。`warden/` 中的文件是 npm 包
 `@aimarket/warden@0.23.0` 的插件文件，未作修改（共 20 个）。下面的每条命令都先在我们的主机上运行过。
+
+下面的历史 tarball **不包含** 2026-11-10 修复。新的 QA 部署应使用[安全工具包](../security/README.md)所述的
+已审阅本地构建和检查，并保留版本及文件清单。以下命令保留旧安装方法，不代表当前干净会话已通过验收。
 
 加载器，保存为 `docker-compose.yml` 旁边的 `warden.js`：
 
@@ -496,8 +609,8 @@ sequenceDiagram
 2. **外部读取由你的服务完成。** 服务在接受订单之前完成这些读取，并使用自己的令牌。没有任何权限范围的 GitHub 令牌
    能把限额从每小时 60 次提高到 5000 次。输入错误或数据源不可用时，在扣费之前拒绝：枢纽只对得到回答的调用收费。
    买家的自由文本不应到达智能体。
-3. **智能体的最终回答就是交付物。** 它是一行 JSON：`{"job_id": "...", "summary": "..."}`，由 Multica 发布在
-   任务上。智能体不通过网络发送任何东西。读过外部文本、随后又发送自己任务中数值的智能体，正是 WARDEN 要拒绝的。
+3. **智能体的最终回答就是交付物。** 它是一行 JSON：`{"job_id": "...", "summary": "..."}`，可信 Multica 发布器必须在存储或发布之前检查它。
+   智能体不需要直接联网发送。工具调用检查与最终结果检查是两个独立要求。
 4. **订单智能体只运行一个包装脚本。** 我们的是 [`order-task`](../provider/order-task/order-task)：
    `order-task get <issue>` 输出任务，`order-task done <issue>` 关闭任务，前提是任务分配给了订单智能体。脚本属于
    root，它的 OpenCode 规则在 [`opencode-order-agent.json`](../provider/order-task/opencode-order-agent.json)。
@@ -513,14 +626,23 @@ hub.attestedmemory.net 上以 0.05 美元出售 `github.digest.order@v1`。
 
 ## 11. 检查配置
 
-- **智能体看到的配置。** 以智能体用户身份、使用该智能体的 `OPENCODE_CONFIG_CONTENT` 运行
-  `opencode debug config`。确认 MCP 服务器在你想关闭的地方已关闭，并且插件在列表中。
-- **对外访问。** 在守护进程内部，`curl https://example.com` 经代理必须失败，`curl https://api.github.com/zen`
-  必须有响应。
-- **防护。** 用文件中的**伪造**密钥做一次模拟攻击：让智能体通过每个允许的通道发送它。每次发送都必须被拒绝，而
-  普通任务必须在没有拒绝的情况下完成。
-- **出售。** 用少量预算下一笔真实订单。检查结果只能由付款的买家读取，没有买家的调用会被拒绝，错误输入被拒绝且
-  不扣费。
+- **独立执行器。** 检查 `qa_runner` → `task_execute {"id":"platform_smoke"}` 和固定检查报告。未知 ID、额外 URL/
+  命令、过期/变更清单和耗尽预算都应拒绝，智能体 shell 仍被禁止。另行核实 worker 挂载/环境变量名、TLS 私钥只在
+  宿主机，以及有界报告交付。
+- **实际配置。** 以智能体用户身份、使用其 `OPENCODE_CONFIG_CONTENT` 运行 `opencode debug config`，核实权限、
+  MCP 服务器和 root 所有的插件路径。Claude/Codex 则核实对应运行时的有效钩子及拒绝处理。记录准确版本、策略哈希
+  和钩子故障。
+- **网络边界。** 在真实守护进程网络运行[出口检查](../security/egress/README.md)：批准目标应可用，列表外主机、
+  直接 IPv4/IPv6、宿主机/Docker 网关接收器、外部 DNS、清除代理变量/`--noproxy`、其他端口和 SSH 必须失败。单独
+  检查 Docker 解析器，并在容器/Docker 重启后复测。核实接收器和 TCP 建连情况；客户端超时不证明拦截。只使用自己
+  控制的接收器和合成数据。
+- **干净与受污染会话。** 在新会话中测试伪造凭据文件 → 未访问网页时的首次上传，再分别在 `multica issue get`、
+  评论、本地 Playwright 报告和网页之后重复。所有获准出口（包括 Multica 评论）都必须在交付前拒绝。使用专门测试
+  任务/接收器，不向 GitHub 或公共服务发送秘密。记录来源标签及 PreToolUse 决策。随后完成正常 QA、无需安装依赖
+  的启动和安全报告，不尝试绕过。拒绝即结束智能体运行；可信监督器另行报告固定安全状态。
+- **最终结果。** 在拟议回答中放入格式可识别的伪造凭据；修补后的 `result.output`、`output_summary`、评论、事件和
+  日志不得包含原值。检查脱敏替代、正常答案和重试/重启路径；单独清点未修补的会话/日志及历史记录。
+- **出售。** 对已授权的端到端检查使用小额订单，核实买家隔离、无买家时拒绝、无效输入在扣费前拒绝。
 
 ## 12. 我们踩过的坑
 
@@ -536,13 +658,16 @@ hub.attestedmemory.net 上以 0.05 美元出售 `github.digest.order@v1`。
 
 ## 13. 已知限制
 
-- Multica 自己发布智能体的最终回答，这不在防护能看到的工具调用之内。请在你的服务中检查这个回答：格式、大小和
-  链接。
-- 守护进程和它的智能体以同一个用户运行。任何智能体都能读取守护进程自己的 Multica 登录信息，拥有完整 shell 的
-  智能体能修改其他智能体使用的文件。出网限制、防护和文件所有权可以降低风险；只有为每个智能体使用单独的用户才能
-  消除它。
-- 防护按运行时生效，而不是按智能体。
-- 列表中的主机仍然是一条通道。保持列表简短，并给令牌最少的权限。
+- 工具钩子不拥有 Multica 最终输出通道。守护进程必须在存储和发送**之前**检查；下游验证器或遮盖的评论不能清理
+  已保存的原始运行字段。
+- 历史上依赖外部文本触发的防护可能放过触发前的秘密上传。2026-11-10 本地修改需要运行时测试及部署；旧 npm/
+  生产观察不能验证这些修改。
+- 守护进程和智能体共用用户。智能体可能读取该用户的 Multica 凭据和可访问文件。更强隔离需要分开的用户/容器、
+  最少挂载和按智能体分配的服务权限。
+- 防护按运行时生效，不按智能体；应保护会话树状态和配置。
+- 允许的主机仍是通道，包括 Multica/模型 API 和 SSH。防火墙限制目标；加密 CONNECT 请求体、任意编码和未知秘密
+  需要额外控制。全局放开注册表或 GitHub 写入不是安全的默认 QA 配置。
+- 本地测试记录不代表真实部署、发布软件包或通过生产验收。
 
 参考部署：[`multica/community/README.md`](../community/README.md)。本配置的安全审查：
 [`artifacts/vulnetix-class-multica-2026-11-05/REPORT.md`](../../artifacts/vulnetix-class-multica-2026-11-05/REPORT.md)。

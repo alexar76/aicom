@@ -1,0 +1,276 @@
+Tool-captured Docker build output; individual chunks may be shortened by output limits.
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 3.12kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:22.23.4-trixie-slim
+#2 DONE 3.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 290B 0.0s done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [application  1/13] FROM docker.io/library/node:22.23.4-trixie-slim@sha256:be1e2a3dc2c4fd68cdfadad2a696a280e0d2749098bee509230174d72fb768c6
+#5 resolve docker.io/library/node:22.23.4-trixie-slim@sha256:be1e2a3dc2c4fd68cdfadad2a696a280e0d2749098bee509230174d72fb768c6
+#5 resolve docker.io/library/node:22.23.4-trixie-slim@sha256:be1e2a3dc2c4fd68cdfadad2a696a280e0d2749098bee509230174d72fb768c6 0.2s done
+#5 DONE 0.2s
+
+#5 [application  1/13] FROM docker.io/library/node:22.23.4-trixie-slim@sha256:be1e2a3dc2c4fd68cdfadad2a696a280e0d2749098bee509230174d72fb768c6
+#5 DONE 1.9s
+
+#4 [internal] load build context
+#4 transferring context: 11.04MB 4.1s
+#4 transferring context: 13.10MB 4.5s done
+#4 DONE 5.2s
+
+#5 [application  1/13] FROM docker.io/library/node:22.23.4-trixie-slim@sha256:be1e2a3dc2c4fd68cdfadad2a696a280e0d2749098bee509230174d72fb768c6
+#5 sha256:0741bebb9a562c10e41947f613a9d0e3918e4ac7f464c2eef52cfe9de70aaac4 449B / 449B 1.0s done
+#5 sha256:1232465fe25a3f26c8838b7e85590810034d4d6275536fab39a4799e84541bd5 1.72MB / 1.72MB 1.4s done
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 6.29MB / 50.07MB 3.3s
+#5 sha256:0c2b5ba7b33fe401271051c3c46ca7a17e704aaf5750a1b608e8014c1a054b36 3.31kB / 3.31kB 1.2s done
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 2.10MB / 30.21MB 2.3s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 9.44MB / 50.07MB 4.2s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 4.19MB / 30.21MB 3.3s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 12.58MB / 50.07MB 5.0s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 6.06MB / 30.21MB 4.2s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 15.73MB / 50.07MB 6.0s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 8.39MB / 30.21MB 5.3s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 18.87MB / 50.07MB 6.5s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 10.49MB / 30.21MB 5.9s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 22.02MB / 50.07MB 7.1s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 25.17MB / 50.07MB 7.5s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 12.58MB / 30.21MB 6.6s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 14.68MB / 30.21MB 7.2s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 28.31MB / 50.07MB 8.6s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 16.78MB / 30.21MB 7.8s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 31.46MB / 50.07MB 9.0s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 35.65MB / 50.07MB 10.2s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 19.92MB / 30.21MB 9.2s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 22.02MB / 30.21MB 9.8s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 39.85MB / 50.07MB 11.0s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 42.99MB / 50.07MB 11.4s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 24.12MB / 30.21MB 10.4s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 26.21MB / 30.21MB 10.7s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 47.19MB / 50.07MB 12.2s
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 28.31MB / 30.21MB 11.7s
+#5 sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 50.07MB / 50.07MB 12.9s done
+#5 sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 30.21MB / 30.21MB 12.0s done
+#5 extracting sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef
+#5 extracting sha256:acd43e9bebc37bc4ba7a5f47bd7598913337803e53d468f37d940f11f5d5f1ef 1.2s done
+#5 DONE 16.3s
+
+#5 [application  1/13] FROM docker.io/library/node:22.23.4-trixie-slim@sha256:be1e2a3dc2c4fd68cdfadad2a696a280e0d2749098bee509230174d72fb768c6
+#5 extracting sha256:0c2b5ba7b33fe401271051c3c46ca7a17e704aaf5750a1b608e8014c1a054b36 0.0s done
+#5 extracting sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f
+#5 extracting sha256:42945c85c96420700bf7e5c4ef8fa0673dceebc6f13db01898b4c893f91e740f 4.3s done
+#5 DONE 20.7s
+
+#5 [application  1/13] FROM docker.io/library/node:22.23.4-trixie-slim@sha256:be1e2a3dc2c4fd68cdfadad2a696a280e0d2749098bee509230174d72fb768c6
+#5 extracting sha256:1232465fe25a3f26c8838b7e85590810034d4d6275536fab39a4799e84541bd5
+#5 extracting sha256:1232465fe25a3f26c8838b7e85590810034d4d6275536fab39a4799e84541bd5 0.3s done
+#5 DONE 21.0s
+
+#5 [application  1/13] FROM docker.io/library/node:22.23.4-trixie-slim@sha256:be1e2a3dc2c4fd68cdfadad2a696a280e0d2749098bee509230174d72fb768c6
+#5 extracting sha256:0741bebb9a562c10e41947f613a9d0e3918e4ac7f464c2eef52cfe9de70aaac4 0.1s done
+#5 DONE 21.1s
+
+#6 [application  2/13] RUN apt-get update -qq  && apt-get install -y -qq --no-install-recommends python3 python3-venv ca-certificates  && rm -rf /var/lib/apt/lists/*
+#6 14.22 debconf: unable to initialize frontend: Dialog
+#6 14.22 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#6 14.22 debconf: falling back to frontend: Readline
+#6 14.22 debconf: unable to initialize frontend: Readline
+#6 14.22 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/aarch64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/aarch64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/aarch64-linux-gnu/perl-base /usr/lib/aarch64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8, <STDIN> line 20.)
+#6 14.22 debconf: falling back to frontend: Teletype
+#6 14.23 debconf: unable to initialize frontend: Teletype
+#6 14.23 debconf: (This frontend requires a controlling tty.)
+#6 14.23 debconf: falling back to frontend: Noninteractive
+#6 15.25 Preconfiguring packages ...
+#6 15.38 Selecting previously unselected package libexpat1:arm64.
+#6 15.38 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5033 files and directories currently installed.)
+#6 15.39 Preparing to unpack .../libexpat1_2.9.0-1~deb13u1_arm64.deb ...
+#6 15.40 Unpacking libexpat1:arm64 (2.9.0-1~deb13u1) ...
+#6 15.45 Selecting previously unselected package libpython3.13-minimal:arm64.
+#6 15.45 Preparing to unpack .../libpython3.13-minimal_3.13.5-2+deb13u5_arm64.deb ...
+#6 15.46 Unpacking libpython3.13-minimal:arm64 (3.13.5-2+deb13u5) ...
+#6 15.63 Selecting previously unselected package python3.13-minimal.
+#6 15.63 Preparing to unpack .../python3.13-minimal_3.13.5-2+deb13u5_arm64.deb ...
+#6 15.64 Unpacking python3.13-minimal (3.13.5-2+deb13u5) ...
+#6 15.95 Setting up libpython3.13-minimal:arm64 (3.13.5-2+deb13u5) ...
+#6 15.96 Setting up libexpat1:arm64 (2.9.0-1~deb13u1) ...
+#6 15.97 Setting up python3.13-minimal (3.13.5-2+deb13u5) ...
+Warning: truncated output (original token count: 2518)
+Total output lines: 150
+
+#6 17.38 Selecting previously unselected package python3-minimal.
+#6 17.38 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5367 files and directories currently installed.)
+#6 17.39 Preparing to unpack .../0-python3-minimal_3.13.5-1_arm64.deb ...
+#6 17.39 Unpacking python3-minimal (3.13.5-1) ...
+#6 17.42 Selecting previously unselected package media-types.
+#6 17.43 Preparing to unpack .../1-media-types_13.0.0_all.deb ...
+#6 17.43 Unpacking media-types (13.0.0) ...
+#6 17.47 Selecting previously unselected package netbase.
+#6 17.47 Preparing to unpack .../2-netbase_6.5_all.deb ...
+#6 17.48 Unpacking netbase (6.5) ...
+#6 17.52 Selecting previously unselected package libffi8:arm64.
+#6 17.52 Preparing to unpack .../3-libffi8_3.4.8-2_arm64.deb ...
+#6 17.52 Unpacking libffi8:arm64 (3.4.8-2) ...
+#6 17.56 Selecting previously unselected package libncursesw6:arm64.
+#6 17.57 Preparing to unpack .../4-libncursesw6_6.5+20250216-2_arm64.deb ...
+#6 17.57 Unpacking libncursesw6:arm64 (6.5+20250216-2) ...
+#6 17.62 Selecting previously unselected package readline-common.
+#6 17.62 Preparing to unpack .../5-readline-common_8.2-6_all.deb ...
+#6 17.63 Unpacking readline-common (8.2-6) ...
+#6 17.67 Selecting previously unselected package libreadline8t64:arm64.
+#6 17.67 Preparing to unpack .../6-libreadline8t64_8.2-6_arm64.deb ...
+#6 17.68 Adding 'diversion of /lib/aarch64-linux-gnu/libhistory.so.8 to /lib/aarch64-linux-gnu/libhistory.so.8.usr-is-merged by libreadline8t64'
+#6 17.68 Adding 'diversion of /lib/aarch64-linux-gnu/libhistory.so.8.2 to /lib/aarch64-linux-gnu/libhistory.so.8.2.usr-is-merged by libreadline8t64'
+#6 17.69 Adding 'diversion of /lib/aarch64-linux-gnu/libreadline.so.8 to /lib/aarch64-linux-gnu/libreadline.so.8.usr-is-merged by libreadline8t64'
+#6 17.70 Adding 'diversion of /lib/aarch64-linux-gnu/libreadline.so.8.2 to /lib/aarch64-linux-gnu/libreadline.so.8.2.usr-is-merged by libreadline8t64'
+#6 17.70 Unpacking libreadline8t64:arm64 (8.2-6) ...
+#6 17.75 Selecting previously unselected package libpython3.13-stdlib:arm64.
+#6 17.75 Preparing to unpack .../7-libpython3.13-stdlib_3.13.5-2+deb13u5_arm64.deb ...
+#6 17.76 Unpacking libpython3.13-stdlib:arm64 (3.13.5-2+deb13u5) ...
+#6 18.00 Selecting previously unselected package python3.13.
+#6 18.01 Preparing to unpack .../8-python3.13_3.13.5-2+deb13u5_arm64.deb ...
+#6 18.01 Unpacking python3.13 (3.13.5-2+deb13u5) ...
+#6 18.05 Selecting previously unselected package libpython3-stdlib:arm64.
+#6 18.06 Preparing to unpack .../9-libpython3-stdlib_3.13.5-1_arm64.deb ...
+#6 18.06 Unpacking libpython3-stdlib:arm64 (3.13.5-1) ...
+#6 18.10 Setting up python3-minimal (3.13.5-1) ...
+#6 18.35 Selecting previously unselected package python3.
+#6 18.35 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5875 files and directories currently installed.)
+#6 18.35 Preparing to unpack .../0-python3_3.13.5-1_arm64.deb ...
+#6 18.36 Unpacking python3 (3.13.5-1) ...…518 tokens truncated…l/5.40.1 /usr/lib/aarch64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/aarch64-linux-gnu/perl-base /usr/lib/aarch64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
+#6 19.36 debconf: falling back to frontend: Teletype
+#6 19.36 debconf: unable to initialize frontend: Teletype
+#6 19.36 debconf: (This frontend requires a controlling tty.)
+#6 19.36 debconf: falling back to frontend: Noninteractive
+#6 20.19 Updating certificates in /etc/ssl/certs...
+#6 21.13 148 added, 0 removed; done.
+#6 21.16 Setting up libreadline8t64:arm64 (8.2-6) ...
+#6 21.17 Setting up libpython3.13-stdlib:arm64 (3.13.5-2+deb13u5) ...
+#6 21.18 Setting up libpython3-stdlib:arm64 (3.13.5-1) ...
+#6 21.19 Setting up python3.13 (3.13.5-2+deb13u5) ...
+#6 22.74 Setting up python3-pip-whl (25.1.1+dfsg-1) ...
+#6 22.76 Setting up python3 (3.13.5-1) ...
+#6 22.83 running python rtupdate hooks for python3.13...
+#6 22.83 running python post-rtupdate hooks for python3.13...
+#6 23.25 Setting up python3.13-venv (3.13.5-2+deb13u5) ...
+#6 23.33 Setting up python3-venv (3.13.5-1) ...
+#6 23.35 Processing triggers for libc-bin (2.41-12+deb13u4) ...
+#6 23.37 Processing triggers for ca-certificates (20250419+deb13u1) ...
+#6 23.38 Updating certificates in /etc/ssl/certs...
+#6 24.02 0 added, 0 removed; done.
+#6 24.02 Running hooks in /etc/ca-certificates/update.d...
+#6 24.02 done.
+#6 DONE 24.4s
+
+#7 [application  3/13] WORKDIR /app
+#7 DONE 0.1s
+
+#8 [application  4/13] COPY scanner/package.json scanner/package-lock.json ./scanner/
+#8 DONE 0.0s
+
+#9 [application  5/13] COPY scanner/vendor ./scanner/vendor
+#9 DONE 0.0s
+
+#10 [application  6/13] COPY scanner/check-build.mjs ./scanner/
+#10 DONE 0.0s
+
+#11 [application  7/13] COPY scanner/quality ./scanner/quality
+#11 DONE 0.0s
+
+#12 [application  8/13] RUN npm ci --prefix scanner --omit=dev --no-audit --no-fund  && npm --prefix scanner run check:build  && npm cache clean --force
+#12 1.540 
+#12 1.540 added 1 package in 1s
+#12 1.749 
+#12 1.749 > histor-scanner@0.1.0 check:build
+#12 1.749 > node check-build.mjs
+#12 1.749 
+#12 1.812 Verified @aimarket/warden@0.25.0: 6c6d85a732825d19e56646b24a679268ae6bf86516fc24cc71ccf31872404a4d
+#12 1.935 npm warn using --force Recommended protections disabled.
+#12 DONE 2.1s
+
+#13 [application  9/13] COPY scanner/scan.mjs ./scanner/
+#13 DONE 0.1s
+
+#14 [application 10/13] COPY pyproject.toml uv.lock README.md LICENSE ./
+#14 DONE 0.1s
+
+#15 [application 11/13] COPY histor ./histor
+#15 DONE 0.1s
+
+#16 [application 12/13] COPY docs/landing ./docs/landing
+#16 DONE 0.1s
+
+#17 [application 13/13] RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir uv==0.11.17  && UV_PROJECT_ENVIRONMENT=/opt/venv /opt/venv/bin/uv sync --frozen --no-dev --no-editable       --extra postgres --extra pqc --extra cost --python /opt/venv/bin/python  && TIKTOKEN_CACHE_DIR=/opt/tiktoken /opt/venv/bin/python -c "import tiktoken; tiktoken.get_encoding('o200k_base')"  && /opt/venv/bin/pip uninstall -y -q uv && rm -rf /root/.cache  && mkdir -p /data && chown 65532:65532 /data
+#17 5.700 Collecting uv==0.11.17
+#17 5.976   Downloading uv-0.11.17-py3-none-manylinux_2_28_aarch64.whl.metadata (11 kB)
+#17 6.050 Downloading uv-0.11.17-py3-none-manylinux_2_28_aarch64.whl (23.5 MB)
+#17 19.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 23.5/23.5 MB 1.8 MB/s eta 0:00:00
+#17 19.37 Installing collected packages: uv
+#17 19.83 Successfully installed uv-0.11.17
+#17 20.18    Building aimarket-histor @ file:///app
+#17 20.49 Downloading cryptography (4.5MiB)
+#17 20.49 Downloading psycopg-binary (6.5MiB)
+#17 20.50 Downloading pydantic-core (1.9MiB)
+#17 20.50 Downloading tiktoken (1.1MiB)
+#17 21.63  Downloaded tiktoken
+#17 21.92  Downloaded pydantic-core
+#17 22.53  Downloaded cryptography
+#17 22.61       Built aimarket-histor @ file:///app
+#17 22.70  Downloaded psycopg-binary
+#17 22.70 Prepared 31 packages in 2.54s
+#17 22.72 Installed 31 packages in 21ms
+#17 22.72  + aimarket-histor==0.7.0 (from file:///app)
+#17 22.72  + annotated-doc==0.0.5
+#17 22.72  + annotated-types==0.8.0
+#17 22.72  + anyio==4.15.1
+#17 22.72  + awr==2.0.0
+#17 22.72  + certifi==2026.10.19
+#17 22.72  + cffi==2.1.1
+#17 22.72  + charset-normalizer==3.5.2
+#17 22.72  + click==8.5.0
+#17 22.72  + cryptography==50.0.2
+#17 22.72  + dilithium-py==1.4.0
+#17 22.72  + fastapi==0.162.0
+#17 22.72  + h11==0.16.0
+#17 22.72  + httpcore==1.0.9
+#17 22.72  + httpx==0.28.1
+#17 22.72  + idna==3.20
+#17 22.72  + opentelemetry-api==1.45.2
+#17 22.72  + psycopg==3.3.6
+#17 22.72  + psycopg-binary==3.3.6
+#17 22.72  + psycopg-pool==3.3.3
+#17 22.72  + pycparser==3.0
+#17 22.72  + pydantic==2.13.5
+#17 22.72  + pydantic-core==2.46.5
+#17 22.72  + regex==2026.9.29
+#17 22.72  + requests==2.34.2
+#17 22.72  + starlette==1.7.0
+#17 22.72  + tiktoken==0.14.0
+#17 22.72  + typing-extensions==4.16.0
+#17 22.72  + typing-inspection==0.4.4
+#17 22.72  + urllib3==2.8.0
+#17 22.72  + uvicorn==0.53.0
+#17 DONE 26.9s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 6.3s done
+#18 exporting manifest sha256:6668fc9ee4342f06f776a770bea6e54d1be216f0e271ccfe80616510c6b4e498 0.0s done
+#18 exporting config sha256:8e559e4a2499894b056b2d3b04f36a9ea77688daff70ef3042c39924b487371e 0.0s done
+#18 exporting attestation manifest sha256:188e14ab05daaf33f02be67e089912a89b389de06d6886280c59f8c283b0223d
+#18 exporting attestation manifest sha256:188e14ab05daaf33f02be67e089912a89b389de06d6886280c59f8c283b0223d 0.0s done
+#18 exporting manifest list sha256:ce42b4012e18a24136086494b3ec2bcc67e2193c4eae6a17adf97716658e6251 0.0s done
+#18 naming to docker.io/library/histor:local-warden-0.25.0 done
+#18 unpacking to docker.io/library/histor:local-warden-0.25.0
+#18 unpacking to docker.io/library/histor:local-warden-0.25.0 2.3s done
+#18 DONE 8.9s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ymto95vb9dvlffkdfe1jdld1u

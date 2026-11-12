@@ -1,0 +1,23 @@
+{
+ "valid": true,
+ "classical_valid": true,
+ "pq_present": true,
+ "pq_valid": true,
+ "algorithm": "ed25519+ml-dsa-65",
+ "signature_version": 1,
+ "signer": "https://logos.modelmarket.dev",
+ "signer_matches_live_key": false,
+ "policy_requires_pq": false,
+ "protocol_version": "v2",
+ "binding": {
+  "signature_valid": true,
+  "receipt_matches": true,
+  "output_matches": true,
+  "input_matches": true,
+  "client_nonce_matches": true,
+  "valid": true,
+  "signer": "https://independentai.network/hub",
+  "hub_matches": true,
+  "names_this_receipt": true
+ }
+}

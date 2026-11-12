@@ -1,0 +1,56 @@
+{
+  "actualMainFiniteControls": true,
+  "allCurrentAndOldGitBlobsMatched": true,
+  "archivedHistoricalNegativeCasesExpected": 1,
+  "archivedHistoricalScriptBashSyntaxExitCode": 0,
+  "archivedHistoricalScriptExecuted": false,
+  "command": [
+    "-q",
+    "--noconftest",
+    "--import-mode=importlib",
+    "-p",
+    "no:cacheprovider",
+    "-c",
+    "/tmp/pytest.ini",
+    "--rootdir=/source",
+    "--junitxml=/results/unit.xml",
+    "lottery/agent/tests/test_agent_doors.py",
+    "tests/test_evm_public_dev_key_safety.py",
+    "lottery/agent/tests/test_agent_loop.py",
+    "/tmp/test_actual_agent_main_controls.py"
+  ],
+  "currentSelectedFiles": 49,
+  "declaredAgentDependencies": [
+    {
+      "requirement": "web3>=7.15,<8",
+      "resolvedVersion": "7.16.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "eth-account>=0.14,<0.15",
+      "resolvedVersion": "0.14.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "httpx>=0.26",
+      "resolvedVersion": "0.28.1",
+      "satisfied": true
+    }
+  ],
+  "format": "aicom.lottery-agent-source-unit-validation/v1",
+  "localCapabilityProbes": [
+    "urllib3 IPv6 local-only ephemeral capability probe"
+  ],
+  "nativePytestExitCode": 0,
+  "noLocalProjectExecution": true,
+  "oldReceiptStatusZeroNegativeControl": true,
+  "outboundSocketOperationsAttempted": [],
+  "passed": true,
+  "positiveLoopControlsAreNormalCIFile": true,
+  "projectTestCasesExpected": 78,
+  "pytestVersion": "8.4.2",
+  "realWalletOrChainDataMounted": false,
+  "sourceCommit": "cf000311dbdbc0dc8d080d5054c4b9cccdcfd3a8",
+  "sourceTree": "675bf9e766375f834b235118c05e5865670e3aef",
+  "sourceUnchanged": true
+}

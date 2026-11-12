@@ -1,0 +1,98 @@
+[
+  {
+    "name": "ruff-file-scope",
+    "command": [
+      "/deps/bin/ruff",
+      "check",
+      ".",
+      "--isolated",
+      "--no-cache",
+      "--select",
+      "E9,F63,F7,F82",
+      "--extend-exclude",
+      "create-aimarket-agent/src/create_aimarket_agent/templates",
+      "--extend-exclude",
+      "docs/evidence",
+      "--show-files"
+    ],
+    "cwd": "/tmp/python-only-working-tree",
+    "startedAt": "2026-11-08T06:56:49.857734+00:00",
+    "seconds": 0.394,
+    "exitCode": 0,
+    "timeout": false
+  },
+  {
+    "name": "python-bug-gate-equivalent",
+    "command": [
+      "/deps/bin/ruff",
+      "check",
+      ".",
+      "--isolated",
+      "--no-cache",
+      "--select",
+      "E9,F63,F7,F82",
+      "--extend-exclude",
+      "create-aimarket-agent/src/create_aimarket_agent/templates",
+      "--extend-exclude",
+      "docs/evidence",
+      "--output-format",
+      "json"
+    ],
+    "cwd": "/tmp/python-only-working-tree",
+    "startedAt": "2026-11-08T06:56:50.944102+00:00",
+    "seconds": 10.348,
+    "exitCode": 0,
+    "timeout": false
+  },
+  {
+    "name": "whitepaper-links-docs-only",
+    "command": [
+      "bash",
+      "/source/scripts/verify_whitepaper_links.sh"
+    ],
+    "cwd": "/source",
+    "startedAt": "2026-11-08T06:57:04.230647+00:00",
+    "seconds": 3.765,
+    "exitCode": 0,
+    "timeout": false
+  },
+  {
+    "name": "whitepaper-links-all-diagnostic",
+    "command": [
+      "bash",
+      "/source/scripts/verify_whitepaper_links.sh",
+      "--all"
+    ],
+    "cwd": "/source",
+    "startedAt": "2026-11-08T06:57:07.996670+00:00",
+    "seconds": 17.503,
+    "exitCode": 1,
+    "timeout": false
+  },
+  {
+    "name": "bash-syntax-sandbox_images",
+    "command": [
+      "bash",
+      "-n",
+      "/source/histor/sandbox/sandbox_images.sh"
+    ],
+    "cwd": "/source",
+    "startedAt": "2026-11-08T06:57:25.500867+00:00",
+    "seconds": 0.021,
+    "exitCode": 0,
+    "timeout": false
+  },
+  {
+    "name": "bash-syntax-install",
+    "command": [
+      "bash",
+      "-n",
+      "/source/histor/sandbox/install.sh"
+    ],
+    "cwd": "/source",
+    "startedAt": "2026-11-08T06:57:25.522704+00:00",
+    "seconds": 0.025,
+    "exitCode": 0,
+    "timeout": false
+  }
+]

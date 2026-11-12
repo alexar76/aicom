@@ -1,0 +1,120 @@
+{
+  "format": "aicom.exact-index-python-safe-receipt/v1",
+  "testedTree": "2e78a143c4cc77636c4a1c146987b5488b48d42d",
+  "testedCommit": "9f923074378d701581eddcb21580eb6a0d48f468",
+  "laterCommit": "9a0fe8f444fbb94b7be10ee0446a7588fc80f4a5",
+  "laterTree": "6bdb19b5b8ec21f01c29903ab6f09f5150042ade",
+  "laterPythonBlobManifestUnchanged": true,
+  "pythonBlobManifestSha256": "4da8e5365e491c1f84438c79703933f89561050a3a6f65b8ef98b94b5788da22",
+  "crossHostEqual": true,
+  "originalExclusions": [
+    "create-aimarket-agent/src/create_aimarket_agent/templates",
+    "docs/evidence"
+  ],
+  "docsOnlyInputsUnchangedFromV4": true,
+  "sites": {
+    "attested": {
+      "passed": true,
+      "python": "3.13.18",
+      "ruff": "ruff 0.15.15",
+      "candidatePythonFiles": 6596,
+      "lintedPythonFiles": 6268,
+      "excludedCount": 328,
+      "additionalExclusions": [],
+      "rules": [
+        "E9",
+        "F63",
+        "F7",
+        "F82"
+      ],
+      "exitCode": 0,
+      "sourceUnchanged": true,
+      "gitBlobProof": {
+        "indexTree": "2e78a143c4cc77636c4a1c146987b5488b48d42d",
+        "commit": "9f923074378d701581eddcb21580eb6a0d48f468",
+        "expectedPythonBlobs": 6596,
+        "actualPythonEntries": 6596,
+        "blobDifferences": [],
+        "missing": [],
+        "extra": [],
+        "symlinks": [],
+        "manifestSha256": "4da8e5365e491c1f84438c79703933f89561050a3a6f65b8ef98b94b5788da22",
+        "passed": true
+      },
+      "sourceMapSha256": "dda30971583c55d7fdfd5607613eb8761d3a87b94aa8087e05cf40941054e13b",
+      "eligiblePathsSha256": "d18752193ec53c8557629a3c307c60ac7936ab2d2d2ea11a4f99b198d925981e",
+      "state": {
+        "ExitCode": 0,
+        "OOMKilled": false
+      },
+      "isolation": {
+        "runtime": "runsc",
+        "network": "none",
+        "readOnlyRoot": true,
+        "capDrop": [
+          "ALL"
+        ],
+        "securityOpt": [
+          "no-new-privileges"
+        ],
+        "uid": 1000,
+        "gid": 1000
+      }
+    },
+    "blip": {
+      "passed": true,
+      "python": "3.13.18",
+      "ruff": "ruff 0.15.15",
+      "candidatePythonFiles": 6596,
+      "lintedPythonFiles": 6268,
+      "excludedCount": 328,
+      "additionalExclusions": [],
+      "rules": [
+        "E9",
+        "F63",
+        "F7",
+        "F82"
+      ],
+      "exitCode": 0,
+      "sourceUnchanged": true,
+      "gitBlobProof": {
+        "indexTree": "2e78a143c4cc77636c4a1c146987b5488b48d42d",
+        "commit": "9f923074378d701581eddcb21580eb6a0d48f468",
+        "expectedPythonBlobs": 6596,
+        "actualPythonEntries": 6596,
+        "blobDifferences": [],
+        "missing": [],
+        "extra": [],
+        "symlinks": [],
+        "manifestSha256": "4da8e5365e491c1f84438c79703933f89561050a3a6f65b8ef98b94b5788da22",
+        "passed": true
+      },
+      "sourceMapSha256": "dda30971583c55d7fdfd5607613eb8761d3a87b94aa8087e05cf40941054e13b",
+      "eligiblePathsSha256": "d18752193ec53c8557629a3c307c60ac7936ab2d2d2ea11a4f99b198d925981e",
+      "state": {
+        "ExitCode": 0,
+        "OOMKilled": false
+      },
+      "isolation": {
+        "runtime": "runsc",
+        "network": "none",
+        "readOnlyRoot": true,
+        "capDrop": [
+          "ALL"
+        ],
+        "securityOpt": [
+          "no-new-privileges"
+        ],
+        "uid": 1000,
+        "gid": 1000
+      }
+    }
+  },
+  "diagnostics": {
+    "preflight": "Verifier self-reference stopped before Ruff; corrected remote harness, raw failure preserved separately.",
+    "actualFullSourceRuffRunsPerHost": 1
+  },
+  "noLocalProjectRuntime": true,
+  "noWorktreeOrIndexWrites": true,
+  "passed": true
+}

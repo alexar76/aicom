@@ -1,0 +1,124 @@
+{
+  "audit_date": "2026-11-10",
+  "compiled_at_utc": "2026-11-10T20:31:28.715134+00:00",
+  "scope": "East/Southeast Asian public web/platform surfaces CN/JP/KR/VN/ID/TH; country labels describe queries and platforms, not owner nationality.",
+  "new_independent_reviews_discussions_or_integrations_confirmed": 0,
+  "confidence": {
+    "captured_response_facts": "high",
+    "national_absence_claim": "not made"
+  },
+  "items": [
+    {
+      "id": "EA-F01",
+      "type": "known_external_technical_comment_unchanged",
+      "source": "https://qiita.com/qwezzy721/items/4dfe9dc2fbe9d69b1fb7",
+      "comment_id": "a71ae02460f429b7606e",
+      "primary_source": "https://qiita.com/api/v2/items/4dfe9dc2fbe9d69b1fb7/comments",
+      "author": "Skillselion",
+      "created_at": "2026-10-24T17:10:34+09:00",
+      "updated_at": "2026-10-24T17:10:34+09:00",
+      "ownership": "external public account; affiliation/real identity not established",
+      "language": "Japanese",
+      "owner_country": null,
+      "evidence": "The same two comment IDs and full bodies as 9 Nov. Skillselion discusses cache-prefix order, cache-write cost and TTL; ecosystem author's reply is the other comment.",
+      "scope": "Technical discussion, no verified installation/use of an ecosystem package",
+      "novelty": "known before this pass; no new comment or body change",
+      "confidence": "high"
+    },
+    {
+      "id": "EA-F02",
+      "type": "native_search_empty",
+      "primary_sources": [
+        "https://qiita.com/api/v2/items?query=modelmarket.dev%20-user%3Aqwezzy721&per_page=100&page=1",
+        "https://qiita.com/api/v2/items?query=attestedmemory.net&per_page=100&page=1",
+        "https://zenn.dev/api/search?q=modelmarket.dev&source=articles&order=latest",
+        "https://zenn.dev/api/search?q=attestedmemory.net&source=scraps&order=latest",
+        "https://gitee.com/api/v5/search/repositories?q=alexar76&per_page=100&page=1"
+      ],
+      "ownership": "platform search responses",
+      "published_at": null,
+      "owner_country": null,
+      "evidence": "Five HTTP200 native API responses explicitly return zero records for the exact queries.",
+      "scope": "Queries and endpoints only",
+      "novelty": "bounded recheck, not a new external source",
+      "confidence": "high"
+    },
+    {
+      "id": "EA-F03",
+      "type": "search_index_visibility_of_own_sources",
+      "primary_sources": [
+        "https://search.naver.com/search.naver?query=%22modelmarket.dev%22",
+        "https://search.naver.com/search.naver?query=%22attestedmemory.net%22"
+      ],
+      "author": "Naver search index, no article author",
+      "ownership": "external search surface indexing ecosystem-authored destinations",
+      "published_at": null,
+      "owner_country": null,
+      "evidence": "Literal HTML hrefs lead to alexar76 School/Attested GitHub, package registries and own DEV article; no Korean author review validated.",
+      "scope": "Discoverability; not recommendation, adoption or a country-specific audience count",
+      "novelty": "same relation class already in 9 Nov; changed index snapshot not new independent adoption",
+      "confidence": "high"
+    },
+    {
+      "id": "EA-F04",
+      "type": "own_game_distribution",
+      "primary_source": "https://pingblip.itch.io/",
+      "author": "PingBlip profile",
+      "ownership": "ecosystem-owned distribution/profile",
+      "published_at": null,
+      "owner_country": null,
+      "source_to_target": [
+        "https://pingblip.com/",
+        "https://pingblip.itch.io/pingblip"
+      ],
+      "evidence": "Profile HTTP200 contains exact hrefs to own PingBlip website and itch game.",
+      "scope": "Own game listing; Japanese search wording does not establish Japanese authorship or player review",
+      "novelty": "profile known since October; game and own launch topic read earlier today by products audit",
+      "confidence": "high"
+    },
+    {
+      "id": "EA-F05",
+      "type": "known_catalog_search_candidate_primary_unavailable",
+      "primary_source": "https://papers.ananclaw.com/repos?category=ai&form=tutorial&primary=engineering",
+      "author": null,
+      "ownership": "known Paper Vault/Ananclaw catalog operator; current content not read",
+      "published_at": null,
+      "owner_country": null,
+      "evidence": "Search result points to a filtered tutorial list; direct GET502 with empty body.",
+      "scope": "Unverified current card, no evidence of learner review or real use",
+      "novelty": "operator/School catalog known in prior audits; a different filter URL is not a new publication",
+      "confidence": "high for HTTP status; unknown for current page content"
+    }
+  ],
+  "known_baseline_not_represented_as_new": [
+    {
+      "url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+      "type": "known Chinese-language research summary; no rerun established"
+    },
+    {
+      "url": "https://juejin.cn/post/7696713457148952630",
+      "type": "known benchmark summary, identified by rare WARDEN/mcp-shield/mcp-audit table fingerprint"
+    },
+    {
+      "url": "https://qiita.com/qwezzy721/items/b71aaeaae84fcb360fe6",
+      "type": "own Japanese translation"
+    },
+    {
+      "url": "https://www.selectdataset.com/dataset/d595b7ffd78438a48b6efa42e0861151/histor-mcp-tool-definitions",
+      "type": "known automated dataset-card summary"
+    },
+    {
+      "url": "https://dangmua.com/blog/claude-message-threads-beta-cuts-request-size-not-your-bill",
+      "type": "Vietnamese-site article already primary-read by reviews audit earlier today; no new independent rerun"
+    }
+  ],
+  "limitations": [
+    "32 query strings were submitted in eight shared batches, not 32 guaranteed complete result sets.",
+    "Eight input strings in two batches have partial coverage due to blog.naver.com/cafe.naver.com robots blocks; no bypass or retry.",
+    "Search sometimes expands exact/site/OR filters and ignores exclusions; irrelevant homonyms and generic results are not evidence.",
+    "No private/login/CAPTCHA content, local social groups or personalized search was accessed.",
+    "No country of author/owner inferred from language, domain, query formulation or interface locale.",
+    "Package/catalog metadata and search index links are not measured usage, installs, readership or independent validation.",
+    "No Github API, auth, external writes, messages, invocations or execution of third-party code in this branch."
+  ]
+}

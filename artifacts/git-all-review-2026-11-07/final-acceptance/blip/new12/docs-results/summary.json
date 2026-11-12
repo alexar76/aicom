@@ -1,0 +1,28 @@
+{
+  "baseV4Tree": "1400f9f8e6f0b104298835b1f9bcfd35f4a75aa3",
+  "command": [
+    "bash",
+    "scripts/verify_whitepaper_links.sh"
+  ],
+  "format": "aicom.docs-only-frozen-v4-overlay-gate/v1",
+  "gateInputFiles": 627,
+  "nativeExitCode": 0,
+  "nativeGitIdentifiedChangedGateInputs": [
+    "docs/add-gaia-atlas-sensor.md"
+  ],
+  "noLocalProjectExecution": true,
+  "noOptionalAllRepeat": true,
+  "originalDefaultDocsOnlyGate": true,
+  "passed": true,
+  "realMapProof": {
+    "actualAuditPaths": 68,
+    "exactMapAgreement": true,
+    "expectedMirrorExcludedPaths": 68,
+    "mapSha256": "64d57e3b4ffe56b0fbc53df3456ea75c32f806045dc8857d93409d7d2c580964",
+    "pyyaml": "6.0.2",
+    "satelliteEntries": 60,
+    "warnings": ""
+  },
+  "sourceTree": "3d83e57ca3f27340bd78671bbf880c0f1e8028b2",
+  "sourceUnchanged": true
+}

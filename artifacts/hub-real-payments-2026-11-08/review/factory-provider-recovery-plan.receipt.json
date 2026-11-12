@@ -1,0 +1,7 @@
+{
+  "originPath": "artifacts/hub-real-payments-2026-11-08/review/factory-provider-recovery-plan.json",
+  "bytes": 3623,
+  "sha256": "e4c4e8efdee399d7244d2986824b04fff287703b90b10aefa37ea94f939c3670",
+  "classification": "recovery plan embedding an actual production payment record",
+  "exclusionReason": "Embeds an existing failed payment amount, transaction identifier and status in otherwise planned recovery configuration. Preserve the mixed original locally and exclude source transfer and Git."
+}

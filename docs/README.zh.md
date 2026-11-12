@@ -44,7 +44,7 @@ Base **MAINNET** 合约（演示）：[onchain-journal.md](onchain-journal.md)�
 git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && ./start.sh
 ```
 
-在公开仓库中，`./start.sh` 启动工厂（`.env` 里填一个 LLM 密钥）。自己的 hub 单独安装：`pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "我的 hub"` → `aimarket serve`。`--full` 和 `--everything` 会把卫星服务和工厂一起构建，只能在完整的 monorepo 中使用。
+在公开仓库中，`./start.sh` 启动 Factory、Prometheus 和 Grafana。访问 `http://localhost:9080` 打开 Factory。要使用 AI 智能体，请在 `.env` 中设置 LLM 密钥。配置密钥前，Factory 使用模板生成结果。要运行自己的 Hub，请依次执行 `pip install "aimarket-hub[pqc]"`、`aimarket quickstart --name "我的 hub"` 和 `aimarket serve`。`--full` 和 `--everything` 会同时构建 Factory 与卫星服务，需要完整的单体仓库。
 
 ## 文档
 

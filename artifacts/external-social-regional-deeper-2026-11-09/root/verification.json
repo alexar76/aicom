@@ -1,0 +1,65 @@
+{
+  "root_gets": 9,
+  "root_statuses": {
+    "200": 8,
+    "401": 1
+  },
+  "all_saved_bodies_verified": true,
+  "body_checks": [
+    {
+      "name": "gemivo-cache-churn",
+      "status": 200,
+      "sha256_valid": true,
+      "bytes_valid": true
+    },
+    {
+      "name": "gemivo-attested-memory",
+      "status": 200,
+      "sha256_valid": true,
+      "bytes_valid": true
+    },
+    {
+      "name": "gemivo-about",
+      "status": 200,
+      "sha256_valid": true,
+      "bytes_valid": true
+    },
+    {
+      "name": "awr-other-codepantry",
+      "status": 200,
+      "sha256_valid": true,
+      "bytes_valid": true
+    },
+    {
+      "name": "awr-russian-wiki",
+      "status": 401,
+      "sha256_valid": true,
+      "bytes_valid": true
+    },
+    {
+      "name": "ietf-linda-reply",
+      "status": 200,
+      "sha256_valid": true,
+      "bytes_valid": true
+    },
+    {
+      "name": "lupariel-hub",
+      "status": 200,
+      "sha256_valid": true,
+      "bytes_valid": true
+    },
+    {
+      "name": "lupariel-hub-markdown",
+      "status": 200,
+      "sha256_valid": true,
+      "bytes_valid": true
+    },
+    {
+      "name": "one-gateway-market",
+      "status": 200,
+      "sha256_valid": true,
+      "bytes_valid": true
+    }
+  ],
+  "original_ietf_reply_separated_from_quoted_owner_text": true
+}

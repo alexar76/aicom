@@ -1,0 +1,77 @@
+{
+  "checkedAt": "2026-11-10T20:53:28.441293+00:00",
+  "freshRecording": true,
+  "newPublicFilmingProfile": false,
+  "resumedOwnFilmingProfile": true,
+  "initialProfileMatchesPreviousBatch": true,
+  "recordingStartUnix": 1794343527.203006,
+  "frames": 11452,
+  "sourceSha256": "110aa6c4819cd0502135d064a7952fde273d579b764502aff2c387d5635612e9",
+  "actualHatches": 0,
+  "actualFeeds": 3,
+  "actualDailyGrants": 1,
+  "actualScans": 2,
+  "actualNewCatches": 2,
+  "initialOwnedCreatures": 3,
+  "finalOwnedCreatures": 5,
+  "initialPips": 430,
+  "finalPips": 310,
+  "expectedFinalPips": 310,
+  "feedProgress": [
+    {
+      "key": "pigeon",
+      "speciesId": "pigeon-king",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "key": "egg",
+      "speciesId": "soft-egg",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "key": "moth",
+      "speciesId": "sprinkle-moth",
+      "before": 0,
+      "after": 1
+    }
+  ],
+  "successfulFreshReceipts": [
+    "capetown_catch",
+    "capetown_scan",
+    "egg_feed",
+    "egg_select",
+    "house_claim",
+    "kyoto_catch",
+    "kyoto_scan",
+    "moth_feed",
+    "moth_select",
+    "pigeon_feed",
+    "pigeon_select"
+  ],
+  "noEarlierFootage": true,
+  "noAdminAccess": true,
+  "remoteMapChoices": {
+    "Kyoto": {
+      "coordinates": [
+        35.0116,
+        135.7681
+      ],
+      "scanKey": "kyoto_scan",
+      "layer": "weather",
+      "speciesId": "molar-breaker",
+      "name": "Molar Breaker"
+    },
+    "Cape Town": {
+      "coordinates": [
+        -33.9249,
+        18.4241
+      ],
+      "scanKey": "capetown_scan",
+      "layer": "weather",
+      "speciesId": "heel-golem",
+      "name": "Heel Golem"
+    }
+  }
+}

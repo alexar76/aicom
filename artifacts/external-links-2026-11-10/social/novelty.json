@@ -1,0 +1,37 @@
+{
+  "scope": "Literal exact URLs in accessible docs/artifacts excluding current Nov10 audit, node_modules, .venv and cache directories; not a full historical semantic inventory.",
+  "checks": [
+    {
+      "marker": "vouch-protocol.com/agent-trust-index",
+      "returncode": 1,
+      "prior_matches": []
+    },
+    {
+      "marker": "teckdeck.io/posts/we-found-331-mcp-tool-list-changes",
+      "returncode": 1,
+      "prior_matches": []
+    },
+    {
+      "marker": "agentrank-ai.com/tool/alexar76--attested-memory",
+      "returncode": 0,
+      "prior_matches": [
+        "docs/evidence/external-use-pass7-2026-10-30/search-3.json"
+      ]
+    },
+    {
+      "marker": "agentrank-ai.com/tool/alexar76--metis",
+      "returncode": 1,
+      "prior_matches": []
+    },
+    {
+      "marker": "agentrank-ai.com/tool/alexar76--aimarket-hub",
+      "returncode": 1,
+      "prior_matches": []
+    },
+    {
+      "marker": "agentrank-ai.com/tool/alexar76--aimarket-agent",
+      "returncode": 1,
+      "prior_matches": []
+    }
+  ]
+}

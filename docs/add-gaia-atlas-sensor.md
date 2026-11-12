@@ -55,7 +55,8 @@ python3 scripts/add_gaia_atlas_sensor.py \
 What the command does:
 
 1. Appends to `gaia/config/extra_sensors.yaml`
-2. Mirrors to `atlas/config/extra_sensors.yaml`
+2. Mirrors to `atlas/config/extra_sensors.yaml` and to `atlas/atlas/_config/extra_sensors.yaml`, the copy the
+   aimarket-atlas wheel carries
 3. On next deploy, GAIA registers the device in the **fleet**; ATLAS shows the **pin**
 
 Then: **redeploy GAIA → ATLAS**. LIVE kinds need `GAIA_ENABLE_LIVE=1`.

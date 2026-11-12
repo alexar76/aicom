@@ -1,0 +1,277 @@
+{
+  "generated_at_utc": "2026-11-09T19:28:00.110104+00:00",
+  "external_writes": false,
+  "payments_or_invokes": false,
+  "aer": {
+    "source": "https://agenteconomy.report/s/modelmarket.dev.json",
+    "baseline": {
+      "as_of": "2026-10-30",
+      "tier": "CC",
+      "tier_raw": "CCC",
+      "score": 13.3,
+      "uptime": 0.643,
+      "organic_paying_agents": 3,
+      "paying_wallets_raw": 16,
+      "settled_usd_14d": 0.08,
+      "centrality": 0.014,
+      "outlook_basis": {
+        "compares": "organic paying agents, last 7 days vs previous 7 days",
+        "organic_paying_agents_last_7d": 3,
+        "organic_paying_agents_previous_7d": 0,
+        "text": "3 organic paying agents in the last 7 days vs 0 in the 7 before (from zero)"
+      }
+    },
+    "current": {
+      "as_of": "2026-11-09",
+      "tier": "B",
+      "tier_raw": "B",
+      "score": 23.7,
+      "uptime": 1.0,
+      "organic_paying_agents": 4,
+      "paying_wallets_raw": 12,
+      "settled_usd_14d": 0.03,
+      "centrality": 0.037,
+      "outlook_basis": {
+        "compares": "organic paying agents, last 7 days vs previous 7 days",
+        "organic_paying_agents_last_7d": 2,
+        "organic_paying_agents_previous_7d": 2,
+        "text": "2 organic paying agents in the last 7 days vs 2 in the 7 before (+0%)"
+      }
+    },
+    "methodology_source": "https://agenteconomy.report/s/methodology",
+    "current_methodology_version": "2026-11-08",
+    "comparability_ru": "2 ноября изменился набор ресурсов для uptime, 8 ноября — фильтрация organic wallets. Рост рейтинга и uptime не является изолированной оценкой улучшения продукта на неизменной методике.",
+    "top_organic_displayed": [
+      "0x097e3f339d0b02…",
+      "agent402.tools…",
+      "0xa4f183a6799f03…",
+      "0xb9148cd4157ad8…"
+    ],
+    "attribution_ru": "Первый префикс совпадает с раскрытым тестовым кошельком владельца в docs/pay-on-verified-demo.md. Agent402 — посредник; известна собственная тестовая покупка через него 30 октября. Операторы двух остальных префиксов не установлены. Четыре organic не равны четырём независимым клиентам; очищенную сумму и число клиентов этот срез не вычисляет."
+  },
+  "x402_list": {
+    "source": "https://x402-list.com/api/v1/services/aimarket/volume",
+    "attribution": "Data: x402-list.com (CC BY 4.0)",
+    "window": "2026-11-01 through incomplete 2026-11-09 UTC, as returned at observation",
+    "reported_rows": [
+      {
+        "date": "2026-11-03",
+        "volume_usd": 0,
+        "tx_count": 2
+      },
+      {
+        "date": "2026-11-06",
+        "volume_usd": 0,
+        "tx_count": 1
+      },
+      {
+        "date": "2026-11-07",
+        "volume_usd": 0,
+        "tx_count": 3
+      },
+      {
+        "date": "2026-11-09",
+        "volume_usd": 0,
+        "tx_count": 1
+      }
+    ],
+    "reported_settlements_in_rows": 7,
+    "scope_ru": "Весь payout address у измеряемых facilitators; не уникальные клиенты, не delivery outcomes. Каждая дневная сумма округлена до $0.00; точная сумма из этих округлений не восстанавливается. Пропущенные дни отдельно не объявлены нулём."
+  },
+  "agent402": {
+    "source": "https://agent402.tools/api/index?seller=modelmarket.dev",
+    "fetched_at_utc": "2026-11-09T18:13:59.060000+00:00",
+    "routes": 183,
+    "paid_routes": 8,
+    "router_dispatch_eligible": false,
+    "reason": "settlement_self_funded",
+    "paid_route_callable_flags": [
+      {
+        "route": "/x402/histor-check",
+        "callable_now": false,
+        "reason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/warden-scan",
+        "callable_now": false,
+        "reason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/air-quality-now",
+        "callable_now": false,
+        "reason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/weather-now",
+        "callable_now": false,
+        "reason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/x402-check",
+        "callable_now": false,
+        "reason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/mcp-diff",
+        "callable_now": false,
+        "reason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/nearby-sensors",
+        "callable_now": false,
+        "reason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/fair-random",
+        "callable_now": false,
+        "reason": "settlement_self_funded"
+      }
+    ],
+    "interpretation_ru": "Текущее решение внешнего роутера блокирует dispatch по settlement_self_funded / below the settlement floor. Его расчёт происхождения средств здесь не воспроизведён; это не проверка прямого вызова нашего API и не диагноз его недоступности."
+  },
+  "usetested": {
+    "source": "https://usetested.com/v1/review?service=modelmarket.dev",
+    "calls_tested": 1,
+    "receipts": [
+      {
+        "chain": "base",
+        "tx": "0x656749e6bab12a3373a2905c0495126bd7a533902de08e3af18d4f47380fd32a",
+        "ts": "2026-10-27T03:08:02Z",
+        "payer": "0x4C29Ec4F680CA88d0019edBfe3A8FF5c80499494",
+        "amount": "0.001000"
+      }
+    ],
+    "interpretation_ru": "По-прежнему один исторический платный тест 27 октября. Обновление review 2 ноября не является новой покупкой."
+  },
+  "agenstry": {
+    "source": "https://agenstry.com/agents/modelmarket.dev",
+    "score": 78,
+    "grade": "B",
+    "successful_direct_probes": 70,
+    "direct_probes": 70,
+    "displayed_invocations_last_7d": 0,
+    "scope_ru": "Автоматическая протокольная проверка каталога; не доказательство adoption. Счёт 78/B уже существовал в октябре."
+  },
+  "public_own_telemetry": {
+    "source": "https://modelmarket.dev/ai-market/v2/stats/live",
+    "total_invocations_since_counter_reset": 2887,
+    "classified_external_invocations": 2808,
+    "recent_page_rows": 50,
+    "recent_classification_counts": [
+      {
+        "traffic_class": "external",
+        "traffic_basis": "override",
+        "rows": 31
+      },
+      {
+        "traffic_class": "operator_self",
+        "traffic_basis": "account",
+        "rows": 7
+      },
+      {
+        "traffic_class": "external",
+        "traffic_basis": null,
+        "rows": 10
+      },
+      {
+        "traffic_class": "operator_self",
+        "traffic_basis": "address",
+        "rows": 2
+      }
+    ],
+    "interpretation_ru": "В 50 последних строках 31 external/override относится к одному псевдониму account:18001a84cca4, 10 external имеют traffic_basis=null. Ни сводные 2808 external, ни 677 credit accounts не являются проверенным количеством независимых пользователей. Денежный volume ledger, выданные credits и внешние settlements не суммируются."
+  },
+  "federation": {
+    "source": "https://modelmarket.dev/ai-market/v2/federation/peers",
+    "peers_count": 22,
+    "pending_count": 1,
+    "agent_exec": {
+      "url": "https://agent-exec.448c.org",
+      "name": "agent-exec",
+      "capabilities_count": 19,
+      "last_crawl": "2026-11-09T17:52:30Z",
+      "liveness": "live",
+      "silent_days": null,
+      "trust_score": 0.265,
+      "depth": 1,
+      "categories": [
+        "code-execution",
+        "sandbox",
+        "storage",
+        "key-claims",
+        "attestation",
+        "url-watch",
+        "email",
+        "dns",
+        "x402",
+        "risk-checks",
+        "directory",
+        "agents"
+      ],
+      "well_known_url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+      "trusted": true,
+      "public_key": "dvoENalt1FhzSO54A6sF4c54fd0zwyZiP3ljGlYOlsU=",
+      "status": "active",
+      "pin_reject_reason": "",
+      "advertised_public_key": "",
+      "canonical_id": "",
+      "identity_key_matches": null,
+      "declared": {
+        "description": "Accountless pay-per-call services for software agents: sandboxed code execution, durable storage, atomic key claims, signed attestations, URL watches, disposable email inboxes, rented DNS names, address and URL risk checks, x402 payment delivery, and a free agent-service directory.",
+        "hub_version": "0.1.0",
+        "id": "",
+        "mcp_endpoint": "https://agent-exec.448c.org/mcp"
+      }
+    },
+    "industrial": {
+      "url": "https://x402-gateway-production-1f21.up.railway.app",
+      "name": "Industrial Platform Sentinel",
+      "capabilities_count": 4,
+      "last_crawl": "2026-10-31T17:24:24Z",
+      "liveness": "silent",
+      "silent_days": 9,
+      "trust_score": 0.2699,
+      "depth": 1,
+      "categories": [
+        "agent-tooling",
+        "treasury",
+        "wallet",
+        "payments",
+        "monitoring",
+        "x402"
+      ],
+      "well_known_url": "https://x402-gateway-production-1f21.up.railway.app/.well-known/ai-market.json",
+      "trusted": true,
+      "public_key": "8yIANrnT9NIgJMV2YmiVlYx0MjElvJpRNFP50DbIf30=",
+      "status": "active",
+      "pin_reject_reason": "",
+      "advertised_public_key": "",
+      "canonical_id": "",
+      "identity_key_matches": null,
+      "declared": {
+        "description": "Install-once autonomous treasury and payment monitoring for authorized funded agents. AIMarket capabilities bootstrap Sentinel; recurring paid work settles directly through Industrial Platform x402 routes.",
+        "hub_version": "sentinel-federation-1.0.0",
+        "id": "industrial-sentinel",
+        "mcp_endpoint": ""
+      }
+    },
+    "offline_signature_result": "peer-signatures.json",
+    "interpretation_ru": "agent-exec объявляет 19 tools, его подпись совместима с Hub, отрицательный контроль отвергнут. Это техническая совместимость снимка, не выполнение 19 tools и не новый покупатель. Industrial по-прежнему active/trusted, но liveness=silent, silent_days=9, discovery HTTP404. Количество peers включает собственные сервисы и не равно числу внешних операторов."
+  },
+  "apis_attested": {
+    "source": "https://apis.io/providers/attestedmemory-net/",
+    "profile_created": "2026-11-02",
+    "profile_source": "harvest:mcp-registry",
+    "listed_api_contracts": 56,
+    "listed_agent_skills": 8,
+    "score_as_of": "2026-11-06",
+    "rubric": "v0.27.0",
+    "composite_score": 32.5,
+    "interpretation_ru": "Новая машинная обнаружимость/профилирование. Автогенерированные contracts, skills и оценки не доказывают стороннее выполнение кода, ручной обзор или клиентов; отдельные отрицательные поля оценки не перепроверены против реализации."
+  },
+  "limitations_ru": [
+    "Срез публичных источников 9 ноября, не весь интернет и не закрытая аналитика.",
+    "Даты первого обнаружения не приравниваются к датам события; собственные ответы, автоиндексы и исследования отделены от регулярного спроса.",
+    "VibeLeaderboard ответил HTTP429; обход не выполнялся, поисковая карточка не принята за проверенный полный обзор."
+  ]
+}

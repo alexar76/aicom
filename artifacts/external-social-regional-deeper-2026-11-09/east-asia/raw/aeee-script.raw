@@ -1,0 +1,63 @@
+async function main() {
+  const countEl = document.getElementById('report-count');
+  const updatedEl = document.getElementById('last-updated');
+  const res = await fetch('api/reports');
+  const data = await res.json();
+  const reports = data.reports || [];
+
+  countEl.textContent = String(data.count || 0);
+  updatedEl.textContent = formatDate(data.last_updated || latestDate(reports));
+  renderReports(reports);
+}
+
+function renderReports(reports) {
+  const root = document.getElementById('report-list');
+  if (!reports.length) {
+    root.innerHTML = '<div class="empty">现在还没有日报。等今晚那份新的上线。</div>';
+    return;
+  }
+
+  root.innerHTML = reports.map((report) => `
+    <article class="report-card">
+      <aside class="report-rail">
+        <p class="report-date">${escapeHtml(report.date || '')}</p>
+      </aside>
+      <div class="report-main">
+        <h2>${escapeHtml(formatReportTitle(report))}</h2>
+        <p class="report-summary">${escapeHtml(report.summary || '这天的报告没写摘要，但正文在下面。')}</p>
+        <details class="report-body-wrap">
+          <summary>展开正文</summary>
+          <div class="report-body markdown-body">${report.html || '<p>正文暂时不可用。</p>'}</div>
+        </details>
+      </div>
+    </article>
+  `).join('');
+}
+
+function latestDate(reports) {
+  return reports.map((report) => report.date).filter(Boolean).sort().at(-1) || '';
+}
+
+function formatDate(value) {
+  return value || '—';
+}
+
+function formatReportTitle(report) {
+  const raw = String(report?.title || '').trim();
+  if (!raw) return '当日简报';
+  return raw.replace(/^AI\s*晚报[（(].*?[）)]$/, '当日简报');
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+main().catch((err) => {
+  console.error(err);
+  document.getElementById('report-list').innerHTML = '<div class="empty">日报页面加载失败了。</div>';
+});

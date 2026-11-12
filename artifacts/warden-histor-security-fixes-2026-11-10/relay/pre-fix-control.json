@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/bin/python",
+    "-m",
+    "pytest",
+    "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/warden-histor-security-fixes-2026-11-10/relay/pre-fix-control/relay_regressions_fixture.py",
+    "-q",
+    "-k",
+    "redirect and 302"
+  ],
+  "expected_exit": 1,
+  "actual_exit": 1,
+  "expected_behavior": "Three 302 redirect-boundary regressions fail against original source because a second request follows; network is intercepted in memory",
+  "original_source_sha256": "a1deb6cc6eade50a29c16be7da3ce0437ac5efcf91141aa5f669e1820e604a1d"
+}

@@ -1,0 +1,478 @@
+{
+  "format": "warden.figure-cross-host/v1",
+  "generatedAt": "2026-11-07T21:41:26.495Z",
+  "expectedPerPrimaryScanner": 18110,
+  "sites": [
+    "blip",
+    "attested"
+  ],
+  "semanticComparison": "Each case key + supplied opaque wireId + exact tool input file SHA256 + product version/source hash/runtime image; status + HIGH/CRITICAL + any definition signal + advisory-only; full canonical native result SHA. Audit signatures retain every finding object, normalizing only own temporary config finding_path and fresh RUGPULL-000 file evidence. Errors/timeouts are separate from comparable successful verdicts.",
+  "proofScriptHashes": [
+    "e899780aa21ec211f5fdd612f5019e4d7c77f9ce57673951e7e9fe72fd907fb2",
+    "e899780aa21ec211f5fdd612f5019e4d7c77f9ce57673951e7e9fe72fd907fb2"
+  ],
+  "verifiedScanners": {
+    "warden-published": {
+      "scheduled": 18110,
+      "paired": 18110,
+      "comparable": 18110,
+      "identical": 18110,
+      "different": 0,
+      "missingOneOrBoth": 0,
+      "errorsOneOrBoth": 0,
+      "errorsBoth": 0,
+      "errorsOnlyBlip": 0,
+      "errorsOnlyAttested": 0,
+      "inputIdentityMismatches": 0,
+      "engineIdentityMismatches": 0,
+      "scannedOnBoth": 18110,
+      "complete": true
+    },
+    "mcp-audit": {
+      "scheduled": 18110,
+      "paired": 18110,
+      "comparable": 18108,
+      "identical": 18108,
+      "different": 0,
+      "missingOneOrBoth": 0,
+      "errorsOneOrBoth": 2,
+      "errorsBoth": 2,
+      "errorsOnlyBlip": 0,
+      "errorsOnlyAttested": 0,
+      "inputIdentityMismatches": 0,
+      "engineIdentityMismatches": 0,
+      "scannedOnBoth": 18108,
+      "complete": true
+    },
+    "mcp-shield": {
+      "scheduled": 18110,
+      "paired": 18110,
+      "comparable": 18078,
+      "identical": 18078,
+      "different": 0,
+      "missingOneOrBoth": 0,
+      "errorsOneOrBoth": 32,
+      "errorsBoth": 31,
+      "errorsOnlyBlip": 1,
+      "errorsOnlyAttested": 0,
+      "inputIdentityMismatches": 0,
+      "engineIdentityMismatches": 0,
+      "scannedOnBoth": 18078,
+      "complete": true
+    },
+    "truecopy": {
+      "scheduled": 18110,
+      "paired": 18110,
+      "comparable": 18110,
+      "identical": 18110,
+      "different": 0,
+      "missingOneOrBoth": 0,
+      "errorsOneOrBoth": 0,
+      "errorsBoth": 0,
+      "errorsOnlyBlip": 0,
+      "errorsOnlyAttested": 0,
+      "inputIdentityMismatches": 0,
+      "engineIdentityMismatches": 0,
+      "scannedOnBoth": 18110,
+      "complete": true
+    },
+    "mcpsentry": {
+      "scheduled": 18110,
+      "paired": 18110,
+      "comparable": 18110,
+      "identical": 18110,
+      "different": 0,
+      "missingOneOrBoth": 0,
+      "errorsOneOrBoth": 0,
+      "errorsBoth": 0,
+      "errorsOnlyBlip": 0,
+      "errorsOnlyAttested": 0,
+      "inputIdentityMismatches": 0,
+      "engineIdentityMismatches": 0,
+      "scannedOnBoth": 18110,
+      "complete": true
+    }
+  },
+  "supplemental": {
+    "warden-candidate19": {
+      "scheduled": 18110,
+      "paired": 18110,
+      "comparable": 18110,
+      "identical": 18110,
+      "different": 0,
+      "missingOneOrBoth": 0,
+      "errorsOneOrBoth": 0,
+      "errorsBoth": 0,
+      "errorsOnlyBlip": 0,
+      "errorsOnlyAttested": 0,
+      "inputIdentityMismatches": 0,
+      "engineIdentityMismatches": 0,
+      "scannedOnBoth": 18110,
+      "complete": true
+    },
+    "warden-v18": {
+      "scheduled": 14933,
+      "paired": 14933,
+      "comparable": 14933,
+      "identical": 14933,
+      "different": 0,
+      "missingOneOrBoth": 0,
+      "errorsOneOrBoth": 0,
+      "errorsBoth": 0,
+      "errorsOnlyBlip": 0,
+      "errorsOnlyAttested": 0,
+      "inputIdentityMismatches": 0,
+      "engineIdentityMismatches": 0,
+      "scannedOnBoth": 14933,
+      "complete": true
+    }
+  },
+  "details": [
+    {
+      "scanner": "warden-published",
+      "cohort": "base",
+      "scheduled": 3177,
+      "paired": 3177,
+      "comparable": 3177,
+      "identical": 3177,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "warden-published",
+      "cohort": "histor",
+      "scheduled": 14933,
+      "paired": 14933,
+      "comparable": 14933,
+      "identical": 14933,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "mcp-audit",
+      "cohort": "base",
+      "scheduled": 3177,
+      "paired": 3177,
+      "comparable": 3177,
+      "identical": 3177,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "mcp-audit",
+      "cohort": "histor",
+      "scheduled": 14933,
+      "paired": 14933,
+      "comparable": 14931,
+      "identical": 14931,
+      "different": [],
+      "missing": [],
+      "errors": [
+        {
+          "key": "histor-packages/p05122",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p05236",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        }
+      ],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "mcp-shield",
+      "cohort": "base",
+      "scheduled": 3177,
+      "paired": 3177,
+      "comparable": 3177,
+      "identical": 3177,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "mcp-shield",
+      "cohort": "histor",
+      "scheduled": 14933,
+      "paired": 14933,
+      "comparable": 14901,
+      "identical": 14901,
+      "different": [],
+      "missing": [],
+      "errors": [
+        {
+          "key": "histor-packages/p00032",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p00252",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p00485",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p00586",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p00683",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p01725",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p02083",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p03095",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p03231",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p03462",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p03586",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p03897",
+          "blip": "timeout",
+          "attested": "ok"
+        },
+        {
+          "key": "histor-packages/p04648",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p04667",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p04975",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p05289",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p07199",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p07401",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p07918",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p08442",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p09028",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p09948",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p10432",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p10849",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p11645",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p11965",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p12334",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p12640",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p13190",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p13295",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p13499",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        },
+        {
+          "key": "histor-packages/p14725",
+          "blip": "scanner_error",
+          "attested": "scanner_error"
+        }
+      ],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "truecopy",
+      "cohort": "base",
+      "scheduled": 3177,
+      "paired": 3177,
+      "comparable": 3177,
+      "identical": 3177,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "truecopy",
+      "cohort": "histor",
+      "scheduled": 14933,
+      "paired": 14933,
+      "comparable": 14933,
+      "identical": 14933,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "mcpsentry",
+      "cohort": "base",
+      "scheduled": 3177,
+      "paired": 3177,
+      "comparable": 3177,
+      "identical": 3177,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "mcpsentry",
+      "cohort": "histor",
+      "scheduled": 14933,
+      "paired": 14933,
+      "comparable": 14933,
+      "identical": 14933,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "warden-candidate19",
+      "cohort": "base",
+      "scheduled": 3177,
+      "paired": 3177,
+      "comparable": 3177,
+      "identical": 3177,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "warden-candidate19",
+      "cohort": "histor",
+      "scheduled": 14933,
+      "paired": 14933,
+      "comparable": 14933,
+      "identical": 14933,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    },
+    {
+      "scanner": "warden-v18",
+      "cohort": "histor",
+      "scheduled": 14933,
+      "paired": 14933,
+      "comparable": 14933,
+      "identical": 14933,
+      "different": [],
+      "missing": [],
+      "errors": [],
+      "inputIdentityMismatches": [],
+      "engineIdentityMatches": true
+    }
+  ],
+  "passed": true,
+  "scriptHashesMatch": true,
+  "allScheduledRowsPresent": true,
+  "allComparableVerdictsIdentical": true,
+  "allNativeScansSucceeded": false
+}

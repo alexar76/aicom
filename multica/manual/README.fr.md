@@ -19,6 +19,9 @@ gardons le mode `opencode run`, sur lequel la protection et les règles de permi
 commandes ci-dessous sont celles de la CLI 0.5.3 ; celles qu'utilise cette installation ont aussi été vérifiées sur
 0.8.0.
 
+> **En une commande.** [`operator-kit/onboard.sh`](../operator-kit/README.md) met en place les sections 2, 3, 4 et 6 à
+> côté de votre Multica et les vérifie : `sudo ./onboard.sh --dir /opt/multica`. Ce manuel explique ce qu'il fait et pourquoi.
+
 ## Sommaire
 
 [Vue d'ensemble : comment tout s'articule](#vue-densemble--comment-tout-sarticule)
@@ -114,35 +117,53 @@ malgré tout.
 
 ## 3. Limitez la sortie réseau
 
-Un agent qui lit des textes d'autrui (issues, pages, réponses de vendeurs) peut être poussé à envoyer des données à
-l'extérieur. Ne lui donnez aucune route directe : placez le démon sur un réseau Docker interne et laissez un proxy
-décider quels hôtes il peut joindre.
+État du déploiement au 2026-11-10 : les restrictions supplémentaires du pare-feu sont actives sur notre hôte
+Multica **attested**. La recette réseau est suivie séparément dans le
+[reçu de déploiement](../../artifacts/multica-security-2026-11-10/deployment.json) ; l'activation seule ne prouve pas
+la réussite de tous les tests de contournement. Cet état ne décrit pas l'installation du collègue sur `178.62.243.71`.
+
+La restriction réseau appartient au **déploiement Multica** : réseaux Docker, proxy de sortie et pare-feu de l'hôte.
+WARDEN vérifie les appels d'outils ; il n'installe pas de règles réseau. Reliez le démon seulement au réseau interne
+des agents, le proxy aussi au réseau donnant accès à Internet, et gardez le backend joignable en interne.
+Les variables de proxy sont volontaires : une commande peut les ignorer et se connecter directement.
 
 ```yaml
+# Topology excerpt only; use the reviewed overlay in ../security/egress/.
 services:
   daemon:
     networks: [agent]
     environment:
       HTTPS_PROXY: http://egress:8888
+      https_proxy: http://egress:8888
       HTTP_PROXY: http://egress:8888
+      http_proxy: http://egress:8888
       NO_PROXY: backend,localhost,127.0.0.1
+      no_proxy: backend,localhost,127.0.0.1
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+  backend:
+    networks: [app, agent]
   egress:
-    build: { context: ./egress }      # tinyproxy
     networks: [agent, app]
     read_only: true
-    tmpfs: ["/tmp", "/run"]
     cap_drop: [ALL]
 networks:
   agent:
-    internal: true                    # no route out, no outside DNS
+    internal: true
+    enable_ipv6: false
     ipam: { config: [{ subnet: 10.250.0.0/24 }] }
+  app: {}
 ```
 
-Le démon doit toujours joindre le backend de Multica : mettez aussi le backend sur le réseau `agent`.
+Ceci décrit la topologie, pas un déploiement complet. Lors de la fusion Compose, **remplacez** la liste des réseaux
+du démon : conserver `app` en ajoutant `agent` laisse une route directe. Choisissez un sous-réseau sans conflit.
+Le [kit egress](../security/egress/README.md) fournit l'overlay vérifié, le proxy, un plan de règles et les contrôles.
+Il exige l'inventaire exact de l'opérateur ; aucune adresse prod/dev TONmobile n'est inventée ici. L'agent ne doit pas
+pouvoir modifier ces fichiers ; ne publiez pas le port du proxy.
 
-`tinyproxy.conf` :
+Options utiles de `tinyproxy.conf` :
 
-```
+```text
 Port 8888
 Listen 0.0.0.0
 Allow 10.250.0.0/24
@@ -153,19 +174,40 @@ Filter "/etc/tinyproxy/allow"
 ConnectPort 443
 ```
 
-`allow` : un hôte par ligne, ancré au début et à la fin, sinon `github.com.example.net` correspondrait aussi :
+Dans `allow`, un nom d'hôte ancré par ligne. Ces **exemples non utilisables** doivent être remplacés par les hôtes
+vérifiés de l'API modèle et des environnements QA :
 
-```
-^api\.deepseek\.com$
-^models\.dev$
-^github\.com$
-^api\.github\.com$
-^api\.telegram\.org$
-^modelmarket\.dev$
+```text
+^model-api\.operator\.invalid$
+^tonmobile-dev\.operator\.invalid$
+^tonmobile-prod\.operator\.invalid$
 ```
 
-`models.dev` est le catalogue de modèles d'OpenCode. N'ajoutez que les hôtes dont vos agents ont besoin. Un hôte de
-la liste reste un canal (un agent muni d'un jeton GitHub peut écrire sur GitHub) ; c'est le rôle de la section 6.
+Gardez le backend Multica sur son adresse interne. Installez les dépendances à la construction de l'image : ouvrir
+tout le registre npm ou GitHub SSH n'est pas nécessaire par défaut pour QA. Pour lire Git, utilisez un service
+séparé en lecture seule ou un transport explicitement restreint, sans identifiants d'écriture dans l'agent.
+
+L'hôte doit refuser les connexions directes du sous-réseau agent, sauf vers le proxy et l'endpoint exact du backend.
+Couvrez **INPUT de l'hôte**, notamment la passerelle Docker (par exemple le récepteur signalé `172.18.0.1:9999`), et
+le trafic transféré. Avec le backend Docker **iptables**, placez les restrictions dans `DOCKER-USER`, avant les
+règles d'acceptation Docker ; un ajout en fin de `FORWARD` ne suffit pas. Avec **nftables, `DOCKER-USER` n'existe pas** :
+utilisez vos propres chaînes de base input/forward et des priorités vérifiées. Ne modifiez pas les tables Docker et
+ne supposez pas qu'UFW seul protège le conteneur. Désactivez IPv6 explicitement et vérifiez-le, ou appliquez des
+règles équivalentes testées.
+
+Vérifiez le résolveur réel : les noms internes sont nécessaires, mais aucune requête DNS externe arbitraire ne doit
+sortir par le DNS intégré Docker ou le relais de l'hôte. Restreignez ce résolveur séparément si nécessaire.
+`internal: true` ne prouve pas à lui seul le blocage du DNS ou des sockets de l'hôte. `ConnectPort 443` limite CONNECT,
+pas les ports HTTP ordinaires ; les règles de sortie du proxy doivent aussi couvrir ceux-ci.
+
+Un hôte autorisé reste un canal : commentaires Multica, requêtes au modèle et opérations Git peuvent transporter des
+données. Le proxy CONNECT ne voit pas le corps chiffré. Limitez hôtes et permissions, gardez les secrets hors des
+fichiers/environnements lisibles par l'agent, et vérifiez les résultats avant stockage (§6).
+Références officielles : [Docker iptables](https://docs.docker.com/engine/network/firewall-iptables/),
+[Docker nftables](https://docs.docker.com/engine/network/firewall-nftables/),
+[Docker pare-feu/UFW](https://docs.docker.com/engine/network/packet-filtering-firewalls/),
+[Docker DNS](https://docs.docker.com/engine/network/#dns-services) et
+[configuration Tinyproxy](https://tinyproxy.github.io/#documentation).
 
 ## 4. Connectez le hub : achetez des compétences
 
@@ -247,42 +289,135 @@ modifier quoi que ce soit (la nôtre est à la section 10).
 
 ## 6. Protégez les agents : WARDEN pour OpenCode
 
-Le flow guard de [WARDEN](https://github.com/alexar76/warden) est un plugin OpenCode. Une fois qu'une session a lu un
-texte extérieur, il refuse un appel d'outil qui emporterait une clé ou des données lues par la session. Il vide aussi,
-dans les commandes shell, les clés que vous listez. Dans notre attaque simulée, une fausse clé se trouvait dans un
-fichier. Son envoi a été refusé sur tous les canaux : le script de discussion, `curl` vers un hôte autorisé, une
-écriture en mémoire et la CLI du gestionnaire de tâches. Une journée de travail normale s'est déroulée sans aucun
-refus.
+État du déploiement au 2026-11-10 : notre installation **attested** utilise la compilation locale vérifiée de WARDEN
+et le démon/backend Multica corrigés. Les contrôles de hooks en production ont réussi 9/9 ; le canari conservé en
+session propre a été refusé. Empreintes des binaires, santé backend/UI et migrations inchangées ont été vérifiées.
+Voir le [reçu de déploiement](../../artifacts/multica-security-2026-11-10/deployment.json). Ce n'est **pas une nouvelle
+publication npm**, ni une validation de l'installation `178.62.243.71`/0.24.0 du collègue ou de son test TONM-14 complet.
+Les limites de motifs reconnus et de chemins de sortie ci-dessous restent applicables.
 
-Chaque appel d'outil d'un agent passe par trois couches, et chacune peut refuser seule :
+Le flow guard de [WARDEN](https://github.com/alexar76/warden) vérifie les appels d'outils. L'intégration
+historique OpenCode 0.23.0 appliquait les contrôles de fuite après l'enregistrement d'un texte extérieur et vidait
+des variables sélectionnées dans le shell. L'attaque avec une fausse clé lisait d'abord GitHub, puis le fichier :
+script de discussion, `curl` vers un hôte autorisé, écriture mémoire et CLI du gestionnaire ont été refusés.
+Une tâche normale enregistrée s'est terminée sans refus. Cela ne prouve pas la protection d'une session propre ni
+d'une autre version de l'environnement.
+
+L'échec signalé avec 0.24.0 expose ce trou : `multica issue get` n'était pas reconnu comme texte extérieur et lire
+`.env` n'activait pas seul les contrôles. Les changements locaux du 2026-11-10 séparent les contrôles de secrets
+reconnus de ce déclencheur et ajoutent la provenance Multica/rapports QA. Il faut les compiler et les tester dans
+l'environnement choisi ; modifier les sources ne met à jour ni npm ni le démon installé. N'utilisez pas `npx` ou un
+`curl` échoué pour activer volontairement la protection. Un timeout `curl` peut suivre la réception du corps.
+
+Le code de WARDEN ne nomme pas Multica. Les lectures sous `playwright-report/` et `test-results/` sont du texte
+extérieur d'emblée ; la CLI Multica devient une source extérieure par la politique de l'opérateur. Partez du fragment
+fourni `warden/examples/policies/multica.flow-policy.json` (dans le paquet npm à partir de la prochaine version), qui
+marque `multica issue get`, `issue list`, `issue search` et `issue comment list`. Sans lui, la sortie de Multica compte
+comme les données de l'opérateur. Ajoutez vos préfixes de commandes et racines de rapports de la même façon (ici, le
+dossier de rapports QA `reports/`) ; ils ajoutent de la défiance, jamais une autorisation :
+
+```json
+{
+  "mode": "deny",
+  "untrustedSources": {
+    "commands": [
+      ["multica", "issue", "get"], ["multica", "issue", "list"],
+      ["multica", "issue", "search"], ["multica", "issue", "comment", "list"]
+    ],
+    "paths": ["reports"]
+  }
+}
+```
+
+Si l’agent écrit son rapport à côté du clone (à la racine de l’espace de travail de la tâche), ajoutez `"projectRoots": [".."]` à la même politique : sinon, après du texte extérieur, cette écriture compte comme hors du projet (`destructive_action`), comme l’ont montré les mesures sur le terrain.
+
+Les chemins partent de la frontière du projet ; les opérandes shell du dossier d'exécution. La reconnaissance est
+bornée, pas un interpréteur de programmes shell arbitraires. Après du texte extérieur, `deny` strict refuse toujours
+les exécutions opaques, comme `npm run ...` et `node -e ...`. Ne désactivez pas la provenance pour QA : utilisez des
+permissions/adaptateurs limités et vérifiés et un superviseur de confiance pour démarrage et rapport sûrs.
+
+### Exécuteur QA séparé : opérations fixes sans shell de l'agent
+
+Le [runner QA séparé](../qa-runner/README.md) a été déployé et accepté sur notre **attested** le 2026-11-10.
+Dans la tâche réelle Multica **MY-89**, le profil privé permanent a appelé une fois l'outil natif
+`qa_runner_task_execute`, sans autre outil. Backend/modelmarket/hub ont répondu **200/200/200** ; le rapport validé
+figure dans le résultat stocké et le commentaire, et la tâche a le statut `done`. Voir le
+[reçu de recette finale](../../artifacts/multica-qa-runner-2026-11-10/final-acceptance.json). Seule l'opération initiale
+`platform_smoke` est acceptée ; le QA navigateur complet TONmobile n'a pas été exécuté.
+
+Il sépare le contrôleur Multica/modèle d'un worker Node 22 dédié sur `10.250.0.5`, sans identifiants modèle, Multica,
+GitHub ou hub, volume home, fichier env, socket Docker ni clé privée TLS de l'hôte. Son système de fichiers est en
+lecture seule sauf stockage temporaire borné, avec capabilities retirées. Seul le contrôleur de confiance de l'hôte
+lance le travail fixe `npm run smoke`.
+
+Le profil QA privé appelle `task_execute` du serveur `qa_runner` avec exactement `{"id":"platform_smoke"}`.
+Le TaskAdapter WARDEN délègue cette opération épinglée avant les refus généraux après texte extérieur ; il ne permet
+pas à l'agent `npm run ...`, `node -e ...`, URL, arguments ou programmes shell arbitraires. Le processus MCP démarre
+avec `env -i` et une CA publique ; la clé TLS privée du broker `10.250.0.1:8443` reste sur le contrôleur de l'hôte.
+`qa_runner` est désactivé globalement et activé seulement pour le nouveau profil QA privé, dont les autres MCP/outils
+restent désactivés.
+
+Vérifiez les règles résolues avec `opencode debug agent build` : le deny général doit précéder les allow exacts
+pour `qa_runner_task_list`, `qa_runner_task_read`, `qa_runner_task_execute` et `qa_runner_task_run`. Le JSON seul ne
+prouve pas l'ordre après fusion des anciennes options tools. Les instructions appellent directement l'outil QA
+natif, sans démarrage Bash/Multica CLI. MCP accepte seulement la métadonnée standard bornée `_meta.progressToken` ;
+les arguments restent exactement l'ID fixe, sans URL, commande ou champ libre supplémentaire.
+
+Le broker accepte seulement `POST /run/platform-smoke` avec corps vide depuis le contrôleur autorisé. Il lance un
+seul travail à la fois, au plus trois départs par cinq minutes, capture au plus 64 KiB et limite chaque travail à
+8 secondes côté contrôleur ; le worker a 6 secondes puis 1 seconde avant arrêt forcé. Seuls noms fixes, statuts et booléens sont renvoyés ; stdout/erreurs bruts sont écartés.
+Le broker de l'hôte conserve séparément 10 départs par fenêtre UTC de 12 heures dans SQLite, propriété de root, sous
+`/var/lib/multica-qa` ; supprimer le compteur MCP ou redémarrer le contrôleur ne le remet pas à zéro. Les exécutions
+échouées/incertaines consomment le quota. Le manifeste de l'opérateur dure au plus 23 heures, est renouvelé toutes les 12 heures et autorise au plus 10 usages ;
+le broker limite aussi la fréquence. Expiration, pin modifié ou budget épuisé entraînent un refus. `platform_smoke`
+vérifie seulement des endpoints fixes sans authentification de statut backend/hub/modelmarket et renvoie un rapport borné nettoyé,
+sans corps de réponse ni écriture externe. Cela ne réalise ni QA arbitraire ni scénario TONmobile. Ajouter des travaux
+exige un contrôleur revu, une image/opération worker fixe et une nouvelle capability épinglée.
+
+Permissions, WARDEN et réseau ont des frontières distinctes :
 
 ```mermaid
 flowchart TB
-  t["L'agent veut lancer un outil"] --> p{"Règles de permissions d'OpenCode :<br/>cette commande est-elle autorisée ?"}
-  p -- "non" --> r1["Refusé"]
-  p -- "oui" --> w{"WARDEN : après un texte extérieur,<br/>l'appel emporterait-il une clé<br/>ou des données lues ?"}
-  w -- "oui" --> r2["Refusé"]
-  w -- "non" --> run["L'outil s'exécute,<br/>les clés listées vides dans le shell"]
-  run --> net{"Appel réseau ?"}
-  net -- "non" --> ok["Le résultat revient à l'agent"]
-  net -- "oui" --> e{"Hôte dans la liste du proxy ?"}
-  e -- "non" --> r3["Refusé par le proxy"]
-  e -- "oui" --> ok
+  t["Appel d'outil de l'agent"] --> p{"Permissions du runtime"}
+  p -- "refus" --> r1["Refusé"]
+  p -- "accord" --> w{"WARDEN : données reconnues<br/>et provenance"}
+  w -- "refus" --> r2["Refusé"]
+  w -- "accord" --> n{"Pare-feu de l'hôte<br/>et liste du proxy"}
+  n -- "refus" --> r3["Connexion refusée"]
+  n -- "accord" --> ok["Exécution de l'outil"]
+  a["Réponse finale"] --> g{"Contrôle du démon<br/>avant stockage"}
+  g -- "résultat nettoyé" --> s["Stockage et publication"]
 ```
 
-Ce que les couches arrêtent, et ce qu'elles n'arrêtent pas :
-
-| Menace | Arrêtée par |
+| Menace | Frontière de contrôle |
 |---|---|
-| Un agent victime d'une injection de prompt lance une commande qui ne lui était pas destinée | Règles de permissions d'OpenCode (une enveloppe plutôt qu'un joker) |
-| Il envoie une clé ou des données lues vers un hôte autorisé (GitHub, discussion, hub) | Protection WARDEN |
-| Il envoie quoi que ce soit vers un autre hôte | Proxy de sortie |
-| Il désactive la protection pour les sessions suivantes | Protection dans un dossier appartenant à root (plus bas) |
-| La réponse finale de l'agent elle-même sort des données | Pas la protection : Multica publie cette réponse ; vérifiez-la dans votre service (section 10) |
+| L'agent exécute une commande hors de sa tâche | Permissions du runtime et enveloppe limitée appartenant à l'opérateur |
+| Un secret reconnu part vers un service autorisé | Contrôles WARDEN et permissions limitées ; le trou historique sans texte extérieur exige la correction locale |
+| Une connexion contourne le proxy ou vise un hôte absent | Pare-feu de l'hôte, réseaux isolés et proxy ensemble (§3) |
+| L'agent désactive la protection future | Protection et tous les dossiers parents appartenant à root |
+| Un secret apparaît dans la réponse finale | Contrôle du démon avant stockage ; Stop n'est pas un filtre général de secrets |
 
-Nous l'avons vérifié chez nous. L'attaque simulée (plus haut) a été refusée sur tous les canaux. Le 2026-11-05, chaque
-exécution planifiée des cinq agents, et une commande payée après le passage à Multica 0.8.0, ont laissé le fichier
-d'état de la protection pour leur session : le plugin a tourné dans chacune.
+Le 2026-11-05, les exécutions planifiées enregistrées de cinq agents et une commande payée après Multica 0.8.0 ont
+chacune laissé un état de protection. Cela prouve le chargement du plugin, pas la sûreté de toutes les sorties.
+
+### Vérifiez le résultat avant son stockage par Multica
+
+Le [patch local des résultats Multica](../security/README.md), pour upstream v0.8.0, ajoute un masquage récursif aux
+frontières de confiance démon/backend : avant la file de réessai, les callbacks complete/fail/message/progress et le
+stockage des résultats/erreurs de tâche. Il utilise `redact.Text` d'upstream pour les formats de jetons reconnus,
+y compris les valeurs imbriquées dans des chaînes JSON. Vérifiez version et empreintes avec
+`apply-output-patch.py --source-root <checkout> --check`, appliquez le patch vérifié et reconstruisez **démon et backend**
+selon le kit. Le déploiement attested figure dans le reçu ci-dessus ; les autres installations exigent une reconstruction distincte.
+
+Masquer le seul commentaire laisse `result.output`/`output_summary` exposés. Seule la valeur nettoyée doit atteindre
+les sorties corrigées ; ne journalisez pas l'original pour diagnostic. Le contrôle de motifs est borné : il ne couvre
+pas tout secret ou encodage, les fichiers de session du runtime, les autres chemins de logs non corrigés ni
+l'historique base/file. Examinez-les séparément et réduisez d'abord les secrets lisibles. Retirez ou isolez les
+anciens enregistrements exposés selon la politique de conservation ; le patch ne nettoie pas l'historique.
+
+Valider JSON, taille et liens dans le fournisseur (§10) reste utile, mais arrive trop tard pour protéger le stockage
+brut du démon. Ni la continuation Stop ni le SDK de sélection structurée WARDEN ne constituent un DLP général pour
+la prose libre. Avant déploiement, faites passer un faux jeton reconnaissable par chaque sortie corrigée.
 
 Le plugin est livré dans `@aimarket/warden` à partir de la version 0.23.0 (`@aimarket/warden/opencode`). Chargeur,
 sous le nom `plugin/warden.js` dans le dossier de configuration d'OpenCode :
@@ -312,9 +447,13 @@ est chargé.
 
 ### Exemple : la protection pour tous les agents
 
-Voici notre installation en service : Multica 0.8.0, OpenCode 1.18.32 et WARDEN 0.23.0. Les fichiers de `warden/`
+Voici la configuration historique vérifiée le 2026-11-05 : Multica 0.8.0, OpenCode 1.18.32 et WARDEN 0.23.0. Les fichiers de `warden/`
 sont les fichiers du plugin du paquet npm `@aimarket/warden@0.23.0`, inchangés (20 fichiers). Chaque commande
 ci-dessous a d'abord été exécutée sur notre hôte.
+
+Le tarball historique ci-dessous **ne contient pas** la correction du 2026-11-10. Pour un nouveau déploiement QA,
+utilisez la compilation locale vérifiée et les contrôles du [kit de sécurité](../security/README.md), en conservant
+version et manifeste des fichiers. Les commandes suivantes conservent l'ancienne recette, pas une recette validée aujourd'hui.
 
 Le chargeur, enregistré sous `warden.js` à côté de `docker-compose.yml` :
 
@@ -536,9 +675,8 @@ Comment les pièces s'assemblent :
    tout débit si l'entrée est fausse ou si la source est indisponible : le hub ne facture qu'un appel qui a obtenu une
    réponse. Aucun texte libre de l'acheteur ne doit atteindre l'agent.
 3. **La réponse finale de l'agent est le livrable.** C'est une seule ligne JSON,
-   `{"job_id": "...", "summary": "..."}`, et Multica la publie sur la tâche. L'agent n'envoie rien sur le réseau.
-   Un agent qui a lu un texte extérieur puis envoie des valeurs tirées de sa propre tâche, c'est exactement ce que
-   WARDEN refuse.
+   `{"job_id": "...", "summary": "..."}`, et le publicateur de confiance Multica doit masquer les secrets reconnus avant stockage ou publication.
+   L'agent ne nécessite aucun envoi réseau direct. Contrôle des outils et contrôle de sortie sont distincts.
 4. **L'agent de commandes lance une seule enveloppe.** La nôtre est
    [`order-task`](../provider/order-task/order-task) : `order-task get <issue>` affiche la tâche et
    `order-task done <issue>` la ferme, seulement si la tâche est assignée à l'agent de commandes. Elle appartient à
@@ -560,15 +698,28 @@ de plus). Il vend `github.digest.order@v1` à 0,05 $ sur hub.attestedmemory.net.
 
 ## 11. Vérifiez l'installation
 
-- **La configuration vue par l'agent.** Lancez `opencode debug config` en tant qu'utilisateur de l'agent, avec le
-  `OPENCODE_CONFIG_CONTENT` de l'agent. Vérifiez que les serveurs MCP sont coupés là où vous le vouliez et que le
-  plugin figure dans la liste.
-- **La sortie réseau.** Depuis le démon, `curl https://example.com` doit échouer via le proxy, et
-  `curl https://api.github.com/zen` doit répondre.
-- **La protection.** Lancez une attaque simulée avec une **fausse** clé dans un fichier : demandez à un agent de
-  l'envoyer par chaque canal autorisé. Chaque envoi doit être refusé, et une tâche normale doit passer sans refus.
-- **La vente.** Passez une vraie commande avec un petit budget. Vérifiez que le résultat est lu par l'acheteur qui a
-  payé, qu'un appel sans acheteur est refusé, et qu'une entrée erronée est refusée sans débit.
+- **Exécuteur séparé.** Testez `qa_runner` → `task_execute {"id":"platform_smoke"}` et son rapport fixe. Refusez ID
+  inconnu, URL/commande supplémentaire, manifeste expiré/modifié et budget épuisé ; le shell reste refusé. Vérifiez
+  séparément montages/noms env du worker, clé TLS seulement sur l'hôte et livraison du rapport borné.
+- **Configuration effective.** Lancez `opencode debug config` comme utilisateur de l'agent avec son `OPENCODE_CONFIG_CONTENT`.
+  Vérifiez permissions, serveurs MCP et chemin du plugin appartenant à root. Pour Claude/Codex, contrôlez les hooks et
+  le refus dans ce runtime. Consignez versions exactes, hash de politique et défaillances des hooks.
+- **Frontières réseau.** Lancez les [contrôles egress](../security/egress/README.md) depuis le vrai réseau du démon :
+  les cibles approuvées fonctionnent ; hôtes absents, IPv4/IPv6 directs, récepteurs hôte/passerelle Docker, DNS externe,
+  suppression du proxy/`--noproxy`, autres ports et SSH doivent échouer. Vérifiez séparément le résolveur Docker,
+  puis recommencez après redémarrage du conteneur/Docker. Contrôlez le récepteur et la connexion TCP : un timeout
+  client ne prouve pas un refus. Utilisez seulement vos récepteurs et des données synthétiques.
+- **Sessions propres et contaminées.** Dans des sessions neuves, testez fichier de fausse clé → premier envoi sans
+  visiter de site, puis après `multica issue get`, commentaires, rapport local Playwright et page web. Tout canal
+  permis, commentaires Multica inclus, doit refuser avant livraison. Utilisez une tâche/un récepteur de test ;
+  n'envoyez aucun secret vers GitHub ou des services publics. Consignez étiquettes de source et décisions PreToolUse.
+  Exécutez ensuite un QA normal, un démarrage sans installation et un rapport sûr, sans contournement. Un refus termine
+  l'exécution ; le superviseur de confiance signale séparément un statut fixe sûr.
+- **Résultats finaux.** Placez une fausse clé reconnaissable dans une réponse. Sa valeur brute doit être absente des
+  champs `result.output`, `output_summary`, commentaires, événements et journaux corrigés. Vérifiez masquage, résultat
+  normal et chemins de réessai/redémarrage. Examinez séparément sessions/logs non corrigés et anciens enregistrements.
+- **Vente.** Pour un contrôle de bout en bout autorisé, utilisez une petite commande. Vérifiez l'isolation de
+  l'acheteur, le refus sans acheteur et le refus d'entrée invalide avant débit.
 
 ## 12. Pièges dans lesquels nous sommes tombés
 
@@ -586,13 +737,17 @@ de plus). Il vend `github.digest.order@v1` à 0,05 $ sur hub.attestedmemory.net.
 
 ## 13. Limites connues
 
-- Multica publie lui-même la réponse finale d'un agent, hors des appels d'outils qu'une protection voit. Vérifiez
-  cette réponse dans votre service : forme, taille et liens.
-- Le démon et ses agents tournent sous un même utilisateur. Tout agent peut lire la connexion Multica du démon, et un
-  agent doté d'un shell complet peut modifier des fichiers utilisés par les autres. La sortie limitée, la protection
-  et la propriété des fichiers réduisent ce risque ; seul un utilisateur distinct par agent le supprimerait.
-- La protection s'applique par runtime, pas par agent.
-- Un hôte de la liste reste un canal. Gardez la liste courte et donnez aux jetons le moins de permissions possible.
+- Les hooks d'outils ne possèdent pas la sortie finale Multica. Le démon doit la contrôler **avant** stockage et
+  livraison ; un validateur ultérieur ou un commentaire masqué ne nettoie pas les champs bruts déjà enregistrés.
+- La protection historique déclenchée par texte extérieur pouvait laisser sortir un secret avant ce déclencheur.
+  Les changements locaux du 2026-11-10 exigent tests et déploiement ; les anciens résultats npm/réels ne les vérifient pas.
+- Démon et agents partagent un utilisateur. Un agent peut lire ses identifiants Multica et fichiers accessibles.
+  Une isolation plus forte demande utilisateurs/conteneurs distincts, montages minimaux et permissions par agent.
+- La protection est par runtime, pas par agent. Protégez état de l'arbre des sessions et configuration.
+- Les hôtes autorisés restent des canaux, API Multica/modèle et SSH inclus. Le pare-feu borne les destinations ; corps
+  CONNECT chiffré, encodages arbitraires et secrets inconnus demandent d'autres contrôles. Ouvrir tout le registre ou
+  l'écriture GitHub n'est pas une valeur sûre par défaut pour QA.
+- Un reçu de tests locaux ne signifie ni déploiement réel, ni publication du paquet, ni recette en production.
 
 Installation de référence : [`multica/community/README.md`](../community/README.md). Revue de sécurité de cette
 installation : [`artifacts/vulnetix-class-multica-2026-11-05/REPORT.md`](../../artifacts/vulnetix-class-multica-2026-11-05/REPORT.md).

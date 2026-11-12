@@ -1,0 +1,66 @@
+{
+  "submitted_unique_queries": 24,
+  "exact_overlap_previous_social_25": [],
+  "groups": [
+    {
+      "group": "search-0",
+      "queries": [
+        "\"Multica\" \"AIMarket\" -site:github.com -site:modelmarket.dev -site:dev.to -site:medium.com",
+        "\"@aimarket/warden/opencode\" -site:github.com -site:modelmarket.dev -site:npmjs.com",
+        "\"attestedmemory\" (site:dev.to OR site:hashnode.dev OR site:reddit.com OR site:news.ycombinator.com)",
+        "\"LEGION-tlog\" \"HISTOR\" -site:modelmarket.dev -site:github.com -site:dev.to"
+      ],
+      "response_file": "search-0.json"
+    },
+    {
+      "group": "search-1",
+      "queries": [
+        "\"scraperwatch.com\" \"HISTOR\" -site:github.com -site:modelmarket.dev -site:dev.to",
+        "\"@alexar76/dioscuri\" -site:github.com -site:npmjs.com -site:jsdelivr.com",
+        "\"hestia.modelmarket.dev\" -site:github.com -site:modelmarket.dev",
+        "\"metis.modelmarket.dev\" (site:dev.to OR site:hashnode.dev OR site:reddit.com OR site:answeroverflow.com)"
+      ],
+      "response_file": "search-1.json"
+    },
+    {
+      "group": "search-2",
+      "queries": [
+        "\"DELOS\" \"alexar76\"",
+        "\"attestedmemory.net\" -site:github.com -site:modelmarket.dev -site:dev.to -site:glama.ai -site:odel.app",
+        "\"Karatum\" \"AIMarket\" -site:karatum.com -site:github.com -site:modelmarket.dev",
+        "\"PingBlip\" \"Bruised Banana\" -site:pingblip.com -site:youtube.com -site:github.com"
+      ],
+      "response_file": "search-2.json"
+    },
+    {
+      "group": "search-3",
+      "queries": [
+        "\"hestia.host.deploy@v1\" -site:github.com -site:pypi.org -site:modelmarket.dev",
+        "\"aimarket-metis\" (site:dev.to OR site:reddit.com OR site:hashnode.dev OR site:discuss.huggingface.co OR site:answeroverflow.com)",
+        "\"DIOSCURI\" \"MNEMOSYNE\" -site:github.com -site:npmjs.com -site:npm.io -site:modelmarket.dev",
+        "\"multica-ai/multica\" (\"AIMarket\" OR \"WARDEN\" OR \"Attested\") -site:github.com -site:dev.to -site:medium.com -site:modelmarket.dev"
+      ],
+      "response_file": "search-3.json"
+    },
+    {
+      "group": "search-4",
+      "queries": [
+        "\"Trace of Refusal\" (\"review\" OR \"reading\" OR \"discuss\") -site:itch.io -site:modelmarket.dev -site:github.com",
+        "\"The Weight of the Answer\" -site:itch.io -site:modelmarket.dev -site:github.com",
+        "\"The White on the Map\" -site:itch.io -site:modelmarket.dev -site:github.com",
+        "\"The Right to a Shadow\" -site:itch.io -site:modelmarket.dev -site:github.com"
+      ],
+      "response_file": "search-4.json"
+    },
+    {
+      "group": "search-5",
+      "queries": [
+        "\"AIMarket\" \"Multica\" site:dev.to -inurl:alexar76",
+        "\"HISTOR\" \"MCP\" site:dev.to -inurl:alexar76",
+        "\"WARDEN\" \"OpenCode\" (site:hashnode.dev OR site:reddit.com OR site:answeroverflow.com)",
+        "\"Twenty-seven people marked\" \"NEVER DEPARTED\""
+      ],
+      "response_file": "search-5.json"
+    }
+  ]
+}

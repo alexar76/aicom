@@ -1,0 +1,40 @@
+{
+  "id": "cmw9lo6bi005xn5489gg0rk47",
+  "playerId": "cmw9lkshs0052n548w23eywq3",
+  "speciesId": "sprinkle-moth",
+  "source": "catch",
+  "stage": "awake",
+  "evolved": false,
+  "evolvedAt": null,
+  "feedCount": 0,
+  "lastFeedAt": null,
+  "hatchedAt": "2026-11-09T18:34:00.318Z",
+  "cell": "ge2ku",
+  "hatchProofId": "a38648fea21a85786e68",
+  "catchProofId": "a38648fea21a85786e68",
+  "asleepAt": null,
+  "nickname": null,
+  "feeds": [],
+  "species": {
+    "id": "sprinkle-moth",
+    "name": "Sprinkle Moth",
+    "type": "sugar",
+    "typeLabel": "Sugar",
+    "diet": {
+      "productId": "gaia.gateway",
+      "capabilityId": "gaia.weather.read@v1",
+      "sourceHub": "https://iot.modelmarket.dev",
+      "label": "weather",
+      "input": {
+        "device_id": "om-wx-01"
+      }
+    },
+    "sceneId": "sugar-forge",
+    "rarity": "common",
+    "packId": "sugar-riot"
+  },
+  "hungry": true,
+  "asleep": false,
+  "feedReady": true,
+  "nextFeedAt": "2026-11-10T19:49:48.183Z"
+}

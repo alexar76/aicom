@@ -19,6 +19,48 @@ export function payerOf(header) {
   }
 }
 
+/** The authorization's validBefore in epoch seconds, or 0 when the header names none. */
+export function validBeforeOf(header) {
+  try {
+    const doc = JSON.parse(Buffer.from(String(header), "base64").toString("utf8"));
+    const v = Number(doc?.payload?.authorization?.validBefore ?? 0);
+    return Number.isFinite(v) && v > 0 ? v : 0;
+  } catch {
+    return 0;
+  }
+}
+
+// The paywall settles only after the handler answers, and the handler has already bought the
+// call upstream (hub credit, a hearth sale). An authorization that expires while the handler
+// runs, or one its payer cancels or underfunds before settle, leaves that cost with the
+// gateway and the buyer with nothing to pay (audit 2026-11-11, deposits-x402-6). So: refuse an
+// authorization that cannot outlive the slowest upstream call, and give a wallet whose payment
+// failed to settle after it was served a cooldown, so the loss cannot be repeated at the rate
+// limit. A stock client signs validBefore = now + maxTimeoutSeconds (60 s).
+export const MIN_AUTHORIZATION_LIFETIME_S = 45;
+export const FAILED_SETTLE_COOLDOWN_MS = 60 * 60_000;
+
+// Only a failure the payer caused earns the cooldown: the authorization was used or cancelled
+// elsewhere, or the wallet no longer holds the money. A facilitator outage (502), a timeout or
+// our own error left an honest wallet locked out for an hour (review of 2026-11-11).
+const PAYER_FAULT = /nonce_already_used|insufficient_balance|insufficient_funds|transaction_simulation_failed|transaction_failed/;
+
+/** The settle failure reason the paywall put in PAYMENT-RESPONSE, or "". */
+export function settleFailureReason(res) {
+  const raw = res.getHeader("PAYMENT-RESPONSE") || res.getHeader("X-PAYMENT-RESPONSE") || "";
+  if (!raw) return "";
+  try {
+    const doc = JSON.parse(Buffer.from(String(raw), "base64").toString("utf8"));
+    return String(doc?.errorReason || "");
+  } catch {
+    return "";
+  }
+}
+
+export function isPayerFault(status, reason) {
+  return status === 402 && PAYER_FAULT.test(String(reason || ""));
+}
+
 /** Fixed-window counter per caller and service; in memory, because one process serves it. */
 function rateLimiter(perMinute, now) {
   const windows = new Map();
@@ -212,22 +254,51 @@ export function createApp({
     // N concurrent requests carrying the same payment header — or N authorizations from a
     // wallet that can cover one — all passed verify, all ran, and at most one settled.
     const inFlight = new Set();
+    const failedSettles = new Map();   // payer → until (ms); bounded below
     app.post("/x402/:service", (req, res, next) => {
       const header = String(req.get("payment-signature") || req.get("x-payment") || "");
       if (!header) return next();
-      const keys = [`h:${createHash("sha256").update(header).digest("hex")}`];
+      const service = services.get(req.params.service) || { id: req.params.service };
       const payer = payerOf(header);
+      const until = payer ? failedSettles.get(payer) || 0 : 0;
+      if (until > now()) {
+        return res.status(403).set("Retry-After", String(Math.ceil((until - now()) / 1000))).json(
+          failure(service, "payment_failed_recently",
+                  "a payment from this wallet was served but did not settle; try again later"));
+      }
+      const validBefore = validBeforeOf(header);
+      if (validBefore && validBefore * 1000 < now() + MIN_AUTHORIZATION_LIFETIME_S * 1000) {
+        return res.status(400).json(
+          failure(service, "authorization_expires_too_soon",
+                  `sign an authorization valid for at least ${MIN_AUTHORIZATION_LIFETIME_S} s: it is settled after the call answers`));
+      }
+      const keys = [`h:${createHash("sha256").update(header).digest("hex")}`];
       if (payer) keys.push(`p:${payer}`);
       if (keys.some((k) => inFlight.has(k))) {
-        const service = services.get(req.params.service);
         return res.status(409).set("Retry-After", "5").json(
-          failure(service || { id: req.params.service }, "payment_in_flight",
+          failure(service, "payment_in_flight",
                   "a call paid by this payment or wallet is still running; retry when it answers"));
       }
       keys.forEach((k) => inFlight.add(k));
       let released = false;
       const release = () => { if (!released) { released = true; keys.forEach((k) => inFlight.delete(k)); } };
-      res.on("finish", release);
+      res.on("finish", () => {
+        // The handler answered below 400 (so it bought the call upstream) and the client got
+        // something else: the paywall's settle failed and replaced the answer.
+        const served = res.locals.servedStatus;
+        if (served && served < 400 && res.statusCode !== served) {
+          const reason = settleFailureReason(res);
+          const fault = isPayerFault(res.statusCode, reason);
+          if (fault && payer) {
+            if (failedSettles.size > 10_000) failedSettles.clear();
+            failedSettles.set(payer, now() + FAILED_SETTLE_COOLDOWN_MS);
+          }
+          console.error(`x402: ${service.id} was served to ${payer || "an unknown payer"} and its payment did `
+                        + `not settle (answered ${res.statusCode}, ${reason || "no reason"}); the upstream cost `
+                        + `stays with the gateway${fault ? "; the wallet waits an hour" : ""}`);
+        }
+        release();
+      });
       res.on("close", release);
       return next();
     });
@@ -239,7 +310,9 @@ export function createApp({
       try {
         const [status, body] = await service.handle(paramsOf(req), { callerId: callerIdFor(ip, callerSecret), paid: true });
         // A paid call with missing parameters is refused, not answered: 200 would be settled.
-        return res.status(body?.status === "input_required" ? 400 : status).json(body);
+        const answered = body?.status === "input_required" ? 400 : status;
+        res.locals.servedStatus = answered;
+        return res.status(answered).json(body);
       } catch {
         return res.status(500).json(failure(service, "internal_error", "the service failed; try again"));
       }

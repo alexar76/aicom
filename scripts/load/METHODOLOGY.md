@@ -2,8 +2,8 @@
 
 Харнесс: [`locust_ecosystem.py`](locust_ecosystem.py) + [`run_load_smoke.sh`](run_load_smoke.sh).
 Отдельные контуры: Factory soak [`scripts/load_test_factory.sh`](../load_test_factory.sh) (KI-3),
-Mesh [`ai-service-mesh/backend/load/`](../../ai-service-mesh/backend/load/), Metis k6
-[`metis/deploy/loadtest.k6.js`](../../metis/deploy/loadtest.k6.js).
+Mesh [`ai-service-mesh/backend/load/`](https://github.com/alexar76/ai-service-mesh/tree/main/backend/load/), Metis k6
+[`metis/deploy/loadtest.k6.js`](https://github.com/alexar76/metis/blob/main/deploy/loadtest.k6.js).
 
 venv для Locust лежит в `scripts/load/.venv*` и **не коммитится**.
 

@@ -1,0 +1,72 @@
+# Drift Watch - 2026-11-07 run
+
+**Run:** 2026-11-07 (6-day window - the bus was quiet after 11-01; drift-feed kept its own
+hosted scans 11-03/11-05) - tool `npx rugsnare@1.4.3` (corpus grading comparability).
+
+**Movers: 12 of 30 npm entries + both skills repos - the busiest window in corpus history.**
+Headline: **sentry exploded 3 -> 76** - the toolkit #1374 split shipped exactly as predicted,
+with still no release-notes channel. Second headline: **superpowers v7.0.2 rewrites the
+subagent-driven-development suite wholesale** (7 DANGEROUS in one patch release).
+
+| server | package | pinned -> latest | findings | note |
+|---|---|---|---|---|
+| sentry | @sentry/mcp-server | 0.38.0 -> 0.49.0 | **76** (was 3) | #1374 wave: 9 -> 76 tools (67 NEW: monitors/dashboards/releases/teams), find_projects BREAKING, search_events era ends; entry moved to dist/sentry-mcp.cjs |
+| hostinger | hostinger-api-mcp | 2.4.0 -> 3.31.1 | 46 (was 40) | 1 IDENTITY + 40 NEW agent-skill resources (connect/ now ships launch.mjs + launch.sh) + 5 GONE; tools stay at 3 |
+| browserstack | @browserstack/mcp-server | 1.4.1 -> 2.6.5 | 45 (was 42) | 7 BREAKING + 15 COSMETIC + 15 NOTATION + 1 EXPANDED + 1 LOOSENED + 6 NEW; 46 -> 52 tools; #476 still open |
+| iterable | @iterable/mcp | 1.0.0 -> 1.9.1 | **19 (RE-GRADED from 62)** | fresh stand, both endpoints re-pinned; 4 BREAKING + 1 EXPANDED + 10 NEW; the BREAKING-inside-1.x violation stands; the 62 was the 10-18 first-contact grading |
+| supabase | @supabase/mcp-server-supabase | 0.8.3 -> 0.16.1 | 16 (was 11) | 3 COSMETIC + 3 NOTATION + 1 LOOSENED + 8 NEW + 1 GONE; 29 -> 37 tools |
+| apify | @apify/actors-mcp-server | 0.16.0 -> 0.21.4 | 9 (was 8) | 1 BREAKING fetch-actor-details + 3 NEW actor-MCP bridge tools (fetch-actor-mcp-tool-list / call-actor-mcp-tool / send-server-actor-request); 10 -> 13 tools |
+| transcend | @transcend-io/mcp-server-assessment | 2.1.2 -> 2.1.15 | 2 | stable: the assessments_create BREAKING pair |
+| sap-fiori | @sap-ux/fiori-mcp-server | 1.13.0 -> 1.15.24 | 4 | stable: 2 BREAKING generators + 2 COSMETIC |
+| everything (ref) | @modelcontextprotocol/server-everything | 0.1.0 -> 2.2.1 | 44 (was 43) | 1 LOOSENED + 27 NEW + 16 GONE |
+| filesystem (ref) | @modelcontextprotocol/server-filesystem | 0.2.0 -> 2.2.0 | 16 (was 14) | 8 BREAKING: read_file split (read_text_file/read_media_file), write_file split (append_file/edit_file NEW) |
+| dsr (ref) | @transcend-io/mcp-server-dsr | 0.2.0 -> 2.0.15 | 15 | stable count; submission-tool BREAKING set |
+| context7 | @upstash/context7-mcp | 4.0.4 -> 4.5.1 | 1 | still the single query-docs EXPANDED; 4.4.x -> 4.5.1 otherwise contract-quiet |
+
+**Skills:** superpowers v7.0.1 -> v7.0.2 = **15 findings, 7 DANGEROUS**
+(subagent-driven-development suite rewritten: SKILL.md + re-review-prompt + task-reviewer-prompt +
+references/final-review + references/fix-loop; brainstorming SKILL.md rewritten again;
+executing-plans rewritten; 5 systematic-debugging test files GONE). Pin: superpowers@7.0.2.json.
+vercel-labs/skills moved 92a9a34 -> d3701c1 but the skills tree is **clean** (0 findings);
+lastSeen advanced, pin snapshot vercel-skills@d3701c1.json.
+
+**bybit:** trading-mcp still delisted from npm (registry 404, 3rd consecutive run).
+
+Corpus totals after this run: 22-server registry set **504** (was 416); full 28-server manifest
+**627** (was 579). The +88 on the census set is sentry (+73); iterable's honest re-grade
+returns -43 from the manifest count.
+
+## Notable excerpts
+
+**sentry - the predicted break lands silently:**
+```
+  [DRIFT] find_projects (BREAKING) d56ca364d18264db -> fd9b038daef4bc5e
+  [NEW ] find_releases b1c7a7960c0cd5e4
+  [NEW ] create_monitor c8bb2422833226fe
+  [NEW ] find_dashboards 79beb24242879f02
+  ... x67 NEW total; 9 -> 76 tools
+```
+
+**superpowers - a patch release rewrites the orchestration instructions:**
+```
+  [DRIFT] skills-dir/project/subagent-driven-development\SKILL.md (DANGEROUS)
+  [DRIFT] skills-dir/project/subagent-driven-development\task-reviewer-prompt.md (DANGEROUS)
+  [DRIFT] skills-dir/project/brainstorming\SKILL.md (DANGEROUS)
+  ... 15 findings, 7 dangerous
+```
+
+**filesystem - the reference server splits its primitives:**
+```
+  [DRIFT] read_file (BREAKING) 2b4763b7d9505a92 -> 8afdfd757d8498f8
+  [NEW ] read_text_file efae7668e26ac60d
+  [NEW ] read_media_file 80b8f1c4d633c50d
+  [DRIFT] write_file (BREAKING) 11428d865318650b -> a2402bc2d925d1d0
+  [NEW ] edit_file f32addf02cc9fc2d
+```
+
+## Artifacts
+
+- 26 pin snapshots in [`pins/`](pins/) (both window endpoints per mover + superpowers@7.0.2 + vercel-skills@d3701c1)
+- Stand logs: C:/tmp/new8-logs (driver C:/tmp/new8-driver.mjs, pattern of new5/new6/new7)
+
+Tool: [rugsnare](https://www.npmjs.com/package/rugsnare).

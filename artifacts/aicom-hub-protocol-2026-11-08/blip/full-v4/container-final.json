@@ -1,0 +1,264 @@
+[
+    {
+        "Id": "7245f38570f40cb2d6bc213524d02b758131e0d59ed173a7544ca2ddcd63e6de",
+        "Created": "2026-11-08T06:57:42.364415766Z",
+        "Path": "python",
+        "Args": [
+            "/runner-v4.py",
+            "--site",
+            "blip",
+            "--mode",
+            "full"
+        ],
+        "State": {
+            "Status": "exited",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-11-08T06:57:42.44128718Z",
+            "FinishedAt": "2026-11-08T07:20:05.257345448Z"
+        },
+        "Image": "sha256:76baad6037690d6e8c4397fbcaef17bca6f19eecef822b708fe8fa3417d30bb5",
+        "ResolvConfPath": "/var/lib/docker/containers/7245f38570f40cb2d6bc213524d02b758131e0d59ed173a7544ca2ddcd63e6de/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/7245f38570f40cb2d6bc213524d02b758131e0d59ed173a7544ca2ddcd63e6de/hostname",
+        "HostsPath": "/var/lib/docker/containers/7245f38570f40cb2d6bc213524d02b758131e0d59ed173a7544ca2ddcd63e6de/hosts",
+        "LogPath": "/var/lib/docker/containers/7245f38570f40cb2d6bc213524d02b758131e0d59ed173a7544ca2ddcd63e6de/7245f38570f40cb2d6bc213524d02b758131e0d59ed173a7544ca2ddcd63e6de-json.log",
+        "Name": "/hub-protocol-full-v4-20261108",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/opt/aicom-verify/20261108-all-tree/source-v4:/work:ro",
+                "/opt/warden-tests/20261108-hub-protocol-check/runtime:/runtime:ro",
+                "/opt/warden-tests/20261108-hub-protocol-check/runner-v4.py:/runner-v4.py:ro",
+                "/opt/warden-tests/20261108-hub-protocol-check/results/full-v4:/results:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "none",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": [
+                "ALL"
+            ],
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": [
+                "no-new-privileges"
+            ],
+            "Tmpfs": {
+                "/tmp": "rw,exec,nosuid,nodev,size=512m"
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runsc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 2147483648,
+            "NanoCpus": 2000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 2147483648,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": 384,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/opt/warden-tests/20261108-hub-protocol-check/results/full-v4",
+                "Destination": "/results",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/opt/warden-tests/20261108-hub-protocol-check/runner-v4.py",
+                "Destination": "/runner-v4.py",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/opt/warden-tests/20261108-hub-protocol-check/runtime",
+                "Destination": "/runtime",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/opt/aicom-verify/20261108-all-tree/source-v4",
+                "Destination": "/work",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "7245f38570f4",
+            "Domainname": "",
+            "User": "1000:1000",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+                "HOME=/tmp/home",
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.13.18",
+                "PYTHON_SHA256=abb0102e6d4ae027509bcb82327d9dd85515b44a3ba8ad538cfc5e9847029f68"
+            ],
+            "Cmd": [
+                "/runner-v4.py",
+                "--site",
+                "blip",
+                "--mode",
+                "full"
+            ],
+            "Image": "sha256:76baad6037690d6e8c4397fbcaef17bca6f19eecef822b708fe8fa3417d30bb5",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": [
+                "python"
+            ],
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "SandboxID": "",
+            "SandboxKey": "",
+            "Ports": {},
+            "Networks": {
+                "none": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "80069ff9d9d0ad21692345ed0f7df3c00fea1a90b6cc8534f1310a3198969cf1",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "MacAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": null
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:aaf08c5490d52cd92bc27142a5215b1e47355a5eaf9adfad2a0fbc022d0b5490",
+            "size": 1746,
+            "annotations": {
+                "com.docker.official-images.bashbrew.arch": "amd64",
+                "org.opencontainers.image.base.digest": "sha256:1e1a22175fbf1b32157ddaf0219e1db4e5401fab2b94ed285add64d18587cd2d",
+                "org.opencontainers.image.base.name": "debian:trixie-slim",
+                "org.opencontainers.image.created": "2026-10-28T01:54:08Z",
+                "org.opencontainers.image.revision": "152874b138f0b1c4699fbdcb52b174608cfbfff5",
+                "org.opencontainers.image.source": "https://github.com/docker-library/python.git#152874b138f0b1c4699fbdcb52b174608cfbfff5:3.13/slim-trixie",
+                "org.opencontainers.image.url": "https://hub.docker.com/_/python",
+                "org.opencontainers.image.version": "3.13.18-slim-trixie"
+            },
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]

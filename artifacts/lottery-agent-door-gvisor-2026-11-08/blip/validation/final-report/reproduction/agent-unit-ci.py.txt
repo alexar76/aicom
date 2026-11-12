@@ -1,0 +1,49 @@
+import pathlib,json,hashlib,os,sys,subprocess,socket,traceback,importlib.metadata,tomllib
+os.umask(0o077);root=pathlib.Path("/source");out=pathlib.Path("/results")
+def sha(p):return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+def manifest(p):
+ d={}
+ for line in pathlib.Path(p).read_text().splitlines():
+  meta,name=line.split("\t",1);mode,kind,oid=meta.split();assert kind=="blob";d[name]=oid
+ return d
+def check(directory,records):
+ for name,oid in records.items():
+  data=(pathlib.Path(directory)/name).read_bytes();assert hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()==oid
+current=manifest("/metadata/source-ci-blobs.txt");check(root,current)
+old=manifest("/metadata/old-agent-blobs.txt");check("/old-agent",old)
+assert {str(p.relative_to(root)) for p in root.rglob("*") if p.is_file()}==set(current)
+before={p:sha(root/p) for p in current}
+from packaging.requirements import Requirement
+requirements=[]
+for value in tomllib.loads((root/"lottery/agent/pyproject.toml").read_text())["project"]["dependencies"]:
+ req=Requirement(value);version=importlib.metadata.version(req.name);assert version in req.specifier
+ requirements.append({"requirement":value,"resolvedVersion":version,"satisfied":True})
+syntax=subprocess.run(["bash","-n",str(root/"artifacts/lottery-agent-door-2026-11-08/isolated_check.sh")],text=True,capture_output=True,timeout=10)
+(out/"bash-syntax.stdout").write_text(syntax.stdout);(out/"bash-syntax.stderr").write_text(syntax.stderr);assert syntax.returncode==0
+testfile=pathlib.Path("/tmp/test_actual_agent_main_controls.py");testfile.write_text(pathlib.Path("/metadata/archived-negative-only.py").read_text())
+pathlib.Path("/tmp/pytest.ini").write_text("[pytest]\n")
+attempts=[];local=[]
+def guard(name):
+ def deny(*args,**kwargs):
+  attempts.append({"operation":name,"test":os.environ.get("PYTEST_CURRENT_TEST")})
+  raise AssertionError("Network forbidden for agent unit controls")
+ return deny
+realbind=socket.socket.bind
+def bind(sock,address):
+ caller=traceback.extract_stack(limit=2)[0]
+ if sock.family==socket.AF_INET6 and isinstance(address,tuple) and address==("::1",0) and caller.name=="_has_ipv6" and caller.filename.endswith("/urllib3/util/connection.py"):
+  local.append("urllib3 IPv6 local-only ephemeral capability probe");return realbind(sock,address)
+ return guard("bind")(sock,address)
+socket.socket.bind=bind;socket.socket.connect=guard("connect");socket.socket.connect_ex=guard("connect_ex");socket.create_connection=guard("create_connection");socket.getaddrinfo=guard("getaddrinfo")
+os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"]="1";os.chdir(root)
+import pytest
+args=["-q","--noconftest","--import-mode=importlib","-p","no:cacheprovider","-c","/tmp/pytest.ini","--rootdir=/source",
+      "--junitxml="+str(out/"unit.xml"),"lottery/agent/tests/test_agent_doors.py","tests/test_evm_public_dev_key_safety.py","lottery/agent/tests/test_agent_loop.py",str(testfile)]
+code=pytest.main(args)
+after={p:sha(root/p) for p in current};check("/old-agent",old)
+r={"format":"aicom.lottery-agent-source-unit-validation/v1","sourceCommit":"cf000311dbdbc0dc8d080d5054c4b9cccdcfd3a8","sourceTree":"675bf9e766375f834b235118c05e5865670e3aef","currentSelectedFiles":len(current),"allCurrentAndOldGitBlobsMatched":True,"declaredAgentDependencies":requirements,"pytestVersion":importlib.metadata.version("pytest"),"command":args,"nativePytestExitCode":int(code),"sourceUnchanged":before==after,"outboundSocketOperationsAttempted":attempts,"localCapabilityProbes":local,"archivedHistoricalScriptBashSyntaxExitCode":syntax.returncode,"archivedHistoricalScriptExecuted":False,"actualMainFiniteControls":True,"positiveLoopControlsAreNormalCIFile":True,"projectTestCasesExpected":78,"archivedHistoricalNegativeCasesExpected":1,"oldReceiptStatusZeroNegativeControl":True,"realWalletOrChainDataMounted":False,"noLocalProjectExecution":True}
+r["passed"]=code==0 and before==after and not attempts
+(out/"summary.json").write_text(json.dumps(r,indent=2,sort_keys=True)+"\n")
+print(json.dumps({k:r[k] for k in ("nativePytestExitCode","sourceUnchanged","archivedHistoricalScriptBashSyntaxExitCode","passed")}))
+raise SystemExit(0 if r["passed"] else 1)
+

@@ -34,6 +34,13 @@ pragma solidity 0.8.28;
  *     one-unit payment paid the seller nothing and the operator the whole unit.
  *   - `seller` may not be this contract, the zero address, or the operator: each of
  *     those turns a split into something that is not a split.
+ *   - A balance AT REST can only be a stray: a plain `transfer`, or a stock x402 client's
+ *     `transferWithAuthorization` naming this contract as `payTo`, which moves USDC here
+ *     without `_settle` running. Before 2026-11-11 such a payment was unrecoverable by
+ *     anyone. `sweepStray` now sends any balance at rest to the immutable `operator` —
+ *     the one accountable party, who sees the sender in the `Transfer` log and owes the
+ *     buyer a refund. It cannot touch a split in progress (every split leaves zero, and
+ *     both doors are `nonReentrant`), and it can send nowhere else.
  *
  * TWO DOORS, because a buyer arrives one of two ways.
  *
@@ -115,6 +122,9 @@ contract MarketSplitter is ReentrancyGuard {
         bytes32 capabilityId
     );
 
+    /// @notice A stray balance (see the header) went to the operator to refund.
+    event StraySwept(address indexed token, address indexed operator, uint256 amount);
+
     error ZeroAddress();
     error FeeTooHigh(uint16 requested, uint16 maximum);
     error BadSeller(address seller);
@@ -174,6 +184,19 @@ contract MarketSplitter is ReentrancyGuard {
             msg.sender, address(this), gross, validAfter, validBefore, nonce, v, r, s
         );
         _settle(erc20, seller, msg.sender, erc20.balanceOf(address(this)) - before, capabilityId);
+    }
+
+    /**
+     * @notice Send a stray balance of `token` to the operator, who must refund its sender.
+     * @dev Permissionless on purpose: whoever notices a stray can move it to the one party
+     *      accountable for it, and nobody can move it anywhere else. A split never leaves a
+     *      balance, so this cannot take any part of a sale.
+     */
+    function sweepStray(IERC20 token) external nonReentrant returns (uint256 amount) {
+        amount = token.balanceOf(address(this));
+        if (amount == 0) revert NothingReceived();
+        token.safeTransfer(operator, amount);
+        emit StraySwept(address(token), operator, amount);
     }
 
     function _checkSeller(address seller) private view {

@@ -1,0 +1,76 @@
+{
+  "preview": "Local Markdown render",
+  "chromium": "147.0.7727.15",
+  "viewports": {
+    "desktop": {
+      "width": 1366,
+      "height": 1000,
+      "title": "Same MCP version. Different tool description. Who signed it?",
+      "horizontalOverflow": false,
+      "images": [
+        {
+          "src": "./assets/cover.webp",
+          "alt": "Two brass printing plates, one altered strip highlighted in mint, beside a copper seal.",
+          "pixels": [
+            1600,
+            672
+          ],
+          "displayWidth": 878
+        },
+        {
+          "src": "./assets/same-version-different-digest.png",
+          "alt": "Two captures show search at version 1.4.2. The description changes from “Search the docs.” to “Search the private docs.” The per-tool and manifest hashes both change.",
+          "pixels": [
+            1440,
+            1470
+          ],
+          "displayWidth": 704
+        },
+        {
+          "src": "./assets/signature-to-live-match.png",
+          "alt": "Publisher CI signs a revision using Sigstore. HISTOR verifies the bundle and Rekor proof at ingest, records the accepted revision, and compares its manifest digest with the client’s raw tools in a separate step.",
+          "pixels": [
+            1440,
+            2000
+          ],
+          "displayWidth": 704
+        }
+      ]
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "title": "Same MCP version. Different tool description. Who signed it?",
+      "horizontalOverflow": false,
+      "images": [
+        {
+          "src": "./assets/cover.webp",
+          "alt": "Two brass printing plates, one altered strip highlighted in mint, beside a copper seal.",
+          "pixels": [
+            1600,
+            672
+          ],
+          "displayWidth": 390
+        },
+        {
+          "src": "./assets/same-version-different-digest.png",
+          "alt": "Two captures show search at version 1.4.2. The description changes from “Search the docs.” to “Search the private docs.” The per-tool and manifest hashes both change.",
+          "pixels": [
+            1440,
+            1470
+          ],
+          "displayWidth": 356
+        },
+        {
+          "src": "./assets/signature-to-live-match.png",
+          "alt": "Publisher CI signs a revision using Sigstore. HISTOR verifies the bundle and Rekor proof at ingest, records the accepted revision, and compares its manifest digest with the client’s raw tools in a separate step.",
+          "pixels": [
+            1440,
+            2000
+          ],
+          "displayWidth": 356
+        }
+      ]
+    }
+  }
+}

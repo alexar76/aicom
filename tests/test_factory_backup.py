@@ -39,3 +39,43 @@ def test_build_factory_backup_zip_includes_manifest(tmp_path, monkeypatch):
             assert "sandboxes" in (manifest.get("skipped_top_level_dirs") or [])
     finally:
         zip_path.unlink(missing_ok=True)
+
+
+@pytest.mark.parametrize("include_sandboxes", [False, True])
+def test_backup_excludes_previous_backups_and_pending_uploads(tmp_path, monkeypatch, include_sandboxes):
+    data = tmp_path / "data"
+    for dirname in ("backups", "_restore_uploads", "code"):
+        (data / dirname).mkdir(parents=True)
+        (data / dirname / "fixture.txt").write_text(dirname)
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(data))
+    from web.backend.services.factory_backup import build_factory_backup_zip
+
+    path, _ = build_factory_backup_zip(include_sandboxes=include_sandboxes)
+    try:
+        with zipfile.ZipFile(path) as archive:
+            assert "code/fixture.txt" in archive.namelist()
+            assert not any(n.startswith(("backups/", "_restore_uploads/")) for n in archive.namelist())
+    finally:
+        path.unlink()
+
+
+def test_backup_does_not_read_symlink_targets_outside_data(tmp_path, monkeypatch):
+    data = tmp_path / "data"
+    code = data / "code" / "generated"
+    code.mkdir(parents=True)
+    outside = tmp_path / "host-secret.txt"
+    outside.write_text("fixture-only-host-secret")
+    (code / "leaked.txt").symlink_to(outside)
+    (code / "host-directory").symlink_to(tmp_path, target_is_directory=True)
+    (code / "index.html").write_text("normal product")
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(data))
+    from web.backend.services.factory_backup import build_factory_backup_zip
+
+    path, _ = build_factory_backup_zip(include_sandboxes=True)
+    try:
+        with zipfile.ZipFile(path) as archive:
+            assert archive.read("code/generated/index.html") == b"normal product"
+            assert "code/generated/leaked.txt" not in archive.namelist()
+            assert not any(b"fixture-only-host-secret" in archive.read(n) for n in archive.namelist())
+    finally:
+        path.unlink()

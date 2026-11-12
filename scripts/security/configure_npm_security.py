@@ -13,6 +13,12 @@ from pathlib import Path
 
 import yaml
 
+# Routine (version-update) PRs on the GitHub mirrors: none. See configure().
+ROUTINE_PR_LIMIT = 0
+HEADER = ('# npm coverage is maintained by scripts/security/configure_npm_security.py.\n'
+          '# open-pull-requests-limit 0: no routine version-update PRs on the GitHub mirrors (owner, 2026-11-10).\n'
+          '# Dependencies are updated in the aicom monorepo; GitHub still opens security-update PRs where they are enabled.\n')
+
 SKIP = {'.git', 'node_modules', '.venv', 'venv', 'dist', 'build', '.next',
         '.upstreams', '.cache', 'vendor', '.pnpm-store'}
 
@@ -41,10 +47,13 @@ def configure(root: Path) -> bool:
     # One pull request per kind of update. The published repositories are mirrors: every
     # Dependabot PR is imported back by hand, and ungrouped majors left 76 single-package PRs
     # open across the satellites on 2026-10-21, which reads as an unattended repository.
+    # Since 2026-11-10 (owner) routine version updates are off: a limit of 0 opens no
+    # version-update PR, while GitHub still opens security-update PRs where they are enabled.
+    # Dependencies are updated in the monorepo instead (32 grouped PRs were open that day).
     entry.update({
         'directories': ['/', '/**/*'],
         'schedule': {'interval': 'weekly', 'day': 'monday'},
-        'open-pull-requests-limit': 5,
+        'open-pull-requests-limit': ROUTINE_PR_LIMIT,
         'groups': {
             'npm-security': {'applies-to': 'security-updates', 'patterns': ['*']},
             'npm-minor-patch': {'patterns': ['*'], 'update-types': ['minor', 'patch']},
@@ -55,11 +64,10 @@ def configure(root: Path) -> bool:
     for other in others:
         eco = other.get('package-ecosystem', 'deps')
         other.setdefault('groups', {f'{eco}-all': {'patterns': ['*']}})
-        other['open-pull-requests-limit'] = min(int(other.get('open-pull-requests-limit', 5)), 5)
+        other['open-pull-requests-limit'] = ROUTINE_PR_LIMIT
     data['updates'] = others + [entry]
     config.parent.mkdir(parents=True, exist_ok=True)
-    config.write_text('# npm coverage is maintained by scripts/security/configure_npm_security.py.\n'
-                      + yaml.safe_dump(data, sort_keys=False))
+    config.write_text(HEADER + yaml.safe_dump(data, sort_keys=False))
     workflow = config.parent / 'workflows/npm-dependency-audit.yml'
     workflow.parent.mkdir(parents=True, exist_ok=True)
     workflow.write_bytes(Path(__file__).with_name('npm-dependency-audit.yml').read_bytes())

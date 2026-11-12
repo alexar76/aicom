@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-10",
+  "scope": "QA adapter only; existing WARDEN TaskAdapter reused with no core changes or production mutation",
+  "checks": {
+    "pythonLeaseConfigTests": 5,
+    "realTlsMcpTests": 6,
+    "passed": 11,
+    "failed": 0,
+    "installerReadOnlyPreflight": {
+      "passed": true,
+      "archiveSha256": "36c061f4fcd682c9deb7be2d8e84e2e69d42b2331c8163b1f1e0b0fa3fbd3941",
+      "packageFiles": 393
+    },
+    "pythonSyntax": "passed",
+    "diffWhitespace": "passed"
+  },
+  "validated": [
+    "Actual OpenCode guard delegates only the exact qa_runner task_execute fixed ID despite tainted credential state.",
+    "The same guard refuses generic Bash in that state.",
+    "The existing compiled TaskAdapter and actual env-i stdio MCP send one fixed empty HTTPS POST.",
+    "Arbitrary job/URL/body/headers/command arguments, expired or tampered manifests and absent trusted CA are refused.",
+    "Ten-use operation state remains spent across adapter restarts and identical manifest rewrites.",
+    "Root lease renewal preserves unrelated ask policy, existing session files and existing usage files.",
+    "Privileged atomic writes reject symlink directory ancestors."
+  ],
+  "lease": {
+    "operation": "platform_smoke",
+    "method": "POST",
+    "url": "https://10.250.0.1:8443/run/platform-smoke",
+    "body": "",
+    "maxUses": 10,
+    "windowHours": 12,
+    "maxExpiryHours": 23,
+    "taskIdStableWithinWindow": true,
+    "optionalManifestBodyOmitted": true,
+    "wireContentLength": "0",
+    "wireTransferEncodingPresent": false
+  },
+  "environment": {
+    "clearedBy": "env -i",
+    "allowlist": [
+      "PATH",
+      "HOME",
+      "WARDEN_STATE_DIR",
+      "WARDEN_FLOW_POLICY",
+      "NODE_EXTRA_CA_CERTS"
+    ],
+    "modelCredentials": false,
+    "dockerSocket": false,
+    "tlsPrivateKey": false
+  },
+  "integrationRequirements": [
+    "OpenCode guard and MCP must share the protected WARDEN_FLOW_POLICY path.",
+    "Global MCP remains disabled; only the new private QA launch profile enables it.",
+    "Broker response must complete within8s because existing TaskAdapter request timeout is10s.",
+    "A hard adversarial10/12h quota additionally belongs in the root broker: existing TaskAdapter counters are node-owned, while this renewal never resets them."
+  ],
+  "productionApplied": false,
+  "log": "tests.log"
+}

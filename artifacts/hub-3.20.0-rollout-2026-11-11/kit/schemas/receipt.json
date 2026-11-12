@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://modelmarket.dev/schemas/receipt.json",
+  "title": "AI Market Signed Receipt",
+  "description": "Payment receipt for a capability invocation",
+  "type": "object",
+  "required": ["nonce", "product_id", "capability_id", "price_usd", "timestamp", "signature"],
+  "properties": {
+    "nonce": {"type": "string", "description": "Unique receipt identifier"},
+    "product_id": {"type": "string"},
+    "capability_id": {"type": "string"},
+    "price_usd": {"type": "number", "minimum": 0, "description": "In the v1 canonical, the exact JSON number token. 0.0 and 0 are different signed bytes (§7.3.3)."},
+    "latency_ms": {"type": "integer", "description": "In the v1 canonical, the exact JSON number token. Absent serializes as 0 (§7.3.3)."},
+    "success": {"type": "boolean", "description": "Canonical bit is 1 or 0. Absent serializes as 0 (§7.3.3)."},
+    "type": {"type": "string", "description": "Present on a v2 receipt. A rejection uses \"rejection\"."},
+    "category": {"description": "v2 digest key (§7.3.4). Absent is JSON null inside the digest, not an omitted key."},
+    "plugin": {"description": "v2 digest key (§7.3.4). Absent is JSON null inside the digest, not an omitted key."},
+    "reason": {"type": "string"},
+    "verify_score": {"type": "number"},
+    "delivery_reasons": {"type": "array"},
+    "trace_id": {"type": "string"},
+    "refunded": {"type": "boolean"},
+    "channel_id": {"type": "string"},
+    "consumer_hub": {"type": "string", "format": "uri"},
+    "routing_fee_bps": {"type": "integer"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "verification": {"type": "object", "description": "Pay-on-Verified envelope (unsigned receipt field; the envelope carries its own ed25519 signature once resolved)"},
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": {"type": "string", "const": "ed25519"},
+        "value": {"type": "string"},
+        "public_key": {"type": "string", "description": "Claim, not an identity. Verifiers use a pinned key (§7.3.1)."},
+        "version": {"type": "integer", "description": "JSON integer 2 when the signature covers the v2 canonical. Omitted means v1 (§7.3.1)."}
+      }
+    }
+  }
+}

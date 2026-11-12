@@ -1,0 +1,566 @@
+{
+  "captured_at_utc": "2026-11-10T19:34:52.744640+00:00",
+  "version_scope_note": "These are local manifest versions, not a claim of publication. Registry metadata is captured separately.",
+  "components": [
+    {
+      "component_id": "hub",
+      "repo": "alexar76/aimarket-hub",
+      "repo_url": "https://github.com/alexar76/aimarket-hub",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "aimarket-hub",
+          "local_version": "3.19.0",
+          "scripts": {
+            "aimarket": "aimarket_hub.cli:_entrypoint",
+            "aimarket-pipeline": "aimarket_hub.pipeline_cli:main"
+          },
+          "import_fingerprints": [
+            "aimarket_hub*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://modelmarket.dev",
+            "Documentation": "https://github.com/alexar76/aimarket-hub",
+            "Repository": "https://github.com/alexar76/aimarket-hub",
+            "Issues": "https://github.com/alexar76/aimarket-hub/issues"
+          },
+          "private": null,
+          "source_path": "aimarket-hub/pyproject.toml",
+          "source_sha256": "202a49c084e4c24bb63e89cde884044dee7a3ffc7d0a940e4a9002289389b9a2"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "protocol",
+      "repo": "alexar76/aimarket-protocol",
+      "repo_url": "https://github.com/alexar76/aimarket-protocol",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [],
+      "exact_tokens": [
+        "github.com/alexar76/aimarket-protocol",
+        "AIMarket Protocol v2",
+        "/.well-known/ai-market.json"
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "python-agent",
+      "repo": "alexar76/aimarket-agent",
+      "repo_url": "https://github.com/alexar76/aimarket-agent",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "aimarket-agent",
+          "local_version": "2.6.2",
+          "scripts": {
+            "aimarket-agent": "aimarket_agent.cli:main"
+          },
+          "import_fingerprints": [
+            "aimarket_agent*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-agent",
+            "Documentation": "https://github.com/alexar76/aimarket-agent#readme",
+            "Repository": "https://github.com/alexar76/aimarket-agent",
+            "Issues": "https://github.com/alexar76/aimarket-agent/issues"
+          },
+          "private": null,
+          "source_path": "aimarket-agent/pyproject.toml",
+          "source_sha256": "2c810239b3a740cb28e2b1f988631b58acb265b451bcfdc6cfaae47d4ce2941c"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "sdk-typescript",
+      "repo": "alexar76/aimarket-sdks",
+      "repo_url": "https://github.com/alexar76/aimarket-sdks",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "@aimarket/agent",
+          "local_version": "0.4.0",
+          "import_fingerprints": [
+            "@aimarket/agent"
+          ],
+          "private": false,
+          "declared_urls": {
+            "repository": "https://github.com/alexar76/aimarket-sdks",
+            "homepage": "https://github.com/alexar76/aimarket-sdks/tree/main/typescript"
+          },
+          "source_path": "aimarket-sdks/typescript/package.json",
+          "source_sha256": "3b885fa856e29e1cedd3ef9b6ac84c4f2909386dff2aa80c489f5123d47cd281"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "sdk-dart",
+      "repo": "alexar76/aimarket-sdks",
+      "repo_url": "https://github.com/alexar76/aimarket-sdks",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "aimarket_agent",
+          "local_version": "0.4.0",
+          "import_fingerprints": [
+            "package:aimarket_agent/aimarket_agent.dart"
+          ],
+          "private": null,
+          "source_path": "aimarket-sdks/dart/pubspec.yaml",
+          "source_sha256": "4c69a34fcaaca284e067a0079022cc5b2141e80c26bb5335846048e9145e367d"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "sdk-rust",
+      "repo": "alexar76/aimarket-sdks",
+      "repo_url": "https://github.com/alexar76/aimarket-sdks",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "aimarket-agent",
+          "local_version": "0.4.0",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_agent"
+          ],
+          "declared_urls": {},
+          "private": null,
+          "source_path": "aimarket-sdks/rust/Cargo.toml",
+          "source_sha256": "df9c4e0af3e3f2ac39062959735d26ce7d9c6e873ac9c319686d3e837caf956d"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "plugins",
+      "repo": "alexar76/aimarket-plugins",
+      "repo_url": "https://github.com/alexar76/aimarket-plugins",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "aimarket-auction",
+          "local_version": "2.0.1",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_auction*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-auction#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "plugins/aimarket-auction/pyproject.toml",
+          "source_sha256": "d96e31813b19150ef7467d81bff86d3f3fc1418ad08bcd39deb5573124ca3726"
+        },
+        {
+          "name": "aimarket-channels",
+          "local_version": "2.0.1",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_channels*"
+          ],
+          "declared_urls": {},
+          "private": null,
+          "source_path": "plugins/aimarket-channels/pyproject.toml",
+          "source_sha256": "8d4a9301ca08cb7af1d19d19196894ee5b15ca72b4a512fee59e5312edda0658"
+        },
+        {
+          "name": "aimarket-data-cap",
+          "local_version": "3.0.0",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_data_cap*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-data-cap#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "plugins/aimarket-data-cap/pyproject.toml",
+          "source_sha256": "c0b452b73343882c8a52804c128aea70a24870177257071e75bdc603d14f48f6"
+        },
+        {
+          "name": "aimarket-dataset",
+          "local_version": "2.0.0",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_dataset*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-dataset#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "plugins/aimarket-dataset/pyproject.toml",
+          "source_sha256": "21a72b44c301e7f9fcffdbad5bd3d8e522fa2ea59bb3d35ff74ac3d39d258385"
+        },
+        {
+          "name": "aimarket-mcp-packager",
+          "local_version": "2.1.3",
+          "scripts": {
+            "aimarket-mcp-packager": "aimarket_mcp_packager.stdio_server:main",
+            "aimarket-mcp-packager-mcp": "aimarket_mcp_packager.stdio_server:main"
+          },
+          "import_fingerprints": [
+            "aimarket_mcp_packager*"
+          ],
+          "declared_urls": {},
+          "private": null,
+          "source_path": "plugins/aimarket-mcp-packager/pyproject.toml",
+          "source_sha256": "cf39b1fad039b0a77f9db58d7af0d206019273db4371ac2687bae0f6ec20c311"
+        },
+        {
+          "name": "aimarket-nft",
+          "local_version": "2.0.0",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_nft*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-nft#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "plugins/aimarket-nft/pyproject.toml",
+          "source_sha256": "7463cc3a3e793031e13eee1ec7a72457ecc6331d5ed9a5b3a3e76db39099f891"
+        },
+        {
+          "name": "aimarket-orchestrator",
+          "local_version": "2.0.0",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_orchestrator*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-orchestrator#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "plugins/aimarket-orchestrator/pyproject.toml",
+          "source_sha256": "81a03629ff73dfccec001cf71b30efca0963ba82188978ddcfa4fbe40526136a"
+        },
+        {
+          "name": "aimarket-personas",
+          "local_version": "2.0.0",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_personas*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-personas#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "plugins/aimarket-personas/pyproject.toml",
+          "source_sha256": "e7b9b9c1216876518807547ba0d889dba2caa54f0e6536e3764f8fa6227890de"
+        },
+        {
+          "name": "aimarket-promo",
+          "local_version": "2.0.0",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_promo*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-promo#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "plugins/aimarket-promo/pyproject.toml",
+          "source_sha256": "7e9467890b2a6c7240241e03c4a5966f18f26743849b6a7b686b8d236be1bc1f"
+        },
+        {
+          "name": "aimarket-reputation",
+          "local_version": "2.0.1",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_reputation*"
+          ],
+          "declared_urls": {},
+          "private": null,
+          "source_path": "plugins/aimarket-reputation/pyproject.toml",
+          "source_sha256": "8be53dadc90e8d0894d7851b70c62d7bdb6c458d28c410837616ac4ec545bc06"
+        },
+        {
+          "name": "aimarket-safety",
+          "local_version": "2.0.1",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_safety*"
+          ],
+          "declared_urls": {},
+          "private": null,
+          "source_path": "plugins/aimarket-safety/pyproject.toml",
+          "source_sha256": "c72ee51f2ed11e1572ea322e46f41e58c461fc57475c4195e10c1b87c39e6139"
+        },
+        {
+          "name": "aimarket-streaming",
+          "local_version": "2.0.1",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_streaming*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-streaming#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "plugins/aimarket-streaming/pyproject.toml",
+          "source_sha256": "1814eb9390eabaff3321aafedf77ec17b296c2bdfaa621fc76c161753371350c"
+        },
+        {
+          "name": "aimarket-tee",
+          "local_version": "2.0.1",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_tee*"
+          ],
+          "declared_urls": {},
+          "private": null,
+          "source_path": "plugins/aimarket-tee/pyproject.toml",
+          "source_sha256": "aeb0fc8d193acd2676edb23fc04ddf268cdf4d3a0dccaef193f94245a2e64c50"
+        },
+        {
+          "name": "aimarket-zk",
+          "local_version": "2.1.1",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_zk*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-zk#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "plugins/aimarket-zk/pyproject.toml",
+          "source_sha256": "4aa7458bb9cf354cc11b5a2d02db10329ebdffc3c8862eb0a219ac42e4e096be"
+        },
+        {
+          "name": "aimarket-provenance",
+          "local_version": "2.3.1",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_provenance*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://github.com/alexar76/aimarket-plugins",
+            "Documentation": "https://github.com/alexar76/aimarket-plugins/tree/main/plugins/aimarket-provenance#readme",
+            "Repository": "https://github.com/alexar76/aimarket-plugins",
+            "Issues": "https://github.com/alexar76/aimarket-plugins/issues"
+          },
+          "private": null,
+          "source_path": "aimarket-hub/plugins/aimarket-provenance/pyproject.toml",
+          "source_sha256": "bfc4c021a2ec4a2bee5ed463459bba5bb028eb1e02f5c267f9f925aadac2769c"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "widget",
+      "repo": "alexar76/aimarket-widget",
+      "repo_url": "https://github.com/alexar76/aimarket-widget",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "@aimarket/widget",
+          "local_version": "0.1.2",
+          "import_fingerprints": [
+            "@aimarket/widget"
+          ],
+          "private": false,
+          "declared_urls": {
+            "repository": {
+              "type": "git",
+              "url": "git+https://github.com/alexar76/aimarket-widget.git"
+            },
+            "homepage": "https://alexar76.github.io/aimarket-widget/"
+          },
+          "source_path": "aimarket-widget/package.json",
+          "source_sha256": "f21d397413e03471f34b4d98fc13056fff5389bb0c5e56c720b109a7fb24e312"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "bridges",
+      "repo": "alexar76/aimarket-bridges",
+      "repo_url": "https://github.com/alexar76/aimarket-bridges",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "aimarket-bridges",
+          "local_version": "0.2.1",
+          "scripts": {},
+          "import_fingerprints": [
+            "aimarket_bridges"
+          ],
+          "declared_urls": {
+            "Homepage": "https://modelmarket.dev",
+            "Repository": "https://github.com/alexar76/aimarket-bridges"
+          },
+          "private": null,
+          "source_path": "aimarket-bridges/pyproject.toml",
+          "source_sha256": "43ee7215f9b53a40406ffb2589c6aff3a38ca14778f655a1e7c2ec376e19603d"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "service-mesh",
+      "repo": "alexar76/ai-service-mesh",
+      "repo_url": "https://github.com/alexar76/ai-service-mesh",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "ai-service-mesh",
+          "local_version": "0.1.0",
+          "scripts": {
+            "ai-mesh": "ai_service_mesh.main:cli"
+          },
+          "import_fingerprints": [
+            "ai_service_mesh*"
+          ],
+          "declared_urls": {
+            "Homepage": "https://service-mesh.modelmarket.dev/",
+            "Repository": "https://github.com/alexar76/ai-service-mesh",
+            "Issues": "https://github.com/alexar76/ai-service-mesh/issues"
+          },
+          "private": null,
+          "source_path": "ai-service-mesh/backend/pyproject.toml",
+          "source_sha256": "8dc42e4fc5abc532a9658afdf957172d1b1117e2a8838bb4c66b3cf6072f21e9"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "acex",
+      "repo": "alexar76/acex",
+      "repo_url": "https://github.com/alexar76/acex",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "acex-capital",
+          "local_version": "0.1.0",
+          "scripts": {},
+          "import_fingerprints": [
+            "acex_capital"
+          ],
+          "declared_urls": {},
+          "private": null,
+          "source_path": "acex/contracts/solana/programs/acex-capital/Cargo.toml",
+          "source_sha256": "adc5bcee36ac1c14a8c13ec6633d63f8c224827897cae22a768062a117d5f11f"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "pulse",
+      "repo": "alexar76/pulse-terminal",
+      "repo_url": "https://github.com/alexar76/pulse-terminal",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "pulse-terminal",
+          "local_version": "0.1.0",
+          "import_fingerprints": [
+            "pulse-terminal"
+          ],
+          "private": true,
+          "declared_urls": {
+            "repository": null,
+            "homepage": null
+          },
+          "source_path": "apps/pulse-terminal/package.json",
+          "source_sha256": "7fe3637c7c401657952502ac956627d14d531009a729c254c3cd4d822596a17f"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "escrow-signer",
+      "repo": "alexar76/escrow-signer",
+      "repo_url": "https://github.com/alexar76/escrow-signer",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [],
+      "exact_tokens": [
+        "github.com/alexar76/escrow-signer",
+        "escrow-policy-signer",
+        "HORKOS"
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "treasury",
+      "repo": "alexar76/treasury",
+      "repo_url": "https://github.com/alexar76/treasury",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "aimarket-treasury",
+          "local_version": "0.1.4",
+          "scripts": {},
+          "import_fingerprints": [
+            "treasury"
+          ],
+          "declared_urls": {},
+          "private": null,
+          "source_path": "treasury/pyproject.toml",
+          "source_sha256": "f12fd6eb86a5964d4cc83d32d9370caecdb3bcf2f1a248ffc13661ed1599f27c"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "factory",
+      "repo": "alexar76/aicom",
+      "repo_url": "https://github.com/alexar76/aicom",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [
+        {
+          "name": "aicom",
+          "local_version": "2.1.0",
+          "scripts": {},
+          "import_fingerprints": [],
+          "declared_urls": {},
+          "private": null,
+          "source_path": "pyproject.toml",
+          "source_sha256": "dcfdf01c592a550fafb7de97ee06f3958afa2d1b32dd3d81eb66fbea0f5da0a3"
+        }
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    },
+    {
+      "component_id": "products",
+      "repo": "alexar76/aicom-products",
+      "repo_url": "https://github.com/alexar76/aicom-products",
+      "identity_source": "scripts/satellite-map.yaml",
+      "fingerprints": [],
+      "exact_tokens": [
+        "github.com/alexar76/aicom-products"
+      ],
+      "identity_snapshot_scope": "Local manifest and repository identity only; publication verification is recorded separately in coverage.json."
+    }
+  ]
+}

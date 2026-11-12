@@ -1,0 +1,23 @@
+About — witness.gdbsecurity.com
+← witness.gdbsecurity.com
+About this witness
+What
+witness-network.org
+asks every
+  participating witness to state. Also served as plain text to a non-browser client.
+Operator
+name
+GDB Security
+contact
+[email protected]
+Witness verifier key
+vkey, key type 0x04, cosignature/v1
+witness.gdbsecurity.com+a1398f73+BAbIijGonVIk3ikDac+KKlSm1ELHOzcddhjjB6zB4BNf
+Add-checkpoint URL
+https://witness.gdbsecurity.com/add-checkpoint
+Witness-network lists followed
+https://staging.witness-network.org/log-list-10qps-4klogs.1
+re-read every
+24h
+Independence
+Logs discovered from a witness-network list come with no monitoring URL. This witness tries each one at https://<origin>/ and, where the log serves its checkpoint and tiles there under the key the list gave, polls it on its own schedule as well as accepting pushes. A listed log that does not publish there is cosigned only when its operator pushes a checkpoint: for those logs it sees only what the operator chooses to send it, and is not independent of that operator. The C2SP logs it polls on its own schedule it also accepts pushes for, through the same checks.

@@ -44,6 +44,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 GAIA_YAML = ROOT / "gaia" / "config" / "extra_sensors.yaml"
 ATLAS_YAML = ROOT / "atlas" / "config" / "extra_sensors.yaml"
+# The copy the aimarket-atlas wheel carries (atlas/config_files.py reads it when atlas/config/ is absent).
+ATLAS_PACKAGED_YAML = ROOT / "atlas" / "atlas" / "_config" / "extra_sensors.yaml"
 _ID_RE = re.compile(r"^[a-z][a-z0-9_-]{1,47}$")
 _SLUG_RE = re.compile(r"^[a-z][a-z0-9]{1,31}$")
 
@@ -137,6 +139,7 @@ def _existing_ids(doc: dict) -> set[str]:
 def _save(doc: dict) -> None:
     GAIA_YAML.parent.mkdir(parents=True, exist_ok=True)
     ATLAS_YAML.parent.mkdir(parents=True, exist_ok=True)
+    ATLAS_PACKAGED_YAML.parent.mkdir(parents=True, exist_ok=True)
     text = yaml.safe_dump(doc, sort_keys=False, allow_unicode=True, default_flow_style=False)
     # Keep a short header so humans see the disclaimer in the file itself.
     header = (
@@ -149,6 +152,7 @@ def _save(doc: dict) -> None:
     body = text if not text.lstrip().startswith("#") else text
     GAIA_YAML.write_text(header + body, encoding="utf-8")
     shutil.copy2(GAIA_YAML, ATLAS_YAML)
+    shutil.copy2(GAIA_YAML, ATLAS_PACKAGED_YAML)
 
 
 def _row(
@@ -317,6 +321,7 @@ def main() -> int:
     print("OK: added", ", ".join(added))
     print(f"  → {GAIA_YAML}")
     print(f"  → {ATLAS_YAML} (mirrored)")
+    print(f"  → {ATLAS_PACKAGED_YAML} (packaged copy)")
     print()
     print("DISCLAIMER: only built-in kinds. New upstream API ⇒ Recipe B in docs/add-gaia-atlas-sensor.md")
     print("Next: redeploy GAIA then ATLAS (LIVE kinds need GAIA_ENABLE_LIVE=1).")

@@ -1,0 +1,51 @@
+{
+ "@context": [
+  "https://www.w3.org/ns/credentials/v2",
+  "https://verify.modelmarket.dev/ns/awr/v2"
+ ],
+ "id": "urn:uuid:83dbcf5a-47ee-4197-b538-dde75bcc68d4",
+ "type": [
+  "VerifiableCredential",
+  "WorkReceipt",
+  "AIProvenanceReceipt"
+ ],
+ "issuer": {
+  "id": "did:key:z6MkiQS27rzUX2aPyjoUu1rYa8EgjBP5XrfK5aQnuipGbjmv",
+  "name": "AIMarket Hub"
+ },
+ "validFrom": "2026-10-30T06:37:14Z",
+ "awrVersion": "2.0.0",
+ "credentialSubject": {
+  "work": {
+   "modelId": "logos.federation.summary@v1@prod-logos",
+   "completedAt": "2026-10-30T06:37:14Z",
+   "status": "succeeded",
+   "latencyMs": 1403,
+   "startedAt": "2026-10-30T06:37:13Z"
+  },
+  "inputDigest": "sha256-RBNvo1WzZ4oRRq0W9+hknpT7T8If536DEMBg9hyq/4o=",
+  "outputDigest": "sha256-VCzRujQdSubSu7KJc5fbRcQxoGC+hllmpHBGd7lr140=",
+  "providerHub": "https://logos.modelmarket.dev",
+  "payloadSerialization": "json-sorted-compact",
+  "outputDigestOf": "output",
+  "gatewayReceiptDigest": "sha256-0nke/1iHV43gtkmb2ehY3omzL4hOQfN6MQjbHYpdiTg=",
+  "nonce": "rcpt_37759f0374d7beb3b080a841580da481"
+ },
+ "hubInfo": {
+  "hubName": "AIMarket Hub",
+  "hubVersion": "3.16.0",
+  "protocolVersion": "v2"
+ },
+ "proof": {
+  "@context": [
+   "https://www.w3.org/ns/credentials/v2",
+   "https://verify.modelmarket.dev/ns/awr/v2"
+  ],
+  "type": "DataIntegrityProof",
+  "cryptosuite": "eddsa-jcs-2022",
+  "created": "2026-10-30T06:37:14Z",
+  "verificationMethod": "did:key:z6MkiQS27rzUX2aPyjoUu1rYa8EgjBP5XrfK5aQnuipGbjmv#z6MkiQS27rzUX2aPyjoUu1rYa8EgjBP5XrfK5aQnuipGbjmv",
+  "proofPurpose": "assertionMethod",
+  "proofValue": "z2EPftRSgXSmeErKrwmESk2EbZDxeN88h2yxm6X56BJA9CcdvWhu48W7UnBLLpkg9PL9pD8C6Rkj8Y5ZbsKYr4PoS"
+ }
+}

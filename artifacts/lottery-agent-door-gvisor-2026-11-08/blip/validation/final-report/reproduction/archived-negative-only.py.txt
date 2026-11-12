@@ -1,0 +1,16 @@
+import importlib.util
+import sys
+from pathlib import Path
+spec=importlib.util.spec_from_file_location("archived_ci_loop_helper",Path("/source/lottery/agent/tests/test_agent_loop.py"))
+ci=importlib.util.module_from_spec(spec);spec.loader.exec_module(ci)
+def old_module():
+ name="ailottery_agent._old_negative_control"
+ spec=importlib.util.spec_from_file_location(name,Path("/old-agent/lottery/agent/ailottery_agent/__main__.py"))
+ module=importlib.util.module_from_spec(spec);sys.modules[name]=module;spec.loader.exec_module(module)
+ return module
+def test_predecessor_negative_control_reproduces_status_zero_false_success(monkeypatch,capsys):
+ state=ci._run_main(monkeypatch,old_module(),"retry");output=capsys.readouterr().out
+ assert state.sent==[{"name":"buyTickets","rid":7},{"name":"buyTickets","rid":8}]
+ assert output.count("bought")==2
+ assert "could not enter" not in output
+

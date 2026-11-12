@@ -1,0 +1,389 @@
+{
+  "url": "https://modelmarket.dev/x402/histor-check",
+  "method": "HEAD",
+  "retrieved_at_utc": "2026-11-09T19:52:32.699200+00:00",
+  "request_headers": {
+    "User-Agent": "aicom-readonly-quote-check/1"
+  },
+  "request_body": false,
+  "payment_sent": false,
+  "redirects_followed": false,
+  "status": 402,
+  "headers": {
+    "server": "nginx/1.24.0 (Ubuntu)",
+    "date": "Mon, 09 Nov 2026 18:54:39 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "4759",
+    "connection": "close",
+    "allow": "POST",
+    "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQYXltZW50IHJlcXVpcmVkIiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYveDQwMi9oaXN0b3ItY2hlY2siLCJkZXNjcmlwdGlvbiI6IkhJU1RPUiBwcmUtZmxpZ2h0IGZvciBhbiBNQ1Agc2VydmVyOiBpdHMgc2lnbmVkIHJlY29yZCBpbiB0aGUgSElTVE9SIHRyYW5zcGFyZW5jeSBsb2cg4oCUIHdoZW4gdGhlIHRvb2wgc2V0IHdhcyBmaXJzdCBzZWVuLCB3aGV0aGVyIGl0IGNoYW5nZWQsIHdoYXQgdGhlIHBhdHRlcm4gc2NhbiBmb3VuZC4gTmV2ZXIgY29udGFjdHMgdGhlIHNlcnZlciBhc2tlZCBhYm91dC4iLCJtaW1lVHlwZSI6ImFwcGxpY2F0aW9uL2pzb24iLCJzZXJ2aWNlTmFtZSI6IkFJTWFya2V0IiwidGFncyI6WyJtY3AiLCJzZWN1cml0eSIsInRyYW5zcGFyZW5jeS1sb2ciLCJ0cnVzdCJdLCJpY29uVXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYvLndlbGwta25vd24vZXJjLTgwMDQvaGlzdG9yLnBuZyJ9LCJhY2NlcHRzIjpbeyJzY2hlbWUiOiJleGFjdCIsIm5ldHdvcmsiOiJlaXAxNTU6ODQ1MyIsImFtb3VudCI6IjEwMDAiLCJhc3NldCI6IjB4ODMzNTg5ZkNENmVEYjZFMDhmNGM3QzMyRDRmNzFiNTRiZEEwMjkxMyIsInBheVRvIjoiMHgxMjE4ZmYzNkM1ZDJlM0I2QTU2NUNkQjFBOEIxQWNDRmM2MDZBZDBhIiwibWF4VGltZW91dFNlY29uZHMiOjMwMCwiZXh0cmEiOnsibmFtZSI6IlVTRCBDb2luIiwidmVyc2lvbiI6IjIifX1dLCJleHRlbnNpb25zIjp7ImVpcDI2MTJHYXNTcG9uc29yaW5nIjp7fSwiZXJjMjBBcHByb3ZhbEdhc1Nwb25zb3JpbmciOnt9LCJiYXphYXIiOnsiaW5mbyI6eyJpbnB1dCI6eyJ0eXBlIjoiaHR0cCIsIm1ldGhvZCI6IlBPU1QiLCJib2R5VHlwZSI6Impzb24iLCJib2R5Ijp7ImVuZHBvaW50IjoiaHR0cHM6Ly9tY3AucmVkdS5jbG91ZC9tY3AifX0sIm91dHB1dCI6eyJ0eXBlIjoianNvbiIsImV4YW1wbGUiOnsic3RhdHVzIjoib2siLCJzZXJ2aWNlIjoiaGlzdG9yLWNoZWNrIiwic291cmNlIjoiaHR0cHM6Ly9oaXN0b3IubW9kZWxtYXJrZXQuZGV2IiwiY2hlY2siOnsidHlwZSI6Imhpc3Rvci5jaGVjay92MSIsImNoZWNrZWRBdCI6IjIwMjYtMTAtMjVUMTg6MTg6NTJaIiwibWF0Y2giOiJuby1kaWdlc3QiLCJ0YXJnZXQiOnsibmFtZSI6ImNsb3VkLnJlZHUvbWNwIn19fSwic2NoZW1hIjp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7InN0YXR1cyI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJvayJ9LCJzZXJ2aWNlIjp7InR5cGUiOiJzdHJpbmciLCJjb25zdCI6Imhpc3Rvci1jaGVjayJ9LCJzb3VyY2UiOnsidHlwZSI6InN0cmluZyIsImRlc2NyaXB0aW9uIjoidGhlIEhJU1RPUiBpbnN0YW5jZSB0aGF0IGFuc3dlcmVkIn0sImNoZWNrIjp7InR5cGUiOiJvYmplY3QiLCJkZXNjcmlwdGlvbiI6IkhJU1RPUidzIHNpZ25lZCBhbnN3ZXIsIGhpc3Rvci5jaGVjay92MSAoaHR0cHM6Ly9naXRodWIuY29tL2FsZXhhcjc2L2hpc3Rvci9ibG9iL21haW4vZG9jcy9hcGkubWQpIiwicHJvcGVydGllcyI6eyJ0eXBlIjp7InR5cGUiOiJzdHJpbmciLCJjb25zdCI6Imhpc3Rvci5jaGVjay92MSJ9LCJjaGVja2VkQXQiOnsidHlwZSI6InN0cmluZyIsImRlc2NyaXB0aW9uIjoiSVNPIDg2MDEgVVRDIn0sImlzc3VlciI6eyJ0eXBlIjoic3RyaW5nIiwiZGVzY3JpcHRpb24iOiJkaWQ6a2V5IG9mIHRoZSBsb2cifSwicXVlcnkiOnsidHlwZSI6Im9iamVjdCJ9LCJ0YXJnZXQiOnsidHlwZSI6WyJvYmplY3QiLCJudWxsIl0sImRlc2NyaXB0aW9uIjoidGhlIHNlcnZlciBISVNUT1Iga25vd3MgYnkgdGhpcyBlbmRwb2ludCBvciBuYW1lIn0sIm9ic2VydmVkIjp7InR5cGUiOlsib2JqZWN0IiwibnVsbCJdLCJkZXNjcmlwdGlvbiI6IkhJU1RPUidzIGxhdGVzdCBvYnNlcnZhdGlvbiBvZiBpdHMgdG9vbCBzZXQifSwibWF0Y2giOnsidHlwZSI6InN0cmluZyIsImVudW0iOlsic2FtZSIsImRpZmZlcmVudCIsInByZXZpb3VzbHktb2JzZXJ2ZWQiLCJub3Qtb2JzZXJ2ZWQiLCJub3QtbGlzdGVkIiwibm8tZGlnZXN0Il19LCJub3RlIjp7InR5cGUiOiJzdHJpbmcifSwicGF0dGVyblNjYW4iOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsic3RhdHVzIjp7InR5cGUiOiJzdHJpbmcifX19LCJsb2ciOnsidHlwZSI6Im9iamVjdCIsImRlc2NyaXB0aW9uIjoidGhlIHNpZ25lZCB0cmVlIGhlYWQgdGhlIGFuc3dlciB3YXMgZ2l2ZW4gdW5kZXIifSwic2lnbmF0dXJlIjp7InR5cGUiOiJvYmplY3QifX0sInJlcXVpcmVkIjpbInR5cGUiLCJjaGVja2VkQXQiLCJtYXRjaCJdfX0sInJlcXVpcmVkIjpbInN0YXR1cyIsInNlcnZpY2UiLCJzb3VyY2UiLCJjaGVjayJdfX19LCJzY2hlbWEiOnsiJHNjaGVtYSI6Imh0dHBzOi8vanNvbi1zY2hlbWEub3JnL2RyYWZ0LzIwMjAtMTIvc2NoZW1hIiwidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiaW5wdXQiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsidHlwZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJodHRwIn0sIm1ldGhvZCI6eyJ0eXBlIjoic3RyaW5nIiwiZW51bSI6WyJQT1NUIl19LCJib2R5VHlwZSI6eyJ0eXBlIjoic3RyaW5nIiwiZW51bSI6WyJqc29uIiwiZm9ybS1kYXRhIiwidGV4dCJdfSwiYm9keSI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJlbmRwb2ludCI6eyJ0eXBlIjoic3RyaW5nIiwiZGVzY3JpcHRpb24iOiJodHRwcyBVUkwgb2YgdGhlIE1DUCBzZXJ2ZXIgKHNlbmQgdGhpcyBvciBuYW1lKSJ9LCJuYW1lIjp7InR5cGUiOiJzdHJpbmciLCJkZXNjcmlwdGlvbiI6InJlZ2lzdHJ5IG5hbWUsIGUuZy4gaW8uZ2l0aHViLm93bmVyL3NlcnZlciAoc2VuZCB0aGlzIG9yIGVuZHBvaW50KSJ9fX19LCJyZXF1aXJlZCI6WyJ0eXBlIiwibWV0aG9kIiwiYm9keVR5cGUiLCJib2R5Il0sImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZX0sIm91dHB1dCI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJ0eXBlIjp7InR5cGUiOiJzdHJpbmcifSwiZXhhbXBsZSI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJzdGF0dXMiOnsidHlwZSI6InN0cmluZyIsImNvbnN0Ijoib2sifSwic2VydmljZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJoaXN0b3ItY2hlY2sifSwic291cmNlIjp7InR5cGUiOiJzdHJpbmciLCJkZXNjcmlwdGlvbiI6InRoZSBISVNUT1IgaW5zdGFuY2UgdGhhdCBhbnN3ZXJlZCJ9LCJjaGVjayI6eyJ0eXBlIjoib2JqZWN0IiwiZGVzY3JpcHRpb24iOiJISVNUT1IncyBzaWduZWQgYW5zd2VyLCBoaXN0b3IuY2hlY2svdjEgKGh0dHBzOi8vZ2l0aHViLmNvbS9hbGV4YXI3Ni9oaXN0b3IvYmxvYi9tYWluL2RvY3MvYXBpLm1kKSIsInByb3BlcnRpZXMiOnsidHlwZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJoaXN0b3IuY2hlY2svdjEifSwiY2hlY2tlZEF0Ijp7InR5cGUiOiJzdHJpbmciLCJkZXNjcmlwdGlvbiI6IklTTyA4NjAxIFVUQyJ9LCJpc3N1ZXIiOnsidHlwZSI6InN0cmluZyIsImRlc2NyaXB0aW9uIjoiZGlkOmtleSBvZiB0aGUgbG9nIn0sInF1ZXJ5Ijp7InR5cGUiOiJvYmplY3QifSwidGFyZ2V0Ijp7InR5cGUiOlsib2JqZWN0IiwibnVsbCJdLCJkZXNjcmlwdGlvbiI6InRoZSBzZXJ2ZXIgSElTVE9SIGtub3dzIGJ5IHRoaXMgZW5kcG9pbnQgb3IgbmFtZSJ9LCJvYnNlcnZlZCI6eyJ0eXBlIjpbIm9iamVjdCIsIm51bGwiXSwiZGVzY3JpcHRpb24iOiJISVNUT1IncyBsYXRlc3Qgb2JzZXJ2YXRpb24gb2YgaXRzIHRvb2wgc2V0In0sIm1hdGNoIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbInNhbWUiLCJkaWZmZXJlbnQiLCJwcmV2aW91c2x5LW9ic2VydmVkIiwibm90LW9ic2VydmVkIiwibm90LWxpc3RlZCIsIm5vLWRpZ2VzdCJdfSwibm90ZSI6eyJ0eXBlIjoic3RyaW5nIn0sInBhdHRlcm5TY2FuIjp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7InN0YXR1cyI6eyJ0eXBlIjoic3RyaW5nIn19fSwibG9nIjp7InR5cGUiOiJvYmplY3QiLCJkZXNjcmlwdGlvbiI6InRoZSBzaWduZWQgdHJlZSBoZWFkIHRoZSBhbnN3ZXIgd2FzIGdpdmVuIHVuZGVyIn0sInNpZ25hdHVyZSI6eyJ0eXBlIjoib2JqZWN0In19LCJyZXF1aXJlZCI6WyJ0eXBlIiwiY2hlY2tlZEF0IiwibWF0Y2giXX19LCJyZXF1aXJlZCI6WyJzdGF0dXMiLCJzZXJ2aWNlIiwic291cmNlIiwiY2hlY2siXX19LCJyZXF1aXJlZCI6WyJ0eXBlIl19fSwicmVxdWlyZWQiOlsiaW5wdXQiXX19LCJidWlsZGVyLWNvZGUiOnsiaW5mbyI6eyJzIjpbImNkcF9zZGtfc2VydmVyIl19LCJzY2hlbWEiOnsiJHNjaGVtYSI6Imh0dHBzOi8vanNvbi1zY2hlbWEub3JnL2RyYWZ0LzIwMjAtMTIvc2NoZW1hIiwidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiYSI6eyJ0eXBlIjoic3RyaW5nIiwicGF0dGVybiI6Il5bYS16MC05X117MSwzMn0kIiwiZGVzY3JpcHRpb24iOiJBcHAgYnVpbGRlciBjb2RlIn0sInciOnsidHlwZSI6InN0cmluZyIsInBhdHRlcm4iOiJeW2EtejAtOV9dezEsMzJ9JCIsImRlc2NyaXB0aW9uIjoiV2FsbGV0IGJ1aWxkZXIgY29kZSJ9LCJzIjp7InR5cGUiOiJhcnJheSIsIm1heEl0ZW1zIjoxMSwiaXRlbXMiOnsidHlwZSI6InN0cmluZyIsInBhdHRlcm4iOiJeW2EtejAtOV9dezEsMzJ9JCJ9LCJkZXNjcmlwdGlvbiI6IlNlcnZpY2UgYnVpbGRlciBjb2RlcyJ9fSwiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlfX19fQ==",
+    "cache-control": "no-store",
+    "etag": "W/\"1297-QTdtXQ1t4plubTyuFJr/F4/TN64\""
+  },
+  "challenge_header_present": true,
+  "challenge": {
+    "x402Version": 2,
+    "error": "Payment required",
+    "resource": {
+      "url": "https://modelmarket.dev/x402/histor-check",
+      "description": "HISTOR pre-flight for an MCP server: its signed record in the HISTOR transparency log — when the tool set was first seen, whether it changed, what the pattern scan found. Never contacts the server asked about.",
+      "mimeType": "application/json",
+      "serviceName": "AIMarket",
+      "tags": [
+        "mcp",
+        "security",
+        "transparency-log",
+        "trust"
+      ],
+      "iconUrl": "https://modelmarket.dev/.well-known/erc-8004/histor.png"
+    },
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USD Coin",
+          "version": "2"
+        }
+      }
+    ],
+    "extensions": {
+      "eip2612GasSponsoring": {},
+      "erc20ApprovalGasSponsoring": {},
+      "bazaar": {
+        "info": {
+          "input": {
+            "type": "http",
+            "method": "POST",
+            "bodyType": "json",
+            "body": {
+              "endpoint": "https://mcp.redu.cloud/mcp"
+            }
+          },
+          "output": {
+            "type": "json",
+            "example": {
+              "status": "ok",
+              "service": "histor-check",
+              "source": "https://histor.modelmarket.dev",
+              "check": {
+                "type": "histor.check/v1",
+                "checkedAt": "2026-10-25T18:18:52Z",
+                "match": "no-digest",
+                "target": {
+                  "name": "cloud.redu/mcp"
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "ok"
+                },
+                "service": {
+                  "type": "string",
+                  "const": "histor-check"
+                },
+                "source": {
+                  "type": "string",
+                  "description": "the HISTOR instance that answered"
+                },
+                "check": {
+                  "type": "object",
+                  "description": "HISTOR's signed answer, histor.check/v1 (https://github.com/alexar76/histor/blob/main/docs/api.md)",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "histor.check/v1"
+                    },
+                    "checkedAt": {
+                      "type": "string",
+                      "description": "ISO 8601 UTC"
+                    },
+                    "issuer": {
+                      "type": "string",
+                      "description": "did:key of the log"
+                    },
+                    "query": {
+                      "type": "object"
+                    },
+                    "target": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "description": "the server HISTOR knows by this endpoint or name"
+                    },
+                    "observed": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "description": "HISTOR's latest observation of its tool set"
+                    },
+                    "match": {
+                      "type": "string",
+                      "enum": [
+                        "same",
+                        "different",
+                        "previously-observed",
+                        "not-observed",
+                        "not-listed",
+                        "no-digest"
+                      ]
+                    },
+                    "note": {
+                      "type": "string"
+                    },
+                    "patternScan": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "log": {
+                      "type": "object",
+                      "description": "the signed tree head the answer was given under"
+                    },
+                    "signature": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "checkedAt",
+                    "match"
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "service",
+                "source",
+                "check"
+              ]
+            }
+          }
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "http"
+                },
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "POST"
+                  ]
+                },
+                "bodyType": {
+                  "type": "string",
+                  "enum": [
+                    "json",
+                    "form-data",
+                    "text"
+                  ]
+                },
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "endpoint": {
+                      "type": "string",
+                      "description": "https URL of the MCP server (send this or name)"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "registry name, e.g. io.github.owner/server (send this or endpoint)"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "method",
+                "bodyType",
+                "body"
+              ],
+              "additionalProperties": false
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "const": "ok"
+                    },
+                    "service": {
+                      "type": "string",
+                      "const": "histor-check"
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "the HISTOR instance that answered"
+                    },
+                    "check": {
+                      "type": "object",
+                      "description": "HISTOR's signed answer, histor.check/v1 (https://github.com/alexar76/histor/blob/main/docs/api.md)",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "histor.check/v1"
+                        },
+                        "checkedAt": {
+                          "type": "string",
+                          "description": "ISO 8601 UTC"
+                        },
+                        "issuer": {
+                          "type": "string",
+                          "description": "did:key of the log"
+                        },
+                        "query": {
+                          "type": "object"
+                        },
+                        "target": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "description": "the server HISTOR knows by this endpoint or name"
+                        },
+                        "observed": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "description": "HISTOR's latest observation of its tool set"
+                        },
+                        "match": {
+                          "type": "string",
+                          "enum": [
+                            "same",
+                            "different",
+                            "previously-observed",
+                            "not-observed",
+                            "not-listed",
+                            "no-digest"
+                          ]
+                        },
+                        "note": {
+                          "type": "string"
+                        },
+                        "patternScan": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "log": {
+                          "type": "object",
+                          "description": "the signed tree head the answer was given under"
+                        },
+                        "signature": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "checkedAt",
+                        "match"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "service",
+                    "source",
+                    "check"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            }
+          },
+          "required": [
+            "input"
+          ]
+        }
+      },
+      "builder-code": {
+        "info": {
+          "s": [
+            "cdp_sdk_server"
+          ]
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,32}$",
+              "description": "App builder code"
+            },
+            "w": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,32}$",
+              "description": "Wallet builder code"
+            },
+            "s": {
+              "type": "array",
+              "maxItems": 11,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]{1,32}$"
+              },
+              "description": "Service builder codes"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "accepts_summary": [
+    {
+      "scheme": "exact",
+      "network": "eip155:8453",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+      "amount_atomic": "1000",
+      "domain_name": "USD Coin",
+      "domain_version": "2"
+    }
+  ],
+  "checks": {
+    "status_402": true,
+    "allow_post": true,
+    "has_accepts": true,
+    "all_accepts_exact_base_canonical_usdc": true,
+    "all_accepts_expected_payto": true,
+    "all_accepts_correct_usdc_domain": true,
+    "all_amounts_match_index_price": true
+  },
+  "expected_index_price_usd": "0.001",
+  "expected_atomic": "1000"
+}

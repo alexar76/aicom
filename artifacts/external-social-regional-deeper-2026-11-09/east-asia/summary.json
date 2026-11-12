@@ -1,0 +1,135 @@
+{
+  "date": "2026-11-09",
+  "scope": "Second deeper East Asian branch only; public read-only sources.",
+  "query_novelty": {
+    "queries": 25,
+    "unique": 25,
+    "earlier_query_search_files_read": 227,
+    "earlier_structured_strings": 980,
+    "literal_prior_duplicates": [
+      "\"越权链的三个可检测点\" -site:juejin.cn -site:jishuzhan.net"
+    ],
+    "caveat": "Literal query comparison only; semantically related searches and web tool expansion can overlap."
+  },
+  "get_count": 17,
+  "statuses": {
+    "200": 17
+  },
+  "native_results": {
+    "qiita-hf-slug": [],
+    "qiita-package": [],
+    "qiita-histor-external": [],
+    "qiita-tokens-external": [],
+    "zenn-hf-articles": {
+      "articles": [],
+      "next_page": null
+    },
+    "zenn-hf-scraps": {
+      "scraps": [],
+      "next_page": null
+    },
+    "zenn-package-articles": {
+      "articles": [],
+      "next_page": null
+    },
+    "zenn-package-scraps": {
+      "scraps": [],
+      "next_page": null
+    },
+    "gitee-hf-slug": [],
+    "gitee-package": []
+  },
+  "candidate_checks": [
+    {
+      "source": "fjojo-daily",
+      "exact_identity_marker_counts": {
+        "alexar76": 0,
+        "modelmarket.dev": 0,
+        "@aimarket/warden": 0,
+        "histor-mcp-tool-definitions": 0,
+        "MCPTox": 0
+      },
+      "whole_word_histor": 0,
+      "capture_limit_reached": false
+    },
+    {
+      "source": "nccsec-index",
+      "exact_identity_marker_counts": {
+        "alexar76": 0,
+        "modelmarket.dev": 0,
+        "@aimarket/warden": 0,
+        "histor-mcp-tool-definitions": 0,
+        "MCPTox": 0
+      },
+      "whole_word_histor": 0,
+      "capture_limit_reached": false
+    },
+    {
+      "source": "aeee-daily",
+      "exact_identity_marker_counts": {
+        "alexar76": 0,
+        "modelmarket.dev": 0,
+        "@aimarket/warden": 0,
+        "histor-mcp-tool-definitions": 0,
+        "MCPTox": 0
+      },
+      "whole_word_histor": 0,
+      "capture_limit_reached": false
+    },
+    {
+      "source": "aiproducthub-1105",
+      "exact_identity_marker_counts": {
+        "alexar76": 0,
+        "modelmarket.dev": 0,
+        "@aimarket/warden": 0,
+        "histor-mcp-tool-definitions": 0,
+        "MCPTox": 0
+      },
+      "whole_word_histor": 0,
+      "capture_limit_reached": false
+    },
+    {
+      "source": "i3omb-compare",
+      "exact_identity_marker_counts": {
+        "alexar76": 0,
+        "modelmarket.dev": 0,
+        "@aimarket/warden": 0,
+        "histor-mcp-tool-definitions": 0,
+        "MCPTox": 0
+      },
+      "whole_word_histor": 0,
+      "capture_limit_reached": true
+    },
+    {
+      "source": "aeee-reports",
+      "exact_identity_marker_counts": {
+        "alexar76": 0,
+        "modelmarket.dev": 0,
+        "@aimarket/warden": 0,
+        "histor-mcp-tool-definitions": 0,
+        "MCPTox": 0
+      },
+      "whole_word_histor": 0,
+      "capture_limit_reached": false
+    }
+  ],
+  "aeee_index": {
+    "reports": 94,
+    "last_updated": "2026-09-13",
+    "first_date": "2026-04-14",
+    "last_date": "2026-09-13"
+  },
+  "new_confirmed_mentions": [],
+  "excluded": [
+    "Known SelectDataset and translated LightNow catalog cards are not new independent national use.",
+    "Korean tool text inside the own HF dataset viewer is an observed third-party payload, not a Korean article about HISTOR.",
+    "NCC response is a JS shell with a CAPTCHA library; content not read, no bypass attempted.",
+    "i3omb comparison was capped at 8MB; no full-page absence claim or regional attribution established.",
+    "AEEE public index ends before HISTOR public release; it cannot establish November absence."
+  ],
+  "limits": [
+    "24 literal new search strings plus one known repeated reverse-title query; semantic overlap remains possible.",
+    "Empty API query samples do not establish whole-platform absence or no private users.",
+    "No account access, CAPTCHA bypass, publishing, messages, paid calls or GitHub writes."
+  ]
+}

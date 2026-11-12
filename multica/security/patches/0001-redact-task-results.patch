@@ -1,0 +1,383 @@
+--- /dev/null
++++ b/server/internal/daemon/aicom_output_redaction_test.go
+@@ -0,0 +1,73 @@
++package daemon
++
++import (
++	"context"
++	"io"
++	"net/http"
++	"net/http/httptest"
++	"os"
++	"path/filepath"
++	"strings"
++	"testing"
++	"time"
++)
++
++func TestAicomOutputCallbacks(t *testing.T) {
++	token := "ghp_" + strings.Repeat("aB3x", 10)
++	requests := 0
++	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
++		body, _ := io.ReadAll(r.Body)
++		if strings.Contains(string(body), token) || !strings.Contains(string(body), "REDACTED") {
++			t.Error("callback contains raw token or lost the redaction marker")
++		}
++		requests++
++		w.WriteHeader(http.StatusOK)
++	}))
++	defer server.Close()
++	client := NewClient(server.URL)
++	ctx := context.Background()
++	if err := client.completeTaskWithRetrySchedule(ctx, "task", token, "", "", "", false, "", "", nil); err != nil {
++		t.Fatal(err)
++	}
++	if err := client.failTaskWithRetrySchedule(ctx, "task", token, "", "", "", "", false, "", "", nil); err != nil {
++		t.Fatal(err)
++	}
++	if err := client.ReportProgress(ctx, "task", token, 1, 1); err != nil {
++		t.Fatal(err)
++	}
++	messages := []TaskMessageData{{Content: token, Output: token, Input: map[string]any{"nested": []any{map[string]any{"value": token}}}}}
++	if err := client.ReportTaskMessages(ctx, "task", messages); err != nil {
++		t.Fatal(err)
++	}
++	if messages[0].Content != token {
++		t.Fatal("caller batch was mutated")
++	}
++	if requests != 4 {
++		t.Fatal("not every result callback was exercised")
++	}
++}
++
++func TestAicomOutputOutbox(t *testing.T) {
++	token := "ghp_" + strings.Repeat("aB3x", 10)
++	for _, kind := range []terminalTaskReportKind{terminalTaskReportComplete, terminalTaskReportFail} {
++		store := newTerminalReportStore(Config{WorkspacesRoot: t.TempDir(), ServerBaseURL: "https://multica.invalid"})
++		report := terminalTaskReport{kind: kind, taskID: "task", output: token, errorMessage: token}
++		if err := store.enqueue(report); err != nil {
++			t.Fatal(err)
++		}
++		body, err := os.ReadFile(filepath.Join(store.dir, terminalReportFileName("task")))
++		if err != nil || strings.Contains(string(body), token) || !strings.Contains(string(body), "REDACTED") {
++			t.Fatal("outbox stored raw result")
++		}
++		// Legacy queue entries must also be scrubbed before replay.
++		record, err := persistedTerminalReport(report, time.Now())
++		if err != nil {
++			t.Fatal(err)
++		}
++		record.Output, record.ErrorMessage = token, token
++		replayed, err := record.terminalReport()
++		if err != nil || strings.Contains(replayed.output+replayed.errorMessage, token) {
++			t.Fatal("legacy outbox replay leaked result")
++		}
++	}
++}
+--- a/server/internal/daemon/client.go
++++ b/server/internal/daemon/client.go
+@@ -17,6 +17,7 @@
+ 	"github.com/multica-ai/multica/server/pkg/agent"
+ 	"github.com/multica-ai/multica/server/pkg/httptransport"
+ 	"github.com/multica-ai/multica/server/pkg/protocol"
++	"github.com/multica-ai/multica/server/pkg/redact"
+ 	"github.com/multica-ai/multica/server/pkg/remotemcp"
+ )
+ 
+@@ -599,7 +600,7 @@
+ 
+ func (c *Client) ReportProgress(ctx context.Context, taskID, summary string, step, total int) error {
+ 	return c.postJSON(ctx, fmt.Sprintf("/api/daemon/tasks/%s/progress", taskID), map[string]any{
+-		"summary": summary,
++		"summary": redact.Text(summary),
+ 		"step":    step,
+ 		"total":   total,
+ 	}, nil)
+@@ -626,6 +627,14 @@
+ }
+ 
+ func (c *Client) ReportTaskMessages(ctx context.Context, taskID string, messages []TaskMessageData) error {
++	// Copy before scrubbing: the caller may retain a batch for retries.
++	safe := append([]TaskMessageData(nil), messages...)
++	for i := range safe {
++		safe[i].Content = redact.Text(safe[i].Content)
++		safe[i].Output = redact.Text(safe[i].Output)
++		safe[i].Input = redact.InputMap(safe[i].Input)
++	}
++	messages = safe
+ 	return c.postJSON(ctx, fmt.Sprintf("/api/daemon/tasks/%s/messages", taskID), map[string]any{
+ 		"messages": messages,
+ 	}, nil)
+@@ -636,7 +645,7 @@
+ }
+ 
+ func (c *Client) completeTaskWithRetrySchedule(ctx context.Context, taskID, output, branchName, sessionID, workDir string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, schedule []time.Duration) error {
+-	body := map[string]any{"output": output}
++	body := map[string]any{"output": redact.Text(output)}
+ 	if branchName != "" {
+ 		body["branch_name"] = branchName
+ 	}
+@@ -687,7 +696,7 @@
+ }
+ 
+ func (c *Client) failTaskWithRetrySchedule(ctx context.Context, taskID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, schedule []time.Duration) error {
+-	body := map[string]any{"error": errMsg}
++	body := map[string]any{"error": redact.Text(errMsg)}
+ 	if sessionID != "" {
+ 		body["session_id"] = sessionID
+ 	}
+--- a/server/internal/daemon/daemon.go
++++ b/server/internal/daemon/daemon.go
+@@ -6386,6 +6386,9 @@
+ // 30-second drain, but terminal callbacks must still use that remaining window.
+ // The explicit timeout keeps this detached work bounded during normal runs.
+ func (d *Daemon) reportTerminalTask(parentCtx context.Context, report terminalTaskReport) error {
++	// The same scrubbed payload must reach the retry outbox and the server.
++	report.output = redact.Text(report.output)
++	report.errorMessage = redact.Text(report.errorMessage)
+ 	if _, err := persistedTerminalReport(report, time.Now()); err != nil {
+ 		return err
+ 	}
+--- a/server/internal/daemon/terminal_report_queue.go
++++ b/server/internal/daemon/terminal_report_queue.go
+@@ -14,6 +14,8 @@
+ 	"strings"
+ 	"sync"
+ 	"time"
++
++	"github.com/multica-ai/multica/server/pkg/redact"
+ )
+ 
+ const (
+@@ -137,9 +139,9 @@
+ 		CreatedAt:             createdAt.UTC(),
+ 		Kind:                  kind,
+ 		TaskID:                report.taskID,
+-		Output:                report.output,
++		Output:                redact.Text(report.output),
+ 		BranchName:            report.branchName,
+-		ErrorMessage:          report.errorMessage,
++		ErrorMessage:          redact.Text(report.errorMessage),
+ 		SessionID:             report.sessionID,
+ 		WorkDir:               report.workDir,
+ 		DurableWorkDir:        report.durableWorkDir,
+@@ -168,9 +170,9 @@
+ 	return terminalTaskReport{
+ 		kind:                  kind,
+ 		taskID:                record.TaskID,
+-		output:                record.Output,
++		output:                redact.Text(record.Output),
+ 		branchName:            record.BranchName,
+-		errorMessage:          record.ErrorMessage,
++		errorMessage:          redact.Text(record.ErrorMessage),
+ 		sessionID:             record.SessionID,
+ 		workDir:               record.WorkDir,
+ 		durableWorkDir:        record.DurableWorkDir,
+--- /dev/null
++++ b/server/internal/handler/aicom_output_redaction_test.go
+@@ -0,0 +1,21 @@
++package handler
++
++import (
++	"encoding/json"
++	"strings"
++	"testing"
++)
++
++func TestAicomTerminalRequestRedaction(t *testing.T) {
++	token := "ghp_" + strings.Repeat("aB3x", 10)
++	complete := TaskCompleteRequest{Output: token, WorkDir: token, BranchName: token, PRURL: token}
++	sanitizeTaskCompleteRequest(&complete)
++	failed := TaskFailRequest{Error: token, WorkDir: token, BranchName: token}
++	sanitizeTaskFailRequest(&failed)
++	for _, value := range []any{complete, failed} {
++		body, err := json.Marshal(value)
++		if err != nil || strings.Contains(string(body), token) || !strings.Contains(string(body), "REDACTED") {
++			t.Fatal("terminal request was not scrubbed before storage")
++		}
++	}
++}
+--- a/server/internal/handler/daemon.go
++++ b/server/internal/handler/daemon.go
+@@ -4858,23 +4858,23 @@
+ // durable_work_dir, branch_name, session_id) are all TEXT, and result is
+ // JSONB; neither tolerates a NUL.
+ func sanitizeTaskCompleteRequest(req *TaskCompleteRequest) {
+-	req.PRURL = util.SanitizeTextForPostgres(req.PRURL)
+-	req.Output = util.SanitizeTextForPostgres(req.Output)
+-	req.SessionID = util.SanitizeTextForPostgres(req.SessionID)
+-	req.WorkDir = util.SanitizeTextForPostgres(req.WorkDir)
+-	req.DurableWorkDir = util.SanitizeTextForPostgres(req.DurableWorkDir)
+-	req.BranchName = util.SanitizeTextForPostgres(req.BranchName)
+-	req.RetiredSessionID = util.SanitizeTextForPostgres(req.RetiredSessionID)
++	req.PRURL = redact.Text(util.SanitizeTextForPostgres(req.PRURL))
++	req.Output = redact.Text(util.SanitizeTextForPostgres(req.Output))
++	req.SessionID = redact.Text(util.SanitizeTextForPostgres(req.SessionID))
++	req.WorkDir = redact.Text(util.SanitizeTextForPostgres(req.WorkDir))
++	req.DurableWorkDir = redact.Text(util.SanitizeTextForPostgres(req.DurableWorkDir))
++	req.BranchName = redact.Text(util.SanitizeTextForPostgres(req.BranchName))
++	req.RetiredSessionID = redact.Text(util.SanitizeTextForPostgres(req.RetiredSessionID))
+ }
+ 
+ func sanitizeTaskFailRequest(req *TaskFailRequest) {
+-	req.Error = util.SanitizeTextForPostgres(req.Error)
+-	req.SessionID = util.SanitizeTextForPostgres(req.SessionID)
+-	req.WorkDir = util.SanitizeTextForPostgres(req.WorkDir)
+-	req.DurableWorkDir = util.SanitizeTextForPostgres(req.DurableWorkDir)
+-	req.FailureReason = util.SanitizeTextForPostgres(req.FailureReason)
+-	req.BranchName = util.SanitizeTextForPostgres(req.BranchName)
+-	req.RetiredSessionID = util.SanitizeTextForPostgres(req.RetiredSessionID)
++	req.Error = redact.Text(util.SanitizeTextForPostgres(req.Error))
++	req.SessionID = redact.Text(util.SanitizeTextForPostgres(req.SessionID))
++	req.WorkDir = redact.Text(util.SanitizeTextForPostgres(req.WorkDir))
++	req.DurableWorkDir = redact.Text(util.SanitizeTextForPostgres(req.DurableWorkDir))
++	req.FailureReason = redact.Text(util.SanitizeTextForPostgres(req.FailureReason))
++	req.BranchName = redact.Text(util.SanitizeTextForPostgres(req.BranchName))
++	req.RetiredSessionID = redact.Text(util.SanitizeTextForPostgres(req.RetiredSessionID))
+ }
+ 
+ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
+--- /dev/null
++++ b/server/internal/service/aicom_output_redaction_test.go
+@@ -0,0 +1,59 @@
++package service
++
++import (
++	"context"
++	"encoding/json"
++	"fmt"
++	"strings"
++	"testing"
++
++	"github.com/jackc/pgx/v5"
++	"github.com/multica-ai/multica/server/internal/events"
++	db "github.com/multica-ai/multica/server/pkg/db/generated"
++)
++
++type aicomResultDB struct {
++	mockDBTX
++	token  string
++	saw    bool
++	leaked bool
++}
++
++func (m *aicomResultDB) QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row {
++	if strings.Contains(sql, "SET status =") {
++		m.saw = true
++		for _, arg := range args {
++			value := fmt.Sprint(arg)
++			if raw, ok := arg.([]byte); ok {
++				value = string(raw)
++			}
++			if strings.Contains(value, m.token) {
++				m.leaked = true
++			}
++		}
++	}
++	return m.mockDBTX.QueryRow(ctx, sql, args...)
++}
++
++func TestAicomResultStorageBoundary(t *testing.T) {
++	token := "ghp_" + strings.Repeat("aB3x", 10)
++	for _, completed := range []bool{true, false} {
++		capture := &aicomResultDB{mockDBTX: mockDBTX{task: db.AgentTaskQueue{ID: testUUID(1), Status: "completed"}}, token: token}
++		svc := &TaskService{Queries: db.New(capture), Bus: events.New()}
++		var err error
++		if completed {
++			result, _ := json.Marshal(map[string]any{"output": token, "output_summary": token})
++			_, _, err = svc.CompleteTaskWithTransition(context.Background(), testUUID(1), result, "", "", "", false, "", "")
++		} else {
++			_, _, err = svc.FailTaskWithTransition(context.Background(), testUUID(1), token, "", "", "", "cancelled", false, "", "")
++		}
++		if err != nil || !capture.saw || capture.leaked {
++			t.Fatal("database query boundary received raw output or was not exercised")
++		}
++	}
++	// Invalid JSON must be rejected before touching an unconfigured database.
++	svc := &TaskService{}
++	if _, _, err := svc.CompleteTaskWithTransition(context.Background(), testUUID(1), []byte("{"), "", "", "", false, "", ""); err == nil {
++		t.Fatal("invalid result was allowed to reach storage")
++	}
++}
+--- a/server/internal/service/task.go
++++ b/server/internal/service/task.go
+@@ -4641,6 +4641,14 @@
+ // must only run them when transitioned is true; a replay against an already
+ // terminal task is still an idempotent success but must not emit them again.
+ func (s *TaskService) CompleteTaskWithTransition(ctx context.Context, taskID pgtype.UUID, result []byte, sessionID, workDir, branchName string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) (*db.AgentTaskQueue, bool, error) {
++	// Every caller, including non-HTTP callers, crosses this boundary before DB writes.
++	if len(result) > 0 {
++		safe, err := redact.JSON(result)
++		if err != nil {
++			return nil, false, errors.New("task result must be valid JSON before storage")
++		}
++		result = safe
++	}
+ 	var task db.AgentTaskQueue
+ 	var change *qoderIssueChange
+ 	// chatAssistantMsg is the single assistant outcome row written for a chat
+@@ -5077,7 +5085,7 @@
+ 	// text we will actually persist (GH #7098). Kept at the service boundary
+ 	// rather than only in the /fail handler because failClaimedTaskBeforeLaunch
+ 	// reaches FailTask without going through request decoding.
+-	errMsg = util.SanitizeTextForPostgres(errMsg)
++	errMsg = redact.Text(util.SanitizeTextForPostgres(errMsg))
+ 
+ 	// MUL-2946: synthesise a refined reason from the error text whenever the
+ 	// caller didn't supply one. This is the last write-path guard against
+--- /dev/null
++++ b/server/pkg/redact/aicom_json_test.go
+@@ -0,0 +1,26 @@
++package redact
++
++import (
++	"encoding/json"
++	"strings"
++	"testing"
++)
++
++func TestAicomResultJSON(t *testing.T) {
++	token := "ghp_" + strings.Repeat("aB3x", 10)
++	raw, _ := json.Marshal(map[string]any{"output": token, "output_summary": token, "nested": []any{map[string]any{"text": token}}, "count": json.Number("9007199254740993")})
++	safe, err := JSON(raw)
++	if err != nil || strings.Contains(string(safe), token) || !strings.Contains(string(safe), "9007199254740993") || !strings.Contains(string(safe), "REDACTED") {
++		t.Fatal("result fields must be scrubbed with numbers preserved")
++	}
++	for _, raw := range []string{`{`, `{} {}`, `{"output": "` + token} {
++		if safe, err := JSON([]byte(raw)); err == nil || safe != nil {
++			t.Fatal("malformed result must not return an unchecked payload")
++		}
++	}
++	deep := strings.Repeat("[", 40) + `"` + token + `"` + strings.Repeat("]", 40)
++	safe, err = JSON([]byte(deep))
++	if err != nil || strings.Contains(string(safe), token) || !strings.Contains(string(safe), "DEPTH LIMIT") {
++		t.Fatal("deep results must fail closed at the redactor depth limit")
++	}
++}
+--- /dev/null
++++ b/server/pkg/redact/json.go
+@@ -0,0 +1,24 @@
++package redact
++
++import (
++	"bytes"
++	"encoding/json"
++	"errors"
++	"io"
++)
++
++// JSON scrubs terminal-result JSON before storage, preserving numeric precision.
++// Invalid or trailing data is rejected without quoting untrusted content.
++func JSON(data []byte) ([]byte, error) {
++	decoder := json.NewDecoder(bytes.NewReader(data))
++	decoder.UseNumber()
++	var value any
++	if decoder.Decode(&value) != nil {
++		return nil, errors.New("invalid result JSON")
++	}
++	var trailing any
++	if decoder.Decode(&trailing) != io.EOF {
++		return nil, errors.New("invalid trailing result JSON")
++	}
++	return json.Marshal(redactValue(value, 0))
++}

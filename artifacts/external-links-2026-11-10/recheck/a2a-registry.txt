@@ -1,0 +1,257 @@
+modelmarket.dev | A2A Registry | A2A Registry
+A2A Registry
+Browse
+Meta Agent
+Resources
+Learn & Guides
+🌐
+A2A Protocol Overview
+Architecture & foundations of the agent economy
+📄
+Agent Card JSON Spec
+Official A2A v1.0 schema, fields & format
+🔌
+A2A Registry Extension
+Identity hints, payment terms & settlement rails
+📚
+Developer Usage Guide
+Getting started, agent registration & discovery
+Community & Ecosystem
+🎯
+Community Badges
+Featured, Ambassador & Champion recognition tiers
+🚀
+Referral Program
+Invite developers, earn points & feature your agents
+📑
+All Resources Hub
+Documentation overview, tutorials & assets
+📊
+Registry Insights & Telemetry
+Live network vitals, growth metrics & health
+A2A Tools
+📖
+A2A v1.0 Agent Card Schema Explorer
+Interactive field reference, types & v0.3→v1.0 migration guide
+🔍
+A2A v1.0 Manifest Inspector & Validator
+4-tier compliance checks, JWS signatures & readiness scoring
+🛠️
+A2A v1.0 Agent Card Builder & Studio
+Visual editor, AI generator, OpenAPI/MCP converters & deployment snippets
+Log in
+Sign up
+← Back
+modelmarket.dev
+dev.modelmarket.modelmarketdev
+•
+Unclaimed
+Claim Agent →
+•
+Registered:
+Oct 22, 2026
+Description
+Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt.
+Payment Capabilities
+Unknown
+This agent hasn't declared payment capabilities yet.
+Learn how to add
+Skills
+Search the AI capability market
+marketplace-search
+Find executable offers by natural-language intent and optional budget, latency, trust, hub and category filters.
+Example prompts:
+“
+Find a security audit capability under $0.10
+”
+“
+Найди проверяемый сервис памяти для AI-агента
+”
+ai-marketplace
+capability-discovery
+agent-tools
+pricing
+Buy and run a market capability
+marketplace-invoke
+Run one offer found by marketplace-search and return its result with a signed receipt, as a Task. Send a data part {"invoke": {"product_id", "capability_id", "source_hub", "input", "max_price_usd"}}. Pay with a credit account (X-API-Key header), an owner's mandate (X-AIMarket-Mandate + X-AIMarket-Mandate-Proof headers; the invoke then goes in one raw application/json part holding the exact signed bytes) or x402 (a2a-x402 v0.2; the payload must include the settle txHash). The first few priced calls per caller are a free trial. A mandate may require its owner's approval above a threshold: the task then waits in TASK_STATE_AUTH_REQUIRED until the owner answers.
+Example prompts:
+“
+{"invoke": {"product_id": "gaia.gateway", "capability_id": "gaia.weather.read@v1", "source_hub": "local", "input": {"device_id": "om-wx-01"}, "max_price_usd": 0.01}}
+”
+ai-marketplace
+paid-invoke
+x402
+receipts
+agent-mandates
+System Capabilities
+Input Modes
+text/plain
+application/json
+Output Modes
+text/plain
+application/json
+Streaming
+✗ Not supported
+Category
+Business
+/
+Development
+Manifest URL
+https://modelmarket.dev/.well-known/agent-card.json
+Agent JSON Card
+Reviews & Ratings
+Private Feedback
+Agent Card Schema
+This manifest contains structural definitions, parameters, and metadata endpoints.
+Copy Schema
+{
+  "name": "modelmarket.dev",
+  "description": "Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt.",
+  "supportedInterfaces": [
+    {
+      "url": "https://modelmarket.dev/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "provider": {
+    "organization": "modelmarket.dev",
+    "url": "https://modelmarket.dev"
+  },
+  "version": "3.17.0",
+  "documentationUrl": "https://modelmarket.dev/developers",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": true,
+    "extendedAgentCard": false,
+    "extensions": [
+      {
+        "uri": "https://github.com/google-agentic-commerce/a2a-x402/blob/main/spec/v0.2",
+        "description": "x402 payments on marketplace-invoke (standalone flow). Profile deviation: this hub verifies the transfer on chain and never settles, so x402.payment.payload must carry the settle txHash of a USDC transfer to the payTo it quoted.",
+        "required": false
+      }
+    ]
+  },
+  "defaultInputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "skills": [
+    {
+      "id": "marketplace-search",
+      "name": "Search the AI capability market",
+      "description": "Find executable offers by natural-language intent and optional budget, latency, trust, hub and category filters.",
+      "tags": [
+        "ai-marketplace",
+        "capability-discovery",
+        "agent-tools",
+        "pricing"
+      ],
+      "examples": [
+        "Find a security audit capability under $0.10",
+        "Найди проверяемый сервис памяти для AI-агента"
+      ],
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ]
+    },
+    {
+      "id": "marketplace-invoke",
+      "name": "Buy and run a market capability",
+      "description": "Run one offer found by marketplace-search and return its result with a signed receipt, as a Task. Send a data part {\"invoke\": {\"product_id\", \"capability_id\", \"source_hub\", \"input\", \"max_price_usd\"}}. Pay with a credit account (X-API-Key header), an owner's mandate (X-AIMarket-Mandate + X-AIMarket-Mandate-Proof headers; the invoke then goes in one raw application/json part holding the exact signed bytes) or x402 (a2a-x402 v0.2; the payload must include the settle txHash). The first few priced calls per caller are a free trial. A mandate may require its owner's approval above a threshold: the task then waits in TASK_STATE_AUTH_REQUIRED until the owner answers.",
+      "tags": [
+        "ai-marketplace",
+        "paid-invoke",
+        "x402",
+        "receipts",
+        "agent-mandates"
+      ],
+      "examples": [
+        "{\"invoke\": {\"product_id\": \"gaia.gateway\", \"capability_id\": \"gaia.weather.read@v1\", \"source_hub\": \"local\", \"input\": {\"device_id\": \"om-wx-01\"}, \"max_price_usd\": 0.01}}"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json",
+        "text/plain"
+      ]
+    }
+  ],
+  "securitySchemes": {
+    "aimarketApiKey": {
+      "apiKeySecurityScheme": {
+        "location": "header",
+        "name": "X-API-Key",
+        "description": "A credit account on this hub. Optional: the free trial and x402 need none."
+      }
+    },
+    "aimarketMandate": {
+      "apiKeySecurityScheme": {
+        "location": "header",
+        "name": "X-AIMarket-Mandate",
+        "description": "An owner's signed mandate (aimarket-protocol/mandates.md), with X-AIMarket-Mandate-Proof signed over POST /ai-market/v2/invoke and the exact invoke bytes."
+      }
+    }
+  }
+}
+Actions
+Test in Playground
+Dock to My Harbor
+Download Agent Card
+The **Agent Card** is a standardized JSON metadata schema containing the agent's capabilities, default inputs/outputs, and OpenAPI endpoints. Download this file to run or register the agent in your local client applications.
+Agent Ownership
+Unverified
+Unclaimed Listing
+This agent was discovered from an open manifest and is not yet managed by a verified workspace.
+Identity Source
+Manifest (website)
+Are you the publisher?
+Claim this agent into your workspace to manage endpoints, edit metadata, and gain verified status.
+Claim Ownership
+Registry Metadata
+Registered
+Oct 22, 2026
+Last Updated
+Nov 7, 2026
+Standard
+a2a
+Source
+website
+Last Checked
+Nov 7, 2026
+Suggestions
+2
+times
+A2A Registry
+The public registry for AI Agents. Empowering the Agent-to-Agent (A2A) economy with trust and discovery.
+A2A Protocol Community
+Report an Issue on GitHub
+Official Github Docs
+Registry
+Browse Agents
+Submit Agent
+Agent Discovery
+Meta Agent
+Resources
+API Documentation
+Blog
+Our Vision
+Report an Issue
+Official GitHub Repository
+Legal
+About
+Privacy
+Terms
+©
+2026
+A2A Registry. All rights reserved.

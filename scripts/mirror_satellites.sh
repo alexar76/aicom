@@ -1259,6 +1259,11 @@ export_plugins() {
     cp "$ROOT/plugins/.github/workflows/publish-mcp-registry.yml" "$clone/.github/workflows/publish-mcp-registry.yml"
     echo "  ✓ .github/workflows/publish-mcp-registry.yml"
   fi
+  if [[ -f "$ROOT/plugins/.github/workflows/sign-manifest-revision.yml" ]]; then
+    mkdir -p "$clone/.github/workflows"
+    cp "$ROOT/plugins/.github/workflows/sign-manifest-revision.yml" "$clone/.github/workflows/sign-manifest-revision.yml"
+    echo "  ✓ .github/workflows/sign-manifest-revision.yml (OWASP SUPP-06)"
+  fi
 
   _copy_badge_tooling "$clone" "$mcp_packager/docs/badges/coverage.svg" "$ROOT/plugins/scripts"
 
@@ -2653,6 +2658,11 @@ else:
       local extra_excludes
       extra_excludes="$(_python_map exclude-paths esim-kit)"
       export_simple "$sat_id" "esim-kit" "esim-operator-kit" "mit" "$extra_excludes"
+      ;;
+    mcp-tool-set-digest)
+      # A specification repository: ships its own LICENSE (text CC BY 4.0, code Apache-2.0 OR MIT)
+      # and SECURITY.md, both kept by _copy_governance.
+      export_simple "$sat_id" "mcp-tool-set-digest" "mcp-tool-set-digest" "mit"
       ;;
     domain-kit)
       # Same door as esim-kit: export_simple → _commit_and_push (existing sanitizer).

@@ -1,0 +1,54 @@
+{
+  "mode": "pilot",
+  "site": "blip",
+  "snapshot": "source-v4",
+  "allTestCommandsPassed": true,
+  "testedSourceUnchanged": true,
+  "sourceChanges": [],
+  "sourceFiles": 574,
+  "commands": [
+    {
+      "stage": "hub-preflight-v4",
+      "command": [
+        "/usr/local/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-ra",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "pytest_asyncio.plugin",
+        "-p",
+        "pytest_httpx",
+        "/work/aimarket-hub/tests/test_mandates_hardening.py::TestJobTree::test_each_receipt_commits_to_its_own_children_by_their_receipt_ids",
+        "/work/aimarket-hub/tests/test_supply_chain_admission.py::test_supply_register_runs_admission_before_catalog_write",
+        "/work/aimarket-hub/tests/test_peer_rejections.py::test_inbound_crawler_uses_actual_database_policy_before_dns",
+        "/work/aimarket-hub/tests/test_private_grant_not_public.py",
+        "/work/aimarket-hub/tests/test_source_scoped_rejections.py",
+        "--basetemp=/results/pytest-tmp/pilot",
+        "--junitxml=/results/hub-preflight-v4.xml"
+      ],
+      "cwd": "/tmp/run",
+      "exitCode": 0,
+      "durationSeconds": 29.563,
+      "tests": 7,
+      "passed": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassingCases": []
+    }
+  ],
+  "isolation": {
+    "runtime": "runsc",
+    "network": "none",
+    "readOnlyRoot": true,
+    "sourceReadOnly": true,
+    "user": "1000:1000",
+    "capabilities": "ALL dropped",
+    "noNewPrivileges": true
+  },
+  "allCollectedCasesPassed": true,
+  "passed": true
+}

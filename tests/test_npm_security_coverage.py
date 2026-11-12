@@ -28,13 +28,15 @@ def test_nested_studio_gets_coverage_and_existing_ecosystems_survive(tmp_path):
     assert (gh / 'dependabot.yml').read_bytes() == first
     data = yaml.safe_load(first)
     kept = next(e for e in data['updates'] if e['package-ecosystem'] == 'pip')
-    assert {k: kept[k] for k in pip} == pip  # the bespoke entry survives untouched ...
+    assert {k: kept[k] for k in pip} == pip  # the bespoke entry survives (only its limit is set) ...
     assert kept['groups'] == {'pip-all': {'patterns': ['*']}}  # ... and opens one grouped PR
     npm = next(e for e in data['updates'] if e['package-ecosystem'] == 'npm')
     assert npm['directories'] == ['/', '/**/*']
     assert npm['groups']['npm-security']['applies-to'] == 'security-updates'
     assert npm['groups']['npm-major']['update-types'] == ['major']
-    assert npm['open-pull-requests-limit'] <= 5
+    # No routine version-update PRs on the mirrors (owner, 2026-11-10); security updates are separate.
+    assert npm['open-pull-requests-limit'] == 0
+    assert kept['open-pull-requests-limit'] == 0
     wf = yaml.safe_load((gh / 'workflows/npm-dependency-audit.yml').read_text())
     assert wf['permissions'] == {'contents': 'read'}
     audit = wf['jobs']['audit']
@@ -87,3 +89,16 @@ def test_all_committed_lockfiles_exclude_the_reported_vulnerable_versions():
             if unsafe:
                 bad.append(f'{path}: {location}@{meta["version"]}')
     assert not bad, '\n'.join(bad)
+
+
+def test_every_committed_dependabot_config_opens_no_routine_prs():
+    """Owner, 2026-11-10: no routine version-update PRs on the GitHub mirrors (32 grouped PRs were
+    open that day). Every committed config, including the three kept only for mirrors whose
+    source tree has no other .github (aicom-products, domain-kit, esim-kit), must say so."""
+    listed = subprocess.run(['git', 'ls-files'], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
+    configs = [f for f in listed if f == '.github/dependabot.yml' or f.endswith('/.github/dependabot.yml')]
+    assert len(configs) >= 35
+    for rel in configs:
+        data = yaml.safe_load((ROOT / rel).read_text())
+        for entry in data['updates']:
+            assert entry.get('open-pull-requests-limit') == 0, f"{rel}: {entry.get('package-ecosystem')}"

@@ -1,0 +1,23 @@
+{
+ "site_rule_all_fields_except_signature_meta": true,
+ "npm_afta_protocol_0_1_1_core_without_agent_nonce": false,
+ "npm_package_accepts_canonical_form_id": false,
+ "request_hash_matches_GET_path_query": true,
+ "response_hash_matches_body_minus_receipt_billing": true,
+ "signed_fields": [
+  "agent_nonce",
+  "captured_at",
+  "credits_charged",
+  "credits_remaining",
+  "endpoint",
+  "freshness_sla_seconds",
+  "id",
+  "method",
+  "no_charge_reason",
+  "request_hash",
+  "response_hash",
+  "server_time",
+  "token_short",
+  "v"
+ ]
+}

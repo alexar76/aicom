@@ -1,0 +1,341 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://analytics.python.org/js/pa-L6tKDp5ar6fQQvUK3ukDy.js"></script>
+    <script>
+        window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+        plausible.init()
+    </script>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="PyPI Download Stats">
+    <meta name="keywords" content="Python,PyPI,package,downloads,stats">
+    <title>
+        PyPI Download Stats
+    </title>
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]> <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+            type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js" type="text/javascript"></script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    
+    
+</head>
+
+<body>
+<div class="wrapper">
+    <header>
+
+        <h1>PyPI Stats</h1>
+        <p>
+            <a href="/">Search</a>
+            <br>
+            <br>
+            <a href="/packages/__all__">All packages</a>
+            <br>
+            <a href="/top">Top packages</a>
+            <br>
+            <br>
+            
+                <a href="/user">Track packages</a>
+            
+            <br>
+            <br>
+            
+        </p>
+
+    </header>
+
+    <section>
+        
+    <h1>PyPI Stats API</h1>
+    <hr>
+    <p>
+        PyPI Stats provides a simple JSON API for retrieving aggregate download stats and time series for packages. The
+        following are the valid endpoints using host:
+        <code>https://pypistats.org/</code>
+    </p>
+    <h2>NOTES</h2>
+    <p>
+    <ul>
+        <li>All download stats exclude known mirrors (such as
+            <a href="/packages/bandersnatch">bandersnatch</a>) unless noted
+            otherwise.
+        </li>
+        <li>Time series data is retained only for 180 days.</li>
+        <li>All download data is updated once daily.</li>
+    </ul>
+    </p>
+    <h2>Etiquette</h2>
+    <p>
+        If you plan on using the API to download historical data for every python package in the database (e.g. for some
+        personal data exploration), <b>DON'T</b>. This website runs on limited resources and you will degrade
+        the site performance by doing this. It will also take a very long time.
+    </p>
+    <p>
+        You are much better off extracting the data directly from the Google
+        BigQuery <a href="https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sbigquery-public-data!2spypi!3sfile_downloads">pypi downloads tables</a>. You
+        can query up to 1TB of data FREE every month before having to pay. The volume of data queried for this website
+        falls well under that limit (each month of data is less than 100 GB queried) and you will have your data
+        in a relatively short amount of time. <a
+            href="https://packaging.python.org/guides/analyzing-pypi-package-downloads/">Here is a quick guide</a>.
+    </p>
+    <p>
+        If you want to regularly fetch download counts for a particular package or set of packages, cache your results.
+        The data provided here is updated <b>once</b> daily, so you should not need to fetch results from the same API
+        endpoint more than once per day.
+    </p>
+    <h2>Rate Limiting</h2>
+    <p>
+        IP-based rate limiting is imposed application-wide.
+    </p>
+    <h2>API Client</h2>
+    <p>
+        The <a href="/packages/pypistats">pypistats</a> <a
+            href="https://pypi.org/project/pypistats">package</a> is a python client and CLI tool for easily
+        accessing, aggregating, and formatting results from the API. To install, use pip:
+    <pre><code>pip install -U pypistats</code></pre>
+    Refer to the <a href="https://github.com/hugovk/pypistats">documentation</a> for usage.
+    </p>
+    <h2>Endpoints</h2>
+    <h3>/api/packages/&lt;package&gt;/recent</h3>
+    <p>Retrieve the aggregate download quantities for the last day/week/month.
+    </p>
+    <p>Query arguments:
+    <ul>
+        <li>
+            <b>period</b>
+            (optional):
+            <code>day</code>
+            or
+            <code>week</code>
+            or
+            <code>month</code>. If omitted returns all values.
+        </li>
+    </ul>
+    Example response:
+    <pre><code>{
+  "data": {
+    "last_day": 1,
+    "last_month": 2,
+    "last_week": 3
+  },
+  "package": "package_name",
+  "type": "recent_downloads"
+}</code></pre>
+    </p>
+    <h3>/api/packages/&lt;package&gt;/overall</h3>
+    <p>Retrieve the aggregate daily download time series with or without mirror downloads.
+    </p>
+    <p>Query arguments:
+    <ul>
+        <li>
+            <b>mirrors</b>
+            (optional):
+            <code>true</code>
+            or
+            <code>false</code>. If omitted returns both series data.
+        </li>
+        <!-- <li> <b>start_date</b> (optional): starting date of time series in format <code>YYYY-MM-DD</code> </li> <li> <b>end_date</b> (optional): ending date of time series in format <code>YYYY-MM-DD</code> </li> -->
+    </ul>
+    Example response:
+    <pre><code>{
+  "data": [
+    {
+      "category": "with_mirrors",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "without_mirrors",
+      "date": "2018-02-08",
+      "downloads": 1
+    }
+  ],
+  "package": "package_name",
+  "type": "overall_downloads"
+}</code></pre>
+    </p>
+    <h3>/api/packages/&lt;package&gt;/python_major</h3>
+    <p>Retrieve the aggregate daily download time series by Python major version number.
+    </p>
+    <p>Query arguments:
+    <ul>
+        <li>
+            <b>version</b>
+            (optional): the Python major version number, e.g.
+            <code>2</code>
+            or
+            <code>3</code>. If omitted returns all series data (including
+            <code>null</code>).
+        </li>
+        <!-- <li> <b>start_date</b> (optional): starting date of time series in format <code>YYYY-MM-DD</code> </li> <li> <b>end_date</b> (optional): ending date of time series in format <code>YYYY-MM-DD</code> </li> -->
+    </ul>
+    Example response:
+    <pre><code>{
+  "data": [
+    {
+      "category": "2",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "3",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "null",
+      "date": "2018-02-08",
+      "downloads": 1
+    }
+  ],
+  "package": "package_name",
+  "type": "python_major_downloads"
+}</code></pre>
+    </p>
+    <h3>/api/packages/&lt;package&gt;/python_minor</h3>
+    <p>Retrieve the aggregate daily download time series by Python minor version number.
+    </p>
+    <p>Query arguments:
+    <ul>
+        <li>
+            <b>version</b>
+            (optional): the Python major version number, e.g.
+            <code>2.7</code>
+            or
+            <code>3.6</code>. If omitted returns all series data (including
+            <code>null</code>).
+        </li>
+        <!-- <li> <b>start_date</b> (optional): starting date of time series in format <code>YYYY-MM-DD</code> </li> <li> <b>end_date</b> (optional): ending date of time series in format <code>YYYY-MM-DD</code> </li> -->
+    </ul>
+    Example response:
+    <pre><code>{
+  "data": [
+    {
+      "category": "2.6",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "2.7",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "3.2",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "3.3",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "3.4",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "3.5",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "3.6",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "3.7",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "null",
+      "date": "2018-02-08",
+      "downloads": 1
+    }
+  ],
+  "package": "package_name",
+  "type": "python_minor_downloads"
+}</code></pre>
+    </p>
+    <h3>/api/packages/&lt;package&gt;/system</h3>
+    <p>Retrieve the aggregate daily download time series by operating system.
+    </p>
+    <p>Query arguments:
+    <ul>
+        <li>
+            <b>os</b>
+            (optional): the operating system name, e.g.
+            <code>windows</code>,
+            <code>linux</code>,
+            <code>darwin</code>
+            or
+            <code>other</code>. If omitted returns all series data (including
+            <code>null</code>).
+        </li>
+        <!-- <li> <b>start_date</b> (optional): starting date of time series in format <code>YYYY-MM-DD</code> </li> <li> <b>end_date</b> (optional): ending date of time series in format <code>YYYY-MM-DD</code> </li> -->
+    </ul>
+    Example response:
+    <pre><code>{
+  "data": [
+    {
+      "category": "darwin",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "linux",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "null",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "other",
+      "date": "2018-02-08",
+      "downloads": 1
+    },
+    {
+      "category": "windows",
+      "date": "2018-02-08",
+      "downloads": 1
+    }
+  ],
+  "package": "package_name",
+  "type": "system_downloads"
+}</code></pre>
+    </p>
+
+
+    </section>
+
+    <footer>
+        <p>
+            <a href="/api/">API</a>
+            <br>
+            <a href="/about">About</a>
+            <br>
+            <a href="/faqs">FAQs</a>
+            <br>
+            Hosted by <a href="https://python.org/psf/">The PSF</a>
+        </p>
+    </footer>
+</div>
+<script>
+    anchors.add();
+</script>
+
+</body>
+
+</html>

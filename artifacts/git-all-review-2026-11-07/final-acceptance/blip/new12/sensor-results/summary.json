@@ -1,0 +1,50 @@
+{
+  "allSelectedGitBlobsMatched": true,
+  "bashSyntaxExitCode": 0,
+  "declaredRequirementChecks": [],
+  "dependencies": {
+    "PyYAML": "6.0.3",
+    "pytest": "8.4.2"
+  },
+  "dependencyMode": "declared-focused-sensor-test-subset",
+  "format": "aicom.new12-focused-offline-tests/v1",
+  "nativePytestExitCode": 0,
+  "networkNone": true,
+  "networkOperationsAttempted": 0,
+  "noLocalProjectExecution": true,
+  "noProductionStateMounts": true,
+  "noconftestReason": "Focused selected tests use their own mocks/fixtures; unrelated monorepo service/database fixtures are excluded.",
+  "paidCycleOrLedgerInvoked": false,
+  "passed": true,
+  "scope": "sensors",
+  "socketOperationsDenied": true,
+  "sourceProof": {
+    "actualFiles": 49,
+    "allMatched": true,
+    "expectedFiles": 49,
+    "format": "aicom.selected-source-git-blob-proof/v1",
+    "nativeBlobManifestSha256": "9b4628e5cf0f57160ae6288b090709e54ead75fb13cdbc3dedb080578e5f9612",
+    "sourceContentMapSha256": "e227cd2ecbfbaaa8c99bd398b54f39feee2b368a49f1e49e69c647c1c2bd8731",
+    "tree": "3d83e57ca3f27340bd78671bbf880c0f1e8028b2"
+  },
+  "sourceUnchanged": true,
+  "testArguments": [
+    "-q",
+    "--noconftest",
+    "--import-mode=importlib",
+    "-p",
+    "no:cacheprovider",
+    "-c",
+    "/tmp/pytest.ini",
+    "--rootdir=/source",
+    "--junitxml=/results/focused.xml",
+    "atlas/tests/test_packaged_catalogs.py",
+    "gaia/tests/test_packaged_catalogs.py",
+    "tests/test_packaged_sensor_catalogs.py",
+    "tests/test_extra_sensors_catalog_sync.py",
+    "tests/test_om_mesh_catalog_sync.py",
+    "tests/test_sc_mesh_catalog_sync.py",
+    "/tmp/test_sensor_cli_packaged_copy.py"
+  ],
+  "tree": "3d83e57ca3f27340bd78671bbf880c0f1e8028b2"
+}

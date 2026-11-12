@@ -1,0 +1,327 @@
+<!doctype html>
+
+ <!--
+  Copyright 2020 Google LLC
+ 
+  Licensed under the Apache License, Version 2.0 (the 'License');
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an 'AS IS' BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+      
+        
+          TrustFabric Witnesses
+         |
+       Trillian
+    </title>
+
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-173407084-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-173407084-1');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Google+Sans:wght@400;500;700&family=DM+Mono&display=swap&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://transparency.dev/css/styles.min.2e9850cf6275033796af0a0fcd64e04383ec6847e9b0d8160426bd9c341587e1.css" integrity="sha256-LphQz2J1AzeWrwoPzWTgQ4PsaEfpsNgWBCa9nDQVh&#43;E=">
+    <script>
+      'use strict';
+
+      function ready(fn) {
+        if (document.attachEvent
+          ? document.readyState === 'complete'
+          : document.readyState !== 'loading') {
+          fn();
+        } else {
+          document.addEventListener('DOMContentLoaded', fn);
+        }
+      }
+
+      function addClass(el, className) {
+        if (el.classList) {
+          el.classList.add(className);
+        } else {
+          el.className += ' ' + className;
+        }
+      }
+
+      function removeClass(el, className) {
+        if (el.classList) {
+          el.classList.remove(className);
+        } else {
+          el.className = el.className.replace(
+              new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' '
+          );
+        }
+      }
+    </script>
+  </head>
+<body>
+    
+
+<div class="bg-white z-50 w-full font-google" id="site-header">
+<nav class="glue-page test-fixed">
+  <div class="lg:hidden absolute h-16 flex items-center cursor-pointer">
+    <button id="toggleMenu" class="h-8 flex items-center justify-left px-4 -mx-4 rounded text-Grey-700" aria-label="Toggle menu">
+      <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+        <path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+      </svg>
+    </button>
+  </div>
+  <ul class="mx-auto lg:float-left h-16 flex items-center">
+    <li class="mx-auto"><a href='/' class="text-Grey-700" style="font-size: 22px; font-weight: normal;">Transparency.dev</a></li>
+  </ul>
+  <ul class="invisible lg:visible float-right h-16 flex items-center">
+    <li class="text-right inline mr-6"><a href='/#applications' class="text-Grey-600 hover:no-underline">Applications</a></li>
+    <li class="text-right inline mr-6"><a href='/summit/' class="text-Grey-600 hover:no-underline">2026 Summit</a></li>
+    <li class="text-right inline mr-6"><a href='/articles/' class="text-Grey-600 hover:no-underline">Articles</a></li>
+    <li class="text-right inline mr-6"><a href="https://blog.transparency.dev" class="text-Grey-600 hover:no-underline">Blog</a></li>
+  </ul>
+</nav>
+<ul id="mobileMenu" class="hidden bg-white p-8 fixed w-full z-50">
+  <li class="gmb-2"><a href='/#applications' class="text-Grey-600 hover:no-underline">Applications</a></li>
+  <li class="gmb-2"><a href='/summit/' class="text-Grey-600 hover:no-underline">2026 Summit</a></li>
+  <li class="gmb-2"><a href='/articles/' class="text-Grey-600 hover:no-underline">Articles</a></li>
+  <li class=""><a href="https://blog.transparency.dev" class="text-Grey-600 hover:no-underline">Blog</a></li>
+</ul>
+</div>
+<div id="nav-spacer" class="h-16"></div>
+
+<script>
+  'use strict';
+  (function(){
+
+    var doc = document.documentElement;
+    var w = window;
+
+    var prevScroll = w.scrollY || doc.scrollTop;
+    var curScroll;
+    var direction = 0;
+    var prevDirection = 0;
+
+    var header = document.getElementById('site-header');
+
+    var checkScroll = function() {
+
+      
+
+
+      curScroll = w.scrollY || doc.scrollTop;
+      if (curScroll > prevScroll) {
+        
+        direction = 2;
+      }
+      else if (curScroll < prevScroll) {
+        
+        direction = 1;
+      }
+
+      if (direction !== prevDirection) {
+        toggleHeader(direction, curScroll);
+      }
+
+      prevScroll = curScroll;
+    };
+
+    var toggleHeader = function(direction, curScroll) {
+      if (direction === 2 && curScroll > 64) {
+        addClass(header, 'hide');
+        addClass(mobileMenu, 'hidden');
+        prevDirection = direction;
+      }
+      else if (direction === 1) {
+        removeClass(header, 'hide');
+        prevDirection = direction;
+      }
+    };
+
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    function toggleMenuVisibility() {
+      if (mobileMenu.classList.contains('hidden')) {
+        removeClass(mobileMenu, 'hidden');
+        return;
+      };
+      addClass(mobileMenu, 'hidden');
+    };
+
+    window.addEventListener('scroll', checkScroll);
+    document.getElementById('toggleMenu').onclick = toggleMenuVisibility;
+
+  })();
+</script>
+
+<div class="glue-page markdown">
+      <h1 class="headline2 md:text-center mb-5 md:mb-16">
+        <div class="eyebrow"></div>
+        TrustFabric Witnesses
+      </h1>
+  </div>
+  <div class="glue-page markdown">
+    <article id="content" class="markdown">
+      
+
+<p>This page contains information about the witnesses operated by the TrustFabric team at Google.
+This is the same team which developed and maintains Google CT logs,
+<a href="https://github.com/google/trillian">Trillian</a>, <a href="https://github.com/transparency-dev/tessera">Tessera</a>,
+and <a href="https://github.com/transparency-dev/tesseract">TesseraCT</a>.</p>
+<p>The witnesses listed below conform to the C2SP
+<a href="https://github.com/C2SP/C2SP/blob/tlog-witness/v0.1.0/tlog-witness.md">tlog-witness@v0.1.0</a>
+and related specs.</p>
+<h2 id="dev-witnesses">Dev witnesses</h2>
+<p>These witnesses are intended for testing and development purposes only, you are welcome to integrate
+with them but they should not be relied upon for any reason.
+They are operated on a best-effort basis, and, while we do not envisage it happening regularly, they
+may be unavailable, withdrawn, reset, or have their keys rotated at any time and without prior notice.</p>
+<h3 id="transparencydevdevwitness-little-garden">transparency.dev/DEV:witness-little-garden</h3>
+<p>This witness is running the
+<a href="https://github.com/transparency-dev/witness/tree/main/cmd/omniwitness_gcp">open-source OmniGCP implementation</a>
+on Google Cloud.</p>
+<table>
+<thead>
+<tr>
+<th>Little Garden</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>url</strong></td>
+<td><a href="https://api.transparency.dev/dev/witness/little-garden">https://api.transparency.dev/dev/witness/little-garden</a></td>
+</tr>
+<tr>
+<td><strong>configured lists</strong></td>
+<td>testing/log-list.1</td>
+</tr>
+<tr>
+<td><strong>updated</strong></td>
+<td>Multiple times per day</td>
+</tr>
+<tr>
+<td><strong>vkey ed25519</strong></td>
+<td><code>transparency.dev/DEV:witness-little-garden+d8042a87+BCtusOxINQNUTN5Oj8HObRkh2yHf/MwYaGX4CPdiVEPM</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="staging-witnesses">Staging witnesses</h2>
+<p>These witnesses are intended to be prod-like in most respects, but will be the first to be updated with new software versions
+before rolling out to the prod instances.
+They are operated on a best-effort basis, and consequently are monitored but are non-paging.
+We intend to keep these witnesses stable and will not reset their data or rotate keys without a good reason.</p>
+<p>These witnesses run the
+<a href="https://github.com/transparency-dev/witness/tree/main/cmd/omniwitness_gcp">open-source OmniGCP implementation</a>, with multi-region
+frontends backed by a regional Spanner instance.</p>
+<p>Key material is stored encrypted-at-rest in Secret Manager.</p>
+<table>
+<thead>
+<tr>
+<th>Ring any bells?</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>url</strong></td>
+<td><a href="https://staging.witness.transparency.goog/ring-any-bells">https://staging.witness.transparency.goog/ring-any-bells</a></td>
+</tr>
+<tr>
+<td><strong>configured lists</strong></td>
+<td>testing/log-list.1 staging/log-list-10qps-4klogs.1</td>
+</tr>
+<tr>
+<td><strong>updated</strong></td>
+<td>Multiple times per day</td>
+</tr>
+<tr>
+<td><strong>vkey ed25519</strong></td>
+<td><code>staging.witness.transparency.goog/ring-any-bells+2e1a8dc9+BG5JTpLc3FJtwzgh1Uv+Qelz9qeOH2bfWjS1s0s+y4rL</code></td>
+</tr>
+<tr>
+<td><strong>vkey MLDSA-44</strong></td>
+<td><code>staging.witness.transparency.goog/ring-any-bells+5774b075+Bi1GzCU2/5mxwhCBcfEpKliaoIg171qCFP3r3svllk/XlYj7hzNl9yVqfL2EBUdbC1vbnyCF6gD5XOFjsK4n64/mKMFIsWnuwoCVpqfUvHiM3sf48LMvFvWkQhHGEizw7FLiX+nmyM/EhzoNJ+98AKfLOjTvOFCqnb0RC9lLI+MlWGalc4fgNXYwcSBmShYfMBcaZzUt77SOHXORybbdeaGtRBU93KvBl03A9zipY5Hmn1E18ZtWtflwSV/tqgWs1Od1Hs+jHMGigKHKDaE4zYdRwkHFdf8VsTx4LJv2Ok0/4dfLxAZDEXAhpAbCbluBW5cf2Q6owZRa9obSEbjYXKCzSYySNh01rRf6K9o0VeFEK/6+CM45GvD/pMu++J1xGInxAjCoNqK3j3Rmx93WpIRmiwUhL+if1rPzrZO2m3Skek8QQx0Ke+HiaGcRYPUHqQ3Y/zJrJyXapg9lx9CgVXfOUWO89bocspztYABz43m5jqGaltjgOGUtYeoNvbtzzkJOugLLH43PwNPll064+oG4kmCAdVVS2VZHTm20l5qZ7jBumsrauD/S6dBpmZzua0hJlxf94I9gd8zmLsKLvjc9IAKkY26rMuAzl6Hu9NfXMM+8ZAtuJ6q2EKxy47dDn01AjrjZ/qYXiJbXDFTcHlUWF3fCujYgo8nCcoDYFbjby99TL++sHmivsz5kO2cR6xeJphlGt4Di5qxUaf9K70keUqr22R1rcLyGU5dPzWE0cAp+Z6dmvq4rM6QsTLfOjvZlydj/zfRs6BOBzlPEoqEWCN+A2MPCTm6NBV7L/24z0fUoGBh/08BGY37FU3nWwuldLKC+9nr1ItMhOKWKx8pkHnSllJEY0XVxpzE3eV08sCQyuRdVi++2K8Xnb3nUA7uQBr90IBCWzPzY/NWaBhVwqr+S1XzxHcHogWbVfdDxYgmj1tGWQaampa1ZwIBfjlHfn3ji2wSG8Mzd3jGTIX/4TlhN/rAlscnqnABEo24mzrQpOz7Dhc8hKhvAOXvS9b6GN6dml+O68UQg/qXNqBQep8UxOtmxmTMs5t/wBDNzkYwWONKwf682AaZfKaAOurHpkuGHlgCAtylWY/o4PDCyZ3e7wQfNRZK6asOUaq1CthaxRrLcemyvZYcydvw2ZFH/SF8J1RoeXtFRy4adRjPqNrzNk0um/cvxX8QB1Qf00sHXLOY7IfYdl6xUnsMsGrE5XkXWKxl8eN+VJhMpONQgB9MqgxLcQquesFpfeeo8k3MsX4+weJ8il/UNq7r6JWc+5/0E9bFDUTp30tSiwCEPEXBlQR8LbbBSTU7/cRru62D8L0/QvVnT4stFDouJpNPP5V7BbqPC36hQi7yVPXRyCUzsroDquICtaKqqnk90Ej0smXodBBXm4BHodXT1eXND5jR8N1AqzZcpucSmA6G5b33oXL3dlX+GP3q4JslJHRlQWFvp8Qbv6GYbnYGnvv4tIGxslibfdx1mKzuXczNeYlrlWJrddIXrFKgiwFBFTXG0HlIgeAMlF99g9Efyd4g/aJpmNLa8Qx7PV3+SZE3nrum37tyVVKfK9q7eXDYztOgIOKFNb3iS2CXCjrf3CsKGbXX+PvjqfBAH1cTc/lrDb2Rg2beH5mQam4zTPv2ndkPjEC0c5q92y+VNzBlKSnnBNlRg5fKIwbH3s8lOP51mdCYAdpwd8M6rYxs/jy37jWb9Utmh80HA3yR8KBDZYxEKkghO0PAFaC5kQIjUeYs=</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="production-witnesses">Production witnesses</h2>
+<p>We are in the process of productionising our production witness.</p>
+<h2 id="sla-witnessing">SLA witnessing</h2>
+<p>Please get in touch with the team to discuss.</p>
+<h2 id="how-to-request-witnessing-of-a-log">How to request witnessing of a log</h2>
+<p>To have your log witnessed, please follow the instructions at <a href="https://witness-network.org/participate/">https://witness-network.org/participate/</a></p>
+<p>Direct requests may also be sent directly to the TrustFabric team via issues on the
+<a href="https://github.com/transparency-dev/witness">https://github.com/transparency-dev/witness</a> repo, or getting in touch with the team via
+<a href="https://transparency.dev/slack">slack</a>.</p>
+
+
+
+    </article>
+  </div>
+</div>
+
+
+<div class="text-white bg-Grey-050 font-google font-medium footer">
+
+  <div class="glue-page gpt-4 gpb-5">
+    <div class="glue-grid">
+      <div class="col-span-4 sm:col-span-5 sm:col-start-2">
+        <h2 class="text-Grey-900">Learn more about tamper-evident logs</h2>
+        <ul class="text-Grey-600">
+          <li>
+            <a href='/#benefits' class="text-Grey-600 hover:text-Grey-900 hover:no-underline">Benefits of tamper-evident logs</a>
+          </li>
+          <li>
+            <a href='/verifiable-data-structures/' class="text-Grey-600 hover:text-Grey-900 hover:no-underline">Verifiable Data Structures</a>
+          </li>
+        </ul>
+        </ul>
+      </div>
+      <div class="col-span-4 gmt-2 sm:col-span-5 sm:mt-0">
+        <h2 class="text-Grey-900">Applications of tamper-evident logs</h2>
+        <ul class="text-Grey-600 gmb-4">
+          <li>
+            <a href='/application/add-tamper-checking-to-a-package-manager' class="text-Grey-600 hover:text-Grey-900 hover:no-underline">Add tamper-checking to a package manager</a>
+          </li>
+          <li>
+            <a href='/application/reliably-log-all-actions-performed-on-your-servers' class="text-Grey-600 hover:text-Grey-900 hover:no-underline">Reliably log all actions performed on your servers</a>
+          </li>
+          <li>
+            <a href='/application/strengthen-discovery-of-encryption-keys' class="text-Grey-600 hover:text-Grey-900 hover:no-underline">Strengthen discovery of encryption keys with Key Transparency</a>
+          </li>
+          <li>
+            <a href='/application/discourage-misbehaviour-by-third-parties-in-certificate-transparency' class="text-Grey-600 hover:text-Grey-900 hover:no-underline">Discourage misbehaviour by third parties in Certificate Transparency</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-span-4 sm:col-span-10 sm:col-start-2 border-t border-Grey-300 gpt-4 sm:flex">
+        <img src="/images/logos/google-logo.svg" alt="Google's Logo" />
+        <p class="mt-6 sm:mt-0 sm:ml-16 text-sm">
+          <a href="/privacy/" class="text-Grey-600 hover:text-Grey-900 hover:no-underline">
+            Privacy
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

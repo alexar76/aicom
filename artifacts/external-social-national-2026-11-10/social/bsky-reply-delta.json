@@ -1,0 +1,325 @@
+{
+  "feed_evidence": {
+    "key": "bsky-author-feed",
+    "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=alexar76.bsky.social&limit=100",
+    "method": "GET",
+    "read_at_utc": "2026-11-10T20:23:09.553154+00:00",
+    "status": 200,
+    "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=alexar76.bsky.social&limit=100",
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 196084,
+    "truncated": false,
+    "public_headers": {
+      "Date": "Tue, 10 Nov 2026 19:25:16 GMT",
+      "Server": "BunnyCDN-AMS1-883"
+    },
+    "body_file": "raw/bsky-author-feed.raw",
+    "sha256": "aa0a479d021a250fbaa482547420d441d07af33c8f43ffdd14b84c93c140344c"
+  },
+  "baseline_feed": "artifacts/external-signals-2026-11-09/audience/raw/bsky-feed.raw",
+  "baseline_post_uris": [
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpv2cab2vk2r",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpv2gpdio22r",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpwbmfa2ds2j",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpwbn4rric2j",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mq37e3veyc2d",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mq37g7mmkc2d",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqhdmkivr22l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqhdnassic2l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqjzt622722e",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqjzue47nc2l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqvtvnj4nc22",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqzdvcsv6s2d",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqiywe52x",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqizwpm2v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqj2voc2z",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqj5vc524",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqj6cfw2r",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqj7ubr2g",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqja6yb2l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr6nmqaj2c2j",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mrmmenpldc2m",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mrujtbjd3s2u",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mrujtzjnz22u",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3ms4k4lcloc2g",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3ms4k4zpxds2g",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3msgrn3imhs2q",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3msgrojtmjk2j",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mslau3rlps2f",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mslaudw4n22f",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3msycdjhjck2b",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3msyce4qjh22b",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtezof6w3s2z",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtezpsxp5c2i",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtqwn3mwlc2v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtqwornrt22v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mttvaf5xnk25",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mttvb636fc25",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtwnbwbl5c2e",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mukg4enmt22s",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mukg4zsup22s",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvg2jeidts2p",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvg2mixwbs2p",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvlenuwosk2a",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvleppxvv22a",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mwbafqq5rs2n",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mwbalmbmns2n",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mwyptcrezs25",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mxefgywfs42l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mxefgywv6r2i",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mxlruxm5us24",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mxyjegc35227",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3my3u7uuvm22o",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3my3ubclajk2o",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3my3udt6nk22o",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3myhh7p6a6s2m",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3myhhjwk5z32a",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3myhj7scbxc2m",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mytqb4od3c2v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mz3ks3nvn22r",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mz6lynddhi2f",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mz72alerxw2a",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mza7tee7vk2t",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mzqp73nc422s",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mzqqupxq2t2v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mzqskeiq2l2t",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mzqu7z4iks2m"
+  ],
+  "current_post_uris": [
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpv2cab2vk2r",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpv2gpdio22r",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpwbmfa2ds2j",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpwbn4rric2j",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mq37e3veyc2d",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mq37g7mmkc2d",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqhdmkivr22l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqhdnassic2l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqjzt622722e",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqjzue47nc2l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqvtvnj4nc22",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqzdvcsv6s2d",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqiywe52x",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqizwpm2v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqj2voc2z",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqj5vc524",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqj6cfw2r",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqj7ubr2g",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr3wqja6yb2l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mr6nmqaj2c2j",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mrmmenpldc2m",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mrujtbjd3s2u",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mrujtzjnz22u",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3ms4k4lcloc2g",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3ms4k4zpxds2g",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3msgrn3imhs2q",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3msgrojtmjk2j",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mslau3rlps2f",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mslaudw4n22f",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3msycdjhjck2b",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3msyce4qjh22b",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtezof6w3s2z",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtezpsxp5c2i",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtqwn3mwlc2v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtqwornrt22v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mttvaf5xnk25",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mttvb636fc25",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mtwnbwbl5c2e",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mukg4enmt22s",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mukg4zsup22s",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvg2jeidts2p",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvg2mixwbs2p",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvlenuwosk2a",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvleppxvv22a",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mwbafqq5rs2n",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mwbalmbmns2n",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mwyptcrezs25",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mxefgywfs42l",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mxefgywv6r2i",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mxlruxm5us24",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mxyjegc35227",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3my3u7uuvm22o",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3my3ubclajk2o",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3my3udt6nk22o",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3myhh7p6a6s2m",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3myhhjwk5z32a",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3myhj7scbxc2m",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mytqb4od3c2v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mz3ks3nvn22r",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mz6lynddhi2f",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mz72alerxw2a",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mza7tee7vk2t",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mzqp73nc422s",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mzqqupxq2t2v",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mzqskeiq2l2t",
+    "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mzqu7z4iks2m"
+  ],
+  "added_post_uris": [],
+  "absent_from_current_feed_uris": [],
+  "current_cursor": null,
+  "selected_threads": [
+    {
+      "component": "Metis",
+      "source_url": "https://bsky.app/profile/alexar76.bsky.social/post/3mqhdmkivr22l",
+      "baseline": "artifacts/external-signals-2026-11-09/audience/raw/bsky-thread-3mqhdmkivr22l.raw",
+      "current_evidence": {
+        "key": "bsky-thread-metis",
+        "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mqhdmkivr22l&depth=10&parentHeight=0",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:26:08.708713+00:00",
+        "status": 200,
+        "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mqhdmkivr22l&depth=10&parentHeight=0",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 4819,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:28:16 GMT",
+          "Server": "BunnyCDN-AMS1-879"
+        },
+        "body_file": "raw/bsky-thread-metis.raw",
+        "sha256": "d65c09853aa749503537456ddc5734167482bfe630a0b24646daf459fe697e6c"
+      },
+      "baseline_reply_uris": [
+        "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqhdnassic2l"
+      ],
+      "current_reply_uris": [
+        "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqhdnassic2l"
+      ],
+      "new_reply_uris": [],
+      "removed_reply_uris": [],
+      "new_external_reply_uris": [],
+      "replies": [
+        {
+          "uri": "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mqhdnassic2l",
+          "author_did": "did:plc:u63726gke7rdfrsrtuz3hqzd",
+          "author_handle": "alexar76.bsky.social",
+          "created_at": "2026-07-12T14:00:45.165Z",
+          "is_owner": true
+        }
+      ],
+      "limit": "Four selected complete returned trees, depth10; other public/quote/private conversations not comprehensively re-read."
+    },
+    {
+      "component": "GAIA",
+      "source_url": "https://bsky.app/profile/alexar76.bsky.social/post/3mrujtbjd3s2u",
+      "baseline": "artifacts/external-signals-2026-11-09/audience/raw/bsky-thread-3mrujtbjd3s2u.raw",
+      "current_evidence": {
+        "key": "bsky-thread-gaia",
+        "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mrujtbjd3s2u&depth=10&parentHeight=0",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:26:09.266777+00:00",
+        "status": 200,
+        "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mrujtbjd3s2u&depth=10&parentHeight=0",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 4722,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:28:16 GMT",
+          "Server": "BunnyCDN-AMS1-879"
+        },
+        "body_file": "raw/bsky-thread-gaia.raw",
+        "sha256": "19a9cb3d89b967a5d30e85458f93e639217acd6613f5ce4d7b66c93e2a09042b"
+      },
+      "baseline_reply_uris": [
+        "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mrujtzjnz22u"
+      ],
+      "current_reply_uris": [
+        "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mrujtzjnz22u"
+      ],
+      "new_reply_uris": [],
+      "removed_reply_uris": [],
+      "new_external_reply_uris": [],
+      "replies": [
+        {
+          "uri": "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mrujtzjnz22u",
+          "author_did": "did:plc:u63726gke7rdfrsrtuz3hqzd",
+          "author_handle": "alexar76.bsky.social",
+          "created_at": "2026-07-30T13:21:43.084Z",
+          "is_owner": true
+        }
+      ],
+      "limit": "Four selected complete returned trees, depth10; other public/quote/private conversations not comprehensively re-read."
+    },
+    {
+      "component": "Hub",
+      "source_url": "https://bsky.app/profile/alexar76.bsky.social/post/3mvlenuwosk2a",
+      "baseline": "artifacts/external-signals-2026-11-09/audience/raw/bsky-thread-3mvlenuwosk2a.raw",
+      "current_evidence": {
+        "key": "bsky-thread-hub",
+        "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mvlenuwosk2a&depth=10&parentHeight=0",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:26:09.657676+00:00",
+        "status": 200,
+        "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mvlenuwosk2a&depth=10&parentHeight=0",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 4129,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:28:16 GMT",
+          "Server": "BunnyCDN-AMS1-879"
+        },
+        "body_file": "raw/bsky-thread-hub.raw",
+        "sha256": "99a45c6aac1a3beaebaf37ff47ed0f633d742023fc80c42b208d6d5764d19257"
+      },
+      "baseline_reply_uris": [
+        "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvleppxvv22a"
+      ],
+      "current_reply_uris": [
+        "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvleppxvv22a"
+      ],
+      "new_reply_uris": [],
+      "removed_reply_uris": [],
+      "new_external_reply_uris": [],
+      "replies": [
+        {
+          "uri": "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mvleppxvv22a",
+          "author_did": "did:plc:u63726gke7rdfrsrtuz3hqzd",
+          "author_handle": "alexar76.bsky.social",
+          "created_at": "2026-09-15T19:36:39.004Z",
+          "is_owner": true
+        }
+      ],
+      "limit": "Four selected complete returned trees, depth10; other public/quote/private conversations not comprehensively re-read."
+    },
+    {
+      "component": "ARGUS",
+      "source_url": "https://bsky.app/profile/alexar76.bsky.social/post/3mpwbmfa2ds2j",
+      "baseline": "artifacts/external-signals-2026-11-09/audience/raw/bsky-thread-3mpwbmfa2ds2j.raw",
+      "current_evidence": {
+        "key": "bsky-thread-argus",
+        "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mpwbmfa2ds2j&depth=10&parentHeight=0",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:26:10.058876+00:00",
+        "status": 200,
+        "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at%3A%2F%2Fdid%3Aplc%3Au63726gke7rdfrsrtuz3hqzd%2Fapp.bsky.feed.post%2F3mpwbmfa2ds2j&depth=10&parentHeight=0",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 4972,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:28:17 GMT",
+          "Server": "BunnyCDN-AMS1-879"
+        },
+        "body_file": "raw/bsky-thread-argus.raw",
+        "sha256": "a631b351d69adc4c5a09664e4b600810d4d90786a62fd8c9e0ac9dc632c3223d"
+      },
+      "baseline_reply_uris": [
+        "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpwbn4rric2j"
+      ],
+      "current_reply_uris": [
+        "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpwbn4rric2j"
+      ],
+      "new_reply_uris": [],
+      "removed_reply_uris": [],
+      "new_external_reply_uris": [],
+      "replies": [
+        {
+          "uri": "at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3mpwbn4rric2j",
+          "author_did": "did:plc:u63726gke7rdfrsrtuz3hqzd",
+          "author_handle": "alexar76.bsky.social",
+          "created_at": "2026-07-05T19:09:37.902Z",
+          "is_owner": true
+        }
+      ],
+      "limit": "Four selected complete returned trees, depth10; other public/quote/private conversations not comprehensively re-read."
+    }
+  ]
+}

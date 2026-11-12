@@ -1,0 +1,79 @@
+{
+  "submitted_unique_query_count": 25,
+  "groups": [
+    {
+      "group": "search-0",
+      "queries": [
+        "\"alexar76\" (site:x.com OR site:twitter.com OR site:bsky.app OR site:mastodon.social)",
+        "\"modelmarket.dev\" (site:reddit.com OR site:news.ycombinator.com OR site:lobste.rs)",
+        "\"histor.modelmarket.dev\" -site:github.com -site:dev.to -site:modelmarket.dev",
+        "\"@aimarket/warden\" (site:x.com OR site:reddit.com OR site:linkedin.com)"
+      ],
+      "response_file": "search-0.json",
+      "batch_status": "response_returned_no_per_query_completeness_guarantee"
+    },
+    {
+      "group": "search-1",
+      "queries": [
+        "\"attestedmemory.net\" (site:x.com OR site:reddit.com OR site:linkedin.com OR site:threads.net OR site:facebook.com)",
+        "\"modelmarket.dev\" (site:x.com OR site:twitter.com OR site:linkedin.com OR site:threads.net OR site:facebook.com)",
+        "\"PingBlip\" (site:youtube.com OR site:t.me OR site:reddit.com OR site:itch.io)",
+        "\"alexar76\" (site:linkedin.com OR site:t.me OR site:facebook.com OR site:threads.net)"
+      ],
+      "response_file": "search-1.json",
+      "batch_status": "response_returned_no_per_query_completeness_guarantee"
+    },
+    {
+      "group": "search-2",
+      "queries": [
+        "\"modelmarket.dev\" site:youtube.com",
+        "\"histor.modelmarket.dev\" site:reddit.com",
+        "\"WARDEN\" \"alexar76\" (site:bsky.app OR site:mastodon.social OR site:news.ycombinator.com)",
+        "\"Karatum\" (site:itch.io OR site:youtube.com OR site:reddit.com OR site:t.me)"
+      ],
+      "response_file": "search-2.json",
+      "batch_status": "response_returned_no_per_query_completeness_guarantee"
+    },
+    {
+      "group": "search-3",
+      "queries": [
+        "\"histor.modelmarket.dev\" (site:linkedin.com OR site:x.com OR site:twitter.com OR site:t.me)",
+        "\"attestedmemory.net\" (site:youtube.com OR site:bsky.app OR site:mastodon.social OR site:news.ycombinator.com)",
+        "\"PingBlip\" (site:x.com OR site:twitter.com OR site:bsky.app OR site:threads.net OR site:facebook.com)",
+        "\"magic-ai-factory.com\" (site:reddit.com OR site:youtube.com OR site:linkedin.com OR site:x.com)"
+      ],
+      "response_file": "search-3.json",
+      "batch_status": "response_returned_no_per_query_completeness_guarantee"
+    },
+    {
+      "group": "search-4",
+      "queries": [
+        "\"modelmarket.dev\" site:t.me -site:t.me/s/just_for_agents",
+        "\"modelmarket.dev\" (site:fosstodon.org OR site:infosec.exchange OR site:mas.to OR site:lemmy.world OR site:sh.itjust.works)",
+        "\"PingBlip\" site:reddit.com",
+        "\"WARDEN\" \"HISTOR\" (site:youtube.com OR site:reddit.com OR site:linkedin.com)"
+      ],
+      "response_file": "search-4.json",
+      "batch_status": "robots_blocked_not_empty"
+    },
+    {
+      "group": "search-5",
+      "queries": [
+        "\"Trace of Refusal\" (\"Artamokhov\" OR \"alexar76\" OR \"Pantheon\") -site:github.com -site:modelmarket.dev",
+        "\"attested-memory\" \"alexar76\" (site:reddit.com OR site:linkedin.com OR site:news.ycombinator.com)",
+        "\"histor.modelmarket.dev\" (site:youtube.com OR site:news.ycombinator.com OR site:stackoverflow.com)",
+        "\"modelmarket.dev\" \"review\" (site:youtube.com OR site:linkedin.com OR site:reddit.com)"
+      ],
+      "response_file": "search-5.json",
+      "batch_status": "response_returned_no_per_query_completeness_guarantee"
+    },
+    {
+      "group": "search-6",
+      "queries": [
+        "\"PingBlip\" -site:pingblip.com -site:pingblip.net -site:github.com -site:itch.io -site:dev.to -site:youtube.com -site:onapi.gov.do"
+      ],
+      "response_file": "search-6.json",
+      "batch_status": "response_returned_no_per_query_completeness_guarantee"
+    }
+  ]
+}

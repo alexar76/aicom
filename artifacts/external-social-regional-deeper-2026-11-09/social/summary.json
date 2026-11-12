@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-09",
+  "scope": "Additional bounded product/phrase-focused public search after two same-day audits. Event dates separated from retrieval.",
+  "queries": {
+    "submitted_unique": 24,
+    "exact_overlap_prior25": 0,
+    "primary_read_candidates": 6,
+    "adaptive_final_queries": 4
+  },
+  "new_confirmed_substantive_external_replies": 0,
+  "new_confirmed_customer_use_or_paid_adoption": 0,
+  "candidate_observations": [
+    {
+      "source": "Forum for Agents",
+      "url": "https://forumforagents.com/stats",
+      "checked_at_utc": "2026-11-09T20:41Z",
+      "row_text": [
+        "histor agent / tool directories and other bots 2186 2026-11-03"
+      ],
+      "requests": 2186,
+      "window": "last30days",
+      "first_seen": "2026-11-03",
+      "attribution": "normalized histor user-agent name; no unique domain or raw UA in read HTML",
+      "interpretation": "possible outbound observer traffic, not inbound HISTOR customers",
+      "novelty": "current measurement not in checked previous social reports; no historical comparable series established",
+      "public_json_endpoints_status": 403
+    },
+    {
+      "source": "GregBenza Arena",
+      "url": "https://gregbenza.ai/arena?day=2026-11-05",
+      "observation_date_utc": "2026-11-05T20:55:00Z",
+      "client_label": "histor",
+      "methods": [
+        "notifications/initialized",
+        "tools/list",
+        "initialize",
+        "server/discover"
+      ],
+      "attribution": "client label only; unique domain not present",
+      "interpretation": "possible outbound tool-discovery probe; no task execution or user adoption proven"
+    }
+  ],
+  "known_reconfirmed": [
+    {
+      "source": "FPL Cat",
+      "url": "https://fplcat.com/blog/ai-agents-playing-fantasy-premier-league",
+      "publication_date": "2026-10-13",
+      "request_count_in_article": 39,
+      "direct_url_attribution": "https://histor.modelmarket.dev/",
+      "known_baseline": "docs/evidence/external-signals-2026-10-30/technical/report.ru.md",
+      "count_as_new": false
+    }
+  ],
+  "derived_distribution": [
+    {
+      "source": "AIWithGhost LEGION article",
+      "url": "https://aiwithghost.com/news/news-two-mcp-logs-matched-23-tools-five-days-later-every-name-had-changed/",
+      "original_date_utc": "2026-11-04T08:00:00Z",
+      "type": "explicit aggregation of own DEV article",
+      "known_baseline": "artifacts/external-social-regional-2026-11-09/report.ru.md",
+      "independent_validation": false
+    },
+    {
+      "source": "LibHunt Multica",
+      "url": "https://www.libhunt.com/posts/1567497-our-multica-agents-now-work-in-an-agent-market-they-buy-remember-review-sellers-and-sell-their-own-work",
+      "original_date": "2026-11-05",
+      "type": "summary/quotation of own DEV article",
+      "new_independent_integration": false
+    }
+  ],
+  "native_hn": {
+    "histor_prefix_query": {
+      "nbHits": 11318,
+      "returned": 100,
+      "literal_name_matches_after_stripping_html": [],
+      "scope": "Algolia expanded HISTOR to history/historical; first100 only, no whole corpus claim"
+    },
+    "multica_aimarket": {
+      "nbHits": 0
+    }
+  },
+  "not_recounted": [
+    "earlier_today17externalDEVcomments",
+    "knownwitnessNov4admission",
+    "rootIETFDuandLindaresponses",
+    "APIs.ioAttestedcatalogprofile"
+  ],
+  "limitations": [
+    "No authenticated/private platform search",
+    "Social search exclusions not always honored; owner URLs manually excluded",
+    "Ambiguous mythology/fiction-title matches excluded",
+    "No identity inferred from user-agent name; spoofing or another historical name remains possible",
+    "No external writes/messages/login/payment"
+  ]
+}

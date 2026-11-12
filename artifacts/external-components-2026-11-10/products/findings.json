@@ -1,0 +1,268 @@
+{
+  "date_client": "2026-11-10",
+  "generated_at_utc": "2026-11-10T19:44:17.998996+00:00",
+  "counts": {
+    "families": 13,
+    "web_query_strings": 35,
+    "primary_gets": 34,
+    "http_statuses": {
+      "200": 29,
+      "403": 5
+    },
+    "github_repo_search_requests": 6,
+    "github_commit_search_requests": 2,
+    "new_confirmed_independent_product_reviews": 0,
+    "new_confirmed_runtime_adoptions": 0,
+    "dependency_graphs": 4,
+    "dependency_graphs_with_recorded_dependents": 0
+  },
+  "substantive_or_curated_references": [
+    {
+      "component": "AIMarket Courses",
+      "source": "EbookFoundation/free-programming-books canonical course list",
+      "evidence": {
+        "key": "courses-ebookfoundation",
+        "url": "https://raw.githubusercontent.com/EbookFoundation/free-programming-books/main/courses/free-courses-en.md",
+        "observed_at_utc": "2026-11-10T19:38:07.370788+00:00",
+        "status": 200,
+        "body_file": "raw/courses-ebookfoundation.raw",
+        "sha256": "8c4d2684ae89abc543582b5a8d6cb59a01282586b43f875d85d51b832b78e66b",
+        "truncated": false,
+        "public_rate_headers": {}
+      },
+      "target": "https://alexar76.github.io/aimarket-courses/",
+      "literal_markdown_line": "* [AIMarket Courses](https://alexar76.github.io/aimarket-courses/) - Aleksandr Artamokhov (HTML) (MIT)",
+      "type": "curated_external_course_link_owner_submission_provenance",
+      "event_provenance": {
+        "commit_search": {
+          "key": "gh-commits-education",
+          "url": "https://api.github.com/search/commits?q=%22aimarket-courses%22+-author%3Aalexar76&per_page=30",
+          "observed_at_utc": "2026-11-10T19:38:01.932943+00:00",
+          "status": 200,
+          "body_file": "raw/gh-commits-education.raw",
+          "sha256": "85aae57189d802070501ddbbfd28e48281b17d678d74648a5af15e75fd6a5962",
+          "truncated": false,
+          "public_rate_headers": {
+            "X-RateLimit-Remaining": "9",
+            "X-RateLimit-Reset": "1794336068",
+            "X-RateLimit-Resource": "search"
+          }
+        },
+        "commit": "b197a1cf7f8c62153dacc22a351253ae88ec840c",
+        "commit_author_login": "alexar76",
+        "commit_date": "2026-08-06T16:01:39+03:00",
+        "subject": "Move AIMarket Courses into 0 - MOOC section (#13394)"
+      },
+      "novelty": "Current canonical list directly verified. The repository/fork coursework references were already in fresh baseline; not a newly published independent review.",
+      "ownership_confidence": "High for foreign organization/source file and exact target; no new individual maintainer endorsement verified.",
+      "limit": "Owner-authored move commit appears in official and fork histories. PR/commit detailed GET403, so no fresh merger/comment claim; clones not additional audiences or new users."
+    },
+    {
+      "component": "AIMarket Courses / orchestration-course",
+      "source": "The Learning Standard educational article",
+      "evidence": {
+        "key": "courses-learningstandard",
+        "url": "https://thelearningstandard.org/news/how-autonomous-ai-agents-are-redefining-student-research-skills",
+        "observed_at_utc": "2026-11-10T19:38:07.902403+00:00",
+        "status": 200,
+        "body_file": "raw/courses-learningstandard.raw",
+        "sha256": "455b9fd646589abd159eafe9498600288b0d17c45b764a912c9d61864c7a8111",
+        "truncated": false,
+        "public_rate_headers": {}
+      },
+      "target": "https://github.com/alexar76/aimarket-courses/tree/main/orchestration-course",
+      "event_date": "2026-09-22T22:45:39.837Z",
+      "author_byline": "The Learning Standard (Organization)",
+      "type": "external_topical_article_source_list",
+      "novelty": "Known and verified Oct30; current exact href reconfirmed.",
+      "ownership_confidence": "External publishing surface confirmed; legal ownership/human editorial work not independently verified.",
+      "limit": "Course cited in Sources, not proof of taking the course, validating notebooks or adopting the protocol. About says active invariant evaluations have not yet been published; no course quality certification claimed."
+    }
+  ],
+  "automated_presence_not_reviews": [
+    {
+      "component": "Attested Memory Hub / family",
+      "evidence": [
+        {
+          "key": "attested-apisio",
+          "url": "https://apis.io/providers/attestedmemory-net/",
+          "observed_at_utc": "2026-11-10T19:38:04.067429+00:00",
+          "status": 200,
+          "body_file": "raw/attested-apisio.raw",
+          "sha256": "876410d1690327d7b7f1f6bf999a60a1ef13f6fb7e109c3639fca35fd3cd6892",
+          "truncated": false,
+          "public_rate_headers": {}
+        },
+        {
+          "key": "attested-apiev-repo",
+          "url": "https://api.github.com/repos/api-evangelist/attestedmemory-net",
+          "observed_at_utc": "2026-11-10T19:38:04.511554+00:00",
+          "status": 200,
+          "body_file": "raw/attested-apiev-repo.raw",
+          "sha256": "41b9f31030ae1f9e4c5e87abd4bd7cadf9775eae9cab8225a3ce790b6012afcd",
+          "truncated": false,
+          "public_rate_headers": {
+            "X-RateLimit-Remaining": "5",
+            "X-RateLimit-Reset": "1794337597",
+            "X-RateLimit-Resource": "core"
+          }
+        },
+        {
+          "key": "attested-apiev-readme",
+          "url": "https://api.github.com/repos/api-evangelist/attestedmemory-net/readme",
+          "observed_at_utc": "2026-11-10T19:38:05.010580+00:00",
+          "status": 200,
+          "body_file": "raw/attested-apiev-readme.raw",
+          "sha256": "ea4ced4d5725c33327e14f4f48051d917a1171bfd8e0d7b40b8fda82b5398e25",
+          "truncated": false,
+          "public_rate_headers": {
+            "X-RateLimit-Remaining": "4",
+            "X-RateLimit-Reset": "1794337597",
+            "X-RateLimit-Resource": "core"
+          }
+        }
+      ],
+      "type": "generated_third_party_API_profile",
+      "novelty": "Known APIs.io presence, reconfirmed. API Evangelist README explicitly describes third-party profiling, not operating our API.",
+      "ownership_confidence": "Foreign GitHub organization and publisher self-disclosure; independent legal ownership unverified.",
+      "limit": "Generated contracts/schemas/skills and scoring do not establish foreign use of our client, Personal/Team/Expert products or paid delivery."
+    },
+    {
+      "component": "Domain Operator Kit",
+      "evidence": [
+        {
+          "key": "domain-glama",
+          "url": "https://glama.ai/mcp/servers/alexar76/domain-operator-kit",
+          "observed_at_utc": "2026-11-10T19:38:05.737378+00:00",
+          "status": 200,
+          "body_file": "raw/domain-glama.raw",
+          "sha256": "0acb028ec850e131f34a6c028c62b7eeed44f2bd3e0a864012e0718f0dc324d1",
+          "truncated": false,
+          "public_rate_headers": {}
+        },
+        {
+          "key": "domain-glama-renew",
+          "url": "https://glama.ai/mcp/servers/alexar76/domain-operator-kit/tools/renew",
+          "observed_at_utc": "2026-11-10T19:39:40.764816+00:00",
+          "status": 200,
+          "body_file": "raw/domain-glama-renew.raw",
+          "sha256": "ace594aff3b48492e8de8dfe86f1e3d0b5767b5eae7b39b5138ed223de178a1a",
+          "truncated": false,
+          "public_rate_headers": {}
+        }
+      ],
+      "type": "automated_tool_description_assessment",
+      "observed_schema_date_claim": "2026-10-20",
+      "novelty": "Domain card already appears in accumulated search evidence; current tool-specific assessment is preserved without claiming new publication.",
+      "ownership_confidence": "Foreign hosted assessment surface; human review not established.",
+      "scope": "Seven-tool metadata assessed; renew feedback points to missing parameter/output/failure documentation. No domain registration, DNS change or Vercel attach performed."
+    },
+    {
+      "component": "eSIM Operator Kit",
+      "evidence": {
+        "key": "esim-socket",
+        "url": "https://socket.dev/npm/package/%40aimarket/esim-rails",
+        "observed_at_utc": "2026-11-10T19:38:07.070926+00:00",
+        "status": 403,
+        "body_file": "raw/esim-socket.raw",
+        "sha256": "626dda74f468bdeaa45f2ef84ca05abcb2426794a579d063a8bc7369f36ddafd",
+        "truncated": false,
+        "public_rate_headers": {}
+      },
+      "type": "unread_search_candidate",
+      "limit": "Direct403, no content/security claim adopted."
+    }
+  ],
+  "own_distribution_not_external_reviews": [
+    {
+      "component": "PingBlip",
+      "evidence": [
+        {
+          "key": "pingblip-game",
+          "url": "https://pingblip.itch.io/pingblip",
+          "observed_at_utc": "2026-11-10T19:38:09.967998+00:00",
+          "status": 200,
+          "body_file": "raw/pingblip-game.raw",
+          "sha256": "5d26d64c3e7a8e19793821a3c70cc80644e8f23a4ddc58214e5004a34a046a2b",
+          "truncated": false,
+          "public_rate_headers": {}
+        },
+        {
+          "key": "pingblip-announcement",
+          "url": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game",
+          "observed_at_utc": "2026-11-10T19:38:11.370663+00:00",
+          "status": 200,
+          "body_file": "raw/pingblip-announcement.raw",
+          "sha256": "6ef689dd973294c02fd9bcef6dbb5cbdbb5fe99ca350ae3b3dbf53b6825c4013",
+          "truncated": false,
+          "public_rate_headers": {}
+        }
+      ],
+      "type": "owner_game_page_and_owner_launch_thread",
+      "current_observation": "Game HTML exposes no reader comments; launch topic shows viewing posts1to1 and owner PingBlip. No new independent player review established.",
+      "novelty": "Known October distribution surfaces, not new."
+    }
+  ],
+  "exclusions": [
+    {
+      "evidence": {
+        "key": "besboy-team-readme",
+        "url": "https://api.github.com/repos/besboy3107/team-memory-os/readme",
+        "observed_at_utc": "2026-11-10T19:39:38.224288+00:00",
+        "status": 200,
+        "body_file": "raw/besboy-team-readme.raw",
+        "sha256": "f0af0e3b07607892c1db73b2a3efa74b7e9181aac89ca807f9d1f9334da27b77",
+        "truncated": false,
+        "public_rate_headers": {
+          "X-RateLimit-Remaining": "1",
+          "X-RateLimit-Reset": "1794337597",
+          "X-RateLimit-Resource": "core"
+        }
+      },
+      "decoded_file": "besboy-team-readme.md",
+      "exact_identity_matches": [],
+      "decision": "Team Memory OS is a distinct Russian stdlib/SQLite knowledge app with different API/routes; shared generic name alone does not establish our ecosystem.",
+      "scope": "Fetched README only; the full repository tree was not scanned."
+    },
+    {
+      "evidence": {
+        "key": "starlight-readme",
+        "url": "https://api.github.com/repos/Starlight-Intelligence/Starlight-Intelligence-System/readme",
+        "observed_at_utc": "2026-11-10T19:39:38.904525+00:00",
+        "status": 200,
+        "body_file": "raw/starlight-readme.raw",
+        "sha256": "676869c559d62e5180f82a6eda6b96f75c06dc38f04cb1e647a80f06f2be34d8",
+        "truncated": false,
+        "public_rate_headers": {
+          "X-RateLimit-Remaining": "0",
+          "X-RateLimit-Reset": "1794337597",
+          "X-RateLimit-Resource": "core"
+        }
+      },
+      "decoded_file": "starlight-readme.md",
+      "exact_identity_matches": [],
+      "decision": "Attested memory is used as a general concept in the Starlight project; no exact owner/domain/package identity links to our Attested Memory in fetched README.",
+      "scope": "Fetched README only; the full repository tree was not scanned."
+    }
+  ],
+  "limits": [
+    "Public bounded sample, not the full internet or private code.",
+    "Each family has its own coverage row even when a grouped query includes several names.",
+    "Only selected plausible GitHub README candidates were read; all returned repositories were not cloned/scanned.",
+    "Grouped repository search frequently matches separate words in hyphenated names and is not an exact identity detector.",
+    "Subcomponents are inventoried explicitly; not every SKU/desk/lesson has an independent exhaustive code query.",
+    "GitHub core rate-limit403 affected one candidate README and three detail requests; no credential/account/proxy switch, retry or bypass.",
+    "Search-page1+page2 education returned all36 records, but their code was not cloned or comprehensively reviewed.",
+    "Some commit search results were owner-authored despite requested exclusion; actual author/repository identity was checked and own syncs/fork copies excluded manually.",
+    "No authenticated code search, private repositories, app analytics, payments or customer interviews.",
+    "No confirmed new adoption in this sample is not proof of no users; package dependents omit many installation/use modes."
+  ],
+  "coverage": "coverage.json",
+  "capture_integrity": "capture-integrity.json",
+  "external_writes": false,
+  "github_writes": false,
+  "messages": false,
+  "logins": false,
+  "payments_or_tools_call": false,
+  "foreign_code_execution": false
+}

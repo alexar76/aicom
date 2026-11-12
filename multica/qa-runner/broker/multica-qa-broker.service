@@ -1,0 +1,28 @@
+[Unit]
+Description=Fixed QA job controller (TLS key outside worker)
+Requires=multica-qa-worker.service multica-egress-firewall.service
+After=multica-qa-worker.service multica-egress-firewall.service
+BindsTo=multica-egress-firewall.service
+PartOf=multica-egress-firewall.service
+
+[Service]
+Type=simple
+User=root
+UMask=0077
+ExecStart=/usr/bin/python3 /opt/multica/qa-runner/broker/broker.py --cert /etc/multica/qa/tls/server.crt --key /etc/multica/qa/tls/server.key
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_UNIX
+MemoryMax=128M
+TasksMax=32
+StateDirectory=multica-qa
+StateDirectoryMode=0700
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target

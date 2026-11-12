@@ -1,0 +1,13 @@
+{
+  "previousRelease": "/var/www/modelmarket-blog-releases/20261108-080147-quality-2a1c4d",
+  "plannedRelease": "/var/www/modelmarket-blog-releases/20261111-090422-histor-82e593cd",
+  "addedUrl": "https://modelmarket.dev/blog/same-mcp-version-different-tool-description-who-signed-it/",
+  "rollbackCommand": "ssh -o BatchMode=yes -o ConnectTimeout=15 factory-vps 'test \"$(readlink /var/www/modelmarket-blog)\" = /var/www/modelmarket-blog-releases/20261111-090422-histor-82e593cd && ln -s /var/www/modelmarket-blog-releases/20261108-080147-quality-2a1c4d /var/www/modelmarket-blog.histor-rollback-82e593cd && mv -T /var/www/modelmarket-blog.histor-rollback-82e593cd /var/www/modelmarket-blog'",
+  "activeRelease": "/var/www/modelmarket-blog-releases/20261111-090422-histor-82e593cd",
+  "preservedFiles": 372,
+  "overlayFiles": 11,
+  "oldUrls": 71,
+  "newUrls": 72,
+  "deployedAt": "2026-11-11T09:04:31.493432+00:00",
+  "previousReleaseRetained": true
+}

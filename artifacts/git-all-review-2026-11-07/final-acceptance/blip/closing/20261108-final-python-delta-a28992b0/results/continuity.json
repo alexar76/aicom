@@ -1,0 +1,87 @@
+{
+  "addedSinceBaseline": [
+    "artifacts/hub-functional-recheck-2026-11-08/payments/real-paid-plan/read_operator_presence.py",
+    "artifacts/hub-paid-live-2026-11-08/attested/discover_contradiction_terms.py",
+    "artifacts/hub-paid-live-2026-11-08/attested/discover_public_terms.py",
+    "artifacts/hub-paid-live-2026-11-08/attested/read_account_availability.py",
+    "artifacts/hub-paid-live-2026-11-08/attested/read_chain_terms.py",
+    "artifacts/hub-paid-live-2026-11-08/attested/read_payment_rows.py",
+    "artifacts/hub-real-payments-2026-11-08/review/payment_guards.py",
+    "artifacts/hub-real-payments-2026-11-08/review/test_payment_guards.py",
+    "artifacts/hub-real-payments-2026-11-08/review/test_runner_journal_independent.py",
+    "artifacts/hub-real-payments-2026-11-08/run_paid_cycle.py"
+  ],
+  "allDeltaFindings": 0,
+  "applicationRuntimeSuitesRepeated": false,
+  "baselineActuallyLinted": 6268,
+  "baselineOriginalExclusions": 328,
+  "baselinePythonBlobs": 6596,
+  "coverageMethod": "Full baseline gate plus exact Git-blob deltas; this is not a repeated6606-file full run.",
+  "derivedCurrentEligiblePythonFiles": 6278,
+  "docsOnlyV4InputsUnchanged": {
+    "nativeGitDiffEmpty": true,
+    "note": "Native Git body comparison; V4 real-PyYAML docs-only proof remains applicable.",
+    "paths": [
+      "docs/*.md",
+      "scripts/verify_whitepaper_links.sh",
+      "scripts/audit_satellite_md_links.py",
+      "scripts/aicom_publish_config.py",
+      "scripts/satellite-map.yaml"
+    ],
+    "v4Tree": "1400f9f8e6f0b104298835b1f9bcfd35f4a75aa3"
+  },
+  "finalDeltaActuallyLinted": 4,
+  "finalDeltaAdded": [
+    "artifacts/hub-real-payments-2026-11-08/review/test_payment_guards.py",
+    "artifacts/hub-real-payments-2026-11-08/review/test_runner_journal_independent.py",
+    "artifacts/hub-real-payments-2026-11-08/run_paid_cycle.py"
+  ],
+  "finalDeltaModified": [
+    "artifacts/hub-real-payments-2026-11-08/review/payment_guards.py"
+  ],
+  "finalFourSourcePrivacyBoundBlobIds": {
+    "artifacts/hub-real-payments-2026-11-08/review/payment_guards.py": "b95c090c90f9513634f6ac01da4453be3f628f15",
+    "artifacts/hub-real-payments-2026-11-08/review/test_payment_guards.py": "751fb385c689a1639a9b682addb7a925c05389a1",
+    "artifacts/hub-real-payments-2026-11-08/review/test_runner_journal_independent.py": "f7e41bd912defee091dcd193ef75129c18ed5808",
+    "artifacts/hub-real-payments-2026-11-08/run_paid_cycle.py": "de9e8c677cff2dbe356c4cef8e51a7eb55ea3642"
+  },
+  "finalPythonBlobs": 6606,
+  "finalSealedTree": "a28992b01d0cce221b443042ac702f545ba2a38a",
+  "firstDeltaActuallyLinted": 14,
+  "format": "aicom.python.final-full-tree-static-continuity/v1",
+  "fullBaselineTree": "2e78a143c4cc77636c4a1c146987b5488b48d42d",
+  "intermediateTree": "222b29cf330bade85ba258b038f09b61ffb6c1dc",
+  "modifiedSinceBaseline": [
+    "aimarket-hub/aimarket_hub/__init__.py",
+    "atlas/atlas/__init__.py",
+    "create-aimarket-agent/src/create_aimarket_agent/__init__.py",
+    "gaia/gaia/__init__.py",
+    "helios/helios/__init__.py",
+    "helios/helios/config.py",
+    "histor/histor/__init__.py"
+  ],
+  "nativeDeltaExitCodes": [
+    0,
+    0
+  ],
+  "noLocalProjectExecution": true,
+  "noLocalTemporaryFilesCreated": true,
+  "noOOM": true,
+  "ownedContainersRemoved": true,
+  "paidCycleRunnerInvoked": false,
+  "passed": true,
+  "projectImportsExecutedByStaticGate": false,
+  "removedPythonFiles": [],
+  "ruffVersion": "0.15.15",
+  "rules": [
+    "E9",
+    "F63",
+    "F7",
+    "F82"
+  ],
+  "runtimeIdentityLimitation": "Application runtime suites retain their measured frozen pre-release source identities. The seven later version-string replacements were checked by exact Git blobs, AST equivalence apart from __version__, and the static Python delta gate; runtime suites were not repeated under the new release labels.",
+  "sourceUnchanged": true,
+  "unchangedBaselineBlobs": 6589,
+  "versionOnlyASTProofSha256": "bfdc883168167e8aed51011bc583fa068e0a2c60328f1c8e38246e11d0f3967a",
+  "versionOnlyASTProofUnchangedForFinalTree": true
+}

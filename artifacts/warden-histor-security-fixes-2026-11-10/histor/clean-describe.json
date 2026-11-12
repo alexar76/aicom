@@ -1,0 +1,969 @@
+{
+  "warden": {
+    "package": "@aimarket/warden@0.25.0",
+    "version": "0.25.0"
+  },
+  "patternSet": {
+    "id": "urn:awr:mtl:1:patternset:argus-warden-static-scan",
+    "package": "@aimarket/warden@0.25.0",
+    "note": "Generated at runtime by calling staticScanRuleset() in the published package named above \u2014 the same function the gate calls to stamp its verdicts. A `block` rule can refuse a connection in WARDEN; an `advise` rule is reported and never blocks. `severity` is the gate's own label and MTL/1 attaches no safety meaning to it. Guards are part of the ruleset: two rules with the same regex and different guards are different scans. `fold` names the text normalisation applied before a non-`raw` rule is matched, and each rule carries its `raw` flag; the digest preimage is {version, fold, rules}.",
+    "version": "19",
+    "fold": "escapes+entities+percent+base64/4x64k+nfkc+tags+invisible+confusables/2",
+    "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw=",
+    "scannedFields": [
+      "name",
+      "description",
+      "inputSchema",
+      "outputSchema"
+    ],
+    "ruleCount": 43,
+    "tierCounts": {
+      "block": 32,
+      "advise": 11
+    },
+    "rules": [
+      {
+        "code": "TOOL_DEF_BASE64_BLOB",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "[A-Za-z0-9+/_-]{120,}={0,2}",
+        "flags": "",
+        "guards": [
+          "blob"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_CREDENTIAL_PARAM",
+        "severity": "low",
+        "tier": "advise",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bapi[_\\s-]?key\\b",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_CREDENTIAL_PARAM",
+        "severity": "low",
+        "tier": "advise",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bcredentials?\\b|\\baccess[_\\s-]?token\\b|\\bbearer\\s+token\\b",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_CREDENTIAL_PARAM",
+        "severity": "medium",
+        "tier": "advise",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bpassword\\b|\\bpasswd\\b",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_CREDENTIAL_PARAM",
+        "severity": "low",
+        "tier": "advise",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bsecret(?:s)?\\b",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_CROSS_TOOL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:[bB][eE][fF][oO][rR][eE]|[fF][iI][rR][sS][tT])\\b[^.;\\n]{0,40}?\\b(?:[uU][sS][eE]|[cC][aA][lL][lL]|[rR][uU][nN]|[iI][nN][vV][oO][kK][eE]|[tT][rR][iI][gG][gG][eE][rR])\\s+(?:[tT][hH][eE]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?",
+        "flags": "",
+        "guards": [
+          "threatenedCall"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_CROSS_TOOL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:[cC][aA][lL][lL]|[cC][aA][lL][lL][sS]|[cC][aA][lL][lL][iI][nN][gG]|[iI][nN][vV][oO][kK][eE]|[iI][nN][vV][oO][kK][eE][sS]|[rR][uU][nN]|[rR][uU][nN][sS]|[tT][rR][iI][gG][gG][eE][rR]|[tT][rR][iI][gG][gG][eE][rR][sS]|[uU][sS][eE]|[uU][sS][eE][sS]|[uU][sS][iI][nN][gG]|[rR][eE][qQ][uU][eE][sS][tT]|[pP][eE][rR][fF][oO][rR][mM]|[sS][cC][aA][nN]|[sS][eE][aA][rR][cC][hH]|[rR][eE][tT][rR][iI][eE][vV][eE]|[qQ][uU][eE][rR][yY]|[fF][eE][tT][cC][hH]|[vV][iI][aA])\\s+(?:[\\w-]+\\s+){0,4}?(?:[tT][hH][eE]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?",
+        "flags": "",
+        "guards": [
+          "zeroArgOrder"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_CROSS_TOOL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:[mM][uU][sS][tT]|[nN][eE][eE][dD]\\s+[tT][oO]|[hH][aA][vV][eE]\\s+[tT][oO])\\b[^.;\\n]{0,40}?\\b(?:[cC][aA][lL][lL]|[cC][aA][lL][lL][iI][nN][gG]|[uU][sS][eE]|[uU][sS][iI][nN][gG]|[rR][uU][nN]|[rR][uU][nN][nN][iI][nN][gG]|[iI][nN][vV][oO][kK][eE]|[iI][nN][vV][oO][kK][iI][nN][gG]|[eE][xX][eE][cC][uU][tT][eE]|[eE][xX][eE][cC][uU][tT][iI][nN][gG]|[fF][eE][tT][cC][hH]|[fF][eE][tT][cC][hH][iI][nN][gG]|[qQ][uU][eE][rR][yY]|[qQ][uU][eE][rR][yY][iI][nN][gG]|[tT][rR][iI][gG][gG][eE][rR]|[tT][rR][iI][gG][gG][eE][rR][iI][nN][gG])\\s+(?:[tT][hH][eE]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?",
+        "flags": "",
+        "guards": [
+          "zeroArgCall"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_CROSS_TOOL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:[wW][hH][eE][nN]|[wW][hH][eE][nN][eE][vV][eE][rR]|[bB][eE][fF][oO][rR][eE]|[aA][fF][tT][eE][rR]|[wW][hH][iI][lL][eE]|[iI][fF]|[eE][aA][cC][hH]\\s+[tT][iI][mM][eE]|[eE][vV][eE][rR][yY]\\s+[tT][iI][mM][eE])\\s+(?:[yY][oO][uU]\\s+)?(?:[aA][rR][eE]\\s+)?(?:[fF][iI][rR][sS][tT]\\s+)?(?:[cC][aA][lL][lL]|[cC][aA][lL][lL][iI][nN][gG]|[uU][sS][eE]|[uU][sS][iI][nN][gG]|[rR][uU][nN]|[rR][uU][nN][nN][iI][nN][gG]|[iI][nN][vV][oO][kK][eE]|[iI][nN][vV][oO][kK][iI][nN][gG]|[eE][xX][eE][cC][uU][tT][eE]|[eE][xX][eE][cC][uU][tT][iI][nN][gG]|[fF][eE][tT][cC][hH]|[fF][eE][tT][cC][hH][iI][nN][gG]|[qQ][uU][eE][rR][yY]|[qQ][uU][eE][rR][yY][iI][nN][gG]|[tT][rR][iI][gG][gG][eE][rR]|[tT][rR][iI][gG][gG][eE][rR][iI][nN][gG])\\s+(?:[tT][hH][eE]\\s+)?(?:[tT][oO][oO][lL]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?|\\b(?:[wW][hH][eE][nN]|[wW][hH][eE][nN][eE][vV][eE][rR]|[iI][fF])\\s+(?:[aA]|[tT][hH][eE]|[aA][nN][yY])\\s+[uU][sS][eE][rR]\\s+(?:[cC][aA][lL][lL][sS]|[uU][sS][eE][sS]|[iI][nN][vV][oO][kK][eE][sS]|[rR][uU][nN][sS]|[eE][xX][eE][cC][uU][tT][eE][sS])\\s+(?:[tT][hH][eE]\\s+)?(?:[tT][oO][oO][lL]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?|\\b(?:[wW][hH][eE][nN]|[wW][hH][eE][nN][eE][vV][eE][rR]|[iI][fF])\\s+(?:[aA]|[tT][hH][eE])\\s+(?:[uU][sS][eE][rR]'s\\s+)?(?:[qQ][uU][eE][rR][yY]|[rR][eE][qQ][uU][eE][sS][tT]|[cC][aA][lL][lL]|[iI][nN][pP][uU][tT])\\s+(?:[fF][oO][rR]|[tT][oO])\\s+(?:[tT][hH][eE]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?|\\b(?:[aA][lL][lL]|[aA][nN][yY]|[eE][vV][eE][rR][yY]|[eE][aA][cC][hH])\\b[^.;\\n]{0,60}?\\b(?:[vV][iI][aA]|[uU][sS][iI][nN][gG]|[tT][hH][rR][oO][uU][gG][hH]|[pP][rR][oO][vV][iI][dD][eE][dD]\\s+[tT][oO])\\s+[tT][hH][eE]\\s+(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?\\s+[tT][oO][oO][lL]\\b|\\b(?:[wW][hH][eE][nN]|[wW][hH][eE][nN][eE][vV][eE][rR]|[iI][fF])\\s+(?:[aA]|[tT][hH][eE])\\s+[uU][sS][eE][rR]\\s+(?:[qQ][uU][eE][rR][iI][eE][sS]|[sS][eE][aA][rR][cC][hH][eE][sS]|[aA][sS][kK][sS]|[rR][eE][qQ][uU][eE][sS][tT][sS])\\b[^.;\\n]{0,40}?\\b(?:[uU][sS][iI][nN][gG]|[vV][iI][aA])\\s+(?:[tT][hH][eE]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?|\\b(?:[wW][hH][eE][nN]|[wW][hH][eE][nN][eE][vV][eE][rR]|[iI][fF])\\s+(?:[tT][hH][eE]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?\\s+(?:[tT][oO][oO][lL]\\s+)?(?:(?:[fF][rR][oO][mM]|[oO][fF]|[oO][nN]|[iI][nN]|[bB][yY])\\s+[^.;,\\n]{1,40}?\\s+)?(?:[iI][sS]|[aA][rR][eE])\\s+(?:[cC][aA][lL][lL][eE][dD]|[uU][sS][eE][dD]|[iI][nN][vV][oO][kK][eE][dD]|[rR][uU][nN]|[eE][xX][eE][cC][uU][tT][eE][dD])\\b|\\b(?:[aA][lL][lL]|[aA][nN][yY]|[eE][vV][eE][rR][yY]|[eE][aA][cC][hH])\\s+(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?\\s+(?:[rR][eE][qQ][uU][eE][sS][tT][sS]|[rR][eE][qQ][uU][eE][sS][tT]|[cC][aA][lL][lL][sS]|[cC][aA][lL][lL]|[qQ][uU][eE][rR][iI][eE][sS]|[lL][oO][oO][kK][uU][pP][sS]|[oO][pP][eE][rR][aA][tT][iI][oO][nN][sS])\\b|\\b(?:[sS][uU][bB][mM][iI][tT][tT][eE][dD]|[pP][aA][sS][sS][eE][dD]|[sS][eE][nN][tT]|[gG][iI][vV][eE][nN])\\s+[tT][oO]\\s+(?:[tT][hH][eE]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?|\\b(?:[qQ][uU][eE][rR][iI][eE][sS]|[qQ][uU][eE][rR][yY]|[rR][eE][qQ][uU][eE][sS][tT][sS]|[rR][eE][qQ][uU][eE][sS][tT]|[cC][aA][lL][lL][sS]|[cC][aA][lL][lL]|[iI][nN][pP][uU][tT][sS]|[iI][nN][pP][uU][tT])\\s+[tT][oO]\\s+(?:[tT][hH][eE]\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?|\\b[bB][eE][fF][oO][rR][eE]\\s+\\w+ing\\b[^.;\\n]{0,60}?\\b(?:[uU][sS][iI][nN][gG]|[wW][iI][tT][hH]|[vV][iI][aA]|[tT][hH][rR][oO][uU][gG][hH])\\s+(?:(?:[tT][hH][eE]|[tT][hH][iI][sS])\\s+)?(?:[\\`'\"]?([A-Za-z][A-Za-z0-9]*(?:[_-][A-Za-z0-9]+)+|[a-z]+[A-Z][A-Za-z0-9]+)[\\`'\"]?|[\\`'\"]([a-z][A-Za-z0-9]{1,40})[\\`'\"])(?:\\s+tool)?|\\b[bB][eE][fF][oO][rR][eE]\\s+(?:[aA][nN][yY]|[eE][vV][eE][rR][yY]|[eE][aA][cC][hH])\\b",
+        "flags": "",
+        "guards": [
+          "crossTool"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_CROSS_TOOL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "description",
+          "inputSchema"
+        ],
+        "source": "\\b(?:must|should|always|mandatory|required)\\b[^.;\\n]{0,60}?\\b(?:change|modify|replace|set|append|prepend|add|redirect|update|override|use\\s+the\\s+new)\\b[^.;\\n]{0,80}?(?:'[^'\\n]{1,80}'|\"[^\"\\n]{1,80}\"|`[^`\\n]{1,80}`)",
+        "flags": "i",
+        "guards": [
+          "zeroArgRewrite"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_DATA_URL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bdata:[\\w/+.-]+;base64,",
+        "flags": "i",
+        "guards": [
+          "payload",
+          "mention"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_DATA_URL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bjavascript:",
+        "flags": "",
+        "guards": [
+          "uri",
+          "mention"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_ENV_REFERENCE",
+        "severity": "medium",
+        "tier": "advise",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "(?:^|[^.\\w])\\.env\\b|\\benvironment\\s+variables?\\b",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_EXFIL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "[\\w.+-]{1,64}@[\\w-]{1,63}(?:\\.[\\w-]{1,63})+\\s+(?:in|as|to|into)\\s+(?:the\\s+)?(?:bcc|cc)\\b",
+        "flags": "i",
+        "guards": [
+          "mention",
+          "placeholderAddress",
+          "polarity"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_EXFIL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:bcc|cc)\\b\\s*:?\\s*[\\w.+-]{1,64}@[\\w-]{1,63}(?:\\.[\\w-]{1,63})+",
+        "flags": "i",
+        "guards": [
+          "mention",
+          "placeholderAddress",
+          "polarity"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_EXFIL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:entire|whole|full|complete)\\s+(?:conversation|chat)(?:\\s+(?:history|log|so\\s+far))?|\\bconversation\\s+history\\b|\\b(?:list\\s+of\\s+)?(?:last|previous|all)\\s+(?:the\\s+)?(?:messages|chats)\\b",
+        "flags": "i",
+        "guards": [
+          "mention",
+          "polarity",
+          "contextExfil"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_EXFIL",
+        "severity": "critical",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:post|send|put)\\s+to\\s+https?:\\/\\/",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_EXFIL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:send|post|forward|relay)\\s+(?:it|them|this|the\\s+\\w+|all|results?|output|data|contents?)\\s+to\\s+(?:https?:\\/\\/|\\b[\\w-]+(?:\\.[\\w-]+)*\\.[a-z]{2,}\\b)",
+        "flags": "i",
+        "guards": [
+          "navigation"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_EXFIL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:send|post|forward|relay|copy|transmit|e-?mail)\\s[^.;!?\\n]{0,80}?\\bto\\s+(?:https?:\\/\\/[^\\s\"'<>)]+|[\\w.+-]{1,64}@[\\w-]{1,63}(?:\\.[\\w-]{1,63})+)",
+        "flags": "i",
+        "guards": [
+          "navigation",
+          "mention",
+          "dataObject",
+          "placeholderAddress",
+          "polarity"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_EXFIL",
+        "severity": "medium",
+        "tier": "advise",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bexfiltrat\\w*",
+        "flags": "i",
+        "guards": [
+          "mention"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_EXFIL",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bupload\\b[\\s\\S]{0,40}\\bto\\s+(?:https?:\\/\\/|[\\w.-]+\\.[a-z]{2,})",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_HIDDEN_UNICODE",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "[\\u200B-\\u200F\\u202A-\\u202E\\u2060\\u2066-\\u2069\\uFEFF\\u{E0000}-\\u{E007F}\\u{E0100}-\\u{E01EF}]",
+        "flags": "u",
+        "guards": [
+          "zeroWidth"
+        ],
+        "raw": true
+      },
+      {
+        "code": "TOOL_DEF_IMPERATIVE",
+        "severity": "info",
+        "tier": "advise",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\binstead\\s+of\\b",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_IMPERATIVE",
+        "severity": "low",
+        "tier": "advise",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\byou\\s+must\\b",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "<\\s*\\/?\\s*(?:system|instructions?|important)\\s*>",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:do\\s+not|don'?t|never)\\s+(?:tell|inform|notify|alert)\\s+(?:the\\s+)?user\\s+(?:about\\s+(?:this|these|it|that)\\b|that\\s+(?:this|the)\\s+tool\\b|of\\s+(?:this|these)\\b)",
+        "flags": "i",
+        "guards": [
+          "mention"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:do\\s+not|don'?t|never)\\s+mention\\s+that\\s+you\\b",
+        "flags": "i",
+        "guards": [
+          "mention"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:priority|precedence)\\s+(?:is\\s+)?(?:higher\\s+than|over|above)\\s+(?:that\\s+of\\s+)?(?:the\\s+|any\\s+|all\\s+)?(?:user'?s?\\b|user\\s+(?:query|request|instructions?)|(?:previous\\s+|other\\s+)?instructions?\\b|system\\s+prompt)",
+        "flags": "i",
+        "guards": [
+          "polarity",
+          "detection"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "low",
+        "tier": "advise",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:system\\s+prompt|developer\\s+(?:message|prompt))\\b",
+        "flags": "i",
+        "guards": [],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "critical",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bdisregard\\s+(?:all\\s+|the\\s+|any\\s+)?(?:previous|prior|above|instructions?|rules?)\\b",
+        "flags": "i",
+        "guards": [
+          "mention"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "medium",
+        "tier": "advise",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bdo\\s+not\\s+(?:tell|inform|mention|reveal\\s+to|notify)\\s+(?:the\\s+)?user\\b",
+        "flags": "i",
+        "guards": [
+          "mention"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "critical",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bignore\\s+(?:all\\s+|the\\s+)?(?:previous|prior|above|preceding)\\b",
+        "flags": "i",
+        "guards": [
+          "mention"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\brm\\s+-(?:rf|fr|r\\s+-f|f\\s+-r)\\s+(?:~\\/?|\\/|\\$HOME\\/?|\\*)(?=[\\s\"'`;)]|$)",
+        "flags": "",
+        "guards": [
+          "mention",
+          "polarity",
+          "detection"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_INJECTION",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bwithout\\s+(?:telling|informing|asking)\\s+(?:the\\s+)?user\\b",
+        "flags": "i",
+        "guards": [
+          "autonomy"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_SECRET_EXFIL",
+        "severity": "medium",
+        "tier": "advise",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "~\\/\\.ssh\\/[\\w.-]{1,64}|\\bid_rsa\\b|~?\\/?\\.aws\\/credentials\\b|~?\\/?\\.(?:npmrc|pgpass|netrc|git-credentials)\\b|(?:^|[^.\\w])\\.env(?:\\.[\\w-]{1,40})?\\b|\\bprocess\\.env\\b",
+        "flags": "i",
+        "guards": [
+          "publicKeyPath",
+          "polarity",
+          "detection",
+          "secretExfilPair"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_SECRET_HARVEST",
+        "severity": "critical",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "(?<transferPrefix>(?:\u8bfb\u53d6|\u8b80\u53d6|\u83b7\u53d6|\u7372\u53d6|\u8bfb\u51fa|\u8b80\u51fa|\u63d0\u53d6|\u5bfc\u51fa|\u5c0e\u51fa|\u628a|\u5c06|\u5c07)[^\u3002\uff01\uff1f\uff1b\\n\"]{0,40}?(?:\\.env\\b|\u51ed\u636e\u6587\u4ef6|\u6191\u64da\u6587\u4ef6|\u5bc6\u94a5\u6587\u4ef6|\u91d1\u9470\u6a94\u6848)[^\u3002\uff01\uff1f\uff1b\\n\"]{0,40}?(?:\u5185\u5bb9|\u5167\u5bb9)[^\u3002\uff01\uff1f\uff1b\\n\"]{0,12}?)(?<transfer>\u653e\u8fdb|\u653e\u5165|\u586b\u5165|\u5199\u5165|\u5beb\u5165|\u9644\u52a0\u5230|\u53d1\u9001\u5230|\u767c\u9001\u5230)[^\u3002\uff01\uff1f\uff1b\\n\"]{0,40}?(?:\u53c2\u6570|\u53c3\u6578|\u5b57\u6bb5|\u6b04\u4f4d|\u5907\u6ce8|\u5099\u8a3b)",
+        "flags": "u",
+        "guards": [
+          "chineseRefusal"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_SECRET_HARVEST",
+        "severity": "critical",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "(?<transferPrefix>\\b(?:gather|assemble|round\\s+up|collect|harvest|grab|copy|read|retrieve|fetch|obtain)\\s+[^.;\"\\n]{0,64}?\\bcredentials?[\\s-]+files?\\b[^.;\"\\n]{0,100}?)\\b(?<transfer>attach|append|include|paste|copy|put|send|write)\\s+(?:(?:their|the|its|all|of|complete|full|entire|raw)\\s+){0,5}(?:contents?|text|values?)\\b[^.;\"\\n]{0,60}?\\b(?:fields?|arguments?|parameters?|params?|reports?|notes?|context)\\b",
+        "flags": "i",
+        "guards": [
+          "transferRefusal"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_SECRET_HARVEST",
+        "severity": "critical",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:include|attach|paste|append|copy|put|send|write|dump|return)\\s+(?:(?:the|a|an)\\s+)?(?:(?:(?:full|complete|entire|raw)\\s+)?output\\s+(?:of|from)\\s+[`']?(?:env|printenv)\\b|all\\s+(?:the\\s+)?environment[\\s-]+variables?(?:\\s+values?)?\\b|(?:full|complete|entire|raw)\\s+(?:process\\s+)?environment\\b)[^.;\"\\n]{0,100}?\\b(?:fields?|arguments?|parameters?|params?|reports?|notes?|context)\\b",
+        "flags": "i",
+        "guards": [
+          "transferRefusal"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_SECRET_HARVEST",
+        "severity": "critical",
+        "tier": "block",
+        "surfaces": [
+          "name",
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\b(?:read|extract|retrieve|fetch|obtain|dump|reveal|collect|harvest|grab|copy|print)\\s(?:[^.;\"\\n]|\\.(?=[\\w/])){0,40}?(?:\\b(?:api[_\\s-]?key|access[_\\s-]?token|bearer\\s+token|credential|password|passwd|secret|environment\\s+variable)|\\.env\\b|\\.kube\\/config\\b|application_default_credentials|\\.docker\\/config\\.json|\\.git-credentials|\\.netrc\\b|\\.pgpass\\b|\\.npmrc\\b|\\.pypirc\\b)",
+        "flags": "i",
+        "guards": [
+          "polarity",
+          "harvestTarget",
+          "ownAuthHeader"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_SECRET_REQUEST",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "inputSchema"
+        ],
+        "source": "\\b(?:signing|wallet)\\s+(?:private\\s+|secret\\s+)?key\\b|\\bkey[\\s-]?pair\\b|\\b(?:secret\\s+)?recovery\\s+(?:phrase|words)\\b|\\bsecret\\s+phrase\\b",
+        "flags": "i",
+        "guards": [
+          "polarity",
+          "detection",
+          "identifierFragment",
+          "keyReference",
+          "keyStaysLocal"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_SECRET_REQUEST",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bprivate[_\\s-]?key\\b",
+        "flags": "i",
+        "guards": [
+          "polarity",
+          "detection",
+          "identifierFragment",
+          "keyValue",
+          "outputEnumLabel",
+          "keyStaysLocal"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_SECRET_REQUEST",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "\\bseed[_\\s-]?phrase\\b|\\bmnemonic\\b",
+        "flags": "i",
+        "guards": [
+          "polarity",
+          "mention",
+          "detection",
+          "identifierFragment"
+        ],
+        "raw": false
+      },
+      {
+        "code": "TOOL_DEF_SECRET_REQUEST",
+        "severity": "high",
+        "tier": "block",
+        "surfaces": [
+          "description",
+          "inputSchema",
+          "title",
+          "outputSchema",
+          "annotations",
+          "metadata"
+        ],
+        "source": "~\\/\\.ssh|\\bid_rsa\\b|\\.ssh\\/[\\w.-]+",
+        "flags": "i",
+        "guards": [
+          "polarity",
+          "publicKeyPath"
+        ],
+        "raw": false
+      }
+    ]
+  },
+  "recordSet": {
+    "id": "urn:awr:mtl:1:recordset:argus-warden-builtin",
+    "package": "@aimarket/warden@0.25.0",
+    "note": "The built-in deny-list floor of the published package named above, pinned by digest. No remote feed is loaded: WARDEN's feed has no maximum age, so a remote snapshot could be replayed to make newer records disappear (MTL/1 section 7.5). HISTOR matches these records against a server's registry name and endpoint only \u2014 never its tool definitions \u2014 and does not state that the set was current when a label was issued.",
+    "records": [
+      {
+        "pattern": "*~/.ssh*",
+        "severity": "critical",
+        "code": "THREAT_SSH_KEY_READ",
+        "reason": "Server references the user's SSH key directory.",
+        "source": "builtin",
+        "scope": "any"
+      },
+      {
+        "pattern": "*id_rsa*",
+        "severity": "critical",
+        "code": "THREAT_SSH_KEY_READ",
+        "reason": "Server references a private SSH key file.",
+        "source": "builtin",
+        "scope": "any"
+      },
+      {
+        "pattern": "*rm -rf*",
+        "severity": "critical",
+        "code": "THREAT_DESTRUCTIVE_CMD",
+        "reason": "Server command performs a destructive recursive delete.",
+        "source": "builtin",
+        "scope": "server"
+      },
+      {
+        "pattern": "*:(){ :|:&};:*",
+        "severity": "critical",
+        "code": "THREAT_FORK_BOMB",
+        "reason": "Server command contains a shell fork bomb.",
+        "source": "builtin",
+        "scope": "server"
+      },
+      {
+        "pattern": "*drain*wallet*",
+        "severity": "critical",
+        "code": "THREAT_CRYPTO_DRAINER",
+        "reason": "Crypto-drainer keyword in server identity.",
+        "source": "builtin",
+        "scope": "any"
+      },
+      {
+        "pattern": "*seed*phrase*",
+        "severity": "high",
+        "code": "THREAT_SEED_PHRASE",
+        "reason": "Server references wallet seed phrases.",
+        "source": "builtin",
+        "scope": "any"
+      },
+      {
+        "pattern": "*sweep*funds*",
+        "severity": "critical",
+        "code": "THREAT_CRYPTO_DRAINER",
+        "reason": "Crypto-drainer keyword in server identity.",
+        "source": "builtin",
+        "scope": "any"
+      },
+      {
+        "pattern": "*.env*exfil*",
+        "severity": "critical",
+        "code": "THREAT_ENV_EXFIL",
+        "reason": "Server references exfiltrating environment files.",
+        "source": "builtin",
+        "scope": "any"
+      },
+      {
+        "pattern": "*offical-mcp*",
+        "severity": "high",
+        "code": "THREAT_TYPOSQUAT",
+        "reason": "Typosquat of an official MCP server name.",
+        "source": "builtin",
+        "scope": "server"
+      },
+      {
+        "pattern": "*modelcontextprotocoll*",
+        "severity": "high",
+        "code": "THREAT_TYPOSQUAT",
+        "reason": "Typosquat of modelcontextprotocol.",
+        "source": "builtin",
+        "scope": "server"
+      },
+      {
+        "pattern": "*filesytem*",
+        "severity": "medium",
+        "code": "THREAT_TYPOSQUAT",
+        "reason": "Typosquat of the filesystem reference server.",
+        "source": "builtin",
+        "scope": "server"
+      }
+    ]
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "root_get_requests": 11,
+  "saved_bodies": 10,
+  "body_checks": [
+    {
+      "index": "http-index.json",
+      "name": "aiwithghost-legion",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "index": "http-index.json",
+      "name": "teckdeck-scraperwatch",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "index": "http-index.json",
+      "name": "ietf-own-message",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "index": "http-index.json",
+      "name": "witness-own-thread",
+      "body_saved": false,
+      "error": "URLError: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1129)>"
+    },
+    {
+      "index": "http-index.json",
+      "name": "colony-candidate",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "index": "ietf-http-index.json",
+      "name": "ietf-own-followup",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "index": "ietf-http-index.json",
+      "name": "ietf-du-reply",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "index": "ietf-http-index.json",
+      "name": "ietf-riccardo",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "index": "ietf-draft-http-index.json",
+      "name": "ietf-mdi-01",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "index": "ietf-draft-http-index.json",
+      "name": "ietf-mdi-02",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "index": "ietf-draft-http-index.json",
+      "name": "ietf-datatracker",
+      "body_saved": true,
+      "bytes_match": true,
+      "sha256_match": true
+    }
+  ],
+  "local_report_links_valid": true,
+  "ietf_version_comparison_valid": true
+}

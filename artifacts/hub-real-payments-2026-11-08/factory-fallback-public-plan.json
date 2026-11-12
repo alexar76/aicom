@@ -1,0 +1,60 @@
+{
+  "at_utc": "2026-11-08T09:44:58.475294+00:00",
+  "financial_mutations": 0,
+  "paid_invocation_attempts": 0,
+  "readonly_business_input": {
+    "n": 84
+  },
+  "provider_health": {
+    "http_status": 200,
+    "metadata": {
+      "ok": true,
+      "capability_id": "math.factor@v1",
+      "product_id": "factorworks",
+      "provider_pubkey": "2ktVFBiXynR0mjAjUUT3iwF3nEQKYwnujgpDlC/ivPI="
+    }
+  },
+  "unpaid_quote": {
+    "http_status": 402,
+    "error": "listing_not_sellable",
+    "needed": 0.05,
+    "nonce_present": false,
+    "accepts": []
+  },
+  "diagnostics_unpaid_quote": {
+    "http_status": 402,
+    "error": "payment_required",
+    "needed": 0.1,
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "base",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "amount": null,
+        "maxAmountRequired": "100000",
+        "maxTimeoutSeconds": 300
+      }
+    ]
+  },
+  "diagnostics_input_plan": {
+    "contract": "aicom.diagnosis/1",
+    "issue": "b863d3d7bfa404f15bb48d5bfc3aa2de193f7a5789ca6b7f0c09f176cda1898f",
+    "finding": {
+      "file": "app/main.py",
+      "title": "Division by zero",
+      "severity": "high"
+    },
+    "files": {
+      "app/main.py": "def divide(x):\n    return 1 / x\n"
+    },
+    "acceptance": "Return a diagnosis.",
+    "fingerprint": "ae1200cef7bf88c7beaacab73b181bcf0b9d05e534e6869a28094b2c2797d2e7"
+  },
+  "listings_snapshot_source": "artifacts/hub-functional-recheck-2026-11-08/tools/operator-route-inventory-factory-vps.json#modelmarket-hub",
+  "fallback_limitations": [
+    "FactorWorks .05 public provider healthy but current payout missing: direct Hub quote listing_not_sellable, no transfer allowed until explicit reviewed repair.",
+    "Diagnostic .1 may consume provider own model cost <=.05 under dailycap; buyer exact quoted .1 only; requires a separately approved payer principal budget increase.",
+    "No actual paid/provider calls made by this checker."
+  ]
+}

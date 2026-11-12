@@ -1,10 +1,13 @@
- aimarket-hub/aimarket_hub/crawler.py               |  93 +++++++-------
+ aimarket-hub/aimarket_hub/cli.py                   |   3 +
+ aimarket-hub/aimarket_hub/crawler.py               | 126 ++++++++++---------
  aimarket-hub/aimarket_hub/database.py              |  27 ++++-
- aimarket-hub/aimarket_hub/federation_assay.py      |   2 +
- aimarket-hub/aimarket_hub/hub_routes/federation.py |   3 +-
+ aimarket-hub/aimarket_hub/federation_assay.py      |  11 +-
+ aimarket-hub/aimarket_hub/hub_routes/federation.py |  25 ++--
+ aimarket-hub/aimarket_hub/hub_routes/wellknown.py  |   2 +-
+ aimarket-hub/aimarket_hub/outbound_http.py         | 105 +++++++++-------
  aimarket-hub/aimarket_hub/peer_operations.py       |  34 ++++--
  aimarket-hub/aimarket_hub/provider_recovery.py     |  36 +++---
- aimarket-hub/aimarket_hub/realm.py                 |   5 +-
+ aimarket-hub/aimarket_hub/realm.py                 |  10 +-
  aimarket-hub/tests/test_crawler_stream_security.py | 135 +++++++++++++++++++++
  aimarket-protocol/conformance/interop.py           |  46 +++++--
  aimarket-protocol/conformance/run.py               |  55 +++++----
@@ -12,8 +15,9 @@
  .../lottery-migration-2026-11-07/transport.py      |   8 +-
  deploy/backup/README.md                            |  51 +++++++-
  metis/deploy/skopos-test/servers.yaml              |   4 +-
+ modelmarket-blog/public-assets.json                |  20 +++
  warden/.pre-commit-hooks.yaml                      |   4 +-
- warden/CHANGELOG.md                                |  19 +++
+ warden/CHANGELOG.md                                |  59 +++++++++
  warden/README-es.md                                |   4 +-
  warden/README-fr.md                                |   4 +-
  warden/README-ru.md                                |   4 +-
@@ -23,20 +27,39 @@
  warden/action/run.sh                               |   2 +-
  warden/claude-plugin/.claude-plugin/plugin.json    |   2 +-
  warden/claude-plugin/hooks/hooks.json              |   2 +-
+ .../claude-plugin/scripts/flow-guard-classify.mjs  |  21 ++--
+ warden/claude-plugin/scripts/flow-guard-codex.mjs  |  25 ++--
+ warden/claude-plugin/scripts/flow-guard-paths.mjs  |  13 +-
  warden/claude-plugin/skills/scan/SKILL.md          |   2 +-
+ warden/codex-hooks/scripts/codex-hook.mjs          |  20 +++
+ warden/codex-hooks/scripts/flow-guard-classify.mjs |  21 ++--
+ warden/codex-hooks/scripts/flow-guard-codex.mjs    |  25 ++--
+ warden/codex-hooks/scripts/flow-guard-paths.mjs    |  13 +-
  warden/docs/badges/tests.svg                       |   8 +-
+ warden/docs/codex.es.md                            |   5 +
+ warden/docs/codex.fr.md                            |   5 +
+ warden/docs/codex.md                               |   4 +
+ warden/docs/codex.ru.md                            |   4 +
+ warden/docs/codex.zh.md                            |   4 +
  warden/docs/landing/index.html                     |  42 +++----
+ warden/docs/opencode.md                            |  10 +-
  warden/package-lock.json                           |   4 +-
  warden/package.json                                |   2 +-
  warden/server.json                                 |   4 +-
+ warden/src/flow-guard-classify.ts                  |  21 ++--
+ warden/src/flow-guard-codex.ts                     |  29 +++--
+ warden/src/flow-guard-paths.ts                     |  11 +-
  warden/src/mcp-tools.ts                            |   6 +-
- warden/src/result-screen.ts                        |  35 ++++--
+ warden/src/opencode-plugin.ts                      |  72 +++++++----
+ warden/src/result-screen.ts                        |  47 +++++--
  warden/src/static-scan.ts                          | 108 +++++++++++++++--
  warden/src/threat-feed.ts                          |   9 +-
  warden/src/wrap.ts                                 |  35 +++++-
  warden/test/action.test.ts                         |   9 +-
+ warden/test/codex-hook.test.ts                     |  29 +++++
+ warden/test/opencode-plugin.test.ts                |  71 ++++++++++-
  warden/test/ruleset-v10.test.ts                    |   8 +-
  warden/test/ruleset-v13.test.ts                    |   8 +-
  warden/test/warden-benign.test.ts                  |  12 +-
  warden/test/wrap.test.ts                           |   4 +-
- 41 files changed, 625 insertions(+), 223 deletions(-)
+ 64 files changed, 1117 insertions(+), 385 deletions(-)

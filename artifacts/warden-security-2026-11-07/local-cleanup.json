@@ -1,0 +1,22 @@
+{
+  "format": "warden.local-pilot-cleanup/v1",
+  "checkedAtControlUtc": "2026-11-07T23:51:35Z",
+  "scope": "Known local WARDEN pilot outputs; comparative and subsequent acceptance measurements execute remotely",
+  "absent": [
+    "warden/dist",
+    "warden/.vitest",
+    "warden/node_modules/.vite",
+    "warden/npm-debug.log"
+  ],
+  "removedEarlier": [
+    "warden/dist",
+    "warden/.vitest",
+    "warden/node_modules/.vite"
+  ],
+  "preexistingDependenciesAndCoveragePreserved": true,
+  "earlierLocalPilotExcludedFromReportedComparison": true,
+  "newLocalProjectRuntimeExecuted": false,
+  "matchingLocalWardenOrVitestProcessFound": false,
+  "processCheck": "Native ps filtered by executable and WARDEN/Vitest arguments; arguments were not printed",
+  "verification": "Native filesystem existence checks; no local Node, Python, npm, build, test or MCP server"
+}

@@ -1,0 +1,36 @@
+# About witness.stagemole.eu
+
+witness.stagemole.eu is a transparency-log test witness. We use it to test
+updates to Mullvad VPN's main production witness (witness.mullvad.net).
+
+While we do intend to keep it up and running for the foreseeable future, it is
+run on a best-effort basis. This means it might break, be unavailable, or even
+have its state rolled back.
+
+If you have questions or want to use this witness for testing, feel free to
+contact us at services@mullvad.net.
+
+## Configuration
+
+To get your log cosigned by witness.stagemole.eu, please participate in:
+
+  https://witness-network.org/
+
+This witness configures the following lists:
+
+  - https://testing.witness-network.org/log-list.1
+  - https://staging.witness-network.org/log-list-10qps-4klogs.1
+  - https://staging.witness-network.org/log-list-100qps-40klogs.1
+
+The lists are updated every 15 minutes.
+
+Your log can request cosignatures via the following url
+
+    https://witness.stagemole.eu/add-checkpoint
+
+Verification key for log operators and trust policies:
+
+    witness.stagemole.eu+67f7aea0+BEqSG3yu9YrmcM3BHvQYTxwFj3uSWakQepafafpUqklv
+
+The above key is in vkey format. You may find sigsum-key helpful for
+conversions to other verification-key formats.

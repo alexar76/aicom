@@ -173,7 +173,7 @@ calibration. The number should climb.
 | 🔌 **aimarket-mcp** | Shared MCP: `web_fetch` · `web_search` · `metis_verify` | [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp) · [`aimarket-mcp`](https://github.com/alexar76/aimarket-mcp) |
 | 📈 **Pulse (ACEX)** | CapShare NAV · Proof-of-Audit · live pricing | [live](https://magic-ai-factory.com/pulse/) · [`pulse-terminal`](https://github.com/alexar76/pulse-terminal) |
 
-**Experiment, not a product.** 🎰 **Lottery**: a verifiable draw among the demo agents on a private test chain ("machine UBI" for mesh agents). Nobody plays for money: the Base mainnet contract never opened a round and has been paused since 2026-11-05. [demo](https://lottery.modelmarket.dev/) · [`lottery`](https://github.com/alexar76/lottery)
+**Experiment, not a product.** 🎰 **Lottery**: a verifiable draw among the demo agents on a private test chain ("machine UBI" for mesh agents). Nobody plays for money: paid tickets are off on Base and the live lottery held 0 ETH on 2026-11-11; it is not paused (the contract paused on 2026-11-05 is a superseded one). [demo](https://lottery.modelmarket.dev/) · [`lottery`](https://github.com/alexar76/lottery)
 
 *Monorepo operators:* `./scripts/deploy_ecosystem.sh` can co-deploy Factory + Hub + ARGUS + Monitor + lottery relayer — see [deploy-ecosystem.md](docs/deploy-ecosystem.md). **You do not need any of this to run AI-Factory alone.**
 
@@ -209,12 +209,13 @@ Three ways in, by how much you want to run:
 |----------|-----|----------|
 | An agent that uses the live economy | paste `https://modelmarket.dev/mcp` into any MCP client ([setup per client](docs/hosted-mcp-endpoint.md)) | nothing |
 | Your own hub: sell your API, join the federation | `pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "My hub"` → `aimarket serve` ([guide](docs/join-the-federation.md)) | Python 3.11+ |
-| The AI-Factory, this repository | the commands below | Docker, one LLM key |
+| The Factory in a browser | [Open the hosted demo](https://magic-ai-factory.com/) | nothing |
+| The Factory on your machine | the commands below | Git, Bash, Python 3, `curl`, Docker with Compose v2, and an LLM key for agent builds |
 
 ```bash
 git clone https://github.com/alexar76/aicom.git
 cd aicom
-cp .env.demo .env          # then add ONE key, e.g. DEEPSEEK_API_KEY=sk-...
+cp .env.demo .env          # Add a provider key such as DEEPSEEK_API_KEY for agent builds.
 ./start.sh                 # builds + boots, opens the browser
 # → Factory  http://localhost:9080         idea → real AI build
 # → admin/login: user admin, password printed by start.sh
@@ -228,19 +229,15 @@ The Hub, Service Mesh and Alien Monitor are published as their own repositories 
 is generated for you; crypto/mainnet stays **off** — no wallet, no real funds
 ([`core/crypto_config.py`](core/crypto_config.py)).
 
-> Without a key the stack still boots — the pipeline just falls back to templated output.
-> The **wow is with a key** (real agents).
+> The Factory uses templated output until you configure an LLM key.
 
-**Monorepo tiers.** The tiers below build the satellites together with the Factory, so they
-need the full monorepo this repository is exported from; in this public mirror `./start.sh`
-names what is missing and starts the Factory alone, and `--everything` stops before building.
-
-| Tier | Command | What comes up |
-|------|---------|---------------|
-| **Core** | `./start.sh` | Factory + Hub + Mesh + Alien Monitor. The "2 a.m. tinker" tier — light, one key, safe. |
-| **Full fleet** | `./start.sh --full` | The whole 15-satellite ecosystem via [`scripts/quickstart_ecosystem.sh`](scripts/quickstart_ecosystem.sh) (ARGUS, Lottery, landing, …). |
-| **Everything** | `./start.sh --everything` | All three prod hosts on one machine, ~40 containers: Factory · Hub · Mesh · ARGUS · MOMUS · Metis · LOGOS · Dioscuri · Helios · Skopos · Gaia · Atlas · Platon · Chronos · Lumen · Lottery · Treasury · Bridges · ACEX (UNI) · Alien Monitor. Needs ≥60 GB disk, ≥16 GB RAM, 4+ cores, Linux x86-64 ([runbook](docs/quickstart-ecosystem-deploy.md)). |
-| **One click** | [Open in a Dev Container / Codespaces](.devcontainer/devcontainer.json) | The same stack as `./start.sh` in a hosted Linux box — ports forwarded, `.env` prepared. |
+| Checkout | Command | What comes up |
+|----------|---------|---------------|
+| **Public AICOM clone** | `./start.sh` | Factory, Prometheus and Grafana. |
+| **Public AICOM clone** | [Open in a Dev Container / Codespaces](.devcontainer/devcontainer.json) | The Factory stack in a Linux box with ports forwarded and `.env` prepared. |
+| **Complete monorepo** | `./start.sh` | Factory + Hub + Mesh + Alien Monitor. |
+| **Complete monorepo** | `./start.sh --full` | The 15-satellite fleet via [`scripts/quickstart_ecosystem.sh`](scripts/quickstart_ecosystem.sh). |
+| **Complete monorepo** | `./start.sh --everything` | All three prod hosts on one machine, about 40 containers. Needs ≥60 GB disk, ≥16 GB RAM, 4+ cores and Linux x86-64 ([runbook](docs/deploy-everything.md)). |
 
 Handy: `./start.sh --down` (stop, keep data) · `--logs` · `--no-build` · `--no-open` · `--help`.
 
@@ -252,7 +249,7 @@ Handy: `./start.sh --down` (stop, keep data) · `--logs` · `--no-build` · `--n
 | File | Purpose |
 |------|---------|
 | `docker-compose.yml` | Root Factory stack — `app` + Prometheus + Grafana. The single-container "batteries-included" self-host. |
-| `docker-compose.core.yml` | **Core overlay** (used by `./start.sh`): adds Hub + Mesh + Alien Monitor on the shared bridge. Layered on top of the root file, never edits it. |
+| `docker-compose.core.yml` | **Core overlay** (used by `./start.sh` in the complete monorepo). Adds Hub, Mesh and Alien Monitor on the shared bridge. |
 | `docker-compose.prod.yml` | Production overrides (TLS, external URLs). |
 | `docker-compose.pg.yml` | Switch the pipeline store to PostgreSQL. |
 | `docker-compose.secrets.yml` | File-based secrets overlay (keys as Docker secrets, not env). |
@@ -260,7 +257,6 @@ Handy: `./start.sh --down` (stop, keep data) · `--logs` · `--no-build` · `--n
 | `docker-compose.host-gateway.yml` | Reach a host-local LLM (e.g. Ollama) from the container. |
 | `docker-compose.split.yml` | Run API / worker / web as separate containers instead of one. |
 
-Manual equivalent of core: `docker compose -f docker-compose.yml -f docker-compose.core.yml up -d --build`.
 </details>
 
 ### Admin access

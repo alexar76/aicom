@@ -1,0 +1,551 @@
+<!DOCTYPE html> 
+<html data-bs-theme="auto" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Search IETF mail list archives">
+    <title>[Dawn] 回复: How should we determine the minimum public discovery information?</title>
+
+    
+
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.46.0/fontawesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.46.0/mlarchive/css/bootstrap_custom.css">
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.46.0/mlarchive/css/styles.css">
+
+    <script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/js/bs-theme.js"></script>
+
+    
+
+    
+
+</head>
+
+<body>
+
+<!-- Container -->
+<div id="container">
+
+    <header class="navbar navbar-expand-md navbar-dark fixed-top px-3 py-0">
+        <div class="container-fluid">
+            <a class="navbar-brand p-0" href="/">
+                <img alt="IETF Logo" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/images/ietflogo-small-transparent.png">
+                <span class="navbar-text d-none d-md-inline-block">
+                
+                Mail Archive
+                
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-main" aria-controls="navbar-main" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            
+            <div id="navbar-main" class="navbar-header collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item d-none d-lg-inline">
+                        <a class="nav-link" href="https://www.ietf.org/search/">Search www.ietf.org</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-inline">
+                        <a class="nav-link" href="https://datatracker.ietf.org">Search Datatracker</a>
+                    </li>
+		            <li class="nav-item d-none d-lg-inline navbar-text pipe"></li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbar-help" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
+                        <div class="dropdown-menu" aria-labelledby="navbar-help">
+                            <a class="dropdown-item" href="/arch/help/">Search Syntax</a>
+                            <a class="dropdown-item" href="/docs/api-reference/">API Reference</a>
+                        </div>
+                    </li>
+
+                    
+                    
+                    
+                    
+                    
+                    <li class="nav-item dropdown me-2">
+                        <a id="nav-settings-anchor" class="nav-link dropdown-toggle" href="#" id="navbar-settings" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbar-settings">
+                            <li><a id="toggle-static" class="dropdown-item" href="#">Turn Static Mode On</a></li>
+                        </ul>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item">
+                        
+                            <a class="nav-link" href="/oidc/authenticate/" rel="nofollow">Sign in</a>
+                        
+                    </li>
+                    
+                </ul>
+            </div> <!-- navbar-header -->
+            
+        </div> <!-- container-fluid -->
+    </header>
+
+            <!-- 
+            <noscript>
+                <p class="navbar-text"><small>Enable Javascript for full functionality.</small></p>
+            </noscript>
+            -->
+
+        <!-- Django Messages -->
+        
+
+
+    <!-- Content -->
+    <div id="content">
+        
+
+<div class="container-fluid">
+
+  <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary rounded shadow-sm navbar-msg-detail my-2">
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#id-navbar-top" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-detail px-5" id="id-navbar-top">
+      <ul class="navbar-nav">
+        <li class="nav-item" title="Previous by date">
+          
+            <a class="nav-link previous-in-list" href="/arch/msg/dawn/8AH1G_4XRNTTn4kSPwd7Z_c59jQ/" aria-label="previous in list">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Date Index">
+          <a class="nav-link date-index" href="/arch/browse/dawn/?index=GbumKwLL1oy3I7h7GFmgAkNJAkQ">Date</a>
+        </li>
+        <li class="nav-item" title="Next by date">
+          
+            <a class="nav-link next-in-list" href="/arch/msg/dawn/lqKM0Cjb716AcxwLOvW-PM3pT7Y/" aria-label="next in list">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Previous in thread">
+          
+            <a class="nav-link previous-in-thread" href="/arch/msg/dawn/vGzlv459xuo1ICC5gcJIW-K4NTU/" aria-label="previous in thread">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Thread Index">
+          <a class="nav-link thread-index" href="/arch/browse/dawn/?gbt=1&amp;index=GbumKwLL1oy3I7h7GFmgAkNJAkQ">Thread</a>
+        </li>
+        <li class="nav-item" title="Next in thread">
+          
+            <a class="nav-link next-in-thread" href="/arch/msg/dawn/zO1UZSSjuVOdzY7Y8ZMHbHsa4sA/" aria-label="next in thread">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+  
+  <div class="row">
+
+    <div class="msg-detail col-md-8 pt-3" data-static-date-index-url="/arch/browse/static/dawn/2026-11/#GbumKwLL1oy3I7h7GFmgAkNJAkQ" data-static-thread-index-url="/arch/browse/static/dawn/thread/2026-11/#GbumKwLL1oy3I7h7GFmgAkNJAkQ" data-date-index-url="/arch/browse/dawn/?index=GbumKwLL1oy3I7h7GFmgAkNJAkQ" data-thread-index-url="/arch/browse/dawn/?gbt=1&amp;index=GbumKwLL1oy3I7h7GFmgAkNJAkQ">
+      
+      <div id="msg-body" data-message-url="https://mailarchive.ietf.org/arch/msg/dawn/GbumKwLL1oy3I7h7GFmgAkNJAkQ/">
+    
+    <div id="message-links">
+      
+        <a href="mailto:dawn@ietf.org?subject=Re: [Dawn] 回复: How should we determine the minimum public discovery information?" class="reply-link" title="Reply"><i class="fas fa-reply fa-lg"></i></a>
+      
+      
+        <a href="/arch/msg/dawn/GbumKwLL1oy3I7h7GFmgAkNJAkQ/download/" class="download-link" rel="nofollow" title="Message Download"><i class="fa fa-download fa-lg"></i></a>
+      
+      
+        <a href="https://mailarchive.ietf.org/arch/msg/dawn/GbumKwLL1oy3I7h7GFmgAkNJAkQ/" class="detail-link" title="Message Detail"><i class="fa fa-link fa-lg"></i></a>
+      
+    </div>
+    
+    <h3>[Dawn] 回复: How should we determine the minimum public discovery information?</h3>
+    <p id="msg-info" class="msg-header">
+      <span id="msg-from" class="pipe">Du Chenguang &lt;du_chenguang@outlook.com&gt;</span>
+      <span id="msg-date" class="pipe">Mon, 02 November  2026 12:09 UTC</span>
+    </p>
+    <div id="msg-header" class="msg-header">
+      <p>
+      
+        Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazolkn190130003.outbound.protection.outlook.com [IPv6:2a01:111:f403:d405::3])	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)	 key-exchange secp256r1 server-signature ECDSA (prime256v1) server-digest SHA256)	(No client certificate requested)	by mx.ietf.org (Postfix) with ESMTPS id 377B346	for &lt;dawn@ietf.org&gt;; Mon, 02 Nov 2026 12:09:46 +0000 (UTC)<br />
+      
+        Authentication-Results: mx.ietf.org;	dkim=pass header.d=outlook.com header.s=selector1 header.b=YI7UuOvQ;	spf=pass (mx.ietf.org: domain of du_chenguang@outlook.com designates 2a01:111:f403:d405::3 as permitted sender) smtp.mailfrom=du_chenguang@outlook.com;	dmarc=pass (policy=none) header.from=outlook.com;	arc=pass (&quot;microsoft.com:s=arcselector10001:i=1&quot;)<br />
+      
+        ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none; b=v1bJTUeFSNcsaydGxJja0/83wfdIoRf4LNo2QtlJ7r+mNB8GWZH137vzo/wt7XNaRl5C/VQ6vQ1lJKVnAgCv3JRrkSVlw3/BLl6PGwbTLCc8Enu8XvMGwps2UCg7lZI0zfFmPmgGl2N663RvtJ+FOWOb8JV1Cq9w4AlUevcF5jQkuFzb/yx46TYxS8+c9zsAbXBIFEABDkDtS/suWcfUl2/tWewzc9t4A5RWIo8USFpQAHW/l5a3gtqUfUMIVIiEoLnhoemKrBT8Q+r6ltsFOztECTE8Bfb1lVOkjGTvUqCLbmJCKZk6i9jNN1xPDQDBXcSl8x1aggVf6VMRWwVqyQ==<br />
+      
+        ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; s=arcselector10001; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1; bh=bB2MTwEn1q9bmQFt8fGRwtNZwnus2Oh2J3N9v+JHuQ0=; b=J9UtlWHuJQGB18uhu3RdxZz5b9UFbx3XU0bzHfm+CA/eU9Zy0BzJTeHdM7yeCePDPxlOKtZFFYnii/wWJUQIJ9e9Pk0YFEKipE/5fFUVX1kfFN/lE58cd1enaOt472acA1yRTQAV/ruer2qnggt92AjJ3TkmBavylhC+TJUD2ZAXilqPARBuFPxT1jQEx2Cqa+AlDcioXA76VZ6I+3XwSOFDIsYvVUaxqR9ZRO80hi35BqNdq4KnqoOrZiePojH7Se6Tvgk7c9GsDrAwKnwN0ficQhcS5D69E9UpkLBd5pcKq496sVdPl6utR7xrweeZLjtiQNIQpHmHqFM3P6T4TQ==<br />
+      
+        ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none; dkim=none; arc=none<br />
+      
+        DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com; s=selector1; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=bB2MTwEn1q9bmQFt8fGRwtNZwnus2Oh2J3N9v+JHuQ0=; b=YI7UuOvQzR5JepaAx7AegPvX1bfxdd/Z+x9QKbzcBpgjKIC5Baedn9gTiCwikB4AVAE3OsQGAnLlMswiCBsxESTl468l/Qe5Jp21KAnPDfyGO22OYFmgHA0vRZ4UJhprQd4FmMriQKfAFP62t8W3NN9uXV1+e1ChvojRFQKzOD4eGuDq96B2UrfuaUnSpFPk1XK864SDET4MzDBHJDdrxrTE9UCx2hCpfzW5LDIuMqwJFxsUdIYP/SmINq26KFLUEOT6sSdkgn0sB5jf+ZNQkUnjr3rLlHcHRf0d8XpADgAs0rPYqz7gMEMYibRltscuCTZmn5OF80akvV1e3Sn2og==<br />
+      
+        Received: from JH0PR06MB7448.apcprd06.prod.outlook.com (2603:1096:990:aa::9) by SE1PPFA7A817EB8.apcprd06.prod.outlook.com (2603:1096:108:1::424) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Mon, 2 Nov 2026 12:09:34 +0000<br />
+      
+        Received: from JH0PR06MB7448.apcprd06.prod.outlook.com ([fe80::a19f:48df:d22e:e041]) by JH0PR06MB7448.apcprd06.prod.outlook.com ([fe80::a19f:48df:d22e:e041%3]) with mapi id 15.21.0592.007; Mon, 2 Nov 2026 12:09:34 +0000<br />
+      
+        From: Du Chenguang &lt;du_chenguang@outlook.com&gt;<br />
+      
+        To: &quot;bhsdfbhsdf@126.com&quot; &lt;bhsdfbhsdf@126.com&gt;, Александр Артамохов &lt;alexar76@rambler.ru&gt;<br />
+      
+        Thread-Topic: [Dawn] How should we determine the minimum public discovery information?<br />
+      
+        Thread-Index: AQHdaqItGdue3k2FdUaVos6IwVNBUrcarvpY<br />
+      
+        Date: Mon, 02 Nov 2026 12:09:34 +0000<br />
+      
+        Message-ID: &lt;JH0PR06MB7448688EB68C3D29C51D4A8EE86A2@JH0PR06MB7448.apcprd06.prod.outlook.com&gt;<br />
+      
+        References: &lt;f9f25e4.3326.1a19a5119ae.Coremail.bhsdfbhsdf@126.com&gt;	&lt;JH0PR06MB7448AB90386E304873F40ECAE86B2@JH0PR06MB7448.apcprd06.prod.outlook.com&gt; &lt;2b98379041e0abc3ec87db1692d6701c@mail.rambler.ru&gt;<br />
+      
+        In-Reply-To: &lt;2b98379041e0abc3ec87db1692d6701c@mail.rambler.ru&gt;<br />
+      
+        Accept-Language: zh-CN, en-US<br />
+      
+        Content-Language: zh-CN<br />
+      
+        X-MS-Has-Attach: <br />
+      
+        X-MS-TNEF-Correlator: <br />
+      
+        msip_labels: <br />
+      
+        x-ms-publictraffictype: Email<br />
+      
+        x-ms-traffictypediagnostic: JH0PR06MB7448:EE_|SE1PPFA7A817EB8:EE_<br />
+      
+        x-ms-office365-filtering-correlation-id: 601041cf-20b0-4219-29e6-08df38da289b<br />
+      
+        x-microsoft-antispam: BCL:0;ARA:14566002|31061999003|8060799015|8062599012|9400799043|25010399006|12121999013|19110799012|19101099003|15080799012|15030799006|51005399006|25031999004|1602099012|10035399007|40105399003|56899033|102099032|440099028|4302099013|3412199025;<br />
+      
+        x-microsoft-antispam-message-info: TKIM1EWmPT11GCMFDq990/P1xRGbTCm+Ih2GS9wSkayYmlZA87GNYpyZsVRwqKXlMbykfmd35PDt/mU6q5wBvTVEiw0rUQ6qg/FVgIWKeDL8GGaFGzu1W8ONQJQZpO11wdCex7oLhOlkH3oEuu9GnkWAwiLX1GIIzggjeR/Q3BxHScfGu4P6gk1geIEF+l259txJMsVnMElAdRikRGnXjJ559XKSK1F1td5SMsL7rQAT9JE/k3PxY4Gk3MGFv+h3NO73RyhiJs1K0OBtrE9Jzr1w3W7rZhanTQ8H3cI49fq67/muPCyTamv2Wug0WqPJP/CslDUfjE8lKagp5g0XHBo6QEY/a8YY0s0j09vetpMWs2VppMUsS+UrFD6P8j+uZXAUhf82vYV+kUz9wMgj18VFPM96ruWKB4RkJSnGrQcJQEXahW0tXK5qrhvXPMA8Pt4ac6UEcfgPe17/4aq+zTxWiz2DAMreUeJnW30sgfOc6vr+V+3oJ4tMPUu2haoC/qer5VWeugrkLUrFRhNRh70mC5gVQH8GNoW8x+RAvpzVXZwJBYBimoaRQ/EBhsPEzp9mevPLqylv2hm3zl+/JZjeh7/9AHaWR8gqOfXhypa4h8k4+ofDSUxEtWfzItEddYT14obZmV8BEtIdlyxbzztLM5OctF2kKPpv6zPts+CHkJ1NkSITBcaa2UlB9c/QQt3nec1UMdgG5D8u+aRf2v2MIaPRjqDGCZEb+hTYOgNF54slvS3iQP3xjC4u3BTMb8V3k5ns9pzt9LGQebzaeLavI3Ip766k5UVBBaDlEvMa66e3nCUHyhuJWNeZCbWiLG2S8bWfIsPY/PIsOHns+DZfTIMnXTOnFGiCqHO3voR1L7juIaD2otCrvIA/i+k2dtpZrFNIfv79z9GWGR1iBK66yEKGZ3Vb7SmbR9jAFz87J8eK4pu1kd45fYeZF0AlmleNsOjlgXlnNbPl1mRAxj4INv/gE1PeX8bxHF3tmSin36FzZVJ9rGHrszn/laAz4i8FhcIlfWchyfggK/OhcMVedDbEX2szDbfbprU3UrMZjdlkpifm0VM8YJffHH4dvLvnE2+TeW4yy76MXpZNN9nN5YlgC5y21TRdrFSwGn9FUimMogZ9hitRc8Hr+lzgl/WR9wC4SmYJOdET9n2rVSxRVFMbUVbxKQJnULkilIc=<br />
+      
+        x-ms-exchange-antispam-messagedata-chunkcount: 1<br />
+      
+        x-ms-exchange-antispam-messagedata-0: btLcsNHlUpWd7i5mU/iozMBkct3rgZE94mCYZ0pEhtgMUszrz1/SBtXMidBNg//o9sD/RI0BCgLCMAkXk6lb62hIi3M0ixGoZYPSINVAUbzSEGL2P6n0liL2SGBvNM8rOG/5tC6efhAwhN05B4Su+7vithZzX0zwmT72sSxwhjSsDwCnEyUHg+tDdeUlQufKB+I5i9ITlLNO8mt8OUnIvO+Oj9yzsbtzTjiDR/AiIqcA/dmwMC/m1EcCjYq1w2rsRFKTRSmjXvJM5Phr/kloegh7kDnOSHoHAk6Xhaxe+vcTBMq58ZZIarL9N4YXYUve5+H/xPpcCGQpPe2e0vM0R+hz2jM2QqYbkM/yk5U0ShmBqCTBC6MihgfxX0YjPdijagXdxefcWQIC2jp7WVOGZ1s/hpeLk0ATdXvIesFZLpmv+DVH20VQjg0T5slXqcRNWvmJjs2bDd9TzbiL1Mj8crpS9iLJ/HybmaNr4AYGE7bnpXM9DzpnUj1m4qepAOBXZKBAx4qPviGoi0NWWRcTfkk9GTCio65CCysJzU+cORU0zKIkxHMhDWTPE4jDm/jhJJ3aE/tlnuc1axT3cicFpPe1NqA0zOtMJIocXpQN9ldZmAXG7mF0pCZ1Huzf4U/yigoAI6LpX7EYtvOYwVVilISUHIKSEwo5ATeT2abdu7a6xsFyNLvmMFRVwaezuqWOFEWN9Y38lWTz7Dj55IG2W5uP0X1uEISkot5SpU8mXL1E284azJ3WFp5btDoSoIdtJ/AjP4M/yqVe+h68oQcPVRctYYT9MCxEnK/o0w0Cyn4s/OFXH3/9ZzeyILepD+bRGgi3s8ZchXgp8MBkSZfFSZUdeQ4VCyDtksNeJn4H/n5q1xZT7zEFw6tiEIjQRjfp9qX/YpHg/XhGudT83z02M0DVqoe84WBYWsj5B3LgFnqgmE05v+ff9SezYD4ILZUJpGh8nGGiWhH5sMRvXkjBNG+h7b8cPgg6xMlFdoTa2FjZf0TQDdxo7pNwHYucTy4NtQde1Q18Rd07f6Od+imM92mJBOMkR7Lkn/DH5OkBazMZb7Ot1kuY7vChYxVrlwDllq0BXpngn6PnG5ulvCqIaQwPQTuuJxRskPhv+MPJncS5hRcyxvyLQOS/WjSYf/+RD06JVCw98tbO1zKV6x49QSKqBS4SuN9qWpyTBRnOlXR7xj2gxukvYyyNMFLrULv2u8OFFQngYoaNm8qlXztFfgrtsT+98KYL1lw42cjUmXKuv2ivbnwGwHdOSIVVpAv9f7c70IPO/IxeY4xgpSXPSW4qADP/MBYqc+h76ek7ececk+HTkVfgarEsA+CaqxWZErwRf17qmNIcU6xjz+ut54EU+kn08f+vx3nkO4eBqNYG0kNC9mvoetd8xw7/O5RA5NAobB1NTIB04NHgO0vQEpZdxKXtgQ9mGMyTBwagfBqJDR077/mYMZSl0zgJHhUC<br />
+      
+        Content-Type: multipart/alternative; boundary=&quot;_000_JH0PR06MB7448688EB68C3D29C51D4A8EE86A2JH0PR06MB7448apcp_&quot;<br />
+      
+        MIME-Version: 1.0<br />
+      
+        X-OriginatorOrg: outlook.com<br />
+      
+        X-MS-Exchange-CrossTenant-AuthAs: Internal<br />
+      
+        X-MS-Exchange-CrossTenant-AuthSource: JH0PR06MB7448.apcprd06.prod.outlook.com<br />
+      
+        X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000<br />
+      
+        X-MS-Exchange-CrossTenant-Network-Message-Id: 601041cf-20b0-4219-29e6-08df38da289b<br />
+      
+        X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Nov 2026 12:09:34.5062 (UTC)<br />
+      
+        X-MS-Exchange-CrossTenant-fromentityheader: Hosted<br />
+      
+        X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa<br />
+      
+        X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000<br />
+      
+        X-MS-Exchange-Transport-CrossTenantHeadersStamped: SE1PPFA7A817EB8<br />
+      
+        X-Spamd-Bar: -------------------------<br />
+      
+        Message-ID-Hash: NRN7H4B6RFYYPDEOLMRF64AGO6PTEVGN<br />
+      
+        X-Message-ID-Hash: NRN7H4B6RFYYPDEOLMRF64AGO6PTEVGN<br />
+      
+        X-MailFrom: du_chenguang@outlook.com<br />
+      
+        X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; loop; banned-address; emergency; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; digests; suspicious-header<br />
+      
+        CC: &quot;dawn@ietf.org&quot; &lt;dawn@ietf.org&gt;<br />
+      
+        X-Mailman-Version: 3.3.10<br />
+      
+        Precedence: list<br />
+      
+        Subject: [Dawn] 回复: How should we determine the minimum public discovery information?<br />
+      
+        List-Id: &quot;The list is for discussion of the scope, use cases, requirements, and solutions for discovery of entities (e.g., tasks, AI agents, or endpoints) using IETF technologies.&quot; &lt;dawn.ietf.org&gt;<br />
+      
+        Archived-At: &lt;https://mailarchive.ietf.org/arch/msg/dawn/GbumKwLL1oy3I7h7GFmgAkNJAkQ&gt;<br />
+      
+        List-Archive: &lt;https://mailarchive.ietf.org/arch/browse/dawn&gt;<br />
+      
+        List-Help: &lt;mailto:dawn-request@ietf.org?subject=help&gt;<br />
+      
+        List-Owner: &lt;mailto:dawn-owner@ietf.org&gt;<br />
+      
+        List-Post: &lt;mailto:dawn@ietf.org&gt;<br />
+      
+        List-Subscribe: &lt;mailto:dawn-join@ietf.org&gt;<br />
+      
+        List-Unsubscribe: &lt;mailto:dawn-leave@ietf.org&gt;<br />
+      
+      </p>
+    </div>
+    <div class="msg-payload">
+      
+          <pre class="wordwrap">Hi Siyu, Aleksandr,
+
+Thank you both. -02 takes up your suggestions:
+
+  *
+Entity Type is now conditional: needed when the client has to tell
+     *
+kinds of AI resource apart to choose its next step, and usually
+implied by the carrier, such as a well-known name, or by the
+Endpoint purpose (Sections 7 and 8.2).
+  *
+A protocols value can name a version of the agent protocol; where
+     *
+it does not, the binding states how the client learns which version
+to use (Sections 8.2 and 9).
+  *
+Next to Freshness: a version need not change when a description
+     *
+changes, while the digest of a description Endpoint does
+(Section 8.2).
+
+Aleksandr, the mapping to draft-artamokhov-dawn-marketplace-discovery
+is a useful check that the elements fit a deployed discovery document.
+
+-02: <a href="https://datatracker.ietf.org/doc/draft-cui-dawn-mdi-model/" rel="nofollow">https://datatracker.ietf.org/doc/draft-cui-dawn-mdi-model/</a>
+
+Best,
+Chenguang
+
+________________________________
+发件人: Александр Артамохов &lt;alexar76@rambler.ru&gt;
+发送时间: 2026年11月2日 16:14
+收件人: <a href="mailto:bhsdfbhsdf@126.com">bhsdfbhsdf@126.com</a> &lt;bhsdfbhsdf@126.com&gt;; <a href="mailto:du_chenguang@outlook.com">du_chenguang@outlook.com</a> &lt;du_chenguang@outlook.com&gt;
+抄送: <a href="mailto:dawn@ietf.org">dawn@ietf.org</a> &lt;dawn@ietf.org&gt;
+主题: RE: [Dawn] How should we determine the minimum public discovery information?
+
+Hi Siyu,
+
+One data point for your suggestion. The discovery document in draft-artamokhov-dawn-marketplace-discovery has no type field, and the clients that read it have not needed one. The well-known name already says the document describes a catalog, and each URL says its purpose by its member name: catalogue_url continues discovery, manifest_url is a description, mcp_endpoint is for interaction. So the condition could be &quot;required unless the carrier or the Endpoint purpose already implies it&quot;.
+
+A related observation on Endpoint purposes, from reading robots.txt this morning. Of 33,520 remote MCP endpoints (33,469 of them from the official MCP registry, as listed on 26 October), the site&#x27;s own robots.txt disallows the MCP path for automated clients on 4,708 (14%). Of the 4,359 sites involved, 103 explicitly allow a server-card path in the same file, and 680 serve a server card at a path their robots.txt leaves open. So the description and the interaction endpoint of the same entity can carry different access rules. I am not proposing text for this yet.
+
+I can share the counts and the scripts if useful.
+
+Best,
+Aleksandr
+02.11.2026, 04:33, bhsdfbhsdf &lt;bhsdfbhsdf@126.com&lt;mailto:bhsdfbhsdf@126.com&gt;&gt;
+Hi Chenguang,
+
+
+One small comment on Entity Type in Section 13: I think it could be made conditional.
+
+Suppose an agent and a catalog both provide a description URL. If the client&#x27;s next step is just to fetch the description, it doesn&#x27;t need to know which kind of resource it has found yet.
+Could Entity Type be required only when the client needs that distinction to choose its next step?
+
+Best regards,
+Siyu Deng
+
+
+
+At 2026-11-01 16:54:07, &quot;Du Chenguang&quot; &lt;du_chenguang@outlook.com&gt; wrote:
+
+Hi all,
+
+The charter asks DAWN to specify the minimum public discovery
+information, and how we decide what belongs in it seems worth
+discussing early. In draft-cui-dawn-mdi-model-01 we made a first
+attempt: for each of the charter&#x27;s three deployment contexts, we
+asked what a client needs to use a discovery result (choose one,
+fetch its description, talk to it, or ask a catalog for more), and
+treated only that as the minimum.
+
+<a href="https://datatracker.ietf.org/doc/draft-cui-dawn-mdi-model/" rel="nofollow">https://datatracker.ietf.org/doc/draft-cui-dawn-mdi-model/</a>
+
+We would welcome your views on whether this is a reasonable way to
+determine the minimum, what other approaches we should consider, and
+whether the resulting elements match your mechanisms and use cases.
+
+Best,
+Chenguang
+
+
+_______________________________________________
+Dawn mailing list -- [/compose]dawn@ietf.org
+To unsubscribe send an email to [/compose]dawn-leave@ietf.org
+
+</pre>
+
+      
+    </div>
+    <div>
+      
+    </div>
+</div> <!-- msg-body -->
+
+
+
+
+            <div id="message-thread">
+
+        
+<ul class="thread-snippet">
+
+    <li class="depth-0"><a href="/arch/msg/dawn/7AOkmLVFp9CuFpwZtZCgQ_kyfXA/">[Dawn] How should we determine the minimum public…</a>&nbsp;&nbsp;Du Chenguang</li>
+
+    <li class="depth-1"><a href="/arch/msg/dawn/_bbNP5OUfVY7BpfGz0AACS0JgLw/">[Dawn] Re: How should we determine the minimum pu…</a>&nbsp;&nbsp;Александр Артамохов</li>
+
+    <li class="depth-1"><a href="/arch/msg/dawn/4tX94aUiEaWi1W23dHA1jIw_6jo/">[Dawn] Re: How should we determine the minimum pu…</a>&nbsp;&nbsp;Riccardo Di Nuzzo</li>
+
+    <li class="depth-2"><a href="/arch/msg/dawn/lqKM0Cjb716AcxwLOvW-PM3pT7Y/">[Dawn] 回复: How should we determine the minimum pu…</a>&nbsp;&nbsp;Du Chenguang</li>
+
+    <li class="depth-3"><a href="/arch/msg/dawn/rbzoecOi-g6zl_M4qMqIPnitdIo/">[Dawn] Re: How should we determine the minimum pu…</a>&nbsp;&nbsp;安勍(莳逸)</li>
+
+    <li class="depth-1"><a href="/arch/msg/dawn/JhsH-n0BQyYs58R75d28BvjZjPM/">[Dawn] Re: How should we determine the minimum pu…</a>&nbsp;&nbsp;bhsdfbhsdf</li>
+
+    <li class="depth-1"><a href="/arch/msg/dawn/vGzlv459xuo1ICC5gcJIW-K4NTU/">[Dawn] Re: How should we determine the minimum pu…</a>&nbsp;&nbsp;Александр Артамохов</li>
+
+    <li class="depth-2 current-msg"><a href="/arch/msg/dawn/GbumKwLL1oy3I7h7GFmgAkNJAkQ/">[Dawn] 回复: How should we determine the minimum pu…</a>&nbsp;&nbsp;Du Chenguang</li>
+
+</ul>
+
+
+      </div> <!-- message-thread -->
+
+
+      <div class="d-flex justify-content-center">
+        <ul id="navigation" class="list-inline">
+          <li class="list-inline-item">
+            <a id="toggle-nav" class="toggle js-off" href="#">Hide Navigation Bar</a>
+          </li>
+          
+        </ul>
+      </div>
+          
+    </div> <!-- msg-detail -->
+
+    <div class="msg-aside col-md-4"></div>
+</div> <!-- row -->
+
+    <div class="btn-toolbar msg-detail-toolbar" role="toolbar" aria-label="...">
+    <div class="btn-group" role="group" aria-label="...">
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/8AH1G_4XRNTTn4kSPwd7Z_c59jQ/">
+      
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </a>
+      <a class="btn btn-default" href="">Date</a>
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/lqKM0Cjb716AcxwLOvW-PM3pT7Y/">
+      
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/vGzlv459xuo1ICC5gcJIW-K4NTU/">
+      
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </a>
+      <a class="btn btn-default" href="">Thread</a>
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/zO1UZSSjuVOdzY7Y8ZMHbHsa4sA/">
+      
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </a>
+    </div>
+    
+</div>
+
+
+
+    <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary rounded shadow-sm navbar-msg-detail my-2">
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#id-navbar-bottom" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-detail px-5" id="id-navbar-bottom">
+      <ul class="navbar-nav">
+        <li class="nav-item" title="Previous by date">
+          
+            <a class="nav-link previous-in-list" href="/arch/msg/dawn/8AH1G_4XRNTTn4kSPwd7Z_c59jQ/" aria-label="previous in list">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Date Index">
+          <a class="nav-link date-index" href="/arch/browse/dawn/?index=GbumKwLL1oy3I7h7GFmgAkNJAkQ">Date</a>
+        </li>
+        <li class="nav-item" title="Next by date">
+          
+            <a class="nav-link next-in-list" href="/arch/msg/dawn/lqKM0Cjb716AcxwLOvW-PM3pT7Y/" aria-label="next in list">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Previous in thread">
+          
+            <a class="nav-link previous-in-thread" href="/arch/msg/dawn/vGzlv459xuo1ICC5gcJIW-K4NTU/" aria-label="previous in thread">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Thread Index">
+          <a class="nav-link thread-index" href="/arch/browse/dawn/?gbt=1&amp;index=GbumKwLL1oy3I7h7GFmgAkNJAkQ">Thread</a>
+        </li>
+        <li class="nav-item" title="Next in thread">
+          
+            <a class="nav-link next-in-thread" href="/arch/msg/dawn/zO1UZSSjuVOdzY7Y8ZMHbHsa4sA/" aria-label="next in thread">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+
+</div>
+
+
+    </div>
+    <!-- END Content -->
+
+
+    
+  
+    
+  <div class="footer bg-body scrolling">
+      <p class="small text-center">v2.46.0 | <a href="https://github.com/ietf-tools/mailarch/issues">Report a Bug</a> | <a href="mailto:tools-help@ietf.org">By Email</a> | <a href="https://status.ietf.org">System Status</a></p>
+  </div>
+
+  
+
+
+</div> <!-- END Container -->
+
+
+
+<script src="https://static.ietf.org/mailarchive/2.46.0/jquery/js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="https://static.ietf.org/mailarchive/2.46.0/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/jquery.cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/js/base.js"></script>
+
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/jquery.cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/js/detail.js"></script>
+
+
+<!-- debug_toolbar_here -->
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a57f1c054d866612',t:'MTc5NDI1MTM0MQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a57f1c054d866612',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

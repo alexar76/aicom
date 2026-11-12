@@ -1,0 +1,380 @@
+[
+  {
+    "id": "metis",
+    "repo": "https://github.com/alexar76/metis",
+    "package": "aimarket-metis",
+    "version": "0.2.6",
+    "module_or_product": "metis",
+    "endpoint_fingerprint": "metis.modelmarket.dev",
+    "metadata_source": "metis/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [
+      "https://metis.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/metis/pyproject.toml",
+        "sha256": "4be08376b3c8f7d889d57f35750ecc92d03d81dfddf4c7ec645beb8df2846f34"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/metis/README.md",
+        "sha256": "4b0c57524383119318182106599864fe85b2dbf7bcecfb834b335c4289443630"
+      }
+    ]
+  },
+  {
+    "id": "argus",
+    "repo": "https://github.com/alexar76/argus",
+    "package": "@alexar76/argus3",
+    "version": "0.3.6",
+    "module_or_product": "ARGUS-3",
+    "endpoint_fingerprint": "magic-ai-factory.com/argus/",
+    "metadata_source": "argus/package.json",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/argus/package.json",
+        "sha256": "c53edce8247b2ab1d66695ff95accc4283ed6ef4b70bd6abefc501192088f7a6"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/argus/README.md",
+        "sha256": "2e64e4bfd9c0b1caa70150327dff09ea1d1bd39d532c21e17f7ad76ba40f4ca5"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/argus/server.json",
+        "sha256": "7c7eeae1f12df9d9f34f3c3ca2a6edf3fe7e99f64eefb32419508b7d2b204de8"
+      }
+    ],
+    "endpoint_disambiguation": "stdio npm MCP; magic-ai-factory.com/argus is product homepage, not a verified public ARGUS runtime API."
+  },
+  {
+    "id": "hestia",
+    "repo": "https://github.com/alexar76/hestia",
+    "package": "aimarket-hestia",
+    "version": "0.2.0",
+    "module_or_product": "hestia",
+    "endpoint_fingerprint": "hestia.modelmarket.dev",
+    "metadata_source": "hestia/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [
+      "https://hestia.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/hestia/pyproject.toml",
+        "sha256": "569ab7260ad7e96ee4edaba3d3a4f3ee40469a85ef7475ceccf5d9785009770f"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/hestia/README.md",
+        "sha256": "9ec39cc52160b4f00083cc7b78bf1d39afd2daf0b8fa96417f9d2031a5c834bf"
+      }
+    ]
+  },
+  {
+    "id": "themis",
+    "repo": "https://github.com/alexar76/themis",
+    "package": "aimarket-themis",
+    "version": "0.1.0",
+    "module_or_product": "themis",
+    "endpoint_fingerprint": "modelmarket.dev",
+    "metadata_source": "themis/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/themis/pyproject.toml",
+        "sha256": "8982299c6a04c5b53a923b22c740d0ae9fd086562d3baf9c66fa3fc68b6f2817"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/themis/README.md",
+        "sha256": "a9b45a389cb8b261a27fafdb932e2f76b0a5e7535af8f891762b692b125c24a7"
+      }
+    ],
+    "endpoint_disambiguation": "No standalone public API origin established by examined README; shared modelmarket.dev alone is not a THEMIS integration fingerprint."
+  },
+  {
+    "id": "hephaestus",
+    "repo": "https://github.com/alexar76/hephaestus",
+    "package": "@aimarket/hephaestus-core",
+    "version": "0.1.0",
+    "module_or_product": "HEPHAESTUS",
+    "endpoint_fingerprint": "forge.modelmarket.dev",
+    "metadata_source": "hephaestus/package.json",
+    "package_private": true,
+    "aliases": [],
+    "public_origins": [
+      "https://forge.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/hephaestus/package.json",
+        "sha256": "2ad89d15a745ec1c482a35f4108f14219bc4394ea5a0e893e0d51874ee867969"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/hephaestus/README.md",
+        "sha256": "a0ca0dacb934a66399a81808e1bf81eaadf140120a8adf54d18a8cab97d8717f"
+      }
+    ],
+    "endpoint_disambiguation": "forge origin is studio/frontend; package marked private:true. Published npm dependency inference is inapplicable."
+  },
+  {
+    "id": "atlas",
+    "repo": "https://github.com/alexar76/atlas",
+    "package": "aimarket-atlas",
+    "version": "0.4.0",
+    "module_or_product": "atlas",
+    "endpoint_fingerprint": "atlas.modelmarket.dev",
+    "metadata_source": "atlas/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [
+      "https://atlas.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/atlas/pyproject.toml",
+        "sha256": "14b5eb8c3a168ff4a321452905b1e2f7134dc0aa2542a4ff8046da23b4bd00e2"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/atlas/README.md",
+        "sha256": "4f5e5a21d7818f1a7e211778dc993820527c195cc30019df87f6a741f418f1bd"
+      }
+    ]
+  },
+  {
+    "id": "gaia",
+    "repo": "https://github.com/alexar76/gaia",
+    "package": "aimarket-gaia-gateway",
+    "version": "0.3.0",
+    "module_or_product": "gaia",
+    "endpoint_fingerprint": "iot.modelmarket.dev",
+    "metadata_source": "gaia/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [
+      "https://iot.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/gaia/pyproject.toml",
+        "sha256": "c0ef4c536a6a38400343c2cd5e6c196fbc018a0df901e34219a7db75eb32eb8a"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/gaia/README.md",
+        "sha256": "35718b59b0deb99d5454c3856054463befba96781b3ff4ea7fd7bb7d63b452ed"
+      }
+    ]
+  },
+  {
+    "id": "oracles_platon",
+    "repo": "https://github.com/alexar76/oracles",
+    "package": "aimarket-oracle-core",
+    "version": "0.6.4",
+    "module_or_product": "oracle_core",
+    "endpoint_fingerprint": "oracles.modelmarket.dev",
+    "metadata_source": "oracles/core/pyproject.toml",
+    "package_private": false,
+    "aliases": [
+      "https://github.com/alexar76/platon",
+      "aimarket-platon",
+      "aimarket-oracle-family",
+      "platon"
+    ],
+    "public_origins": [
+      "https://oracles.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/oracles/core/pyproject.toml",
+        "sha256": "d9981a154753fc1e0063852ffd56d777b5b358c9b40d4685154f387fb58f0707"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/oracles/README.md",
+        "sha256": "6f17639432a9a254c71e0185b67e8a1806dfc1b3978c5ef74e8b41bfe5df7aad"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/platon/backend/pyproject.toml",
+        "sha256": "7e31d88d62a5a394c337bfa8e64aa4e5f72210258512e4b157fd6eda79be8f4a"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/oracles/oracles/oracle-family/pyproject.toml",
+        "sha256": "0d140818283788aeb1dbc5f67c0496955eae5fbb93d95f7bd98b8301f6dcaabf"
+      }
+    ]
+  },
+  {
+    "id": "oracle_gateway",
+    "repo": "https://github.com/alexar76/aimarket-oracle-gateway",
+    "package": "aimarket-oracle-gateway",
+    "version": "0.3.3",
+    "module_or_product": "aimarket_oracle_gateway",
+    "endpoint_fingerprint": "oracles.modelmarket.dev",
+    "metadata_source": "plugins/aimarket-oracle-gateway/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/plugins/aimarket-oracle-gateway/pyproject.toml",
+        "sha256": "4d2dc28c2b5c936c73710bbbd94f3336b80c04980cf5b65d069d48e62c996422"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/plugins/aimarket-oracle-gateway/README.md",
+        "sha256": "8d807e4c92a119b1ef978995ef60d279898e6b972f3a109ee7dc34ab66059208"
+      }
+    ],
+    "endpoint_disambiguation": "stdio package; AIMARKET_HUB_URL=https://modelmarket.dev is its backend, not an independently hosted MCP gateway instance."
+  },
+  {
+    "id": "mcp_gateway",
+    "repo": "https://github.com/alexar76/aimarket-mcp",
+    "package": "aimarket-mcp",
+    "version": "0.6.4",
+    "module_or_product": "aimarket_mcp",
+    "endpoint_fingerprint": "modelmarket.dev/mcp",
+    "metadata_source": "aimarket-mcp/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-mcp/pyproject.toml",
+        "sha256": "37c25aead225613b14f6157966fafd515eea502d73299d230486f509f4b1524a"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-mcp/README.md",
+        "sha256": "3ce82ed7a41521bb2c44d134c7a3d1cc323bc418e4ed8b91d8b44c147141c36d"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-mcp/server.json",
+        "sha256": "4be36d6d9c3dd20f9a2aaf4df9e2e95069ee061cf9c399b2435993eaf89cb758"
+      }
+    ],
+    "endpoint_disambiguation": "modelmarket.dev/mcp is maintained Hub hosted MCP, not evidence of running the aimarket-mcp package. server.json remote uses operator-provided aimarket_host; default127.0.0.1:9090."
+  },
+  {
+    "id": "momus",
+    "repo": "https://github.com/alexar76/momus",
+    "package": "aimarket-momus",
+    "version": "0.2.0",
+    "module_or_product": "momus",
+    "endpoint_fingerprint": "momus.modelmarket.dev",
+    "metadata_source": "momus/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [
+      "https://momus.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/momus/pyproject.toml",
+        "sha256": "777819b6bbb44a416eaf59036cb1d80c9723dff36a6cbed546a3e39f7817c1ec"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/momus/README.md",
+        "sha256": "4b8bf088b9b6ea82347b3bf881cae0ab48a8e9b369f003a85c9c1303738b2ea5"
+      }
+    ]
+  },
+  {
+    "id": "basanos",
+    "repo": "https://github.com/alexar76/basanos",
+    "package": "aimarket-basanos",
+    "version": "0.1.0",
+    "module_or_product": "basanos",
+    "endpoint_fingerprint": "basanos.modelmarket.dev",
+    "metadata_source": "basanos/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [
+      "https://basanos.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/basanos/pyproject.toml",
+        "sha256": "8d0fa4d86ed14a0e59af2717646fdc6c246ef057f2848d37456617abd1f96500"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/basanos/README.md",
+        "sha256": "475ec8f28142a2d715ef2771b7509e7530863eb4f1c552a915db7df498366d4a"
+      }
+    ]
+  },
+  {
+    "id": "dolos",
+    "repo": "https://github.com/alexar76/dolos",
+    "package": "aimarket-dolos",
+    "version": "0.1.0",
+    "module_or_product": "dolos",
+    "endpoint_fingerprint": "dolos.modelmarket.dev",
+    "metadata_source": "dolos/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [
+      "https://dolos.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/dolos/pyproject.toml",
+        "sha256": "183d3cfd20c37daaeab13a158229b8767d0114cf97be5d7fc9899345eb8ca7ce"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/dolos/README.md",
+        "sha256": "90f353152894cf0fb7fb2120e0cfbf1eacbdf2c77ec559f7a4ecb0e22374ca91"
+      }
+    ]
+  },
+  {
+    "id": "logos",
+    "repo": "https://github.com/alexar76/logos",
+    "package": "aimarket-logos",
+    "version": "0.2.2",
+    "module_or_product": "logos",
+    "endpoint_fingerprint": "logos.modelmarket.dev",
+    "metadata_source": "logos/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [
+      "https://logos.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/logos/pyproject.toml",
+        "sha256": "a26f718159ea7491ea6ade8c574d0f07737b258cbd28192f58db5a40e72830ac"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/logos/README.md",
+        "sha256": "4978b307635dcfc3e272b2e4d904ab5dea5cf3d66a0255e84f47c37fbd12d0ca"
+      }
+    ]
+  },
+  {
+    "id": "skopos",
+    "repo": "https://github.com/alexar76/skopos",
+    "package": "skopos-fleet",
+    "version": "0.3.0",
+    "module_or_product": "skopos",
+    "endpoint_fingerprint": "skopos.modelmarket.dev",
+    "metadata_source": "skopos/pyproject.toml",
+    "package_private": false,
+    "aliases": [],
+    "public_origins": [
+      "https://skopos.modelmarket.dev"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/pyproject.toml",
+        "sha256": "a241a9170c161ec8eaeb1a9c89c8c311df1219e3900140fa9efcfed835d46936"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/skopos/README.md",
+        "sha256": "dbbdeb67e9b640bcf2130eeb00afada4d36767bbe35f1761d449cacb77bbfa7c"
+      }
+    ]
+  }
+]

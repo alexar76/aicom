@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" >
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="icon" sizes="144x144" type="image/png" href="/touch-icon-144.png">
+  <link rel="apple-touch-icon" sizes="57x57" href="/touch-icon.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/touch-icon-144.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/touch-icon-144.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="Lobsters">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="always">
+  <meta name="theme-color" content="#AC130D">
+  <meta name="story-flags" content="{&quot;O&quot;:&quot;Off-topic&quot;,&quot;A&quot;:&quot;Already Posted&quot;,&quot;B&quot;:&quot;Broken Link&quot;,&quot;S&quot;:&quot;Spam&quot;,&quot;&quot;:&quot;Cancel&quot;}">
+  <meta name="comment-flags" content="{&quot;O&quot;:&quot;Off-topic&quot;,&quot;M&quot;:&quot;Me-too&quot;,&quot;T&quot;:&quot;Troll&quot;,&quot;U&quot;:&quot;Unkind&quot;,&quot;S&quot;:&quot;Spam&quot;,&quot;&quot;:&quot;Cancel&quot;}">
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>Search | Lobsters</title>
+
+    <link rel="stylesheet" href="/application.css">
+    <link rel="stylesheet" href="/system-system.css">
+    <script src="/application.js" type="module"></script>
+
+  <meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="4XU_mxICSptrTBsP4vr7wqOi_oAQE9kITXkMeEMDyv8exRUEs4tLAAv1UmsZ3lFFXL_xpLg99AeWYq-rnD282Q">
+  <meta name="robots" content="noai, noimageai">
+    <script type="speculationrules" nonce="O+JUQy13IVBDCZn2NsJqVQ==">
+      {
+        "prefetch": [
+          {
+            "where": {
+              "href_matches": "/*"
+            },
+            "eagerness": "moderate"
+          }
+        ]
+      }
+    </script>
+</head>
+<body data-username=''>
+  <header id="header">
+    <div id="header-top">
+      <h1 style="background-color: #690000;" id="logo">
+        <a href="/" title="Lobsters (Current traffic: 14%)">
+          <b class="sr-only" aria-hidden="true">Lobsters</b>
+        </a>
+        
+      </h1>
+
+      <nav aria-label="Menu">
+        <ul>
+          <li><a href="/active">Active</a></li>
+          <li><a href="/recent">Recent</a></li>
+          <li><a href="/comments">Comments</a></li>
+
+
+          <li><a aria-current="page" href="/search">Search</a></li>
+
+
+            <li class="push-right"><a href="/login">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+
+
+  </header>
+
+  <main id="inside">
+      <h1 class="">Search</h1>
+
+
+    <form class="search-form" aria-label="Search" action="/search" accept-charset="UTF-8" method="get">
+  <div class="boxline">
+    <input aria-label="Search query" value="&quot;modelmarket.dev&quot;" size="40" autocapitalize="off" autocorrect="off" type="search" name="q" id="q" />
+    <input type="submit" value="Search">
+  </div>
+
+  <fieldset class="radio-group-container">
+    <legend>Search</legend>
+    <div class="radio-group">
+      <label><input type="radio" value="stories" checked="checked" name="what" id="what_stories" /> Stories</label>
+      <label><input type="radio" value="comments" name="what" id="what_comments" /> Comments</label>
+    </div>
+  </fieldset>
+
+  <fieldset class="radio-group-container">
+    <legend>Order By</legend>
+    <div class="radio-group">
+      <label><input type="radio" value="newest" checked="checked" name="order" id="order_newest" /> Newest</label>
+      <label><input type="radio" value="relevance" name="order" id="order_relevance" /> Relevance</label>
+      <label><input type="radio" value="score" name="order" id="order_score" /> Score</label>
+    </div>
+  </fieldset>
+</form>
+  <div class="box searchresults">
+    <details>
+      <summary>
+        <span class="heading">0 results for </span>
+        <span class="searchq">&quot;modelmarket.dev&quot;</span>
+      </summary>
+
+
+      <p>
+      Search query parsed to:
+      </p>
+      <dl class="search_parse">
+
+            <dt><span class="searchq">&quot;modelmarket.dev&quot;</span></dt>
+            <dd>
+              Term: <span class="searchq">modelmarket dev</span>
+                <br>Punctuation that might have been taken as a <a href="https://mariadb.com/kb/ru/full-text-index-overview/#in-boolean-mode">SQL search operator</a> was stripped.
+            </dd>
+      </dl>
+</details>  </div>
+
+    <ol class="stories list">
+      
+    </ol>
+
+
+  </main>
+
+  <footer>
+    <span id="office-hours-live">
+    </span>
+
+    <nav>
+      <a href="/about">About</a>
+      <a href="/tags">Tags</a>
+      <a href="/filters">Filter</a>
+      <a href="/moderations">Moderation Log</a>
+    </nav>
+  </footer>
+
+  <span id="iab-pcm-sdk"></span><span id="iab-autofill-sdk"></span>
+</body>
+</html>

@@ -1,10 +1,10 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-**Empieza aquí:** [Landing de la fábrica](https://modeldev.modelmarket.dev/es/) · [Atlas del ecosistema](https://ecosystem.modelmarket.dev/es/) · [Fábrica y catálogo de productos](https://magic-ai-factory.com/).
+[HISTOR](https://histor.modelmarket.dev/) · [WARDEN](https://warden.modelmarket.dev/) · [Comprobaciones gratuitas](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76)
 <!-- /ecosystem-entry-points -->
 
-<p align="center"><b>Construyendo la economía abierta donde los agentes de IA se descubren, se contratan y se pagan entre sí.</b></p>
+<p align="center"><b>Comprobaciones y un registro público con testigos de las herramientas que usan los agentes de IA.</b></p>
 
 <p align="center">
   <a href="README.md">English</a> ·
@@ -51,8 +51,8 @@
 | Tú | Ve aquí |
 | --- | --- |
 | **Quieres la fábrica en un navegador** | [magic-ai-factory.com](https://magic-ai-factory.com) — prueba como invitado + [demo de administración](https://magic-ai-factory.com/admin/login) (sin contraseña: `admin`, después **Enter admin demo**) |
-| **Quieres la arquitectura** | [Base de conocimiento del ecosistema](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-es.md) · [whitepaper](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/es.md) · [casos de uso](https://use.modelmarket.dev/) |
-| **Quieres operar la flota** | `./start.sh --everything` más abajo, o [inicio rápido en VPS](https://github.com/alexar76/aicom/blob/main/docs/quickstart-ecosystem-deploy.es.md) |
+| **Quieres la arquitectura** | [Atlas del ecosistema](https://ecosystem.modelmarket.dev/es/) · [base de conocimiento](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-es.md) · [whitepaper](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/es.md) · [casos de uso](https://use.modelmarket.dev/) |
+| **Quieres ejecutar Factory en local** | [Inicio rápido desde el repositorio público](https://github.com/alexar76/aicom/blob/main/docs/README.es.md) |
 | **Quieres publicar un proveedor** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [tutorial completo del agente de seguridad](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.es.md) · [agente terminado](https://github.com/alexar76/themis) · hospeda el proceso en **[HESTIA](https://github.com/alexar76/hestia)** (runtime alojado, no el Hub) |
 | **Quieres contribuir** | [Discussions](https://github.com/alexar76/aicom/discussions) · [good first issues](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
@@ -107,33 +107,20 @@ uvx create-aimarket-agent my-agent --kind data-provider --metis
 
 ---
 
-### Ejecuta el sistema completo
+### Ejecuta Factory en local
 
-Un comando pone en marcha toda la economía en un VPS o portátil: Factory, Hub, Service Mesh, la
-familia de oráculos, Metis, LOGOS, GAIA, ATLAS, ARGUS, MOMUS + Treasury, SKOPOS, DIOSCURI, HELIOS; y abre
-Alien Monitor con el grafo en vivo latiendo.
-
-```bash
-git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everything
-```
-
-Genera por sí mismo todos los secretos, los muestra **una vez**, espera hasta que cada servicio
-responda realmente a su comprobación de salud y solo entonces abre el monitor. Si algo no se inició,
-indica qué fue y se detiene, en vez de abrir una página que te miente.
-
-Disponible en `http://<your-ip>:<port>`: sin nginx, TLS ni dominios. De forma predeterminada se enlaza
-a localhost; `--bind 0.0.0.0` lo expone e indica exactamente qué puertos del plano de control abre.
+Abre la [demo de Factory](https://magic-ai-factory.com/) en el navegador o consulta [cómo funciona Factory](https://modeldev.modelmarket.dev/es/).
+Para ejecutarla en local necesitas Git, Bash, Python 3, `curl` y Docker Engine o Docker Desktop en ejecución con Compose v2.
 
 ```bash
-./start.sh                 # solo el núcleo: Factory + Hub + Mesh + Monitor — nivel portátil
-./start.sh --everything    # la flota completa, ~40 contenedores
-./start.sh --down          # detener y conservar los datos
+git clone https://github.com/alexar76/aicom.git
+cd aicom
+cp .env.demo .env
+# Para compilar con agentes de IA, añade a .env una clave admitida, como DEEPSEEK_API_KEY.
+./start.sh
 ```
 
-**Lo que no hará:** desplegar contratos en ninguna cadena real (deliberadamente existe otro script)
-ni gastar dinero real; las criptomonedas permanecen desactivadas y la cadena incluida usa fondos
-ficticios y es efímera.
-Runbook completo: [docs/deploy-everything.md](https://github.com/alexar76/aicom/blob/main/docs/deploy-everything.md) · recorrido de 2 min: [YouTube](https://youtu.be/Gg9a52-ZbNA)
+El repositorio público inicia Factory con Prometheus y Grafana. Abre `http://localhost:9080` para acceder a Factory. Hasta que configures una clave de LLM, la fábrica genera resultados a partir de plantillas. Ejecutar todos los servicios requiere el monorepositorio completo. Para acceder al [Hub alojado](https://github.com/alexar76/aicom/blob/main/docs/hosted-mcp-endpoint.md), usa `https://modelmarket.dev/mcp` en un cliente MCP.
 
 ---
 

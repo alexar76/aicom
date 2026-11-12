@@ -1,0 +1,84 @@
+We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write · AI News
+ai news
+Die KI-News
+Start
+News
+Coding & Dev-Tools
+KI-Videos
+Modelle
+Tipps
+Anhören
+Di., 10. Nov.
+Eilmeldung
+ChatGPT is getting verified AI ‘Business Agents’
+Alle News
+/
+Tools & Apps
+We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write
+A reader of our last post, Paul Irolla, who builds a token optimizer for coding agents, pointed out something we had only looked at as a correctness problem. A model request starts with the tool list. Change one byte of a tool definition and every prompt cache built on that request is gone, even if
+dev.to
+Dienstag 04:00 · 03.11.
+5
+Min. Lesezeit
+Link kopieren
+Bild:
+dev.to
+Posted on Nov 3 • Originally published at modelmarket.dev
+A reader of our last post, Paul Irolla, who builds a token optimizer for coding agents, pointed out something we had only looked at as a correctness problem. A model request starts with the tool list. Change one byte of a tool definition and every prompt cache built on that request is gone, even if the change means nothing.
+HISTOR, our public log of MCP tool definitions, records every change it sees, so we counted. In the week of 25 October to 1 November it recorded 10,712 changes to the tool lists of 4,491 MCP servers. 331 of them changed nothing but a date or a timestamp.
+With Anthropic's API, the cached prefix is built in a fixed order: tools first, then the system prompt, then the messages. A change anywhere in the tools invalidates everything after it. Reading a cached prefix costs a tenth of the normal input price. Writing one costs 1.25 times the input price, or twice for the one-hour cache. So the same tool list costs about 12 times more on a miss than on a hit, and so does everything behind it. Other providers discount cached input by different amounts, but the principle is the same: an identical prefix is cheap, a changed one is not.
+Inside one session this mostly doesn't bite. Clients fetch tools/list when they connect and keep it until the server says the list changed. It bites between sessions. If you run many agent sessions with the same servers, the cached prefix carries over from one session to the next until a byte changes. A server that rewrites its definitions twice a day resets that for everyone who uses it.
+For every change in the week, we took both stored tool lists, the one before and the one after, and compared them tool by tool, ignoring more and more at each step:
+The step at which the two lists become equal names the change:
+HISTOR's digest sorts tools and keys, so a list that only changed order isn't recorded as a change at all, and doesn't appear here. And HISTOR sees at most one change per read, every 30 minutes to 6 hours. A server that rewrites its date every minute shows up as one change per read. The counts are a floor.
+One server accounts for 237 of the 331. Its whats_new tool describes the latest improvement and the time the server last read its own feed: "Live now (feed read 2026-10-28T08:24:54Z)". Each read of the feed rewrites the tool list. The other 94 date-only changes come from 26 servers, in four patterns.
+Telling the model what day it is. "Today is 2026-10-28 (UTC) — never infer the date from the…", "Hoy es 2026-10-28", "Current date is 2026-10-28.", "Current server time: 2026-10-25T02:36:38Z (UTC). Use this as your…" The instinct is sound: a model doesn't know the date, and a booking or scheduling tool needs it. But in the description, the date changes the tool list every day.
+Freshness stamps. "measured 2026-10-28", "indexed on 2026-10-26", "list prices verified 2026-10-27", "as of 2026-10-29", "Rules version 2026-10-28.1". These tell the reader how current the data is. They change whenever the data does, which can be daily.
+Examples that move with the calendar. A booking server's input schema has an example start time that moves forward a day at a time: 2026-10-29T10:00:00-07:00, then 2026-10-30T10:00:00-07:00. Three servers from one publisher do this.
+Defaults set at startup. A default for a title like "Conversation 2026-10-26T21:47:21.670Z", or start_date and end_date defaults with the time the server started. These are npm packages, so the date changes on every launch.
+Of the 2,119 fields that differ in these two classes, 1,963 are tool descriptions and 156 are in input schemas: defaults, examples and property descriptions.
+The 134 changes that only moved a decimal number look like the same kind of noise. They aren't. About 126 of them are prices written into the description: "sold per call … at 0.009027 USDC", then 0.008588; "Price $0.01/call", then $0.05; one tool went from "$1.00" to "$222.00". Five are version strings, such as a rules engine going from 1.6.12 to 1.7.1.
+A price change is a real change for an agent that pays per call, so it belongs in the tool list's history. But if the price moves every few hours, the description is a costly place to keep it. Every move resets the cache for every client, including the ones that will never call that tool. A price that floats is better quoted at call time. Paid MCP tools over x402 already get a priced offer in the HTTP 402 answer.
+If you maintain an MCP server and want the model to know the date, or how fresh your data is, there are places that don't touch the tool list:
+None of this changes what the model can know. It only moves the moving parts out of the one block that every request shares.
+If you build a client or a token optimizer, the per-server history is public. HISTOR's changes API, https://histor.modelmarket.dev/api/v1/changes, lists every recorded change with the digests of both sides and a field-by-field diff. A server that changed its definitions seven or more times in a week is a good candidate to fetch once per session and pin. 218 servers did that this week, and between them they made 3,661 changes, a third of the total.
+The week's counts, the script and the examples behind this post are at https://histor.modelmarket.dev/datasets/cache-churn-2026-11-01/.
+Disclosure: we build HISTOR. AI assistance was used for the analysis, the code and the writing. The counts come from HISTOR's production database, read-only, in a throw-away container.
+Quelle:
+dev.to
+(
+dev.to
+).
+Original öffnen
+Mehr zu dem Thema
+Oura buys Counsel Health for $625m to put AI and doctors in its app
+The Next Web
+·
+Dienstag 18:33 · 10.11.
+Google’s new AI tool just proved Signal encryption really works – here’s how
+ZDNet
+·
+Dienstag 17:31 · 10.11.
+Reddit launches AI-powered Reviews feature – with 10,000 products to start
+ZDNet
+·
+Dienstag 16:00 · 10.11.
+KI-News anhören
+Das tägliche Briefing als Sprachaudio, gesprochen im Nachrichtensender-Stil.
+Zum Player
+Gestern
+30 Besucher · 30 Seitenaufrufe
+· heute
+14 Besucher · 16 Seitenaufrufe
+bisher.
+Zahlen: Umami, cookielos.
+Start
+KI-News der letzten Tage
+News
+alle Meldungen im Feed
+Modelle
+aktuelle KI-Modelle
+Tipps
+Anleitungen für die Praxis
+Mehr
+Archiv, Einstellungen und Über

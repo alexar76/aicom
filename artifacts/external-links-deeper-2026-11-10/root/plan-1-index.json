@@ -1,0 +1,128 @@
+[
+  {
+    "key": "crawlcheck-home",
+    "url": "https://crawlcheck.io/",
+    "checked_at_utc": "2026-11-10T19:18:15.341084+00:00",
+    "status": 200,
+    "final_url": "https://crawlcheck.io/",
+    "content_type": "text/html; charset=utf-8",
+    "truncated": false,
+    "file": "crawlcheck-home.raw",
+    "bytes": 60917,
+    "sha256": "a08ba125d9a1d6659fd914c4e721c9861c62704d4f24f6752f3b34e7a7066c30"
+  },
+  {
+    "key": "crawlcheck-witness",
+    "url": "https://crawlcheck.io/witness",
+    "checked_at_utc": "2026-11-10T19:18:15.341793+00:00",
+    "status": 200,
+    "final_url": "https://crawlcheck.io/witness",
+    "content_type": "text/html; charset=utf-8",
+    "truncated": false,
+    "file": "crawlcheck-witness.raw",
+    "bytes": 50202,
+    "sha256": "123a959efc7b311e3031579ecd8993dd9476e8bcee8b7464c2a15c9e3ec58c9a"
+  },
+  {
+    "key": "histor-checkpoint",
+    "url": "https://histor.modelmarket.dev/log/checkpoint",
+    "checked_at_utc": "2026-11-10T19:18:15.341977+00:00",
+    "status": 200,
+    "final_url": "https://histor.modelmarket.dev/log/checkpoint",
+    "content_type": "text/plain; charset=utf-8",
+    "truncated": false,
+    "file": "histor-checkpoint.raw",
+    "bytes": 205,
+    "sha256": "008543c635769b1d0dbf9380e8cd68fab41abdce88901c793de89234a65e1b81"
+  },
+  {
+    "key": "histor-issuer",
+    "url": "https://histor.modelmarket.dev/api/v1/issuer",
+    "checked_at_utc": "2026-11-10T19:18:15.342213+00:00",
+    "status": 200,
+    "final_url": "https://histor.modelmarket.dev/api/v1/issuer",
+    "content_type": "application/json",
+    "truncated": false,
+    "file": "histor-issuer.raw",
+    "bytes": 1165,
+    "sha256": "a9b79c34095c241075756234e54cc5bafe09d49466ca77e5655973a62a434056"
+  },
+  {
+    "key": "witness-list",
+    "url": "https://staging.witness-network.org/log-list-10qps-4klogs.1",
+    "checked_at_utc": "2026-11-10T19:18:15.728481+00:00",
+    "error": "URLError: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1129)>"
+  },
+  {
+    "key": "stagemole-about",
+    "url": "https://witness.stagemole.eu/about",
+    "checked_at_utc": "2026-11-10T19:18:16.004460+00:00",
+    "status": 200,
+    "final_url": "https://witness.stagemole.eu/about",
+    "content_type": "text/plain; charset=utf-8",
+    "truncated": false,
+    "file": "stagemole-about.raw",
+    "bytes": 1229,
+    "sha256": "3f7a1a02f0c5709923e3f69f3f0e7e5a83182886d9e31504bc9df94a6183f8c5"
+  },
+  {
+    "key": "markovian-about",
+    "url": "https://witness.markovianprotocol.com/about",
+    "checked_at_utc": "2026-11-10T19:18:16.412623+00:00",
+    "status": 200,
+    "final_url": "https://witness.markovianprotocol.com/about",
+    "content_type": "text/plain; charset=utf-8",
+    "truncated": false,
+    "file": "markovian-about.raw",
+    "bytes": 19288,
+    "sha256": "cb838d8170eccd9647286e2b2ec96e13d3fbb3b81684c1674cd8d79d5017cd16"
+  },
+  {
+    "key": "gdb-about",
+    "url": "https://witness.gdbsecurity.com/about",
+    "checked_at_utc": "2026-11-10T19:18:16.656724+00:00",
+    "status": 200,
+    "final_url": "https://witness.gdbsecurity.com/about",
+    "content_type": "text/html; charset=utf-8",
+    "truncated": false,
+    "file": "gdb-about.raw",
+    "bytes": 28823,
+    "sha256": "2a048df8a7f6ad56859d9f821df37664f40d155e84c47b0036a8165cff8f4c2b"
+  },
+  {
+    "key": "transparency-witnesses",
+    "url": "https://transparency.dev/witnesses",
+    "checked_at_utc": "2026-11-10T19:18:16.697161+00:00",
+    "status": 200,
+    "final_url": "https://transparency.dev/witnesses/",
+    "content_type": "text/html; charset=utf-8",
+    "truncated": false,
+    "file": "transparency-witnesses.raw",
+    "bytes": 14057,
+    "sha256": "30d9b70b592b1d8429673b95a4ef4c6d6aed05a7df1b581bf7e95368054a79dd"
+  },
+  {
+    "key": "mdi-datatracker",
+    "url": "https://datatracker.ietf.org/doc/draft-cui-dawn-mdi-model/",
+    "checked_at_utc": "2026-11-10T19:18:16.763792+00:00",
+    "status": 200,
+    "final_url": "https://datatracker.ietf.org/doc/draft-cui-dawn-mdi-model/",
+    "content_type": "text/html; charset=utf-8",
+    "truncated": false,
+    "file": "mdi-datatracker.raw",
+    "bytes": 122622,
+    "sha256": "2679cc8c1fa5c617f52218df6395525ab363d1fca1910c174db0f5746884b9fe"
+  },
+  {
+    "key": "dawn-archive",
+    "url": "https://mailarchive.ietf.org/arch/browse/dawn/",
+    "checked_at_utc": "2026-11-10T19:18:17.049642+00:00",
+    "status": 200,
+    "final_url": "https://mailarchive.ietf.org/arch/browse/dawn/",
+    "content_type": "text/html; charset=utf-8",
+    "truncated": false,
+    "file": "dawn-archive.raw",
+    "bytes": 45066,
+    "sha256": "e9c2f413089b418c608997765d15c2f2f203d33cf48f75005b5e7040f3166f42"
+  }
+]

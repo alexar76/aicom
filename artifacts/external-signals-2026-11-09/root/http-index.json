@@ -1,0 +1,156 @@
+[
+  {
+    "name": "aer",
+    "url": "https://agenteconomy.report/s/modelmarket.dev.json",
+    "observed_at_utc": "2026-11-09T19:23:16.243833+00:00",
+    "status": 200,
+    "final_url": "https://agenteconomy.report/s/modelmarket.dev.json",
+    "content_type": "application/json",
+    "file": "aer.raw",
+    "bytes": 6630,
+    "sha256": "f7e3c8ec72216ab5cf0a4d821d93ec564f38bd10a1a36ad57439a0d3f4b708b5"
+  },
+  {
+    "name": "aer-page",
+    "url": "https://agenteconomy.report/s/modelmarket.dev",
+    "observed_at_utc": "2026-11-09T19:23:16.244359+00:00",
+    "status": 200,
+    "final_url": "https://agenteconomy.report/s/modelmarket.dev",
+    "content_type": "text/html; charset=utf-8",
+    "file": "aer-page.raw",
+    "bytes": 15321,
+    "sha256": "10d300577435e16f7fd63e6ea667c44b2e5dbbbe02f0a7636a0dfa8640dc5345"
+  },
+  {
+    "name": "aer-methodology",
+    "url": "https://agenteconomy.report/s/methodology",
+    "observed_at_utc": "2026-11-09T19:23:16.244493+00:00",
+    "status": 200,
+    "final_url": "https://agenteconomy.report/s/methodology",
+    "content_type": "text/html; charset=utf-8",
+    "file": "aer-methodology.raw",
+    "bytes": 64319,
+    "sha256": "e3a64ed40eb0e7aa0aedd1a3e8209601d1dcb5703af7d81b75cad736db86bfa9"
+  },
+  {
+    "name": "x402-volume",
+    "url": "https://x402-list.com/api/v1/services/aimarket/volume",
+    "observed_at_utc": "2026-11-09T19:23:16.244615+00:00",
+    "status": 200,
+    "final_url": "https://x402-list.com/api/v1/services/aimarket/volume",
+    "content_type": "application/json",
+    "file": "x402-volume.raw",
+    "bytes": 1825,
+    "sha256": "fec4cb5ad4f14e11265eea6a71611ce1ad40946d6d6d3ee7dd3297451f3d7eac"
+  },
+  {
+    "name": "x402-buyers",
+    "url": "https://x402-list.com/api/v1/services/aimarket/buyers",
+    "observed_at_utc": "2026-11-09T19:23:16.244794+00:00",
+    "status": 200,
+    "final_url": "https://x402-list.com/api/v1/services/aimarket/buyers",
+    "content_type": "application/json",
+    "file": "x402-buyers.raw",
+    "bytes": 1782,
+    "sha256": "a9e07207ea34166032957bfddcdb1defcec763ca78ffafc02166e373edfa9af1"
+  },
+  {
+    "name": "usetested",
+    "url": "https://usetested.com/v1/review?service=modelmarket.dev",
+    "observed_at_utc": "2026-11-09T19:23:16.600385+00:00",
+    "status": 200,
+    "final_url": "https://usetested.com/v1/review?service=modelmarket.dev",
+    "content_type": "application/json",
+    "file": "usetested.raw",
+    "bytes": 901,
+    "sha256": "d8f2c9e720e7e01cc4494826dba9130fc0f17139276f07fae75084ea098086de"
+  },
+  {
+    "name": "agenstry",
+    "url": "https://agenstry.com/agents/modelmarket.dev",
+    "observed_at_utc": "2026-11-09T19:23:16.656437+00:00",
+    "status": 200,
+    "final_url": "https://agenstry.com/agents/modelmarket.dev",
+    "content_type": "text/html; charset=utf-8",
+    "file": "agenstry.raw",
+    "bytes": 234741,
+    "sha256": "5b19bef624e29fa0c6ecd20020cda639d8f544fc17258c8c870f96d416fe218f"
+  },
+  {
+    "name": "agent402-index",
+    "url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+    "observed_at_utc": "2026-11-09T19:23:16.666160+00:00",
+    "status": 200,
+    "final_url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+    "content_type": "application/json; charset=utf-8",
+    "file": "agent402-index.raw",
+    "bytes": 200469,
+    "sha256": "e92ec494a866742fa506736163c59eb2c34103fe16df8318a469802111ca67ca"
+  },
+  {
+    "name": "hub-health",
+    "url": "https://modelmarket.dev/ai-market/v2/health",
+    "observed_at_utc": "2026-11-09T19:23:16.731156+00:00",
+    "status": 200,
+    "final_url": "https://modelmarket.dev/ai-market/v2/health",
+    "content_type": "application/json",
+    "file": "hub-health.raw",
+    "bytes": 200,
+    "sha256": "543e0be42f7114d08c57632e58b3027539480b3bb9e87169be4e15bac6e72830"
+  },
+  {
+    "name": "hub-stats",
+    "url": "https://modelmarket.dev/ai-market/v2/stats/live",
+    "observed_at_utc": "2026-11-09T19:23:16.741309+00:00",
+    "status": 200,
+    "final_url": "https://modelmarket.dev/ai-market/v2/stats/live",
+    "content_type": "application/json",
+    "file": "hub-stats.raw",
+    "bytes": 21672,
+    "sha256": "3465ccd7107f1abce0ae065bafbf3bac2f35bb64e97ad33b34f63f6950202591"
+  },
+  {
+    "name": "hub-peers",
+    "url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+    "observed_at_utc": "2026-11-09T19:23:17.303553+00:00",
+    "status": 200,
+    "final_url": "https://modelmarket.dev/ai-market/v2/federation/peers",
+    "content_type": "application/json",
+    "file": "hub-peers.raw",
+    "bytes": 20088,
+    "sha256": "aabfbb107cb494655ee7905b275b7771bde37cce7e1630bde69e37da42ff07f4"
+  },
+  {
+    "name": "factory-status",
+    "url": "https://magic-ai-factory.com/api/public/ecosystem-status",
+    "observed_at_utc": "2026-11-09T19:23:17.352204+00:00",
+    "status": 200,
+    "final_url": "https://magic-ai-factory.com/api/public/ecosystem-status",
+    "content_type": "application/json",
+    "file": "factory-status.raw",
+    "bytes": 3180,
+    "sha256": "05450e42f1272f7e8c7f96c6d8b69c14cc36b722c01c503cc4597ced9bfc8ce7"
+  },
+  {
+    "name": "agent-exec-discovery",
+    "url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+    "observed_at_utc": "2026-11-09T19:23:17.603992+00:00",
+    "status": 200,
+    "final_url": "https://agent-exec.448c.org/.well-known/ai-market.json",
+    "content_type": "application/json; charset=utf-8",
+    "file": "agent-exec-discovery.raw",
+    "bytes": 1839,
+    "sha256": "a77363fdb4a05930cef0f713d0817c5202b12f8cc3d2066a8d6d51f087ebd4ba"
+  },
+  {
+    "name": "machina-manifest",
+    "url": "https://mach402.dev/ai-market/v2/manifest",
+    "observed_at_utc": "2026-11-09T19:23:17.712467+00:00",
+    "status": 200,
+    "final_url": "https://mach402.dev/ai-market/v2/manifest",
+    "content_type": "application/json",
+    "file": "machina-manifest.raw",
+    "bytes": 3217,
+    "sha256": "0d24d6d6893a7979512ed05f9c4b60195b54b4b9934cc9c580c1f2a42cc18547"
+  }
+]

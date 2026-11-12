@@ -1,0 +1,35 @@
+{
+  "rejected_change": "f333e3892",
+  "rejection": "Automatic approval review rejected the push because loopback invokes could use the configured private host-gateway without private_invoke_authorized.",
+  "resolution": "Use a separate exact-loopback transport; invoke=allow_private exclusively controls gateway/private authority. No unchanged retry.",
+  "baseline_tests": {
+    "failed": 4,
+    "passed": 4,
+    "source_isolation_verified": true
+  },
+  "fixed_tests": {
+    "passed": 222,
+    "skipped": 5
+  },
+  "source": [
+    {
+      "path": "aimarket-hub/aimarket_hub/outbound_http.py",
+      "sha256": "1bb666286701029396fc2ebec2ea5e2b21d1ec6c0ad2095ac8f2acd193c6a1cd"
+    },
+    {
+      "path": "aimarket-hub/aimarket_hub/hub_routes/invoke_parts/local_delivery.py",
+      "sha256": "65af0b211e59f1149d27a5e8411c7d432516ecaffc40dc44f7fa0bb77ca21c6d"
+    },
+    {
+      "path": "aimarket-hub/tests/test_publish_network_boundary.py",
+      "sha256": "dc057b7dbc59e79eb44760caa4d346ff553f290faf9d0f509823ee0da78388c5"
+    },
+    {
+      "path": "aimarket-hub/tests/test_subcontract_example.py",
+      "sha256": "35c3ef46cb30329a5aefb3406505c865a13f8966fb4ea90248bf7939915a0aed"
+    }
+  ],
+  "github_writes": 0,
+  "production_changes": 0,
+  "dependency_installations": 0
+}

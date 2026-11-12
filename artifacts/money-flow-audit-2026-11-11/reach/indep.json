@@ -1,0 +1,95 @@
+{
+"cwd": "/opt/independentai/releases/aimarket-hub-3.15.16",
+"cmd": "/opt/independentai/venvs/hub-3.16.0-rpc-security-20261031/bin/python -m aimarket_hub serve ",
+"pkg": "/opt/independentai/venvs/hub-3.16.0-rpc-security-20261031/lib/python3.12/site-packages/aimarket_hub",
+"version": "3.16.0",
+"provenance_plugin": false,
+"flags": {
+"AIMARKET_CREDITS_ENABLED": "1",
+"AIMARKET_TOPUP_ENABLED": "1",
+"AIMARKET_DEPOSIT_WATCH": null,
+"AIMARKET_DEPOSIT_WATCH_INTERVAL_S": null,
+"AIFACTORY_CRYPTO_ENABLED": "1",
+"AIMARKET_ESCROW_BRIDGE_ENABLED": "1",
+"AIMARKET_ESCROW_REQUIRED": "1",
+"AIMARKET_ESCROW_SUBMIT_STRATEGY": "external",
+"AIMARKET_ESCROW_COLLECT_INTERVAL_S": null,
+"AIMARKET_ESCROW_MAX_USD_PER_PASS": null,
+"AIMARKET_ESCROW_MAX_USD_PER_DAY": null,
+"AIMARKET_ESCROW_MAX_UNCOLLECTED_USD": null,
+"AIMARKET_VERIFY_ENABLED": null,
+"AIMARKET_VERIFY_MAX_WAIT_S": null,
+"AIMARKET_APPEAL_WINDOW_S": null,
+"AIMARKET_VERIFY_MIN_PRICE_USD": null,
+"AIMARKET_X402_ENABLED": null,
+"AIMARKET_X402_ACCEPT": "1",
+"AIMARKET_MARKET_FEE_BPS": null,
+"AIMARKET_X402_BRIDGE": null,
+"AIMARKET_X402_BRIDGE_SELLER_DAY_USD": null,
+"AIMARKET_X402_BRIDGE_DAY_USD": null,
+"AIMARKET_X402_BRIDGE_MAX_CALL_USD": null,
+"AIMARKET_SUBCONTRACT_MAX_ALLOWANCE_USD": null,
+"AIMARKET_PUBLISHER_SHARE_BPS": null,
+"AIMARKET_SUPPLY_SECURITY_ENABLED": null,
+"AIMARKET_INVOKE_RATE_PER_MIN": null,
+"AIMARKET_REALM": null,
+"AIMARKET_PRODUCTION": null,
+"AIMARKET_TOPUP_PAY_TO": "set",
+"AIMARKET_VERIFY_METIS_URL": null,
+"AIMARKET_VERIFY_ROUTES": null,
+"AIMARKET_MARKET_SPLITTER": null,
+"AIMARKET_MARKET_FEE_TO": null,
+"AIMARKET_X402_BRIDGE_KEY_FILE": null,
+"AIMARKET_X402_BRIDGE_GRANTED_ACCOUNTS": null,
+"AIMARKET_SELLS_FOR": null,
+"AIMARKET_PEER_API_KEYS": "set",
+"AIMARKET_PEER_PAYMENT_CHANNEL": null,
+"AIMARKET_SETTLE_RPC_URL": "set",
+"AIMARKET_ESCROW_SIGNER_URL": "set",
+"AIMARKET_ESCROW_PRIVATE_KEY": null,
+"STRIPE_SECRET_KEY": null,
+"AIMARKET_CARD_TOPUP_ENABLED": null
+},
+"markers": {
+"credits-1 topup dust": [
+"topup.py"
+],
+"invoke-local-1 pop on non-dict": [
+"hub_routes/invoke.py"
+],
+"escrow-1/channels-1 receipt lower()": [
+"escrow_bridge/authorization.py"
+],
+"escrow-2 withdraw early return": [
+"escrow_bridge/authorization.py"
+],
+"federation-1 fed auth w/o credit check": [
+"hub_routes/invoke.py"
+],
+"federation-1 pre-split variant": [],
+"pov-1 intent+output only": [
+"settlement_service/verifying.py"
+],
+"pov-2 capture then acex only": [
+"settlement_service/finalizing.py"
+],
+"x402-bridge-1 buyer_spent statuses": [],
+"L-1 guard0 before deadline": [
+"escrow_bridge/mirror.py"
+],
+"escrow-6 per-pass cap": [
+"escrow_bridge/config.py",
+"escrow_bridge/mirror.py",
+"escrow_bridge/collector.py"
+],
+"deposits-x402-2 rpc->payment_invalid": [
+"mcp_gateway.py",
+"a2a.py",
+"topup.py"
+],
+"pov-5 verify max wait": [
+"verified_settlement.py"
+]
+},
+"env_error": null
+}

@@ -1,0 +1,28 @@
+{
+  "name": "rugsnare",
+  "version": "1.6.0",
+  "description": "Runtime integrity gateway for AI agents: pin MCP tool descriptions, snare rug-pulls and drift, log every tool call.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "RugSnare Releases <releases@rugsnare.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Paraphern/rugsnare.git"
+  },
+  "bugs": "https://github.com/Paraphern/rugsnare/issues",
+  "homepage": "https://rugsnare.com",
+  "mcpName": "io.github.Paraphern/rugsnare",
+  "engines": { "node": ">=18" },
+  "bin": { "rugsnare": "./src/cli.js" },
+  "files": ["src", "!src/.mimosa", "README.md", "CHANGELOG.md", "LICENSE"],
+  "keywords": [
+    "mcp", "model-context-protocol", "ai-agents", "security",
+    "tool-poisoning", "rug-pull", "integrity", "gateway", "audit",
+    "supply-chain", "ci"
+  ],
+  "scripts": {
+    "test": "node --test test/security-canary.test.js test/security-runtime.test.js test/runtime-mode.test.js test/runtime-integrity.test.js test/core.test.js test/proxy.test.js test/proxy-http.test.js test/rpc-edge.test.js test/rpc-http.test.js test/auth.test.js test/results.test.js test/keccak.test.js test/onchain.test.js test/shadow.test.js test/advisory.test.js test/prompts.test.js test/policies.test.js test/canary.test.js test/canary-replay.test.js test/canary-http.test.js test/receipts.test.js test/mcp-server.test.js test/chameleon.test.js test/v041.test.js test/wrap.test.js test/v05.test.js test/adhoc-url.test.js test/doctor.test.js test/events.test.js test/config.test.js test/scan-e2e.test.js test/approve.test.js test/sarif.test.js test/audit.test.js test/vault.test.js test/budgets.test.js test/pins-sig.test.js test/review28.test.js test/undeclared.test.js test/skills-pin.test.js test/version.test.js test/history.test.js test/history-web.test.js test/gradation.test.js test/skills-advisory.test.js test/pinv11.test.js",
+    "prepack": "node --test test/security-canary.test.js test/security-runtime.test.js test/runtime-mode.test.js test/runtime-integrity.test.js test/core.test.js test/proxy.test.js test/proxy-http.test.js test/rpc-edge.test.js test/rpc-http.test.js test/auth.test.js test/results.test.js test/keccak.test.js test/onchain.test.js test/shadow.test.js test/advisory.test.js test/prompts.test.js test/policies.test.js test/canary.test.js test/canary-replay.test.js test/canary-http.test.js test/receipts.test.js test/mcp-server.test.js test/chameleon.test.js test/v041.test.js test/wrap.test.js test/v05.test.js test/adhoc-url.test.js test/doctor.test.js test/events.test.js test/config.test.js test/scan-e2e.test.js test/approve.test.js test/sarif.test.js test/audit.test.js test/vault.test.js test/budgets.test.js test/pins-sig.test.js test/review28.test.js test/undeclared.test.js test/skills-pin.test.js test/version.test.js test/history.test.js test/history-web.test.js test/gradation.test.js test/skills-advisory.test.js test/pinv11.test.js"
+  }
+}
+

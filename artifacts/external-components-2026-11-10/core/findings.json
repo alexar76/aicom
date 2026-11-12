@@ -1,0 +1,388 @@
+{
+  "summary": {
+    "generated_at_utc": "2026-11-10T19:44:28.054668+00:00",
+    "families": 16,
+    "plugin_distributions": 15,
+    "executed_search_strings": 29,
+    "web_queries": 24,
+    "github_search_attempts": 5,
+    "github_search_successful": 4,
+    "primary_get_count": 31,
+    "http_status_counts": {
+      "200": 28,
+      "403": 2,
+      "404": 1
+    },
+    "new_external_runtime_or_dependency_confirmed": false,
+    "new_independent_core_review_confirmed": false,
+    "baseline": [
+      "artifacts/external-links-2026-11-10/review.ru.md",
+      "artifacts/external-links-deeper-2026-11-10/report.ru.md",
+      "docs/growth/external-mentions-2026-10-26.ru.md",
+      "artifacts/external-signals-2026-11-09/report.ru.md"
+    ],
+    "limits": [
+      "No HISTOR/WARDEN research in this branch.",
+      "No downloads used as adoption counts.",
+      "No authenticated accounts, publishing, operator messages, package installation, payments, invokes or foreign code execution.",
+      "GitHub quota403 stopped queue; no retry or identity/network change.",
+      "Public search/index coverage is not a global absence claim."
+    ]
+  },
+  "findings": [
+    {
+      "id": "hub-internal-graph",
+      "components": [
+        "hub",
+        "plugins"
+      ],
+      "class": "internal_package_dependency",
+      "novelty": "current version scope; no new external adoption",
+      "source_url": "https://deps.dev/_/s/pypi/p/aimarket-hub/v/3.19.0/dependents",
+      "targets": [
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-channels"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-data-cap"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-dataset"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-mcp-packager"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-nft"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-orchestrator"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-personas"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-promo"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-provenance"
+          },
+          "version": "1.1.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-reputation"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-safety"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-streaming"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-tee"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-zk"
+          },
+          "version": "2.1.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-auction"
+          },
+          "version": "2.0.0"
+        }
+      ],
+      "target_version": "aimarket-hub@3.19.0",
+      "count": 15,
+      "ownership": "Every named distribution matches local own plugin manifest identity; not15 outside customers. Older representative dependent versions are graph nodes, not observed installed clients.",
+      "confidence": "high_for_named_snapshot"
+    },
+    {
+      "id": "agent-internal-graph",
+      "components": [
+        "python-agent",
+        "bridges"
+      ],
+      "class": "internal_package_dependency",
+      "novelty": "current version scope; no new external adoption",
+      "source_url": "https://deps.dev/_/s/pypi/p/aimarket-agent/v/2.6.2/dependents",
+      "targets": [
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-bridges"
+          },
+          "version": "0.1.0"
+        }
+      ],
+      "target_version": "aimarket-agent@2.6.2",
+      "ownership": "aimarket-bridges is our own distribution.",
+      "confidence": "high_for_named_snapshot"
+    },
+    {
+      "id": "zero-graphs",
+      "components": [
+        "sdk-typescript",
+        "widget",
+        "bridges",
+        "treasury",
+        "plugins",
+        "sdk-rust",
+        "sdk-dart"
+      ],
+      "class": "bounded_reverse_index_result",
+      "novelty": "current package graph verification, not new audience",
+      "checks": [
+        {
+          "id": "aimarket-bridges-pypi-dependents",
+          "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-bridges/versions/0.2.1:dependents",
+          "data": {
+            "dependentCount": 0,
+            "directDependentCount": 0,
+            "indirectDependentCount": 0
+          }
+        },
+        {
+          "id": "aimarket-treasury-pypi-dependents",
+          "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-treasury/versions/0.1.4:dependents",
+          "data": {
+            "dependentCount": 0,
+            "directDependentCount": 0,
+            "indirectDependentCount": 0
+          }
+        },
+        {
+          "id": "aimarket-mcp-packager-pypi-dependents",
+          "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-mcp-packager/versions/2.1.3:dependents",
+          "data": {
+            "dependentCount": 0,
+            "directDependentCount": 0,
+            "indirectDependentCount": 0
+          }
+        },
+        {
+          "id": "aimarket-tee-pypi-dependents",
+          "url": "https://api.deps.dev/v3alpha/systems/pypi/packages/aimarket-tee/versions/2.0.1:dependents",
+          "data": {
+            "dependentCount": 0,
+            "directDependentCount": 0,
+            "indirectDependentCount": 0
+          }
+        },
+        {
+          "id": "sdk-npm-dependents",
+          "url": "https://api.deps.dev/v3alpha/systems/npm/packages/%40aimarket%2Fagent/versions/0.4.0:dependents",
+          "data": {
+            "dependentCount": 0,
+            "directDependentCount": 0,
+            "indirectDependentCount": 0
+          }
+        },
+        {
+          "id": "widget-npm-dependents",
+          "url": "https://api.deps.dev/v3alpha/systems/npm/packages/%40aimarket%2Fwidget/versions/0.1.2:dependents",
+          "data": {
+            "dependentCount": 0,
+            "directDependentCount": 0,
+            "indirectDependentCount": 0
+          }
+        },
+        {
+          "id": "sdk-rust-reverse",
+          "url": "https://crates.io/api/v1/crates/aimarket-agent/reverse_dependencies?page=1&per_page=100",
+          "data": {
+            "dependencies": [],
+            "versions": [],
+            "meta": {
+              "total": 0
+            }
+          }
+        },
+        {
+          "id": "dart-dependent-search",
+          "url": "https://pub.dev/api/search?q=dependency%3Aaimarket_agent",
+          "data": {
+            "packages": []
+          }
+        }
+      ],
+      "limits": "Version-scoped or registry-index bounded, excludes unrecorded/private/runtime/non-package uses.",
+      "confidence": "high_for_bounded_API_response"
+    },
+    {
+      "id": "mesh-pypi-unavailable",
+      "components": [
+        "service-mesh"
+      ],
+      "class": "distribution_coordinate_observation",
+      "novelty": "current HTTP check; not external adoption",
+      "source_url": "https://pypi.org/pypi/ai-service-mesh/json",
+      "status": 404,
+      "local_coordinate": "ai-service-mesh0.1.0",
+      "limits": "Exact PyPI JSON404 does not prove the service or repository is unavailable. No reverse graph zero inferred.",
+      "confidence": "high_for_exact_GET"
+    },
+    {
+      "id": "dart-version-scope",
+      "components": [
+        "sdk-dart"
+      ],
+      "class": "distribution_version_observation",
+      "novelty": "current metadata, not external adoption",
+      "source_url": "https://pub.dev/api/packages/aimarket_agent",
+      "published_version": "0.3.0",
+      "local_version": "0.4.0",
+      "limits": "Own release distribution metadata; no defect, user or rollout inferred.",
+      "confidence": "high_for_exact_registry_response"
+    },
+    {
+      "id": "enterprise-factory",
+      "components": [
+        "factory"
+      ],
+      "class": "derivative_source",
+      "novelty": "known26Oct; head unchanged; no new artifact",
+      "source_url": "https://github.com/th3artfuldodger/enterprise-factory",
+      "parent": "alexar76/aicom",
+      "current_head": "ef124a40d592bf149fab93fb632a4aaf688a04fa",
+      "last_push_utc": "2026-10-14T20:06:17Z",
+      "known_compare_at_2026_10_26": {
+        "ahead_by": 19,
+        "behind_by": 102,
+        "base_sha": "77ceae90552f0fa8a256a9277b2c91a3ddfaff37",
+        "merge_base_sha": "d506b12ef31dd7a5edc80c04b94627d41ecf3122"
+      },
+      "pinned_source_url": "https://github.com/th3artfuldodger/enterprise-factory/blob/ef124a40d592bf149fab93fb632a4aaf688a04fa/core/security_redaction.py",
+      "source_evidence_id": "enterprise-redaction-pinned",
+      "ownership": "External GitHub account. Historical author strings name Everett Trimble but are not verified identity/human provenance.",
+      "limits": "Historical extra commits establish separate source work, not successful tests, running deployment, paying clients or new activity since26Oct. Ahead/behind counts belong to26Oct comparison and were not recalculated against today parent.",
+      "confidence": "high_for_source_and_head; runtime_unverified"
+    },
+    {
+      "id": "undercode",
+      "components": [
+        "factory"
+      ],
+      "class": "historical_release_coverage_not_hands_on",
+      "novelty": "known26Oct, article8Oct; current GET403",
+      "source_url": "https://undercodenews.com/aicom-factory-just-updated-video/",
+      "current_status": 403,
+      "evidence_id": "undercode-factory",
+      "limits": "Current article body not read due403. Historical attribution and AI disclosure are from26Oct baseline, corroborated only by current search snapshot; not new hands-on review.",
+      "confidence": "historical_primary_plus_current_search_only"
+    },
+    {
+      "id": "long-tail-search-limits",
+      "components": [
+        "protocol",
+        "bridges",
+        "widget",
+        "service-mesh",
+        "treasury",
+        "acex",
+        "pulse",
+        "escrow-signer"
+      ],
+      "class": "bounded_search_result",
+      "novelty": "new targeted coverage, no integration found",
+      "records": [
+        {
+          "component": "bridges",
+          "query": "\"aimarket-bridges\" in:readme -user:alexar76",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "component": "widget",
+          "query": "\"@aimarket/widget\" in:readme -user:alexar76",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "component": "service-mesh",
+          "query": "\"github.com/alexar76/ai-service-mesh\" in:readme -user:alexar76",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "component": "protocol",
+          "query": "\"github.com/alexar76/aimarket-protocol\" in:readme -user:alexar76",
+          "status": 200,
+          "total_count": 0,
+          "incomplete_results": false
+        },
+        {
+          "component": "treasury",
+          "query": "\"aimarket-treasury\" in:readme -user:alexar76",
+          "status": 403,
+          "total_count": null,
+          "incomplete_results": null
+        }
+      ],
+      "not_executed_after403": [
+        "acex",
+        "pulse",
+        "escrow-signer"
+      ],
+      "limits": "Four200/0 READMEs, treasury403, three planned GitHub searches skipped. Definite identity matching required because GitHub tokenizes hyphens. No full authenticated code search performed.",
+      "confidence": "bounded_only"
+    }
+  ]
+}

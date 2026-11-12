@@ -1,0 +1,3062 @@
+{
+  "format": "warden.binary-resource-compatibility/v1",
+  "at": "2026-11-07T22:09:21.426Z",
+  "candidateVersion": "0.23.1-dev.20261107.2",
+  "baselineVersion": "0.23.1-dev.20261107.1",
+  "ruleset": {
+    "version": "19",
+    "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw="
+  },
+  "classifierFiles": 320,
+  "classifierIdentitySha256": "5ff407cf78742ae18fd593065e9c9bd552bba45f3fab91f27fae9f45adb13238",
+  "coreEqualAcrossHosts": true,
+  "declaredChangesEqualAcrossHosts": true,
+  "toolHashesAcrossHosts": true,
+  "binaryAgreement": true,
+  "pairedPaths": {
+    "library-prior19_1": {
+      "checked": 23,
+      "matches": 23,
+      "peerRows": 23
+    },
+    "library-current19_2": {
+      "checked": 23,
+      "matches": 23,
+      "peerRows": 23
+    },
+    "protocol-prior19_1": {
+      "checked": 23,
+      "matches": 23,
+      "peerRows": 23
+    },
+    "protocol-current19_2": {
+      "checked": 23,
+      "matches": 23,
+      "peerRows": 23
+    }
+  },
+  "pairedRows": 92,
+  "pairedMatches": 92,
+  "differences": [],
+  "lowResourceDiagnostic": {
+    "cpus": 0.25,
+    "tests": 154,
+    "passed": 153,
+    "failed": 1,
+    "failures": [
+      {
+        "title": "preserves clean results and benign JSON-RPC failures",
+        "messages": [
+          "Error: Test timed out in 15000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\n    at task (file:///work/warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:2700:43)\n    at Object.<anonymous> (file:///work/warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:2717:16)\n    at Object.<anonymous> (file:///work/warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:2486:28)\n    at chain (file:///work/warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:1870:14)\n    at /work/warden/test/two-sided-protocol.test.ts:128:3\n    at file:///work/warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:2781:52\n    at runWithSuite (file:///work/warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:3267:8)\n    at Object.collect (file:///work/warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:2781:22)\n    at Object.collect (file:///work/warden/node_modules/vitest/dist/chunks/run.BPv-BBRv.js:2786:51)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"
+        ]
+      }
+    ],
+    "retained": true,
+    "normalProfileRetest": "304/304 followed by1536/1536 without product or test-deadline changes"
+  },
+  "sites": {
+    "attested": {
+      "full": {
+        "total": 1536,
+        "passed": 1536,
+        "failed": 0,
+        "files": 63,
+        "success": true,
+        "failedSuites": 0,
+        "complete": {
+          "completedAt": "2026-11-07T21:28:36.898612+00:00",
+          "allCommandsPassed": true,
+          "stages": 4,
+          "expectedStages": 4
+        },
+        "stability": {
+          "unchanged": true,
+          "fileCount": 1095,
+          "changed": [],
+          "missing": [],
+          "added": []
+        },
+        "state": {
+          "Status": "exited",
+          "Running": false,
+          "Paused": false,
+          "Restarting": false,
+          "OOMKilled": false,
+          "Dead": false,
+          "Pid": 0,
+          "ExitCode": 0,
+          "Error": "",
+          "StartedAt": "2026-11-07T21:20:32.885450991Z",
+          "FinishedAt": "2026-11-07T21:28:39.263002457Z"
+        },
+        "stages": [
+          {
+            "name": "typecheck",
+            "command": [
+              "npm",
+              "run",
+              "typecheck"
+            ],
+            "startedAt": "2026-11-07T21:23:36.379634+00:00",
+            "seconds": 2.402,
+            "exitCode": 0,
+            "timeout": false
+          },
+          {
+            "name": "build",
+            "command": [
+              "npm",
+              "run",
+              "build"
+            ],
+            "startedAt": "2026-11-07T21:23:38.782182+00:00",
+            "seconds": 2.935,
+            "exitCode": 0,
+            "timeout": false
+          },
+          {
+            "name": "full",
+            "command": [
+              "npm",
+              "test",
+              "--",
+              "--maxWorkers=1",
+              "--testTimeout=20000",
+              "--hookTimeout=30000",
+              "--reporter=default",
+              "--reporter=json",
+              "--outputFile=/results/full-results.json"
+            ],
+            "startedAt": "2026-11-07T21:23:41.718140+00:00",
+            "seconds": 293.705,
+            "exitCode": 0,
+            "timeout": false
+          },
+          {
+            "name": "redteam",
+            "command": [
+              "node",
+              "scripts/redteam/flow-redteam.mjs",
+              "/results/redteam-results.json",
+              "--check"
+            ],
+            "startedAt": "2026-11-07T21:28:35.424932+00:00",
+            "seconds": 0.845,
+            "exitCode": 0,
+            "timeout": false
+          }
+        ]
+      },
+      "focused": {
+        "total": 304,
+        "passed": 304,
+        "failed": 0,
+        "success": true
+      },
+      "proofBefore": {
+        "at": "2026-11-07T21:20:40.686Z",
+        "baselineVersion": "0.23.1-dev.20261107.1",
+        "candidateVersion": "0.23.1-dev.20261107.2",
+        "baselineFiles": 805,
+        "candidateFiles": 805,
+        "differences": [
+          {
+            "file": ".pre-commit-hooks.yaml",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "7d84fce23f6929339e3a258e7aee00e97a21d5664dd487dce4f7015b15d326ee",
+            "after": "771e5e79d66d5704f3012bc057f86d7ea949d9172af8dcbc0c2e03319b124a38"
+          },
+          {
+            "file": "CHANGELOG.md",
+            "kind": "release-history",
+            "allowed": true,
+            "before": "2baca4da4555ab8602acb1f896fe302e33e0c8081101a2f75a71125efd8d6288",
+            "after": "105aeeb543a0bf52d9bac448a1c307b0ecc6dfd849bc1d70bce03ce78fbd90e2"
+          },
+          {
+            "file": "action.yml",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "605f2c8dfb51d77060d4e73c26b8b1a795bf760955440cd866049fa31563099d",
+            "after": "19dab54ed8a545961ffad73aed68f56afcb18613e7fc9d06574a87e4010affec"
+          },
+          {
+            "file": "claude-plugin/.claude-plugin/plugin.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "2f7e25864972d06684e390d3edecb11774a5af283c29d9116a0f9070e60de1bb",
+            "after": "5beba6601f0d1a30ba7408285ef129d14bbeb19bfd9ccaffd0283e1104443193"
+          },
+          {
+            "file": "claude-plugin/hooks/hooks.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "c7c38fb885e4ae8b5705ee1224405e10d54e82a4e397ebec2d2e95cb7a3f84d1",
+            "after": "f730731f899995395590fc7db8dce5ceceb77dfcf7316eafc0a22c809cd10b60"
+          },
+          {
+            "file": "claude-plugin/skills/scan/SKILL.md",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "f5f689309acd778bcc1cf3cc321f873df5cb8e81fecb248d3cf4bb56a4a19dba",
+            "after": "e2596b9b6f6b4c261aedbce9d88b36f88078bbecc8414e8a3d97c9b74f798c09"
+          },
+          {
+            "file": "dist/result-screen.d.ts.map",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "78f8de147660f16e975d14e75c108863106407be812666e493130896c117e6c4",
+            "after": "012c8001c56f82a211d23eb0d3fe0df898752cb7fc0a0079171d48de08615aa8"
+          },
+          {
+            "file": "dist/result-screen.js",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "2da84c80bf6bbdcd0c43ea91a6ea46c0123d5cb1abc3006bc649cc676446d8e5",
+            "after": "4d4c22b6f4af8c8a84cc7d8b0d28d8d3ca5326abaf6c879fdce30a92d226159b"
+          },
+          {
+            "file": "dist/result-screen.js.map",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "517d0027996f4ab5b289b276c7d057797fa72e36ac3e6608e3a5ce097d64fcb5",
+            "after": "a7622797372db40069772a12cea897802946e2dd1b5e33ccc4e23d16530d1058"
+          },
+          {
+            "file": "docs/landing/index.html",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "36258d973b14bd4ceb15c706c20da25560a3b6b649da268ac018c1b4c53cacc9",
+            "after": "065870c130ea1edcb816469065524d343c9f20f9b66166598362308c3bd8de49"
+          },
+          {
+            "file": "package-lock.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "278e740d7d4071c4dfe261ccade20e725657059494f74669ca8afc9ecab6d107",
+            "after": "b47b3b24b6f83c6769980136958485c3351dd04434992adca8760d87a009fce8"
+          },
+          {
+            "file": "package.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "95fd0a95ee1900746987e6e89e8f4ede2893164e7ffba75aa15c7df7ca725507",
+            "after": "cc3f1f52a935907e1f21033c95614838e0bd857611f8edb785a0d89341a2b9d0"
+          },
+          {
+            "file": "server.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "0b20cecd90075cdcff48d4aec3e100e32f6879df234f4b80f6a89e4f406eb06d",
+            "after": "fd9fb8c8ab0c4b59a1bb2a1b9bdb7c3d14477988add43cc4e691ed3770a656e6"
+          },
+          {
+            "file": "src/result-screen.ts",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "eeb9ef404d6023966ef6bef2957dd8c962ac98f4b4afb957cebc9dd44b2271f9",
+            "after": "ba12a7fc337f7414645e8ad0679ef3f1cc2bd282b62f262442cbe527316b85c3"
+          },
+          {
+            "file": "test/action.test.ts",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "abf01fb62206029bfdd2004c82d512107684565483e8f018eb2ee6292dbfd0d0",
+            "after": "0a10d36e3802faaa3fd68ced0ef799cb11f3f46ecf35d1ee30979d41b4aad47e"
+          },
+          {
+            "file": "test/two-sided-protocol.test.ts",
+            "kind": "same-test-count-resource-regressions",
+            "allowed": true,
+            "before": "46b6e5086f0099d6b364911edc3f6d5bd908812413056fc7fa1c8013358cee61",
+            "after": "a695cf219e7e5df5520912c3844b8de2338aa59b9cb3955482cd3db4bae78f70"
+          }
+        ],
+        "classifierFiles": 320,
+        "classifierByteEqual": true,
+        "classifierIdentitySha256": "5ff407cf78742ae18fd593065e9c9bd552bba45f3fab91f27fae9f45adb13238",
+        "rulesetEqual": true,
+        "ruleset": {
+          "version": "19",
+          "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw="
+        },
+        "passed": true
+      },
+      "proofAfter": {
+        "at": "2026-11-07T21:28:38.125Z",
+        "baselineVersion": "0.23.1-dev.20261107.1",
+        "candidateVersion": "0.23.1-dev.20261107.2",
+        "baselineFiles": 805,
+        "candidateFiles": 805,
+        "differences": [
+          {
+            "file": ".pre-commit-hooks.yaml",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "7d84fce23f6929339e3a258e7aee00e97a21d5664dd487dce4f7015b15d326ee",
+            "after": "771e5e79d66d5704f3012bc057f86d7ea949d9172af8dcbc0c2e03319b124a38"
+          },
+          {
+            "file": "CHANGELOG.md",
+            "kind": "release-history",
+            "allowed": true,
+            "before": "2baca4da4555ab8602acb1f896fe302e33e0c8081101a2f75a71125efd8d6288",
+            "after": "105aeeb543a0bf52d9bac448a1c307b0ecc6dfd849bc1d70bce03ce78fbd90e2"
+          },
+          {
+            "file": "action.yml",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "605f2c8dfb51d77060d4e73c26b8b1a795bf760955440cd866049fa31563099d",
+            "after": "19dab54ed8a545961ffad73aed68f56afcb18613e7fc9d06574a87e4010affec"
+          },
+          {
+            "file": "claude-plugin/.claude-plugin/plugin.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "2f7e25864972d06684e390d3edecb11774a5af283c29d9116a0f9070e60de1bb",
+            "after": "5beba6601f0d1a30ba7408285ef129d14bbeb19bfd9ccaffd0283e1104443193"
+          },
+          {
+            "file": "claude-plugin/hooks/hooks.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "c7c38fb885e4ae8b5705ee1224405e10d54e82a4e397ebec2d2e95cb7a3f84d1",
+            "after": "f730731f899995395590fc7db8dce5ceceb77dfcf7316eafc0a22c809cd10b60"
+          },
+          {
+            "file": "claude-plugin/skills/scan/SKILL.md",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "f5f689309acd778bcc1cf3cc321f873df5cb8e81fecb248d3cf4bb56a4a19dba",
+            "after": "e2596b9b6f6b4c261aedbce9d88b36f88078bbecc8414e8a3d97c9b74f798c09"
+          },
+          {
+            "file": "dist/result-screen.d.ts.map",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "78f8de147660f16e975d14e75c108863106407be812666e493130896c117e6c4",
+            "after": "012c8001c56f82a211d23eb0d3fe0df898752cb7fc0a0079171d48de08615aa8"
+          },
+          {
+            "file": "dist/result-screen.js",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "2da84c80bf6bbdcd0c43ea91a6ea46c0123d5cb1abc3006bc649cc676446d8e5",
+            "after": "4d4c22b6f4af8c8a84cc7d8b0d28d8d3ca5326abaf6c879fdce30a92d226159b"
+          },
+          {
+            "file": "dist/result-screen.js.map",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "517d0027996f4ab5b289b276c7d057797fa72e36ac3e6608e3a5ce097d64fcb5",
+            "after": "a7622797372db40069772a12cea897802946e2dd1b5e33ccc4e23d16530d1058"
+          },
+          {
+            "file": "docs/landing/index.html",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "36258d973b14bd4ceb15c706c20da25560a3b6b649da268ac018c1b4c53cacc9",
+            "after": "065870c130ea1edcb816469065524d343c9f20f9b66166598362308c3bd8de49"
+          },
+          {
+            "file": "package-lock.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "278e740d7d4071c4dfe261ccade20e725657059494f74669ca8afc9ecab6d107",
+            "after": "b47b3b24b6f83c6769980136958485c3351dd04434992adca8760d87a009fce8"
+          },
+          {
+            "file": "package.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "95fd0a95ee1900746987e6e89e8f4ede2893164e7ffba75aa15c7df7ca725507",
+            "after": "cc3f1f52a935907e1f21033c95614838e0bd857611f8edb785a0d89341a2b9d0"
+          },
+          {
+            "file": "server.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "0b20cecd90075cdcff48d4aec3e100e32f6879df234f4b80f6a89e4f406eb06d",
+            "after": "fd9fb8c8ab0c4b59a1bb2a1b9bdb7c3d14477988add43cc4e691ed3770a656e6"
+          },
+          {
+            "file": "src/result-screen.ts",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "eeb9ef404d6023966ef6bef2957dd8c962ac98f4b4afb957cebc9dd44b2271f9",
+            "after": "ba12a7fc337f7414645e8ad0679ef3f1cc2bd282b62f262442cbe527316b85c3"
+          },
+          {
+            "file": "test/action.test.ts",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "abf01fb62206029bfdd2004c82d512107684565483e8f018eb2ee6292dbfd0d0",
+            "after": "0a10d36e3802faaa3fd68ced0ef799cb11f3f46ecf35d1ee30979d41b4aad47e"
+          },
+          {
+            "file": "test/two-sided-protocol.test.ts",
+            "kind": "same-test-count-resource-regressions",
+            "allowed": true,
+            "before": "46b6e5086f0099d6b364911edc3f6d5bd908812413056fc7fa1c8013358cee61",
+            "after": "a695cf219e7e5df5520912c3844b8de2338aa59b9cb3955482cd3db4bae78f70"
+          }
+        ],
+        "classifierFiles": 320,
+        "classifierByteEqual": true,
+        "classifierIdentitySha256": "5ff407cf78742ae18fd593065e9c9bd552bba45f3fab91f27fae9f45adb13238",
+        "rulesetEqual": true,
+        "ruleset": {
+          "version": "19",
+          "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw="
+        },
+        "passed": true
+      },
+      "interop": {
+        "at": "2026-11-07T21:25:47.027Z",
+        "node": "v22.23.4",
+        "sdk": "1.32.1",
+        "scope": "Independent official SDK; actual server processes directly and through Warden; synthetic local tool calls only",
+        "servers": [
+          {
+            "id": "warden",
+            "modes": [
+              {
+                "mode": "direct",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "warden",
+                  "title": "WARDEN MCP security firewall",
+                  "version": "0.23.1-dev.20261107.2"
+                },
+                "toolCount": 9,
+                "digest": "c2fb2f087e533f45cea599505299c158a7355540c64c476a323d5f46ef9ee79d",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"canonical\": \"{\\\"a\\\":\\\"ёж 🛡\\\",\\\"z\\\":1}\"\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "canonical": "{\"a\":\"ёж 🛡\",\"z\":1}"
+                  }
+                },
+                "elapsedMs": 970,
+                "pass": true
+              },
+              {
+                "mode": "wrapped",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "warden",
+                  "title": "WARDEN MCP security firewall",
+                  "version": "0.23.1-dev.20261107.2"
+                },
+                "toolCount": 9,
+                "digest": "c2fb2f087e533f45cea599505299c158a7355540c64c476a323d5f46ef9ee79d",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"canonical\": \"{\\\"a\\\":\\\"ёж 🛡\\\",\\\"z\\\":1}\"\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "canonical": "{\"a\":\"ёж 🛡\",\"z\":1}"
+                  }
+                },
+                "elapsedMs": 2699,
+                "pass": true
+              }
+            ],
+            "toolListParity": true
+          },
+          {
+            "id": "filesystem",
+            "modes": [
+              {
+                "mode": "direct",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "secure-filesystem-server",
+                  "version": "2.2.0"
+                },
+                "toolCount": 16,
+                "digest": "0d610691206ba9eaab8f9736ca4310271464f47d430ff71bc36e3f07af95cc54",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "WARDEN interop fixture: ёж 🛡\n"
+                    }
+                  ],
+                  "structuredContent": {
+                    "content": "WARDEN interop fixture: ёж 🛡\n"
+                  }
+                },
+                "elapsedMs": 1431,
+                "pass": true
+              },
+              {
+                "mode": "wrapped",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "secure-filesystem-server",
+                  "version": "2.2.0"
+                },
+                "toolCount": 16,
+                "digest": "0d610691206ba9eaab8f9736ca4310271464f47d430ff71bc36e3f07af95cc54",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "WARDEN interop fixture: ёж 🛡\n"
+                    }
+                  ],
+                  "structuredContent": {
+                    "content": "WARDEN interop fixture: ёж 🛡\n"
+                  }
+                },
+                "elapsedMs": 2903,
+                "pass": true
+              }
+            ],
+            "toolListParity": true
+          },
+          {
+            "id": "memory",
+            "modes": [
+              {
+                "mode": "direct",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "memory-server",
+                  "version": "2.1.0"
+                },
+                "toolCount": 9,
+                "digest": "b90b2a5b24f007f69e0578bc60d805c498efed07d8b7d509ec2c79d8551115dd",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"entities\": [],\n  \"relations\": []\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "entities": [],
+                    "relations": []
+                  }
+                },
+                "elapsedMs": 1318,
+                "pass": true
+              },
+              {
+                "mode": "wrapped",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "memory-server",
+                  "version": "2.1.0"
+                },
+                "toolCount": 9,
+                "digest": "b90b2a5b24f007f69e0578bc60d805c498efed07d8b7d509ec2c79d8551115dd",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"entities\": [],\n  \"relations\": []\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "entities": [],
+                    "relations": []
+                  }
+                },
+                "elapsedMs": 2878,
+                "pass": true
+              }
+            ],
+            "toolListParity": true
+          },
+          {
+            "id": "sequential-thinking",
+            "modes": [
+              {
+                "mode": "direct",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "sequential-thinking-server",
+                  "version": "2.1.1"
+                },
+                "toolCount": 1,
+                "digest": "d20bbcb12a025a95938cd6569df48edf4f27d88139474e55e42f96a31338233a",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"thoughtNumber\": 1,\n  \"totalThoughts\": 1,\n  \"nextThoughtNeeded\": false,\n  \"branches\": [],\n  \"thoughtHistoryLength\": 1\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "thoughtNumber": 1,
+                    "totalThoughts": 1,
+                    "nextThoughtNeeded": false,
+                    "branches": [],
+                    "thoughtHistoryLength": 1
+                  }
+                },
+                "elapsedMs": 1109,
+                "pass": true
+              },
+              {
+                "mode": "wrapped",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "sequential-thinking-server",
+                  "version": "2.1.1"
+                },
+                "toolCount": 1,
+                "digest": "d20bbcb12a025a95938cd6569df48edf4f27d88139474e55e42f96a31338233a",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"thoughtNumber\": 1,\n  \"totalThoughts\": 1,\n  \"nextThoughtNeeded\": false,\n  \"branches\": [],\n  \"thoughtHistoryLength\": 1\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "thoughtNumber": 1,
+                    "totalThoughts": 1,
+                    "nextThoughtNeeded": false,
+                    "branches": [],
+                    "thoughtHistoryLength": 1
+                  }
+                },
+                "elapsedMs": 1998,
+                "pass": true
+              }
+            ],
+            "toolListParity": true
+          }
+        ],
+        "summary": {
+          "servers": 4,
+          "exchanges": 8,
+          "passed": 8,
+          "toolListParity": 4
+        }
+      },
+      "binary": {
+        "at": "2026-11-07T21:25:50.413Z",
+        "node": "v22.23.4",
+        "sdk": "1.32.1",
+        "schemaChecks": {
+          "withoutMime": true,
+          "withMime": true,
+          "invalidBase64Rejected": true,
+          "objectRejected": true
+        },
+        "modes": [
+          {
+            "mode": "direct",
+            "cases": [
+              {
+                "variant": "withoutMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              },
+              {
+                "variant": "withMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              }
+            ],
+            "actualExecutions": 2,
+            "exactlyOneExecutionPerCall": true,
+            "sessionSurvived": true,
+            "pass": true
+          },
+          {
+            "mode": "prior19_1",
+            "cases": [
+              {
+                "variant": "withoutMime",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: inspection is incomplete (RESULT_INSPECTION_INCOMPLETE); the tool already ran"
+                }
+              },
+              {
+                "variant": "withMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              },
+              {
+                "variant": "metadataPoison",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: inspection is incomplete (RESULT_INSPECTION_INCOMPLETE, TOOL_DEF_INJECTION); the tool already ran"
+                }
+              }
+            ],
+            "actualExecutions": 3,
+            "exactlyOneExecutionPerCall": true,
+            "sessionSurvived": true,
+            "pass": true
+          },
+          {
+            "mode": "current19_2",
+            "cases": [
+              {
+                "variant": "withoutMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              },
+              {
+                "variant": "withMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              },
+              {
+                "variant": "metadataPoison",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: it reads as instructions to the model (TOOL_DEF_INJECTION); the tool already ran"
+                }
+              },
+              {
+                "variant": "invalidWithoutMime",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: it reads as instructions to the model (TOOL_DEF_INJECTION); the tool already ran"
+                }
+              },
+              {
+                "variant": "invalidWithMime",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: it reads as instructions to the model (TOOL_DEF_INJECTION); the tool already ran"
+                }
+              },
+              {
+                "variant": "objectWithMime",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: it reads as instructions to the model (TOOL_DEF_INJECTION); the tool already ran"
+                }
+              }
+            ],
+            "actualExecutions": 6,
+            "exactlyOneExecutionPerCall": true,
+            "sessionSurvived": true,
+            "pass": true
+          }
+        ],
+        "passed": true
+      },
+      "protocol": {
+        "format": "warden.paired-regression/v1",
+        "site": "attested",
+        "pilot": true,
+        "startedAt": "2026-11-07T21:56:13.417Z",
+        "completedAt": "2026-11-07T21:56:38.601Z",
+        "node": "v22.23.4",
+        "scheduled": 23,
+        "sharedCasesSha256": "e29baa05fbdbf46e34631ff2c75f0b4f535f0188054dd4499699bd189a3dc757",
+        "caseManifestSha256": "b45d82380bf8e9b2344ea65571fe88bb79b2adaf9670eb44f5423b73fd602cb1",
+        "versions": {
+          "prior19_1": {
+            "ruleset": {
+              "version": "19",
+              "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw="
+            },
+            "summary": {
+              "author-labelled": {
+                "N": 3,
+                "C": 3,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "benign": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 3,
+                    "C": 3,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "independent": {
+                "N": 2,
+                "C": 2,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-clean": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "benign": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-decorated": {
+                "N": 5,
+                "C": 5,
+                "B": 5,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 5,
+                    "C": 5,
+                    "B": 5,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 1,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 4,
+                    "C": 4,
+                    "B": 4,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-scenarios": {
+                "N": 2,
+                "C": 2,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "test": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-served": {
+                "N": 5,
+                "C": 5,
+                "B": 3,
+                "A": 1,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 5,
+                    "C": 5,
+                    "B": 3,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 1,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 4,
+                    "C": 4,
+                    "B": 2,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "public-carryover": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 2,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "unlabelled": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 2,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 2,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "public-main": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 1,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "unlabelled": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              }
+            }
+          },
+          "current19_2": {
+            "ruleset": {
+              "version": "19",
+              "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw="
+            },
+            "summary": {
+              "author-labelled": {
+                "N": 3,
+                "C": 3,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "benign": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 3,
+                    "C": 3,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "independent": {
+                "N": 2,
+                "C": 2,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-clean": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "benign": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-decorated": {
+                "N": 5,
+                "C": 5,
+                "B": 5,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 5,
+                    "C": 5,
+                    "B": 5,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 1,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 4,
+                    "C": 4,
+                    "B": 4,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-scenarios": {
+                "N": 2,
+                "C": 2,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "test": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-served": {
+                "N": 5,
+                "C": 5,
+                "B": 3,
+                "A": 1,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 5,
+                    "C": 5,
+                    "B": 3,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 1,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 4,
+                    "C": 4,
+                    "B": 2,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "public-carryover": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 2,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "unlabelled": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 2,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 2,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "public-main": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 1,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "unlabelled": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parity": {
+          "prior19_1": {
+            "checked": 23,
+            "matches": 23,
+            "differences": 0,
+            "batchesValid": true
+          },
+          "current19_2": {
+            "checked": 23,
+            "matches": 23,
+            "differences": 0,
+            "batchesValid": true
+          }
+        },
+        "libraryErrors": {
+          "prior19_1": [],
+          "current19_2": []
+        },
+        "inputUnchanged": true,
+        "sourceUnchanged": true,
+        "changes": [],
+        "passed": true
+      },
+      "executedHarnessSha256": "1ac16cf8d4bdadcc14522f4ed0b398bf185e1ef33f6347372d3848f31624d789"
+    },
+    "blip": {
+      "full": {
+        "total": 1536,
+        "passed": 1536,
+        "failed": 0,
+        "files": 63,
+        "success": true,
+        "failedSuites": 0,
+        "complete": {
+          "completedAt": "2026-11-07T21:54:19.084154+00:00",
+          "allCommandsPassed": true,
+          "stages": 4,
+          "expectedStages": 4
+        },
+        "stability": {
+          "unchanged": true,
+          "fileCount": 1093,
+          "changed": [],
+          "missing": [],
+          "added": []
+        },
+        "state": {
+          "Status": "exited",
+          "Running": false,
+          "Paused": false,
+          "Restarting": false,
+          "OOMKilled": false,
+          "Dead": false,
+          "Pid": 0,
+          "ExitCode": 0,
+          "Error": "",
+          "StartedAt": "2026-11-07T21:38:39.264904605Z",
+          "FinishedAt": "2026-11-07T21:54:23.562438836Z"
+        },
+        "stages": [
+          {
+            "name": "typecheck",
+            "command": [
+              "npm",
+              "run",
+              "typecheck"
+            ],
+            "startedAt": "2026-11-07T21:44:50.380927+00:00",
+            "seconds": 4.894,
+            "exitCode": 0,
+            "timeout": false
+          },
+          {
+            "name": "build",
+            "command": [
+              "npm",
+              "run",
+              "build"
+            ],
+            "startedAt": "2026-11-07T21:44:55.276359+00:00",
+            "seconds": 6.164,
+            "exitCode": 0,
+            "timeout": false
+          },
+          {
+            "name": "full",
+            "command": [
+              "npm",
+              "test",
+              "--",
+              "--maxWorkers=1",
+              "--testTimeout=20000",
+              "--hookTimeout=30000",
+              "--reporter=default",
+              "--reporter=json",
+              "--outputFile=/results/full-results.json"
+            ],
+            "startedAt": "2026-11-07T21:45:01.442809+00:00",
+            "seconds": 554.284,
+            "exitCode": 0,
+            "timeout": false
+          },
+          {
+            "name": "redteam",
+            "command": [
+              "node",
+              "scripts/redteam/flow-redteam.mjs",
+              "/results/redteam-results.json",
+              "--check"
+            ],
+            "startedAt": "2026-11-07T21:54:15.731006+00:00",
+            "seconds": 1.929,
+            "exitCode": 0,
+            "timeout": false
+          }
+        ]
+      },
+      "focused": {
+        "total": 304,
+        "passed": 304,
+        "failed": 0,
+        "success": true
+      },
+      "proofBefore": {
+        "at": "2026-11-07T21:38:56.301Z",
+        "baselineVersion": "0.23.1-dev.20261107.1",
+        "candidateVersion": "0.23.1-dev.20261107.2",
+        "baselineFiles": 805,
+        "candidateFiles": 805,
+        "differences": [
+          {
+            "file": ".pre-commit-hooks.yaml",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "7d84fce23f6929339e3a258e7aee00e97a21d5664dd487dce4f7015b15d326ee",
+            "after": "771e5e79d66d5704f3012bc057f86d7ea949d9172af8dcbc0c2e03319b124a38"
+          },
+          {
+            "file": "CHANGELOG.md",
+            "kind": "release-history",
+            "allowed": true,
+            "before": "2baca4da4555ab8602acb1f896fe302e33e0c8081101a2f75a71125efd8d6288",
+            "after": "105aeeb543a0bf52d9bac448a1c307b0ecc6dfd849bc1d70bce03ce78fbd90e2"
+          },
+          {
+            "file": "action.yml",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "605f2c8dfb51d77060d4e73c26b8b1a795bf760955440cd866049fa31563099d",
+            "after": "19dab54ed8a545961ffad73aed68f56afcb18613e7fc9d06574a87e4010affec"
+          },
+          {
+            "file": "claude-plugin/.claude-plugin/plugin.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "2f7e25864972d06684e390d3edecb11774a5af283c29d9116a0f9070e60de1bb",
+            "after": "5beba6601f0d1a30ba7408285ef129d14bbeb19bfd9ccaffd0283e1104443193"
+          },
+          {
+            "file": "claude-plugin/hooks/hooks.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "c7c38fb885e4ae8b5705ee1224405e10d54e82a4e397ebec2d2e95cb7a3f84d1",
+            "after": "f730731f899995395590fc7db8dce5ceceb77dfcf7316eafc0a22c809cd10b60"
+          },
+          {
+            "file": "claude-plugin/skills/scan/SKILL.md",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "f5f689309acd778bcc1cf3cc321f873df5cb8e81fecb248d3cf4bb56a4a19dba",
+            "after": "e2596b9b6f6b4c261aedbce9d88b36f88078bbecc8414e8a3d97c9b74f798c09"
+          },
+          {
+            "file": "dist/result-screen.d.ts.map",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "78f8de147660f16e975d14e75c108863106407be812666e493130896c117e6c4",
+            "after": "012c8001c56f82a211d23eb0d3fe0df898752cb7fc0a0079171d48de08615aa8"
+          },
+          {
+            "file": "dist/result-screen.js",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "2da84c80bf6bbdcd0c43ea91a6ea46c0123d5cb1abc3006bc649cc676446d8e5",
+            "after": "4d4c22b6f4af8c8a84cc7d8b0d28d8d3ca5326abaf6c879fdce30a92d226159b"
+          },
+          {
+            "file": "dist/result-screen.js.map",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "517d0027996f4ab5b289b276c7d057797fa72e36ac3e6608e3a5ce097d64fcb5",
+            "after": "a7622797372db40069772a12cea897802946e2dd1b5e33ccc4e23d16530d1058"
+          },
+          {
+            "file": "docs/landing/index.html",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "36258d973b14bd4ceb15c706c20da25560a3b6b649da268ac018c1b4c53cacc9",
+            "after": "065870c130ea1edcb816469065524d343c9f20f9b66166598362308c3bd8de49"
+          },
+          {
+            "file": "package-lock.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "278e740d7d4071c4dfe261ccade20e725657059494f74669ca8afc9ecab6d107",
+            "after": "b47b3b24b6f83c6769980136958485c3351dd04434992adca8760d87a009fce8"
+          },
+          {
+            "file": "package.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "95fd0a95ee1900746987e6e89e8f4ede2893164e7ffba75aa15c7df7ca725507",
+            "after": "cc3f1f52a935907e1f21033c95614838e0bd857611f8edb785a0d89341a2b9d0"
+          },
+          {
+            "file": "server.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "0b20cecd90075cdcff48d4aec3e100e32f6879df234f4b80f6a89e4f406eb06d",
+            "after": "fd9fb8c8ab0c4b59a1bb2a1b9bdb7c3d14477988add43cc4e691ed3770a656e6"
+          },
+          {
+            "file": "src/result-screen.ts",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "eeb9ef404d6023966ef6bef2957dd8c962ac98f4b4afb957cebc9dd44b2271f9",
+            "after": "ba12a7fc337f7414645e8ad0679ef3f1cc2bd282b62f262442cbe527316b85c3"
+          },
+          {
+            "file": "test/action.test.ts",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "abf01fb62206029bfdd2004c82d512107684565483e8f018eb2ee6292dbfd0d0",
+            "after": "0a10d36e3802faaa3fd68ced0ef799cb11f3f46ecf35d1ee30979d41b4aad47e"
+          },
+          {
+            "file": "test/two-sided-protocol.test.ts",
+            "kind": "same-test-count-resource-regressions",
+            "allowed": true,
+            "before": "46b6e5086f0099d6b364911edc3f6d5bd908812413056fc7fa1c8013358cee61",
+            "after": "a695cf219e7e5df5520912c3844b8de2338aa59b9cb3955482cd3db4bae78f70"
+          }
+        ],
+        "classifierFiles": 320,
+        "classifierByteEqual": true,
+        "classifierIdentitySha256": "5ff407cf78742ae18fd593065e9c9bd552bba45f3fab91f27fae9f45adb13238",
+        "rulesetEqual": true,
+        "ruleset": {
+          "version": "19",
+          "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw="
+        },
+        "passed": true
+      },
+      "proofAfter": {
+        "at": "2026-11-07T21:54:21.658Z",
+        "baselineVersion": "0.23.1-dev.20261107.1",
+        "candidateVersion": "0.23.1-dev.20261107.2",
+        "baselineFiles": 805,
+        "candidateFiles": 805,
+        "differences": [
+          {
+            "file": ".pre-commit-hooks.yaml",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "7d84fce23f6929339e3a258e7aee00e97a21d5664dd487dce4f7015b15d326ee",
+            "after": "771e5e79d66d5704f3012bc057f86d7ea949d9172af8dcbc0c2e03319b124a38"
+          },
+          {
+            "file": "CHANGELOG.md",
+            "kind": "release-history",
+            "allowed": true,
+            "before": "2baca4da4555ab8602acb1f896fe302e33e0c8081101a2f75a71125efd8d6288",
+            "after": "105aeeb543a0bf52d9bac448a1c307b0ecc6dfd849bc1d70bce03ce78fbd90e2"
+          },
+          {
+            "file": "action.yml",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "605f2c8dfb51d77060d4e73c26b8b1a795bf760955440cd866049fa31563099d",
+            "after": "19dab54ed8a545961ffad73aed68f56afcb18613e7fc9d06574a87e4010affec"
+          },
+          {
+            "file": "claude-plugin/.claude-plugin/plugin.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "2f7e25864972d06684e390d3edecb11774a5af283c29d9116a0f9070e60de1bb",
+            "after": "5beba6601f0d1a30ba7408285ef129d14bbeb19bfd9ccaffd0283e1104443193"
+          },
+          {
+            "file": "claude-plugin/hooks/hooks.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "c7c38fb885e4ae8b5705ee1224405e10d54e82a4e397ebec2d2e95cb7a3f84d1",
+            "after": "f730731f899995395590fc7db8dce5ceceb77dfcf7316eafc0a22c809cd10b60"
+          },
+          {
+            "file": "claude-plugin/skills/scan/SKILL.md",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "f5f689309acd778bcc1cf3cc321f873df5cb8e81fecb248d3cf4bb56a4a19dba",
+            "after": "e2596b9b6f6b4c261aedbce9d88b36f88078bbecc8414e8a3d97c9b74f798c09"
+          },
+          {
+            "file": "dist/result-screen.d.ts.map",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "78f8de147660f16e975d14e75c108863106407be812666e493130896c117e6c4",
+            "after": "012c8001c56f82a211d23eb0d3fe0df898752cb7fc0a0079171d48de08615aa8"
+          },
+          {
+            "file": "dist/result-screen.js",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "2da84c80bf6bbdcd0c43ea91a6ea46c0123d5cb1abc3006bc649cc676446d8e5",
+            "after": "4d4c22b6f4af8c8a84cc7d8b0d28d8d3ca5326abaf6c879fdce30a92d226159b"
+          },
+          {
+            "file": "dist/result-screen.js.map",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "517d0027996f4ab5b289b276c7d057797fa72e36ac3e6608e3a5ce097d64fcb5",
+            "after": "a7622797372db40069772a12cea897802946e2dd1b5e33ccc4e23d16530d1058"
+          },
+          {
+            "file": "docs/landing/index.html",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "36258d973b14bd4ceb15c706c20da25560a3b6b649da268ac018c1b4c53cacc9",
+            "after": "065870c130ea1edcb816469065524d343c9f20f9b66166598362308c3bd8de49"
+          },
+          {
+            "file": "package-lock.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "278e740d7d4071c4dfe261ccade20e725657059494f74669ca8afc9ecab6d107",
+            "after": "b47b3b24b6f83c6769980136958485c3351dd04434992adca8760d87a009fce8"
+          },
+          {
+            "file": "package.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "95fd0a95ee1900746987e6e89e8f4ede2893164e7ffba75aa15c7df7ca725507",
+            "after": "cc3f1f52a935907e1f21033c95614838e0bd857611f8edb785a0d89341a2b9d0"
+          },
+          {
+            "file": "server.json",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "0b20cecd90075cdcff48d4aec3e100e32f6879df234f4b80f6a89e4f406eb06d",
+            "after": "fd9fb8c8ab0c4b59a1bb2a1b9bdb7c3d14477988add43cc4e691ed3770a656e6"
+          },
+          {
+            "file": "src/result-screen.ts",
+            "kind": "return-path-resource-compatibility",
+            "allowed": true,
+            "before": "eeb9ef404d6023966ef6bef2957dd8c962ac98f4b4afb957cebc9dd44b2271f9",
+            "after": "ba12a7fc337f7414645e8ad0679ef3f1cc2bd282b62f262442cbe527316b85c3"
+          },
+          {
+            "file": "test/action.test.ts",
+            "kind": "version-metadata-only",
+            "allowed": true,
+            "before": "abf01fb62206029bfdd2004c82d512107684565483e8f018eb2ee6292dbfd0d0",
+            "after": "0a10d36e3802faaa3fd68ced0ef799cb11f3f46ecf35d1ee30979d41b4aad47e"
+          },
+          {
+            "file": "test/two-sided-protocol.test.ts",
+            "kind": "same-test-count-resource-regressions",
+            "allowed": true,
+            "before": "46b6e5086f0099d6b364911edc3f6d5bd908812413056fc7fa1c8013358cee61",
+            "after": "a695cf219e7e5df5520912c3844b8de2338aa59b9cb3955482cd3db4bae78f70"
+          }
+        ],
+        "classifierFiles": 320,
+        "classifierByteEqual": true,
+        "classifierIdentitySha256": "5ff407cf78742ae18fd593065e9c9bd552bba45f3fab91f27fae9f45adb13238",
+        "rulesetEqual": true,
+        "ruleset": {
+          "version": "19",
+          "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw="
+        },
+        "passed": true
+      },
+      "interop": {
+        "at": "2026-11-07T21:48:45.383Z",
+        "node": "v22.23.4",
+        "sdk": "1.32.1",
+        "scope": "Independent official SDK; actual server processes directly and through Warden; synthetic local tool calls only",
+        "servers": [
+          {
+            "id": "warden",
+            "modes": [
+              {
+                "mode": "direct",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "warden",
+                  "title": "WARDEN MCP security firewall",
+                  "version": "0.23.1-dev.20261107.2"
+                },
+                "toolCount": 9,
+                "digest": "c2fb2f087e533f45cea599505299c158a7355540c64c476a323d5f46ef9ee79d",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"canonical\": \"{\\\"a\\\":\\\"ёж 🛡\\\",\\\"z\\\":1}\"\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "canonical": "{\"a\":\"ёж 🛡\",\"z\":1}"
+                  }
+                },
+                "elapsedMs": 1919,
+                "pass": true
+              },
+              {
+                "mode": "wrapped",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "warden",
+                  "title": "WARDEN MCP security firewall",
+                  "version": "0.23.1-dev.20261107.2"
+                },
+                "toolCount": 9,
+                "digest": "c2fb2f087e533f45cea599505299c158a7355540c64c476a323d5f46ef9ee79d",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"canonical\": \"{\\\"a\\\":\\\"ёж 🛡\\\",\\\"z\\\":1}\"\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "canonical": "{\"a\":\"ёж 🛡\",\"z\":1}"
+                  }
+                },
+                "elapsedMs": 5094,
+                "pass": true
+              }
+            ],
+            "toolListParity": true
+          },
+          {
+            "id": "filesystem",
+            "modes": [
+              {
+                "mode": "direct",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "secure-filesystem-server",
+                  "version": "2.2.0"
+                },
+                "toolCount": 16,
+                "digest": "0d610691206ba9eaab8f9736ca4310271464f47d430ff71bc36e3f07af95cc54",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "WARDEN interop fixture: ёж 🛡\n"
+                    }
+                  ],
+                  "structuredContent": {
+                    "content": "WARDEN interop fixture: ёж 🛡\n"
+                  }
+                },
+                "elapsedMs": 2925,
+                "pass": true
+              },
+              {
+                "mode": "wrapped",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "secure-filesystem-server",
+                  "version": "2.2.0"
+                },
+                "toolCount": 16,
+                "digest": "0d610691206ba9eaab8f9736ca4310271464f47d430ff71bc36e3f07af95cc54",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "WARDEN interop fixture: ёж 🛡\n"
+                    }
+                  ],
+                  "structuredContent": {
+                    "content": "WARDEN interop fixture: ёж 🛡\n"
+                  }
+                },
+                "elapsedMs": 5991,
+                "pass": true
+              }
+            ],
+            "toolListParity": true
+          },
+          {
+            "id": "memory",
+            "modes": [
+              {
+                "mode": "direct",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "memory-server",
+                  "version": "2.1.0"
+                },
+                "toolCount": 9,
+                "digest": "b90b2a5b24f007f69e0578bc60d805c498efed07d8b7d509ec2c79d8551115dd",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"entities\": [],\n  \"relations\": []\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "entities": [],
+                    "relations": []
+                  }
+                },
+                "elapsedMs": 3373,
+                "pass": true
+              },
+              {
+                "mode": "wrapped",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "memory-server",
+                  "version": "2.1.0"
+                },
+                "toolCount": 9,
+                "digest": "b90b2a5b24f007f69e0578bc60d805c498efed07d8b7d509ec2c79d8551115dd",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"entities\": [],\n  \"relations\": []\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "entities": [],
+                    "relations": []
+                  }
+                },
+                "elapsedMs": 6089,
+                "pass": true
+              }
+            ],
+            "toolListParity": true
+          },
+          {
+            "id": "sequential-thinking",
+            "modes": [
+              {
+                "mode": "direct",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "sequential-thinking-server",
+                  "version": "2.1.1"
+                },
+                "toolCount": 1,
+                "digest": "d20bbcb12a025a95938cd6569df48edf4f27d88139474e55e42f96a31338233a",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"thoughtNumber\": 1,\n  \"totalThoughts\": 1,\n  \"nextThoughtNeeded\": false,\n  \"branches\": [],\n  \"thoughtHistoryLength\": 1\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "thoughtNumber": 1,
+                    "totalThoughts": 1,
+                    "nextThoughtNeeded": false,
+                    "branches": [],
+                    "thoughtHistoryLength": 1
+                  }
+                },
+                "elapsedMs": 2300,
+                "pass": true
+              },
+              {
+                "mode": "wrapped",
+                "checks": [
+                  {
+                    "name": "nonempty tools/list",
+                    "pass": true
+                  },
+                  {
+                    "name": "synthetic tool succeeds",
+                    "pass": true
+                  },
+                  {
+                    "name": "unknown tool refused",
+                    "pass": true
+                  },
+                  {
+                    "name": "session survives refused call",
+                    "pass": true
+                  }
+                ],
+                "serverInfo": {
+                  "name": "sequential-thinking-server",
+                  "version": "2.1.1"
+                },
+                "toolCount": 1,
+                "digest": "d20bbcb12a025a95938cd6569df48edf4f27d88139474e55e42f96a31338233a",
+                "response": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "{\n  \"thoughtNumber\": 1,\n  \"totalThoughts\": 1,\n  \"nextThoughtNeeded\": false,\n  \"branches\": [],\n  \"thoughtHistoryLength\": 1\n}"
+                    }
+                  ],
+                  "structuredContent": {
+                    "thoughtNumber": 1,
+                    "totalThoughts": 1,
+                    "nextThoughtNeeded": false,
+                    "branches": [],
+                    "thoughtHistoryLength": 1
+                  }
+                },
+                "elapsedMs": 4086,
+                "pass": true
+              }
+            ],
+            "toolListParity": true
+          }
+        ],
+        "summary": {
+          "servers": 4,
+          "exchanges": 8,
+          "passed": 8,
+          "toolListParity": 4
+        }
+      },
+      "binary": {
+        "at": "2026-11-07T21:49:21.102Z",
+        "node": "v22.23.4",
+        "sdk": "1.32.1",
+        "schemaChecks": {
+          "withoutMime": true,
+          "withMime": true,
+          "invalidBase64Rejected": true,
+          "objectRejected": true
+        },
+        "modes": [
+          {
+            "mode": "direct",
+            "cases": [
+              {
+                "variant": "withoutMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              },
+              {
+                "variant": "withMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              }
+            ],
+            "actualExecutions": 2,
+            "exactlyOneExecutionPerCall": true,
+            "sessionSurvived": true,
+            "pass": true
+          },
+          {
+            "mode": "prior19_1",
+            "cases": [
+              {
+                "variant": "withoutMime",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: inspection is incomplete (RESULT_INSPECTION_INCOMPLETE); the tool already ran"
+                }
+              },
+              {
+                "variant": "withMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              },
+              {
+                "variant": "metadataPoison",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: inspection is incomplete (RESULT_INSPECTION_INCOMPLETE, TOOL_DEF_INJECTION); the tool already ran"
+                }
+              }
+            ],
+            "actualExecutions": 3,
+            "exactlyOneExecutionPerCall": true,
+            "sessionSurvived": true,
+            "pass": true
+          },
+          {
+            "mode": "current19_2",
+            "cases": [
+              {
+                "variant": "withoutMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              },
+              {
+                "variant": "withMime",
+                "expected": "preserved valid binary",
+                "accepted": true,
+                "withheld": false,
+                "pass": true,
+                "blobLength": 400000,
+                "blobSha256": "1dd46bf32349db53e130c63c4bc278df83ed2331be4cae06d10b98bd4967b63d"
+              },
+              {
+                "variant": "metadataPoison",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: it reads as instructions to the model (TOOL_DEF_INJECTION); the tool already ran"
+                }
+              },
+              {
+                "variant": "invalidWithoutMime",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: it reads as instructions to the model (TOOL_DEF_INJECTION); the tool already ran"
+                }
+              },
+              {
+                "variant": "invalidWithMime",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: it reads as instructions to the model (TOOL_DEF_INJECTION); the tool already ran"
+                }
+              },
+              {
+                "variant": "objectWithMime",
+                "expected": "withheld",
+                "accepted": false,
+                "withheld": true,
+                "pass": true,
+                "error": {
+                  "code": -32602,
+                  "message": "MCP error -32602: tool result withheld by WARDEN: it reads as instructions to the model (TOOL_DEF_INJECTION); the tool already ran"
+                }
+              }
+            ],
+            "actualExecutions": 6,
+            "exactlyOneExecutionPerCall": true,
+            "sessionSurvived": true,
+            "pass": true
+          }
+        ],
+        "passed": true
+      },
+      "protocol": {
+        "format": "warden.paired-regression/v1",
+        "site": "blip",
+        "pilot": true,
+        "startedAt": "2026-11-07T21:56:19.270Z",
+        "completedAt": "2026-11-07T21:57:08.140Z",
+        "node": "v22.23.4",
+        "scheduled": 23,
+        "sharedCasesSha256": "e29baa05fbdbf46e34631ff2c75f0b4f535f0188054dd4499699bd189a3dc757",
+        "caseManifestSha256": "b45d82380bf8e9b2344ea65571fe88bb79b2adaf9670eb44f5423b73fd602cb1",
+        "versions": {
+          "prior19_1": {
+            "ruleset": {
+              "version": "19",
+              "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw="
+            },
+            "summary": {
+              "author-labelled": {
+                "N": 3,
+                "C": 3,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "benign": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 3,
+                    "C": 3,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "independent": {
+                "N": 2,
+                "C": 2,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-clean": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "benign": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-decorated": {
+                "N": 5,
+                "C": 5,
+                "B": 5,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 5,
+                    "C": 5,
+                    "B": 5,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 1,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 4,
+                    "C": 4,
+                    "B": 4,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-scenarios": {
+                "N": 2,
+                "C": 2,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "test": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-served": {
+                "N": 5,
+                "C": 5,
+                "B": 3,
+                "A": 1,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 5,
+                    "C": 5,
+                    "B": 3,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 1,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 4,
+                    "C": 4,
+                    "B": 2,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "public-carryover": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 2,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "unlabelled": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 2,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 2,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "public-main": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 1,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "unlabelled": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              }
+            }
+          },
+          "current19_2": {
+            "ruleset": {
+              "version": "19",
+              "digest": "sha256-XfRh1+VZoAM6PGtbmqprnSX/eF16qNYOk0o+ilRFxXw="
+            },
+            "summary": {
+              "author-labelled": {
+                "N": 3,
+                "C": 3,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "benign": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 3,
+                    "C": 3,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "independent": {
+                "N": 2,
+                "C": 2,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-clean": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "benign": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 0,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-decorated": {
+                "N": 5,
+                "C": 5,
+                "B": 5,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 5,
+                    "C": 5,
+                    "B": 5,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 1,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 4,
+                    "C": 4,
+                    "B": 4,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-scenarios": {
+                "N": 2,
+                "C": 2,
+                "B": 2,
+                "A": 0,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "test": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 2,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "mcptox-served": {
+                "N": 5,
+                "C": 5,
+                "B": 3,
+                "A": 1,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "attack": {
+                    "N": 5,
+                    "C": 5,
+                    "B": 3,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "dev": {
+                    "N": 1,
+                    "C": 1,
+                    "B": 1,
+                    "A": 0,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  },
+                  "test": {
+                    "N": 4,
+                    "C": 4,
+                    "B": 2,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "public-carryover": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 2,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "unlabelled": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 2,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 2,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              },
+              "public-main": {
+                "N": 2,
+                "C": 2,
+                "B": 0,
+                "A": 1,
+                "E": 0,
+                "S": 0,
+                "U": 0,
+                "labels": {
+                  "unlabelled": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                },
+                "splits": {
+                  "none": {
+                    "N": 2,
+                    "C": 2,
+                    "B": 0,
+                    "A": 1,
+                    "E": 0,
+                    "S": 0,
+                    "U": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parity": {
+          "prior19_1": {
+            "checked": 23,
+            "matches": 23,
+            "differences": 0,
+            "batchesValid": true
+          },
+          "current19_2": {
+            "checked": 23,
+            "matches": 23,
+            "differences": 0,
+            "batchesValid": true
+          }
+        },
+        "libraryErrors": {
+          "prior19_1": [],
+          "current19_2": []
+        },
+        "inputUnchanged": true,
+        "sourceUnchanged": true,
+        "changes": [],
+        "passed": true
+      },
+      "executedHarnessSha256": "1ac16cf8d4bdadcc14522f4ed0b398bf185e1ef33f6347372d3848f31624d789"
+    }
+  },
+  "passed": true
+}

@@ -312,8 +312,12 @@ artifacts/payment-chain-audit-2026-10-23/
 artifacts/payment-production-deploy-2026-10-23/
 artifacts/quality-audit-2026-10-23/
 artifacts/quality-audit-2026-10-24/
+artifacts/admin-vps-migration-audit-2026-11-10/
+artifacts/external-growth-openings-2026-11-10/
+artifacts/histor-migration-2026-11-10/
 # Prepared npm tarballs (2026-11-03): up to 13 MB each; SHA256SUMS and README stay tracked.
 artifacts/npm-release-2026-11-03/*.tgz
+artifacts/npm-release-argus3-0.3.6-2026-11-10/
 pingblip/memeforge/artifacts/bag-golem-review/
 pingblip/memeforge/artifacts/map-layout/
 
@@ -329,3 +333,74 @@ output/agent-skills-state-2026-before-replacement.git/
 output/agent-skills-state-2026-clean/
 output/agent-skills-state-2026-histor-pr/
 output/histor-pr/
+
+# Owner-private capture and production snapshots retained locally; safe receipts
+# and redacted/aggregate evidence beside them remain available to Git.
+/artifacts/backup-admin-repair-2026-11-07/verification-stderr.private.log
+/artifacts/lottery-migration-2026-11-07/target-live-snapshot.json
+/artifacts/hub-knocking-log-audit-2026-11-07/lab/historical-and-transport.json
+/artifacts/hub-knocking-log-audit-2026-11-07/factory/execution-metadata.json
+/artifacts/hub-knocking-log-audit-2026-11-07/lab/redacted-log-evidence.json
+/artifacts/hub-knocking-log-audit-2026-11-07/factory/log-evidence.json
+/artifacts/hub-knocking-log-audit-2026-11-07/indep/logs-summary.json
+/artifacts/hub-security-recheck-2026-11-07/live/competing-lab.json
+/artifacts/hub-security-recheck-2026-11-07/live/factory-vps.json
+/artifacts/hub-security-recheck-2026-11-07/live/attested.json
+/artifacts/hub-security-recheck-2026-11-07/live/indep.json
+/artifacts/hub-security-recheck-2026-11-07/live/BASELINE-SUMMARY.json
+/artifacts/hub-security-recheck-2026-11-07/live-after/competing-lab.json
+/artifacts/hub-security-recheck-2026-11-07/live-after/factory-vps.json
+/artifacts/hub-security-recheck-2026-11-07/live-after/attested.json
+/artifacts/hub-security-recheck-2026-11-07/live-after/indep.json
+/artifacts/hub-knocking-log-audit-2026-11-07/factory/symmartys-capture-evidence.json
+/artifacts/hub-knocking-log-audit-2026-11-07/factory/targeted-nginx.json
+/artifacts/hub-knocking-log-audit-2026-11-07/indep/internal-app-log-matches.json
+/artifacts/hub-knocking-log-audit-2026-11-07/indep/FINDINGS.json
+/artifacts/hub-knocking-log-audit-2026-11-07/attested/internal-app-log-matches.json
+/artifacts/hub-knocking-log-audit-2026-11-07/attested/FINDINGS.json
+/artifacts/hub-knocking-log-audit-2026-11-07/attested/logs-summary.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/attested-inventory.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/competing-lab-inventory.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/factory-vps-inventory.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/indep-inventory.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/attested-logs-proxy.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/competing-lab-logs-proxy.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/factory-vps-logs-proxy.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/indep-logs-proxy.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/cleanup-bootstrap-plan.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/attested-cleanup-preview.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/competing-lab-cleanup-preview.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/factory-vps-cleanup-preview.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/indep-cleanup-preview.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/synthetic-local-candidates.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/synthetic-local-provenance.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/factory-vps-log-details.json
+/artifacts/hub-public-endpoints-audit-2026-11-08/live/competing-lab-log-details.json
+/artifacts/backup-admin-repair-2026-11-07/final-compact-admin.json
+/artifacts/backup-admin-repair-2026-11-07/quota-admin40.json
+/artifacts/hub-paid-live-2026-11-08/attested/paid-routing-rows.json
+/artifacts/hub-paid-live-2026-11-08/attested/account-availability.json
+/artifacts/hub-real-payments-2026-11-08/buyer-funding-preflight.json
+# This helper's known future captures expose private operator/canary availability.
+/artifacts/hub-functional-recheck-2026-11-08/payments/real-paid-plan/*-operator-presence.json
+# Known future payment-executor summaries retain private financial records.
+/artifacts/hub-real-payments-2026-11-08/factory-preflight.json
+/artifacts/hub-real-payments-2026-11-08/factory-cycle.json
+/artifacts/hub-real-payments-2026-11-08/independent-preflight.json
+/artifacts/hub-real-payments-2026-11-08/independent-cycle.json
+/artifacts/hub-real-payments-2026-11-08/attested-preflight.json
+/artifacts/hub-real-payments-2026-11-08/attested-cycle.json
+# Known future private ledger verification captures; source/tests stay eligible.
+/artifacts/hub-real-payments-2026-11-08/factory-ledger.json
+/artifacts/hub-real-payments-2026-11-08/independent-ledger.json
+/artifacts/hub-real-payments-2026-11-08/attested-ledger.json
+/artifacts/hub-real-payments-2026-11-08/factory-chain-rescue.json
+/artifacts/hub-real-payments-2026-11-08/diagnosis/weather-provider-findings.json
+/artifacts/hub-real-payments-2026-11-08/review/factory-provider-recovery-plan.json
+/artifacts/hub-real-payments-2026-11-08/independent-paid-ledger-proof.json
+/artifacts/hub-real-payments-2026-11-08/attested-paid-ledger-proof.json
+/artifacts/hub-real-payments-2026-11-08/factory-refund-preflight.json
+/artifacts/hub-real-payments-2026-11-08/factory-refund.json
+/artifacts/hub-real-payments-2026-11-08/paid-ledger-selectors.json
+/artifacts/hub-real-payments-2026-11-08/review/refund-plan.json
+/artifacts/hub-real-payments-2026-11-08/FINAL-REPORT.json

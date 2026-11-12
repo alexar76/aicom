@@ -1,0 +1,27 @@
+{
+  "root_sources": 23,
+  "root_source_200": 22,
+  "root_source_403": 1,
+  "root_pages_with_owned_html_href": 18,
+  "root_distinct_linking_domains": 16,
+  "root_unique_source_target": 144,
+  "root_target_gets": 125,
+  "root_target_200": 124,
+  "root_target_405_post_only_a2a": 1,
+  "root_target_errors": 0,
+  "root_target_truncated_captures": 107,
+  "reference_register_records": 343,
+  "register_external_html_source_target_records": 337,
+  "register_external_html_source_pages": 30,
+  "root_capture_integrity": {
+    "checked": 148,
+    "valid": true
+  },
+  "limits": [
+    "Register contains references, not a count of users or independent operators.",
+    "Only the root target batch was individually GET-checked; other rows retain branch evidence.",
+    "Root target captures are bounded at 120000 bytes; HTTP reachability does not verify full content or behavior.",
+    "Source body caps are 6000000 bytes; all 23 source captures were complete.",
+    "Markdown links and metadata URL references are retained separately from HTML anchors."
+  ]
+}

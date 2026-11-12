@@ -1,0 +1,40 @@
+{
+  "commonHighCritical": "Definition HIGH or CRITICAL findings, not a universal blocking metric",
+  "advisoryOnly": "Any definition signal without a HIGH/CRITICAL non-advisory finding",
+  "warden": {
+    "nativeBlocked": "Native allow=false under declared policy",
+    "allowUnknownServers": true,
+    "pinToolDefs": true
+  },
+  "truecopy": {
+    "poisonedIncludesAdvisoryContent": true,
+    "poisonedToolsWithheld": true,
+    "coldLockUnpinnedToolsWithheld": true,
+    "coldLockRefusalsAreNotDetectionHits": true,
+    "nativeBlockedField": null,
+    "nativeEnforcementRetainedInRaw": true
+  },
+  "shield": {
+    "reportOnly": true,
+    "cliNormallyExitsZeroWithFindings": true,
+    "nativeBlockedField": null
+  },
+  "sentry": {
+    "reportOnly": true,
+    "cliExitsOneOnlyForCritical": true,
+    "highOnlyCanExitZero": true,
+    "nativeBlockedField": null
+  },
+  "audit": {
+    "reportOnly": true,
+    "launchHygieneAndPartialLimitsSeparate": true,
+    "nativeBlockedField": null
+  },
+  "shieldTimeouts": {
+    "actualApiTimeout": "histor-packages/p03897",
+    "actualDeadlineSeconds": 30,
+    "combinedParityDeadlineCase": "histor-packages/p05122",
+    "retryCombinedSeconds": 90,
+    "retryPassed": true
+  }
+}

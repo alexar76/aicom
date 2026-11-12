@@ -1,0 +1,465 @@
+{
+  "url": "https://modelmarket.dev/x402/warden-scan",
+  "method": "HEAD",
+  "retrieved_at_utc": "2026-11-09T19:52:32.699819+00:00",
+  "request_headers": {
+    "User-Agent": "aicom-readonly-quote-check/1"
+  },
+  "request_body": false,
+  "payment_sent": false,
+  "redirects_followed": false,
+  "status": 402,
+  "headers": {
+    "server": "nginx/1.24.0 (Ubuntu)",
+    "date": "Mon, 09 Nov 2026 18:54:39 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "4589",
+    "connection": "close",
+    "allow": "POST",
+    "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQYXltZW50IHJlcXVpcmVkIiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYveDQwMi93YXJkZW4tc2NhbiIsImRlc2NyaXB0aW9uIjoiV0FSREVOIHZlcmRpY3Qgb24gYW4gTUNQIHNlcnZlcidzIHRvb2xzL2xpc3Q6IGFsbG93IG9yIGJsb2NrLCBhIDAtMSBzY29yZSBhbmQgZXZlcnkgZmluZGluZyB3aXRoIHRoZSBtYXRjaGVkIHRleHQgKHByb21wdCBpbmplY3Rpb24sIHNlY3JldCByZXF1ZXN0cywgZXhmaWx0cmF0aW9uLCBoaWRkZW4gVW5pY29kZSkuIERldGVybWluaXN0aWMgcHVibGlzaGVkIHJ1bGVzLCBubyBuZXR3b3JrLiIsIm1pbWVUeXBlIjoiYXBwbGljYXRpb24vanNvbiIsInNlcnZpY2VOYW1lIjoiQUlNYXJrZXQiLCJ0YWdzIjpbIm1jcCIsInNlY3VyaXR5IiwicHJvbXB0LWluamVjdGlvbiIsImZpcmV3YWxsIl0sImljb25VcmwiOiJodHRwczovL21vZGVsbWFya2V0LmRldi8ud2VsbC1rbm93bi9lcmMtODAwNC93YXJkZW4ucG5nIn0sImFjY2VwdHMiOlt7InNjaGVtZSI6ImV4YWN0IiwibmV0d29yayI6ImVpcDE1NTo4NDUzIiwiYW1vdW50IjoiMTAwMCIsImFzc2V0IjoiMHg4MzM1ODlmQ0Q2ZURiNkUwOGY0YzdDMzJENGY3MWI1NGJkQTAyOTEzIiwicGF5VG8iOiIweDEyMThmZjM2QzVkMmUzQjZBNTY1Q2RCMUE4QjFBY0NGYzYwNkFkMGEiLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiVVNEIENvaW4iLCJ2ZXJzaW9uIjoiMiJ9fV0sImV4dGVuc2lvbnMiOnsiZWlwMjYxMkdhc1Nwb25zb3JpbmciOnt9LCJlcmMyMEFwcHJvdmFsR2FzU3BvbnNvcmluZyI6e30sImJhemFhciI6eyJpbmZvIjp7ImlucHV0Ijp7InR5cGUiOiJodHRwIiwibWV0aG9kIjoiUE9TVCIsImJvZHlUeXBlIjoianNvbiIsImJvZHkiOnsidG9vbHMiOlt7Im5hbWUiOiJnZXRfd2VhdGhlciIsImRlc2NyaXB0aW9uIjoiUmV0dXJucyB0aGUgZm9yZWNhc3QgZm9yIGEgY2l0eS4iLCJpbnB1dFNjaGVtYSI6eyJ0eXBlIjoib2JqZWN0In19XX19LCJvdXRwdXQiOnsidHlwZSI6Impzb24iLCJleGFtcGxlIjp7InN0YXR1cyI6Im9rIiwic2VydmljZSI6IndhcmRlbi1zY2FuIiwiZW5naW5lIjp7InBhY2thZ2UiOiJAYWltYXJrZXQvd2FyZGVuQDAuMjEuMCIsInJ1bGVzZXQiOnsidmVyc2lvbiI6IjE2In19LCJ2ZXJkaWN0Ijp7ImFsbG93Ijp0cnVlLCJzY29yZSI6MSwiZmluZGluZ3MiOltdfX0sInNjaGVtYSI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJzdGF0dXMiOnsidHlwZSI6InN0cmluZyIsImNvbnN0Ijoib2sifSwic2VydmljZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJ3YXJkZW4tc2NhbiJ9LCJlbmdpbmUiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsicGFja2FnZSI6eyJ0eXBlIjoic3RyaW5nIn0sInJ1bGVzZXQiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsidmVyc2lvbiI6eyJ0eXBlIjoic3RyaW5nIn0sImRpZ2VzdCI6eyJ0eXBlIjoic3RyaW5nIn19fX0sInJlcXVpcmVkIjpbInBhY2thZ2UiXX0sInZlcmRpY3QiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiYWxsb3ciOnsidHlwZSI6ImJvb2xlYW4ifSwic2NvcmUiOnsidHlwZSI6Im51bWJlciIsIm1pbmltdW0iOjAsIm1heGltdW0iOjF9LCJkZWNpZGVkQnkiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl19LCJibG9ja2VkVG9vbHMiOnsidHlwZSI6ImFycmF5IiwiaXRlbXMiOnsidHlwZSI6InN0cmluZyJ9fSwiYWxsb3dlZFRvb2xzIjp7InR5cGUiOiJhcnJheSIsIml0ZW1zIjp7InR5cGUiOiJzdHJpbmcifX0sImZpbmRpbmdzIjp7InR5cGUiOiJhcnJheSIsIml0ZW1zIjp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7ImdhdGUiOnsidHlwZSI6InN0cmluZyJ9LCJjb2RlIjp7InR5cGUiOiJzdHJpbmcifSwic2V2ZXJpdHkiOnsidHlwZSI6InN0cmluZyJ9LCJ0b29sIjp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwiYWR2aXNvcnkiOnsidHlwZSI6ImJvb2xlYW4ifSwibWVzc2FnZSI6eyJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJnYXRlIiwiY29kZSIsInNldmVyaXR5IiwibWVzc2FnZSJdfX19LCJyZXF1aXJlZCI6WyJhbGxvdyIsInNjb3JlIiwiZmluZGluZ3MiXX0sInNjb3BlIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbInN0YXR1cyIsInNlcnZpY2UiLCJlbmdpbmUiLCJ2ZXJkaWN0Il19fX0sInNjaGVtYSI6eyIkc2NoZW1hIjoiaHR0cHM6Ly9qc29uLXNjaGVtYS5vcmcvZHJhZnQvMjAyMC0xMi9zY2hlbWEiLCJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJpbnB1dCI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJ0eXBlIjp7InR5cGUiOiJzdHJpbmciLCJjb25zdCI6Imh0dHAifSwibWV0aG9kIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbIlBPU1QiXX0sImJvZHlUeXBlIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbImpzb24iLCJmb3JtLWRhdGEiLCJ0ZXh0Il19LCJib2R5Ijp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7InRvb2xzIjp7InR5cGUiOiJhcnJheSIsImRlc2NyaXB0aW9uIjoidGhlIHNlcnZlcidzIHRvb2xzL2xpc3QgcmVzdWx0LCB1cCB0byA1MDAgZGVmaW5pdGlvbnMiLCJpdGVtcyI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJuYW1lIjp7InR5cGUiOiJzdHJpbmcifSwiZGVzY3JpcHRpb24iOnsidHlwZSI6InN0cmluZyJ9LCJpbnB1dFNjaGVtYSI6eyJ0eXBlIjoib2JqZWN0In19LCJyZXF1aXJlZCI6WyJuYW1lIl19fSwic2VydmVyIjp7InR5cGUiOiJvYmplY3QiLCJkZXNjcmlwdGlvbiI6Im9wdGlvbmFsIHtuYW1lLCB1cmx9LCB1c2VkIG9ubHkgYXMgYSBsYWJlbCJ9fSwicmVxdWlyZWQiOlsidG9vbHMiXX19LCJyZXF1aXJlZCI6WyJ0eXBlIiwibWV0aG9kIiwiYm9keVR5cGUiLCJib2R5Il0sImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZX0sIm91dHB1dCI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJ0eXBlIjp7InR5cGUiOiJzdHJpbmcifSwiZXhhbXBsZSI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJzdGF0dXMiOnsidHlwZSI6InN0cmluZyIsImNvbnN0Ijoib2sifSwic2VydmljZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJ3YXJkZW4tc2NhbiJ9LCJlbmdpbmUiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsicGFja2FnZSI6eyJ0eXBlIjoic3RyaW5nIn0sInJ1bGVzZXQiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsidmVyc2lvbiI6eyJ0eXBlIjoic3RyaW5nIn0sImRpZ2VzdCI6eyJ0eXBlIjoic3RyaW5nIn19fX0sInJlcXVpcmVkIjpbInBhY2thZ2UiXX0sInZlcmRpY3QiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiYWxsb3ciOnsidHlwZSI6ImJvb2xlYW4ifSwic2NvcmUiOnsidHlwZSI6Im51bWJlciIsIm1pbmltdW0iOjAsIm1heGltdW0iOjF9LCJkZWNpZGVkQnkiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl19LCJibG9ja2VkVG9vbHMiOnsidHlwZSI6ImFycmF5IiwiaXRlbXMiOnsidHlwZSI6InN0cmluZyJ9fSwiYWxsb3dlZFRvb2xzIjp7InR5cGUiOiJhcnJheSIsIml0ZW1zIjp7InR5cGUiOiJzdHJpbmcifX0sImZpbmRpbmdzIjp7InR5cGUiOiJhcnJheSIsIml0ZW1zIjp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7ImdhdGUiOnsidHlwZSI6InN0cmluZyJ9LCJjb2RlIjp7InR5cGUiOiJzdHJpbmcifSwic2V2ZXJpdHkiOnsidHlwZSI6InN0cmluZyJ9LCJ0b29sIjp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwiYWR2aXNvcnkiOnsidHlwZSI6ImJvb2xlYW4ifSwibWVzc2FnZSI6eyJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJnYXRlIiwiY29kZSIsInNldmVyaXR5IiwibWVzc2FnZSJdfX19LCJyZXF1aXJlZCI6WyJhbGxvdyIsInNjb3JlIiwiZmluZGluZ3MiXX0sInNjb3BlIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbInN0YXR1cyIsInNlcnZpY2UiLCJlbmdpbmUiLCJ2ZXJkaWN0Il19fSwicmVxdWlyZWQiOlsidHlwZSJdfX0sInJlcXVpcmVkIjpbImlucHV0Il19fSwiYnVpbGRlci1jb2RlIjp7ImluZm8iOnsicyI6WyJjZHBfc2RrX3NlcnZlciJdfSwic2NoZW1hIjp7IiRzY2hlbWEiOiJodHRwczovL2pzb24tc2NoZW1hLm9yZy9kcmFmdC8yMDIwLTEyL3NjaGVtYSIsInR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7ImEiOnsidHlwZSI6InN0cmluZyIsInBhdHRlcm4iOiJeW2EtejAtOV9dezEsMzJ9JCIsImRlc2NyaXB0aW9uIjoiQXBwIGJ1aWxkZXIgY29kZSJ9LCJ3Ijp7InR5cGUiOiJzdHJpbmciLCJwYXR0ZXJuIjoiXlthLXowLTlfXXsxLDMyfSQiLCJkZXNjcmlwdGlvbiI6IldhbGxldCBidWlsZGVyIGNvZGUifSwicyI6eyJ0eXBlIjoiYXJyYXkiLCJtYXhJdGVtcyI6MTEsIml0ZW1zIjp7InR5cGUiOiJzdHJpbmciLCJwYXR0ZXJuIjoiXlthLXowLTlfXXsxLDMyfSQifSwiZGVzY3JpcHRpb24iOiJTZXJ2aWNlIGJ1aWxkZXIgY29kZXMifX0sImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZX19fX0=",
+    "cache-control": "no-store",
+    "etag": "W/\"11ed-Rcp0inw+T+mSshS3U/luyKxvGSI\""
+  },
+  "challenge_header_present": true,
+  "challenge": {
+    "x402Version": 2,
+    "error": "Payment required",
+    "resource": {
+      "url": "https://modelmarket.dev/x402/warden-scan",
+      "description": "WARDEN verdict on an MCP server's tools/list: allow or block, a 0-1 score and every finding with the matched text (prompt injection, secret requests, exfiltration, hidden Unicode). Deterministic published rules, no network.",
+      "mimeType": "application/json",
+      "serviceName": "AIMarket",
+      "tags": [
+        "mcp",
+        "security",
+        "prompt-injection",
+        "firewall"
+      ],
+      "iconUrl": "https://modelmarket.dev/.well-known/erc-8004/warden.png"
+    },
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USD Coin",
+          "version": "2"
+        }
+      }
+    ],
+    "extensions": {
+      "eip2612GasSponsoring": {},
+      "erc20ApprovalGasSponsoring": {},
+      "bazaar": {
+        "info": {
+          "input": {
+            "type": "http",
+            "method": "POST",
+            "bodyType": "json",
+            "body": {
+              "tools": [
+                {
+                  "name": "get_weather",
+                  "description": "Returns the forecast for a city.",
+                  "inputSchema": {
+                    "type": "object"
+                  }
+                }
+              ]
+            }
+          },
+          "output": {
+            "type": "json",
+            "example": {
+              "status": "ok",
+              "service": "warden-scan",
+              "engine": {
+                "package": "@aimarket/warden@0.21.0",
+                "ruleset": {
+                  "version": "16"
+                }
+              },
+              "verdict": {
+                "allow": true,
+                "score": 1,
+                "findings": []
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "ok"
+                },
+                "service": {
+                  "type": "string",
+                  "const": "warden-scan"
+                },
+                "engine": {
+                  "type": "object",
+                  "properties": {
+                    "package": {
+                      "type": "string"
+                    },
+                    "ruleset": {
+                      "type": "object",
+                      "properties": {
+                        "version": {
+                          "type": "string"
+                        },
+                        "digest": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "package"
+                  ]
+                },
+                "verdict": {
+                  "type": "object",
+                  "properties": {
+                    "allow": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "decidedBy": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "blockedTools": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "allowedTools": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "findings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "gate": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "severity": {
+                            "type": "string"
+                          },
+                          "tool": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "advisory": {
+                            "type": "boolean"
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "gate",
+                          "code",
+                          "severity",
+                          "message"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "allow",
+                    "score",
+                    "findings"
+                  ]
+                },
+                "scope": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "service",
+                "engine",
+                "verdict"
+              ]
+            }
+          }
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "http"
+                },
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "POST"
+                  ]
+                },
+                "bodyType": {
+                  "type": "string",
+                  "enum": [
+                    "json",
+                    "form-data",
+                    "text"
+                  ]
+                },
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "tools": {
+                      "type": "array",
+                      "description": "the server's tools/list result, up to 500 definitions",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "inputSchema": {
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      }
+                    },
+                    "server": {
+                      "type": "object",
+                      "description": "optional {name, url}, used only as a label"
+                    }
+                  },
+                  "required": [
+                    "tools"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "method",
+                "bodyType",
+                "body"
+              ],
+              "additionalProperties": false
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "const": "ok"
+                    },
+                    "service": {
+                      "type": "string",
+                      "const": "warden-scan"
+                    },
+                    "engine": {
+                      "type": "object",
+                      "properties": {
+                        "package": {
+                          "type": "string"
+                        },
+                        "ruleset": {
+                          "type": "object",
+                          "properties": {
+                            "version": {
+                              "type": "string"
+                            },
+                            "digest": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "package"
+                      ]
+                    },
+                    "verdict": {
+                      "type": "object",
+                      "properties": {
+                        "allow": {
+                          "type": "boolean"
+                        },
+                        "score": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        },
+                        "decidedBy": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "blockedTools": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "allowedTools": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "findings": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "gate": {
+                                "type": "string"
+                              },
+                              "code": {
+                                "type": "string"
+                              },
+                              "severity": {
+                                "type": "string"
+                              },
+                              "tool": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "advisory": {
+                                "type": "boolean"
+                              },
+                              "message": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "gate",
+                              "code",
+                              "severity",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "allow",
+                        "score",
+                        "findings"
+                      ]
+                    },
+                    "scope": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "service",
+                    "engine",
+                    "verdict"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            }
+          },
+          "required": [
+            "input"
+          ]
+        }
+      },
+      "builder-code": {
+        "info": {
+          "s": [
+            "cdp_sdk_server"
+          ]
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,32}$",
+              "description": "App builder code"
+            },
+            "w": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,32}$",
+              "description": "Wallet builder code"
+            },
+            "s": {
+              "type": "array",
+              "maxItems": 11,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]{1,32}$"
+              },
+              "description": "Service builder codes"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "accepts_summary": [
+    {
+      "scheme": "exact",
+      "network": "eip155:8453",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+      "amount_atomic": "1000",
+      "domain_name": "USD Coin",
+      "domain_version": "2"
+    }
+  ],
+  "checks": {
+    "status_402": true,
+    "allow_post": true,
+    "has_accepts": true,
+    "all_accepts_exact_base_canonical_usdc": true,
+    "all_accepts_expected_payto": true,
+    "all_accepts_correct_usdc_domain": true,
+    "all_amounts_match_index_price": true
+  },
+  "expected_index_price_usd": "0.001",
+  "expected_atomic": "1000"
+}

@@ -1,0 +1,167 @@
+{
+  "site": "blip",
+  "format": "explicit-flat-file-whitelist-v1",
+  "excluded": [
+    "pytest-tmp",
+    "data databases",
+    "generated signing keys",
+    "runtime and dependency prefixes"
+  ],
+  "files": [
+    {
+      "path": "full-v4/command-results.json",
+      "bytes": 5132,
+      "sha256": "0e7f8a31d31af96fd075a67c1df93d3c5ad17b076255708c28a8614308013d89"
+    },
+    {
+      "path": "full-v4/complete-v4.json",
+      "bytes": 5904,
+      "sha256": "031ac78ce62a59ed04329836f7e74bc9760f4519d4fa594bc9f27e475e3ceb9a"
+    },
+    {
+      "path": "full-v4/container-final.json",
+      "bytes": 9661,
+      "sha256": "540542d79df6e406f476c44698dd7209f948439b28ca03d2838cca3bfedf9757"
+    },
+    {
+      "path": "full-v4/hub-chain-v4.log",
+      "bytes": 530,
+      "sha256": "4c78202d72a9f0f7735384a362f743e20f75d45ffe1c890767d25c46cc490cb5"
+    },
+    {
+      "path": "full-v4/hub-chain-v4.xml",
+      "bytes": 510,
+      "sha256": "426bae6db36a93452bb4e67812d458e3468fb43244c225f563da52bf9f3b951e"
+    },
+    {
+      "path": "full-v4/hub-relevant-v4.log",
+      "bytes": 1936,
+      "sha256": "593a03db570c64fbb3bf00d70be5fa5d16043e25388f1d08675bf69a9611e126"
+    },
+    {
+      "path": "full-v4/hub-relevant-v4.xml",
+      "bytes": 146494,
+      "sha256": "6ac56dd2dd98dfe38e0a29f852c941f3a639781b43f15d39a2f027a2fd8be5e0"
+    },
+    {
+      "path": "full-v4/progress.json",
+      "bytes": 5525,
+      "sha256": "f8f1c30599d22964b7cb15a1ed4a5247ab9c054c61c5985594a8ff131c423192"
+    },
+    {
+      "path": "full-v4/protocol-main-v4.log",
+      "bytes": 99,
+      "sha256": "971d98f904d863f8c12dda053d4db36129caf004987775fb8573a08e28634943"
+    },
+    {
+      "path": "full-v4/protocol-main-v4.xml",
+      "bytes": 9902,
+      "sha256": "128c3bb4ea5a8e0fc80e654afd6d8b560fc0540530e7eede63b73797f18dff0e"
+    },
+    {
+      "path": "full-v4/protocol-wire-v4.log",
+      "bytes": 98,
+      "sha256": "5d0cc4658984d12ec4761f3cdd54060b37d5ee2346d2c58c35f23861d361d8d8"
+    },
+    {
+      "path": "full-v4/protocol-wire-v4.xml",
+      "bytes": 905,
+      "sha256": "4a1a4ac8f54aca6fe4c317b07055257f545a21738aac7ef3821394e8c2f3ec0d"
+    },
+    {
+      "path": "full-v4/run.log",
+      "bytes": 4362,
+      "sha256": "cc8d6f6de1a76ad1fe2a2d67708ef4a824aeba3c497d044d758010ce7350e561"
+    },
+    {
+      "path": "full-v4/runtime.json",
+      "bytes": 10087,
+      "sha256": "1ce1b1ff33a4e2923276ffa5e5dbb405ce8c31df580ddbfe9a6f2f322aea655a"
+    },
+    {
+      "path": "full-v4/tested-source-after.json",
+      "bytes": 69373,
+      "sha256": "0115299f67eabeb219c68725ff53b7944cf220a784345e7ce07359a4e5b53836"
+    },
+    {
+      "path": "full-v4/tested-source-before.json",
+      "bytes": 69373,
+      "sha256": "0115299f67eabeb219c68725ff53b7944cf220a784345e7ce07359a4e5b53836"
+    },
+    {
+      "path": "preflight-v4/command-results.json",
+      "bytes": 1066,
+      "sha256": "6000b29238037907355f7e87e3b9124d17913350db6270e956ea1f1fce24ad0d"
+    },
+    {
+      "path": "preflight-v4/complete-v4.json",
+      "bytes": 1589,
+      "sha256": "ab46b494e02c0bee5d92acf6b179f518b94a171bb4b12148904b7185d8bd47d4"
+    },
+    {
+      "path": "preflight-v4/container-final.json",
+      "bytes": 9674,
+      "sha256": "d2b6bb1a507c5782fbe6a48beb203ca2a11617e3340deeb0af1a4033cb924516"
+    },
+    {
+      "path": "preflight-v4/hub-preflight-v4.log",
+      "bytes": 530,
+      "sha256": "ddf09ba9d44f12a0d5808d558d1dcce6ca4e87b3e40b6ec3f6686125b12b352c"
+    },
+    {
+      "path": "preflight-v4/hub-preflight-v4.xml",
+      "bytes": 1286,
+      "sha256": "d82fde2e7d55b6625a77180efea3ec2412672dc4db599046b3f6e0a2e5f1b066"
+    },
+    {
+      "path": "preflight-v4/progress.json",
+      "bytes": 1209,
+      "sha256": "3c150b075255df973e156b94f8ec1aa72e23f914df6af29bed5ac376b9b2891e"
+    },
+    {
+      "path": "preflight-v4/run.log",
+      "bytes": 965,
+      "sha256": "11f0d02a93e68c5598055c42a4b53fbed0bb1fa1b7c73d38c9a959c1de5e0446"
+    },
+    {
+      "path": "preflight-v4/runtime.json",
+      "bytes": 10088,
+      "sha256": "99799277337ceb79c9ff8a4965a6ed589758dc673e003c04b5f3f18af7491cc3"
+    },
+    {
+      "path": "preflight-v4/tested-source-after.json",
+      "bytes": 69373,
+      "sha256": "0115299f67eabeb219c68725ff53b7944cf220a784345e7ce07359a4e5b53836"
+    },
+    {
+      "path": "preflight-v4/tested-source-before.json",
+      "bytes": 69373,
+      "sha256": "0115299f67eabeb219c68725ff53b7944cf220a784345e7ce07359a4e5b53836"
+    },
+    {
+      "path": "final-report/REPORT.md",
+      "bytes": 3191,
+      "sha256": "f468d85ac85353b54a35442ba4fcf84bd29a942a2ee39b79a9acb7c1030d18c0"
+    },
+    {
+      "path": "final-report/cleanup-temp.json",
+      "bytes": 592,
+      "sha256": "3a779c7607402d583b560fab971c99412e9de2045d8a0a5ef9c93c62ca4041fd"
+    },
+    {
+      "path": "final-report/cross-host-parity.json",
+      "bytes": 3368,
+      "sha256": "8603516d0bdc7cf9f5820da6285c019e60967ac450bd6433e6d527395d87af8e"
+    },
+    {
+      "path": "final-report/test-status-vectors.json",
+      "bytes": 140454,
+      "sha256": "2c9f9b9e948c55bfabfcc2c0ee292e6109c466368033b6d19805674fc3e5885b"
+    },
+    {
+      "path": "final-report/validation-summary.json",
+      "bytes": 2365,
+      "sha256": "0a82b0c16057bbb7395326aa76c95dc52f9e88f36882deb4c4a8c029377a2f53"
+    }
+  ]
+}

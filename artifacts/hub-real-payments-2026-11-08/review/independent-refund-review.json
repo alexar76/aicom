@@ -1,0 +1,23 @@
+{
+  "decision": "green",
+  "refund_sha256": "4ab1ef28a6e00276f23dfbfec8d84ebff1d7d6bf95576f8a2d61c852b9511edb",
+  "actual_network_calls": 0,
+  "actual_funds_or_signer_access": false,
+  "ephemeral_key_fixture_only": true,
+  "cases": [
+    {
+      "case": "acknowledged broadcast",
+      "sole_send_count": 1,
+      "durable_hash_before_send": true,
+      "existing_journal_blocks_reexecute": true,
+      "resume_no_key_sign_or_send": true
+    },
+    {
+      "case": "lost broadcast response",
+      "sole_send_count": 1,
+      "durable_hash_before_send": true,
+      "existing_journal_blocks_reexecute": true,
+      "resume_no_key_sign_or_send": true
+    }
+  ]
+}

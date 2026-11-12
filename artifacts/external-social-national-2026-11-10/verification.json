@@ -1,0 +1,476 @@
+{
+  "verified_at": "2026-11-10T20:33:21.230346+00:00",
+  "branches": {
+    "root": {
+      "get_attempts": 5,
+      "http_statuses": {
+        "200": 5
+      }
+    },
+    "regions": {
+      "get_attempts": 4,
+      "http_statuses": {
+        "200": 4
+      }
+    },
+    "east-asia": {
+      "get_attempts": 10,
+      "http_statuses": {
+        "200": 9,
+        "502": 1
+      }
+    },
+    "social": {
+      "get_attempts": 26,
+      "http_statuses": {
+        "200": 24,
+        "403": 2
+      }
+    }
+  },
+  "get_attempts": 45,
+  "saved_complete_bodies_verified": 45,
+  "json_files_parsed": 80,
+  "captures": [
+    {
+      "file": "root/jonkum-aggregators.raw",
+      "status": 200,
+      "bytes": 281861,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "root/jonkum-home.raw",
+      "status": 200,
+      "bytes": 87871,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "root/info-agent-aimarket.raw",
+      "status": 200,
+      "bytes": 52753,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "root/mcp-pub-aimarket.raw",
+      "status": 200,
+      "bytes": 44859,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "root/wpnews-hub.raw",
+      "status": 200,
+      "bytes": 55490,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "regions/bodies/italian-aimarket-faq.body",
+      "status": 200,
+      "bytes": 4443,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "regions/bodies/habr-public-rss.body",
+      "status": 200,
+      "bytes": 835,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "regions/bodies/radyz-native-aimarket.body",
+      "status": 200,
+      "bytes": 2,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "regions/bodies/agentstacklist-trending.body",
+      "status": 200,
+      "bytes": 2411694,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/qiita-other-domain.raw",
+      "status": 200,
+      "bytes": 2,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/qiita-attested.raw",
+      "status": 200,
+      "bytes": 2,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/zenn-domain-articles.raw",
+      "status": 200,
+      "bytes": 32,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/zenn-attested-scraps.raw",
+      "status": 200,
+      "bytes": 30,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/gitee-identity.raw",
+      "status": 200,
+      "bytes": 2,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/naver-hub.raw",
+      "status": 200,
+      "bytes": 290025,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/naver-attested.raw",
+      "status": 200,
+      "bytes": 111335,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/qiita-known-cost-comments.raw",
+      "status": 200,
+      "bytes": 6421,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/pingblip-itch-profile.raw",
+      "status": 200,
+      "bytes": 10641,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "east-asia/paper-vault-education-list.raw",
+      "status": 502,
+      "bytes": 0,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/hn-known-thread.raw",
+      "status": 200,
+      "bytes": 1362,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/hn-search-metis.raw",
+      "status": 200,
+      "bytes": 360,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/hn-search-argus.raw",
+      "status": 200,
+      "bytes": 368,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/hn-search-esim.raw",
+      "status": 200,
+      "bytes": 376,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/hn-search-courses.raw",
+      "status": 200,
+      "bytes": 364,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/hn-search-pingblip.raw",
+      "status": 200,
+      "bytes": 368,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/bsky-author-feed.raw",
+      "status": 200,
+      "bytes": 196084,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/bsky-search-attested.raw",
+      "status": 403,
+      "bytes": 2334,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/mastodon-attested.raw",
+      "status": 200,
+      "bytes": 60,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/mastodon-metis.raw",
+      "status": 200,
+      "bytes": 60,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/reddit-attested.raw",
+      "status": 403,
+      "bytes": 189908,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/lobsters-domain.raw",
+      "status": 200,
+      "bytes": 4909,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/telegram-own-channel.raw",
+      "status": 200,
+      "bytes": 108043,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/dev-own-articles.raw",
+      "status": 200,
+      "bytes": 176906,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/bsky-thread-metis.raw",
+      "status": 200,
+      "bytes": 4819,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/bsky-thread-gaia.raw",
+      "status": 200,
+      "bytes": 4722,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/bsky-thread-hub.raw",
+      "status": 200,
+      "bytes": 4129,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/bsky-thread-argus.raw",
+      "status": 200,
+      "bytes": 4972,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/dev-comments-marketplace.raw",
+      "status": 200,
+      "bytes": 16681,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/dev-comments-x402.raw",
+      "status": 200,
+      "bytes": 59028,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/dev-comments-multica.raw",
+      "status": 200,
+      "bytes": 2,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/dev-comments-metis.raw",
+      "status": 200,
+      "bytes": 2,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/dev-comments-new-firewall.raw",
+      "status": 200,
+      "bytes": 2,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/quincygb-outside-article.raw",
+      "status": 200,
+      "bytes": 10069,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/quincygb-outside-comments.raw",
+      "status": 200,
+      "bytes": 2176,
+      "length_sha256_and_completeness_pass": true
+    },
+    {
+      "file": "social/raw/dev-comments-new-ard.raw",
+      "status": 200,
+      "bytes": 2,
+      "length_sha256_and_completeness_pass": true
+    }
+  ],
+  "local_report_links": [
+    {
+      "from": "report.ru.md",
+      "target": "regions/summary.md",
+      "exists": true
+    },
+    {
+      "from": "report.ru.md",
+      "target": "east-asia/summary.md",
+      "exists": true
+    },
+    {
+      "from": "report.ru.md",
+      "target": "root/report.ru.md",
+      "exists": true
+    },
+    {
+      "from": "report.ru.md",
+      "target": "social/summary.md",
+      "exists": true
+    },
+    {
+      "from": "report.ru.md",
+      "target": "summary.json",
+      "exists": true
+    },
+    {
+      "from": "report.ru.md",
+      "target": "verification.json",
+      "exists": true
+    },
+    {
+      "from": "report.ru.md",
+      "target": "verify.py",
+      "exists": true
+    },
+    {
+      "from": "east-asia/summary.md",
+      "target": "report.ru.md",
+      "exists": true
+    },
+    {
+      "from": "east-asia/summary.md",
+      "target": "findings.json",
+      "exists": true
+    },
+    {
+      "from": "east-asia/summary.md",
+      "target": "coverage.json",
+      "exists": true
+    },
+    {
+      "from": "east-asia/summary.md",
+      "target": "query-index.json",
+      "exists": true
+    },
+    {
+      "from": "east-asia/summary.md",
+      "target": "verification.json",
+      "exists": true
+    },
+    {
+      "from": "east-asia/summary.md",
+      "target": "novelty-check.json",
+      "exists": true
+    },
+    {
+      "from": "east-asia/report.ru.md",
+      "target": "verification.json",
+      "exists": true
+    },
+    {
+      "from": "east-asia/report.ru.md",
+      "target": "novelty-check.json",
+      "exists": true
+    },
+    {
+      "from": "east-asia/report.ru.md",
+      "target": "verification.json",
+      "exists": true
+    },
+    {
+      "from": "east-asia/report.ru.md",
+      "target": "findings.json",
+      "exists": true
+    },
+    {
+      "from": "east-asia/report.ru.md",
+      "target": "coverage.json",
+      "exists": true
+    },
+    {
+      "from": "social/summary.md",
+      "target": "hn-thread-delta.json",
+      "exists": true
+    },
+    {
+      "from": "social/summary.md",
+      "target": "bsky-reply-delta.json",
+      "exists": true
+    },
+    {
+      "from": "social/summary.md",
+      "target": "dev-comment-delta.json",
+      "exists": true
+    },
+    {
+      "from": "social/summary.md",
+      "target": "telegram-own-distribution.json",
+      "exists": true
+    },
+    {
+      "from": "social/summary.md",
+      "target": "quincy-outside-discussion.json",
+      "exists": true
+    },
+    {
+      "from": "social/summary.md",
+      "target": "novelty-check.json",
+      "exists": true
+    },
+    {
+      "from": "social/summary.md",
+      "target": "capture-integrity.json",
+      "exists": true
+    },
+    {
+      "from": "social/summary.md",
+      "target": "findings.json",
+      "exists": true
+    },
+    {
+      "from": "social/summary.md",
+      "target": "query-index.json",
+      "exists": true
+    },
+    {
+      "from": "root/report.ru.md",
+      "target": "query-index.json",
+      "exists": true
+    },
+    {
+      "from": "root/report.ru.md",
+      "target": "http-index.json",
+      "exists": true
+    },
+    {
+      "from": "root/report.ru.md",
+      "target": "verification.json",
+      "exists": true
+    },
+    {
+      "from": "root/report.ru.md",
+      "target": "primary-links.json",
+      "exists": true
+    },
+    {
+      "from": "root/report.ru.md",
+      "target": "findings.json",
+      "exists": true
+    },
+    {
+      "from": "root/report.ru.md",
+      "target": "summary.json",
+      "exists": true
+    }
+  ],
+  "errors": [],
+  "all_passed": true,
+  "note": "HTTP403/502 responses are complete evidence bodies, not successful reads of requested content. Search-engine tool captures are stored separately and not counted as direct GET attempts."
+}

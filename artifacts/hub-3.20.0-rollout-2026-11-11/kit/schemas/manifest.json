@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://modelmarket.dev/schemas/manifest.json",
+  "title": "AI Market Capability Manifest",
+  "description": "Full capability catalog returned by GET /ai-market/manifest",
+  "type": "object",
+  "required": ["protocol_version", "generated_at", "tools", "signature"],
+  "properties": {
+    "protocol_version": {
+      "type": "string",
+      "enum": ["v1", "v2"]
+    },
+    "release_version": {
+      "type": "string",
+      "description": "Semver of the aimarket-protocol package (repo VERSION file), e.g. 0.1.0",
+      "pattern": "^0\\.[0-9]+\\.[0-9]+$"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "base_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "products_count": {"type": "integer", "minimum": 0},
+    "capabilities_count": {"type": "integer", "minimum": 0},
+    "total_capabilities": {"type": "integer", "minimum": 0},
+    "local_capabilities": {"type": "integer", "minimum": 0},
+    "federated_capabilities": {"type": "integer", "minimum": 0},
+    "hubs_indexed": {"type": "integer", "minimum": 0},
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "description", "input_schema"],
+        "properties": {
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "input_schema": {"type": "object"},
+          "output_schema": {"type": "object"},
+          "price_per_call_usd": {"type": "number", "minimum": 0},
+          "p50_latency_ms": {"type": "integer", "minimum": 0},
+          "success_rate_30d": {"type": "number", "minimum": 0, "maximum": 1},
+          "reputation_basis": {
+            "type": "string",
+            "enum": ["measured", "unobserved"],
+            "description": "Whether success_rate_30d is a measurement. 'measured': successes/attempts over the 30-day window, with observations_30d > 0. 'unobserved': nothing was invoked and the rate is the publishing hub's neutral placeholder — consumers MUST NOT render it as a score."
+          },
+          "observations_30d": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Invocations of this capability observed by the publishing hub in the last 30 days. Zero means success_rate_30d and trust_score carry no evidence."
+          },
+          "product_id": {"type": "string"},
+          "capability_id": {"type": "string"},
+          "source_hub": {"type": "string", "format": "uri"},
+          "source_hub_name": {"type": "string"},
+          "routed_price_usd": {"type": "number"},
+          "routing_fee_bps": {"type": "integer"},
+          "trust_score": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "by_hub": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "capabilities_count": {"type": "integer"},
+          "trust_score": {"type": "number"},
+          "trust_basis": {
+            "type": "string",
+            "enum": ["measured", "unobserved", "self"],
+            "description": "Whether trust_score is earned through observed trade. 'self' is the publishing hub itself, which trusts itself by construction."
+          },
+          "observations_30d": {"type": "integer", "minimum": 0},
+          "last_crawl": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "public_key", "value"],
+      "properties": {
+        "algorithm": {"type": "string", "const": "ed25519"},
+        "public_key": {"type": "string"},
+        "value": {"type": "string"}
+      }
+    }
+  }
+}

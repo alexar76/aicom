@@ -1,0 +1,39 @@
+{
+  "captured_at_utc": "2026-11-10T20:22:33.204Z",
+  "queries": [
+    {
+      "id": "ru-habr-products",
+      "region": "RU",
+      "domains": [
+        "habr.com"
+      ],
+      "q": "(\"aimarket-bridges\" OR \"SYMMARTYS\" OR \"@aimarket/esim-rails\" OR \"attestedmemory.net\")"
+    },
+    {
+      "id": "ru-community-products",
+      "region": "RU",
+      "domains": [
+        "vc.ru",
+        "dtf.ru",
+        "pikabu.ru"
+      ],
+      "q": "(\"PingBlip\" OR \"modelmarket.dev\" OR \"domain-operator-kit\")"
+    },
+    {
+      "id": "ru-books-review",
+      "region": "RU",
+      "q": "\"Артамохов\" \"Вес ответа\" рецензия -site:github.com -site:modelmarket.dev"
+    },
+    {
+      "id": "ua-tech-products",
+      "region": "UA",
+      "domains": [
+        "dou.ua",
+        "dev.ua",
+        "ain.ua"
+      ],
+      "q": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"create-aimarket-agent\")"
+    }
+  ],
+  "result": "Empty search results\nNo results were found for the provided queries"
+}

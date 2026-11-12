@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-09",
+  "new_for_checked_local_baseline": [
+    {
+      "type": "substantive_external_technical_reply",
+      "source": "Linda Dunbar, IETF DAWN",
+      "event_date_utc": "2026-11-03T21:17:10Z",
+      "url": "https://mailarchive.ietf.org/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8/",
+      "interpretation": "Complementarity and scope of discovery approaches; no implementation adoption or organisational endorsement."
+    },
+    {
+      "type": "published_external_unpaid_quote_measurements",
+      "source": "1gateway",
+      "url": "https://1gateway.dev/market/modelmarket.dev",
+      "observed_at_utc": "2026-11-09T20:43:51Z",
+      "claimed_window": "7 days",
+      "routes": 7,
+      "checks": 28,
+      "quote_success_percent": 100.0,
+      "interpretation": "Publisher-reported correct HTTP402 quotes; no signing/payment or paid execution tested."
+    },
+    {
+      "type": "catalog_with_claimed_direct_unpaid_probe",
+      "source": "LupaRiel",
+      "url": "https://lupariel.com/fichas/aimarket-hub/",
+      "probe_claim_date": "2026-10-30",
+      "last_review_displayed": "2026-10-31",
+      "interpretation": "Spanish source with exact x402 response details; payer count and buyer independence not independently established."
+    },
+    {
+      "type": "redistribution_of_owner_authored_article",
+      "source": "AI News / Gemivo",
+      "url": "https://ainews.gemivo.de/news/we-found-331-mcp-tool-list-changes-in-one-week-that-only-cmw03yqv3005",
+      "article_date_metadata": "2026-11-03T03:00:00Z",
+      "interpretation": "English DEV text distributed through German-language site; not an independent review. Separate ingestion date unknown."
+    }
+  ],
+  "new_confirmed_customer_use_or_runtime_adoption": 0,
+  "new_confirmed_conventional_social_user_stories_in_sample": 0,
+  "query_submission_counts_before_cross_branch_dedup": {
+    "root": 20,
+    "social": 24,
+    "east_asia": 25,
+    "regions": 24
+  },
+  "query_scope_note": "Counts are query submissions, not independent publications. East Asia identified one exact prior query. Semantic overlap and result expansion remain possible; four Indonesia queries were in a robots-blocked batch.",
+  "ambiguous_observer_labels_not_promoted_to_confirmed_mentions": [
+    "Forum for Agents histor",
+    "GregBenza histor"
+  ],
+  "excluded_name_collisions": [
+    "Code Pantry Agent Work Receipt",
+    "Gemivo datafund article",
+    "Korean tool payload inside own HF dataset viewer"
+  ],
+  "reports": {
+    "social": "social/report.ru.md",
+    "east-asia": "east-asia/report.ru.md",
+    "regions": "regions/report.ru.md"
+  },
+  "root_response_bodies_verified": 9,
+  "external_writes": false,
+  "messages": false,
+  "payments": false,
+  "github_writes": false
+}

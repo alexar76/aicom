@@ -1,0 +1,100 @@
+import pathlib,json,hashlib,subprocess,os,time,signal,sys
+from web3 import Web3
+from eth_account import Account
+from web3.exceptions import ContractLogicError
+os.umask(0o077);out=pathlib.Path("/results");root=pathlib.Path("/source");tools=pathlib.Path("/tools")
+def sha(p):return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+def verify(rootdir,manifest):
+ for line in pathlib.Path(manifest).read_text().splitlines():
+  meta,name=line.split("\t",1);mode,kind,oid=meta.split();data=(pathlib.Path(rootdir)/name).read_bytes();assert hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()==oid
+verify(root,"/metadata/source-final-blobs.txt");verify("/old-agent","/metadata/old-agent-blobs.txt")
+compileproof=json.load(open("/compiled/summary.json"));assert compileproof["passed"] and compileproof["legacySourceSha256"]=="6866ae731c24e699facb1d4cf4efaecae837e1dfb76cfdd5db9a7f8d71d0d854"
+artifact=json.load(open("/compiled/legacy-artifact.json"));assert not any(x.get("name")=="paidTicketsEnabled" for x in artifact["abi"])
+before={"newMain":sha(root/"lottery/agent/ailottery_agent/__main__.py"),"oldMain":sha("/old-agent/lottery/agent/ailottery_agent/__main__.py")}
+port=18545;rpc=f"http://127.0.0.1:{port}";mnemonic=" ".join(["test"]*11+["junk"])
+processes=[];files=[];observations={};result={"format":"aicom.synthetic-anvil-legacy-agent-control/v1","passed":False}
+started=time.monotonic()
+def alarm(*args):raise TimeoutError("100-second total synthetic control bound")
+signal.signal(signal.SIGALRM,alarm);signal.alarm(100)
+def stop(p):
+ if p.poll() is None:
+  p.terminate()
+  try:p.wait(timeout=4)
+  except subprocess.TimeoutExpired:p.kill();p.wait(timeout=3)
+ return p.returncode
+def wait_for(label,condition,timeout=15):
+ end=time.monotonic()+timeout
+ while time.monotonic()<end:
+  value=condition()
+  if value:return value
+  time.sleep(0.1)
+ raise TimeoutError(label)
+def spawn_agent(label,path,key,contract):
+ log=open(out/(label+".log"),"w");files.append(log)
+ env={"PATH":"/usr/local/bin:/usr/bin:/bin","HOME":"/tmp","PYTHONDONTWRITEBYTECODE":"1","PYTHONUNBUFFERED":"1",
+      "PYTHONPATH":"/deps:"+path,"AGENT_KEY":key,"RPC_URL":rpc,"CHAIN_ID":"31337","LOTTERY_ADDRESS":contract,
+      "RELAYER_URL":"","USE_VOUCHER":"0","TICKETS":"2","POLL":"0.1","HOME_HUB_URL":"","HUB_AGENT_ID":"","HUB_AGENT_TOKEN":""}
+ p=subprocess.Popen([sys.executable,"-m","ailottery_agent"],env=env,cwd="/tmp",stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+ processes.append(p);return p
+try:
+ nodelog=open(out/"anvil.log","w");files.append(nodelog)
+ node=subprocess.Popen([str(tools/"anvil"),"--host","127.0.0.1","--port",str(port),"--chain-id","31337","--accounts","12","--balance","100000","--mnemonic",mnemonic,"--silent"],cwd="/tmp",stdout=nodelog,stderr=subprocess.STDOUT,start_new_session=True)
+ processes.append(node)
+ w3=Web3(Web3.HTTPProvider(rpc,request_kwargs={"timeout":3,"allow_redirects":False}))
+ wait_for("isolated Anvil startup",lambda:w3.is_connected(),10);assert w3.eth.chain_id==31337
+ accounts=w3.eth.accounts;operator=accounts[0]
+ Account.enable_unaudited_hdwallet_features();agent=Account.from_mnemonic(mnemonic,account_path="m/44'/60'/0'/0/1");assert agent.address==accounts[1]
+ constructor=[operator,accounts[2],operator,accounts[3],accounts[4],"0x"+"00"*20,10**15,8000,1500,500,600,2,False,0]
+ factory=w3.eth.contract(abi=artifact["abi"],bytecode=artifact["evm"]["bytecode"]["object"])
+ receipt=w3.eth.wait_for_transaction_receipt(factory.constructor(*constructor).transact({"from":operator,"gas":8_000_000}),timeout=15)
+ assert receipt.status==1
+ address=receipt.contractAddress;lottery=w3.eth.contract(address=address,abi=artifact["abi"]);runtime=bytes(w3.eth.get_code(address))
+ assert runtime and len(runtime)==compileproof["runtimeTemplateBytes"]
+ import ailottery_agent.__main__ as current
+ compatible=w3.eth.contract(address=address,abi=current.ABI)
+ try:compatible.functions.paidTicketsEnabled().call()
+ except ContractLogicError as exc:missing={"exception":type(exc).__name__,"emptyData":getattr(exc,"data",None) in (None,"","0x",b"")}
+ else:raise AssertionError("legacy getter unexpectedly exists")
+ assert missing["emptyData"] and current.paid_door_open(compatible) is True
+ def send(fn):
+  r=w3.eth.wait_for_transaction_receipt(fn.transact({"from":operator,"gas":1_500_000}),timeout=10);assert r.status==1;return r
+ send(lottery.functions.openRound());assert lottery.functions.currentRoundId().call()==1
+ old=spawn_agent("old-agent","/old-agent/lottery/agent",agent.key.hex(),address)
+ def old_failed():
+  if old.poll() is not None:raise RuntimeError("old agent exited before negative observation")
+  text=(out/"old-agent.log").read_text()
+  return text if text.lower().count("revert")>=2 else False
+ oldtext=wait_for("old agent repeated missing-getter failure",old_failed,15)
+ observations["old"]={"missingGetterErrorObserved":True,"revertLogCount":oldtext.lower().count("revert"),"nonce":w3.eth.get_transaction_count(agent.address),"round1PaidBy":lottery.functions.paidBy(1,agent.address).call()}
+ assert observations["old"]["nonce"]==0 and observations["old"]["round1PaidBy"]==0
+ stop(old);send(lottery.functions.cancelRound(1));send(lottery.functions.openRound());assert lottery.functions.currentRoundId().call()==2
+ new=spawn_agent("new-agent","/source/lottery/agent",agent.key.hex(),address)
+ price=lottery.functions.ticketPrice().call()
+ def paid2():
+  if new.poll() is not None:raise RuntimeError("new agent exited before entry")
+  return lottery.functions.paidBy(2,agent.address).call()==2*price
+ wait_for("new agent legacy entry",paid2)
+ observations["newEntry"]={"round":2,"paidBy":lottery.functions.paidBy(2,agent.address).call(),"nonce":w3.eth.get_transaction_count(agent.address)}
+ assert observations["newEntry"]["nonce"]==1
+ before_refund=w3.eth.get_balance(agent.address);send(lottery.functions.cancelRound(2))
+ wait_for("new agent cancellation refund",lambda:lottery.functions.paidBy(2,agent.address).call()==0)
+ after_refund=w3.eth.get_balance(agent.address)
+ observations["refund"]={"round":2,"paidBy":0,"nonce":w3.eth.get_transaction_count(agent.address),"netSyntheticWeiReturned":after_refund-before_refund}
+ assert observations["refund"]["nonce"]==2 and after_refund>before_refund
+ send(lottery.functions.openRound());assert lottery.functions.currentRoundId().call()==3
+ wait_for("same new-agent process enters next round",lambda:lottery.functions.paidBy(3,agent.address).call()==2*price)
+ observations["nextRound"]={"round":3,"paidBy":lottery.functions.paidBy(3,agent.address).call(),"nonce":w3.eth.get_transaction_count(agent.address),"sameAgentProcess":new.poll() is None}
+ assert observations["nextRound"]["nonce"]==3 and observations["nextRound"]["sameAgentProcess"]
+ result.update(passed=True,legacySourceSha256=compileproof["legacySourceSha256"],compilerVersion=compileproof["solcVersion"],openzeppelinVersion=compileproof["openzeppelinVersion"],anvilVersion=subprocess.check_output([str(tools/"anvil"),"--version"],text=True).strip(),creationCodeSha256=compileproof["creationCodeSha256"],deployedRuntimeBytes=len(runtime),deployedRuntimeSha256=hashlib.sha256(runtime).hexdigest(),missingGetter=missing,observations=observations,scope="Exact legacy Solidity source and synthetic isolated Anvil only; compiler/OZ identities recorded, no assertion of live bytecode identity.",liveBytecodeIdentityClaim=False,realWalletOrChainDataMounted=False,archivedHistoricalScriptExecuted=False,externalRPCConfigured=False,noLocalProjectExecution=True)
+except BaseException as exc:
+ result.update(errorType=type(exc).__name__,errorMessage=str(exc),observations=observations)
+finally:
+ signal.alarm(0)
+ exits=[stop(p) for p in reversed(processes)]
+ for f in files:f.close()
+ result.update(seconds=round(time.monotonic()-started,3),boundedTimeoutSeconds=100,childExitCodes=exits,allChildProcessesStopped=all(p.poll() is not None for p in processes),sourceUnchanged=before=={"newMain":sha(root/"lottery/agent/ailottery_agent/__main__.py"),"oldMain":sha("/old-agent/lottery/agent/ailottery_agent/__main__.py")})
+ verify(root,"/metadata/source-final-blobs.txt");verify("/old-agent","/metadata/old-agent-blobs.txt")
+ (out/"summary.json").write_text(json.dumps(result,indent=2,sort_keys=True)+"\n")
+ print(json.dumps(result,indent=2))
+raise SystemExit(0 if result["passed"] and result["sourceUnchanged"] and result["allChildProcessesStopped"] else 1)
+

@@ -1,0 +1,196 @@
+[
+  {
+    "id": "agent-exec-manifest-advertised",
+    "source_url": "https://agent-exec.448c.org/ai-market/manifest",
+    "retrieved_at_utc": "2026-11-10T19:06:34.092023+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://agent-exec.448c.org/ai-market/manifest",
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 61582,
+    "sha256": "6d769d627926c76eb91794422bda4a8fb27ee438e9ab9bf6e963b0503c63d52f",
+    "complete": true,
+    "body_path": "bodies/agent-exec-manifest-advertised.body",
+    "ecosystem_href": [],
+    "exact_mentions": [],
+    "selected_contexts": [
+      {
+        "term": "Checks",
+        "context": "s, write the digest's preimage to  , and run `ots verify  .ots` -- it checks the Bitcoin blockchain, not us, so this attestation outlives our host. A fresh proof is \\\"pending\\\" until the calendar's next Bitcoin batch confirms; `ots upgrade  .ots` completes it, again with no call to us.\"},\"payment\":{\"type\":\"object\","
+      },
+      {
+        "term": "2026-11-10",
+        "context": "{\"protocol_version\":\"v1\",\"generated_at\":\"2026-11-10T18:08:41.200Z\",\"capabilities_count\":19,\"tools\":[{\"name\":\"execute\",\"description\":\"POST /execute -- Run python3/node source code to completion in the sandbox; returns stdout, stderr, exit code. Complaints, questions, quote requests, or a ser"
+      },
+      {
+        "term": "answered",
+        "context": "type\":[\"integer\",\"null\"],\"description\":\"The HTTP status the final hop answered with, or null if fetch_ok is false.\"},\"body_sha256\":{\"type\":[\"string\",\"null\"],\"description\":\"sha256 of the fetched body, hex-encoded, or null if fetch_ok is false. The body itself is never returned or stored beyond this hash.\"},\"body_bytes"
+      }
+    ]
+  },
+  {
+    "id": "mcpindex-gateway",
+    "source_url": "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp",
+    "retrieved_at_utc": "2026-11-10T19:06:34.093279+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp",
+    "content_type": "text/html; charset=utf-8",
+    "bytes": 99133,
+    "sha256": "72b977e6f9f24769843a66bb2ae4746818e8e9228743dbe37be996bc0163f9d6",
+    "complete": true,
+    "body_path": "bodies/mcpindex-gateway.body",
+    "ecosystem_href": [
+      {
+        "href": "/claim?server=io-github-alexar76-aimarket-mcp",
+        "rel": null
+      },
+      {
+        "href": "mailto:hello@mcpindex.ai?subject=Claim%20listing%3A%20io-github-alexar76-aimarket-mcp",
+        "rel": null
+      },
+      {
+        "href": "https://github.com/alexar76/aimarket-mcp",
+        "rel": "nofollow noreferrer"
+      }
+    ],
+    "exact_mentions": [
+      "https://github.com/alexar76/aimarket-mcp",
+      "https://github.com/alexar76/aimarket-mcp\\",
+      "https://github.com/alexar76/aimarket-mcp\\\\\\",
+      "https://mcpindex.ai/api/v1/badge/io-github-alexar76-aimarket-mcp&quot;",
+      "https://mcpindex.ai/api/v1/badge/io-github-alexar76-aimarket-mcp)](https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp)",
+      "https://mcpindex.ai/api/v1/badge/io-github-alexar76-aimarket-mcp)](https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp)\\",
+      "https://mcpindex.ai/api/v1/badge/io-github-alexar76-aimarket-mcp\\\\\\",
+      "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp",
+      "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp&quot;&gt;&lt;img",
+      "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp&quot;&gt;Independent",
+      "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp)",
+      "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp/og",
+      "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp/og\\",
+      "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp\\",
+      "https://mcpindex.ai/server/io-github-alexar76-aimarket-mcp\\\\\\"
+    ],
+    "selected_contexts": [
+      {
+        "term": "quality",
+        "context": "ke calls from a prepaid USDC balance once the free trial is spent MCP quality score · maturity, not trust ·  methodology freshness 25 completeness 15 installability 25 documentation 15 stability 5 Alternatives in  Search Ankra Docs ai.ankra/docs Search the Ankra documentation: clusters, stacks, GitOps, CI/CD and the"
+      },
+      {
+        "term": "listed from",
+        "context": "verdict expires 2026-11-25 quality 85 / 100 operator alexar76 Listing Listed from the official MCP registry.   Unclaimed by its maintainer.   Maintainer?   Verify it →   ·   or email us → Provenance Each verdict is bound to a hash of the exact description it judged, so a re-crawl that changes the text produces a new rec"
+      },
+      {
+        "term": "2026-11-10",
+        "context": "9b63b85aa8dc\",\"url\":\"https://mcpindex.ai/trust#anchor\",\"dateCreated\":\"2026-11-10T04:22:41.464063Z\"}} ← Index AIMarket MCP Gateway io.github.alexar76/aimarket-mcp v 0.6.4 Search Stdio + HTTP MCP gateway: SSRF-hardened web_fetch, web_search, metis_verify, market_search. The current version, v0.6.4, was published to the o"
+      },
+      {
+        "term": "modelmarket.dev",
+        "context": "h endpoint override AIMARKET_API_KEY secret Optional key from https://modelmarket.dev/start: pays priced market_invoke calls from a prepaid USDC balance once the free trial is spent MCP quality score · maturity, not trust ·  methodology freshness 25 completeness 15 installability 25 documentation 15 stability 5 Alternatives"
+      }
+    ]
+  },
+  {
+    "id": "mcpindex-hub-verdict",
+    "source_url": "https://mcpindex.ai/api/v1/trust/server/io-github-alexar76-aimarket-hub",
+    "retrieved_at_utc": "2026-11-10T19:06:34.093837+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://mcpindex.ai/api/v1/trust/server/io-github-alexar76-aimarket-hub",
+    "content_type": "application/json",
+    "bytes": 549,
+    "sha256": "154cbe883556c510df3f885ed44df66bca7ce3e8ab11b2a519b0b74da1ea11d2",
+    "complete": true,
+    "body_path": "bodies/mcpindex-hub-verdict.body",
+    "ecosystem_href": [],
+    "exact_mentions": [],
+    "selected_contexts": [
+      {
+        "term": "aimarket-hub",
+        "context": "{\"subject\":{\"server_id\":\"io-github-alexar76-aimarket-hub\",\"slug\":\"io-github-alexar76-aimarket-hub\",\"tool_name\":null},\"status\":\"PARTIAL\",\"directive\":\"REVIEW\",\"granularity\":\"description-level\",\"dimensions\":[{\"id\":\"mcpindex.integrity.description\",\"verdict\":\"PASS\",\"severity\":\"INFO\"}],\"expires_at\":\"2"
+      }
+    ]
+  },
+  {
+    "id": "mcpindex-method",
+    "source_url": "https://mcpindex.ai/docs/methodology",
+    "retrieved_at_utc": "2026-11-10T19:06:34.094452+00:00",
+    "method": "GET",
+    "status": 404,
+    "final_url": "https://mcpindex.ai/docs/methodology",
+    "content_type": "text/html; charset=utf-8",
+    "bytes": 45950,
+    "sha256": "29f5ad2814210ec1905226762153ec9c51d2782be980dc3aae868019003df9f2",
+    "complete": true,
+    "body_path": "bodies/mcpindex-method.body",
+    "ecosystem_href": [],
+    "exact_mentions": [],
+    "selected_contexts": []
+  },
+  {
+    "id": "completeaitraining-gateway",
+    "source_url": "https://completeaitraining.com/mcp-servers/alexar76-aimarket-mcp/",
+    "retrieved_at_utc": "2026-11-10T19:06:34.633649+00:00",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://completeaitraining.com/mcp-servers/alexar76-aimarket-mcp/",
+    "content_type": "text/html; charset=utf-8",
+    "bytes": 72096,
+    "sha256": "18a5925c8d28f7b00ec1f6cf2d332217941dbcbd03d83ed62ade02c06681724c",
+    "complete": true,
+    "body_path": "bodies/completeaitraining-gateway.body",
+    "ecosystem_href": [
+      {
+        "href": "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcompleteaitraining.com%2Fmcp-servers%2Falexar76-aimarket-mcp%2F",
+        "rel": "noopener"
+      },
+      {
+        "href": "https://github.com/alexar76",
+        "rel": "noopener nofollow"
+      },
+      {
+        "href": "https://github.com/alexar76/aimarket-mcp",
+        "rel": "noopener nofollow"
+      },
+      {
+        "href": "https://cdn.completeaitraining.com/mcp/flow/alexar76-aimarket-mcp/how-the-aimarket-mcp-server-works.webp?v=pocik8",
+        "rel": "noopener"
+      },
+      {
+        "href": "/signin/?next=%2Fmcp-servers%2Falexar76-aimarket-mcp%2F%23install",
+        "rel": null
+      },
+      {
+        "href": "/join/?back=%2Fmcp-servers%2Falexar76-aimarket-mcp%2F",
+        "rel": null
+      },
+      {
+        "href": "https://github.com/alexar76",
+        "rel": "noopener nofollow"
+      },
+      {
+        "href": "https://github.com/alexar76/aimarket-mcp",
+        "rel": "noopener nofollow"
+      },
+      {
+        "href": "/signin/?next=%2Fmcp-servers%2Falexar76-aimarket-mcp%2F",
+        "rel": null
+      }
+    ],
+    "exact_mentions": [
+      "https://cdn.completeaitraining.com/mcp/flow/alexar76-aimarket-mcp/aimarket-mcp-server-flow-diagram.webp?v=pocik8",
+      "https://cdn.completeaitraining.com/mcp/flow/alexar76-aimarket-mcp/how-the-aimarket-mcp-server-works.webp?v&#x3D;pocik8",
+      "https://cdn.completeaitraining.com/mcp/flow/alexar76-aimarket-mcp/how-the-aimarket-mcp-server-works.webp?v=pocik8",
+      "https://completeaitraining.com/mcp-servers/alexar76-aimarket-mcp/",
+      "https://github.com/alexar76",
+      "https://github.com/alexar76/aimarket-mcp",
+      "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcompleteaitraining.com%2Fmcp-servers%2Falexar76-aimarket-mcp%2F"
+    ],
+    "selected_contexts": [
+      {
+        "term": "Checks",
+        "context": "ne prompt, paste it into an AI that can work on your computer, and it checks, installs and connects the server for you, asking you when it needs something. \n           \n              Sign in to get the install prompt \n             Members get a ready-made prompt that lets the Claude desktop app check AIMarket MCP s"
+      }
+    ]
+  }
+]

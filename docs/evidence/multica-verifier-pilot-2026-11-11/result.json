@@ -1,0 +1,67 @@
+{
+  "schema": "multica-verifier-pilot/v1",
+  "environment": {
+    "python": "3.9.6",
+    "node": "v22.22.1",
+    "system": "Darwin",
+    "architecture": "arm64"
+  },
+  "source_sha256": {
+    "multica/qa-runner/worker/smoke.mjs": "075bad8a5b5f4a6a6fe6d0f3ba46d0dee6993d52c12c81753883710ea87c94ac",
+    "multica/qa-runner/broker/broker.py": "72f38fd3a063200668d515d1fb533addaafd445ceaa9b2cf018a2a4716ad5802",
+    "artifacts/multica-qa-runner-2026-11-10/create-profile.py": "240d86065909427be09bb07f026dba6dc31727164aaa71ba592b0be1dc81f00e",
+    "docs/evidence/multica-verifier-pilot-2026-11-11/probe.mjs": "02fdf85a651336f25906d6dba95e4c60c95415be50607eca6328235595349cc4",
+    "docs/evidence/multica-verifier-pilot-2026-11-11/replay.py": "b753cf480b1e6813cd23808c854b753bbd77bf86d2cc2af4e223ad255df2030a"
+  },
+  "cases": [
+    {
+      "case": "healthy",
+      "verdict": "pass",
+      "completed": true,
+      "qa_execute_calls": 1,
+      "controller_status": 200,
+      "local_worker_exit_code": 0,
+      "local_worker_http_statuses": {
+        "backend_health": 200,
+        "modelmarket_https": 200,
+        "hub_https": 200
+      },
+      "same_task_tool_report": true,
+      "foreign_tool_reports_excluded": 0,
+      "multica_acceptance_passed": true
+    },
+    {
+      "case": "required_check_failed",
+      "verdict": "fail",
+      "completed": true,
+      "qa_execute_calls": 1,
+      "controller_status": 200,
+      "local_worker_exit_code": 1,
+      "local_worker_http_statuses": {
+        "backend_health": 200,
+        "modelmarket_https": 503,
+        "hub_https": 200
+      },
+      "same_task_tool_report": true,
+      "foreign_tool_reports_excluded": 0,
+      "multica_acceptance_passed": false
+    },
+    {
+      "case": "missing_same_task_report",
+      "verdict": "unverifiable",
+      "completed": true,
+      "qa_execute_calls": 1,
+      "controller_status": 200,
+      "local_worker_exit_code": 0,
+      "local_worker_http_statuses": {
+        "backend_health": 200,
+        "modelmarket_https": 200,
+        "hub_https": 200
+      },
+      "same_task_tool_report": false,
+      "foreign_tool_reports_excluded": 1,
+      "multica_acceptance_passed": false
+    }
+  ],
+  "matched_expected": true
+}

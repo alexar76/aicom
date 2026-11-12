@@ -1,0 +1,71 @@
+{
+  "host": "blip",
+  "scope": "Static blog build and real PyYAML parsing; no deployment or service start",
+  "python": "3.13.18",
+  "dependencies": {
+    "Markdown": "3.8.2",
+    "Pillow": "13.0.0",
+    "PyYAML": "6.0.2"
+  },
+  "input_manifests": {
+    "blog-source.sha256": {
+      "sha256": "876d15046caf416b4b404a86d72eb186e149aca41d3c0916eb65072a5c455274",
+      "files_verified": 191
+    },
+    "promo-source.sha256": {
+      "sha256": "57d36cc85d8b8e82e6fffb657216fcdbac7c6583e91de48320e7f92a4d2da1e2",
+      "files_verified": 22
+    },
+    "yaml-source.sha256": {
+      "sha256": "51b26b8527f0bee743973ba9174890a0768ae08c89cafbb3802beb32b8fb7544",
+      "files_verified": 1
+    },
+    "font-source.sha256": {
+      "sha256": "7e58961b64acd7cad2361c6f2b1f31fa19bc01113989fa549d7e6749fe01a42d",
+      "files_verified": 2
+    }
+  },
+  "public_cache": {
+    "manifest_sha256": "87f8b7cf2259d794608d648128ed1479908d5f4d77ef34d48f1ed0f35175090c",
+    "files_verified": 44
+  },
+  "build_exit": 0,
+  "public_assets_verified": 26,
+  "promotional_assets_verified": 22,
+  "new_posts": [
+    {
+      "slug": "a-missing-version-broke-verification-of-signed-ard-search-results",
+      "body_sha256": "209076fc42066dfe9c2842562d6d25e3ebe9af62ff37198f71cf8cd4c447b690",
+      "meta_sha256": "4f048282ef053332cd865151dad68da311e153209faaa9ddf7db38049bda0f12",
+      "page_bytes": 25801
+    },
+    {
+      "slug": "a-privacy-warning-became-bad-advice-in-an-ai-reviewers-draft",
+      "body_sha256": "4d70e1ed9c14abf3b2676a1612503d3c36218ee16944ca943023ef81b8efae4d",
+      "meta_sha256": "fa3fe255380341f93a5baf2161ea2752a0a46752708d783037c47431d46d2dcf",
+      "page_bytes": 23880
+    },
+    {
+      "slug": "an-mcp-tool-set-can-gain-a-digest-without-changing",
+      "body_sha256": "d9bebc95cf2eeefb7a2f423aaa333586cc1023b79a30a7f11a8b7df6d5a2ac7a",
+      "meta_sha256": "701489bfdfccdc4663f64620089696ece5c44e9647c95b7cc4b40bd1b62007c1",
+      "page_bytes": 24871
+    },
+    {
+      "slug": "healthy-containers-hid-a-blocked-mcp-marketplace-connection",
+      "body_sha256": "00931f87e11de3e1eaf5cd556adb297b93992e065ab609567c2a74cec506e2ba",
+      "meta_sha256": "c8e2be7c27dc6a5bd09878534170a506eefc8b00a7e74790deacd72637def1ea",
+      "page_bytes": 23492
+    }
+  ],
+  "generated_post_pages": 70,
+  "yaml": {
+    "sha256": "f28df7cb6b67165ea65dbb8f743082604e40a8e756da3f024e80221c1ad99706",
+    "server_count": 8,
+    "unique_names": true,
+    "factory_address_verified": true,
+    "services_started": false
+  },
+  "elapsed_seconds": 59.209,
+  "success": true
+}

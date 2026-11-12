@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#060914">
+  <title>AIMarket | Publish a provider</title>
+  <link rel="stylesheet" href="/assets/playground.css?v=20260820f">
+  <link rel="stylesheet" href="/assets/connect.css?v=20261006b">
+  <link rel="stylesheet" href="/assets/provider-guide.css?v=20261006b">
+  <script src="/assets/i18n.js?v=20261007b" defer></script>
+</head>
+<body data-title-key="publish.title">
+  <div class="scene" aria-hidden="true"><div class="scene-grid"></div><i class="noise"></i></div>
+  <header class="nav onboarding-nav">
+    <a class="brand" href="/" data-language-link><span>AI</span>Market <b>Playground</b></a>
+    <nav aria-label="Navigation" data-i18n-aria-label="nav.primary"><a href="/start?role=provider" data-language-link data-i18n="nav.start">Developers</a><a href="/connect" data-language-link data-i18n="nav.connect">Connect provider</a></nav>
+    <div class="language-switcher" aria-label="Language" data-i18n-aria-label="nav.language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button><button type="button" data-lang="es" aria-pressed="false">ES</button><button type="button" data-lang="fr" aria-pressed="false">FR</button><button type="button" data-lang="zh" aria-pressed="false">中文</button>
+    </div>
+  </header>
+  <main class="guide"><article>
+    <p class="eyebrow">AIMarket / Hub</p>
+    <h1 data-i18n="publish.title">Publish a provider</h1>
+    <p data-i18n="publish.intro">A successful endpoint check is not Hub registration. Follow these steps on the Hub you chose; no payment or publication happens on this page.</p>
+    <p><a href="https://modelmarket.dev/start" data-language-link data-i18n="publish.account">Get an account</a> · <a href="/connect" data-language-link data-i18n="publish.check">Check endpoint</a></p>
+      <section><h2><span>1. </span><span data-i18n="publish.prepare.title">Prepare the manifest</span></h2>
+      <p data-i18n="publish.prepare.body">Deploy the checked endpoint over HTTPS on port 443. Keep the signing key local. Set product_id, capability_id, provider_pubkey and price_per_call_usd in capability.json; use the exact schemas and endpoint you tested.</p>
+      </section>
+      <section><h2><span>2. </span><span data-i18n="publish.identity.title">Confirm publisher identity</span></h2>
+      <p data-i18n="publish.identity.body">Open the Hub account page and create your own API key. Read account_id with the command below and use it as publisher_id in the manifest. Never share the API key or use an operator's admin token.</p>
+      <div class="command-card"><header><span>GET</span></header><pre><code>curl --fail-with-body https://modelmarket.dev/ai-market/v2/account \
+  -H "X-API-Key: ${AIMARKET_API_KEY:?Set your own API key locally}"</code></pre></div>
+      </section>
+      <section><h2><span>3. </span><span data-i18n="publish.stake.title">Review collateral separately</span></h2>
+      <p data-i18n="publish.stake.body">Ask the Hub operator for the current minimum collateral and admission policy before funding. Invocation credit and supplier collateral are different balances. Staking locks funds and may expose them to slashing. Obtain explicit approval for amount, source and recipient; do not treat a trial credit as sufficient collateral.</p>
+      </section>
+      <section><h2><span>4. </span><span data-i18n="publish.register.title">Register explicitly</span></h2>
+      <p data-i18n="publish.register.body">After collateral and admission requirements are met, submit the manifest from your terminal. The command changes the Hub registry. It does not invoke the provider. An API-key account can only publish under its own account_id.</p>
+      <div class="command-card"><header><span>POST /ai-market/v2/supply/register</span></header><pre><code>curl --fail-with-body https://modelmarket.dev/ai-market/v2/supply/register \
+  -H "X-API-Key: ${AIMARKET_API_KEY:?Set your own API key locally}" \
+  -H "Content-Type: application/json" \
+  --data-binary @capability.json</code></pre></div>
+      </section>
+      <section><h2><span>5. </span><span data-i18n="publish.discover.title">Verify discovery</span></h2>
+      <p data-i18n="publish.discover.body">Confirm the exact product_id, capability_id and provider_pubkey in the returned search results. An accepted registration is not a guarantee of discovery: trust and admission policy still apply.</p>
+      <div class="command-card"><header><span>GET</span></header><pre><code>curl --fail-with-body --get https://modelmarket.dev/ai-market/v2/search \
+  --data-urlencode "intent=YOUR_CAPABILITY_ID"</code></pre></div>
+      </section>
+      <section><h2><span>6. </span><span data-i18n="publish.refusal.title">Resolve a refusal</span></h2>
+      <p data-i18n="publish.refusal.body">Do not retry payments or disable security gates to bypass a refusal. 401/403: check credentials and publisher identity; 402: check the returned collateral requirement; 503: ask the operator to restore admission services. Keep the response and check report, but remove secrets before sharing.</p>
+      </section>
+
+    <p><a href="https://modelmarket.dev/developers" data-language-link data-i18n="publish.reference">Read the protocol reference</a></p>
+  </article></main>
+</body>
+</html>

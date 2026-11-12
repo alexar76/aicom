@@ -1,0 +1,199 @@
+{
+  "host": "blip",
+  "scope": "Static blog build and real PyYAML parsing; no deployment or service start",
+  "python": "3.13.18",
+  "dependencies": {
+    "Markdown": "3.8.2",
+    "Pillow": "13.0.0",
+    "PyYAML": "6.0.2"
+  },
+  "input_manifests": {
+    "blog-source.sha256": {
+      "sha256": "7caa695faae236d4a9fd183809c9e13eecb7c4609b2e44fd4c5505cc82381e57",
+      "files_verified": 216
+    },
+    "promo-source.sha256": {
+      "sha256": "57d36cc85d8b8e82e6fffb657216fcdbac7c6583e91de48320e7f92a4d2da1e2",
+      "files_verified": 22
+    },
+    "yaml-source.sha256": {
+      "sha256": "51b26b8527f0bee743973ba9174890a0768ae08c89cafbb3802beb32b8fb7544",
+      "files_verified": 1
+    },
+    "font-source.sha256": {
+      "sha256": "7e58961b64acd7cad2361c6f2b1f31fa19bc01113989fa549d7e6749fe01a42d",
+      "files_verified": 2
+    }
+  },
+  "public_cache": {
+    "manifest_sha256": "87f8b7cf2259d794608d648128ed1479908d5f4d77ef34d48f1ed0f35175090c",
+    "files_verified": 44
+  },
+  "build_exit": 0,
+  "public_assets_verified": 26,
+  "promotional_assets_verified": 22,
+  "new_posts": [
+    {
+      "slug": "a-missing-version-broke-verification-of-signed-ard-search-results",
+      "body_sha256": "633efb05af4d82bc1abce37bc42e56b7c28840900c414778ef47dedcfb80a272",
+      "meta_sha256": "04f9ab7f4d2cced852b0f292f6801071f11c99ea71915cad0149a8ad89321246",
+      "page_bytes": 28795
+    },
+    {
+      "slug": "a-privacy-warning-became-bad-advice-in-an-ai-reviewers-draft",
+      "body_sha256": "171ea4edf3103fd21b43ff1f3e51fbc279ef5fed13f46816aa8a524235baf299",
+      "meta_sha256": "d122511267b1b45133f7efe0415efb4a3dd9a35e593cf432ef0116bfc0e5ec7e",
+      "page_bytes": 26457
+    },
+    {
+      "slug": "an-mcp-tool-set-can-gain-a-digest-without-changing",
+      "body_sha256": "f92ac6205f608a52695b853c8e90cf47bf9ea1c4bbc481fb31ba7e234184873b",
+      "meta_sha256": "3d3f4d93d30c8a3fed0e2dcfd37c1dc044cf351337da0e27d19ec2c73f5c872f",
+      "page_bytes": 28775
+    },
+    {
+      "slug": "healthy-containers-hid-a-blocked-mcp-marketplace-connection",
+      "body_sha256": "0a22c898dab04797557b377872847b4eb3e8c604ce6bd8aff38a13818cecf384",
+      "meta_sha256": "992bf9088a44026857c6e4ac5ec60e69f90cef3394ff8519194c6765a42c3358",
+      "page_bytes": 26153
+    }
+  ],
+  "generated_post_pages": 70,
+  "yaml": {
+    "sha256": "f28df7cb6b67165ea65dbb8f743082604e40a8e756da3f024e80221c1ad99706",
+    "server_count": 8,
+    "unique_names": true,
+    "factory_address_verified": true,
+    "services_started": false
+  },
+  "elapsed_seconds": 52.429,
+  "success": true,
+  "current_post_attachments": [
+    {
+      "post": "a-missing-version-broke-verification-of-signed-ard-search-results",
+      "path": "cover-v2.svg",
+      "sha256": "732dac6ab7af5a3550711f57721c0bc81ba81e84318fda18515d7653343899ff"
+    },
+    {
+      "post": "a-missing-version-broke-verification-of-signed-ard-search-results",
+      "path": "cover-v2.png",
+      "sha256": "d01005bf2cb706f4819dd3a936439480a00d3062ecf76f760da40a022ab5a5a5"
+    },
+    {
+      "post": "a-missing-version-broke-verification-of-signed-ard-search-results",
+      "path": "ard-discovery-boundary.svg",
+      "sha256": "573cd63b20e3096289a7db8ac78fe3916e578ed6e6138a8c0e91507112d9e456"
+    },
+    {
+      "post": "a-missing-version-broke-verification-of-signed-ard-search-results",
+      "path": "ard-discovery-boundary.png",
+      "sha256": "62595665bb6cc9f7ade3e785301132759102d6565ff00a1bb3065984746f4b3f"
+    },
+    {
+      "post": "a-missing-version-broke-verification-of-signed-ard-search-results",
+      "path": "ard-subject-binding.svg",
+      "sha256": "09c96f4ee8c0940d3c8cad24f5b45a7f94e92c8325530f38dc10019b8112a603"
+    },
+    {
+      "post": "a-missing-version-broke-verification-of-signed-ard-search-results",
+      "path": "ard-subject-binding.png",
+      "sha256": "68fa4cc80d87b42f634c38549f0b76f6ac4f220daf0bede65bc01b187ddf52fa"
+    },
+    {
+      "post": "a-privacy-warning-became-bad-advice-in-an-ai-reviewers-draft",
+      "path": "cover-v2.svg",
+      "sha256": "293564323999e13df40370f4cc7b086a8c4b877756e132754cbc748817017c01"
+    },
+    {
+      "post": "a-privacy-warning-became-bad-advice-in-an-ai-reviewers-draft",
+      "path": "cover-v2.png",
+      "sha256": "708eff49bd1e595398afa07a0971604787a6daf34813ab83505c5bc7450ee6a1"
+    },
+    {
+      "post": "a-privacy-warning-became-bad-advice-in-an-ai-reviewers-draft",
+      "path": "reviewer-advisory-flow.svg",
+      "sha256": "290479f7c52d94ff6fdeac17e8fdcd5b1e6205ca5cb733f583d5b6a190057d8a"
+    },
+    {
+      "post": "a-privacy-warning-became-bad-advice-in-an-ai-reviewers-draft",
+      "path": "reviewer-advisory-flow.png",
+      "sha256": "85855b07a4bb8d17a648c8628e1b51bd3e66d6f2ddd4e5143a7ee7eec89acbfd"
+    },
+    {
+      "post": "a-privacy-warning-became-bad-advice-in-an-ai-reviewers-draft",
+      "path": "reviewer-letter-points-sample.svg",
+      "sha256": "7415c39ce3f27aa3e7947f1c67dbd4c672aa31a606de12edc1b9fa5380f89847"
+    },
+    {
+      "post": "a-privacy-warning-became-bad-advice-in-an-ai-reviewers-draft",
+      "path": "reviewer-letter-points-sample.png",
+      "sha256": "1b661d7af06e4d787f18dcbbab20961283ad60dfb242f2c678d432fbffbb4ad7"
+    },
+    {
+      "post": "an-mcp-tool-set-can-gain-a-digest-without-changing",
+      "path": "cover-v2.svg",
+      "sha256": "2d0f05cd5b73a475bd45fa9fe5bb79e0f9de17313dec70e030155c91bd41cf78"
+    },
+    {
+      "post": "an-mcp-tool-set-can-gain-a-digest-without-changing",
+      "path": "cover-v2.png",
+      "sha256": "07c94a703da4938952281c97f86b3b069f8fa5227d19815fe496fff5ad498329"
+    },
+    {
+      "post": "an-mcp-tool-set-can-gain-a-digest-without-changing",
+      "path": "histor-digest-fixtures.svg",
+      "sha256": "7dce41b2a4618911adebf3b1bb18f2001b257e0976f7611214a5b57dd7b718b5"
+    },
+    {
+      "post": "an-mcp-tool-set-can-gain-a-digest-without-changing",
+      "path": "histor-digest-fixtures.png",
+      "sha256": "0773d472b0e0ab7b9edbb9b1ed71e398c83498a696cafb3d887d8a6c48ce2cd9"
+    },
+    {
+      "post": "an-mcp-tool-set-can-gain-a-digest-without-changing",
+      "path": "histor-observation-states.svg",
+      "sha256": "498f6a88d9a45d247a1e8352caead3c7a59023244e60e5219f4e54767cf892a8"
+    },
+    {
+      "post": "an-mcp-tool-set-can-gain-a-digest-without-changing",
+      "path": "histor-observation-states.png",
+      "sha256": "7092a46f20f765768f58e862c0f79f020fefbcbe533b135b4fee7ddd5071e156"
+    },
+    {
+      "post": "an-mcp-tool-set-can-gain-a-digest-without-changing",
+      "path": "histor-fixture-results.json",
+      "sha256": "f4ceb7fa3dad9ccd980f0562050461a59bb72b11c9c687f7b1b067f6e65df5b3"
+    },
+    {
+      "post": "healthy-containers-hid-a-blocked-mcp-marketplace-connection",
+      "path": "cover-v2.svg",
+      "sha256": "43860e8549a0f9575a39e7ff6f8594c1d7abdc5f1a08ac50aff2706db179c3da"
+    },
+    {
+      "post": "healthy-containers-hid-a-blocked-mcp-marketplace-connection",
+      "path": "cover-v2.png",
+      "sha256": "bcdf15ec1a6bd77073b6d8bdba32aa2131bc7360b1b06f5e65fb0c0dd2057e80"
+    },
+    {
+      "post": "healthy-containers-hid-a-blocked-mcp-marketplace-connection",
+      "path": "mcp-admission-states.svg",
+      "sha256": "b608334d15de6174f55e454c39988adc2c34fbfadc534c3b782ba5b7357ad6e1"
+    },
+    {
+      "post": "healthy-containers-hid-a-blocked-mcp-marketplace-connection",
+      "path": "mcp-admission-states.png",
+      "sha256": "c8e02bcf4a52411b752a8f747b3c9017c9d780a3d906281a480a6f0331ae67c0"
+    },
+    {
+      "post": "healthy-containers-hid-a-blocked-mcp-marketplace-connection",
+      "path": "tool-definition-fixture-matrix.svg",
+      "sha256": "a7d0b23fe7899e9156a65b9a4b4ceb504aaa4ed102b1660bf1700a3a702f74ad"
+    },
+    {
+      "post": "healthy-containers-hid-a-blocked-mcp-marketplace-connection",
+      "path": "tool-definition-fixture-matrix.png",
+      "sha256": "da480912f5c9c90b27d7484485be039abf4f227ef6dc6ae2660e718e3b333314"
+    }
+  ],
+  "post_image_revisions_verified": 4
+}

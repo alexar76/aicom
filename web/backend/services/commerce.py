@@ -349,6 +349,7 @@ class CommerceService:
         self.conn.execute(
             "CREATE INDEX IF NOT EXISTS idx_stripe_sessions_customer_id ON stripe_checkout_sessions(customer_id)"
         )
+        self._ensure_stripe_payment_intent_column()
         self._ensure_canonical_tx_index()
         self.conn.execute(
             """
@@ -659,6 +660,75 @@ class CommerceService:
         )
         self.conn.commit()
 
+    def _ensure_stripe_payment_intent_column(self) -> None:
+        """The payment intent of a paid checkout: what a refund or a dispute names.
+
+        Run once at start, right after the table is created, so an older database gains the
+        column before any webhook runs. Called from inside a writer it committed half of that
+        writer (review of 2026-11-11).
+        """
+        try:
+            cols = [r["name"] for r in self.conn.execute(
+                "PRAGMA table_info(stripe_checkout_sessions)").fetchall()]
+            if cols and "payment_intent" not in cols:
+                self.conn.execute("ALTER TABLE stripe_checkout_sessions ADD COLUMN payment_intent TEXT")
+            if cols:
+                self.conn.execute("CREATE INDEX IF NOT EXISTS idx_stripe_sessions_payment_intent "
+                                  "ON stripe_checkout_sessions(payment_intent)")
+            self.conn.commit()
+        except Exception as _suppressed_exc:
+            log_suppressed(logger, "non-fatal (web/backend/services/commerce.py)", exc_info=_suppressed_exc)
+
+    @_atomic
+    def apply_stripe_reversal(self, event_id: str, event_type: str, *, payment_intent: str,
+                              session_id: str = "") -> dict:
+        """A refund or a dispute takes back the plan the checkout bought.
+
+        The webhook acted only on completed checkouts, so a customer refunded or charging back
+        kept maker/studio/enterprise with no expiry; the desks and HISTOR end access on the same
+        events (audit 2026-11-11, desks-stripe-7). The customer drops to the best plan another
+        still-paid checkout of theirs bought, else 'free' — but only when the reversed checkout
+        is what put them on their current plan: a plan the operator set by hand is not this
+        payment's to take back.
+        """
+        now = time.time()
+        if self.conn.execute("SELECT 1 FROM stripe_webhook_events WHERE event_id = ?",
+                             (event_id,)).fetchone() is not None:
+            return {"already_processed": True, "plan_reverted": False}
+        session = None
+        if session_id:
+            session = self.conn.execute("SELECT * FROM stripe_checkout_sessions WHERE session_id = ?",
+                                        (session_id,)).fetchone()
+        if session is None and payment_intent:
+            session = self.conn.execute("SELECT * FROM stripe_checkout_sessions WHERE payment_intent = ?",
+                                        (payment_intent,)).fetchone()
+        if session is None:
+            raise LookupError("no recorded checkout for that payment")
+        kind = "disputed" if event_type == "charge.dispute.created" else "refunded"
+        self.conn.execute(
+            "INSERT INTO stripe_webhook_events (event_id, event_type, session_id, processed_at) VALUES (?, ?, ?, ?)",
+            (event_id, event_type, session["session_id"], now))
+        was_paid = session["payment_status"] == "paid"
+        self.conn.execute(
+            "UPDATE stripe_checkout_sessions SET payment_status = ?, payment_intent = COALESCE(payment_intent, ?), "
+            "updated_at = ? WHERE session_id = ?",
+            (kind, payment_intent or None, now, session["session_id"]))
+        reverted = False
+        if was_paid:
+            plans = {"free": 0, "maker": 1, "studio": 2, "enterprise": 3}
+            customer = self.get_customer(session["customer_id"])
+            if customer and customer["plan"] == session["target_plan"]:
+                standing = [r["target_plan"] for r in self.conn.execute(
+                    "SELECT target_plan FROM stripe_checkout_sessions WHERE customer_id = ? AND payment_status = 'paid'",
+                    (session["customer_id"],)).fetchall()]
+                fallback = max(standing, key=lambda p: plans.get(p, 0), default="free")
+                if fallback != customer["plan"]:
+                    reverted = self.set_customer_plan(session["customer_id"], fallback)
+                    logger.error("stripe: %s on %s — plan %s taken back to %s", kind, session["session_id"],
+                                 customer["plan"], fallback)
+        self.conn.commit()
+        return {"already_processed": False, "plan_reverted": reverted, "reversal": kind}
+
     @_atomic
     def apply_stripe_webhook_event(
         self,
@@ -670,6 +740,7 @@ class CommerceService:
         *,
         amount_total: int | None,
         currency: str,
+        payment_intent: str = "",
     ) -> dict:
         if event_type not in ("checkout.session.completed", "checkout.session.async_payment_succeeded"):
             return {"already_processed": False, "plan_upgraded": False}
@@ -694,6 +765,15 @@ class CommerceService:
             return {"already_processed": False, "plan_upgraded": False}
         if session["payment_status"] == "paid":
             return {"already_processed": True, "plan_upgraded": False}
+        if session["payment_status"] in ("refunded", "disputed"):
+            # Stripe does not order its events: the refund or dispute of this checkout was
+            # handled first. The money went back, so the late "completed" grants nothing
+            # (review of 2026-11-11).
+            self.conn.execute(
+                "INSERT INTO stripe_webhook_events (event_id, event_type, session_id, processed_at) VALUES (?, ?, ?, ?)",
+                (event_id, event_type, session_id, now))
+            self.conn.commit()
+            return {"already_processed": False, "plan_upgraded": False, "reversed": session["payment_status"]}
 
         self.conn.execute(
             """
@@ -710,6 +790,9 @@ class CommerceService:
             """,
             (session_status, payment_status, now, session_id),
         )
+        if payment_intent:
+            self.conn.execute("UPDATE stripe_checkout_sessions SET payment_intent = ? WHERE session_id = ?",
+                              (payment_intent, session_id))
 
         plans = {"free": 0, "maker": 1, "studio": 2, "enterprise": 3}
         customer_id = session["customer_id"]

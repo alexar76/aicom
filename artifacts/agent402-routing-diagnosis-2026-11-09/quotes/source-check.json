@@ -1,0 +1,37 @@
+{
+  "checked_local_sources": [
+    {
+      "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/okx-a2mcp/src/app.js",
+      "sha256": "df1fb1704e856fbcea8e79c5670f8c107a50bcb3e07d48026f995a94f8c33c2a",
+      "start_line": 183,
+      "end_line": 195,
+      "fact": "GET/HEAD unpaid quote branch calls paywall guard and terminates; with payment headers it returns405; never calls service.handle.",
+      "excerpt": "    app.all(\"/x402/:service\", (req, res, next) => {\n      if (req.method !== \"GET\" && req.method !== \"HEAD\") return next();\n      if (!paidIds().includes(req.params.service)) return next();\n      const service = services.get(req.params.service) || { id: req.params.service };\n      const refuse = () => res.status(405).set(\"Allow\", \"POST\")\n        .json(failure(service, \"method_not_allowed\", \"use POST with a JSON body; it answers 402 with the price until paid\"));\n      if (req.get(\"payment-signature\") || req.get(\"x-payment\")) return refuse();\n      res.set(\"Allow\", \"POST\");\n      // The paywall matches \"POST /x402/<id>\": shown as a POST, the unpaid GET gets its challenge\n      // (or its 503 while the facilitator is down). Without a payment it never calls next().\n      const method = req.method;\n      req.method = \"POST\";\n      return guard(req, res, () => { req.method = method; refuse(); });"
+    },
+    {
+      "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/okx-a2mcp/src/app.js",
+      "sha256": "df1fb1704e856fbcea8e79c5670f8c107a50bcb3e07d48026f995a94f8c33c2a",
+      "start_line": 197,
+      "end_line": 209,
+      "fact": "Per-caller paid-route allow() quota is registered later on POST only.",
+      "excerpt": "    // The middleware answers 402 for the configured routes until a valid payment arrives, and\n    // settles only when the handler answers below 400 — so a refused request costs nothing.\n    // The per-caller limit runs BEFORE the paywall: the middleware asks the CDP facilitator to\n    // verify every payment it is shown, under our API key, so a limit after it would let anyone\n    // spend our facilitator quota with copied payment headers.\n    app.post(\"/x402/:service\", (req, res, next) => {\n      const service = services.get(req.params.service);\n      if (!service) return next();\n      if (!allow(`x402|${service.id}|${req.ip || \"unknown\"}`)) {\n        return res.status(429).set(\"Retry-After\", \"60\").json(failure(service, \"rate_limited\", `at most ${perMinute} calls a minute`));\n      }\n      return next();\n    });"
+    },
+    {
+      "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/okx-a2mcp/src/app.js",
+      "sha256": "df1fb1704e856fbcea8e79c5670f8c107a50bcb3e07d48026f995a94f8c33c2a",
+      "start_line": 235,
+      "end_line": 243,
+      "fact": "Actual service.handle is in later POST handler; HEAD quote is terminated before it.",
+      "excerpt": "    app.post(\"/x402/:service\", async (req, res) => {\n      const service = services.get(req.params.service);\n      if (!service) return res.status(404).json({ status: \"error\", error: \"unknown_service\", services: [...services.keys()] });\n      const ip = req.ip || \"unknown\";\n      try {\n        const [status, body] = await service.handle(paramsOf(req), { callerId: callerIdFor(ip, callerSecret), paid: true });\n        // A paid call with missing parameters is refused, not answered: 200 would be settled.\n        return res.status(body?.status === \"input_required\" ? 400 : status).json(body);\n      } catch {"
+    },
+    {
+      "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/okx-a2mcp/src/x402.js",
+      "sha256": "5cc3d9623fa3feea46bf654d532c0e236b313e62dedd8b13175525ff52b8c180",
+      "start_line": 306,
+      "end_line": 318,
+      "fact": "Paid route accepts configured exact Base scheme with published price and payTo.",
+      "excerpt": "  const routes = {};\n  for (const id of serviceIds) {\n    const l = LISTING[id];\n    if (!l) continue;\n    routes[`POST /x402/${id}`] = {\n      accepts: { scheme: \"exact\", price: l.price ?? price, network: BASE_MAINNET, payTo },\n      resource: `${publicUrl}/x402/${id}`,\n      description: l.description,\n      mimeType: \"application/json\",\n      serviceName: \"AIMarket\",\n      tags: l.tags,\n      iconUrl: l.icon,\n      extensions: { ...discoveryExtension(declareDiscoveryExtension, id) },"
+    }
+  ],
+  "scope": "Source review of workspace implementation; not a deployment hash attestation. No service handler execution or quota counters queried."
+}

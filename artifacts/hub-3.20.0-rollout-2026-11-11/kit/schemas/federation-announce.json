@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://modelmarket.dev/schemas/federation-announce.json",
+  "title": "Federation Announce Message",
+  "description": "Peer announcement payload for POST /ai-market/v2/federation/announce",
+  "type": "object",
+  "required": ["hub_url", "well_known_url", "signer_public_key", "signature"],
+  "properties": {
+    "hub_url": {"type": "string", "format": "uri"},
+    "well_known_url": {"type": "string", "format": "uri"},
+    "capabilities_count": {"type": "integer", "minimum": 0},
+    "hub_name": {"type": "string"},
+    "signer_public_key": {"type": "string"},
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": {"type": "string", "const": "ed25519"},
+        "value": {"type": "string"}
+      }
+    }
+  }
+}

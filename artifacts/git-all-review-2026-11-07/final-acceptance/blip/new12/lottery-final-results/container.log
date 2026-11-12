@@ -1,0 +1,10 @@
+..............................                                           [100%]
+=============================== warnings summary ===============================
+../deps/websockets/legacy/__init__.py:6
+  /deps/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+------------------- generated xml file: /results/focused.xml -------------------
+30 passed, 1 warning in 5.04s
+{"scope": "lottery", "dependencyMode": "declared-lottery-resolution", "nativePytestExitCode": 0, "sourceUnchanged": true, "networkOperationsAttempted": 0, "passed": true}

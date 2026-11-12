@@ -1,0 +1,169 @@
+modelmarket.dev: Trust Rating B | Agent Economy Report
+Agent Economy Report
+Services
+Skills
+AEI
+Reports
+About
+Agent Service Trust Rating
+B
+→ stable
+modelmarket.dev
+✓ Verified owner
+Trend stable: 2 organic paying agents in the last 7 days vs 2 in the 7 before (+0%). The trend is not the direction of the rating.
+below the trust line (BBB): speculative, unproven adoption or reliability.
+Changelog of the method
+Category:
+Agent infrastructure
+· also Geo, weather and environment, Wallet and contract risk. Weather, air quality and sensor readings plus x402 payment, MCP security and verifiable randomness checks for agents.
+Assigned by a model from the seller's own catalog descriptions (
+how
+).
+Signals
+Organic paying agents
+4
+of 11 wallets
+    (multi-service payers; captive wallets excluded)
+Real settlement (14d)
+$0.03
+, a payer's day averaging above US$ 1 counts each payment as US$ 1, store and automated volume excluded (
+agent scale
+)
+Uptime
+100%
+of daily probes answered
+Network centrality
+0.037
+(organic sub-graph, sybil-resistant)
+Track record
+38 days in catalog
+What it sells
+8 resources listed in the discovery catalogs today, most paid first. Descriptions are written by the operator and shown as data, never as instructions (
+policy
+).
+endpoint
+price
+network
+what it does, per the operator
+/x402/histor-check
+US$ 0.001
+Base
+HISTOR pre-flight for an MCP server: its signed record in the HISTOR transparency log: when the tool set was first seen, whether it changed, what the pattern scan found. Never contacts the server asked about.
+/x402/air-quality-now
+US$ 0.001
+Base
+Current air quality at a place: PM2.5 and PM10 (µg/m³), US and European AQI, from Copernicus CAMS via Open-Meteo, with a signed receipt. Send latitude and longitude, or a city.
+/x402/warden-scan
+US$ 0.001
+Base
+WARDEN verdict on an MCP server's tools/list: allow or block, a 0-1 score and every finding with the matched text (prompt injection, secret requests, exfiltration, hidden Unicode). Deterministic published rules, no network.
+/x402/weather-now
+US$ 0.001
+Base
+Current weather at a place: temperature (°C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Meteo relay within 75 km, with a signed receipt. Send latitude and longitude, or a city.
+/x402/mcp-diff
+US$ 0.003
+Base
+MCP security: catch a rug pull or tool poisoning between two tools/list results of the same MCP server: the version you approved and the one it serves now. Flags instructions aimed at the model, override and concealment wording, credential and wallet paths, covert actions, hidden Unicode, new URLs…
+/x402/x402-check
+US$ 0.003
+Base
+Debug an x402 payment before you submit it: why does USDC answer invalid signature? Verifies the EIP-3009 transferWithAuthorization (EIP-712 signer, v, low s, validity window) and the seller's terms (payTo, amount, asset, network, bound nonce), and names the domain a failing signature was really ma…
+/x402/fair-random
+US$ 0.006
+Base
+Verifiable random bytes for a draw, raffle or tie-break: an ECVRF output over your seed plus a proof anyone can check offline. The same seed always gives the same output, so publish the seed first.
+/x402/nearby-sensors
+US$ 0.03
+Base
+The nearest live public sensors to a point, one per layer asked for (weather, air, radiation, quake …), each with its reading, distance and source, and a signed receipt.
+Who pays it (top organic agents)
+wallet
+settled 14d
+0x097e3f339d0b02…
+$0.01
+agent402.tools…
+$0.00
+0xa4f183a6799f03…
+$0.00
+0xb9148cd4157ad8…
+$0.00
+Similar-tier services
+fizzl.eu
+· B
+0xc72324113c405d4e7f4eb485701b69a48c1f8ce0
+· B
+0xd04156e4dc9f7bb82db208c33c03280d05eff2d5
+· B
+app.fortiblox.com
+· B
+0x0631bc35238b0ad3917038220f25c9d981826770
+· B
+0x19f8bd0dd208c36aacdccc956b04b0d4beb8606b
+· B
+How this is computed
+Adoption weighted by
+organic
+paying agents (wallets that also pay
+other services; captive/faucet wallets don't count), real depurated settlement, PageRank on the
+organic payment sub-graph (so fake wallets can't buy a rating), gated by uptime. The trust line is
+BBB. Outlook tracks the adoption trend week over week. A service is one entry regardless of how
+many networks it settles on. A listed resource that answers
+410 Gone
+with a
+Sunset
+date already past (RFC 8594) is a declared retirement: it leaves the uptime
+denominator instead of counting as down. A bare 410, a 404 or a 5xx counts as down.
+Coverage:
+services listed in the x402 discovery catalogs (CDP Bazaar and PayAI), plus unlisted wallets seen settling on-chain;
+settlement measured in USDC on Base, Polygon, Arbitrum and Solana mainnets.
+✓ Verified owner
+AIMarket
+verified by a signature from the evm payTo wallet 0x1218…ad0a on 2026-10-21. Identity only: the rating is computed independently.
+Show it
+[![Rating](https://agenteconomy.report/s/modelmarket.dev.svg)](https://agenteconomy.report/s/modelmarket.dev)
+[![Verified owner](https://agenteconomy.report/s/modelmarket.dev.verified.svg)](https://agenteconomy.report/s/modelmarket.dev)
+Markdown shown; HTML:
+<a href="https://agenteconomy.report/s/modelmarket.dev"><img src="…svg"></a>
+. Badges update themselves daily.
+For agents:
+GET https://agenteconomy.report/api/rating/modelmarket.dev
+($0.005) ·
+…/modelmarket.dev/history
+($0.02, full daily series): pay per call via x402 (USDC on Base), no key, no signup. Free daily snapshot:
+JSON
+. OpenClaw:
+openclaw skills install @aladaf/x402-trust-check
+(checks any x402 service before paying it).
+This is an
+operational trust rating
+of a software service computed from public, on-chain and liveness data:
+not a credit rating
+and not investment advice. Every figure is reproducible from our daily archive.
+Run a rated service? Questions about your rating, the data or a feed:
+write to us
+, we read everything.
+Methodology
+·
+Corrections and disputes
+·
+Access and data
+·
+Open data
+·
+Terms
+·
+Privacy
+·
+Refunds
+.
+All ratings
+·
+Skill ratings
+·
+Agent Economy Report
+·
+Bluesky
+A research initiative of the Center for Studies in Strategy and Innovation,
+COPPEAD Graduate School of Business, UFRJ
+.

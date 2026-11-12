@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "network": "none",
+  "literalJavaScriptBlocksChecked": 2,
+  "adapterSourceBefore": "git:1ec9bd988:multica/supplier-review/review.mjs",
+  "adapterSourceAfter": "multica/supplier-review/review.mjs",
+  "before": {
+    "check": "injection",
+    "code": "TOOL_DEF_IMPERATIVE",
+    "severity": "low"
+  },
+  "after": {
+    "check": "injection",
+    "code": "TOOL_DEF_IMPERATIVE",
+    "severity": "info",
+    "advisory": true
+  },
+  "filterMatrixCases": 7,
+  "eligibleMatrixCodes": [
+    "schema_low",
+    "real_medium",
+    "real_high"
+  ],
+  "schemaInputControl": "input_not_object eligible",
+  "criticalNormalizationControl": "critical becomes high and remains eligible",
+  "historicalSample": {
+    "date": "2026-11-06",
+    "textokit": 0,
+    "agentExec": 4,
+    "rerun": false,
+    "scope": "Recorded checker eligibility counts, not model-draft quality or seller safety"
+  },
+  "frontmatterPreserved": true
+}

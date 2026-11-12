@@ -1,0 +1,552 @@
+{
+  "formatVersion": 1,
+  "profiles": {
+    "triple": "SHA-256 over RFC 8785, with sorted tool array, projecting name, description and inputSchema; fixture-defined, no cross-implementation pin encoding claim.",
+    "mtl": "HISTOR MTL/1 tool-set digest; additionally projects outputSchema when present.",
+    "readOnlyHint": "Missing and explicit false have the same effective value."
+  },
+  "archive": {
+    "changeId": 25495,
+    "expectedObservedCount": 32,
+    "beforeDigest": "sha256-8+lE4g0m//4edWK0ysMX2r4RymStpy75SKP+dJHXb4o=",
+    "afterDigest": "sha256-PYy2R08yoXf/ucl+UsPs5cX+avWYVb15qS2J0uXLg1Q=",
+    "comparisonScope": "Offline comparison of two archived definitions. Original authorization and launcher details are not retained in these observations.",
+    "checks": [
+      {
+        "tool": "list_console_messages",
+        "classification": "description-only",
+        "changed": [
+          "/inputSchema/properties/pageIdx/description",
+          "/inputSchema/properties/serviceWorkerId/description"
+        ]
+      },
+      {
+        "tool": "list_network_requests",
+        "classification": "enum-narrowed",
+        "enumPath": "/inputSchema/properties/resourceTypes/items/enum",
+        "removedValues": [
+          "websocket"
+        ],
+        "otherChanged": [
+          "/inputSchema/properties/pageIdx/description"
+        ]
+      },
+      {
+        "tool": "wait_for",
+        "classification": "optional-parameter-added",
+        "addedProperty": "visible",
+        "type": "boolean",
+        "default": false,
+        "otherChanged": [
+          "/description"
+        ]
+      }
+    ]
+  },
+  "captures": {
+    "observed-before": {
+      "scope": {
+        "target": "npm:chrome-devtools-mcp",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "archive:unknown",
+        "launchProfile": "archive:unknown"
+      },
+      "complete": true,
+      "file": "observed.before.json"
+    },
+    "observed-after": {
+      "scope": {
+        "target": "npm:chrome-devtools-mcp",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "archive:unknown",
+        "launchProfile": "archive:unknown"
+      },
+      "complete": true,
+      "file": "observed.after.json"
+    },
+    "base": {
+      "scope": {
+        "target": "fixture:local-tools",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "fixture:role-a",
+        "launchProfile": "fixture:default"
+      },
+      "complete": true,
+      "tools": [
+        {
+          "name": "lookup",
+          "description": "Look up an item.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "status",
+          "description": "Read status.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ]
+    },
+    "reordered": {
+      "scope": {
+        "target": "fixture:local-tools",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "fixture:role-a",
+        "launchProfile": "fixture:default"
+      },
+      "complete": true,
+      "tools": [
+        {
+          "inputSchema": {
+            "properties": {},
+            "type": "object"
+          },
+          "description": "Read status.",
+          "name": "status"
+        },
+        {
+          "inputSchema": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "a",
+                  "b"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "description": "Look up an item.",
+          "name": "lookup"
+        }
+      ]
+    },
+    "output-only": {
+      "scope": {
+        "target": "fixture:local-tools",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "fixture:role-a",
+        "launchProfile": "fixture:default"
+      },
+      "complete": true,
+      "tools": [
+        {
+          "name": "lookup",
+          "description": "Look up an item.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              }
+            }
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "name": "status",
+          "description": "Read status.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ]
+    },
+    "hint-explicit-default": {
+      "scope": {
+        "target": "fixture:local-tools",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "fixture:role-a",
+        "launchProfile": "fixture:default"
+      },
+      "complete": true,
+      "tools": [
+        {
+          "name": "lookup",
+          "description": "Look up an item.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              }
+            }
+          },
+          "annotations": {
+            "readOnlyHint": false
+          }
+        },
+        {
+          "name": "status",
+          "description": "Read status.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ]
+    },
+    "hint-true": {
+      "scope": {
+        "target": "fixture:local-tools",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "fixture:role-a",
+        "launchProfile": "fixture:default"
+      },
+      "complete": true,
+      "tools": [
+        {
+          "name": "lookup",
+          "description": "Look up an item.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              }
+            }
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "status",
+          "description": "Read status.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ]
+    },
+    "added-removed": {
+      "scope": {
+        "target": "fixture:local-tools",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "fixture:role-a",
+        "launchProfile": "fixture:default"
+      },
+      "complete": true,
+      "tools": [
+        {
+          "name": "lookup",
+          "description": "Look up an item.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "health",
+          "description": "Read status.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ]
+    },
+    "required-added": {
+      "scope": {
+        "target": "fixture:local-tools",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "fixture:role-a",
+        "launchProfile": "fixture:default"
+      },
+      "complete": true,
+      "tools": [
+        {
+          "name": "lookup",
+          "description": "Look up an item.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          }
+        },
+        {
+          "name": "status",
+          "description": "Read status.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ]
+    },
+    "different-authorization": {
+      "scope": {
+        "target": "fixture:local-tools",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "fixture:role-b",
+        "launchProfile": "fixture:default"
+      },
+      "complete": true,
+      "tools": [
+        {
+          "name": "lookup",
+          "description": "Look up an item.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "status",
+          "description": "Read status.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ]
+    },
+    "partial-page": {
+      "scope": {
+        "target": "fixture:local-tools",
+        "transport": "stdio",
+        "protocolVersion": "2025-06-18",
+        "authorizationScope": "fixture:role-a",
+        "launchProfile": "fixture:default"
+      },
+      "complete": false,
+      "tools": [
+        {
+          "name": "lookup",
+          "description": "Look up an item.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "nextCursor": "fixture-page-2"
+    }
+  },
+  "cases": [
+    {
+      "id": "histor-change-25495",
+      "kind": "histor-observation",
+      "before": "observed-before",
+      "after": "observed-after",
+      "expected": {
+        "comparable": true,
+        "tripleDigestChanged": true,
+        "mtlToolSetDigestChanged": true,
+        "added": [],
+        "removed": [],
+        "tripleChanged": [
+          "list_console_messages",
+          "list_network_requests",
+          "wait_for"
+        ],
+        "outputSchemaChanged": [],
+        "effectiveReadOnlyChanged": []
+      }
+    },
+    {
+      "id": "reordered",
+      "kind": "synthetic",
+      "before": "base",
+      "after": "reordered",
+      "expected": {
+        "comparable": true,
+        "tripleDigestChanged": false,
+        "mtlToolSetDigestChanged": false,
+        "added": [],
+        "removed": [],
+        "tripleChanged": [],
+        "outputSchemaChanged": [],
+        "effectiveReadOnlyChanged": []
+      }
+    },
+    {
+      "id": "output-only",
+      "kind": "synthetic",
+      "before": "base",
+      "after": "output-only",
+      "expected": {
+        "comparable": true,
+        "tripleDigestChanged": false,
+        "mtlToolSetDigestChanged": true,
+        "added": [],
+        "removed": [],
+        "tripleChanged": [],
+        "outputSchemaChanged": [
+          "lookup"
+        ],
+        "effectiveReadOnlyChanged": []
+      }
+    },
+    {
+      "id": "hint-explicit-default",
+      "kind": "synthetic",
+      "before": "base",
+      "after": "hint-explicit-default",
+      "expected": {
+        "comparable": true,
+        "tripleDigestChanged": false,
+        "mtlToolSetDigestChanged": false,
+        "added": [],
+        "removed": [],
+        "tripleChanged": [],
+        "outputSchemaChanged": [],
+        "effectiveReadOnlyChanged": []
+      }
+    },
+    {
+      "id": "hint-true",
+      "kind": "synthetic",
+      "before": "hint-explicit-default",
+      "after": "hint-true",
+      "expected": {
+        "comparable": true,
+        "tripleDigestChanged": false,
+        "mtlToolSetDigestChanged": false,
+        "added": [],
+        "removed": [],
+        "tripleChanged": [],
+        "outputSchemaChanged": [],
+        "effectiveReadOnlyChanged": [
+          "lookup"
+        ]
+      }
+    },
+    {
+      "id": "added-removed",
+      "kind": "synthetic",
+      "before": "base",
+      "after": "added-removed",
+      "expected": {
+        "comparable": true,
+        "tripleDigestChanged": true,
+        "mtlToolSetDigestChanged": true,
+        "added": [
+          "health"
+        ],
+        "removed": [
+          "status"
+        ],
+        "tripleChanged": [],
+        "outputSchemaChanged": [],
+        "effectiveReadOnlyChanged": []
+      }
+    },
+    {
+      "id": "required-added",
+      "kind": "synthetic",
+      "before": "base",
+      "after": "required-added",
+      "expected": {
+        "comparable": true,
+        "tripleDigestChanged": true,
+        "mtlToolSetDigestChanged": true,
+        "added": [],
+        "removed": [],
+        "tripleChanged": [
+          "lookup"
+        ],
+        "outputSchemaChanged": [],
+        "effectiveReadOnlyChanged": []
+      }
+    },
+    {
+      "id": "different-authorization",
+      "kind": "synthetic",
+      "before": "base",
+      "after": "different-authorization",
+      "expected": {
+        "comparable": false,
+        "reason": "scope-mismatch"
+      }
+    },
+    {
+      "id": "partial-page",
+      "kind": "synthetic",
+      "before": "base",
+      "after": "partial-page",
+      "expected": {
+        "comparable": false,
+        "reason": "incomplete-list"
+      }
+    }
+  ]
+}

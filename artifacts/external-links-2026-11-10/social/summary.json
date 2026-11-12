@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-10",
+  "queries": {
+    "submitted_unique": 24,
+    "batches": 6,
+    "blocked_batches": 0,
+    "scope": "Returned web batch results are bounded, not exhaustive per-query/platform searches."
+  },
+  "new_for_checked_local_baseline": [
+    {
+      "source": "Vouch Protocol Agent Trust Index",
+      "url": "https://vouch-protocol.com/agent-trust-index/",
+      "source_measurement_date": "2026-11-09",
+      "classification": "Publisher-reported external static DID/key checks, six exactly attributable ecosystem mentions",
+      "rows": "vouch-ecosystem-rows.json",
+      "row_count": 6,
+      "literal_backlinks_in_rows": 0,
+      "score_scope": "Identity document resolution and key presence/usability, not application security, signed action verification or runtime adoption.",
+      "methodology_mismatch": "Index headline60451/495 differs from methodology11680/157; overall population statistics not adopted."
+    },
+    {
+      "source": "TeckDeck cache churn summary",
+      "url": "https://teckdeck.io/posts/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-prompt-cache-write",
+      "article_date_attributed": "2026-11-03",
+      "classification": "Derived summary of ownDEVarticle, directexternalbacklink; knownoperator, newexactURLinbaseline.",
+      "independent_review": false
+    },
+    {
+      "source": "AgentRank specific new cards",
+      "urls": [
+        "https://agentrank-ai.com/tool/alexar76--metis/",
+        "https://agentrank-ai.com/tool/alexar76--aimarket-hub/",
+        "https://agentrank-ai.com/tool/alexar76--aimarket-agent/"
+      ],
+      "classification": "Automatedcatalog backlinks to exactownGitHubrepositories; publication dates not established.",
+      "new_operator_claim": false
+    }
+  ],
+  "known_candidate_primary_verified": {
+    "source": "AgentRank Attested Memory",
+    "url": "https://agentrank-ai.com/tool/alexar76--attested-memory/",
+    "baseline": "docs/evidence/external-use-pass7-2026-10-30/search-3.json",
+    "count_as_new": false
+  },
+  "excluded": [
+    "Model Context Problems: HISTOR matched history and WARDEN matched Bitwarden, exact identity markers absent",
+    "The AI Toolchain Codex release page: no connection to our projects",
+    "Other AIMarket education/finance and Telegram course names without exact account/domain link",
+    "GitHub wiki/free-programming-books mirrors are distribution of already known source links"
+  ],
+  "new_confirmed_social_user_posts": 0,
+  "new_confirmed_runtime_adoption_or_paid_users": 0,
+  "get_requests": 8,
+  "http200": 8,
+  "complete_bodies": 7,
+  "partial_bodies": 1,
+  "limits": [
+    "Noauthenticatedorprivateplatformsearch",
+    "Noabsenceclaimfromemptymultiquerybatch",
+    "AgentRankcategoryHTMLcapped4MB;individualfourcardsfullyread",
+    "Externaloperatorindependenceorhumaneditorialreviewnotinferredfromlanguageorstyle"
+  ],
+  "external_writes": false,
+  "github_writes": false,
+  "messages": false,
+  "payments": false
+}

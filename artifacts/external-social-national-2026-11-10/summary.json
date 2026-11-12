@@ -1,0 +1,126 @@
+{
+  "captured_date": "2026-11-10",
+  "identity": "alexar76",
+  "scope": "public social and regional exact ecosystem mentions",
+  "counts": {
+    "submitted_web_query_strings": 136,
+    "web_batches": 34,
+    "partially_robots_blocked_batch_query_strings": 12,
+    "noncanonical_brand_probe_strings_excluded_from_product_coverage": 2,
+    "primary_get_attempts": 45,
+    "statuses": {
+      "200": 42,
+      "403": 2,
+      "502": 1
+    },
+    "new_confirmed_independent_mentions": 0,
+    "new_confirmed_foreign_runtime_integrations": 0,
+    "prior_exact_search_candidates_now_primary_read": 2,
+    "known_catalog_reconfirmations_in_root": 2
+  },
+  "novelty": [
+    {
+      "source_url": "https://info-agent-ia.com/en/mcp/aimarket/",
+      "classification": "directory_metadata_and_setup_summary",
+      "novelty": "prior_search_candidate_now_primary_read",
+      "primary_get": 200,
+      "new_independent_mention": false
+    },
+    {
+      "source_url": "https://wpnews.pro/news/i-opened-a-live-agent-marketplace-the-receipts-were-the-product",
+      "classification": "republication_of_owner_DEV_article",
+      "published_at": "2026-09-15T11:19:16Z",
+      "novelty": "prior_search_candidate_now_primary_read",
+      "primary_get": 200,
+      "new_independent_mention": false
+    },
+    {
+      "source_url": "https://habr.com/ru/rss/search/?q=%22modelmarket.dev%22&target_type=posts&order=relevance",
+      "classification": "native_search_endpoint",
+      "novelty": "additional_public_read_path_without_consent",
+      "returned_items": 0,
+      "primary_get": 200,
+      "not_global_absence": true
+    }
+  ],
+  "known_social_deltas": {
+    "hacker_news": {
+      "same_comment_ids": [
+        50205750,
+        50223414
+      ],
+      "new_comment_ids": []
+    },
+    "bluesky": {
+      "own_feed_post_uris": 66,
+      "new_feed_uris": [],
+      "selected_threads": 4,
+      "same_self_reply_uris": 4,
+      "new_external_reply_uris": []
+    },
+    "dev": {
+      "marketplace_comment_ids": 13,
+      "x402_comment_ids": 35,
+      "new_or_removed_ids": [],
+      "additional_selected_empty_threads": 4,
+      "own_articles_baseline": 75,
+      "own_articles_current": 76
+    },
+    "qiita": {
+      "external_comment_id": "a71ae02460f429b7606e",
+      "same_body_and_id_as": "2026-11-09"
+    },
+    "telegram": {
+      "window": 20,
+      "new_own_post_ids": [
+        403,
+        404,
+        405,
+        406,
+        407,
+        408,
+        409,
+        410
+      ],
+      "external_discussion_not_established": true
+    },
+    "known_quincygb_article": {
+      "id": 4913651,
+      "source_url": "https://dev.to/quincygb/eighteen-routes-five-conversations-one-bug-a-customer-found-for-us-6lm",
+      "known_since": "2026-10-29",
+      "historical_reader_comments_now_read": 2,
+      "reader_comments_contain_ecosystem_markers": false
+    }
+  },
+  "branches": [
+    {
+      "path": "root/report.ru.md",
+      "web_queries": 44,
+      "gets": 5
+    },
+    {
+      "path": "regions/summary.md",
+      "web_queries": 28,
+      "gets": 4
+    },
+    {
+      "path": "east-asia/summary.md",
+      "web_queries": 32,
+      "gets": 10
+    },
+    {
+      "path": "social/summary.md",
+      "web_queries": 32,
+      "gets": 26
+    }
+  ],
+  "limits": [
+    "Search results are shared bounded batch responses; site filters and exact phrases may be expanded.",
+    "403/502 and robots constraints are unknown coverage, not zero mentions.",
+    "Own posts, translations, copies, registries, setup examples and independent deployments are separate classifications.",
+    "Language, country TLD and query language are not operator-nationality or audience evidence.",
+    "Private communities, logged-in feeds and the full national internet were not searched exhaustively."
+  ],
+  "report": "report.ru.md",
+  "verification": "verification.json"
+}

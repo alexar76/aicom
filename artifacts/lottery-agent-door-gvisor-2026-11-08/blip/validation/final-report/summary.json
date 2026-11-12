@@ -1,0 +1,137 @@
+{
+  "baseSourceCommit": "cf000311dbdbc0dc8d080d5054c4b9cccdcfd3a8",
+  "cleanup": {
+    "allAnvilAndAgentChildProcessesStopped": true,
+    "archivedHistoricalScriptExecuted": false,
+    "format": "aicom.agent-validation-cleanup/v1",
+    "localProjectRuntimeExecuted": false,
+    "localTemporaryTransportFilesCreated": false,
+    "noStateDumpOrWalletFilesExported": true,
+    "ownedContainersRemaining": 0,
+    "productionWalletOrChainMounted": false
+  },
+  "declaredAgentDependencies": [
+    {
+      "requirement": "web3>=7.15,<8",
+      "resolvedVersion": "7.16.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "eth-account>=0.14,<0.15",
+      "resolvedVersion": "0.14.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "httpx>=0.26",
+      "resolvedVersion": "0.28.1",
+      "satisfied": true
+    }
+  ],
+  "ethAbiVersion": "5.2.0",
+  "format": "aicom.lottery-agent-final-acceptance/v1",
+  "legacyControl": {
+    "anvilBinarySha256": "7cae0864d041c3f1d4d60fd3a155d97c6cc5d980fd2299c142a79811dcd8a5a9",
+    "anvilVersion": "anvil Version: 1.3.1-v1.3.1\nCommit SHA: 08d3a4ad4d78b62bcb897350803bf96fc2cf6cc9\nBuild Timestamp: 2025-08-12T07:41:29.787024592Z (1754984489)\nBuild Profile: maxperf",
+    "boundedTimeoutSeconds": 100,
+    "creationCodeSha256": "6ffd56874292941de7168435b6bfa174cb538638422eaddd42f631a5aa275fde",
+    "deployedRuntimeSha256": "94fa4ce871bc93fcba32f00fb2dc49b0de228f9fa834a0d0064108f7b38d6acf",
+    "legacySourceSha256": "6866ae731c24e699facb1d4cf4efaecae837e1dfb76cfdd5db9a7f8d71d0d854",
+    "liveBytecodeIdentityClaim": false,
+    "missingGetter": {
+      "emptyData": true,
+      "exception": "ContractLogicError"
+    },
+    "observations": {
+      "newEntry": {
+        "nonce": 1,
+        "paidBy": 2000000000000000,
+        "round": 2
+      },
+      "nextRound": {
+        "nonce": 3,
+        "paidBy": 2000000000000000,
+        "round": 3,
+        "sameAgentProcess": true
+      },
+      "old": {
+        "missingGetterErrorObserved": true,
+        "nonce": 0,
+        "revertLogCount": 2,
+        "round1PaidBy": 0
+      },
+      "refund": {
+        "netSyntheticWeiReturned": 1943605616820320,
+        "nonce": 2,
+        "paidBy": 0,
+        "round": 2
+      }
+    },
+    "openzeppelinArchiveSha512": "2f2e9296c549de68fe6f5f16dd1f2036e7c1edd4c8093d74e5f261a1d1801a0c82da8aa704086a4a234327c57c0cb634e5c0b3f3518b234094e6f358035102ff",
+    "openzeppelinVersion": "5.6.1",
+    "runtimeBytes": 18663,
+    "solcBinarySha256": "9a0fb7e0db2c0641dbae1c5cc645dc686820c83af516226abb1c0a2f76636f25",
+    "solcVersion": "solc, the solidity compiler commandline interface\nVersion: 0.8.28+commit.7893614a.Linux.g++",
+    "syntheticOnly": true
+  },
+  "noLocalProjectExecution": true,
+  "passed": true,
+  "portableCITestBlob": "4157d34d4acd8c3fbb438967d26e7ae31be50a94",
+  "restartScope": "Entered/paid/done/tries are process memory. Continuous-process round changes were tested; restart persistence or safe-at-any-moment behavior is not claimed.",
+  "shellSyntax": {
+    "executed": false,
+    "nativeExitCode": 0,
+    "script": "artifacts/lottery-agent-door-2026-11-08/isolated_check.sh"
+  },
+  "sourceTree": "675bf9e766375f834b235118c05e5865670e3aef",
+  "sourceWitness": {
+    "actualAnvilAgentMainMatchesFinalCIBlob": true,
+    "afterRecomputedNativeGitMapSha256": "fdfbb91076b9ba32732ba57fc90328768a7e7556f06669fd3e55108cdf9ab3f9",
+    "allCurrentBlobsMatched": true,
+    "beforeEvidence": "Unit startup verified every exact input Git blob and exact file-set; read-only source mount.",
+    "beforeExpectedNativeGitMapSha256": "fdfbb91076b9ba32732ba57fc90328768a7e7556f06669fd3e55108cdf9ab3f9",
+    "format": "aicom.agent-source-before-after-witness/v1",
+    "newMainGitBlob": "6550c5c2a7fa9ecd8b4eac0138ed10821182fefb",
+    "oldAgentMatchesVerifiedPredecessorBlob": "78df95d7ff58942c0d9bfa8471f1d93654038729",
+    "selectedFiles": 49,
+    "sourceTree": "675bf9e766375f834b235118c05e5865670e3aef",
+    "sourceUnchanged": true,
+    "unitComparedBeforeAndAfterSHA256Maps": true
+  },
+  "static": {
+    "addedPythonPaths": [
+      "lottery/agent/tests/test_agent_doors.py",
+      "lottery/agent/tests/test_agent_loop.py"
+    ],
+    "allOtherPythonBlobsUnchanged": true,
+    "baselinePlusDeltaOnly": true,
+    "changedPythonFilesLinted": 3,
+    "derivedEligible": 6290,
+    "finalPythonBlobs": 6618,
+    "findings": 0,
+    "modifiedPythonPaths": [
+      "lottery/agent/ailottery_agent/__main__.py"
+    ],
+    "originalUnchangedExclusions": 328,
+    "removedPythonPaths": [],
+    "ruffVersion": "0.15.15",
+    "rules": [
+      "E9",
+      "F63",
+      "F7",
+      "F82"
+    ]
+  },
+  "tests": {
+    "archivedHistoricalNegativePassed": 1,
+    "counting": "78 project tests plus one archived-only historical negative; no duplicate positive controls.",
+    "errors": 0,
+    "existingDevKeyGuardCases": 58,
+    "failures": 0,
+    "nativePytestTotal": 79,
+    "newDoorCases": 15,
+    "newPortableCILoopCases": 5,
+    "projectPassed": 78,
+    "skips": 0
+  },
+  "verifiedPredecessor": "6f86974"
+}

@@ -1,0 +1,530 @@
+<!DOCTYPE html> 
+<html data-bs-theme="auto" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Search IETF mail list archives">
+    <title>[Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery</title>
+
+    
+
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.46.0/fontawesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.46.0/mlarchive/css/bootstrap_custom.css">
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.46.0/mlarchive/css/styles.css">
+
+    <script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/js/bs-theme.js"></script>
+
+    
+
+    
+
+</head>
+
+<body>
+
+<!-- Container -->
+<div id="container">
+
+    <header class="navbar navbar-expand-md navbar-dark fixed-top px-3 py-0">
+        <div class="container-fluid">
+            <a class="navbar-brand p-0" href="/">
+                <img alt="IETF Logo" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/images/ietflogo-small-transparent.png">
+                <span class="navbar-text d-none d-md-inline-block">
+                
+                Mail Archive
+                
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-main" aria-controls="navbar-main" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            
+            <div id="navbar-main" class="navbar-header collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item d-none d-lg-inline">
+                        <a class="nav-link" href="https://www.ietf.org/search/">Search www.ietf.org</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-inline">
+                        <a class="nav-link" href="https://datatracker.ietf.org">Search Datatracker</a>
+                    </li>
+		            <li class="nav-item d-none d-lg-inline navbar-text pipe"></li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbar-help" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
+                        <div class="dropdown-menu" aria-labelledby="navbar-help">
+                            <a class="dropdown-item" href="/arch/help/">Search Syntax</a>
+                            <a class="dropdown-item" href="/docs/api-reference/">API Reference</a>
+                        </div>
+                    </li>
+
+                    
+                    
+                    
+                    
+                    
+                    <li class="nav-item dropdown me-2">
+                        <a id="nav-settings-anchor" class="nav-link dropdown-toggle" href="#" id="navbar-settings" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbar-settings">
+                            <li><a id="toggle-static" class="dropdown-item" href="#">Turn Static Mode On</a></li>
+                        </ul>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item">
+                        
+                            <a class="nav-link" href="/oidc/authenticate/" rel="nofollow">Sign in</a>
+                        
+                    </li>
+                    
+                </ul>
+            </div> <!-- navbar-header -->
+            
+        </div> <!-- container-fluid -->
+    </header>
+
+            <!-- 
+            <noscript>
+                <p class="navbar-text"><small>Enable Javascript for full functionality.</small></p>
+            </noscript>
+            -->
+
+        <!-- Django Messages -->
+        
+
+
+    <!-- Content -->
+    <div id="content">
+        
+
+<div class="container-fluid">
+
+  <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary rounded shadow-sm navbar-msg-detail my-2">
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#id-navbar-top" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-detail px-5" id="id-navbar-top">
+      <ul class="navbar-nav">
+        <li class="nav-item" title="Previous by date">
+          
+            <a class="nav-link previous-in-list" href="/arch/msg/dawn/R1Ga6qDX0E2jy7aHNWkeyAsu2AM/" aria-label="previous in list">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Date Index">
+          <a class="nav-link date-index" href="/arch/browse/dawn/?index=6m1_jcurI0F0_LadffO71f0d4m8">Date</a>
+        </li>
+        <li class="nav-item" title="Next by date">
+          
+            <a class="nav-link next-in-list" href="/arch/msg/dawn/6PAuYWoAtcq0vO-PztlxQmfZ5qQ/" aria-label="next in list">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Previous in thread">
+          
+            <a class="nav-link previous-in-thread" href="/arch/msg/dawn/R1Ga6qDX0E2jy7aHNWkeyAsu2AM/" aria-label="previous in thread">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Thread Index">
+          <a class="nav-link thread-index" href="/arch/browse/dawn/?gbt=1&amp;index=6m1_jcurI0F0_LadffO71f0d4m8">Thread</a>
+        </li>
+        <li class="nav-item" title="Next in thread">
+          
+            <a class="nav-link next-in-thread" href="/arch/msg/dawn/sIMH9X7I30g1m7_1klGddVM8Kb4/" aria-label="next in thread">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+  
+  <div class="row">
+
+    <div class="msg-detail col-md-8 pt-3" data-static-date-index-url="/arch/browse/static/dawn/2026-11/#6m1_jcurI0F0_LadffO71f0d4m8" data-static-thread-index-url="/arch/browse/static/dawn/thread/2026-11/#6m1_jcurI0F0_LadffO71f0d4m8" data-date-index-url="/arch/browse/dawn/?index=6m1_jcurI0F0_LadffO71f0d4m8" data-thread-index-url="/arch/browse/dawn/?gbt=1&amp;index=6m1_jcurI0F0_LadffO71f0d4m8">
+      
+      <div id="msg-body" data-message-url="https://mailarchive.ietf.org/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8/">
+    
+    <div id="message-links">
+      
+        <a href="mailto:dawn@ietf.org?subject=Re: [Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery" class="reply-link" title="Reply"><i class="fas fa-reply fa-lg"></i></a>
+      
+      
+        <a href="/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8/download/" class="download-link" rel="nofollow" title="Message Download"><i class="fa fa-download fa-lg"></i></a>
+      
+      
+        <a href="https://mailarchive.ietf.org/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8/" class="detail-link" title="Message Detail"><i class="fa fa-link fa-lg"></i></a>
+      
+    </div>
+    
+    <h3>[Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery</h3>
+    <p id="msg-info" class="msg-header">
+      <span id="msg-from" class="pipe">Linda Dunbar &lt;linda.dunbar@futurewei.com&gt;</span>
+      <span id="msg-date" class="pipe">Tue, 03 November  2026 21:17 UTC</span>
+    </p>
+    <div id="msg-header" class="msg-header">
+      <p>
+      
+        Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazlp170130001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c10c::1])	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)	 key-exchange secp256r1 server-signature ECDSA (prime256v1) server-digest SHA256)	(No client certificate requested)	by mx.ietf.org (Postfix) with ESMTPS id 1737147	for &lt;dawn@ietf.org&gt;; Tue, 03 Nov 2026 21:17:16 +0000 (UTC)<br />
+      
+        Authentication-Results: mx.ietf.org;	dkim=pass header.d=Futurewei.com header.s=selector2 header.b=cmyUlWhR;	spf=pass (mx.ietf.org: domain of linda.dunbar@futurewei.com designates 2a01:111:f403:c10c::1 as permitted sender) smtp.mailfrom=linda.dunbar@futurewei.com;	dmarc=pass (policy=reject) header.from=futurewei.com;	arc=pass (&quot;microsoft.com:s=arcselector10001:i=1&quot;)<br />
+      
+        ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none; b=sXeqJZ7FgZO0Uz1VVL+7I5TDSfYvtwiOAXty76gdbBNWGN/SKb/sOio3HzEmmSOlMdF885//CI8bp50xMGv2+jubtHqmhwjvyAelzivP4VcynGKiAj2kDFOiGEr421gYssBpElR9jbATmL7GC9Ke65FD/tB/biT0oSNWvxV2EXFnxfZSoOdT6Srx8ZH1ddEnsgl9I3ZW4sQZMzBuAQVs+xid+Z0izKvGqK6PAx8C4Nx3eAy5CC85VPslp1KboursCORWBIX7wv+an9HBGvtQv9Ndayr1lrNEO2U5Ro4NA4YuMgi7p5oAhYpY+ZefLXr1tOfBXEwPxHGQ6fubB1vOLw==<br />
+      
+        ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; s=arcselector10001; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1; bh=xThoK1LChyTz8ALTmhOjYufw2HouD7PEQD7ZUSUBZ0s=; b=C2kzn2pMKuYJVF4XFUARRhhFoS++aqREA1/bJQYRb5R30iSyI276tey3GQYS2SXHcfj19j39n9FGiU1dTEO2P3htuU2BDZETAAl194hy1ygfpDXP0/CcJ3y9ydMHC3KixkaE+CpUQyQ5dqt104nsV5ZM+vj/4IDdmpDT2tSvMA/3JCeAn2uz4C8lU8NwPQrZ5xdBrczdM0xW/lJoF+nm1zANNkmjlK/lXbrrjbvs5ix3Xb+qRVGjeJqCVlmkQAdZ/De1cptWck4101kkUG3cGs/GnowquzUXZXY33omH98fGXZBxW0u7EaK0ufwfxfNNrVHoB9cWDHQ1rz5fBW7e6w==<br />
+      
+        ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass smtp.mailfrom=futurewei.com; dmarc=pass action=none header.from=futurewei.com; dkim=pass header.d=futurewei.com; arc=none<br />
+      
+        DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Futurewei.com; s=selector2; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=xThoK1LChyTz8ALTmhOjYufw2HouD7PEQD7ZUSUBZ0s=; b=cmyUlWhRWqteuf5RRgP4uMk0nuZDz7LPpf3REmBNb6h2RaDDxogvNal72ZOhPXiv2Bta26mC4fk6Dfszz0nOvBmh8S9bVgUxdH6QuzUKQfjFATxw+2utpxuRhhIs4UDEbTqKdB0QodoOjDejgESIYU3Omx3Ewz3/pZrrLluCkOs=<br />
+      
+        Received: from BYAPR13MB4311.namprd13.prod.outlook.com (2603:10b6:a03:a6::25) by FT1PR13MB994406.namprd13.prod.outlook.com (2603:10b6:170:f::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026 21:17:10 +0000<br />
+      
+        Received: from BYAPR13MB4311.namprd13.prod.outlook.com ([fe80::f1ac:a440:7356:ae65]) by BYAPR13MB4311.namprd13.prod.outlook.com ([fe80::f1ac:a440:7356:ae65%3]) with mapi id 15.21.0569.011; Tue, 3 Nov 2026 21:17:10 +0000<br />
+      
+        From: Linda Dunbar &lt;linda.dunbar@futurewei.com&gt;<br />
+      
+        To: Александр Артамохов &lt;alexar76@rambler.ru&gt;, &quot;adrian@olddog.co.uk&quot; &lt;adrian@olddog.co.uk&gt;, &quot;dawn@ietf.org&quot; &lt;dawn@ietf.org&gt;<br />
+      
+        Thread-Topic: [Dawn] Updated draft-dunbar-dawn-infra-assisted-discovery<br />
+      
+        Thread-Index: Ad1pu5GX/XXLYQKaRyyqL8z7fdMQAwACW76AAITctOA=<br />
+      
+        Date: Tue, 03 Nov 2026 21:17:10 +0000<br />
+      
+        Message-ID: &lt;BYAPR13MB431137436640A04456BB8C4885692@BYAPR13MB4311.namprd13.prod.outlook.com&gt;<br />
+      
+        References: &lt;BYAPR13MB4311E6A1D931CB8A6778A9DC856B2@BYAPR13MB4311.namprd13.prod.outlook.com&gt; &lt;dc2e20cee9bab19a2be3f118ce3537c1@mail.rambler.ru&gt;<br />
+      
+        In-Reply-To: &lt;dc2e20cee9bab19a2be3f118ce3537c1@mail.rambler.ru&gt;<br />
+      
+        Accept-Language: en-US<br />
+      
+        Content-Language: en-US<br />
+      
+        X-MS-Has-Attach: <br />
+      
+        X-MS-TNEF-Correlator: <br />
+      
+        x-ms-publictraffictype: Email<br />
+      
+        x-ms-traffictypediagnostic: BYAPR13MB4311:EE_|FT1PR13MB994406:EE_<br />
+      
+        x-ms-office365-filtering-correlation-id: 8c87e58f-5c37-4ffc-635a-08df39efd2a5<br />
+      
+        x-ms-exchange-senderadcheck: 1<br />
+      
+        x-ms-exchange-antispam-relay: 0<br />
+      
+        x-microsoft-antispam: BCL:0;ARA:13230040|4022899009|23010399003|376014|1800799024|366016|6133799003|10067099003|22082099003|18002099003|8096899003|13003099007|38070700021|261021123027099003|56012099006|261021121427099003|4143699003|11063799006|261022075727099003|261028144727099003|261102123227099003|261026140227099003|261026121527099003|261009223027099003|261022105027099003;<br />
+      
+        x-microsoft-antispam-message-info: 8DLpnl7kgCxDY5wY75g5HznY/cyc3AIIDO6WfUPbKkMNtqj8IQWDfIatBjg8/85wueouSeGGHHerS6xMeKmutQP/BNLxP/kki9jZwwYCbgkour+1ZhnURefQ/FDEbplplf0O0B6Isi5QtXaL4dLu3lx6/4c2t7QKYz6NgO8e+kr0h8UANRXlKiE9EUb4OfZcBfPECl7CFLCmgPOCopxX4833f25HrX+01HCcbB8J1VzC87o/v7BreWEB/ao5nVYirVGRCVKw9heMEwpbgWSl5FCYTih6Jbae3S21zPpYeqAuVFvDuGh6Qq+K+KYx5004YMeWJpOVLmXwZZAUJW3q2fX8MD4E8YZiUTFZqvvTvc+3dxwBBktYmhGRLQR6co6jdt3zTWqpboYM0MzdNbFuTwSqkVKwEn2aLzcdguyb7jlAzTkhAUZsgiSPFuU+Kre2kIAatyPgQ0/1ON2aqX+LONc6yJUyRmnFV7kLxwXtx9MDcmQ9EFCuJiANoxk/3XiG56DOI6ANDcI2Jp0eZkS98cXYPVzhVEUyMdrw5RAHFE1XRDIY6hNuDEunUlJ4/QYFQflUKiqvrou8SjS9yQwLN92QaDhfhnM21/btFQYsaNimUMpGIuAz7eo1A1CDPt0rDYxoI0bkjUQi3ZUVm4BYMZRxWKLbHhIp4VGtkSOg2BXdthgljHxY+U9QtStXLYIAQR32FfTN6W1YlxOpTkaqkDr80UiVYT0SjYpqDRsFCBg=<br />
+      
+        x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR13MB4311.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(4022899009)(23010399003)(376014)(1800799024)(366016)(6133799003)(10067099003)(22082099003)(18002099003)(8096899003)(13003099007)(38070700021)(261021123027099003)(56012099006)(261021121427099003)(4143699003)(11063799006)(261022075727099003)(261028144727099003)(261102123227099003)(261026140227099003)(261026121527099003)(261009223027099003)(261022105027099003);DIR:OUT;SFP:1102;<br />
+      
+        x-ms-exchange-antispam-messagedata-chunkcount: 1<br />
+      
+        x-ms-exchange-antispam-messagedata-0: W9fKKDD9BpkB3AVUFk9VYfUlPaV1UYyTKS03rfCgSV3Gp0CauTuPa27UcVw5L6cWe8KZ1uFvvGV7u0WhXu94rdYzGKy7kqlKqx7+CC6ZVQsLBxUviI6ui7YKi5KS+f4BqTh0nLQYpSnE9Rac3a2YLkcZ4vC7kW/YzVI93z2dCW13u8tBJLNntQVX6zemI96AdT8QJp2kCk9osRGyejmE4sFtFDGMFIzDo/aJBAHK7ICghqn4E/0CshdmZ55yY5k9TO2RpEVqVGusfSgPlMaVnSoitcUyWALDk2363v6PN33JMUS/RenIfyMqzD6sdiQ6Kq1RWFpgnHoZR1S1gyAIuU39aAw2Xhi3EN68hc8sF805CrNLXmI3yr3BdHnTBysMXH3nYuGF6HP1J2XuRts3AM3xiZ1mPWKuYx7L3/0Yc6RowK1LOn0avNKM1PUc3EQVeLBNW6QltP7tkePGBi4Jl2ZebIqqP3bnNjAnF3ZOwmGAou0/tHfVaxzoT3Rp8pgJWUqSJAGh29N1A4E1q2/+FGjkuU7P1DthcEIW5dVeuqSxLjUJjWXAd+BXDNoYlXov5c1kfG5n5SczOISyA6n7zp7lZV4EVQD7X2W3g/CJO1Z5C/6C75ry3oIe8hHfZaHUl+r44EWeBAsQX+rOoAKi5ljx0CSOYhTmvRpYmfWDBlT6FpLsQ7DVO9SKMbqikelqX3FF5bKGazp0DS/+BDL6CoJTDqGsqTPopIavjsEOdf57xDIFaLZAMBlLs/UCmmQkDWvOcExAnliD/QeZ7ge6Cw5hMLiT9CnDYVobYXbzTAyehsg2DiZpsQ79m2JuMJHjhIJhkDbgS+MZzTTM1smekzVMNxSukLZFVZTWsh3ctMYxQ+IEue2g2gi4bNPDSjs34knCzyyOozVBTkClWq//GAA/xA2nP+Cc8KyCMtxlx4R+npAZc995aaHxBkGkM0u0YOGDbJZRS7Ebov1D9zostOvBiLQs372P57TVuiC+B2aDbrzNyyZfWLgdEtWmdDCWXXFxTICnMRhrZCqr8zWSOEY8YMrNiWKl60SXR2IteCMpDjWPU3Hdxm/vcrrFukgG3+z0UMmvUQi2RPh4tE0LLcnu9lghKMj8wgKj1Ru2td4jxbvApeJephuya/P2Q6SgwjP3BXruhg+sRbXVX4XVQKhjREqgzJQvY8wvdTL6IWjO93mjNfBwvDrGfCiUO9Sl44qdwqOo2DAqmgEBd5iIiqm+/FUWPM9DjbyaVkZc0pqaWyk2mM2W/NSCfk5tyHvwbCsY2o6JOCWG8OppeXB2N1cd763vHaRt7l7MlnmEa+HT6ft0IhN0FSJ+FsxREm8Y+uz1L5laVlOU4hgMevbehce5qY3mG4jEqPIKMLTppjsP22YGz2FT389JHg2z2FjYpeayPk6qa+G0R1jbLolv6twRUvMFwZ2vD3OBGTHYhfoLh3CoaWLb7HmjEt91uLpsL7tjFqCxmkE1nBdXEvm4SognayV6c4uKY3n/EBrxFH8HtXpCqWIu0F31wja7x23co80cTCXOFSrUoVrCFoVepiJXeHgL334K2Q3jmRyAs+gsOw7UIBCt45HJpaQG30FxT/pAWshEZXOXSfW4oMhT9W7/5/0VQMak7NdE9jtp97kpmXTxT35638t81mCdOeYZ9t6LmfbKaEcGxmQFC7O8hDIgo1bJ368zQT7rV9WsSy1YVP3pXK+YdXs3jEGFzAlO<br />
+      
+        Content-Type: multipart/alternative; boundary=&quot;_000_BYAPR13MB431137436640A04456BB8C4885692BYAPR13MB4311namp_&quot;<br />
+      
+        MIME-Version: 1.0<br />
+      
+        X-OriginatorOrg: Futurewei.com<br />
+      
+        X-MS-Exchange-CrossTenant-AuthAs: Internal<br />
+      
+        X-MS-Exchange-CrossTenant-AuthSource: BYAPR13MB4311.namprd13.prod.outlook.com<br />
+      
+        X-MS-Exchange-CrossTenant-Network-Message-Id: 8c87e58f-5c37-4ffc-635a-08df39efd2a5<br />
+      
+        X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2026 21:17:10.3498 (UTC)<br />
+      
+        X-MS-Exchange-CrossTenant-fromentityheader: Hosted<br />
+      
+        X-MS-Exchange-CrossTenant-id: 0fee8ff2-a3b2-4018-9c75-3a1d5591fedc<br />
+      
+        X-MS-Exchange-CrossTenant-mailboxtype: HOSTED<br />
+      
+        X-MS-Exchange-CrossTenant-userprincipalname: 0abFoxjfK7nqFH3SYMg0wyoeUTa/mKu+Cg5p/xl98DhRPM0aw0Wo8KhgaVFh8cUOA+Z/VpsIRtdb7OKN0t7KpQ==<br />
+      
+        X-MS-Exchange-Transport-CrossTenantHeadersStamped: FT1PR13MB994406<br />
+      
+        X-Spamd-Bar: ------------------------<br />
+      
+        Message-ID-Hash: ONYXYMTDHE73M6YDFSIM7TFXVANTGFOL<br />
+      
+        X-Message-ID-Hash: ONYXYMTDHE73M6YDFSIM7TFXVANTGFOL<br />
+      
+        X-MailFrom: linda.dunbar@futurewei.com<br />
+      
+        X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; loop; banned-address; emergency; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; digests; suspicious-header<br />
+      
+        X-Mailman-Version: 3.3.10<br />
+      
+        Precedence: list<br />
+      
+        Subject: [Dawn] Re: Updated draft-dunbar-dawn-infra-assisted-discovery<br />
+      
+        List-Id: &quot;The list is for discussion of the scope, use cases, requirements, and solutions for discovery of entities (e.g., tasks, AI agents, or endpoints) using IETF technologies.&quot; &lt;dawn.ietf.org&gt;<br />
+      
+        Archived-At: &lt;https://mailarchive.ietf.org/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8&gt;<br />
+      
+        List-Archive: &lt;https://mailarchive.ietf.org/arch/browse/dawn&gt;<br />
+      
+        List-Help: &lt;mailto:dawn-request@ietf.org?subject=help&gt;<br />
+      
+        List-Owner: &lt;mailto:dawn-owner@ietf.org&gt;<br />
+      
+        List-Post: &lt;mailto:dawn@ietf.org&gt;<br />
+      
+        List-Subscribe: &lt;mailto:dawn-join@ietf.org&gt;<br />
+      
+        List-Unsubscribe: &lt;mailto:dawn-leave@ietf.org&gt;<br />
+      
+      </p>
+    </div>
+    <div class="msg-payload">
+      
+          <pre class="wordwrap">Aleksandr,
+
+Thanks. I agree they are complementary.
+
+Per the DAWN charter, the discovered AI resource may itself be a service such as a catalog that furthers the discovery process. So bootstrap discovery can return the minimum public information needed to reach such a catalog.
+
+I would still keep the metadata reference resource-specific, e.g., pointing to an Agent Card. Catalog search, capability comparison, ranking, or selection after reaching the catalog remain outside the bootstrap scope.
+
+Best regards,
+Linda
+
+From: Александр Артамохов &lt;alexar76=40rambler.ru@dmarc.ietf.org&gt;
+Sent: Saturday, October 31, 2026 10:51 PM
+To: <a href="mailto:adrian@olddog.co.uk">adrian@olddog.co.uk</a>; <a href="mailto:dawn@ietf.org">dawn@ietf.org</a>; Linda Dunbar &lt;linda.dunbar@futurewei.com&gt;
+Subject: RE: [Dawn] Updated draft-dunbar-dawn-infra-assisted-discovery
+
+Hi Linda,
+
+Thank&#x27;s for the update.
+
+The clear boundary in -03 is helpful: bootstrap discovery returns the minimum needed to reach an agent, while catalog search, ranking and cost-based selection stay out of scope.
+That excluded part is what draft-artamokhov-dawn-marketplace-discovery addresses: how a requester finds catalogs (marketplaces) that list agents and tools across operators, through a well-known URI, before any selection happens.
+The two seem complementary: your model finds an entry point inside a managed network, and a catalog is used when the requester has to search beyond it.
+
+One question: should the metadata reference returned by bootstrap discovery be allowed to point to such a catalog, or do you see catalogs as entirely separate from bootstrap discovery?
+
+Best regards, Aleksandr Artamokhov
+
+01.11.2026, 05:47, Linda Dunbar &lt;linda.dunbar=40futurewei.com@dmarc.ietf.org&lt;mailto:linda.dunbar=40futurewei.com@dmarc.ietf.org&gt;&gt;
+Hi all,
+
+Thanks to Adrian for the detailed comments, and to everyone for the helpful discussion on the DAWN mailing list.
+
+We have updated draft <a href="https://datatracker.ietf.org/doc/draft-dunbar-dawn-infra-assisted-discovery/" rel="nofollow">https://datatracker.ietf.org/doc/draft-dunbar-dawn-infra-assisted-discovery/</a> . The revision aligns the terminology more closely with the DAWN terminology draft, in particular around MVD/MDI and the role of requester context. It also clarifies that the infrastructure-assisted model supports bootstrap discovery by contributing current resource state and requester context, without defining registration, catalog search, semantic matchmaking, ranking, or resource selection.
+
+The updated draft also distinguishes more clearly between DAWN bootstrap discovery and subsequent retrieval of richer agent-native metadata such as an A2A Agent Card.
+
+Comments and suggestions are very welcome.
+
+Best regards,
+Linda
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_______________________________________________
+Dawn mailing list -- dawn@ietf.org&lt;/compose&gt;
+To unsubscribe send an email to dawn-leave@ietf.org&lt;/compose&gt;
+</pre>
+
+      
+    </div>
+    <div>
+      
+    </div>
+</div> <!-- msg-body -->
+
+
+
+
+            <div id="message-thread">
+
+        
+<ul class="thread-snippet">
+
+    <li class="depth-0"><a href="/arch/msg/dawn/Aajyw8JLTsXJ3WLp4LLWAG0-EQc/">[Dawn] Updated draft-dunbar-dawn-infra-assisted-d…</a>&nbsp;&nbsp;Linda Dunbar</li>
+
+    <li class="depth-1"><a href="/arch/msg/dawn/4ykvVwmx1uFdtBGyEA-EdI8DqUI/">[Dawn] Re: Updated draft-dunbar-dawn-infra-assist…</a>&nbsp;&nbsp;Александр Артамохов</li>
+
+    <li class="depth-2"><a href="/arch/msg/dawn/Quse3xqhbag1_uoXRjrxXIPLypE/">[Dawn] Re: Updated draft-dunbar-dawn-infra-assist…</a>&nbsp;&nbsp;Girish Konda</li>
+
+    <li class="depth-3"><a href="/arch/msg/dawn/R1Ga6qDX0E2jy7aHNWkeyAsu2AM/">[Dawn] Re: Updated draft-dunbar-dawn-infra-assist…</a>&nbsp;&nbsp;Linda Dunbar</li>
+
+    <li class="depth-2 current-msg"><a href="/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8/">[Dawn] Re: Updated draft-dunbar-dawn-infra-assist…</a>&nbsp;&nbsp;Linda Dunbar</li>
+
+    <li class="depth-3"><a href="/arch/msg/dawn/sIMH9X7I30g1m7_1klGddVM8Kb4/">[Dawn] Re: Updated draft-dunbar-dawn-infra-assist…</a>&nbsp;&nbsp;Girish Konda</li>
+
+</ul>
+
+
+      </div> <!-- message-thread -->
+
+
+      <div class="d-flex justify-content-center">
+        <ul id="navigation" class="list-inline">
+          <li class="list-inline-item">
+            <a id="toggle-nav" class="toggle js-off" href="#">Hide Navigation Bar</a>
+          </li>
+          
+        </ul>
+      </div>
+          
+    </div> <!-- msg-detail -->
+
+    <div class="msg-aside col-md-4"></div>
+</div> <!-- row -->
+
+    <div class="btn-toolbar msg-detail-toolbar" role="toolbar" aria-label="...">
+    <div class="btn-group" role="group" aria-label="...">
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/R1Ga6qDX0E2jy7aHNWkeyAsu2AM/">
+      
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </a>
+      <a class="btn btn-default" href="">Date</a>
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/6PAuYWoAtcq0vO-PztlxQmfZ5qQ/">
+      
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/R1Ga6qDX0E2jy7aHNWkeyAsu2AM/">
+      
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </a>
+      <a class="btn btn-default" href="">Thread</a>
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/sIMH9X7I30g1m7_1klGddVM8Kb4/">
+      
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </a>
+    </div>
+    
+</div>
+
+
+
+    <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary rounded shadow-sm navbar-msg-detail my-2">
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#id-navbar-bottom" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-detail px-5" id="id-navbar-bottom">
+      <ul class="navbar-nav">
+        <li class="nav-item" title="Previous by date">
+          
+            <a class="nav-link previous-in-list" href="/arch/msg/dawn/R1Ga6qDX0E2jy7aHNWkeyAsu2AM/" aria-label="previous in list">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Date Index">
+          <a class="nav-link date-index" href="/arch/browse/dawn/?index=6m1_jcurI0F0_LadffO71f0d4m8">Date</a>
+        </li>
+        <li class="nav-item" title="Next by date">
+          
+            <a class="nav-link next-in-list" href="/arch/msg/dawn/6PAuYWoAtcq0vO-PztlxQmfZ5qQ/" aria-label="next in list">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Previous in thread">
+          
+            <a class="nav-link previous-in-thread" href="/arch/msg/dawn/R1Ga6qDX0E2jy7aHNWkeyAsu2AM/" aria-label="previous in thread">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Thread Index">
+          <a class="nav-link thread-index" href="/arch/browse/dawn/?gbt=1&amp;index=6m1_jcurI0F0_LadffO71f0d4m8">Thread</a>
+        </li>
+        <li class="nav-item" title="Next in thread">
+          
+            <a class="nav-link next-in-thread" href="/arch/msg/dawn/sIMH9X7I30g1m7_1klGddVM8Kb4/" aria-label="next in thread">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+
+</div>
+
+
+    </div>
+    <!-- END Content -->
+
+
+    
+  
+    
+  <div class="footer bg-body scrolling">
+      <p class="small text-center">v2.46.0 | <a href="https://github.com/ietf-tools/mailarch/issues">Report a Bug</a> | <a href="mailto:tools-help@ietf.org">By Email</a> | <a href="https://status.ietf.org">System Status</a></p>
+  </div>
+
+  
+
+
+</div> <!-- END Container -->
+
+
+
+<script src="https://static.ietf.org/mailarchive/2.46.0/jquery/js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="https://static.ietf.org/mailarchive/2.46.0/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/jquery.cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/js/base.js"></script>
+
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/jquery.cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/js/detail.js"></script>
+
+
+<!-- debug_toolbar_here -->
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a57f52258b6c9708',t:'MTc5NDI1MzU1OA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a57f52258b6c9708',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

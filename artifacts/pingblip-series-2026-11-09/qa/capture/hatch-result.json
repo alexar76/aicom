@@ -1,0 +1,71 @@
+{
+  "recordedAt": 1794252563.672288,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "creature": {
+      "id": "cmw9lkyjp0055n5483dt16gai",
+      "playerId": "cmw9lkshs0052n548w23eywq3",
+      "speciesId": "pigeon-king",
+      "source": "hatch",
+      "stage": "awake",
+      "evolved": false,
+      "evolvedAt": null,
+      "feedCount": 0,
+      "lastFeedAt": null,
+      "hatchedAt": "2026-11-09T18:31:30.277Z",
+      "cell": "global",
+      "hatchProofId": "2eecbac4bba4c5e334c4",
+      "catchProofId": null,
+      "asleepAt": null,
+      "nickname": null
+    },
+    "species": {
+      "id": "pigeon-king",
+      "name": "Pigeon King",
+      "packId": "alley-beasts",
+      "type": "alley",
+      "diet": {
+        "productId": "prod-murmuration",
+        "capabilityId": "murmuration.aggregate@v1",
+        "sourceHub": "https://oracles.modelmarket.dev/family",
+        "label": "consensus",
+        "input": {
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            8,
+            13
+          ],
+          "trim": 0.1
+        }
+      },
+      "sceneId": "wet-asphalt",
+      "spawn": {
+        "layers": [
+          "adsb",
+          "weather"
+        ],
+        "rarity": "rare",
+        "moving": true
+      },
+      "starter": true
+    },
+    "weather": {
+      "kind": "clear",
+      "isNight": false,
+      "sceneId": "black-studio",
+      "windKmh": 6.732,
+      "humidity": 94,
+      "weatherCode": null,
+      "temperatureC": 2.6,
+      "precipitationMm": null
+    },
+    "proofId": "2eecbac4bba4c5e334c4",
+    "coverage": "no pin in this cell. weather twin is the base. this is coverage, not emptiness.",
+    "referral": null,
+    "already": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "classification": "generated_API_profile_not_runtime_implementation",
+  "evidence": {
+    "key": "attested-published-apis-yaml",
+    "url": "https://artifacts.apis.io/attestedmemory-net/apis.yml",
+    "access_method": "publisher_published_raw_artifact",
+    "method": "GET",
+    "read_at_utc": "2026-11-10T20:07:31.917791+00:00",
+    "status": 200,
+    "final_url": "https://artifacts.apis.io/attestedmemory-net/apis.yml",
+    "content_type": "application/yaml",
+    "bytes": 179804,
+    "truncated": false,
+    "public_headers": {
+      "Date": "Tue, 10 Nov 2026 19:09:40 GMT",
+      "Server": "AmazonS3"
+    },
+    "body_file": "raw/attested-published-apis-yaml.raw",
+    "sha256": "bb9d6de49c154bb893f85490265029d804907d0d22f92eca988a473f6bde08f1",
+    "challenge_shell": false,
+    "redirected_to_login": false
+  },
+  "literal_publisher_href_provenance": "artifacts/external-components-2026-11-10/products/raw/attested-apisio.raw:1831",
+  "metadata": {
+    "aid": "attestedmemory-net",
+    "name": "Attested Memory",
+    "x-type": "company",
+    "x-source": "harvest:mcp-registry",
+    "x-tier": "profiled",
+    "x-tier-reason": "enrichment pass 2026-11-02 (modular-v1; was harvest)",
+    "created": "2026-11-02",
+    "modified": "2026-11-02"
+  },
+  "api_records": 56,
+  "same_bytes_as_Nov9_capture": true,
+  "Nov9_body": "artifacts/external-signals-2026-11-09/root/apis-attested-source.raw",
+  "scope": "Profile/harvest metadata and generated artifact references; no import, dependency, actual client call or deployment established.",
+  "location_correction": "Published source is artifacts.apis.io/attestedmemory-net/apis.yml. Original GitHub contents/apis.yml path remains unread/unverified; the two locations are not equated.",
+  "novelty": "Known Nov9 artifact, identical bytes. Access restored through its actual published primary location; no new relationship or update."
+}

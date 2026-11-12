@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free x402 and MCP security checks · modelmarket.dev</title>
+<meta name="description" content="Five free developer checks: count what an MCP server&#39;s tool list costs in tokens on every request, debug an x402 payment signature, diff an MCP server&#39;s tools for a rug pull, scan tool definitions for poisoning with WARDEN, and look up a server&#39;s history in the HISTOR transparency log.">
+<link rel="canonical" href="https://modelmarket.dev/tools/">
+<link rel="alternate" hreflang="en" href="https://modelmarket.dev/tools/"><link rel="alternate" hreflang="ru" href="https://modelmarket.dev/tools/ru/"><link rel="alternate" hreflang="es" href="https://modelmarket.dev/tools/es/"><link rel="alternate" hreflang="fr" href="https://modelmarket.dev/tools/fr/"><link rel="alternate" hreflang="zh-Hans" href="https://modelmarket.dev/tools/zh/"><link rel="alternate" hreflang="x-default" href="https://modelmarket.dev/tools/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="modelmarket.dev">
+<meta property="og:title" content="Free x402 and MCP security checks · modelmarket.dev">
+<meta property="og:description" content="Five free developer checks: count what an MCP server&#39;s tool list costs in tokens on every request, debug an x402 payment signature, diff an MCP server&#39;s tools for a rug pull, scan tool definitions for poisoning with WARDEN, and look up a server&#39;s history in the HISTOR transparency log.">
+<meta property="og:url" content="https://modelmarket.dev/tools/">
+<meta property="og:image" content="https://modelmarket.dev/og-card.png"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://modelmarket.dev/og-card.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#02030a">
+<link rel="icon" type="image/png" href="/tools/assets/icon.png?v=e23ce860b932">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/tools/assets/tools.css?v=e22f036e8dff">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"Free x402 and MCP security checks","description":"Five free developer checks: count what an MCP server's tool list costs in tokens on every request, debug an x402 payment signature, diff an MCP server's tools for a rug pull, scan tool definitions for poisoning with WARDEN, and look up a server's history in the HISTOR transparency log.","url":"https://modelmarket.dev/tools/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"modelmarket.dev","url":"https://modelmarket.dev/"},"mainEntity":{"@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"url":"https://modelmarket.dev/tools/tool-list-cost","name":"MCP tool-list token cost"},{"@type":"ListItem","position":2,"url":"https://modelmarket.dev/tools/x402-check","name":"x402 payment check"},{"@type":"ListItem","position":3,"url":"https://modelmarket.dev/tools/mcp-diff","name":"MCP rug-pull diff"},{"@type":"ListItem","position":4,"url":"https://modelmarket.dev/tools/warden-scan","name":"MCP tool scan (WARDEN)"},{"@type":"ListItem","position":5,"url":"https://modelmarket.dev/tools/histor-check","name":"MCP server history (HISTOR)"}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"modelmarket.dev","item":"https://modelmarket.dev/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://modelmarket.dev/tools/"}]}]}</script>
+<script src="/tools/assets/tools.js?v=66f1a7b39143" defer></script>
+</head>
+<body class="tools-page">
+<a class="skip" href="#main">Skip to the check</a>
+<div class="nebula"></div><div class="scan"></div><div class="vignette"></div>
+<nav><div class="nav-inner">
+<a class="brand" href="/"><span class="core"></span> modelmarket.dev</a>
+<div class="nav-links">
+<a class="nav-live" href="/"><span class="pip"></span> Live</a>
+<a href="/start">Start</a>
+<a href="/developers">Developers</a>
+<a href="/tools/" class="on">Tools</a>
+</div>
+<details class="lang-menu"><summary aria-label="Language">English</summary><ul><li><a href="/tools/" hreflang="en" lang="en" aria-current="true">English</a></li><li><a href="/tools/ru/" hreflang="ru" lang="ru">Русский</a></li><li><a href="/tools/es/" hreflang="es" lang="es">Español</a></li><li><a href="/tools/fr/" hreflang="fr" lang="fr">Français</a></li><li><a href="/tools/zh/" hreflang="zh-Hans" lang="zh-Hans">中文</a></li></ul></details>
+</div></nav>
+<main class="shell" id="main">
+<header class="hero">
+<span class="eyebrow">Free tools for developers</span>
+<h1><span class="grad">Paste it. Get a diagnosis.</span></h1>
+<p class="tagline">Five checks for people who build with MCP servers and x402 payments. Free here: no account, no wallet. AI agents buy four of the very same answers over x402 for a fraction of a cent — this page opens what they pay for to people.</p>
+</header>
+<section class="tool-grid" aria-label="Tools">
+<article class="card tool-card">
+<span class="pill free">Free</span>
+<h2><a href="/tools/tool-list-cost">MCP tool-list token cost</a></h2>
+<p>What an MCP server&#39;s tool list costs in every model request: tokens, dollars per 1,000 requests and the heaviest tools, against 18,204 packages HISTOR observes.</p>
+<p class="pastes"><span>You paste:</span> a server address or a tools/list</p>
+<a class="btn" href="/tools/tool-list-cost">Open the check →</a>
+</article>
+<article class="card tool-card">
+<span class="pill free">Free</span>
+<h2><a href="/tools/x402-check">x402 payment check</a></h2>
+<p>Why a USDC transferWithAuthorization reverts: the signer, the token domain, the window and the seller&#39;s terms — and the domain a failing signature was really made for.</p>
+<p class="pastes"><span>You paste:</span> an X-PAYMENT header</p>
+<a class="btn" href="/tools/x402-check">Open the check →</a>
+</article>
+<article class="card tool-card">
+<span class="pill free">Free</span>
+<h2><a href="/tools/mcp-diff">MCP rug-pull diff</a></h2>
+<p>Two tools/list results of one server — the one you approved and today&#39;s. A verdict, a word diff per tool, and a signal for each risky thing the change added.</p>
+<p class="pastes"><span>You paste:</span> two tools/list results</p>
+<a class="btn" href="/tools/mcp-diff">Open the check →</a>
+</article>
+<article class="card tool-card">
+<span class="pill free">Free</span>
+<h2><a href="/tools/warden-scan">MCP tool scan (WARDEN)</a></h2>
+<p>One tools/list. WARDEN, the open-source MCP firewall, checks every name, description, schema and annotation for prompt injection, exfiltration and credential theft.</p>
+<p class="pastes"><span>You paste:</span> a tools/list result</p>
+<a class="btn" href="/tools/warden-scan">Open the check →</a>
+</article>
+<article class="card tool-card">
+<span class="pill free">Free</span>
+<h2><a href="/tools/histor-check">MCP server history (HISTOR)</a></h2>
+<p>A server&#39;s address or registry name. When HISTOR first pinned its tool set, how often it changed, and what the pattern scan found — from a public, signed log.</p>
+<p class="pastes"><span>You paste:</span> a server address</p>
+<a class="btn" href="/tools/histor-check">Open the check →</a>
+</article>
+</section>
+<section class="section" lang="en">
+<h2 class="section-title">Find public sensors near a point</h2>
+<p><a href="/tools/nearby-sensors">ATLAS nearby sensors API</a> · x402 · $0.03 per call</p>
+</section>
+<section class="section">
+<h2 class="section-title">Deterministic, signed, the same for everyone</h2>
+<div class="grid how-grid"><div class="card"><h3>Deterministic</h3><p>Same input, same answer. Rules and cryptography decide the verdict, not a model&#39;s mood.</p></div><div class="card"><h3>Signed</h3><p>The x402 and diff answers carry an Ed25519 signature of our HESTIA runtime; HISTOR signs its own.</p></div><div class="card"><h3>Paid for by agents</h3><p>The same checks are sold to AI agents over x402, USDC on Base. That is what keeps this page free.</p></div></div>
+</section>
+</main>
+<footer>
+<div>Free checks for people. AI agents buy the same answers over x402.</div>
+<div><a href="/developers">API</a> · <a href="https://histor.modelmarket.dev/" rel="noopener">HISTOR</a> · <a href="https://www.npmjs.com/package/@aimarket/warden" rel="noopener">WARDEN</a> · <a href="/x402/openapi.json">x402 OpenAPI</a></div>
+</footer>
+
+</body>
+</html>

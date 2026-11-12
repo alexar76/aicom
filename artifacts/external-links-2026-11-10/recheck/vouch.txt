@@ -1,0 +1,2627 @@
+Agent Trust Index - Vouch Protocol - Vouch Protocol
+Vouch Protocol
+An Open Standard
+Robotics
+Onboard
+Tools
+Support
+More
+GitHub
+For the ecosystem
+The Agent Trust Index
+An open benchmark of how trustworthy the agent world actually is. It checks one simple thing for each public agent: can it cryptographically prove who it is, on whose authority it acts, and that it has not been tampered with?
+The first sweep checked
+60,451
+unique agents
+from the public Model Context Protocol registry on
+9 November 2026
+. The answer is uncomfortable.
+99.2%
+of the 60,451 agents checked cannot present an identity anyone can verify.
+0.8%
+can prove who they are with a resolvable did:web identity. That is 495 agents.
+4
+agents are post-quantum ready. Not one carries an ML-DSA key.
+As of
+9 November 2026
+. First sweep of
+60,451
+agents from the public Model Context Protocol registry.
+Share this
+Is your agent one of them?
+Run the same check the Index runs, on your own domain. You get a letter grade, the exact reasons, and the fixes to raise it, in about ten seconds.
+Grade your agent →
+Most agents are anonymous. Yours does not have to be.
+Give your agent a verifiable identity in one command. It is free and open source, and you keep control of your own keys.
+pip install vouch-protocol
+Get started
+View on GitHub
+Identity is the floor. Accountability is the core.
+Knowing which agent acted is only the start. The harder questions are who authorized it, whether it is still behaving, and whether it can be stopped. A bare identity does not answer those. The Vouch Protocol does, and this Index will grow to measure all of it.
+Who authorized it
+A delegation chain shows who gave the agent its authority, on whose behalf, and within what limits, all verifiable.
+Is it still trustworthy
+Continuous trust means an agent has to keep proving itself, not get trusted once and forever.
+Can it be stopped
+Revocation lets you pull an agent's authority the moment it goes wrong, and anyone can check the status.
+What the first sweep found
+As of
+9 November 2026
+Trust property
+Agents
+Share
+Can prove who they are (resolvable did:web identity)
+495
+0.8%
+Agent card references a key or signature
+921
+1.5%
+Publishes a service endpoint (revocation, MCP, A2A)
+257
+0.4%
+Post-quantum ready (an ML-DSA key)
+4
+0%
+Two properties a static scan cannot see are left out on purpose: delegation provenance (who authorized the agent) and continuous trust (renewed, not trusted once). Both are runtime properties.
+The agents that can prove it
+The
+495
+agents that publish a verifiable signal, scored from 0 to 100 and graded, as of
+9 November 2026
+. The other
+59,956
+scored zero. Filter by grade.
+All
+(
+495
+)
+A
+(
+201
+)
+B
+(
+0
+)
+C
+(
+294
+)
+D
+(
+0
+)
+Grade
+Score
+Agent
+Domain
+Method
+A
+100
+ai.achromat/mcp-server
+mom.achromat.ai
+did:web, Ed25519 (Multikey)
+A
+100
+ai.apir/verify
+apir.ai
+did:web, Ed25519 (JWK)
+A
+100
+ai.councilof/gspc
+councilof.ai
+did:web, Ed25519 (JWK)
+A
+100
+ai.councilof/gspc-free
+councilof.ai
+did:web, Ed25519 (JWK)
+A
+100
+ai.inflowpay.app/inflow
+app.inflowpay.ai
+did:web, P-256 (JWK)
+A
+100
+ai.pubfi/mcp
+mcp.pubfi.ai
+did:web, Ed25519 (JWK)
+A
+100
+ai.snowdata/live-snow
+mcp.snowdata.ai
+did:web, Ed25519 (JWK)
+A
+100
+ai.snowsure/snow
+www.snowsure.ai
+did:web, Ed25519 (JWK)
+A
+100
+ai.sosumi/sosumi
+sosumi.ai
+did:web, Ed25519 (JWK)
+A
+100
+ai.universalagents/universal-agents
+universalagents.ai
+did:web, Ed25519 (JWK)
+A
+100
+ai.upgradeagent/upgrade-agent
+www.upgradeagent.ai
+did:web, Ed25519 (JWK)
+A
+100
+br.com.scrypta/compraracoes
+scrypta.com.br
+did:web, Ed25519 (JWK)
+A
+100
+br.com.scrypta/guapissimas
+scrypta.com.br
+did:web, Ed25519 (JWK)
+A
+100
+br.com.scrypta/scrypta
+scrypta.com.br
+did:web, Ed25519 (JWK)
+A
+100
+br.com.scrypta/scrypta-mcp-server
+scrypta.com.br
+did:web, Ed25519 (JWK)
+A
+100
+br.com.scrypta/zissou
+scrypta.com.br
+did:web, Ed25519 (JWK)
+A
+100
+ch.kulalabs.pazair/pazair
+pazair.kulalabs.ch
+did:web, Ed25519 (Multikey)
+A
+100
+cloud.bisque/presentations
+bisque.cloud
+did:web, Ed25519 (JWK)
+A
+100
+co.itseasy/easy-mcp
+mcp.itseasy.co, www.itseasy.co
+did:web, Ed25519 (JWK)
+A
+100
+co.leviathansystems/public-content
+www.leviathansystems.co
+did:web, P-256 (JWK)
+A
+100
+com.agentavow/agentavow-trust
+agentavow.com
+did:web, Ed25519 (JWK)
+A
+100
+com.agenticfinancegraph/agentic-finance-graph
+agenticfinancegraph.com
+did:web, Ed25519 (JWK)
+A
+100
+com.agonna/agonna
+api.agonna.com
+did:web, Ed25519 (JWK)
+A
+100
+com.aicontentdrop/ai-content-drop
+aicontentdrop.com
+did:web, Ed25519 (JWK)
+A
+100
+com.alalanet/check
+alalanet.com
+did:web, Ed25519 (JWK)
+A
+100
+com.assessall/catalogue
+www.assessall.com
+did:web, RSA (JWK)
+A
+100
+com.authichain/authichain
+authichain.com
+did:web, Ed25519 (JWK)
+A
+100
+com.carragent/carragent
+carragent.com
+did:web, P-256 (JWK)
+A
+100
+com.data-slconsulting/site
+data-slconsulting.com
+did:web, P-256 (JWK)
+A
+100
+com.datahubz/attest
+attest.datahubz.com
+did:web, P-256 (JWK)
+A
+100
+com.datahubz/attest-verify
+attest.datahubz.com
+did:web, P-256 (JWK)
+A
+100
+com.dominionobservatory/observatory
+dominionobservatory.com
+did:web, Ed25519 (JWK)
+A
+100
+com.eformogi/records-vault
+eformogi.com
+did:web, Ed25519 (JWK)
+A
+100
+com.entidex/entidex
+entidex.com
+did:web, Ed25519 (JWK)
+A
+100
+com.gadgethumans/api-hub
+api.gadgethumans.com
+did:key, Ed25519
+A
+100
+com.getacqpath/acqpath
+api.getacqpath.com
+did:web, Ed25519 (JWK)
+A
+100
+com.grideos/facts
+grideos.com
+did:web, Ed25519 (JWK)
+A
+100
+com.hemmabo/hemmabo-mcp-server
+www.hemmabo.com
+did:web, Ed25519 (JWK)
+A
+100
+com.imagiolabs.www/imagio-relay
+relay.imagiolabs.com
+did:web, Ed25519 (JWK)
+A
+100
+com.jenriks/photo-archive
+jenriks.com
+did:web, Ed25519 (JWK)
+A
+100
+com.kimchi-sushi/agent-mcp
+kimchi-sushi.com
+did:web, Ed25519 (JWK)
+A
+100
+com.mart402/docs
+mart402.com
+did:web, Ed25519 (JWK)
+A
+100
+com.mart402/extract
+mart402.com
+did:web, Ed25519 (JWK)
+A
+100
+com.mart402/free
+mart402.com
+did:web, Ed25519 (JWK)
+A
+100
+com.mart402/jp-statutory
+mart402.com
+did:web, Ed25519 (JWK)
+A
+100
+com.mart402/vision
+mart402.com
+did:web, Ed25519 (JWK)
+A
+100
+com.moltbotden/mcp
+api.moltbotden.com
+did:web, Ed25519 (Multikey)
+A
+100
+com.muretai/catalog
+catalog.muretai.com
+did:key, Ed25519
+A
+100
+com.mybuba/public-discovery
+mybuba.com
+did:web, P-256 (JWK)
+A
+100
+com.osintverse/mcp
+osintverse.com
+did:web, Ed25519 (Multikey)
+A
+100
+com.patrickjv/profile
+patrickjv.com
+did:web, P-256 (JWK)
+A
+100
+com.quantlix/content
+quantlix.com
+did:web, Ed25519 (JWK)
+A
+100
+com.scriptmasterlabs/agent-verify
+scriptmasterlabs.com
+did:web, Ed25519 (JWK)
+A
+100
+com.travelacosta/trip-planning
+travelacosta.com
+did:web, Ed25519 (JWK)
+A
+100
+com.wallet-connectors/wallet-verifier-mcp
+wallet-connectors.com
+did:web, P-256 (JWK)
+A
+100
+de.carbon-cashmere.api/crypto-intelligence
+api.carbon-cashmere.de
+did:web, secp256k1 (JWK)
+A
+100
+dev.fly.x402-accelerometer-feed/tokenized-stocks-agent-data
+x402-accelerometer-feed.fly.dev
+did:web, Ed25519 (JWK)
+A
+100
+dev.modelmarket/domains
+modelmarket.dev
+did:web, Ed25519 (JWK)
+A
+100
+dev.modelmarket/emporion
+modelmarket.dev
+did:web, Ed25519 (JWK)
+A
+100
+dev.modelmarket/mcp-security
+modelmarket.dev
+did:web, Ed25519 (JWK)
+A
+100
+dev.modelmarket/weather
+modelmarket.dev
+did:web, Ed25519 (JWK)
+A
+100
+dev.pages.wayreceipt/wayreceipt
+wayreceipt.pages.dev
+did:key, key
+A
+100
+eco.reeco/reecopedia
+ia.reeco.eco
+did:web, Ed25519 (JWK)
+A
+100
+fr.symone/symone-docs
+symone.fr
+did:web, P-256 (JWK)
+A
+100
+fr.symone/symone-moto
+symone.fr
+did:web, P-256 (JWK)
+A
+100
+in.ashwingopalsamy.home/agam-journal
+home.ashwingopalsamy.in
+did:web, P-256 (JWK)
+A
+100
+io.aeroz/aeroz
+api.aeroz.io
+did:web, P-256 (JWK)
+A
+100
+io.agentsvc/services
+agentsvc.io
+did:web, Ed25519 (JWK)
+A
+100
+io.codeb/signing
+phone.codeb.io
+did:web, P-256 (JWK)
+A
+100
+io.feedoracle/compliance
+feedoracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.github.Abracadabrastartup/deusproof-mcp
+deusproof.com
+did:key, key
+A
+100
+io.github.AgentNOMOS/nomos-crossborder-broker
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.github.AgentTanuki/agent-guild
+agent-guild-5d5r.onrender.com
+did:web, Ed25519 (Multikey)
+A
+100
+io.github.AgentTanuki/x402-payment-safety
+agent-guild-5d5r.onrender.com
+did:web, Ed25519 (Multikey)
+A
+100
+io.github.CHANGCHINFU/mcp-gauge
+api.truthbear.co
+did:key, Ed25519
+A
+100
+io.github.CHANGCHINFU/truthbear-mcp
+api.truthbear.co
+did:key, Ed25519
+A
+100
+io.github.CSOAI-ORG/gspc
+councilof.ai
+did:web, Ed25519 (JWK)
+A
+100
+io.github.INJprotocol/sentinel-compliance
+mru-oracle.com
+did:web, Ed25519 (Multikey)
+A
+100
+io.github.Ovindolo/billify
+billify.org
+did:web, P-256 (JWK)
+A
+100
+io.github.Ovindolo/billify-pay
+billify.org
+did:web, P-256 (JWK)
+A
+100
+io.github.Toramo747/mycelix
+neo-collettive.onrender.com
+did:web, Ed25519 (JWK)
+A
+100
+io.github.Vortx-AI/emem
+emem.dev
+did:web, Ed25519 (Multikey)
+A
+100
+io.github.Vortx-AI/eudr
+eudr.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.agentready-market/audit
+www.agentready.market
+did:web, Ed25519 (JWK)
+A
+100
+io.github.alexar76/aimarket-hub
+modelmarket.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.alexar76/attested-memory
+hub.attestedmemory.net
+did:web, Ed25519 (JWK)
+A
+100
+io.github.ariffazil/arifos
+mcp.arif-fazil.com
+did:web, Ed25519 (JWK)
+A
+100
+io.github.bananohands/moltclub
+www.moltclub.io
+did:web, Ed25519 (Multikey)
+A
+100
+io.github.cloakmaster/pact0
+pact0.com
+did:web, Ed25519 (JWK)
+A
+100
+io.github.craigmbrown/blindoracle
+craigmbrown.com
+did:web, Ed25519 (JWK)
+A
+100
+io.github.dav3trad3r/agentpickup
+web-production-3cfc1.up.railway.app
+did:web, Ed25519 (JWK)
+A
+100
+io.github.edwinorange/emboss
+api.getemboss.ai
+did:web, Ed25519 (JWK)
+A
+100
+io.github.feedoracle/feedoracle-macro-mcp
+feedoracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.github.feedoracle/stablecoin-risk
+feedoracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.github.freeq-irc/freeq
+irc.freeq.at
+did:web, Ed25519 (Multikey)
+A
+100
+io.github.huwhitememes/tollbooth
+agenttoll.dev
+did:web, P-256 (JWK)
+A
+100
+io.github.inamprotocol/inam-mcp
+api.inamprotocol.org
+did:key, key
+A
+100
+io.github.indexagent/scrypta-mcp
+scrypta.com.br
+did:web, Ed25519 (JWK)
+A
+100
+io.github.jai-rathore/agentboard-skills
+agentboard-api.onrender.com
+did:key, Ed25519
+A
+100
+io.github.jake-zaiba/deai-research
+research.zaiba.cloud
+did:web, Ed25519 (Multikey)
+A
+100
+io.github.jweezy119/Pabandi
+pabandi.onrender.com
+did:web, P-256 (JWK)
+A
+100
+io.github.lbailey94/whitemagic-mcp
+mcp.whitemagic.dev
+did:key, key
+A
+100
+io.github.m2mfreedom/freedom-m2m-mcp-server
+m2mfreedom.com
+did:web, P-256 (JWK)
+A
+100
+io.github.mikeslone/skilimone-travel
+www.skilimone.com
+did:web, Ed25519 (JWK)
+A
+100
+io.github.nirholas/ibm-x402-mcp-remote
+three.ws
+did:web, Ed25519 (JWK)
+A
+100
+io.github.nirholas/three.ws
+three.ws
+did:web, Ed25519 (JWK)
+A
+100
+io.github.nirholas/threews-3d-studio
+three.ws
+did:web, Ed25519 (JWK)
+A
+100
+io.github.nirholas/threews-3d-studio-free
+three.ws
+did:web, Ed25519 (JWK)
+A
+100
+io.github.nirholas/threews-agent
+three.ws
+did:web, Ed25519 (JWK)
+A
+100
+io.github.nirholas/threews-grok
+three.ws
+did:web, Ed25519 (JWK)
+A
+100
+io.github.nirholas/threews-pumpfun
+three.ws
+did:web, Ed25519 (JWK)
+A
+100
+io.github.nirholas/threews-x402-bazaar
+three.ws
+did:web, Ed25519 (JWK)
+A
+100
+io.github.ogasurfproject-jpg/hs-verify-gate
+hs-verify-gate.oga-surf-project.workers.dev
+did:web, P-256 (JWK)
+A
+100
+io.github.rezearcher/company-enrichment-mcp
+assetfactory-jobs-x402.sigrunner.workers.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.rezearcher/jobs-mcp-server
+assetfactory-jobs-x402.sigrunner.workers.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.rezearcher/unified-jobs-mcp
+assetfactory-jobs-x402.sigrunner.workers.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.rezearcher/web-extract-mcp
+assetfactory-jobs-x402.sigrunner.workers.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.rnwy/mcp
+rnwy.com
+did:web, P-256 (JWK)
+A
+100
+io.github.rudedoggg/ace-memory
+ais.agentsandswarms.ai
+did:web, Ed25519 (JWK)
+A
+100
+io.github.snefhew/factline
+factline.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.snefhew/factline-kyc
+factline.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.snefhew/factline-nl
+factline.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.snefhew/factline-vehicles
+factline.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.github.spendpreflight/spendpreflight
+api.spendpreflight.com
+did:web, Ed25519 (JWK)
+A
+100
+io.github.yonatangross/orchestkit
+orchestkit.dev
+did:web, Ed25519 (JWK)
+A
+100
+io.tooloracle/accessoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/agentguard
+feedoracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/aml
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/ampel
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/arbitrumoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/baseoracle
+feedoracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/bnboracle
+feedoracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/changeoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/cloudoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/conductor
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/contractoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/cybershield
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/dealoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/dependencyoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/dora
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/doraeventfabric
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/driftoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/ecommerceoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/flareoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/flightoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/governanceoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/healthguard
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/hederaoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/hoteloracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/incidentoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/insuranceoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/invoiceoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/iso20022oracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/joboracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/law
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/leadoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/macroooracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/memeoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/memoryoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/mica
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/newsoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/paymentoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/policyoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/predictionguard
+feedoracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/predictoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/priceoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/quantum
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/rankoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/registeroracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/reporting
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/researchoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/reserveoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/resilienceoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/revieworacle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/riskoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/seooraclev2
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/shoporacle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/smartmoneyoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/solanaoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/suioracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/tlpt
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/tonoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/trustlayer
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/xrploracle
+feedoracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/yieldoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+io.tooloracle/zkevidenceoracle
+tooloracle.io
+did:web, secp256k1 (JWK)
+A
+100
+is.did/mcp
+did.is
+did:web, Ed25519 (JWK)
+A
+100
+link.aotrust/notary
+api.aotrust.link
+did:web, Ed25519 (JWK)
+A
+100
+link.neronewrecklive/haven
+neronewrecklive.link
+did:web, Ed25519 (JWK)
+A
+100
+ltd.qianyuan/china-source
+qianyuan.ltd
+did:web, Ed25519 (JWK)
+A
+100
+ltd.qianyuan/qy-evolution
+qianyuan.ltd
+did:web, Ed25519 (JWK)
+A
+100
+me.manylives/agent-exchange
+manylives.me
+did:web, Ed25519 (JWK)
+A
+100
+org.agentborn/agentborn
+mcp.agentborn.org
+did:web, Ed25519 (JWK)
+A
+100
+org.hangel/hangel
+hangel.org
+did:web, Ed25519 (JWK)
+A
+100
+si.humancollab/humancollab
+humancollab.si
+did:web, Ed25519 (Multikey)
+A
+100
+store.scvd/general-store
+scvd.store
+did:web, Ed25519 (JWK)
+A
+100
+tech.flocore/flocore
+fo.flocore.tech
+did:web, Ed25519 (JWK)
+A
+100
+tech.vrsai/mcp
+api.vrsai.tech
+did:web, P-256 (JWK)
+A
+100
+wiki.agenticweb/probe
+agenticweb.wiki
+did:web, Ed25519 (JWK)
+A
+100
+xyz.agoreum/agoreum
+agoreum.xyz
+did:web, Ed25519 (JWK)
+A
+100
+xyz.agoreum/agoreum-public
+agoreum.xyz
+did:web, Ed25519 (JWK)
+C
+60
+ai.kanvo/kanvo
+kanvo.ai
+did:web
+C
+60
+ai.law.mcp/lawyer-search
+mcp.law.ai
+did:web
+C
+60
+ai.law/lawyer-search
+mcp.law.ai
+did:web
+C
+60
+ai.openhelm/deep-research
+mcp.openhelm.ai
+did:web
+C
+60
+ai.openhelm/dev-changes
+mcp.openhelm.ai
+did:web
+C
+60
+ai.openhelm/email-outreach
+mcp.openhelm.ai
+did:web
+C
+60
+ai.openhelm/monitoring
+mcp.openhelm.ai
+did:web
+C
+60
+ai.openhelm/openhelm
+mcp.openhelm.ai
+did:web
+C
+60
+ai.openhelm/seo-growth
+mcp.openhelm.ai
+did:web
+C
+60
+ai.rallyprop/gov-funding
+mcp.rallyprop.ai
+did:web
+C
+60
+ai.stealthstack/discovery
+stealthstack.ai
+did:web
+C
+60
+ai.websitepublisher/mcp
+mcp.websitepublisher.ai
+did:web
+C
+60
+app.postflow/mcp
+api.postflow.app
+did:web
+C
+60
+app.quantcalc/retirement-engine
+mcp.quantcalc.app
+did:web
+C
+60
+app.steadywrk/mcp-dispatch
+steadywrk.app
+did:web
+C
+60
+ar.com.muovi/mcp-server
+mcp.muovi.com.ar
+did:web
+C
+60
+at.vorausgedacht/mcp
+vorausgedacht.at
+did:web
+C
+60
+bot.match/matchbot
+match.bot
+did:web
+C
+60
+ca.omniapps/sairen
+sairen.omniapps.ca
+did:web
+C
+60
+cc.thecolony/mcp-server
+thecolony.cc
+did:web
+C
+60
+co.solidmade/hire-solidmade
+solidmade-mcp.solidmade.workers.dev
+did:web
+C
+60
+com.530amodel/calculator
+mcp.530amodel.com
+did:web
+C
+60
+com.agentscouthq/directory
+agentscout-mcp.agentscouthq.workers.dev
+did:web
+C
+60
+com.agentstackdata/agentstack
+agentstackdata.com
+did:web
+C
+60
+com.ai-for-av/ai-for-av
+ai-for-av.com
+did:web
+C
+60
+com.alohafungi/store
+alohafungi.com
+did:web
+C
+60
+com.angelmoncada/consulting
+mcp.angelmoncada.com
+did:web
+C
+60
+com.anots/directory
+api.anots.com
+did:web
+C
+60
+com.australiawidefirstaid/courses
+www.australiawidefirstaid.com
+did:web
+C
+60
+com.australiawidefirstaid/docs
+www.australiawidefirstaid.com
+did:web
+C
+60
+com.boardroombob/boardroombob
+mcp.boardroombob.com
+did:web
+C
+60
+com.botsinbox/botsinbox
+mcp.botsinbox.com
+did:web
+C
+60
+com.bushdrum/events
+bushdrum.com
+did:web
+C
+60
+com.corbah/open-line
+corbah-agents.corbah.workers.dev
+did:web
+C
+60
+com.corpusfetch/corpusfetch
+mcp.corpusfetch.com
+did:web
+C
+60
+com.dribba/dribba
+dribba.com
+did:web
+C
+60
+com.eventescapes/event-escapes
+mcp.eventescapes.com
+did:web
+C
+60
+com.fieldrobin/fieldrobin
+fieldrobin.com
+did:web
+C
+60
+com.firmared/firmared
+firmared.com
+did:web
+C
+60
+com.getmandatorytraining/courses
+getmandatorytraining.com
+did:web
+C
+60
+com.ghostavo/retail-media-measurement
+mcp.ghostavo.com
+did:web
+C
+60
+com.goodrecmovies/mcp
+goodrecmovies.com
+did:web
+C
+60
+com.greencalculus/api
+mcp.greencalculus.com
+did:web
+C
+60
+com.growaify/mcp
+growaify.com
+did:web
+C
+60
+com.handsofflinks/link-followability
+handsofflinks-mcp.lipmichal.workers.dev
+did:web
+C
+60
+com.homegeneratorhq/generators
+homegeneratorhq.com
+did:web
+C
+60
+com.ifreework/content
+ifreework.com
+did:web
+C
+60
+com.jointhestudentlife/docs
+jointhestudentlife.com
+did:web
+C
+60
+com.jwatte/site
+jwatte.com
+did:web
+C
+60
+com.kresmion/kresmion
+kresmion.com
+did:web
+C
+60
+com.linkbreakers/docs-mcp
+linkbreakers.com
+did:web
+C
+60
+com.lottiefiles/generative-icons
+generativeicons.com
+did:web
+C
+60
+com.melvea/local-discovery
+mcp.melvea.com
+did:web
+C
+60
+com.neurobird/search
+search.neurobird.com
+did:web
+C
+60
+com.neuronto/agents-tools-search-discovery-ard-registry
+neuronto.com
+did:web
+C
+60
+com.neuronto/x402-payments-facilitator
+pay.neuronto.com
+did:web
+C
+60
+com.othermindset/campus
+othermindset.com
+did:web
+C
+60
+com.powerbankportatil/store
+powerbankportatil.com
+did:web
+C
+60
+com.primesettlementrefund/prime-refund-tools
+mcp.primesettlementrefund.com
+did:web
+C
+60
+com.provecart/provecart
+api.provecart.com
+did:web
+C
+60
+com.shipshapedata/shipshape-data
+shipshapedata.com
+did:web
+C
+60
+com.shipshapedata/shipshape-data-docs
+shipshapedata.com
+did:web
+C
+60
+com.socialcasinoindex/toplist
+dddc2d2qtq6jpgf3ucaorgozpe0lbqtj.lambda-url.us-east-1.on.aws
+did:web
+C
+60
+com.tfrooms/tf-rooms
+tfrooms.com
+did:web
+C
+60
+com.thefomite/fomite
+thefomite.com
+did:web
+C
+60
+com.thesiftguide/sift-tools
+mcp.thesiftguide.com
+did:web
+C
+60
+com.tkawen/intelligence-gateway
+mcp.tkawen.com
+did:web
+C
+60
+com.tools-berry/paycheck
+mcp.tools-berry.com
+did:web
+C
+60
+com.toolsthatrank/serp-metrics
+toolsthatrank-mcp.lipmichal.workers.dev
+did:web
+C
+60
+com.unitebr.research/benchmark
+research.unitebr.com
+did:web
+C
+60
+com.x402broker/marketplace
+www.x402broker.com
+did:web
+C
+60
+com.x402broker/mcp-gateway
+x402broker.com
+did:web
+C
+60
+com.x402broker/x402-broker
+x402-broker-72343955726.us-central1.run.app, x402broker.com
+did:web
+C
+60
+delivery.cometmessenger/courier
+agents.cometmessenger.delivery
+did:web
+C
+60
+dev.agentdiet/agentdiet
+agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/alpha-stream
+alpha-stream.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/arxiv-digest
+arxiv-digest.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/assay
+assay.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/company-enrich
+company-enrich.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/cve-intel
+cve-intel.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/defi-yield
+defi-yield.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/domain-osint
+domain-osint.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/email-verify
+email-verify.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/github-audit
+github-audit.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/hn-pulse
+hn-pulse.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/json-repair
+json-repair.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/llms-generator
+llms-generator.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/mcp-compiler
+mcp-compiler.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/mcp-gateway
+mcp-gateway.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/mcp-security
+mcp-security.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/mesh
+mesh.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/onchain-risk
+onchain-risk.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/polymarket-odds
+polymarket-odds.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/preflight
+preflight.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/prompt-guard
+prompt-guard.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/rag-diet
+rag-diet.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/sec-intel
+sec-intel.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/serp-extract
+serp-extract.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/shopify-intel
+shopify-intel.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/shopify-spy
+shopify-spy.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/token-intel
+token-intel.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/whale-momentum
+whale-momentum.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/workflows
+workflows.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/x402-audit
+x402-audit.agentdiet.dev
+did:web
+C
+60
+dev.agentdiet/x402-broker
+x402-broker.agentdiet.dev
+did:web
+C
+60
+dev.fly.obol-x402/obol
+obol-mcp.fly.dev
+did:web
+C
+60
+dev.fly.solidus-x402/solidus
+solidus-mcp.fly.dev
+did:web
+C
+60
+dev.jobspipe/mcp
+jobspipe.dev
+did:web
+C
+60
+dev.pressmark/pressmark
+www.pressmark.dev
+did:web
+C
+60
+dev.workers.3labsio.policy-gate/policy-gate
+policy-gate.3labsio.workers.dev
+did:web
+C
+60
+dev.workers.jbarkules.agent-tools/agent-tools
+agent-tools.jbarkules.workers.dev
+did:web
+C
+60
+dev.workers.kikoribera03.flat-rate-llm/x402-tools
+flat-rate-llm.kikoribera03.workers.dev
+did:web
+C
+60
+dog.swoleeswoge/swogeagentic
+web-production-220a3.up.railway.app
+did:web
+C
+60
+eco.unreasonable/mcp
+unreasonable.eco
+did:web
+C
+60
+eu.iotpay/en16931-validator
+agent-gateway-i3gust564q-ey.a.run.app
+did:web
+C
+60
+eu.iotpay/privacy-pii-shield
+agent-gateway-i3gust564q-ey.a.run.app
+did:web
+C
+60
+eu.iotpay/sanctions-kyb
+agent-gateway-i3gust564q-ey.a.run.app
+did:web
+C
+60
+il.co.sabag3d/studio
+sabag3d.co.il
+did:web
+C
+60
+io.aiverified/verify-business
+aiverified.io
+did:web
+C
+60
+io.dxbdata/dxb-data
+dxbdata.io
+did:web
+C
+60
+io.eventify/mcp-server
+amcp.eventify.io
+did:web
+C
+60
+io.github.0580iris-lang/x711-gas-station
+x711.io
+did:web
+C
+60
+io.github.0xDanielLopez/phishunt
+mcp.phishunt.io
+did:web
+C
+60
+io.github.0xDanielLopez/tweetfeed
+mcp.tweetfeed.live
+did:web
+C
+60
+io.github.AETumiApp/aetumi
+mcp.aetumi.app
+did:web
+C
+60
+io.github.AgentLineHQ/agentline
+api.agentline.cloud
+did:web
+C
+60
+io.github.Alex-Dev-Web-C-DE/pep-screening-mcp
+pep-screening-mcp.boring-saas-infra.workers.dev
+did:web
+C
+60
+io.github.ArneFfm/shared-forest
+sharedforest.com
+did:web
+C
+60
+io.github.ArtyKOMarkets/warda
+mcp.wardaprotocol.com
+did:web
+C
+60
+io.github.BricePourLe13/merx
+mcp.merxprotocol.eu
+did:web
+C
+60
+io.github.Carmel-Labs-Inc/mcp-index
+index.mcp.agentstatus.dev
+did:web
+C
+60
+io.github.CumulativeWebInc/cwi-discovery-engine
+cwi-machine-data.hp-ace.workers.dev
+did:web
+C
+60
+io.github.GaetanGermain/emotion-dictionary
+mcp.emotioninside.org
+did:web
+C
+60
+io.github.Galanai/aiwebsignals
+aiwebsignals.com
+did:web
+C
+60
+io.github.JadeSparrow/sqlai-dev-sql-verifier
+mcp.sqlai.dev
+did:web
+C
+60
+io.github.MoltyCel/moltrust-mcp-server
+api.moltrust.ch
+did:web
+C
+60
+io.github.MvikManners/aw1-circuit-breaker
+p20.laveto.net
+did:web
+C
+60
+io.github.Nero-Engine/breach-notification-deadlines
+breach-notification-deadlines.nerolabs.workers.dev
+did:web
+C
+60
+io.github.Nero-Engine/dataset-aggregate-pivot
+dataset-aggregate-pivot.nerolabs.workers.dev
+did:web
+C
+60
+io.github.Nero-Engine/dataset-cleaner-exporter
+dataset-cleaner-exporter.nerolabs.workers.dev
+did:web
+C
+60
+io.github.Nero-Engine/dataset-diff-detector
+dataset-diff-detector.nerolabs.workers.dev
+did:web
+C
+60
+io.github.Nero-Engine/dataset-filter-transform
+dataset-filter-transform.nerolabs.workers.dev
+did:web
+C
+60
+io.github.Nero-Engine/dataset-join-merge
+dataset-join-merge.nerolabs.workers.dev
+did:web
+C
+60
+io.github.Nero-Engine/listing-location-toolkit
+listing-location-toolkit.nerolabs.workers.dev
+did:web
+C
+60
+io.github.Nero-Engine/pay-transparency-rules
+pay-transparency-rules.nerolabs.workers.dev
+did:web
+C
+60
+io.github.Nero-Engine/us-minimum-wage
+us-minimum-wage.nerolabs.workers.dev
+did:web
+C
+60
+io.github.Nero-Engine/us-sales-tax-nexus
+us-sales-tax-nexus.nerolabs.workers.dev
+did:web
+C
+60
+io.github.POEditor/mcp.poeditor.com
+mcp.poeditor.com
+did:web
+C
+60
+io.github.ShieldZCash/mcp
+shieldz.cash
+did:web
+C
+60
+io.github.Waysway-app/waysway
+api.waysway.com
+did:web
+C
+60
+io.github.andy-chak/vendorindex
+mcp.vendorindex.dev
+did:web
+C
+60
+io.github.anmols/frontdesko-mcp
+mcp.frontdesko.app
+did:web
+C
+60
+io.github.apayne1987-droid/payne-machine-revenue
+payne-machine-revenue-mcp.apayne1987.workers.dev
+did:web
+C
+60
+io.github.astuto-ai/onelens-mcp
+mcp.onelens.cloud
+did:web
+C
+60
+io.github.cuqu-net/cuqu-mcp
+agent.cuqu.net
+did:web
+C
+60
+io.github.danielasalgadov/fiscal
+menteorama-fiscal-mcp.menteorama.workers.dev
+did:web
+C
+60
+io.github.dtajitdinov-aris/sphere-marketplace
+starsphera.com
+did:web
+C
+60
+io.github.gosadu/loophole-tape
+htrlhl3y49.execute-api.us-east-2.amazonaws.com
+did:web
+C
+60
+io.github.hardeyhemy/revnuvo-trust-mcp
+api.revnuvo.site
+did:web
+C
+60
+io.github.hycore220/k-work-trust
+k-work-trust-api.fly.dev
+did:web
+C
+60
+io.github.imoldyoung/e-invoice
+e-invoice-mcp.601096790.workers.dev
+did:web
+C
+60
+io.github.jaymiller-cmg/dealsync-mcp-server
+dealsync-mcp-server.jaymiller.workers.dev
+did:web
+C
+60
+io.github.jmrplens/gitlab-mcp-server
+gitlab-mcp-server.fly.dev, {host}
+did:web
+C
+60
+io.github.kindrat86/vc-deal-flow-signal
+signals.gitdealflow.com
+did:web
+C
+60
+io.github.lavndrs120/lavenders
+lavndr.omssolutionorders.workers.dev
+did:web
+C
+60
+io.github.lazymac2x/a11y-scorer
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/agent-loop-detector
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/agent-memory
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/agent-trace-auditor
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/agent-workflow-engine
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-agent-scratchpad
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-budget-planner
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-changelog-writer
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-cost-optimizer
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-crawler-policy
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-eval
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-gateway
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-guardrails
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-model-router
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-prompt-optimizer
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-provider-status
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-rate-limit-tracker
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/ai-token-counter
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-changelog-tracker
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-composition-gateway
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-contract-validator
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-diff-monitor
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-flow-analyzer
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-landing
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-mock-server
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-payload-auditor
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-perf-analyzer
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-request-deduplicator
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-response-cost-analyzer
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/api-schema-drift-detector
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/blog
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/citation-verifier
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/claude-skill-validator
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/code-explainer
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/code-pattern-risk-scanner
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/color-palette
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/cron-collision-detector
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/cron-monitor
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/cron-parser
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/crypto-signal
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/data-transform
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/diff-patch-tools
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/domain-intel
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/email-validator
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/embedding-search
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/env-blueprint-validator
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/font-metadata
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/form-backend
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/govdata-korea
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/graphql-dos-shield
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/graphql-rest-bridge
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/interactive-api-playground
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/llm-output-quality-monitor
+api.lazy-mac.com
+did:web
+C
+60
+io.github.lazymac2x/smart-data-extractor
+api.lazy-mac.com
+did:web
+C
+60
+io.github.mambaventures/nzxplorer-mcp
+mcp.nzxplorer.co.nz
+did:web
+C
+60
+io.github.mdimamhosen/jev-guide
+jev-guide.jevrouter.workers.dev
+did:web
+C
+60
+io.github.michu5696/agora402
+agora402.fly.dev
+did:web
+C
+60
+io.github.mikeslone/storylayer
+app.storylayer.ai
+did:web
+C
+60
+io.github.mooshee/pressmark
+pressmark.dev
+did:web
+C
+60
+io.github.nach-dakwale/domaincheckr
+domaincheckr.fly.dev
+did:web
+C
+60
+io.github.nao1234g/calibration-routing
+nowpattern.com
+did:web
+C
+60
+io.github.nexscope/ecommerce
+api.nexscope.ai
+did:web
+C
+60
+io.github.nexusforge-tools/mcp-eu-finance
+api.nexusforge.tools
+did:web
+C
+60
+io.github.nikhilgogulwar/universalbench
+universalbench-mcp.penantiaglobal.workers.dev
+did:web
+C
+60
+io.github.ogasurfproject-jpg/horizon-shield-webmcp
+hs-webmcp.oga-surf-project.workers.dev
+did:web
+C
+60
+io.github.pain2hustle/cloudflare-ops-mcp
+cfops.nothingunseen.com
+did:web
+C
+60
+io.github.pyfile-toolkit/pyfile-llm
+pyfile-agent.taile3ff35.ts.net
+did:web
+C
+60
+io.github.r2hb-assistant/propscorer
+mcp.propscorer.com
+did:web
+C
+60
+io.github.rccola990-cloud/x402-agent-store
+store.agentexchange.work
+did:web
+C
+60
+io.github.rmartins1451/losbeto
+api.losbeto.xyz
+did:web
+C
+60
+io.github.robertoyanguas-ops/agentdiet
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/alpha-stream-mcp
+alpha-stream-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/arxiv-digest-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/assay
+assay-207908449630.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/company-enrich-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/cve-intel-mcp
+cve-intel-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/defi-yield-mcp
+defi-yield-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/domain-osint-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/email-verify-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/github-audit-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/hn-pulse-mcp
+hn-pulse-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/json-repair-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/llms-generator-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/mcp-compiler-mcp
+mcp-compiler-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/onchain-risk-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/polymarket-odds-mcp
+polymarket-odds-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/prompt-guard-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/sec-intel-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/serp-extract-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/shopify-intel-mcp
+shopify-intel-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/shopify-spy-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/token-intel-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/whale-momentum-mcp
+whale-momentum-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/x402-audit-mcp
+agentdiet-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.robertoyanguas-ops/x402-broker-mcp
+x402-broker-72343955726.us-central1.run.app
+did:web
+C
+60
+io.github.ruvendors5-ops/content-intelligence-api
+content-intelligence-mcp.wajih-hyder55.workers.dev
+did:web
+C
+60
+io.github.sanhaoyoung/sanhao-global-experts
+sanhaoyoung821208-d5dv139af0958c.service.tcloudbase.com
+did:web
+C
+60
+io.github.seasonsagents-art/webaz
+webaz.xyz
+did:web
+C
+60
+io.github.solidmade-co/hire-solidmade
+solidmade-mcp.solidmade.workers.dev
+did:web
+C
+60
+io.github.squidcode/tapwatermap
+mcp.tapwatermap.com
+did:web
+C
+60
+io.github.srotzin/hive-gate
+hivegate.onrender.com
+did:web
+C
+60
+io.github.srotzin/hive-mcp-connector
+hive-mcp-connector.onrender.com
+did:web
+C
+60
+io.github.srotzin/hivebank
+hivebank.onrender.com
+did:web
+C
+60
+io.github.srotzin/hivegate
+hivegate.onrender.com
+did:web
+C
+60
+io.github.srotzin/hivetrust
+hivetrust.onrender.com
+did:web
+C
+60
+io.github.tacticalnoot/agent-embassy
+agent-embassy.fly.dev
+did:web
+C
+60
+io.github.tankstellen/firmenliste-mcp
+firmenliste-mcp.cf-firmenliste.workers.dev
+did:web
+C
+60
+io.github.thedaviddias/front-end-checklist
+mcp.frontendchecklist.io
+did:web
+C
+60
+io.github.tony8713/casa
+casa-agents.fly.dev
+did:web
+C
+60
+io.github.vassiliylakhonin/agenda-intelligence-md
+agenda-intelligence-a2a.vassiliy-lakhonin.workers.dev, agent-financial-guard-a2a.vassiliy-lakhonin.workers.dev, agent-output-verification-a2a.vassiliy-lakhonin.workers.dev, agentic-interaction-trust-a2a.vassiliy-lakhonin.workers.dev, cis-secondary-sanctions-a2a.vassiliy-lakhonin.workers.dev, corridor-sanctions-assistant-a2a.vassiliy-lakhonin.workers.dev, critical-minerals-due-diligence-a2a.vassiliy-lakhonin.workers.dev, dual-use-technology-export-a2a.vassiliy-lakhonin.workers.dev, gulf-maritime-exposure-a2a.vassiliy-lakhonin.workers.dev, kazakhstan-market-entry-readiness-a2a.vassiliy-lakhonin.workers.dev, m2m-escrow-arbiter-a2a.vassiliy-lakhonin.workers.dev, middle-corridor-deal-risk-gate-a2a.vassiliy-lakhonin.workers.dev
+did:web
+C
+60
+io.github.yang7206/paletteget
+paletteget-mcp.y7206062.workers.dev
+did:web
+C
+60
+io.github.yyphilo/openfab
+openfab-22100483453.us-central1.run.app
+did:web
+C
+60
+me.crowdspark.agents/agent-tools
+agents.crowdspark.me
+did:web
+C
+60
+net.glyt/glyt
+glyt.net
+did:web
+C
+60
+org.448c.agent-exec/agent-exec
+agent-exec.448c.org
+did:web
+C
+60
+org.aviationhs/private-jet-charter
+mcp.aviationhs.org
+did:web
+C
+60
+pro.aemb/agent-embassy
+aemb.pro
+did:web
+C
+60
+site.coze.page.dytsk9wrfv/groundtruth
+winter-river-47fc.contentforge-press.workers.dev
+did:web
+C
+60
+team.golem/context
+context.golem.team
+did:web
+C
+60
+team.golem/defender
+context.golem.team
+did:web
+C
+60
+team.golem/intel
+context.golem.team
+did:web
+C
+60
+team.golem/security
+context.golem.team
+did:web
+C
+60
+tech.blockwerk/mcp
+blockwerk-mcp-worker.blockwerk.workers.dev
+did:web
+C
+60
+tech.halfpoint/sports-odds
+mcp.halfpoint.tech
+did:web
+C
+60
+tech.tessa/tessa-mcp-server
+aiagent.tessa.tech
+did:web
+C
+60
+tools.extrabold/gridfinity
+mcp.extrabold.tools
+did:web
+C
+60
+uk.co.opengrant/opengrant
+opengrant.co.uk
+did:web
+C
+60
+work.agentexchange.store/mcp
+store.agentexchange.work
+did:web
+C
+60
+world.asks/asks
+asks.world
+did:web
+495
+agents shown.
+Check your own agent
+Grade your agent before anyone else does
+Type your agent's domain to run the same check the Index runs. You get a letter grade, the exact reasons, and numbered fixes to raise it.
+Grade my agent
+Prefer the command line, or want a badge for your README? Install once and run it locally:
+pip install vouch-protocol
+vouch grade yourdomain.com --badge trust-badge.svg
+Claiming and verified listings are coming. If you want your agent listed when they open, say so in the discussion and we will follow up.
+Raise your grade
+Register interest
+How the score works
+Open methodology
+Each agent gets a Trust Score from 0 to 100 and a letter grade. For this first version the source is the public Model Context Protocol registry, and the check is a resolvable decentralized identity: a did:web document at the agent's own domain (60 points) carrying a usable public key (40 points). A is 90 or above, then B, C, D, and F below 40. The scoring is open so anyone can audit how a number is reached. Nobody signs up; the Index finds agents on its own.
+Read the full methodology
+Follow on GitHub
+See the tools
+Cryptographic identity, intent attestation, and continuous trust verification for autonomous AI agents.
+Vouch Protocol™ · common-law trademark
+Product
+Tools
+Robotics
+FAQ
+Help & Guides
+Agent Trust Index
+Support
+Resources
+GitHub
+Specification
+Prior Art Disclosures
+Conformance Levels
+Regulatory Mapping
+Test Vectors
+CHANGELOG
+SDKs
+Python (PyPI)
+WASM core (npm)
+API client (PyPI)
+Go sidecar
+Swift, JVM, .NET, C
+Browser extension
+Community
+Contributors
+Adopters
+Discord
+GitHub issues
+X / Twitter
+Bluesky
+LinkedIn
+Instagram
+© 2025-2026 Ramprasad Gaddam. Licensed under Apache 2.0.
+An open standard specification.
+Ask the assistant

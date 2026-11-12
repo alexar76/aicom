@@ -1,0 +1,112 @@
+import contextlib, datetime, hashlib, importlib.metadata, importlib.util, io, json, os, pathlib, shutil, subprocess, sys, time
+os.umask(0o077)
+if os.getuid() != 1000 or os.getgid() != 1000:
+    raise RuntimeError('Validation requires UID1000:GID1000')
+root = pathlib.Path('/source')
+out = pathlib.Path('/results')
+out.mkdir(parents=True, exist_ok=True)
+required = ['scripts/python_bug_gate.sh', 'scripts/verify_whitepaper_links.sh', 'scripts/audit_satellite_md_links.py', 'scripts/aicom_publish_config.py', 'scripts/satellite-map.yaml']
+for rel in required:
+    if not (root / rel).is_file():
+        raise RuntimeError('Required source missing: ' + rel)
+shell_files = [rel for rel in ['histor/sandbox/sandbox_images.sh', 'histor/sandbox/install.sh'] if (root / rel).is_file()]
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+def inventory():
+    files = [p for p in root.rglob('*') if p.is_file() and (p.suffix in {'.py', '.md'} or p.relative_to(root).as_posix() in required + shell_files)]
+    return {p.relative_to(root).as_posix(): digest(p) for p in sorted(files)}
+before = inventory()
+(out / 'source-manifest.before.json').write_text(json.dumps(before, indent=2) + '\n')
+env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', HOME='/tmp')
+stages = []
+def run(name, command, cwd, timeout=300):
+    started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    begin = time.monotonic()
+    try:
+        p = subprocess.run(command, cwd=cwd, env=env, text=True, capture_output=True, timeout=timeout)
+        stdout, stderr, code, timed_out = p.stdout, p.stderr, p.returncode, False
+    except subprocess.TimeoutExpired as error:
+        stdout = error.stdout.decode() if isinstance(error.stdout, bytes) else error.stdout or ''
+        stderr = error.stderr.decode() if isinstance(error.stderr, bytes) else error.stderr or ''
+        code, timed_out = None, True
+    (out / (name + '.stdout')).write_text(stdout)
+    (out / (name + '.stderr')).write_text(stderr)
+    r = {'name': name, 'command': command, 'cwd': str(cwd), 'startedAt': started, 'seconds': round(time.monotonic() - begin, 3), 'exitCode': code, 'timeout': timed_out}
+    stages.append(r)
+    (out / 'stages.json').write_text(json.dumps(stages, indent=2) + '\n')
+    return r, stdout, stderr
+import yaml
+assert yaml.__version__ == '6.0.2', yaml.__version__
+assert importlib.metadata.version('ruff') == '0.15.15'
+assert str(pathlib.Path(yaml.__file__).resolve()).startswith('/deps/')
+ruff_binary = pathlib.Path('/deps/bin/ruff')
+assert ruff_binary.is_file(), 'Pinned Ruff binary missing'
+version = subprocess.check_output([str(ruff_binary), '--version'], env=env, text=True).strip()
+python_files = sorted(p for p in before if p.endswith('.py'))
+data_python_files = [p for p in python_files if p.startswith('data/')]
+markdown_files = [p for p in before if p.endswith('.md')]
+pyroot = pathlib.Path('/tmp/python-only-working-tree')
+pyroot.mkdir()
+for rel in python_files:
+    src = root / rel
+    if not src.resolve().is_relative_to(root.resolve()):
+        raise RuntimeError('Python source escapes the approved snapshot: ' + rel)
+    dest = pyroot / rel
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, dest)
+    if digest(dest) != before[rel]:
+        raise RuntimeError('Python source copy mismatch: ' + rel)
+common = [str(ruff_binary), 'check', '.', '--isolated', '--no-cache', '--select', 'E9,F63,F7,F82', '--extend-exclude', 'create-aimarket-agent/src/create_aimarket_agent/templates', '--extend-exclude', 'docs/evidence']
+listing, files_text, _ = run('ruff-file-scope', common + ['--show-files'], pyroot)
+if listing['exitCode'] != 0:
+    raise RuntimeError('Ruff file inventory failed')
+eligible = []
+for line in files_text.splitlines():
+    if not line.strip():
+        continue
+    listed = pathlib.Path(line.strip())
+    if not listed.is_absolute():
+        listed = pyroot / listed
+    eligible.append(listed.relative_to(pyroot).as_posix())
+eligible.sort()
+if not eligible or set(eligible) - set(python_files):
+    raise RuntimeError('Ruff did not inventory the intended Python-only candidate tree')
+(out / 'ruff-eligible-files.json').write_text(json.dumps(eligible, indent=2) + '\n')
+excluded = sorted(set(python_files) - set(eligible))
+ruff, ruff_text, _ = run('python-bug-gate-equivalent', common + ['--output-format', 'json'], pyroot)
+try:
+    findings = json.loads(ruff_text)
+except ValueError:
+    findings = None
+sys.path.insert(0, str(root / 'scripts'))
+config_spec = importlib.util.spec_from_file_location('aicom_publish_config', root / 'scripts/aicom_publish_config.py')
+config = importlib.util.module_from_spec(config_spec)
+config_spec.loader.exec_module(config)
+map_data = config._load_map()
+expected_paths = {str(p).strip('/') for p in config.factory_exclude_paths() if str(p).strip('/')}
+audit_spec = importlib.util.spec_from_file_location('audit_satellite_md_links', root / 'scripts/audit_satellite_md_links.py')
+audit = importlib.util.module_from_spec(audit_spec)
+warnings = io.StringIO()
+with contextlib.redirect_stderr(warnings):
+    audit_spec.loader.exec_module(audit)
+actual_paths = set(audit.ROOT_SATELLITES)
+map_proof = {'pyyaml': yaml.__version__, 'pyyamlFile': yaml.__file__, 'satelliteEntries': len(map_data.get('satellites', [])), 'expectedMirrorExcludedPaths': len(expected_paths), 'actualAuditPaths': len(actual_paths), 'exactMapAgreement': actual_paths == expected_paths, 'warnings': warnings.getvalue(), 'mapSha256': digest(root / 'scripts/satellite-map.yaml')}
+map_proof['passed'] = bool(expected_paths) and actual_paths == expected_paths and 'falling back' not in warnings.getvalue()
+(out / 'real-map-proof.json').write_text(json.dumps(map_proof, indent=2) + '\n')
+if not map_proof['passed']:
+    raise RuntimeError('Documentation audit would use incomplete/fallback map')
+docs, _, _ = run('whitepaper-links-docs-only', ['bash', str(root / 'scripts/verify_whitepaper_links.sh')], root)
+all_docs, _, _ = run('whitepaper-links-all-diagnostic', ['bash', str(root / 'scripts/verify_whitepaper_links.sh'), '--all'], root)
+shell_stages = []
+for rel in shell_files:
+    stage, _, _ = run('bash-syntax-' + pathlib.Path(rel).stem, ['bash', '-n', str(root / rel)], root)
+    shell_stages.append(stage)
+after = inventory()
+stability = {'unchanged': before == after, 'files': len(before), 'changed': sorted(k for k in set(before) & set(after) if before[k] != after[k]), 'missing': sorted(set(before) - set(after)), 'added': sorted(set(after) - set(before))}
+(out / 'source-stability.json').write_text(json.dumps(stability, indent=2) + '\n')
+result = {'format': 'aicom.python-docs-working-tree-gates/v1', 'at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'python': sys.version.split()[0], 'ruff': version, 'pyyaml': yaml.__version__, 'sourceFiles': len(before), 'pythonCandidateFiles': len(python_files), 'dataPythonFiles': data_python_files, 'markdownCandidateFiles': len(markdown_files), 'docsMarkdownFiles': sum(p.startswith('docs/') for p in markdown_files), 'snapshotId': os.environ.get('AICOM_SNAPSHOT_ID'), 'snapshotFiles': os.environ.get('AICOM_SNAPSHOT_FILES'), 'transportActualMappingSha256': os.environ.get('AICOM_ACTUAL_MAPPING_SHA256'), 'transportBlobManifestSha256': os.environ.get('AICOM_SOURCE_BLOB_MANIFEST_SHA256'), 'executionUID': os.getuid(), 'executionGID': os.getgid(), 'ruffEligibleFiles': len(eligible), 'excludedPythonFiles': excluded, 'pythonRules': ['E9', 'F63', 'F7', 'F82'], 'pythonMethod': 'Exact-rule equivalent of scripts/python_bug_gate.sh over approved current working-tree snapshot, including intended new Python files; Python-only temp tree reproduces git-archive input semantics. This is not a run against repository HEAD.', 'ruffFindings': findings, 'ruffExit': ruff['exitCode'], 'realMap': map_proof, 'docsOnlyExit': docs['exitCode'], 'allDocsDiagnosticExit': all_docs['exitCode'], 'allDocsIsGiteaGate': False, 'shellSyntaxFiles': shell_files, 'shellSyntaxPassed': all(s['exitCode'] == 0 for s in shell_stages), 'sourceStability': stability, 'stages': stages, 'noLocalProjectExecution': True}
+result['requiredGatesPassed'] = ruff['exitCode'] == 0 and isinstance(findings, list) and not findings and docs['exitCode'] == 0 and map_proof['passed'] and stability['unchanged'] and result['shellSyntaxPassed']
+(out / 'summary.json').write_text(json.dumps(result, indent=2) + '\n')
+print(json.dumps({k: result[k] for k in ['python', 'ruff', 'pyyaml', 'sourceFiles', 'pythonCandidateFiles', 'ruffEligibleFiles', 'ruffExit', 'docsOnlyExit', 'allDocsDiagnosticExit', 'requiredGatesPassed']}), flush=True)
+sys.exit(0 if result['requiredGatesPassed'] else 1)
+

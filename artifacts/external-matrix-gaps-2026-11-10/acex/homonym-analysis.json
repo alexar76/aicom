@@ -1,0 +1,38 @@
+{
+  "name": "acex",
+  "version": "7.0.0",
+  "project_urls": {
+    "Homepage": "https://github.com/acex-labs/acex",
+    "Repository": "https://github.com/acex-labs/acex"
+  },
+  "summary": "ACE-X Backend - Core automation engine and API",
+  "requires_dist": [
+    "acex-devkit<4,>=3",
+    "alembic>=1.19.1",
+    "celery>=5.5.0",
+    "fastapi>=0.121.0",
+    "fastmcp>=2.13.0.2",
+    "httpx>=0.28.0",
+    "hvac>=2.3.0; extra == \"vault\"",
+    "ipaddress>=1.0.23",
+    "jinja2>=3.1.6",
+    "mcp>=1.20.0",
+    "openai>=1.54.0",
+    "psycopg2-binary>=2.9.10",
+    "pydantic-settings>=2.7.0",
+    "python-jose[cryptography]>=3.3.0",
+    "requests>=2.32.5",
+    "sqlalchemy<2.1,>=2.0",
+    "sqlmodel>=0.0.45",
+    "uvicorn>=0.38.0"
+  ],
+  "exact_ecosystem_markers_in_metadata": {
+    "alexar76": false,
+    "modelmarket.dev": false,
+    "acex.integrations": false,
+    "AgentListingRegistry": false,
+    "AgentAuditPool": false,
+    "ai-auditor:acex-v1": false
+  },
+  "scope": "Registry metadata only. Different repo and product identity; no claim of full code audit or global absence of a relationship."
+}

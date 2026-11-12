@@ -1,0 +1,18 @@
+{
+  "mcp": {
+    "qa_runner": {
+      "type": "local",
+      "enabled": true,
+      "timeout": 12000,
+      "command": ["/usr/bin/env", "-i", "PATH=/usr/local/bin:/usr/bin:/bin", "HOME=/home/node", "WARDEN_STATE_DIR=/home/node/.local/state/warden", "WARDEN_FLOW_POLICY=/opt/opencode-guard/flow-policy.json", "NODE_EXTRA_CA_CERTS=/opt/opencode-guard/qa-adapter/ca.crt", "/usr/local/bin/node", "/opt/opencode-guard/qa-adapter/warden/dist/mcp-server.js", "task"]
+    }
+  },
+  "tools": {"qa_runner_*": true},
+  "permission": {
+    "*": "deny",
+    "qa_runner_task_list": "allow",
+    "qa_runner_task_read": "allow",
+    "qa_runner_task_execute": "allow",
+    "qa_runner_task_run": "allow"
+  }
+}

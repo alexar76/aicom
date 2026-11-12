@@ -1,0 +1,3116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    
+    
+    
+    
+    
+    
+    <title>Attested Memory API — Docs, OpenAPI &amp; Kin Score | APIs.io</title>
+    <meta name="description" content="Attested Memory publishes 56 API contracts indexed on the APIs.io network, including A2a API, Accounts API, Acex Capital API, and 53 more. Tagged areas inclu...">
+    <meta name="keywords" content="Company, Software-as-a-Service, Verifiable Memory, AI Agents, USDC, APIs, Search, Discovery">
+    <link rel="canonical" href="https://apis.io/providers/attestedmemory-net/">
+    <link rel="api-catalog" href="https://apis.io/.well-known/api-catalog" type="application/linkset+json">
+    <link rel="agent-skills" href="https://apis.io/skills/">
+    <link rel="alternate" type="text/markdown" title="Markdown source" href="https://apis.io/providers/attestedmemory-net/index.md">
+    
+    
+    
+    
+    
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Attested Memory API — Docs, OpenAPI &amp; Kin Score | APIs.io">
+    <meta property="og:description" content="Attested Memory publishes 56 API contracts indexed on the APIs.io network, including A2a API, Accounts API, Acex Capital API, and 53 more. Tagged areas include Company, Software-as-a-Service, Verif...">
+    <meta property="og:url" content="https://apis.io/providers/attestedmemory-net/">
+    <meta property="og:site_name" content="APIs.io Providers">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://kinlane-images.s3.amazonaws.com/shared/kin-score/cards/attestedmemory-net.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Attested Memory: Kin Score 32.5 out of 100 (thin)">
+    
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://kinlane-images.s3.amazonaws.com/shared/kin-score/cards/attestedmemory-net.png">
+    <meta name="twitter:image:alt" content="Attested Memory: Kin Score 32.5 out of 100 (thin)">
+    <meta name="twitter:title" content="Attested Memory API — Docs, OpenAPI &amp; Kin Score | APIs.io">
+    <meta name="twitter:description" content="Attested Memory publishes 56 API contracts indexed on the APIs.io network, including A2a API, Accounts API, Acex Capital API, and 53 more. Tagged areas include Company, Software-as-a-Service, Verif...">
+
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
+    <link href="/assets/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/sticky-footer.css" rel="stylesheet">
+    <script src="/assets/jquery-3.7.1.min.js"></script>
+    <script src="/assets/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js-yaml.min.js"></script>
+
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: #333; }
+      .navbar { padding: 0.75rem 0; }
+      .navbar-brand { font-weight: 700; font-size: 1.4rem; letter-spacing: -0.5px; padding-top: 0; padding-bottom: 0; }
+      .navbar-brand img { display: block; height: 28px; width: auto; }
+      .nav-link { font-size: 0.95rem; padding: 0.5rem 0.7rem !important; }
+      .container.my-5 { max-width: 960px; }
+      a { color: #0d6efd; }
+      a:hover { color: #0a58ca; }
+
+      /* ------------------------------------------------------------------
+         Masthead — three shallow mega-menus (Browse / Artifacts / Signals)
+         replacing the single 26-link "More" column (2026-07-28). Menus are
+         built from _data/nav.yml by _includes/nav.html; `columns:` there maps
+         to .nav-mega-N here.
+         Breakpoint is XL (1200px), not LG: eight top-level items plus the
+         search field and the CTA don't fit at 992px.
+      ------------------------------------------------------------------ */
+      .navbar-search { min-width: 15rem; }
+      .navbar-cta { white-space: nowrap; }
+
+      @media (min-width: 1200px) {
+        .navbar-search { margin-right: 0.5rem; }
+        .navbar .dropdown-menu { padding: 0.75rem 0.25rem; border: 0; box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+        .navbar .dropdown-header { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; padding: 0.15rem 1rem 0.35rem; }
+        .navbar .dropdown-item { font-size: 0.9rem; padding: 0.3rem 1rem; }
+        .navbar .dropdown-item.active, .navbar .dropdown-item:active { background-color: #0d6efd; color: #fff; }
+
+        /* Multi-column menus: groups lay out side by side as flex children.
+           Bootstrap's dropdown JS only cares about .dropdown-toggle /
+           .dropdown-menu / .dropdown-item, all of which survive the nesting,
+           so keyboard navigation still works. */
+        .nav-mega { display: none; }
+        .nav-mega.show { display: flex; flex-wrap: wrap; }
+        .nav-mega-1 { min-width: 13rem; }
+        .nav-mega-2 { min-width: 26rem; }
+        .nav-mega-3 { min-width: 39rem; }
+        .nav-mega-group { flex: 1 1 12rem; min-width: 12rem; padding-bottom: 0.35rem; }
+        .nav-mega-list { list-style: none; margin: 0; padding: 0; }
+
+        /* Right-align the last menu so a wide 3-column panel can't push the
+           page into a horizontal scrollbar. */
+        .navbar-nav > .nav-item.dropdown:last-of-type .nav-mega { right: 0; left: auto; }
+      }
+
+      /* Collapsed navbar: render menus inline (no light popover card floating
+         over the dark bar) and match the dark styling so the whole drawer
+         reads as one list. */
+      @media (max-width: 1199px) {
+        .navbar-collapse { padding: 0.5rem 0 0.25rem; }
+        .navbar-nav .nav-link { padding: 0.6rem 0 !important; }
+        .navbar .dropdown-menu {
+          position: static; float: none; display: block;
+          background-color: transparent; border: 0; box-shadow: none;
+          padding: 0.25rem 0 0.5rem 0.75rem;
+          margin: 0; width: auto;
+        }
+        .navbar .dropdown-toggle::after { display: none; }
+        .nav-mega-list { list-style: none; margin: 0; padding: 0; }
+        .navbar .dropdown-header {
+          color: rgba(255,255,255,0.55);
+          font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.6px;
+          padding: 0.75rem 0 0.25rem; font-weight: 600;
+        }
+        .navbar-dark .dropdown-menu .dropdown-item {
+          color: rgba(255,255,255,0.85);
+          padding: 0.5rem 0; font-size: 0.95rem;
+        }
+        .navbar-dark .dropdown-menu .dropdown-item:hover,
+        .navbar-dark .dropdown-menu .dropdown-item:focus {
+          color: #fff; background-color: rgba(255,255,255,0.06); border-radius: 4px;
+          padding-left: 0.5rem; padding-right: 0.5rem;
+        }
+        .navbar-dark .dropdown-menu .dropdown-item.active {
+          color: #fff; background-color: rgba(13,110,253,0.6); border-radius: 4px;
+          padding-left: 0.5rem; padding-right: 0.5rem;
+        }
+        .navbar-search { margin-top: 0.5rem; min-width: 0; }
+        .navbar-cta { margin-top: 0.6rem; align-self: flex-start; }
+      }
+    </style>
+    <script>
+      // Collapsed navbar: expand every menu automatically when the drawer is
+      // opened, so Browse / Artifacts / Signals are visible without a second
+      // tap. Boundary must match the CSS above (1199px).
+      document.addEventListener('DOMContentLoaded', function () {
+        var collapseEl = document.getElementById('navbarSupportedContent');
+        if (!collapseEl) return;
+        collapseEl.addEventListener('show.bs.collapse', function () {
+          if (window.matchMedia('(max-width: 1199px)').matches) {
+            collapseEl.querySelectorAll('.dropdown-menu').forEach(function (m) {
+              m.classList.add('show');
+            });
+          }
+        });
+        collapseEl.addEventListener('hidden.bs.collapse', function () {
+          collapseEl.querySelectorAll('.dropdown-menu.show').forEach(function (m) {
+            m.classList.remove('show');
+          });
+        });
+      });
+    </script>
+
+    <!-- First-touch source (2026-10-19). Records HOW someone first reached APIs.io — the
+         referring HOST (never the full URL), utm_source/medium/campaign, the landing path,
+         the date — in a first-party cookie, ONCE, never overwritten. The sign-in Lambda copies
+         it onto a new account as `signup_source` so signups can be counted by channel. No IDs,
+         nothing sent anywhere else; internal navigation and our own sites are not a source. -->
+    <script>
+      (function () {
+        try {
+          if (document.cookie.indexOf('apisio_src=') !== -1) return;
+          var ref = '';
+          try { ref = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+          if (/(^|\.)(apis\.io|apievangelist\.com|apis\.how|apicommons\.org|apisjson\.org)$/.test(ref)) ref = '';
+          var q = new URLSearchParams(location.search), utm = [q.get('utm_source'), q.get('utm_medium'), q.get('utm_campaign')]
+            .map(function (v) { return (v || '').replace(/[^\w.\-+ ]/g, '').slice(0, 40); }).join('/').replace(/\/+$/, '');
+          if (!ref && !utm) return;   // direct / internal: leave it unset; the Lambda records direct/unknown
+          var v = 'ref=' + ref + '|utm=' + utm + '|land=' + location.pathname.replace(/[^\w.\-\/]/g, '').slice(0, 80) +
+                  '|d=' + new Date().toISOString().slice(0, 10);
+          document.cookie = 'apisio_src=' + encodeURIComponent(v) + '; Domain=apis.io; Path=/; Max-Age=7776000; SameSite=Lax; Secure';
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6H4KFSEF6P"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6H4KFSEF6P');
+
+      function getQueryVariable(variable) {
+          var query = window.location.search.substring(1);
+          var vars = query.split('&');
+          for (var i = 0; i < vars.length; i++) {
+              var pair = vars[i].split('=');
+              if (decodeURIComponent(pair[0]) == variable) {
+                  return decodeURIComponent(pair[1]);
+              }
+          }
+      }
+    </script><script>
+(function () {
+  'use strict';
+
+  var BEACON_URL = '/webmcp/beacon';
+  // Sampling rate for the NEGATIVE case (browser has no modelContext). Positives
+  // are always sent. Keep in sync with the scale-up factor in QUERIES.md.
+  var NEGATIVE_SAMPLE_RATE = 0.01;
+
+  var registered = [];   // every tool registered on this page, across surfaces
+  var surfaces = {};     // surface -> true, so a double register() is a no-op
+  var ctx = null;        // the live modelContext object
+  var flavor = null;     // 'document' (current spec) | 'navigator' (<= Chrome 149)
+
+  // --- capability detection ------------------------------------------------
+  // Document first: that is where the spec put it. Navigator is the deprecated
+  // fallback, kept only while Chrome 149 is still in the field.
+  try {
+    if (typeof document !== 'undefined' && document.modelContext &&
+        typeof document.modelContext.registerTool === 'function') {
+      ctx = document.modelContext;
+      flavor = 'document';
+    } else if (typeof navigator !== 'undefined' && navigator.modelContext &&
+               typeof navigator.modelContext.provideContext === 'function') {
+      ctx = navigator.modelContext;
+      flavor = 'navigator';
+    }
+  } catch (err) {
+    ctx = null;
+    flavor = null;
+  }
+
+  // --- measurement ---------------------------------------------------------
+  function beacon(payload) {
+    try {
+      payload.flavor = flavor || 'none';
+      payload.path = (location && location.pathname) || '';
+      var body = JSON.stringify(payload);
+      if (navigator && typeof navigator.sendBeacon === 'function') {
+        navigator.sendBeacon(BEACON_URL, new Blob([body], { type: 'application/json' }));
+      } else if (typeof fetch === 'function') {
+        fetch(BEACON_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: body,
+          keepalive: true
+        }).catch(function () {});
+      }
+    } catch (err) {
+      // Telemetry must never break a page or a tool call.
+    }
+  }
+
+  // --- return-shape normalization -----------------------------------------
+  function toContent(value) {
+    if (value && typeof value === 'object' && Array.isArray(value.content)) return value;
+    var text;
+    try {
+      text = (typeof value === 'string') ? value : JSON.stringify(value, null, 2);
+    } catch (err) {
+      text = String(value);
+    }
+    return { content: [{ type: 'text', text: text }] };
+  }
+
+  function wrapExecute(surface, tool) {
+    var fn = tool.execute;
+    return function (args) {
+      var started = (typeof performance !== 'undefined' && performance.now)
+        ? performance.now() : Date.now();
+      function done(ok) {
+        var ms = ((typeof performance !== 'undefined' && performance.now)
+          ? performance.now() : Date.now()) - started;
+        beacon({ event: 'call', surface: surface, tool: tool.name, ok: ok, ms: Math.round(ms) });
+      }
+      var out;
+      try {
+        out = fn.apply(this, arguments);
+      } catch (err) {
+        done(false);
+        throw err;
+      }
+      return Promise.resolve(out).then(function (value) {
+        done(true);
+        return toContent(value);
+      }, function (err) {
+        done(false);
+        throw err;
+      });
+    };
+  }
+
+  // --- registration --------------------------------------------------------
+  function pushToBrowser(tools) {
+    if (flavor === 'document') {
+      for (var i = 0; i < tools.length; i++) ctx.registerTool(tools[i]);
+    } else {
+      // Legacy provideContext replaces the entire set, so always send the
+      // accumulated list rather than just this surface's slice.
+      ctx.provideContext({ tools: registered });
+    }
+  }
+
+  function register(surface, tools) {
+    surface = String(surface || 'unknown');
+    if (!ctx || !Array.isArray(tools) || !tools.length) return false;
+    if (surfaces[surface]) return false;
+    surfaces[surface] = true;
+
+    var prepared = [];
+    for (var i = 0; i < tools.length; i++) {
+      var t = tools[i];
+      if (!t || !t.name || typeof t.execute !== 'function') continue;
+      prepared.push({
+        name: t.name,
+        description: t.description || '',
+        inputSchema: t.inputSchema || { type: 'object', properties: {} },
+        execute: wrapExecute(surface, t)
+      });
+    }
+    if (!prepared.length) return false;
+
+    registered = registered.concat(prepared);
+    try {
+      pushToBrowser(prepared);
+    } catch (err) {
+      // The API surface is a moving draft — a failed registration must not take
+      // the page down with it. Record it, because a spike here is the signal
+      // that the spec moved under us again.
+      if (typeof console !== 'undefined') console.warn('WebMCP registration failed', err);
+      beacon({ event: 'error', surface: surface, tool: '', ok: false, ms: 0 });
+      return false;
+    }
+    beacon({ event: 'register', surface: surface, tool: '', ok: true, ms: prepared.length });
+    return true;
+  }
+
+  window.apisioWebMCP = {
+    get available() { return !!ctx; },
+    get flavor() { return flavor; },
+    get tools() { return registered.map(function (t) { return t.name; }); },
+    register: register
+  };
+
+  // Capability census — one beacon per pageview. Always when a modelContext
+  // exists (rare, and the whole point); sampled when it does not, so the
+  // denominator is measurable without a write per pageview.
+  if (ctx) {
+    beacon({ event: 'capability', surface: 'page', tool: '', ok: true, ms: 0 });
+  } else if (Math.random() < NEGATIVE_SAMPLE_RATE) {
+    beacon({ event: 'capability', surface: 'page', tool: '', ok: false, ms: 0, sampled: 1 });
+  }
+})();
+</script>
+
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="https://apis.io/" aria-label="apis.io home"><img src="/assets/branding/apisio-wordmark-white.png" alt="apis.io"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-xl-0"><li class="nav-item">
+                <a class="nav-link active" href="https://apis.io/providers/">Providers</a>
+              </li><li class="nav-item">
+                <a class="nav-link" href="https://apis.io/apis/">APIs</a>
+              </li><li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="nav-browse" role="button" data-bs-toggle="dropdown" aria-expanded="false">Browse</a>
+                <ul class="dropdown-menu nav-mega nav-mega-2" aria-labelledby="nav-browse"><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Taxonomy</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/tags/">Tags</a></li><li><a class="dropdown-item" href="https://apis.io/industries/">Industries</a></li><li><a class="dropdown-item" href="https://apis.io/areas/">Areas</a></li><li><a class="dropdown-item" href="https://apis.io/topics/">Topics</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Business Architecture</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/capabilities/">Business Capabilities</a></li><li><a class="dropdown-item" href="https://apis.io/applications/">Applications</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Use Cases & Features</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/use-cases/">Use Cases</a></li><li><a class="dropdown-item" href="https://apis.io/features/">Features</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Geography</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/regions/">Regions</a></li><li><a class="dropdown-item" href="https://apis.io/countries/">Countries</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Governance</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/regulations/">Regulations</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Market</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/vcs/">Venture Capital</a></li><li><a class="dropdown-item" href="https://apis.io/secondary-market/">Secondary Market</a></li><li><a class="dropdown-item" href="https://apis.io/estates/">API Estates</a></li><li><a class="dropdown-item" href="https://apis.io/gartner/">Gartner Magic Quadrants</a></li><li><a class="dropdown-item" href="https://apis.io/markets/">Markets</a></li></ul>
+                    </li></ul>
+              </li><li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="nav-artifacts" role="button" data-bs-toggle="dropdown" aria-expanded="false">Artifacts</a>
+                <ul class="dropdown-menu nav-mega nav-mega-3" aria-labelledby="nav-artifacts"><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Specifications</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/apis/">OpenAPI</a></li><li><a class="dropdown-item" href="https://apis.io/extensions/">OpenAPI Extensions</a></li><li><a class="dropdown-item" href="https://apis.io/overlays/">OpenAPI Overlays</a></li><li><a class="dropdown-item" href="https://apis.io/headers/">HTTP Headers</a></li><li><a class="dropdown-item" href="https://apis.io/schemas/">Schemas</a></li><li><a class="dropdown-item" href="https://apis.io/json-structure/">JSON Structure</a></li><li><a class="dropdown-item" href="https://apis.io/asyncapis/">AsyncAPI</a></li><li><a class="dropdown-item" href="https://apis.io/graphqls/">GraphQL</a></li><li><a class="dropdown-item" href="https://apis.io/jsonld/">JSON-LD</a></li><li><a class="dropdown-item" href="https://apis.io/vocabularies/">Vocabularies</a></li><li><a class="dropdown-item" href="https://apis.io/standards/">Standards</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Usage</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/examples/">Examples</a></li><li><a class="dropdown-item" href="https://apis.io/collections/">Collections</a></li><li><a class="dropdown-item" href="https://apis.io/arazzos/">Arazzo Workflows</a></li><li><a class="dropdown-item" href="https://apis.io/channels/">Event Channels</a></li><li><a class="dropdown-item" href="https://apis.io/webhooks/">Webhooks</a></li><li><a class="dropdown-item" href="https://apis.io/errors/">Errors</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Agents & Governance</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/agents/">Agent Registry</a></li><li><a class="dropdown-item" href="https://apis.io/servers/">MCP Servers</a></li><li><a class="dropdown-item" href="https://apis.io/a2a/">A2A Agent Cards</a></li><li><a class="dropdown-item" href="https://apis.io/ard/">Agent Discovery</a></li><li><a class="dropdown-item" href="https://apis.io/agent-skills/">Agent Skills</a></li><li><a class="dropdown-item" href="https://apis.io/llms-txt/">llms.txt</a></li><li><a class="dropdown-item" href="https://apis.io/ai-catalog/">AI Catalog</a></li><li><a class="dropdown-item" href="https://apis.io/rules/">Rules</a></li></ul>
+                    </li></ul>
+              </li><li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="nav-signals" role="button" data-bs-toggle="dropdown" aria-expanded="false">Signals</a>
+                <ul class="dropdown-menu nav-mega nav-mega-2" aria-labelledby="nav-signals"><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Security</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/security/">Security Posture</a></li><li><a class="dropdown-item" href="https://apis.io/scopes/">OAuth Scopes</a></li><li><a class="dropdown-item" href="https://apis.io/agentic-access/">Agentic Access</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Commercial</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/plans/">Plans</a></li><li><a class="dropdown-item" href="https://apis.io/rate-limits/">Rate Limits</a></li><li><a class="dropdown-item" href="https://apis.io/sla/">Service Levels</a></li><li><a class="dropdown-item" href="https://apis.io/finops/">FinOps</a></li></ul>
+                    </li></ul>
+              </li><li class="nav-item">
+                <a class="nav-link" href="https://apis.io/rating/">Kin Score</a>
+              </li><li class="nav-item">
+                <a class="nav-link" href="https://apis.io/stack/">Stack</a>
+              </li><li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="nav-platform" role="button" data-bs-toggle="dropdown" aria-expanded="false">Platform</a>
+                <ul class="dropdown-menu nav-mega nav-mega-2" aria-labelledby="nav-platform"><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Developers</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/developer/">Developer Docs</a></li><li><a class="dropdown-item" href="https://apis.io/playground/">Agent Playground</a></li><li><a class="dropdown-item" href="https://apis.io/changelog/">Changelog</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Trust Layer</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/trust/">The Trust Layer</a></li><li><a class="dropdown-item" href="https://apis.io/onboarding/">Onboarding</a></li><li><a class="dropdown-item" href="https://apis.io/agent-signup/">Agent Signup</a></li><li><a class="dropdown-item" href="https://apis.io/blueprint/">Blueprint</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">Insights</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/analytics/">Analytics</a></li><li><a class="dropdown-item" href="https://apis.io/search-terms/">Search Terms</a></li></ul>
+                    </li><li class="nav-mega-group">
+                      <h6 class="dropdown-header">APIs.io</h6>
+                      <ul class="nav-mega-list"><li><a class="dropdown-item" href="https://apis.io/about/">About</a></li><li><a class="dropdown-item" href="https://apis.io/on-premise/">On-Premise</a></li><li><a class="dropdown-item" href="https://usecommune.com/n/apisio">Newsletter</a></li><li><a class="dropdown-item" href="https://apis.io/support/">Support</a></li><li><a class="dropdown-item" href="https://github.com/api-search">GitHub</a></li></ul>
+                    </li></ul>
+              </li><li class="nav-item">
+                <a class="nav-link" href="https://apis.io/blog/">Blog</a>
+              </li></ul><form class="d-flex navbar-search" role="search" action="https://apis.io/" method="get">
+        <input class="form-control form-control-sm" type="search" name="search" placeholder="Search APIs, providers, capabilities…" aria-label="Search APIs">
+      </form><a class="btn btn-sm btn-outline-light navbar-cta" href="https://apis.io/add/">Add your API</a></div>
+  </div>
+</nav>
+
+    
+    <!-- Laneworks ad network (ads.laneworks.net) -->
+    <script async src="https://ads.laneworks.net/embed.js"></script>
+    <div data-laneworks-ad="top-banner"></div>
+    <main class="container mt-2 mb-5" role="main">
+      <style>
+  .provider-hero { background: linear-gradient(135deg, #f8f9fb 0%, #eef2f7 100%); border: 1px solid #e3e7ee; border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; }
+  /* Screenshot banner. With no screenshot (or a load failure) the dark apis.io
+     wordmark background shows through as the fallback card. */
+  .provider-banner { display: block; width: 100%; aspect-ratio: 16 / 6; background: #14161d url('/assets/branding/apisio-wordmark-white.png') center / 200px auto no-repeat; border: 1px solid #e3e7ee; border-radius: 12px; overflow: hidden; margin-bottom: 1.5rem; }
+  .provider-banner img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  /* Deprecated providers stay listed but carry a banner here and a badge on the card. */
+  .deprecated-banner { display: flex; gap: 0.6rem; align-items: baseline; background: #fff4e5; border: 1px solid #ffd9a8; color: #8a4b00; border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5; }
+  .deprecated-banner strong { white-space: nowrap; }
+  .provider-title { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; color: #1a1a2e; }
+  .provider-desc { color: #4a5568; line-height: 1.6; font-size: 1.05rem; margin-bottom: 1rem; }
+  .provider-overview { color: #4a5568; line-height: 1.65; font-size: 0.95rem; margin: 0 0 1rem; }
+  .provider-overview p { margin: 0 0 0.6rem; }
+  .provider-overview a { color: #0d6efd; text-decoration: none; }
+  .provider-overview a:hover { text-decoration: underline; }
+  .stat-badges { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .stat-badge { background: white; border: 1px solid #e3e7ee; border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; }
+  .stat-badge strong { color: #0d6efd; }
+  .provider-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+  .provider-link { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.85rem; background: #0d6efd; color: #fff; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; }
+  .provider-link:hover { background: #0b5ed7; color: #fff; }
+  .provider-link.secondary { background: #fff; color: #1a1a2e; border: 1px solid #cdd6e4; }
+  .provider-link.secondary:hover { background: #f1f4f9; color: #1a1a2e; }
+
+  /* Rating header — the at-a-glance headline in the hero. Band pill colors are the
+     same ladder used by the search-result pills on apis.io and the bands on
+     /rating/ — green/blue/yellow/orange/red/gray, descending. Keep the three in
+     sync; a provider seeing `strong` blue in search and something else here reads
+     as two different systems. */
+  .score-header { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; padding: 0.75rem 1rem; background: white; border: 1px solid #e3e7ee; border-radius: 10px; }
+  /* The K'in sun. Fixed box so the header doesn't reflow when the script
+     swaps the empty placeholder for the drawn mark. */
+  .score-glyph { flex: 0 0 auto; width: 72px; height: 72px; display: block; line-height: 0; }
+  .score-glyph svg { display: block; width: 100%; height: 100%; }
+  .score-composite { font-size: 1.5rem; font-weight: 700; color: #1a1a2e; font-variant-numeric: tabular-nums; line-height: 1; }
+  .score-composite span { font-size: 0.85rem; font-weight: 500; color: #8a94a6; }
+  .band-pill { display: inline-block; padding: 0.25em 0.75em; border-radius: 999px; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .band-exemplar   { background: #d1f7e0; color: #0f5132; }
+  .band-strong     { background: #cfe2ff; color: #0a3d91; }
+  .band-developing { background: #fff3cd; color: #664d03; }
+  .band-thin       { background: #ffe0c2; color: #7a3e07; }
+  .band-emerging   { background: #f8d7da; color: #842029; }
+  .band-minimal    { background: #e9ecef; color: #495057; }
+  .score-trend { font-size: 0.8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .trend-rising  { color: #0f5132; }
+  .trend-falling { color: #842029; }
+  .trend-flat    { color: #8a94a6; }
+  .score-meta { margin-left: auto; font-size: 0.78rem; color: #8a94a6; text-align: right; }
+  .score-meta a { color: #0d6efd; text-decoration: none; }
+  /* Access model — how a developer gets in (pricing + onboarding), derived from
+     plans/finops/authentication into apis.yml's accessModel block. Same pill ladder
+     as the rating bands: green = easiest/cheapest, blue = self-serve, gray = paid,
+     orange = gated. */
+  .access-header { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .access-header .ax-caption { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #8a94a6; margin-right: 0.15rem; }
+  .access-pill { display: inline-block; padding: 0.25em 0.75em; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+  .ax-free, .ax-freemium, .ax-open, .ax-try { background: #d1f7e0; color: #0f5132; }
+  .ax-self-serve { background: #cfe2ff; color: #0a3d91; }
+  .ax-free-trial { background: #cff4e4; color: #0f5132; }
+  .ax-paid { background: #e9ecef; color: #495057; }
+  .ax-enterprise, .ax-approval { background: #ffe0c2; color: #7a3e07; }
+  .ax-gated-partner { background: #ffe0c2; color: #7a3e07; }
+  .ax-gated-private { background: #f8d7da; color: #842029; }
+  .score-meta a:hover { text-decoration: underline; }
+  @media (max-width: 560px) { .score-meta { margin-left: 0; text-align: left; width: 100%; } }
+  /* Agent readiness — a SEPARATE axis from the composite, so its own divider,
+     label, and pill palette (teal/agent family) rather than the composite ladder. */
+  .score-divider { width: 1px; align-self: stretch; background: #e3e7ee; margin: 0 0.35rem; }
+  .agent-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a94a6; font-weight: 700; }
+  .agent-score { font-size: 1.25rem; font-weight: 700; color: #1a1a2e; font-variant-numeric: tabular-nums; line-height: 1; }
+  .agent-score span { font-size: 0.8rem; font-weight: 500; color: #8a94a6; }
+  .band-agent-native { background: #cff4e6; color: #0b6b4f; }
+  .band-agent-ready  { background: #d7ebff; color: #0a4b8c; }
+  .band-agent-aware  { background: #fff0d4; color: #7a5200; }
+  .band-human-only   { background: #eceef1; color: #5a6472; }
+
+  /* Front Door AI — a third, OPTIONAL axis beside the composite and agent
+     readiness. It counts AI vocabulary on the provider's home page: what the
+     company SAYS, not what it ships. Deliberately not part of the composite and
+     never coloured as good/bad — the ramp is one neutral hue getting stronger,
+     because saying a lot about AI is a fact about a home page, not a failing.
+     Stamped into frontmatter by build.py's _stamp_front_door_ai() from
+     signals/_data/front-door-ai/providers-latest.json. */
+  .fdai-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a94a6; font-weight: 700; }
+  .fdai-score { font-size: 1.25rem; font-weight: 700; color: #1a1a2e; font-variant-numeric: tabular-nums; line-height: 1; }
+  .fdai-score span { font-size: 0.8rem; font-weight: 500; color: #8a94a6; }
+  .fdai-1 { background: #eceef1; color: #5a6472; }
+  .fdai-2 { background: #eef2fb; color: #4a5a7a; }
+  .fdai-3 { background: #e0e9f9; color: #3c5488; }
+  .fdai-4 { background: #d2e0f6; color: #2f4a8c; }
+  .fdai-5 { background: #c2d6f3; color: #24408a; }
+  .fdai-6 { background: #b0caf0; color: #1b3680; }
+
+  /* Heartbeat — a SECONDARY axis beside Front Door AI: is the provider still
+     making noise (blog, press, GitHub), and is that noise fading? The 90-day
+     window against the 90 before it. Not part of the composite. Neutral greys
+     except going_silent, which is the one reading the index exists to raise.
+     Stamped by build.py's _stamp_heartbeat() from
+     signals/_data/heartbeat/providers-latest.json. */
+  .hb-alive        { background: #d2e0f6; color: #2f4a8c; }
+  .hb-slowing      { background: #eef2fb; color: #4a5a7a; }
+  .hb-going_silent { background: #fff0d4; color: #7a5200; }
+  .hb-dormant      { background: #eceef1; color: #5a6472; }
+
+  /* On-page contents nav — chips that jump to the sections this provider actually
+     has. Makes the depth of data navigable instead of an endless scroll. */
+  .toc-nav { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 2rem; padding: 0.9rem 1rem; background: #fbfcfe; border: 1px solid #e3e7ee; border-radius: 10px; }
+  .toc-nav .toc-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #8a94a6; align-self: center; margin-right: 0.25rem; }
+  .toc-chip { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.7rem; background: #fff; border: 1px solid #dbe2ec; border-radius: 999px; font-size: 0.8rem; font-weight: 500; color: #2d3748; text-decoration: none; transition: all 0.12s; }
+  .toc-chip:hover { border-color: #0d6efd; color: #0d6efd; box-shadow: 0 1px 4px rgba(13,110,253,0.12); }
+  .toc-chip .toc-count { font-variant-numeric: tabular-nums; font-weight: 700; color: #8a94a6; font-size: 0.75rem; }
+  .toc-chip:hover .toc-count { color: #0d6efd; }
+  .std-implements { display: grid; gap: 0.6rem; margin-bottom: 1.5rem; }
+  .std-impl-row { border: 1px solid #e3e7ee; border-radius: 10px; padding: 0.85rem 1rem; background: #fff; }
+  .std-impl-main { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; margin-bottom: 0.3rem; }
+  .std-impl-name { font-weight: 700; color: #1a1a2e; text-decoration: none; font-size: 1rem; }
+  .std-impl-name:hover { color: #0d6efd; }
+  .std-impl-tier { font-family: monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.12rem 0.45rem; border-radius: 4px; }
+  .std-impl-tier.tier-core { background: #dcebe8; color: #0e6e62; }
+  .std-impl-tier.tier-extended { background: #f3e8d2; color: #8a5e12; }
+  .std-impl-ver { font-family: monospace; font-size: 0.72rem; color: #6c757d; background: #f4f6f8; border: 1px solid #e3e7ee; border-radius: 4px; padding: 0.1rem 0.4rem; }
+  .std-impl-ev { font-size: 0.85rem; color: #4a5568; }
+  .std-impl-ev strong { color: #1a1a2e; }
+  .std-impl-meta { font-size: 0.78rem; color: #8a94a6; margin-top: 0.3rem; }
+  .std-impl-meta a { color: #8a94a6; }
+
+  /* Delivery-model pill — sits with the score because it says what the score
+     measured. Muted next to the band pill: it is context, not a verdict. */
+  .delivery-pill{display:inline-flex;align-items:center;gap:.3rem;padding:.15rem .5rem;
+    border:1px solid rgba(0,0,0,.15);border-radius:999px;font-size:.72rem;
+    text-transform:capitalize;letter-spacing:.01em;white-space:nowrap;opacity:.9}
+  .dm-saas{background:#eef4ff;border-color:#c7d8ff;color:#22407a}
+  .dm-self-hosted{background:#eefaf1;border-color:#c3e8d0;color:#1d5b34}
+  .dm-open-core{background:#fdf3e7;border-color:#f0d6ae;color:#7a4b12}
+  .dm-library{background:#f4f0fb;border-color:#ddd0f2;color:#4c2f7a}
+  /* Kin Score brand mark — the API Evangelist rating system, an API Evangelist product
+     licensed by apis.io. Kin icon + wordmark, links to the rating page. */
+  .ae-rating-mark { display: flex; align-items: center; gap: 0.4rem; text-decoration: none; }
+  .ae-rating-mark img { height: 30px; width: auto; }
+  .ae-rating-mark span { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #0a3d91; }
+  .ae-rating-mark:hover span { text-decoration: underline; }
+
+  /* Inline rating panel — the full score breakdown, rendered on the page (no popup).
+     Green fill = points applied, red track = points possible, so every bar reads as
+     earned-vs-possible at a glance. Rendered from site.data.scoring (mirrored from
+     signals/_data/scoring.yml) + the frontmatter score. */
+  .rating-panel { background: #fff; border: 1px solid #e3e7ee; border-radius: 12px; padding: 1.5rem; }
+  .rp-topline { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding-bottom: 1.1rem; border-bottom: 1px solid #eef1f5; }
+  .rp-topline .ae-rating-mark { margin-right: auto; }
+  .rp-scored { font-size: 0.75rem; color: #8a94a6; text-align: right; }
+  .rp-scored a { color: #0d6efd; text-decoration: none; }
+  .rp-scored a:hover { text-decoration: underline; }
+  /* Every facet and dimension label links to its own page under /rating/. The
+     label was already the one piece of the panel a reader wants to interrogate —
+     "what IS Contract Quality, and who is good at it" — and until 2026-09-01 the
+     only answer was /rating/, which documents all 141 checks at once. Absolute
+     apis.io URLs on purpose: this layout also renders on providers.apis.io, where
+     a root-relative /rating/ path resolves to nothing. */
+  .rd-label a { color: inherit; text-decoration: none; border-bottom: 1px dotted #b9c6dd; }
+  .rd-label a:hover { color: #0a3d91; border-bottom-color: #0a3d91; }
+  .rd-label a abbr { text-decoration: none; }
+  /* Diagram — one vertical bar per facet + agent readiness, the at-a-glance picture. */
+  .rd-diagram { display: flex; align-items: flex-end; gap: 8px; height: 110px; padding: 0.3rem 0 1.5rem; border-bottom: 1px solid #eef1f5; margin-bottom: 1.25rem; }
+  .rd-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; position: relative; }
+  .rd-vbar { width: 100%; max-width: 40px; height: 100%; background: #fbe0e3; border-radius: 5px; display: flex; align-items: flex-end; overflow: hidden; }
+  .rd-vfill { width: 100%; background: linear-gradient(180deg, #16a34a, #0b6b4f); border-radius: 0 0 5px 5px; }
+  .rd-col-agent .rd-vbar { background: #eef2f8; }
+  .rd-col-agent .rd-vfill { background: linear-gradient(180deg, #2f7fd6, #0a4b8c); }
+  .rd-vnum { position: absolute; top: -1.15rem; font-size: 0.72rem; font-weight: 700; color: #4a5568; font-variant-numeric: tabular-nums; }
+  .rd-vlabel { position: absolute; bottom: -1.35rem; font-size: 0.62rem; color: #6c757d; white-space: nowrap; text-align: center; max-width: 6rem; overflow: hidden; text-overflow: ellipsis; }
+  /* Two-column breakdown: composite facets on the left, agent readiness on the right. */
+  .rd-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; }
+  @media (max-width: 640px) { .rd-cols { grid-template-columns: 1fr; } }
+  .rd-section-title { font-size: 0.82rem; font-weight: 700; color: #1a1a2e; margin: 0 0 0.6rem; padding-bottom: 0.35rem; border-bottom: 1px solid #f0f2f5; }
+  .rd-section-title .rd-band { font-weight: 600; color: #6c757d; text-transform: capitalize; }
+  .rd-row { display: grid; grid-template-columns: 1fr 84px 58px; align-items: center; gap: 0.5rem; padding: 0.28rem 0; font-size: 0.83rem; }
+  .rd-label { color: #2d3748; display: flex; align-items: center; gap: 0.35rem; }
+  .rd-label abbr { text-decoration: none; border-bottom: 1px dotted #b6c0d0; cursor: help; }
+  .rd-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .rd-dot.on { background: #16a34a; } .rd-dot.off { background: #dc3545; }
+  .rd-track { height: 8px; background: #fbe0e3; border-radius: 999px; overflow: hidden; }
+  .rd-fill { display: block; height: 100%; background: linear-gradient(90deg, #16a34a, #0b6b4f); border-radius: 999px; }
+  .rd-col-agent-rows .rd-track { background: #e6edf7; }
+  .rd-col-agent-rows .rd-fill { background: linear-gradient(90deg, #2f7fd6, #0a4b8c); }
+  .rd-pts { text-align: right; font-variant-numeric: tabular-nums; font-size: 0.78rem; color: #4a5568; white-space: nowrap; }
+  .rd-pts b { color: #0b6b4f; } .rd-pts.miss b { color: #dc3545; }
+  .rd-col-agent-rows .rd-pts b { color: #0a4b8c; }
+  .rd-foot { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #eef1f5; font-size: 0.85rem; color: #4a5568; line-height: 1.55; }
+  .rd-foot a { color: #0a3d91; font-weight: 600; text-decoration: none; }
+  .rd-foot a:hover { text-decoration: underline; }
+  .rd-foot .rd-price { display: inline-block; margin-top: 0.5rem; margin-right: 1.25rem; font-weight: 700; color: #0a3d91; }
+
+  .section-anchor { font-size: 1.25rem; font-weight: 700; color: #1a1a2e; margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e3e7ee; scroll-margin-top: 1rem; }
+  .section-anchor a { color: inherit; text-decoration: none; }
+  .section-anchor a:hover { color: #0d6efd; }
+  /* Box header count + one-line summary — every artifact box carries both, so the
+     depth of data is legible before the cards even load. Rendered by
+     _includes/provider-box.html (the single source for every box). */
+  .section-anchor .section-count { font-size: 0.9rem; font-weight: 700; color: #8a94a6; font-variant-numeric: tabular-nums; margin-left: 0.15rem; }
+  .section-blurb { color: #8a94a6; font-size: 0.85rem; line-height: 1.5; margin: -0.4rem 0 1rem; }
+  .card-meta { font-size: 0.8rem; color: #666; margin: 0 0 0.5rem; }
+  .card-badge { display: inline-block; padding: 0.15em 0.5em; border-radius: 4px; font-size: 0.7rem; font-weight: 700; color: #fff; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .item-card { background: white; border: 1px solid #e3e7ee; border-radius: 10px; padding: 1.25rem; transition: all 0.15s; }
+  .item-card:hover { border-color: #0d6efd; box-shadow: 0 2px 8px rgba(13,110,253,0.1); transform: translateY(-1px); }
+  .item-card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .item-card h4 a { color: #1a1a2e; text-decoration: none; }
+  .item-card h4 a:hover { color: #0d6efd; }
+  .item-card p { font-size: 0.85rem; color: #666; margin-bottom: 0.5rem; }
+  .item-card .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .tag-sm { display: inline-block; padding: 0.2em 0.6em; background: #eef2f7; color: #4a5568; border-radius: 999px; font-size: 0.75rem; text-decoration: none; }
+  a.tag-sm:hover { background: #dde5ef; color: #1f2d3d; }
+  .resource-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0; border-bottom: 1px solid #f0f2f5; font-size: 0.9rem; }
+  .resource-link:last-child { border-bottom: none; }
+  .resource-link a { color: #0d6efd; text-decoration: none; }
+  .resource-link a:hover { text-decoration: underline; }
+  .resource-type { font-size: 0.75rem; font-weight: 600; color: #6c757d; text-transform: uppercase; min-width: 120px; }
+  .feature-item { padding: 0.75rem 0; border-bottom: 1px solid #f0f2f5; }
+  .feature-item:last-child { border-bottom: none; }
+  .feature-item strong { color: #1a1a2e; }
+  .feature-item p { margin: 0.25rem 0 0; font-size: 0.85rem; color: #666; }
+
+  /* Scroll pane — artifact lists that routinely run to dozens of entries
+     (examples, JSON Schema, JSON Structure, schemas, scopes) are capped at
+     roughly two card rows and scroll internally, so one prolific provider
+     can't push the rest of the page kilometres down. Height is expressed in
+     rem so it tracks the card's own type scale. */
+  .scroll-pane { max-height: 17.5rem; overflow-y: auto; overscroll-behavior: contain;
+                 padding: 0.75rem; margin-bottom: 0.35rem;
+                 background: #fbfcfe; border: 1px solid #e8ecf3; border-radius: 10px; }
+  .scroll-pane::-webkit-scrollbar { width: 10px; }
+  .scroll-pane::-webkit-scrollbar-track { background: transparent; }
+  .scroll-pane::-webkit-scrollbar-thumb { background: #cdd6e4; border-radius: 999px;
+                                          border: 3px solid #fbfcfe; }
+  .scroll-pane::-webkit-scrollbar-thumb:hover { background: #aab6c8; }
+  .scroll-pane { scrollbar-width: thin; scrollbar-color: #cdd6e4 transparent; }
+  /* The grid inside a pane loses the outer bottom margin — the pane owns spacing. */
+  .card-grid.scroll-pane { margin-bottom: 0.35rem; }
+  .scroll-hint { font-size: 0.75rem; color: #8a94a6; margin: 0 0 2rem; }
+
+  /* Resource groups — same visual logic as the rating panel's facet sections:
+     a titled band with a count, a one-line explanation of what the group is
+     for, then the items. */
+  .res-group { margin-bottom: 1.75rem; }
+  .res-group-head { margin-bottom: 0.75rem; }
+  .res-group-head h3 { font-size: 0.95rem; font-weight: 700; color: #1a1a2e; margin: 0 0 0.15rem;
+                       display: flex; align-items: center; gap: 0.5rem; scroll-margin-top: 1rem; }
+  .res-group-head p { margin: 0; font-size: 0.8rem; color: #8a94a6; }
+  .res-count { display: inline-block; padding: 0.1em 0.55em; background: #eef2f7; color: #4a5568;
+               border-radius: 999px; font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+  .res-card { display: block; text-decoration: none; color: inherit; border-left: 3px solid #6c757d; }
+  .res-card strong { font-size: 0.85rem; color: #1a1a2e; display: block; }
+  .res-card .res-type { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;
+                        font-weight: 600; color: #6c757d; margin-top: 0.15rem; }
+  /* One accent per group — the colour carries the grouping when cards wrap. */
+  .res-start      { border-left-color: #0d6efd; } .res-start .res-type      { color: #0d6efd; }
+  .res-docs       { border-left-color: #6610f2; } .res-docs .res-type       { color: #6610f2; }
+  .res-build      { border-left-color: #6f42c1; } .res-build .res-type      { color: #6f42c1; }
+  .res-auth       { border-left-color: #fd7e14; } .res-auth .res-type       { color: #fd7e14; }
+  .res-learn      { border-left-color: #198754; } .res-learn .res-type      { color: #198754; }
+  .res-operate    { border-left-color: #0dcaf0; } .res-operate .res-type    { color: #0aa2c0; }
+  .res-commercial { border-left-color: #d63384; } .res-commercial .res-type { color: #d63384; }
+  .res-company    { border-left-color: #1a1a2e; } .res-company .res-type    { color: #1a1a2e; }
+</style>
+
+<nav aria-label="breadcrumb" style="margin-bottom: 1rem;">
+  <ol class="breadcrumb" style="font-size: 0.85rem;">
+    <li class="breadcrumb-item"><a href="https://apis.io/">Home</a></li>
+    <li class="breadcrumb-item"><a href="https://apis.io/providers/">Providers</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Attested Memory</li>
+  </ol>
+</nav>
+
+
+<a class="provider-banner" href="https://attestedmemory.net/" target="_blank" rel="noopener" aria-label="Attested Memory website screenshot">
+  
+</a>
+
+
+<div class="provider-hero">
+  <h1 class="provider-title">Attested Memory</h1>
+  <p class="provider-desc">Attested Memory provides verifiable context for people, teams, and autonomous agents through a SaaS platform that stores durable knowledge with cryptographic identity, truth state, and provenance. It offers personal, team, and expert memory products, USDC‑settled transactions, escrow, metering, and proof capabilities, all federated via the KOVA hub and integrated with the open AIMarket ecosystem.</p>
+  <div class="provider-overview"><p>Attested Memory publishes 56 API contracts indexed on the <a href="https://apis.io/">APIs.io</a> network, including A2a API, Accounts API, Acex Capital API, and 53 more. Tagged areas include Company, Software-as-a-Service, Verifiable Memory, AI Agents, and USDC.</p>
+
+<p>The Attested Memory catalog on APIs.io includes 1 JSON-LD context and 1 Spectral governance ruleset.</p>
+
+<p>Attested Memory’s developer surface includes documentation, getting-started guide, and 15 more developer resources.</p>
+</div>
+
+  
+  <div class="provider-links">
+    <a class="provider-link" href="https://attestedmemory.net/" target="_blank" rel="noopener">&#127760; Visit website</a><a class="provider-link secondary" href="https://github.com/api-evangelist/attestedmemory-net" target="_blank" rel="noopener" title="API Evangelist's profile repository for this provider — the data behind this page, not the provider's own source code">&#128225; Profile data on GitHub</a></div>
+  
+  <div class="score-header">
+    <span class="score-glyph"
+          data-kin-glyph
+          data-size="72"
+          data-palette="facet"
+          data-name="Attested Memory"
+          data-score="32.5"
+          data-band="thin"
+          data-agent-score="34.7"
+          data-agent-band="agent-ready"
+          data-facets='{"discoverability":71.4,"contract_quality":49.9,"contract_governance":22.0,"operational_transparency":0.0,"developer_ergonomics":15.5,"access_clarity":31.6}'
+          data-dims='{"spec_presence":true,"agentic_access":"derived","reversibility_documented":false,"mcp_server":"documented","auth_clarity":false,"idempotency":false,"error_semantics":"verified","openapi_examples":false,"rate_limit_signal":"documented","event_surface_described":false,"agent_skills":"unknown","well_known_catalog":false,"consent_identity":false,"agent_card":"conformant","dry_run_mode":false,"delegated_identity":false,"protected_resource_metadata":false,"dynamic_client_registration":false,"agentic_commerce":false,"pagination_ratio":"na","operation_distinctiveness":false,"mcp_tool_quality":"na"}'></span>
+    <span class="score-composite">32.5<span>/100</span></span>
+    <span class="band-pill band-thin">thin</span>
+      <span class="score-trend trend-flat" title="No material change since the previous scoring run">&#9644; flat</span>
+    <span class="score-divider" aria-hidden="true"></span>
+    <span class="agent-label" title="How safely an autonomous AI agent can drive this API — scored separately from the composite above">Agent</span>
+    <span class="agent-score">35<span>/100</span></span>
+    <span class="band-pill band-agent-ready">agent ready</span>
+    <span class="score-meta">
+      <a href="#rating">Full breakdown &darr;</a><br>
+      scored 2026-11-06 &middot; rubric v0.27.0 &middot; <a href="#badge" style="font-weight:600">Show this score on your site &rarr;</a>
+    </span>
+  </div><div class="access-header" title="How to get started — Paid · Open access (derived, medium confidence)">
+    <span class="ax-caption">Access</span><span class="access-pill ax-paid">Paid</span><span class="access-pill ax-open">Open</span>
+  </div><div class="stat-badges"><span class="stat-badge" title="OpenAPI contracts the provider publishes. The APIs section below lists the individual APIs indexed from them."><strong>7</strong> published contracts</span>
+    
+    <span class="stat-badge"><strong>8</strong> Agent Skills</span>
+    
+    
+  </div>
+  
+  <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;"><a class="tag-sm" href="https://apis.io/tags/company/">Company</a><a class="tag-sm" href="https://apis.io/tags/software-as-a-service/">Software-as-a-Service</a><span class="tag-sm">Verifiable Memory</span><a class="tag-sm" href="https://apis.io/tags/ai-agents/">AI Agents</a><a class="tag-sm" href="https://apis.io/tags/usdc/">USDC</a>
+  </div>
+  
+</div><nav class="toc-nav" aria-label="On this page">
+  <span class="toc-label">On this page</span>
+  <a class="toc-chip" href="#rating">Kin Score</a><a class="toc-chip" href="#faq">FAQ</a><a class="toc-chip" href="#badge" style="border-color:#f5b74e">&#9728; Get your badge</a><a class="toc-chip" href="#standards">Standards <span class="toc-count">3</span></a>
+  <a class="toc-chip" href="#apis">APIs <span class="toc-count">56</span></a>
+  
+  
+  
+  
+  <a class="toc-chip" href="#skills">Agent Skills <span class="toc-count">8</span></a>
+  
+  <a class="toc-chip" href="#pricing">Pricing</a>
+  <a class="toc-chip" href="#plans">Pricing Plans <span class="toc-count">1</span></a>
+  <a class="toc-chip" href="#rate-limits">Rate Limits <span class="toc-count">1</span></a>
+  
+  
+  
+  <a class="toc-chip" href="#jsonld">Vocabularies <span class="toc-count">1</span></a>
+  <a class="toc-chip" href="#rules">Spectral Rules <span class="toc-count">1</span></a>
+  
+  <a class="toc-chip" href="#json-schema">JSON Schema <span class="toc-count">32</span></a>
+  
+  
+  <a class="toc-chip" href="#security">Security Posture <span class="toc-count">2</span></a>
+  <a class="toc-chip" href="#scopes">Scopes <span class="toc-count">1</span></a>
+  <a class="toc-chip" href="#agentic-access">Agentic Access <span class="toc-count">1</span></a>
+  
+  
+  
+  
+  
+  <a class="toc-chip" href="#resources">Resources <span class="toc-count">17</span></a>
+  <a class="toc-chip" href="#source">apis.yml</a>
+</nav>
+
+<!-- API Rating Section — the full score breakdown, rendered inline on the page. -->
+
+
+<h2 class="section-anchor" id="rating"><a href="#rating">Kin Score</a></h2>
+<div class="rating-panel">
+  <div class="rp-topline">
+    <a class="ae-rating-mark" href="https://apis.io/rating/" title="Kin Score — the API Evangelist rating system, licensed by APIs.io">
+      <img src="https://kinlane-images.s3.amazonaws.com/shared/api-evangelist-logos/api-evangelist-kin.png" alt="Kin Score">
+      <span>Kin Score</span>
+    </a>
+    <span class="rp-scored">
+      <a href="https://apis.io/rating/">How this is scored &rarr;</a><br>
+      scored 2026-11-06 &middot; rubric v0.27.0
+    </span>
+  </div><div class="rd-diagram" aria-hidden="true"><div class="rd-col"><span class="rd-vnum">50</span><div class="rd-vbar"><div class="rd-vfill" style="height:49.9%;"></div></div><div class="rd-vlabel">Contract Quality</div></div><div class="rd-col"><span class="rd-vnum">16</span><div class="rd-vbar"><div class="rd-vfill" style="height:15.5%;"></div></div><div class="rd-vlabel">Developer Ergonomics</div></div><div class="rd-col"><span class="rd-vnum">32</span><div class="rd-vbar"><div class="rd-vfill" style="height:31.6%;"></div></div><div class="rd-vlabel">Access Clarity</div></div><div class="rd-col"><span class="rd-vnum">0</span><div class="rd-vbar"><div class="rd-vfill" style="height:0.0%;"></div></div><div class="rd-vlabel">Operational Transparency</div></div><div class="rd-col"><span class="rd-vnum">22</span><div class="rd-vbar"><div class="rd-vfill" style="height:22.0%;"></div></div><div class="rd-vlabel">Contract Governance</div></div><div class="rd-col"><span class="rd-vnum">71</span><div class="rd-vbar"><div class="rd-vfill" style="height:71.4%;"></div></div><div class="rd-vlabel">Discoverability</div></div>
+    <div class="rd-col"><span class="rd-vnum">21</span><div class="rd-vbar"><div class="rd-vfill" style="height:20.6%;"></div></div><div class="rd-vlabel">Regulatory Posture</div></div>
+    <div class="rd-col rd-col-agent"><span class="rd-vnum">35</span><div class="rd-vbar"><div class="rd-vfill" style="height:34.7%;"></div></div><div class="rd-vlabel">Agent</div></div>
+  </div>
+
+  <div class="rd-cols">
+    <div class="rd-col-composite">
+      <div class="rd-section-title">Composite quality &mdash; 32.5/100 <span class="rd-band">&middot; thin</span></div><div class="rd-row">
+          <span class="rd-label"><a href="https://apis.io/rating/facets/contract-quality/"><abbr title="Technical depth and richness of the API contract artifacts — OpenAPI, AsyncAPI, JSON Schema, JSON-LD.">Contract Quality</abbr></a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:49.9%;"></span></span>
+          <span class="rd-pts"><b>10.6</b> / 21</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><a href="https://apis.io/rating/facets/developer-ergonomics/"><abbr title="How easy is it to get started? SDKs, CLI, portal, getting-started, documentation, sandbox/console, MCP server, and authentication clarity.">Developer Ergonomics</abbr></a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:15.5%;"></span></span>
+          <span class="rd-pts"><b>2.6</b> / 17</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><a href="https://apis.io/rating/facets/access-clarity/"><abbr title="What it costs, what you are permitted to do, and how you get in — plans, pricing, sign-up, terms of service, privacy, finops mapping, compliance/trust. Renamed in 0.12 from &quot;Commercial Clarity&quot;. For a free statutory interface, a public-interest open-data API, or a provider whose own OpenAPI states &quot;No authentication, no registration, no rate limit, no quota&quot;, there is no commercial surface to measure and only the permission and access questions apply. The word described a subset of the catalog and was read as a deficiency by the rest.">Access Clarity</abbr></a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:31.6%;"></span></span>
+          <span class="rd-pts"><b>5.4</b> / 17</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><a href="https://apis.io/rating/facets/operational-transparency/"><abbr title="Does the provider expose how the API behaves operationally? Rate limits, status, change log, deprecation, security disclosure.">Operational Transparency</abbr></a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0.0%;"></span></span>
+          <span class="rd-pts"><b>0.0</b> / 11</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><a href="https://apis.io/rating/facets/contract-governance/"><abbr title="Artifacts that describe and constrain the CONTRACT — rulesets, vocabulary, declared conformance, overlays. Renamed in 0.12 from &quot;Governance&quot;: it never measured how the organisation governs itself, and the standalone `accountability` layer now does, so one word could not carry both. NOTE ON WHAT THIS SCORES (0.12, roadmap#62): these checks read what a ruleset DECLARES, not the result of running it. Spectral is never executed against the provider&#39;s own spec. The facet text through 0.11 described lint outcomes, which was the source of a reported and confirmed defect. Outcome-based linting is a separate artifact class and is not in this release.">Contract Governance</abbr></a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:22.0%;"></span></span>
+          <span class="rd-pts"><b>2.2</b> / 10</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><a href="https://apis.io/rating/facets/discoverability/"><abbr title="Can the API be found and understood from machine-readable metadata alone? Driven by apis.yml completeness, tagging, and identity signals.">Discoverability</abbr></a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:71.4%;"></span></span>
+          <span class="rd-pts"><b>6.1</b> / 9</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><a href="https://apis.io/rating/facets/regulatory/"><abbr title="For providers in a regulated industry ONLY: does the API publish the consent, security, legal, and standards-conformance posture its regime demands? Consent-scoped authorization (OAuth/OIDC scopes), a published security + vulnerability-disclosure posture, terms/privacy as legal basis, and evidence of conformance to the industry&#39;s data standard. Not applied to unregulated industries — see the composite math note below.">Regulatory Posture</abbr></a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:20.6%;"></span></span>
+          <span class="rd-pts"><b>3.1</b> / 15</span>
+        </div></div>
+    <div class="rd-col-agent-rows">
+      <div class="rd-section-title">Agent readiness &mdash; 35/100 <span class="rd-band">&middot; agent ready</span></div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot on"></span><a href="https://apis.io/rating/dimensions/spec-presence/">Machine-Readable Contract</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:100%;"></span></span>
+          <span class="rd-pts "><b>18</b> / 18</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot on"></span><a href="https://apis.io/rating/dimensions/agentic-access/">Agentic Access Contract</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:100%;"></span></span>
+          <span class="rd-pts "><b>10</b> / 10</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/reversibility-documented/">Documented Reversibility</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 6</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot on"></span><a href="https://apis.io/rating/dimensions/mcp-server/">MCP Server</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:100%;"></span></span>
+          <span class="rd-pts "><b>12</b> / 12</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/auth-clarity/">Machine-Readable Auth</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 10</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/idempotency/">Idempotency</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 9</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot on"></span><a href="https://apis.io/rating/dimensions/error-semantics/">Stable Error Semantics</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:100%;"></span></span>
+          <span class="rd-pts "><b>8</b> / 8</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/openapi-examples/">Request/Response Examples</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 7</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot on"></span><a href="https://apis.io/rating/dimensions/rate-limit-signal/">Rate-Limit Signaling</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:100%;"></span></span>
+          <span class="rd-pts "><b>7</b> / 7</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/event-surface-described/">Typed Event Surface</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 6</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot on"></span><a href="https://apis.io/rating/dimensions/agent-skills/">Agent Skills</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:100%;"></span></span>
+          <span class="rd-pts "><b>5</b> / 5</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/well-known-catalog/">Well-Known Catalog</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 4</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/consent-identity/">Consent & Bot Identity</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 3</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot on"></span><a href="https://apis.io/rating/dimensions/agent-card/">A2A Agent Card</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:100%;"></span></span>
+          <span class="rd-pts "><b>8</b> / 8</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/dry-run-mode/">Dry-Run / Simulate Mode</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 4</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/delegated-identity/">Delegated User Identity</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 6</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/protected-resource-metadata/">Protected Resource Metadata</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 5</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/dynamic-client-registration/">Registration Without a Human</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 6</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/agentic-commerce/">Agentic Commerce Well-Known Document</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 5</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot on"></span><a href="https://apis.io/rating/dimensions/pagination-ratio/">Pagination</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:100%;"></span></span>
+          <span class="rd-pts "><b>5</b> / 5</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot off"></span><a href="https://apis.io/rating/dimensions/operation-distinctiveness/">Distinct Operations</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:0%;"></span></span>
+          <span class="rd-pts miss"><b>0</b> / 3</span>
+        </div><div class="rd-row">
+          <span class="rd-label"><span class="rd-dot on"></span><a href="https://apis.io/rating/dimensions/mcp-tool-quality/">MCP Tool Quality</a></span>
+          <span class="rd-track"><span class="rd-fill" style="width:100%;"></span></span>
+          <span class="rd-pts "><b>6</b> / 6</span>
+        </div></div>
+  </div>
+  <div class="rd-foot">
+    <strong>Regulatory Posture applies to this provider.</strong> Its tags matched the
+    <strong>Horizontal (data, software, accessibility, platform)</strong> regime, so
+    Regulatory Posture carries 15 points of the composite.
+    If this regime is wrong for your business, say so on your
+    <a href="https://github.com/api-evangelist/attestedmemory-net" target="_blank" rel="noopener">provider repo</a> — the
+    <a href="https://apis.io/rating/#regulatory">applicability map</a> is public and we will correct it.
+  </div>
+  <div class="rd-foot">
+    <strong>Create-or-Update Ergonomics could not be measured.</strong> We hold no machine-readable contract for
+    this provider to read, so there is nothing to measure a write surface against. Excluded rather than scored zero:
+    never-measured and measured-empty are different facts. Publishing an OpenAPI is what makes this facet — and
+    several others — scorable at all.
+  </div>
+  <div class="rd-foot">
+    <strong>The six quality facets above are damped to 85 points between them</strong>,
+    because the conditional facet above carries the other
+    15. That is why each facet's contribution is shown against a damped
+    maximum: raising a quality facet moves the composite by 85% of its nominal
+    weight, not 100%. The full arithmetic is at <a href="https://apis.io/rating/#regulatory-math">apis.io/rating/</a>.
+  </div>
+  <div class="rd-foot rd-badge" id="badge" style="border:2px solid #f5b74e;border-radius:8px;padding:.75rem 1rem;background:#fffaf0">
+    <strong>Show this score on your site.</strong>
+    <a href="https://apis.io/badge/attestedmemory-net/"><img src="https://apis.io/badge/attestedmemory-net/card.svg" alt="Kin Score badge preview for Attested Memory" height="40" loading="lazy" style="vertical-align:middle;margin:0 .5rem"></a>
+    It updates itself when the score changes. Paste this where you link to your API docs:
+    <pre style="white-space:pre-wrap;margin:.5rem 0;font-size:.8rem">&lt;a href="https://apis.io/providers/attestedmemory-net/"&gt;&lt;img src="https://apis.io/badge/attestedmemory-net/card.svg" alt="Attested Memory on APIs.io — Kin Score by API Evangelist"&gt;&lt;/a&gt;</pre>
+    Other styles, a README pill and a shields.io endpoint are on <a href="https://apis.io/badge/attestedmemory-net/">the badge page</a>.
+  </div>
+  <div class="rd-foot rd-raise" id="raise-your-score" style="border:2px solid #4e9af5;border-radius:8px;padding:.75rem 1rem;background:#f4f9ff;margin-top:.75rem">
+  <strong>Raise your score.</strong>
+  <div style="margin:.4rem 0 .2rem">Agent readiness — checks not met, largest first (exact, from this profile):</div>
+  <ul style="margin:.2rem 0 .5rem 1.1rem;padding:0">
+    <li><a href="https://apis.io/rating/dimensions/auth-clarity/">Machine-Readable Auth</a> <span style="color:#555">+10 pts</span> — a served openid-configuration/oauth-authorization-server carrying `issuer` (served), else the securitySchemes class in the provider OpenAPIs — bound (mutualTLS, DPoP, Signature) > negotiable (oauth2 authorizationCode/clientCredentials, openIdConnect) > bearer (http bearer, apiKey)</li>
+    <li><a href="https://apis.io/rating/dimensions/idempotency/">Idempotency</a> <span style="color:#555">+9 pts</span> — OpenAPI mutating operations declare an idempotency key — a header, a request-body property, or a named de-duplication token whose own description says so (verified); else common[].type matches /idempoten/i (documented)</li>
+    <li><a href="https://apis.io/rating/dimensions/openapi-examples/">Request/Response Examples</a> <span style="color:#555">+7 pts</span> — share of operations carrying request/response examples; else an Examples / Code Samples link</li>
+    <li><a href="https://apis.io/rating/dimensions/dynamic-client-registration/">Registration Without a Human</a> <span style="color:#555">+6 pts</span> — a `registration_endpoint` in the served RFC 8414 / OIDC discovery document</li>
+    <li><a href="https://apis.io/rating/dimensions/delegated-identity/">Delegated User Identity</a> <span style="color:#555">+6 pts</span> — a served discovery document listing authorization_code in grant_types_supported (served), else an oauth2 authorizationCode flow or openIdConnect declared in an OpenAPI (documented)</li>
+    <li><a href="https://apis.io/rating/dimensions/event-surface-described/">Typed Event Surface</a> <span style="color:#555">+6 pts</span> — AsyncAPI document, OR webhooks/callbacks objects in the as-published OpenAPI, OR common[].type includes Webhooks</li>
+  </ul><div style="font-size:.85rem;color:#555">7 more unmet checks in the Agent Readiness table above.</div>
+  <div style="margin:.4rem 0 .2rem">Kin Score — facets with the most composite points still available (weight &times; headroom):</div>
+  <ul style="margin:.2rem 0 .5rem 1.1rem;padding:0"><li><a href="https://apis.io/rating/facets/developer-ergonomics/">Developer Ergonomics</a> <span style="color:#555">scores 15.5 — up to +16.9 composite points</span></li><li><a href="https://apis.io/rating/facets/access-clarity/">Access Clarity</a> <span style="color:#555">scores 31.6 — up to +13.7 composite points</span></li><li><a href="https://apis.io/rating/facets/operational-transparency/">Operational Transparency</a> <span style="color:#555">scores 0.0 — up to +13.0 composite points</span></li>
+  </ul>
+  <div style="font-size:.85rem">Each check links to what satisfies it. Publish the artifact, or <a href="https://github.com/api-evangelist/attestedmemory-net/issues/new">tell us where it already lives</a>, and the score moves on the next scoring run.</div>
+</div>
+
+  <div class="rd-foot">
+    <strong>Improve this rating</strong> by publishing the missing artifacts — every area above can be raised, and the full rubric is at <a href="https://apis.io/rating/">apis.io/rating/</a>. <strong>Every facet and dimension name above is a link</strong>: it opens that measurement's own page — what it means, the exact checks that feed it, how the whole catalog distributes on it, and the providers at the top of it. This rating is computed from the provider profile at <a href="https://artifacts.apis.io/attestedmemory-net/apis.yml" target="_blank" rel="noopener">artifacts.apis.io/attestedmemory-net/apis.yml</a>: open an issue on <a href="https://github.com/api-evangelist/attestedmemory-net/issues" target="_blank" rel="noopener">github.com/api-evangelist/attestedmemory-net</a> to ask a question or point us at an artifact you publish.
+    <a class="rd-price" href="https://github.com/api-evangelist/attestedmemory-net/issues/new" target="_blank" rel="noopener">Submit an artifact on GitHub — free &rarr;</a>
+    <a class="rd-price" href="https://apis.io/developer/plans/" target="_blank" rel="noopener">Manage your own listing — the Influence plan, $499/mo &rarr;</a>
+  </div>
+</div>
+
+<!-- APIs -->
+<h2 class="section-anchor" id="standards"><a href="#standards">Standards implemented</a> <span class="section-count">3</span></h2>
+<p class="section-blurb">Standards this provider implements or carries. De facto ones are profiled and measured by the <a href="https://apicommons.org/standards/">API Commons</a>; formal ones come from the <a href="https://apis.io/standards/#formal">standards directory</a> and are linked by the provider's own tags. The evidence column says how each claim was established — not that it was made.</p>
+<div class="std-implements">
+  <div class="std-impl-row">
+    <div class="std-impl-main">
+      <a class="std-impl-name" href="https://apis.io/standards/agent2agent/">Agent2Agent</a>
+      
+      
+    </div>
+    <div class="std-impl-ev">
+      <strong>measured</strong> &mdash; observed by APIs.io (conformant)
+        
+    </div>
+    
+  </div>
+  <div class="std-impl-row">
+    <div class="std-impl-main">
+      <a class="std-impl-name" href="https://apis.io/standards/model-context-protocol/">Model Context Protocol (MCP)</a>
+      
+      
+    </div>
+    <div class="std-impl-ev">
+      <strong>measured</strong> &mdash; observed by APIs.io (documented)
+        
+    </div>
+    
+  </div>
+  <div class="std-impl-row">
+    <div class="std-impl-main">
+      <a class="std-impl-name" href="https://apis.io/standards/openapi/">OpenAPI</a>
+      
+      
+    </div>
+    <div class="std-impl-ev">
+      <strong>measured</strong> &mdash; observed by APIs.io (published)
+        
+    </div>
+    
+  </div>
+  
+</div>
+<h2 class="section-anchor" id="apis"><a href="#apis">APIs</a> <span class="section-count">56</span></h2><p class="section-blurb">Individual APIs this provider publishes, each with its own machine-readable definition.</p>
+<div class="card-grid scroll-pane">
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attested-memory-store-api/">Attested Memory Store API</a></h4><p>Memory store API.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-a2a-api/">Attested Memory A2a API</a></h4><p>The a2a API from Attested Memory — 2 operation(s) for a2a.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-accounts-api/">Attested Memory Accounts API</a></h4><p>The Accounts API from Attested Memory — 3 operation(s) for accounts.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-acex-capital-api/">Attested Memory Acex Capital API</a></h4><p>The acex-capital API from Attested Memory — 10 operation(s) for acex-capital.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-admin-api/">Attested Memory Admin API</a></h4><p>The Admin API from Attested Memory — 15 operation(s) for admin.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-ai-market-api/">Attested Memory Ai Market API</a></h4><p>The Ai Market API from Attested Memory — 4 operation(s) for ai market.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-assets-api/">Attested Memory Assets API</a></h4><p>The Assets API from Attested Memory — 1 operation(s) for assets.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-attested-memory-hub-aimarket-hub-v3-api/">Attested Memory Attested Memory Hub — AIMarket Hub V3 API</a></h4><p>The Attested Memory Hub — AIMarket Hub V3 API from Attested Memory — 1 operation(s) for attested memory hub — aimarket hub v3.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-billing-api/">Attested Memory Billing API</a></h4><p>The Billing API from Attested Memory — 3 operation(s) for billing.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-bonds-api/">Attested Memory Bonds API</a></h4><p>The Bonds API from Attested Memory — 3 operation(s) for bonds.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-cap-descriptions-i18n-json-api/">Attested Memory Cap Descriptions I18n.json API</a></h4><p>The Cap Descriptions I18n.json API from Attested Memory — 1 operation(s) for cap descriptions i18n.json.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-capabilities-api/">Attested Memory Capabilities API</a></h4><p>The Capabilities API from Attested Memory — 1 operation(s) for capabilities.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-challenges-api/">Attested Memory Challenges API</a></h4><p>The Challenges API from Attested Memory — 1 operation(s) for challenges.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-clients-api/">Attested Memory Clients API</a></h4><p>The Clients API from Attested Memory — 3 operation(s) for clients.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-deals-api/">Attested Memory Deals API</a></h4><p>The Deals API from Attested Memory — 7 operation(s) for deals.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-developers-api/">Attested Memory Developers API</a></h4><p>The Developers API from Attested Memory — 1 operation(s) for developers.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-disputes-api/">Attested Memory Disputes API</a></h4><p>The Disputes API from Attested Memory — 2 operation(s) for disputes.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-examples-api/">Attested Memory Examples API</a></h4><p>The Examples API from Attested Memory — 1 operation(s) for examples.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-gate-api/">Attested Memory Gate API</a></h4><p>The Gate API from Attested Memory — 1 operation(s) for gate.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-healthz-api/">Attested Memory Healthz API</a></h4><p>The Healthz API from Attested Memory — 1 operation(s) for healthz.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-hub-ui-i18n-json-api/">Attested Memory Hub Ui I18n.json API</a></h4><p>The Hub Ui I18n.json API from Attested Memory — 1 operation(s) for hub ui i18n.json.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-hub-v2-api/">Attested Memory Hub V2 API</a></h4><p>The hub-v2 API from Attested Memory — 88 operation(s) for hub-v2.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-hubs-api/">Attested Memory Hubs API</a></h4><p>The Hubs API from Attested Memory — 1 operation(s) for hubs.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-keys-api/">Attested Memory Keys API</a></h4><p>The Keys API from Attested Memory — 4 operation(s) for keys.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-listings-api/">Attested Memory Listings API</a></h4><p>The Listings API from Attested Memory — 4 operation(s) for listings.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-live-api/">Attested Memory Live API</a></h4><p>The Live API from Attested Memory — 1 operation(s) for live.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-mcp-api/">Attested Memory MCP API</a></h4><p>The mcp API from Attested Memory — 4 operation(s) for mcp.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-memory-api/">Attested Memory Memory API</a></h4><p>The Memory API from Attested Memory — 4 operation(s) for memory.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-meter-api/">Attested Memory Meter API</a></h4><p>The Meter API from Attested Memory — 4 operation(s) for meter.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-metrics-api/">Attested Memory Metrics API</a></h4><p>The Metrics API from Attested Memory — 1 operation(s) for metrics.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-nullifiers-api/">Attested Memory Nullifiers API</a></h4><p>The Nullifiers API from Attested Memory — 6 operation(s) for nullifiers.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-operator-api/">Attested Memory Operator API</a></h4><p>The Operator API from Attested Memory — 2 operation(s) for operator.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-passports-api/">Attested Memory Passports API</a></h4><p>The Passports API from Attested Memory — 4 operation(s) for passports.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-payouts-api/">Attested Memory Payouts API</a></h4><p>The Payouts API from Attested Memory — 1 operation(s) for payouts.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-plans-api/">Attested Memory Plans API</a></h4><p>The Plans API from Attested Memory — 1 operation(s) for plans.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-plugins-api/">Attested Memory Plugins API</a></h4><p>The Plugins API from Attested Memory — 1 operation(s) for plugins.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-prices-api/">Attested Memory Prices API</a></h4><p>The Prices API from Attested Memory — 1 operation(s) for prices.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-products-api/">Attested Memory Products API</a></h4><p>The Products API from Attested Memory — 1 operation(s) for products.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-publishers-api/">Attested Memory Publishers API</a></h4><p>The Publishers API from Attested Memory — 5 operation(s) for publishers.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-publishing-api/">Attested Memory Publishing API</a></h4><p>The Publishing API from Attested Memory — 1 operation(s) for publishing.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-read-api/">Attested Memory Read API</a></h4><p>The Read API from Attested Memory — 1 operation(s) for read.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-receipts-api/">Attested Memory Receipts API</a></h4><p>The Receipts API from Attested Memory — 3 operation(s) for receipts.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-settlements-api/">Attested Memory Settlements API</a></h4><p>The Settlements API from Attested Memory — 1 operation(s) for settlements.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-slots-api/">Attested Memory Slots API</a></h4><p>The Slots API from Attested Memory — 1 operation(s) for slots.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-start-api/">Attested Memory Start API</a></h4><p>The Start API from Attested Memory — 1 operation(s) for start.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-stats-api/">Attested Memory Stats API</a></h4><p>The Stats API from Attested Memory — 1 operation(s) for stats.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-studio-api/">Attested Memory Studio API</a></h4><p>The Studio API from Attested Memory — 11 operation(s) for studio.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-studio-ui-i18n-json-api/">Attested Memory Studio Ui I18n.json API</a></h4><p>The Studio Ui I18n.json API from Attested Memory — 1 operation(s) for studio ui i18n.json.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-team-memories-api/">Attested Memory Team Memories API</a></h4><p>The Team Memories API from Attested Memory — 2 operation(s) for team memories.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-team-search-api/">Attested Memory Team Search API</a></h4><p>The Team Search API from Attested Memory — 1 operation(s) for team search.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-teams-api/">Attested Memory Teams API</a></h4><p>The Teams API from Attested Memory — 7 operation(s) for teams.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-trials-api/">Attested Memory Trials API</a></h4><p>The Trials API from Attested Memory — 3 operation(s) for trials.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-well-known-api/">Attested Memory .well Known API</a></h4><p>The .well Known API from Attested Memory — 4 operation(s) for .well known.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-widget-api/">Attested Memory Widget API</a></h4><p>The Widget API from Attested Memory — 2 operation(s) for widget.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-world-api/">Attested Memory World API</a></h4><p>The World API from Attested Memory — 2 operation(s) for world.</p>
+  </div>
+  <div class="item-card">
+    <h4><a href="https://apis.io/apis/attestedmemory-net/attestedmemory-net-x402-api/">Attested Memory X402 API</a></h4><p>The X402 API from Attested Memory — 1 operation(s) for x402.</p>
+  </div>
+</div><p class="scroll-hint">Scroll for all 56</p>
+
+<!-- Postman Collections -->
+
+
+<!-- Open Collections (open + Bruno formats) -->
+
+
+<!-- Arazzo Workflows -->
+
+
+<!-- MCP Servers -->
+
+
+<!-- Agent Skills -->
+<h2 class="section-anchor" id="skills"><a href="#skills">Agent Skills</a> <span class="section-count">8</span></h2><p class="section-blurb">Packaged agent skills for driving this provider's APIs from an AI assistant.</p>
+<div class="card-grid scroll-pane">
+  <div class="item-card" style="border-left: 3px solid #7e22ce;">
+    <h4><a href="https://apis.io/agent-skills/attestedmemory-net/attestedmemory-net-api/">attestedmemory-net-api</a></h4><span class="card-badge" style="background: #7e22ce;">AGENT SKILL</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #7e22ce;">
+    <h4><a href="https://apis.io/agent-skills/attestedmemory-net/attestedmemory-net-deal/">attestedmemory-net-deal</a></h4><span class="card-badge" style="background: #7e22ce;">AGENT SKILL</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #7e22ce;">
+    <h4><a href="https://apis.io/agent-skills/attestedmemory-net/attestedmemory-net-hub/">attestedmemory-net-hub</a></h4><span class="card-badge" style="background: #7e22ce;">AGENT SKILL</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #7e22ce;">
+    <h4><a href="https://apis.io/agent-skills/attestedmemory-net/attestedmemory-net-market/">attestedmemory-net-market</a></h4><span class="card-badge" style="background: #7e22ce;">AGENT SKILL</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #7e22ce;">
+    <h4><a href="https://apis.io/agent-skills/attestedmemory-net/attestedmemory-net-memory/">attestedmemory-net-memory</a></h4><span class="card-badge" style="background: #7e22ce;">AGENT SKILL</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #7e22ce;">
+    <h4><a href="https://apis.io/agent-skills/attestedmemory-net/attestedmemory-net-meter/">attestedmemory-net-meter</a></h4><span class="card-badge" style="background: #7e22ce;">AGENT SKILL</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #7e22ce;">
+    <h4><a href="https://apis.io/agent-skills/attestedmemory-net/attestedmemory-net-prove/">attestedmemory-net-prove</a></h4><span class="card-badge" style="background: #7e22ce;">AGENT SKILL</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #7e22ce;">
+    <h4><a href="https://apis.io/agent-skills/attestedmemory-net/attestedmemory-net-teams/">attestedmemory-net-teams</a></h4><span class="card-badge" style="background: #7e22ce;">AGENT SKILL</span>
+  </div>
+</div><p class="scroll-hint">Scroll for all 8</p>
+
+<!-- GraphQL -->
+
+
+<!-- Pricing summary: plans, rate limits and billing in one place (#pricing) -->
+<section id="pricing" class="provider-pricing" style="margin:2rem 0;padding:1rem 1.25rem;border:1px solid #d1d5db;border-radius:8px">
+  <h2 style="margin-top:0">Attested Memory API pricing</h2>
+  <p style="margin:.25rem 0 .75rem;font-size:.95rem">Prices published by Attested Memory, read 2026-11-02 from <a href="https://attestedmemory.net/billing" rel="nofollow noopener">attestedmemory.net/billing</a>.
+  </p>
+  <table style="width:100%;border-collapse:collapse;font-size:.92rem">
+    <thead><tr><th style="text-align:left;border-bottom:1px solid #e5e7eb;padding:.35rem">Plan</th><th style="text-align:left;border-bottom:1px solid #e5e7eb;padding:.35rem">Price</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:.35rem;border-bottom:1px solid #f3f4f6;vertical-align:top">Personal</td>
+          <td style="padding:.35rem;border-bottom:1px solid #f3f4f6">$12/ month</td></tr>
+      <tr><td style="padding:.35rem;border-bottom:1px solid #f3f4f6;vertical-align:top">Teams</td>
+          <td style="padding:.35rem;border-bottom:1px solid #f3f4f6">$49/ month</td></tr>
+      <tr><td style="padding:.35rem;border-bottom:1px solid #f3f4f6;vertical-align:top">Market</td>
+          <td style="padding:.35rem;border-bottom:1px solid #f3f4f6">$29/ 7 days</td></tr>
+    </tbody>
+  </table>
+  <p style="margin:.5rem 0 0;font-size:.9rem"><a href="https://apis.io/plans/attestedmemory-net/attestedmemory-net-plans-pricing/">Plan details, limits and sources &rarr;</a></p>
+</section>
+
+<!-- Pricing Plans -->
+<h2 class="section-anchor" id="plans"><a href="#plans">Pricing Plans</a> <span class="section-count">1</span></h2><p class="section-blurb">Published pricing tiers and plan structures.</p>
+<div class="card-grid scroll-pane">
+  <div class="item-card" style="border-left: 3px solid #16a34a;">
+    <h4><a href="https://apis.io/plans/attestedmemory-net/attestedmemory-net-plans-pricing/">Attestedmemory Net Plans Pricing</a></h4><p class="card-meta">3 plans</p><span class="card-badge" style="background: #16a34a;">PLANS</span>
+  </div>
+</div>
+
+<!-- Rate Limits -->
+<h2 class="section-anchor" id="rate-limits"><a href="#rate-limits">Rate Limits</a> <span class="section-count">1</span></h2><p class="section-blurb">Documented rate limits and quota policies.</p>
+<div class="card-grid scroll-pane">
+  <div class="item-card" style="border-left: 3px solid #ca8a04;">
+    <h4><a href="https://apis.io/rate-limits/attestedmemory-net/attestedmemory-net-rate-limits/">Attestedmemory Net Rate Limits</a></h4><p class="card-meta">0 limits</p><span class="card-badge" style="background: #ca8a04;">RATE LIMITS</span>
+  </div>
+</div>
+
+<!-- Service Levels -->
+
+
+<!-- FinOps -->
+
+
+<!-- Features -->
+
+
+<!-- Event Specifications (AsyncAPI) -->
+
+
+<!-- Semantic Vocabularies (JSON-LD) -->
+<h2 class="section-anchor" id="jsonld"><a href="#jsonld">Semantic Vocabularies</a> <span class="section-count">1</span></h2><p class="section-blurb">JSON-LD contexts and semantic vocabularies used across these APIs.</p>
+<div class="card-grid scroll-pane">
+  <div class="item-card" style="border-left: 3px solid #7c3aed;">
+    <h4><a href="https://apis.io/jsonld/attestedmemory-net/attestedmemory-net-context/">Attestedmemory Net Context</a></h4><p class="card-meta">60 classes &middot; 120 properties</p><span class="card-badge" style="background: #7c3aed;">JSON-LD</span>
+  </div>
+</div>
+
+<!-- Spectral Rules — bespoke card (severity breakdown) -->
+
+<h2 class="section-anchor" id="rules"><a href="#rules">Spectral Rules</a> <span class="section-count">1</span></h2>
+<p class="section-blurb">Spectral governance rulesets for linting and validating these APIs.</p>
+<div class="card-grid scroll-pane">
+  
+  <div class="item-card" style="border-left: 3px solid #c2410c;">
+    <h4><a href="https://apis.io/rules/attestedmemory-net/attestedmemory-net-rules/">Attested Memory API Rules</a></h4>
+    <p class="card-meta">36 rules &middot;
+      <span style="color: #dc3545; font-weight: 600;">29 errors</span> 
+      <span style="color: #fd7e14; font-weight: 600;">6 warnings</span> 
+      <span style="color: #0dcaf0; font-weight: 600;">1 info</span>
+    </p>
+    <span class="card-badge" style="background: #c2410c;">SPECTRAL</span>
+  </div>
+  
+</div>
+
+
+
+<!-- OpenAPI Overlays (2026-10-09) -->
+
+
+<!-- JSON Schema -->
+<h2 class="section-anchor" id="json-schema"><a href="#json-schema">JSON Schema</a> <span class="section-count">32</span></h2><p class="section-blurb">Standalone JSON Schema definitions for this provider's data models.</p>
+<div class="card-grid scroll-pane">
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-announce-request/">AnnounceRequest</a></h4><p class="card-meta">6 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-authorize-request/">AuthorizeRequest</a></h4><p class="card-meta">3 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-bind-request/">BindRequest</a></h4><p class="card-meta">3 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-bond-request/">BondRequest</a></h4><p class="card-meta">4 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-capture-request/">CaptureRequest</a></h4><p class="card-meta">2 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-challenge-request/">ChallengeRequest</a></h4><p class="card-meta">3 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-channel-open-request/">ChannelOpenRequest</a></h4><p class="card-meta">7 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-confirm-request/">ConfirmRequest</a></h4><p class="card-meta">1 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-deal-request/">DealRequest</a></h4><p class="card-meta">11 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-dispute-request/">DisputeRequest</a></h4><p class="card-meta">2 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-evidence-request/">EvidenceRequest</a></h4><p class="card-meta">3 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-invoke-request/">InvokeRequest</a></h4><p class="card-meta">9 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-ipo-request/">IpoRequest</a></h4><p class="card-meta">7 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-member-request/">MemberRequest</a></h4><p class="card-meta">2 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-memory-request/">MemoryRequest</a></h4><p class="card-meta">3 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-order-request/">OrderRequest</a></h4><p class="card-meta">2 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-own-price-request/">OwnPriceRequest</a></h4><p class="card-meta">4 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-passport-request/">PassportRequest</a></h4><p class="card-meta">2 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-permission-violation-request/">PermissionViolationRequest</a></h4><p class="card-meta">6 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-price-request/">PriceRequest</a></h4><p class="card-meta">5 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-publisher-request/">PublisherRequest</a></h4><p class="card-meta">3 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-read-request/">ReadRequest</a></h4><p class="card-meta">1 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-receipt-request/">ReceiptRequest</a></h4><p class="card-meta">5 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-receipt-verify-request/">ReceiptVerifyRequest</a></h4><p class="card-meta">5 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-scope-request/">ScopeRequest</a></h4><p class="card-meta">4 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-team-create/">TeamCreate</a></h4><p class="card-meta">1 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-team-member/">TeamMember</a></h4><p class="card-meta">2 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-team-memory/">TeamMemory</a></h4><p class="card-meta">5 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-team-request/">TeamRequest</a></h4><p class="card-meta">1 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-trial-request/">TrialRequest</a></h4><p class="card-meta">3 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-verify-request/">VerifyRequest</a></h4><p class="card-meta">2 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #0ea5e9;">
+    <h4><a href="https://apis.io/schemas/attestedmemory-net/attestedmemory-net-world-request/">WorldRequest</a></h4><p class="card-meta">3 properties</p><span class="card-badge" style="background: #0ea5e9;">JSON SCHEMA</span>
+  </div>
+</div><p class="scroll-hint">Scroll for all 32</p>
+
+<!-- JSON Structure -->
+
+
+<!-- Examples -->
+
+
+<!-- Security Posture -->
+<h2 class="section-anchor" id="security"><a href="#security">Security Posture</a> <span class="section-count">2</span></h2><p class="section-blurb">Authentication, domain security, vulnerability disclosure, and trust-center signals.</p>
+<div class="card-grid scroll-pane">
+  <div class="item-card" style="border-left: 3px solid #b91c1c;">
+    <h4><a href="https://apis.io/security/attestedmemory-net/attestedmemory-net-authentication/">Attestedmemory Net Authentication</a></h4><p>0 schemes</p><span class="card-badge" style="background: #b91c1c;">SECURITY</span>
+  </div>
+  <div class="item-card" style="border-left: 3px solid #b91c1c;">
+    <h4><a href="https://apis.io/security/attestedmemory-net/attestedmemory-net-domain-security/">Attestedmemory Net Domain Security</a></h4><p>TLSv1.3 · HSTS</p><span class="card-badge" style="background: #b91c1c;">SECURITY</span>
+  </div>
+</div>
+
+<!-- Scopes -->
+<h2 class="section-anchor" id="scopes"><a href="#scopes">Scopes</a> <span class="section-count">1</span></h2><p class="section-blurb">OAuth scopes governing access to this provider's APIs.</p>
+<div class="card-grid scroll-pane">
+  <div class="item-card" style="border-left: 3px solid #b45309;">
+    <h4><a href="https://apis.io/scopes/attestedmemory-net/attestedmemory-net-scopes/">Attestedmemory Net Scopes</a></h4><p>OAuth 2.0 · no documented scopes</p><p class="card-meta">0 scopes</p><span class="card-badge" style="background: #b45309;">SCOPES</span>
+  </div>
+</div>
+
+<!-- Agentic Access -->
+<h2 class="section-anchor" id="agentic-access"><a href="#agentic-access">Agentic Access</a> <span class="section-count">1</span></h2><p class="section-blurb">Recommended x-agentic-access execution contracts for AI agents.</p>
+<div class="card-grid scroll-pane">
+  <div class="item-card" style="border-left: 3px solid #6d28d9;">
+    <h4><a href="https://apis.io/agentic-access/attestedmemory-net/attestedmemory-net-agentic-access/">Attestedmemory Net Agentic Access</a></h4><p>317 operations · 137 acting · 6 human-in-the-loop</p><p class="card-meta">317 operations &middot; 137 acting</p><span class="card-badge" style="background: #6d28d9;">AGENTIC</span>
+  </div>
+</div>
+
+<!-- Use Cases -->
+
+
+<!-- Integrations -->
+
+
+<!-- Solutions -->
+
+
+<!-- Kubernetes CRDs — bespoke card (external links) -->
+
+
+<!-- Press — bespoke card (external links) -->
+
+
+<!-- Resources Section — grouped by the JOB the resource does, mirroring the way
+     the rating panel groups its checks into facets. A provider can declare 50+
+     properties; ungrouped they were an undifferentiated wall of cards where a
+     status page sat next to a privacy policy. The groups follow the integrator's
+     arc: start it, read it, build it, secure it, learn it, run it, then the
+     commercial and corporate surface.
+
+     Each property's `group` is assigned in build.py (resource_group()), so this
+     template only has to filter — Liquid has no array-append, which makes the
+     equivalent in-template grouping quadratic and fragile. -->
+
+<h2 class="section-anchor" id="resources"><a href="#resources">Resources</a></h2>
+
+
+  
+  
+  
+  <div class="res-group">
+    <div class="res-group-head">
+      <h3 id="resources-start">Get Started <span class="res-count">2</span></h3>
+      <p>Portal, sign-up, and the first successful call</p>
+    </div>
+    <div class="card-grid">
+      
+      
+      
+      <a href="https://attestedmemory.net/developers" target="_blank" rel="noopener" class="item-card res-card res-start">
+        <strong>DeveloperPortal</strong>
+        <div class="res-type">DeveloperPortal</div>
+      </a>
+      
+      
+      
+      
+      <a href="https://attestedmemory.net/start" target="_blank" rel="noopener" class="item-card res-card res-start">
+        <strong>GettingStarted</strong>
+        <div class="res-type">GettingStarted</div>
+      </a>
+      
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  
+  <div class="res-group">
+    <div class="res-group-head">
+      <h3 id="resources-docs">Documentation <span class="res-count">1</span></h3>
+      <p>Reference material describing how the API behaves</p>
+    </div>
+    <div class="card-grid">
+      
+      
+      
+      <a href="https://attestedmemory.net/docs" target="_blank" rel="noopener" class="item-card res-card res-docs">
+        <strong>Documentation</strong>
+        <div class="res-type">Documentation</div>
+      </a>
+      
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  
+  <div class="res-group">
+    <div class="res-group-head">
+      <h3 id="resources-agent">Agent Surfaces <span class="res-count">3</span></h3>
+      <p>MCP servers, agent skills, and machine-readable catalogs</p>
+    </div>
+    <div class="card-grid">
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/agentic-access/attestedmemory-net-agentic-access.yml" target="_blank" rel="noopener" class="item-card res-card res-agent">
+        <strong>AgenticAccess</strong>
+        <div class="res-type">AgenticAccess</div>
+      </a>
+      
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/llms/attestedmemory-net-llms.txt" target="_blank" rel="noopener" class="item-card res-card res-agent">
+        <strong>LLMsTxt</strong>
+        <div class="res-type">LLMsTxt</div>
+      </a>
+      
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/well-known/attestedmemory-net-well-known.yml" target="_blank" rel="noopener" class="item-card res-card res-agent">
+        <strong>WellKnown</strong>
+        <div class="res-type">WellKnown</div>
+      </a>
+      
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  
+  <div class="res-group">
+    <div class="res-group-head">
+      <h3 id="resources-design">Design & Contract <span class="res-count">6</span></h3>
+      <p>Pagination, idempotency, versioning, errors, and events</p>
+    </div>
+    <div class="card-grid">
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/rules/attestedmemory-net-rules.yml" target="_blank" rel="noopener" class="item-card res-card res-design">
+        <strong>Spectral</strong>
+        <div class="res-type">Spectral</div>
+      </a>
+      
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/json-ld/attestedmemory-net-context.jsonld" target="_blank" rel="noopener" class="item-card res-card res-design">
+        <strong>JSONLD</strong>
+        <div class="res-type">JSONLD</div>
+      </a>
+      
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/vocabulary/attestedmemory-net-vocabulary.yml" target="_blank" rel="noopener" class="item-card res-card res-design">
+        <strong>Vocabulary</strong>
+        <div class="res-type">Vocabulary</div>
+      </a>
+      
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/data-model/attestedmemory-net-data-model.yml" target="_blank" rel="noopener" class="item-card res-card res-design">
+        <strong>DataModel</strong>
+        <div class="res-type">DataModel</div>
+      </a>
+      
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/errors/attestedmemory-net-problem-types.yml" target="_blank" rel="noopener" class="item-card res-card res-design">
+        <strong>ErrorCatalog</strong>
+        <div class="res-type">ErrorCatalog</div>
+      </a>
+      
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/conformance/attestedmemory-net-conformance.yml" target="_blank" rel="noopener" class="item-card res-card res-design">
+        <strong>Conformance</strong>
+        <div class="res-type">Conformance</div>
+      </a>
+      
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  
+
+  
+  
+  
+  <div class="res-group">
+    <div class="res-group-head">
+      <h3 id="resources-auth">Access & Security <span class="res-count">1</span></h3>
+      <p>Authentication, authorization, and security posture</p>
+    </div>
+    <div class="card-grid">
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/security/attestedmemory-net-domain-security.yml" target="_blank" rel="noopener" class="item-card res-card res-auth">
+        <strong>DomainSecurity</strong>
+        <div class="res-type">DomainSecurity</div>
+      </a>
+      
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  
+
+  
+  
+  
+
+  
+  
+  
+  <div class="res-group">
+    <div class="res-group-head">
+      <h3 id="resources-commercial">Commercial <span class="res-count">1</span></h3>
+      <p>Pricing, plans, and the legal terms of use</p>
+    </div>
+    <div class="card-grid">
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/plans/attestedmemory-net-plans-pricing.yml" target="_blank" rel="noopener" class="item-card res-card res-commercial">
+        <strong>Plans</strong>
+        <div class="res-type">Plans</div>
+      </a>
+      
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  
+  <div class="res-group">
+    <div class="res-group-head">
+      <h3 id="resources-company">Company <span class="res-count">1</span></h3>
+      <p>The organization behind the API</p>
+    </div>
+    <div class="card-grid">
+      
+      
+      
+      <a href="https://attestedmemory.net/" target="_blank" rel="noopener" class="item-card res-card res-company">
+        <strong>Website</strong>
+        <div class="res-type">Website</div>
+      </a>
+      
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  
+  <div class="res-group">
+    <div class="res-group-head">
+      <h3 id="resources-other">Other <span class="res-count">2</span></h3>
+      <p>Properties that don't map to a standard resource type</p>
+    </div>
+    <div class="card-grid">
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/a2a/attestedmemory-net-a2a.yml" target="_blank" rel="noopener" class="item-card res-card res-other">
+        <strong>AgentCard</strong>
+        <div class="res-type">AgentCard</div>
+      </a>
+      
+      
+      
+      
+      <a href="https://artifacts.apis.io/attestedmemory-net/hosts/attestedmemory-net-hosts.yml" target="_blank" rel="noopener" class="item-card res-card res-other">
+        <strong>Hosts</strong>
+        <div class="res-type">Hosts</div>
+      </a>
+      
+      
+    </div>
+    
+  </div>
+  
+
+
+
+
+<!-- Source (apis.yml) — always rendered last, at the bottom of the page. The
+     include renders its own heading with id="source" (the #source anchor target).
+     specs='none' keeps this to apis.yml alone: a provider page describes the
+     company, and its individual specs belong on the API pages they document. -->
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/prism/prism-coy.min.css">
+<link rel="stylesheet" href="/assets/prism/prism-line-numbers.min.css">
+<style>
+  .src-widget { background: #fdfdfd; border: 1px solid #e3e7ee; border-radius: 10px; overflow: hidden; margin-top: 0.75rem; }
+  .src-widget-head { display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0.85rem; background: #f8fafc; border-bottom: 1px solid #e3e7ee; flex-wrap: wrap; }
+  .src-label { color: #475569; font-weight: 600; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.8rem; flex: 0 0 auto; }
+  .src-picker { flex: 0 0 auto; max-width: 360px; padding: 0.3em 0.55em; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; font-size: 0.78rem; color: #1a1a2e; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; cursor: pointer; }
+  .src-picker:focus { outline: none; border-color: #1e40af; box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.15); }
+  .src-loading { color: #94a3b8; font-style: italic; padding: 1rem; }
+  .src-search { flex: 1 1 200px; min-width: 140px; }
+  .src-search input { width: 100%; padding: 0.3em 0.6em; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.8rem; background: #fff; color: #1a1a2e; }
+  .src-search input:focus { outline: none; border-color: #1e40af; box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.15); }
+  .src-actions { display: flex; gap: 0.25rem; flex: 0 0 auto; }
+  .src-actions a, .src-actions button { background: none; border: 1px solid transparent; padding: 0.25em 0.6em; color: #1e40af; font-size: 0.78rem; font-weight: 500; cursor: pointer; text-decoration: none; border-radius: 4px; line-height: 1.4; }
+  .src-actions a:hover, .src-actions button:hover { background: #eef2f7; }
+  .src-actions button.active { background: #dbeafe; border-color: #93c5fd; }
+  .src-actions button:disabled { color: #94a3b8; cursor: not-allowed; }
+  .src-actions button:disabled:hover { background: none; }
+  .src-widget pre[class*="language-"] { margin: 0; padding: 1rem 0; background: #fdfdfd; box-shadow: none; border: none; max-height: 540px; overflow: auto; font-size: 0.82rem; line-height: 1.5; }
+  .src-widget pre[class*="language-"] > code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; padding-right: 1rem; }
+  .src-widget pre[class*="language-"]::before, .src-widget pre[class*="language-"]::after { display: none; }
+  .src-widget pre.line-numbers { padding-left: 3.5em; counter-reset: linenumber; position: relative; }
+  .src-widget pre.line-numbers > code { position: relative; white-space: inherit; }
+  .src-widget pre.line-numbers .line-numbers-rows { position: absolute; pointer-events: none; top: 1rem; font-size: 100%; left: -3em; width: 2.7em; letter-spacing: -1px; border-right: 1px solid #e3e7ee; user-select: none; }
+  .src-widget pre.line-numbers .line-numbers-rows > span { display: block; counter-increment: linenumber; }
+  .src-widget pre.line-numbers .line-numbers-rows > span:before { content: counter(linenumber); color: #cbd5e1; display: block; padding-right: 0.7em; text-align: right; font-size: 0.78rem; }
+  .src-widget .token.key, .src-widget .token.property, .src-widget .token.atrule { color: #1e40af; font-weight: 600; }
+  .src-widget .token.string { color: #047857; }
+  .src-widget .token.number, .src-widget .token.boolean, .src-widget .token.null { color: #b45309; }
+  .src-widget .token.comment { color: #94a3b8; font-style: italic; }
+  .src-widget .token.punctuation, .src-widget .token.operator { color: #64748b; }
+  .src-widget .token.tag { color: #7c3aed; }
+  .src-widget .token.anchor, .src-widget .token.alias { color: #be185d; }
+  .src-widget mark.src-hit { background: #fef08a; color: inherit; padding: 0; border-radius: 2px; }
+  .src-widget mark.src-hit-active { background: #fb923c; color: #fff; }
+  .src-copied { color: #047857 !important; }
+  .src-empty { padding: 2rem 1rem; text-align: center; color: #94a3b8; font-size: 0.85rem; }
+</style>
+<h3 class="section-title" id="source">Source (apis.yml)</h3>
+<div class="src-widget" data-src-widget data-original-lang="yaml" data-current-lang="yaml" data-original-filename="apis.yml">
+  <div class="src-widget-head">
+    
+    
+    
+    <span class="src-label" data-src-filename>apis.yml</span>
+    
+    <span class="src-search">
+      <input type="search" data-src-search placeholder="Search in source… (n / N to navigate)" aria-label="Search source">
+    </span>
+    <span class="src-actions">
+      <button type="button" data-src-toggle data-target="yaml" aria-label="View as YAML">YAML</button>
+      <button type="button" data-src-toggle data-target="json" aria-label="View as JSON">JSON</button>
+      <button type="button" data-src-download aria-label="Download source">Download</button>
+      <a data-src-raw href="https://artifacts.apis.io/attestedmemory-net/apis.yml" target="_blank" rel="noopener">Raw &uarr;</a>
+      <button type="button" data-src-copy>Copy</button>
+    </span>
+  </div>
+  <pre class="line-numbers language-yaml"><code class="language-yaml" data-src-code>aid: attestedmemory-net
+name: Attested Memory
+accessModel:
+  pricing: paid
+  onboarding: open
+  trial: false
+  try_now: false
+  public: true
+  gated: none
+  gated_source:
+  - onboarding
+  label: Paid · Open access
+  confidence: medium
+  source:
+  - plans
+  - authentication
+  - security
+  generated: &apos;2026-11-06&apos;
+  method: derived
+image: https://attestedmemory.net/attested-social.png
+description: Attested Memory provides verifiable context for people, teams, and autonomous agents through a SaaS platform
+  that stores durable knowledge with cryptographic identity, truth state, and provenance. It offers personal, team, and expert
+  memory products, USDC‑settled transactions, escrow, metering, and proof capabilities, all federated via the KOVA hub and
+  integrated with the open AIMarket ecosystem.
+url: https://artifacts.apis.io/attestedmemory-net/apis.yml
+x-type: company
+x-source: harvest:mcp-registry
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-11-02 (modular-v1; was harvest)
+specificationVersion: &apos;0.20&apos;
+created: &apos;2026-11-02&apos;
+modified: &apos;2026-11-02&apos;
+tags:
+- Company
+- Software-as-a-Service
+- Verifiable Memory
+- AI Agents
+- USDC
+tags_raw:
+- Company
+- SaaS
+- Verifiable Memory
+- AI Agents
+- USDC
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
+common:
+- type: AgenticAccess
+  url: agentic-access/attestedmemory-net-agentic-access.yml
+- type: Plans
+  url: plans/attestedmemory-net-plans-pricing.yml
+- type: Spectral
+  url: rules/attestedmemory-net-rules.yml
+- type: JSONLD
+  url: json-ld/attestedmemory-net-context.jsonld
+- type: Vocabulary
+  url: vocabulary/attestedmemory-net-vocabulary.yml
+- type: DataModel
+  url: data-model/attestedmemory-net-data-model.yml
+- type: ErrorCatalog
+  url: errors/attestedmemory-net-problem-types.yml
+- type: Conformance
+  url: conformance/attestedmemory-net-conformance.yml
+- type: LLMsTxt
+  url: llms/attestedmemory-net-llms.txt
+- type: AgentCard
+  url: a2a/attestedmemory-net-a2a.yml
+- type: WellKnown
+  url: well-known/attestedmemory-net-well-known.yml
+- type: Hosts
+  url: hosts/attestedmemory-net-hosts.yml
+- type: DomainSecurity
+  url: security/attestedmemory-net-domain-security.yml
+- type: Website
+  url: https://attestedmemory.net/
+- type: Documentation
+  url: https://attestedmemory.net/docs
+- type: DeveloperPortal
+  url: https://attestedmemory.net/developers
+- type: GettingStarted
+  url: https://attestedmemory.net/start
+- type: UseCases
+  url: https://attestedmemory.net/use-cases
+apis:
+- name: Attested Memory Store API
+  description: Memory store API.
+  humanURL: https://attestedmemory.net/memory
+  baseURL: https://attestedmemory.net/memory
+  aid: attestedmemory-net:attested-memory-store-api
+- aid: attestedmemory-net:attestedmemory-net-a2a-api
+  name: Attested Memory A2a API
+  description: The a2a API from Attested Memory — 2 operation(s) for a2a.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - A2A
+  tags_raw:
+  - a2a
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-a2a-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-accounts-api
+  name: Attested Memory Accounts API
+  description: The Accounts API from Attested Memory — 3 operation(s) for accounts.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Account
+  tags_raw:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-accounts-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-acex-capital-api
+  name: Attested Memory Acex Capital API
+  description: The acex-capital API from Attested Memory — 10 operation(s) for acex-capital.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - acex-capital
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-acex-capital-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-admin-api
+  name: Attested Memory Admin API
+  description: The Admin API from Attested Memory — 15 operation(s) for admin.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Admin
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-admin-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-ai-market-api
+  name: Attested Memory Ai Market API
+  description: The Ai Market API from Attested Memory — 4 operation(s) for ai market.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Ai Market
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-ai-market-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-assets-api
+  name: Attested Memory Assets API
+  description: The Assets API from Attested Memory — 1 operation(s) for assets.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Assets
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-assets-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-attested-memory-hub-aimarket-hub-v3-api
+  name: Attested Memory Attested Memory Hub — AIMarket Hub V3 API
+  description: The Attested Memory Hub — AIMarket Hub V3 API from Attested Memory — 1 operation(s) for attested memory hub
+    — aimarket hub v3.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags: []
+  tags_raw:
+  - Attested Memory Hub — AIMarket Hub V3
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-attested-memory-hub-aimarket-hub-v3-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-billing-api
+  name: Attested Memory Billing API
+  description: The Billing API from Attested Memory — 3 operation(s) for billing.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-billing-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-bonds-api
+  name: Attested Memory Bonds API
+  description: The Bonds API from Attested Memory — 3 operation(s) for bonds.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Bonds
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-bonds-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-cap-descriptions-i18n-json-api
+  name: Attested Memory Cap Descriptions I18n.json API
+  description: The Cap Descriptions I18n.json API from Attested Memory — 1 operation(s) for cap descriptions i18n.json.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Cap Descriptions I18n.json
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-cap-descriptions-i18n-json-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+
+
+# --- truncated at 32 KB (176 KB total) ---
+# Full source: https://artifacts.apis.io/attestedmemory-net/apis.yml
+</code></pre>
+</div>
+<script src="/assets/prism/prism-core.min.js" defer></script>
+<script src="/assets/prism/prism-yaml.min.js" defer></script>
+<script src="/assets/prism/prism-json.min.js" defer></script>
+<script src="/assets/prism/prism-line-numbers.min.js" defer></script>
+<script src="/assets/prism/js-yaml.min.js" defer></script>
+<script>
+  (function () {
+    if (window.__srcWidgetInit) return;
+    window.__srcWidgetInit = true;
+
+    function initWidget(widget) {
+      var codeEl = widget.querySelector('[data-src-code]');
+      var preEl = widget.querySelector('pre');
+      var search = widget.querySelector('[data-src-search]');
+      var toggles = widget.querySelectorAll('[data-src-toggle]');
+      var downloadBtn = widget.querySelector('[data-src-download]');
+      var copyBtn = widget.querySelector('[data-src-copy]');
+      var fileLabel = widget.querySelector('[data-src-filename]');
+      var picker = widget.querySelector('[data-src-picker]');
+      var rawLink = widget.querySelector('[data-src-raw]');
+      var headingEl = widget.previousElementSibling && widget.previousElementSibling.tagName === 'H3'
+        ? widget.previousElementSibling : null;
+      var fetchedCache = {};
+
+      // Original raw text — we always re-render from this so toggles + searches don't compound.
+      var originalLang = widget.dataset.originalLang;
+      var originalText = codeEl.textContent;
+      var originalFilename = widget.dataset.originalFilename;
+      var currentLang = originalLang;
+      var currentText = originalText;
+      var searchHits = [];
+      var activeHit = -1;
+
+      function highlight() {
+        if (window.Prism) window.Prism.highlightElement(codeEl);
+      }
+
+      function setActiveToggle() {
+        toggles.forEach(function (b) {
+          if (b.dataset.target === currentLang) b.classList.add('active');
+          else b.classList.remove('active');
+        });
+      }
+
+      function updateFilenameForLang() {
+        if (!fileLabel) return;
+        var base = (currentSourceFilename || originalFilename).replace(/\.(ya?ml|json)$/i, '');
+        fileLabel.textContent = base + '.' + currentLang;
+      }
+
+      var currentSourceFilename = originalFilename;
+      var currentSourceUrl = null;
+      if (rawLink) currentSourceUrl = rawLink.getAttribute('href');
+
+      function setLangContent(lang, text) {
+        currentLang = lang;
+        currentText = text;
+        codeEl.textContent = text;
+        codeEl.className = 'language-' + lang;
+        preEl.className = 'line-numbers language-' + lang;
+        highlight();
+        setActiveToggle();
+        updateFilenameForLang();
+        runSearch();
+      }
+
+      function tryConvert(targetLang) {
+        if (targetLang === currentLang) return;
+        if (!window.jsyaml) return;
+        try {
+          var parsed;
+          if (currentLang === 'yaml') parsed = window.jsyaml.load(currentText);
+          else parsed = JSON.parse(currentText);
+          var out;
+          if (targetLang === 'yaml') {
+            out = window.jsyaml.dump(parsed, { indent: 2, lineWidth: 100, noRefs: true });
+          } else {
+            out = JSON.stringify(parsed, null, 2);
+          }
+          setLangContent(targetLang, out);
+        } catch (err) {
+          alert('Cannot convert: source is not valid ' + currentLang.toUpperCase() + '.\n' + err.message);
+        }
+      }
+
+      // ---- Search highlighting (DOM walker over text nodes inside <code>) ----
+      function clearSearch() {
+        widget.querySelectorAll('mark.src-hit').forEach(function (m) {
+          var parent = m.parentNode;
+          while (m.firstChild) parent.insertBefore(m.firstChild, m);
+          parent.removeChild(m);
+          parent.normalize();
+        });
+        searchHits = [];
+        activeHit = -1;
+      }
+
+      function runSearch() {
+        clearSearch();
+        var q = (search.value || '').trim();
+        if (q.length < 2) return;
+        var qLower = q.toLowerCase();
+        var walker = document.createTreeWalker(codeEl, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        var n;
+        while ((n = walker.nextNode())) nodes.push(n);
+        nodes.forEach(function (node) {
+          var text = node.nodeValue;
+          var lower = text.toLowerCase();
+          var idx = lower.indexOf(qLower);
+          if (idx === -1) return;
+          var frag = document.createDocumentFragment();
+          var cursor = 0;
+          while (idx !== -1) {
+            if (idx > cursor) frag.appendChild(document.createTextNode(text.slice(cursor, idx)));
+            var mark = document.createElement('mark');
+            mark.className = 'src-hit';
+            mark.textContent = text.slice(idx, idx + q.length);
+            frag.appendChild(mark);
+            searchHits.push(mark);
+            cursor = idx + q.length;
+            idx = lower.indexOf(qLower, cursor);
+          }
+          if (cursor < text.length) frag.appendChild(document.createTextNode(text.slice(cursor)));
+          node.parentNode.replaceChild(frag, node);
+        });
+        if (searchHits.length) jumpToHit(0);
+      }
+
+      function jumpToHit(i) {
+        if (!searchHits.length) return;
+        if (activeHit >= 0 && searchHits[activeHit]) searchHits[activeHit].classList.remove('src-hit-active');
+        activeHit = ((i % searchHits.length) + searchHits.length) % searchHits.length;
+        var el = searchHits[activeHit];
+        el.classList.add('src-hit-active');
+        el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+
+      // ---- Wire up ----
+      var debounce;
+      search.addEventListener('input', function () {
+        clearTimeout(debounce);
+        debounce = setTimeout(runSearch, 100);
+      });
+      search.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === 'n') { ev.preventDefault(); jumpToHit(activeHit + 1); }
+        else if (ev.key === 'N' || (ev.key === 'p')) { ev.preventDefault(); jumpToHit(activeHit - 1); }
+        else if (ev.key === 'Escape') { search.value = ''; runSearch(); }
+      });
+
+      toggles.forEach(function (b) {
+        b.addEventListener('click', function () { tryConvert(b.dataset.target); });
+      });
+
+      downloadBtn.addEventListener('click', function () {
+        var blob = new Blob([codeEl.textContent], { type: currentLang === 'json' ? 'application/json' : 'application/yaml' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = fileLabel.textContent;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 0);
+      });
+
+      copyBtn.addEventListener('click', function () {
+        navigator.clipboard.writeText(codeEl.textContent).then(function () {
+          var orig = copyBtn.textContent;
+          copyBtn.textContent = 'Copied';
+          copyBtn.classList.add('src-copied');
+          setTimeout(function () { copyBtn.textContent = orig; copyBtn.classList.remove('src-copied'); }, 1500);
+        });
+      });
+
+      // ---- Picker (provider pages with multiple specs) ----
+      function applySource(text, lang, filename, url, heading) {
+        currentSourceFilename = filename || originalFilename;
+        currentSourceUrl = url || null;
+        if (rawLink) {
+          if (url) { rawLink.setAttribute('href', url); rawLink.style.display = ''; }
+          else { rawLink.style.display = 'none'; }
+        }
+        if (headingEl && heading) headingEl.textContent = heading;
+        setLangContent(lang, text);
+      }
+
+      if (picker) {
+        picker.addEventListener('change', function () {
+          var opt = picker.options[picker.selectedIndex];
+          var url = opt.dataset.url;
+          var fmt = opt.dataset.format || 'yaml';
+          var fname = opt.dataset.filename || '';
+          var heading = opt.dataset.heading || '';
+          if (!url) {
+            // Original embedded source
+            applySource(originalText, originalLang, originalFilename, picker.options[0].dataset.url || null, picker.options[0].dataset.heading || '');
+            return;
+          }
+          if (fetchedCache[url]) {
+            applySource(fetchedCache[url], fmt, fname, url, heading);
+            return;
+          }
+          codeEl.textContent = 'Loading ' + fname + '…';
+          codeEl.className = '';
+          preEl.className = '';
+          fetch(url).then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.text();
+          }).then(function (text) {
+            fetchedCache[url] = text;
+            applySource(text, fmt, fname, url, heading);
+          }).catch(function (err) {
+            codeEl.textContent = 'Could not load: ' + err.message;
+          });
+        });
+        // Stash the default option's url so we can restore "Raw" link when reset.
+        if (rawLink && picker.options[0]) {
+          picker.options[0].dataset.url = rawLink.getAttribute('href') || '';
+          picker.options[0].dataset.heading = (headingEl ? headingEl.textContent : '') || '';
+        }
+      }
+
+      // Auto-fetch when initial source is empty but a remote URL is available.
+      // This happens when the build found an external OpenAPI URL but didn't
+      // inline the content — the widget fetches it on page load instead.
+      if (!originalText.trim() && currentSourceUrl) {
+        var remoteUrl = currentSourceUrl;
+        codeEl.textContent = 'Loading…';
+        codeEl.className = '';
+        preEl.className = 'line-numbers language-' + originalLang;
+        fetch(remoteUrl)
+          .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+          .then(function (text) {
+            var ext = remoteUrl.replace(/\?.*/, '').split('.').pop().toLowerCase();
+            var fmt = ext === 'json' ? 'json' : 'yaml';
+            originalText = text;
+            originalLang = fmt;
+            currentLang = fmt;
+            widget.dataset.originalLang = fmt;
+            applySource(text, fmt, originalFilename, remoteUrl, headingEl ? headingEl.textContent : '');
+          })
+          .catch(function (err) {
+            codeEl.textContent = 'Could not load spec: ' + err.message;
+          });
+      }
+
+      // Initial state
+      setActiveToggle();
+      // Wait for Prism to load before highlighting / line-numbers wiring.
+      var tries = 0;
+      var waitPrism = setInterval(function () {
+        if (window.Prism && window.Prism.plugins) {
+          clearInterval(waitPrism);
+          highlight();
+        } else if (++tries > 80) {
+          clearInterval(waitPrism);
+        }
+      }, 50);
+    }
+
+    function initAll() {
+      document.querySelectorAll('[data-src-widget]').forEach(initWidget);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+      initAll();
+    }
+  })();
+</script>
+
+
+
+<section class="provider-faq" id="faq" style="margin:2rem 0">
+  <h2>Attested Memory API — frequently asked questions</h2>
+  <h3 style="font-size:1.05rem;margin:1.1rem 0 .3rem">Does Attested Memory have an API?</h3>
+  <p style="margin:0">Yes. APIs.io lists 56 APIs from Attested Memory, including Attested Memory Store API, Attested Memory A2a API and Attested Memory Accounts API, and 53 more.</p>
+  <h3 style="font-size:1.05rem;margin:1.1rem 0 .3rem">Is there an OpenAPI specification for the Attested Memory API?</h3>
+  <p style="margin:0">Yes. APIs.io indexes 55 OpenAPI specifications for Attested Memory, each linked for download from this page.</p>
+  <h3 style="font-size:1.05rem;margin:1.1rem 0 .3rem">How do I authenticate with the Attested Memory API?</h3>
+  <p style="margin:0">Attested Memory documents its authentication (0 schemes). The details are profiled on APIs.io as Attestedmemory Net Authentication.</p>
+  <h3 style="font-size:1.05rem;margin:1.1rem 0 .3rem">How much does the Attested Memory API cost?</h3>
+  <p style="margin:0">Attested Memory publishes its prices; its Personal plan is $12/ month as of 2026-11-02. APIs.io lists 3 pricing plans for Attested Memory, with each plan's price, limits and inclusions under Pricing on this page.</p>
+  <h3 style="font-size:1.05rem;margin:1.1rem 0 .3rem">Is the Attested Memory API ready for AI agents?</h3>
+  <p style="margin:0">Attested Memory has a Kin Score of 32.5 out of 100 (thin) and an Agent Readiness score of 34.7 (agent-ready), scored by API Evangelist on 2026-11-06.</p>
+</section>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Does Attested Memory have an API?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. APIs.io lists 56 APIs from Attested Memory, including Attested Memory Store API, Attested Memory A2a API and Attested Memory Accounts API, and 53 more."}},
+    {"@type": "Question", "name": "Is there an OpenAPI specification for the Attested Memory API?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. APIs.io indexes 55 OpenAPI specifications for Attested Memory, each linked for download from this page."}},
+    {"@type": "Question", "name": "How do I authenticate with the Attested Memory API?", "acceptedAnswer": {"@type": "Answer", "text": "Attested Memory documents its authentication (0 schemes). The details are profiled on APIs.io as Attestedmemory Net Authentication."}},
+    {"@type": "Question", "name": "How much does the Attested Memory API cost?", "acceptedAnswer": {"@type": "Answer", "text": "Attested Memory publishes its prices; its Personal plan is $12/ month as of 2026-11-02. APIs.io lists 3 pricing plans for Attested Memory, with each plan's price, limits and inclusions under Pricing on this page."}},
+    {"@type": "Question", "name": "Is the Attested Memory API ready for AI agents?", "acceptedAnswer": {"@type": "Answer", "text": "Attested Memory has a Kin Score of 32.5 out of 100 (thin) and an Agent Readiness score of 34.7 (agent-ready), scored by API Evangelist on 2026-11-06."}}
+  ]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Attested Memory API",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://apis.io/providers/attestedmemory-net/", "sameAs": "https://attestedmemory.net/",
+  "publisher": {"@type": "Organization", "name": "Attested Memory"},
+  "review": {
+    "@type": "Review",
+    "name": "Attested Memory Kin Score",
+    "author": {"@type": "Organization", "name": "API Evangelist", "url": "https://apievangelist.com"},"datePublished": "2026-11-06",
+    "reviewBody": "Attested Memory scores 32.5 of 100 (thin) on the Kin Score, API Evangelist's rubric for API discoverability, contract quality, governance, operational transparency, developer ergonomics and access clarity.",
+    "reviewRating": {"@type": "Rating", "ratingValue": 32.5, "bestRating": 100, "worstRating": 0}
+  }
+}
+</script>
+<style>
+  /* One row of options, not four stacked blocks. align-items:start so opening a
+     <details> grows only its own card instead of stretching every sibling. */
+  .apimcp-bar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.75rem; margin: 1rem 0 0; }
+  /* flex over a fixed 4-column grid: two of the four cards are conditional, and a
+     grid would leave a hole in the row on the sections that render three or two. */
+  .apimcp-card { flex: 1 1 220px; min-width: 0; background: #fff; border: 1px solid #e3e7ee; border-left: 3px solid var(--apimcp-accent, #6c757d); border-radius: 10px; padding: 0.9rem 1rem; }
+  .apimcp-card h4 { font-size: 0.9rem; font-weight: 700; color: #1a1a2e; margin: 0 0 0.35rem; }
+  .apimcp-card p { font-size: 0.78rem; line-height: 1.4; color: #6c757d; margin: 0; }
+  .apimcp-card p + p, .apimcp-card > * + p { margin-top: 0.5rem; }
+  .apimcp-card code { font-size: 0.72rem; word-break: break-all; }
+  .apimcp-card summary { font-size: 0.78rem; color: #0d6efd; font-weight: 600; cursor: pointer; }
+  .apimcp-card summary:hover { text-decoration: underline; }
+  .apimcp-card details { margin-top: 0.15rem; }
+  .apimcp-card ul { list-style: none; padding: 0; margin: 0.5rem 0 0; font-size: 0.78rem; }
+  .apimcp-card ul li { margin-bottom: 0.5rem; }
+  .apimcp-card ul li span { display: block; color: #6c757d; }
+  .apimcp-card pre { background: #f6f8fa; border: 1px solid #e3e7ee; border-radius: 6px; padding: 0.5rem; margin: 0; white-space: pre-wrap; word-break: break-all; }
+  .apimcp-curl { margin-top: 0.6rem; }
+  .apimcp-curl .apimcp-label { display: block; font-size: 0.72rem; color: #6c757d; margin-bottom: 0.25rem; }
+  .apimcp-link { display: inline-block; margin-top: 0.55rem; font-size: 0.78rem; font-weight: 600; color: #0d6efd; text-decoration: none; }
+  .apimcp-link:hover { text-decoration: underline; }
+  /* Three auth providers side by side keeps this card the same height as the
+     others; stacked buttons were what made the row ragged. */
+  .apimcp-auth { display: flex; gap: 0.4rem; margin-top: 0.15rem; }
+  .apimcp-auth a { flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.35rem 0.4rem; border: 1px solid #d7dce5; border-radius: 6px; background: #fff; color: #4a5568; font-size: 0.72rem; font-weight: 600; text-decoration: none; }
+  .apimcp-auth a:hover { border-color: #0d6efd; color: #0d6efd; }
+  .apimcp-auth svg { flex: none; }
+  @media (max-width: 575.98px) { .apimcp-card { flex-basis: 100%; } }
+</style>
+
+
+
+<h2 class="section-anchor" id="api-mcp"><a href="#api-mcp">Work with this as data</a></h2>
+<p class="section-blurb">
+  Every provider here is available over the APIs.io API and to AI agents over MCP.</p>
+
+<div class="apimcp-bar">
+
+  <div class="apimcp-card" style="--apimcp-accent: #3098d8;">
+    <h4>MCP server</h4>
+    <p>One button, every client — Claude, Cursor, VS Code and the rest.</p>
+    <script src="https://install.apicommons.org/button.js" async></script>
+    <mcp-install-button server="https://apis.io/server.json" label="Install the MCP server" color="#3098d8"></mcp-install-button>
+    <p><code>https://apis.io/mcp</code></p>
+  </div>
+  <div class="apimcp-card" style="--apimcp-accent: #6d28d9;">
+    <h4>Tools for providers</h4>
+    <details>
+      <summary>9 MCP tools reach this</summary>
+      <ul>
+        <li><code>find_providers</code><span>Browse and filter every provider in the catalog.</span></li>
+        <li><code>get_provider_artifacts</code><span>Every artifact this provider publishes, grouped by type.</span></li>
+        <li><code>get_provider_operations</code><span>Every operation across all of their OpenAPIs — one call instead of parsing every spec.</span></li>
+        <li><code>get_provider_tools</code><span>Every MCP tool they ship, with the operation each wraps.</span></li>
+        <li><code>get_provider_evidence</code><span>How each part of their score was established. Free — the basis for a claim should not sit behind it.</span></li>
+        <li><code>get_provider_rating</code><span>PRO — composite, band, trend and facet scores.</span></li>
+        <li><code>apis_io_search</code><span>START HERE — APIs, providers and tags for one query, each with its total.</span></li>
+        <li><code>resolve</code><span>Turn a domain, URL or GitHub org into the provider it belongs to.</span></li>
+        <li><code>find_cohorts</code><span>Every scored population of providers in the catalog.</span></li>
+      </ul>
+    </details>
+    <a href="https://apis.io/developer/mcp-server/" class="apimcp-link">All 92 tools &rarr;</a>
+  </div>
+  <div class="apimcp-card" style="--apimcp-accent: #198754;">
+    <h4>Call it yourself</h4>
+    <details>
+      <summary>curl for this page</summary>
+      <div class="apimcp-curl">
+        <span class="apimcp-label">This provider</span>
+        <pre><code>curl "https://apis.io/api/v1/providers/attestedmemory-net"</code></pre>
+      </div>
+      <div class="apimcp-curl">
+        <span class="apimcp-label">All providers</span>
+        <pre><code>curl "https://apis.io/api/v1/providers?limit=25"</code></pre>
+      </div>
+      <div class="apimcp-curl">
+        <span class="apimcp-label">Every operation they expose</span>
+        <pre><code>curl "https://apis.io/api/v1/providers/attestedmemory-net/operations?limit=25"</code></pre>
+      </div>
+      <div class="apimcp-curl">
+        <span class="apimcp-label">How their score was established</span>
+        <pre><code>curl "https://apis.io/api/v1/providers/attestedmemory-net/evidence"</code></pre>
+      </div>
+    </details>
+    <script>
+      /* roadmap#1080: paid examples carry only a path, so crawlers cannot lift a URL from the
+         page text and fetch it unkeyed. Assembled here when the reader opens the card. */
+      document.querySelectorAll('.apimcp-card details').forEach(function (d) {
+        d.addEventListener('toggle', function () {
+          d.querySelectorAll('code.apimcp-paid:empty').forEach(function (el) {
+            el.textContent = 'curl "' + 'https://apis.io/api/v1/' + el.getAttribute('data-p') + '" \\\n  -H "X-API-Key: $APIS_IO_KEY"';
+          });
+        }, { once: true });
+      });
+    </script>
+    <p>Calls without <code>X-API-Key</code> need no key. Calls with it need a paid plan &mdash; <a href="https://apis.io/developer/account/?access=1">get a key</a>.</p>
+  </div><div class="apimcp-card" style="--apimcp-accent: #6c757d;">
+    <h4>Get an API key</h4>
+    <!-- roadmap#272 — this said "no email required". The intent was "no form to fill in";
+         what it told a data subject AT THE MOMENT OF COLLECTION was that no email is
+         collected. The callback stores one on every account it creates (auth/index.mjs)
+         and indexes it in the EmailIndex GSI, and a verified email is what joins a second
+         provider to an existing account. The copy has to say what the code does. -->
+    <p>Free tier, no form to fill in. Signing in shares your email address with us — we
+      store it to create your key and to recognise you if you sign in with another
+      provider. See our <a href="/privacy/">Privacy Policy</a> and
+      <a href="/terms/">Terms</a>.</p>
+    <div class="apimcp-auth">
+      <a href="https://apis.io/api/v1/auth/login?provider=github">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <span>GitHub</span>
+      </a>
+      <a href="https://apis.io/api/v1/auth/login?provider=google">
+        <svg viewBox="0 0 18 18" width="14" height="14" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62Z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.97 10.72a5.41 5.41 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33Z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58Z"/></svg>
+        <span>Google</span>
+      </a>
+      <a href="https://apis.io/api/v1/auth/login?provider=linkedin">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="#0A66C2" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0Z"/></svg>
+        <span>LinkedIn</span>
+      </a>
+    </div>
+    <p>A second provider on the same verified email joins the account you already have.</p>
+  </div>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Attested Memory", "description": "Attested Memory provides verifiable context for people, teams, and autonomous agents through a SaaS platform that stores durable knowledge with cryptographic identity, truth state, and provenance. It offers personal, team, and expert memory products, USDC‑settled transactions, escrow, metering, and proof capabilities, all federated via the KOVA hub and integrated with the open AIMarket ecosystem."
+  , "logo": "https://attestedmemory.net/attested-social.png"
+  , "keywords": "Company, Software-as-a-Service, Verifiable Memory, AI Agents, USDC"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://apis.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Providers",
+      "item": "https://apis.io/providers/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Attested Memory"
+    }
+  ]
+}
+</script>
+
+    </main>
+
+    <footer class="footer">
+  <div class="container"><div class="footer-bar">
+      <span class="footer-copy">© APIs.io</span>
+      <div class="footer-legal"><a href="http://apisjson.org">APIs.json</a><a href="http://apicommons.org">API Commons</a><a href="https://apievangelist.com">API Evangelist</a><a href="https://apis.io/terms/">Terms</a><a href="https://apis.io/privacy/">Privacy</a></div>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/kin-glyph.js"></script>
+
+  </body>
+</html>

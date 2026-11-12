@@ -1,0 +1,61 @@
+{
+  "checked_date": "2026-11-09",
+  "strong_signals": [
+    {
+      "kind": "external_spec_alignment",
+      "product": "HISTOR",
+      "external_actor": "emmanuelorta / CrawlCheck",
+      "source": "https://github.com/modelcontextprotocol/registry/issues/82#issuecomment-6711311079",
+      "followup": "https://github.com/OWASP/secure-agent-playbook/issues/33#issuecomment-6712103956",
+      "spec": "https://crawlcheck.io/spec/mcp-lockfile#jcs-v1",
+      "measurement_scope": "External author reports 30/30; we independently compare one published fixture with one current HISTOR record. Hosted canonicalizer implementation not verified."
+    },
+    {
+      "kind": "external_dataset_analysis",
+      "product": "HISTOR",
+      "external_actor": "avp9-nexus",
+      "source": "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6545176155",
+      "date": "2026-10-31",
+      "scope": "Published detailed analysis of HISTOR snapshot, code and 250 label sample. We read the comment; we did not reproduce that sample or validate signatures."
+    },
+    {
+      "kind": "external_code_review",
+      "product": "HISTOR",
+      "external_actor": "Mayur021",
+      "source": "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6572123939",
+      "followups": [
+        "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6572965082",
+        "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6573529015"
+      ],
+      "scope": "External author says they read HISTOR code and uses findings to refine ACS proposal. No adopted normative standard verified."
+    }
+  ],
+  "negative_delta": {
+    "actor": "Industrial Platform",
+    "retained_evidence": "requirements main still pins aimarket-hub source; AIMarket adapter present",
+    "current_endpoints": "discovery, v2 manifest, health and x402 discovery all 404",
+    "scope": "Point-in-time old Railway host, not evidence project ended"
+  },
+  "other_signals": [
+    {
+      "actor": "The Agent Forge",
+      "kind": "house-tester MCP handshake",
+      "scope": "WARDEN0.22.2 one worked report, zero corroborations; HISTOR also house handshake. Not independent users or function tests."
+    },
+    {
+      "actor": "ragmap",
+      "kind": "protocol catalogue",
+      "scope": "EMPORION8 tools,lastOk2026-11-09; not runtime business API use."
+    },
+    {
+      "actor": "AgentAvow",
+      "kind": "external technical reply",
+      "source": "https://github.com/AgentAvow/AgentAvow/issues/240#issuecomment-6714769340",
+      "scope": "Asked permission to link our interop work; no added link verified"
+    }
+  ],
+  "new_organic_customer_confirmed": false,
+  "new_runtime_integration_confirmed": false,
+  "evidence_verification": "verification.json",
+  "report": "report.ru.md"
+}

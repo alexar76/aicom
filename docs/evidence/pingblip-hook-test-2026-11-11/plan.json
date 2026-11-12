@@ -1,0 +1,53 @@
+{
+  "status": "proposed",
+  "queueEvidence": {
+    "checkedAt": "2026-11-10T20:57:07Z",
+    "lastScheduledAt": "2026-11-20T19:00:00Z",
+    "lastScheduledEpisode": "PB81",
+    "scheduledCount": 20,
+    "channelId": "UCdhqQ5UAdUHPyX8BnolB4dQ"
+  },
+  "cadence": {
+    "timezone": "UTC",
+    "slots": ["13:00", "19:00"],
+    "audienceTimezone": "America/New_York"
+  },
+  "baseline": {
+    "checkedAt": "2026-10-24T05:47:29.206987Z",
+    "publicShorts": 37,
+    "videoRows": 43,
+    "lifetimeViews": 4838,
+    "videoAttributedProfiles": 19,
+    "videosWithAttributedProfiles": 5,
+    "videoAttributedHatches": 0,
+    "excludedTestProfilesAcrossSources": 17
+  },
+  "variants": {
+    "weather_reveal": "Open on genuine gameplay showing the weather-based reveal.",
+    "first_feed": "Open on genuine gameplay showing the first feed."
+  },
+  "metrics": {
+    "primary": "stayedToWatchPercent",
+    "studioWindow": "First seven Pacific reporting dates starting on the publication date",
+    "studioTimezone": "America/Los_Angeles",
+    "studioDiagnostics": ["shownInFeed", "engagedViews"],
+    "funnelReadAgeHours": 168,
+    "funnelReadToleranceMinutes": 30,
+    "funnelAttribution": {
+      "source": "youtube",
+      "medium": "shorts",
+      "campaign": "get-your-pet"
+    },
+    "funnelOutcomes": ["visits", "landingReady", "hatched", "firstFed", "returnEligible", "returnedD1", "fedD1"]
+  },
+  "episodes": [
+    {"id": "PB82", "publishAt": "2026-11-21T13:00:00Z", "variant": "weather_reveal", "route": "https://pingblip.com/go/pb82"},
+    {"id": "PB83", "publishAt": "2026-11-21T19:00:00Z", "variant": "first_feed", "route": "https://pingblip.com/go/pb83"},
+    {"id": "PB84", "publishAt": "2026-11-22T13:00:00Z", "variant": "first_feed", "route": "https://pingblip.com/go/pb84"},
+    {"id": "PB85", "publishAt": "2026-11-22T19:00:00Z", "variant": "weather_reveal", "route": "https://pingblip.com/go/pb85"},
+    {"id": "PB86", "publishAt": "2026-11-23T13:00:00Z", "variant": "first_feed", "route": "https://pingblip.com/go/pb86"},
+    {"id": "PB87", "publishAt": "2026-11-23T19:00:00Z", "variant": "weather_reveal", "route": "https://pingblip.com/go/pb87"},
+    {"id": "PB88", "publishAt": "2026-11-24T13:00:00Z", "variant": "weather_reveal", "route": "https://pingblip.com/go/pb88"},
+    {"id": "PB89", "publishAt": "2026-11-24T19:00:00Z", "variant": "first_feed", "route": "https://pingblip.com/go/pb89"}
+  ]
+}

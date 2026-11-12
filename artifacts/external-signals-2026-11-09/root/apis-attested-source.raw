@@ -1,0 +1,4148 @@
+aid: attestedmemory-net
+name: Attested Memory
+image: https://attestedmemory.net/attested-social.png
+description: Attested Memory provides verifiable context for people, teams, and autonomous agents through a SaaS platform that stores durable
+  knowledge with cryptographic identity, truth state, and provenance. It offers personal, team, and expert memory products, USDC‑settled transactions,
+  escrow, metering, and proof capabilities, all federated via the KOVA hub and integrated with the open AIMarket ecosystem.
+url: https://artifacts.apis.io/attestedmemory-net/apis.yml
+x-type: company
+x-source: harvest:mcp-registry
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-11-02 (modular-v1; was harvest)
+specificationVersion: '0.20'
+created: '2026-11-02'
+modified: '2026-11-02'
+tags:
+- Company
+- SaaS
+- Verifiable Memory
+- AI Agents
+- USDC
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
+common:
+- type: AgenticAccess
+  url: agentic-access/attestedmemory-net-agentic-access.yml
+- type: Plans
+  url: plans/attestedmemory-net-plans-pricing.yml
+- type: Spectral
+  url: rules/attestedmemory-net-rules.yml
+- type: JSONLD
+  url: json-ld/attestedmemory-net-context.jsonld
+- type: Vocabulary
+  url: vocabulary/attestedmemory-net-vocabulary.yml
+- type: DataModel
+  url: data-model/attestedmemory-net-data-model.yml
+- type: ErrorCatalog
+  url: errors/attestedmemory-net-problem-types.yml
+- type: Conformance
+  url: conformance/attestedmemory-net-conformance.yml
+- type: LLMsTxt
+  url: llms/attestedmemory-net-llms.txt
+- type: AgentCard
+  url: a2a/attestedmemory-net-a2a.yml
+- type: WellKnown
+  url: well-known/attestedmemory-net-well-known.yml
+- type: Hosts
+  url: hosts/attestedmemory-net-hosts.yml
+- type: DomainSecurity
+  url: security/attestedmemory-net-domain-security.yml
+- type: Website
+  url: https://attestedmemory.net/
+- type: Documentation
+  url: https://attestedmemory.net/docs
+- type: DeveloperPortal
+  url: https://attestedmemory.net/developers
+- type: GettingStarted
+  url: https://attestedmemory.net/start
+- type: UseCases
+  url: https://attestedmemory.net/use-cases
+apis:
+- name: Attested Memory Store API
+  description: Memory store API.
+  humanURL: https://attestedmemory.net/memory
+  baseURL: https://attestedmemory.net/memory
+  aid: attestedmemory-net:attested-memory-store-api
+- aid: attestedmemory-net:attestedmemory-net-a2a-api
+  name: Attested Memory A2a API
+  description: The a2a API from Attested Memory — 2 operation(s) for a2a.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - a2a
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-a2a-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-accounts-api
+  name: Attested Memory Accounts API
+  description: The Accounts API from Attested Memory — 3 operation(s) for accounts.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-accounts-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-acex-capital-api
+  name: Attested Memory Acex Capital API
+  description: The acex-capital API from Attested Memory — 10 operation(s) for acex-capital.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - acex-capital
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-acex-capital-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-admin-api
+  name: Attested Memory Admin API
+  description: The Admin API from Attested Memory — 15 operation(s) for admin.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Admin
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-admin-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-ai-market-api
+  name: Attested Memory Ai Market API
+  description: The Ai Market API from Attested Memory — 4 operation(s) for ai market.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Ai Market
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-ai-market-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-assets-api
+  name: Attested Memory Assets API
+  description: The Assets API from Attested Memory — 1 operation(s) for assets.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Assets
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-assets-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-attested-memory-hub-aimarket-hub-v3-api
+  name: Attested Memory Attested Memory Hub — AIMarket Hub V3 API
+  description: >-
+    The Attested Memory Hub — AIMarket Hub V3 API from Attested Memory — 1 operation(s) for attested memory
+    hub — aimarket hub v3.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Attested Memory Hub — AIMarket Hub V3
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-attested-memory-hub-aimarket-hub-v3-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-billing-api
+  name: Attested Memory Billing API
+  description: The Billing API from Attested Memory — 3 operation(s) for billing.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-billing-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-bonds-api
+  name: Attested Memory Bonds API
+  description: The Bonds API from Attested Memory — 3 operation(s) for bonds.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Bonds
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-bonds-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-cap-descriptions-i18n-json-api
+  name: Attested Memory Cap Descriptions I18n.json API
+  description: >-
+    The Cap Descriptions I18n.json API from Attested Memory — 1 operation(s) for cap descriptions i18n.json.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Cap Descriptions I18n.json
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-cap-descriptions-i18n-json-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-capabilities-api
+  name: Attested Memory Capabilities API
+  description: The Capabilities API from Attested Memory — 1 operation(s) for capabilities.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Capabilities
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-capabilities-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-challenges-api
+  name: Attested Memory Challenges API
+  description: The Challenges API from Attested Memory — 1 operation(s) for challenges.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Challenges
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-challenges-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-clients-api
+  name: Attested Memory Clients API
+  description: The Clients API from Attested Memory — 3 operation(s) for clients.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Clients
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-clients-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-deals-api
+  name: Attested Memory Deals API
+  description: The Deals API from Attested Memory — 7 operation(s) for deals.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Deals
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-deals-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-developers-api
+  name: Attested Memory Developers API
+  description: The Developers API from Attested Memory — 1 operation(s) for developers.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Developers
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-developers-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-disputes-api
+  name: Attested Memory Disputes API
+  description: The Disputes API from Attested Memory — 2 operation(s) for disputes.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Disputes
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-disputes-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-examples-api
+  name: Attested Memory Examples API
+  description: The Examples API from Attested Memory — 1 operation(s) for examples.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Examples
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-examples-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-gate-api
+  name: Attested Memory Gate API
+  description: The Gate API from Attested Memory — 1 operation(s) for gate.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Gate
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-gate-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-healthz-api
+  name: Attested Memory Healthz API
+  description: The Healthz API from Attested Memory — 1 operation(s) for healthz.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Healthz
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-healthz-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-hub-ui-i18n-json-api
+  name: Attested Memory Hub Ui I18n.json API
+  description: The Hub Ui I18n.json API from Attested Memory — 1 operation(s) for hub ui i18n.json.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Hub Ui I18n.json
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-hub-ui-i18n-json-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-hub-v2-api
+  name: Attested Memory Hub V2 API
+  description: The hub-v2 API from Attested Memory — 88 operation(s) for hub-v2.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - hub-v2
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-hub-v2-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-hubs-api
+  name: Attested Memory Hubs API
+  description: The Hubs API from Attested Memory — 1 operation(s) for hubs.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Hubs
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-hubs-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-keys-api
+  name: Attested Memory Keys API
+  description: The Keys API from Attested Memory — 4 operation(s) for keys.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-keys-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-listings-api
+  name: Attested Memory Listings API
+  description: The Listings API from Attested Memory — 4 operation(s) for listings.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Listings
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-listings-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-live-api
+  name: Attested Memory Live API
+  description: The Live API from Attested Memory — 1 operation(s) for live.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Live
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-live-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-mcp-api
+  name: Attested Memory MCP API
+  description: The mcp API from Attested Memory — 4 operation(s) for mcp.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - mcp
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-mcp-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-memory-api
+  name: Attested Memory Memory API
+  description: The Memory API from Attested Memory — 4 operation(s) for memory.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Memory
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-memory-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-meter-api
+  name: Attested Memory Meter API
+  description: The Meter API from Attested Memory — 4 operation(s) for meter.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Meter
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-meter-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-metrics-api
+  name: Attested Memory Metrics API
+  description: The Metrics API from Attested Memory — 1 operation(s) for metrics.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-metrics-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-nullifiers-api
+  name: Attested Memory Nullifiers API
+  description: The Nullifiers API from Attested Memory — 6 operation(s) for nullifiers.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Nullifiers
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-nullifiers-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-operator-api
+  name: Attested Memory Operator API
+  description: The Operator API from Attested Memory — 2 operation(s) for operator.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Operator
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-operator-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-passports-api
+  name: Attested Memory Passports API
+  description: The Passports API from Attested Memory — 4 operation(s) for passports.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Passports
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-passports-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-payouts-api
+  name: Attested Memory Payouts API
+  description: The Payouts API from Attested Memory — 1 operation(s) for payouts.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Payouts
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-payouts-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-plans-api
+  name: Attested Memory Plans API
+  description: The Plans API from Attested Memory — 1 operation(s) for plans.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Plans
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-plans-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-plugins-api
+  name: Attested Memory Plugins API
+  description: The Plugins API from Attested Memory — 1 operation(s) for plugins.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Plugins
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-plugins-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-prices-api
+  name: Attested Memory Prices API
+  description: The Prices API from Attested Memory — 1 operation(s) for prices.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Prices
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-prices-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-products-api
+  name: Attested Memory Products API
+  description: The Products API from Attested Memory — 1 operation(s) for products.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Products
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-products-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-publishers-api
+  name: Attested Memory Publishers API
+  description: The Publishers API from Attested Memory — 5 operation(s) for publishers.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Publishers
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-publishers-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-publishing-api
+  name: Attested Memory Publishing API
+  description: The Publishing API from Attested Memory — 1 operation(s) for publishing.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Publishing
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-publishing-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-read-api
+  name: Attested Memory Read API
+  description: The Read API from Attested Memory — 1 operation(s) for read.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Read
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-read-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-receipts-api
+  name: Attested Memory Receipts API
+  description: The Receipts API from Attested Memory — 3 operation(s) for receipts.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Receipts
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-receipts-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-settlements-api
+  name: Attested Memory Settlements API
+  description: The Settlements API from Attested Memory — 1 operation(s) for settlements.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Settlements
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-settlements-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-slots-api
+  name: Attested Memory Slots API
+  description: The Slots API from Attested Memory — 1 operation(s) for slots.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Slots
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-slots-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-start-api
+  name: Attested Memory Start API
+  description: The Start API from Attested Memory — 1 operation(s) for start.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Start
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-start-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-stats-api
+  name: Attested Memory Stats API
+  description: The Stats API from Attested Memory — 1 operation(s) for stats.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Stats
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-stats-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-studio-api
+  name: Attested Memory Studio API
+  description: The Studio API from Attested Memory — 11 operation(s) for studio.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Studio
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-studio-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-studio-ui-i18n-json-api
+  name: Attested Memory Studio Ui I18n.json API
+  description: >-
+    The Studio Ui I18n.json API from Attested Memory — 1 operation(s) for studio ui i18n.json.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Studio Ui I18n.json
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-studio-ui-i18n-json-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-team-memories-api
+  name: Attested Memory Team Memories API
+  description: The Team Memories API from Attested Memory — 2 operation(s) for team memories.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Team Memories
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-team-memories-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-team-search-api
+  name: Attested Memory Team Search API
+  description: The Team Search API from Attested Memory — 1 operation(s) for team search.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Team Search
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-team-search-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-teams-api
+  name: Attested Memory Teams API
+  description: The Teams API from Attested Memory — 7 operation(s) for teams.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-teams-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-trials-api
+  name: Attested Memory Trials API
+  description: The Trials API from Attested Memory — 3 operation(s) for trials.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Trials
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-trials-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-well-known-api
+  name: Attested Memory .well Known API
+  description: The .well Known API from Attested Memory — 4 operation(s) for .well known.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - .well Known
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-well-known-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-widget-api
+  name: Attested Memory Widget API
+  description: The Widget API from Attested Memory — 2 operation(s) for widget.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - Widget
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-widget-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-world-api
+  name: Attested Memory World API
+  description: The World API from Attested Memory — 2 operation(s) for world.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - World
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-world-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+- aid: attestedmemory-net:attestedmemory-net-x402-api
+  name: Attested Memory X402 API
+  description: The X402 API from Attested Memory — 1 operation(s) for x402.
+  humanURL: https://deal.attestedmemory.net
+  baseURL: https://deal.attestedmemory.net
+  tags:
+  - X402
+  properties:
+  - type: OpenAPI
+    url: openapi/attestedmemory-net-x402-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-deal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bond-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-challenge-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-evidence-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-trial-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-dispute-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-permission-violation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-invoke-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-ipo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-channel-open-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-announce-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-own-price-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-publisher-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-authorize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-memory-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-capture-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-receipt-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-scope-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-bind-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-world-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-passport-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-verify-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-member-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-confirm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-read-request-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-memory-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-member-schema.json
+  - type: JSONSchema
+    url: json-schema/attestedmemory-net-team-create-schema.json
+x-enrichment:
+  date: '2026-11-02'
+  status: enriched
+  artifacts_added: 27
+  pass: modular-v1
+  engine: identity=local,contract=local,surfaces=local,docs=local,regulatory=local

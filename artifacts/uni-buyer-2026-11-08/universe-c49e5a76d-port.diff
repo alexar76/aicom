@@ -1,0 +1,92 @@
+--- running/universe.py
++++ deployed/universe.py
+@@ -771,13 +771,23 @@
+         return False
+ 
+     def _init_web3(self):
++        from evm_dev_key_safety import local_dev_rpc, require_local_dev_chain
++
++        if not local_dev_rpc(self.evm_rpc):
++            self._w3 = None
++            raise RuntimeError("Universe requires a local/private development RPC")
+         try:
+             from web3 import Web3
+         except ImportError:
+             print("[Universe] web3.py missing — pip install web3")
+             return
+-        self._w3 = Web3(Web3.HTTPProvider(self.evm_rpc))
++        self._w3 = Web3(Web3.HTTPProvider(self.evm_rpc, request_kwargs={"timeout": 5, "allow_redirects": False}))
+         if self._w3.is_connected():
++            try:
++                require_local_dev_chain(self._w3, self.evm_rpc)
++            except Exception:
++                self._w3 = None
++                raise
+             self._eth_accounts = self._w3.eth.accounts
+             self.payment_recipient = self._eth_accounts[0]
+             print(f"[Universe] EVM connected — chain {self._w3.eth.chain_id}")
+@@ -971,6 +981,16 @@
+             if not self._last_deploy_error:
+                 self._last_deploy_error = "FakeUSDT deploy failed"
+ 
++    def _assert_demo_deployment_rpc(self) -> None:
++        from evm_dev_key_safety import local_dev_rpc, require_local_dev_chain
++
++        if not local_dev_rpc(self.evm_rpc):
++            raise RuntimeError("Universe's public deployer key requires a local/private development RPC")
++        from web3 import Web3
++
++        w3 = Web3(Web3.HTTPProvider(self.evm_rpc, request_kwargs={"timeout": 5, "allow_redirects": False}))
++        require_local_dev_chain(w3, self.evm_rpc)
++
+     def _forge_run(self, script: str, deployer: str, extra_env: dict) -> str | None:
+         if not shutil.which("forge"):
+             self._last_deploy_error = "forge not found on PATH"
+@@ -980,6 +1000,7 @@
+             self._last_deploy_error = f"contracts dir missing: {evm_dir}"
+             print(f"[Universe] {self._last_deploy_error}")
+             return None
++        self._assert_demo_deployment_rpc()
+         env = os.environ.copy()
+         env["PRIVATE_KEY"] = ANVIL_DEPLOYER_KEY
+         env["INITIAL_HUBS"] = deployer
+@@ -995,7 +1016,7 @@
+         env.update(extra_env)
+         try:
+             proc = subprocess.run(
+-                ["forge", "script", script, "--rpc-url", self.evm_rpc, "--broadcast", "--slow"],
++                ["forge", "script", script, "--rpc-url", self.evm_rpc, "--chain-id", "31337", "--broadcast", "--slow"],
+                 cwd=str(evm_dir),
+                 env=env,
+                 capture_output=True,
+@@ -1151,13 +1172,14 @@
+         if not shutil.which("forge"):
+             self._last_deploy_error = "forge not found on PATH"
+             return
++        self._assert_demo_deployment_rpc()
+         env = os.environ.copy()
+         env["PRIVATE_KEY"] = ANVIL_DEPLOYER_KEY
+         env["DEPLOYER_PRIVATE_KEY"] = ANVIL_DEPLOYER_KEY
+         env["USDC_ADDRESS"] = self.evm_usdt_address
+         try:
+             proc = subprocess.run(
+-                ["forge", "script", "script/DeployACEX.s.sol:DeployACEX", "--rpc-url", self.evm_rpc, "--broadcast", "--slow"],
++                ["forge", "script", "script/DeployACEX.s.sol:DeployACEX", "--rpc-url", self.evm_rpc, "--chain-id", "31337", "--broadcast", "--slow"],
+                 cwd=str(acex_dir),
+                 env=env,
+                 capture_output=True,
+@@ -1201,12 +1223,13 @@
+         if not project_dir.is_dir():
+             self._last_deploy_error = f"project dir missing: {project_dir}"
+             return None
++        self._assert_demo_deployment_rpc()
+         env = os.environ.copy()
+         env["PRIVATE_KEY"] = ANVIL_DEPLOYER_KEY
+         env.update(extra_env)
+         try:
+             proc = subprocess.run(
+-                ["forge", "script", script, "--rpc-url", self.evm_rpc, "--broadcast", "--slow"],
++                ["forge", "script", script, "--rpc-url", self.evm_rpc, "--chain-id", "31337", "--broadcast", "--slow"],
+                 cwd=str(project_dir),
+                 env=env,
+                 capture_output=True,

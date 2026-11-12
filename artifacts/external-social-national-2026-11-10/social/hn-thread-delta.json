@@ -1,0 +1,47 @@
+{
+  "thread": "https://news.ycombinator.com/item?id=50193565",
+  "baseline": "artifacts/external-social-regional-2026-11-09/social/raw/hn-item.raw",
+  "current_evidence": {
+    "key": "hn-known-thread",
+    "url": "https://hn.algolia.com/api/v1/items/50193565",
+    "method": "GET",
+    "read_at_utc": "2026-11-10T20:23:05.091463+00:00",
+    "status": 200,
+    "final_url": "https://hn.algolia.com/api/v1/items/50193565",
+    "content_type": "application/json",
+    "bytes": 1362,
+    "truncated": false,
+    "public_headers": {
+      "Date": "Tue, 10 Nov 2026 19:25:12 GMT",
+      "Server": "Google Frontend"
+    },
+    "body_file": "raw/hn-known-thread.raw",
+    "sha256": "2829b375b4b9ca9e26e150849b1ebea16512b103ff7580b5921e33ddc393dcd0"
+  },
+  "baseline_comment_ids": [
+    50205750,
+    50223414
+  ],
+  "current_comment_ids": [
+    50205750,
+    50223414
+  ],
+  "new_comment_ids": [],
+  "removed_comment_ids": [],
+  "comments": [
+    {
+      "id": 50205750,
+      "author": "ITAltitudes",
+      "created_at": "2026-10-23T07:55:37.000Z",
+      "url": "https://news.ycombinator.com/item?id=50205750",
+      "ownership": "external_account_not_verified_person_or_customer"
+    },
+    {
+      "id": 50223414,
+      "author": "alex_artamokhov",
+      "created_at": "2026-10-24T17:40:43.000Z",
+      "url": "https://news.ycombinator.com/item?id=50223414",
+      "ownership": "owner_account"
+    }
+  ]
+}

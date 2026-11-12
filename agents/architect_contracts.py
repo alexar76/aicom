@@ -211,8 +211,11 @@ def _ensure_testing_contract_fields(
         from core.demo_identity import sandbox_demo_email
 
         demo.setdefault("seed_email", sandbox_demo_email())
-        # Match factory `AIFACTORY_SANDBOX_DEMO_PASSWORD` docker-compose default (see demo_credentials.py).
-        demo.setdefault("seed_password", "AfSc7xK9mR2nL4vP8qW1jH0fT5dB3cZyEu")  # gitleaks:allow — mirrors demo_credentials sandbox default
+        # Share compose/browser credential selection instead of a public legacy fallback.
+        if "seed_password" not in demo:
+            from web.backend.services.demo_credentials import effective_sandbox_demo_password_for_compose
+
+            demo["seed_password"] = effective_sandbox_demo_password_for_compose()
         demo.setdefault(
             "env_var_names",
             "SANDBOX_DEMO_EMAIL, SANDBOX_DEMO_PASSWORD; frontend mirrors VITE_SANDBOX_DEMO_EMAIL, VITE_SANDBOX_DEMO_PASSWORD when using Vite.",

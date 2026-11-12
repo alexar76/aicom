@@ -1,0 +1,189 @@
+{
+  "$schema": "https://tensorfeed.ai/.well-known/agent-fair-trade-schema.json",
+  "version": "1.0",
+  "name": "Agent Fair-Trade Agreement",
+  "abbrev": "AFTA",
+  "publisher": {
+    "name": "TensorFeed.ai",
+    "legal_entity": "TensorFeed.ai",
+    "url": "https://tensorfeed.ai",
+    "contact": "contact@tensorfeed.ai",
+    "manifesto_page": "https://tensorfeed.ai/agent-fair-trade"
+  },
+  "self_description": "TensorFeed.ai is agent fair-trade certified: open pricing, automatic no-charge on 5xx, breaker, schema fail, and stale data, Ed25519-signed receipts on every paid call, inference-only license. Built with Claude (Anthropic). Standard at /.well-known/agent-fair-trade.json.",
+  "no_charge_guarantees": [
+    {
+      "id": "5xx",
+      "description": "Server errors (HTTP 5xx) never charge a credit. The handler can fail safely.",
+      "code": "worker/src/payments.ts (commitPayment)",
+      "verifiable_via": "/api/payment/no-charge-stats?date=YYYY-MM-DD"
+    },
+    {
+      "id": "circuit_breaker",
+      "description": "Two breaker layers run on every premium call. The identical-request layer trips at 20 same-fingerprint calls / 60s (trip_kind: \"identical_request\"). The burn-rate layer trips at 100 calls / 60s on a single bearer token regardless of path or query (trip_kind: \"burn_rate\"), so loops that randomize the URL cannot drain credits. Either trip returns HTTP 429 with no charge.",
+      "code": "worker/src/circuit-breaker.ts + worker/src/payments.ts (requirePayment)",
+      "verifiable_via": "/api/payment/no-charge-stats and /developers/agent-payments#circuit-breaker"
+    },
+    {
+      "id": "schema_validation_failure",
+      "description": "Requests that fail input validation (HTTP 400) are not charged, are logged to the public no-charge ledger, and carry a signed receipt with no_charge_reason: \"schema_validation_failure\" so the agent has cryptographic proof the failure was free. Lenient by default: extra fields are ignored.",
+      "code": "premiumValidationFailure() helper in worker/src/index.ts; calls commitPayment with the schema_validation_failure reason, signs a receipt with credits_charged: 0, returns 400 + receipt.",
+      "verifiable_via": "Send a malformed request to /api/premium/cost/projection, /api/premium/news/search, /api/premium/compare/models, or /api/premium/whats-new and inspect the receipt. The event will appear at /api/payment/no-charge-stats."
+    },
+    {
+      "id": "upstream_failure",
+      "description": "If the upstream source a paid endpoint depends on fails or returns nothing usable, the call is not charged. Their outage is not your bill.",
+      "code": "worker/src/index.ts (premiumResponse with the upstream_failure reason), used across the endpoints that proxy or derive from third-party sources",
+      "verifiable_via": "/api/payment/no-charge-stats and the no_charge_reason field in the signed receipt"
+    },
+    {
+      "id": "stale_data",
+      "description": "If the underlying data is older than the endpoint's published freshness SLA, the call is not charged. Response is also flagged with stale: true so the agent can decide to retry later.",
+      "code": "worker/src/freshness.ts + worker/src/index.ts (premiumResponse)",
+      "verifiable_via": "/api/payment/no-charge-stats and the freshness_sla_seconds field in every receipt"
+    },
+    {
+      "id": "empty_result",
+      "description": "If we hold no records for the window or key you asked for, the call is not charged. You still get the response shape plus the coverage we do have, so the next request can be aimed correctly.",
+      "code": "worker/src/index.ts (premiumResponse with the empty_result reason)",
+      "verifiable_via": "/api/payment/no-charge-stats and the no_charge_reason field in the signed receipt"
+    },
+    {
+      "id": "no_new_since_cursor",
+      "description": "If you pass a delta cursor and nothing has changed since your mark, the call is not charged. Polling for changes that have not happened is free.",
+      "code": "worker/src/delta-cursor.ts + worker/src/index.ts (premiumResponse)",
+      "verifiable_via": "/api/payment/no-charge-stats and the no_charge_reason field in the signed receipt"
+    },
+    {
+      "id": "known_data_defect",
+      "description": "If the window you asked for resolves entirely to records we have identified as wrong, the call is not charged. Distinct from empty_result, where we hold nothing, and from stale_data, where we hold something merely older than the SLA: here we hold records and know they are artifacts, so the response explains the defect instead of billing for it.",
+      "code": "worker/src/x402-reg-series.ts (isWindowAllCrawlerDefect) + worker/src/index.ts (premiumResponse with the known_data_defect reason)",
+      "verifiable_via": "/api/payment/no-charge-stats, the no_charge_reason field in the signed receipt, and the data_quality block in the response payload"
+    },
+    {
+      "id": "ledger_unavailable",
+      "description": "If the balance ledger cannot be reached to record the charge, the call is free. You still get the response, and the signed receipt records credits_charged 0. The debit is retried once with the same request id and never falls back to a second store, so a ledger fault can never charge you twice.",
+      "code": "worker/src/payments.ts (commitPayment and tryLedgerDebit) + worker/src/credit-ledger.ts (request-id idempotent debit)",
+      "verifiable_via": "/api/payment/no-charge-stats and the no_charge_reason field in the signed receipt"
+    },
+    {
+      "id": "concurrent_depletion",
+      "description": "If your call passed the balance check but a concurrent call on the same token spent the credits (or the day's cap) first, the call is not charged. You still get the response, the signed receipt records credits_charged 0, and the balance never goes negative.",
+      "code": "worker/src/payments.ts (commitPayment, the CreditLedger refusal branch) + worker/src/credit-ledger.ts (debit)",
+      "verifiable_via": "/api/payment/no-charge-stats and the no_charge_reason field in the signed receipt"
+    }
+  ],
+  "freshness_slas": "Published live at https://tensorfeed.ai/api/meta -> agent_fair_trade.freshness_slas",
+  "receipts": {
+    "signed": true,
+    "algorithm": "EdDSA",
+    "curve": "Ed25519",
+    "canonical_form": "tensorfeed-canonical-json-v1",
+    "schema_version_current": 2,
+    "schema_versions_supported": [
+      1,
+      2
+    ],
+    "public_key_url": "https://tensorfeed.ai/.well-known/tensorfeed-receipt-key.json",
+    "verify_endpoint": "https://tensorfeed.ai/api/receipt/verify",
+    "verify_doc": "https://tensorfeed.ai/agent-fair-trade#receipts",
+    "fields_signed": [
+      "v",
+      "id",
+      "endpoint",
+      "method",
+      "token_short",
+      "credits_charged",
+      "credits_remaining",
+      "request_hash",
+      "response_hash",
+      "captured_at",
+      "server_time",
+      "no_charge_reason",
+      "freshness_sla_seconds",
+      "agent_nonce"
+    ],
+    "agent_nonce": {
+      "header": "X-Agent-Nonce",
+      "field": "agent_nonce",
+      "since_version": 2,
+      "purpose": "Optional client-supplied nonce echoed verbatim into the signed receipt. Binds the signature to the agent's specific request so a server cannot return a previously signed receipt from a cached identical call.",
+      "format": "[A-Za-z0-9._-]{8,128}",
+      "echo_header": "X-Agent-Nonce-Echo"
+    },
+    "rotation_policy": "Single-key in v1. Key rotations announced 30 days in advance with both old and new keys served during the rotation window."
+  },
+  "pricing": {
+    "transparent": true,
+    "listed_at": "https://tensorfeed.ai/api/payment/info",
+    "currency": "USDC",
+    "network": "eip155:8453",
+    "network_name": "Base mainnet",
+    "rail_rationale": "Public on-chain crypto ledgers (USDC on Base) are structurally fair to all participants, including AI agents that traditional payment processors lock out. Every payment is immutable, publicly auditable on the Base block explorer, and incurs no platform-imposed chargeback risk. The receipt rail and the on-chain rail are independent: a receipt attests to what we charged and why; the chain attests to what was paid.",
+    "x402_compatibility": {
+      "compliant": true,
+      "manifest": "https://tensorfeed.ai/.well-known/x402.json",
+      "accepted_methods": [
+        {
+          "method": "exact",
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "asset_symbol": "USDC",
+          "header": "X-Payment-Tx",
+          "value": "Base mainnet USDC transaction hash; verified server-side via eth_getTransactionReceipt"
+        }
+      ],
+      "evaluating_methods": [
+        {
+          "method": "stripe",
+          "credential_type": "shared_payment_token",
+          "status": "under_evaluation",
+          "note": "Stripe Link agents (link.com/agents) issue Shared Payment Tokens for HTTP 402 endpoints that advertise method=stripe in the www-authenticate header. We are evaluating adding this as a parallel x402 path alongside USDC. Until shipped, Link agents that prefer SPTs will not be able to pay TensorFeed; they should fall back to the credits flow at /api/payment/buy-credits or to USDC on Base."
+        }
+      ]
+    }
+  },
+  "data_license": {
+    "type": "inference-only",
+    "description": "Premium API responses are licensed for inference use only. Use of TensorFeed premium data for training, fine-tuning, evaluation, or distillation of machine learning models is prohibited.",
+    "terms_url": "https://tensorfeed.ai/terms#premium",
+    "section": "17.1"
+  },
+  "deprecation": {
+    "notice_days": 90,
+    "channel": "https://tensorfeed.ai/changelog",
+    "policy": "Endpoint removal or breaking change requires 90 days notice on /changelog. Receipts and on-chain payment records are never deleted."
+  },
+  "sanctions": {
+    "screening": "Chainalysis public sanctions API on every credit purchase. Geo-IP block on /api/payment/buy-credits for CU/IR/KP/SY. See https://tensorfeed.ai/terms#premium Section 17.9."
+  },
+  "built_with_claude": {
+    "statement": "TensorFeed was built in collaboration with Claude (Anthropic). Specific systems Claude designed: the agent payments rail, the active LLM probes, the GPU pricing aggregator, the OFAC sanctions screening pipeline, the routing engine, and the Agent Fair-Trade Agreement itself.",
+    "verifiable_via": "https://tensorfeed.ai/agent-fair-trade documents the collaboration."
+  },
+  "adoption": {
+    "open_invitation": "We invite other API publishers to adopt this standard. The schema at /.well-known/agent-fair-trade-schema.json is open. Self-publish your own /.well-known/agent-fair-trade.json with your code-pointer attestations. There is no certification authority and no fee. Adoption is the certification.",
+    "current_adopters": [
+      {
+        "site": "tensorfeed.ai",
+        "adopted_at": "2026-04-30",
+        "manifest": "https://tensorfeed.ai/.well-known/agent-fair-trade.json",
+        "receipt_key": "https://tensorfeed.ai/.well-known/tensorfeed-receipt-key.json"
+      }
+    ],
+    "network_federation": {
+      "description": "AFTA adopters that share a payment rail can federate trust at the credit level: sites in a federation accept each other's bearer tokens through a server-to-server reserve + commit handshake, and each site signs its own receipts with its own keypair (private keys are never shared). This is a documented pattern with no current members; the rail contract below and in the whitepaper (section 8) is how a federation runs.",
+      "status": "documented pattern; no current members",
+      "rail_endpoints": {
+        "status": "Not currently active; no federation is live today. Documented here as the contract a future federation would use.",
+        "validate": "POST /api/internal/validate { token, cost } -> { ok, credits_remaining, sufficient, reservation_id }. Atomically debits the credit balance and writes a per-call reservation with a 5-minute TTL. The reservation_id MUST be threaded back to commit.",
+        "commit": "POST /api/internal/commit { token, cost, endpoint, no_charge_reason?, reservation_id? } -> { ok, credits_charged, balance_after, no_charge_reason }. With reservation_id: consumes the reservation atomically (charge: no-op since debit already happened; no-charge: restores reserved credits). Mismatched token/cost is rejected as reservation_mismatch.",
+        "auth_header": "X-Internal-Auth (constant-time check against shared secret)",
+        "ledger": "When a federation is active, no-charge events from federated sites land in the host's pay:no-charge:{date} ledger with the member's endpoint path, so the public no-charge record reflects the network.",
+        "race_safety": "The reserve + commit + reservation_id design closes the federation double-spend race identified in the 2026-05-05 AFTA security audit. See SECURITY.md and the whitepaper threat model for the full attack tree."
+      },
+      "current_federation": []
+    }
+  },
+  "lastUpdated": "2026-09-27"
+}

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050">
+<rect width="1600" height="1050" fill="#f5f6f8"/>
+<text x="60" y="48" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="46" font-weight="700" fill="#14283f">Where verification broke</text>
+<text x="60" y="112" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="400" fill="#516579">Controlled reproduction: remove only version from the outer search result.</text>
+<rect x="60" y="182" width="1480" height="390" rx="14" fill="white" stroke="#b8c6d5" stroke-width="2"/>
+<rect x="60" y="182" width="1480" height="72" rx="12" fill="#e7edf5" stroke="#b8c6d5" stroke-width="2"/>
+<text x="84" y="205" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#14283f">COORDINATE</text>
+<text x="386" y="205" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#14283f">SIGNED SUBJECT</text>
+<text x="990" y="205" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#14283f">OUTER SEARCH RESULT</text>
+<line x1="60" y1="254" x2="1540" y2="254" stroke="#b8c6d5" stroke-width="2"/>
+<line x1="60" y1="334" x2="1540" y2="334" stroke="#b8c6d5" stroke-width="2"/>
+<line x1="60" y1="414" x2="1540" y2="414" stroke="#b8c6d5" stroke-width="2"/>
+<line x1="60" y1="494" x2="1540" y2="494" stroke="#b8c6d5" stroke-width="2"/>
+<line x1="356" y1="182" x2="356" y2="572" stroke="#b8c6d5" stroke-width="2"/>
+<line x1="960" y1="182" x2="960" y2="572" stroke="#b8c6d5" stroke-width="2"/>
+<text x="84" y="278" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">identifier</text>
+<text x="386" y="278" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">&lt;same resource URN&gt;</text>
+<text x="990" y="278" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">&lt;same resource URN&gt;</text>
+<text x="84" y="358" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">type</text>
+<text x="386" y="358" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">&lt;same media type&gt;</text>
+<text x="990" y="358" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">&lt;same media type&gt;</text>
+<rect x="962" y="420" width="576" height="77" rx="0" fill="#ffe9ee" stroke="#ffe9ee" stroke-width="2"/>
+<text x="84" y="438" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">version</text>
+<text x="386" y="438" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">&quot;v1&quot;</text>
+<text x="990" y="438" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="700" fill="#a51d35">FIELD OMITTED</text>
+<text x="84" y="518" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">digest</text>
+<text x="386" y="518" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">sha256:&lt;same digest&gt;</text>
+<text x="990" y="518" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">sha256:&lt;same digest&gt;</text>
+<text x="60" y="594" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="400" fill="#516579">The values are abbreviated; the missing field is the only change.</text>
+<rect x="60" y="650" width="1480" height="120" rx="14" fill="#eaf0f8" stroke="#195fc4" stroke-width="2"/>
+<text x="88" y="673" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="32" font-weight="400" fill="#14283f">subject == coordinates(search_result)</text>
+<text x="88" y="722" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#a51d35">Fails because version appears on only one side.</text>
+<rect x="60" y="814" width="472" height="120" rx="14" fill="white" stroke="#17644d" stroke-width="2"/>
+<text x="84" y="836" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#14283f">JWS SIGNATURE</text>
+<text x="84" y="881" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17644d">still valid</text>
+<rect x="564" y="814" width="472" height="120" rx="14" fill="white" stroke="#a51d35" stroke-width="2"/>
+<text x="588" y="836" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#14283f">SUBJECT BINDING</text>
+<text x="588" y="881" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#a51d35">FAILS</text>
+<rect x="1068" y="814" width="472" height="120" rx="14" fill="white" stroke="#17644d" stroke-width="2"/>
+<text x="1092" y="836" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#14283f">DESCRIPTOR DIGEST</text>
+<text x="1092" y="881" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17644d">still matches</text>
+<text x="60" y="980" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#14283f">Fix: keep version in the result and compare every signed coordinate.</text>
+</svg>

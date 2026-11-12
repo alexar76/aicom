@@ -1,0 +1,108 @@
+#
+# This is an experimental list where witnesses can discover logs.  The
+# work-in-progress list format is described here:
+#
+#   https://witness-network.org/log-list-format
+#
+# Witnesses that discover logs from this list should be able to persist the
+# states of 4,000 logs and support 10 add-checkpoint requests/s on average for
+# all logs combined (e.g., 10x 1qps logs would make this list of logs "full").
+#
+logs/v0
+
+vkey sigsum.org/v1/tree/1643169b32bef33a3f54f8a353b87c475d19b6223cbb106390d10a29978e1cba+57f71a6a+AUfkgWBtisunR6awU9bC0ZFgX7EiF11BChICqRQwq845
+qpd 8640
+contact services@mullvad.net | https://serviceberry.tlog.stagemole.eu/about
+
+vkey nous-lang.org/envelope/5fe20ff38bf251d0d1d21865cced8d9e60cb808546dc27d608bee9c88701d4ff+0d1ddb5d+AYWf42KPdJuChdrjpOVssCNl82NNcT7LsOkdMAgcT/xz
+qpd 64
+contact support@nous-lang.org
+
+vkey markovianprotocol.com/log+0302c6c8+ATkpOWo95UuEiW2EhNZAol4f0CS8hMluJfPcTSzrr03v
+qpd 24
+contact hello@markovianprotocol.com
+
+vkey thelemail.com/keys+76ead63c+ASduViYkPgYHzuTuDnuTdEkjR/DIprnavuFA3vom4YZT
+qpd 8640
+contact security@thel.email
+
+vkey keys.enigm.dev/v1+06c61fb2+AcBPl120wgVJe9QWPfa8Pazv3kG99wFcZvr316Msrab6
+qpd 720
+contact security@enigm.io
+
+vkey fulcrumlayer.io/witnessed-log/v1/m5CJYf0Ts4ywjJXeFPtlukIvrl3NqTahAdzKZ4cSkvI+22c43aca+AbFl8/zTg5IVBAyHqDASCJyHL5nAiagBMs6SZ1rNW3Lo
+qpd 24
+contact tony@fulcrumlayer.io
+
+vkey android.transparency.goog/google1p/apk/2026/1+fc654374+ATr9NQE0gvOtVfj5cCStUzdlflEp3oZoNHD8pImzPj5O
+qpd 2880
+contact Billy Lau (billylau@google.com)
+
+vkey android.transparency.goog/mainline/modules/2026/1+1a8e4064+AfwnHm59rNQTJICchMd7a2W5PQa7nC5h2gTEfq3fhCEI
+qpd 2880
+contact Billy Lau (billylau@google.com)
+
+vkey log.frem.sh+4e9c5de6+AcfzmSNWSmxIklo06ELrJzqR8VNCsdV3Sz9pFqL+5lH+
+qpd 96
+contact info@fremverk.com
+
+vkey notbefore.net/log+8b627e7f+AfPQekreiy4JUcf8TEcJs4Mj00EHL7JvHUSSLXeyZVLs
+qpd 60
+contact docdailey@gmail.com
+
+vkey edge.bluefox.ai/transparency/reliance/v1+dde62350+ATjbXC50KK3XMDTkI4H79Q+TshwWsnwhJ3wDuw3ZvFzO
+qpd 24
+contact ethan@bluefoxedge.ai
+
+vkey apertrue.photo/witness/production+03cfa386+AVHItNDu7TwYuYl5pxDxmCKbwaz+zwxcOBk+YRbn6fuD
+qpd 24
+contact jamie@apertrue.photo
+
+vkey sigsum.org/v1/tree/44ad38f8226ff9bd27629a41e55df727308d0a1cd8a2c31d3170048ac1dd22a1+682b49db+AQ7H4WhDEZsSA3enOROsasvC0D2CQy4sNrhBsJqVhB8l
+qpd 8640
+contact sigsum-logs (at) glasklarteknik.se
+
+vkey api.riskrouter.eu/tlog/evidence-v2+05e20636+AZsv9x6CMqcAlnY+GmAtkFthrxjtaGKnVpQEH9ZAkL7J
+qpd 24
+contact anil@riskrouter.eu
+
+vkey transparency.syngraphe.org/countersign/v1+57c78c5b+AWCOEr/7863suzb/aa/f26wzDDa1iyNm7qBIIjaghUnk
+qpd 24
+contact jgregory@syngraphe.org
+
+vkey tribeunal.com/log/v1+1864d425+ARZ+dcbAv0uh5QsOa2oqYAMZUrFHvgkIk84T7QqVkyu4
+qpd 300
+contact info@tribeunal.com
+
+vkey mcpverify.ai/archive/v1+f5d9c8d0+AZ0GwtwS941FiviqZwM4j/UKN/YiUO3rZawJimXMIfMc
+qpd 24
+contact contact@mcpverify.ai
+
+vkey trooth.co/witness-log/v1+06471ca9+AY9UdmLMbCX5Ib3ksDeoE8x3CburcWGJE9eJiPiYP5sZ
+qpd 144
+contact security@trooth.co | https://trooth.co/security
+
+vkey alalaai.ru/api/kt/v1+a0f52e4b+ATXb0OtL11Ghs0cbDyTjNOVcXjMWid4f2/Z05os7JDxp
+qpd 312
+contact support@alalaai.ru
+
+vkey caja.box/K+0436e498+AWxE2/qfXNdS8IQNHZMclm32r0bXYvgJn6QZtFpHco5v
+qpd 144
+contact sergetuslex@gmail.com
+
+vkey caja.box/P+07bc5e90+ATOdnisk3MO0DQEs5IaPic9ToZ0NmWQpkpqCU78TLabC
+qpd 144
+contact sergetuslex@gmail.com
+
+vkey idt.jesseahawkins.com/log+058d956b+AUQaM40MzBEcgzpLS5SZAjKigqYYTB+hbJwHZFTPuyUh
+qpd 24
+contact officialemailsignup@gmail.com
+
+vkey histor.modelmarket.dev/log+ad3ca066+AfXpkWqXVW93sChXnhKsNzvGLTFAAredl1jLlEjbr4wU
+qpd 144
+contact alexar76@rambler.ru
+
+vkey arcaeon.io/witness/v1+7d23e5e3+AelW+r1GQ7NZu3A3sP+cxm/DTaE99Q6AUHHMR5PI53tl
+qpd 24
+contact hello@arcaeon.io
+

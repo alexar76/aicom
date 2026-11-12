@@ -1,0 +1,363 @@
+{
+  "date_client": "2026-11-10",
+  "generated_at_utc": "2026-11-10T20:12:33.447376+00:00",
+  "counts": {
+    "worker_public_GETs": 9,
+    "worker_GitHub_REST_GETs": 0,
+    "worker_statuses": {
+      "403": 2,
+      "200": 7
+    },
+    "publisher_content_gaps_resolved": 4,
+    "same_query_gap_resolved_by_root": 1,
+    "still_managed_challenges": 2,
+    "new_external_relationships_confirmed": 0,
+    "new_runtime_adoptions_confirmed": 0
+  },
+  "recovered": {
+    "obsidian": {
+      "classification": "internal_document_compilation_example_not_attributed_to_our_Team_Memory_OS",
+      "evidence": [
+        {
+          "key": "obsidian-repo-web",
+          "url": "https://github.com/2233admin/obsidian-llm-wiki",
+          "access_method": "publisher_github_repository_web",
+          "method": "GET",
+          "read_at_utc": "2026-11-10T20:07:30.708395+00:00",
+          "status": 200,
+          "final_url": "https://github.com/2233admin/obsidian-llm-wiki",
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 482109,
+          "truncated": false,
+          "public_headers": {
+            "Date": "Tue, 10 Nov 2026 19:09:38 GMT",
+            "Server": "github.com"
+          },
+          "body_file": "raw/obsidian-repo-web.raw",
+          "sha256": "c2c6613cb1b1fde425d58e899efbadfb177a2976400c57c3d905ea8c40dc0da6",
+          "challenge_shell": false,
+          "redirected_to_login": false
+        },
+        {
+          "key": "obsidian-canonical-readme",
+          "url": "https://raw.githubusercontent.com/2233admin/obsidian-llm-wiki/main/README.md",
+          "access_method": "publisher_github_canonical_raw",
+          "method": "GET",
+          "read_at_utc": "2026-11-10T20:08:28.973006+00:00",
+          "status": 200,
+          "final_url": "https://raw.githubusercontent.com/2233admin/obsidian-llm-wiki/main/README.md",
+          "content_type": "text/plain; charset=utf-8",
+          "bytes": 23887,
+          "truncated": false,
+          "public_headers": {
+            "Date": "Tue, 10 Nov 2026 19:10:36 GMT"
+          },
+          "body_file": "raw/obsidian-canonical-readme.raw",
+          "sha256": "270668015e4fad3dcd694510ae7b67d44b5922c110e45466ca52dd26876d9f2a",
+          "challenge_shell": false,
+          "redirected_to_login": false
+        },
+        {
+          "key": "obsidian-team-memory-example",
+          "url": "https://raw.githubusercontent.com/2233admin/obsidian-llm-wiki/main/examples/collab-vault/research-compiler/raw/team-memory-os.md",
+          "access_method": "publisher_github_canonical_raw",
+          "method": "GET",
+          "read_at_utc": "2026-11-10T20:09:34.941716+00:00",
+          "status": 200,
+          "final_url": "https://raw.githubusercontent.com/2233admin/obsidian-llm-wiki/main/examples/collab-vault/research-compiler/raw/team-memory-os.md",
+          "content_type": "text/plain; charset=utf-8",
+          "bytes": 817,
+          "truncated": false,
+          "public_headers": {
+            "Date": "Tue, 10 Nov 2026 19:11:43 GMT"
+          },
+          "body_file": "raw/obsidian-team-memory-example.raw",
+          "sha256": "7de8eb29615d38a1e135aae184eeed9e661e8220374607d40cfa6df9d5285ff1",
+          "challenge_shell": false,
+          "redirected_to_login": false
+        },
+        {
+          "key": "obsidian-team-memory-summary",
+          "url": "https://raw.githubusercontent.com/2233admin/obsidian-llm-wiki/main/examples/collab-vault/research-compiler/wiki/summaries/team-memory-os.md",
+          "access_method": "publisher_github_canonical_raw",
+          "method": "GET",
+          "read_at_utc": "2026-11-10T20:09:53.175659+00:00",
+          "status": 200,
+          "final_url": "https://raw.githubusercontent.com/2233admin/obsidian-llm-wiki/main/examples/collab-vault/research-compiler/wiki/summaries/team-memory-os.md",
+          "content_type": "text/plain; charset=utf-8",
+          "bytes": 768,
+          "truncated": false,
+          "public_headers": {
+            "Date": "Tue, 10 Nov 2026 19:12:00 GMT"
+          },
+          "body_file": "raw/obsidian-team-memory-summary.raw",
+          "sha256": "4d7932125a05751a2c7cb3ce47536b5e50481f1fe8cb644615e9dd2578d15173",
+          "challenge_shell": false,
+          "redirected_to_login": false
+        }
+      ],
+      "confirmed_default_branch": "main",
+      "README_path_observed_on_repository_page": "README.md",
+      "exact_marker_matches": {
+        "README": {
+          "alexar76": 0,
+          "attestedmemory.net": 0,
+          "attested-memory": 0,
+          "personal-attested-memory": 0,
+          "expert-memory-market": 0,
+          "AIMarket": 0
+        },
+        "linked_raw_example": {
+          "alexar76": 0,
+          "attestedmemory.net": 0,
+          "attested-memory": 0,
+          "personal-attested-memory": 0,
+          "expert-memory-market": 0,
+          "AIMarket": 0
+        },
+        "compiled_summary": {
+          "alexar76": 0,
+          "attestedmemory.net": 0,
+          "attested-memory": 0,
+          "personal-attested-memory": 0,
+          "expert-memory-market": 0,
+          "AIMarket": 0
+        }
+      },
+      "generic_name_mentions": {
+        "README_team_memory_os": 3
+      },
+      "raw_frontmatter": {
+        "source-type": "clipping",
+        "captured-at": "2026-05-16",
+        "origin": "internal-product-note"
+      },
+      "compiled_summary_claimed_date": "2026-05-16",
+      "direction": "Repository README points to its own raw note and compiled wiki summary; no exact provenance points to alexar76's Attested products.",
+      "scope": "Four publisher pages/files, not a full tree/dependency audit. No claim about every file in the repository.",
+      "novelty": "An unread candidate is now classified in this bounded source chain; neither runtime adoption nor a new external link confirmed.",
+      "besboy_attribution": "Not established: the note labels itself internal; it is not attributed to besboy3107 or our ecosystem."
+    },
+    "course_curation": {
+      "classification": "historical_owner_submission_accepted_as_single_curated_course_portal",
+      "pr_evidence": {
+        "key": "courses-pr-web",
+        "url": "https://github.com/EbookFoundation/free-programming-books/pull/13394",
+        "access_method": "publisher_github_web",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:07:27.957946+00:00",
+        "status": 200,
+        "final_url": "https://github.com/EbookFoundation/free-programming-books/pull/13394",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 271518,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:09:35 GMT",
+          "Server": "github.com"
+        },
+        "body_file": "raw/courses-pr-web.raw",
+        "sha256": "5a9006620d224116fbeb4f91a8087fe99bd820c3596f755b25ddd4d34aae8286",
+        "challenge_shell": false,
+        "redirected_to_login": false
+      },
+      "commit_evidence": {
+        "key": "courses-commit-web",
+        "url": "https://github.com/EbookFoundation/free-programming-books/commit/b197a1cf7f8c62153dacc22a351253ae88ec840c",
+        "access_method": "publisher_github_web",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:07:29.452938+00:00",
+        "status": 200,
+        "final_url": "https://github.com/EbookFoundation/free-programming-books/commit/b197a1cf7f8c62153dacc22a351253ae88ec840c",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 210097,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:09:37 GMT",
+          "Server": "github.com"
+        },
+        "body_file": "raw/courses-commit-web.raw",
+        "sha256": "e74abef2b88e9c9130071cb84c3085bdc891c171774ccc9cd8ddb8d422b92210",
+        "challenge_shell": false,
+        "redirected_to_login": false
+      },
+      "pr_number": 13394,
+      "pr_submitter": "alexar76",
+      "merge_account": "eshellman",
+      "merge_day": "2026-08-06",
+      "pinned_commit": "b197a1cf7f8c62153dacc22a351253ae88ec840c",
+      "author_login": "alexar76",
+      "committer_login": "web-flow",
+      "commit_authored_date": "2026-08-06T16:01:39.000+03:00",
+      "commit_committed_date": "2026-08-06T09:01:39.000-04:00",
+      "file": "courses/free-courses-en.md",
+      "additions": 1,
+      "deletions": 0,
+      "added_lines": [
+        "+* [AIMarket Courses](https://alexar76.github.io/aimarket-courses/) - Aleksandr Artamokhov (HTML) (MIT)"
+      ],
+      "school_scope": "PR13394 conversation asks for one portal rather than two listings; owner closes companion SchoolPR13393 as duplicate. That companion PR was not read independently in this recovery.",
+      "not_established": [
+        "A new November reference",
+        "Completion or testing of academies/notebooks",
+        "Runtime integration",
+        "Verified human/legal identity of all participants"
+      ],
+      "novelty": "Newly recovered primary provenance for an existing historical link, not a new backlink relationship."
+    },
+    "apis_profile": {
+      "classification": "generated_API_profile_not_runtime_implementation",
+      "evidence": {
+        "key": "attested-published-apis-yaml",
+        "url": "https://artifacts.apis.io/attestedmemory-net/apis.yml",
+        "access_method": "publisher_published_raw_artifact",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:07:31.917791+00:00",
+        "status": 200,
+        "final_url": "https://artifacts.apis.io/attestedmemory-net/apis.yml",
+        "content_type": "application/yaml",
+        "bytes": 179804,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:09:40 GMT",
+          "Server": "AmazonS3"
+        },
+        "body_file": "raw/attested-published-apis-yaml.raw",
+        "sha256": "bb9d6de49c154bb893f85490265029d804907d0d22f92eca988a473f6bde08f1",
+        "challenge_shell": false,
+        "redirected_to_login": false
+      },
+      "literal_publisher_href_provenance": "artifacts/external-components-2026-11-10/products/raw/attested-apisio.raw:1831",
+      "metadata": {
+        "aid": "attestedmemory-net",
+        "name": "Attested Memory",
+        "x-type": "company",
+        "x-source": "harvest:mcp-registry",
+        "x-tier": "profiled",
+        "x-tier-reason": "enrichment pass 2026-11-02 (modular-v1; was harvest)",
+        "created": "2026-11-02",
+        "modified": "2026-11-02"
+      },
+      "api_records": 56,
+      "same_bytes_as_Nov9_capture": true,
+      "Nov9_body": "artifacts/external-signals-2026-11-09/root/apis-attested-source.raw",
+      "scope": "Profile/harvest metadata and generated artifact references; no import, dependency, actual client call or deployment established.",
+      "location_correction": "Published source is artifacts.apis.io/attestedmemory-net/apis.yml. Original GitHub contents/apis.yml path remains unread/unverified; the two locations are not equated.",
+      "novelty": "Known Nov9 artifact, identical bytes. Access restored through its actual published primary location; no new relationship or update."
+    },
+    "treasury": {
+      "root_evidence": {
+        "key": "readme-treasury",
+        "url": "https://api.github.com/search/repositories?q=%22aimarket-treasury%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+        "method": "GET",
+        "observed_at_utc": "2026-11-10T20:04:20.157551+00:00",
+        "status": 200,
+        "final_url": "https://api.github.com/search/repositories?q=%22aimarket-treasury%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+        "content_type": "application/json; charset=utf-8",
+        "headers": {
+          "Date": "Tue, 10 Nov 2026 19:06:27 GMT",
+          "X-RateLimit-Limit": "10",
+          "X-RateLimit-Remaining": "6",
+          "X-RateLimit-Reset": "1794337645",
+          "X-RateLimit-Resource": "search"
+        },
+        "truncated": false,
+        "file": "readme-treasury.raw",
+        "bytes": 55,
+        "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f"
+      },
+      "source_index": "artifacts/external-matrix-gaps-2026-11-10/root/plan-2-search-index.json",
+      "result": {
+        "total_count": 0,
+        "incomplete_results": false
+      },
+      "scope": "Same exact q; per_page100 rather than30. No independent consumer found by this query only."
+    }
+  },
+  "still_unknown": [
+    {
+      "key": "undercode-factory",
+      "evidence": {
+        "key": "undercode-factory",
+        "url": "https://undercodenews.com/aicom-factory-just-updated-video/",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:05:28.138177+00:00",
+        "status": 403,
+        "final_url": "https://undercodenews.com/aicom-factory-just-updated-video/",
+        "content_type": "text/html; charset=UTF-8",
+        "bytes": 5709,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:07:35 GMT",
+          "Server": "cloudflare",
+          "cf-mitigated": "challenge"
+        },
+        "body_file": "raw/undercode-factory.raw",
+        "sha256": "12eb7349ab8c57640ff919bb6bf866f1cb2d2e1492e5020507ec8f565813247e",
+        "cloudflare_managed_challenge": true
+      },
+      "reason": "Cloudflare managed challenge shell, not source article/package content; no JS/cookie/CAPTCHA handling or further retry."
+    },
+    {
+      "key": "esim-socket",
+      "evidence": {
+        "key": "esim-socket",
+        "url": "https://socket.dev/npm/package/%40aimarket/esim-rails",
+        "method": "GET",
+        "read_at_utc": "2026-11-10T20:05:28.750600+00:00",
+        "status": 403,
+        "final_url": "https://socket.dev/npm/package/%40aimarket/esim-rails",
+        "content_type": "text/html; charset=UTF-8",
+        "bytes": 5663,
+        "truncated": false,
+        "public_headers": {
+          "Date": "Tue, 10 Nov 2026 19:07:35 GMT",
+          "Server": "cloudflare",
+          "cf-mitigated": "challenge"
+        },
+        "body_file": "raw/esim-socket.raw",
+        "sha256": "22f2b4abbc4766814259b10a1a80df4fa71ef09164d75d5e987f07e5d039d093",
+        "cloudflare_managed_challenge": true
+      },
+      "reason": "Cloudflare managed challenge shell, not source article/package content; no JS/cookie/CAPTCHA handling or further retry."
+    }
+  ],
+  "REST_limit": {
+    "control": {
+      "key": "obsidian-readme-retry",
+      "url": "https://api.github.com/repos/2233admin/obsidian-llm-wiki/readme",
+      "method": "GET",
+      "observed_at_utc": "2026-11-10T20:04:23.202147+00:00",
+      "status": 403,
+      "final_url": "https://api.github.com/repos/2233admin/obsidian-llm-wiki/readme",
+      "content_type": "application/json; charset=utf-8",
+      "headers": {
+        "Date": "Tue, 10 Nov 2026 19:06:30 GMT",
+        "X-RateLimit-Limit": "60",
+        "X-RateLimit-Remaining": "0",
+        "X-RateLimit-Reset": "1794337597",
+        "X-RateLimit-Resource": "core"
+      },
+      "truncated": false,
+      "file": "obsidian-readme-retry.raw",
+      "bytes": 279,
+      "sha256": "9fa66ef96734ac76fa91ca8090247e0851182d172c4cb49ca7417d46bb4ed968"
+    },
+    "source_index": "artifacts/external-matrix-gaps-2026-11-10/root/plan-3-core-probe-index.json",
+    "status": "Not recovered. Four content subjects were instead checked through separately accessible publisher web/raw surfaces.",
+    "rate_clock_limit": "Response Date/reset predate capture by nearly an hour; do not convert elapsed time into approval or quota availability."
+  },
+  "provenance_limits": [
+    "Publication/merge dates are historical; recovery date is not a new publication.",
+    "Metadata/source-list/profile generation is not runtime integration or product-quality evidence.",
+    "Obsidian decision covers README and the linked raw/compiled example, not a complete code audit.",
+    "Public publisher surfaces were ordinary unauthenticated GETs, not third-party mirrors/proxies or identity/IP changes."
+  ],
+  "external_writes": false,
+  "github_writes": false,
+  "messages": false,
+  "logins": false,
+  "payments_or_tools_call": false,
+  "challenge_execution": false,
+  "foreign_code_execution": false,
+  "capture_integrity": "capture-integrity.json"
+}

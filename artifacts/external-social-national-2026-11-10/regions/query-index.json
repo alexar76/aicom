@@ -1,0 +1,338 @@
+{
+  "queries": [
+    {
+      "id": "ru-habr-products",
+      "region": "RU",
+      "domains": [
+        "habr.com"
+      ],
+      "q": "(\"aimarket-bridges\" OR \"SYMMARTYS\" OR \"@aimarket/esim-rails\" OR \"attestedmemory.net\")",
+      "batch_file": "search-01.json",
+      "batch_status": "empty_batch",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "ru-community-products",
+      "region": "RU",
+      "domains": [
+        "vc.ru",
+        "dtf.ru",
+        "pikabu.ru"
+      ],
+      "q": "(\"PingBlip\" OR \"modelmarket.dev\" OR \"domain-operator-kit\")",
+      "batch_file": "search-01.json",
+      "batch_status": "empty_batch",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "ru-books-review",
+      "region": "RU",
+      "q": "\"Артамохов\" \"Вес ответа\" рецензия -site:github.com -site:modelmarket.dev",
+      "batch_file": "search-01.json",
+      "batch_status": "empty_batch",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "ua-tech-products",
+      "region": "UA",
+      "domains": [
+        "dou.ua",
+        "dev.ua",
+        "ain.ua"
+      ],
+      "q": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"create-aimarket-agent\")",
+      "batch_file": "search-01.json",
+      "batch_status": "empty_batch",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "ua-feedback",
+      "region": "UA",
+      "q": "(\"AIMarket\" OR \"Attested Memory\" OR \"PingBlip\") відгук агент -site:dev.to -site:github.com -site:modelmarket.dev",
+      "batch_file": "search-02.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "de-tech-products",
+      "region": "DE",
+      "domains": [
+        "heise.de",
+        "golem.de"
+      ],
+      "q": "(\"AIMarket\" OR \"Attested Memory\" OR \"PingBlip\")",
+      "batch_file": "search-02.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "de-domain-feedback",
+      "region": "DE",
+      "q": "\"modelmarket.dev\" Erfahrungen Agenten -site:modelmarket.dev -site:github.com -site:dev.to",
+      "batch_file": "search-02.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "de-fresh-marketplace-title",
+      "region": "DE",
+      "q": "\"Healthy containers hid a blocked MCP marketplace connection\" deutsch -site:dev.to -site:modelmarket.dev",
+      "batch_file": "search-02.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "fr-tech-products",
+      "region": "FR",
+      "domains": [
+        "linuxfr.org",
+        "developpez.com"
+      ],
+      "q": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"aimarket-bridges\")",
+      "batch_file": "search-03.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "fr-product-feedback",
+      "region": "FR",
+      "q": "(\"AIMarket\" OR \"Attested Memory\" OR \"PingBlip\") avis agents -site:github.com -site:dev.to -site:modelmarket.dev",
+      "batch_file": "search-03.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "es-tech-products",
+      "region": "ES",
+      "domains": [
+        "meneame.net",
+        "genbeta.com",
+        "xataka.com"
+      ],
+      "q": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"SYMMARTYS\")",
+      "batch_file": "search-03.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "es-latam-products",
+      "region": "ES/LatAm",
+      "domains": [
+        "platzi.com",
+        "devs.com.ar",
+        "holamundo.io"
+      ],
+      "q": "(\"AIMarket\" OR \"PingBlip\" OR \"Attested Memory\")",
+      "batch_file": "search-03.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "es-cite-desks",
+      "region": "ES/LatAm",
+      "q": "\"Emberline\" \"Tideline\" agentes -site:github.com -site:dev.to -site:modelmarket.dev",
+      "batch_file": "search-04.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "pt-dev-products",
+      "region": "PT/BR",
+      "domains": [
+        "tabnews.com.br",
+        "devmedia.com.br",
+        "imasters.com.br"
+      ],
+      "q": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"aimarket-bridges\")",
+      "batch_file": "search-04.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "pt-tech-products",
+      "region": "PT/BR",
+      "domains": [
+        "diolinux.com.br",
+        "tecnoblog.net",
+        "codigofonte.com.br"
+      ],
+      "q": "(\"PingBlip\" OR \"AIMarket\" OR \"Attested Memory\")",
+      "batch_file": "search-04.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "pt-builder",
+      "region": "PT/BR",
+      "q": "\"create-aimarket-agent\" português -site:github.com -site:dev.to -site:modelmarket.dev",
+      "batch_file": "search-04.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "pl-security-products",
+      "region": "PL",
+      "domains": [
+        "sekurak.pl",
+        "niebezpiecznik.pl",
+        "zaufanatrzeciastrona.pl"
+      ],
+      "q": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"alexar76\")",
+      "batch_file": "search-05.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "pl-dev-products",
+      "region": "PL",
+      "domains": [
+        "justjoin.it",
+        "bulldogjob.pl",
+        "wykop.pl"
+      ],
+      "q": "(\"AIMarket\" OR \"PingBlip\" OR \"SYMMARTYS\")",
+      "batch_file": "search-05.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "cz-tech-products",
+      "region": "CZ",
+      "domains": [
+        "root.cz",
+        "lupa.cz",
+        "radyz.cz"
+      ],
+      "q": "(\"AIMarket\" OR \"Attested Memory\" OR \"PingBlip\")",
+      "batch_file": "search-05.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "cz-domain-feedback",
+      "region": "CZ",
+      "q": "\"modelmarket.dev\" zkušenosti -site:modelmarket.dev -site:github.com -site:dev.to",
+      "batch_file": "search-05.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "nl-tech-products",
+      "region": "NL",
+      "domains": [
+        "tweakers.net",
+        "computable.nl",
+        "dutchitchannel.nl"
+      ],
+      "q": "(\"AIMarket\" OR \"PingBlip\" OR \"Attested Memory\")",
+      "batch_file": "search-06.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "nl-domain-feedback",
+      "region": "NL",
+      "q": "\"modelmarket.dev\" ervaringen -site:modelmarket.dev -site:github.com -site:dev.to",
+      "batch_file": "search-06.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "it-tech-products",
+      "region": "IT",
+      "domains": [
+        "punto-informatico.it",
+        "hwupgrade.it",
+        "tomshw.it"
+      ],
+      "q": "(\"AIMarket\" OR \"PingBlip\" OR \"Attested Memory\")",
+      "batch_file": "search-06.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "it-domain-feedback",
+      "region": "IT",
+      "q": "\"modelmarket.dev\" recensione agenti -site:modelmarket.dev -site:github.com -site:dev.to",
+      "batch_file": "search-06.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "rare-domain-buyer-title",
+      "region": "DE/ES/PT",
+      "q": "\"An AI Agent Bought a Domain\" \"1.54\" (Deutsch OR español OR português) -site:dev.to -site:modelmarket.dev",
+      "batch_file": "search-07.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "rare-fire-brief-title",
+      "region": "FR/IT",
+      "q": "\"I unzipped the sample fire brief\" (français OR italiano) -site:dev.to -site:modelmarket.dev",
+      "batch_file": "search-07.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "rare-forge-title",
+      "region": "PL/NL",
+      "q": "\"Price the chain before hop three bills you\" (polski OR nederlands) -site:dev.to -site:modelmarket.dev",
+      "batch_file": "search-07.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    },
+    {
+      "id": "rare-multica-title",
+      "region": "DE/FR/ES/PT",
+      "q": "\"Our Multica agents now work in an agent market\" (Deutsch OR français OR español OR português) -site:dev.to -site:modelmarket.dev",
+      "batch_file": "search-07.json",
+      "batch_status": "response_received",
+      "individual_query_completeness": "not_certified_by_combined_response"
+    }
+  ],
+  "batches": [
+    {
+      "file": "search-01.json",
+      "captured_at_utc": "2026-11-10T20:22:33.204Z",
+      "status": "empty_batch",
+      "submitted_query_count": 4
+    },
+    {
+      "file": "search-02.json",
+      "captured_at_utc": "2026-11-10T20:22:33.368Z",
+      "status": "response_received",
+      "submitted_query_count": 4
+    },
+    {
+      "file": "search-03.json",
+      "captured_at_utc": "2026-11-10T20:22:58.467Z",
+      "status": "response_received",
+      "submitted_query_count": 4
+    },
+    {
+      "file": "search-04.json",
+      "captured_at_utc": "2026-11-10T20:22:58.687Z",
+      "status": "response_received",
+      "submitted_query_count": 4
+    },
+    {
+      "file": "search-05.json",
+      "captured_at_utc": "2026-11-10T20:23:44.205Z",
+      "status": "response_received",
+      "submitted_query_count": 4
+    },
+    {
+      "file": "search-06.json",
+      "captured_at_utc": "2026-11-10T20:23:44.359Z",
+      "status": "response_received",
+      "submitted_query_count": 4
+    },
+    {
+      "file": "search-07.json",
+      "captured_at_utc": "2026-11-10T20:24:11.098Z",
+      "status": "response_received",
+      "submitted_query_count": 4
+    }
+  ]
+}

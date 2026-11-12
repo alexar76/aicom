@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Attested Memory field manual — pay once, prove who acts, keep memory portable across people and agents.">
+  <title>Field manual · Attested Memory</title>
+  <link rel="stylesheet" href="/app.css?v=20260907k">
+</head>
+<body class="guide-page">
+  <header class="top site-top">
+    <a class="brand" href="/">attested<span>memory</span></a>
+    <nav class="nav">
+      <a href="/memory" data-i18n="personal">Memory</a>
+      <a href="/teams" data-i18n="teams">Teams</a>
+      <a href="/market" data-i18n="market">Market</a>
+      <a class="active" href="/docs" data-i18n="guide">Guide</a>
+      <a href="/use-cases" data-i18n="cases">Use cases</a>
+      <a href="/developers" data-i18n="developers">Developers</a>
+    </nav>
+    <div class="top-actions">
+      <a class="btn" href="/start" data-i18n="start">Setup wizard</a>
+    </div>
+  </header>
+
+  <main class="guide-shell">
+    <section class="guide-hero" aria-label="Attested Memory field manual">
+      <div class="guide-hero-copy">
+        <div class="eyebrow" data-i18n="guideHeroEyebrow">Field manual · 10 languages</div>
+        <h1 class="guide-brand-hero">attested<span>memory</span></h1>
+        <p class="guide-hero-line" data-i18n="guideHeroLine">One path from wallet to proven context — exact USDC, signed actors, portable memory.</p>
+        <div class="actions">
+          <a class="btn" href="/start" data-i18n="start">Setup wizard</a>
+          <a class="btn alt" href="/billing" data-i18n="goBilling">Go to billing</a>
+          <a class="btn alt" href="#guide-body" data-i18n="guideHeroRead">Read the chapters</a>
+        </div>
+      </div>
+      <div class="guide-hero-stage" aria-hidden="true">
+        <div class="guide-orbit">
+          <i class="guide-ring r1"></i>
+          <i class="guide-ring r2"></i>
+          <i class="guide-ring r3"></i>
+          <div class="guide-core"><span>ASK_</span><strong>KEY</strong><small>BASE · USDC · ACTOR</small></div>
+          <b class="guide-sat s-a">01 PAY</b>
+          <b class="guide-sat s-b">02 PROVE</b>
+          <b class="guide-sat s-c">03 WRITE</b>
+          <b class="guide-sat s-d">04 KEEP</b>
+        </div>
+        <div class="guide-beam"></div>
+      </div>
+    </section>
+
+    <p class="guide-status" id="guide-status"></p>
+    <article class="guide guide-journey" id="guide-body" aria-live="polite" data-guide-file="USER_GUIDE.md"></article>
+
+    <section class="guide-next section">
+      <div class="eyebrow" data-i18n="docsAlso">Also available</div>
+      <h2 data-i18n="guideNextTitle">Leave the manual. Enter the network.</h2>
+      <p data-i18n="docsAlsoBody">Move from instructions to real-world patterns, KOVA federation or exact API contracts.</p>
+      <div class="actions">
+        <a class="btn" href="/use-cases" data-i18n="exploreCases">Explore use cases</a>
+        <a class="btn alt" href="/capabilities" data-i18n="openCapabilities">Understand KOVA</a>
+        <a class="btn alt" href="/developers" data-i18n="openDevelopers">Open Developers</a>
+        <a class="btn alt" href="/billing" data-i18n="goBilling">Go to billing</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span data-i18n="guideFooter">Attested Memory · field manual</span>
+    <span data-i18n="guideFooterNote">Security and payment text requires human review.</span>
+  </footer>
+  <script src="/app.js?v=20260907j"></script>
+</body>
+</html>

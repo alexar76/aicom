@@ -1,0 +1,218 @@
+{
+  "checked_at_utc": "2026-11-10T20:08:13.316169+00:00",
+  "read_only": true,
+  "findings": [
+    {
+      "id": "PE01",
+      "component": "pulse",
+      "classification": "exact_fingerprint_and_public_self_deployment",
+      "ownership": "alexar76 ecosystem surfaces; not independent external integration",
+      "confidence": "high for captured bytes/routes; no browser interaction performed",
+      "sources": [
+        {
+          "url": "https://pulse.modelmarket.dev/",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T20:04:36.083961+00:00",
+          "bytes": 1090,
+          "sha256": "42c1f6ea5b7d1be74e803bd5cbbaddf3ff5be988538b252a4ade3e23716d49a3",
+          "body_file": "pulse-alias-page.raw",
+          "truncated": false
+        },
+        {
+          "url": "https://magic-ai-factory.com/pulse/",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T20:04:36.086888+00:00",
+          "bytes": 499,
+          "sha256": "6c68d12b08190b9560c209bae72310cef84f05c1ec38ae6b2460588b25106122",
+          "body_file": "pulse-factory-page.raw",
+          "truncated": false
+        },
+        {
+          "url": "https://pulse.modelmarket.dev/pulse/assets/index-s972v_UH.js",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T20:06:02.116447+00:00",
+          "bytes": 242316,
+          "sha256": "3392d344aafd4cd94cc4a778fbc1035f188971b185d77aafbaccfea90db06931",
+          "body_file": "pulse-alias-script.raw",
+          "truncated": false
+        },
+        {
+          "url": "https://magic-ai-factory.com/pulse/assets/index-s972v_UH.js",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T20:06:02.118505+00:00",
+          "bytes": 242316,
+          "sha256": "3392d344aafd4cd94cc4a778fbc1035f188971b185d77aafbaccfea90db06931",
+          "body_file": "pulse-factory-script.raw",
+          "truncated": false
+        },
+        {
+          "url": "https://magic-ai-factory.com/api/v2/capital/pricing?limit=1&chain=any",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T20:04:36.088083+00:00",
+          "bytes": 1643,
+          "sha256": "86f12bad331ea1f33481206ff6eb3e0f91a86da1e816a8128dc54a3c51026e87",
+          "body_file": "pulse-pricing-one.raw",
+          "truncated": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/alexar76/pulse-terminal/main/src/lib/api.ts",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T20:04:36.853037+00:00",
+          "bytes": 1220,
+          "sha256": "56b39459b4c298cc2d0a3ec06a68a2536f8e614648de1fb0bd750c1dcdb7355c",
+          "body_file": "pulse-public-client.raw",
+          "truncated": false
+        }
+      ],
+      "finding_ru": "Pulse frontend package private:true. Два публичных собственных origins отдают одинаковый объявленный JS asset:242316bytes,SHA2563392d344aafd4cd94cc4a778fbc1035f188971b185d77aafbaccfea90db06931. Public api.ts совпадает с local. GET pricing сlimit1 вернул одну listing и один index; это ограниченное чтение своего API, не внешний пользователь или production adoption count.",
+      "source_target_edges": [
+        {
+          "source": "https://pulse.modelmarket.dev/",
+          "target": "https://pulse.modelmarket.dev/pulse/assets/index-s972v_UH.js",
+          "kind": "own_html_script_src"
+        },
+        {
+          "source": "https://magic-ai-factory.com/pulse/",
+          "target": "https://magic-ai-factory.com/pulse/assets/index-s972v_UH.js",
+          "kind": "own_html_script_src"
+        },
+        {
+          "source": "pulse src/lib/api.ts",
+          "target": "${VITE_PULSE_API_URL}/api/v2/capital/pricing",
+          "kind": "own_fetch_client"
+        }
+      ],
+      "novelty": "Extended primary fingerprints versus prior matrix; no new independent integration"
+    },
+    {
+      "id": "PE02",
+      "component": "pulse",
+      "classification": "runtime_documentation_disambiguation",
+      "ownership": "own local/public source",
+      "confidence": "high for code reading and bundle strings; code not executed",
+      "finding_ru": "README описывает WS-first/SSE fallback, но текущий local usePricingStream явно запускает polling и для LIVE, и для UNI. В публичном собранном asset есть capital/pricing,polling,setInterval; нет WebSocket и WS/SSE route strings. Доступность всех transport modes не проверялась; actual embed/client нужно искать по текущему HTTP path.",
+      "evidence_files": [
+        "fingerprints.json",
+        "pulse-public-readme.raw",
+        "pulse-alias-script.raw"
+      ],
+      "novelty": "Fingerprint precision, not an external adoption finding"
+    },
+    {
+      "id": "PE03",
+      "component": "escrow",
+      "classification": "exact_protocol_identity_not_public_service_discovery",
+      "ownership": "alexar76 HORKOS policy signer",
+      "confidence": "high for captured public EIP712 source and local config; live signer not queried",
+      "sources": [
+        {
+          "url": "https://alexar76.github.io/escrow-signer/",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T20:04:36.825161+00:00",
+          "bytes": 40802,
+          "sha256": "09039c5377bcbf4c8ce323681fb3d3bbec4691a49fdc37dd7833e672813f4e26",
+          "body_file": "horkos-landing.raw",
+          "truncated": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/alexar76/escrow-signer/main/README.md",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T20:04:37.394100+00:00",
+          "bytes": 8569,
+          "sha256": "1029de82f25b10a4d093e7dca6ddbe21461b9a563b3975cf416a2c7064f93a6b",
+          "body_file": "horkos-public-readme.raw",
+          "truncated": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/alexar76/escrow-signer/main/escrow_signer/eip712.py",
+          "status": 200,
+          "retrieved_at_utc": "2026-11-10T20:04:37.925029+00:00",
+          "bytes": 3227,
+          "sha256": "e5f3394b38e50a1c74da7860a2375254b95d15748931a3a7a41e0582d43d8891",
+          "body_file": "horkos-public-eip712.raw",
+          "truncated": false
+        }
+      ],
+      "finding_ru": "HORKOS — escrow-policy-signer, Python escrow_signer; публичная landing не является signer API. Документированный Hub endpoint — loopback9500/sign через tunnel. ExternalSigner отправляет POST{transaction:{to,data,chainId,gas,value}} сBearer; принимает tx_hash/transactionHash. EIP712domain AIMarketEscrow/version1,Base8453,DebitAuthorization и selector0xf7becd80 выделены как точные fingerprints. Public eip712.py совпадает с local bytes. Signer/status/receipt/auth routes и chain не вызывались.",
+      "source_target_edges": [
+        {
+          "source": "aimarket_hub.escrow_bridge.signer.ExternalSigner",
+          "target": "configured AIMARKET_ESCROW_SIGNER_URL",
+          "kind": "own_authenticated_POST_client_not_called"
+        },
+        {
+          "source": "escrow_signer.eip712",
+          "target": "AIMarketEscrow EIP712 domain and DebitAuthorization struct",
+          "kind": "own_signing_protocol_definition"
+        }
+      ],
+      "novelty": "Extended identity/protocol coverage versus prior matrix; no external adopter"
+    },
+    {
+      "id": "PE04",
+      "component": "both",
+      "classification": "bounded_external_search_no_candidate",
+      "confidence": "bounded",
+      "shared_github_results": [
+        {
+          "key": "readme-pulse",
+          "url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%2Fpulse-terminal%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "status": 200,
+          "observed_at_utc": "2026-11-10T20:04:19.106030+00:00",
+          "total_count": 0,
+          "incomplete_results": false,
+          "shared_evidence_file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/readme-pulse.raw"
+        },
+        {
+          "key": "readme-escrow",
+          "url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%2Fescrow-signer%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "status": 200,
+          "observed_at_utc": "2026-11-10T20:04:19.606346+00:00",
+          "total_count": 0,
+          "incomplete_results": false,
+          "shared_evidence_file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/readme-escrow.raw"
+        },
+        {
+          "key": "config-escrow",
+          "url": "https://api.github.com/search/commits?q=%22AIMARKET_ESCROW_SIGNER_URL%22%20-user%3Aalexar76%20-author%3Aalexar76&per_page=100",
+          "status": 200,
+          "observed_at_utc": "2026-11-10T20:05:33.386501+00:00",
+          "total_count": 0,
+          "incomplete_results": false,
+          "shared_evidence_file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/config-escrow.raw"
+        },
+        {
+          "key": "url-pulse",
+          "url": "https://api.github.com/search/commits?q=%22magic-ai-factory.com%2Fpulse%22%20-user%3Aalexar76&per_page=100",
+          "status": 200,
+          "observed_at_utc": "2026-11-10T20:05:34.043229+00:00",
+          "total_count": 0,
+          "incomplete_results": false,
+          "shared_evidence_file": "/Users/alex/Desktop/ai_tests/aicompany/aicom/artifacts/external-matrix-gaps-2026-11-10/root/url-pulse.raw"
+        }
+      ],
+      "finding_ru": "12 целевых web запросов по repo/origins/config/routes/protocol не подтвердили чужого embed, fetch client, signer client, import или самостоятельный review. Root восстановил оба ранее пропущенных README queries и выполнил2точечных commit queries: все200,total_count0,incomplete_resultsfalse. README и commit-message search не являются полным code search.",
+      "novelty": "Previous skipped GitHub queries now have successful bounded results; no positive adoption delta"
+    },
+    {
+      "id": "PE05",
+      "component": "both",
+      "classification": "excluded_results",
+      "confidence": "high for scope distinctions, no claim all unrelated projects reviewed",
+      "finding_ru": "Topic/wiki mirrors и свои ACEX/Hub docs исключены. APIs.io Attested Memory capital API — автоматическая индексация соседнего собственного Hub route, не чужой Pulse fetch. Общие escrow/signature projects и ACEX logistics homonym не содержат установленных exact identity matches в возвращённом контексте и не засчитаны интеграцией.",
+      "evidence_files": [
+        "search-01.json",
+        "search-02.json",
+        "search-03.json"
+      ],
+      "novelty": "No new independent source confirmed"
+    }
+  ],
+  "new_independent_runtime_confirmed": false,
+  "new_independent_review_confirmed": false,
+  "limitations": [
+    "Root search evidence is referenced, not newly executed by this branch.",
+    "Current public raw source refs use main; exact bytes/SHA retained, no immutable commit resolved because no new foreign code candidate was found.",
+    "No browser render, foreign code execution, package installation, auth, signer call, invoke, payment or external write."
+  ]
+}

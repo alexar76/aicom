@@ -1,6 +1,6 @@
 # Running AI-Factory
 
-Every way to run this monorepo, what each one brings up, and what gets deployed. Start with the decision table, then jump to the section for your path.
+The [public AICOM clone](../README.md#quick-start) starts Factory, Prometheus and Grafana with `./start.sh`. Try the [hosted Factory demo](https://magic-ai-factory.com/) in a browser or connect an MCP client to the [hosted Hub](hosted-mcp-endpoint.md). Running the satellite stacks in this guide requires the complete monorepo.
 
 ---
 
@@ -8,13 +8,14 @@ Every way to run this monorepo, what each one brings up, and what gets deployed.
 
 | I want to… | Run this | What you get |
 |---|---|---|
-| Just tinker / see it work locally | [`./start.sh`](../start.sh) | Core stack: Factory + Hub + Mesh + Alien Monitor. One LLM key, crypto OFF, browser opens. |
-| Reuse already-built images (faster) | `./start.sh --no-build` | Same core stack, skips the image build. |
+| Run the Factory from a public clone | [`./start.sh`](../start.sh) | Factory, Prometheus and Grafana. Configure an LLM key for builds with AI agents. |
+| Run the core stack from the complete monorepo | [`./start.sh`](../start.sh) | Factory, Hub, Mesh and Alien Monitor with crypto disabled. |
+| Reuse already-built images (faster) | `./start.sh --no-build` | Starts the same services for your checkout and skips the image build. |
 | Tail core logs | `./start.sh --logs` | Follows all core services (`logs -f --tail=120`). |
 | Stop core, keep my data | `./start.sh --down` | Stops core; `./data` + named volumes preserved. |
-| Run the **whole ecosystem** (15-satellite fleet) | `./start.sh --full` | Delegates to [`scripts/quickstart_ecosystem.sh`](../scripts/quickstart_ecosystem.sh) → [`scripts/deploy_ecosystem.sh`](../scripts/deploy_ecosystem.sh). |
-| Reproduce **all of production on one box** | `./start.sh --everything` | Everything tier: 38 containers, 32 ports, no nginx/TLS/domains — `http://<ip>:<port>`. Wants 32 GB RAM + 100 GB disk. See [deploy-everything.md](deploy-everything.md). |
-| Deploy the fleet **publicly with TLS** | `./start.sh --full --public-url https://…` | Fleet + nginx/certbot routing (needs nginx on host). |
+| Run the **whole ecosystem** from the complete monorepo | `./start.sh --full` | Delegates to [`scripts/quickstart_ecosystem.sh`](../scripts/quickstart_ecosystem.sh) → [`scripts/deploy_ecosystem.sh`](../scripts/deploy_ecosystem.sh). |
+| Reproduce **all of production on one box** from the complete monorepo | `./start.sh --everything` | Everything tier: 38 containers, 32 ports, no nginx/TLS/domains — `http://<ip>:<port>`. Wants 32 GB RAM + 100 GB disk. See [deploy-everything.md](deploy-everything.md). |
+| Deploy the fleet **publicly with TLS** from the complete monorepo | `./start.sh --full --public-url https://…` | Fleet + nginx/certbot routing (needs nginx on host). |
 | One-click cloud, zero local setup | Dev Container / GitHub Codespaces | [`.devcontainer`](../.devcontainer/devcontainer.json) builds the box; you supply the LLM key as a Codespaces secret, then run `./start.sh --no-open`. |
 | A single container, no Hub/Mesh/Monitor | `docker compose up -d --build` | Just `app` + `prometheus` + `grafana` from the base [`docker-compose.yml`](../docker-compose.yml). |
 | Full monitoring + DinD/host-docker toggle | [`./run-compose.sh`](../run-compose.sh) | Base + DinD (or host-docker) + secrets overlay + Grafana/Prometheus. |
@@ -28,7 +29,7 @@ Every way to run this monorepo, what each one brings up, and what gets deployed.
 
 ## Core stack (`./start.sh`)
 
-`./start.sh` is the front door. It always drives **two** compose files, layered:
+`./start.sh` uses the base Compose file for Factory. When the Hub, Mesh and Monitor build contexts are present, it adds the core overlay:
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.core.yml <up|logs|down>
@@ -37,7 +38,7 @@ docker compose -f docker-compose.yml -f docker-compose.core.yml <up|logs|down>
 - [`docker-compose.yml`](../docker-compose.yml) (base) owns `data-init`, `data-keep`, `app`, `prometheus`, `grafana`, and the `aicom_net` bridge network.
 - [`docker-compose.core.yml`](../docker-compose.core.yml) (overlay) **only adds** `hub`, `mesh-api`, `alien-monitor` (plus named volumes `hub_data`, `mesh_data`). Its header: *"It ONLY adds services; it never edits the root."*
 
-Every action (`up` / `logs` / `down`) runs against **both** files.
+The following service and port details describe the full core stack. A public clone launches the services from `docker-compose.yml`.
 
 ### What `./start.sh` does on a default run
 

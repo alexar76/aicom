@@ -1,0 +1,56 @@
+{
+  "format": "aicom.single-finding-semantic-proof/v1",
+  "status": "PASS-context-false-positive",
+  "rule": "generic-api-key",
+  "file": "artifacts/hub-real-payments-2026-11-08/run_paid_cycle.py",
+  "line": 47,
+  "sourceSha256": "cc09759c6622ce036dcfc441ac1ec7b189777d833d2b5ca90cacc9fac90c6991",
+  "field": "TOKEN",
+  "valueForm": "0x-prefixed40hex(20-byte)EVMaddress",
+  "valueSha256": "a674ffd2fb85bde6baa7b8bb7fd47d0ecbb20871c3ae3aeddbd7951aa4a8e5d7",
+  "chainId": 8453,
+  "meaning": "ERC20 asset contract destination, not API authentication credential",
+  "publicAssetReferences": [
+    {
+      "file": "artifacts/hub-paid-live-2026-11-08/attested/chain-terms.json",
+      "pointer": "/asset_profile/address",
+      "fileSha256": "2273baf4b18ebcbe38ca664a320f1eda944fbcf76af72ef2683213273bac81b9"
+    },
+    {
+      "file": "artifacts/hub-paid-live-2026-11-08/attested/contradiction-public-terms.json",
+      "pointer": "/unpaid_read_tool_quote/accepts/0/asset",
+      "fileSha256": "93eaedae4aefbce7fa4d84d91449ee5d0e2c4f9233b2fa0a62d9db5f8341cef0"
+    },
+    {
+      "file": "artifacts/hub-functional-recheck-2026-11-08/payments/real-paid-plan/direct-offers.json",
+      "pointer": "/0/offers/0/asset",
+      "fileSha256": "9eac416f0f774978e6d5ad5da42cc9ebf4e96ef7abbbe1fb1d352453af88eddc"
+    },
+    {
+      "file": "artifacts/hub-functional-recheck-2026-11-08/payments/real-paid-plan/direct-offers.json",
+      "pointer": "/1/offers/0/asset",
+      "fileSha256": "9eac416f0f774978e6d5ad5da42cc9ebf4e96ef7abbbe1fb1d352453af88eddc"
+    }
+  ],
+  "sourceDataFlow": {
+    "erc20CallArgumentLines": [
+      139,
+      171,
+      264,
+      174
+    ],
+    "transactionDestinationLines": [
+      283,
+      267
+    ]
+  },
+  "execution": {
+    "runtime": "runsc",
+    "network": "none",
+    "uid": 1000,
+    "source": "read-only",
+    "projectCodeExecuted": false,
+    "credentialValidation": false,
+    "rawValuePrinted": false
+  }
+}

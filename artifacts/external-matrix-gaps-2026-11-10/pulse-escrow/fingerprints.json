@@ -1,0 +1,193 @@
+{
+  "pulse": {
+    "id": "pulse",
+    "repository": "https://github.com/alexar76/pulse-terminal",
+    "package": {
+      "name": "pulse-terminal",
+      "version": "0.1.0",
+      "private": true,
+      "published_registry_dependency_inference": "not_applicable"
+    },
+    "product": "Pulse Terminal / ACEX capital markets UI",
+    "public_origins": [
+      "https://pulse.modelmarket.dev",
+      "https://magic-ai-factory.com/pulse/"
+    ],
+    "config_names": [
+      "VITE_PULSE_API_URL",
+      "VITE_PULSE_MONITOR_API",
+      "VITE_BASE_PATH"
+    ],
+    "routes": [
+      {
+        "method": "GET",
+        "route": "/api/v2/capital/pricing",
+        "scope": "actual fetch client; chain=any|evm|solana,limit,listing_id"
+      },
+      {
+        "method": "GET",
+        "route": "/api/v2/capital/pricing/stream",
+        "scope": "SSE URL builder and docs; actual current hook uses polling"
+      },
+      {
+        "method": "WS",
+        "route": "/api/v2/capital/pricing/ws",
+        "scope": "WS URL builder and docs; actual current hook uses polling"
+      },
+      {
+        "method": "GET",
+        "route": "/ai-market/v2/capital/pricing",
+        "scope": "Hub alias documented; not exclusive Pulse fingerprint"
+      },
+      {
+        "method": "GET",
+        "route": "/pulse/api/monitor/state",
+        "scope": "UNI contour relative monitor data; production nginx maps to /api/pulse/state"
+      }
+    ],
+    "runtime_local_current": {
+      "live": "fetchPricing every5000ms polling, HTTP timeout12000ms",
+      "uni": "fetchUniversePricing polling every5000ms",
+      "doc_difference": "README says WebSocket-first/SSE fallback; current usePricingStream explicitly polling-only"
+    },
+    "browser_namespace": [
+      "pulse_terminal_locale",
+      "LIVE vs UNI",
+      "Chain any/evm/solana"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/apps/pulse-terminal/package.json",
+        "sha256": "7fe3637c7c401657952502ac956627d14d531009a729c254c3cd4d822596a17f"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/apps/pulse-terminal/README.md",
+        "sha256": "2c87201f83e15f6edd867d638bc70ae181627388731d5cfd76930b048906dac3"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/apps/pulse-terminal/src/lib/api.ts",
+        "sha256": "56b39459b4c298cc2d0a3ec06a68a2536f8e614648de1fb0bd750c1dcdb7355c"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/apps/pulse-terminal/src/lib/pulseUrl.ts",
+        "sha256": "fdf85c4bf237db42a419a7e8ddb379d106b0321f655bd8e089926be4a35c4e7b"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/apps/pulse-terminal/src/hooks/usePricingStream.ts",
+        "sha256": "ff491fc73ed91d47f67887d741c3b6d29f21cd98368e2816b5d3189e85933783"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/apps/pulse-terminal/vite.config.ts",
+        "sha256": "08cac41bba17f35e0f4085a6c818fa4eca1042d5a6b1c8c66a4cf0661eada0cd"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/apps/pulse-terminal/nginx.prod.conf",
+        "sha256": "ec2ef240f056f418b617f4dae14660b32726d21784cdf8b4e5ccdd1a0ac268e8"
+      }
+    ]
+  },
+  "escrow": {
+    "id": "escrow",
+    "repository": "https://github.com/alexar76/escrow-signer",
+    "product_names": [
+      "HORKOS",
+      "escrow-policy-signer"
+    ],
+    "python_namespace": "escrow_signer",
+    "package_manifest": "No pyproject found in current component; no package-index adoption inference",
+    "public_landing": "https://alexar76.github.io/escrow-signer/",
+    "public_signer_api_origin": null,
+    "configured_endpoint_example": "http://127.0.0.1:9500/sign",
+    "deployment_boundary": "separate signer host; Hub reaches loopback-forward through reverse SSH tunnel; do not mistake public landing for signing API",
+    "http_protocol": {
+      "request": "POST configured /sign, Authorization: Bearer <token>, application/json",
+      "envelope": {
+        "transaction_fields": [
+          "to",
+          "data",
+          "chainId",
+          "gas",
+          "value"
+        ]
+      },
+      "result_fields": [
+        "tx_hash",
+        "replayed"
+      ],
+      "hub_client_accepts": [
+        "tx_hash",
+        "transactionHash"
+      ],
+      "read_routes": [
+        "GET /health",
+        "GET /status",
+        "GET /receipt/<receipt_id>"
+      ],
+      "server_header": "escrow-policy-signer",
+      "user_agent": "escrow-policy-signer/0.1",
+      "redirects": "server has no3xx route; exact sign path required"
+    },
+    "eip712": {
+      "domain_type": "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)",
+      "domain_name": "AIMarketEscrow",
+      "domain_version": "1",
+      "debit_type": "DebitAuthorization(bytes32 channelId,address hub,address token,uint256 amount,bytes32 receiptId,uint256 nonce,uint256 deadline)",
+      "call_signature": "debitChannel(bytes32,uint256,bytes32,uint256,bytes)",
+      "selector": "0xf7becd80",
+      "chain_id": 8453,
+      "value": 0,
+      "hub_field_binding": "signer own address; token and nonce read from chain, not trusted request"
+    },
+    "public_identity_fingerprints": {
+      "signer_address": "0xBE0bBE44cceCfEb048dd53f601C37525a3D6C5f1",
+      "escrow_aicom": "0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb",
+      "escrow_independent_profile": "0x0BFCa46A324fe534Eb6E71c52C8b5AD74B969534",
+      "token_usdc_base": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "attribution_limit": "compiled deployment profiles do not establish independent operator/adoption"
+    },
+    "config_names": [
+      "AIMARKET_ESCROW_SUBMIT_STRATEGY",
+      "AIMARKET_ESCROW_SIGNER_URL",
+      "AIMARKET_ESCROW_SIGNER_TOKEN",
+      "SIGNER_SIGN_PATH",
+      "SIGNER_DEPLOYMENT",
+      "SIGNER_BIND_HOST",
+      "SIGNER_BIND_PORT",
+      "SIGNER_RPC_URLS"
+    ],
+    "local_evidence": [
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/escrow-signer/README.md",
+        "sha256": "4eb7fe1ae4be9155b41d87ab6797451c75aea4008de13b3a489e98b8692e23c0"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/escrow-signer/escrow_signer/config.py",
+        "sha256": "7da7c61c2a7e54dea744f4798a33d808292027b1eac8c10f9d593e80c950b507"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/escrow-signer/escrow_signer/eip712.py",
+        "sha256": "e5f3394b38e50a1c74da7860a2375254b95d15748931a3a7a41e0582d43d8891"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/escrow-signer/escrow_signer/server.py",
+        "sha256": "ee8022cd8c00a273796bba817548194c2151bac519d4a339827ad21df67d93a7"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/escrow-signer/escrow_signer/calldata.py",
+        "sha256": "eb155a652d210b7a5a19dade00fda65112d3c60b25d9c9ada99cc8b386dcc689"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/escrow-signer/escrow_signer/policy.py",
+        "sha256": "e888c65435f5d465e210b9aeca08569b4d9cd46979617ec12b91220a417f3c20"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/escrow-signer/.env.example",
+        "sha256": "013fac92deddf1c07d27f50cab33ba936efc6058bc420302aa907365700897ba"
+      },
+      {
+        "path": "/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/aimarket_hub/escrow_bridge/signer.py",
+        "sha256": "ee558efdd573e8cd3147c36de099da7d2e86ae5b4a3257aff16a019d08af2639"
+      }
+    ]
+  }
+}

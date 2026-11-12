@@ -1,0 +1,39 @@
+{
+  "web_queries": [
+    "\"@aimarket/warden\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:glama.ai -site:odel.app -site:npmjs.com",
+    "\"aimarket-histor\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:pypi.org -site:glama.ai",
+    "\"histor.modelmarket.dev\" \"import\"",
+    "\"histor-mcp-tool-definitions\" -site:huggingface.co -site:modelmarket.dev -site:dev.to",
+    "\"histor.modelmarket.dev\" -site:modelmarket.dev -site:dev.to -site:glama.ai -site:lightnow.ai -site:huggingface.co -site:pypi.org -site:odel.app",
+    "\"10.5281/zenodo.23512760\" -site:modelmarket.dev -site:dev.to -site:zenodo.org -site:huggingface.co",
+    "\"HISTOR\" \"MTL/1\" -site:modelmarket.dev -site:dev.to -site:huggingface.co",
+    "\"HISTOR\" \"toolExtrasDigest\" -site:modelmarket.dev -site:dev.to",
+    "\"histor.modelmarket.dev\" \"github.com\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev",
+    "\"23512760\" benchmark -site:dev.to -site:modelmarket.dev",
+    "\"histor-mcp-tool-definitions\" notebook OR script OR dataset -site:modelmarket.dev -site:huggingface.co -site:dev.to",
+    "\"@aimarket/warden\" \"uses:\" -site:github.com/alexar76 -site:modelmarket.dev -site:dev.to",
+    "\"HISTOR\" \"tools/list\" \"github\" -site:modelmarket.dev -site:dev.to -site:github.com/alexar76 -site:lightnow.ai -site:glama.ai -site:mcpbeat.com",
+    "\"histor-mcp-tool-definitions\" site:github.com -site:github.com/alexar76",
+    "\"@aimarket/warden\" \"import\" -site:modelmarket.dev -site:dev.to -site:github.com/alexar76",
+    "\"10.5281/zenodo.23512759\" research -site:modelmarket.dev -site:dev.to",
+    "\"HISTOR\" \"tool definitions\" \"benchmark\" -site:modelmarket.dev -site:dev.to -site:github.com/alexar76 -site:lightnow.ai -site:glama.ai",
+    "\"HISTOR\" \"MTL/1\" site:gitlab.com OR site:codeberg.org OR site:arxiv.org",
+    "\"histor.modelmarket.dev\" filetype:py OR filetype:ipynb",
+    "\"10.5281/zenodo.23884408\" OR \"10.5281/zenodo.23884119\" -site:modelmarket.dev -site:dev.to"
+  ],
+  "web_query_count_attempted": 20,
+  "batch_05_partial": "codeberg.org robots block; remaining query completeness unknown",
+  "github_query_urls": [
+    "https://api.github.com/search/repositories?q=%22%40aimarket%2Fwarden%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+    "https://api.github.com/search/repositories?q=%22histor.modelmarket.dev%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+    "https://api.github.com/search/repositories?q=%22histor-mcp-tool-definitions%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+    "https://api.github.com/search/repositories?q=%2223512760%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+    "https://api.github.com/search/commits?q=%22%40aimarket%2Fwarden%22%20-author%3Aalexar76&per_page=100",
+    "https://api.github.com/search/commits?q=%22histor.modelmarket.dev%22%20-author%3Aalexar76&per_page=100",
+    "https://api.github.com/search/commits?q=%22histor-mcp-tool-definitions%22%20-author%3Aalexar76&per_page=100",
+    "https://api.github.com/search/repositories?q=%22MTL%2F1%22%20MCP%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+    "https://api.github.com/search/repositories?q=%22toolExtrasDigest%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+    "https://api.github.com/search/repositories?q=%22aimarket-histor%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+    "https://api.github.com/search/commits?q=%2223512760%22%20-author%3Aalexar76&per_page=100"
+  ]
+}

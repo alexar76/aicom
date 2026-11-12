@@ -1,0 +1,91 @@
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "startedAt": "2026-11-07T22:45:18.792877+00:00",
+    "seconds": 7.603,
+    "exitCode": 0,
+    "timeout": false
+  },
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-07T22:45:26.397694+00:00",
+    "seconds": 5.613,
+    "exitCode": 0,
+    "timeout": false
+  },
+  {
+    "name": "focused",
+    "command": [
+      "npm",
+      "test",
+      "--",
+      "test/codex-hook.test.ts",
+      "test/opencode-plugin.test.ts",
+      "test/hook-path-context.test.ts",
+      "test/result-screen.test.ts",
+      "test/two-sided-protocol.test.ts",
+      "test/mcp-tools.test.ts",
+      "test/mcp-server.test.ts",
+      "test/action.test.ts",
+      "test/landing.test.ts",
+      "test/docs.test.ts",
+      "test/packaging.test.ts",
+      "test/claude-plugin.test.ts",
+      "test/ruleset-v19-prerequisite.test.ts",
+      "test/ruleset-v13.test.ts",
+      "test/ruleset-v10.test.ts",
+      "test/flow-guard.test.ts",
+      "--maxWorkers=1",
+      "--testTimeout=20000",
+      "--hookTimeout=30000",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=/results/focused-results.json"
+    ],
+    "startedAt": "2026-11-07T22:45:32.012187+00:00",
+    "seconds": 86.684,
+    "exitCode": 0,
+    "timeout": false
+  },
+  {
+    "name": "full",
+    "command": [
+      "npm",
+      "test",
+      "--",
+      "--maxWorkers=1",
+      "--testTimeout=20000",
+      "--hookTimeout=30000",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=/results/full-results.json"
+    ],
+    "startedAt": "2026-11-07T22:46:58.699210+00:00",
+    "seconds": 530.247,
+    "exitCode": 0,
+    "timeout": false
+  },
+  {
+    "name": "redteam",
+    "command": [
+      "node",
+      "scripts/redteam/flow-redteam.mjs",
+      "/results/redteam-results.json",
+      "--check"
+    ],
+    "startedAt": "2026-11-07T22:55:48.949340+00:00",
+    "seconds": 1.696,
+    "exitCode": 0,
+    "timeout": false
+  }
+]

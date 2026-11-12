@@ -1,0 +1,37 @@
+[
+  {
+    "key": "gh-repos-attested",
+    "kind": "repositories",
+    "query": "\"attested-memory\" OR \"personal-attested-memory\" OR \"team-memory-os\" OR \"expert-memory-market\" in:readme -user:alexar76"
+  },
+  {
+    "key": "gh-repos-operator-desks",
+    "kind": "repositories",
+    "query": "\"cite-desks\" OR \"domain-operator-kit\" OR \"esim-operator-kit\" in:readme -user:alexar76"
+  },
+  {
+    "key": "gh-repos-apps",
+    "kind": "repositories",
+    "query": "\"linked-in-profile-coach\" OR \"aimarket-desktop\" OR \"aicom-landing\" in:readme -user:alexar76"
+  },
+  {
+    "key": "gh-repos-education",
+    "kind": "repositories",
+    "query": "\"aimarket-school\" OR \"aimarket-courses\" OR \"create-aimarket-agent\" OR \"aimarket-playground\" OR \"use-cases-portal\" in:readme -user:alexar76"
+  },
+  {
+    "key": "gh-repos-pingblip",
+    "kind": "repositories",
+    "query": "\"pingblip.com\" in:readme -user:alexar76"
+  },
+  {
+    "key": "gh-commits-education",
+    "kind": "commits",
+    "query": "\"aimarket-courses\" -author:alexar76"
+  },
+  {
+    "key": "gh-commits-operators",
+    "kind": "commits",
+    "query": "\"esim-operator-kit\" OR \"domain-operator-kit\" -author:alexar76"
+  }
+]

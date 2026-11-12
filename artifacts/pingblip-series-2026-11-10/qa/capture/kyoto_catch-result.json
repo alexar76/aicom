@@ -1,0 +1,53 @@
+{
+  "recordedAt": 1794343749.846594,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "creature": {
+      "id": "cmwb3veb5008kn548k1t5xuap",
+      "playerId": "cmw9lkshs0052n548w23eywq3",
+      "speciesId": "molar-breaker",
+      "source": "catch",
+      "stage": "awake",
+      "evolved": false,
+      "evolvedAt": null,
+      "feedCount": 0,
+      "lastFeedAt": null,
+      "hatchedAt": "2026-11-10T19:51:16.529Z",
+      "cell": "xn0x1",
+      "hatchProofId": "a9e4cca7888d5aab8239",
+      "catchProofId": "a9e4cca7888d5aab8239",
+      "asleepAt": null,
+      "nickname": null
+    },
+    "species": {
+      "id": "molar-breaker",
+      "name": "Molar Breaker",
+      "packId": "sugar-riot",
+      "type": "sugar",
+      "diet": {
+        "productId": "gaia.gateway",
+        "capabilityId": "gaia.weather.read@v1",
+        "sourceHub": "https://iot.modelmarket.dev",
+        "label": "weather",
+        "input": {
+          "device_id": "om-wx-01"
+        }
+      },
+      "sceneId": "sugar-forge",
+      "spawn": {
+        "layers": [
+          "weather"
+        ],
+        "weather": [
+          "heat",
+          "clear"
+        ],
+        "rarity": "common"
+      },
+      "starter": false
+    },
+    "already": false,
+    "creditsMilli": 420
+  }
+}

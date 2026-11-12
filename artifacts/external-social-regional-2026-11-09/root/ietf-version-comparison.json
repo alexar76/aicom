@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "acknowledges_artamokhov_in_01": false,
+    "acknowledges_artamokhov_in_02": true,
+    "protocol_version_learning_sentence_in_01": false,
+    "protocol_version_learning_sentence_in_02": true,
+    "freshness_description_sentence_in_01": false,
+    "freshness_description_sentence_in_02": true,
+    "carrier_or_endpoint_type_in_01": false,
+    "carrier_or_endpoint_type_in_02": true
+  },
+  "external_reply_date": "Mon, 02 November  2026 12:09 UTC",
+  "original_reply": "Hi Siyu, Aleksandr,\n\nThank you both. -02 takes up your suggestions:\n\n  *\nEntity Type is now conditional: needed when the client has to tell\n     *\nkinds of AI resource apart to choose its next step, and usually\nimplied by the carrier, such as a well-known name, or by the\nEndpoint purpose (Sections 7 and 8.2).\n  *\nA protocols value can name a version of the agent protocol; where\n     *\nit does not, the binding states how the client learns which version\nto use (Sections 8.2 and 9).\n  *\nNext to Freshness: a version need not change when a description\n     *\nchanges, while the digest of a description Endpoint does\n(Section 8.2).\n\nAleksandr, the mapping to draft-artamokhov-dawn-marketplace-discovery\nis a useful check that the elements fit a deployed discovery document.\n\n-02: https://datatracker.ietf.org/doc/draft-cui-dawn-mdi-model/\n\nBest,\nChenguang\n\n",
+  "scope": "Literal passage presence comparison in the two saved published drafts; original reply separated from quoted owner messages. Individual Internet-Draft, not an adopted standard."
+}

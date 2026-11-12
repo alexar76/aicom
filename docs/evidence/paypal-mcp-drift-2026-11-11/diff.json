@@ -1,0 +1,94 @@
+{
+  "stable": false,
+  "hashes": [
+    {
+      "process": 1,
+      "request": 1,
+      "sha256": "2c6054c65d65d60a9b867926a7f0581d4b89ca92fe308c7ae56709e904958b21"
+    },
+    {
+      "process": 1,
+      "request": 2,
+      "sha256": "82b7d1748f874a97de57c5d0210a1b7272007b3b14c4232f8bcfb66095c7b259"
+    },
+    {
+      "process": 2,
+      "request": 1,
+      "sha256": "2eb588032ee5978b83298cf0f0ed969c452e2b2ba2014fa9d5099b54a2b30233"
+    }
+  ],
+  "comparisons": [
+    {
+      "from": {
+        "process": 1,
+        "request": 1
+      },
+      "to": {
+        "process": 1,
+        "request": 2
+      },
+      "changes": [
+        {
+          "op": "replace",
+          "path": "/0/inputSchema/properties/end_date/default",
+          "before": "2026-11-11T15:01:29.639Z",
+          "after": "2026-11-11T15:01:29.707Z"
+        },
+        {
+          "op": "replace",
+          "path": "/0/inputSchema/properties/start_date/default",
+          "before": "2026-10-11T15:01:29.637Z",
+          "after": "2026-10-11T15:01:29.707Z"
+        }
+      ]
+    },
+    {
+      "from": {
+        "process": 1,
+        "request": 1
+      },
+      "to": {
+        "process": 2,
+        "request": 1
+      },
+      "changes": [
+        {
+          "op": "replace",
+          "path": "/0/inputSchema/properties/end_date/default",
+          "before": "2026-11-11T15:01:29.639Z",
+          "after": "2026-11-11T15:01:38.106Z"
+        },
+        {
+          "op": "replace",
+          "path": "/0/inputSchema/properties/start_date/default",
+          "before": "2026-10-11T15:01:29.637Z",
+          "after": "2026-10-11T15:01:38.106Z"
+        }
+      ]
+    },
+    {
+      "from": {
+        "process": 1,
+        "request": 2
+      },
+      "to": {
+        "process": 2,
+        "request": 1
+      },
+      "changes": [
+        {
+          "op": "replace",
+          "path": "/0/inputSchema/properties/end_date/default",
+          "before": "2026-11-11T15:01:29.707Z",
+          "after": "2026-11-11T15:01:38.106Z"
+        },
+        {
+          "op": "replace",
+          "path": "/0/inputSchema/properties/start_date/default",
+          "before": "2026-10-11T15:01:29.707Z",
+          "after": "2026-10-11T15:01:38.106Z"
+        }
+      ]
+    }
+  ]
+}

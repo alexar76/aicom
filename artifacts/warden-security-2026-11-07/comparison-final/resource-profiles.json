@@ -1,0 +1,433 @@
+{
+  "runtimeImageId": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+  "node": "24.22.2",
+  "python": "3.13.18",
+  "scope": "actual classification engines; auxiliary reporting containers are separate",
+  "nodeComparators": {
+    "bothHosts": {
+      "cpu": 1,
+      "memoryMiB": 768,
+      "concurrency": 1
+    }
+  },
+  "auditBase": {
+    "bothHosts": {
+      "cpu": 1,
+      "memoryMiB": 768,
+      "concurrency": 1
+    }
+  },
+  "auditHistor": {
+    "blip": {
+      "cpu": 2,
+      "memoryMiB": 1536,
+      "concurrency": 2
+    },
+    "attested": {
+      "cpu": 1,
+      "memoryMiB": 768,
+      "concurrency": 1
+    }
+  },
+  "network": "none",
+  "publishedPorts": false,
+  "hostNetworking": false,
+  "hostSocketsOrCredentials": false,
+  "nonroot": "501:501",
+  "readOnlyRoot": true,
+  "capDrop": "ALL",
+  "noNewPrivileges": true,
+  "linuxCgroupQuotaReadbackSha256": "b0364c98e856e919940004b39ace2666bb14f15dc6196c07fe63f2cad707a777",
+  "witnesses": [
+    {
+      "site": "blip",
+      "cohort": "base",
+      "role": "mcp-audit",
+      "containerReceiptSha256": "c47e9ae81872b07bc331f251d60d6135a3ba87d3addbc053ebb23ae3b8df10f4",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 256,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,exec,nosuid,nodev,size=256m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "histor",
+      "role": "mcp-audit",
+      "containerReceiptSha256": "49e6aa03bfb86ed9f00877240e37af4e622f4338f2e8a81880491452607a3fdf",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 2000000000,
+      "memoryBytes": 1610612736,
+      "memorySwapBytes": 1610612736,
+      "pidsLimit": 256,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,exec,nosuid,nodev,size=256m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "attested",
+      "cohort": "base",
+      "role": "mcp-audit",
+      "containerReceiptSha256": "3e6a5f7d3e62cd5245a36ce0b61a679bede36dd9d572c7b93979a785ba26bacf",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 256,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,exec,nosuid,nodev,size=256m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "attested",
+      "cohort": "histor",
+      "role": "mcp-audit",
+      "containerReceiptSha256": "325a9c3fab5dcc6cea9802c8094a89c4603651bb54dc653f1d1ccfbf9c13698e",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 256,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,exec,nosuid,nodev,size=256m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "base",
+      "role": "mcp-shield",
+      "containerReceiptSha256": "36a2cb2827797448e61a61445e16b53e54aa425eb456d98e5a54c32d418b60e5",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "base",
+      "role": "truecopy",
+      "containerReceiptSha256": "c71faa642e49ea84507cf81cbde66436d6fd3842c99cd00083fccb340dc625f3",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "base",
+      "role": "mcpsentry",
+      "containerReceiptSha256": "2896a174a15581faa1302967868fc406e5f288f2d4a6f9f0c833bce51bc930e5",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "base",
+      "role": "warden-published",
+      "containerReceiptSha256": "a29533baa90753312f850af89b475bc1d8940619a257e5521913bdea5d13331a",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "base",
+      "role": "warden-candidate19",
+      "containerReceiptSha256": "9ae4a32784fc3f957ffd7f05149aec06b650d528f4a09f784fc3d2a1b2f61b99",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "histor",
+      "role": "mcp-shield",
+      "containerReceiptSha256": "6439adc8553555436b2ea3d513c8d80b42713cb193f509f3935e2b43b1b34652",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "histor",
+      "role": "truecopy",
+      "containerReceiptSha256": "1c82adeec5f3eb222d2ebfd37f6142ff4c28315445e017f03cba620c79ea537a",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "histor",
+      "role": "mcpsentry",
+      "containerReceiptSha256": "fd23752699ee9157751817b3ca6874797d113e4a400bf3a6c431b32e03eecf63",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "histor",
+      "role": "warden-published",
+      "containerReceiptSha256": "e27a2576a5aeb5f879663a334e0a93d5e74029e6c095f8b4aa35d67281d83108",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "histor",
+      "role": "warden-candidate19",
+      "containerReceiptSha256": "3f69b243ee73f300dc9a116e537f7a4194388ae2dfb18fd1d846e2435e48d0f9",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    },
+    {
+      "site": "blip",
+      "cohort": "histor",
+      "role": "warden-v18",
+      "containerReceiptSha256": "5d9f54d4233705ba7b1a2dc63bde18e93cadc43a4859912876c084e07fd74ee0",
+      "image": "sha256:db7085498187e8477fa462d5f1652d62bdf4b8af29ea3666bd1748a8315631a5",
+      "runtime": "runsc",
+      "network": "none",
+      "nanoCpus": 1000000000,
+      "memoryBytes": 805306368,
+      "memorySwapBytes": 805306368,
+      "pidsLimit": 128,
+      "readOnlyRoot": true,
+      "user": "501:501",
+      "capDrop": [
+        "ALL"
+      ],
+      "securityOpt": [
+        "no-new-privileges"
+      ],
+      "tmpfs": {
+        "/tmp": "rw,noexec,nosuid,size=64m"
+      },
+      "exitCode": 0,
+      "oomKilled": false
+    }
+  ]
+}

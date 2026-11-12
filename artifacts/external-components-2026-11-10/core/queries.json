@@ -1,0 +1,122 @@
+[
+  {
+    "id": "hub-import",
+    "component": "hub",
+    "q": "\"aimarket_hub\" (import OR dependency OR integration) -site:github.com/alexar76 -site:modelmarket.dev -site:pypi.org -site:dev.to -site:glama.ai -site:odel.app -site:lightnow.ai"
+  },
+  {
+    "id": "hub-review",
+    "component": "hub",
+    "q": "\"github.com/alexar76/aimarket-hub\" review -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:glama.ai -site:odel.app"
+  },
+  {
+    "id": "protocol-repo",
+    "component": "protocol",
+    "q": "\"github.com/alexar76/aimarket-protocol\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:glama.ai -site:odel.app"
+  },
+  {
+    "id": "python-import",
+    "component": "python-agent",
+    "q": "\"from aimarket_agent\" -site:github.com/alexar76 -site:dev.to -site:pypi.org -site:modelmarket.dev"
+  },
+  {
+    "id": "python-coordinate",
+    "component": "python-agent",
+    "q": "\"aimarket-agent\" \"modelmarket\" -site:github.com/alexar76 -site:dev.to -site:pypi.org -site:modelmarket.dev -site:glama.ai -site:odel.app"
+  },
+  {
+    "id": "typescript-dependency",
+    "component": "sdk-typescript",
+    "q": "\"@aimarket/agent\" \"dependencies\" -site:github.com/alexar76 -site:dev.to -site:npmjs.com -site:modelmarket.dev"
+  },
+  {
+    "id": "dart-import",
+    "component": "sdk-dart",
+    "q": "\"package:aimarket_agent/aimarket_agent.dart\" -site:github.com/alexar76 -site:pub.dev -site:dev.to -site:modelmarket.dev"
+  },
+  {
+    "id": "rust-cargo",
+    "component": "sdk-rust",
+    "q": "\"aimarket-agent\" \"Cargo.toml\" -site:github.com/alexar76 -site:docs.rs -site:lib.rs -site:dev.to -site:modelmarket.dev"
+  },
+  {
+    "id": "plugins-settlement",
+    "component": "plugins",
+    "q": "(\"aimarket-tee\" OR \"aimarket-channels\" OR \"aimarket-reputation\" OR \"aimarket-safety\" OR \"aimarket-auction\") (dependency OR integration OR import) -site:github.com/alexar76 -site:pypi.org -site:modelmarket.dev -site:dev.to -site:glama.ai -site:odel.app -site:lightnow.ai"
+  },
+  {
+    "id": "plugins-data",
+    "component": "plugins",
+    "q": "(\"aimarket-data-cap\" OR \"aimarket-dataset\" OR \"aimarket-nft\" OR \"aimarket-orchestrator\" OR \"aimarket-personas\") -site:github.com/alexar76 -site:pypi.org -site:modelmarket.dev -site:dev.to -site:glama.ai -site:odel.app -site:lightnow.ai"
+  },
+  {
+    "id": "plugins-remaining",
+    "component": "plugins",
+    "q": "(\"aimarket-promo\" OR \"aimarket-streaming\" OR \"aimarket-zk\" OR \"aimarket-provenance\" OR \"aimarket-mcp-packager\") (code OR dependency OR integration) -site:github.com/alexar76 -site:pypi.org -site:modelmarket.dev -site:dev.to -site:glama.ai -site:odel.app -site:lightnow.ai"
+  },
+  {
+    "id": "widget-package",
+    "component": "widget",
+    "q": "\"@aimarket/widget\" -site:github.com/alexar76 -site:npmjs.com -site:dev.to -site:modelmarket.dev -site:glama.ai -site:odel.app"
+  },
+  {
+    "id": "widget-embed",
+    "component": "widget",
+    "q": "\"modelmarket.dev/widget\" -site:modelmarket.dev -site:github.com/alexar76 -site:dev.to -site:glama.ai -site:odel.app -site:lightnow.ai"
+  },
+  {
+    "id": "bridges-import",
+    "component": "bridges",
+    "q": "\"aimarket_bridges\" -site:github.com/alexar76 -site:dev.to -site:pypi.org -site:modelmarket.dev -site:glama.ai -site:odel.app -site:socket.dev"
+  },
+  {
+    "id": "mesh-repo",
+    "component": "service-mesh",
+    "q": "\"github.com/alexar76/ai-service-mesh\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:pypi.org"
+  },
+  {
+    "id": "acex-repo",
+    "component": "acex",
+    "q": "\"github.com/alexar76/acex\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:github-wiki-see.page"
+  },
+  {
+    "id": "pulse-repo",
+    "component": "pulse",
+    "q": "\"github.com/alexar76/pulse-terminal\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:github-wiki-see.page"
+  },
+  {
+    "id": "escrow-repo",
+    "component": "escrow-signer",
+    "q": "\"github.com/alexar76/escrow-signer\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:github-wiki-see.page"
+  },
+  {
+    "id": "treasury-package",
+    "component": "treasury",
+    "q": "\"aimarket-treasury\" -site:github.com/alexar76 -site:dev.to -site:pypi.org -site:modelmarket.dev -site:glama.ai -site:odel.app"
+  },
+  {
+    "id": "factory-review",
+    "component": "factory",
+    "q": "\"github.com/alexar76/aicom\" (review OR \"case study\" OR integration) -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:glama.ai -site:odel.app -site:lightnow.ai -site:github-wiki-see.page"
+  },
+  {
+    "id": "products-repo",
+    "component": "products",
+    "q": "\"github.com/alexar76/aicom-products\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev -site:github-wiki-see.page"
+  },
+  {
+    "id": "sdks-repo",
+    "component": "sdk-typescript,sdk-dart,sdk-rust",
+    "q": "\"github.com/alexar76/aimarket-sdks\" (dependency OR integration OR review) -site:github.com/alexar76 -site:dev.to -site:pub.dev -site:modelmarket.dev -site:docs.rs -site:npmjs.com -site:glama.ai -site:odel.app"
+  },
+  {
+    "id": "mesh-package",
+    "component": "service-mesh",
+    "q": "\"ai-service-mesh\" \"alexar76\" -site:github.com/alexar76 -site:pypi.org -site:dev.to -site:modelmarket.dev"
+  },
+  {
+    "id": "escrow-token",
+    "component": "escrow-signer",
+    "q": "\"escrow-policy-signer\" \"HORKOS\" -site:github.com/alexar76 -site:dev.to -site:modelmarket.dev"
+  }
+]

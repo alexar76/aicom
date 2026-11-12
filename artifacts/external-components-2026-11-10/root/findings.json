@@ -1,0 +1,173 @@
+{
+  "generated_at_utc": "2026-11-10T19:41:54.945644+00:00",
+  "public_get_attempts": 22,
+  "http_statuses": {
+    "200": 22
+  },
+  "saved_bodies": 22,
+  "all_hashes_and_lengths_valid": true,
+  "family_count": 8,
+  "new_runtime_integrations_confirmed": 0,
+  "new_independent_product_reviews_confirmed": 0,
+  "dependents_scope": [
+    {
+      "file": "deps-aimarket-emporion.raw",
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-emporion"
+      },
+      "version": "0.4.2",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    {
+      "file": "deps-aimarket-signal-hunt.raw",
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-signal-hunt"
+      },
+      "version": "0.1.2",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    {
+      "file": "deps-aimarket-symmartys.raw",
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-symmartys"
+      },
+      "version": "0.5.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    {
+      "file": "deps-dioscuri.raw",
+      "package": {
+        "system": "NPM",
+        "name": "@alexar76/dioscuri"
+      },
+      "version": "0.2.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    {
+      "file": "deps-helios-broadcast.raw",
+      "package": {
+        "system": "PYPI",
+        "name": "helios-broadcast"
+      },
+      "version": "0.2.2",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    }
+  ],
+  "sourcegraph_limits": [
+    {
+      "file": "sourcegraph-packages.raw",
+      "match_count": 0,
+      "skipped": [
+        {
+          "reason": "shard-match-limit",
+          "title": "result limit hit",
+          "message": "Not all results have been returned due to hitting a match limit. Sourcegraph has limits for the number of results returned from a line, document and repository.",
+          "severity": "info",
+          "suggested": {
+            "title": "increase limit",
+            "queryExpression": "count:1000"
+          }
+        }
+      ],
+      "complete_negative_evidence": false,
+      "alerts": []
+    },
+    {
+      "file": "sourcegraph-origins.raw",
+      "match_count": 0,
+      "skipped": [
+        {
+          "reason": "shard-match-limit",
+          "title": "result limit hit",
+          "message": "Not all results have been returned due to hitting a match limit. Sourcegraph has limits for the number of results returned from a line, document and repository.",
+          "severity": "info",
+          "suggested": {
+            "title": "increase limit",
+            "queryExpression": "count:1000"
+          }
+        }
+      ],
+      "complete_negative_evidence": false,
+      "alerts": [
+        {
+          "title": "Timed out while searching",
+          "description": "We weren't able to find any results in 17s.",
+          "proposedQueries": [
+            {
+              "description": "query with longer timeout",
+              "query": "timeout:35s context:global patterntype:regexp -repo:^github.com/alexar76/ archived:yes fork:yes count:100 (symmartys\\.modelmarket\\.dev|hunt\\.modelmarket\\.dev|monitor\\.modelmarket\\.dev|alexar76/theoros|pantheon\\.modelmarket\\.dev) patternType:regexp"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "repository_search_scope": {
+    "search-pantheon": {
+      "total_count": 0,
+      "incomplete_results": false,
+      "repositories": []
+    },
+    "search-symmartys": {
+      "total_count": 0,
+      "incomplete_results": false,
+      "repositories": []
+    },
+    "search-signal": {
+      "total_count": 0,
+      "incomplete_results": false,
+      "repositories": []
+    },
+    "search-dioscuri": {
+      "total_count": 0,
+      "incomplete_results": false,
+      "repositories": []
+    },
+    "search-emporion": {
+      "total_count": 0,
+      "incomplete_results": false,
+      "repositories": []
+    },
+    "search-helios": {
+      "total_count": 1,
+      "incomplete_results": false,
+      "repositories": [
+        "aionbuilders/helios"
+      ]
+    },
+    "search-theoros": {
+      "total_count": 0,
+      "incomplete_results": false,
+      "repositories": []
+    },
+    "search-alien": {
+      "total_count": 0,
+      "incomplete_results": false,
+      "repositories": []
+    }
+  },
+  "scope_limit": "No HISTOR/WARDEN research in this branch. Public observations only; no foreign execution, writes, login or invocations."
+}

@@ -1,0 +1,345 @@
+CrawlCheck — Can AI read your site? Free check
+Crawl
+Check
+Skip to content
+Menu
+For humans
+Check and fix
+Register your site
+Free. Every agent that asks is told who runs it
+Check my site
+Free A–F report, every problem named
+Watch
+Checked twice a day from $29 a month, with an alert when a check finds a regression
+Fix it
+We do the fixes for $100 and prove them
+Executive report
+A two-page PDF per site, monthly or weekly
+How it works
+The scan, step by step, and what each grade means
+Free tools
+All free tools
+Every check, no account
+Agent lens
+Your homepage as Chrome and as each AI crawler
+robots.txt for AI crawlers
+What each crawler is allowed, and what it got
+llms.txt audit
+Read the way crawlers ask for it
+Listing check
+Is your business record right where agents look?
+Compare two sites
+Side by side, same measurement
+Googlebot check
+Is this IP from your logs really Google?
+Entity map validator
+entitymap.json against your structured data
+Fix it on your platform
+WordPress
+Shopify
+Wix
+Squarespace
+Webflow
+Next.js
+Drupal
+Cloudflare
+Browser extension
+Grades as you browse
+The app
+iPhone and Android
+Register your site
+Prove who runs it.
+Registered sites answer every agent that asks: who runs this, what it declares, verified by a fetch. Free.
+Register free
+Datasets
+For agents
+Build
+Quickstart
+MCP, curl, Python, OpenAI Agents, LangChain, CrewAI, Vercel AI
+API reference
+Every endpoint, with a worked example
+SDKs
+npm and PyPI, with the offline verifier
+MCP demo
+An approved server allowed, a rewritten tool refused
+CrawlCheck in CI
+Fail a pull request that breaks crawler access
+Policy as code
+Preflight rules and tests in your repository
+Ask before acting
+Agent view
+The signed answer about any domain, for a person
+Resolve protocol
+What the signed answer holds, how to verify it
+Capability registry
+What sites say agents may do, and what was verified
+Agent conduct
+How each named agent behaves on sites
+MCP tool changes
+Servers whose tools changed after approval
+Enterprise pilot
+30 days of signed preflight for your agents
+Verify it yourself
+Verify a record
+Check any answer on your own machine
+Signing keys
+The Ed25519 keys every answer is signed with
+Rulebook
+Every finding the measurement can raise
+Canonical numbers
+The definition and every public count, with sources and as_of
+Conformance
+Run the suite against your own implementation
+Proof and timestamps
+How every record is sealed and anchored
+Service status
+Scans, signing, seals and a signed incident log
+Before you act
+One signed answer, no key.
+Read, cite, connect or transact: ask first, verify the receipt offline.
+Start in a minute
+Research
+Live data
+AI crawler census
+The top 1,000 sites, read daily, open CC BY data
+AI crawler radar
+What the top 10,000 sites say and serve
+Agent Traffic Index
+Verified and forged agent requests, monthly
+Live figures
+Decisions, scans and crawler visits, counted
+Agent safety benchmark
+Do agents stop before acting?
+Scan globe
+Every city a scan was started from
+Crawlers and vendors
+AI crawlers
+Who sends each agent and what it reads
+Crawlers compared
+GPTBot vs ClaudeBot and more, two at a time
+SEO and AI tools, measured
+The vendors that measure sites, measured by the same rules
+Registry
+What registered sites declare, verified by a fetch
+Certified sites
+Every live machine-readability certificate
+Evidence for disputes
+A dated, signed record of what a site served
+Reports and method
+Editions
+Four recurring reports, each signed with a feed
+Exclusive findings
+Measured only here
+How we read the data
+The rules, what we never cite, how to report an error
+Free course
+Six lessons and a certificate
+MCP tool changes
+How often public MCP servers change the tools agents approved
+AI audit tools, Round 2
+74 tools against 63 planted faults
+AI audit tools, tested
+Twelve tools against ten planted faults
+Submit a finding
+Your study, published with credit
+Corrections
+Everything we got wrong, dated
+The census
+What the top sites serve AI crawlers.
+Read daily from our own network, open CC BY data, every figure with its denominator.
+Read the census
+Library
+Pricing
+Sign in
+Add to Chrome
+Free check for your website
+Can AI
+read your site?
+See what your website serves to AI crawler request profiles. CrawlCheck compares real responses from its own network, names what went wrong, and shows you what to fix first.
+Domain
+Check my site
+Free. No signup, nothing installed, nothing changed on your site.
+The deepest free site audit there is.
+48 sections, read as 16 named crawler request profiles and 3 comparison controls, every finding named and the first one shown with its evidence.
+Where scans come from →
+Example report · a public site, checked daily · 17 hours ago
+www.denverpost.com
+Grade
+C
+Score
+83
+/100
+Things to fix
+11
+AI assistants like ChatGPT can read this site, but find little they can quote from its pages.
+Fix first
+robots.txt rules do not apply to named agents
+See the full report →
+Last scan finished
+4 minutes ago
+·
+35
+domains measured today
+How it works
+See exactly what each request received.
+We compare what your site serves to search crawlers, training crawlers, user-triggered fetchers and controls from CrawlCheck's network. That includes separate desktop and smartphone Googlebot requests. We also read your robots.txt, machine files and declared agent permissions. The answer is graded by published rules and signed, so anyone can check it offline.
+The full definition
+CrawlCheck is the verification layer for the agentic web. It measures what a site actually serves — tested with named crawler request profiles, including desktop and smartphone Googlebot, alongside its machine files, crawl policy, declared rights and capabilities — decides findings by published rules, and signs the answer so an agent can verify it offline before it reads, cites, connects or acts. Site owners get the same measurement as a free A–F audit with every defect named.
+Paying never changes a reading.
+The scan, step by step
+·
+Live figures
+Independent research
+Being readable beats being talked about.
+In 37,927 AI agent sessions about 1,056 real businesses, agents did better on every measure when they could read the business’s own site.
+1.9×
+as often clearly recommended
+78% vs 56%
+of answers built from the business’s own pages
+41%
+more accurate answers
+7–10%
+of the answer came from the model’s memory
+Source: Finder, Elovic, Shalev and Yosef, “AX is the New AEO”,
+arXiv:2609.34951
+, 29 September 2026. CrawlCheck was not involved in the study.
+Questions
+What people ask before they check.
+Q
+Can ChatGPT read my website?
+ChatGPT reaches the web through more than one crawler: OAI-SearchBot finds pages for ChatGPT search, and GPTBot collects content for model training. Allowing GPTBot is not needed to appear in ChatGPT search, and blocking it does not remove you. Many sites block one or both in robots.txt or behind a bot wall without knowing. That is the access we can test, not the only way an AI service may reach your content. The free check fetches your homepage as OAI-SearchBot, GPTBot and fourteen other crawlers from our own network and shows exactly what each one got.
+Q
+Why doesn’t my business show up in AI answers?
+Three usual reasons: the crawler is blocked, the page it gets has no readable text, or there is no clear fact to quote: a name, address, hours and prices that match everywhere. The report names which one applies to you.
+Q
+Is the check free, and does it change anything on my site?
+Free, no account. Every request is a read, the same GET a crawler makes. Nothing is installed, submitted or changed.
+Q
+What does registering my site do?
+It tells every agent that asks who runs the site and what it declares, verified by a fetch. Free, from the registry page.
+Four doors
+Who it is for.
+Agents
+One signed yes-or-no before your agent acts on a site.
+Quickstart
+·
+Resolve
+·
+SDKs
+Site owners
+Check free. We fix it for $100; Watch re-checks twice a day and alerts you if it regresses, from $29 a month.
+Scan
+·
+Fix
+·
+Watch
+Developers and vendors
+The API, typed SDKs, the specs and the signing keys.
+API
+·
+Specs
+·
+Keys
+Researchers and press
+A daily census of the top 1,000 sites, as open CC BY data.
+Census
+·
+Conduct
+·
+Datasets
+We read your site the way crawlers do, from our own network, and every report says exactly what was asked for and what came back.
+Who runs this
+·
+Press kit
+·
+Videos
+·
+Evidence for disputes
+·
+YouTube
+·
+hello@crawlcheck.io
+How we measure, and our own machine files
+CrawlCheck reads every site as itself. Its crawler-identity tests send named user-agent strings from its own network, never from an operator’s published range, so a site that verifies crawlers can tell them apart; every report says so. Results reflect what an anonymous non-browser client receives.
+What we collect and how to opt out
+·
+how every report is timestamped
+·
+who runs this
+·
+press kit
+·
+hello@crawlcheck.io
+.
+Second vantage:
+the
+browser extension
+measures what crawlers are served from your own address and after your JavaScript runs — the half this server cannot see. From 1.0.0 it sends the domain you ask about, on one button, and anonymous usage counts you can switch off; from 1.0.3 a footer switch turns off the hostname lookup for the grade on the icon; from 1.0.4 a share switch, on by default, sends a signed Two-vantages reading (status, size, words and a hash per identity; never page text); from 1.0.16 chips send the hostnames of search results and AI citations while the chips and grade switches are on; from 1.0.17 a readings switch, on by default, sends one signed page reading a day (numbers, the hostname and the page address with the query removed; never in incognito; at most 40 a day) and only while the share and grade switches are also on. Earlier versions send nothing.
+Our own machine layer for the agentic web:
+llms.txt
+·
+llms-full.txt
+·
+agents.md
+·
+SKILL.md
+·
+entitymap.json
+·
+media kit
+·
+MCP server card
+·
+API catalog
+·
+OpenAPI
+·
+robots.txt
+·
+sitemap.xml
+·
+security.txt
+— every one named in robots.txt, which is exactly what we check for on yours. Home page updated
+2026-11-09
+.
+Registry:
+Agents
+·
+Entity
+·
+AI policy
+·
+crawlcheck.dev
+·
+example-shop.com
+·
+indeed.com
+·
+mentionlytics.com
+·
+patreon.com
+·
+scrapingbee.com
+·
+topazlabs.com
+·
+peerpush.com
+|
+Pages:
+IP ranges
+Contact
+·
+Partnerships
+·
+Terms of service
+·
+Refund policy
+·
+Trust center
+·
+Report an error
+English
+Deutsch
+Français
+Español
+Português

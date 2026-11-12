@@ -1,0 +1,49 @@
+{
+  "recordedAt": 1794252647.66337,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "creature": {
+      "id": "cmw9lmrct005kn548bw5r4gu3",
+      "playerId": "cmw9lkshs0052n548w23eywq3",
+      "speciesId": "soft-egg",
+      "source": "catch",
+      "stage": "awake",
+      "evolved": false,
+      "evolvedAt": null,
+      "feedCount": 0,
+      "lastFeedAt": null,
+      "hatchedAt": "2026-11-09T18:32:54.269Z",
+      "cell": "eycs2",
+      "hatchProofId": "a546d13e22bff5197efa",
+      "catchProofId": "a546d13e22bff5197efa",
+      "asleepAt": null,
+      "nickname": null
+    },
+    "species": {
+      "id": "soft-egg",
+      "name": "Soft Egg",
+      "packId": "snack-cult",
+      "type": "snack",
+      "diet": {
+        "productId": "gaia.gateway",
+        "capabilityId": "gaia.weather.read@v1",
+        "sourceHub": "https://iot.modelmarket.dev",
+        "label": "weather",
+        "input": {
+          "device_id": "om-wx-01"
+        }
+      },
+      "sceneId": "candy-dump",
+      "spawn": {
+        "layers": [
+          "weather"
+        ],
+        "rarity": "common"
+      },
+      "starter": true
+    },
+    "already": false,
+    "creditsMilli": 590
+  }
+}

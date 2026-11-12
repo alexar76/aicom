@@ -1,0 +1,406 @@
+<!DOCTYPE html> 
+<html data-bs-theme="auto" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Search IETF mail list archives">
+    <title>[Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery</title>
+
+    
+
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.46.0/fontawesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.46.0/mlarchive/css/bootstrap_custom.css">
+    <link rel="stylesheet" type="text/css" href="https://static.ietf.org/mailarchive/2.46.0/mlarchive/css/styles.css">
+
+    <script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/js/bs-theme.js"></script>
+
+    
+
+    
+
+</head>
+
+<body>
+
+<!-- Container -->
+<div id="container">
+
+    <header class="navbar navbar-expand-md navbar-dark fixed-top px-3 py-0">
+        <div class="container-fluid">
+            <a class="navbar-brand p-0" href="/">
+                <img alt="IETF Logo" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/images/ietflogo-small-transparent.png">
+                <span class="navbar-text d-none d-md-inline-block">
+                
+                Mail Archive
+                
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-main" aria-controls="navbar-main" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            
+            <div id="navbar-main" class="navbar-header collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item d-none d-lg-inline">
+                        <a class="nav-link" href="https://www.ietf.org/search/">Search www.ietf.org</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-inline">
+                        <a class="nav-link" href="https://datatracker.ietf.org">Search Datatracker</a>
+                    </li>
+		            <li class="nav-item d-none d-lg-inline navbar-text pipe"></li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbar-help" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
+                        <div class="dropdown-menu" aria-labelledby="navbar-help">
+                            <a class="dropdown-item" href="/arch/help/">Search Syntax</a>
+                            <a class="dropdown-item" href="/docs/api-reference/">API Reference</a>
+                        </div>
+                    </li>
+
+                    
+                    
+                    
+                    
+                    
+                    <li class="nav-item dropdown me-2">
+                        <a id="nav-settings-anchor" class="nav-link dropdown-toggle" href="#" id="navbar-settings" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbar-settings">
+                            <li><a id="toggle-static" class="dropdown-item" href="#">Turn Static Mode On</a></li>
+                        </ul>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item">
+                        
+                            <a class="nav-link" href="/oidc/authenticate/" rel="nofollow">Sign in</a>
+                        
+                    </li>
+                    
+                </ul>
+            </div> <!-- navbar-header -->
+            
+        </div> <!-- container-fluid -->
+    </header>
+
+            <!-- 
+            <noscript>
+                <p class="navbar-text"><small>Enable Javascript for full functionality.</small></p>
+            </noscript>
+            -->
+
+        <!-- Django Messages -->
+        
+
+
+    <!-- Content -->
+    <div id="content">
+        
+
+<div class="container-fluid">
+
+  <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary rounded shadow-sm navbar-msg-detail my-2">
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#id-navbar-top" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-detail px-5" id="id-navbar-top">
+      <ul class="navbar-nav">
+        <li class="nav-item" title="Previous by date">
+          
+            <a class="nav-link previous-in-list" href="/arch/msg/dawn/EInPLeuJXvQhWcyrj-pka2gkNws/" aria-label="previous in list">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Date Index">
+          <a class="nav-link date-index" href="/arch/browse/dawn/?index=2zTrEQqFmZ2bbki3rs33CT8shVU">Date</a>
+        </li>
+        <li class="nav-item" title="Next by date">
+          
+            <a class="nav-link next-in-list" href="/arch/msg/dawn/8G4r8r_8VxkKc4VQ-TAZmaC2eDA/" aria-label="next in list">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Previous in thread">
+          
+            <a class="nav-link previous-in-thread" href="/arch/msg/dawn/EInPLeuJXvQhWcyrj-pka2gkNws/" aria-label="previous in thread">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Thread Index">
+          <a class="nav-link thread-index" href="/arch/browse/dawn/?gbt=1&amp;index=2zTrEQqFmZ2bbki3rs33CT8shVU">Thread</a>
+        </li>
+        <li class="nav-item" title="Next in thread">
+          
+            <a class="nav-link next-in-thread" href="/arch/msg/dawn/8G4r8r_8VxkKc4VQ-TAZmaC2eDA/" aria-label="next in thread">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+  
+  <div class="row">
+
+    <div class="msg-detail col-md-8 pt-3" data-static-date-index-url="/arch/browse/static/dawn/2026-11/#2zTrEQqFmZ2bbki3rs33CT8shVU" data-static-thread-index-url="/arch/browse/static/dawn/thread/2026-11/#2zTrEQqFmZ2bbki3rs33CT8shVU" data-date-index-url="/arch/browse/dawn/?index=2zTrEQqFmZ2bbki3rs33CT8shVU" data-thread-index-url="/arch/browse/dawn/?gbt=1&amp;index=2zTrEQqFmZ2bbki3rs33CT8shVU">
+      
+      <div id="msg-body" data-message-url="https://mailarchive.ietf.org/arch/msg/dawn/2zTrEQqFmZ2bbki3rs33CT8shVU/">
+    
+    <div id="message-links">
+      
+        <a href="mailto:dawn@ietf.org?subject=Re: [Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery" class="reply-link" title="Reply"><i class="fas fa-reply fa-lg"></i></a>
+      
+      
+        <a href="/arch/msg/dawn/2zTrEQqFmZ2bbki3rs33CT8shVU/download/" class="download-link" rel="nofollow" title="Message Download"><i class="fa fa-download fa-lg"></i></a>
+      
+      
+        <a href="https://mailarchive.ietf.org/arch/msg/dawn/2zTrEQqFmZ2bbki3rs33CT8shVU/" class="detail-link" title="Message Detail"><i class="fa fa-link fa-lg"></i></a>
+      
+    </div>
+    
+    <h3>[Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery</h3>
+    <p id="msg-info" class="msg-header">
+      <span id="msg-from" class="pipe">Александр Артамохов &lt;alexar76@rambler.ru&gt;</span>
+      <span id="msg-date" class="pipe">Wed, 04 November  2026 10:13 UTC</span>
+    </p>
+    <div id="msg-header" class="msg-header">
+      <p>
+      
+        Received: from mxout2.rambler.ru (mxout2.rambler.ru [81.19.78.101])	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))	(No client certificate requested)	by mx.ietf.org (Postfix) with ESMTPS id 4C40347	for &lt;dawn@ietf.org&gt;; Wed, 04 Nov 2026 10:13:24 +0000 (UTC)<br />
+      
+        Authentication-Results: mx.ietf.org;	dkim=pass header.d=rambler.ru header.s=mail header.b=e3sr1Wki;	spf=pass (mx.ietf.org: domain of alexar76@rambler.ru designates 81.19.78.101 as permitted sender) smtp.mailfrom=alexar76@rambler.ru;	dmarc=pass (policy=quarantine) header.from=rambler.ru<br />
+      
+        Received: from localhost (0vm0069.prod.mail.rambler.tech [10.132.224.39])	by mxout2.rambler.ru (Postfix) with ESMTP id 0E820912A66;	Wed,  4 Nov 2026 13:13:17 +0300 (MSK)<br />
+      
+        DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rambler.ru; s=mail;	t=1793787197; bh=dpy/DHjjZaSTTPUBJ3gec+fZnWsU5Vb1g4GffaeAXPs=;	h=Date:In-Reply-To:References:Reply-To:From:To:Subject;	b=e3sr1WkiokVCoptIyJVFG3i5N6SZwQuCKZipqLdNpLY5cyFADbXu3yj3Xb+7991YP	 iFcpX9tP2R6/qecAdKxll0DfRmaGLMVO7Hg+A/jEetSCdLpxaykmeFA6V57GOrXgTw	 7MCYMZjBibuewb6szK0nlceloMTK6ftrBWQMhAg8=<br />
+      
+        Date: Wed, 04 Nov 2026 10:13:16 +0000<br />
+      
+        Mime-Version: 1.0<br />
+      
+        Message-Id: &lt;b5415d9bc947bbf521ff203ca2ffe755@mail.rambler.ru&gt;<br />
+      
+        In-Reply-To: &lt;CAHu+Kg5k6JD-MUYF1F7w+mpi4uzU6W4yq83subD_RGEDQDDFmg@mail.gmail.com&gt;<br />
+      
+        References: &lt;CAHu+Kg5k6JD-MUYF1F7w+mpi4uzU6W4yq83subD_RGEDQDDFmg@mail.gmail.com&gt;<br />
+      
+        From: Александр Артамохов &lt;alexar76@rambler.ru&gt;<br />
+      
+        To: dawn@ietf.org, jbu@google.com<br />
+      
+        Content-Transfer-Encoding: 7bit<br />
+      
+        X-Mailer: Rambler Compose (2.9.2), https://mail.rambler.ru<br />
+      
+        Content-Type: multipart/alternative; boundary=&quot;==bound.0.63681858149253d779a75e6bf123f25c.mail.rambler.ru==&quot;<br />
+      
+        X-Spamd-Bar: ----------------------<br />
+      
+        Message-ID-Hash: 3WKVSBI5VF6B4IG7MGCLCDPASS5UZW7G<br />
+      
+        X-Message-ID-Hash: 3WKVSBI5VF6B4IG7MGCLCDPASS5UZW7G<br />
+      
+        X-MailFrom: alexar76@rambler.ru<br />
+      
+        X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; loop; banned-address; emergency; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; digests; suspicious-header<br />
+      
+        X-Mailman-Version: 3.3.10<br />
+      
+        Precedence: list<br />
+      
+        Reply-To: Александр Артамохов &lt;alexar76@rambler.ru&gt;<br />
+      
+        Subject: [Dawn] Re: New drafts: Agentic Resource Discovery (ARD) - architecture, initial contact, and discovery<br />
+      
+        List-Id: &quot;The list is for discussion of the scope, use cases, requirements, and solutions for discovery of entities (e.g., tasks, AI agents, or endpoints) using IETF technologies.&quot; &lt;dawn.ietf.org&gt;<br />
+      
+        Archived-At: &lt;https://mailarchive.ietf.org/arch/msg/dawn/2zTrEQqFmZ2bbki3rs33CT8shVU&gt;<br />
+      
+        List-Archive: &lt;https://mailarchive.ietf.org/arch/browse/dawn&gt;<br />
+      
+        List-Help: &lt;mailto:dawn-request@ietf.org?subject=help&gt;<br />
+      
+        List-Owner: &lt;mailto:dawn-owner@ietf.org&gt;<br />
+      
+        List-Post: &lt;mailto:dawn@ietf.org&gt;<br />
+      
+        List-Subscribe: &lt;mailto:dawn-join@ietf.org&gt;<br />
+      
+        List-Unsubscribe: &lt;mailto:dawn-leave@ietf.org&gt;<br />
+      
+      </p>
+    </div>
+    <div class="msg-payload">
+      
+          <pre class="wordwrap">Junjie, all, We implemented the manifest and lookup parts on the AIMarket hubs we run, as another way into catalogues that otherwise speak our own protocol: /.well-known/ard.json, the &quot;ard&quot; link relation, POST /search, POST /explore and GET /agents, with publisher trustManifests under did:web. For example: <a href="https://modelmarket.dev/.well-known/ard.json" rel="nofollow">https://modelmarket.dev/.well-known/ard.json</a>. <a href="https://modelmarket.dev/.well-known/ard.json" rel="nofollow">https://modelmarket.dev/.well-known/ard.json</a>. How our catalogue maps onto ARD entries: <a href="https://github.com/alexar76/aimarket-hub/blob/main/docs/ard.md" rel="nofollow">https://github.com/alexar76/aimarket-hub/blob/main/docs/ard.md</a>. <a href="https://github.com/alexar76/aimarket-hub/blob/main/docs/ard.md" rel="nofollow">https://github.com/alexar76/aimarket-hub/blob/main/docs/ard.md</a>. Some notes from doing that: 1. The CDDL in section 5 of draft-bu-dawn-ard-discovery-00 does not compile with the cddl tool: it redefines &quot;any&quot; and &quot;null&quot;, which the RFC 8610 prelude already defines. With those lines removed, and the url/data group choice written as two map alternatives (the tool stops on it inside the entry map), our manifest, a list page, a search request and a search response validate. Because of the open &quot;* tstr =&gt; any&quot; member, the CDDL cannot express that an entry carries exactly one of url and data. 2. Prose and CDDL differ on what is required: the trustManifest &quot;subject&quot; and &quot;signature&quot; are MUST in section 3.5 and optional in the CDDL, and &quot;query.text&quot; is MUST for /search (4.2.2.1) but optional in &quot;query-model&quot;. 3. The DNS owner names differ between the documents: initial-contact 4.2.1 uses <a href="http://_index._agents.example.com" rel="nofollow">_index._agents.example.com</a>, while discovery 4.1 refers to _entries._agents and _search._agents. 4. &quot;Detached JWS&quot; could say whether the payload enters the signing input base64url-encoded (RFC 7515, Appendix F) or unencoded (RFC 7797, b64=false). A test vector would settle it. We used Appendix F. 5. ES256 is mandatory to implement. A publisher whose key is Ed25519 signs with EdDSA, and an ES256-only verifier will reject it. Making EdDSA (RFC 8037) mandatory to implement as well would spare such publishers a second key. 6. (identifier, version) is the deduplication key, but &quot;version&quot; is optional and rarely moves in practice: in our records of public MCP servers, 81.3% of tool-definition changes kept the same serverInfo.version <a href="https://histor.modelmarket.dev/datasets/mcp-protocol-eras-2026-11-01/" rel="nofollow">https://histor.modelmarket.dev/datasets/mcp-protocol-eras-2026-11-01/</a>) <a href="https://histor.modelmarket.dev/datasets/mcp-protocol-eras-2026-11-01/" rel="nofollow">https://histor.modelmarket.dev/datasets/mcp-protocol-eras-2026-11-01/</a>) The digest is the reliable change signal and might deserve a SHOULD. 7. GET /agents: the response body and the filter syntax in the query string are not specified. We return {&quot;entries&quot;: [...], &quot;nextPageToken&quot;: ...} and read a repeated parameter as OR. 8. search-result-item has no version member, while a signed result&#x27;s trustManifest subject includes version and section 3.5.1 has verifiers match the subject against the entry. A registry that returns only the listed members leaves its signed results unverifiable; we ran into this in our first deployment. Adding &quot;? version&quot; to search-result-item would close it. Aleksandr Artamokhov
+03.11.2026, 22:23, Junjie Bu &lt; mailto:jbu=40google.com@dmarc.ietf.org <a href="mailto:jbu%3D40google.com@dmarc.ietf.org">jbu=40google.com@dmarc.ietf.org</a> &gt;
+Hi, We have submitted a set of drafts documenting an open framework, Agentic Resource Discovery (ARD), for publishing and discovering agent capabilities (such as MCP servers, additional agents, skills, plugins, and APIs) across diverse networks:
+</pre>
+
+      
+    </div>
+    <div>
+      
+    </div>
+</div> <!-- msg-body -->
+
+
+
+
+            <div id="message-thread">
+
+        
+<ul class="thread-snippet">
+
+    <li class="depth-0"><a href="/arch/msg/dawn/6PAuYWoAtcq0vO-PztlxQmfZ5qQ/">[Dawn] New drafts: Agentic Resource Discovery (AR…</a>&nbsp;&nbsp;Junjie Bu</li>
+
+    <li class="depth-1"><a href="/arch/msg/dawn/EInPLeuJXvQhWcyrj-pka2gkNws/">[Dawn] Re: New drafts: Agentic Resource Discovery…</a>&nbsp;&nbsp;Aijun Wang</li>
+
+    <li class="depth-1 current-msg"><a href="/arch/msg/dawn/2zTrEQqFmZ2bbki3rs33CT8shVU/">[Dawn] Re: New drafts: Agentic Resource Discovery…</a>&nbsp;&nbsp;Александр Артамохов</li>
+
+</ul>
+
+
+      </div> <!-- message-thread -->
+
+
+      <div class="d-flex justify-content-center">
+        <ul id="navigation" class="list-inline">
+          <li class="list-inline-item">
+            <a id="toggle-nav" class="toggle js-off" href="#">Hide Navigation Bar</a>
+          </li>
+          
+        </ul>
+      </div>
+          
+    </div> <!-- msg-detail -->
+
+    <div class="msg-aside col-md-4"></div>
+</div> <!-- row -->
+
+    <div class="btn-toolbar msg-detail-toolbar" role="toolbar" aria-label="...">
+    <div class="btn-group" role="group" aria-label="...">
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/EInPLeuJXvQhWcyrj-pka2gkNws/">
+      
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </a>
+      <a class="btn btn-default" href="">Date</a>
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/8G4r8r_8VxkKc4VQ-TAZmaC2eDA/">
+      
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/EInPLeuJXvQhWcyrj-pka2gkNws/">
+      
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </a>
+      <a class="btn btn-default" href="">Thread</a>
+      
+        <a class="btn btn-default" href="/arch/msg/dawn/8G4r8r_8VxkKc4VQ-TAZmaC2eDA/">
+      
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </a>
+    </div>
+    
+</div>
+
+
+
+    <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary rounded shadow-sm navbar-msg-detail my-2">
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#id-navbar-bottom" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-detail px-5" id="id-navbar-bottom">
+      <ul class="navbar-nav">
+        <li class="nav-item" title="Previous by date">
+          
+            <a class="nav-link previous-in-list" href="/arch/msg/dawn/EInPLeuJXvQhWcyrj-pka2gkNws/" aria-label="previous in list">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Date Index">
+          <a class="nav-link date-index" href="/arch/browse/dawn/?index=2zTrEQqFmZ2bbki3rs33CT8shVU">Date</a>
+        </li>
+        <li class="nav-item" title="Next by date">
+          
+            <a class="nav-link next-in-list" href="/arch/msg/dawn/8G4r8r_8VxkKc4VQ-TAZmaC2eDA/" aria-label="next in list">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Previous in thread">
+          
+            <a class="nav-link previous-in-thread" href="/arch/msg/dawn/EInPLeuJXvQhWcyrj-pka2gkNws/" aria-label="previous in thread">
+          
+            <span class="fa fa-chevron-left" aria-hidden="true"></span>
+            </a>
+        </li>
+        <li class="nav-item" title="Thread Index">
+          <a class="nav-link thread-index" href="/arch/browse/dawn/?gbt=1&amp;index=2zTrEQqFmZ2bbki3rs33CT8shVU">Thread</a>
+        </li>
+        <li class="nav-item" title="Next in thread">
+          
+            <a class="nav-link next-in-thread" href="/arch/msg/dawn/8G4r8r_8VxkKc4VQ-TAZmaC2eDA/" aria-label="next in thread">
+          
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+            </a>
+        </li>
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+
+</div>
+
+
+    </div>
+    <!-- END Content -->
+
+
+    
+  
+    
+  <div class="footer bg-body scrolling">
+      <p class="small text-center">v2.46.0 | <a href="https://github.com/ietf-tools/mailarch/issues">Report a Bug</a> | <a href="mailto:tools-help@ietf.org">By Email</a> | <a href="https://status.ietf.org">System Status</a></p>
+  </div>
+
+  
+
+
+</div> <!-- END Container -->
+
+
+
+<script src="https://static.ietf.org/mailarchive/2.46.0/jquery/js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="https://static.ietf.org/mailarchive/2.46.0/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/jquery.cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/js/base.js"></script>
+
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/jquery.cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="https://static.ietf.org/mailarchive/2.46.0/mlarchive/js/detail.js"></script>
+
+
+<!-- debug_toolbar_here -->
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a58215923a150e7f',t:'MTc5NDI4MjUzNA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a58215923a150e7f',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

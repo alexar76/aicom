@@ -1,0 +1,90 @@
+{
+  "type": "histor.dataset/v1",
+  "log": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+  "createdAt": "2026-11-02T07:20:03Z",
+  "license": "CC-BY-4.0",
+  "source": "https://histor.modelmarket.dev",
+  "code": "https://github.com/alexar76/histor",
+  "treeHead": {
+    "type": "histor.sth/v1",
+    "log": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+    "treeSize": 1490816,
+    "rootHash": "1a309bf33a0b8b260897f22253c57e4b138f332830ee8028b23c5e4da7aabb33",
+    "timestamp": "2026-11-02T07:19:59Z",
+    "signature": {
+      "alg": "Ed25519",
+      "verificationMethod": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9#z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+      "value": "bXHe36etzAvY_bPssx0IH5KOeswi-aosnqU3NNAOYLBgbpYNhDT-XJPEhfNzTTnP2dgxxECjI5GtkLwQUX5iBQ"
+    }
+  },
+  "patternSet": "sha256-BvMTyitbcexoJohv9INjLQFti2oFQbRNhSB+eeR3uMc=",
+  "recordSet": "sha256-7LgXbxguRZSl7MIjtOu9nWxO334xSrkrRPl4SQTIf5k=",
+  "changesFrom": "2026-09-24T10:53:44Z",
+  "changesUntil": "2026-11-02T07:19:57Z",
+  "changeVersions": true,
+  "counts": {
+    "listed": 90863,
+    "delisted": 6060,
+    "pinned": 47016,
+    "everChanged": 15082,
+    "blockTier": 982,
+    "adviseOnly": 18480,
+    "packages": 53270,
+    "remote": 37593
+  },
+  "files": {
+    "servers.jsonl.gz": {
+      "sha256": "fc9759a4166f7c1241ae8c40a7f9aa8aad1d1404bebd9802a7e2b7c409cddc68",
+      "bytes": 21166266,
+      "rows": 96923
+    },
+    "toolsets.jsonl.gz": {
+      "sha256": "2a3e516b1ab5487e17c6ba12cfdeb1fd70eff33d493c26edd9c32b00841ed25f",
+      "bytes": 1053935439,
+      "rows": 90641
+    },
+    "changes.jsonl.gz": {
+      "sha256": "9c90605fe9fa935d339e4959889d2bceff570088f8eebb25866ae0ab0bb3eef0",
+      "bytes": 56543429,
+      "rows": 53159
+    },
+    "scans.jsonl.gz": {
+      "sha256": "304f7797d9dc625b2ce03130040f4c0ded51e301a34a7545ba439161ab8afdf8",
+      "bytes": 754086,
+      "rows": 11069
+    },
+    "classifications.jsonl.gz": {
+      "sha256": "b7ddf9d948e4691fae380f30b809cfefafd700c32436d5f3844d29fded8972ab",
+      "bytes": 233463,
+      "rows": 4195
+    },
+    "tool_extras.jsonl.gz": {
+      "sha256": "37ee4fcec4233c8aa261544632793a877430e45028c8f37fbeaa2df5f7610ca5",
+      "bytes": 40578099,
+      "rows": 95178
+    },
+    "extras_changes.jsonl.gz": {
+      "sha256": "66fa0a1f1334e9dd901f1f601bb1d97c444d489b1e5a42555ba821a6e072817e",
+      "bytes": 8022911,
+      "rows": 74812
+    },
+    "package_observations.jsonl.gz": {
+      "sha256": "f2d5c17b0eecabccda1752836c4ed906af46444fa3231c432b7522064e60e8a8",
+      "bytes": 15152129,
+      "rows": 171834
+    },
+    "pattern-set.json": {
+      "sha256": "cc281951922f3654c82bd5332249e0f05fff55ed780f62a7bc14b704d3905056",
+      "bytes": 19437
+    },
+    "record-set.json": {
+      "sha256": "31c46efdcbcbae5ab8b5c9c1019138bfe052e8eaae98b6866d61a47d6ae1cb22",
+      "bytes": 2357
+    }
+  },
+  "signature": {
+    "alg": "Ed25519",
+    "verificationMethod": "did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9#z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9",
+    "value": "MvAWgVcz-drMkO3MlyeQsUr0uf8eCPGWlzP9An48ej6hECi_SzOiuCsRBVI4uziE__I7uQ-Od27gLav9vOi7BQ"
+  }
+}

@@ -1,0 +1,63 @@
+Baseline module verified from isolated rejected-commit snapshot
+FFF...F.                                                                 [100%]
+=================================== FAILURES ===================================
+_ test_opted_in_legacy_loopback_cannot_borrow_gateway_authority[http://127.0.0.1:9123/private-127.0.0.1] _
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_publish_network_boundary.py:157: in test_opted_in_legacy_loopback_cannot_borrow_gateway_authority
+    assert requests[0].url.host == host
+E   AssertionError: assert 'operator-provider' == '127.0.0.1'
+E     
+E     - 127.0.0.1
+E     + operator-provider
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:299 NEW Ed25519 signing key generated at /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-29/test_opted_in_legacy_loopback_0/key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+WARNING  aimarket_hub.api:api.py:400 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+_ test_opted_in_legacy_loopback_cannot_borrow_gateway_authority[http://localhost:9123/private-127.0.0.1] _
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_publish_network_boundary.py:157: in test_opted_in_legacy_loopback_cannot_borrow_gateway_authority
+    assert requests[0].url.host == host
+E   AssertionError: assert 'operator-provider' == '127.0.0.1'
+E     
+E     - 127.0.0.1
+E     + operator-provider
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:299 NEW Ed25519 signing key generated at /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-29/test_opted_in_legacy_loopback_1/key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+WARNING  aimarket_hub.api:api.py:400 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+_ test_opted_in_legacy_loopback_cannot_borrow_gateway_authority[http://[::1]:9123/private-::1] _
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_publish_network_boundary.py:157: in test_opted_in_legacy_loopback_cannot_borrow_gateway_authority
+    assert requests[0].url.host == host
+E   AssertionError: assert 'operator-provider' == '::1'
+E     
+E     - ::1
+E     + operator-provider
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:299 NEW Ed25519 signing key generated at /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-29/test_opted_in_legacy_loopback_2/key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+WARNING  aimarket_hub.api:api.py:400 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+_____ test_opted_in_loopback_does_not_follow_gateway_redirect_or_use_proxy _____
+/Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_publish_network_boundary.py:204: in test_opted_in_loopback_does_not_follow_gateway_redirect_or_use_proxy
+    assert captured[0].url.host == "127.0.0.1"
+E   AssertionError: assert 'operator-provider' == '127.0.0.1'
+E     
+E     - 127.0.0.1
+E     + operator-provider
+------------------------------ Captured log call -------------------------------
+WARNING  aimarket_hub.signing:signing.py:299 NEW Ed25519 signing key generated at /private/var/folders/42/89nwyc990vb88p11gks6gvt80000gn/T/pytest-of-alex/pytest-29/test_opted_in_loopback_does_no0/key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+WARNING  aimarket_hub.api:api.py:400 [crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+=============================== warnings summary ===============================
+../../../../../../../Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/config/__init__.py:1309
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/_pytest/config/__init__.py:1309: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+../../../../../../../Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../../../../../../../Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py:53
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/.venv-quality/lib/python3.12/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED ../../../../../../../Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_publish_network_boundary.py::test_opted_in_legacy_loopback_cannot_borrow_gateway_authority[http://127.0.0.1:9123/private-127.0.0.1]
+FAILED ../../../../../../../Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_publish_network_boundary.py::test_opted_in_legacy_loopback_cannot_borrow_gateway_authority[http://localhost:9123/private-127.0.0.1]
+FAILED ../../../../../../../Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_publish_network_boundary.py::test_opted_in_legacy_loopback_cannot_borrow_gateway_authority[http://[::1]:9123/private-::1]
+FAILED ../../../../../../../Users/alex/Desktop/ai_tests/aicompany/aicom/aimarket-hub/tests/test_publish_network_boundary.py::test_opted_in_loopback_does_not_follow_gateway_redirect_or_use_proxy
+4 failed, 4 passed, 26 deselected, 3 warnings in 1.71s

@@ -1,0 +1,62 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About ScraperWatch</title><meta name="description" content="Who runs ScraperWatch and how it is funded."><link rel="canonical" href="https://scraperwatch.com/about/"><link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="ScraperWatch" href="/feed.xml">
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--muted:#6b6a65;--line:#e4e1d8;--accent:#1f6f5c;--warn:#a3471d;--card:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--fg:#ecebe6;--muted:#a09e96;--line:#2c2b28;--accent:#5fc3a6;--warn:#e38b5d;--card:#1b1b19}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--accent)}header,main,footer{max-width:1080px;margin:0 auto;padding:0 16px}
+header{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline;padding-top:20px;padding-bottom:8px;border-bottom:1px solid var(--line)}header nav{display:flex;flex-wrap:wrap;gap:4px 14px}
+header a.brand{font-weight:700;font-size:20px;color:var(--fg);text-decoration:none}header nav a{font-size:14px}
+h1{font-size:28px;line-height:1.2;margin:28px 0 8px}h2{font-size:20px;margin:32px 0 8px}.lede{color:var(--muted);max-width:760px}
+.wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+#api-daily-history table{min-width:650px}#api-daily-history th,#api-daily-history td{white-space:normal}
+#api-daily-history th:first-child{min-width:160px}#api-daily-history summary{cursor:pointer;padding:8px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal;min-width:220px}.picks td{text-align:left;white-space:normal;min-width:180px}th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:var(--bg)}
+#store-history-excerpt table{min-width:680px}#store-history-excerpt thead th{white-space:normal}
+#store-history-excerpt tbody th{text-transform:none;letter-spacing:normal;font-size:14px;color:inherit;background:transparent;font-weight:400;overflow-wrap:anywhere}
+tr:last-child td{border-bottom:0}.muted{color:var(--muted)}.bad{color:var(--warn);font-weight:600}.tag{font-size:11px;border:1px solid var(--line);border-radius:4px;padding:1px 5px;margin-left:6px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:12px 0}
+.card{border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--card);text-decoration:none;color:var(--fg)}.card b{display:block}.card span{font-size:13px;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding:4px 12px;margin:16px 0}
+.billing-unit{display:block;min-width:160px;max-width:220px;white-space:normal;overflow-wrap:anywhere;text-align:left;font-size:12px;color:var(--muted)}
+.billing-unit summary{cursor:pointer}.billing-unit ul{margin:4px 0;padding-left:16px}
+[hidden]{display:none!important}
+.shortlist-choice{display:block;font-size:13px;margin-top:6px;cursor:pointer}
+.shortlist-choice input{width:18px;height:18px;vertical-align:middle}
+.shortlist-table{width:auto}.shortlist-table th,.shortlist-table td{text-align:left;white-space:normal;min-width:190px;max-width:260px;overflow-wrap:anywhere;vertical-align:top}
+.shortlist-table th:first-child{min-width:125px;max-width:145px}
+.shortlist-table button{display:block;margin-top:8px}button,input,select{font:inherit}button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,.wrap:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.target-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:16px 0}.target-filters label{display:flex;flex-direction:column;gap:4px;max-width:100%}.target-filters input,.target-filters select{max-width:100%;width:240px;padding:6px}.target-filters input[type="checkbox"]{width:20px;height:20px;align-self:flex-start}.target-filters button{padding:6px 12px}.target-filters p{flex-basis:100%;margin:0}
+.target-finder{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:20px 0}.target-finder label{display:flex;flex-direction:column;gap:4px;width:360px;max-width:100%;min-width:0}.target-finder input{width:100%;min-width:0;padding:8px}.target-finder button{padding:8px 12px;min-height:44px}.target-finder p{flex-basis:100%;margin:0}.target-az{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;padding:0}.target-az li{max-width:100%;overflow-wrap:anywhere}
+.target-jumps{display:flex;flex-wrap:wrap;gap:8px 18px;margin:16px 0}.target-jumps a{padding:6px 0}
+.target-jumps a:focus-visible,[tabindex="-1"]:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.buying-paths a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.target-sort-button{color:inherit;background:transparent;border:1px solid currentColor;border-radius:4px;padding:6px;text-align:inherit}.target-sort-button:focus-visible{outline:3px solid #1769aa;outline-offset:3px}
+.pair-choice,.alternative-pair{display:block;margin-top:8px}.pair-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.pair-card{min-width:0;border:1px solid var(--muted);border-radius:6px;padding:12px;overflow-wrap:anywhere}.pair-card h3{margin-top:0}.pair-card dt{font-weight:bold;margin-top:10px}.pair-card dd{margin:3px 0}.pair-card a{white-space:normal}.pair-card dl{font-size:14px}
+.trend{display:block;margin-left:auto;color:var(--accent)}
+.quick-answer{border:1px solid var(--accent);border-radius:8px;padding:4px 16px 8px;margin:16px 0;background:var(--card)}.quick-answer h2{margin:12px 0 4px;font-size:18px}.quick-answer li{margin:6px 0}
+#alt-answer{overflow-wrap:anywhere}#alt-answer p{margin:8px 0}#alt-answer .billing-unit{max-width:none}
+.how-to-read,.filter-help{margin:12px 0}.how-to-read summary,.filter-help summary{cursor:pointer;font-weight:600}
+.shortlist-share{width:100%;max-width:740px;font-size:14px}.shortlist-actions{margin:10px 0}
+footer{margin-top:48px;padding-top:16px;padding-bottom:40px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+</style></head><body>
+<header><a class="brand" href="/">ScraperWatch</a><nav><a href="/apis/">API benchmark</a><a href="/serp/">SERP</a><a href="/rag/">RAG</a><a href="/proxies/">Proxies</a><a href="/picks/">Usage &amp; reliability picks</a><a href="/rising/">Rising</a><a href="/changes/">Changes</a><a href="/data/">Data</a><a href="/badges/">Badges</a><a href="/methodology/">Methodology</a><a href="/about/">About</a></nav></header>
+<main><h1>About ScraperWatch</h1>
+<p>ScraperWatch exists because "best scraper" articles are mostly written by companies selling scrapers. We publish the numbers instead.</p>
+<p>ScraperWatch is an independent project. Every number is produced by code from public data; nothing here is hand-picked. Contact: <a href="mailto:hello@scraperwatch.com">hello@scraperwatch.com</a>.</p>
+<h2 id="operator">How rankings are made</h2>
+<p>Rankings are computed automatically from public statistics and our own scheduled measurements, using the published <a href="/methodology/">methodology</a>. No one hand-picks winners, and placement is never for sale. Corrections are welcome at the address above.</p>
+<h2 id="disclosure">Affiliate disclosure</h2>
+<p>Some links to tools and services are affiliate links: if you sign up and pay, we may earn a commission at no cost to you. Our complete list of affiliate relationships: Apify (Store tool links), Firecrawl (RAG benchmark), ScraperAPI (scraping-API benchmark and SERP calculator), ScrapingAnt (scraping-API and RAG benchmarks, from 2026-10-27), Scrapingdog (scraping-API benchmark and SERP calculator, from 2026-10-27), Webshare (proxy comparison) and Zyte. Among the scraping APIs in our daily benchmark, ScraperAPI, ScrapingAnt and Scrapingdog are affiliate partners; we have no commercial relationship with ScrapingBee, other than ScrapingBee providing 25,000 free API credits for the benchmarks on 2026-10-26 (no payment, and no effect on settings, scoring or publication). Affiliate relationships never affect rankings, inclusion or measurements; rankings are computed from data only and are never paid for.</p>
+<p>We may sell private benchmark data to vendors; this never affects public rankings or inclusion.</p>
+<h2 id="privacy">Privacy</h2>
+<p>We ask for no personal data and set no cookies. Our web server keeps a technical log (including IP addresses) for up to 14 days, for security and to count visits. A small counter records the page viewed and where the visit came from; once per page view, after you tap, type or scroll and the page has been open for at least 5 seconds, a small request to our own server records that the page was actually used. It sets no cookie and names only the page. Tracked outbound links go through <code>/go/</code> on this site. Contact: ops@scraperwatch.com.</p>
+<h2 id="data-terms">Data terms</h2>
+<p>Store data (usage, runs, prices, ratings; <a href="/data/">/data/</a> downloads and history): Source: public Apify Store API. Underlying data may be subject to Apify&#x27;s terms; ScraperWatch grants no additional licence. You may cite this page with attribution to ScraperWatch.</p>
+<p>Our own first-hand benchmark measurements (<a href="/apis/">scraping APIs</a>, <a href="/rag/">RAG extractors</a>) are <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; credit "ScraperWatch" with a link.</p></main>
+<footer>Data from the official Apify Store API, refreshed daily. Last update: 2026-11-10 03:28 UTC.
+Some links are affiliate links; rankings are computed from data only and never paid for. <a href="/about/#disclosure">Disclosure</a>.
+<br>ScraperWatch is an independent project. <a href="/sites/">All websites A–Z</a>.</footer>
+<script>try{navigator.sendBeacon("/b?p="+encodeURIComponent(location.pathname)+"&r="+encodeURIComponent(document.referrer)+"&u="+encodeURIComponent(new URLSearchParams(location.search).get("utm_source")||""))}catch(e){}</script><script>(function(){var start=Date.now(),armed=false;function send(){try{navigator.sendBeacon("/b?event=engaged&p="+encodeURIComponent(location.pathname))}catch(e){}}function gesture(e){if(!e.isTrusted||armed)return;if(e.type==="scroll"&&Date.now()-start<500)return;armed=true;setTimeout(send,Math.max(0,5000-(Date.now()-start)))}["pointerdown","keydown","scroll"].forEach(function(t){addEventListener(t,gesture,{capture:true,passive:true})})})();</script></body></html>

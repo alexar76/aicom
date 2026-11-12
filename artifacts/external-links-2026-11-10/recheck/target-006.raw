@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write - DEV Community</title>
+    
+    <link rel="preload" href="/reactions?article_id=4961950" as="fetch" crossorigin="same-origin">
+    <link rel="canonical" href="https://modelmarket.dev/blog/331-mcp-tool-list-changes-only-moved-a-date/" />
+    <meta name="description" content="Of 10,712 tool-definition changes HISTOR recorded in a week, 331 changed nothing but a date or a timestamp. Where those dates come from, and where they belong instead. Tagged with mcp, ai, llm, performance.">
+    <meta name="keywords" content="mcp, ai, llm, performance, software, coding, development, engineering, inclusive, community">
+
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2" />
+    <meta property="og:title" content="We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write" />
+    <meta property="og:description" content="Of 10,712 tool-definition changes HISTOR recorded in a week, 331 changed nothing but a date or a timestamp. Where those dates come from, and where they belong instead." />
+    <meta property="og:site_name" content="DEV Community" />
+    <meta name="twitter:site" content="@thepracticaldev">
+    <meta name="twitter:creator" content="@build_ai_infra">
+    <meta name="author-trust" content="1">
+    <meta name="twitter:title" content="We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write">
+    <meta name="twitter:description" content="Of 10,712 tool-definition changes HISTOR recorded in a week, 331 changed nothing but a date or a timestamp. Where those dates come from, and where they belong instead.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:widgets:new-embed-design" content="on">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+      <meta property="og:image" content="https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2F331-mcp-tool-list-changes-only-moved-a-date%2Fcover.webp" />
+      <meta name="twitter:image:src" content="https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2F331-mcp-tool-list-changes-only-moved-a-date%2Fcover.webp">
+
+      <meta name="last-updated" content="2026-11-10 18:07:41 UTC">
+      <meta name="user-signed-in" content="false">
+      <meta name="head-cached-at" content="1794334061">
+      <meta name="environment" content="production">
+      <link rel="stylesheet" href="https://assets.dev.to/assets/minimal-7159cf3bbf06a194ecd4289552407874be2a6ab3d6d0218346363b70d1ec255f.css" media="all" id="main-minimal-stylesheet" />
+<link rel="stylesheet" href="https://assets.dev.to/assets/views-f0fe4fb47d419abc949a43abed35604ea7ac9f258085b0368e4841033cd26a3e.css" media="all" id="main-views-stylesheet" />
+<link rel="stylesheet" href="https://assets.dev.to/assets/crayons-08ce12ab8de9d434694954ab91d00f01cfec7749cb4753f53208a49d9b51a4a4.css" media="all" id="main-crayons-stylesheet" />
+
+      <script src="https://assets.dev.to/assets/base-ae9609fe694623e37d5a9f7bbbae7575a1454a04a5e2c6c6526e190ee8628d24.js" defer="defer"></script>
+<script src="https://assets.dev.to/assets/application-6f9b199879bf5dad71ab3b558249163bc266598ab4c3167ac230b28f72450290.js" defer="defer"></script>
+<script src="https://assets.dev.to/assets/baseInitializers-156019861c82585affd356f74e4e754ff9bce9772a8721b6fb10b17289a22cb9.js" defer="defer"></script>
+<script src="https://assets.dev.to/assets/baseTracking-72a6d524cdf9aea517a8bbc18f8e57c791fd563c348bbfc9428a31d39ae4054e.js" defer="defer"></script>
+<script src="https://assets.dev.to/assets/followButtons-e7a4331aaa997af8cf78beb02dd628699cbd4b2fb83a0bfb7d37d128040de79e.js" defer="defer"></script>
+        <script src="https://assets.dev.to/assets/commentsPage-fd7ddd41d1f79507290af2ee0c295be89b50d10646a4819883f1549deb5508d0.js" defer="defer" onerror="this.remove()"></script>
+
+      <meta name="search-script" content="https://assets.dev.to/assets/Search-0e88ff63a9b7e05eb67e959c8e8eb3624da7b8a4fabdb4e6f6085af9e6b44b1b.js">
+      <meta name="mermaid-script" content="https://assets.dev.to/assets/mermaidRenderer-2799dd717da288d72e5de9448cc9c0f0495ad4e3277ba9b7c0911fd32a8efcf3.js">
+      <meta name="comment-textarea-script" content="https://assets.dev.to/assets/CommentTextArea/CommentTextArea-ae635951afd0d4a9096043374b4badc3330081d34ff22616098b6c60a56305b0.js">
+      <meta name="emoji-picker-script" content="https://assets.dev.to/assets/emojiPicker-f1ccf65e87a71a92846fea8c6168f7a7cc6b15a47fa7f77347d874934b72e073.js">
+      <meta name="window-modal-script" content="https://assets.dev.to/assets/windowModal-a3b005c20eb280b83233bff77ea741424aac29784da05a22302dd0a295ba8b75.js">
+      <meta name="postscribe-script" content="https://assets.dev.to/assets/postscribeLoader-0fb4b2f1a50549aa032b2e85f385f3478f02c82a18145e3ad3db17040c111fcf.js">
+      <meta name="media-playback-script" content="https://assets.dev.to/assets/mediaPlayback-6d76127a0e6b16ecd77f2c36cf798bcf7a427aff776bcd8045ca89e48f09d072.js">
+        <meta name="honeybadger-script" content="https://assets.dev.to/assets/honeybadgerClient-bb9389813acef9b81e240b79f976f11e8b1135ad842a379cf5400fc6f4889422.js">
+      <meta name="comments-page-script" content="https://assets.dev.to/assets/commentsPage-fd7ddd41d1f79507290af2ee0c295be89b50d10646a4819883f1549deb5508d0.js">
+      <meta name="event-signup-buttons-script" content="https://assets.dev.to/assets/eventSignupButtons-d7be454dd15c446a3bd5f62b1ea9a91085c9a1c22e76fd9056002bb721293652.js">
+      <meta name="preact-runtime-script" content="https://assets.dev.to/assets/preactRuntime-e48bd49d9f5743c1a9e60b3f77263e3c3075109206abad022a47bd86240b9a33.js">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+      <link rel="icon" type="image/x-icon" href="https://media2.dev.to/dynamic/image/width=32,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+      <link rel="apple-touch-icon" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="https://media2.dev.to/dynamic/image/width=152,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <link rel="apple-touch-icon" sizes="167x167" href="https://media2.dev.to/dynamic/image/width=167,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <link href="https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="192x192" />
+      <link href="https://media2.dev.to/dynamic/image/width=128,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="128x128" />
+      <meta name="apple-mobile-web-app-title" content="dev.to">
+      <meta name="application-name" content="dev.to">
+      <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+      <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+      <link rel="search" href="https://dev.to/open-search.xml" type="application/opensearchdescription+xml" title="DEV Community" />
+
+      <link rel="describedby" href="https://dev.to/llms.txt" type="text/plain" title="Guidance for AI agents" />
+
+      <meta property="forem:name" content="DEV Community" />
+      <meta property="forem:logo" content="https://media2.dev.to/dynamic/image/width=512,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+      <meta property="forem:domain" content="dev.to" />
+    <style>
+body:has(.pageslug-aie) #topbar {
+    display: none !important;
+}
+
+@media screen and (max-width: 768px) and (pointer: coarse) {
+  /* Target WebKit/Blink specific behaviors */
+  @supports (-webkit-app-region: none) {
+    body:has(.pageslug-aie) .dc-page {
+      padding-top: 56px !important;
+    }
+  }
+}
+
+body:not(.hidden-shell) .pageslug-aie {
+    margin-top: -56px !important;
+}
+
+/* ==========================================================================
+   THE 418 CHALLENGE: THEME-AWARE RETRO EDITION
+   ========================================================================== */
+.articletag-418challenge {
+  font-family: "Comic Sans MS", "Chalkboard SE", "Marker Felt", sans-serif !important;
+  cursor: crosshair !important;
+}
+
+/* Destroy modern rounded corners and add brutal borders */
+.articletag-418challenge .crayons-card,
+.articletag-418challenge .crayons-article__main,
+.articletag-418challenge .crayons-article__header {
+  border-radius: 0 !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Typography specifics */
+.articletag-418challenge h1,
+.articletag-418challenge h2,
+.articletag-418challenge h3 {
+  text-transform: uppercase !important;
+}
+
+/* Fake <marquee> effect for the main article title */
+.articletag-418challenge h1.fs-3xl {
+  animation: retro-slide 5s linear infinite alternate;
+  overflow: visible;
+}
+
+/* Spin those avatars */
+.articletag-418challenge .crayons-article__header__meta img {
+  border-radius: 0 !important; 
+  animation: retro-spin 5s linear infinite;
+}
+
+/* Obnoxious tags */
+.articletag-418challenge .crayons-tag {
+  border-radius: 0 !important;
+  font-weight: 900 !important;
+  transform: rotate(-3deg);
+  display: inline-block;
+}
+.articletag-418challenge .crayons-tag:nth-child(even) {
+  transform: rotate(3deg);
+}
+
+/* --------------------------------------------------------------------------
+   2. LIGHT THEME (Windows 95 / Office 97 Vibes)
+   -------------------------------------------------------------------------- */
+body:not(.dark-theme) .articletag-418challenge {
+  background-color: #008080 !important; /* Win95 Teal Desktop */
+}
+
+body:not(.dark-theme) .articletag-418challenge .crayons-card,
+body:not(.dark-theme) .articletag-418challenge .crayons-article__main,
+body:not(.dark-theme) .articletag-418challenge .crayons-article__header {
+  background-color: #c0c0c0 !important; /* Classic dialog gray */
+  color: #000000 !important;
+  border: 4px outset #ffffff !important;
+  box-shadow: 8px 8px 0px #000000 !important;
+}
+
+body:not(.dark-theme) .articletag-418challenge h1,
+body:not(.dark-theme) .articletag-418challenge h2,
+body:not(.dark-theme) .articletag-418challenge h3 {
+  color: #ff0000 !important;
+  text-shadow: 2px 2px 0px #ffff00 !important;
+  border-bottom: 3px dashed #0000ff !important;
+}
+
+body:not(.dark-theme) .articletag-418challenge a,
+body:not(.dark-theme) .articletag-418challenge .crayons-link {
+  color: #0000ff !important; /* Standard unvisited blue */
+  text-decoration: underline !important;
+  font-weight: bold !important;
+}
+
+body:not(.dark-theme) .articletag-418challenge a:hover,
+body:not(.dark-theme) .articletag-418challenge .crayons-link:hover {
+  background-color: #ffff00 !important;
+  color: #ff0000 !important;
+}
+
+body:not(.dark-theme) .articletag-418challenge .crayons-tag {
+  background: #ffff00 !important;
+  color: #ff0000 !important;
+  border: 2px dotted #0000ff !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. DARK THEME (1999 Hacker / Deep GeoCities Vibes)
+   -------------------------------------------------------------------------- */
+body.dark-theme .articletag-418challenge {
+  background-color: #000000 !important;
+  /* Dumb CSS: A scrolling, eye-bleeding neon green hacker grid with CRT scanlines */
+  background-image: 
+    linear-gradient(transparent 50%, rgba(0, 255, 0, 0.25) 50%), 
+    linear-gradient(90deg, rgba(0, 255, 0, 0.5) 1px, transparent 1px), 
+    linear-gradient(rgba(0, 255, 0, 0.5) 1px, transparent 1px) !important;
+  background-size: 100% 4px, 20px 20px, 20px 20px !important;
+  animation: retro-pan 60s linear infinite !important;
+}
+
+body.dark-theme .articletag-418challenge .crayons-card,
+body.dark-theme .articletag-418challenge .crayons-article__main,
+body.dark-theme .articletag-418challenge .crayons-article__header {
+  background-color: #111111 !important;
+  color: #00ff00 !important; /* Terminal Green */
+  border: 4px outset #555555 !important;
+  box-shadow: 8px 8px 0px #ff00ff !important; /* Hot pink shadow */
+}
+
+body.dark-theme .articletag-418challenge h1,
+body.dark-theme .articletag-418challenge h2,
+body.dark-theme .articletag-418challenge h3 {
+  color: #ff00ff !important; /* Magenta headers */
+  text-shadow: 2px 2px 0px #00ffff !important; /* Cyan shadow */
+  border-bottom: 3px dashed #00ff00 !important;
+}
+
+body.dark-theme .articletag-418challenge a,
+body.dark-theme .articletag-418challenge .crayons-link {
+  color: #00ffff !important; /* Cyan links */
+  text-decoration: underline !important;
+  font-weight: bold !important;
+}
+
+body.dark-theme .articletag-418challenge a:hover,
+body.dark-theme .articletag-418challenge .crayons-link:hover {
+  background-color: #ff00ff !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .articletag-418challenge .crayons-tag {
+  background: #000000 !important;
+  color: #00ff00 !important;
+  border: 2px dotted #ff00ff !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. ANIMATIONS
+   -------------------------------------------------------------------------- */
+@keyframes retro-spin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes retro-slide {
+  0% { transform: translateX(-2%); }
+  100% { transform: translateX(2%); }
+}
+
+@keyframes retro-pan {
+  0% { background-position: 0 0, 0 0, 0 0; }
+  /* Numbers must be multiples of the background-size (4px and 20px) to loop perfectly */
+  100% { background-position: 0 100px, 40px 40px, 40px 40px; }
+}
+
+/* --------------------------------------------------------------------------
+   5. BONUS: CAUTION TAPE REACTION BAR
+   -------------------------------------------------------------------------- */
+.articletag-418challenge .crayons-article-actions {
+  background: repeating-linear-gradient(
+    45deg,
+    #ffff00,
+    #ffff00 10px,
+    #000000 10px,
+    #000000 20px
+  ) !important;
+  border: 4px solid #ff0000 !important;
+  border-radius: 0 !important;
+}
+
+.articletag-418challenge .crayons-article-actions button {
+  background:black;
+  color: #ff00ff !important;
+}
+
+.articletag-418challenge .crayons-article-actions .crayons-reaction__count {
+    color: #ff00ff !important;
+    font-weight: bold !important;
+}
+
+.articletag-418challenge .crayons-icon:not(.crayons-icon--default) * {
+    fill: #ffff00 !important;
+}
+
+.articletag-418challenge .c-embed .crayons-btn--primary {
+  color: #00ff00 !important;
+}
+
+.articletag-418challenge .popover-billboard {
+margin-bottom: 0 !important;
+}
+
+.crayons-story__contentpreview .ltag__link--embedded {
+margin-top: 0 !important;
+}
+
+.subscription-icon {
+    max-height: 16px !important;
+    display: inline-block !important;
+}
+
+@media screen and (min-width: 950px) {
+    .event-show-layout {
+        margin-top: 24px !important;
+    }
+}
+
+@media screen and (max-width: 949px) {
+    .event-show-layout {
+        padding: 11px !important;
+    }
+}
+
+
+</style>
+  </head>
+    <body
+      class="sans-serif-article-body default-header"
+      data-user-status="logged-out"
+      data-is-root-subforem="false"
+        data-subforem-id="1"
+      data-side-nav-visible="false"
+      data-community-name="DEV Community"
+      data-subscription-icon="https://assets.dev.to/assets/subscription-icon-805dfa7ac7dd660f07ed8d654877270825b07a92a03841aa99a1093bd00431b2.png"
+      data-community-leader-icon="https://assets.dev.to/assets/community-leader-icon-b72c9e74eff54916e5c46c962f47ba40c9f611a71f8b157511f9613f69c0001b.svg"
+      data-locale="en"
+        data-honeybadger-key="hbp_nqu4Y66HuEKlD6YRGssZuRQnPOjDm50J8Zkr"
+      data-deployed-at="2026-11-10T17:52:30Z"
+      data-latest-commit-id="70ef98ef1468e2031e6d63abd487858601749595"
+      data-ga-tracking="UA-71991109-1"
+      data-cookie-banner-user-context="logged_out_only"
+      data-cookie-banner-platform-context="off"
+      data-algolia-id="PRSOBFP46H"
+      data-algolia-search-key="9aa7d31610cba78851c9b1f63776a9dd"
+      data-algolia-display="true"
+      data-dynamic-url-component="bmar11"
+      data-ga4-tracking-id="G-TYEM8Y3JN3"
+      data-global-feature-flags-enabled="data_update_scripts onboarding_newsletter_content schedule_articles moderator_role display_ad_tags replace_unicorn_with_jump_to_comments article_id_adjusted_weight cloudflare_preferred_for_hosted_images multiple_reactions subscriber_icon ab_experiment_feed_strategy use_stories_endpoint digest_subject_testing digest_results_count_testing consistent_rendering discover_and_following_tabs hero_billboard onboarding_drip_emails algolia_frontend hide_onboarding_task_card optimize_article_tag_query dev_core_user_sync personalized_email_digests customerio_email_delivery community_favorites"
+      data-style-fingerprint="000daeaddd">
+      
+      <script>
+        if (navigator.userAgent === 'ForemWebView/1' || window.frameElement) {
+          document.body.classList.add("hidden-shell");
+        }
+        window.Forem = window.Forem || {};
+        window.Forem.revealBillboardPlacement = window.Forem.revealBillboardPlacement || function (placementArea) {
+          (window.Forem.queuedBillboardPlacementReveals = window.Forem.queuedBillboardPlacementReveals || []).push(placementArea);
+        };
+          if (new Date() > new Date("2026-02-04T09:00:00-05:00")) {
+            document.body.dataset.sideNavVisible = "false";
+          } 
+      </script>
+
+      <link rel="stylesheet" href="https://assets.dev.to/assets/minimal-7159cf3bbf06a194ecd4289552407874be2a6ab3d6d0218346363b70d1ec255f.css" media="all" id="secondary-minimal-stylesheet" />
+<link rel="stylesheet" href="https://assets.dev.to/assets/views-f0fe4fb47d419abc949a43abed35604ea7ac9f258085b0368e4841033cd26a3e.css" media="all" id="secondary-views-stylesheet" />
+<link rel="stylesheet" href="https://assets.dev.to/assets/crayons-08ce12ab8de9d434694954ab91d00f01cfec7749cb4753f53208a49d9b51a4a4.css" media="all" id="secondary-crayons-stylesheet" />
+
+      <div id="body-styles">
+        <style>
+          :root {
+            --accent-brand-lighter-rgb: 86, 105, 285;
+            --accent-brand-rgb: 64, 78, 211;
+            --accent-brand-darker-rgb: 51, 62, 169;
+          }
+        </style>
+      </div>
+      <div id="audiocontent" data-podcast="">
+        
+      </div>
+      <div class="navigation-progress" id="navigation-progress"></div>
+
+<header id="topbar" class="crayons-header topbar print-hidden">
+  <span id="route-change-target" tabindex="-1"></span>
+  <a href="#main-content" class="skip-content-link">Skip to content</a>
+  <div class="crayons-header__container">
+    <span class="inline-block m:hidden ">
+      <button class="c-btn c-btn--icon-alone js-hamburger-trigger mx-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a2i492oxmjhs6zk1elojnrdo5wq43w1t" class="crayons-icon"><title id="a2i492oxmjhs6zk1elojnrdo5wq43w1t">Navigation menu</title>
+    <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z"></path>
+</svg>
+
+      </button>
+    </span>
+    <a href="/" class="site-logo" aria-label="DEV Community Home" >
+    <img class="site-logo__img"
+         src="https://media2.dev.to/dynamic/image/quality=100/https://dev-to-uploads.s3.amazonaws.com/uploads/logos/resized_logo_UQww2soKuUsjaOGNB38o.png"
+         style="aspect-ratio: 10 / 8"
+         alt="DEV Community">
+</a>
+
+
+    <div class="crayons-header--search js-search-form" id="header-search">
+      <form accept-charset="UTF-8" method="get" action="/search" role="search">
+        <div class="crayons-fields crayons-fields--horizontal">
+          <div class="crayons-field flex-1 relative">
+            <input id="search-input" class="crayons-header--search-input crayons-textfield js-search-input" type="text" id="nav-search" name="q" placeholder="Find related posts..." autocomplete="off" />
+            <button type="submit" aria-label="Search" class="c-btn c-btn--icon-alone absolute inset-px right-auto mt-0 py-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="afchlrwkj312q9c2zbahs3v5opt13gj" aria-hidden="true" class="crayons-icon"><title id="afchlrwkj312q9c2zbahs3v5opt13gj">Search</title>
+    <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0111 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 01-1.969 5.617zm-2.006-.742A6.977 6.977 0 0018 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 004.875-1.975l.15-.15z"></path>
+</svg>
+
+            </button>
+
+            <a class="crayons-header--search-brand-indicator" href="https://www.algolia.com/developers/?utm_source=devto&utm_medium=referral" target="_blank" rel="noopener noreferrer">
+                Powered by Algolia
+                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" width="24" height="24" viewBox="0 0 500 500.34" role="img" aria-labelledby="aybf2y8m3pgqx1lioiqw8qdj8byoonz" aria-hidden="true" class="crayons-icon"><title id="aybf2y8m3pgqx1lioiqw8qdj8byoonz">Search</title>
+  <defs></defs><path class="cls-1" d="M250,0C113.38,0,2,110.16,.03,246.32c-2,138.29,110.19,252.87,248.49,253.67,42.71,.25,83.85-10.2,120.38-30.05,3.56-1.93,4.11-6.83,1.08-9.52l-23.39-20.74c-4.75-4.22-11.52-5.41-17.37-2.92-25.5,10.85-53.21,16.39-81.76,16.04-111.75-1.37-202.04-94.35-200.26-206.1,1.76-110.33,92.06-199.55,202.8-199.55h202.83V407.68l-115.08-102.25c-3.72-3.31-9.43-2.66-12.43,1.31-18.47,24.46-48.56,39.67-81.98,37.36-46.36-3.2-83.92-40.52-87.4-86.86-4.15-55.28,39.65-101.58,94.07-101.58,49.21,0,89.74,37.88,93.97,86.01,.38,4.28,2.31,8.28,5.53,11.13l29.97,26.57c3.4,3.01,8.8,1.17,9.63-3.3,2.16-11.55,2.92-23.6,2.07-35.95-4.83-70.39-61.84-127.01-132.26-131.35-80.73-4.98-148.23,58.18-150.37,137.35-2.09,77.15,61.12,143.66,138.28,145.36,32.21,.71,62.07-9.42,86.2-26.97l150.36,133.29c6.45,5.71,16.62,1.14,16.62-7.48V9.49C500,4.25,495.75,0,490.51,0H250Z"></path>
+</svg>
+
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="flex items-center h-100 ml-auto">
+        <div class="flex" id="authentication-top-nav-actions">
+          <span class="hidden m:block">
+            <a href="/enter?signup_subforem=1" class="c-link c-link--block mr-2 whitespace-nowrap ml-auto" data-no-instant>
+              Log in
+            </a>
+          </span>
+
+          <a href="/enter?signup_subforem=1&amp;state=new-user" data-tracking-id="ca_top_nav" data-tracking-source="top_navbar" class="c-cta c-cta--branded whitespace-nowrap mr-2" data-no-instant>
+            Create account
+          </a>
+        </div>
+    </div>
+  </div>
+</header>
+
+<div class="hamburger">
+  <div class="hamburger__content">
+    <header class="hamburger__content__header">
+      <h2 class="fs-l fw-bold flex-1 break-word lh-tight">DEV Community</h2>
+
+      <button class="c-btn c-btn--icon-alone js-hamburger-trigger shrink-0" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="aa61xgnsol6ixidb3xa2ubdty11pghye" aria-hidden="true" class="crayons-icon c-btn__icon"><title id="aa61xgnsol6ixidb3xa2ubdty11pghye">Close</title><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636l4.95 4.95z"></path></svg>
+
+      </button>
+    </header>
+
+    <div class="p-2 js-navigation-links-container" id="authentication-hamburger-actions">
+    </div>
+  </div>
+  <div class="hamburger__overlay js-hamburger-trigger"></div>
+</div>
+
+
+      <div id="active-broadcast" class="broadcast-wrapper"></div>
+<div id="page-content" class="wrapper stories stories-show articletag-mcp articletag-ai articletag-llm articletag-performance articleuser-3927872" data-current-page="stories-show" data-preact-runtime-src="https://assets.dev.to/assets/preactRuntime-e48bd49d9f5743c1a9e60b3f77263e3c3075109206abad022a47bd86240b9a33.js">
+  <div id="page-content-inner" data-internal-nav="false" data-viewable-id="4961950" data-viewable-type="Article">
+    <div id="page-route-change" class="screen-reader-only" aria-live="polite" aria-atomic="true"></div>
+
+    
+<style>
+  .html-variant-wrapper { display: none}
+</style>
+
+
+
+<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-loader.js"
+        integrity="sha384-3HK5hxQbkFqOIxMbpROlRmRtYl2LBZ52t+tqcjzsmr9NJuOWQxl8RgQSyFvq2lhy"
+        crossorigin="anonymous" defer></script>
+
+  <script src="https://assets.dev.to/assets/webShare-38f916fbdd1159d0c1b10d09a2584278ae77bcd49967d1e221f22b03f7d22dec.js" defer="defer"></script>
+<script src="https://assets.dev.to/assets/articlePage-3dec3cd5e56457b0ed189e8ff1f16eb4ae38f6785ca1e4c27b4ed9c2dace112d.js" defer="defer"></script>
+<script src="https://assets.dev.to/assets/commentDropdowns-a31c2bd62e6c9bb2475080c0db1a16ca87e6ceed3aa1c837e1b8a6e8517573d5.js" defer="defer"></script>
+
+
+  <script type="application/ld+json">
+    {"@context":"http://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2"},"url":"https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2","image":["https://media2.dev.to/dynamic/image/width=1080,height=1080,fit=cover,gravity=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2F331-mcp-tool-list-changes-only-moved-a-date%2Fcover.webp","https://media2.dev.to/dynamic/image/width=1280,height=720,fit=cover,gravity=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2F331-mcp-tool-list-changes-only-moved-a-date%2Fcover.webp","https://media2.dev.to/dynamic/image/width=1600,height=900,fit=cover,gravity=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2F331-mcp-tool-list-changes-only-moved-a-date%2Fcover.webp"],"publisher":{"@context":"http://schema.org","@type":"Organization","name":"DEV Community","logo":{"@context":"http://schema.org","@type":"ImageObject","url":"https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png","width":"192","height":"192"}},"headline":"We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write","author":{"@context":"http://schema.org","@type":"Person","url":"https://dev.to/alexar76","name":"Alex"},"datePublished":"2026-11-03T03:00:00Z","dateModified":"2026-11-03T03:00:00Z","mainEntity":{"@type":"DiscussionForumPosting","@id":"#article-discussion-4961950","headline":"We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write","text":"\u003cp\u003eA reader of our last post, Paul Irolla, who builds a token optimizer for coding agents, pointed out something we had only looked at as a correctness problem. A model request starts with the tool list. Change one byte of a tool definition and every prompt cache built on that request is gone, even if the change means nothing.\u003c/p\u003e\n\n\u003cp\u003eHISTOR, our public log of MCP tool definitions, records every change it sees, so we counted. In the week of 25 October to 1 November it recorded 10,712 changes to the tool lists of 4,491 MCP servers. 331 of them changed nothing but a date or a timestamp.\u003c/p\u003e\n\n\u003ch2\u003e\n  \u003ca name=\"why-one-byte-matters\" href=\"#why-one-byte-matters\"\u003e\n  \u003c/a\u003e\n  Why one byte matters\n\u003c/h2\u003e\n\n\u003cp\u003eWith Anthropic's API, the cached prefix is built in a fixed order: tools first, then the system prompt, then the messages. A change anywhere in the tools invalidates everything after it. Reading a cached prefix costs a tenth of the normal input price. Writing one costs 1.25 times the input price, or twice for the one-hour cache. So the same tool list costs about 12 times more on a miss than on a hit, and so does everything behind it. Other providers discount cached input by different amounts, but the principle is the same: an identical prefix is cheap, a changed one is not.\u003c/p\u003e\n\n\u003cp\u003eInside one session this mostly doesn't bite. Clients fetch \u003ccode\u003etools/list\u003c/code\u003e when they connect and keep it until the server says the list changed. It bites between sessions. If you run many agent sessions with the same servers, the cached prefix carries over from one session to the next until a byte changes. A server that rewrites its definitions twice a day resets that for everyone who uses it.\u003c/p\u003e\n\n\u003ch2\u003e\n  \u003ca name=\"how-we-counted\" href=\"#how-we-counted\"\u003e\n  \u003c/a\u003e\n  How we counted\n\u003c/h2\u003e\n\n\u003cp\u003eFor every change in the week, we took both stored tool lists, the one before and the one after, and compared them tool by tool, ignoring more and more at each step:\u003c/p\u003e\n\n\u003col\u003e\n\u003cli\u003ewhitespace;\u003c/li\u003e\n\u003cli\u003edates and timestamps (\u003ccode\u003e2026-10-28\u003c/code\u003e, \u003ccode\u003e2026-10-28T08:24:54Z\u003c/code\u003e);\u003c/li\u003e\n\u003cli\u003edecimal numbers such as \u003ccode\u003e1.6.12\u003c/code\u003e or \u003ccode\u003e0.009027\u003c/code\u003e;\u003c/li\u003e\n\u003cli\u003eevery remaining number.\u003c/li\u003e\n\u003c/ol\u003e\n\n\u003cp\u003eThe step at which the two lists become equal names the change:\u003c/p\u003e\n\n\u003cdiv class=\"table-wrapper-paragraph\"\u003e\u003ctable\u003e\n\u003cthead\u003e\n\u003ctr\u003e\n\u003cth\u003eWhat changed\u003c/th\u003e\n\u003cth style=\"text-align: right\"\u003eChanges\u003c/th\u003e\n\u003cth style=\"text-align: right\"\u003eServers\u003c/th\u003e\n\u003c/tr\u003e\n\u003c/thead\u003e\n\u003ctbody\u003e\n\u003ctr\u003e\n\u003ctd\u003etools added or removed\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e3,032\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e1,840\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003ewording or schema\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e6,555\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e3,369\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eonly numbers, such as counts or limits\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e657\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e160\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003e\u003cstrong\u003eonly decimal numbers\u003c/strong\u003e\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e\u003cstrong\u003e134\u003c/strong\u003e\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e\u003cstrong\u003e43\u003c/strong\u003e\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003e\u003cstrong\u003eonly a date or a timestamp\u003c/strong\u003e\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e\u003cstrong\u003e331\u003c/strong\u003e\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e\u003cstrong\u003e27\u003c/strong\u003e\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eonly whitespace\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e3\u003c/td\u003e\n\u003ctd style=\"text-align: right\"\u003e2\u003c/td\u003e\n\u003c/tr\u003e\n\u003c/tbody\u003e\n\u003c/table\u003e\u003c/div\u003e\n\n\u003cp\u003e\u003ca href=\"https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2Fmedia%2Fcache-dates-2026-11-01%2F02-kinds.png\" class=\"article-body-image-wrapper\"\u003e\u003cimg src=\"https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2Fmedia%2Fcache-dates-2026-11-01%2F02-kinds.png\" alt=\"Bar chart of 10,712 tool-list changes by kind: wording or schema 6,555, tools added or removed 3,032, only numbers 657, only a date or a time 331, only decimal numbers 134, only whitespace 3.\" loading=\"lazy\" width=\"800\" height=\"400\"\u003e\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003eHISTOR's digest sorts tools and keys, so a list that only changed order isn't recorded as a change at all, and doesn't appear here. And HISTOR sees at most one change per read, every 30 minutes to 6 hours. A server that rewrites its date every minute shows up as one change per read. The counts are a floor.\u003c/p\u003e\n\n\u003ch2\u003e\n  \u003ca name=\"where-the-dates-come-from\" href=\"#where-the-dates-come-from\"\u003e\n  \u003c/a\u003e\n  Where the dates come from\n\u003c/h2\u003e\n\n\u003cp\u003eOne server accounts for 237 of the 331. Its \u003ccode\u003ewhats_new\u003c/code\u003e tool describes the latest improvement and the time the server last read its own feed: \"Live now (feed read 2026-10-28T08:24:54Z)\". Each read of the feed rewrites the tool list. The other 94 date-only changes come from 26 servers, in four patterns.\u003c/p\u003e\n\n\u003cp\u003e\u003cstrong\u003eTelling the model what day it is.\u003c/strong\u003e \"Today is 2026-10-28 (UTC) — never infer the date from the…\", \"Hoy es 2026-10-28\", \"Current date is 2026-10-28.\", \"Current server time: 2026-10-25T02:36:38Z (UTC). Use this as your…\" The instinct is sound: a model doesn't know the date, and a booking or scheduling tool needs it. But in the description, the date changes the tool list every day.\u003c/p\u003e\n\n\u003cp\u003e\u003cstrong\u003eFreshness stamps.\u003c/strong\u003e \"measured 2026-10-28\", \"indexed on 2026-10-26\", \"list prices verified 2026-10-27\", \"as of 2026-10-29\", \"Rules version 2026-10-28.1\". These tell the reader how current the data is. They change whenever the data does, which can be daily.\u003c/p\u003e\n\n\u003cp\u003e\u003cstrong\u003eExamples that move with the calendar.\u003c/strong\u003e A booking server's input schema has an example start time that moves forward a day at a time: \u003ccode\u003e2026-10-29T10:00:00-07:00\u003c/code\u003e, then \u003ccode\u003e2026-10-30T10:00:00-07:00\u003c/code\u003e. Three servers from one publisher do this.\u003c/p\u003e\n\n\u003cp\u003e\u003cstrong\u003eDefaults set at startup.\u003c/strong\u003e A \u003ccode\u003edefault\u003c/code\u003e for a title like \"Conversation 2026-10-26T21:47:21.670Z\", or \u003ccode\u003estart_date\u003c/code\u003e and \u003ccode\u003eend_date\u003c/code\u003e defaults with the time the server started. These are npm packages, so the date changes on every launch.\u003c/p\u003e\n\n\u003cp\u003eOf the 2,119 fields that differ in these two classes, 1,963 are tool descriptions and 156 are in input schemas: defaults, examples and property descriptions.\u003c/p\u003e\n\n\u003ch2\u003e\n  \u003ca name=\"the-decimal-numbers-are-a-different-story\" href=\"#the-decimal-numbers-are-a-different-story\"\u003e\n  \u003c/a\u003e\n  The decimal numbers are a different story\n\u003c/h2\u003e\n\n\u003cp\u003eThe 134 changes that only moved a decimal number look like the same kind of noise. They aren't. About 126 of them are prices written into the description: \"sold per call … at 0.009027 USDC\", then 0.008588; \"Price $0.01/call\", then $0.05; one tool went from \"$1.00\" to \"$222.00\". Five are version strings, such as a rules engine going from 1.6.12 to 1.7.1.\u003c/p\u003e\n\n\u003cp\u003eA price change is a real change for an agent that pays per call, so it belongs in the tool list's history. But if the price moves every few hours, the description is a costly place to keep it. Every move resets the cache for every client, including the ones that will never call that tool. A price that floats is better quoted at call time. Paid MCP tools over x402 already get a priced offer in the HTTP 402 answer.\u003c/p\u003e\n\n\u003ch2\u003e\n  \u003ca name=\"where-to-put-a-date-instead\" href=\"#where-to-put-a-date-instead\"\u003e\n  \u003c/a\u003e\n  Where to put a date instead\n\u003c/h2\u003e\n\n\u003cp\u003eIf you maintain an MCP server and want the model to know the date, or how fresh your data is, there are places that don't touch the tool list:\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2Fmedia%2Fcache-dates-2026-11-01%2F03-one-byte.png\" class=\"article-body-image-wrapper\"\u003e\u003cimg src=\"https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2Fmedia%2Fcache-dates-2026-11-01%2F03-one-byte.png\" alt=\"The same tool description read a day apart differs only in the date 2026-10-28 versus 2026-10-29; places the date can go instead: the tool result, a small tool or resource, relative examples, defaults filled in at call time.\" loading=\"lazy\" width=\"800\" height=\"400\"\u003e\u003c/a\u003e\u003c/p\u003e\n\n\u003cul\u003e\n\u003cli\u003e\n\u003cstrong\u003eThe tool result.\u003c/strong\u003e Return \u003ccode\u003e\"today\": \"2026-10-28\"\u003c/code\u003e or \u003ccode\u003e\"data_as_of\": …\u003c/code\u003e with the answer. The model sees it when it needs it, and the definition stays the same.\u003c/li\u003e\n\u003cli\u003e\n\u003cstrong\u003eA small tool or resource.\u003c/strong\u003e A \u003ccode\u003eget_current_time\u003c/code\u003e tool, or a resource the client reads when it needs it.\u003c/li\u003e\n\u003cli\u003e\n\u003cstrong\u003eRelative examples.\u003c/strong\u003e \"e.g. tomorrow at 10:00 in the user's time zone\" doesn't need to change every day.\u003c/li\u003e\n\u003cli\u003e\n\u003cstrong\u003eDefaults computed at call time.\u003c/strong\u003e If \u003ccode\u003eend_date\u003c/code\u003e defaults to now, say so in the description (\"defaults to the current time\") and fill it in when the call arrives, not when the server starts.\u003c/li\u003e\n\u003cli\u003e\n\u003cstrong\u003eStable freshness wording.\u003c/strong\u003e \"Updated daily\" instead of \"updated 2026-10-28\". The exact date can go in the result.\u003c/li\u003e\n\u003c/ul\u003e\n\n\u003cp\u003eNone of this changes what the model can know. It only moves the moving parts out of the one block that every request shares.\u003c/p\u003e\n\n\u003ch2\u003e\n  \u003ca name=\"for-clients-and-optimizers\" href=\"#for-clients-and-optimizers\"\u003e\n  \u003c/a\u003e\n  For clients and optimizers\n\u003c/h2\u003e\n\n\u003cp\u003eIf you build a client or a token optimizer, the per-server history is public. HISTOR's changes API, \u003ca href=\"https://histor.modelmarket.dev/api/v1/changes\" target=\"_blank\" rel=\"noopener noreferrer\"\u003ehttps://histor.modelmarket.dev/api/v1/changes\u003c/a\u003e, lists every recorded change with the digests of both sides and a field-by-field diff. A server that changed its definitions seven or more times in a week is a good candidate to fetch once per session and pin. 218 servers did that this week, and between them they made 3,661 changes, a third of the total.\u003c/p\u003e\n\n\u003cp\u003eThe week's counts, the script and the examples behind this post are at \u003ca href=\"https://histor.modelmarket.dev/datasets/cache-churn-2026-11-01/\" target=\"_blank\" rel=\"noopener noreferrer\"\u003ehttps://histor.modelmarket.dev/datasets/cache-churn-2026-11-01/\u003c/a\u003e.\u003c/p\u003e\n\n\n\u003chr\u003e\n\n\u003cp\u003e\u003cem\u003eDisclosure: we build HISTOR. AI assistance was used for the analysis, the code and the writing. The counts come from HISTOR's production database, read-only, in a throw-away container.\u003c/em\u003e\u003c/p\u003e\n\n","author":{"@type":"Person","name":"Alex","url":"https://dev.to/alexar76"},"datePublished":"2026-11-03T03:00:00Z","dateModified":"2026-11-03T03:00:00Z","url":"https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2","interactionStatistic":[{"@type":"InteractionCounter","interactionType":"https://schema.org/CommentAction","userInteractionCount":2},{"@type":"InteractionCounter","interactionType":"https://schema.org/LikeAction","userInteractionCount":2}],"comment":[{"@type":"Comment","@id":"#comment-1722950","text":"\u003cp\u003eSpeaking as the author of Tokenade, tool-list churn is the cost I would flag first: a date that changes in a tool definition is a cache write nobody asked for. Where the date lives matters more than whether it changes.\u003c/p\u003e\n\n","author":{"@type":"Person","name":"Paul Irolla","url":"https://dev.to/paul_irolla_6b5ae261d0224"},"datePublished":"2026-11-03T22:13:31Z","dateModified":"2026-11-03T22:13:31Z","url":"https://dev.to/paul_irolla_6b5ae261d0224/comment/3k0j8","interactionStatistic":[{"@type":"InteractionCounter","interactionType":"https://schema.org/LikeAction","userInteractionCount":2}],"comment":[{"@type":"Comment","@id":"#comment-1723683","text":"\u003cp\u003eThanks, and your question is what started this count. Where it lives is most of the story: 286 of the 331 dates sat in tool descriptions, which invalidate the cache from that tool on, while the same date in a tool result would cost only its own few tokens.\u003c/p\u003e\n\n","author":{"@type":"Person","name":"Alex","url":"https://dev.to/alexar76"},"datePublished":"2026-11-04T07:00:11Z","dateModified":"2026-11-04T07:00:11Z","url":"https://dev.to/alexar76/comment/3k1ld","interactionStatistic":[{"@type":"InteractionCounter","interactionType":"https://schema.org/LikeAction","userInteractionCount":1}],"parentItem":{"@type":"Comment","@id":"#comment-1722950"}}]}]}}
+  </script>
+
+  
+  <div class="crayons-layout crayons-layout--3-cols crayons-layout--article">
+    <aside class="crayons-layout__sidebar-left" aria-label="Article actions">
+      <script>
+  if (/Twitter for (iPhone|iPad|Android)/i.test(navigator.userAgent)) {
+    document.documentElement.classList.add('is-twitter-in-app');
+  }
+</script>
+
+<style>
+  .community-leader-visible-block {
+    display: none !important;
+  }
+  .trusted-visible-block {
+    display: none !important;
+  }
+  .only-sidebar-menu-item {
+    display: none !important;
+  }
+  @media (min-width: 640px) {
+    body.community-leader-status-true .only-sidebar-menu-item.community-leader-visible-block {
+      display: block !important;
+    }
+    body.trusted-status-true .only-sidebar-menu-item.trusted-visible-block {
+      display: block !important;
+    }
+  }
+  .only-mobile-menu-item {
+    display: none !important;
+  }
+  body.community-leader-status-true .only-mobile-menu-item.community-leader-visible-block {
+    display: block !important;
+  }
+  body.trusted-status-true .only-mobile-menu-item.trusted-visible-block {
+    display: block !important;
+  }
+  @media (min-width: 640px) {
+    body.community-leader-status-true .only-mobile-menu-item.community-leader-visible-block {
+      display: none !important;
+    }
+    body.trusted-status-true .only-mobile-menu-item.trusted-visible-block {
+      display: none !important;
+    }
+  }
+  .crayons-reaction__count {
+    line-height: 18px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  @media (min-width: 768px) {
+    .crayons-reaction__count {
+      display: flex !important;
+    }
+  }
+  .crayons-reaction__count > span {
+    height: 16px !important;
+    width: 16px !important;
+    padding: 0 !important;
+    display: inline-block !important;
+  }
+</style>
+
+  <div class="crayons-article-actions print-hidden">
+    <div class="crayons-article-actions__inner">
+
+      
+<div class="reaction-drawer__outer hoverdown" style="">
+  <button
+    id="reaction-drawer-trigger"
+    aria-label="reaction-drawer-trigger"
+    aria-pressed="false"
+    class="hoverdown-trigger crayons-reaction pseudo-reaction crayons-tooltip__activator relative">
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction--like crayons-reaction__icon--inactive" style="width: 40px; height: 40px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon">
+    <g clip-path="url(#clip0_988_3276)">
+        <path d="M19 14V17H22V19H18.999L19 22H17L16.999 19H14V17H17V14H19ZM20.243 4.75698C22.505 7.02498 22.583 10.637 20.479 12.992L19.059 11.574C20.39 10.05 20.32 7.65998 18.827 6.16998C17.324 4.67098 14.907 4.60698 13.337 6.01698L12.002 7.21498L10.666 6.01798C9.09103 4.60598 6.67503 4.66798 5.17203 6.17198C3.68203 7.66198 3.60703 10.047 4.98003 11.623L13.412 20.069L12 21.485L3.52003 12.993C1.41603 10.637 1.49503 7.01898 3.75603 4.75698C6.02103 2.49298 9.64403 2.41698 12 4.52898C14.349 2.41998 17.979 2.48998 20.242 4.75698H20.243Z" fill="#525252"></path>
+    </g>
+    <defs>
+        <clipPath id="clip0_988_3276">
+        <rect width="24" height="24" fill="white"></rect>
+        </clipPath>
+    </defs>
+</svg>
+
+      </span>
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--active" style="width: 40px; height: 40px">
+        <img aria_hidden="true" height="24" width="24" src="https://assets.dev.to/assets/heart-plus-active-9ea3b22f2bc311281db911d416166c5f430636e76b15cd5df6b3b841d830eefa.svg" />
+      </span>
+      <span class="crayons-reaction__count" id="reaction_total_count">
+        <span class="bg-base-40 opacity-25 inline-block radius-default" style="height: 16px; width: 16px;"></span>
+      </span>
+      <span class="crayons-tooltip__content">
+        Add reaction
+      </span>
+  </button>
+
+  <div class="reaction-drawer" aria-expanded="false">
+    <div class="reaction-drawer__container">
+        <button
+  id="reaction-butt-like"
+  name="Like"
+  aria-label="Like"
+  aria-pressed="false"
+  class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2"
+  data-category="like">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-like"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+</button>
+
+        <button
+  id="reaction-butt-unicorn"
+  name="Unicorn"
+  aria-label="Unicorn"
+  aria-pressed="false"
+  class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2"
+  data-category="unicorn">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-unicorn"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Unicorn
+    </span>
+</button>
+
+        <button
+  id="reaction-butt-exploding_head"
+  name="Exploding Head"
+  aria-label="Exploding Head"
+  aria-pressed="false"
+  class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2"
+  data-category="exploding_head">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-exploding_head"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Exploding Head
+    </span>
+</button>
+
+        <button
+  id="reaction-butt-raised_hands"
+  name="Raised Hands"
+  aria-label="Raised Hands"
+  aria-pressed="false"
+  class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2"
+  data-category="raised_hands">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-raised_hands"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Raised Hands
+    </span>
+</button>
+
+        <button
+  id="reaction-butt-fire"
+  name="Fire"
+  aria-label="Fire"
+  aria-pressed="false"
+  class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2"
+  data-category="fire">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-fire"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Fire
+    </span>
+</button>
+
+    </div>
+  </div>
+</div>
+
+<button
+  id="reaction-butt-comment"
+  aria-label="Jump to Comments"
+  aria-pressed="false"
+  class="crayons-reaction crayons-reaction--comment crayons-tooltip__activator relative"
+  data-category="comment">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M10 3h4a8 8 0 010 16v3.5c-5-2-12-5-12-11.5a8 8 0 018-8zm2 14h2a6 6 0 000-12h-4a6 6 0 00-6 6c0 3.61 2.462 5.966 8 8.48V17z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-comment" data-count="2">
+      <span class="bg-base-40 opacity-25 inline-block radius-default" style="height: 16px; width: 16px;"></span>
+    </span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Jump to Comments
+    </span>
+</button>
+
+<button
+  id="reaction-butt-readinglist"
+  aria-label="Add to reading list"
+  aria-pressed="false"
+  class="crayons-reaction crayons-reaction--readinglist crayons-tooltip__activator relative"
+  data-category="readinglist">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-readinglist"><span class="bg-base-40 opacity-25 inline-block radius-default" style="height: 16px; width: 16px;"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Save
+    </span>
+</button>
+
+
+<button
+  id="reaction-butt-boost"
+  aria-label="Boost"
+  aria-pressed="false"
+  class="crayons-reaction crayons-reaction--boost crayons-tooltip__activator relative">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="img" aria-hidden="true" class="crayons-icon" width="24" height="24">
+  <path transform="translate(24,0) scale(-1,1)" d="M6 4H21C21.5523 4 22 4.44772 22 5V12H20V6H6V9L1 5L6 1V4ZM18 20H3C2.44772 20 2 19.5523 2 19V12H4V18H18V15L23 19L18 23V20Z"></path>
+</svg>
+
+    </span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Boost
+    </span>
+</button>
+
+
+      <div class="only-sidebar-menu-item community-leader-visible-block align-center">
+        <span class="favorite-control-root" data-favorite-control="true" data-variant="article" data-favoritable-type="Article" data-favoritable-id="4961950" data-favoritable-user-id="3927872" data-favorited="false" data-label-favorite="Pick as gem" data-label-favorited="Picked as gem" data-label-favorited-by-you="Picked as gem by you" data-confirm-title="Give this post a Gem?" data-confirm-body="Are you sure you want to give this post a Gem?" data-confirm-submit="Give Gem" data-confirm-cancel="Cancel" data-modal-title="Gem Picked!" data-modal-body="You&#39;ve picked this as a community gem!" data-modal-remaining-zero="You have no more gems left to give out today." data-modal-remaining-one="You have 1 more gem left to give out today." data-modal-remaining-other="You have %{count} more gems left to give out today." data-modal-remaining-unlimited="You have unlimited gems to give out." data-modal-close="Got it" data-modal-exhausted-title="Out of Gems" data-modal-exhausted-body="You have no more gems left to give out today. Your allowance will refresh soon!" data-modal-exhausted-close="Got it"><button type="button" class="favorite-reaction favorite-control crayons-tooltip__activator relative" aria-label="Pick as gem"><span class="crayons-reaction__icon crayons-reaction__icon--borderless"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" class="crayons-icon crayons-icon--default"><path d="M5.95 3.5h12.1L23.5 9 12 20.5.5 9 5.95 3.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</span><span data-testid="tooltip" class="crayons-tooltip__content">Pick as gem</span></button></span>
+      </div>
+
+      <div id="mod-actions-menu-btn-area" class="only-sidebar-menu-item trusted-visible-block align-center">
+      </div>
+      <div class="align-center m:relative">
+        <button id="article-show-more-button" aria-controls="article-show-more-dropdown" aria-expanded="false" aria-haspopup="true" class="dropbtn crayons-btn crayons-btn--ghost-dimmed crayons-btn--icon-rounded" aria-label="Share post options">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="abnxqf22sqocy31iyyr6vhteidq3moph" aria-hidden="true" class="crayons-icon dropdown-icon"><title id="abnxqf22sqocy31iyyr6vhteidq3moph">More...</title><path fill-rule="evenodd" clip-rule="evenodd" d="M7 12a2 2 0 11-4 0 2 2 0 014 0zm7 0a2 2 0 11-4 0 2 2 0 014 0zm5 2a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+
+        </button>
+
+        <div id="article-show-more-dropdown" class="crayons-dropdown side-bar left-2 right-2 m:right-auto m:left-100 s:left-auto mb-1 m:mb-0 top-unset bottom-100 m:top-0 m:bottom-unset">
+          <div>
+            <button
+              id="copy-post-url-button"
+              class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0"
+              data-postUrl="https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2">
+              <span class="fw-bold">Copy link</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="article-copy-icon" role="img" aria-labelledby="ajrwas4zp4wa23pikt9nh2ssnzbrgymh" aria-hidden="true" class="crayons-icon mx-2 shrink-0"><title id="ajrwas4zp4wa23pikt9nh2ssnzbrgymh">Copy link</title>
+    <path d="M7 6V3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1 1 0 013 21l.003-14c0-.552.45-1 1.007-1H7zm2 0h8v10h2V4H9v2zm-2 5v2h6v-2H7zm0 4v2h6v-2H7z"></path>
+</svg>
+
+            </button>
+            <div id="article-copy-link-announcer" aria-live="polite" class="crayons-notice crayons-notice--success my-2 p-1" aria-live="polite" hidden>Copied to Clipboard</div>
+          </div>
+
+          <div class="Desktop-only">
+            <a
+              target="_blank"
+              class="crayons-link crayons-link--block"
+              rel="noopener"
+              href='https://twitter.com/intent/tweet?text=%22We%20found%20331%20MCP%20tool-list%20changes%20in%20one%20week%20that%20only%20moved%20a%20date.%20Each%20one%20costs%20a%20prompt-cache%20write%22%20by%20%40build_ai_infra%20%23DEVCommunity%20https%3A%2F%2Fdev.to%2Falexar76%2Fwe-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2'>
+              Share to X
+            </a>
+            <a
+              target="_blank"
+              class="crayons-link crayons-link--block"
+              rel="noopener"
+              href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdev.to%2Falexar76%2Fwe-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2&title=We%20found%20331%20MCP%20tool-list%20changes%20in%20one%20week%20that%20only%20moved%20a%20date.%20Each%20one%20costs%20a%20prompt-cache%20write&summary=Of%2010%2C712%20tool-definition%20changes%20HISTOR%20recorded%20in%20a%20week%2C%20331%20changed%20nothing%20but%20a%20date%20or%20a%20timestamp.%20Where%20those%20dates%20come%20from%2C%20and%20where%20they%20belong%20instead.&source=DEV%20Community">
+              Share to LinkedIn
+            </a>
+            <a
+              target="_blank"
+              class="crayons-link crayons-link--block"
+              rel="noopener"
+              href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fdev.to%2Falexar76%2Fwe-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2">
+              Share to Facebook
+            </a>
+            <a
+              target="_blank"
+              class="crayons-link crayons-link--block"
+              rel="noopener"
+              href="https://s2f.kytta.dev/?text=https%3A%2F%2Fdev.to%2Falexar76%2Fwe-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2">
+              Share to Mastodon
+            </a>
+          </div>
+
+          <web-share-wrapper shareurl="https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2" sharetitle="We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write" sharetext="Of 10,712 tool-definition changes HISTOR recorded in a week, 331 changed nothing but a date or a timestamp. Where those dates come from, and where they belong instead." template="web-share-button">
+          </web-share-wrapper>
+          <template id="web-share-button">
+            <a href="#" class="dropdown-link-row crayons-link crayons-link--block">Share Post via...</a>
+          </template>
+
+          <a href="/report-abuse" class="crayons-link crayons-link--block" id="ReportButtonAuthor">Report Abuse</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    </aside>
+
+    <main id="main-content" class="crayons-layout__content grid gap-4">
+      <div class="article-wrapper">
+
+
+        <article class="crayons-card crayons-article mb-4"
+          id="article-show-container"
+          data-article-id="4961950"
+          data-article-slug="we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2"
+          data-article-tags="mcp,ai,llm,performance"
+          data-author-id="3927872"
+          data-author-name="Alex"
+          data-author-username="alexar76"
+          data-co-author-ids=""
+          data-path="/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2"
+          data-pin-path="/stories/feed/pinned_article"
+          data-pinned-article-id=""
+          data-published="true"
+          data-scheduled="false"
+          lang=en
+           >
+          <script>
+            try {
+              if(localStorage) {
+                let currentUser = localStorage.getItem('current_user');
+
+                if (currentUser) {
+                  currentUser = JSON.parse(currentUser);
+                  if (currentUser.id === 3927872) {
+                    document.getElementById('article-show-container').classList.add('current-user-is-article-author');
+                  }
+                }
+              }
+            } catch (e) {
+              console.error(e);
+            }
+          </script>
+          <header class="crayons-article__header" id="main-title">
+              <a class="crayons-article__cover" href="https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2F331-mcp-tool-list-changes-only-moved-a-date%2Fcover.webp">
+                <img
+                  src="https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2F331-mcp-tool-list-changes-only-moved-a-date%2Fcover.webp"
+                  style="aspect-ratio: auto 1000 / 420;"
+                  width="1000" height="420"
+                  class="crayons-article__cover__image" alt="Cover image for We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write">
+              </a>
+
+            <div class="crayons-article__header__meta">
+              <div class="flex s:items-start flex-col s:flex-row">
+                <div id="action-space" class="crayons-article__actions mb-4 s:mb-0 s:order-last"></div>
+                <div class="flex flex-1 mb-5 items-start">
+                  <div class="relative">
+                      <a href="/alexar76"><img class="radius-full align-middle" src="https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg" width="40" height="40" alt="Alex" /></a>
+                  </div>
+                  <div class="pl-3 flex-1">
+                    <a href="/alexar76" class="crayons-link fw-bold">Alex</a>
+                    
+                    
+                    <p class="fs-xs color-base-60 flex flex-wrap items-center gap-1">
+                        <span>Posted on <time datetime="2026-11-03T03:00:00Z" class="date-no-year">Nov 3</time></span>
+
+
+                        <span class="mx-0.5 opacity-60" aria-hidden="true">&bull;</span>
+                        <span>Originally published at <a style="color:#1395b8" href="https://modelmarket.dev/blog/331-mcp-tool-list-changes-only-moved-a-date/">modelmarket.dev</a> </span>
+
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="multiple_reactions_engagement">
+    <button
+      class="reaction_engagement_like hidden crayons-reaction crayons-reaction--like"
+      data-category="like"
+      aria-label="Like"
+      type="button"
+    ><span class="crayons-reaction__icon crayons-reaction__icon--inactive p-1"><img src="https://assets.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" width="24" height="24" /></span>
+      <span class="crayons-reaction__count" id="reaction_engagement_like_count">&nbsp;</span>
+    </button>    <button
+      class="reaction_engagement_unicorn hidden crayons-reaction crayons-reaction--unicorn"
+      data-category="unicorn"
+      aria-label="Unicorn"
+      type="button"
+    ><span class="crayons-reaction__icon crayons-reaction__icon--inactive p-1"><img src="https://assets.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" width="24" height="24" /></span>
+      <span class="crayons-reaction__count" id="reaction_engagement_unicorn_count">&nbsp;</span>
+    </button>    <button
+      class="reaction_engagement_exploding_head hidden crayons-reaction crayons-reaction--exploding_head"
+      data-category="exploding_head"
+      aria-label="Exploding Head"
+      type="button"
+    ><span class="crayons-reaction__icon crayons-reaction__icon--inactive p-1"><img src="https://assets.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" width="24" height="24" /></span>
+      <span class="crayons-reaction__count" id="reaction_engagement_exploding_head_count">&nbsp;</span>
+    </button>    <button
+      class="reaction_engagement_raised_hands hidden crayons-reaction crayons-reaction--raised_hands"
+      data-category="raised_hands"
+      aria-label="Raised Hands"
+      type="button"
+    ><span class="crayons-reaction__icon crayons-reaction__icon--inactive p-1"><img src="https://assets.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" width="24" height="24" /></span>
+      <span class="crayons-reaction__count" id="reaction_engagement_raised_hands_count">&nbsp;</span>
+    </button>    <button
+      class="reaction_engagement_fire hidden crayons-reaction crayons-reaction--fire"
+      data-category="fire"
+      aria-label="Fire"
+      type="button"
+    ><span class="crayons-reaction__icon crayons-reaction__icon--inactive p-1"><img src="https://assets.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" width="24" height="24" /></span>
+      <span class="crayons-reaction__count" id="reaction_engagement_fire_count">&nbsp;</span>
+    </button>
+</div>
+
+
+              <h1 class=" fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 longest">
+                We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write
+              </h1>
+              
+                  <div class="spec__tags flex flex-wrap">
+                      <a class="crayons-tag   " style="
+        --tag-bg: rgba(0, 0, 0, 0.10);
+        --tag-prefix: #000000;
+        --tag-bg-hover: rgba(0, 0, 0, 0.10);
+        --tag-prefix-hover: #000000;
+      " href="/t/mcp"><span class="crayons-tag__prefix">#</span>mcp</a>
+                      <a class="crayons-tag   " style="
+        --tag-bg: rgba(23, 253, 26, 0.10);
+        --tag-prefix: #17fd1a;
+        --tag-bg-hover: rgba(23, 253, 26, 0.10);
+        --tag-prefix-hover: #17fd1a;
+      " href="/t/ai"><span class="crayons-tag__prefix">#</span>ai</a>
+                      <a class="crayons-tag   " style="
+        --tag-bg: rgba(64, 78, 211, 0.10);
+        --tag-prefix: #404ED3;
+        --tag-bg-hover: rgba(64, 78, 211, 0.10);
+        --tag-prefix-hover: #404ED3;
+      " href="/t/llm"><span class="crayons-tag__prefix">#</span>llm</a>
+                      <a class="crayons-tag   " style="
+        --tag-bg: rgba(255, 163, 100, 0.10);
+        --tag-prefix: #ffa364;
+        --tag-bg-hover: rgba(255, 163, 100, 0.10);
+        --tag-prefix-hover: #ffa364;
+      " href="/t/performance"><span class="crayons-tag__prefix">#</span>performance</a>
+                  </div>
+            </div>
+          </header>
+
+          <div class="crayons-article__main ">
+            <div class="crayons-article__body text-styles spec__body" data-article-id="4961950"
+              id="article-body">
+                <p>A reader of our last post, Paul Irolla, who builds a token optimizer for coding agents, pointed out something we had only looked at as a correctness problem. A model request starts with the tool list. Change one byte of a tool definition and every prompt cache built on that request is gone, even if the change means nothing.</p>
+
+<p>HISTOR, our public log of MCP tool definitions, records every change it sees, so we counted. In the week of 25 October to 1 November it recorded 10,712 changes to the tool lists of 4,491 MCP servers. 331 of them changed nothing but a date or a timestamp.</p>
+
+<h2>
+  <a name="why-one-byte-matters" href="#why-one-byte-matters">
+  </a>
+  Why one byte matters
+</h2>
+
+<p>With Anthropic's API, the cached prefix is built in a fixed order: tools first, then the system prompt, then the messages. A change anywhere in the tools invalidates everything after it. Reading a cached prefix costs a tenth of the normal input price. Writing one costs 1.25 times the input price, or twice for the one-hour cache. So the same tool list costs about 12 times more on a miss than on a hit, and so does everything behind it. Other providers discount cached input by different amounts, but the principle is the same: an identical prefix is cheap, a changed one is not.</p>
+
+<p>Inside one session this mostly doesn't bite. Clients fetch <code>tools/list</code> when they connect and keep it until the server says the list changed. It bites between sessions. If you run many agent sessions with the same servers, the cached prefix carries over from one session to the next until a byte changes. A server that rewrites its definitions twice a day resets that for everyone who uses it.</p>
+
+<h2>
+  <a name="how-we-counted" href="#how-we-counted">
+  </a>
+  How we counted
+</h2>
+
+<p>For every change in the week, we took both stored tool lists, the one before and the one after, and compared them tool by tool, ignoring more and more at each step:</p>
+
+<ol>
+<li>whitespace;</li>
+<li>dates and timestamps (<code>2026-10-28</code>, <code>2026-10-28T08:24:54Z</code>);</li>
+<li>decimal numbers such as <code>1.6.12</code> or <code>0.009027</code>;</li>
+<li>every remaining number.</li>
+</ol>
+
+<p>The step at which the two lists become equal names the change:</p>
+
+<div class="table-wrapper-paragraph"><table>
+<thead>
+<tr>
+<th>What changed</th>
+<th style="text-align: right">Changes</th>
+<th style="text-align: right">Servers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tools added or removed</td>
+<td style="text-align: right">3,032</td>
+<td style="text-align: right">1,840</td>
+</tr>
+<tr>
+<td>wording or schema</td>
+<td style="text-align: right">6,555</td>
+<td style="text-align: right">3,369</td>
+</tr>
+<tr>
+<td>only numbers, such as counts or limits</td>
+<td style="text-align: right">657</td>
+<td style="text-align: right">160</td>
+</tr>
+<tr>
+<td><strong>only decimal numbers</strong></td>
+<td style="text-align: right"><strong>134</strong></td>
+<td style="text-align: right"><strong>43</strong></td>
+</tr>
+<tr>
+<td><strong>only a date or a timestamp</strong></td>
+<td style="text-align: right"><strong>331</strong></td>
+<td style="text-align: right"><strong>27</strong></td>
+</tr>
+<tr>
+<td>only whitespace</td>
+<td style="text-align: right">3</td>
+<td style="text-align: right">2</td>
+</tr>
+</tbody>
+</table></div>
+
+<p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2Fmedia%2Fcache-dates-2026-11-01%2F02-kinds.png" class="article-body-image-wrapper"><img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2Fmedia%2Fcache-dates-2026-11-01%2F02-kinds.png" alt="Bar chart of 10,712 tool-list changes by kind: wording or schema 6,555, tools added or removed 3,032, only numbers 657, only a date or a time 331, only decimal numbers 134, only whitespace 3." loading="lazy" width="800" height="400"></a></p>
+
+<p>HISTOR's digest sorts tools and keys, so a list that only changed order isn't recorded as a change at all, and doesn't appear here. And HISTOR sees at most one change per read, every 30 minutes to 6 hours. A server that rewrites its date every minute shows up as one change per read. The counts are a floor.</p>
+
+<h2>
+  <a name="where-the-dates-come-from" href="#where-the-dates-come-from">
+  </a>
+  Where the dates come from
+</h2>
+
+<p>One server accounts for 237 of the 331. Its <code>whats_new</code> tool describes the latest improvement and the time the server last read its own feed: "Live now (feed read 2026-10-28T08:24:54Z)". Each read of the feed rewrites the tool list. The other 94 date-only changes come from 26 servers, in four patterns.</p>
+
+<p><strong>Telling the model what day it is.</strong> "Today is 2026-10-28 (UTC) — never infer the date from the…", "Hoy es 2026-10-28", "Current date is 2026-10-28.", "Current server time: 2026-10-25T02:36:38Z (UTC). Use this as your…" The instinct is sound: a model doesn't know the date, and a booking or scheduling tool needs it. But in the description, the date changes the tool list every day.</p>
+
+<p><strong>Freshness stamps.</strong> "measured 2026-10-28", "indexed on 2026-10-26", "list prices verified 2026-10-27", "as of 2026-10-29", "Rules version 2026-10-28.1". These tell the reader how current the data is. They change whenever the data does, which can be daily.</p>
+
+<p><strong>Examples that move with the calendar.</strong> A booking server's input schema has an example start time that moves forward a day at a time: <code>2026-10-29T10:00:00-07:00</code>, then <code>2026-10-30T10:00:00-07:00</code>. Three servers from one publisher do this.</p>
+
+<p><strong>Defaults set at startup.</strong> A <code>default</code> for a title like "Conversation 2026-10-26T21:47:21.670Z", or <code>start_date</code> and <code>end_date</code> defaults with the time the server started. These are npm packages, so the date changes on every launch.</p>
+
+<p>Of the 2,119 fields that differ in these two classes, 1,963 are tool descriptions and 156 are in input schemas: defaults, examples and property descriptions.</p>
+
+<h2>
+  <a name="the-decimal-numbers-are-a-different-story" href="#the-decimal-numbers-are-a-different-story">
+  </a>
+  The decimal numbers are a different story
+</h2>
+
+<p>The 134 changes that only moved a decimal number look like the same kind of noise. They aren't. About 126 of them are prices written into the description: "sold per call … at 0.009027 USDC", then 0.008588; "Price $0.01/call", then $0.05; one tool went from "$1.00" to "$222.00". Five are version strings, such as a rules engine going from 1.6.12 to 1.7.1.</p>
+
+<p>A price change is a real change for an agent that pays per call, so it belongs in the tool list's history. But if the price moves every few hours, the description is a costly place to keep it. Every move resets the cache for every client, including the ones that will never call that tool. A price that floats is better quoted at call time. Paid MCP tools over x402 already get a priced offer in the HTTP 402 answer.</p>
+
+<h2>
+  <a name="where-to-put-a-date-instead" href="#where-to-put-a-date-instead">
+  </a>
+  Where to put a date instead
+</h2>
+
+<p>If you maintain an MCP server and want the model to know the date, or how fresh your data is, there are places that don't touch the tool list:</p>
+
+<p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2Fmedia%2Fcache-dates-2026-11-01%2F03-one-byte.png" class="article-body-image-wrapper"><img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fmodelmarket.dev%2Fblog%2Fmedia%2Fcache-dates-2026-11-01%2F03-one-byte.png" alt="The same tool description read a day apart differs only in the date 2026-10-28 versus 2026-10-29; places the date can go instead: the tool result, a small tool or resource, relative examples, defaults filled in at call time." loading="lazy" width="800" height="400"></a></p>
+
+<ul>
+<li>
+<strong>The tool result.</strong> Return <code>"today": "2026-10-28"</code> or <code>"data_as_of": …</code> with the answer. The model sees it when it needs it, and the definition stays the same.</li>
+<li>
+<strong>A small tool or resource.</strong> A <code>get_current_time</code> tool, or a resource the client reads when it needs it.</li>
+<li>
+<strong>Relative examples.</strong> "e.g. tomorrow at 10:00 in the user's time zone" doesn't need to change every day.</li>
+<li>
+<strong>Defaults computed at call time.</strong> If <code>end_date</code> defaults to now, say so in the description ("defaults to the current time") and fill it in when the call arrives, not when the server starts.</li>
+<li>
+<strong>Stable freshness wording.</strong> "Updated daily" instead of "updated 2026-10-28". The exact date can go in the result.</li>
+</ul>
+
+<p>None of this changes what the model can know. It only moves the moving parts out of the one block that every request shares.</p>
+
+<h2>
+  <a name="for-clients-and-optimizers" href="#for-clients-and-optimizers">
+  </a>
+  For clients and optimizers
+</h2>
+
+<p>If you build a client or a token optimizer, the per-server history is public. HISTOR's changes API, <a href="https://histor.modelmarket.dev/api/v1/changes" target="_blank" rel="noopener noreferrer">https://histor.modelmarket.dev/api/v1/changes</a>, lists every recorded change with the digests of both sides and a field-by-field diff. A server that changed its definitions seven or more times in a week is a good candidate to fetch once per session and pin. 218 servers did that this week, and between them they made 3,661 changes, a third of the total.</p>
+
+<p>The week's counts, the script and the examples behind this post are at <a href="https://histor.modelmarket.dev/datasets/cache-churn-2026-11-01/" target="_blank" rel="noopener noreferrer">https://histor.modelmarket.dev/datasets/cache-churn-2026-11-01/</a>.</p>
+
+
+<hr>
+
+<p><em>Disclosure: we build HISTOR. AI assistance was used for the analysis, the code and the writing. The counts come from HISTOR's production database, read-only, in a throw-away container.</em></p>
+
+
+            </div>
+
+              <div class="bb-shuffle-group js-bb-shuffle-group">
+                <div class="below-post-bb body-billboard-container" data-async-url="/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2/bmar11/post_body_bottom"></div>
+                <div class="below-post-bb body-billboard-container" data-async-url="/bmar11/post_body_bottom_secondary"></div>
+              </div>
+          </div>
+          <section id="comments" data-follow-button-container="true" data-updated-at="2026-11-10 18:07:41 UTC" class="text-padding mb-4 border-t-1 border-0 border-solid border-base-10">
+    <header class="relative flex justify-between items-center mb-6">
+      <div class="flex items-center">
+        <h2 class="crayons-subtitle-1">
+          Top comments <span class="js-comments-count" data-comments-count="2">(2)</span>
+        </h2>
+      </div>
+
+
+      <div id="comment-subscription" class="print-hidden">
+        <div class="crayons-btn-group">
+          <span class="crayons-btn crayons-btn--outlined">Subscribe</span>
+        </div>
+      </div>
+    </header>
+    <div id="billboard_delay_trigger"></div>
+    <div
+      id="comments-container"
+      data-testid="comments-container"
+      data-commentable-id="4961950"
+      data-commentable-type="Article"
+      data-has-recent-comment-activity="true">
+
+        
+
+<form class="comment-form print-hidden" id="new_comment" action="/comments" accept-charset="UTF-8" method="post">
+
+  <input type="hidden" name="authenticity_token" value="NOTHING" id="new_comment_authenticity_token">
+
+    <input value="4961950" autocomplete="off" type="hidden" name="comment[commentable_id]" id="comment_commentable_id" />
+    <input value="Article" autocomplete="off" type="hidden" name="comment[commentable_type]" id="comment_commentable_type" />
+    
+
+  <span class="crayons-avatar m:crayons-avatar--l mr-2 shrink-0">
+    <img src="https://media2.dev.to/dynamic/image/width=256,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" width="32" height="32" alt="pic" class="crayons-avatar__image overflow-hidden" id="comment-primary-user-profile--avatar" loading="lazy" />
+  </span>
+  <div class="comment-form__inner">
+    <div class="comment-form__field" data-tracking-name="comment_form_textfield">
+      <textarea placeholder="Add to the discussion" onfocus="handleFocus(event)" onkeyup="handleKeyUp(event)" onkeydown="handleKeyDown(event)" oninput="handleChange(event)" id="text-area" required="required" class="crayons-textfield comment-textarea crayons-textfield--ghost" aria-label="Add a comment to the discussion" name="comment[body_markdown]">
+</textarea>
+
+    </div>
+
+
+    <div class="comment-form__preview text-styles text-styles--secondary" id="preview-div"></div>
+
+    <div class="comment-form__buttons mb-4 flex items-center flex-wrap gap-2">
+      <button type="submit" class="crayons-btn mr-2 js-btn-enable" onclick="validateField(event)" data-tracking-name="comment_submit_button" disabled>Submit</button>
+      <button type="button" class="preview-toggle crayons-btn crayons-btn--secondary comment-action-preview js-btn-enable mr-2" data-tracking-name="comment_preview_button" disabled>Preview</button>
+      <a href="/404.html" class="dismiss-edit-comment crayons-btn crayons-btn--ghost js-btn-dismiss hidden">Dismiss</a>
+    </div>
+  </div>
+
+  <div class="code-of-conduct" id="toggle-code-of-conduct-checkbox"></div>
+</form>
+
+
+      <div class="comments" id="comment-trees-container">
+              <details class="comment-wrapper js-comment-wrapper comment-wrapper--deep-0
+                    root
+                    " open>
+      <summary aria-label="Toggle this comment (and replies)" data-tracking-name="expand_comment_toggle">
+        <span class="m:mx-1 inline-block align-middle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="aeh0swf3czuq19lwexbbe71lvyfsde7a" class="crayons-icon expanded"><title id="aeh0swf3czuq19lwexbbe71lvyfsde7a">Collapse</title>
+    <path d="M12 10.677L8 6.935 9 6l3 2.807L15 6l1 .935-4 3.742zm0 4.517L9 18l-1-.935 4-3.742 4 3.742-1 .934-3-2.805z"></path>
+</svg>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="amzvn76hehahccio19580gxep8kbxn30" class="crayons-icon collapsed"><title id="amzvn76hehahccio19580gxep8kbxn30">Expand</title>
+    <path d="M12 18l-4-3.771 1-.943 3 2.829 3-2.829 1 .943L12 18zm0-10.115l-3 2.829-1-.943L12 6l4 3.771-1 .942-3-2.828z"></path>
+</svg>
+
+        </span>
+        <span class="js-collapse-comment-content inline-block align-middle"></span>
+      </summary>
+  <div
+    id="comment-node-1722950"
+    class="
+      comment single-comment-node
+      
+      root
+      comment--deep-0
+      
+    "
+    data-comment-id="1722950"
+    data-path="/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2/comments/3k0j8"
+    data-comment-author-id="2183047"
+    data-content-user-id="2183047">
+    <a name="comment-3k0j8" style="position: absolute; top: -8px;">&nbsp;</a>
+    <div class="comment__inner">
+    <a href="https://dev.to/paul_irolla_6b5ae261d0224" class="shrink-0 crayons-avatar m:crayons-avatar--l mt-4 m:mt-3">
+    <img class="crayons-avatar__image" width="32" height="32" src="https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F2183047%2Fc0c55e95-e0dd-4375-8123-478cede020d8.png" alt="paul_irolla_6b5ae261d0224 profile image" loading="lazy" />
+  </a>
+
+
+  <div class="inner-comment comment__details">
+    <div class="comment__content crayons-card">
+        
+
+
+        <div class="comment__header">
+  <a href="https://dev.to/paul_irolla_6b5ae261d0224" class="crayons-link crayons-link--secondary flex items-center fw-medium m:hidden">
+    <span class="js-comment-username">
+      Paul Irolla
+    </span>
+  </a>
+  <div class="profile-preview-card relative mb-4 s:mb-0 fw-medium hidden m:block">
+    <button id="comment-profile-preview-trigger-1722950" aria-controls="comment-profile-preview-content-1722950" class="profile-preview-card__trigger p-1 -my-1 -ml-1 crayons-btn crayons-btn--ghost" aria-label="Paul Irolla profile details">
+      Paul Irolla
+      
+      
+    </button>
+    <div id="comment-profile-preview-content-1722950" class="profile-preview-card__content p-4 pt-0 branded-7 crayons-dropdown" style="--card-color: #000000; border-top-color: var(--card-color);" data-testid="profile-preview-card" data-repositioning-dropdown="true">
+    <div class="gap-4 grid">
+        <div class="-mt-4">
+  <a href="/paul_irolla_6b5ae261d0224" class="flex">
+    <span class="crayons-avatar crayons-avatar--xl  mr-2 shrink-0">
+      <img src="https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F2183047%2Fc0c55e95-e0dd-4375-8123-478cede020d8.png" class="crayons-avatar__image" alt="" loading="lazy" />
+    </span>
+    <span class="crayons-link crayons-subtitle-2 mt-5">
+      Paul Irolla
+      
+      
+    </span>
+  </a>
+</div>
+
+<div class="print-hidden">
+  <button name="button" type="button" data-info="{&quot;className&quot;:&quot;User&quot;,&quot;style&quot;:&quot;&quot;,&quot;id&quot;:2183047,&quot;name&quot;:&quot;Paul Irolla&quot;}" class="crayons-btn follow-action-button whitespace-nowrap w-100 follow-user" aria-label="Follow user: Paul Irolla" aria-pressed="false">Follow</button>
+</div>
+  <div class="color-base-70">
+    Building Tokenade, a free and open-source token optimizer for coding agents (Claude Code, Codex, Cursor). Runs locally.
+  </div>
+
+  <div class="user-metadata-details">
+    <ul class="user-metadata-details-inner">
+        <li>
+          <div class="key">
+            Location
+          </div>
+          <div class="value">
+            Nantes
+          </div>
+        </li>
+      <li>
+        <div class="key">
+          Joined
+        </div>
+        <div class="value">
+          <time datetime="2024-10-08T09:19:32Z" class="date">Oct 8, 2024</time>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+    </div>
+</div>
+
+
+  </div>
+
+  <span class="color-base-30 px-2 m:pl-0" role="presentation">&bull;</span>
+
+<a href="https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2#comment-3k0j8" class="comment-date crayons-link crayons-link--secondary fs-s">
+  <time datetime="2026-11-03T22:13:31Z" class=date-no-year>
+    Nov 3
+  </time>
+
+</a>
+
+
+
+  <div class="comment__dropdown" data-tracking-name="comment_dropdown">
+    <button id="comment-dropdown-trigger-1722950" aria-controls="comment-dropdown-1722950" aria-expanded="false"
+      class="dropbtn comment__dropdown-trigger crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon "
+      aria-label="Toggle dropdown menu" aria-haspopup="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="afj235hgop3fk49toznz53ngx5y8iqec" class="crayons-icon pointer-events-none"><title id="afj235hgop3fk49toznz53ngx5y8iqec">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+    </button>
+    <div id="comment-dropdown-1722950" class="crayons-dropdown right-1 s:right-0 s:left-auto fs-base dropdown">
+      <ul class="m-0">
+        <li><a href="https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2#comment-3k0j8" class="crayons-link crayons-link--block permalink-copybtn" aria-label="Copy link to Paul Irolla&#39;s comment" data-no-instant>Copy link</a></li>
+        <li class="comment-actions hidden" data-user-id="2183047" data-action="settings-button" data-path="https://dev.to/paul_irolla_6b5ae261d0224/comment/3k0j8/settings" aria-label="Go to Paul Irolla&#39;s comment settings"></li>
+          <li class="comment-actions hidden" data-action="hide-button" data-commentable-user-id="3927872" data-user-id="2183047">
+              <button
+                class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0 hide-comment"
+                data-hide-type="hide"
+                data-comment-id="1722950"
+                data-comment-url="https://dev.to/paul_irolla_6b5ae261d0224/comment/3k0j8"
+                aria-label="Hide Paul Irolla&#39;s comment">
+                Hide
+              </button>
+          </li>
+        <li class="admin-actions hidden" data-path="/admin/member_manager/users/2183047" data-text="View Admin Profile" aria-label="View Paul Irolla&#39;s admin profile"></li>
+        <li class="mod-actions hidden mod-actions-comment-button" data-path="https://dev.to/paul_irolla_6b5ae261d0224/comment/3k0j8/mod" aria-label="Moderate Paul Irolla&#39;s comment"></li>
+        <li class="report-abuse-link-wrapper" data-path="/report-abuse?url=https://dev.to/paul_irolla_6b5ae261d0224/comment/3k0j8" aria-label="Report Paul Irolla&#39;s comment as abusive or violating our code of conduct and/or terms and conditions"></li>
+        <li class="current-user-actions"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+        <div
+          class="
+            comment__body
+            text-styles
+            text-styles--secondary
+            body
+            
+            
+          ">
+          <p>Speaking as the author of Tokenade, tool-list churn is the cost I would flag first: a date that changes in a tool definition is a cache write nobody asked for. Where the date lives matters more than whether it changes.</p>
+
+
+        </div>
+
+    </div>
+
+    <script>
+    </script>
+
+    <footer class="comment__footer print-hidden">
+  <button
+    class="crayons-tooltip__activator relative crayons-btn crayons-btn--ghost crayons-btn--icon-left crayons-btn--s mr-1 reaction-like inline-flex reaction-button"
+    id="button-for-comment-1722950"
+    data-comment-id="1722950"
+    aria-label="like"
+    data-tracking-name="comment_heart_button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="a6xqjp5jdcjx6pkipobn3zxg3du7mg7t" class="crayons-icon reaction-icon not-reacted"><title id="a6xqjp5jdcjx6pkipobn3zxg3du7mg7t">Like comment: </title><path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path></svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="antl5r2orb3pjhtm7buy2gm00ja8cjbx" class="crayons-icon crayons-icon reaction-icon--like reaction-icon reacted"><title id="antl5r2orb3pjhtm7buy2gm00ja8cjbx">Like comment: </title>
+    <path d="M5.116 12.595a4.875 4.875 0 015.56-7.68h-.002L7.493 8.098l1.06 1.061 3.181-3.182a4.875 4.875 0 016.895 6.894L12 19.5l-6.894-6.894.01-.01z"></path>
+</svg>
+
+    <span class="reactions-count">2</span><span class="reactions-label hidden m:inline-block">&nbsp;likes</span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+  </button>
+
+  <span class="favorite-control-root" data-favorite-control="true" data-variant="comment" data-favoritable-type="Comment" data-favoritable-id="1722950" data-favoritable-user-id="2183047" data-favorited="false" data-label-favorite="Pick as gem" data-label-favorited="Picked as gem" data-label-favorited-by-you="Picked as gem by you" data-confirm-title="Give this comment a Gem?" data-confirm-body="Are you sure you want to give this comment a Gem?" data-confirm-submit="Give Gem" data-confirm-cancel="Cancel" data-modal-title="Gem Picked!" data-modal-body="You&#39;ve picked this as a community gem!" data-modal-remaining-zero="You have no more gems left to give out today." data-modal-remaining-one="You have 1 more gem left to give out today." data-modal-remaining-other="You have %{count} more gems left to give out today." data-modal-remaining-unlimited="You have unlimited gems to give out." data-modal-close="Got it" data-modal-exhausted-title="Out of Gems" data-modal-exhausted-body="You have no more gems left to give out today. Your allowance will refresh soon!" data-modal-exhausted-close="Got it"></span>
+
+      <button
+        class="actions crayons-btn crayons-btn--ghost crayons-btn--s crayons-btn--icon-left toggle-reply-form mr-1 inline-flex"
+        data-comment-id="1722950"
+        data-path="/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2/comments/3k0j8"
+        data-tracking-name="comment_reply_button"
+        data-testid="reply-button-1722950"
+        rel="nofollow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="a2gtaf0zl76tecqo85ree200hxcvcdzj" class="crayons-icon reaction-icon not-reacted"><title id="a2gtaf0zl76tecqo85ree200hxcvcdzj">Comment button</title><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>
+
+        <span class="hidden m:inline-block">Reply</span>
+      </button>
+
+</footer>
+
+  </div>
+</div>
+    <details class="comment-wrapper js-comment-wrapper comment-wrapper--deep-1
+                    child
+                    " open>
+      <summary aria-label="Toggle this comment (and replies)" data-tracking-name="expand_comment_toggle">
+        <span class="mx-0 inline-block align-middle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="abzbfifdefkod3lqgeplx89zb4gcy6jr" class="crayons-icon expanded"><title id="abzbfifdefkod3lqgeplx89zb4gcy6jr">Collapse</title>
+    <path d="M12 10.677L8 6.935 9 6l3 2.807L15 6l1 .935-4 3.742zm0 4.517L9 18l-1-.935 4-3.742 4 3.742-1 .934-3-2.805z"></path>
+</svg>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a6mpd8yekshod00j5xwt4q7g5124fxez" class="crayons-icon collapsed"><title id="a6mpd8yekshod00j5xwt4q7g5124fxez">Expand</title>
+    <path d="M12 18l-4-3.771 1-.943 3 2.829 3-2.829 1 .943L12 18zm0-10.115l-3 2.829-1-.943L12 6l4 3.771-1 .942-3-2.828z"></path>
+</svg>
+
+        </span>
+        <span class="js-collapse-comment-content inline-block align-middle"></span>
+      </summary>
+  <div
+    id="comment-node-1723683"
+    class="
+      comment single-comment-node
+      
+      child
+      comment--deep-1
+      
+    "
+    data-comment-id="1723683"
+    data-path="/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2/comments/3k1ld"
+    data-comment-author-id="3927872"
+    data-content-user-id="3927872">
+    <a name="comment-3k1ld" style="position: absolute; top: -8px;">&nbsp;</a>
+    <div class="comment__inner">
+    <a href="https://dev.to/alexar76" class="shrink-0 crayons-avatar mt-4">
+    <img class="crayons-avatar__image" width="32" height="32" src="https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg" alt="alexar76 profile image" loading="lazy" />
+  </a>
+
+
+  <div class="inner-comment comment__details">
+    <div class="comment__content crayons-card">
+        
+
+
+        <div class="comment__header">
+  <a href="https://dev.to/alexar76" class="crayons-link crayons-link--secondary flex items-center fw-medium m:hidden">
+    <span class="js-comment-username">
+      Alex
+    </span>
+      <span class="crayons-hover-tooltip inline-block spec-op-author -mr-2" data-tooltip="Author">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" class="crayons-icon">
+    <path d="M12 8.25a6 6 0 110 12 6 6 0 010-12zm0 2.625l-.992 2.01-2.218.322 1.605 1.564-.379 2.21L12 15.937l1.984 1.043-.379-2.209 1.605-1.564-2.218-.323L12 10.875zm.75-6.376l3.75.001v2.25l-1.022.854a7.45 7.45 0 00-2.728-.817V4.5zm-1.5 0v2.288a7.451 7.451 0 00-2.727.816L7.5 6.75V4.5h3.75z"></path>
+</svg>
+
+      </span>
+  </a>
+  <div class="profile-preview-card relative mb-4 s:mb-0 fw-medium hidden m:block">
+    <button id="comment-profile-preview-trigger-1723683" aria-controls="comment-profile-preview-content-1723683" class="profile-preview-card__trigger p-1 -my-1 -ml-1 crayons-btn crayons-btn--ghost" aria-label="Alex profile details">
+      Alex
+      
+      
+    </button>
+    <div id="comment-profile-preview-content-1723683" class="profile-preview-card__content p-4 pt-0 branded-7 crayons-dropdown" style="--card-color: #e08804; border-top-color: var(--card-color);" data-testid="profile-preview-card" data-repositioning-dropdown="true">
+    <div class="gap-4 grid">
+        <div class="-mt-4">
+  <a href="/alexar76" class="flex">
+    <span class="crayons-avatar crayons-avatar--xl  mr-2 shrink-0">
+      <img src="https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg" class="crayons-avatar__image" alt="" loading="lazy" />
+    </span>
+    <span class="crayons-link crayons-subtitle-2 mt-5">
+      Alex
+      
+      
+    </span>
+  </a>
+</div>
+
+<div class="print-hidden">
+  <button name="button" type="button" data-info="{&quot;className&quot;:&quot;User&quot;,&quot;style&quot;:&quot;&quot;,&quot;id&quot;:3927872,&quot;name&quot;:&quot;Alex&quot;}" class="crayons-btn follow-action-button whitespace-nowrap w-100 follow-user" aria-label="Follow user: Alex" aria-pressed="false">Follow</button>
+</div>
+  <div class="color-base-70">
+    Building production-ready, open-source AI pipelines where state machines, LLM failover, and real quality gates matter more than prompts.
+  </div>
+
+  <div class="user-metadata-details">
+    <ul class="user-metadata-details-inner">
+      <li>
+        <div class="key">
+          Joined
+        </div>
+        <div class="value">
+          <time datetime="2026-05-12T19:34:24Z" class="date">May 12, 2026</time>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+    </div>
+</div>
+
+      <span class="crayons-hover-tooltip inline-block spec-op-author -ml-2" data-tooltip="Author">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" class="crayons-icon">
+    <path d="M12 8.25a6 6 0 110 12 6 6 0 010-12zm0 2.625l-.992 2.01-2.218.322 1.605 1.564-.379 2.21L12 15.937l1.984 1.043-.379-2.209 1.605-1.564-2.218-.323L12 10.875zm.75-6.376l3.75.001v2.25l-1.022.854a7.45 7.45 0 00-2.728-.817V4.5zm-1.5 0v2.288a7.451 7.451 0 00-2.727.816L7.5 6.75V4.5h3.75z"></path>
+</svg>
+
+      </span>
+
+  </div>
+
+  <span class="color-base-30 px-2 m:pl-0" role="presentation">&bull;</span>
+
+<a href="https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2#comment-3k1ld" class="comment-date crayons-link crayons-link--secondary fs-s">
+  <time datetime="2026-11-04T07:00:11Z" class=date-no-year>
+    Nov 4
+  </time>
+
+</a>
+
+
+
+  <div class="comment__dropdown" data-tracking-name="comment_dropdown">
+    <button id="comment-dropdown-trigger-1723683" aria-controls="comment-dropdown-1723683" aria-expanded="false"
+      class="dropbtn comment__dropdown-trigger crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon "
+      aria-label="Toggle dropdown menu" aria-haspopup="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="adfudx8w6tpg7ux7g4wv8e8bi0k2pc41" class="crayons-icon pointer-events-none"><title id="adfudx8w6tpg7ux7g4wv8e8bi0k2pc41">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+    </button>
+    <div id="comment-dropdown-1723683" class="crayons-dropdown right-1 s:right-0 s:left-auto fs-base dropdown">
+      <ul class="m-0">
+        <li><a href="https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2#comment-3k1ld" class="crayons-link crayons-link--block permalink-copybtn" aria-label="Copy link to Alex&#39;s comment" data-no-instant>Copy link</a></li>
+        <li class="comment-actions hidden" data-user-id="3927872" data-action="settings-button" data-path="https://dev.to/alexar76/comment/3k1ld/settings" aria-label="Go to Alex&#39;s comment settings"></li>
+          <li class="comment-actions hidden" data-action="hide-button" data-commentable-user-id="3927872" data-user-id="3927872">
+              <button
+                class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0 hide-comment"
+                data-hide-type="hide"
+                data-comment-id="1723683"
+                data-comment-url="https://dev.to/alexar76/comment/3k1ld"
+                aria-label="Hide Alex&#39;s comment">
+                Hide
+              </button>
+          </li>
+        <li class="admin-actions hidden" data-path="/admin/member_manager/users/3927872" data-text="View Admin Profile" aria-label="View Alex&#39;s admin profile"></li>
+        <li class="mod-actions hidden mod-actions-comment-button" data-path="https://dev.to/alexar76/comment/3k1ld/mod" aria-label="Moderate Alex&#39;s comment"></li>
+        <li class="report-abuse-link-wrapper" data-path="/report-abuse?url=https://dev.to/alexar76/comment/3k1ld" aria-label="Report Alex&#39;s comment as abusive or violating our code of conduct and/or terms and conditions"></li>
+        <li class="current-user-actions"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+        <div
+          class="
+            comment__body
+            text-styles
+            text-styles--secondary
+            body
+            
+            
+          ">
+          <p>Thanks, and your question is what started this count. Where it lives is most of the story: 286 of the 331 dates sat in tool descriptions, which invalidate the cache from that tool on, while the same date in a tool result would cost only its own few tokens.</p>
+
+
+        </div>
+
+    </div>
+
+    <script>
+    </script>
+
+    <footer class="comment__footer print-hidden">
+  <button
+    class="crayons-tooltip__activator relative crayons-btn crayons-btn--ghost crayons-btn--icon-left crayons-btn--s mr-1 reaction-like inline-flex reaction-button"
+    id="button-for-comment-1723683"
+    data-comment-id="1723683"
+    aria-label="like"
+    data-tracking-name="comment_heart_button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="a16b9qpv0l347ty6q0gjvllrtta5v6c7" class="crayons-icon reaction-icon not-reacted"><title id="a16b9qpv0l347ty6q0gjvllrtta5v6c7">Like comment: </title><path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path></svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="argblya8f53vzm2g4q8943tqjj51e56v" class="crayons-icon crayons-icon reaction-icon--like reaction-icon reacted"><title id="argblya8f53vzm2g4q8943tqjj51e56v">Like comment: </title>
+    <path d="M5.116 12.595a4.875 4.875 0 015.56-7.68h-.002L7.493 8.098l1.06 1.061 3.181-3.182a4.875 4.875 0 016.895 6.894L12 19.5l-6.894-6.894.01-.01z"></path>
+</svg>
+
+    <span class="reactions-count">1</span><span class="reactions-label hidden m:inline-block">&nbsp;like</span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+  </button>
+
+  <span class="favorite-control-root" data-favorite-control="true" data-variant="comment" data-favoritable-type="Comment" data-favoritable-id="1723683" data-favoritable-user-id="3927872" data-favorited="false" data-label-favorite="Pick as gem" data-label-favorited="Picked as gem" data-label-favorited-by-you="Picked as gem by you" data-confirm-title="Give this comment a Gem?" data-confirm-body="Are you sure you want to give this comment a Gem?" data-confirm-submit="Give Gem" data-confirm-cancel="Cancel" data-modal-title="Gem Picked!" data-modal-body="You&#39;ve picked this as a community gem!" data-modal-remaining-zero="You have no more gems left to give out today." data-modal-remaining-one="You have 1 more gem left to give out today." data-modal-remaining-other="You have %{count} more gems left to give out today." data-modal-remaining-unlimited="You have unlimited gems to give out." data-modal-close="Got it" data-modal-exhausted-title="Out of Gems" data-modal-exhausted-body="You have no more gems left to give out today. Your allowance will refresh soon!" data-modal-exhausted-close="Got it"></span>
+
+      <button
+        class="actions crayons-btn crayons-btn--ghost crayons-btn--s crayons-btn--icon-left toggle-reply-form mr-1 inline-flex"
+        data-comment-id="1723683"
+        data-path="/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2/comments/3k1ld"
+        data-tracking-name="comment_reply_button"
+        data-testid="reply-button-1723683"
+        rel="nofollow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="acuf9eweo75dk9bsmk6eyvwdi7zh769z" class="crayons-icon reaction-icon not-reacted"><title id="acuf9eweo75dk9bsmk6eyvwdi7zh769z">Comment button</title><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path></svg>
+
+        <span class="hidden m:inline-block">Reply</span>
+      </button>
+
+</footer>
+
+  </div>
+</div>
+
+
+  </div>
+    </details>
+
+
+  </div>
+    </details>
+
+
+      </div>
+    </div>
+
+    <div class="align-center">
+
+
+  <nav class="fs-s align-center block" aria-label="Conduct controls">
+  <a href="/code-of-conduct" class="crayons-link crayons-link--secondary">Code of Conduct</a>
+  <span class="opacity-25 px-2" role="presentation">&bull;</span>
+  <a href="/report-abuse" class="crayons-link crayons-link--secondary">Report abuse</a>
+</nav>
+
+</div>
+
+</section>
+
+
+        </article>
+
+        <div class="pb-4 crayons-layout__comments-billboard bb-shuffle-group js-bb-shuffle-group">
+          <div class="new-bb-container pb-4 crayons-layout__comments-billboard" data-async-url="/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2/bmar11/post_comments"></div>
+          <div class="new-bb-container pb-4 crayons-layout__comments-billboard" data-async-url="/bmar11/post_comments_secondary"></div>
+        </div>
+
+          <!-- Bottom content skipped via SKIP_BOTTOM_CONTENT config -->
+      </div>
+    </main>
+
+    <aside class="crayons-layout__sidebar-right" aria-label="Author details">
+      <div class="crayons-article-sticky grid gap-4 pb-4 break-word" id="article-show-primary-sticky-nav">
+  <div class="crayons-card crayons-card--secondary branded-7 p-4 pt-0 gap-4 grid" style="border-top-color: #e08804;">
+    <div class="-mt-4">
+  <a href="/alexar76" class="flex">
+    <span class="crayons-avatar crayons-avatar--xl  mr-2 shrink-0">
+      <img src="https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F3927872%2Fdf501cac-6862-47af-8b22-4e3067696337.jpeg" class="crayons-avatar__image" alt="" loading="lazy" />
+    </span>
+    <span class="crayons-link crayons-subtitle-2 mt-5">
+      Alex
+      
+      
+    </span>
+  </a>
+</div>
+
+<div class="print-hidden">
+  <button name="button" type="button" data-info="{&quot;className&quot;:&quot;User&quot;,&quot;style&quot;:&quot;&quot;,&quot;id&quot;:3927872,&quot;name&quot;:&quot;Alex&quot;}" class="crayons-btn follow-action-button whitespace-nowrap w-100 follow-user" aria-label="Follow user: Alex" aria-pressed="false">Follow</button>
+</div>
+  <div class="color-base-70">
+    Building production-ready, open-source AI pipelines where state machines, LLM failover, and real quality gates matter more than prompts.
+  </div>
+
+  <div class="user-metadata-details">
+    <ul class="user-metadata-details-inner">
+      <li>
+        <div class="key">
+          Joined
+        </div>
+        <div class="value">
+          <time datetime="2026-05-12T19:34:24Z" class="date">May 12, 2026</time>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  </div>
+
+      <div class="crayons-card crayons-card--secondary">
+        <header class="crayons-card__header">
+          <h3 class="crayons-subtitle-3">
+            More from <a href="/alexar76">Alex</a>
+          </h3>
+        </header>
+        <div>
+            <a class="crayons-link crayons-link--contentful" href="/alexar76/we-added-ard-discovery-to-six-hubs-and-found-a-broken-signed-search-result-3nlp">
+              A missing version broke verification of signed ARD search results
+              <div class="crayons-link__secondary -ml-1">
+                  <span class="mr-1"><span class="opacity-50">#</span>ai</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>agents</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>webdev</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>opensource</span>
+              </div>
+            </a>
+            <a class="crayons-link crayons-link--contentful" href="/alexar76/our-mcp-firewall-blocked-our-marketplace-while-every-container-stayed-healthy-3dbc">
+              Healthy containers hid a blocked MCP marketplace connection
+              <div class="crayons-link__secondary -ml-1">
+                  <span class="mr-1"><span class="opacity-50">#</span>mcp</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>security</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>ai</span>
+                  <span class="mr-1"><span class="opacity-50">#</span>devops</span>
+              </div>
+            </a>
+        </div>
+      </div>
+</div>
+
+<div class="crayons-article-sticky grid gap-4 break-word bb-shuffle-group js-bb-shuffle-group">
+  <div class="grid gap-4 sidebar-bb" data-async-url="/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2/bmar11/post_sidebar"></div>
+  <div class="grid gap-4 sidebar-bb" data-async-url="/bmar11/post_sidebar_secondary"></div>
+</div>
+
+
+    </aside>
+  </div>
+
+  <div class="mod-actions-menu print-hidden"></div>
+  <div data-testid="unpublish-post-modal-container" class="unpublish-post-modal-container hidden"></div>
+
+  <div class="fullscreen-code js-fullscreen-code"></div>
+    <script src="https://assets.dev.to/assets/billboard-578fa21e8e53abc02d0567fa8a3fd7a4a7dac159521ebb095561f82750a22032.js" defer="defer"></script>
+<script src="https://assets.dev.to/assets/localizeArticleDates-ae9de0a2788a22884a206d2884c5caa8f6c344a28ce597574b4b78d1dd64f9d8.js" defer="defer"></script>
+<script src="https://assets.dev.to/assets/articleReactions-8b74c2d98b97a4389643c1441359225a0d425ee4cc9a1bf54ef15be90f15a74e.js" defer="defer"></script>
+
+  <script>
+  </script>
+  <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2/bmar11/post_fixed_bottom"></div>
+
+
+    <div id="runtime-banner-container"></div>
+    <div id="i18n-translations" data-locale="en" data-translations="{&quot;en&quot;:{&quot;core&quot;:{&quot;add_comment&quot;:&quot;Add comment&quot;,&quot;beta&quot;:&quot;beta&quot;,&quot;comment&quot;:&quot;Comment&quot;,&quot;copy_link&quot;:&quot;Copy link&quot;,&quot;edit_profile&quot;:&quot;Edit profile&quot;,&quot;follow&quot;:&quot;Follow&quot;,&quot;follow_back&quot;:&quot;Follow back&quot;,&quot;following&quot;:&quot;Following&quot;,&quot;image_upload_server_error&quot;:&quot;A server error has occurred!&quot;,&quot;like&quot;:&quot;Like&quot;,&quot;loading&quot;:&quot;loading...&quot;,&quot;reaction&quot;:&quot;Reaction&quot;,&quot;report_abuse&quot;:&quot;Report abuse&quot;,&quot;search&quot;:&quot;Search&quot;,&quot;success_settings&quot;:&quot;Successfully updated settings.&quot;,&quot;search_placeholder&quot;:&quot;Search...&quot;,&quot;search_find_related_posts&quot;:&quot;Find related posts...&quot;,&quot;search_powered_by&quot;:&quot;Powered by Algolia&quot;,&quot;search_submit_search&quot;:&quot;Submit search for advanced filtering.&quot;,&quot;search_displaying_recommendations&quot;:&quot;Displaying Algolia Recommendations — Start typing to search&quot;,&quot;article_form_save_changes&quot;:&quot;Save changes&quot;,&quot;article_form_schedule&quot;:&quot;Schedule&quot;,&quot;article_form_publish&quot;:&quot;Publish&quot;,&quot;article_form_loading_preview&quot;:&quot;Loading preview&quot;,&quot;article_form_preview_loaded&quot;:&quot;Preview loaded&quot;,&quot;article_form_co_authors&quot;:&quot;Co-authors&quot;,&quot;article_form_co_authors_description&quot;:&quot;Add up to 4 co-authors from %{org_name}.&quot;,&quot;article_form_co_authors_placeholder&quot;:&quot;Add up to 4...&quot;,&quot;article_form_co_author_invitations_description&quot;:&quot;Invite people who follow you. They&#39;ll be credited once they accept from their notifications.&quot;,&quot;article_form_co_author_invitations_placeholder&quot;:&quot;Search your followers...&quot;,&quot;article_form_co_author_invitations_declined&quot;:&quot;Declined: %{names}&quot;,&quot;article_form_co_author_invitation_new&quot;:&quot;Invite on save&quot;,&quot;article_form_co_author_invitation_pending&quot;:&quot;Pending&quot;,&quot;article_form_co_author_invitation_accepted&quot;:&quot;Accepted&quot;,&quot;article_form_co_author_invitation_edit&quot;:&quot;Edit %{name}&quot;,&quot;article_form_co_author_invitation_remove&quot;:&quot;Remove %{name}&quot;,&quot;comments_preview&quot;:&quot;Preview&quot;,&quot;comments_continue_editing&quot;:&quot;Continue editing&quot;,&quot;survey_enter_response&quot;:&quot;Enter your response here...&quot;,&quot;survey_thank_you_response&quot;:&quot;Thank you for your response.&quot;,&quot;survey_thank_you_completing&quot;:&quot;Thank you for completing the survey!&quot;,&quot;dashboard_analytics_readers&quot;:&quot;Readers&quot;,&quot;dashboard_analytics_avg_read_time&quot;:&quot;avg. read time %{seconds}s&quot;,&quot;dashboard_analytics_comments&quot;:&quot;Comments&quot;,&quot;dashboard_analytics_reactions&quot;:&quot;Reactions&quot;,&quot;dashboard_analytics_unique_reactors&quot;:&quot;from %{count} unique users&quot;,&quot;dashboard_analytics_bookmarks&quot;:&quot;Bookmarks&quot;,&quot;dashboard_analytics_followers&quot;:&quot;New Followers&quot;,&quot;top_contributors_empty&quot;:&quot;No engagers found for this period.&quot;,&quot;top_contributors_reactions&quot;:&quot;reactions&quot;,&quot;top_contributors_comments&quot;:&quot;comments&quot;,&quot;top_contributors_weight_note&quot;:&quot;Comments carry more weight&quot;,&quot;follower_engagement_ratio&quot;:&quot;%{ratio}% of followers engaged&quot;,&quot;follower_engagement_detail&quot;:&quot;(%{engaged} of %{total})&quot;,&quot;dashboard_analytics_no_data&quot;:&quot;No data available for this period&quot;,&quot;dashboard_analytics_no_referrers&quot;:&quot;No traffic sources yet&quot;,&quot;stats_by&quot;:&quot;by&quot;,&quot;editor_new_title&quot;:&quot;New post title here...&quot;,&quot;editor_body_placeholder&quot;:&quot;Write your post content here...&quot;,&quot;tags_field_label&quot;:&quot;Add up to 4 tags&quot;,&quot;tags_field_placeholder&quot;:&quot;Add up to 4 tags...&quot;,&quot;counted_organization&quot;:{&quot;one&quot;:&quot;%{count} organization&quot;,&quot;other&quot;:&quot;%{count} organizations&quot;},&quot;counted_user&quot;:{&quot;one&quot;:&quot;%{count} person&quot;,&quot;other&quot;:&quot;%{count} people&quot;},&quot;not_following&quot;:&quot;You&#39;re not following anyone&quot;,&quot;following_everyone&quot;:&quot;You&#39;re following %{details} (everyone)&quot;,&quot;you_are_following&quot;:&quot;You&#39;re following&quot;,&quot;and&quot;:&quot;and&quot;}}}"></div>
+  </div>
+</div>
+    
+
+<footer id="footer" class="crayons-footer print-hidden">
+  <div id="footer-container" class="crayons-footer__container">
+
+
+
+    <p class="fs-s crayons-footer__description">
+      <a class="c-link c-link--branded fw-medium" aria-label="DEV Community Home" href="/">DEV Community</a> — A space to discuss and keep up software development and manage your software career
+    </p>
+
+    <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="" />
+        <li class="footer__nav-link flex items-center">
+    <a href="/">
+      Home
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/challenges">
+      DEV Challenges
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/++">
+      DEV++
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/videos">
+      Videos
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/deved">
+      DEV Education Tracks
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/help">
+      DEV Help
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/advertise">
+      Advertise on DEV
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/organizations">
+      Organization Accounts
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/showcase">
+      DEV Showcase
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/about">
+      About
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/contact">
+      Contact
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="/free-postgres-database-tier">
+      Free Postgres Database
+    </a>
+    <span class="dot ml-2"></span>
+  

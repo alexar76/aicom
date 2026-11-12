@@ -1,0 +1,1248 @@
+{
+  "checked_at_utc": "2026-11-09T19:36:56.969624+00:00",
+  "requested_rolling_7day_window": {
+    "start_utc": "2026-11-02T19:36:56.969624+00:00",
+    "end_utc": "2026-11-09T19:36:56.969624+00:00"
+  },
+  "scope": "Two successful BaseScan first pages, 50 all-token rows each. URL contractAddress parameter did NOT restrict displayed table; canonical token contract verified locally for every included row. No pagination. Explorer indexed observations, not full RPC logs or call records.",
+  "pages": {
+    "payout": {
+      "html_table_rows": 50,
+      "ignored_noncanonical_token_rows": 1,
+      "canonical_usdc_rows": 49,
+      "newest": "2026-11-09T00:40:38+00:00",
+      "oldest": "2026-10-24T21:53:39+00:00",
+      "rows": [
+        {
+          "tx": "0x772dc59e803f8609414a5e39aa90e1ab7b49ca5d1f4dfab02f73ecd4899c88ed",
+          "block": 54972316,
+          "timestamp_utc": "2026-11-09T00:40:38+00:00",
+          "timestamp_unix": 1794184838,
+          "from": "0x35fE83e85F949B7235595a76782296c6C9C3c030",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x2054e97650d788a6fd566cde8b014bd1d53a33cd654d1a8cd507fa91d5909494",
+          "block": 54691099,
+          "timestamp_utc": "2026-11-08T09:03:15+00:00",
+          "timestamp_unix": 1794128595,
+          "from": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "to": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+          "value_usdc": "0.002",
+          "value_atomic": "2000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x47a095061a12704908f1c4b012ab55bab348b5050d272ed9f1b0fd3e2ff4a541",
+          "block": 54683380,
+          "timestamp_utc": "2026-11-08T08:37:31+00:00",
+          "timestamp_unix": 1794127051,
+          "from": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.002",
+          "value_atomic": "2000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xa07ada03f1165996a8ab1a5b93b8d3ff3b06992560545085c014eaff85d0e91c",
+          "block": 54372654,
+          "timestamp_utc": "2026-11-07T15:21:46+00:00",
+          "timestamp_unix": 1794064906,
+          "from": "0xB9148CD4157AD89691f86b762E9e1A166b788D45",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x21f19ff1ee05f0aa8dff6bc83b9e00e3ee0cf04bdc39c2a65988107dd0c2830a",
+          "block": 54333214,
+          "timestamp_utc": "2026-11-07T13:10:18+00:00",
+          "timestamp_unix": 1794057018,
+          "from": "0x35fE83e85F949B7235595a76782296c6C9C3c030",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xdd890514c1b64327a3f9a869aacde000653a23c1aaec7698ac2f25e921aa6e3b",
+          "block": 54325179,
+          "timestamp_utc": "2026-11-07T12:43:31+00:00",
+          "timestamp_unix": 1794055411,
+          "from": "0xa4f183a6799F0310FcCC545B07F2DcC960223de2",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x7cd7883cf8033054b368db1c038ce5b838dbcfdd04e15db8d2634fe2facfa10a",
+          "block": 54051796,
+          "timestamp_utc": "2026-11-06T21:32:14+00:00",
+          "timestamp_unix": 1794000734,
+          "from": "0xc9c7b38C0942914fC8EA12063BC92dcd3b581670",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x63d07459576bd1edfcfa6c418b25d0051e2d634ce87bac7ceb09fb2c78f87ba3",
+          "block": 53460613,
+          "timestamp_utc": "2026-11-03T12:56:13+00:00",
+          "timestamp_unix": 1793710573,
+          "from": "0x73cC9400Bd9f086D7427d3421D79195a68bB1eA4",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xe4ac7d739c817240b67446f6f948eaa477b2e870bfde77365563c79f5ebec9dd",
+          "block": 53460537,
+          "timestamp_utc": "2026-11-03T12:53:41+00:00",
+          "timestamp_unix": 1793710421,
+          "from": "0x8EC901f7E2710163387d70950F680f1Ea2269D15",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x6d1082db9b7fe841b5700a88c27c52e6e310077bc6a9eb5f811da391652ce342",
+          "block": 53316589,
+          "timestamp_utc": "2026-10-31T04:55:25+00:00",
+          "timestamp_unix": 1793422525,
+          "from": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x478637aabfeb2a2ab0a0627cd706a6d75862e894d478488cc34db15baf036de9",
+          "block": 53316565,
+          "timestamp_utc": "2026-10-31T04:54:37+00:00",
+          "timestamp_unix": 1793422477,
+          "from": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xf60ed00ba4a4887b2a8367b5ff610b5b7dcf55fdc5b266fcf4f8fb2e70ce3d70",
+          "block": 53316158,
+          "timestamp_utc": "2026-10-31T04:41:03+00:00",
+          "timestamp_unix": 1793421663,
+          "from": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xd4f80e80101b68bed98bfb2c6c7b03b88ab7bd3605ace18f872ab2426f6485c2",
+          "block": 53297004,
+          "timestamp_utc": "2026-10-30T18:02:35+00:00",
+          "timestamp_unix": 1793383355,
+          "from": "0xc9c7b38C0942914fC8EA12063BC92dcd3b581670",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x2faf098f58f5cc348475320e67f22a87025ec55847c57a0072d6f69cd2648df8",
+          "block": 53287472,
+          "timestamp_utc": "2026-10-30T12:44:51+00:00",
+          "timestamp_unix": 1793364291,
+          "from": "0x8EC901f7E2710163387d70950F680f1Ea2269D15",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xeeaf156c4574b9e197f4804e0fc85bc1067ffce388bc49b0b4b8b1d05691f398",
+          "block": 53287330,
+          "timestamp_utc": "2026-10-30T12:40:07+00:00",
+          "timestamp_unix": 1793364007,
+          "from": "0xAa34bd941511cc82A19878E2EFBE0BD7077E1db3",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xd951ac0b583a4b741491d856b226579b8c8f389eb1735f3a6da780bad6ad73ab",
+          "block": 53287039,
+          "timestamp_utc": "2026-10-30T12:30:25+00:00",
+          "timestamp_unix": 1793363425,
+          "from": "0x35fE83e85F949B7235595a76782296c6C9C3c030",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x097048836ca8a17feda32b06d39ba69439f00c0ddd435eee336c5e4097c7e9c9",
+          "block": 53272857,
+          "timestamp_utc": "2026-10-30T04:37:41+00:00",
+          "timestamp_unix": 1793335061,
+          "from": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x33c43c06ad086a068983c14bf2788c217544feaec873160b0ff5b2188fff1279",
+          "block": 53272857,
+          "timestamp_utc": "2026-10-30T04:37:41+00:00",
+          "timestamp_unix": 1793335061,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x88fad533fad775598980e7f4a6a187ea8f50422cd8f23df7cf2a2c746c01e0e9",
+          "block": 53270237,
+          "timestamp_utc": "2026-10-30T03:10:21+00:00",
+          "timestamp_unix": 1793329821,
+          "from": "0x8EC901f7E2710163387d70950F680f1Ea2269D15",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x5101d1b11e8fa5f1034455f3011762ad2ca6e68af29192399b6f7595a28b7fe1",
+          "block": 53270171,
+          "timestamp_utc": "2026-10-30T03:08:09+00:00",
+          "timestamp_unix": 1793329689,
+          "from": "0xAa34bd941511cc82A19878E2EFBE0BD7077E1db3",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x1c3619c2d6396f857b208efa3664eeec42a0f1689c6faca4af0d3459c2499768",
+          "block": 53270031,
+          "timestamp_utc": "2026-10-30T03:03:29+00:00",
+          "timestamp_unix": 1793329409,
+          "from": "0x35fE83e85F949B7235595a76782296c6C9C3c030",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xeb976a6aeb5a99dc1a5a67769e76bc2fb337fa87b7e414d3a791ba1a77714bb0",
+          "block": 53269780,
+          "timestamp_utc": "2026-10-30T02:55:07+00:00",
+          "timestamp_unix": 1793328907,
+          "from": "0x73cC9400Bd9f086D7427d3421D79195a68bB1eA4",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x8ea4039eae836db981924b845bc6a567437af30aa69725e79a88bf0c796cfac7",
+          "block": 53254206,
+          "timestamp_utc": "2026-10-29T18:15:59+00:00",
+          "timestamp_unix": 1793297759,
+          "from": "0xAa34bd941511cc82A19878E2EFBE0BD7077E1db3",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xd79453abfe3c45c368054c8ecf1277c65b4bb63bcfcbd252bda59db249fc864e",
+          "block": 53254141,
+          "timestamp_utc": "2026-10-29T18:13:49+00:00",
+          "timestamp_unix": 1793297629,
+          "from": "0x35fE83e85F949B7235595a76782296c6C9C3c030",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xe7bccac712e7de23485d80781037b026a5c5ffe582210782c4b53cc0019dbcec",
+          "block": 53254036,
+          "timestamp_utc": "2026-10-29T18:10:19+00:00",
+          "timestamp_unix": 1793297419,
+          "from": "0x73cC9400Bd9f086D7427d3421D79195a68bB1eA4",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x39f735616d684309ad1c252e5e1618b3c154b5fcaad6b6e987721b818f91971b",
+          "block": 53253880,
+          "timestamp_utc": "2026-10-29T18:05:07+00:00",
+          "timestamp_unix": 1793297107,
+          "from": "0x8EC901f7E2710163387d70950F680f1Ea2269D15",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x12f358fb77214c2aef33be44d8ef2731269417423a9777c880a70403f08957fe",
+          "block": 53242649,
+          "timestamp_utc": "2026-10-29T11:50:45+00:00",
+          "timestamp_unix": 1793274645,
+          "from": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "to": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+          "value_usdc": "0.005",
+          "value_atomic": "5000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xa7b54c90d0044fc51426fe1082b2dd67a6805448e0016b00a04499404047a022",
+          "block": 53242648,
+          "timestamp_utc": "2026-10-29T11:50:43+00:00",
+          "timestamp_unix": 1793274643,
+          "from": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "to": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+          "value_usdc": "0.005",
+          "value_atomic": "5000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x4e90d18b9fd68ccf9b43e10f4716ffea6d55382ec7ccb2052beb6d34cb8fbdbb",
+          "block": 53242645,
+          "timestamp_utc": "2026-10-29T11:50:37+00:00",
+          "timestamp_unix": 1793274637,
+          "from": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "to": "0x097f9685D1e0752bF8B02d61E5Ce9be7eA0FBA7F",
+          "value_usdc": "0.05",
+          "value_atomic": "50000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x53c12881e612c3aa7ab1add123b6e6add782f7232666f33cf32fa3eb386cefe9",
+          "block": 53239922,
+          "timestamp_utc": "2026-10-29T10:19:51+00:00",
+          "timestamp_unix": 1793269191,
+          "from": "0xA1d1C0cf717402ff3651aA4873CcF96410B01978",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x054aa16d3fa2d75a9a4c5cb137c104429eede02cf51218e3e943ecdc9a53d7b8",
+          "block": 53178200,
+          "timestamp_utc": "2026-10-28T00:02:27+00:00",
+          "timestamp_unix": 1793145747,
+          "from": "0xc9c7b38C0942914fC8EA12063BC92dcd3b581670",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x4866e4048514b9861b250a2294878573b35a8d5e2a09c7e6282baa23c740353e",
+          "block": 53153220,
+          "timestamp_utc": "2026-10-27T10:09:47+00:00",
+          "timestamp_unix": 1793095787,
+          "from": "0x6031551fc1FE26710fe4b20316d5DC91d9d6c2D1",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x656749e6bab12a3373a2905c0495126bd7a533902de08e3af18d4f47380fd32a",
+          "block": 53140568,
+          "timestamp_utc": "2026-10-27T03:08:03+00:00",
+          "timestamp_unix": 1793070483,
+          "from": "0x4C29Ec4F680CA88d0019edBfe3A8FF5c80499494",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x36eb3b97871ef7e9685afcf280814ee6f8e39fc6937ae503e5040d6f2df59adc",
+          "block": 53088154,
+          "timestamp_utc": "2026-10-25T22:00:55+00:00",
+          "timestamp_unix": 1792965655,
+          "from": "0xE8273A7AEA1A99639801Dbe8767429F0126150A0",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x9743371f29940adaedea7b36e65be4ea9ce8a7bfdeda4e868b3f5c96f10e067d",
+          "block": 53088122,
+          "timestamp_utc": "2026-10-25T21:59:51+00:00",
+          "timestamp_unix": 1792965591,
+          "from": "0xE8273A7AEA1A99639801Dbe8767429F0126150A0",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xade2cb1269903571d5c464481fe7fc3debf7659d928766f756c786791dae2679",
+          "block": 53088086,
+          "timestamp_utc": "2026-10-25T21:58:39+00:00",
+          "timestamp_unix": 1792965519,
+          "from": "0x2465A48F1e44EF60a986257E0B7c6f90e0a8a1b1",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x143cb4f2d2abd6d7af027da3f2b5911a30b128d1e01ce5c252d17bff1be48940",
+          "block": 53088043,
+          "timestamp_utc": "2026-10-25T21:57:13+00:00",
+          "timestamp_unix": 1792965433,
+          "from": "0xb83BE19A6f16BB7643ECD015afBe14D8a35375CC",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x290cd0fecba5cabe9341a70f19c3cc22af591b75dc8dc789b132c7afd0b67264",
+          "block": 53082704,
+          "timestamp_utc": "2026-10-25T18:59:15+00:00",
+          "timestamp_unix": 1792954755,
+          "from": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x3604087359d8c1adb3a668b7bc600cf949adf99d8df06a72aa9c8f524151b25d",
+          "block": 53075783,
+          "timestamp_utc": "2026-10-25T15:08:33+00:00",
+          "timestamp_unix": 1792940913,
+          "from": "0xb83BE19A6f16BB7643ECD015afBe14D8a35375CC",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xa675ffa34e4a2b166c9e54ce8cb8aefa295e384b6072d1109356a66660549e68",
+          "block": 53074683,
+          "timestamp_utc": "2026-10-25T14:31:53+00:00",
+          "timestamp_unix": 1792938713,
+          "from": "0xE8273A7AEA1A99639801Dbe8767429F0126150A0",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x858648afdf85cb0f0f4f436440b3803212fb04bb309c1d52aa6557ec82eee9aa",
+          "block": 53071761,
+          "timestamp_utc": "2026-10-25T12:54:29+00:00",
+          "timestamp_unix": 1792932869,
+          "from": "0x38b65A78040213f6aa0D09B740eF59A021648B9F",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xc5fb77001abb996895629c7aa6c99687394ba40199d04ec60d735b807656cff0",
+          "block": 53069572,
+          "timestamp_utc": "2026-10-25T11:41:31+00:00",
+          "timestamp_unix": 1792928491,
+          "from": "0xb83BE19A6f16BB7643ECD015afBe14D8a35375CC",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xc1547fa506568b3af7902a1177529f24a8ddcc78bcbcef9cf40047de663a756a",
+          "block": 53068438,
+          "timestamp_utc": "2026-10-25T11:03:43+00:00",
+          "timestamp_unix": 1792926223,
+          "from": "0xE8273A7AEA1A99639801Dbe8767429F0126150A0",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x55624ba7706796bf443a04f09a3b67e15e78b34b0f116a534a7c7bbc439b78d4",
+          "block": 53067232,
+          "timestamp_utc": "2026-10-25T10:23:31+00:00",
+          "timestamp_unix": 1792923811,
+          "from": "0x38b65A78040213f6aa0D09B740eF59A021648B9F",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xfbb0feeda16bd417e23db06f262757e64ca45723f0c9be7eff47b56604e78d4c",
+          "block": 53066132,
+          "timestamp_utc": "2026-10-25T09:46:51+00:00",
+          "timestamp_unix": 1792921611,
+          "from": "0x38b65A78040213f6aa0D09B740eF59A021648B9F",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x14128eef6c1e0c34d0c7dc96a9d02268e97bf93d4daae614bdc4d8a52036e2ec",
+          "block": 53064207,
+          "timestamp_utc": "2026-10-25T08:42:41+00:00",
+          "timestamp_unix": 1792917761,
+          "from": "0x2465A48F1e44EF60a986257E0B7c6f90e0a8a1b1",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xb1c54f290cd1ec7cd98e0537f0068aee15ceec978f2313ba33fb048c15913dd5",
+          "block": 53053989,
+          "timestamp_utc": "2026-10-25T03:02:05+00:00",
+          "timestamp_unix": 1792897325,
+          "from": "0xE2d8dc842FC5037C99c332BD57baAba3649F66C2",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.03",
+          "value_atomic": "30000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x36148e61eeea80282c0d1ccf83fad6e4c50965f082cb69cca8aed74eb026884e",
+          "block": 53044984,
+          "timestamp_utc": "2026-10-24T22:01:55+00:00",
+          "timestamp_unix": 1792879315,
+          "from": "0xb83BE19A6f16BB7643ECD015afBe14D8a35375CC",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x208a3ef41e615581769b194e1b292bd68ceb1b4bc4c3a18be399b58edefc8873",
+          "block": 53044736,
+          "timestamp_utc": "2026-10-24T21:53:39+00:00",
+          "timestamp_unix": 1792878819,
+          "from": "0xE8273A7AEA1A99639801Dbe8767429F0126150A0",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        }
+      ]
+    },
+    "agent402": {
+      "html_table_rows": 50,
+      "ignored_noncanonical_token_rows": 5,
+      "canonical_usdc_rows": 45,
+      "newest": "2026-11-09T15:30:23+00:00",
+      "oldest": "2026-11-02T16:25:51+00:00",
+      "rows": [
+        {
+          "tx": "0x1767c6e20d7f471f1cdee357ba1ea9089b977ab198bf57760f919b79871465c3",
+          "block": 55239237,
+          "timestamp_utc": "2026-11-09T15:30:23+00:00",
+          "timestamp_unix": 1794238223,
+          "from": "0x1FAdD278a61b33f54dA0729210E1B496608E410c",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x7beeb72c78f14d85e7eecad3c10a730f1dc0c508cc833dd4eac0dbfccd96fd86",
+          "block": 55239230,
+          "timestamp_utc": "2026-11-09T15:30:21+00:00",
+          "timestamp_unix": 1794238221,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x1f291B5B41B6E5ffbDc4f2ad8b5F45811438184a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xae77afb06cd98384bfd4b7f32d51bacf4ea03d3c5cffafcb1f3c83a7d2eb5e5b",
+          "block": 55238140,
+          "timestamp_utc": "2026-11-09T15:26:43+00:00",
+          "timestamp_unix": 1794238003,
+          "from": "0x1FAdD278a61b33f54dA0729210E1B496608E410c",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x8cd3a81f4acdf9f2252463c86808093c318925f8b8cc58ebe4967d055ebe8d38",
+          "block": 55238132,
+          "timestamp_utc": "2026-11-09T15:26:42+00:00",
+          "timestamp_unix": 1794238002,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x1f291B5B41B6E5ffbDc4f2ad8b5F45811438184a",
+          "value_usdc": "0.001",
+          "value_atomic": "1000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x0888d49839cc673fb4b771550f322c92664372dbb2fca775a4a74cd8812d8f11",
+          "block": 55237950,
+          "timestamp_utc": "2026-11-09T15:26:05+00:00",
+          "timestamp_unix": 1794237965,
+          "from": "0x1FAdD278a61b33f54dA0729210E1B496608E410c",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x282172c2b160b7fe4d7f60123099d85a489e54a3534f879ca5a3d948e0c50e2c",
+          "block": 54910688,
+          "timestamp_utc": "2026-11-08T21:15:13+00:00",
+          "timestamp_unix": 1794172513,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xe4b29123e5ccbd4237d573482925830fa6c4ccb68642a2c79e8ce6a5a50935c7",
+          "block": 54815965,
+          "timestamp_utc": "2026-11-08T15:59:28+00:00",
+          "timestamp_unix": 1794153568,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x1154736826b5b7e6e580c9ee9b4cb304126370cfc69cfb95df5ce55bb01b210f",
+          "block": 54421193,
+          "timestamp_utc": "2026-11-07T18:03:34+00:00",
+          "timestamp_unix": 1794074614,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x22197e1278ff69714414992aad19c91447186755eded496cbecccebd7f8a288a",
+          "block": 54137713,
+          "timestamp_utc": "2026-11-07T02:18:38+00:00",
+          "timestamp_unix": 1794017918,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0xA5c1Ce365ddb5a91ff466774ec4bDF8f97cb9f55",
+          "value_usdc": "4",
+          "value_atomic": "4000000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x35b9247ef18352c5d0f355150dc23bdd16a924e5be3d20cc1a03c4fe535af43b",
+          "block": 54137332,
+          "timestamp_utc": "2026-11-07T02:17:22+00:00",
+          "timestamp_unix": 1794017842,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0xA5c1Ce365ddb5a91ff466774ec4bDF8f97cb9f55",
+          "value_usdc": "5",
+          "value_atomic": "5000000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x5618672c6119e2e788987fa7ed87aa483f9a6ace1ee26a571a147340b43eb666",
+          "block": 54137038,
+          "timestamp_utc": "2026-11-07T02:16:23+00:00",
+          "timestamp_unix": 1794017783,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0xA5c1Ce365ddb5a91ff466774ec4bDF8f97cb9f55",
+          "value_usdc": "5",
+          "value_atomic": "5000000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x4721efcafddff03dbdf961d99d4b1423f191552f0787be264fd681c8bf68182d",
+          "block": 54136682,
+          "timestamp_utc": "2026-11-07T02:15:12+00:00",
+          "timestamp_unix": 1794017712,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0xA5c1Ce365ddb5a91ff466774ec4bDF8f97cb9f55",
+          "value_usdc": "5",
+          "value_atomic": "5000000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x3b6d22340fffcad800281c0296808f67e77b68d7313b71912a20b015fa78fe79",
+          "block": 54056558,
+          "timestamp_utc": "2026-11-06T21:48:07+00:00",
+          "timestamp_unix": 1794001687,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x7a37823074873e60877a57ac5be3a45ed7b84d2cd98fdedaf833ba50952ac904",
+          "block": 54038351,
+          "timestamp_utc": "2026-11-06T20:47:25+00:00",
+          "timestamp_unix": 1793998045,
+          "from": "0x1110179bFC56d42076bB9C0Ef400eb2dA35B0E91",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x751846291c159d1db9f9b07dfc6a774424e9057a3fc7faf2c02577047bbba2c2",
+          "block": 54038347,
+          "timestamp_utc": "2026-11-06T20:47:25+00:00",
+          "timestamp_unix": 1793998045,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x850363a27F0aC6fEb9C7a3eC4C1d295262dF9432",
+          "value_usdc": "0.005",
+          "value_atomic": "5000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x467e6b2fb2dc289535e35875e6bd304a141440fa12a086ea94bbe4fdca41f6ef",
+          "block": 53944139,
+          "timestamp_utc": "2026-11-06T15:33:23+00:00",
+          "timestamp_unix": 1793979203,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xe886b99dd34874f93818915c862139ca1e328069bc407ebf4653565942c77d68",
+          "block": 53807917,
+          "timestamp_utc": "2026-11-06T07:59:19+00:00",
+          "timestamp_unix": 1793951959,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xe335a0892c5dd3a2464e4924b7a210ec55d3769784ab62932485e69635dd2c26",
+          "block": 53640886,
+          "timestamp_utc": "2026-11-05T22:42:32+00:00",
+          "timestamp_unix": 1793918552,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x593fa72bc7b8dd419b1d92505447dea76c792cf67dc677305cfd52af6ee4ab99",
+          "block": 53621862,
+          "timestamp_utc": "2026-11-05T21:39:08+00:00",
+          "timestamp_unix": 1793914748,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "3.3",
+          "value_atomic": "3300000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xce100c7d498bd00060a8daf723c13be9ad2a9467865b6b0524d6c69a5ba42cab",
+          "block": 53621858,
+          "timestamp_utc": "2026-11-05T21:39:07+00:00",
+          "timestamp_unix": 1793914747,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0xdaDc335482AD545296Fd7b28518A251fFCbEb9Df",
+          "value_usdc": "0.003",
+          "value_atomic": "3000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x4d6db520ec95b0edc33762c94371f339ca265d9d4457b97a93e9fbcebfcea590",
+          "block": 53621687,
+          "timestamp_utc": "2026-11-05T21:38:33+00:00",
+          "timestamp_unix": 1793914713,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.55",
+          "value_atomic": "550000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x1220430199c4b5b2033273073beefa49feda3a1462e4e122b95b7b96a04f8184",
+          "block": 53621683,
+          "timestamp_utc": "2026-11-05T21:38:32+00:00",
+          "timestamp_unix": 1793914712,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0xdaDc335482AD545296Fd7b28518A251fFCbEb9Df",
+          "value_usdc": "0.003",
+          "value_atomic": "3000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x6920e090358bc6cbea750f603b1db904baa2a7f2306c142ffcd46d6ff009f14e",
+          "block": 53620237,
+          "timestamp_utc": "2026-11-05T21:33:43+00:00",
+          "timestamp_unix": 1793914423,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.05",
+          "value_atomic": "50000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xe9ed083d26fbc836ca05b951e1ee04929fef950483c3fb0d099b80761402c0be",
+          "block": 53618317,
+          "timestamp_utc": "2026-11-05T21:27:19+00:00",
+          "timestamp_unix": 1793914039,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xca47528693ac69cdb81e7bfdbb17fcece0382d5e4dde3272d76cc924c31f8413",
+          "block": 53531046,
+          "timestamp_utc": "2026-11-05T04:03:59+00:00",
+          "timestamp_unix": 1793851439,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x2e19f39d208e49773e71dc3f8c3c11c02b4b259fe2c0e0bd6b7fd5b3cf22aadc",
+          "block": 53517316,
+          "timestamp_utc": "2026-11-04T20:26:19+00:00",
+          "timestamp_unix": 1793823979,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x6376dad5bdaf64c6fc5c897336dbbe326e15164cd25a61ed3f3f715022efeecc",
+          "block": 53483098,
+          "timestamp_utc": "2026-11-04T01:25:43+00:00",
+          "timestamp_unix": 1793755543,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x3ca20b86cff8df891654d413a8b02bf3c019e7527361ea78db1f763e6ca17254",
+          "block": 53480489,
+          "timestamp_utc": "2026-11-03T23:58:45+00:00",
+          "timestamp_unix": 1793750325,
+          "from": "0x7c8dAE41883A7Beda7F5392356eF34F57541e01F",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xfd7be9440617672cb70383e52f4195c36ddcf29e7fc1b0f66391f3392c455bc3",
+          "block": 53480489,
+          "timestamp_utc": "2026-11-03T23:58:45+00:00",
+          "timestamp_unix": 1793750325,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x344143199642E87320785823C20c2dF107D17534",
+          "value_usdc": "0.002",
+          "value_atomic": "2000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x7861c0dbad6d4e3d4183d6ada894d8c84f25fd2264d3972cccc2a4af9a3f89cc",
+          "block": 53480314,
+          "timestamp_utc": "2026-11-03T23:52:55+00:00",
+          "timestamp_unix": 1793749975,
+          "from": "0x7c8dAE41883A7Beda7F5392356eF34F57541e01F",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xd7c78b5f70acf5339ca028cc8ee5c2b540f2fd121df2b8d4992f8c45ed80be1e",
+          "block": 53480313,
+          "timestamp_utc": "2026-11-03T23:52:53+00:00",
+          "timestamp_unix": 1793749973,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x344143199642E87320785823C20c2dF107D17534",
+          "value_usdc": "0.002",
+          "value_atomic": "2000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x9cc3cee807fd56a0023700ddff8b9e92a88dcd8268d7361a7f25d8b03b298997",
+          "block": 53468098,
+          "timestamp_utc": "2026-11-03T17:05:43+00:00",
+          "timestamp_unix": 1793725543,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x421986b28b646c9a299dc10ec8d757bbc8e932f4d22066d25614bd70b232a8a5",
+          "block": 53437888,
+          "timestamp_utc": "2026-11-03T00:18:43+00:00",
+          "timestamp_unix": 1793665123,
+          "from": "0xA1d1C0cf717402ff3651aA4873CcF96410B01978",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.05",
+          "value_atomic": "50000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x4142d2a61145584188c738d6a4324bd75367e809de0db91ae6c3783aae603a38",
+          "block": 53433602,
+          "timestamp_utc": "2026-11-02T21:55:51+00:00",
+          "timestamp_unix": 1793656551,
+          "from": "0x7c8dAE41883A7Beda7F5392356eF34F57541e01F",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xebd9369132ae2d7a05078f55c4bd729c628e4379237398c69484e4ae363c679d",
+          "block": 53433601,
+          "timestamp_utc": "2026-11-02T21:55:49+00:00",
+          "timestamp_unix": 1793656549,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x344143199642E87320785823C20c2dF107D17534",
+          "value_usdc": "0.002",
+          "value_atomic": "2000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x48ef64b9f9875dc05b1db620c45f332e39dfde7119a0af9f0b6973d0bfeb6ed1",
+          "block": 53433472,
+          "timestamp_utc": "2026-11-02T21:51:31+00:00",
+          "timestamp_unix": 1793656291,
+          "from": "0x7c8dAE41883A7Beda7F5392356eF34F57541e01F",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xad9b10a311b359ac00a363341a48a089cb49b5731e05df145d834bfbbadbd78b",
+          "block": 53433471,
+          "timestamp_utc": "2026-11-02T21:51:29+00:00",
+          "timestamp_unix": 1793656289,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x344143199642E87320785823C20c2dF107D17534",
+          "value_usdc": "0.002",
+          "value_atomic": "2000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x40a557638e856225beec78ab929e4948840c8af48ac23502b811fadb3a4828d3",
+          "block": 53433116,
+          "timestamp_utc": "2026-11-02T21:39:39+00:00",
+          "timestamp_unix": 1793655579,
+          "from": "0x7c8dAE41883A7Beda7F5392356eF34F57541e01F",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xbd0721b4be152aff7bb29febe82b7455b150889234eb48f387830cb5522f259c",
+          "block": 53433115,
+          "timestamp_utc": "2026-11-02T21:39:37+00:00",
+          "timestamp_unix": 1793655577,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x344143199642E87320785823C20c2dF107D17534",
+          "value_usdc": "0.002",
+          "value_atomic": "2000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x3aee5b8e401fd5af579ef428247792ad2162ce6e148bff2459bf7b245fb31726",
+          "block": 53431192,
+          "timestamp_utc": "2026-11-02T20:35:31+00:00",
+          "timestamp_unix": 1793651731,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x4bdcb59a6984656d92fe573e1a9b7f5b68d1e0c5dc0436c659fa69dfc04cdc85",
+          "block": 53429844,
+          "timestamp_utc": "2026-11-02T19:50:35+00:00",
+          "timestamp_unix": 1793649035,
+          "from": "0x62F2cdBf6b12B466989506DB048c21B1644238d3",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x8294f84c7d69b37877cd747a81bb889338b0c6968557eb3139cd4ab74641958f",
+          "block": 53429843,
+          "timestamp_utc": "2026-11-02T19:50:33+00:00",
+          "timestamp_unix": 1793649033,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0xd334AB5151C624cAdA654854E2879903Dc4217eD",
+          "value_usdc": "0.004",
+          "value_atomic": "4000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x3fa944b811cb74d5dff7ccb16164a51227156852ca578c499be086d78dc065c6",
+          "block": 53429833,
+          "timestamp_utc": "2026-11-02T19:50:13+00:00",
+          "timestamp_unix": 1793649013,
+          "from": "0x62F2cdBf6b12B466989506DB048c21B1644238d3",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0xe3318225dd087369dd0c47b27188414ccd5b7fff9c59f1908d0e040e4e82710c",
+          "block": 53429832,
+          "timestamp_utc": "2026-11-02T19:50:11+00:00",
+          "timestamp_unix": 1793649011,
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0xd334AB5151C624cAdA654854E2879903Dc4217eD",
+          "value_usdc": "0.004",
+          "value_atomic": "4000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        {
+          "tx": "0x3335ee6fa758031284a5c539bfb44fbed14b097501c75038299b2380c1b1a85a",
+          "block": 53423702,
+          "timestamp_utc": "2026-11-02T16:25:51+00:00",
+          "timestamp_unix": 1793636751,
+          "from": "0x902dCf34E53695bDEA2fFB354b1a2e58bD598256",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_usdc": "0.01",
+          "value_atomic": "10000",
+          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        }
+      ]
+    }
+  },
+  "payout_7day": {
+    "all_usdc_transfer_count": 9,
+    "incoming_count": 8,
+    "incoming_unique_sender_wallets": [
+      "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "0x35fe83e85f949b7235595a76782296c6c9c3c030",
+      "0x73cc9400bd9f086d7427d3421d79195a68bb1ea4",
+      "0x8ec901f7e2710163387d70950f680f1ea2269d15",
+      "0xa4f183a6799f0310fccc545b07f2dcc960223de2",
+      "0xb9148cd4157ad89691f86b762e9e1a166b788d45",
+      "0xc9c7b38c0942914fc8ea12063bc92dcd3b581670"
+    ],
+    "incoming_usdc": "0.009",
+    "outgoing_count": 1,
+    "outgoing_usdc": "0.002",
+    "pair_transfers": [],
+    "rows": [
+      {
+        "tx": "0x772dc59e803f8609414a5e39aa90e1ab7b49ca5d1f4dfab02f73ecd4899c88ed",
+        "block": 54972316,
+        "timestamp_utc": "2026-11-09T00:40:38+00:00",
+        "timestamp_unix": 1794184838,
+        "from": "0x35fE83e85F949B7235595a76782296c6C9C3c030",
+        "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "value_usdc": "0.001",
+        "value_atomic": "1000",
+        "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      },
+      {
+        "tx": "0x2054e97650d788a6fd566cde8b014bd1d53a33cd654d1a8cd507fa91d5909494",
+        "block": 54691099,
+        "timestamp_utc": "2026-11-08T09:03:15+00:00",
+        "timestamp_unix": 1794128595,
+        "from": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "to": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+        "value_usdc": "0.002",
+        "value_atomic": "2000",
+        "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      },
+      {
+        "tx": "0x47a095061a12704908f1c4b012ab55bab348b5050d272ed9f1b0fd3e2ff4a541",
+        "block": 54683380,
+        "timestamp_utc": "2026-11-08T08:37:31+00:00",
+        "timestamp_unix": 1794127051,
+        "from": "0x097e3F339D0b023605e12A6B81E2d6Cb7571475a",
+        "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "value_usdc": "0.002",
+        "value_atomic": "2000",
+        "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      },
+      {
+        "tx": "0xa07ada03f1165996a8ab1a5b93b8d3ff3b06992560545085c014eaff85d0e91c",
+        "block": 54372654,
+        "timestamp_utc": "2026-11-07T15:21:46+00:00",
+        "timestamp_unix": 1794064906,
+        "from": "0xB9148CD4157AD89691f86b762E9e1A166b788D45",
+        "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "value_usdc": "0.001",
+        "value_atomic": "1000",
+        "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      },
+      {
+        "tx": "0x21f19ff1ee05f0aa8dff6bc83b9e00e3ee0cf04bdc39c2a65988107dd0c2830a",
+        "block": 54333214,
+        "timestamp_utc": "2026-11-07T13:10:18+00:00",
+        "timestamp_unix": 1794057018,
+        "from": "0x35fE83e85F949B7235595a76782296c6C9C3c030",
+        "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "value_usdc": "0.001",
+        "value_atomic": "1000",
+        "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      },
+      {
+        "tx": "0xdd890514c1b64327a3f9a869aacde000653a23c1aaec7698ac2f25e921aa6e3b",
+        "block": 54325179,
+        "timestamp_utc": "2026-11-07T12:43:31+00:00",
+        "timestamp_unix": 1794055411,
+        "from": "0xa4f183a6799F0310FcCC545B07F2DcC960223de2",
+        "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "value_usdc": "0.001",
+        "value_atomic": "1000",
+        "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      },
+      {
+        "tx": "0x7cd7883cf8033054b368db1c038ce5b838dbcfdd04e15db8d2634fe2facfa10a",
+        "block": 54051796,
+        "timestamp_utc": "2026-11-06T21:32:14+00:00",
+        "timestamp_unix": 1794000734,
+        "from": "0xc9c7b38C0942914fC8EA12063BC92dcd3b581670",
+        "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "value_usdc": "0.001",
+        "value_atomic": "1000",
+        "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      },
+      {
+        "tx": "0x63d07459576bd1edfcfa6c418b25d0051e2d634ce87bac7ceb09fb2c78f87ba3",
+        "block": 53460613,
+        "timestamp_utc": "2026-11-03T12:56:13+00:00",
+        "timestamp_unix": 1793710573,
+        "from": "0x73cC9400Bd9f086D7427d3421D79195a68bB1eA4",
+        "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "value_usdc": "0.001",
+        "value_atomic": "1000",
+        "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      },
+      {
+        "tx": "0xe4ac7d739c817240b67446f6f948eaa477b2e870bfde77365563c79f5ebec9dd",
+        "block": 53460537,
+        "timestamp_utc": "2026-11-03T12:53:41+00:00",
+        "timestamp_unix": 1793710421,
+        "from": "0x8EC901f7E2710163387d70950F680f1Ea2269D15",
+        "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "value_usdc": "0.001",
+        "value_atomic": "1000",
+        "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      }
+    ]
+  },
+  "pair_transfers_in_payout_page": [
+    {
+      "tx": "0x097048836ca8a17feda32b06d39ba69439f00c0ddd435eee336c5e4097c7e9c9",
+      "block": 53272857,
+      "timestamp_utc": "2026-10-30T04:37:41+00:00",
+      "timestamp_unix": 1793335061,
+      "from": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+      "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+      "value_usdc": "0.01",
+      "value_atomic": "10000",
+      "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    {
+      "tx": "0x33c43c06ad086a068983c14bf2788c217544feaec873160b0ff5b2188fff1279",
+      "block": 53272857,
+      "timestamp_utc": "2026-10-30T04:37:41+00:00",
+      "timestamp_unix": 1793335061,
+      "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+      "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+      "value_usdc": "0.001",
+      "value_atomic": "1000",
+      "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    }
+  ],
+  "historical_receipts": [
+    {
+      "name": "buyer-to-agent402",
+      "tx": "0x097048836ca8a17feda32b06d39ba69439f00c0ddd435eee336c5e4097c7e9c9",
+      "status": "success",
+      "block_number": "53272857",
+      "timestamp_utc": "2026-10-30T04:37:41.000Z",
+      "gas_used": "86466",
+      "effective_gas_price_wei": "10000000",
+      "transaction_sender": "0x8cda367232d78c067116e3260da881d2da8ffa39",
+      "transfers": [
+        {
+          "from": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "to": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "value_atomic": "10000",
+          "log_index": 342
+        }
+      ]
+    },
+    {
+      "name": "agent402-to-warden",
+      "tx": "0x33c43c06ad086a068983c14bf2788c217544feaec873160b0ff5b2188fff1279",
+      "status": "success",
+      "block_number": "53272857",
+      "timestamp_utc": "2026-10-30T04:37:41.000Z",
+      "gas_used": "86506",
+      "effective_gas_price_wei": "10000000",
+      "transaction_sender": "0x8f5cb67b49555e614892b7233cfddebfb746e531",
+      "transfers": [
+        {
+          "from": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+          "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "value_atomic": "1000",
+          "log_index": 73
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Four explorer page GET attempts total:2Blockscout403,2BaseScan200; no pagination requested",
+    "Base mainnet RPC returned403; historical receipts independently re-seen in current payout page but not fresh RPC validated",
+    "Actual Agent402 scan window and private gross/net ledger are not exposed here; seven days anchored at this retrieval is a comparison, not exact replay of their run",
+    "No wallet ownership inferred from transfer events; one transfer does not prove successful capability execution or an organic customer"
+  ]
+}

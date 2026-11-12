@@ -1,0 +1,60 @@
+{
+  "query_kind": "repositories",
+  "query": "\"modelmarket.dev\" in:readme -user:alexar76",
+  "url": "https://api.github.com/search/repositories?q=%22modelmarket.dev%22+in%3Areadme+-user%3Aalexar76&per_page=30",
+  "method": "GET",
+  "retrieved_at_utc": "2026-11-10T19:20:11.573919+00:00",
+  "status": 200,
+  "final_url": "https://api.github.com/search/repositories?q=%22modelmarket.dev%22+in%3Areadme+-user%3Aalexar76&per_page=30",
+  "rate_limit_remaining": "9",
+  "rate_limit_resource": "search",
+  "retry_after": null,
+  "bytes": 21957,
+  "complete": true,
+  "sha256": "7787cab80cb2749e235a375cd8056edb372d463f7d32104fc19bca0d6c41c301",
+  "body_path": "bodies/search-13.json",
+  "total_count": 4,
+  "incomplete_results": false,
+  "items": [
+    {
+      "full_name": "khalidsaidi/ragmap",
+      "html_url": "https://github.com/khalidsaidi/ragmap",
+      "description": "Find a retrieval MCP server that works today: a daily-checked list of MCP servers that search knowledge",
+      "fork": false,
+      "default_branch": "main",
+      "created_at": "2026-02-09T22:14:59Z",
+      "updated_at": "2026-11-10T15:20:12Z",
+      "pushed_at": "2026-11-10T15:20:02Z"
+    },
+    {
+      "full_name": "akfldk1028/awesome-mcp-servers",
+      "html_url": "https://github.com/akfldk1028/awesome-mcp-servers",
+      "description": null,
+      "fork": false,
+      "default_branch": "main",
+      "created_at": "2026-07-22T05:41:50Z",
+      "updated_at": "2026-07-22T05:46:32Z",
+      "pushed_at": "2026-07-22T05:50:12Z"
+    },
+    {
+      "full_name": "mizacu72/awesome-mcp",
+      "html_url": "https://github.com/mizacu72/awesome-mcp",
+      "description": null,
+      "fork": false,
+      "default_branch": "main",
+      "created_at": "2026-09-24T16:23:41Z",
+      "updated_at": "2026-09-24T16:39:59Z",
+      "pushed_at": "2026-09-24T16:39:54Z"
+    },
+    {
+      "full_name": "BearRizgar/awesome-mcp-servers",
+      "html_url": "https://github.com/BearRizgar/awesome-mcp-servers",
+      "description": "A collection of MCP servers.",
+      "fork": false,
+      "default_branch": "main",
+      "created_at": "2026-07-01T22:36:52Z",
+      "updated_at": "2026-09-22T06:42:04Z",
+      "pushed_at": "2026-09-13T18:10:20Z"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Guided setup for Attested Memory products, trials and exact USDC access.">
+  <title>Setup wizard · Attested Memory</title>
+  <link rel="stylesheet" href="/app.css?v=20260907k">
+</head>
+<body class="wizard-page">
+  <header class="top">
+    <a class="brand" href="/">attested<span>memory</span><i> / launch</i></a>
+    <nav class="nav"><a href="/docs">Guide</a><a href="/use-cases">Use cases</a><a href="/capabilities">KOVA</a><a href="/billing">Billing</a></nav>
+    <span class="pill">GUIDED SETUP</span>
+  </header>
+  <main class="wizard-shell">
+    <section class="wizard-intro">
+      <div class="eyebrow" data-w="eyebrow"></div>
+      <h1 data-w="title"></h1>
+      <p data-w="intro"></p>
+    </section>
+    <div class="wizard-layout">
+      <section class="wizard-card" aria-live="polite">
+        <ol class="wizard-progress" aria-label="Setup progress">
+          <li data-progress="1"><span>01</span><b data-w="step1"></b></li>
+          <li data-progress="2"><span>02</span><b data-w="step2"></b></li>
+          <li data-progress="3"><span>03</span><b data-w="step3"></b></li>
+        </ol>
+
+        <div class="wizard-step" data-step="1">
+          <div class="step-index">STEP 01 / 03</div>
+          <h2 data-w="productQ"></h2><p data-w="productHint"></p>
+          <div class="choice-grid">
+            <button class="choice" type="button" data-product="personal"><span>PERSONAL</span><strong data-w="pPersonal"></strong><small data-w="pPersonalDesc"></small></button>
+            <button class="choice" type="button" data-product="team"><span>TEAM</span><strong data-w="pTeam"></strong><small data-w="pTeamDesc"></small></button>
+            <button class="choice" type="button" data-product="expert-market"><span>MARKET</span><strong data-w="pMarket"></strong><small data-w="pMarketDesc"></small></button>
+          </div>
+        </div>
+
+        <div class="wizard-step" data-step="2" hidden>
+          <div class="step-index">STEP 02 / 03</div>
+          <h2 data-w="accessQ"></h2><p data-w="accessHint"></p>
+          <div class="choice-grid access-choices">
+            <button class="choice" type="button" data-access="trial"><span>NO PAYMENT</span><strong data-w="trial"></strong><small data-w="trialDesc"></small></button>
+            <button class="choice" type="button" data-access="paid"><span>USDC · BASE</span><strong data-w="paid"></strong><small data-w="paidDesc"></small></button>
+          </div>
+          <details class="wizard-tip"><summary data-w="tipTitle"></summary><ul><li data-w="tip1"></li><li data-w="tip2"></li><li data-w="tip3"></li></ul></details>
+        </div>
+
+        <div class="wizard-step" data-step="3" hidden>
+          <div class="step-index">STEP 03 / 03</div>
+          <h2 data-w="readyTitle"></h2><p data-w="readyBody"></p>
+          <div class="launch-summary"><div><span data-w="summaryProduct"></span><strong id="summary-product"></strong></div><div><span data-w="summaryAccess"></span><strong id="summary-access"></strong></div></div>
+          <div class="actions"><a class="btn" id="launch-link" href="/" data-w="launch"></a><a class="btn alt" href="/docs" data-w="readGuide"></a><a class="btn alt" href="/capabilities" data-w="kovaGuide"></a></div>
+        </div>
+
+        <div class="wizard-controls"><button class="btn alt" type="button" id="wizard-back" data-w="back"></button><button class="btn" type="button" id="wizard-next" data-w="next"></button></div>
+      </section>
+
+      <aside class="wizard-aside">
+        <div class="scope-beam" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="eyebrow">CONTEXT LENS</div><h2 data-w="sideTitle"></h2><p data-w="sideBody"></p>
+        <dl class="terms">
+          <div><dt data-w="capability"></dt><dd data-w="capabilityDesc"></dd><a href="/capabilities">KOVA ↗</a></div>
+          <div><dt data-w="actor"></dt><dd data-w="actorDesc"></dd></div>
+          <div><dt data-w="usdc"></dt><dd data-w="usdcDesc"></dd></div>
+          <div><dt data-w="secret"></dt><dd data-w="secretDesc"></dd></div>
+        </dl>
+      </aside>
+    </div>
+  </main>
+  <footer class="footer"><span>Attested Memory · guided setup</span><span><a href="/docs">10 languages · user guides · use cases</a></span></footer>
+  <script src="/app.js?v=20260907j"></script>
+  <script src="/wizard.js?v=20260907e"></script>
+</body>
+</html>

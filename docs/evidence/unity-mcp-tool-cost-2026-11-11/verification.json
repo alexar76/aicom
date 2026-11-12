@@ -1,0 +1,47 @@
+{
+  "versions": {
+    "histor": "0.8.0",
+    "tiktoken": "0.14.0",
+    "rfc8785": "0.1.4"
+  },
+  "tokenizer": "o200k_base",
+  "toolCount": 48,
+  "observedRunCount": 3,
+  "toolSetDigest": "sha256-nHVV/biN4rTp4sh0Fa60j/NfU0qlLRm56zp/Q4w2nHU=",
+  "totals": {
+    "sent": 23686,
+    "names": 217,
+    "descriptions": 7277,
+    "inputSchemas": 15941,
+    "structure": 251,
+    "outputSchemas": 1941,
+    "listed": 25770
+  },
+  "largestTools": [
+    {
+      "name": "manage_physics",
+      "tokens": 2140
+    },
+    {
+      "name": "manage_graphics",
+      "tokens": 1719
+    },
+    {
+      "name": "manage_camera",
+      "tokens": 1453
+    },
+    {
+      "name": "manage_probuilder",
+      "tokens": 1143
+    },
+    {
+      "name": "manage_ui",
+      "tokens": 1067
+    }
+  ],
+  "unchangedObservationExitCode": 0,
+  "syntheticGrowthExitCode": 1,
+  "syntheticGrowthProblems": [
+    "input schemas +1,664 tokens (+10.4%), over the 10% allowed"
+  ]
+}

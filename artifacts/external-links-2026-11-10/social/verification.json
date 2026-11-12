@@ -1,0 +1,64 @@
+{
+  "body_checks": [
+    {
+      "name": "vouch-trust-index",
+      "status": 200,
+      "bytes": 422042,
+      "truncated": false,
+      "sha256_valid": true
+    },
+    {
+      "name": "teckdeck-cache-churn",
+      "status": 200,
+      "bytes": 38867,
+      "truncated": false,
+      "sha256_valid": true
+    },
+    {
+      "name": "model-context-problems",
+      "status": 200,
+      "bytes": 640416,
+      "truncated": false,
+      "sha256_valid": true
+    },
+    {
+      "name": "agentrank-python",
+      "status": 200,
+      "bytes": 4000001,
+      "truncated": true,
+      "sha256_valid": true
+    },
+    {
+      "name": "agentrank-attested",
+      "status": 200,
+      "bytes": 43039,
+      "truncated": false,
+      "sha256_valid": true
+    },
+    {
+      "name": "agentrank-metis",
+      "status": 200,
+      "bytes": 43550,
+      "truncated": false,
+      "sha256_valid": true
+    },
+    {
+      "name": "agentrank-hub",
+      "status": 200,
+      "bytes": 42473,
+      "truncated": false,
+      "sha256_valid": true
+    },
+    {
+      "name": "agentrank-agent",
+      "status": 200,
+      "bytes": 42470,
+      "truncated": false,
+      "sha256_valid": true
+    }
+  ],
+  "queries_unique": true,
+  "positive_attribution_uses_complete_card_bodies": true,
+  "vouch_rows_count": 6,
+  "novelty": "novelty.json"
+}

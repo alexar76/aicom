@@ -1,0 +1,47 @@
+{
+  "categoryCounts": {
+    "archive-path-name": 3,
+    "artifact-file-sha256": 9,
+    "container-name-list": 1,
+    "descriptive-postcondition-strings": 1,
+    "documented-public-did-key": 1,
+    "public-benchmark-case-identifier": 46,
+    "public-ed25519-did-key": 8,
+    "public-indexnow-verification-key": 1,
+    "public-pagination-cursor": 3,
+    "public-python-image-gpg-fingerprint": 4,
+    "public-well-known-verification-key": 2,
+    "runtime-provenance-source-sha256": 16,
+    "runtime-source-file-sha256": 6,
+    "source-sha256-manifest": 490,
+    "tested-source-sha256": 168,
+    "warden-source-immutability-sha256": 24
+  },
+  "confirmedSecrets": 0,
+  "findingCount": 783,
+  "format": "aicom.gitleaks.independent-semantic-triage/v2",
+  "inputGitTree": "6bdb19b5b8ec21f01c29903ab6f09f5150042ade",
+  "nativeExitCode": 1,
+  "nativeExitPreserved": true,
+  "nativeReportSha256": "190edbf2fcd8ff54870088f4ef81d99096798f83949889eb2c869bfdbcd3a868",
+  "pendingFindings": 0,
+  "perFindingProofSha256": "9f9f08786b83e7719e01f55ff80b00622b7475ed095164acdb8677f92d5ef1b4",
+  "prior88SemanticProofSha256": "18e0af50bc86d9acfc95dd8f663944b7d967cc1b65b1b3757979054f09f9998f",
+  "priorReview": {
+    "files": 14,
+    "findings": 88,
+    "independentSemanticReview": "fix_review verified source contexts and producer semantics; all88 bound to unchanged native Git blobs.",
+    "oldCandidate": "ab469",
+    "sourceBlobsIdenticalToFinalTree": true
+  },
+  "rawSecretValuesExported": false,
+  "safeFindingsSha256": "6a69b68029f9ebe5a54994d7d38707245d1218cdd5f59de6460ec219df9e8947",
+  "scope": "Context review of every native finding from the exact1761-file changed-source input; no global ignore or scanner configuration change.",
+  "sourceFileHashesSha256": "0208daa22207578dc71193d81d902256b57789f135bdd5ee1c796531915d3aff",
+  "sourceUnchanged": true,
+  "statusCounts": {
+    "verified-nonsecret": 783
+  },
+  "triagePass": true,
+  "verifiedInputFiles": 1761
+}

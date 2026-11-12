@@ -1,10 +1,10 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-**从这里开始:** [工厂介绍](https://modeldev.modelmarket.dev/zh/) · [生态系统图谱](https://ecosystem.modelmarket.dev/zh/) · [工厂与产品展示](https://magic-ai-factory.com/).
+[HISTOR](https://histor.modelmarket.dev/) · [WARDEN](https://warden.modelmarket.dev/) · [免费检查](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76)
 <!-- /ecosystem-entry-points -->
 
-<p align="center"><b>构建开放经济，让 AI 智能体彼此发现、雇佣并付款。</b></p>
+<p align="center"><b>为 AI 智能体所用的工具提供检查和有见证的公开记录。</b></p>
 
 <p align="center">
   <a href="README.md">English</a> ·
@@ -51,8 +51,8 @@
 | 你想要 | 前往这里 |
 | --- | --- |
 | **在浏览器中体验 Factory** | [magic-ai-factory.com](https://magic-ai-factory.com)——访客试用 + [管理员演示](https://magic-ai-factory.com/admin/login)（免密码：输入 `admin`，然后点击 **Enter admin demo**） |
-| **了解架构** | [生态系统知识库](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-zh.md) · [白皮书](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/zh.md) · [用例](https://use.modelmarket.dev/) |
-| **运行整个机队** | 使用下方的 `./start.sh --everything`，或阅读 [VPS 快速入门](https://github.com/alexar76/aicom/blob/main/docs/quickstart-ecosystem-deploy.zh.md) |
+| **了解架构** | [生态系统图谱](https://ecosystem.modelmarket.dev/zh/) · [知识库](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/knowledge-base-zh.md) · [白皮书](https://github.com/alexar76/aicom/blob/main/docs/ecosystem/whitepaper/zh.md) · [用例](https://use.modelmarket.dev/) |
+| **在本地运行 Factory** | [公开仓库快速入门](https://github.com/alexar76/aicom/blob/main/docs/README.zh.md) |
 | **发布提供方** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [完整安全智能体教程](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.zh.md) · [完成版智能体](https://github.com/alexar76/themis) · 进程托管在 **[HESTIA](https://github.com/alexar76/hestia)**（托管运行时，不是 Hub） |
 | **参与贡献** | [Discussions](https://github.com/alexar76/aicom/discussions) · [适合首次贡献的问题](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
@@ -107,26 +107,20 @@ uvx create-aimarket-agent my-agent --kind data-provider --metis
 
 ---
 
-### 运行整个系统
+### 在本地运行 Factory
 
-只需一条命令，即可在 VPS 或笔记本电脑上启动整个经济系统——Factory、Hub、Service Mesh、预言机家族、Metis、LOGOS、GAIA、ATLAS、ARGUS、MOMUS + Treasury、SKOPOS、DIOSCURI、HELIOS——并打开实时图谱脉动的 Alien Monitor。
-
-```bash
-git clone https://github.com/alexar76/aicom && cd aicom && ./start.sh --everything
-```
-
-它会自行生成所有密钥，仅显示**一次**；等待每项服务真正响应健康检查后，才会打开监视器。如果有服务未启动，它会指出具体服务并停止，而不会打开一个提供虚假状态的页面。
-
-通过 `http://<your-ip>:<port>` 访问——无需 nginx、TLS 或域名。默认绑定到 localhost；`--bind 0.0.0.0` 会将其公开，并明确告知这会开放哪些控制平面端口。
+在浏览器中打开 [Factory 演示](https://magic-ai-factory.com/)，或了解 [Factory 的工作方式](https://modeldev.modelmarket.dev/zh/)。
+本地运行需要 Git、Bash、Python 3、`curl`，以及已启动的 Docker Engine 或 Docker Desktop（含 Compose v2）。
 
 ```bash
-./start.sh                 # 仅核心：Factory + Hub + Mesh + Monitor——笔记本电脑级
-./start.sh --everything    # 完整机队，约 40 个容器
-./start.sh --down          # 停止，但保留数据
+git clone https://github.com/alexar76/aicom.git
+cd aicom
+cp .env.demo .env
+# 如需用 AI 智能体构建产品，请在 .env 中设置受支持的提供方密钥，例如 DEEPSEEK_API_KEY。
+./start.sh
 ```
 
-**它不会做的事：**向任何真实链部署合约（此操作刻意由单独脚本完成），也不会花费真实资金——加密货币功能保持关闭，随附链使用虚拟资金且为临时链。
-完整运行手册：[docs/deploy-everything.md](https://github.com/alexar76/aicom/blob/main/docs/deploy-everything.md) · 2 分钟演示：[YouTube](https://youtu.be/Gg9a52-ZbNA)
+公开仓库启动 Factory、Prometheus 和 Grafana。访问 `http://localhost:9080` 打开 Factory 界面。配置 LLM 密钥前，Factory 使用模板生成结果。运行全部服务需要完整的单体仓库。要访问[托管的 Hub](https://github.com/alexar76/aicom/blob/main/docs/hosted-mcp-endpoint.md)，请在 MCP 客户端中使用 `https://modelmarket.dev/mcp`。
 
 ---
 

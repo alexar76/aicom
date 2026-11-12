@@ -92,6 +92,31 @@ def test_implementation_contract_synthesized_for_full_software():
     assert any("GITHUB_HOUSE_CONTRACT" in s for s in ic["forbidden_shortcuts"])
 
 
+def test_generated_demo_seed_matches_the_configured_sandbox_password(monkeypatch):
+    from web.backend.services.demo_credentials import effective_sandbox_demo_password_for_compose
+
+    monkeypatch.setenv("AIFACTORY_SANDBOX_DEMO_PASSWORD", "instance-fixture-password")
+    arch = {"tech_stack": {"frontend": "React + Vite", "backend": "FastAPI", "database": "postgresql"}}
+    _ensure_implementation_contract(arch, {"delivery_profile": "full_software"}, "CRM demo", landing_charter=False)
+    demo = arch["implementation_contract"]["testing_contract"]["sandbox_demo_credentials"]
+    matches_effective_password = demo["seed_password"] == effective_sandbox_demo_password_for_compose()
+    assert matches_effective_password
+    assert "SANDBOX_DEMO_PASSWORD" in demo["env_var_names"]
+
+
+def test_generated_demo_seed_preserves_explicit_password(monkeypatch):
+    from agents.architect_contracts import _ensure_testing_contract_fields
+
+    monkeypatch.setenv("AIFACTORY_SANDBOX_DEMO_PASSWORD", "instance-fixture-password")
+    arch = {"implementation_contract": {
+        "data_plane": [{"store": "postgresql"}],
+        "testing_contract": {"sandbox_demo_credentials": {"seed_password": "explicit-fixture-password"}},
+    }}
+    _ensure_testing_contract_fields(arch, {"delivery_profile": "full_software"}, landing_charter=False)
+    assert arch["implementation_contract"]["testing_contract"]["sandbox_demo_credentials"]["seed_password"] == \
+        "explicit-fixture-password"
+
+
 def test_github_house_paths_appended_to_thin_layout():
     arch: dict = {
         "content_language": "ru",

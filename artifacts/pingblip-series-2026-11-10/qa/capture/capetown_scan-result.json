@@ -1,0 +1,119 @@
+{
+  "recordedAt": 1794343790.712547,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "cell": "k3vp5",
+    "layer": "weather",
+    "weather": {
+      "kind": "clear",
+      "temperatureC": 17.1,
+      "humidity": 74,
+      "windKmh": 5.508,
+      "precipitationMm": null,
+      "weatherCode": null,
+      "isNight": false,
+      "sceneId": "black-studio"
+    },
+    "hasPin": true,
+    "pin": {
+      "ok": true,
+      "capability_id": "atlas.nearest.read@v1",
+      "sku": "atlas.nearest.read@v1",
+      "generated_at": "2026-11-10T19:51:56.391607+00:00",
+      "query": {
+        "lat": -33.9249,
+        "lon": 18.4241,
+        "layers": [
+          "weather"
+        ],
+        "max_km": 2500,
+        "per_layer": false
+      },
+      "nearest": {
+        "id": "om-wx-capetown",
+        "parent_id": null,
+        "layer": "weather",
+        "place": "Cape Town",
+        "lat": -33.9249,
+        "lon": 18.4241,
+        "live": true,
+        "mode": "live",
+        "source": "https://open-meteo.com (Open-Meteo Forecast API; CC BY 4.0 — attribution required; relayed via operator-run Open-Meteo instance http://open-meteo:8080)",
+        "headline": "17.1 °C",
+        "values": {
+          "temperature_c": 17.1,
+          "humidity_pct": 74,
+          "pressure_hpa": 1019.3,
+          "wind_mps": 1.53
+        },
+        "color": "#3dd6c6",
+        "reading_age_ms": 861,
+        "distance_km": 0,
+        "point_invoke": {
+          "capability_id": "atlas.point.read@v1",
+          "product_id": "atlas.products",
+          "input": {
+            "point_id": "om-wx-capetown",
+            "fresh": false
+          },
+          "invoke_path": "/ai-market/v2/invoke"
+        }
+      },
+      "distance_km": 0,
+      "layer": "weather",
+      "values": {
+        "temperature_c": 17.1,
+        "humidity_pct": 74,
+        "pressure_hpa": 1019.3,
+        "wind_mps": 1.53
+      },
+      "receipt": {
+        "algorithm": "sha256",
+        "digest": "0e48db92e64452bd0a9d6b893ccc7cb5e4302d8effb0b3fd25ceb9931188a6ff",
+        "service": "atlas",
+        "version": "0.3.3",
+        "ts": "2026-11-10T19:51:56.391924+00:00",
+        "capability_id": "atlas.nearest.read@v1",
+        "signature_alg": "ed25519",
+        "signature_b64": "Zx6z67W7gunD8w5ecxjj0H+tN/eoC1kiwAcdrY+kZwJ9K2UoKdZNOtzLwanoi/yOmp1L3sWEHy/XUB50QBBoAA==",
+        "public_key_b64": "p4dibtrb4RSgFvm8lF7xH6csSdpDp01XVVfhuiKfeBk=",
+        "pq_signature_alg": "ml-dsa-65",
+        "pq_signature_b64": "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",
+        "pq_public_key_b64": "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",
+        "signature_status": "signed"
+      },
+      "success": true,
+      "latency_ms": 0,
+      "price_usd": 0.03,
+      "routed_via": "https://modelmarket.dev",
+      "routing_fee_bps": 100,
+      "provenance_receipt": {
+        "receipt_id": "urn:uuid:61596659-8125-41ab-9420-be3af57cc416",
+        "verify_url": "https://modelmarket.dev/ai-market/v2/p/provenance/verify/urn:uuid:61596659-8125-41ab-9420-be3af57cc416",
+        "receipt_url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:61596659-8125-41ab-9420-be3af57cc416",
+        "verifier_url": "https://verify.modelmarket.dev",
+        "awr_version": "2.0.0",
+        "issuer": "did:key:z6MkkCADReBRLTMEqSV7REQ399ujjFPb8UFBSryAC7SPv6LX",
+        "digest_sri": "sha256-E4IC8C88QYSM7dp53qf4eKphk5XQjbCURjSYyaA18Fk="
+      }
+    },
+    "roster": [
+      {
+        "id": "sprinkle-moth",
+        "rarity": "common",
+        "owned": true,
+        "name": "Sprinkle Moth"
+      },
+      {
+        "id": "heel-golem",
+        "rarity": "rare",
+        "owned": false,
+        "name": "Heel Golem"
+      }
+    ],
+    "proofId": "c63307141f8dbea957c2",
+    "coverage": "live pin in range",
+    "creditsMilli": 390
+  }
+}

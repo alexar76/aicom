@@ -1,0 +1,12 @@
+ARG BASE
+FROM ${BASE}
+# receipt-binding overlay 2026-10-30: receipt_binding (spec §7.3.9) on every delivered invoke,
+# X-Client-Nonce, peer receipts verified by pinned key, recomputable provenance digests.
+COPY aimarket_hub/receipt_binding.py /app/aimarket_hub/receipt_binding.py
+COPY aimarket_hub/api.py /app/aimarket_hub/api.py
+COPY aimarket_hub/api_models.py /app/aimarket_hub/api_models.py
+COPY aimarket_hub/mcp_gateway.py /app/aimarket_hub/mcp_gateway.py
+COPY aimarket_hub/hub_routes/invoke.py /app/aimarket_hub/hub_routes/invoke.py
+COPY aimarket_hub/hub_routes/verification.py /app/aimarket_hub/hub_routes/verification.py
+COPY aimarket_provenance/plugin.py /usr/local/lib/python3.12/site-packages/aimarket_provenance/plugin.py
+COPY aimarket_provenance/receipt.py /usr/local/lib/python3.12/site-packages/aimarket_provenance/receipt.py

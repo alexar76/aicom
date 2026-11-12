@@ -1,0 +1,79 @@
+We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write — Summary & Key Points | TeckDeck.io
+Tags
+Sources
+About
+Contact
+Login
+Join
+Home
+›
+Changes
+dev.to
+3 Nov 2026
+We found 331 MCP tool-list changes in one week that only moved a date. Each one costs a prompt-cache write
+changes
+data management
+mcp
+prompt-cache
+tool-list
+Read the full article on
+dev.to
+TL;DR
+In one week, 331 tool-list changes recorded in MCP servers were purely date changes, highlighting the inefficiencies in cache usage. Each change disrupts cached prefixes, resulting in higher costs for these operations. Alternatives for date management without impacting tool lists are proposed.
+Key points
+A total of 10,712 changes were recorded, with a significant number being minor date updates that cost system resources.
+Changing a single byte in tool definitions invalidates cached prompts, increasing operational costs significantly.
+Date values and numeric updates in tool lists should be managed differently to reduce cache disruptions and costs.
+The study provides insights into better practices for maintaining tool definitions while minimizing changes to cached data.
+Developers can utilize HISTOR's API for analyzing tool list changes and optimizing their server interactions.
+Quick facts
+Total changes recorded
+10,712
+Changes that only moved a date
+331
+Ineffective date-changing server count
+1
+Operational cost increase on cache miss
+12 times more than on a hit
+Public log of tool changes
+HISTOR
+Why it matters
+Understanding how minor changes can impact system performance and costs is crucial for developers managing tool optimizers and code agents. This insight can lead to more efficient architectures and refined practices in date management.
+Who it's for
+This article is beneficial for developers, especially those working with tool optimizers and MCP servers.
+FAQ
+What is the impact of changing a byte in tool definitions?
+Changing a byte invalidates cached prefixes, leading to increased costs for every request that relies on the cache.
+How many minor changes were recorded in MCP server tool lists?
+A total of 331 changes were identified that involved only moving dates or timestamps.
+What are recommended practices for date management in tool definitions?
+Instead of embedding dates in tool lists, use results, small tools, or computed defaults to maintain stability in definitions.
+Summary written by TeckDeck.io from the original article on
+dev.to
+. All rights to the original content belong to its author.
+Read the original
+.
+More on
+Changes
+A Brief Overview Before Anything Else: Artificial Intelligence and MCP
+dev.to
+· 10 Nov 2026
+Switching Recovery Tools: The Costs Nobody Puts in the Comparison Table
+dev.to
+· 10 Nov 2026
+Ultorg: The User Interface for Relational Databases
+ultorg.com
+· 10 Nov 2026
+Docker Compose volumes: four mix-ups that can cost you data
+dev.to
+· 10 Nov 2026
+All posts tagged
+changes
+All posts from
+dev.to
+About
+Contact
+TeckDeck.io
+(c)
+2026
+created by Oleg Klimenko

@@ -1,0 +1,984 @@
+AIMarket — live agent marketplace · modelmarket.dev
+Skip to content
+verify
+mcp
+Beta
+VerifyMCP is currently in beta. If you notice any issues, get in
+              touch and we’ll put it right.
+Directory
+Products
+Known Malware
+Docs
+Blog
+Stats
+MCP Server
+Account
+Sign out
+Your dashboard
+Open menu
+Directory
+Products
+Known Malware
+Docs
+Blog
+Stats
+MCP Server
+Your dashboard
+Account
+Sign out
+Home
+/
+Remote
+/
+AIMarket — live agent marketplace
+/
+modelmarket.dev
+AIMarket — live agent marketplace
+REMOTE · MODELMARKET.DEV · 2 COMPONENTS
+Search and invoke real AI capabilities on modelmarket.dev. Free trial, then a prepaid key.
+Available components
+remote · modelmarket.dev
+0
+remote · modelmarket.dev
+74
+−1 this week
+74
+74
+Trust /100
+Last scanned
+10 Nov 2026
+(14 hours ago)
+Scores higher than 63% of remote servers
+Reachable. Last reached 10 Nov 2026.
+Category
+AI and Machine Learning
+Trust breakdown (7 categories)
+How this component scores in each security and reliability category. Every signal is checked automatically against the live server, and we only credit what we can confirm.
+How we score →
+Why this is hard to score →
+Endpoint Security
+63
+The endpoint's TLS certificate is valid, in date, and uses a strong key.
+View diagnostics →
+Pass
+Authorisation not fully verified: no authorisation is required to call this server, and 13 tool(s) never declared a destructiveHint. The MCP spec treats an absent hint as destructive by default, so we cannot call this surface safe.
+See how to fix →
+View diagnostics →
+Unverified
+HTTPS is enforced; there's no plaintext access path.
+View diagnostics →
+Pass
+The HSTS (Strict-Transport-Security) header is present.
+View diagnostics →
+Pass
+DNSSEC check failed: this domain isn't protected by DNSSEC.
+See how to fix →
+View diagnostics →
+Fail
+Transport & Reachability
+100
+Verified streamable-http transport via a live MCP handshake.
+View diagnostics →
+Pass
+Schema Quality & AI Usability
+64
+AI-judged instruction clarity (good).
+Pass
+Context-footprint check failed: tool/resource definitions use about 2055 tokens (~158/item across 13 items; 13 tools + 0 resources), over budget; trim descriptions and params.
+See how to fix →
+Fail
+Usage-examples check failed: none of the tools include examples.
+See how to fix →
+Fail
+Stability & Change Management
+97
+Stability observed for 29 of 30 days with no destabilising changes; credit accrues until the full window elapses.
+Partial
+Tool Coverage
+86
+100% of tools have a non-trivial description (not blank, and not just the tool's name).
+Pass
+57% of tool parameters carry a description.
+Partial
+Tool Safety
+75
+No prompt-injection markers were found in the server instructions, tool names or descriptions we captured.
+Pass
+0 of 4 tool(s) whose name or description implies an irreversible operation declare an MCP destructiveHint annotation; "pipeline_invoke" implies "execute" and declares no destructiveHint at all, which the MCP spec reads as destructive by default.
+See how to fix →
+Fail
+An AI judge read all 14 captured unit(s) of tool text and found none that tries to manipulate the model reading it.
+Pass
+Capabilities
+60
+Spec-recency check failed: implements MCP spec 2025-06-18; the latest is 2026-07-28.
+See how to fix →
+Fail
+What we tested
+Checks we ran (12)
+TLS certificate
+HTTPS
+HSTS header
+DNSSEC
+Transport
+Schema quality
+Stability
+Tool coverage
+Injection markers
+Destructive annotations
+Judged manipulation
+MCP protocol
+Checks we could not complete (1)
+These are gaps on our side, not findings about this hosted endpoint. We only credit what we
+              can confirm, so a category made up entirely of them scores 0.
+Authorization
+in Endpoint Security
+Authorisation not fully verified: no authorisation is required to call this server, and 13 tool(s) never declared a destructiveHint. The MCP spec treats an absent hint as destructive by default, so we cannot call this surface safe.
+Does not apply to this hosted endpoint (2)
+Supply Chain Security
+Scored on package channels only. This is a hosted endpoint, so there is nothing to install or inspect.
+Provenance & Transparency
+Scored on package channels only. This is a hosted endpoint, so there is nothing to install or inspect.
+The score does not measure everything.
+What the score does not measure →
+Changelog
+Show cosmetic changes
+Every change we have recorded for this component, newest first. Security-relevant changes
+    are always shown. ▲ marks a change for the better, ▼ a change for the worse; unmarked
+    changes are neutral.
+10 Nov 26
+−1
+Stability:
+pass → 0.97
+functional
+9 Nov 26
++1
+Stability:
+0.97 → pass
+security
+8 Nov 26
+−1
+Stability:
+pass → 0.97
+functional
+7 Nov 26
+0
+Tool “x402_check” rewrote its description, which is the text the model reads
+security
+Tool “air_quality_now” rewrote its description, which is the text the model reads
+security
+Tool “fair_random” rewrote its description, which is the text the model reads
+security
+Tool “nearby_sensors” rewrote its description, which is the text the model reads
+security
+Tool “weather_now” rewrote its description, which is the text the model reads
+security
+Server version:
+1.2.0 → 1.3.0
+functional
+6 Nov 26
+0
+We updated how we score, so this day's move reflects our rubric, not a change to the server
+See what changed →
+functional
+22 Oct 26
+0
+Tool “market_search” rewrote its description, which is the text the model reads
+security
+10 Oct 26
+0
+HSTS header:
+fail → pass
+▲
+security
+Schema quality:
+1743 → 2023
+▼
+functional
+Tool coverage:
+52% → 57%
+▲
+functional
+1 Oct 26
+0
+The server rewrote its instructions, which are the text every model session reads
+security
+Tool coverage:
+89% → 52%
+▼
+functional
+Schema quality:
+195 → 145
+▲
+functional
+Schema quality:
+excellent → good
+functional
+Destructive annotations:
+pass → 0
+functional
+Server version:
+1.1.0 → 1.2.0
+functional
+New tool “pipeline_invoke”
+functional
+New tool “pipeline_prepare”
+functional
+New tool “pipeline_refund”
+functional
+New tool “pipeline_refund_prepare”
+functional
+New tool “pipeline_refund_status”
+functional
+New tool “pipeline_status”
+functional
+Show 2 earlier entries
+Hide earlier entries
+Diagnostics
+Diagnostic detail from the automated scan of this channel: what the scanner
+    observed at each step, so you can see exactly where a check passed or
+    failed. It is informational only and never changes the trust score.
+Captured 10 Nov 2026  ·   Probed
+https://modelmarket.dev/mcp
+TLS
+valid
+Negotiated TLS 1.3  
+with
+TLS_AES_128_GCM_SHA256
+.
+Subject
+Issuer
+Valid from
+Valid until
+Key
+Signature
+Serial
+CN=modelmarket.dev
+Copy
+CN=YE2,O=Let's Encrypt,C=US
+Copy
+29 Sept 2026
+28 Dec 2026
+ECDSA 256
+ECDSA-SHA384
+676c19725090b70834a37df124c11ac463f
+Copy
+SANs: modelmarket.dev, www.modelmarket.dev
+CN=YE2,O=Let's Encrypt,C=US
+Copy
+(CA)
+CN=Root YE,O=ISRG,C=US
+Copy
+3 Sept 2025
+2 Sept 2028
+ECDSA 384
+ECDSA-SHA384
+4df3b15dd6c0784c507cd37b58e6f115
+Copy
+CN=Root YE,O=ISRG,C=US
+Copy
+(CA)
+CN=ISRG Root X2,O=Internet Security Research Group,C=US
+Copy
+13 May 2026
+2 Sept 2032
+ECDSA 384
+ECDSA-SHA384
+872165fc34b6e5fba8add5b3705fb53a
+Copy
+CN=ISRG Root X2,O=Internet Security Research Group,C=US
+Copy
+(CA)
+CN=ISRG Root X1,O=Internet Security Research Group,C=US
+Copy
+13 May 2026
+2 Sept 2032
+ECDSA 384
+SHA256-RSA
+6c8f1dc727c7117f7baf853ac980f9cd
+Copy
+Background:
+What to check on a remote MCP endpoint →
+DNSSEC
+insecure
+Validation of
+modelmarket.dev.
+Copy
+—
+Not signed
+The domain proved it is genuinely unsigned. This is not a failure, but DNS answers for it are unauthenticated.
+Zone
+The DNS zone this step of the chain walk covers.
+DS
+The delegation signer record linking this zone to its parent.
+Keys
+The DNSKEY tags seen at this zone.
+Algorithms
+The DNSSEC signing algorithms in use at this zone.
+Outcome
+.
+Copy
+Trust anchor
+The root zone is checked against the trust anchor built into the validator, not against a parent.
+20326, 38696
+Copy
+8, 8
+Verified
+This zone's signatures verified against the key its parent delegated to.
+dev.
+Copy
+DS published
+The parent zone publishes a DS record for this zone, delegating signing authority to it.
+60074
+Copy
+8
+Verified
+This zone's signatures verified against the key its parent delegated to.
+modelmarket.dev.
+Copy
+No DS
+There is no DS record at this label, either because it is not a zone cut or because the delegation is unsigned.
+Unsigned (proven)
+The parent proved that no signed delegation exists here, so the chain legitimately stops.
+parent-signed NSEC/NSEC3 proves an unsigned delegation
+Authentication
+No authorisation required
+The endpoint answered without asking for a token. Anyone who knows the URL can reach it.
+Result
+No authorisation required
+The endpoint answered without asking for a token. Anyone who knows the URL can reach it.
+HTTP status
+200
+The HTTP status code the endpoint returned, when it returned one.
+Header
+A response header captured from the endpoint, from a fixed allowlist.
+Value
+strict-transport-security
+max-age=31536000
+Copy
+content-security-policy
+frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+Copy
+x-content-type-options
+nosniff
+Copy
+x-frame-options
+DENY
+Copy
+referrer-policy
+strict-origin-when-cross-origin
+Copy
+Background:
+How OAuth 2.1 works in the 2026 MCP spec →
+Transports
+2  probes
+Transport
+Which MCP transport was probed. Streamable HTTP is current; HTTP+SSE is the deprecated 2024-11-05 transport.
+URL
+The exact URL that was requested for this probe.
+Outcome
+What the probe found. Hover the value for what that specific result means.
+Status
+The HTTP status code the endpoint returned, when it returned one.
+Location
+The Location header, present only when the endpoint answered with a redirect.
+streamable-http
+https://modelmarket.dev/mcp
+Copy
+Verified
+The endpoint completed a valid MCP handshake over this transport.
+200
+http (plaintext)
+What happened when the endpoint was requested over unencrypted HTTP, rather than HTTPS.
+http://modelmarket.dev/mcp
+Copy
+HTTPS enforced
+The plaintext HTTP address either refuses to serve or redirects to HTTPS, so there is no unencrypted way in.
+301
+https://modelmarket.dev/mcp
+Copy
+MCP tools
+ · 13 exposed
+ · ~1,807 tokens
+The tools this component advertises to a client, with an estimated token cost
+    for each. Expand a tool to see its parameters and schema. The per-tool counts
+    are indicative and are not scored directly; the schema's total context
+    footprint is one signal in Schema Quality & AI Usability. A tool's
+    description is untrusted text the model reads on every call, which is what
+    makes this list a security surface and not just an inventory:
+how tool poisoning works →
+Tool
+Tokens
+air_quality_now
+~131
+Current air quality at a place: PM2.5 and PM10 (µg/m³), US and European AQI, from Copernicus CAMS via Open-Meteo, with a signed receipt. Pass latitude and longitude, or a city. Paid per call; market_search shows the current price. The first few priced calls per caller are free.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+city
+string
+–
+A city instead of coordinates, e.g. "Tokyo"; many spellings work (Токио, 東京).
+latitude
+number
+–
+Latitude in degrees.
+longitude
+number
+–
+Longitude in degrees.
+No output schema declared.
+No examples provided.
+fair_random
+~109
+Verifiable random bytes for a draw, raffle or tie-break: an ECVRF output over your seed plus a proof anyone can check offline. The same seed always gives the same output, so publish the seed first to show the result was not picked. Paid per call; market_search shows the current price. The first few priced calls per caller are free.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+num_bytes
+integer
+–
+Output length (default 32).
+seed
+string
+yes
+Seed or message the draw is bound to.
+No output schema declared.
+No examples provided.
+market_invoke
+~410
+Invoke a capability found via market_search. A few trial invokes are granted per caller with no wallet, key or channel, and each returns the hub's signed receipt; when the allowance is spent the hub answers 402 and this reports that rather than inventing a result, with next_steps saying how to pay. Paid access uses the prepaid balance of an API key sent as this connection's X-API-Key header, payment_channel (+ secret), or an on-chain x402 payment (x_payment + x_payment_nonce + x_payment_secret).
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+capability_id
+string
+yes
+The exact capability_id from market_search.
+include_full_receipt
+boolean
+–
+Return the hub's raw response, including the full hybrid Ed25519 + ML-DSA-65 receipt signature (about 7 KB).
+input
+object
+–
+Input object for the capability; {} when it takes none.
+max_price_usd
+number
+–
+Atomic total-price ceiling. Copy the selected search result's max_price_usd here; the Hub returns price_limit_exceeded before work or payment if the route was repriced.
+payment_authorization
+object
+–
+–
+payment_channel
+string
+–
+–
+payment_channel_secret
+string
+–
+–
+product_id
+string
+yes
+The product_id from market_search.
+source_hub
+string
+–
+The source_hub from market_search, when it shows one. Required for federated capabilities — most of the catalogue; omitting it makes the hub look for the capability locally and answer 404.
+x_payment
+string
+–
+x402 seller-direct payment: the hash of the USDC transfer you broadcast for the 402's invoice (see next_steps).
+x_payment_nonce
+string
+–
+The invoice nonce from the 402 that x_payment pays.
+x_payment_secret
+string
+–
+The payment_secret from that 402. The nonce and the transaction are public once mined; the secret is what shows you are the one who paid.
+No output schema declared.
+No examples provided.
+market_search
+~147
+Search this hub's catalogue of live data and computation by what you need, in plain words. Each match gives the product_id, capability_id and source_hub to pass to market_invoke, its price, `input` (the fields its input object takes) and `relevance` from 0 to 1; a `note` says when nothing matched well.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+budget
+number
+–
+Optional cap on price per call, in USD.
+category
+string
+–
+Optional category filter, e.g. 'security'.
+intent
+string
+yes
+What you want done, in plain language.
+limit
+integer
+–
+Maximum results (default 10, max 50).
+No output schema declared.
+No examples provided.
+nearby_sensors
+~128
+The nearest live public sensors to a point, one per layer asked for (e.g. weather, air, radiation, quake), each with its reading, distance and source, and a signed receipt. Paid per call; market_search shows the current price. The first few priced calls per caller are free.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+latitude
+number
+yes
+Latitude in degrees.
+layers
+array
+–
+Sensor layers to search, e.g. ["weather", "air"]; default weather.
+longitude
+number
+yes
+Longitude in degrees.
+max_km
+number
+–
+Refuse sensors farther than this.
+No output schema declared.
+No examples provided.
+pipeline_invoke
+~109
+Execute or continue the SAME prepared graph. Submit authorizations when the signed quote enables gas_sponsorship, otherwise buyer-signed transactions; none for free steps. Never submit both payment modes. Retain run_id/access_token and the exact bundle. Pending is not failure; repeat the same run or read pipeline_status. Never create a replacement purchase after a lost response.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+access_token
+string
+yes
+–
+authorizations
+–
+–
+–
+run_id
+string
+yes
+–
+transactions
+–
+–
+–
+No output schema declared.
+No examples provided.
+pipeline_prepare
+~110
+Validate a graph and return a signed quote and payment offers. No work or payment. Free steps require no wallet; paid steps require buyer wallet address. Use gas_mode=required to demand gas sponsorship or auto to prefer it. Inspect ready/blockers and gas_sponsorship. Sign offers LOCALLY, never provide a private key. Then call pipeline_invoke.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+gas_mode
+string
+–
+–
+max_budget_usd
+–
+–
+–
+nodes
+array
+yes
+–
+wallet
+string
+–
+–
+No output schema declared.
+No examples provided.
+pipeline_refund
+~93
+Submit the original seller's refund authorization or resume the SAME refund. The recipient is the original buyer, amount is the paid step price, and the sponsor pays gas. Preserve the exact authorization after a lost response. Returns a separately signed credit note; the original bill is unchanged.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+access_token
+string
+yes
+–
+authorization
+–
+–
+–
+run_id
+string
+yes
+–
+step_id
+string
+yes
+–
+No output schema declared.
+No examples provided.
+pipeline_refund_prepare
+~85
+Prepare a cash refund for a verified paid step of a finished pipeline. This moves no money. The original seller must approve the exact EIP-3009 authorization locally; never send a private key. Refunds require seller cooperation and a configured gas sponsor.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+access_token
+string
+yes
+–
+run_id
+string
+yes
+–
+step_id
+string
+yes
+–
+No output schema declared.
+No examples provided.
+pipeline_refund_status
+~71
+Read the saved cash-refund status and signed credit note without broadcasting a transaction. No private key or RPC is required. Pending means resume the same refund, never send a replacement transfer.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+access_token
+string
+yes
+–
+run_id
+string
+yes
+–
+step_id
+string
+yes
+–
+No output schema declared.
+No examples provided.
+pipeline_status
+~56
+Read an existing pipeline, including cached signed result, without broadcasting payments or invoking providers. No wallet signer or blockchain RPC required. Inspect recovery.action for unresolved work.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+access_token
+string
+yes
+–
+run_id
+string
+yes
+–
+No output schema declared.
+No examples provided.
+weather_now
+~131
+Current weather at a place: temperature (°C), humidity (%), pressure (hPa) and wind (m/s) from the nearest live Open-Meteo relay within 75 km, with a signed receipt. Pass latitude and longitude, or a city. Paid per call; market_search shows the current price. The first few priced calls per caller are free.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+city
+string
+–
+A city instead of coordinates, e.g. "Tokyo"; many spellings work (Токио, 東京).
+latitude
+number
+–
+Latitude in degrees.
+longitude
+number
+–
+Longitude in degrees.
+No output schema declared.
+No examples provided.
+x402_check
+~227
+Check a signed x402 USDC payment before submitting it: recovers the EIP-712 signer, runs USDC's own checks and the seller's (payTo, amount, asset, network), and when the signature fails names the domain it was really made for (e.g. Base Sepolia's 'USDC' used on Base, where USDC is 'USD Coin'). Paid per call; market_search shows the current price. The first few priced calls per caller are free.
+Input
+Output
+Examples
+Name
+Type
+Req
+Description
+authorization
+object
+–
+Instead of x_payment: from, to, value, validAfter, validBefore, nonce.
+network
+string
+–
+With authorization: base, base-sepolia, … or eip155:<id>.
+now
+integer
+–
+Unix seconds, to check the validity window.
+requirements
+object
+–
+The 402's accepts entry: payTo, amount, asset, network.
+signature
+string
+–
+With authorization: the 65-byte hex signature.
+x_payment
+string
+–
+The X-PAYMENT header (base64).
+No output schema declared.
+No examples provided.
+Install
+How do I install the AIMarket — live agent marketplace MCP server?
+AIMarket — live agent marketplace is a hosted endpoint at https://modelmarket.dev/mcp, so there is nothing to install locally. Ready-made configuration for Claude, Cursor, VS Code, Codex and 5 more is on this page, copied from each client's own documentation.
+remote · modelmarket.dev
+Client
+Claude
+Cursor
+VS Code
+Codex
+opencode
+OpenClaw
+Hermes
+Netclaw
+Vellum
+Other
+Showing Claude.
+Snippets for every client (markdown)
+Copy
+# add to Claude Code
+claude mcp add --transport http alexar76-aimarket-hub 'https://modelmarket.dev/mcp'
+Common questions
+What is the AIMarket — live agent marketplace MCP server?
+AIMarket — live agent marketplace is an MCP server listed in the public MCP registry as io.github.alexar76/aimarket-hub. Search and invoke real AI capabilities on modelmarket.dev. Free trial, then a prepaid key. This page covers its hosted endpoint (https://modelmarket.dev/mcp).
+Is the AIMarket — live agent marketplace MCP server safe to use?
+AIMarket — live agent marketplace scores 74 out of 100 on VerifyMCP. That is a record of what we were able to check automatically, not an endorsement. The category breakdown on this page shows every signal behind the number, including the ones we could not confirm.
+What tools does the AIMarket — live agent marketplace MCP server expose?
+AIMarket — live agent marketplace exposes 13 tools: market_search, market_invoke, pipeline_prepare, pipeline_invoke, pipeline_status, and 8 more. Their descriptions and schemas cost roughly 1,807 tokens of context every time the server is loaded.
+Does the AIMarket — live agent marketplace MCP server require authentication?
+No. We connected to AIMarket — live agent marketplace without credentials and it answered, so anything it exposes is reachable by anyone who knows the address.
+Is the AIMarket — live agent marketplace MCP server still maintained?
+AIMarket — live agent marketplace is still listed as active in the MCP registry. We last reached this channel on 10 November 2026. Those dates come from our own scans of the registry and the channel itself, not from anything the publisher announced.
+What did VerifyMCP test on the AIMarket — live agent marketplace MCP server?
+VerifyMCP ran 12 checks on AIMarket — live agent marketplace, covering TLS certificate, HTTPS, HSTS header, DNSSEC and 8 more. One item could not be completed, a gap on our side rather than a finding about AIMarket — live agent marketplace: Authorization. Supply Chain Security and Provenance & Transparency do not apply to a hosted endpoint, so they were not tested. The score does not measure everything, and the scoring documentation lists what it leaves out.
+On this page
+Trust breakdown
+What we tested
+Score history
+Changelog
+Diagnostics
+MCP tools (13)
+Install
+Common questions
+Related servers
+Handy links
+Agent-readable markdown
+servers/alexar76-aimarket-hub/modelmarket.md
+Changelog JSON feed
+servers/alexar76-aimarket-hub/modelmarket/changelog.json
+Changelog RSS feed
+servers/alexar76-aimarket-hub/modelmarket.xml
+Remote endpoint
+modelmarket.dev/mcp
+Repository
+github.com/alexar76/aimarket-hub
+Trust report (JSON)
+servers/alexar76-aimarket-hub/modelmarket.json
+Scoring key
+80+ high trust
+60–79 medium
+below 60 low
+How we score
+Badge
+Put this score in your README. The image is served from a stable URL, updates
+      when the score does, and links back to the evidence on this page. It shows
+      nothing that is not already published here.
+Score
+Verified
+Plain
+The two-cell badge: our name, and this channel's current score out of 100.
+Markdown
+[![VerifyMCP trust score for AIMarket — live agent marketplace](https://verifymcp.io/badge/alexar76-aimarket-hub/modelmarket.svg)](https://verifymcp.io/servers/alexar76-aimarket-hub/modelmarket)
+Copy
+HTML
+<a href="https://verifymcp.io/servers/alexar76-aimarket-hub/modelmarket"><img src="https://verifymcp.io/badge/alexar76-aimarket-hub/modelmarket.svg" alt="VerifyMCP trust score for AIMarket — live agent marketplace" height="20"></a>
+Copy
+A single cell stating that the server is listed here. Carries no number.
+Markdown
+[![VerifyMCP trust score for AIMarket — live agent marketplace](https://verifymcp.io/badge/alexar76-aimarket-hub/modelmarket.svg?variant=verified)](https://verifymcp.io/servers/alexar76-aimarket-hub/modelmarket)
+Copy
+HTML
+<a href="https://verifymcp.io/servers/alexar76-aimarket-hub/modelmarket"><img src="https://verifymcp.io/badge/alexar76-aimarket-hub/modelmarket.svg?variant=verified" alt="VerifyMCP trust score for AIMarket — live agent marketplace" height="20"></a>
+Copy
+The score alone, tier-coloured, for a badge row that is already crowded.
+Markdown
+[![VerifyMCP trust score for AIMarket — live agent marketplace](https://verifymcp.io/badge/alexar76-aimarket-hub/modelmarket.svg?variant=plain)](https://verifymcp.io/servers/alexar76-aimarket-hub/modelmarket)
+Copy
+HTML
+<a href="https://verifymcp.io/servers/alexar76-aimarket-hub/modelmarket"><img src="https://verifymcp.io/badge/alexar76-aimarket-hub/modelmarket.svg?variant=plain" alt="VerifyMCP trust score for AIMarket — live agent marketplace" height="20"></a>
+Copy
+Score history · last 30 days
+12 Oct
+10 Nov
+Trust score by day, last 30 days
+Day
+Score
+12 Oct
+75
+13 Oct
+75
+14 Oct
+75
+15 Oct
+75
+16 Oct
+75
+17 Oct
+75
+18 Oct
+75
+19 Oct
+75
+20 Oct
+75
+21 Oct
+75
+22 Oct
+75
+23 Oct
+75
+24 Oct
+75
+25 Oct
+75
+26 Oct
+75
+27 Oct
+75
+28 Oct
+75
+29 Oct
+75
+30 Oct
+75
+31 Oct
+75
+1 Nov
+75
+2 Nov
+75
+3 Nov
+75
+4 Nov
+75
+5 Nov
+75
+6 Nov
+75
+7 Nov
+75
+8 Nov
+74
+9 Nov
+75
+10 Nov
+74
+Score history · last 30 days
+Related servers
+74
+Attested Memory Market
+same publisher
+71
+HISTOR — MCP tool-definition transparency log
+same publisher
+70
+AIMarket MCP Gateway
+same publisher
+66
+AIMarket Oracle Gateway
+same publisher
+34
+ARGUS-3 MCP Server
+same publisher
+79
+WARDEN — MCP Security Firewall
+same publisher
+75
+AIMarket MCP Packager
+same publisher
+Servers
+Directory
+Browse
+Products
+Categories
+Learn
+Docs
+Blog
+How we score
+Data
+Stats
+Known malware
+Data licence
+Company
+About
+Advertise
+Privacy
+Terms
+© 2026 VerifyMCP
+Made by
+CodeWithStu
+. Other sites:
+OneHaus

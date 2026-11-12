@@ -1,0 +1,33 @@
+# Standalone worker project attached to the existing network, not a replacement for Multica Compose.
+name: multica-qa
+services:
+  qa-worker:
+    container_name: qa-worker
+    image: ${QA_WORKER_IMAGE:?reviewed local worker image tag or digest}
+    build:
+      context: ${QA_WORKER_DIR:?absolute path to multica/qa-runner/worker}
+      args:
+        NODE_IMAGE: ${QA_NODE_IMAGE:?reviewed official node22 image with sha256 digest}
+    user: "10001:10001"
+    read_only: true
+    tmpfs: ["/tmp:mode=1777,size=32m,noexec,nosuid,nodev"]
+    cap_drop: [ALL]
+    cap_add: []
+    privileged: false
+    security_opt: [no-new-privileges:true]
+    mem_limit: 128m
+    cpus: 0.5
+    pids_limit: 64
+    restart: "no"
+    dns: [127.0.0.1]
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: "1"
+    logging:
+      driver: none
+    networks:
+      qa_agent:
+        ipv4_address: 10.250.0.5
+networks:
+  qa_agent:
+    external: true
+    name: multica_agent

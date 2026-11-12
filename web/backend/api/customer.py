@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
+import logging
 import os
 import time
 import uuid
@@ -26,6 +27,7 @@ from web.backend.schemas.api_requests import (
 from web.backend.services.commerce import CommerceService
 
 router = APIRouter(prefix="/api/customer", tags=["customer"])
+logger = logging.getLogger(__name__)
 commerce = CommerceService()
 
 _REG_MAX_PER_HOUR = int(os.environ.get("AIFACTORY_CUSTOMER_REGISTER_MAX_PER_HOUR", "5"))
@@ -305,6 +307,8 @@ async def stripe_webhook(request: Request):
     if not isinstance(event, dict):
         raise HTTPException(status_code=400, detail="Invalid webhook payload")
     event_type = str(event.get("type") or "")
+    if event_type in ("charge.refunded", "charge.dispute.created"):
+        return await _stripe_reversal(event, event_type)
     if event_type not in ("checkout.session.completed", "checkout.session.async_payment_succeeded"):
         return {"ok": True, "event_type": event_type, "ignored": True}
     secret_key = os.environ.get("STRIPE_SECRET_KEY", "").strip()
@@ -331,12 +335,65 @@ async def stripe_webhook(request: Request):
             session_status=str(obj.get("status") or ""),
             amount_total=obj.get("amount_total"),
             currency=str(obj.get("currency") or ""),
+            payment_intent=str(obj.get("payment_intent") or ""),
         )
     except LookupError as exc:
         raise HTTPException(status_code=503, detail="Stripe checkout record is unavailable") from exc
     except ValueError as exc:
         raise HTTPException(status_code=409, detail="Stripe checkout amount or currency mismatch") from exc
     return {"ok": True, "event_type": event_type, **result}
+
+
+async def _stripe_reversal(event: dict, event_type: str) -> dict:
+    """charge.refunded (full refunds only) and charge.dispute.created take the plan back.
+
+    Audit 2026-11-11, desks-stripe-7: these were acknowledged as ignored, so a refunded or
+    charged-back customer kept the paid plan forever. A checkout paid before payment intents
+    were recorded is found by asking Stripe which session the intent belongs to.
+    """
+    secret_key = os.environ.get("STRIPE_SECRET_KEY", "").strip()
+    if not secret_key.startswith(("sk_live_", "rk_live_", "sk_test_", "rk_test_")):
+        raise HTTPException(status_code=503, detail="Stripe checkout mode is not configured")
+    live = secret_key.startswith(("sk_live_", "rk_live_"))
+    event_id = str(event.get("id") or "")
+    data = event.get("data")
+    obj = data.get("object") if isinstance(data, dict) else None
+    if not isinstance(obj, dict) or not event_id or event.get("livemode") is not live:
+        raise HTTPException(status_code=400, detail="Invalid Stripe reversal event")
+    if event_type == "charge.refunded" and obj.get("refunded") is not True:
+        return {"ok": True, "event_type": event_type, "ignored": True, "reason": "partial refund"}
+    payment_intent = str(obj.get("payment_intent") or "")
+    if not payment_intent:
+        return {"ok": True, "event_type": event_type, "ignored": True, "reason": "no payment intent"}
+    try:
+        result = commerce.apply_stripe_reversal(event_id, event_type, payment_intent=payment_intent)
+    except LookupError:
+        session_id = await _stripe_session_for_intent(secret_key, payment_intent)
+        if not session_id:
+            # Not a factory checkout (another product on the same Stripe account), or Stripe
+            # could not be asked: 200 so Stripe does not retry forever; the log names it.
+            logger.warning("stripe: %s for %s matches no factory checkout", event_type, payment_intent)
+            return {"ok": True, "event_type": event_type, "ignored": True, "reason": "no factory checkout"}
+        try:
+            result = commerce.apply_stripe_reversal(event_id, event_type, payment_intent=payment_intent,
+                                                    session_id=session_id)
+        except LookupError:
+            return {"ok": True, "event_type": event_type, "ignored": True, "reason": "no factory checkout"}
+    return {"ok": True, "event_type": event_type, **result}
+
+
+async def _stripe_session_for_intent(secret_key: str, payment_intent: str) -> str:
+    try:
+        async with httpx.AsyncClient(timeout=15) as client:
+            resp = await client.get("https://api.stripe.com/v1/checkout/sessions",
+                                    params={"payment_intent": payment_intent, "limit": 1},
+                                    auth=(secret_key, ""))
+        if resp.status_code >= 300:
+            return ""
+        rows = resp.json().get("data") or []
+        return str(rows[0].get("id") or "") if rows else ""
+    except Exception:  # noqa: BLE001
+        return ""
 
 
 @router.get("/orders")

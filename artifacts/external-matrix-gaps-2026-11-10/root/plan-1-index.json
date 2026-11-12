@@ -1,0 +1,22 @@
+[
+  {
+    "key": "github-rate-limit",
+    "url": "https://api.github.com/rate_limit",
+    "method": "GET",
+    "observed_at_utc": "2026-11-10T20:03:19.478494+00:00",
+    "status": 200,
+    "final_url": "https://api.github.com/rate_limit",
+    "content_type": "application/json; charset=utf-8",
+    "headers": {
+      "Date": "Tue, 10 Nov 2026 19:05:26 GMT",
+      "X-RateLimit-Limit": "60",
+      "X-RateLimit-Remaining": "0",
+      "X-RateLimit-Reset": "1794337597",
+      "X-RateLimit-Resource": "core"
+    },
+    "truncated": false,
+    "file": "github-rate-limit.raw",
+    "bytes": 424,
+    "sha256": "26fb83fe921e5896465a49ee4581edf4b5e0acb6c92627f830b2a158ac3778aa"
+  }
+]

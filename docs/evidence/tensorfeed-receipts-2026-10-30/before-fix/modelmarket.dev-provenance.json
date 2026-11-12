@@ -1,0 +1,49 @@
+{
+ "@context": [
+  "https://www.w3.org/ns/credentials/v2",
+  "https://verify.modelmarket.dev/ns/awr/v2"
+ ],
+ "id": "urn:uuid:04861752-3e12-4127-816d-88a1840ad8bd",
+ "type": [
+  "VerifiableCredential",
+  "WorkReceipt",
+  "AIProvenanceReceipt"
+ ],
+ "issuer": {
+  "id": "did:key:z6MkkCADReBRLTMEqSV7REQ399ujjFPb8UFBSryAC7SPv6LX",
+  "name": "AIMarket Hub"
+ },
+ "validFrom": "2026-10-30T06:30:52Z",
+ "awrVersion": "2.0.0",
+ "credentialSubject": {
+  "work": {
+   "modelId": "logos.federation.summary@v1@prod-logos",
+   "completedAt": "2026-10-30T06:30:52Z",
+   "status": "succeeded",
+   "latencyMs": 2068,
+   "startedAt": "2026-10-30T06:30:50Z"
+  },
+  "inputDigest": "sha256-RBNvo1WzZ4oRRq0W9+hknpT7T8If536DEMBg9hyq/4o=",
+  "outputDigest": "sha256-jBEdko2nPgcKjOhDPgDzXowPGuwelf8ibLj3AHagIvU=",
+  "providerHub": "https://logos.modelmarket.dev",
+  "payloadSerialization": "json-sorted-compact",
+  "nonce": "rcpt_5766c85fa0d97dcdd1a0e64c5c364d4d"
+ },
+ "hubInfo": {
+  "hubName": "AIMarket Hub",
+  "hubVersion": "3.16.0",
+  "protocolVersion": "v2"
+ },
+ "proof": {
+  "@context": [
+   "https://www.w3.org/ns/credentials/v2",
+   "https://verify.modelmarket.dev/ns/awr/v2"
+  ],
+  "type": "DataIntegrityProof",
+  "cryptosuite": "eddsa-jcs-2022",
+  "created": "2026-10-30T06:30:52Z",
+  "verificationMethod": "did:key:z6MkkCADReBRLTMEqSV7REQ399ujjFPb8UFBSryAC7SPv6LX#z6MkkCADReBRLTMEqSV7REQ399ujjFPb8UFBSryAC7SPv6LX",
+  "proofPurpose": "assertionMethod",
+  "proofValue": "z3hThD3Dvo29mS8LggrxVuckkKL1ZLFBPikKu8iqrmxhDQVUBp6iPvMK4gQapadq8MFyPJHzMTrtys2TBHqsLSKcx"
+ }
+}

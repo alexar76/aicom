@@ -1,0 +1,322 @@
+{
+  "format": "aicom.prior88-semantic-proof/v1",
+  "oldGitTree": "ab46922f863e3f7148d757e9ccf4c72ec60202bb",
+  "finalGitCommit": "9a0fe8f444fbb94b7be10ee0446a7588fc80f4a5",
+  "findings": 88,
+  "status": "PASS-context-false-positives",
+  "execution": {
+    "host": "Attested",
+    "runtime": "runsc",
+    "network": "none",
+    "uid": 1000,
+    "sourceMount": "read-only",
+    "projectCodeExecuted": false,
+    "audit": "Python standard-library field/form/hash parsing only",
+    "exitCode": 0,
+    "credentialValidation": false,
+    "rawValuesPrinted": false,
+    "container": "aicom-prior88-semantic-review",
+    "autoRemoved": true
+  },
+  "blobIdentity": {
+    "compared": 14,
+    "identical": 14,
+    "changed": 0,
+    "algorithm": "Git blob object ID",
+    "identicalOldAndFinal": {
+      "artifacts/backup-admin-repair-2026-11-07/histor-key-pairs.json": "1fa5cbf9f2ca70356db668fa6846163c3b4d9a0a",
+      "artifacts/devto-new-articles-2026-11-07/ard-walkthrough-check.json": "d987736c9220b3a0d5b4d481d1c1f7006ea02e5a",
+      "artifacts/devto-new-articles-2026-11-07/ard-walkthrough-output.txt": "9db7c83efc8018302c5d8240d6e830bfa1befbf0",
+      "artifacts/glama-draft-check-2026-11-02/snapshot-README-verified-2026-11-07.md": "a75edaa67bfeca9cfdde7e6ef0cd8e1a3396cdb0",
+      "artifacts/hub-knocking-log-audit-2026-11-07/collect_factory.py": "a1f7cdf874e0e71f12747fed25849fa541f742f3",
+      "artifacts/hub-knocking-log-audit-2026-11-07/factory/assays-and-protection.json": "c6f26164aefaa5e5446ff6125f5b4fae484111f3",
+      "artifacts/hub-public-endpoints-audit-2026-11-08/live/attested-source-map.json": "39bc392e039c2d7d5dee21307a2c465d1e249be1",
+      "artifacts/hub-public-endpoints-audit-2026-11-08/live/competing-lab-source-map.json": "6fee4fc3734785b34ab3d5821116f4ccfeefee41",
+      "artifacts/hub-public-endpoints-audit-2026-11-08/live/factory-vps-source-map.json": "d9503c083ed1bba2e8681e2d138aea8735a3104a",
+      "artifacts/hub-public-endpoints-audit-2026-11-08/live/indep-source-map.json": "21a9098b64e9f5b6423e8f787f1ba61e69d1b7de",
+      "artifacts/hub-public-endpoints-audit-2026-11-08/live/prepare_cleanup_plan.py": "495a3d5845fd7aeec3913228716ee047efcaf5fb",
+      "artifacts/warden-security-2026-11-07/current-source-20261108/attested/results/final-report/summary.json": "b42e7afa24eb98f5c328bf921fe33d39f7cd06f6",
+      "artifacts/warden-security-2026-11-07/inventory/public-inventory.json": "adbce4d7359e0f5aaa5d40cb5970e70b106f7b9e",
+      "modelmarket-blog/build.py": "2e64faffb4ffd2ce85706cea16574b593c6cf3be"
+    }
+  },
+  "groups": [
+    {
+      "category": "public_case_identifier",
+      "count": 46,
+      "data": "artifacts/warden-security-2026-11-07/inventory/public-inventory.json",
+      "field": "originalCaseKey",
+      "evidence": [
+        {
+          "file": "artifacts/warden-security-2026-11-07/inventory/README.md",
+          "line": 33,
+          "meaning": "Publication inventory contains factual metadata rows, not arguments/payloads."
+        },
+        {
+          "file": "artifacts/warden-security-2026-11-07/warden-pair.mjs",
+          "line": 41,
+          "meaning": "Reads case metadata with key/set/label identifiers."
+        },
+        {
+          "file": "artifacts/warden-security-2026-11-07/warden-pair.mjs",
+          "line": 49,
+          "meaning": "originalCaseKey used for case selection, not authentication."
+        }
+      ],
+      "checks": [
+        "Every exact prior flagged line parses as the originalCaseKey field with a string value.",
+        "Case identifier role is bound to same immutable metadata blob and consumer harness."
+      ]
+    },
+    {
+      "category": "sha256_file_map",
+      "count": 24,
+      "data": "artifacts/warden-security-2026-11-07/current-source-20261108/attested/results/final-report/summary.json",
+      "evidence": [
+        {
+          "file": "artifacts/warden-security-2026-11-07/current-source-20261108/attested/harness/current-source-pair.mjs",
+          "line": 13,
+          "meaning": "sha computes SHA256."
+        },
+        {
+          "file": "artifacts/warden-security-2026-11-07/current-source-20261108/attested/harness/current-source-pair.mjs",
+          "line": 14,
+          "meaning": "hash reads file bytes."
+        },
+        {
+          "file": "artifacts/warden-security-2026-11-07/current-source-20261108/attested/harness/current-source-pair.mjs",
+          "line": 19,
+          "meaning": "tree maps relative filenames to hash(file)."
+        }
+      ],
+      "checks": [
+        "Every exact prior flagged line parses as one source filename mapped to exactly64 lowercase hex characters.",
+        "No authentication field at those locations; source-manifest role has explicit retained producer."
+      ]
+    },
+    {
+      "category": "sha256_captured_source",
+      "count": 6,
+      "data": "artifacts/hub-public-endpoints-audit-2026-11-08/live/*-source-map.json",
+      "field": "source_hashes",
+      "evidence": [
+        {
+          "file": "artifacts/hub-public-endpoints-audit-2026-11-08/live/read_sources.py",
+          "line": 22,
+          "meaning": "Writes retained package-before module source and computes hashlib.sha256(source.encode()).hexdigest()."
+        },
+        {
+          "file": "artifacts/hub-public-endpoints-audit-2026-11-08/live/read_sources.py",
+          "line": 23,
+          "meaning": "Stores module hash mapping in source_hashes."
+        }
+      ],
+      "checks": [
+        "Every exact flagged field has64hex form.",
+        "Every one of6 hashes independently recomputed equal to at least1 retained package-before module in the matching host source capture."
+      ],
+      "witnesses": [
+        {
+          "host": "attested",
+          "line": 14,
+          "matches": 1
+        },
+        {
+          "host": "competing-lab",
+          "line": 14,
+          "matches": 2
+        },
+        {
+          "host": "competing-lab",
+          "line": 48,
+          "matches": 2
+        },
+        {
+          "host": "factory-vps",
+          "line": 14,
+          "matches": 1
+        },
+        {
+          "host": "factory-vps",
+          "line": 49,
+          "matches": 1
+        },
+        {
+          "host": "indep",
+          "line": 14,
+          "matches": 1
+        }
+      ]
+    },
+    {
+      "category": "archive_path_inventory",
+      "count": 3,
+      "data": "artifacts/backup-admin-repair-2026-11-07/histor-key-pairs.json",
+      "line": 1,
+      "field": "keys",
+      "evidence": [
+        {
+          "file": "artifacts/backup-admin-repair-2026-11-07/histor-key-pairs.json",
+          "line": 1,
+          "meaning": "Three records with exactly dump/keys/members; keys values are archive paths;21 member records contain only name/bytes/regular."
+        }
+      ],
+      "checks": [
+        "All3 keys values end in archive file extensions.",
+        "No archive bytes, member bodies or key material in this schema."
+      ],
+      "producerCodeRetained": false
+    },
+    {
+      "category": "advertised_public_ed25519_key",
+      "count": 2,
+      "data": "artifacts/hub-knocking-log-audit-2026-11-07/factory/assays-and-protection.json",
+      "lines": [
+        7754,
+        7875
+      ],
+      "field": "advertised_key",
+      "evidence": [
+        {
+          "file": "aimarket-hub/aimarket_hub/federation_assay.py",
+          "line": 467,
+          "meaning": "admit_peer advertised_key parameter."
+        },
+        {
+          "file": "aimarket-hub/aimarket_hub/federation_assay.py",
+          "line": 470,
+          "meaning": "Explicitly documented as signer_public_key read from peer public well-known."
+        }
+      ],
+      "checks": [
+        "Both exact advertised_key values are valid base64 encoding32bytes.",
+        "Source establishes public verification-key role; no network/key validity request made."
+      ]
+    },
+    {
+      "category": "public_did_identity",
+      "count": 1,
+      "data": "artifacts/glama-draft-check-2026-11-02/snapshot-README-verified-2026-11-07.md",
+      "line": 77,
+      "evidence": [
+        {
+          "file": "artifacts/glama-draft-check-2026-11-02/snapshot-README-verified-2026-11-07.md",
+          "line": 77,
+          "meaning": "Document explicitly identifies did:key as the signed log/manifest verification identity; following line states Ed25519 over RFC8785JSON."
+        }
+      ],
+      "checks": [
+        "did:key public identifier appears in signed-public-manifest documentation, not a private-key body."
+      ]
+    },
+    {
+      "category": "public_indexnow_ownership_key",
+      "count": 1,
+      "data": "modelmarket-blog/build.py",
+      "line": 44,
+      "evidence": [
+        {
+          "file": "modelmarket-blog/build.py",
+          "line": 44,
+          "meaning": "INDEXNOW_KEY public ownership verification identifier."
+        },
+        {
+          "file": "modelmarket-blog/build.py",
+          "line": 642,
+          "meaning": "Writes same value as public DIST/<key>.txt content."
+        }
+      ],
+      "checks": [
+        "Retained source explicitly publishes this value in the static site; it is not an application authorization key."
+      ]
+    },
+    {
+      "category": "public_ard_page_cursor",
+      "count": 3,
+      "dataLocations": [
+        {
+          "file": "artifacts/devto-new-articles-2026-11-07/ard-walkthrough-check.json",
+          "line": 36
+        },
+        {
+          "file": "artifacts/devto-new-articles-2026-11-07/ard-walkthrough-check.json",
+          "line": 191
+        },
+        {
+          "file": "artifacts/devto-new-articles-2026-11-07/ard-walkthrough-output.txt",
+          "line": 175
+        }
+      ],
+      "field": "nextPageToken",
+      "evidence": [
+        {
+          "file": "aimarket-hub/aimarket_hub/ard.py",
+          "line": 488,
+          "meaning": "parse_page decodes query-bound pagination offset."
+        },
+        {
+          "file": "aimarket-hub/aimarket_hub/ard.py",
+          "line": 515,
+          "meaning": "page_token serializes only offset o and query fingerprint q as base64url JSON."
+        },
+        {
+          "file": "aimarket-hub/aimarket_hub/ard.py",
+          "line": 519,
+          "meaning": "fingerprint is SHA256(query parts) truncated to16hex."
+        },
+        {
+          "file": "aimarket-hub/aimarket_hub/hub_routes/ard.py",
+          "line": 187,
+          "meaning": "Routes explicitly public and unauthenticated."
+        },
+        {
+          "file": "aimarket-hub/aimarket_hub/hub_routes/ard.py",
+          "line": 273,
+          "meaning": "Search emits pagination cursor."
+        },
+        {
+          "file": "aimarket-hub/aimarket_hub/hub_routes/ard.py",
+          "line": 308,
+          "meaning": "Agents listing emits pagination cursor."
+        }
+      ],
+      "checks": [
+        "All3 actual tokens independently base64url-decoded and parsed in gVisor.",
+        "All3 contain exactly keys o/q, with nonnegative integer o and16hex q; no credential fields."
+      ]
+    },
+    {
+      "category": "container_name_list",
+      "count": 1,
+      "data": "artifacts/hub-knocking-log-audit-2026-11-07/collect_factory.py",
+      "line": 60,
+      "evidence": [
+        {
+          "file": "artifacts/hub-knocking-log-audit-2026-11-07/collect_factory.py",
+          "line": 60,
+          "meaning": "Flagged literal belongs to for n in [container-name strings] list; n selects a docker logs target in subsequent lines."
+        }
+      ],
+      "checks": [
+        "Exact flagged source line is a container enumeration statement, not an API credential assignment."
+      ]
+    },
+    {
+      "category": "descriptive_postcondition_list",
+      "count": 1,
+      "data": "artifacts/hub-public-endpoints-audit-2026-11-08/live/prepare_cleanup_plan.py",
+      "line": 56,
+      "evidence": [
+        {
+          "file": "artifacts/hub-public-endpoints-audit-2026-11-08/live/prepare_cleanup_plan.py",
+          "line": 56,
+          "meaning": "Flagged literal is in postconditions descriptive policy string list."
+        }
+      ],
+      "checks": [
+        "Exact flagged source line starts postconditions list; no opaque credential assignment."
+      ]
+    }
+  ],
+  "caveat": "Four separate prior findings in two unverified backup fingerprint originals remain withheld; they are not reclassified clean by this88-proof."
+}

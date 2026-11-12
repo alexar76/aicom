@@ -1,0 +1,55 @@
+{
+  "checked_at_utc": "2026-11-09T19:34:26Z",
+  "outcome": "Eight paid routes blocked by a seller-level net settlement gate; no current seller API defect established.",
+  "source_sha": "81a674d1a3cf7fdbbcc04f4da366c144ccd393f7",
+  "paid_routes": 8,
+  "callable_routes": 0,
+  "reason": "settlement_self_funded",
+  "detail": "below the settlement floor",
+  "source_defaults": {
+    "min_settlements": 50,
+    "min_payers": 3,
+    "unproven_max_usd": 0.05,
+    "seller_24h_usd": 0.25,
+    "lane_24h_usd": 5
+  },
+  "runtime_limit_caveat": "50/3 env values not directly exposed in public modelmarket rows;0.05 ceiling independently seen on other current route rows.",
+  "proven_branch": "Net credited evidence fails floor; held gross would clear floor at live payTo; self_funded label suppresses unproven.",
+  "classification_issue": "selfByWallet receives any gross reduction, including router own purchases/refunds; reason is therefore not proof of seller pre-funding.",
+  "synthetic_counterexample": "gross50,net49,gross4/net3 payers,one router purchase,zero funded payments: self_funded label;unproven false. Baseline49/49 is unproven true.",
+  "current_attribution_unresolved": true,
+  "missing_inputs": [
+    "private net/gross calls and payers",
+    "actual funded/refunded/router-owned deductions",
+    "private Bazaar cache",
+    "retained circular and funding-read state"
+  ],
+  "source_regression": false,
+  "source_regression_scope": "seller-funding.js byte-identical to30Oct; Base binding deductions unchanged; not a deployed-binary identity assertion",
+  "chain_summary": "chain/summary.json",
+  "known_test": {
+    "date_utc": "2026-10-30T04:37:41Z",
+    "payout_wallet": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+    "router_wallet": "0x77065d81e18ad403BCD6e9A0616b288e16744121",
+    "incoming_usdc": 0.001,
+    "incoming_log_index": 73,
+    "outgoing_usdc": 0.01,
+    "outgoing_log_index": 342,
+    "caveat": "Incoming preceded outgoing; without prior state cannot claim pre-funded incoming; pair may enter refund/pool heuristic, and router-owned purchase excluded independently."
+  },
+  "report": "report.ru.md",
+  "reproduction": "diagnose.py",
+  "reproduction_output": "analysis.json",
+  "correction_draft": "upstream-correction-draft.en.md",
+  "correction_sent": false,
+  "external_writes": false,
+  "payments": false,
+  "direct_head_quotes": {
+    "requests": 8,
+    "status_402": 8,
+    "all_checks_pass": true,
+    "source": "quotes/summary.json",
+    "scope": "Payment challenge readiness only; no paid execution",
+    "retrieved_at_utc": "2026-11-09T19:52:32Z to19:52:33Z"
+  }
+}

@@ -1,0 +1,1608 @@
+draft-cui-dawn-mdi-model-02 - Minimum Public Discovery Information: Requirements and Common Semantics
+Skip to main content
+Datatracker
+Groups
+By area/parent
+Apps & Realtime
+General
+Internet
+Ops & Management
+Routing
+Security
+Web and Internet Transport
+IESG
+IAB
+IRTF
+IETF LLC
+RFC Editor
+Other
+Active AGs
+Active Areas
+Active Directorates
+Active IAB Workshops
+Active Programs
+Active RAGs
+Active Teams
+New work
+Chartering groups
+BOFs
+BOF Requests
+Other groups
+Concluded groups
+Non-WG lists
+Documents
+Search
+Recent I-Ds
+Submit an Internet-Draft
+RFC streams
+IAB
+IRTF
+ISE
+Editorial
+Subseries
+STD
+BCP
+FYI
+Meetings
+Agenda
+Materials
+Floor plan
+Registration
+Important dates
+Request a session
+Session requests
+Upcoming meetings
+Upcoming meetings
+Past meetings
+Past IETF meetings
+Past interim meetings
+Other
+IPR disclosures
+Liaison statements
+IESG agenda
+NomComs
+Downref registry
+Statistics
+I-Ds/RFCs
+Meetings
+API Help
+Release notes
+System status
+Report a bug
+User
+Sign in
+Password reset
+Preferences
+New account
+List subscriptions
+IETF Lists
+IRTF Lists
+IAB Lists
+RFC-Editor Lists
+Report a bug
+Sign in
+Javascript disabled?
+Like other modern websites, the IETF Datatracker relies on Javascript.
+                            Please enable Javascript for full functionality.
+Minimum Public Discovery Information: Requirements and Common Semantics
+draft-cui-dawn-mdi-model-02
+Status
+Email expansions
+History
+Versions:
+00
+01
+02
+This document is an Internet-Draft (I-D).
+        Anyone may submit an I-D to the IETF.
+        This I-D is
+not endorsed by the IETF
+and has
+no formal standing
+in the
+IETF standards process
+.
+Document
+Type
+Active Internet-Draft
+(individual)
+Authors
+Yong Cui
+,
+Kehan Yao
+Last updated
+2026-11-02
+RFC stream
+(None)
+Intended RFC status
+(None)
+Formats
+txt
+html
+xml
+htmlized
+bibtex
+bibxml
+Stream
+Stream state
+(No stream defined)
+Consensus boilerplate
+Unknown
+RFC Editor Note
+(None)
+IESG
+IESG state
+I-D Exists
+Telechat date
+(None)
+Responsible AD
+(None)
+Send notices to
+(None)
+Email authors
+IPR
+References
+Referenced by
+Nits
+Nits v3
+Search email archive
+draft-cui-dawn-mdi-model-02
+DAWN                                                              Y. Cui
+Internet-Draft                                       Tsinghua University
+Intended status: Informational                                    K. Yao
+Expires: 6 May 2027                                         China Mobile
+                                                         2 November 2026
+
+Minimum Public Discovery Information: Requirements and Common Semantics
+                      draft-cui-dawn-mdi-model-02
+Abstract
+The charter of the Discovery of Agents With Names (DAWN) working
+   group asks it to specify the minimum public discovery information
+   that a client obtains when it discovers an AI resource.  An
+   individual draft on DAWN terminology defines Minimum Discoverable
+   Information (MDI) as the minimum amount of information an entity
+   needs to provide to become discoverable, distinguishes it from the
+   Minimum Viable Dataset (MVD) that a discovery mechanism needs as
+   input, and gives only examples of the content of either.  Individual
+   drafts on the DAWN problem statement and requirements call for a
+   standardized minimum structure and list what it must at least
+   contain; in its absence, emerging discovery formats risk each
+   defining its own minimal metadata, with descriptors that do not
+   interoperate across organizational or protocol boundaries.
+
+   This document addresses the minimum public discovery information as a
+   client obtains it and as a publisher provides it, and its relation to
+   the input of discovery; registration mechanisms are outside its
+   scope.  Using the distinction RFC 3444 draws between information
+   models and data models, it describes the information involved in
+   publication, lookup, and response; proposes a procedure that derives
+   what is minimal for each deployment context from the scope of the
+   charter; applies the procedure to the charter's three deployment
+   contexts: a local network, an organization, and the domain of a
+   cooperating party; and proposes a set of elements with the minimal
+   constraints that hold among them.  Information can be supplied by the
+   discovery response, by context the client already has, or by binding
+   rules.  This document is input to the DAWN architecture and protocol
+   work; normative definitions that affect interoperability belong to
+   the corresponding Standards Track documents.  It is a mapping target
+   for richer descriptors.
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+Cui & Yao                  Expires 6 May 2027                   [Page 1]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+Discussion of this document takes place on the Discovery of Agents
+   With Names Working Group mailing list (dawn@ietf.org), which is
+   archived at https://mailarchive.ietf.org/arch/browse/dawn.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/nxbrowning/MDI.
+Status of This Memo
+This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 6 May 2027.
+Copyright Notice
+Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+Table of Contents
+1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   4
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   4
+   3.  Scope and Non-Goals . . . . . . . . . . . . . . . . . . . . .   5
+   4.  Design Principles . . . . . . . . . . . . . . . . . . . . . .   6
+   5.  Information in the Discovery Flow . . . . . . . . . . . . . .   6
+   6.  Determining What Is Minimal . . . . . . . . . . . . . . . . .   9
+   7.  Applying the Procedure  . . . . . . . . . . . . . . . . . . .  10
+Cui & Yao                  Expires 6 May 2027                   [Page 2]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+8.  MDI Information Model . . . . . . . . . . . . . . . . . . . .  14
+     8.1.  Structure . . . . . . . . . . . . . . . . . . . . . . . .  15
+     8.2.  Elements  . . . . . . . . . . . . . . . . . . . . . . . .  16
+     8.3.  Information Beyond the Minimum  . . . . . . . . . . . . .  18
+     8.4.  Services  . . . . . . . . . . . . . . . . . . . . . . . .  19
+     8.5.  Minimal Constraints . . . . . . . . . . . . . . . . . . .  20
+   9.  Binding Expectations  . . . . . . . . . . . . . . . . . . . .  21
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  22
+   11. Privacy Considerations  . . . . . . . . . . . . . . . . . . .  23
+   12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  24
+   13. Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  24
+   14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
+     14.1.  Normative References . . . . . . . . . . . . . . . . . .  25
+     14.2.  Informative References . . . . . . . . . . . . . . . . .  25
+   Appendix A.  Illustrative JSON Example  . . . . . . . . . . . . .  27
+   Appendix B.  Mapping Notes  . . . . . . . . . . . . . . . . . . .  28
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  30
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  30
+
+1.  Introduction
+
+   Clients often need to discover information about AI resources, such
+   as AI agents, before interacting with them [DAWN-CHARTER], and often
+   have no pre-configured relationship with them.  Before any
+   interaction can begin, a client needs a small amount of information
+   about the AI resource: what it is, what it does, how to reach it, and
+   what assurances, if any, accompany those claims.
+   [I-D.farrel-dawn-terminology] defines Minimum Discoverable
+   Information (MDI) as the minimum amount of information an entity
+   needs to provide to become discoverable, and does not define its
+   content; [I-D.king-dawn-requirements] requires each discovery
+   mechanism to define the MDI, including at least the entity's type,
+   the services it offers, its reachability information, and the
+   communication protocols and any security parameters needed to
+   interact with it, and to indicate whether discovery information is
+   static or dynamic; [I-D.akhavain-moussa-dawn-problem-statement] calls
+   directly for a standardized structure carrying the minimum
+   information a discovery response returns; and
+   [I-D.moussa-dawn-gap-analysis] sketches a provisional baseline
+   without normalizing it.  Mechanism-specific drafts define such fields
+   for their carriers ([I-D.jakab-dawn-agent-discovery-mdns],
+   [I-D.blwm-dawn-common-discovery-parameters]); none defines MDI
+   content independently of a carrier.
+
+   The DAWN charter [DAWN-CHARTER] places this information at the center
+   of the working group's scope: discovery is limited to a client
+   requesting and obtaining the minimum public discovery information for
+   an AI resource (for example, its type, reachability information,
+Cui & Yao                  Expires 6 May 2027                   [Page 3]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+communication protocol, and services) within a local network, within
+   an organization, or between cooperating parties with trust
+   relationships over the public Internet.  The charter assigns this
+   information to two deliverables: the Discovery Architecture captures
+   the requirements behind it, and the Protocol specifications, possibly
+   one per deployment context, define it.  This document uses "MDI" as
+   shorthand for the information the charter calls minimum public
+   discovery information; where the two might differ, the charter's
+   wording governs.
+
+   Meanwhile, the gap is being filled independently and incompatibly by
+   adjacent ecosystems: DNS-based bootstrap
+   ([I-D.mozleywilliams-dnsop-dnsaid]), well-known JSON manifests, agent
+   cards, and signed capability documents each carry a slightly
+   different minimal field set with slightly different semantics, each
+   bound to its own substrate.  A descriptor that is minimal and
+   sufficient in one system is unreadable in another.
+
+   [I-D.farrel-dawn-terminology] distinguishes the input of discovery,
+   the Minimum Viable Dataset (MVD), from MDI, which it defines by what
+   an entity provides to become discoverable and describes as what a
+   lookup returns.  This document considers MDI at both points,
+   publication and response, and relates it to the input.  Following the
+   distinction [RFC3444] draws between information models and data
+   models, it describes the information involved in discovery
+   (Section 5), proposes how to decide what is minimal (Section 6),
+   applies that procedure to the charter's three deployment contexts
+   (Section 7), and describes the elements of the common discovery
+   header and the minimal constraints that hold among them (Section 8),
+   leaving encodings to bindings.  Section 13 lists the points on which
+   input is sought.
+
+1.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+2.  Terminology
+
+   This document uses the terms defined in
+   [I-D.farrel-dawn-terminology], including AI Resource, Entity,
+   Discovered Entity, Discovering Entity, Discovery, Discovery
+   Information, Discovery Scope, Discoverable Object, Capability Card,
+   Trust Indicator, and, centrally, Minimum Discoverable Information
+   (MDI); readers are assumed to be familiar with that document.  The
+Cui & Yao                  Expires 6 May 2027                   [Page 4]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+elements defined here are the normalized slots through which a
+   minimal subset of an entity's Properties is conveyed as Discovery
+   Information.
+
+   The entity that MDI describes is a Discovered Entity, which in DAWN
+   is an AI system or AI resource [I-D.farrel-dawn-terminology]; the
+   charter's AI resource "may be an individual named agent or a service
+   such as a catalog that will further the discovery process"
+   [DAWN-CHARTER].  In this document, "resource" is short for AI
+   resource.  The client, as the charter calls it, is the Discovering
+   Entity; this document also calls it the discovering party.  In
+   addition:
+
+   Discovery response:  What a discovery mechanism returns to a client;
+      it may carry element values for one or more entities.
+
+   Known context:  Information the client already has when it interprets
+      a discovery response, such as the Discovery Scope it searched, the
+      name it started from, or the network it is attached to.  Some of
+      it is part of the MVD (Section 5).
+
+   Minimum Viable Dataset (MVD):  As defined in
+      [I-D.farrel-dawn-terminology], "the data that must be provided to
+      the discovery mechanism to enable it to return indications of
+      Discovered Entities" (Section 5).
+
+   MDI instance:  The collection of element values for one entity, as a
+      publisher provides it or as a consumer obtains it (Section 5).  A
+      consumer's instance takes each value from the discovery response,
+      known context, or a binding rule.
+
+   Consumer:  The party that interprets an MDI instance, typically the
+      client that performed discovery.
+
+3.  Scope and Non-Goals
+
+   This document defines the abstract content of the MDI common header,
+   and proposes how it is derived (Section 6), within the initial
+   discovery that the DAWN charter scopes [DAWN-CHARTER].  It does NOT
+   define:
+
+   *  a discovery, query, resolution, or transport protocol, and it does
+      not bind MDI to DNS or to any other carrier;
+
+   *  a wire format, serialization, or schema; representations are
+      illustrative (Appendix A);
+Cui & Yao                  Expires 6 May 2027                   [Page 5]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+*  a new capability card, or a replacement for any existing
+      descriptor;
+
+   *  identity verification, authentication, authorization, policy
+      evaluation, or attestation procedures;
+
+   *  capability exchange, negotiation, selection, registration, or
+      invocation semantics;
+
+   *  open-ended search, semantic matchmaking, ranking, indexing or
+      searching across the wider Internet, or trust management and trust
+      evaluation beyond the secure exchange of discovery information,
+      all of which the charter places out of scope.
+
+4.  Design Principles
+
+   Encoding-neutral model:  Per [RFC3444], one information model can be
+      carried by many concrete data models -- a JSON object, a CBOR map,
+      a set of DNS records.  Those are carriers; MDI is the shared
+      meaning they carry.
+
+   Information, not fields:  Information that initial discovery needs
+      can be carried in a discovery response, supplied by known context
+      (such as the scope searched or the name the client started from),
+      or fixed by a binding.  Necessary information therefore need not
+      be repeated in every record.
+
+   Thin core, rich references:  MDI is a header.  Rich or sensitive
+      structures -- capability cards, proofs, certificates, policy
+      documents -- are referenced, not embedded, and fetched only when
+      needed.  A binding can carry small items beyond the minimum, such
+      as coarse capability labels, directly as an Extension
+      (Section 8.3).
+
+   Discovery-time only:  MDI carries what lets a discovering party
+      identify an entity, decide whether follow-up is worthwhile, and
+      dereference the next object safely.
+
+   Freshness and rate of change matter -- elements are marked static,
+   mainly-static, or dynamic, and validity information is first-class --
+   but detailed cache behavior belongs to bindings (Section 9).
+
+5.  Information in the Discovery Flow
+
+   Discovery moves information through four stages, and each stage holds
+   different information:
+
+   Publication:  A publisher makes information about an entity available
+Cui & Yao                  Expires 6 May 2027                   [Page 6]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+to a discovery system.  The publisher can be the entity or a
+      system that maintains information on its behalf, such as an
+      orchestration system [I-D.dunbar-dawn-infra-assisted-discovery].
+      Published information contains the published MDI instance and can
+      include more, such as administrative or policy data that is never
+      returned to clients.
+
+   Serving:  A system that answers lookups, such as an authoritative DNS
+      server, a registry, a catalog, or a responder on the local link,
+      holds the published information.  It can generate or transform
+      parts of the output, for example when an mDNS responder renames an
+      instance after a name conflict or a Discovery Proxy answers
+      unicast queries with the results of mDNS queries
+      [I-D.jakab-dawn-agent-discovery-mdns], and it can add information
+      of its own or hold different views for different audiences.  A
+      serving system outside the publisher's administrative domain, such
+      as a gateway or a third-party catalog, is an intermediary.
+
+   Lookup input:  The MVD: the data the discovery mechanism needs to
+      return results.  The client supplies some of it in its query, such
+      as a name, a protocol, or a scope; other mechanisms can supply the
+      rest, such as context derived from the client's network
+      attachment.  Depending on the mechanism, a lookup can enumerate a
+      scope or target a narrower set.
+
+   Response:  The MDI instances returned for the entities found,
+      interpreted together with known context and binding rules.
+
+   +-----------+  published MDI and more   +-----------------+
+   | publisher |-------------------------->|                 |
+   +-----------+                           |  serving system |
+                                           |                 |
+   +-----------+   lookup input (MVD)      |  can generate,  |
+   |  client   |-------------------------->|  transform, or  |
+   |           |<--------------------------|  add            |
+   +-----------+   response (MDI)          |  information    |
+         |                                 +-----------------+
+         |  follow-up at an Endpoint: description retrieval,
+         v  interaction, or further discovery
+
+                Figure 1: Information in the discovery flow
+
+   This document proposes that MDI be considered at publication as well
+   as in the response.  The individual terminology draft
+   [I-D.farrel-dawn-terminology] defines MDI by what an entity needs to
+   provide to become discoverable and describes a lookup that returns
+   it, and the individual requirements draft
+   [I-D.king-dawn-requirements] asks each mechanism to define the MDI
+Cui & Yao                  Expires 6 May 2027                   [Page 7]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+"that every discoverable entity provides"; the charter defines
+   discovery by what a client obtains.  The model of Section 8 describes
+   MDI instances at both points: published MDI instances, which
+   publishers provide, and the instances consumers obtain.  The
+   correspondence need not be one to one.  One published MDI instance
+   can yield several obtained instances, as when a Discovery Proxy
+   relays an advertisement (Section 7), and an entity can have several
+   published MDI instances, per protocol or per publisher; a binding
+   states how they correspond.  A published and an obtained instance
+   have the same elements and can differ in which values they carry and
+   in the values themselves: a serving system can generate or transform
+   values, as in the examples above; a binding can fix a value, such as
+   an Endpoint purpose; and known context can supply one, such as a
+   protocol named in the query.  Every other value comes from a
+   publisher.
+
+   Considered at publication, the analysis of Section 6 also indicates
+   what a publisher has to provide, which each binding states
+   (Section 9).  Origin and attribution are assessed per value.  A value
+   can be verified to the name that a validated key is authorized for,
+   the zone for DNSSEC or the origin for TLS, whoever operates the
+   server.  Protection applied at publication, such as a signature by a
+   key that the binding ties to the publisher's name through an
+   authenticated property of the carrier, covers only values that
+   serving systems pass on unchanged.  A value that a serving system
+   generates or transforms, as a catalog or a Discovery Proxy does, can
+   be verified at most to that serving system, and only where that
+   system is authenticated; Section 7 applies this to the deployment
+   contexts.  A consumer generally obtains only its own instance, so a
+   binding states which values a serving system can generate or
+   transform, and those values are attributable to the serving system
+   unless protection applied at publication covers them.
+
+   How published information reaches a serving system, for example by
+   zone provisioning, DNS Update, SRP registration, or a registry
+   interface, is a registration mechanism.
+   [I-D.farrel-dawn-terminology] lists registration as a function
+   separate from the discovery lookup and places it out of scope for
+   DAWN, while noting that "the information that can be discovered and
+   the trust with which that information is treated are key to any
+   complete system".  This document defines no registration mechanism
+   (Section 3).
+
+   The MVD and MDI can share attributes, such as a protocol that a
+   client asks for and a response reports, and each has items the other
+   lacks, such as a search scope in the input and endpoints in MDI.  The
+   sources of the input, how it is conveyed, and how it corresponds to
+   published information are stated for each deployment context and
+Cui & Yao                  Expires 6 May 2027                   [Page 8]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+binding.  A catalog reached through an Endpoint whose purpose is
+   continuing discovery can return MDI instances for the resources it
+   lists; how it selects them is outside this document (Section 3).  The
+   individual use-cases draft [I-D.kay-dawn-use-cases] leaves to the
+   DAWN architecture which query properties belong in the minimum
+   (Section 13).
+
+6.  Determining What Is Minimal
+
+   The charter gives examples of the minimum public discovery
+   information (type, reachability information, communication protocol,
+   and services) but no list [DAWN-CHARTER].  This document uses one
+   question to decide what belongs: what does a client need to know to
+   use a discovery result?  Using a result means the subsequent
+   interactions that the charter names, "such as selection, invocation,
+   or communication": choosing one result, then fetching its
+   description, talking to it, or asking a catalog for more results.
+
+   An example shows how the question works.  A client on a shop's
+   network looks for agents and receives three results.  To choose one
+   and talk to it, the client has to tell the three apart, so each
+   result needs a name.  It has to know where to connect, such as a host
+   and port or a URL, and which agent protocol to speak there, such as
+   A2A or MCP.  It has to know what it will find there: the agent
+   itself, or a description of the agent, such as an agent card.  And it
+   has to know whether the result is still current.  Other information
+   helps only in some situations: a short description when a person, not
+   software, makes the choice; an authentication scheme when the client
+   talks to the agent directly without reading a description first; and
+   a stable identifier when the client wants to recognize the same agent
+   later or in another result.  The rest, such as the full list of what
+   the agent can do, can be read from its description after the choice
+   is made, and is not part of the minimum.
+
+   Not everything a client needs has to be in every result.  A client
+   that asked for A2A agents already knows the protocol, and a discovery
+   mechanism can fix defaults, such as where an agent card is found.
+   For each piece of information, this document therefore records two
+   things: whether a client needs it, and where the client gets it,
+   which is from the result, from its own query, from the rules of the
+   discovery mechanism, or later from a description.
+
+   The analysis has four steps:
+
+   1.  List the candidates: the charter's examples and the information
+       that existing discovery mechanisms carry (Appendix B).
+Cui & Yao                  Expires 6 May 2027                   [Page 9]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+2.  For each candidate and each deployment context of the charter,
+       ask: if this were missing, could the client still use the result?
+       If not, the client needs it in that context.
+
+   3.  For each candidate the client needs, ask whether the client can
+       know it without the result telling it.  If not, results have to
+       carry it, and the publisher provides it unless a serving system
+       generates it (Section 5).
+
+   4.  Where a candidate is needed only in some situations, state the
+       situation.
+
+   What existing mechanisms carry is evidence for step 1: information
+   that all of them carry can be required at little cost, and
+   information that only some of them carry still has to pass step 2.
+   The charter also requires integrity of all discovery information
+   exchanged; protecting it, and the origin of the information where
+   Table 1 marks this, is an obligation on the binding in every context
+   (Section 9).
+
+7.  Applying the Procedure
+
+   This section applies Section 6 to the three deployment contexts of
+   the charter.  The charter's examples enumerate all agents in a scope;
+   a lookup can also return a narrower set, such as the agents that
+   speak one protocol, and the analysis applies to each result in the
+   same way.  The DNS-based mechanisms below are representative; the
+   same model applies to registry and catalog interfaces.
+
+   Local network:  The charter's example is "discover all agents in this
+      shop".  The client knows only its network attachment and possibly
+      the agent protocol it wants; it has no name, registry, or prior
+      relationship.  DNS-SD over multicast DNS, as the individual draft
+      [I-D.jakab-dawn-agent-discovery-mdns] profiles it for agents, is a
+      representative mechanism.  The next step is to tell the candidates
+      apart, choose one, and retrieve its description or interact with
+      it.
+
+   Within an organization:  The charter's example is "discover all
+      agents available to employees within their employer's
+      infrastructure".  In the case tested here, the client is attached
+      to the organization's network, possibly through a VPN, and can
+      learn from that attachment where to look: DNS-SD domain
+      enumeration queries names derived from a domain name received
+      through DHCP and from the client's address prefixes ([RFC8766],
+      Section 5.2).  Representative mechanisms extend those of the other
+      two contexts: DNS-SD beyond the link, through Discovery Proxies
+      [RFC8766] or registration with the Service Registration Protocol
+Cui & Yao                  Expires 6 May 2027                  [Page 10]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+(SRP) [RFC9665], as [I-D.jakab-dawn-agent-discovery-mdns]
+      describes for enterprise campus and branch networks, and DNS
+      records in internal zones, which the individual draft
+      [I-D.mozleywilliams-dnsop-dnsaid] provides for.  The next step is
+      to choose an agent and retrieve its description or interact with
+      it, or to continue discovery at a catalog.
+
+   Known domain of a cooperating party:  The charter's example is
+      "discover all agents of example.org, for all its customers/
+      members", between cooperating parties with trust relationships
+      over the public Internet.  The client knows the party's domain
+      name and possibly the protocol, and has an organizational trust
+      relationship; knowing the name does not show that information came
+      from that party, and "for all its customers/members" names an
+      audience for the results.  DNS records under the party's domain,
+      as proposed in the individual drafts
+      [I-D.mozleywilliams-dnsop-dnsaid] and
+      [I-D.blwm-dawn-common-discovery-parameters], are representative.
+      To find all of a domain's agents, these drafts locate an
+      organizational index at a well-known name such as
+      _index._agents.<domain>, so the next step is further discovery at
+      that index; a client that already knows an agent's name queries
+      its records directly, then reaches the agent or retrieves its
+      description.
+
+   +================+================+=================+==============+
+   | Information    | If missing     | Other source    | Result       |
+   +================+================+=================+==============+
+   | Name of each   | Results cannot | The query, when | Needed in    |
+   | result         | be told apart  | it names one    | every        |
+   |                |                | entity          | context      |
+   +----------------+----------------+-----------------+--------------+
+   | Endpoint       | Client cannot  | Partly: owner   | Needed in    |
+   | location       | connect        | name, default   | every        |
+   |                |                | path            | context      |
+   +----------------+----------------+-----------------+--------------+
+   | Agent protocol | Client cannot  | The query, when | Needed in    |
+   |                | talk to the    | the binding     | every        |
+   |                | endpoint       | ties the        | context      |
+   |                |                | protocol to it  |              |
+   +----------------+----------------+-----------------+--------------+
+   | Endpoint       | Next step      | Protocol or     | Needed in    |
+   | purpose        | unknown        | well-known      | every        |
+   |                |                | name, via the   | context      |
+   |                |                | binding         |              |
+   +----------------+----------------+-----------------+--------------+
+   | Freshness      | Stale data not | Record lifetime | Needed in    |
+   |                | recognized     |                 | every        |
+Cui & Yao                  Expires 6 May 2027                  [Page 11]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+|                |                |                 | context      |
+   +----------------+----------------+-----------------+--------------+
+   | Entity type    | Kinds of       | Carrier name or | When kinds   |
+   |                | resource       | Endpoint        | are told     |
+   |                | cannot be told | purpose, via    | apart        |
+   |                | apart          | the binding     |              |
+   +----------------+----------------+-----------------+--------------+
+   | Display name   | Only a person  | DNS-SD instance | When a       |
+   |                | choosing is    | name            | person       |
+   |                | affected       |                 | chooses      |
+   +----------------+----------------+-----------------+--------------+
+   | Authentication | Next step can  | Description or  | When neither |
+   | hint           | fail           | protocol        | supplies the |
+   |                |                | handshake       | scheme first |
+   +----------------+----------------+-----------------+--------------+
+   | Stable         | Results cannot | None            | When results |
+   | identifier     | be correlated  |                 | are          |
+   |                |                |                 | correlated   |
+   +----------------+----------------+-----------------+--------------+
+   | Services       | Covered by     | Description     | Left to the  |
+   |                | Endpoint       |                 | WG           |
+   |                | protocols and  |                 |              |
+   |                | Entity Type    |                 |              |
+   +----------------+----------------+-----------------+--------------+
+   | Origin         | Publisher      | DNSSEC or TLS,  | Protection   |
+   |                | unknown        | to the zone or  | goal         |
+   |                |                | origin; none    |              |
+   |                |                | for mDNS or SRP |              |
+   |                |                | advertisers     |              |
+   +----------------+----------------+-----------------+--------------+
+   | Coarse         | Nothing; the   | Description     | Beyond the   |
+   | capability     | client chooses |                 | minimum      |
+   | labels         | by protocol    |                 |              |
+   |                | and type       |                 |              |
+   +----------------+----------------+-----------------+--------------+
+   | Trust          | Nothing beyond | Binding and     | Beyond the   |
+   | material,      | what origin    | carrier         | minimum      |
+   | publisher name | provides       |                 |              |
+   +----------------+----------------+-----------------+--------------+
+   | Scope or       | Nothing; the   | Query and       | Beyond the   |
+   | audience hint  | audience       | deployment      | minimum      |
+   |                | applies to the |                 |              |
+   |                | lookup         |                 |              |
+   +----------------+----------------+-----------------+--------------+
+   | Availability   | The connection | Follow-up       | Beyond the   |
+   |                | fails and the  | connection      | minimum      |
+   |                | client tries   |                 |              |
+   |                | another result |                 |              |
+Cui & Yao                  Expires 6 May 2027                  [Page 12]
+Internet-Draft    Minimum Public Discovery Information     November 2026
++----------------+----------------+-----------------+--------------+
+
+          Table 1: Derivation for the three deployment contexts
+
+   In the Result column, "Protection goal" marks an obligation on the
+   binding (Section 9), "Left to the WG" marks a question in Section 13,
+   and "Beyond the minimum" marks information a client does not need for
+   its next step, which is therefore not part of MDI (Section 8.3).  The
+   Other source column reflects the representative mechanisms above.
+
+   The results are the same in all three contexts; what differs is where
+   the client gets each item.  On a local network, each result carries
+   the name, the endpoint location, and the protocol.  A query for a
+   known name, as under a cooperating party's domain, supplies the name,
+   and a query for one protocol supplies the protocol.  The binding
+   supplies defaults, such as the protocol's default path, and usually
+   the endpoint purpose, which follows from the protocol or from a well-
+   known name such as an index label.  Freshness comes from the lifetime
+   of the records a result is built from.
+
+   The conditional items depend on the next step.  A display name
+   matters when a person chooses among results.  An authentication hint
+   matters when the client interacts directly and neither a description
+   nor the agent protocol's own handshake supplies the scheme first.  A
+   Stable Identifier matters when results are correlated, as when a
+   client within an organization sees the same agent both through
+   multicast DNS on its link and through a Discovery Proxy
+   (Section 8.5).  Entity type matters when the client has to tell kinds
+   of AI resource apart to choose its next step, and is usually implied
+   by the carrier, such as a well-known name, or by the endpoint
+   purpose.  Whether services are covered by Endpoint protocols and
+   Entity Type is asked in Section 13.  Information beyond the minimum
+   can help but is not needed for this initial step: the client chooses
+   by protocol and type, learns the details from the description, and
+   learns availability at the follow-up connection.
+
+   Where the results are meant for an audience, as "available to
+   employees" and "for all its customers/members" suggest, the
+   restriction applies to the lookup, for example through split-view DNS
+   or a VPN, and the result carries nothing that enforces it; where this
+   requester context belongs is asked in Section 13.
+Cui & Yao                  Expires 6 May 2027                  [Page 13]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+Origin is where the contexts differ most.  Under a party's domain,
+   DNSSEC-validated records and TLS-authenticated origins tie the
+   information to the party.  A catalog or a Discovery Proxy that relays
+   information can be authenticated only as itself, and on a local link
+   multicast DNS does not authenticate advertisements, so the agent is
+   authenticated only at the follow-up connection
+   [I-D.jakab-dawn-agent-discovery-mdns].  How the charter's integrity
+   requirement is met for such advertisements is asked in Section 13.
+
+   Compared with REQ-PROP-1 of the individual requirements draft
+   [I-D.king-dawn-requirements], reachability and protocol are needed in
+   every context, type and security parameters (an authentication hint)
+   under a condition, and services are a question for the working group.
+
+8.  MDI Information Model
+
+   An MDI instance is the common header published or obtained for one
+   entity.  Its elements follow the results of Section 7 (Table 1):
+
+   *  Information needed in every context becomes the mandatory Name and
+      Endpoint (location, agent protocol, and purpose) and the Freshness
+      element.  Freshness is SHOULD because its meaning is obtainable
+      from the carrier lifetime; a binding whose carrier provides no
+      lifetime MUST carry it.
+
+   *  Information needed only under a condition becomes an element with
+      Status MAY: Entity Type, Display Name, Authentication Hint, and
+      Stable Identifier.  A publisher cannot always know whether the
+      condition holds for a given consumer; a binding or profile for
+      deployments where it holds can make the element MUST; for example,
+      a binding for exchange between gateways or catalogs can make the
+      Stable Identifier MUST.
+
+   *  Services, left to the working group, are covered by Endpoint
+      protocols and Entity Type (Section 8.4).
+
+   *  Origin is a protection goal, met by the binding (Section 9), and
+      is not an element.
+
+   *  Information beyond the minimum is not an element of MDI.  A
+      binding can still carry it as an Extension, and Section 8.3 names
+      the kinds that existing formats and individual drafts carry, so
+      that bindings agree on their meaning.
+
+   Mandatory elements keep the record very small; in constrained
+   carriers, a binding can derive their values from the carrier or from
+   known context (Section 9).  All Status values are provisional.
+Cui & Yao                  Expires 6 May 2027                  [Page 14]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+Status key words in this document place obligations on the publishers
+   and bindings that claim to carry MDI, and key words addressed to
+   consumers apply to implementations of a binding.  Status says how
+   strongly the meaning of an element has to be obtainable by the
+   consumer, from the response, from known context, or from binding
+   rules; whether each response carries a value explicitly is a binding
+   decision.  Status applies to the instance a consumer obtains; a
+   publisher provides every value that the binding neither derives nor
+   fixes and that no serving system generates (Section 5).  Cardinality
+   governs how many values of an element may be carried.  Obligations
+   specific to binding documents are collected in Section 9.
+
+8.1.  Structure
+
+   Figure 2 shows the elements and their shapes.  Composite members
+   marked "?" are optional, and freshness, whose members are all
+   optional, is present only when at least one member is present; all
+   other structure is given by the cardinalities.
+
+   +--------------+   describes exactly one
+   | MDI Instance |--------------------------->  Entity
+   +--------------+
+     |- name                                        (1)
+     |- endpoint { locator-type, locator,
+     |             protocols (1..n), purpose?,
+     |             digest? }                        (1..n)
+     |- freshness { version?, valid-from?,
+     |              valid-until?, refresh-hint? }   (0..1)
+     |- entity-type                                 (0..1)
+     |- display-name                                (0..n)
+     |- authentication-hint { scheme, metadata? }   (0..n)
+     |- stable-identifier                           (0..1)
+     |- extension { name, value }                   (0..n)
+
+     Reference = { ref-type, locator, digest? }
+
+                    Figure 2: Elements of the MDI model
+
+   A Reference is a typed pointer, used by the Authentication Hint and
+   by information beyond the minimum: the ref-type says how to interpret
+   the locator, and the optional digest is an integrity digest over the
+   object the locator identifies (Section 8.5).  Information carried
+   directly, rather than through a Reference, is covered by the
+   integrity protection of the binding (Section 9).
+Cui & Yao                  Expires 6 May 2027                  [Page 15]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+8.2.  Elements
+
+    +================+========+===============+=======================+
+    | Element        | Status | Class         | Result in Table 1     |
+    +================+========+===============+=======================+
+    | Name           | MUST   | varies        | Needed in every       |
+    |                |        |               | context               |
+    +----------------+--------+---------------+-----------------------+
+    | Endpoint       | MUST   | mainly-static | Needed in every       |
+    |                |        |               | context (location,    |
+    |                |        |               | protocol, purpose)    |
+    +----------------+--------+---------------+-----------------------+
+    | Freshness      | SHOULD | dynamic       | Needed in every       |
+    |                |        |               | context; carrier      |
+    |                |        |               | lifetime              |
+    +----------------+--------+---------------+-----------------------+
+    | Entity Type    | MAY    | static        | When kinds are told   |
+    |                |        |               | apart                 |
+    +----------------+--------+---------------+-----------------------+
+    | Display Name   | MAY    | static        | When a person chooses |
+    +----------------+--------+---------------+-----------------------+
+    | Authentication | MAY    | mainly-static | When neither          |
+    | Hint           |        |               | description nor       |
+    |                |        |               | handshake supplies it |
+    +----------------+--------+---------------+-----------------------+
+    | Stable         | MAY    | static        | When results are      |
+    | Identifier     |        |               | correlated            |
+    +----------------+--------+---------------+-----------------------+
+    | Extension      | MAY    | varies        | Mechanism for         |
+    |                |        |               | information beyond    |
+    |                |        |               | the minimum           |
+    +----------------+--------+---------------+-----------------------+
+
+                                  Table 2
+
+   A static value is not expected to change while the resource keeps its
+   identity.  A mainly-static value changes only through deliberate
+   administrative or deployment action.  A dynamic value can change in
+   normal operation and is evaluated together with Freshness.  The
+   stability of a Name varies with the carrier and is stated by the
+   binding.
+
+   The following elements are needed in every context.
+
+   Name:  The name under which a result is found, such as a DNS-SD
+      service instance name or a DNS owner name, which lets a client
+      tell results apart and refer back to them.  It is often implicit
+      in the carrier and is interpreted within its naming scope
+Cui & Yao                  Expires 6 May 2027                  [Page 16]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+(Section 8.5).  One resource can be found under several Names, for
+      example one per protocol, and a Name can change, as when multicast
+      DNS renames an instance after a conflict.  A Name that the binding
+      states to be stable also serves as the Stable Identifier; such a
+      name is the stable name by which [I-D.farrel-dawn-terminology]
+      identifies a Named Entity.
+
+   Endpoint:  Where follow-up can proceed, for what purpose, and in
+      which agent protocol; the locator is the charter's "reachability
+      information", and the protocols member its "communication
+      protocol".  In this document, "agent protocol" means the
+      application protocol that an AI resource speaks at the endpoint,
+      such as A2A or MCP, whether or not the resource is an agent.  The
+      locator-type and locator members say where to go; a binding can
+      carry the locator as one value, such as a URI, or assemble it from
+      several fields, such as a target host and port plus a path.  The
+      protocols member names the agent protocols reached there, such as
+      A2A or MCP; the protocol negotiated on the underlying TLS or QUIC
+      connection, such as an HTTP version identified by ALPN [RFC7301],
+      is different information unless the agent protocol runs directly
+      over TLS or QUIC.  A protocols value can name a version or
+      versions of the agent protocol; where it does not, the binding
+      states how a client learns which version to use, for example from
+      the description or through the protocol's own negotiation.  The
+      purpose member says what the follow-up is: retrieving a
+      description of the resource (for example, an agent card),
+      interacting with the resource, or continuing discovery at another
+      discovery service, such as a catalog.  When the purpose is not
+      carried, the binding states how it follows from the protocol.  An
+      Endpoint for description retrieval is how MDI points to a fuller
+      capability description, such as a Capability Card; its protocols
+      member names the agent protocol of the described resource, the
+      description is fetched as the locator implies (for an https URI,
+      with an HTTP GET), and the Endpoint can carry a digest of the
+      description.  An entity can have Endpoints with different
+      protocols and purposes.
+
+   Freshness:  Version, validity window, and refresh hint for the
+      instance.  A version need not change when the resource's
+      description changes; the digest of a description Endpoint changes
+      when the description does (Section 8.5).
+
+   The following elements are needed under the conditions that Section 7
+   states.
+
+   Entity Type:  The kind of AI resource: for example an individual
+Cui & Yao                  Expires 6 May 2027                  [Page 17]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+named agent or a service such as a catalog that furthers
+      discovery, the two kinds the charter names [DAWN-CHARTER], or
+      another AI resource such as an AI inference service
+      [I-D.farrel-dawn-terminology].  It lets a client triage before
+      fetching anything, and is needed when the client has to tell kinds
+      of AI resource apart to choose its next step.  It is usually
+      implied by the carrier, such as a well-known name, or by the
+      Endpoint purpose, and the binding states how.  The value space is
+      left to DAWN, bindings, or profiles to define.
+
+   Display Name:  A short human-readable name or description for a
+      person choosing among results, with no machine semantics.  In DNS-
+      SD the Name often serves; under unicast owner names, a binding
+      carries one, as the title parameter of
+      [I-D.blwm-dawn-common-discovery-parameters] does, or takes it from
+      the description.  Language handling, if any, is a binding matter.
+
+   Authentication Hint:  The authentication scheme(s) a discovering
+      party would need for follow-up, optionally with a Reference to
+      authentication metadata.  Never credentials, never authorization
+      logic.
+
+   Stable Identifier:  A name for the resource itself that stays the
+      same across results, protocols, and time within its naming scope,
+      so that a client can correlate results and recognize the resource
+      later.  Where the naming scope is itself globally unique, such as
+      a DNS domain or a URN namespace, the Stable Identifier is globally
+      unique.  Like a Name, it is a name, not a verified identity, key,
+      or proof.
+
+   Extension:  An extension named by a binding, profile, or future
+      registry, carrying type-specific or ecosystem-specific
+      information, including the information beyond the minimum of
+      Section 8.3.  An Extension does not alter core element semantics
+      and does not reintroduce a non-goal of Section 3.
+
+8.3.  Information Beyond the Minimum
+
+   Table 1 finds that a client does not need the following information
+   for its next step, so it is not part of MDI; REQ-PROP-1 of the
+   individual requirements draft [I-D.king-dawn-requirements] likewise
+   states that "Properties beyond the MDI are optional".  Existing
+   formats and individual drafts carry it (Appendix B).  A binding that
+   carries it does so as an Extension, with the following meanings:
+
+   Capability Summary:  Coarse, machine-readable capability tags for
+Cui & Yao                  Expires 6 May 2027                  [Page 18]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+discovery-time filtering and triage; they are not sufficient for
+      selection, negotiation, authorization, or invocation.  The value
+      space is not yet defined (Section 8.4).
+
+   Trust Reference:  A Reference to a trust indicator, such as a
+      signature, certificate, attestation, trust manifest, or key set.
+
+   Provenance:  Who published this discovery information and,
+      optionally, the party responsible for the entity -- information-
+      layer provenance, not verified identity.
+
+   Scope Hint:  An opaque hint about discovery scope, audience,
+      jurisdiction, or visibility.  It is not access control
+      (Section 11).
+
+   Operational Hint:  A coarse availability or health class, or a
+      Reference to richer operational state, or both.
+
+8.4.  Services
+
+   The charter lists "services" among its examples [DAWN-CHARTER], and
+   REQ-PROP-1 of [I-D.king-dawn-requirements] requires the MDI to
+   include "the services it offers"; neither says what a service is.
+   This document covers services with existing elements, so there is no
+   separate Services element:
+
+   *  The agent protocols a resource offers, such as A2A or MCP, are the
+      protocols of its Endpoints.  The per-protocol DNS-SD subtypes
+      proposed for agents, such as "_a2a._sub._agents._tcp", name these
+      protocols [I-D.jakab-dawn-agent-discovery-mdns].
+
+   *  A resource that is itself a service, such as a catalog that
+      furthers discovery, as the charter's scope notes, is identified by
+      its Entity Type and by an Endpoint whose purpose is continuing
+      discovery.
+
+   Coarse labels for what a resource does are the Capability Summary,
+   which is beyond the minimum (Section 8.3).  The individual draft
+   [I-D.zhang-dawn-bgp-style-federated-discovery] makes such labels
+   mandatory, while [I-D.blwm-dawn-common-discovery-parameters] leaves
+   capabilities out of DNS records and notes that coarse categories, if
+   ever needed, could use DNS-SD subtypes.  A shared vocabulary for the
+   labels does not yet exist, and labels used for more than triage would
+   be capability information beyond the minimum, which the charter
+   places out of scope.  Whether this reading of "services" is right is
+   asked in Section 13.
+Cui & Yao                  Expires 6 May 2027                  [Page 19]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+8.5.  Minimal Constraints
+
+   The following rules are part of the model.  A binding MAY tighten
+   them but MUST NOT relax them.
+
+   1.  An MDI instance describes exactly one entity.  A discovery
+       response may carry information for several entities; aggregation
+       is a carrier matter.
+
+   2.  Each Name and Stable Identifier is interpreted within a naming
+       scope, which by default is the publisher scope.  A binding states
+       the naming scope and stability period of each Name and Stable
+       Identifier it carries and how values are compared, with exact
+       match as carried as the default.  A Name distinguishes results
+       only within its naming scope and stability period, and one
+       resource may be found under several Names.  The host name at
+       which an endpoint is reached (such as an SVCB TargetName) belongs
+       to the Endpoint locator and names a host, even where the same
+       string is also a Name.  Correlating results to one resource
+       without a Stable Identifier is heuristic.  Within one naming
+       scope, equal Stable Identifiers denote the same resource; unequal
+       ones do not by themselves denote distinct resources, and across
+       naming scopes this model makes no sameness claim.  Where a
+       consumer holds several instances with the same Stable Identifier,
+       it reconciles them by Freshness only among instances whose
+       integrity and origin in that naming scope have been verified as
+       the binding defines, using only Freshness values that the same
+       verification covers; an instance that has not passed those checks
+       does not displace one that has, and other cases are left to the
+       binding.
+
+   3.  Protocols attach to endpoints, not to the instance as a whole.  A
+       protocols value names an agent protocol, not the protocol
+       negotiated on the underlying connection, such as an HTTP version,
+       except where the two coincide (Section 8.2).  An instance-level
+       protocol list, where a binding offers one, is derived information
+       (the union over all endpoints) and cannot diverge from them.  The
+       model attaches no meaning to the order of Endpoints; preference
+       and selection are binding or carrier matters.
+
+   4.  A digest, when present, is a member of the Reference or of the
+       description-retrieval Endpoint it protects and covers exactly the
+       object located there.  Integrity is not trust: a matching digest
+       shows that the bytes are intact, provided the digest itself was
+       obtained with integrity, and it does not show that the publisher
+       or the entity should be believed.  A consumer MUST NOT use an
+       object whose digest does not match.  How a digest value
+       identifies its algorithm is defined by the binding.
+Cui & Yao                  Expires 6 May 2027                  [Page 20]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+5.  A consumer MUST ignore unrecognized Extensions; their presence is
+       not an error.  As an exception, a binding MAY mark an Extension
+       as mandatory, as SVCB does with its "mandatory" key ([RFC9460]);
+       unless the binding says otherwise, a consumer that does not
+       understand a mandatory Extension does not use the Endpoint or
+       result that carries it, as an SVCB client skips a record that
+       lists a mandatory key it does not support.
+
+9.  Binding Expectations
+
+   MDI reaches the wire through bindings: documents that map this model
+   onto a concrete encoding or discovery mechanism.  Existing discovery
+   formats already approximate bindings (Appendix B); normative bindings
+   are expected in separate documents.  A binding that carries MDI MUST
+   specify:
+
+   Encoding:  How each element is encoded and which value space it uses,
+      defined by the binding, a profile, or a future registry.  Which
+      values are implicit and how they are derived from the carrier or
+      from known context, for example a Name taken from a DNS-SD service
+      instance name; an implicit value counts exactly as an explicit
+      one.  How unrecognized Extensions are carried and skipped at the
+      encoding level, and which Extensions, if any, are mandatory.
+
+   Names and Endpoints:  The naming scope and stability period of each
+      Name and Stable Identifier it carries, and whether it carries a
+      Stable Identifier at all.  For each Endpoint, how the locator is
+      assembled, how the purpose is determined when it is not carried,
+      how protocol versions are expressed or learned, and, where
+      connection-level protocols are also carried, how they are kept
+      apart from the protocols member.  For an Endpoint for description
+      retrieval, which object a digest covers.  For Endpoints whose
+      purpose is continuing discovery, the maximum referral depth, how
+      loops are detected, and the naming scope of the results obtained
+      there.
+
+   Integrity and origin:  How the integrity and origin of the MDI it
+      conveys are protected, including how carried values are bound to
+      the carrier fields and known context they are interpreted with,
+      for example that a response answers the name or scope the client
+      asked about, and where verification material comes from.  How the
+      publisher scope is determined from an authenticated property of
+      the carrier, such as a DNSSEC-validated owner name or a TLS-
+      authenticated web origin, never from values the instance asserts
+      about itself, such as Provenance, and what publisher scope, if
+      any, applies where a serving system generates the content from
+      unauthenticated sources, as a Discovery Proxy does.  Whether
+      information relayed by a catalog or other intermediary is verified
+Cui & Yao                  Expires 6 May 2027                  [Page 21]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+to the original publisher or only to the intermediary.  How a
+      consumer treats failed verification, removed elements, and expired
+      information, and what successful verification establishes and what
+      it does not.
+
+   Sources and lifetimes of values:  Which values the publisher provides
+      and which a serving system generates or transforms, how a consumer
+      tells them apart, how what an intermediary adds or changes is
+      attributed to it, and which publisher an obtained instance derives
+      from when several provide information for one entity.  How carrier
+      lifetimes, such as a DNS TTL or an HTTP cache lifetime, combine
+      with Freshness, including which record lifetimes apply when a
+      result is assembled from several records, with the earliest
+      applicable expiry prevailing, and how stale or replayed
+      information is detected.
+
+   A binding MUST protect the integrity of all MDI it conveys, as the
+   charter requires [DAWN-CHARTER]; what meets this requirement where
+   the carrier does not authenticate advertisements is asked in
+   Section 13.  A binding MAY tighten Status, cardinality, or
+   constraints, including per entity type, but MUST NOT relax a MUST
+   element or a rule of Section 8.5.
+
+10.  Security Considerations
+
+   MDI is advertised information; a consumer MUST treat it as unverified
+   until corroborated by mechanisms outside this document.
+
+   *  Values prove nothing by themselves.  Any value can be forged by
+      whoever publishes or serves it: a Name or Stable Identifier is not
+      proof of identity, and an Endpoint does not prove that the
+      reachable party is the intended entity.  A matching digest shows
+      only that a referenced object is the one the digest was computed
+      over, and only if the digest was obtained with integrity; it does
+      not show that the publisher or the entity can be trusted.  A
+      Display Name or other text chosen by the publisher can imitate
+      another entity, including through visually confusable characters,
+      or carry text aimed at automated consumers; a client presents such
+      text as unverified, does not use it to identify or authorize, and
+      does not treat it as instructions.  An Authentication Hint, and
+      any metadata at its locator, is unverified; it does not lead a
+      client to weaken its authentication requirements or to send
+      credentials to a party named only by unverified MDI.  A Trust
+      Reference locates assurance material but confers none until that
+      material is verified by procedures defined elsewhere.
+Cui & Yao                  Expires 6 May 2027                  [Page 22]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+*  Protection comes from the binding and the carrier, value by value.
+      Integrity and origin, including protection against the removal of
+      optional elements, are properties of the binding and carrier (for
+      example DNSSEC, TLS); each binding states how it provides them and
+      to whom origin is verified (Section 9).  A serving system can
+      generate, transform, withhold, or replay values, and protection
+      applied at publication covers only the values it protects.  A
+      value derived from the carrier is as trustworthy as that carrier,
+      and a value taken from known context is no more trustworthy than
+      that context.  A consumer SHOULD NOT draw conclusions from the
+      absence of an element.  A referral to another discovery service
+      does not extend the referring publisher's naming scope or
+      protection to the results obtained there.
+
+   *  Every locator in MDI, whether of an Endpoint, a Reference, or
+      authentication metadata, is supplied by an unverified party, and
+      following it carries the usual risks of contacting an untrusted
+      party.  The usual dereferencing protections apply, such as limits
+      on redirects and response sizes.  Which addresses a client
+      connects to is a matter of deployment policy, applied to the
+      addresses a locator resolves to at connection time, including
+      after redirects.  Link-local and internal addresses are expected
+      results of local and organizational discovery; unless deployment
+      policy permits otherwise, a client does not connect to them when
+      they appear in information obtained from outside that context.
+
+11.  Privacy Considerations
+
+   Publishing MDI can reveal entity names, endpoints, organizational
+   structure, capability hints, and scope information.  Publishers
+   SHOULD minimize public MDI to what discovery requires and SHOULD
+   place sensitive information -- detailed capabilities, policy,
+   internal topology, operational state -- behind access-controlled
+   references.
+
+   A Stable Identifier lets any observer correlate an entity across
+   results, protocols, and time.  Where an entity acts for an
+   individual, its names, identifiers, and Provenance can be personal
+   data; publishers that do not need correlation can omit a Stable
+   Identifier.  A Scope Hint is not access control.
+
+   Published information, including data never returned to clients, is
+   disclosed to every serving system that holds it, and views for
+   different audiences stay separate only as far as that system keeps
+   them apart.  A key used to sign published MDI instances can be
+   tracked like an identifier ([RFC9665], Section 7): a key unique to an
+   entity correlates that entity as a Stable Identifier does, and a key
+   shared by a publisher links the entities it publishes.
+Cui & Yao                  Expires 6 May 2027                  [Page 23]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+Results obtained under an audience restriction carry no marker of it;
+   a cache, intermediary, or consumer that passes them outside that
+   audience discloses internal names, endpoints, and topology.  A
+   Discovery Proxy makes advertisements visible to whoever can query it,
+   and the domain a result appears under can reveal where a device, and
+   a person it acts for, is ([RFC8766], Section 9.2).
+
+12.  IANA Considerations
+
+   Future revisions or binding documents may request registries for
+   selected MDI value spaces, such as entity types or protocol
+   identifiers; existing registries are to be reused where applicable.
+
+13.  Open Issues
+
+   Input from the working group is sought on the following questions:
+
+   *  Is the procedure of Section 6 an acceptable basis for deciding
+      what belongs in the minimum public discovery information?  Are the
+      results of Section 7 right, including the conditions under which
+      an entity type, a display name, an authentication hint, or a
+      Stable Identifier is needed, and is the information that Table 1
+      places beyond the minimum correctly left out of MDI?  If so,
+      should this document keep naming that information for bindings
+      (Section 8.3), or leave it to bindings and profiles?
+
+   *  Should MDI be defined only by what a client obtains, or also at
+      publication?  This document proposes both points, with Status
+      defined for the instance a consumer obtains and a publisher's
+      obligations derived from it per binding (Section 5); an
+      alternative is to set Status separately for published MDI
+      instances.
+
+   *  Which items of the MVD should DAWN specify for each deployment
+      context?  Is requester context, such as the audience that
+      "available to employees" or "for all its customers/members"
+      implies, part of the MVD, and if so who supplies it, or is it
+      access control outside discovery?  Is information restricted to
+      such an audience public in the charter's sense?
+
+   *  How should the charter's examples "type" and "services" be read?
+      This document makes Entity Type conditional and usually implied by
+      the carrier or the Endpoint purpose, covers services by the
+      protocols of Endpoints and by Entity Type, and places coarse
+      labels (Capability Summary) beyond the minimum (Section 8.4); is
+      that right?
+Cui & Yao                  Expires 6 May 2027                  [Page 24]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+*  Where an agent's advertisement or registration is not
+      authenticated to its operator, as with multicast DNS, a Discovery
+      Proxy relaying it, or SRP, how is the charter's requirement for
+      integrity of the information exchanged met: by authenticating the
+      agent at the follow-up connection, by that together with
+      protection of the hop that delivers the information, such as a
+      Discovery Proxy's DNSSEC signature, or only by protecting the
+      advertisement to its origin, for example with authenticated DNS
+      Update ([RFC8766], Section 9.1), which places a requirement on
+      registration (Section 5)?  See Section 7.
+
+14.  References
+
+14.1.  Normative References
+
+   [I-D.farrel-dawn-terminology]
+              Farrel, A., Yao, K., Schott, R., and N. Williams,
+              "Terminology for the Discovery of Agents With Names
+              (DAWN)", Work in Progress, Internet-Draft, draft-farrel-
+              dawn-terminology-06, 28 October 2026,
+              <https://datatracker.ietf.org/doc/html/draft-farrel-dawn-
+              terminology-06>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+14.2.  Informative References
+
+   [DAWN-CHARTER]
+              IETF, "Discovery of Agents With Names (dawn) Working Group
+              Charter", October 2026,
+              <https://datatracker.ietf.org/doc/charter-ietf-dawn/>.
+
+   [I-D.akhavain-moussa-dawn-problem-statement]
+              Akhavain, A., Moussa, H., and D. King, "Problem Statement
+              for the Discovery of Agents, Workloads, and Named Entities
+              (DAWN)", Work in Progress, Internet-Draft, draft-akhavain-
+              moussa-dawn-problem-statement-05, 19 July 2026,
+              <https://datatracker.ietf.org/doc/html/draft-akhavain-
+              moussa-dawn-problem-statement-05>.
+Cui & Yao                  Expires 6 May 2027                  [Page 25]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+[I-D.blwm-dawn-common-discovery-parameters]
+              Brockners, F., Jakab, L., Williams, N., and J. Mozley,
+              "Common Agent DNS Discovery Parameters", Work in Progress,
+              Internet-Draft, draft-blwm-dawn-common-discovery-
+              parameters-00, 27 October 2026,
+              <https://datatracker.ietf.org/doc/html/draft-blwm-dawn-
+              common-discovery-parameters-00>.
+
+   [I-D.dunbar-dawn-infra-assisted-discovery]
+              Dunbar, L. and B. Zhang, "Infrastructure-Assisted
+              Discovery for AI Agents", Work in Progress, Internet-
+              Draft, draft-dunbar-dawn-infra-assisted-discovery-02, 16
+              October 2026, <https://datatracker.ietf.org/doc/html/
+              draft-dunbar-dawn-infra-assisted-discovery-02>.
+
+   [I-D.jakab-dawn-agent-discovery-mdns]
+              Jakab, L. and F. Brockners, "Zero-Configuration Agent
+              Discovery", Work in Progress, Internet-Draft, draft-jakab-
+              dawn-agent-discovery-mdns-01, 28 October 2026,
+              <https://datatracker.ietf.org/doc/html/draft-jakab-dawn-
+              agent-discovery-mdns-01>.
+
+   [I-D.kay-dawn-use-cases]
+              King, D., Yao, K., Adler, K., and R. Ramdhany, "Use Cases
+              and Applicability for Discovery of Agents With Names",
+              Work in Progress, Internet-Draft, draft-kay-dawn-use-
+              cases-01, 10 September 2026,
+              <https://datatracker.ietf.org/doc/html/draft-kay-dawn-use-
+              cases-01>.
+
+   [I-D.king-dawn-requirements]
+              King, D. and A. Farrel, "Requirements for the Discovery of
+              Agents With Names (DAWN)", Work in Progress, Internet-
+              Draft, draft-king-dawn-requirements-02, 19 October 2026,
+              <https://datatracker.ietf.org/doc/html/draft-king-dawn-
+              requirements-02>.
+
+   [I-D.moussa-dawn-gap-analysis]
+              Moussa, H. and A. Akhavain, "Gap Analysis and
+              Applicability Statement for Discovery Protocols of Agents,
+              Workloads, and Named Entities (DAWN)", Work in Progress,
+              Internet-Draft, draft-moussa-dawn-gap-analysis-01, 12 June
+              2026, <https://datatracker.ietf.org/doc/html/draft-moussa-
+              dawn-gap-analysis-01>.
+
+   [I-D.mozleywilliams-dnsop-dnsaid]
+              Mozley, J., Williams, N., Sarikaya, B., Schott, R., and J.
+              Damick, "DNS for AI Discovery", Work in Progress,
+Cui & Yao                  Expires 6 May 2027                  [Page 26]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+Internet-Draft, draft-mozleywilliams-dnsop-dnsaid-02, 27
+              May 2026, <https://datatracker.ietf.org/doc/html/draft-
+              mozleywilliams-dnsop-dnsaid-02>.
+
+   [I-D.zhang-dawn-agent-discovery-framework]
+              Zhang, B., Dunbar, L., and Y. Yang, "A Framework for Agent
+              Discovery in DAWN", Work in Progress, Internet-Draft,
+              draft-zhang-dawn-agent-discovery-framework-09, 20 October
+              2026, <https://datatracker.ietf.org/doc/html/draft-zhang-
+              dawn-agent-discovery-framework-09>.
+
+   [I-D.zhang-dawn-bgp-style-federated-discovery]
+              Zhang, B., "Federated Agent Metadata Synchronization
+              Protocol (FAMS-P)", Work in Progress, Internet-Draft,
+              draft-zhang-dawn-bgp-style-federated-discovery-00, 14
+              October 2026, <https://datatracker.ietf.org/doc/html/
+              draft-zhang-dawn-bgp-style-federated-discovery-00>.
+
+   [RFC3444]  Pras, A. and J. Schoenwaelder, "On the Difference between
+              Information Models and Data Models", RFC 3444,
+              DOI 10.17487/RFC3444, January 2003,
+              <https://www.rfc-editor.org/rfc/rfc3444>.
+
+   [RFC7301]  Friedl, S., Popov, A., Langley, A., and E. Stephan,
+              "Transport Layer Security (TLS) Application-Layer Protocol
+              Negotiation Extension", RFC 7301, DOI 10.17487/RFC7301,
+              July 2014, <https://www.rfc-editor.org/rfc/rfc7301>.
+
+   [RFC8766]  Cheshire, S., "Discovery Proxy for Multicast DNS-Based
+              Service Discovery", RFC 8766, DOI 10.17487/RFC8766, June
+              2020, <https://www.rfc-editor.org/rfc/rfc8766>.
+
+   [RFC9460]  Schwartz, B., Bishop, M., and E. Nygren, "Service Binding
+              and Parameter Specification via the DNS (SVCB and HTTPS
+              Resource Records)", RFC 9460, DOI 10.17487/RFC9460,
+              November 2023, <https://www.rfc-editor.org/rfc/rfc9460>.
+
+   [RFC9665]  Lemon, T. and S. Cheshire, "Service Registration Protocol
+              for DNS-Based Service Discovery", RFC 9665,
+              DOI 10.17487/RFC9665, June 2025,
+              <https://www.rfc-editor.org/rfc/rfc9665>.
+Appendix A.  Illustrative JSON Example
+Cui & Yao                  Expires 6 May 2027                  [Page 27]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+{
+     "name": "invoice-bot",
+     "entity_type": "agent",
+     "endpoint": [
+       { "locator_type": "uri",
+         "locator": "https://example.com/.well-known/agent-card.json",
+         "protocols": [ "a2a" ],
+         "purpose": "description" },
+       { "locator_type": "uri",
+         "locator": "https://example.com/agent",
+         "protocols": [ "a2a" ],
+         "purpose": "interaction" }
+     ],
+     "freshness": { "valid_until": "2026-09-01T00:00:00Z" },
+     "display_name": "Invoice assistant",
+     "stable_identifier": "urn:example:agent:invoice-bot",
+     "extension": [
+       { "name": "capability-summary", "value": [ "invoicing" ] }
+     ]
+   }
+Appendix B.  Mapping Notes
+The table sketches where the mandatory elements of MDI, Entity Type,
+   the Stable Identifier, the description Endpoint, and Freshness
+   surface in the DNS and DNS-SD parameters proposed in
+   [I-D.blwm-dawn-common-discovery-parameters] for SVCB records
+   ([RFC9460]) and DNS-SD TXT records, as used by
+   [I-D.jakab-dawn-agent-discovery-mdns], and in the generic well-known-
+   JSON and agent-card patterns (no single specification is implied).
+   Field names are indicative; full mappings belong to binding
+   documents.
+Cui & Yao                  Expires 6 May 2027                  [Page 28]
+Internet-Draft    Minimum Public Discovery Information     November 2026
++===========+===================+===============+===================+
+   |MDI element| DNS and DNS-SD    | Well-known    | Agent Card        |
+   |           |                   | JSON          |                   |
+   +===========+===================+===============+===================+
+   |Name       | instance or       | (document     | (card URL)        |
+   |           | owner name        | URL)          |                   |
+   +-----------+-------------------+---------------+-------------------+
+   |Stable     | none; shared      | identity      | agent_id          |
+   |Identifier | desc-ref          |               |                   |
+   |           | suggests one      |               |                   |
+   |           | agent             |               |                   |
+   +-----------+-------------------+---------------+-------------------+
+   |Entity Type| (service type     | (metadata)    | (metadata)        |
+   |           | or name)          |               |                   |
+   +-----------+-------------------+---------------+-------------------+
+   |Endpoint   | SRV/SVCB target   | endpoints     | endpoint.url      |
+   |locator    | and port, plus    |               |                   |
+   |           | path or well-     |               |                   |
+   |           | known             |               |                   |
+   +-----------+-------------------+---------------+-------------------+
+   |Endpoint   | proto             | (in           | endpoint.protocol |
+   |protocols  |                   | endpoints)    |                   |
+   +-----------+-------------------+---------------+-------------------+
+   |Endpoint   | implied by        | (interaction) | (interaction)     |
+   |purpose    | proto, or by      |               |                   |
+   |           | the _index        |               |                   |
+   |           | label             |               |                   |
+   +-----------+-------------------+---------------+-------------------+
+   |Description| desc-ref          | descriptor    | (the card itself) |
+   |Endpoint   |                   | URI           |                   |
+   +-----------+-------------------+---------------+-------------------+
+   |Freshness  | DNS TTL; desc-    | version       | version           |
+   |           | ref-digest as     |               |                   |
+   |           | change signal     |               |                   |
+   +-----------+-------------------+---------------+-------------------+
+
+                                  Table 3
+
+   In the DNS and DNS-SD column, proto carries the agent protocol; the
+   alpn parameter carries the protocol negotiated on the TLS or QUIC
+   connection and corresponds to no MDI element.
+   [I-D.mozleywilliams-dnsop-dnsaid] carries the agent protocol in alpn
+   or in a separate bap parameter.
+
+   Each record carries one proto value, so a resource that offers
+   several protocols appears in several records: in DNS-SD each has its
+   own instance name, while unicast SVCB records share one owner name.
+   Each record supplies the Endpoint for its protocol, and a desc-ref
+Cui & Yao                  Expires 6 May 2027                  [Page 29]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+supplies an Endpoint for description retrieval, whose description can
+   be hosted elsewhere.  [I-D.blwm-dawn-common-discovery-parameters] and
+   [I-D.jakab-dawn-agent-discovery-mdns] infer from a shared desc-ref
+   that records belong to one agent;
+   [I-D.blwm-dawn-common-discovery-parameters] states that desc-ref is
+   neither a universal identifier nor authenticated.  The desc-ref-
+   digest parameter is defined as a freshness signal, not a security
+   signal, and maps to Freshness; it is not the digest of the
+   description Endpoint (rule 4 of Section 8.5).
+
+   The locator is assembled from the SRV or SVCB target and port plus
+   the path or well-known parameter or, absent both, the protocol's
+   default location (for A2A, /.well-known/agent-card.json).  Whether
+   the advertised location serves description retrieval or interaction
+   follows from the protocol: for A2A it serves the agent card, from
+   which interaction URLs are taken, while for MCP it is the interaction
+   endpoint [I-D.jakab-dawn-agent-discovery-mdns].
+
+   The individual drafts [I-D.zhang-dawn-bgp-style-federated-discovery]
+   and [I-D.zhang-dawn-agent-discovery-framework] define a TLV binding
+   of MDI elements for exchange between gateways, including an Entity-
+   Identifier and a Capability-Summary.  In
+   [I-D.zhang-dawn-bgp-style-federated-discovery], the Entity-
+   Identifier, which together with the Origin-GW-ID keys a record, can
+   serve as the Name and corresponds to the Stable Identifier; the
+   Capability-Card-URI is an Endpoint for description retrieval; and the
+   Capability-Summary, Trust-Reference, and Provenance TLVs correspond
+   to the information of the same names beyond the minimum
+   (Section 8.3).  That draft makes the Capability-Summary mandatory,
+   while Table 1 places coarse capability labels beyond the minimum.
+Acknowledgements
+The author thanks Chenguang Du for his valuable contributions to the
+   design and text of this draft.
+
+   This work builds on the DAWN terminology, requirements, problem
+   statement, and gap-analysis documents.
+
+   Thanks to Aleksandr Artamokhov and Siyu Deng for their comments on
+   protocol versions, description changes, and Entity Type, and to
+   Riccardo Di Nuzzo for checking the procedure against draft-dinuzzo-
+   best-protocol.
+Authors' Addresses
+Cui & Yao                  Expires 6 May 2027                  [Page 30]
+Internet-Draft    Minimum Public Discovery Information     November 2026
+Yong Cui
+   Tsinghua University
+   Beijing
+   100084
+   China
+   Email: cuiyong@tsinghua.edu.cn
+   URI:   http://www.cuiyong.net/
+
+   Kehan Yao
+   China Mobile
+   China
+   Email: yaokehan@chinamobile.com
+Cui & Yao                  Expires 6 May 2027                  [Page 31]
+IETF
+IESG
+IAB
+IRTF
+IETF LLC
+IETF Trust
+RFC Editor
+IANA
+Privacy Statement
+About IETF Datatracker
+Version 12.83.0
+                            (release - 70a3417)
+System Status
+Report a bug:
+GitHub
+Email

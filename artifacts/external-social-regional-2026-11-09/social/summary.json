@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-09",
+  "baseline": [
+    "artifacts/external-signals-2026-11-09/audience/",
+    "docs/evidence/external-signals-2026-10-30/social/"
+  ],
+  "new_confirmed_independent_social_mentions": 0,
+  "new_confirmed_user_stories_or_runtime_adoption": 0,
+  "queries": {
+    "submitted_unique": 25,
+    "groups": 7,
+    "robots_blocked_groups": 1,
+    "queries_in_blocked_group": 4,
+    "nonblocked_response_groups": 6,
+    "queries_in_nonblocked_groups": 21,
+    "scope": "Combined web result cannot establish completeness per query"
+  },
+  "hn": {
+    "story_id": 50193565,
+    "points": 1,
+    "visible_comment_count": 2,
+    "external_comment_author": "ITAltitudes",
+    "external_comment_date": "2026-10-23T07:55:37Z",
+    "new_delta": 0
+  },
+  "mastodon": {
+    "url": "https://mastodon.social/api/v2/search?q=modelmarket.dev&type=statuses&limit=40",
+    "status": 200,
+    "returned_statuses": 0,
+    "scope": "one query on one server, not global fediverse search"
+  },
+  "blocked_native_searches": {
+    "reddit": 403,
+    "bluesky": 403
+  },
+  "itch": {
+    "pingblip_game": {
+      "status": 200,
+      "visible_comments": 0
+    },
+    "pingblip_launch_topic": {
+      "status": 200,
+      "visible_posts": 1,
+      "all_visible_authors": [
+        "PingBlip"
+      ],
+      "external_replies": 0
+    },
+    "right_to_a_shadow": {
+      "status": 200,
+      "visible_comments": 0
+    },
+    "weight_of_answer": {
+      "status": 429,
+      "current_comments_read": false
+    },
+    "white_on_map": {
+      "status": 429,
+      "current_comments_read": false
+    }
+  },
+  "known_signal_reconfirmed": {
+    "type": "witness_staging_admission",
+    "author": "Rasmus Dahlberg",
+    "reply_date_utc": "2026-11-04T10:18:10Z",
+    "reply_url": "https://lists.witness-network.org/mailman3/hyperkitty/list/participate@lists.witness-network.org/message/762ZAYCAXMZPHXAMX3UZ5OARJHJWCWVZ/",
+    "current_list_url": "https://staging.witness-network.org/log-list-10qps-4klogs.1",
+    "exact_key_present": true,
+    "known_local_baseline": "artifacts/histor-witness-listing-2026-11-04/README.md",
+    "count_as_new": false
+  },
+  "search_only_candidates": [
+    {
+      "url": "https://www.vibeleaderboard.ai/app/d8a7cafb-d59e-470a-9207-e89df4720091",
+      "type": "catalog_index",
+      "search_snapshot_publication_date": "2026-10-22",
+      "primary_read_status": 429,
+      "primary_read_content": "Vercel Security Checkpoint",
+      "independent_endorsement_confirmed": false
+    }
+  ],
+  "false_positive_categories": [
+    "PingBlip2012Dominican_geolocation_project",
+    "pingblip2003automotiveFAQ_user",
+    "owner_authored_itch_collection",
+    "registry_and_README_mirrors"
+  ],
+  "prior_today_devto_delta_not_recounted": 17,
+  "limitations": [
+    "No authenticated X/LinkedIn/Reddit/Bluesky search",
+    "No private groups/messages or platform analytics",
+    "No universal negative claim from empty indexed query",
+    "No human/bot identity inferred from prose style"
+  ],
+  "external_writes": false
+}

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Build with Attested Memory APIs, MCP, signed actor identities and federated capabilities. Quickstarts, OpenAPI contracts and a capability publishing kit.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <title>Developer portal · Attested Memory</title>
+  <link rel="canonical" href="https://attestedmemory.net/developers">
+  <link rel="alternate" hreflang="x-default" href="https://attestedmemory.net/developers">
+  <link rel="alternate" hreflang="en" href="https://attestedmemory.net/developers">
+  <link rel="alternate" hreflang="ru" href="https://attestedmemory.net/developers?lang=ru">
+  <link rel="alternate" hreflang="es" href="https://attestedmemory.net/developers?lang=es">
+  <link rel="alternate" hreflang="pt-BR" href="https://attestedmemory.net/developers?lang=pt-BR">
+  <link rel="alternate" hreflang="de" href="https://attestedmemory.net/developers?lang=de">
+  <link rel="alternate" hreflang="fr" href="https://attestedmemory.net/developers?lang=fr">
+  <link rel="alternate" hreflang="ja" href="https://attestedmemory.net/developers?lang=ja">
+  <link rel="alternate" hreflang="ko" href="https://attestedmemory.net/developers?lang=ko">
+  <link rel="alternate" hreflang="zh-CN" href="https://attestedmemory.net/developers?lang=zh-CN">
+  <link rel="alternate" hreflang="tr" href="https://attestedmemory.net/developers?lang=tr">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Attested Memory">
+  <meta property="og:title" content="Developer portal · Attested Memory">
+  <meta property="og:description" content="From a signed first write to a federated capability: working contracts, onboarding and publication paths.">
+  <meta property="og:url" content="https://attestedmemory.net/developers">
+  <meta property="og:image" content="https://attestedmemory.net/attested-social.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Build on attested context">
+  <meta name="twitter:description" content="Quickstarts, OpenAPI contracts and federated capability publishing.">
+  <meta name="twitter:image" content="https://attestedmemory.net/attested-social.png">
+  <link rel="stylesheet" href="/app.css?v=20260909a">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"TechArticle","headline":"Attested Memory developer portal","url":"https://attestedmemory.net/developers","about":["API integration","Ed25519 actor identity","federated capabilities","Memory Units"],"publisher":{"@type":"Organization","name":"Attested Memory"}}
+  </script>
+</head>
+<body class="developer-page">
+  <header class="top site-top">
+    <a class="brand" href="/">attested<span>memory</span><i> / developers</i></a>
+    <nav class="nav">
+      <a href="/memory">Memory</a><a href="/teams">Teams</a><a href="/market">Market</a><a href="/docs">Guide</a><a href="/use-cases">Use cases</a><a href="/capabilities">KOVA</a><a class="active" href="/developers">Developers</a>
+    </nav>
+    <div class="top-actions"><a class="btn" href="/start" data-i18n="start">Setup wizard</a></div>
+  </header>
+
+  <main class="developer-shell">
+    <section class="dev-hero">
+      <div class="dev-hero-copy">
+        <div class="eyebrow" data-dev-i18n="heroEyebrow">DEVELOPER PORTAL · PRODUCTION CONTRACTS</div>
+        <h1><span data-dev-i18n="heroLead">Ship your first</span> <em data-dev-i18n="heroAccent">proven memory.</em></h1>
+        <p data-dev-i18n="heroBody">Start with a free actor-bound key, make a signed request, then publish your own capability into the federated catalog.</p>
+        <div class="actions"><a class="btn" href="/start" data-dev-i18n="heroStart">Start the guided setup</a><a class="btn alt" href="#mcp">Connect MCP</a><a class="btn alt" href="#first-call" data-dev-i18n="heroCode">Run the first call</a><a class="btn alt" href="#publisher" data-dev-i18n="heroPublish">Publish a capability</a></div>
+        <div class="dev-signals"><div><strong data-hub-total aria-live="polite">—</strong><span data-dev-i18n="signalCapabilities">network capabilities</span></div><div><strong data-hub-indexed aria-live="polite">—</strong><span data-dev-i18n="signalProviders">indexed Hubs</span></div><div><strong>10</strong><span data-dev-i18n="signalLanguages">guide languages</span></div></div>
+      </div>
+      <div class="dev-terminal" aria-label="Animated request path" data-dev-i18n-aria="terminalAria">
+        <div class="dev-terminal-bar"><i></i><i></i><i></i><span>attested://first-write</span></div>
+        <div class="dev-terminal-body">
+          <div class="dev-command"><span>$</span> POST /memory/api/memories</div>
+          <div class="dev-header"><b>X-SaaS-Key</b><span>ask_••••••••</span><i>scope ✓</i></div>
+          <div class="dev-header"><b>X-Actor-Signature</b><span>ed25519:••••</span><i>identity ✓</i></div>
+          <div class="dev-pipeline" aria-hidden="true"><span>EDGE</span><span>GATEWAY</span><span>HUB</span><span>LEDGER</span></div>
+          <div class="dev-response"><small>201 CREATED</small><strong>mem_9f2a…</strong><span>provenance: signed</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dev-mcp" id="mcp" aria-labelledby="dev-mcp-title">
+      <div class="dev-mcp-copy">
+        <div class="eyebrow">MCP · STREAMABLE HTTP</div>
+        <h2 id="dev-mcp-title">One endpoint for agent access.</h2>
+        <p>Paste the URL into an MCP client. Discover with <code>market_search</code>, invoke with <code>market_invoke</code>, then verify the hybrid-signed receipt.</p>
+        <div class="dev-mcp-badges" aria-label="MCP features"><span>market_search</span><span>market_invoke</span><span>Ed25519 + ML-DSA-65</span></div>
+      </div>
+      <div class="code-block dev-mcp-console">
+        <button type="button" class="copy-btn">Copy endpoint</button>
+        <div class="dev-mcp-status"><i aria-hidden="true"></i><span>PRODUCTION · MCP 1.0.1</span></div>
+        <pre class="code">https://hub.attestedmemory.net/mcp</pre>
+        <a class="dev-mcp-open" href="https://hub.attestedmemory.net/mcp">Open live endpoint ↗</a>
+      </div>
+    </section>
+
+    <section class="dev-section" id="onboarding">
+      <div class="dev-section-head"><div><div class="eyebrow" data-dev-i18n="onboardEyebrow">FIRST TEN MINUTES</div><h2 data-dev-i18n="onboardTitle">One clear path into the network.</h2></div><p data-dev-i18n="onboardBody">No blockchain transaction is needed for the trial. Your private actor key stays in your runtime.</p></div>
+      <div class="dev-steps">
+        <article><b>01</b><span data-dev-i18n="step1Tag">CHOOSE</span><h3 data-dev-i18n="step1Title">Pick the product surface</h3><p data-dev-i18n="step1Body">Personal, Team or Expert Market. Every access key is product-scoped.</p><a href="/start" data-dev-i18n="step1Link">Open setup wizard →</a></article>
+        <article><b>02</b><span data-dev-i18n="step2Tag">IDENTITY</span><h3 data-dev-i18n="step2Title">Create an Ed25519 actor</h3><p data-dev-i18n="step2Body">Derive the did:actor identifier and sign that exact identifier locally.</p><a href="#first-call" data-dev-i18n="step2Link">See the request →</a></article>
+        <article><b>03</b><span data-dev-i18n="step3Tag">INVOKE</span><h3 data-dev-i18n="step3Title">Write or discover</h3><p data-dev-i18n="step3Body">Call the product API; Gateway checks scope and Hub preserves trust state.</p><a href="#contracts" data-dev-i18n="step3Link">Browse contracts →</a></article>
+        <article><b>04</b><span data-dev-i18n="step4Tag">VERIFY</span><h3 data-dev-i18n="step4Title">Keep the receipt</h3><p data-dev-i18n="step4Body">Persist the memory ID, truth state and provenance receipt beside the output.</p><a href="https://prove.attestedmemory.net" data-dev-i18n="step4Link">Open Attested Prove →</a></article>
+      </div>
+    </section>
+
+    <section class="dev-section" id="first-signed-write">
+      <div class="dev-section-head">
+        <div>
+          <div class="eyebrow">TRIAL · STUDIO · RECEIPT</div>
+          <h2 data-i18n="memoryDevTitle">First signed write</h2>
+        </div>
+        <p data-i18n="memoryDevBody">Claim a Personal trial in the browser, then POST a Memory Unit. The studio shows the receipt, hash and cite pack.</p>
+      </div>
+      <div class="actions">
+        <a class="btn" href="/memory?trial=1" data-i18n="memoryDevCta">Open /memory?trial=1</a>
+        <a class="btn alt" href="#first-call" data-dev-i18n="heroCode">Run the first call</a>
+      </div>
+    </section>
+
+    <section class="dev-code-section" id="first-call">
+      <div class="dev-code-copy"><div class="eyebrow" data-dev-i18n="codeEyebrow">COPY · SIGN · SEND</div><h2 data-dev-i18n="codeTitle">A complete first write.</h2><p data-dev-i18n="codeBody">The shell example assumes you exported an issued ask_ key and an actor identity. The Python example creates the actor locally before sending the same request.</p><div class="dev-security-note"><strong data-dev-i18n="privateTitle">The private key never becomes a header.</strong><span data-dev-i18n="privateBody">Only the public key and signature leave your process.</span></div></div>
+      <div class="dev-code-console">
+        <div class="dev-code-tabs" role="tablist" aria-label="Code examples"><button class="dev-code-tab active" type="button" role="tab" aria-selected="true" data-code-target="shell">cURL</button><button class="dev-code-tab" type="button" role="tab" aria-selected="false" data-code-target="python">Python</button></div>
+        <div class="code-block dev-code-panel active" data-code-panel="shell"><button type="button" class="copy-btn">Copy</button><pre class="code">curl -fsS -X POST https://attestedmemory.net/memory/api/memories \
+  -H "X-SaaS-Key: $ASK_KEY" \
+  -H "X-Actor-ID: $ACTOR_ID" \
+  -H "X-Actor-Public-Key: $ACTOR_PUBLIC_KEY" \
+  -H "X-Actor-Signature: $ACTOR_SIGNATURE" \
+  -H 'content-type: application/json' \
+  -d '{"title":"First signed memory","content":"A decision worth keeping.","tags":["quickstart"],"visibility":"private","source_refs":[]}'</pre></div>
+        <div class="code-block dev-code-panel" data-code-panel="python" hidden><button type="button" class="copy-btn">Copy</button><pre class="code">import base64, hashlib, httpx
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+
+private = Ed25519PrivateKey.generate()
+public = private.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+actor = "did:actor:" + hashlib.sha256(public).hexdigest()
+b64 = lambda value: base64.urlsafe_b64encode(value).rstrip(b"=").decode()
+
+response = httpx.post(
+    "https://attestedmemory.net/memory/api/memories",
+    headers={"X-SaaS-Key": "ask_…", "X-Actor-ID": actor,
+             "X-Actor-Public-Key": b64(public),
+             "X-Actor-Signature": b64(private.sign(actor.encode()))},
+    json={"title": "First signed memory", "content": "A decision worth keeping.",
+          "tags": ["quickstart"], "visibility": "private"}, timeout=15,
+)
+response.raise_for_status()
+print(response.json())</pre></div>
+      </div>
+    </section>
+
+    <section class="dev-section" id="contracts">
+      <div class="dev-section-head"><div><div class="eyebrow" data-dev-i18n="contractsEyebrow">CONTRACT ATLAS</div><h2 data-dev-i18n="contractsTitle">Every public surface, one click away.</h2></div><p data-dev-i18n="contractsBody">Use OpenAPI for direct product integration and the signed AI Market manifest for federated invocation.</p></div>
+      <div class="dev-contracts">
+        <a href="/api/openapi.json"><span>CONTROL</span><strong>SaaS Gateway</strong><small>/api/openapi.json</small></a>
+        <a href="/memory/openapi.json"><span>PERSONAL</span><strong>Memory API</strong><small>/memory/openapi.json</small></a>
+        <a href="/teams/openapi.json"><span>TEAM</span><strong>Team API</strong><small>/teams/openapi.json</small></a>
+        <a href="/market/openapi.json"><span>MARKET</span><strong>Expert Market</strong><small>/market/openapi.json</small></a>
+        <a href="https://deal.attestedmemory.net/openapi.json"><span>ESCROW</span><strong>Attested Deal</strong><small>deal.attestedmemory.net</small></a>
+        <a href="https://meter.attestedmemory.net/openapi.json"><span>METERING</span><strong>Attested Meter</strong><small>meter.attestedmemory.net</small></a>
+        <a href="https://prove.attestedmemory.net/openapi.json"><span>PROOF</span><strong>Attested Prove</strong><small>prove.attestedmemory.net</small></a>
+        <a href="https://hub.attestedmemory.net/ai-market/v2/manifest"><span>FEDERATION</span><strong>Hub Manifest</strong><small>live signed catalog</small></a>
+      </div>
+    </section>
+
+    <section class="dev-publisher" id="publisher">
+      <div class="dev-section-head"><div><div class="eyebrow" data-dev-i18n="publisherEyebrow">CAPABILITY DISTRIBUTION</div><h2 data-dev-i18n="publisherTitle">Yes — the Hub promotes its capabilities.</h2></div><p data-dev-i18n="publisherBody">Promotion is automatic after authorization; trust is never self-approved.</p></div>
+      <div class="publisher-rail" aria-label="Capability publication sequence" data-dev-i18n-aria="publisherAria">
+        <article><b>01</b><h3 data-dev-i18n="publish1Title">Provider registers</h3><p data-dev-i18n="publish1Body">A signed provider publishes its schema, price, invoke URL and public key.</p></article>
+        <article><b>02</b><h3 data-dev-i18n="publish2Title">Hub indexes</h3><p data-dev-i18n="publish2Body">The catalog exposes discovery metadata and records capability consumption.</p></article>
+        <article><b>03</b><h3 data-dev-i18n="publish3Title">Hub announces</h3><p data-dev-i18n="publish3Body">Federation bootstrap announces the signed Hub identity to configured roots.</p></article>
+        <article><b>04</b><h3 data-dev-i18n="publish4Title">Peers approve</h3><p data-dev-i18n="publish4Body">External operators inspect and pin the identity before granting trust.</p></article>
+      </div>
+      <div class="publisher-boundary"><div><span data-dev-i18n="automaticLabel">AUTOMATIC</span><strong data-dev-i18n="automaticTitle">Registration, signed discovery, metrics and federation announcements.</strong></div><div><span data-dev-i18n="approvalLabel">OPERATOR CONTROLLED</span><strong data-dev-i18n="approvalTitle">Publisher token issuance, external approval and promotional channels.</strong></div></div>
+    </section>
+
+    <section class="manifest-lab">
+      <div class="manifest-copy"><div class="eyebrow" data-dev-i18n="manifestEyebrow">MANIFEST LAB</div><h2 data-dev-i18n="manifestTitle">Shape a capability before you publish it.</h2><p data-dev-i18n="manifestBody">This local builder generates a starter AI Market v2 entry. It sends nothing and stores nothing.</p>
+        <div class="manifest-fields">
+          <label><span>product_id</span><input id="manifest-product" value="my-verifier"></label>
+          <label><span>capability_id</span><input id="manifest-capability" value="claim.verify@v1"></label>
+          <label><span>invoke_url</span><input id="manifest-url" value="https://provider.example/capabilities/my-verifier/claim.verify@v1/invoke"></label>
+          <label><span>price_per_call_usd</span><input id="manifest-price" type="number" min="0" step="0.001" value="0.01"></label>
+        </div>
+        <p class="manifest-note" data-dev-i18n="manifestNote">Add the provider public key and obtain a scoped publisher token before registration.</p>
+      </div>
+      <div class="manifest-console">
+        <div class="code-block manifest-output"><button type="button" class="copy-btn" id="manifest-copy">Copy</button><pre class="code" id="manifest-json"></pre></div>
+        <div class="code-block manifest-register"><button type="button" class="copy-btn">Copy</button><pre class="code">curl -fsS -X POST https://hub.attestedmemory.net/ai-market/v2/supply/register \
+  -H "Authorization: Bearer $AIMARKET_PUBLISHER_TOKEN" \
+  -H 'content-type: application/json' \
+  --data @capability.json</pre></div>
+      </div>
+    </section>
+
+    <p class="guide-status" id="guide-status"></p>
+    <article class="guide guide-journey dev-guide" id="guide-body" aria-live="polite" data-guide-file="DEVELOPER_GUIDE.md"></article>
+
+    <section class="dev-final">
+      <div><div class="eyebrow" data-dev-i18n="finalEyebrow">BUILD WITH EVIDENCE</div><h2 data-dev-i18n="finalTitle">From first request to federated distribution.</h2><p data-dev-i18n="finalBody">Use the trial for integration, OpenAPI for contracts and the signed manifest when your capability is ready for agents.</p></div>
+      <div class="actions"><a class="btn" href="/start" data-dev-i18n="finalStart">Start integration</a><a class="btn alt" href="/capabilities" data-dev-i18n="finalKova">Study the KOVA boundary</a><a class="btn alt" href="https://hub.attestedmemory.net/.well-known/ai-market.json" data-dev-i18n="finalDiscovery">Open live discovery</a></div>
+    </section>
+  </main>
+
+  <footer class="footer"><span data-dev-i18n="footer">Attested Memory · developer field kit</span><span><a href="https://hub.attestedmemory.net/mcp">MCP endpoint</a> · <a href="/docs" data-i18n="guide">User guide</a> · <a href="/capabilities" data-i18n="capabilities">KOVA capabilities</a></span></footer>
+  <script src="/app.js?v=20260909a"></script>
+  <script src="/developer.js?v=20260908r"></script>
+</body>
+</html>

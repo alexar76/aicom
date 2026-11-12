@@ -1,0 +1,271 @@
+{
+  "date_client": "2026-11-10",
+  "generated_at_utc": "2026-11-10T19:25:38.800514+00:00",
+  "baseline": [
+    "artifacts/external-links-2026-11-10/review.ru.md",
+    "artifacts/external-social-regional-deeper-2026-11-09/report.ru.md",
+    "artifacts/external-social-regional-deeper-2026-11-09/social/report.ru.md",
+    "artifacts/external-social-regional-deeper-2026-11-09/regions/report.ru.md"
+  ],
+  "scope": "Independent reviews, outside technical discussion and named research reuse. Catalogs, own articles and same-name projects excluded.",
+  "counts": {
+    "search_strings_submitted": 28,
+    "search_batches": 7,
+    "primary_gets": 30,
+    "unique_get_urls": 29,
+    "http_statuses": {
+      "200": 25,
+      "410": 2,
+      "429": 3
+    },
+    "new_external_non_catalog_research_mentions": 1,
+    "new_confirmed_html_backlink_pages": 0,
+    "new_confirmed_independent_full_product_reviews": 0,
+    "new_confirmed_runtime_adoptions": 0,
+    "new_external_comments_in_three_rechecked_dev_threads": 0
+  },
+  "new_findings": [
+    {
+      "source_url": "https://dangmua.com/blog/claude-message-threads-beta-cuts-request-size-not-your-bill",
+      "title": "Claude Message Threads Beta: Faster, Not Cheaper",
+      "component": "HISTOR",
+      "classification": "external_editorial_synthesis_reuses_named_historical_research_without_backlink",
+      "published_at_claim": "2026-11-03T11:17:18.000Z",
+      "modified_at_claim": "2026-11-03T13:00:47.389Z",
+      "evidence": {
+        "url": "https://dangmua.com/blog/claude-message-threads-beta-cuts-request-size-not-your-bill",
+        "read_at_utc": "2026-11-10T19:19:01.544717+00:00",
+        "status": 200,
+        "body_file": "raw/dangmua-threads.raw",
+        "sha256": "ed49619424a60ae29dad501a835a8d46c0e078636a56c733c2424a1727ea0270",
+        "truncated": false
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "DangMua Editorial",
+        "url": "https://dangmua.com"
+      },
+      "ownership_confidence": {
+        "external_publication_surface": "high",
+        "publisher_owner_independence": "unverified",
+        "human_author_or_fact_checking": "unverified"
+      },
+      "direct_html_hrefs_to_ecosystem": [],
+      "all_absolute_external_anchor_hrefs": [],
+      "named_attribution": "HISTOR is explicitly named; historical figures are attributed to its accounting.",
+      "direction": "Our named research results are reused in an external article about Claude Message Threads; no direct source URL establishes whether the path was original or an intermediary.",
+      "comparison": {
+        "local_first_party_article": "modelmarket-blog/posts/331-mcp-tool-list-changes-only-moved-a-date/body.md",
+        "local_article_sha256": "fd9bfdeea42309576f000a0d3276b758487f2efc76c38b096cb4d890a7956cab",
+        "shared_numeric_fingerprints": [
+          "10,712",
+          "4,491",
+          "331",
+          "237",
+          "218"
+        ],
+        "shared_measurement_window": "25 October to 1 November 2026",
+        "scope": "Text-to-text comparison only, no new production query or independent empirical replication."
+      },
+      "novelty": "Exact source domain and URL absent in checked prior docs/artifacts outside current deeper pass; historical article from Nov3, newly identified Nov10.",
+      "limits": [
+        "Not a full product review or independently rerun benchmark.",
+        "Not an HTML backlink and no new installation/customer/payment is established.",
+        "Publisher uses an organizational byline; a human writer/editor or relationship to ecosystem owner has not been verified.",
+        "The article is a topical synthesis with broader Threads discussion; a lack of explicit aggregator label does not prove independent reporting."
+      ]
+    }
+  ],
+  "known_reconfirmed": [
+    {
+      "source_url": "https://scraperwatch.com/mcp-changes/",
+      "classification": "outside_comparison_writeup",
+      "evidence": {
+        "url": "https://scraperwatch.com/mcp-changes/",
+        "read_at_utc": "2026-11-10T19:19:01.928326+00:00",
+        "status": 200,
+        "body_file": "raw/scraperwatch-changes.raw",
+        "sha256": "6ebd766fb756e6a2c52285c6250546c91cd18e3bb3aeb64eff720256b1fa33f3",
+        "truncated": false
+      },
+      "event_date": "2026-11-01",
+      "correction_date": "2026-11-02",
+      "literal_own_hrefs": [
+        {
+          "href": "https://histor.modelmarket.dev",
+          "rel": null,
+          "absolute_url": "https://histor.modelmarket.dev"
+        }
+      ],
+      "ownership": "About page claims independent project, automated public-data rankings and affiliate disclosure; ownership not independently verified.",
+      "scope": "Outside-check section still acknowledges HISTOR and robots correction. Already in fresh baseline; no new date/review established."
+    },
+    {
+      "source_url": "https://fplcat.com/blog/ai-agents-playing-fantasy-premier-league",
+      "classification": "operator_blog_about_inbound_crawlers",
+      "evidence": {
+        "url": "https://fplcat.com/blog/ai-agents-playing-fantasy-premier-league",
+        "read_at_utc": "2026-11-10T19:19:02.107685+00:00",
+        "status": 200,
+        "body_file": "raw/fplcat-agents.raw",
+        "sha256": "bda422559484145a17cb7d4087997047394102a3b1a55b01bccabd7d9ad90fe6",
+        "truncated": false
+      },
+      "published_date": "2026-10-13",
+      "modified_date": "2026-10-13",
+      "literal_own_hrefs": [
+        {
+          "href": "https://histor.modelmarket.dev/",
+          "rel": "nofollow noopener",
+          "absolute_url": "https://histor.modelmarket.dev/"
+        }
+      ],
+      "scope": "Same historical 39 requests by histor/0.1.0 and direct HISTOR link. Observation of our crawler is not adoption of HISTOR."
+    },
+    {
+      "source_url": "https://hlido.eu/reviews/alexar76-aimarket-plugins/",
+      "classification": "historical_public_surface_review",
+      "evidence": {
+        "url": "https://hlido.eu/reviews/alexar76-aimarket-plugins/",
+        "read_at_utc": "2026-11-10T19:20:53.634278+00:00",
+        "status": 200,
+        "body_file": "raw/hlido-review.raw",
+        "sha256": "a0523d5a19bf733b512bdb7667ae2c65050d00a881a365d1a3bfbc0a67aa333c",
+        "truncated": false
+      },
+      "published_date": "2026-08-05",
+      "modified_date": "2026-08-05",
+      "claimed_retest_due": "2026-11-05",
+      "literal_own_hrefs": [
+        {
+          "href": "https://alexar76.github.io/aicom/",
+          "rel": "noopener",
+          "absolute_url": "https://alexar76.github.io/aicom/"
+        },
+        {
+          "href": "https://alexar76.github.io/aicom/",
+          "rel": "noopener",
+          "absolute_url": "https://alexar76.github.io/aicom/"
+        },
+        {
+          "href": "https://alexar76.github.io/aicom/",
+          "rel": "noopener",
+          "absolute_url": "https://alexar76.github.io/aicom/"
+        },
+        {
+          "href": "https://alexar76.github.io/aicom/",
+          "rel": "noopener",
+          "absolute_url": "https://alexar76.github.io/aicom/"
+        },
+        {
+          "href": "https://alexar76.github.io/aicom/",
+          "rel": "noopener",
+          "absolute_url": "https://alexar76.github.io/aicom/"
+        },
+        {
+          "href": "https://alexar76.github.io/aicom/ (self-authored tests; no independent audit)",
+          "rel": "noopener",
+          "absolute_url": "https://alexar76.github.io/aicom/ (self-authored tests; no independent audit)"
+        },
+        {
+          "href": "https://alexar76.github.io/aicom/ (none published)",
+          "rel": "noopener",
+          "absolute_url": "https://alexar76.github.io/aicom/ (none published)"
+        }
+      ],
+      "author": "Hlido Editor",
+      "score_not_adopted_as_our_quality_measure": 60,
+      "scope": "Known review, still dated August despite passed re-test date. JSON-LD marks compositeWithTrainedAlgorithmicMedia. Not a new November hands-on review or current compliance validation."
+    },
+    {
+      "source_url": "https://github.com/lets-order-some-fries/trovark/issues/22#issuecomment-5682361982",
+      "classification": "historical_external_static_analysis",
+      "evidence": {
+        "url": "https://api.github.com/repos/lets-order-some-fries/trovark/issues/22/comments?per_page=100",
+        "read_at_utc": "2026-11-10T19:20:57.215575+00:00",
+        "status": 200,
+        "body_file": "raw/trovark-issue22-comments.raw",
+        "sha256": "4a63b58972be3f4e867c545b5b23950854d20177d59c03ccd569dcdb00b75763",
+        "truncated": false
+      },
+      "event_date": "2026-09-15T14:49:23Z",
+      "comments_returned": 1,
+      "scope": "One unchanged historical author comment covering aimarket-plugins; no later comment in current returned complete one-comment list."
+    }
+  ],
+  "negative_or_unresolved": [
+    {
+      "kind": "outside_author_article_bodies",
+      "file": "external-author-articles.json",
+      "fully_read": 5,
+      "decision": "No exact ecosystem identity in these bodies. They are not counted as reviews merely because authors previously replied to us."
+    },
+    {
+      "kind": "three_DEV_comment_threads",
+      "file": "dev-comment-delta.json",
+      "decision": "Zero new comment IDs against Nov9 baseline in three selected threads."
+    },
+    {
+      "kind": "HackerNews_exact_comment_search",
+      "urls": [
+        "https://hn.algolia.com/api/v1/search_by_date?query=%22modelmarket.dev%22&tags=comment&hitsPerPage=100",
+        "https://hn.algolia.com/api/v1/search_by_date?query=%22alexar76%22&tags=comment&hitsPerPage=100"
+      ],
+      "hits": [
+        0,
+        0
+      ],
+      "decision": "Only exact quoted comment markers checked. Known external HN questions can omit these markers; no global absence claim."
+    },
+    {
+      "kind": "unresolved_rate_limited_sources",
+      "keys": [
+        "agentembassy-articles",
+        "quincygb-shovels-article"
+      ],
+      "status": 429,
+      "decision": "Unread; no negative conclusion. Initial x402 comments429 recovered by one later GET200."
+    },
+    {
+      "kind": "guessed_source_navigation",
+      "keys": [
+        "dangmua-blog",
+        "dangmua-about"
+      ],
+      "status": 410,
+      "decision": "Guessed navigation paths, not published backlinks. Real homepage and linked feed were read separately."
+    },
+    {
+      "kind": "fplcat_adjacent_comparison",
+      "url": "https://fplcat.com/blog/fpl-ai-assistants-compared",
+      "evidence": {
+        "url": "https://fplcat.com/blog/fpl-ai-assistants-compared",
+        "read_at_utc": "2026-11-10T19:20:56.100914+00:00",
+        "status": 200,
+        "body_file": "raw/fplcat-assistants-article.raw",
+        "sha256": "775c90ddd08306ad4011c6dd1959fdfb72759468b1bd0b662cd0da8b8d6b6545",
+        "truncated": false
+      },
+      "decision": "Adjacent AI-assistant comparison has no exact link/name for our ecosystem; excluded."
+    },
+    {
+      "kind": "search_noise",
+      "decision": "Own DEV/Pages/wiki mirrors, catalog cards, historical/Siemens tool-list homonyms and histor.dev were excluded. Search exclusions/literal matches were not consistently obeyed by the engine."
+    }
+  ],
+  "limits": [
+    "Public indexed sample and selected native APIs, not the whole internet or closed discussions.",
+    "No new confirmed independent full product review in this sample is not evidence that none exists.",
+    "External organizational bylines and about-page independence claims are not verified legal ownership or human review.",
+    "Search response dates and primary read dates are separate from publication/measurement event dates.",
+    "Ratings and old counts quoted by outsiders are not our current telemetry and were not re-measured here.",
+    "Initial default sandbox had no DNS access; public GET captures were made after authorized read-only network escalation. No denied-read result was treated as absence."
+  ],
+  "external_writes": false,
+  "github_writes": false,
+  "messages": false,
+  "logins": false,
+  "payments_or_tool_invocations": false,
+  "foreign_code_executed": false,
+  "capture_integrity": "capture-integrity.json"
+}

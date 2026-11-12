@@ -2,6 +2,7 @@
 """Audit markdown for satellite links that 404 on alexar76/aicom factory mirror."""
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import sys
@@ -72,12 +73,43 @@ SKIP_DIRS = {
     "venv",
     "data",
     "web/frontend/test-results",
+    # Recorded evidence and generated previews are not published source.
+    "artifacts",
+    "output",
+    "build",
+    "dist",
 }
+
+
+def source_markdown_paths() -> list[Path]:
+    """Include maintained/new source, excluding ignored dependencies and previews."""
+    try:
+        result = subprocess.run(
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z", "--", "*.md"],
+            cwd=ROOT, capture_output=True, text=True, timeout=60, check=True,
+        )
+        paths = [ROOT / name for name in result.stdout.split("\0") if name]
+    except (OSError, subprocess.SubprocessError):
+        # Source archives have no Git index; prune before descending into vendors.
+        paths = []
+        for directory, dirs, files in os.walk(ROOT):
+            dirs[:] = [name for name in dirs if name not in SKIP_DIRS
+                       and not name.startswith(".venv")]
+            paths.extend(Path(directory) / name for name in files if name.endswith(".md"))
+    return sorted({path for path in paths if path.is_file() and not skipped_path(path)})
+
+
+def skipped_path(path: Path) -> bool:
+    rel = path.relative_to(ROOT)
+    return (any(part in {"node_modules", ".git", "__pycache__"}
+                or part.startswith(".venv") for part in rel.parts)
+            or any(rel.as_posix() == name or rel.as_posix().startswith(name + "/")
+                   for name in SKIP_DIRS))
 
 
 def should_scan(path: Path) -> bool:
     rel = path.relative_to(ROOT).as_posix()
-    if any(rel == s or rel.startswith(s + "/") for s in SKIP_DIRS):
+    if skipped_path(path):
         return False
     # A file that is itself stripped from the factory mirror cannot carry a link
     # that 404s there — and inside its own satellite export the relative link is
@@ -91,8 +123,9 @@ def main() -> int:
     rel_hits: dict[str, list[str]] = {}
     stale_hits: dict[str, list[str]] = {}
 
-    glob_root = ROOT / "docs" if only_docs else ROOT
-    for md in sorted(glob_root.rglob("*.md")):
+    markdown_paths = [path for path in source_markdown_paths()
+                      if not only_docs or path.is_relative_to(ROOT / "docs")]
+    for md in markdown_paths:
         if not should_scan(md):
             continue
         if only_docs and not md.is_relative_to(ROOT / "docs"):
@@ -143,7 +176,7 @@ def main() -> int:
     print("\n=== Links escaping their satellite root (404 in the satellite repo) ===")
     escape_hits: dict[str, list[str]] = {}
     link_re = re.compile(r"\]\((?!https?://|mailto:|#|/)([^)\s]+?)(?:#[^)]*)?\)")
-    for md in sorted(glob_root.rglob("*.md")):
+    for md in markdown_paths:
         rel = md.relative_to(ROOT).as_posix()
         if any(rel == s or rel.startswith(s + "/") for s in SKIP_DIRS):
             continue

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<rect width="1600" height="1000" fill="#f5f6f8"/>
+<text x="60" y="48" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="46" font-weight="700" fill="#14283f">From a domain to a call</text>
+<text x="60" y="112" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="400" fill="#516579">The walkthrough follows catalog documents; execution starts at a separate endpoint.</text>
+<rect x="60" y="220" width="220" height="390" rx="14" fill="white" stroke="#b8c6d5" stroke-width="2"/>
+<rect x="340" y="220" width="340" height="390" rx="14" fill="white" stroke="#b8c6d5" stroke-width="2"/>
+<rect x="740" y="220" width="340" height="390" rx="14" fill="white" stroke="#b8c6d5" stroke-width="2"/>
+<rect x="1140" y="220" width="400" height="390" rx="14" fill="white" stroke="#b8c6d5" stroke-width="2"/>
+<line x1="290" y1="400" x2="330" y2="400" stroke="#195fc4" stroke-width="4"/>
+<polygon points="330,400 316,391 316,409" fill="#195fc4"/>
+<line x1="690" y1="400" x2="730" y2="400" stroke="#195fc4" stroke-width="4"/>
+<polygon points="730,400 716,391 716,409" fill="#195fc4"/>
+<line x1="1090" y1="400" x2="1130" y2="400" stroke="#195fc4" stroke-width="4"/>
+<polygon points="1130,400 1116,391 1116,409" fill="#195fc4"/>
+<text x="80" y="246" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#195fc4">ORIGIN</text>
+<text x="80" y="316" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="400" fill="#14283f">HTTPS origin</text>
+<text x="80" y="390" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="400" fill="#14283f">Starting point</text>
+<text x="80" y="432" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="400" fill="#14283f">for discovery</text>
+<text x="366" y="246" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#195fc4">MANIFEST</text>
+<text x="366" y="306" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#14283f">GET</text>
+<text x="366" y="352" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="26" font-weight="400" fill="#14283f">/.well-known/</text>
+<text x="366" y="390" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="26" font-weight="400" fill="#14283f">ard.json</text>
+<text x="366" y="456" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="400" fill="#14283f">Registry entry:</text>
+<text x="366" y="502" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="26" font-weight="400" fill="#14283f">application/</text>
+<text x="366" y="540" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="26" font-weight="400" fill="#14283f">ai-registry+json</text>
+<text x="766" y="246" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#195fc4">REGISTRY</text>
+<text x="766" y="306" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#14283f">POST</text>
+<text x="766" y="352" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="26" font-weight="400" fill="#14283f">/ard/v1/search</text>
+<text x="766" y="414" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="400" fill="#14283f">query.text + pageSize</text>
+<text x="766" y="474" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="400" fill="#14283f">Result gives:</text>
+<text x="766" y="518" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="26" font-weight="400" fill="#14283f">url, source, digest</text>
+<text x="766" y="558" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="400" fill="#14283f">and signed subject*</text>
+<text x="1166" y="246" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#195fc4">DESCRIPTOR</text>
+<text x="1166" y="306" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="28" font-weight="400" fill="#14283f">GET result.url</text>
+<text x="1166" y="378" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="400" fill="#14283f">Input / output schemas</text>
+<text x="1166" y="428" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="400" fill="#14283f">Prices and access mode</text>
+<text x="1166" y="478" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="26" font-weight="400" fill="#14283f">invoke.method / url</text>
+<text x="1166" y="522" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="26" font-weight="400" fill="#14283f">invoke.body + input</text>
+<text x="60" y="642" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="26" font-weight="400" fill="#516579">* Own published entries are signed on the five domain-root hubs; peer rows are hints.</text>
+<line x1="60" y1="718" x2="1540" y2="718" stroke="#a94b08" stroke-width="3" stroke-dasharray="10 10"/>
+<text x="60" y="748" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#a94b08">DISCOVERY ABOVE · EXECUTION BELOW</text>
+<line x1="1340" y1="610" x2="1340" y2="820" stroke="#a94b08" stroke-width="4"/>
+<polygon points="1340,820 1331,806 1349,806" fill="#a94b08"/>
+<rect x="1110" y="820" width="430" height="130" rx="14" fill="#fff4e9" stroke="#a94b08" stroke-width="2"/>
+<text x="1136" y="842" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#a94b08">POST</text>
+<text x="1136" y="892" dominant-baseline="hanging" font-family="Menlo, monospace" font-size="26" font-weight="400" fill="#14283f">/ai-market/v2/invoke</text>
+<text x="60" y="822" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#14283f">curl stops at the descriptor.</text>
+<text x="60" y="880" dominant-baseline="hanging" font-family="Arial, sans-serif" font-size="28" font-weight="400" fill="#516579">Calling and paying still use AIMarket v2.</text>
+</svg>

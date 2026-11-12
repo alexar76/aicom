@@ -1,0 +1,180 @@
+{
+  "allSelectedGitBlobsMatched": true,
+  "bashSyntaxExitCode": null,
+  "declaredRequirementChecks": [
+    {
+      "requirement": "web3>=7.15,<8",
+      "resolvedVersion": "7.16.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "eth-account>=0.14,<0.15",
+      "resolvedVersion": "0.14.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "eth-abi>=5.0.1,<6",
+      "resolvedVersion": "5.2.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "httpx>=0.26",
+      "resolvedVersion": "0.28.1",
+      "satisfied": true
+    },
+    {
+      "requirement": "pyyaml>=6.0",
+      "resolvedVersion": "6.0.3",
+      "satisfied": true
+    },
+    {
+      "requirement": "fastapi>=0.162.0",
+      "resolvedVersion": "0.162.2",
+      "satisfied": true
+    },
+    {
+      "requirement": "uvicorn[standard]>=0.27",
+      "resolvedVersion": "0.54.0",
+      "satisfied": true
+    },
+    {
+      "requirement": "cryptography>=50.0.2",
+      "resolvedVersion": "50.0.2",
+      "satisfied": true
+    }
+  ],
+  "dependencies": {
+    "PyYAML": "6.0.3",
+    "cryptography": "50.0.2",
+    "eth-abi": "5.2.0",
+    "eth-account": "0.14.0",
+    "fastapi": "0.162.2",
+    "httpx": "0.28.1",
+    "pytest": "8.4.2",
+    "web3": "7.16.0"
+  },
+  "dependencyMode": "declared-lottery-resolution",
+  "format": "aicom.new12-focused-offline-tests/v1",
+  "nativePytestExitCode": 0,
+  "networkNone": true,
+  "networkOperationsAttempted": 1,
+  "noLocalProjectExecution": true,
+  "noProductionStateMounts": true,
+  "noconftestReason": "Focused selected tests use their own mocks/fixtures; unrelated monorepo service/database fixtures are excluded.",
+  "paidCycleOrLedgerInvoked": false,
+  "passed": false,
+  "scope": "lottery",
+  "socketAttemptContexts": [
+    {
+      "operation": "bind",
+      "stack": [
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_find_and_load_unlocked",
+          "line": 1312
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_call_with_frames_removed",
+          "line": 488
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_find_and_load",
+          "line": 1369
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_find_and_load_unlocked",
+          "line": 1340
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_load_unlocked",
+          "line": 935
+        },
+        {
+          "file": "<frozen importlib._bootstrap_external>",
+          "function": "exec_module",
+          "line": 1027
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_call_with_frames_removed",
+          "line": 488
+        },
+        {
+          "file": "/deps/urllib3/util/__init__.py",
+          "function": "<module>",
+          "line": 4
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_find_and_load",
+          "line": 1369
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_find_and_load_unlocked",
+          "line": 1340
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_load_unlocked",
+          "line": 935
+        },
+        {
+          "file": "<frozen importlib._bootstrap_external>",
+          "function": "exec_module",
+          "line": 1027
+        },
+        {
+          "file": "<frozen importlib._bootstrap>",
+          "function": "_call_with_frames_removed",
+          "line": 488
+        },
+        {
+          "file": "/deps/urllib3/util/connection.py",
+          "function": "<module>",
+          "line": 137
+        },
+        {
+          "file": "/deps/urllib3/util/connection.py",
+          "function": "_has_ipv6",
+          "line": 127
+        },
+        {
+          "file": "/metadata/focused-socket-trace.py",
+          "function": "deny",
+          "line": 53
+        }
+      ],
+      "test": null
+    }
+  ],
+  "socketOperationsDenied": true,
+  "sourceProof": {
+    "actualFiles": 49,
+    "allMatched": true,
+    "expectedFiles": 49,
+    "format": "aicom.selected-source-git-blob-proof/v1",
+    "nativeBlobManifestSha256": "9b4628e5cf0f57160ae6288b090709e54ead75fb13cdbc3dedb080578e5f9612",
+    "sourceContentMapSha256": "e227cd2ecbfbaaa8c99bd398b54f39feee2b368a49f1e49e69c647c1c2bd8731",
+    "tree": "3d83e57ca3f27340bd78671bbf880c0f1e8028b2"
+  },
+  "sourceUnchanged": true,
+  "testArguments": [
+    "-q",
+    "--noconftest",
+    "--import-mode=importlib",
+    "-p",
+    "no:cacheprovider",
+    "-c",
+    "/tmp/pytest.ini",
+    "--rootdir=/source",
+    "--junitxml=/results/focused.xml",
+    "lottery/relayer/tests/test_draw_rescue_and_cancel_safety.py",
+    "lottery/relayer/tests/test_economy_draw.py"
+  ],
+  "tree": "3d83e57ca3f27340bd78671bbf880c0f1e8028b2"
+}

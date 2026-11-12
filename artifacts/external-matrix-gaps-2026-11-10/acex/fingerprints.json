@@ -1,0 +1,545 @@
+{
+  "captured_at_utc": "2026-11-10T20:05:18.428333+00:00",
+  "scope": "Local ACEX identity expansion only, not deployment verification or outside adoption. No secret/environment values read.",
+  "repo": "https://github.com/alexar76/acex",
+  "pulse_repo": "https://github.com/alexar76/pulse-terminal",
+  "python_modules": [
+    "acex.integrations.pricing",
+    "acex.integrations.ai_audit",
+    "acex.integrations.jupiter"
+  ],
+  "python_symbols": {
+    "acex.integrations.pricing": [
+      "build_pricing_snapshot"
+    ],
+    "acex.integrations.ai_audit": [
+      "build_pack",
+      "score_evidence",
+      "relevant_momus_findings",
+      "fetch_momus_findings"
+    ],
+    "acex.integrations.jupiter": [
+      "fetch_jupiter_quote",
+      "build_swap_plan",
+      "synthetic_quote_for_tests"
+    ]
+  },
+  "python_packaging_note": "No standalone Python pyproject/package coordinate in acex root. These are namespace-module paths present in this workspace; do not infer installed PyPI distribution.",
+  "protocol_tokens": [
+    "ai-auditor:acex-v1",
+    "acex-ai-audit",
+    "Agent Listing Protocol",
+    "CapShares",
+    "AgentNotes",
+    "LiquidityMesh",
+    "CapSense",
+    "PulseAMM"
+  ],
+  "own_http_origins": [
+    "https://modelmarket.dev",
+    "https://magic-ai-factory.com"
+  ],
+  "http_paths": [
+    "/api/v2/capital/pricing",
+    "/api/v2/capital/pricing/stream",
+    "/api/v2/capital/pricing/ws",
+    "/ai-market/v2/capital/pricing",
+    "/ai-market/v2/capital/ipo",
+    "/ai-market/v2/capital/listings"
+  ],
+  "client_config_keys": [
+    "VITE_PULSE_API_URL",
+    "VITE_PULSE_MONITOR_API",
+    "ACEX_JUPITER_QUOTE_URL",
+    "ACEX_JUPITER_SWAP_URL",
+    "ACEX_SOLANA_USDC_MINT",
+    "ACEX_REQUIRE_AI_AUDIT",
+    "ACEX_HUB_SEARCH_URL"
+  ],
+  "outbound_supplier_urls": [
+    "https://quote-api.jup.ag/v6/quote",
+    "https://quote-api.jup.ag/v6/swap"
+  ],
+  "outbound_supplier_note": "Our code calling Jupiter is not evidence that Jupiter imports or uses ACEX.",
+  "contract_identifiers": [
+    "AgentListingRegistry",
+    "AgentAuditPool",
+    "AgentCollateralVault",
+    "AgentShareToken",
+    "AgentNoteToken",
+    "AgentLendingPool",
+    "PulseAMM",
+    "PulseDistributor"
+  ],
+  "declared_base_mainnet_contracts": {
+    "AgentCollateralVault": "0xdAa073EDCA17328188Afe5A83394Fc7b5E42081c",
+    "AgentListingRegistry": "0x3636A636262940Ff4E49aC1BCf34b958F589acC9",
+    "AgentLendingPool": "0x51a61d25b799C17A012eB671e3EDe2569E2d9C3d",
+    "PulseAMM": "0x0A70AA84903ecB2E0aF5c435AFd9EDd178559E47",
+    "AgentAuditPool": "0xE0C711Ef82F9C97eefBF4C0e715de1b09F8a6160",
+    "PulseDistributor": "0x325aC681FDd14c23DE074c15ac2Ed07702e38596"
+  },
+  "declared_addresses_note": "Copied selectively from local public deployment registry, not a fresh chain-state verification.",
+  "solana": {
+    "package": "acex-capital",
+    "local_version": "0.1.0",
+    "lib": "acex_capital",
+    "declared_program_id": "9BkXiRFMB5bAMMqAXxTzaLPYspiGxoUTEeX8kih9ne73",
+    "source": "acex/contracts/solana/programs/acex-capital/src/lib.rs:9",
+    "instructions": [
+      "create_capsense_series",
+      "buy_capsense_option",
+      "exercise_capsense_option"
+    ],
+    "limits": "Declared program ID also appears in localnet/devnet/mainnet Anchor config; no active deployment or outside invocation inferred."
+  },
+  "own_consumers": [
+    {
+      "path": "aimarket-hub/aimarket_hub/capital_pricing.py",
+      "imports": [
+        {
+          "module": "acex.integrations.pricing",
+          "names": [
+            "build_pricing_snapshot"
+          ],
+          "line": 37
+        }
+      ]
+    },
+    {
+      "path": "aimarket-hub/aimarket_hub/acex_ai_audit.py",
+      "imports": [
+        {
+          "module": "acex.integrations.ai_audit",
+          "names": [
+            "AUDITOR_ID",
+            "AUDITOR_KIND",
+            "MIN_AUDIT_SCORE_BPS",
+            "build_pack",
+            "fetch_momus_findings"
+          ],
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "web/backend/api/acex_capital.py",
+      "imports": [
+        {
+          "module": "acex.integrations.pricing",
+          "names": [
+            "build_pricing_snapshot"
+          ],
+          "line": 29
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "acex/README.md",
+      "sha256": "a18a5fbb3a7349694be6b68450708a4199ffe83225d17db23fb45ae8cc6fc19c",
+      "bytes": 8023
+    },
+    {
+      "path": "acex/integrations/__init__.py",
+      "sha256": "88133110e10dea4c64f0c38bb30625de761e6eeff0d8746ec0b81095d77b2f5e",
+      "bytes": 63,
+      "public_functions": [],
+      "acex_imports": []
+    },
+    {
+      "path": "acex/integrations/pricing.py",
+      "sha256": "e1c47b5cd024ac0e1a253aa8df847ec6a7620e1a4746085b6bc1b4a17450096f",
+      "bytes": 9795,
+      "public_functions": [
+        {
+          "name": "build_pricing_snapshot",
+          "line": 35
+        }
+      ],
+      "acex_imports": []
+    },
+    {
+      "path": "acex/integrations/ai_audit.py",
+      "sha256": "cf59199f07b8beb029b038c4cca9874e1392ad6c8c8927341a5f88a890e7af67",
+      "bytes": 8765,
+      "public_functions": [
+        {
+          "name": "relevant_momus_findings",
+          "line": 93
+        },
+        {
+          "name": "score_evidence",
+          "line": 107
+        },
+        {
+          "name": "build_pack",
+          "line": 207
+        },
+        {
+          "name": "fetch_momus_findings",
+          "line": 247
+        }
+      ],
+      "acex_imports": []
+    },
+    {
+      "path": "acex/integrations/jupiter.py",
+      "sha256": "21ace0bff665378efb20df93d1fd51bdf0c3aff77c528fd1608cead72e71bc6e",
+      "bytes": 2747,
+      "public_functions": [
+        {
+          "name": "fetch_jupiter_quote",
+          "line": 28
+        },
+        {
+          "name": "build_swap_plan",
+          "line": 57
+        },
+        {
+          "name": "synthetic_quote_for_tests",
+          "line": 73
+        }
+      ],
+      "acex_imports": []
+    },
+    {
+      "path": "acex/docs/jupiter-routing.md",
+      "sha256": "608b11cb813c1bb4721dea3462e0cb84216cf2604dbb0ea730b3ca706c75ee5a",
+      "bytes": 1041
+    },
+    {
+      "path": "acex/docs/first-market-launch.md",
+      "sha256": "e4cbe260ad8537cd04ee3ae77e32c98426abb6fc3d58587e9c0a4be815588673",
+      "bytes": 2693
+    },
+    {
+      "path": "acex/contracts/evm/README.md",
+      "sha256": "a32acf5697fe7bd0a4b9686adb16125d2e26bba8a0cc8e16ca8c1a0fd750e036",
+      "bytes": 3316
+    },
+    {
+      "path": "acex/contracts/solana/Anchor.toml",
+      "sha256": "eeb857db2ec14660f0404611106f2b2c8ee00b56548902dc15aa23a79f22df17",
+      "bytes": 472
+    },
+    {
+      "path": "acex/contracts/solana/programs/acex-capital/Cargo.toml",
+      "sha256": "adc5bcee36ac1c14a8c13ec6633d63f8c224827897cae22a768062a117d5f11f",
+      "bytes": 787
+    },
+    {
+      "path": "acex/contracts/solana/programs/acex-capital/src/lib.rs",
+      "sha256": "2658a35b0ea7a84785e2e11ef72bd58b76a2228b6ee0051927de0f8257c3c25e",
+      "bytes": 53541
+    },
+    {
+      "path": "apps/pulse-terminal/src/lib/api.ts",
+      "sha256": "56b39459b4c298cc2d0a3ec06a68a2536f8e614648de1fb0bd750c1dcdb7355c",
+      "bytes": 1220
+    },
+    {
+      "path": "apps/pulse-terminal/src/lib/pulseUrl.ts",
+      "sha256": "fdf85c4bf237db42a419a7e8ddb379d106b0321f655bd8e089926be4a35c4e7b",
+      "bytes": 504
+    },
+    {
+      "path": "apps/pulse-terminal/src/lib/acexPricing.ts",
+      "sha256": "0f84be042ef024dbbde167317d9d019bfd3204fdfccae3263c26d17d55615abb",
+      "bytes": 1234
+    },
+    {
+      "path": "aimarket-hub/aimarket_hub/capital_pricing.py",
+      "sha256": "586345287f86757f908bfeca64486adbd011c8ac58444d6e4f388f3ae2af4b92",
+      "bytes": 3434,
+      "public_functions": [
+        {
+          "name": "hub_capital_pricing",
+          "line": 44
+        }
+      ],
+      "acex_imports": [
+        {
+          "module": "acex.integrations.pricing",
+          "names": [
+            "build_pricing_snapshot"
+          ],
+          "line": 37
+        }
+      ]
+    },
+    {
+      "path": "aimarket-hub/aimarket_hub/acex_ai_audit.py",
+      "sha256": "f1ec06ccec93ca5f223a0c9f71670cc5135da020068e07bc91052c1baec2c980",
+      "bytes": 3624,
+      "public_functions": [
+        {
+          "name": "require_ai_audit",
+          "line": 42
+        },
+        {
+          "name": "momus_findings_url",
+          "line": 47
+        },
+        {
+          "name": "audit_capabilities",
+          "line": 51
+        },
+        {
+          "name": "caps_for_product",
+          "line": 96
+        }
+      ],
+      "acex_imports": [
+        {
+          "module": "acex.integrations.ai_audit",
+          "names": [
+            "AUDITOR_ID",
+            "AUDITOR_KIND",
+            "MIN_AUDIT_SCORE_BPS",
+            "build_pack",
+            "fetch_momus_findings"
+          ],
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "aimarket-hub/aimarket_hub/hub_routes/capital.py",
+      "sha256": "123b3b1d6c05e93e728bbbf250050d34264db19e2c730998bf7cf0869addb398",
+      "bytes": 11083,
+      "public_functions": [
+        {
+          "name": "register",
+          "line": 20
+        }
+      ],
+      "acex_imports": []
+    },
+    {
+      "path": "web/backend/api/acex_capital.py",
+      "sha256": "e9127af64cc2a7e8ff3dddcff06d6c0a16b028a02935b9191a960ffecea299e3",
+      "bytes": 10858,
+      "public_functions": [
+        {
+          "name": "capital_pricing",
+          "line": 206
+        },
+        {
+          "name": "capital_pricing_stream",
+          "line": 229
+        },
+        {
+          "name": "capital_pricing_ws",
+          "line": 262
+        }
+      ],
+      "acex_imports": [
+        {
+          "module": "acex.integrations.pricing",
+          "names": [
+            "build_pricing_snapshot"
+          ],
+          "line": 29
+        }
+      ]
+    },
+    {
+      "path": "config/deployments/base-mainnet.json",
+      "sha256": "625f5d7361c6a09b23063a854ba413a18dba456ef4524ceec53c78535bd225e3",
+      "bytes": 12591
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentAuditPool.sol",
+      "sha256": "4d905e81216011d36adea10801bfcaf251dd09f93edef32dcee60e4ec021b377",
+      "bytes": 26809,
+      "contracts": [
+        "AgentAuditPool"
+      ],
+      "functions": [
+        "setPulseAMM",
+        "stake",
+        "unstake",
+        "freeStake",
+        "coverListing",
+        "_recomputeAggregateScore",
+        "onListingApproved",
+        "onListingRejected",
+        "_releaseListingCoverage",
+        "captureBaseline",
+        "observeSharePrice",
+        "_observeSharePrice",
+        "twapPriceE18",
+        "twapSinceBaselineE18",
+        "_cumulativePrice",
+        "_currentSharePriceE18",
+        "triggerDefault",
+        "triggerNoteDefault",
+        "_executeDefault",
+        "claimDefaultCompensation",
+        "fundAuditRewards",
+        "claimAuditReward",
+        "suggestedNoteSpreadBps",
+        "getListingAuditState",
+        "coverages",
+        "coverageCount",
+        "pause",
+        "unpause"
+      ]
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentCollateralVault.sol",
+      "sha256": "b98fa8395f83234be5ccd5fecd5cb37a3c56ac6fb6b36b0cc530846c6c0713ce",
+      "bytes": 10265,
+      "contracts": [
+        "AgentCollateralVault"
+      ],
+      "functions": [
+        "getListing",
+        "debtOf",
+        "MAX_LTV_BPS",
+        "BPS",
+        "setRegistry",
+        "setLendingPool",
+        "depositCollateral",
+        "creditCollateral",
+        "_credit",
+        "registerNote",
+        "lockForNote",
+        "redeemNote",
+        "seizeTo",
+        "releaseOnEviction",
+        "claimEvictionRefund",
+        "availableCollateral",
+        "pause",
+        "unpause"
+      ]
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentLendingPool.sol",
+      "sha256": "ca6b98290e26a372c65e7cfb5d2c19d1c0eaeb9cd6368af594c7eb3bbef54033",
+      "bytes": 20328,
+      "contracts": [
+        "AgentLendingPool"
+      ],
+      "functions": [
+        "accrue",
+        "_accrue",
+        "_projectedIndex",
+        "_debtStored",
+        "deposit",
+        "withdraw",
+        "borrow",
+        "repay",
+        "liquidate",
+        "withdrawCollateral",
+        "_reduceDebt",
+        "_writeOffBadDebt",
+        "setBorrowRate",
+        "setReserveFactor",
+        "reduceReserves",
+        "pause",
+        "unpause",
+        "getCash",
+        "debtOf",
+        "totalBorrows",
+        "totalAssets",
+        "exchangeRate",
+        "isLiquidatable",
+        "healthFactorBps",
+        "availableToBorrow"
+      ]
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentListingRegistry.sol",
+      "sha256": "3a4004e1aa138d6c6c89e267653ba469f7d5398e207dc6b28cd58c4b499ed56a",
+      "bytes": 10951,
+      "contracts": [
+        "AgentListingRegistry"
+      ],
+      "functions": [
+        "setAuditor",
+        "setAuditPool",
+        "applyForListing",
+        "evictUnapprovedListing",
+        "recordAudit",
+        "approveListing",
+        "approveListingWithVesting",
+        "_approveListing",
+        "rejectListing",
+        "issueAgentNotes",
+        "getListing",
+        "pause",
+        "unpause"
+      ]
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentNoteToken.sol",
+      "sha256": "b28735cb804175b5e5f570563bfb450c52a330c1d52329133ec2ebfe163a7fd7",
+      "bytes": 3851,
+      "contracts": [
+        "AgentNoteToken"
+      ],
+      "functions": [
+        "setAuditPool",
+        "freezeForDefault",
+        "burnForDefault",
+        "burnOnRedeem",
+        "isMatured",
+        "_update"
+      ]
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentShareToken.sol",
+      "sha256": "af2e2de8e9ef976c7b65787fed3a9b190a42f1f8bc6ff0fc18838c861f998429",
+      "bytes": 3976,
+      "contracts": [
+        "AgentShareToken"
+      ],
+      "functions": [
+        "mintTo",
+        "enableTrading",
+        "setInitialLock",
+        "lockedBalanceOf",
+        "_update"
+      ]
+    },
+    {
+      "path": "acex/contracts/evm/src/PulseAMM.sol",
+      "sha256": "1c11b2e77746d4bf41157143072565de16519f263e853a9b077267aa1358f775",
+      "bytes": 10492,
+      "contracts": [
+        "PulseAMM"
+      ],
+      "functions": [
+        "setQuoteToken",
+        "setMarketMaker",
+        "createPool",
+        "swapShareForUsdc",
+        "swapUsdcForShare",
+        "_snapshotBlockStart",
+        "blockStartPriceE18",
+        "currentCumulativePrice",
+        "_getAmountOut",
+        "pause",
+        "unpause"
+      ]
+    },
+    {
+      "path": "acex/contracts/evm/src/PulseDistributor.sol",
+      "sha256": "8997b112f6df82d899f3d25ec693e56364b14da25096489f7c11cbdaa04b8c1e",
+      "bytes": 5403,
+      "contracts": [
+        "settles",
+        "PulseDistributor"
+      ],
+      "functions": [
+        "postEpoch",
+        "isClaimed",
+        "claim",
+        "sweepUnclaimed"
+      ]
+    }
+  ]
+}

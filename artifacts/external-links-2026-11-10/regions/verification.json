@@ -1,0 +1,68 @@
+{
+  "body_checks": [
+    {
+      "name": "wpnews-comparison",
+      "status": 200,
+      "sha256_valid": true,
+      "captured_complete": true,
+      "exact_marker_counts": {
+        "alexar76": 2,
+        "modelmarket.dev": 0,
+        "attestedmemory.net": 0,
+        "@aimarket/warden": 1
+      },
+      "whole_word_histor": 1
+    },
+    {
+      "name": "dev-worker-mirror",
+      "status": 429,
+      "sha256_valid": true,
+      "captured_complete": true,
+      "exact_marker_counts": {
+        "alexar76": 0,
+        "modelmarket.dev": 0,
+        "attestedmemory.net": 0,
+        "@aimarket/warden": 0
+      },
+      "whole_word_histor": 0
+    },
+    {
+      "name": "model-context-problems",
+      "status": 200,
+      "sha256_valid": true,
+      "captured_complete": true,
+      "exact_marker_counts": {
+        "alexar76": 0,
+        "modelmarket.dev": 0,
+        "attestedmemory.net": 0,
+        "@aimarket/warden": 0
+      },
+      "whole_word_histor": 0
+    },
+    {
+      "name": "mcp-index-flagged",
+      "status": 200,
+      "sha256_valid": true,
+      "captured_complete": true,
+      "exact_marker_counts": {
+        "alexar76": 0,
+        "modelmarket.dev": 0,
+        "attestedmemory.net": 0,
+        "@aimarket/warden": 0
+      },
+      "whole_word_histor": 0
+    }
+  ],
+  "query_novelty": {
+    "prior_search_files_read": 343,
+    "prior_structured_strings": 938,
+    "submitted": 24,
+    "unique_current": 24,
+    "literal_prior_duplicates": [],
+    "scope": "Literal structuredfields only; semantic overlap and searchengine query expansion not measured."
+  },
+  "external_writes": false,
+  "messages": false,
+  "consent_actions": false,
+  "github_writes": false
+}

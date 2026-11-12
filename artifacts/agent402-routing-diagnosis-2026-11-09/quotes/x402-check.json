@@ -1,0 +1,447 @@
+{
+  "url": "https://modelmarket.dev/x402/x402-check",
+  "method": "HEAD",
+  "retrieved_at_utc": "2026-11-09T19:52:33.238543+00:00",
+  "request_headers": {
+    "User-Agent": "aicom-readonly-quote-check/1"
+  },
+  "request_body": false,
+  "payment_sent": false,
+  "redirects_followed": false,
+  "status": 402,
+  "headers": {
+    "server": "nginx/1.24.0 (Ubuntu)",
+    "date": "Mon, 09 Nov 2026 18:54:40 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "5496",
+    "connection": "close",
+    "allow": "POST",
+    "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQYXltZW50IHJlcXVpcmVkIiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYveDQwMi94NDAyLWNoZWNrIiwiZGVzY3JpcHRpb24iOiJEZWJ1ZyBhbiB4NDAyIHBheW1lbnQgYmVmb3JlIHlvdSBzdWJtaXQgaXQg4oCUIHdoeSBkb2VzIFVTREMgYW5zd2VyIGludmFsaWQgc2lnbmF0dXJlPyBWZXJpZmllcyB0aGUgRUlQLTMwMDkgdHJhbnNmZXJXaXRoQXV0aG9yaXphdGlvbiAoRUlQLTcxMiBzaWduZXIsIHYsIGxvdyBzLCB2YWxpZGl0eSB3aW5kb3cpIGFuZCB0aGUgc2VsbGVyJ3MgdGVybXMgKHBheVRvLCBhbW91bnQsIGFzc2V0LCBuZXR3b3JrLCBib3VuZCBub25jZSksIGFuZCBuYW1lcyB0aGUgZG9tYWluIGEgZmFpbGluZyBzaWduYXR1cmUgd2FzIHJlYWxseSBtYWRlIGZvciwgZS5nLiBCYXNlIFNlcG9saWEncyAnVVNEQycgdXNlZCBmb3IgQmFzZSBtYWlubmV0J3MgJ1VTRCBDb2luJywgdGhlIGNvbW1vbmVzdCByZWFzb24gYW4geDQwMiBwYXltZW50IHJldmVydHMuIE9mZmxpbmUsIGRldGVybWluaXN0aWMsIHNpZ25lZCBhbnN3ZXIuIiwibWltZVR5cGUiOiJhcHBsaWNhdGlvbi9qc29uIiwic2VydmljZU5hbWUiOiJBSU1hcmtldCIsInRhZ3MiOlsieDQwMiIsInVzZGMiLCJlaXAtMzAwOSIsInRyYW5zZmVyd2l0aGF1dGhvcml6YXRpb24iLCJlaXAtNzEyIiwiaW52YWxpZC1zaWduYXR1cmUiLCJwYXltZW50LXZlcmlmaWNhdGlvbiIsImRlYnVnZ2luZyJdLCJpY29uVXJsIjoiaHR0cHM6Ly9tb2RlbG1hcmtldC5kZXYvLndlbGwta25vd24vZXJjLTgwMDQvYWltYXJrZXQtaHViLnBuZyJ9LCJhY2NlcHRzIjpbeyJzY2hlbWUiOiJleGFjdCIsIm5ldHdvcmsiOiJlaXAxNTU6ODQ1MyIsImFtb3VudCI6IjMwMDAiLCJhc3NldCI6IjB4ODMzNTg5ZkNENmVEYjZFMDhmNGM3QzMyRDRmNzFiNTRiZEEwMjkxMyIsInBheVRvIjoiMHgxMjE4ZmYzNkM1ZDJlM0I2QTU2NUNkQjFBOEIxQWNDRmM2MDZBZDBhIiwibWF4VGltZW91dFNlY29uZHMiOjMwMCwiZXh0cmEiOnsibmFtZSI6IlVTRCBDb2luIiwidmVyc2lvbiI6IjIifX1dLCJleHRlbnNpb25zIjp7ImVpcDI2MTJHYXNTcG9uc29yaW5nIjp7fSwiZXJjMjBBcHByb3ZhbEdhc1Nwb25zb3JpbmciOnt9LCJiYXphYXIiOnsiaW5mbyI6eyJpbnB1dCI6eyJ0eXBlIjoiaHR0cCIsIm1ldGhvZCI6IlBPU1QiLCJib2R5VHlwZSI6Impzb24iLCJib2R5Ijp7ImF1dGhvcml6YXRpb24iOnsiZnJvbSI6IjB4OTk5M0MxM0VCQkM0Qjk4NDQxRTM4NTg1ZUE0N2ZlMTc2MjVmMDRmMyIsInRvIjoiMHgxMjE4ZmYzNkM1ZDJlM0I2QTU2NUNkQjFBOEIxQWNDRmM2MDZBZDBhIiwidmFsdWUiOiIzMDAwIiwidmFsaWRBZnRlciI6IjAiLCJ2YWxpZEJlZm9yZSI6IjE4OTM0NTYwMDAiLCJub25jZSI6IjB4NTIyOTNhNzgwY2YxZjQ4ZWE4YTU1NTE4N2MwMWIxNTEyNGM0MWNmZWYwNDExNGI0NGYzZTU0NjNjZThiMzBlYiJ9LCJzaWduYXR1cmUiOiIweGUwOTQ5ZDAzY2U2MDQwMzI3MjFjZjcwNmQwNTg5N2M5YjViMzRkYmMwZDNmNGE3Njg0ODcyNGMxZTIwNDczMzMwMjM4ZjBkZGUxZWEzY2NjZmZjZTRjMWQxZjVhNmRmYmZiMDAxMmVjNDJhOWZkMjE2NWJjOTcyM2IxNGI1NjM4MWIiLCJuZXR3b3JrIjoiYmFzZSJ9fSwib3V0cHV0Ijp7InR5cGUiOiJqc29uIiwiZXhhbXBsZSI6eyJzdGF0dXMiOiJvayIsInNlcnZpY2UiOiJ4NDAyLWNoZWNrIiwiY2FwYWJpbGl0eV9pZCI6Ing0MDIuYXV0aG9yaXphdGlvbi5jaGVja0B2MSIsInJlc3VsdCI6eyJ2ZXJkaWN0IjoidmFsaWQiLCJmYWlsZWQiOltdLCJjaGVja3MiOlt7ImNoZWNrIjoic2lnbmF0dXJlIHJlY292ZXJzIHRvIGZyb20iLCJvayI6dHJ1ZSwiZGV0YWlsIjpudWxsfV19LCJwcm92aWRlcl9wdWJrZXkiOiJlZDI1NTE5IHB1YmxpYyBrZXkiLCJzaWduYXR1cmUiOiJzaWduYXR1cmUgb3ZlciB0aGUgcmVzdWx0In0sInNjaGVtYSI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJzdGF0dXMiOnsidHlwZSI6InN0cmluZyIsImNvbnN0Ijoib2sifSwic2VydmljZSI6eyJ0eXBlIjoic3RyaW5nIiwiY29uc3QiOiJ4NDAyLWNoZWNrIn0sImNhcGFiaWxpdHlfaWQiOnsidHlwZSI6InN0cmluZyIsImNvbnN0IjoieDQwMi5hdXRob3JpemF0aW9uLmNoZWNrQHYxIn0sInJlc3VsdCI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJ2ZXJkaWN0Ijp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbInZhbGlkIiwiaW52YWxpZCJdfSwiZmFpbGVkIjp7InR5cGUiOiJhcnJheSIsIml0ZW1zIjp7InR5cGUiOiJzdHJpbmcifX0sImNoZWNrcyI6eyJ0eXBlIjoiYXJyYXkiLCJpdGVtcyI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJjaGVjayI6eyJ0eXBlIjoic3RyaW5nIn0sIm9rIjp7InR5cGUiOlsiYm9vbGVhbiIsIm51bGwiXX0sImRldGFpbCI6e319LCJyZXF1aXJlZCI6WyJjaGVjayIsIm9rIl19fSwic2lnbmVyIjp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwicHJpbWFyeV90eXBlIjp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdfSwiYXV0aG9yaXphdGlvbiI6eyJ0eXBlIjoib2JqZWN0In0sImRvbWFpbiI6eyJ0eXBlIjoib2JqZWN0In0sImRpZ2VzdCI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX19LCJyZXF1aXJlZCI6WyJ2ZXJkaWN0Il19LCJwcm92aWRlcl9wdWJrZXkiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl0sImRlc2NyaXB0aW9uIjoidGhlIGFnZW50J3MgRWQyNTUxOSBwdWJsaWMga2V5In0sInNpZ25hdHVyZSI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXSwiZGVzY3JpcHRpb24iOiJ0aGUgYWdlbnQncyBzaWduYXR1cmUgb3ZlciByZXN1bHQsIGNoZWNrYWJsZSB3aXRoIHNpZ25hdHVyZS52ZXJpZnkifX0sInJlcXVpcmVkIjpbInN0YXR1cyIsInNlcnZpY2UiLCJjYXBhYmlsaXR5X2lkIiwicmVzdWx0Il19fX0sInNjaGVtYSI6eyIkc2NoZW1hIjoiaHR0cHM6Ly9qc29uLXNjaGVtYS5vcmcvZHJhZnQvMjAyMC0xMi9zY2hlbWEiLCJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJpbnB1dCI6eyJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJ0eXBlIjp7InR5cGUiOiJzdHJpbmciLCJjb25zdCI6Imh0dHAifSwibWV0aG9kIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbIlBPU1QiXX0sImJvZHlUeXBlIjp7InR5cGUiOiJzdHJpbmciLCJlbnVtIjpbImpzb24iLCJmb3JtLWRhdGEiLCJ0ZXh0Il19LCJib2R5Ijp7InR5cGUiOiJvYmplY3QiLCJwcm9wZXJ0aWVzIjp7InhfcGF5bWVudCI6eyJ0eXBlIjoic3RyaW5nIiwiZGVzY3JpcHRpb24iOiJ0aGUgWC1QQVlNRU5UIGhlYWRlciAoYmFzZTY0KSDigJQgb3IgYXV0aG9yaXphdGlvbiArIHNpZ25hdHVyZSArIG5ldHdvcmsifSwicmVxdWlyZW1lbnRzIjp7InR5cGUiOiJvYmplY3QiLCJkZXNjcmlwdGlvbiI6InRoZSA0MDIncyBhY2NlcHRzIGVudHJ5IChwYXlUbywgYW1vdW50LCBhc3NldCwgbmV0d29yaykifSwiYXV0aG9yaXphdGlvbiI6eyJ0eXBlIjoib2JqZWN0IiwiZGVzY3JpcHRpb24iOiJmcm9tLCB0bywgdmFsdWUsIHZhbGlkQWZ0ZXIsIHZhbGlkQmVmb3JlLCBub25jZSJ9LCJzaWduYXR1cmUiOnsidHlwZSI6InN0cmluZyIsImRlc2NyaXB0aW9uIjoiNjUtYnl0ZSBoZXggc2lnbmF0dXJlIn0sIm5ldHdvcmsiOnsidHlwZSI6InN0cmluZyIsImRlc2NyaXB0aW9uIjoiYmFzZSwgYmFzZS1zZXBvbGlhLCDigKYgb3IgZWlwMTU1OjxjaGFpbiBpZD4ifSwibm93Ijp7InR5cGUiOiJpbnRlZ2VyIiwiZGVzY3JpcHRpb24iOiJ1bml4IHNlY29uZHMsIHRvIGNoZWNrIHRoZSB2YWxpZGl0eSB3aW5kb3cifX19fSwicmVxdWlyZWQiOlsidHlwZSIsIm1ldGhvZCIsImJvZHlUeXBlIiwiYm9keSJdLCJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2V9LCJvdXRwdXQiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsidHlwZSI6eyJ0eXBlIjoic3RyaW5nIn0sImV4YW1wbGUiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsic3RhdHVzIjp7InR5cGUiOiJzdHJpbmciLCJjb25zdCI6Im9rIn0sInNlcnZpY2UiOnsidHlwZSI6InN0cmluZyIsImNvbnN0IjoieDQwMi1jaGVjayJ9LCJjYXBhYmlsaXR5X2lkIjp7InR5cGUiOiJzdHJpbmciLCJjb25zdCI6Ing0MDIuYXV0aG9yaXphdGlvbi5jaGVja0B2MSJ9LCJyZXN1bHQiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsidmVyZGljdCI6eyJ0eXBlIjoic3RyaW5nIiwiZW51bSI6WyJ2YWxpZCIsImludmFsaWQiXX0sImZhaWxlZCI6eyJ0eXBlIjoiYXJyYXkiLCJpdGVtcyI6eyJ0eXBlIjoic3RyaW5nIn19LCJjaGVja3MiOnsidHlwZSI6ImFycmF5IiwiaXRlbXMiOnsidHlwZSI6Im9iamVjdCIsInByb3BlcnRpZXMiOnsiY2hlY2siOnsidHlwZSI6InN0cmluZyJ9LCJvayI6eyJ0eXBlIjpbImJvb2xlYW4iLCJudWxsIl19LCJkZXRhaWwiOnt9fSwicmVxdWlyZWQiOlsiY2hlY2siLCJvayJdfX0sInNpZ25lciI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sInByaW1hcnlfdHlwZSI6eyJ0eXBlIjpbInN0cmluZyIsIm51bGwiXX0sImF1dGhvcml6YXRpb24iOnsidHlwZSI6Im9iamVjdCJ9LCJkb21haW4iOnsidHlwZSI6Im9iamVjdCJ9LCJkaWdlc3QiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl19fSwicmVxdWlyZWQiOlsidmVyZGljdCJdfSwicHJvdmlkZXJfcHVia2V5Ijp7InR5cGUiOlsic3RyaW5nIiwibnVsbCJdLCJkZXNjcmlwdGlvbiI6InRoZSBhZ2VudCdzIEVkMjU1MTkgcHVibGljIGtleSJ9LCJzaWduYXR1cmUiOnsidHlwZSI6WyJzdHJpbmciLCJudWxsIl0sImRlc2NyaXB0aW9uIjoidGhlIGFnZW50J3Mgc2lnbmF0dXJlIG92ZXIgcmVzdWx0LCBjaGVja2FibGUgd2l0aCBzaWduYXR1cmUudmVyaWZ5In19LCJyZXF1aXJlZCI6WyJzdGF0dXMiLCJzZXJ2aWNlIiwiY2FwYWJpbGl0eV9pZCIsInJlc3VsdCJdfX0sInJlcXVpcmVkIjpbInR5cGUiXX19LCJyZXF1aXJlZCI6WyJpbnB1dCJdfX0sImJ1aWxkZXItY29kZSI6eyJpbmZvIjp7InMiOlsiY2RwX3Nka19zZXJ2ZXIiXX0sInNjaGVtYSI6eyIkc2NoZW1hIjoiaHR0cHM6Ly9qc29uLXNjaGVtYS5vcmcvZHJhZnQvMjAyMC0xMi9zY2hlbWEiLCJ0eXBlIjoib2JqZWN0IiwicHJvcGVydGllcyI6eyJhIjp7InR5cGUiOiJzdHJpbmciLCJwYXR0ZXJuIjoiXlthLXowLTlfXXsxLDMyfSQiLCJkZXNjcmlwdGlvbiI6IkFwcCBidWlsZGVyIGNvZGUifSwidyI6eyJ0eXBlIjoic3RyaW5nIiwicGF0dGVybiI6Il5bYS16MC05X117MSwzMn0kIiwiZGVzY3JpcHRpb24iOiJXYWxsZXQgYnVpbGRlciBjb2RlIn0sInMiOnsidHlwZSI6ImFycmF5IiwibWF4SXRlbXMiOjExLCJpdGVtcyI6eyJ0eXBlIjoic3RyaW5nIiwicGF0dGVybiI6Il5bYS16MC05X117MSwzMn0kIn0sImRlc2NyaXB0aW9uIjoiU2VydmljZSBidWlsZGVyIGNvZGVzIn19LCJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2V9fX19",
+    "cache-control": "no-store",
+    "etag": "W/\"1578-qh9r3C2EZIsL4zlrSGakcZrPQxY\""
+  },
+  "challenge_header_present": true,
+  "challenge": {
+    "x402Version": 2,
+    "error": "Payment required",
+    "resource": {
+      "url": "https://modelmarket.dev/x402/x402-check",
+      "description": "Debug an x402 payment before you submit it — why does USDC answer invalid signature? Verifies the EIP-3009 transferWithAuthorization (EIP-712 signer, v, low s, validity window) and the seller's terms (payTo, amount, asset, network, bound nonce), and names the domain a failing signature was really made for, e.g. Base Sepolia's 'USDC' used for Base mainnet's 'USD Coin', the commonest reason an x402 payment reverts. Offline, deterministic, signed answer.",
+      "mimeType": "application/json",
+      "serviceName": "AIMarket",
+      "tags": [
+        "x402",
+        "usdc",
+        "eip-3009",
+        "transferwithauthorization",
+        "eip-712",
+        "invalid-signature",
+        "payment-verification",
+        "debugging"
+      ],
+      "iconUrl": "https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png"
+    },
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "3000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USD Coin",
+          "version": "2"
+        }
+      }
+    ],
+    "extensions": {
+      "eip2612GasSponsoring": {},
+      "erc20ApprovalGasSponsoring": {},
+      "bazaar": {
+        "info": {
+          "input": {
+            "type": "http",
+            "method": "POST",
+            "bodyType": "json",
+            "body": {
+              "authorization": {
+                "from": "0x9993C13EBBC4B98441E38585eA47fe17625f04f3",
+                "to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+                "value": "3000",
+                "validAfter": "0",
+                "validBefore": "1893456000",
+                "nonce": "0x52293a780cf1f48ea8a555187c01b15124c41cfef04114b44f3e5463ce8b30eb"
+              },
+              "signature": "0xe0949d03ce604032721cf706d05897c9b5b34dbc0d3f4a76848724c1e20473330238f0dde1ea3cccffce4c1d1f5a6dfbfb0012ec42a9fd2165bc9723b14b56381b",
+              "network": "base"
+            }
+          },
+          "output": {
+            "type": "json",
+            "example": {
+              "status": "ok",
+              "service": "x402-check",
+              "capability_id": "x402.authorization.check@v1",
+              "result": {
+                "verdict": "valid",
+                "failed": [],
+                "checks": [
+                  {
+                    "check": "signature recovers to from",
+                    "ok": true,
+                    "detail": null
+                  }
+                ]
+              },
+              "provider_pubkey": "ed25519 public key",
+              "signature": "signature over the result"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "ok"
+                },
+                "service": {
+                  "type": "string",
+                  "const": "x402-check"
+                },
+                "capability_id": {
+                  "type": "string",
+                  "const": "x402.authorization.check@v1"
+                },
+                "result": {
+                  "type": "object",
+                  "properties": {
+                    "verdict": {
+                      "type": "string",
+                      "enum": [
+                        "valid",
+                        "invalid"
+                      ]
+                    },
+                    "failed": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "checks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "check": {
+                            "type": "string"
+                          },
+                          "ok": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "detail": {}
+                        },
+                        "required": [
+                          "check",
+                          "ok"
+                        ]
+                      }
+                    },
+                    "signer": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "primary_type": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "authorization": {
+                      "type": "object"
+                    },
+                    "domain": {
+                      "type": "object"
+                    },
+                    "digest": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "verdict"
+                  ]
+                },
+                "provider_pubkey": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "the agent's Ed25519 public key"
+                },
+                "signature": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "the agent's signature over result, checkable with signature.verify"
+                }
+              },
+              "required": [
+                "status",
+                "service",
+                "capability_id",
+                "result"
+              ]
+            }
+          }
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "http"
+                },
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "POST"
+                  ]
+                },
+                "bodyType": {
+                  "type": "string",
+                  "enum": [
+                    "json",
+                    "form-data",
+                    "text"
+                  ]
+                },
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "x_payment": {
+                      "type": "string",
+                      "description": "the X-PAYMENT header (base64) — or authorization + signature + network"
+                    },
+                    "requirements": {
+                      "type": "object",
+                      "description": "the 402's accepts entry (payTo, amount, asset, network)"
+                    },
+                    "authorization": {
+                      "type": "object",
+                      "description": "from, to, value, validAfter, validBefore, nonce"
+                    },
+                    "signature": {
+                      "type": "string",
+                      "description": "65-byte hex signature"
+                    },
+                    "network": {
+                      "type": "string",
+                      "description": "base, base-sepolia, … or eip155:<chain id>"
+                    },
+                    "now": {
+                      "type": "integer",
+                      "description": "unix seconds, to check the validity window"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "method",
+                "bodyType",
+                "body"
+              ],
+              "additionalProperties": false
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "const": "ok"
+                    },
+                    "service": {
+                      "type": "string",
+                      "const": "x402-check"
+                    },
+                    "capability_id": {
+                      "type": "string",
+                      "const": "x402.authorization.check@v1"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "verdict": {
+                          "type": "string",
+                          "enum": [
+                            "valid",
+                            "invalid"
+                          ]
+                        },
+                        "failed": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "checks": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "check": {
+                                "type": "string"
+                              },
+                              "ok": {
+                                "type": [
+                                  "boolean",
+                                  "null"
+                                ]
+                              },
+                              "detail": {}
+                            },
+                            "required": [
+                              "check",
+                              "ok"
+                            ]
+                          }
+                        },
+                        "signer": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "primary_type": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "authorization": {
+                          "type": "object"
+                        },
+                        "domain": {
+                          "type": "object"
+                        },
+                        "digest": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "verdict"
+                      ]
+                    },
+                    "provider_pubkey": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "the agent's Ed25519 public key"
+                    },
+                    "signature": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "the agent's signature over result, checkable with signature.verify"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "service",
+                    "capability_id",
+                    "result"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            }
+          },
+          "required": [
+            "input"
+          ]
+        }
+      },
+      "builder-code": {
+        "info": {
+          "s": [
+            "cdp_sdk_server"
+          ]
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,32}$",
+              "description": "App builder code"
+            },
+            "w": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,32}$",
+              "description": "Wallet builder code"
+            },
+            "s": {
+              "type": "array",
+              "maxItems": 11,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]{1,32}$"
+              },
+              "description": "Service builder codes"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "accepts_summary": [
+    {
+      "scheme": "exact",
+      "network": "eip155:8453",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+      "amount_atomic": "3000",
+      "domain_name": "USD Coin",
+      "domain_version": "2"
+    }
+  ],
+  "checks": {
+    "status_402": true,
+    "allow_post": true,
+    "has_accepts": true,
+    "all_accepts_exact_base_canonical_usdc": true,
+    "all_accepts_expected_payto": true,
+    "all_accepts_correct_usdc_domain": true,
+    "all_amounts_match_index_price": true
+  },
+  "expected_index_price_usd": "0.003",
+  "expected_atomic": "3000"
+}

@@ -1,0 +1,245 @@
+{
+  "primary_and_shared": [
+    {
+      "scope": "own_primary_capture",
+      "id": "pypi-acex-homonym",
+      "path": "bodies/pypi-acex-homonym.body",
+      "status": 200,
+      "bytes": 237428,
+      "sha256": "a345dae63f7c8738f25b966a5307f43f53b71988fb61cdafabb97b295b957998",
+      "complete": true,
+      "length_matches": true,
+      "sha256_matches": true
+    },
+    {
+      "scope": "own_primary_capture",
+      "id": "fastly-own-acex-doc",
+      "path": "bodies/fastly-own-acex-doc.body",
+      "status": 503,
+      "bytes": 455,
+      "sha256": "4d38465b9be914f4eb9fab5ab31322fc479445144551a6e2c3ea1e401278751f",
+      "complete": true,
+      "length_matches": true,
+      "sha256_matches": true
+    },
+    {
+      "scope": "shared_root_capture_not_a_new_GET",
+      "id": "readme-acex",
+      "path": "../root/readme-acex.raw",
+      "status": 200,
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "complete": true,
+      "length_matches": true,
+      "sha256_matches": true
+    },
+    {
+      "scope": "shared_root_capture_not_a_new_GET",
+      "id": "imports-acex",
+      "path": "../root/imports-acex.raw",
+      "status": 200,
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "complete": true,
+      "length_matches": true,
+      "sha256_matches": true
+    },
+    {
+      "scope": "shared_root_capture_not_a_new_GET",
+      "id": "contract-audit-pool",
+      "path": "../root/contract-audit-pool.raw",
+      "status": 200,
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "complete": true,
+      "length_matches": true,
+      "sha256_matches": true
+    },
+    {
+      "scope": "shared_root_capture_not_a_new_GET",
+      "id": "contract-listing",
+      "path": "../root/contract-listing.raw",
+      "status": 200,
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "complete": true,
+      "length_matches": true,
+      "sha256_matches": true
+    },
+    {
+      "scope": "shared_root_capture_not_a_new_GET",
+      "id": "config-jupiter",
+      "path": "../root/config-jupiter.raw",
+      "status": 200,
+      "bytes": 55,
+      "sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "complete": true,
+      "length_matches": true,
+      "sha256_matches": true
+    }
+  ],
+  "local_source_fingerprints": [
+    {
+      "path": "acex/README.md",
+      "captured_sha256": "a18a5fbb3a7349694be6b68450708a4199ffe83225d17db23fb45ae8cc6fc19c",
+      "current_sha256": "a18a5fbb3a7349694be6b68450708a4199ffe83225d17db23fb45ae8cc6fc19c",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/integrations/__init__.py",
+      "captured_sha256": "88133110e10dea4c64f0c38bb30625de761e6eeff0d8746ec0b81095d77b2f5e",
+      "current_sha256": "88133110e10dea4c64f0c38bb30625de761e6eeff0d8746ec0b81095d77b2f5e",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/integrations/pricing.py",
+      "captured_sha256": "e1c47b5cd024ac0e1a253aa8df847ec6a7620e1a4746085b6bc1b4a17450096f",
+      "current_sha256": "e1c47b5cd024ac0e1a253aa8df847ec6a7620e1a4746085b6bc1b4a17450096f",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/integrations/ai_audit.py",
+      "captured_sha256": "cf59199f07b8beb029b038c4cca9874e1392ad6c8c8927341a5f88a890e7af67",
+      "current_sha256": "cf59199f07b8beb029b038c4cca9874e1392ad6c8c8927341a5f88a890e7af67",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/integrations/jupiter.py",
+      "captured_sha256": "21ace0bff665378efb20df93d1fd51bdf0c3aff77c528fd1608cead72e71bc6e",
+      "current_sha256": "21ace0bff665378efb20df93d1fd51bdf0c3aff77c528fd1608cead72e71bc6e",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/docs/jupiter-routing.md",
+      "captured_sha256": "608b11cb813c1bb4721dea3462e0cb84216cf2604dbb0ea730b3ca706c75ee5a",
+      "current_sha256": "608b11cb813c1bb4721dea3462e0cb84216cf2604dbb0ea730b3ca706c75ee5a",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/docs/first-market-launch.md",
+      "captured_sha256": "e4cbe260ad8537cd04ee3ae77e32c98426abb6fc3d58587e9c0a4be815588673",
+      "current_sha256": "e4cbe260ad8537cd04ee3ae77e32c98426abb6fc3d58587e9c0a4be815588673",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/evm/README.md",
+      "captured_sha256": "a32acf5697fe7bd0a4b9686adb16125d2e26bba8a0cc8e16ca8c1a0fd750e036",
+      "current_sha256": "a32acf5697fe7bd0a4b9686adb16125d2e26bba8a0cc8e16ca8c1a0fd750e036",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/solana/Anchor.toml",
+      "captured_sha256": "eeb857db2ec14660f0404611106f2b2c8ee00b56548902dc15aa23a79f22df17",
+      "current_sha256": "eeb857db2ec14660f0404611106f2b2c8ee00b56548902dc15aa23a79f22df17",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/solana/programs/acex-capital/Cargo.toml",
+      "captured_sha256": "adc5bcee36ac1c14a8c13ec6633d63f8c224827897cae22a768062a117d5f11f",
+      "current_sha256": "adc5bcee36ac1c14a8c13ec6633d63f8c224827897cae22a768062a117d5f11f",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/solana/programs/acex-capital/src/lib.rs",
+      "captured_sha256": "2658a35b0ea7a84785e2e11ef72bd58b76a2228b6ee0051927de0f8257c3c25e",
+      "current_sha256": "2658a35b0ea7a84785e2e11ef72bd58b76a2228b6ee0051927de0f8257c3c25e",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "apps/pulse-terminal/src/lib/api.ts",
+      "captured_sha256": "56b39459b4c298cc2d0a3ec06a68a2536f8e614648de1fb0bd750c1dcdb7355c",
+      "current_sha256": "56b39459b4c298cc2d0a3ec06a68a2536f8e614648de1fb0bd750c1dcdb7355c",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "apps/pulse-terminal/src/lib/pulseUrl.ts",
+      "captured_sha256": "fdf85c4bf237db42a419a7e8ddb379d106b0321f655bd8e089926be4a35c4e7b",
+      "current_sha256": "fdf85c4bf237db42a419a7e8ddb379d106b0321f655bd8e089926be4a35c4e7b",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "apps/pulse-terminal/src/lib/acexPricing.ts",
+      "captured_sha256": "0f84be042ef024dbbde167317d9d019bfd3204fdfccae3263c26d17d55615abb",
+      "current_sha256": "0f84be042ef024dbbde167317d9d019bfd3204fdfccae3263c26d17d55615abb",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "aimarket-hub/aimarket_hub/capital_pricing.py",
+      "captured_sha256": "586345287f86757f908bfeca64486adbd011c8ac58444d6e4f388f3ae2af4b92",
+      "current_sha256": "586345287f86757f908bfeca64486adbd011c8ac58444d6e4f388f3ae2af4b92",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "aimarket-hub/aimarket_hub/acex_ai_audit.py",
+      "captured_sha256": "f1ec06ccec93ca5f223a0c9f71670cc5135da020068e07bc91052c1baec2c980",
+      "current_sha256": "f1ec06ccec93ca5f223a0c9f71670cc5135da020068e07bc91052c1baec2c980",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "aimarket-hub/aimarket_hub/hub_routes/capital.py",
+      "captured_sha256": "123b3b1d6c05e93e728bbbf250050d34264db19e2c730998bf7cf0869addb398",
+      "current_sha256": "123b3b1d6c05e93e728bbbf250050d34264db19e2c730998bf7cf0869addb398",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "web/backend/api/acex_capital.py",
+      "captured_sha256": "e9127af64cc2a7e8ff3dddcff06d6c0a16b028a02935b9191a960ffecea299e3",
+      "current_sha256": "e9127af64cc2a7e8ff3dddcff06d6c0a16b028a02935b9191a960ffecea299e3",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "config/deployments/base-mainnet.json",
+      "captured_sha256": "625f5d7361c6a09b23063a854ba413a18dba456ef4524ceec53c78535bd225e3",
+      "current_sha256": "625f5d7361c6a09b23063a854ba413a18dba456ef4524ceec53c78535bd225e3",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentAuditPool.sol",
+      "captured_sha256": "4d905e81216011d36adea10801bfcaf251dd09f93edef32dcee60e4ec021b377",
+      "current_sha256": "4d905e81216011d36adea10801bfcaf251dd09f93edef32dcee60e4ec021b377",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentCollateralVault.sol",
+      "captured_sha256": "b98fa8395f83234be5ccd5fecd5cb37a3c56ac6fb6b36b0cc530846c6c0713ce",
+      "current_sha256": "b98fa8395f83234be5ccd5fecd5cb37a3c56ac6fb6b36b0cc530846c6c0713ce",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentLendingPool.sol",
+      "captured_sha256": "ca6b98290e26a372c65e7cfb5d2c19d1c0eaeb9cd6368af594c7eb3bbef54033",
+      "current_sha256": "ca6b98290e26a372c65e7cfb5d2c19d1c0eaeb9cd6368af594c7eb3bbef54033",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentListingRegistry.sol",
+      "captured_sha256": "3a4004e1aa138d6c6c89e267653ba469f7d5398e207dc6b28cd58c4b499ed56a",
+      "current_sha256": "3a4004e1aa138d6c6c89e267653ba469f7d5398e207dc6b28cd58c4b499ed56a",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentNoteToken.sol",
+      "captured_sha256": "b28735cb804175b5e5f570563bfb450c52a330c1d52329133ec2ebfe163a7fd7",
+      "current_sha256": "b28735cb804175b5e5f570563bfb450c52a330c1d52329133ec2ebfe163a7fd7",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/evm/src/AgentShareToken.sol",
+      "captured_sha256": "af2e2de8e9ef976c7b65787fed3a9b190a42f1f8bc6ff0fc18838c861f998429",
+      "current_sha256": "af2e2de8e9ef976c7b65787fed3a9b190a42f1f8bc6ff0fc18838c861f998429",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/evm/src/PulseAMM.sol",
+      "captured_sha256": "1c11b2e77746d4bf41157143072565de16519f263e853a9b077267aa1358f775",
+      "current_sha256": "1c11b2e77746d4bf41157143072565de16519f263e853a9b077267aa1358f775",
+      "unchanged_at_report_build": true
+    },
+    {
+      "path": "acex/contracts/evm/src/PulseDistributor.sol",
+      "captured_sha256": "8997b112f6df82d899f3d25ec693e56364b14da25096489f7c11cbdaa04b8c1e",
+      "current_sha256": "8997b112f6df82d899f3d25ec693e56364b14da25096489f7c11cbdaa04b8c1e",
+      "unchanged_at_report_build": true
+    }
+  ]
+}

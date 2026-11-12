@@ -393,3 +393,89 @@ test("one payment, one call in flight: a concurrent copy of the same payment, or
     assert.equal((await call("/x402/histor-check", paid(pay(wallet, "0x04")))).status, 200, "the lock is released after the answer");
   } finally { await close(); }
 });
+
+test("an authorization that would expire during the call is refused before anything is bought", async () => {
+  // Audit 2026-11-11, deposits-x402-6: the paywall settles after the handler, which buys upstream first.
+  const historian = fakeHistor(async () => json(200, { type: "histor.check/v1", match: "no-digest" }));
+  let clock = Date.parse("2026-11-11T12:00:00Z");
+  const { call, close } = await serve({ fetchImpl: historian.fetchImpl, paywall: fakePaywall, perMinute: 100, now: () => clock });
+  const pay = (validBefore) => Buffer.from(JSON.stringify({ x402Version: 2, payload: { authorization: {
+    from: "0x" + "cd".repeat(20), nonce: "0x01", validBefore: String(validBefore) } } })).toString("base64");
+  const paid = (header) => ({ method: "POST", headers: { "content-type": "application/json", "payment-signature": header },
+                             body: JSON.stringify({ name: "io.example/x" }) });
+  try {
+    const soon = await call("/x402/histor-check", paid(pay(Math.floor(clock / 1000) + 10)));
+    assert.equal(soon.status, 400);
+    assert.equal((await soon.json()).error, "authorization_expires_too_soon");
+    assert.equal(historian.calls.length, 0, "nothing was bought for it");
+    assert.equal((await call("/x402/histor-check", paid(pay(Math.floor(clock / 1000) + 60)))).status, 200);
+  } finally { await close(); }
+});
+
+test("a wallet whose payment did not settle after it was served waits before the next call", async () => {
+  const historian = fakeHistor(async () => json(200, { type: "histor.check/v1", match: "no-digest" }));
+  let settles = false;
+  // Like @x402/express: run the handler, then replace its answer when the settle fails.
+  const settleFails = { ...fakePaywall, middleware: (req, res, next) => {
+    if (!req.headers["payment-signature"]) return res.status(402).json({ x402Version: 2, error: "payment required" });
+    const original = res.json.bind(res);
+    res.json = (body) => {
+      if (settles) return original(body);
+      res.setHeader("PAYMENT-RESPONSE", Buffer.from(JSON.stringify(
+        { success: false, errorReason: "invalid_exact_evm_nonce_already_used" })).toString("base64"));
+      return res.status(402) && original({ error: "settle failed" });
+    };
+    return next();
+  } };
+  let clock = Date.parse("2026-11-11T12:00:00Z");
+  const { call, close } = await serve({ fetchImpl: historian.fetchImpl, paywall: settleFails, perMinute: 100, now: () => clock });
+  const wallet = "0x" + "ef".repeat(20);
+  const paid = (nonce) => ({ method: "POST", headers: { "content-type": "application/json", "payment-signature":
+    Buffer.from(JSON.stringify({ x402Version: 2, payload: { authorization: { from: wallet, nonce } } })).toString("base64") },
+    body: JSON.stringify({ name: "io.example/x" }) });
+  try {
+    assert.equal((await call("/x402/histor-check", paid("0x01"))).status, 402, "served, then the settle failed");
+    assert.equal(historian.calls.length, 1);
+    const again = await call("/x402/histor-check", paid("0x02"));
+    assert.equal(again.status, 403);
+    assert.equal((await again.json()).error, "payment_failed_recently");
+    assert.equal(historian.calls.length, 1, "the cooldown keeps the gateway from buying again");
+    clock += 61 * 60_000;
+    settles = true;
+    assert.equal((await call("/x402/histor-check", paid("0x03"))).status, 200, "after the cooldown it is served");
+  } finally { await close(); }
+});
+
+test("a facilitator outage at settle does not lock an honest wallet out", async () => {
+  // Review of 2026-11-11: any replaced answer started the hour-long cooldown, including a 502
+  // from the facilitator and a 402 without a payer-caused reason.
+  const historian = fakeHistor(async () => json(200, { type: "histor.check/v1", match: "no-digest" }));
+  let mode = "502";
+  const flaky = { ...fakePaywall, middleware: (req, res, next) => {
+    if (!req.headers["payment-signature"]) return res.status(402).json({ x402Version: 2, error: "payment required" });
+    const original = res.json.bind(res);
+    res.json = (body) => {
+      if (mode === "ok") return original(body);
+      if (mode === "402") {
+        res.setHeader("PAYMENT-RESPONSE", Buffer.from(JSON.stringify(
+          { success: false, errorReason: "unexpected_settle_error" })).toString("base64"));
+        return res.status(402) && original({ error: "settle failed" });
+      }
+      return res.status(502) && original({ error: "facilitator unavailable" });
+    };
+    return next();
+  } };
+  const { call, close } = await serve({ fetchImpl: historian.fetchImpl, paywall: flaky, perMinute: 100 });
+  const wallet = "0x" + "ab".repeat(20);
+  const paid = (nonce) => ({ method: "POST", headers: { "content-type": "application/json", "payment-signature":
+    Buffer.from(JSON.stringify({ x402Version: 2, payload: { authorization: { from: wallet, nonce } } })).toString("base64") },
+    body: JSON.stringify({ name: "io.example/x" }) });
+  try {
+    assert.equal((await call("/x402/histor-check", paid("0x01"))).status, 502);
+    mode = "402";
+    assert.equal((await call("/x402/histor-check", paid("0x02"))).status, 402, "served again, not refused 403");
+    mode = "ok";
+    assert.equal((await call("/x402/histor-check", paid("0x03"))).status, 200);
+  } finally { await close(); }
+});
+

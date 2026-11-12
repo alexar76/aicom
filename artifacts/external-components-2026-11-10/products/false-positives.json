@@ -1,0 +1,42 @@
+[
+  {
+    "evidence": {
+      "key": "besboy-team-readme",
+      "url": "https://api.github.com/repos/besboy3107/team-memory-os/readme",
+      "observed_at_utc": "2026-11-10T19:39:38.224288+00:00",
+      "status": 200,
+      "body_file": "raw/besboy-team-readme.raw",
+      "sha256": "f0af0e3b07607892c1db73b2a3efa74b7e9181aac89ca807f9d1f9334da27b77",
+      "truncated": false,
+      "public_rate_headers": {
+        "X-RateLimit-Remaining": "1",
+        "X-RateLimit-Reset": "1794337597",
+        "X-RateLimit-Resource": "core"
+      }
+    },
+    "decoded_file": "besboy-team-readme.md",
+    "exact_identity_matches": [],
+    "decision": "Team Memory OS is a distinct Russian stdlib/SQLite knowledge app with different API/routes; shared generic name alone does not establish our ecosystem.",
+    "scope": "Fetched README only; the full repository tree was not scanned."
+  },
+  {
+    "evidence": {
+      "key": "starlight-readme",
+      "url": "https://api.github.com/repos/Starlight-Intelligence/Starlight-Intelligence-System/readme",
+      "observed_at_utc": "2026-11-10T19:39:38.904525+00:00",
+      "status": 200,
+      "body_file": "raw/starlight-readme.raw",
+      "sha256": "676869c559d62e5180f82a6eda6b96f75c06dc38f04cb1e647a80f06f2be34d8",
+      "truncated": false,
+      "public_rate_headers": {
+        "X-RateLimit-Remaining": "0",
+        "X-RateLimit-Reset": "1794337597",
+        "X-RateLimit-Resource": "core"
+      }
+    },
+    "decoded_file": "starlight-readme.md",
+    "exact_identity_matches": [],
+    "decision": "Attested memory is used as a general concept in the Starlight project; no exact owner/domain/package identity links to our Attested Memory in fetched README.",
+    "scope": "Fetched README only; the full repository tree was not scanned."
+  }
+]

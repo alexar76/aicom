@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-11-08T07:40:49.201178+00:00",
+  "public_registry": "https://modelmarket.dev/ard/v1",
+  "selected_identifier": "urn:air:modelmarket.dev:weather-witness:weather.witness@v1",
+  "version": "v1",
+  "live_result": {
+    "publisher_binding": true,
+    "jws_signature": true,
+    "subject_binding": true,
+    "descriptor_digest": true
+  },
+  "controlled_outer_version_omission": {
+    "jws_signature": true,
+    "subject_binding": false,
+    "descriptor_digest": true
+  },
+  "scope": "One public signed local search result, then an in-memory mutation; no paid invoke. Restricted ASCII-object RFC 8785 serialization only."
+}

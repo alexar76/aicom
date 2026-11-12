@@ -1,0 +1,953 @@
+AgentSearch — find AI agents and MCP servers
+AgentSearch
+Search
+The Plan
+Browse
+Stats
+Submit
+API
+modelmarket.dev
+Source:
+agents 2026-10-26
+https://modelmarket.dev/a2a
+Agent quality score
+—
+Blocker × (0.3·Fame + 0.3·Usability + 0.3·Functionality + 0.1·CallGraph) — from the canonical batch pipeline.
+👤 Inventory
+modelmarket.dev
+sources: a2aregistry.org
+# sources: 1
+🛡 Blocker
+alive
+eliminated: FALSE
+consecutive_fails: 0
+⭐ Fame
+—
+stars: —
+🔧 Usability
+—
+license: —
+⚙ Functionality
+—
+speed: 1245 ms
+✦ Overall
+—
+Blocker × (0.3·Fame + 0.3·Usab + 0.3·Func + 0.1·CallGraph)
+🕸 Call Graph
+0.00
+in-degree → call_graph_score
+Each layer mirrors the canonical scoring pipeline — the layer's gates, inputs, prompt/code and output, filled with this agent's values from the latest run.
+Inventory
+Crawled from registries (a2aregistry, GitHub, awesome-mcp).
+Data collected
+9
+name
+modelmarket.dev
+Agent's display name as published by its source.
+url
+https://modelmarket.dev/a2a
+Primary URL where the agent lives.
+description
+Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt.
+Free-text description from the source.
+sources
+a2aregistry.org
+Which adapters found this agent.
+source_count
+1
+How many adapters listed this agent (cross-source signal).
+capabilities
+Search the AI capability market; ai-marketplace; capability-discovery; agent-tools; pricing; Buy and run a market capability; paid-invoke; x402; receipts; agent-mandates
+Raw capability tags from the source.
+capability_count
+10
+Number of capability tags.
+first_source
+a2aregistry.org
+First adapter that found this agent.
+fetched_at
+2026-10-26T03:19:36.266466+00:00
+Timestamp of the crawl.
+crawler.py
+(
+7759
+chars)
+"""
+Unified crawler.
+
+Runs every adapter, merges the results into one normalized inventory, dedupes
+by URL (so the same agent listed in multiple sources becomes a single record
+with a `sources` list), and writes:
+
+  inventory/latest.json
+  inventory/history/inventory_YYYY-MM-DD.json
+
+Each record keeps the normalized shape we agreed on:
+  {name, url, description, source, source_url, capabilities[],
+   fetched_at, raw, sources[]}
+
+`sources` is added by the merge step — it's the list of every source that
+saw this agent, which is itself a useful trust signal (cross-registry hits).
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import sys
+import traceback
+from datetime import datetime, timezone
+from typing import Any, Callable
+
+# Make the adapters importable when running `python3 crawler.py` from project root.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from adapters import a2aregistry, awesome_mcp, github  # noqa: E402
+
+ADAPTERS: list[tuple[str, Callable[[], list[dict[str, Any]]]]] = [
+    ("a2aregistry.org", a2aregistry.fetch),
+    ("github.com", github.fetch),
+    ("awesome-mcp-servers", awesome_mcp.fetch),
+]
+
+INVENTORY_DIR = "inventory"
+HISTORY_DIR = os.path.join(INVENTORY_DIR, "history")
+
+
+def _dedup_key(rec: dict[str, Any]) -> str:
+    """Canonical key for dedup: lowercased URL with trailing slash stripped."""
+    url = (rec.get("url") or "").strip().lower()
+    if url.endswith("/"):
+        url = url[:-1]
+    return url or f"name::{(rec.get('name') or '').strip().lower()}"
+
+
+def merge(per_source: dict[str, list[dict[str, Any]]]) -> list[dict[str, Any]]:
+    """Merge records from all sources, deduping by URL.
+
+    When the same agent appears in multiple sources, we keep the first record
+    we saw and append the additional source name to its `sources` list. The
+    `raw` payloads from later sources are stored under `raw_extra[source]`
+    so nothing is lost.
+    """
+    merged: dict[str, dict[str, Any]] = {}
+    for source_name, records in per_source.items():
+        for rec in records:
+            key = _dedup_key(rec)
+            if not key:
+                continue
+            if key not in merged:
+                rec = dict(rec)
+                rec["sources"] = [source_name]
+                merged[key] = rec
+            else:
+                existing = merged[key]
+                if source_name not in existing["sources"]:
+                    existing["sources"].append(source_name)
+                # preserve secondary raw payloads without clobbering the first
+                existing.setdefault("raw_extra", {})[source_name] = rec.get("raw")
+                # backfill missing description/capabilities if the first source was sparse
+                if not existing.get("description") and rec.get("description"):
+                    existing["description"] = rec["description"]
+                for cap in rec.get("capabilities") or []:
+                    if cap not in existing.setdefault("capabilities", []):
+                        existing["capabilities"].append(cap)
+    return list(merged.values())
+
+
+def run() -> dict[str, Any]:
+    per_source: dict[str, list[dict[str, Any]]] = {}
+    summary: dict[str, Any] = {"per_source": {}, "errors": {}}
+
+    for name, fn in ADAPTERS:
+        print(f"\n[crawler] running adapter: {name}")
+        try:
+            recs = fn()
+            per_source[name] = recs
+            summary["per_source"][name] = len(recs)
+            print(f"[crawler]   -> {len(recs)} records")
+        except Exception as exc:  # noqa: BLE001
+            summary["errors"][name] = str(exc)
+            per_source[name] = []
+            print(f"[crawler]   !! adapter failed: {exc}")
+            traceback.print_exc()
+
+    merged = merge(per_source)
+    raw_total = sum(summary["per_source"].values())
+    summary["raw_total"] = raw_total
+    summary["unique_total"] = len(merged)
+    summary["dedup_removed"] = raw_total - len(merged)
+    summary["completed_at"] = datetime.now(timezone.utc).isoformat()
+
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+
+    # latest.json keeps full records (including raw payloads) for downstream use.
+    out_full = {"summary": summary, "agents": merged}
+    latest_path = os.path.join(INVENTORY_DIR, "latest.json")
+    with open(latest_path, "w") as f:
+        json.dump(out_full, f, indent=2)
+
+    # History snapshots strip `raw` and `raw_extra` to keep storage small
+    # (~10x reduction). The normalized fields are preserved so diffs and
+    # re-extraction stay possible without re-crawling.
+    slim_agents = [
+        {k: v for k, v in a.items() if k not in ("raw", "raw_extra")}
+        for a in merged
+    ]
+    out_slim = {"summary": summary, "agents": slim_agents}
+
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    history_path = os.path.join(HISTORY_DIR, f"inventory_{today}.json")
+    with open(history_path, "w") as f:
+        json.dump(out_slim, f, indent=2)
+
+    # Compute and write a diff vs. the most recent prior snapshot.
+    diff_path = _write_diff(today, slim_agents)
+
+    print("\n[crawler] === summary ===")
+    for src, cnt in summary["per_source"].items():
+        print(f"  {src:25s} {cnt:>6d}")
+    print(f"  {'raw total':25s} {raw_total:>6d}")
+    print(f"  {'unique (after dedup)':25s} {len(merged):>6d}")
+    print(f"  {'dedup removed':25s} {summary['dedup_removed']:>6d}")
+    if summary["errors"]:
+        print("  errors:")
+        for src, err in summary["errors"].items():
+            print(f"    {src}: {err}")
+    print(f"\n[crawler] wrote {latest_path}")
+    print(f"[crawler] wrote {history_path}")
+    if diff_path:
+        print(f"[crawler] wrote {diff_path}")
+
+    return summary
+
+
+def _write_diff(today: str, today_agents: list[dict[str, Any]]) -> str | None:
+    """Compare today's slim snapshot to the most recent prior snapshot.
+    Writes inventory/history/diff_YYYY-MM-DD.md and returns its path.
+    Returns None if there's no prior snapshot to compare against.
+    """
+    import glob
+
+    pattern = os.path.join(HISTORY_DIR, "inventory_*.json")
+    prior = sorted(p for p in glob.glob(pattern) if today not in p)
+    if not prior:
+        return None
+    prev_path = prior[-1]
+    try:
+        prev_data = json.load(open(prev_path))
+    except Exception:  # noqa: BLE001
+        return None
+
+    prev_agents = prev_data.get("agents") or []
+    prev_by_url = {a.get("url"): a for a in prev_agents if a.get("url")}
+    today_by_url = {a.get("url"): a for a in today_agents if a.get("url")}
+
+    new_urls = sorted(set(today_by_url) - set(prev_by_url))
+    removed_urls = sorted(set(prev_by_url) - set(today_by_url))
+    changed: list[tuple[str, str]] = []
+    for url in set(today_by_url) & set(prev_by_url):
+        a, b = today_by_url[url], prev_by_url[url]
+        if (a.get("description") or "") != (b.get("description") or ""):
+            changed.append((url, "description"))
+        elif sorted(a.get("capabilities") or []) != sorted(b.get("capabilities") or []):
+            changed.append((url, "capabilities"))
+
+    lines = [
+        f"# Inventory diff: {today} vs {os.path.basename(prev_path)[10:-5]}",
+        "",
+        f"- New: {len(new_urls)}",
+        f"- Removed: {len(removed_urls)}",
+        f"- Changed (description or capabilities): {len(changed)}",
+        "",
+    ]
+    if new_urls:
+        lines.append("## New agents")
+        for u in new_urls[:50]:
+            a = today_by_url[u]
+            lines.append(f"- [{a.get('name','')}]({u}) — sources: {a.get('sources')}")
+        if len(new_urls) > 50:
+            lines.append(f"- … and {len(new_urls) - 50} more")
+        lines.append("")
+    if removed_urls:
+        lines.append("## Removed agents")
+        for u in removed_urls[:50]:
+
+...(truncated; full file is crawler.py)
+Crawler raw payload
+10
+raw.stargazers_count  ·  GitHub API
+—
+Star count on the repo.
+raw.pushed_at  ·  GitHub API
+—
+Timestamp of last commit push.
+raw.updated_at  ·  GitHub API
+2026-10-26T02:51:57.315812Z
+Fallback recency timestamp.
+raw.html_url  ·  GitHub API
+—
+Web URL of the repository.
+raw.license  ·  GitHub API
+—
+License (SPDX id or free text).
+raw.homepage  ·  GitHub API
+—
+Project homepage URL.
+raw.documentationUrl  ·  A2A card
+https://modelmarket.dev/developers
+Link to the agent's docs.
+raw.securitySchemes  ·  A2A / OpenAPI
+aimarketApiKey; aimarketMandate
+Declared auth schemes.
+raw.pricing  ·  A2A card
+—
+Declared pricing model.
+raw.skills  ·  A2A card
+Search the AI capability market; Buy and run a market capability
+List of declared skills.
+adapters/github.py
+(
+3708
+chars)
+"""
+Adapter: GitHub Search API
+
+Job: search GitHub for repos tagged with agent-related topics, transcribe each
+result onto our normalized record shape. No auth required (uses unauthenticated
+search; ~10 req/min, 1000-result cap per query).
+
+Normalized record:
+    {
+      name, url, description,
+      source, source_url,
+      capabilities[], fetched_at, raw
+    }
+"""
+
+from __future__ import annotations
+
+import json
+import time
+from datetime import datetime, timezone
+from typing import Any
+
+import httpx
+
+SOURCE_NAME = "github.com"
+SEARCH_API = "https://api.github.com/search/repositories"
+
+# Broad query: catches A2A, MCP servers, and general agent repos.
+TOPICS = [
+    "a2a",
+    "mcp-server",
+    "ai-agent",
+    "agent",
+    "langchain-agent",
+    "autogen",
+]
+PER_PAGE = 100   # GitHub max
+MAX_PAGES_PER_TOPIC = 3   # 300 repos per topic is plenty; keeps runs short
+
+
+def normalize(repo: dict[str, Any], source_url: str) -> dict[str, Any]:
+    """Map one GitHub repo to our normalized record."""
+    return {
+        "name": repo.get("full_name") or repo.get("name") or "",
+        "url": repo.get("html_url") or "",
+        "description": repo.get("description") or "",
+        "source": SOURCE_NAME,
+        "source_url": source_url,
+        "capabilities": list(repo.get("topics") or []),
+        "fetched_at": datetime.now(timezone.utc).isoformat(),
+        "raw": repo,
+    }
+
+
+def _fetch_topic(client: httpx.Client, topic: str, polite_delay: float) -> list[dict[str, Any]]:
+    """Fetch up to MAX_PAGES_PER_TOPIC pages for a single topic."""
+    out: list[dict[str, Any]] = []
+    for page in range(1, MAX_PAGES_PER_TOPIC + 1):
+        params = {
+            "q": f"topic:{topic}",
+            "per_page": PER_PAGE,
+            "page": page,
+            "sort": "stars",
+            "order": "desc",
+        }
+        resp = client.get(SEARCH_API, params=params)
+        if resp.status_code == 403:
+            print(f"[github] rate-limited on topic={topic} page={page}; stopping topic")
+            break
+        resp.raise_for_status()
+        items = (resp.json() or {}).get("items") or []
+        if not items:
+            break
+        source_url = str(resp.request.url)
+        out.extend(normalize(r, source_url) for r in items if isinstance(r, dict))
+        if len(items) < PER_PAGE:
+            break
+        time.sleep(polite_delay)
+    return out
+
+
+def fetch(timeout: float = 30.0, polite_delay: float = 7.0) -> list[dict[str, Any]]:
+    """Fetch repos for each topic and merge, deduping by repo URL."""
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    seen: set[str] = set()
+    merged: list[dict[str, Any]] = []
+    with httpx.Client(timeout=timeout, headers=headers) as client:
+        for i, topic in enumerate(TOPICS):
+            print(f"[github] topic={topic} ({i+1}/{len(TOPICS)})")
+            for rec in _fetch_topic(client, topic, polite_delay):
+                key = rec["url"] or rec["name"]
+                if key and key not in seen:
+                    seen.add(key)
+                    merged.append(rec)
+            time.sleep(polite_delay)  # gap between topics
+    return merged
+
+
+if __name__ == "__main__":
+    print(f"Topics: {', '.join(TOPICS)}")
+    records = fetch()
+    print(f"Fetched {len(records)} repos from {SOURCE_NAME}")
+    if records:
+        print("\nFirst record (preview):")
+        preview = {k: v for k, v in records[0].items() if k != "raw"}
+        print(json.dumps(preview, indent=2)[:800])
+
+    out_path = "inventory_github.json"
+    with open(out_path, "w") as f:
+        json.dump(records, f, indent=2)
+    print(f"\nWrote {len(records)} records to {out_path}")
+adapters/a2aregistry.py
+(
+2893
+chars)
+"""
+Adapter: a2aregistry.org
+
+Job: fetch the full list of agents from a2aregistry.org and transcribe each
+entry onto our normalized record shape. No interpretation, no filtering — just
+mechanical field-mapping plus a `raw` copy of the original payload.
+
+Normalized record:
+    {
+      name, url, description,
+      source, source_url,
+      capabilities[], fetched_at, raw
+    }
+"""
+
+from __future__ import annotations
+
+import json
+from datetime import datetime, timezone
+from typing import Any
+
+import httpx
+
+SOURCE_NAME = "a2aregistry.org"
+SOURCE_URL = "https://a2aregistry.org/api/agents"
+
+
+def _extract_capabilities(entry: dict[str, Any]) -> list[str]:
+    """Pull a flat list of capability strings from the entry's `skills`.
+
+    a2aregistry skills look like: [{id, name, description, tags, examples}, ...]
+    We collect names + tags as the capability list. Description stays in `raw`.
+    """
+    caps: list[str] = []
+    for skill in entry.get("skills") or []:
+        if not isinstance(skill, dict):
+            continue
+        if name := skill.get("name"):
+            caps.append(str(name))
+        for tag in skill.get("tags") or []:
+            caps.append(str(tag))
+    # de-dupe, preserve order
+    seen: set[str] = set()
+    out: list[str] = []
+    for c in caps:
+        if c not in seen:
+            seen.add(c)
+            out.append(c)
+    return out
+
+
+def normalize(entry: dict[str, Any]) -> dict[str, Any]:
+    """Map one a2aregistry agent entry to our normalized record."""
+    return {
+        "name": entry.get("name") or "",
+        "url": entry.get("url") or "",
+        "description": entry.get("description") or "",
+        "source": SOURCE_NAME,
+        "source_url": SOURCE_URL,
+        "capabilities": _extract_capabilities(entry),
+        "fetched_at": datetime.now(timezone.utc).isoformat(),
+        "raw": entry,
+    }
+
+
+def fetch(timeout: float = 30.0) -> list[dict[str, Any]]:
+    """Fetch all agents from a2aregistry and return normalized records."""
+    with httpx.Client(timeout=timeout) as client:
+        resp = client.get(SOURCE_URL)
+        resp.raise_for_status()
+        payload = resp.json()
+    agents = payload.get("agents") if isinstance(payload, dict) else payload
+    if not isinstance(agents, list):
+        return []
+    return [normalize(a) for a in agents if isinstance(a, dict)]
+
+
+if __name__ == "__main__":
+    records = fetch()
+    print(f"Fetched {len(records)} agents from {SOURCE_NAME}")
+    if records:
+        print("\nFirst record (preview):")
+        preview = {k: v for k, v in records[0].items() if k != "raw"}
+        print(json.dumps(preview, indent=2)[:800])
+        print(f"\n(raw payload kept: {len(json.dumps(records[0]['raw']))} chars)")
+
+    out_path = "inventory_a2aregistry.json"
+    with open(out_path, "w") as f:
+        json.dump(records, f, indent=2)
+    print(f"\nWrote {len(records)} records to {out_path}")
+adapters/awesome_mcp.py
+(
+4283
+chars)
+"""
+Adapter: awesome-mcp-servers (curated GitHub README)
+
+Job: fetch the awesome-mcp-servers README, parse every bulleted entry, and
+transcribe each onto our normalized record shape. The section heading above
+each bullet is used as a coarse capability tag.
+
+Source: https://github.com/punkpeye/awesome-mcp-servers
+
+Normalized record:
+    {
+      name, url, description,
+      source, source_url,
+      capabilities[], fetched_at, raw
+    }
+"""
+
+from __future__ import annotations
+
+import json
+import re
+from datetime import datetime, timezone
+from typing import Any
+
+import httpx
+
+SOURCE_NAME = "awesome-mcp-servers"
+SOURCE_URL = "https://raw.githubusercontent.com/punkpeye/awesome-mcp-servers/main/README.md"
+
+# Bullet line: `- [name](url) ...rest...`
+BULLET_RE = re.compile(r"^\s*-\s*\[([^\]]+)\]\(([^)]+)\)(.*)$")
+# Heading like `### 📂 <a name="browser-automation"></a>Browser Automation`
+HEADING_RE = re.compile(r"^(#{1,6})\s*(.*)$")
+# Strip leading emoji / inline anchor tags / trailing whitespace
+ANCHOR_RE = re.compile(r"<a[^>]*>.*?</a>", re.IGNORECASE)
+EMOJI_RE = re.compile(
+    "["
+    "\U0001F300-\U0001FAFF"
+    "\U00002600-\U000027BF"
+    "\U0001F1E0-\U0001F1FF"
+    "]+",
+    flags=re.UNICODE,
+)
+
+
+def _clean_heading(text: str) -> str:
+    text = ANCHOR_RE.sub("", text)
+    text = EMOJI_RE.sub("", text)
+    return text.strip()
+
+
+def _clean_description(rest: str) -> str:
+    """Strip leading emoji/badges and the leading dash separator."""
+    # Remove inline-link badges: [![...](...)](...)
+    rest = re.sub(r"\[!\[[^\]]*\]\([^)]*\)\]\([^)]*\)", "", rest)
+    # Remove markdown image badges like ![...](...)
+    rest = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", rest)
+    # Strip emojis and leftover variation selectors / zero-width joiners
+    rest = EMOJI_RE.sub("", rest)
+    rest = re.sub(r"[\ufe0f\u200d]", "", rest)
+    # Collapse whitespace
+    rest = re.sub(r"\s+", " ", rest).strip()
+    # The README uses " - " between metadata and the actual description.
+    # Drop everything up to the FIRST " - " and keep the tail.
+    if " - " in rest:
+        rest = rest.split(" - ", 1)[1].strip()
+    elif rest.startswith("-"):
+        rest = rest[1:].strip()
+    return rest
+
+
+def parse(markdown: str) -> list[dict[str, Any]]:
+    """Walk the README, tracking the most recent heading, emit one record per bullet."""
+    records: list[dict[str, Any]] = []
+    h2 = ""  # ## section
+    h3 = ""  # ### subsection
+    fetched_at = datetime.now(timezone.utc).isoformat()
+
+    for line in markdown.splitlines():
+        hm = HEADING_RE.match(line)
+        if hm:
+            level = len(hm.group(1))
+            text = _clean_heading(hm.group(2))
+            if level == 2:
+                h2, h3 = text, ""
+            elif level == 3:
+                h3 = text
+            elif level >= 4:
+                # don't overwrite h3 for deeper levels
+                pass
+            continue
+
+        bm = BULLET_RE.match(line)
+        if not bm:
+            continue
+        name, url, rest = bm.group(1).strip(), bm.group(2).strip(), bm.group(3)
+        if not url.startswith("http"):
+            continue
+        description = _clean_description(rest)
+
+        capabilities = [c for c in (h3, h2) if c]
+        records.append({
+            "name": name,
+            "url": url,
+            "description": description,
+            "source": SOURCE_NAME,
+            "source_url": SOURCE_URL,
+            "capabilities": capabilities,
+            "fetched_at": fetched_at,
+            "raw": {"line": line, "section": h2, "subsection": h3},
+        })
+    return records
+
+
+def fetch(timeout: float = 30.0) -> list[dict[str, Any]]:
+    with httpx.Client(timeout=timeout, follow_redirects=True) as client:
+        resp = client.get(SOURCE_URL)
+        resp.raise_for_status()
+    return parse(resp.text)
+
+
+if __name__ == "__main__":
+    records = fetch()
+    print(f"Fetched {len(records)} entries from {SOURCE_NAME}")
+    if records:
+        print("\nFirst record (preview):")
+        preview = {k: v for k, v in records[0].items() if k != "raw"}
+        print(json.dumps(preview, indent=2)[:800])
+
+    out_path = "inventory_awesome_mcp.json"
+    with open(out_path, "w") as f:
+        json.dump(records, f, indent=2)
+    print(f"\nWrote {len(records)} records to {out_path}")
+Blocker
+Reachability gate. Eliminates dead/unreachable agents.
+Gates
+6
+PASS
+Not responsive
+mapping
+TRUE if the agent failed the Status probe 3 consecutive days
+FALSE → still listed
+rolling count tracked in consecutive_fails
+Status alive → server responds (2xx/3xx, or 401/403/405/429)
+Status dead → 404 / 410 (resource gone) / timeout / error
+PASS
+has_url
+mapping
+TRUE if the URL is http(s) with a plausible domain
+FALSE → eliminated
+PASS
+has_name
+mapping
+TRUE if the agent has a non-empty name
+FALSE → eliminated
+PASS
+has_description
+mapping
+TRUE if the agent has a non-empty description
+FALSE → eliminated
+PASS
+not_placeholder
+mapping
+TRUE if the description isn't placeholder text (todo/test/tbd/etc.)
+FALSE → eliminated
+PASS
+not_deprecated
+mapping
+TRUE if the description doesn't mention deprecated/archived/obsolete
+FALSE → eliminated
+Inputs
+none — probes the agent URL directly
+Output
+eliminated:
+FALSE
+Blocker: status
+alive
+Blocker: status_code
+405
+Blocker: consecutive_fails
+0
+Blocker: checked_at
+2026-10-26T03:28:46.287166+00:00
+Fame
+Trust signal: cross-source presence, stars, recency, call graph.
+Gates
+none
+Inputs
+5
+sources
+value:
+a2aregistry.org
+Cross-source presence (count of registries listing this agent)
+mapping
+count: 1→0.0
+2→0.7
+≥3→1.0
+name
+value:
+modelmarket.dev
+Author/Org keyword detection
+mapping
+combined with url
+known org/maintainer keyword→1.0
+established dev→0.5–0.8
+unknown→0.0–0.3
+url
+value:
+https://modelmarket.dev/a2a
+Author/Org keyword detection
+mapping
+combined with name
+known org/maintainer keyword→1.0
+established dev→0.5–0.8
+unknown→0.0–0.3
+raw.stargazers_count
+value:
+—
+GitHub star count
+mapping
+<10→0.0
+100→0.5
+1000→0.75
+≥10000→1.0 (log-interpolated)
+raw.pushed_at
+value:
+—
+Recency of last push (fallback: raw.updated_at)
+mapping
+≤30d→1.0
+≤6mo→0.7
+≤1yr→0.4
+>1yr→0.0 (fallback: raw.updated_at)
+Output
+score:
+—
+formula
+0.3·sources + 0.3·raw.stargazers_count + 0.2·raw.pushed_at + 0.2·(name + url)
+Call Graph
+Agent-to-agent reference graph. in-degree → call_graph_score.
+Gates
+none
+Inputs
+1
+Inventory
+value:
+agent descriptions, URLs, raw A2A cards
+Call-graph edges are mined from these.
+Output
+score:
+0.00
+Usability
+How easy to use: docs, license, auth, capabilities, repo.
+Gates
+3
+structured_spec
+mapping
+1 if the agent exposes any structured spec (A2A card, MCP, OpenAPI, etc.)
+0 otherwise
+a2a_compatible
+mapping
+TRUE if a JSON-RPC probe got an A2A-shaped response
+FALSE: otherwise
+FYI only
+discoverable
+mapping
+TRUE if the agent is realistically findable + callable (not a code repo, not blocker-eliminated)
+FALSE: otherwise
+Default scope for search
+Inputs
+10
+description
+value:
+Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt.
+Documentation fallback when no doc URL
+mapping
+present→0.5–1.0 (length/quality)
+absent→0.0
+combined with raw.documentationUrl and raw.homepage for documentation signal
+capabilities
+value:
+Search the AI capability market; ai-marketplace; capability-discovery; agent-tools; pricing; Buy and run a market capability; paid-invoke; x402; receipts; agent-mandates
+Structured capability tags
+mapping
+≥1 structured tag→1.0
+empty→0.0
+vague/minimal→0.5
+url
+value:
+https://modelmarket.dev/a2a
+Public repo detection (github/gitlab)
+mapping
+github.com or gitlab.com in URL→1.0
+else→0.0
+raw.documentationUrl
+value:
+https://modelmarket.dev/developers
+Documentation link
+mapping
+present→adds to documentation signal (with description/homepage)
+absent→relies on description
+raw.homepage
+value:
+—
+Homepage link
+mapping
+present→adds to documentation signal (with description/documentationUrl)
+absent→relies on description
+raw.license
+value:
+—
+License field
+mapping
+present (any value)→1.0
+absent/null→0.0
+raw.securitySchemes
+value:
+aimarketApiKey; aimarketMandate
+Auth scheme
+mapping
+present→1.0 for auth_pricing signal
+combined with raw.pricing
+raw.pricing
+value:
+—
+Pricing field
+mapping
+present→1.0 for auth_pricing signal
+combined with raw.securitySchemes
+if both absent→0.0
+one present→0.5–1.0
+raw.skills
+value:
+Search the AI capability market; Buy and run a market capability
+A2A skills list
+mapping
+≥1 skill→1.0 for capabilities signal
+empty→0.0
+combined with capabilities field
+raw.html_url
+value:
+—
+GitHub HTML URL
+mapping
+github.com or gitlab.com→1.0 for repository signal
+else→0.0
+combined with url field
+Output
+score:
+—
+formula
+0.2*documentation + 0.2*license + 0.2*auth_pricing + 0.2*capabilities + 0.2*repository
+Functionality
+Predicted functionality + measured speed and reliability.
+Gates
+none
+Inputs
+4
+description
+value:
+Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt.
+Specificity (vague vs concrete words) + sprawl detection
+mapping
+vague/hype words→0.0–0.4
+somewhat concrete→0.5–0.7
+very specific→0.8–1.0
+capabilities
+value:
+Search the AI capability market; ai-marketplace; capability-discovery; agent-tools; pricing; Buy and run a market capability; paid-invoke; x402; receipts; agent-mandates
+Consistency vs description + scope clarity
+mapping
+mismatch with description→0.0–0.3
+partial match→0.4–0.7
+consistent & clear→0.8–1.0
+combined with description for consistency signal
+reliability_pct
+value:
+—
+% of probes that returned alive
+mapping
+linear: 0%→0.0
+50%→0.5
+100%→1.0
+speed_ms
+value:
+1245
+URL probe response time (ms)
+mapping
+linear: ≤300ms→1.0
+2650ms→0.5
+≥5000ms→0.0
+Output
+score:
+—
+Functionality: speed_ms
+1245
+formula
+0.25*specificity + 0.20*consistency + 0.20*reliability + 0.15*speed + 0.20*scope
+Overall
+Blocker × weighted Fame, Usability, Functionality, Call Graph.
+Gates
+1
+PASS
+Blocker
+mapping
+agent passed → formula applies
+Inputs
+4
+Fame: score
+value:
+—
+weight 0.3
+Usability: score
+value:
+—
+weight 0.3
+Functionality: score
+value:
+—
+weight 0.3
+Fame: call_graph_score
+value:
+0.00
+weight 0.1
+Output
+score:
+—
+formula
+Overall = Blocker × (0.3·Fame + 0.3·Usability + 0.3·Functionality + 0.1·CallGraph). Eliminated agents → 0.

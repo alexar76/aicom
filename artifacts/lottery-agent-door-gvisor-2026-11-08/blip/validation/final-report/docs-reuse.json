@@ -1,0 +1,27 @@
+{
+  "acceptedInputCanonicalSha256": "51c6aa5b906ee077e1cf37c7d3f70cb0be93b4dd5affcee1b508cb0bed4a34d7",
+  "acceptedUnionTree": "75928427b2c575cb0731727298a9ccd1fbd975dc",
+  "allInputsUnchanged": true,
+  "changedPathsOutsideRequiredInputSet": [
+    "artifacts/lottery-agent-door-2026-11-08/ROLLOUT.md",
+    "artifacts/lottery-agent-door-2026-11-08/isolated_check.sh",
+    "artifacts/lottery-sec-2026-11-08/ROLLOUT.md",
+    "lottery/agent/ailottery_agent/__main__.py",
+    "lottery/agent/tests/test_agent_doors.py",
+    "lottery/agent/tests/test_agent_loop.py"
+  ],
+  "currentInputCanonicalSha256": "51c6aa5b906ee077e1cf37c7d3f70cb0be93b4dd5affcee1b508cb0bed4a34d7",
+  "currentSourceTree": "675bf9e766375f834b235118c05e5865670e3aef",
+  "exactRequiredInputBlobs": 627,
+  "format": "aicom.agent-delta-docs-gate-reuse/v1",
+  "gateAndMapHelpersUnchanged": true,
+  "noLocalProjectExecution": true,
+  "originalDocsOnlyGateExitCode": 0,
+  "passed": true,
+  "pyyamlVersion": "6.0.2",
+  "realMapExclusions": 68,
+  "realMapSatellites": 60,
+  "rerunRequired": false,
+  "scopeProof": "Original gate selects ROOT/docs/**/*.md and does not recursively read linked target Markdown content. Both rollout artifact paths remain outside this scope; changed target contents do not change the input set.",
+  "testsOrOptionalAllRerun": false
+}

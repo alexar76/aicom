@@ -1,0 +1,66 @@
+test_fixed_request_and_deterministic_12h_budget (test_lease.LeaseTests) ... ok
+test_global_server_is_disabled_and_only_private_fragment_enables_env_i (test_lease.LeaseTests) ... ok
+test_policy_merge_preserves_every_other_setting (test_lease.LeaseTests) ... ok
+test_privileged_atomic_write_rejects_symlink_ancestors (test_lease.LeaseTests) ... ok
+test_renewal_never_resets_usage_or_session_state_and_refuses_clock_rollback (test_lease.LeaseTests) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.005s
+
+OK
+{
+  "applied": false,
+  "archiveSha256": "36c061f4fcd682c9deb7be2d8e84e2e69d42b2331c8163b1f1e0b0fa3fbd3941",
+  "packageFiles": 393,
+  "secretsInstalled": false,
+  "globalMcpEnabled": false,
+  "requiresPrivateQaProfile": true,
+  "daemonRestarted": false,
+  "sessionStateReset": false
+}
+TAP version 13
+# Subtest: fixed ID executes real TLS bytes after credentials/outside text while generic Bash stays refused
+ok 1 - fixed ID executes real TLS bytes after credentials/outside text while generic Bash stays refused
+  ---
+  duration_ms: 81.588333
+  type: 'test'
+  ...
+# Subtest: arbitrary arguments/job/URL/body are refused before any TLS request
+ok 2 - arbitrary arguments/job/URL/body are refused before any TLS request
+  ---
+  duration_ms: 25.947958
+  type: 'test'
+  ...
+# Subtest: expired and tampered manifests remove delegation and never reach the broker
+ok 3 - expired and tampered manifests remove delegation and never reach the broker
+  ---
+  duration_ms: 9.703041
+  type: 'test'
+  ...
+# Subtest: ten-use capability remains spent across adapter recreation and identical lease rewrite
+ok 4 - ten-use capability remains spent across adapter recreation and identical lease rewrite
+  ---
+  duration_ms: 313.023416
+  type: 'test'
+  ...
+# Subtest: actual env-i MCP TaskAdapter succeeds only with fixed ID and rejects custom URL over stdio
+ok 5 - actual env-i MCP TaskAdapter succeeds only with fixed ID and rejects custom URL over stdio
+  ---
+  duration_ms: 160.449125
+  type: 'test'
+  ...
+# Subtest: actual env-i MCP refuses TLS without the public CA and never sends a broker request
+ok 6 - actual env-i MCP refuses TLS without the public CA and never sends a broker request
+  ---
+  duration_ms: 136.388791
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 884.285417

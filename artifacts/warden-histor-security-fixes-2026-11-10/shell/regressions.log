@@ -1,0 +1,123 @@
+{
+  "cases": 29,
+  "passed": 29,
+  "results": [
+    {
+      "case": "retry_set.sh: original JSON key executes marker",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects JSON scanner key shell syntax",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects unknown scanner key",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects SET shell syntax",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects SET command substitution",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects SET traversal",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects server traversal",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects bad server-list schema",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects CPUS option injection",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects CPU cap shell syntax",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: rejects CPU shares option injection",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: fixed dispatcher and preserved evidence",
+      "passed": true
+    },
+    {
+      "case": "retry_set.sh: propagates scanner failure",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: original JSON key executes marker",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects JSON scanner key shell syntax",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects unknown scanner key",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects SET shell syntax",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects SET command substitution",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects SET traversal",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects server traversal",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects bad server-list schema",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects CPUS option injection",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects CPU cap shell syntax",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects CPU shares option injection",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: fixed dispatcher and preserved evidence",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: propagates scanner failure",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects executable workers.conf",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: rejects invalid worker count",
+      "passed": true
+    },
+    {
+      "case": "retry_cross.sh: reads current caps and workers after readiness wait",
+      "passed": true
+    }
+  ],
+  "effects": "temporary fixture files only; fake Docker/chown/watchdog; no real containers or hosts"
+}

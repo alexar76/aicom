@@ -189,9 +189,22 @@ pub mod aimarket_lottery {
         Ok(())
     }
 
-    /// Hub / benefactor tithe — 100% added to prize-side funding.
+    /// Hub / operator tithe — 100% added to prize-side funding.
+    ///
+    /// Only the authority or the treasury may fund. A round tracks one aggregate `funding`,
+    /// and `reclaim_funding` returns it to the treasury after a cancel: when anyone could
+    /// fund, an outside sponsor's lamports went to the operator's treasury on cancel, with
+    /// no instruction to get them back (audit 2026-11-11, contracts-7). Per-sponsor refunds
+    /// like the EVM `fundedBy` map would need a new account in `Fund`, which changes the
+    /// instruction's wire format; until then funding is the operator's own, so returning it
+    /// to the treasury is returning it to its owner.
     pub fn fund(ctx: Context<Fund>, amount: u64) -> Result<()> {
         require!(amount > 0, LotteryError::BadPayment);
+        let funder = ctx.accounts.benefactor.key();
+        require!(
+            funder == ctx.accounts.config.authority || funder == ctx.accounts.config.treasury,
+            LotteryError::Unauthorized
+        );
         let round = &mut ctx.accounts.round;
         require!(round.status() == RoundStatus::Open, LotteryError::WrongStatus);
 
@@ -462,8 +475,9 @@ pub mod aimarket_lottery {
 
     /// Return the operator/Hub funding (tithe) to the configured treasury after a cancel.
     /// Authority-only, once; covers the non-ticket portion of the vault so nothing is left
-    /// stranded. (Funding here is the operator/Hub tithe; a multi-donor model would track
-    /// per-benefactor like the EVM `fundedBy` map.)
+    /// stranded. Funding is the operator's own by construction: `fund` accepts only the
+    /// authority or the treasury (a multi-donor model would track per-benefactor like the
+    /// EVM `fundedBy` map).
     pub fn reclaim_funding(ctx: Context<ReclaimFunding>) -> Result<()> {
         let cfg = &ctx.accounts.config;
         require_keys_eq!(ctx.accounts.authority.key(), cfg.authority, LotteryError::Unauthorized);

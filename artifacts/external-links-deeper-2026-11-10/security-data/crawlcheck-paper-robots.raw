@@ -1,0 +1,162 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\title{Naming a Crawler Unblocks It: Rule Shadowing in robots.txt\\Across 12,828 Popular Websites}
+\author{Emmanuel Orta\\VSNARY\\\texttt{contact@crawlcheck.io}\\ORCID: \href{https://orcid.org/0009-0001-5269-1515}{0009-0001-5269-1515}}
+\date{22 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Under the Robots Exclusion Protocol (RFC~9309), a crawler obeys only the group of rules that names it, and falls back to the \texttt{User-agent: *} group only when no group does. A site that adds a group for one crawler therefore removes that crawler from every rule written for crawlers in general, unless the new group repeats them. As sites add groups for AI crawlers, this interaction is easy to trigger and invisible on inspection: each line is correct, and the file reads as intended. We measure it on a stratified sample of 20,000 origins from the Chrome UX Report top-million list, of which 12,828 served a readable robots.txt. Among the 2,737 sites that both restrict part of the site for all crawlers and name at least one of 26 search or AI crawlers, 1,061 (38.8\%, 95\% CI 37.0--40.6\%) give at least one named crawler access to paths their general rules block; 707 of these include a search crawler. Where a site names Googlebot, 63.0\% of such groups drop rules the general group sets, and 61.8\% of affected crawler--site pairs drop every one of them. Three patterns account for the cases: groups that allow everything (552 sites), copies of the general rules that have drifted (357), and groups meant to add restrictions that instead replace them (229). An independent parser agrees on 1,061 of 1,062 flagged files, and all 30 files in a random sample were confirmed by hand. The exposed rules most often cover query-parameter pages, administration and login paths, and internal search. We state the limits plainly: a file cannot reveal intent, the sample was read once from one network, and only 26 crawler names were evaluated. We release the measurement code and the exact sample definition.
+\end{abstract}
+
+\section{Introduction}
+
+robots.txt is the oldest machine-readable policy on the web, and the one most sites now use to decide how AI systems may read them. Its matching rule is simple and widely misunderstood: a crawler looks for the group whose \texttt{User-agent} line names it, obeys that group alone, and consults the \texttt{*} group only when no group names it~\cite{rfc9309,google-robots}. Groups do not inherit from one another.
+
+That rule was harmless when files named few crawlers. It is not harmless now. Site owners add groups for AI crawlers to allow some and refuse others; plugins and templates add groups that grant named crawlers access with a single \texttt{Allow: /}; and administrators who want to keep one AI crawler away from one section add a group with that one rule. In each case the new group silently replaces the general rules for that crawler. A site that blocks its administration pages, internal search results and checkout for all crawlers can, by adding \texttt{User-agent: Googlebot} followed by \texttt{Allow: /}, reopen every one of those paths to Google and to nobody else. Nothing in the file looks wrong.
+
+Prior measurements of robots.txt in the AI era count which sites refuse which AI crawlers~\cite{longpre2024consent,steinacker2025misinfo} or test whether crawlers comply~\cite{kim2025scrapers}. They treat each crawler's rules as declared. This paper measures how often the rules a site declares for a crawler are not the rules that crawler receives, because a named group displaced the general one. We call a general rule \emph{shadowed} for a crawler when that crawler has its own group and its own group permits a path the general group blocks.
+
+Our contributions are a prevalence estimate on a public, stratified sample of popular origins; a breakdown by crawler and by popularity rank; a classification of the three patterns that produce shadowing; and a validation of the measurement against an independent parser and by hand.
+
+\section{Background}
+
+RFC~9309 defines a group as one or more \texttt{user-agent} lines followed by \texttt{allow} and \texttt{disallow} rules; groups naming the same product token are merged; a crawler uses the group that matches its product token and uses the \texttt{*} group only if none matches~\cite{rfc9309}. Within a group, the most specific (longest) matching rule decides, and an \texttt{allow} wins a tie; a path no rule matches is allowed. Google documents the same behaviour: ``Only one group is valid for a particular crawler'', and ``user agent specific groups and global groups (\texttt{*}) are not combined''~\cite{google-robots}.
+
+The consequence for this paper is direct. In
+\begin{verbatim}
+User-agent: *
+Disallow: /wp-admin/
+Disallow: /?s=
+
+User-agent: Googlebot
+Allow: /
+\end{verbatim}
+every crawler except Googlebot is kept out of \texttt{/wp-admin/} and internal search; Googlebot is kept out of nothing. Listing a crawler in the \texttt{*} group's \texttt{user-agent} lines, or repeating the general rules in each named group, avoids it.
+
+\section{Method}
+
+\paragraph{Population.} We use the Chrome UX Report top-million origins list as published by Ruth et al.~\cite{ruth2022crux,cruxlists} on 22 October 2026 (global list; the compressed file's SHA-256 begins \texttt{be444a34}). The list assigns each origin to a rank bucket (top 1k, 5k, 10k, 50k, 100k, 500k, 1M). We take every origin in the top 10k and a uniform random sample of 2,500 origins from each of the four lower buckets (seed 20261022), giving 20,000 origins.
+
+\paragraph{Collection.} On 22 October 2026 we requested \texttt{/robots.txt} once from each origin with a descriptive user agent naming the study and a contact address, following up to five redirects and reading at most 512~KiB (RFC~9309 requires crawlers to parse at least 500~KiB). All requests left from one datacentre network.
+
+\paragraph{Parsing.} We parse each file as RFC~9309 specifies: consecutive \texttt{user-agent} lines open a group, the group closes at the next \texttt{user-agent} line that follows a rule, lines other than \texttt{allow} and \texttt{disallow} do not close a group, comments are ignored, and groups naming the same token are merged. Matching is case-insensitive on the product token. Patterns support \texttt{*} and a trailing \texttt{\$} as the RFC defines; we implement the match without backtracking.
+
+\paragraph{Crawlers evaluated.} Seven search crawlers (Googlebot, Bingbot, Slurp, DuckDuckBot, Applebot, YandexBot, Baiduspider) and nineteen AI crawlers and agents (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, Claude-User, anthropic-ai, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended, CCBot, Bytespider, Amazonbot, meta-externalagent, cohere-ai, Diffbot, YouBot, MistralAI-User). Groups naming other agents are not counted, so every figure is a lower bound.
+
+\paragraph{Definition.} A site is \emph{eligible} when its file is readable, it has a \texttt{*} group with at least one non-empty \texttt{disallow} rule, the \texttt{*} group does not block the whole site, and it has a group for at least one evaluated crawler. Files whose \texttt{*} group blocks \texttt{/} are excluded, because a named \texttt{Allow: /} there is the ordinary way to admit a chosen crawler and not an error. For each \texttt{disallow} pattern $p$ of the \texttt{*} group we form a test path from $p$ (each \texttt{*} replaced by a literal character, a trailing \texttt{\$} removed). The rule is \emph{shadowed} for crawler $c$ when the \texttt{*} group blocks the test path and $c$'s own group allows it. A site is affected when at least one rule is shadowed for at least one evaluated crawler.
+
+\paragraph{Patterns.} For each affected crawler--site pair we record whether the crawler's group has no \texttt{disallow} rule at all (\emph{allow-everything}), has \texttt{disallow} rules none of which appear in the \texttt{*} group (\emph{additive}: rules written as extra restrictions), or shares some but not all of them (\emph{partial copy}). Each shadowed rule is also assigned a coarse category from its path (query parameters, administration and login, internal search, API and JSON, cart and checkout, private or staging, feeds).
+
+\paragraph{Validation.} Every affected file was re-parsed with Protego, a robots.txt parser that follows Google's matching~\cite{protego}, checking that the first shadowed path is allowed for the named crawler and refused for an unnamed one. A random sample of 30 affected files (seed 7) was read by hand.
+
+\section{Results}
+
+\paragraph{Collection.} Of 20,000 origins, 12,828 served a readable robots.txt (Table~\ref{tab:fetch}). The 4,242 client-error answers include sites that refuse datacentre networks; they are excluded rather than treated as having no file.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lr}\toprule
+Outcome of the request & Origins \\\midrule
+Readable robots.txt (HTTP 200, text) & 12,828 \\
+HTTP 4xx (missing or refused) & 4,242 \\
+Connection, TLS or timeout error & 1,641 \\
+HTTP 200 but an HTML page & 1,090 \\
+HTTP 5xx & 170 \\
+Other status codes & 29 \\\midrule
+Total & 20,000 \\\bottomrule
+\end{tabular}
+\caption{Request outcomes.}\label{tab:fetch}
+\end{table}
+
+\paragraph{Prevalence.} 11,765 readable files have a \texttt{*} group; 8,476 restrict part of the site for all crawlers and 864 block the whole site. 3,806 name at least one evaluated crawler, and 2,737 are eligible. Of these, \textbf{1,061 (38.8\%, 95\% Wilson CI 37.0--40.6\%)} shadow at least one general rule for at least one named crawler: 8.3\% of all readable files (CI 7.8--8.8\%). 707 of the affected sites shadow rules for a search crawler. One further file was flagged by our parser but not by Protego; it places a \texttt{Crawl-delay} line between two \texttt{user-agent} lines, which the two parsers group differently, and we exclude it. The rate is flat across popularity (Table~\ref{tab:rank}): the most-visited thousand origins are affected as often as the long tail.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lrrrr}\toprule
+Rank bucket & Readable & Eligible & Affected & \% (95\% CI) \\\midrule
+Top 1k & 731 & 242 & 99 & 40.9 (34.9--47.2) \\
+1k--5k & 2,702 & 742 & 263 & 35.4 (32.1--39.0) \\
+5k--10k & 3,192 & 778 & 307 & 39.5 (36.1--42.9) \\
+10k--50k$^\dagger$ & 1,543 & 325 & 128 & 39.4 (34.2--44.8) \\
+50k--100k$^\dagger$ & 1,510 & 239 & 97 & 40.6 (34.6--46.9) \\
+100k--500k$^\dagger$ & 1,552 & 198 & 78 & 39.4 (32.9--46.3) \\
+500k--1M$^\dagger$ & 1,598 & 213 & 89 & 41.8 (35.4--48.5) \\\midrule
+All & 12,828 & 2,737 & 1,061 & 38.8 (37.0--40.6) \\\bottomrule
+\end{tabular}
+\caption{Affected sites by popularity. $^\dagger$2,500 origins sampled per bucket; the top 10k are complete.}\label{tab:rank}
+\end{table}
+
+\paragraph{By crawler.} The share is highest exactly where the consequences are largest. Of eligible sites that give Googlebot its own group, 63.0\% (383 of 608) shadow general rules for it; for Bingbot, 58.1\% (331 of 570). Among AI crawlers, the agents that fetch on a user's behalf or for search are affected more often than training crawlers (Table~\ref{tab:crawler}), consistent with sites naming them to grant access. In 61.8\% of the 4,113 affected crawler--site pairs, \emph{every} general \texttt{disallow} rule is shadowed.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lrrr}\toprule
+Crawler & Own group & Shadowed & \% \\\midrule
+Googlebot & 608 & 383 & 63.0 \\
+Bingbot & 570 & 331 & 58.1 \\
+Applebot & 289 & 137 & 47.4 \\
+Slurp & 205 & 89 & 43.4 \\
+OAI-SearchBot & 758 & 282 & 37.2 \\
+Claude-User & 408 & 131 & 32.1 \\
+Perplexity-User & 449 & 143 & 31.8 \\
+ChatGPT-User & 956 & 296 & 31.0 \\
+Claude-SearchBot & 410 & 118 & 28.8 \\
+PerplexityBot & 1,001 & 282 & 28.2 \\
+Google-Extended & 1,150 & 258 & 22.4 \\
+ClaudeBot & 1,338 & 270 & 20.2 \\
+GPTBot & 1,540 & 289 & 18.8 \\
+CCBot & 1,357 & 150 & 11.1 \\
+Bytespider & 1,202 & 88 & 7.3 \\\bottomrule
+\end{tabular}
+\caption{Eligible sites with a group for the crawler, and the share whose group shadows at least one general rule (selected crawlers; all 26 are in the released data).}\label{tab:crawler}
+\end{table}
+
+\paragraph{Patterns.} Allow-everything groups appear on 552 affected sites, partial copies on 357 and additive groups on 229 (a site can show more than one). By crawler--site pair, allow-everything accounts for 2,316 of 4,113 (56.3\%). On 325 sites a search crawler's group allows everything. The additive pattern is the least visible: a site adds \texttt{User-agent: GPTBot} with \texttt{Disallow: /guides/} to keep one section from one AI crawler, and in doing so lifts every general restriction for it. In our hand sample one such file shadowed 179 general rules to add four.
+
+\paragraph{What is exposed.} By site, the shadowed rules most often cover query-parameter pages (495 sites), administration and login paths (404), internal search (352), API and JSON endpoints (246), cart and checkout (185) and private or staging paths (178). robots.txt is not access control, and none of these paths is protected by it; what changes is that the named crawler is now invited to fetch, and for search crawlers potentially to index, pages the owner had asked crawlers to leave alone.
+
+\paragraph{Validation.} Protego agreed on 1,061 of 1,062 flagged files; the exception is the excluded file above. All 30 hand-checked files were true positives as defined (95\% CI 88.6--100\%): in each, the named group permits paths the general group blocks. The sample contained all three patterns, and three files whose named group was plainly a deliberate, separately maintained policy; we return to this below.
+
+\section{Discussion}
+
+The interaction is a property of the protocol, not a bug in any one file, and it is made more likely by how robots.txt is now edited. Advice to ``allow the AI crawlers you want'' is usually given as one \texttt{User-agent} line and an \texttt{Allow: /}; generators and plugins emit such groups in bulk; and the most common way to treat one crawler differently is to add a group for it. Each of these removes the general rules for that crawler. That the rate does not fall with popularity suggests well-resourced sites are not avoiding it.
+
+Two fixes keep a crawler's access while keeping the general rules: list the crawler in the \texttt{user-agent} lines of the \texttt{*} group's rule block, or repeat the general rules in every named group and add only what differs. Validators and robots.txt generators could warn when a named group lacks rules the \texttt{*} group sets; editors that add AI-crawler groups could copy the general rules by default. A clarifying note in documentation, that named groups do not inherit, would reach the people writing these files.
+
+\section{Limitations}
+
+\textbf{Intent is not observable.} A file shows what a crawler receives, not what its owner meant. Some named groups are deliberate, separately maintained policies, and three of 30 hand-checked files looked that way. We report what the protocol does with each file; we do not claim every affected site is misconfigured. The allow-everything and additive patterns are the cases where an unintended outcome is most plausible.
+
+\textbf{One vantage, one read.} Files were fetched once, from one datacentre network. Sites that refuse such networks (part of the 4,242 client errors) or serve different files to different clients are excluded or measured as served to us.
+
+\textbf{Lower bound on names.} Only 26 crawler tokens were evaluated. Files that shadow rules for other agents are not counted.
+
+\textbf{Test paths.} A shadowed rule is tested on one path derived from its pattern. A pattern the named group covers for some URLs and not others is counted when the derived path is not covered.
+
+\textbf{Shadowing is not crawling.} A crawler that is allowed a path may never request it. We measure permission, not traffic.
+
+\textbf{Sample.} The Chrome UX Report list ranks origins by Chrome traffic, which over-represents some regions and under-represents sites browsers rarely visit.
+
+\section{Ethics and disclosure}
+
+The study reads one public file per origin, once, under a user agent that names the study and gives a contact address. We publish aggregates only and name no affected site; the per-site results are available to other researchers on request. The author operates CrawlCheck, a service that checks robots.txt files, among other things, for this interaction; the measurement here uses independent code written for this study and is reproducible from the released code and the sample definition above. The measurement code is at \url{https://github.com/emmanuelorta/crawlcheck-core/tree/main/paper/robots-shadowing}.
+
+\begin{thebibliography}{9}\small
+\bibitem{rfc9309} M.~Koster, G.~Illyes, H.~Zeller, L.~Sassman. \emph{Robots Exclusion Protocol}. RFC~9309, IETF, 2022.
+\bibitem{google-robots} Google Search Central. \emph{How Google interprets the robots.txt specification}. \url{https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec}, accessed 22 October 2026.
+\bibitem{longpre2024consent} S.~Longpre et al. Consent in Crisis: The Rapid Decline of the AI Data Commons. arXiv:2407.14933, 2024.
+\bibitem{kim2025scrapers} T.~Kim, K.~Bock, C.~Luo, A.~Liswood, C.~Poroslay, E.~Wenger. Scrapers selectively respect robots.txt directives: evidence from a large-scale empirical study. arXiv:2505.21733, 2025.
+\bibitem{steinacker2025misinfo} N.~Steinacker-Olsztyn, D.~Gosain, H.~Dao. Is Misinformation More Open? A Study of robots.txt Gatekeeping on the Web. arXiv:2510.10315, 2025.
+\bibitem{ruth2022crux} K.~Ruth, D.~Kumar, B.~Wang, L.~Valenta, Z.~Durumeric. Toppling Top Lists: Evaluating the Accuracy of Popular Website Lists. ACM IMC, 2022.
+\bibitem{cruxlists} Z.~Durumeric et al. \emph{CrUX Top Lists}. \url{https://github.com/zakird/crux-top-lists}.
+\bibitem{protego} Scrapy project. \emph{Protego: a pure-Python robots.txt parser with support for modern conventions}. \url{https://github.com/scrapy/protego}.
+\end{thebibliography}
+
+\end{document}

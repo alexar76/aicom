@@ -1,0 +1,221 @@
+{
+  "coverage_summary": {
+    "built_at_utc": "2026-11-10T20:09:43.933097+00:00",
+    "component": "ACEX",
+    "gap_closed": "Prior coverage only had acex-capital Solana manifest; now includes real Python modules and imports, audit names, EVM contract identifiers/addresses, Solana program declarations, HTTP/WS/SSE routes, client config keys and Jupiter supplier direction.",
+    "local_source_file_count": 27,
+    "web_query_count": 16,
+    "shared_github_search_count": 5,
+    "own_primary_get_count": 2,
+    "own_http_status_counts": {
+      "200": 1,
+      "503": 1
+    },
+    "github_api_called_by_this_branch": false,
+    "new_independent_runtime_integration_confirmed": false,
+    "new_independent_code_or_configuration_confirmed": false,
+    "limits": [
+      "GitHub searches executed by root only; this branch did not consume api.github.com. CORE quota was not assumed restored.",
+      "All five received README/commit search responses200,total_count0,incomplete_results=false. This is not full authenticated code search.",
+      "HTTP response Date headers precede root capture timestamps; both are preserved in shared source indexes. No index-freshness guarantee inferred.",
+      "Only two concrete false-positive GETs were justified; empty matches were not expanded to meet a numerical target.",
+      "No installations, publishing, messages, auth, payments, tools/call or execution of foreign code."
+    ]
+  },
+  "baseline": [
+    "artifacts/external-components-2026-11-10/core/coverage.json",
+    "artifacts/external-components-2026-11-10/core/fingerprints.json",
+    "artifacts/external-links-deeper-2026-11-10/code/findings.json"
+  ],
+  "records": [
+    {
+      "id": "expanded-local-acex-fingerprints",
+      "class": "fingerprint_scope_correction_not_external_adoption",
+      "novelty": "new coverage beyond Solana crate-only fingerprint",
+      "sources": [
+        {
+          "path": "aimarket-hub/aimarket_hub/capital_pricing.py",
+          "imports": [
+            {
+              "module": "acex.integrations.pricing",
+              "names": [
+                "build_pricing_snapshot"
+              ],
+              "line": 37
+            }
+          ]
+        },
+        {
+          "path": "aimarket-hub/aimarket_hub/acex_ai_audit.py",
+          "imports": [
+            {
+              "module": "acex.integrations.ai_audit",
+              "names": [
+                "AUDITOR_ID",
+                "AUDITOR_KIND",
+                "MIN_AUDIT_SCORE_BPS",
+                "build_pack",
+                "fetch_momus_findings"
+              ],
+              "line": 23
+            }
+          ]
+        },
+        {
+          "path": "web/backend/api/acex_capital.py",
+          "imports": [
+            {
+              "module": "acex.integrations.pricing",
+              "names": [
+                "build_pricing_snapshot"
+              ],
+              "line": 29
+            }
+          ]
+        }
+      ],
+      "source_targets": [
+        {
+          "source_path": "aimarket-hub/aimarket_hub/capital_pricing.py",
+          "target_module": "acex.integrations.pricing",
+          "symbols": [
+            "build_pricing_snapshot"
+          ],
+          "line": 37
+        },
+        {
+          "source_path": "aimarket-hub/aimarket_hub/acex_ai_audit.py",
+          "target_module": "acex.integrations.ai_audit",
+          "symbols": [
+            "AUDITOR_ID",
+            "AUDITOR_KIND",
+            "MIN_AUDIT_SCORE_BPS",
+            "build_pack",
+            "fetch_momus_findings"
+          ],
+          "line": 23
+        },
+        {
+          "source_path": "web/backend/api/acex_capital.py",
+          "target_module": "acex.integrations.pricing",
+          "symbols": [
+            "build_pricing_snapshot"
+          ],
+          "line": 29
+        }
+      ],
+      "note": "Hub and Factory are own consumers. These actual local imports justify Python-targeted search but are not foreign integrations. Root ACEX has no standalone Python package manifest."
+    },
+    {
+      "id": "pypi-acex-homonym",
+      "class": "excluded_other_project_identity",
+      "source_url": "https://pypi.org/pypi/acex/json",
+      "source_targets": [
+        {
+          "source_field": "info.project_urls.Repository",
+          "target": "https://github.com/acex-labs/acex"
+        }
+      ],
+      "registry_version": "7.0.0",
+      "identity": "ACE-X Backend - Core automation engine and API",
+      "exact_ecosystem_markers_in_metadata": {
+        "alexar76": false,
+        "modelmarket.dev": false,
+        "acex.integrations": false,
+        "AgentListingRegistry": false,
+        "AgentAuditPool": false,
+        "ai-auditor:acex-v1": false
+      },
+      "note": "Different ACE-X backend/project repository; declared dependency metadata has no aimarket coordinate. Do not treat PyPI acex as our ACEX distribution or use its users/downloads as ours. Metadata-only exclusion, not a full code audit or assertion about every possible relationship.",
+      "novelty": "false-positive namespace clarified; no integration",
+      "confidence": "high_for_registry_identity_fields"
+    },
+    {
+      "id": "fastly-own-doc-search-hit",
+      "class": "search_only_own_document_mirror_candidate",
+      "source_url": "https://ithub.global.ssl.fastly.net/alexar76/acex/blob/main/docs/jupiter-routing.md",
+      "expected_upstream": "https://github.com/alexar76/acex/blob/main/docs/jupiter-routing.md",
+      "current_direct_status": 503,
+      "note": "Search snippet reproduces our acex.integrations.jupiter example at an alexar76 source path. Direct body503 is an access failure, so current content is not primary-confirmed. Neither the search copy nor the proxy hostname establishes foreign use.",
+      "novelty": "excluded copied-own context",
+      "confidence": "search_only"
+    },
+    {
+      "id": "exact-search-zero",
+      "class": "bounded_negative_search_results",
+      "sources": [
+        {
+          "query": "\"github.com/alexar76/acex\" in:readme -user:alexar76",
+          "url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%2Facex%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "status": 200,
+          "data": {
+            "total_count": 0,
+            "incomplete_results": false,
+            "items": []
+          }
+        },
+        {
+          "query": "\"acex.integrations\" in:readme -user:alexar76",
+          "url": "https://api.github.com/search/repositories?q=%22acex.integrations%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "status": 200,
+          "data": {
+            "total_count": 0,
+            "incomplete_results": false,
+            "items": []
+          }
+        },
+        {
+          "query": "\"AgentAuditPool\" -user:alexar76",
+          "url": "https://api.github.com/search/commits?q=%22AgentAuditPool%22%20-user%3Aalexar76&per_page=100",
+          "status": 200,
+          "data": {
+            "total_count": 0,
+            "incomplete_results": false,
+            "items": []
+          }
+        },
+        {
+          "query": "\"AgentListingRegistry\" -user:alexar76",
+          "url": "https://api.github.com/search/commits?q=%22AgentListingRegistry%22%20-user%3Aalexar76&per_page=100",
+          "status": 200,
+          "data": {
+            "total_count": 0,
+            "incomplete_results": false,
+            "items": []
+          }
+        },
+        {
+          "query": "\"ACEX_JUPITER_QUOTE_URL\" in:readme -user:alexar76",
+          "url": "https://api.github.com/search/repositories?q=%22ACEX_JUPITER_QUOTE_URL%22%20in%3Areadme%20-user%3Aalexar76&per_page=100",
+          "status": 200,
+          "data": {
+            "total_count": 0,
+            "incomplete_results": false,
+            "items": []
+          }
+        }
+      ],
+      "note": "No attributable foreign import/call/config candidate emerged from the exact repo, namespace, contract-name and config queries. Does not rule out source files not indexed by README/commit search.",
+      "novelty": "previously skipped repo query now answered; additional fingerprint queries checked",
+      "confidence": "bounded_API_result"
+    },
+    {
+      "id": "outbound-jupiter-boundary",
+      "class": "directionality_not_adoption",
+      "source_path": "acex/integrations/jupiter.py",
+      "source_targets": [
+        {
+          "source_function": "fetch_jupiter_quote",
+          "target": "https://quote-api.jup.ag/v6/quote",
+          "direction": "our client -> Jupiter supplier"
+        },
+        {
+          "source_function": "build_swap_plan",
+          "target": "https://quote-api.jup.ag/v6/swap",
+          "direction": "our generated plan -> Jupiter supplier"
+        }
+      ],
+      "note": "Our integration with Jupiter is not evidence that Jupiter or another operator uses ACEX. Declared contract addresses and Solana program ID likewise do not establish external invocation."
+    }
+  ]
+}

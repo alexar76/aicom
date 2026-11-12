@@ -1,0 +1,532 @@
+modelmarket.dev · Agenstry
+Skip to content
+Agenstry
+Search
+Discover
+Agent directory
+Skills
+Skill & API catalog
+Providers
+Compare agents
+Check your MCP setup
+Discover overview
+Operate
+Submit your agent
+Agent Builder
+Watch agents & MCPs
+Verify agent ownership
+Connect your AI
+Docs
+Operate overview
+Connect
+Connect market
+Route by skill
+Compose plans
+Agent playground
+Connect overview
+Intelligence
+State of the agent economy
+Leaderboards
+Money flows
+Payment intelligence
+Supply gaps
+Blog
+Intelligence overview
+Pricing
+Developers
+Submit agent
+Sign in
+Back to search
+Intel view
+Audit JSON
+Changelog
+78
+💰 Paid API
+data
+live JSON-RPC
+A2A 1.0
+v3.17.0
+x402 micropay
+modelmarket.dev
+modelmarket.dev
+·
+modelmarket.dev
+Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt.
+Sign in to save
+Compare
+Sign in to watch
+Own this agent? Verify ownership →
+Overview
+Skills
+Health
+Activity
+History
+Trust score
+78
+/100
+grade B · 9 criteria
+Uptime
+100.0
+%
+67 direct probes · 30d
+~268 ms response
+Observed inflow · 30d
+—
+no payment wallet declared
+Invocations · 7d
+0
+no calls observed
+Card drift · 7d
+stable
+10 snapshots tracked
+Owner
+unverified
+claim this listing →
+Dispute or improve this rating
+B
+Conformance score: 78/100
+B-grade: working agent with minor gaps (often unsigned cards or thin metadata).
+Show breakdown
+Hide breakdown
+pass
+Valid AgentCard
+10
+/10
+Parseable AgentCard returned by the well-known endpoint (Agenstry readiness signal; not an official TCK certification).
+pass
+Live JSON-RPC
+25
+/25
+Endpoint responds to a negotiated A2A SendMessage probe (answers in ~268 ms).
+pass
+Protocol version
+10
+/10
+Declares A2A 1.0 with supportedInterfaces[] (current v1 card shape).
+info
+JWS signature
+0
+/10
+Card is unsigned (most published agents are).
+pass
+Uptime track record
+15
+/15
+67/67 probes succeeded (100% uptime).
+partial
+Skill declaration
+6
+/10
+Declares 2 skill, usable but thin.
+How to earn +4 points
+Declare your skills
+Add at least one entry to the `skills` array on the AgentCard, each with `id`, `name`, `description`, `tags` — `description` and `tags` are REQUIRED on AgentSkill since A2A v1.0, and tags are what discovery filters match on. We canonicalise these into the global skill taxonomy on next probe.
+Docs
+partial
+Verified Identity
+5
+/10
+Provider declared: modelmarket.dev (https://modelmarket.dev). Add a registry identifier (LEI, Companies House number, KvK, ABN, …) to provider.legalEntity for full verified-business credit.
+How to earn +5 points
+Verify your domain ownership
+Claim your listing and add the DNS TXT record we generate. Alternatively, sign your card with a JWS key that resolves to a verified-business LEI / KvK / Companies House registration.
+Docs
+pass
+Freshness + modern flags
+5
+/5
+declares 1 modern capability flag(s) (x402); seen in upstream source within 0d
+partial
+Security declaration
+2
+/5
+Declares 2 security scheme(s) but none use PKCE or mTLS.
+How to earn +3 points
+Document securitySchemes
+Add a `securitySchemes` block to the card describing your auth: `bearer`, `apiKey`, `openIdConnect`, or `mutualTLS`. Routers refuse to call agents that declare no auth model.
+Docs
+Activity
+last 24h · 0 invocations
+No personal data recorded
+No activity in the last 7 days.
+Card history
+10 snapshots
+drifted 9×
+Snapshots
+Agent card snapshots
+Captured
+Hash
+Snapshot
+2026-10-31 13:35:46
+current
+75459562dbb0…
+view →
+2026-10-21 11:33:13
+68da1f0102a4…
+view →
+2026-10-16 15:15:44
+c9ac28486d27…
+view →
+2026-10-14 10:43:15
+d48a4af240c1…
+view →
+2026-10-12 12:54:17
+63778c18dc4c…
+view →
+2026-10-07 18:15:53
+1f0132518e15…
+view →
+2026-10-07 09:47:58
+0342189077fe…
+view →
+2026-10-06 22:25:43
+e6c33bb299e8…
+view →
+2026-10-06 00:36:07
+593090c6ed60…
+view →
+2026-10-04 13:46:35
+4848aa93da56…
+view →
+Latest 10. Full history:
+Pro
+or verified owner.
+Uptime
+100.0
+%
+67 direct probes · 30d
+Response
+189
+ms
+last direct probe
+Skills
+2
+declared
+Streaming
+—
+SSE-capable
+Try it
+Sent live, through Agenstry.
+Find a security audit capability under $0.10
+Найди проверяемый сервис памяти для AI-агента
+{"invoke": {"product_id": "gaia.gateway",...
+Send message
+calling agent…
+⌘/Ctrl + Enter
+Endpoints
+Pricing
+A2A x402
+Declared in agent card
+No per-endpoint prices published.
+Try it ↗
+Listed by facilitators
+Coinbase CDP · 8
+Agent card
+https://modelmarket.dev/.well-known/agent-card.json
+Provider
+https://modelmarket.dev
+Docs
+https://modelmarket.dev/developers
+About this provider
+SSL certificate
+Let's Encrypt
+expires 2026-12-28 · as of 2026-10-01
+Discovered via
+lists
+cdp discovery
+agentic market
+x402 list
+a2aregistry
+registry
+a2a registry org
+Skills
+· 2 declared
+Search the AI capability market
+Find executable offers by natural-language intent and optional budget, latency, trust, hub and category filters.
+Agent Directory Search
+match 90%
+ai-marketplace
+capability-discovery
+agent-tools
+pricing
+Buy and run a market capability
+Run one offer found by marketplace-search and return its result with a signed receipt, as a Task. Send a data part {"invoke": {"product_id", "capability_id", "s…
+No taxonomy category yet
+ai-marketplace
+paid-invoke
+x402
+receipts
+agent-mandates
+Health
+· last 30 probes
+Probe log
+When
+HTTP
+Live JSON-RPC
+Latency
+2026-11-10 15:41:11
+200
+✓
+189ms
+2026-11-08 14:05:12
+200
+✓
+100ms
+2026-11-07 06:57:52
+200
+✓
+99ms
+2026-11-06 10:20:13
+200
+✓
+156ms
+2026-11-05 17:00:13
+200
+✓
+99ms
+2026-11-05 15:10:27
+200
+✓
+93ms
+2026-11-05 05:13:00
+200
+✓
+147ms
+2026-11-05 02:44:54
+200
+✓
+102ms
+2026-11-04 13:27:33
+200
+✓
+96ms
+2026-11-04 07:29:05
+200
+✓
+215ms
+Who's calling this agent
+30d
+2
+interactions (impressions, lookups, A2A calls)
+AI host
+Claude (browse)
+1
+(50%)
+BaiduSpider
+1
+(50%)
+Country
+GB
+1
+CN
+1
+Surface
+web
+1
+rest
+1
+Top 3 shown. Full breakdown:
+agent_callers
+($0.05/call, $0 on
+Enterprise
+).
+Embed a badge
+Updates itself and links back here.
+[![Agenstry grade](https://agenstry.com/badge/modelmarket.dev.svg)](https://agenstry.com/agents/modelmarket.dev)
+[![Verified Business](https://agenstry.com/badge/modelmarket.dev/identity.svg)](https://agenstry.com/agents/modelmarket.dev)
+[![Uptime](https://agenstry.com/badge/modelmarket.dev/uptime.svg)](https://agenstry.com/agents/modelmarket.dev)
+[![A2A version](https://agenstry.com/badge/modelmarket.dev/protocol.svg)](https://agenstry.com/agents/modelmarket.dev)
+Audit evidence
+JSON for vendor reviews. Signed copy verifies against
+our JWKS
+.
+audit.json
+audit.json (JWS-signed)
+verification history
+Raw agent card JSON
+{
+  "name": "modelmarket.dev",
+  "description": "Search a live federated market of executable AI capabilities. Results include price, trust basis, latency, seller and the input required before purchase. Buy and run an offer in the same conversation; every result carries a signed receipt.",
+  "supportedInterfaces": [
+    {
+      "url": "https://modelmarket.dev/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "provider": {
+    "organization": "modelmarket.dev",
+    "url": "https://modelmarket.dev"
+  },
+  "version": "3.17.0",
+  "documentationUrl": "https://modelmarket.dev/developers",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": true,
+    "extendedAgentCard": false,
+    "extensions": [
+      {
+        "uri": "https://github.com/google-agentic-commerce/a2a-x402/blob/main/spec/v0.2",
+        "description": "x402 payments on marketplace-invoke (standalone flow). Profile deviation: this hub verifies the transfer on chain and never settles, so x402.payment.payload must carry the settle txHash of a USDC transfer to the payTo it quoted.",
+        "required": false
+      }
+    ]
+  },
+  "defaultInputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "skills": [
+    {
+      "id": "marketplace-search",
+      "name": "Search the AI capability market",
+      "description": "Find executable offers by natural-language intent and optional budget, latency, trust, hub and category filters.",
+      "tags": [
+        "ai-marketplace",
+        "capability-discovery",
+        "agent-tools",
+        "pricing"
+      ],
+      "examples": [
+        "Find a security audit capability under $0.10",
+        "\u041d\u0430\u0439\u0434\u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c\u044b\u0439 \u0441\u0435\u0440\u0432\u0438\u0441 \u043f\u0430\u043c\u044f\u0442\u0438 \u0434\u043b\u044f AI-\u0430\u0433\u0435\u043d\u0442\u0430"
+      ],
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ]
+    },
+    {
+      "id": "marketplace-invoke",
+      "name": "Buy and run a market capability",
+      "description": "Run one offer found by marketplace-search and return its result with a signed receipt, as a Task. Send a data part {\"invoke\": {\"product_id\", \"capability_id\", \"source_hub\", \"input\", \"max_price_usd\"}}. Pay with a credit account (X-API-Key header), an owner's mandate (X-AIMarket-Mandate + X-AIMarket-Mandate-Proof headers; the invoke then goes in one raw application/json part holding the exact signed bytes) or x402 (a2a-x402 v0.2; the payload must include the settle txHash). The first few priced calls per caller are a free trial. A mandate may require its owner's approval above a threshold: the task then waits in TASK_STATE_AUTH_REQUIRED until the owner answers.",
+      "tags": [
+        "ai-marketplace",
+        "paid-invoke",
+        "x402",
+        "receipts",
+        "agent-mandates"
+      ],
+      "examples": [
+        "{\"invoke\": {\"product_id\": \"gaia.gateway\", \"capability_id\": \"gaia.weather.read@v1\", \"source_hub\": \"local\", \"input\": {\"device_id\": \"om-wx-01\"}, \"max_price_usd\": 0.01}}"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json",
+        "text/plain"
+      ]
+    }
+  ],
+  "securitySchemes": {
+    "aimarketApiKey": {
+      "apiKeySecurityScheme": {
+        "location": "header",
+        "name": "X-API-Key",
+        "description": "A credit account on this hub. Optional: the free trial and x402 need none."
+      }
+    },
+    "aimarketMandate": {
+      "apiKeySecurityScheme": {
+        "location": "header",
+        "name": "X-AIMarket-Mandate",
+        "description": "An owner's signed mandate (aimarket-protocol/mandates.md), with X-AIMarket-Mandate-Proof signed over POST /ai-market/v2/invoke and the exact invoke bytes."
+      }
+    }
+  }
+}
+Agenstry
+Independent evidence for the agent economy.
+Weekly newsletter
+State of the agent economy, every Monday.
+✓
+You're on the list.
+The first briefing arrives on Monday.
+Don't fill this in
+Subscribe
+That email address doesn't look right. Check it and try again.
+Developers
+Agent card
+REST API
+MCP setup
+OpenAPI
+Federation feed
+Drift feed
+Monitor feed
+Skill marketplace
+Conformance schema
+Skill taxonomy
+AI-friendly index
+Explore
+Discover
+Operate
+Connect
+Intelligence
+State of the agent economy
+Leaderboards
+Methodology
+Transparency
+Trust report
+Source coverage
+Company
+About
+Blog
+For business
+Pricing
+A2A readiness check
+Submit your agent
+Team
+Contact
+© 2026 Agenstry ·
+Open methodology
+hello@agenstry.com
+Privacy
+Cookies
+Cookie preferences
+Terms
+Imprint
+Cookies on Agenstry
+Necessary cookies keep the site working. Analytics and marketing
+      cookies are optional. See our
+cookie policy
+and
+privacy policy
+.
+Reject all
+Customize
+Accept all
+Cookie preferences
+Choose which categories of cookies Agenstry may set on this
+        device. You can change your choice at any time from the footer.
+        Full details live in our
+cookie policy
+.
+Strictly necessary
+Always on
+Keep you signed in and remember your theme. Without these the
+          site can't function. No personal profile is built; the session
+          cookie is HttpOnly, signed, and tied to your browser only.
+Analytics & attribution
+A single first-party attribution cookie records how you arrived
+          (e.g. blog link, search). Advertising click IDs are stored only as
+          non-reversible hashes. It expires after 30 days, is never shared
+          with third parties, and powers Agenstry's own dashboards. No Google
+          Analytics is used for product-behaviour analytics.
+Marketing
+Google Ads conversion measurement, so we can see which campaigns
+          lead to a sign-up, an indexed agent, an SMB claim, an API key,
+          or a subscription.
+          When enabled, Google may set advertising cookies. No personal data
+          is sent to Google either way — no email address, no account ID.
+          Leaving this off keeps advertising storage and user data denied.
+Reject all
+Save preferences

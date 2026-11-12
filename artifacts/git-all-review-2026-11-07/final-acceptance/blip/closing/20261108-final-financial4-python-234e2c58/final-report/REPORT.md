@@ -1,0 +1,7 @@
+# Frozen Python source acceptance through234e
+
+Both hosts passed Ruff4/4 for the latest exact privacy-bound financial additions, with zero findings and native exit0. Native Git inventories prove49508→234e is exactly4 additions with no modification/deletion of existing Python blobs. The accepted frozen tree contains6616 Python blobs:6580 unchanged originals,20 additions and16 modified originals. All328 original exclusions are unchanged; derived eligible coverage is6288 files, supported by the original6268-file full lint plus exact source deltas. This is not a repeated full run.
+
+The earlier49 focused offline tests per host (19 sensor/catalog/CLI and30 lottery draw/cancellation) and the satisfying declared lottery dependency lock remain applicable: all their source/config/metadata inputs are unchanged. The original docs-only gate627 inputs, real60/68 map, PyYAML6.0.2 and shell syntax proof are also unchanged. Separate independent synthetic refund-test receipts cover the new refund helper; this static gate never imported or invoked refund, ledger, diagnosis, RPC, SSH, executor or payment helpers.
+
+Every latest source file matches both its frozen native Git blob and the independent privacy review's SHA256. Sources stayed unchanged; no OOM occurred; owned containers are removed. No project code ran locally and no local temporary transport files were created. Earlier application-runtime suites retain their measured frozen identities.

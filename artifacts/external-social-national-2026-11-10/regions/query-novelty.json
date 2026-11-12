@@ -1,0 +1,176 @@
+{
+  "method": "Literal query text comparison against structured q/query/search_query/query_text fields; domains may differ. This is not a claim of semantic novelty or exhaustive historical-source comparison.",
+  "baseline_files_read": 56,
+  "distinct_prior_query_strings": 1002,
+  "skipped": [],
+  "queries": [
+    {
+      "id": "ru-habr-products",
+      "query": "(\"aimarket-bridges\" OR \"SYMMARTYS\" OR \"@aimarket/esim-rails\" OR \"attestedmemory.net\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "ru-community-products",
+      "query": "(\"PingBlip\" OR \"modelmarket.dev\" OR \"domain-operator-kit\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "ru-books-review",
+      "query": "\"Артамохов\" \"Вес ответа\" рецензия -site:github.com -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "ua-tech-products",
+      "query": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"create-aimarket-agent\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "ua-feedback",
+      "query": "(\"AIMarket\" OR \"Attested Memory\" OR \"PingBlip\") відгук агент -site:dev.to -site:github.com -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "de-tech-products",
+      "query": "(\"AIMarket\" OR \"Attested Memory\" OR \"PingBlip\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "de-domain-feedback",
+      "query": "\"modelmarket.dev\" Erfahrungen Agenten -site:modelmarket.dev -site:github.com -site:dev.to",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "de-fresh-marketplace-title",
+      "query": "\"Healthy containers hid a blocked MCP marketplace connection\" deutsch -site:dev.to -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "fr-tech-products",
+      "query": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"aimarket-bridges\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "fr-product-feedback",
+      "query": "(\"AIMarket\" OR \"Attested Memory\" OR \"PingBlip\") avis agents -site:github.com -site:dev.to -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "es-tech-products",
+      "query": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"SYMMARTYS\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "es-latam-products",
+      "query": "(\"AIMarket\" OR \"PingBlip\" OR \"Attested Memory\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "es-cite-desks",
+      "query": "\"Emberline\" \"Tideline\" agentes -site:github.com -site:dev.to -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "pt-dev-products",
+      "query": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"aimarket-bridges\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "pt-tech-products",
+      "query": "(\"PingBlip\" OR \"AIMarket\" OR \"Attested Memory\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "pt-builder",
+      "query": "\"create-aimarket-agent\" português -site:github.com -site:dev.to -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "pl-security-products",
+      "query": "(\"modelmarket.dev\" OR \"attestedmemory.net\" OR \"alexar76\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "pl-dev-products",
+      "query": "(\"AIMarket\" OR \"PingBlip\" OR \"SYMMARTYS\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "cz-tech-products",
+      "query": "(\"AIMarket\" OR \"Attested Memory\" OR \"PingBlip\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "cz-domain-feedback",
+      "query": "\"modelmarket.dev\" zkušenosti -site:modelmarket.dev -site:github.com -site:dev.to",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "nl-tech-products",
+      "query": "(\"AIMarket\" OR \"PingBlip\" OR \"Attested Memory\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "nl-domain-feedback",
+      "query": "\"modelmarket.dev\" ervaringen -site:modelmarket.dev -site:github.com -site:dev.to",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "it-tech-products",
+      "query": "(\"AIMarket\" OR \"PingBlip\" OR \"Attested Memory\")",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "it-domain-feedback",
+      "query": "\"modelmarket.dev\" recensione agenti -site:modelmarket.dev -site:github.com -site:dev.to",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "rare-domain-buyer-title",
+      "query": "\"An AI Agent Bought a Domain\" \"1.54\" (Deutsch OR español OR português) -site:dev.to -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "rare-fire-brief-title",
+      "query": "\"I unzipped the sample fire brief\" (français OR italiano) -site:dev.to -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "rare-forge-title",
+      "query": "\"Price the chain before hop three bills you\" (polski OR nederlands) -site:dev.to -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    },
+    {
+      "id": "rare-multica-title",
+      "query": "\"Our Multica agents now work in an agent market\" (Deutsch OR français OR español OR português) -site:dev.to -site:modelmarket.dev",
+      "literal_seen_before": false,
+      "prior_paths": []
+    }
+  ]
+}

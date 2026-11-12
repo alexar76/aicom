@@ -1,0 +1,52 @@
+{
+  "tensorfeed_afta_receipt": {
+    "signed_bytes": "canonical JSON of every field except the six signature fields",
+    "signature_valid": true,
+    "tampered_credits_rejected": true,
+    "request_hash_reproduced": true,
+    "response_hash_reproduced": true,
+    "agent_nonce_echoed": true,
+    "signed_fields": [
+      "agent_nonce",
+      "captured_at",
+      "credits_charged",
+      "credits_remaining",
+      "endpoint",
+      "freshness_sla_seconds",
+      "id",
+      "method",
+      "no_charge_reason",
+      "request_hash",
+      "response_hash",
+      "server_time",
+      "token_short",
+      "v"
+    ]
+  },
+  "aimarket_protocol_receipt": {
+    "signed_bytes": "pipe-joined seven-field canonical, spec §7.3.3",
+    "canonical": "nonce:cf8f945b7ba2f614|product_id:prod-logos|capability_id:logos.federation.summary@v1|price_usd:0.0|timestamp:2026-10-30T05:27:40Z|success:1|latency_ms:1373.73",
+    "signature_valid": true,
+    "flipped_success_rejected": true,
+    "post_quantum_signature_present": true,
+    "binds_request_or_response_content": false,
+    "signed_fields": [
+      "nonce",
+      "product_id",
+      "capability_id",
+      "price_usd",
+      "timestamp",
+      "success",
+      "latency_ms"
+    ]
+  },
+  "aimarket_provenance_receipt": {
+    "signed_bytes": "W3C Data Integrity eddsa-jcs-2022 over the whole credential",
+    "signature_valid": true,
+    "output_digest_of_output_member": false,
+    "output_digest_of_answer_minus_provenance": true,
+    "says_what_it_digested": false,
+    "binds_request_or_response_content": true,
+    "signed_fields": "whole document: issuer, work, inputDigest, outputDigest, providerHub, nonce, hubInfo"
+  }
+}

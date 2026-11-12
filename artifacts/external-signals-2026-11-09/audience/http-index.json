@@ -1,0 +1,52 @@
+[
+  {
+    "key": "devto-articles",
+    "url": "https://dev.to/api/articles?username=alexar76&per_page=1000",
+    "checked_at": "2026-11-09T19:22:59.880997+00:00",
+    "status": 200,
+    "final_url": "https://dev.to/api/articles?username=alexar76&per_page=1000",
+    "file": "artifacts/external-signals-2026-11-09/audience/raw/devto-articles.raw",
+    "bytes": 174540,
+    "sha256": "6f2c6ed66313e31ebe8d8b1edec3e69aa5f93cb9b57f695bcc6dd5d7ebaa6789"
+  },
+  {
+    "key": "bsky-feed",
+    "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=alexar76.bsky.social&limit=100",
+    "checked_at": "2026-11-09T19:22:59.881418+00:00",
+    "status": 200,
+    "final_url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=alexar76.bsky.social&limit=100",
+    "file": "artifacts/external-signals-2026-11-09/audience/raw/bsky-feed.raw",
+    "bytes": 196084,
+    "sha256": "aa0a479d021a250fbaa482547420d441d07af33c8f43ffdd14b84c93c140344c"
+  },
+  {
+    "key": "youtube-channel",
+    "url": "https://www.youtube.com/channel/UCdhqQ5UAdUHPyX8BnolB4dQ/about",
+    "checked_at": "2026-11-09T19:22:59.881545+00:00",
+    "status": 200,
+    "final_url": "https://www.youtube.com/channel/UCdhqQ5UAdUHPyX8BnolB4dQ/about?cbrd=1&ucbcb=1",
+    "file": "artifacts/external-signals-2026-11-09/audience/raw/youtube-channel.raw",
+    "bytes": 1250871,
+    "sha256": "0f9655c2fa301333ddbc5c9b585bad37ae55f6bd9a66d608f8407643d90d3656"
+  },
+  {
+    "key": "telegram-channel",
+    "url": "https://t.me/s/just_for_agents",
+    "checked_at": "2026-11-09T19:22:59.881662+00:00",
+    "status": 200,
+    "final_url": "https://t.me/s/just_for_agents",
+    "file": "artifacts/external-signals-2026-11-09/audience/raw/telegram-channel.raw",
+    "bytes": 106927,
+    "sha256": "cf6c3ec886d102feb7fdb2eb460964df8cc923cee3e15a0bd0071b39e896e876"
+  },
+  {
+    "key": "glama-aimarket",
+    "url": "https://glama.ai/mcp/servers/alexar76/aimarket-mcp",
+    "checked_at": "2026-11-09T19:22:59.881767+00:00",
+    "status": 200,
+    "final_url": "https://glama.ai/mcp/servers/alexar76/aimarket-mcp",
+    "file": "artifacts/external-signals-2026-11-09/audience/raw/glama-aimarket.raw",
+    "bytes": 355790,
+    "sha256": "f91db355fd4a0de03f9747be89f2a8c29a5e45d10cbf0594b9c090c97c0d3f08"
+  }
+]

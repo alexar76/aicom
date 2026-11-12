@@ -1,0 +1,11 @@
+[Unit]
+Description=Renew fixed QA lease in each UTC 12-hour window
+
+[Timer]
+OnBootSec=30s
+OnCalendar=*-*-* 00,12:00:00 UTC
+Persistent=true
+Unit=multica-qa-lease.service
+
+[Install]
+WantedBy=timers.target

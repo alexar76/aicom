@@ -1,0 +1,36 @@
+import pathlib,json,hashlib,re,posixpath,subprocess,time,os
+os.umask(0o077);legacy=pathlib.Path("/legacy/lottery/contracts/src");tools=pathlib.Path("/tools");out=pathlib.Path("/results")
+def sha(p):return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+setup=json.load(open(tools/"public-setup.json"));assert sha(tools/"solc")==setup["solcBinarySha256"]
+assert sha(tools/"anvil")==setup["anvilBinarySha256"]
+assert sha(legacy/"AIAgentLottery.sol")=="6866ae731c24e699facb1d4cf4efaecae837e1dfb76cfdd5db9a7f8d71d0d854"
+for line in pathlib.Path("/metadata/legacy-source-blobs.txt").read_text().splitlines():
+ meta,name=line.split("\t",1);mode,kind,oid=meta.split();data=(pathlib.Path("/legacy")/name).read_bytes();assert hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()==oid
+sources={};pending=["AIAgentLottery.sol"];hashes={}
+while pending:
+ name=pending.pop()
+ if name in sources:continue
+ if name.startswith("@openzeppelin/contracts/"):
+  relative=name.removeprefix("@openzeppelin/contracts/");path=tools/"oz"/relative
+ else:path=legacy/name
+ assert ".." not in pathlib.PurePosixPath(name).parts and path.is_file(),name
+ text=path.read_text();sources[name]={"content":text};hashes[name]=sha(path)
+ for found in re.finditer(r'\bimport\s+(?:[^;]*?\s+from\s+)?["\']([^"\']+)["\']\s*;',text,re.S):
+  dep=found.group(1);resolved=posixpath.normpath(posixpath.join(posixpath.dirname(name),dep)) if dep.startswith(".") else dep
+  pending.append(resolved)
+settings={"optimizer":{"enabled":True,"runs":200},"viaIR":True,"evmVersion":"cancun","outputSelection":{"*":{"*":["abi","evm.bytecode.object","evm.deployedBytecode.object"]}}}
+value={"language":"Solidity","sources":sources,"settings":settings};encoded=json.dumps(value,sort_keys=True,separators=(",",":"))
+(out/"compiler-input-sha256.txt").write_text(hashlib.sha256(encoded.encode()).hexdigest()+"\n")
+started=time.monotonic()
+p=subprocess.run([str(tools/"solc"),"--standard-json"],input=encoded,text=True,capture_output=True,timeout=180)
+(out/"compiler.stdout.json").write_text(p.stdout);(out/"compiler.stderr").write_text(p.stderr)
+compiled=json.loads(p.stdout);errors=[x for x in compiled.get("errors",[]) if x.get("severity")=="error"]
+(out/"compiler-errors.json").write_text(json.dumps(errors,indent=2)+"\n")
+assert p.returncode==0 and not errors,errors
+artifact=compiled["contracts"]["AIAgentLottery.sol"]["AIAgentLottery"];assert not any(x.get("name")=="paidTicketsEnabled" for x in artifact["abi"])
+creation=bytes.fromhex(artifact["evm"]["bytecode"]["object"]);runtime=bytes.fromhex(artifact["evm"]["deployedBytecode"]["object"]);assert creation and runtime
+(out/"legacy-artifact.json").write_text(json.dumps(artifact,sort_keys=True)+"\n")
+summary={"format":"aicom.exact-legacy-solidity-compile/v1","sourceGit":"e60aa7218","legacySourceSha256":hashes["AIAgentLottery.sol"],"transitiveSourceFiles":len(sources),"sourceHashes":hashes,"solcVersion":setup["solcVersion"],"solcBinarySha256":setup["solcBinarySha256"],"openzeppelinVersion":setup["openzeppelinVersion"],"openzeppelinArchiveSha512":setup["openzeppelinTarballSha512"],"settings":settings,"nativeExitCode":p.returncode,"compilerErrorCount":len(errors),"seconds":round(time.monotonic()-started,3),"creationCodeBytes":len(creation),"runtimeTemplateBytes":len(runtime),"creationCodeSha256":hashlib.sha256(creation).hexdigest(),"runtimeTemplateSha256":hashlib.sha256(runtime).hexdigest(),"legacyPaidSwitchAbsent":True,"liveBytecodeIdentityClaim":False,"scope":"Exact historical Solidity source with recorded compiler/OZ dependencies; no live bytecode/state comparison.","passed":True}
+(out/"summary.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n")
+print(json.dumps({k:summary[k] for k in ("passed","transitiveSourceFiles","nativeExitCode","seconds","creationCodeBytes","runtimeTemplateBytes","creationCodeSha256")}))
+

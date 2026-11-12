@@ -1,0 +1,28 @@
+{
+  "checked_at_utc": "2026-11-09T19:25:31.324885+00:00",
+  "canonicalizer_source": "aimarket-hub/aimarket_hub/signing.py",
+  "canonicalizer_source_sha256": "4d2529b45860285d7966882f57e3d075b76c37995c4206fd8079590297a3b686",
+  "scope": "Saved manifest signature compatibility and negative control only. No invoke, payment, runtime safety certification or owner-independence verification.",
+  "records": [
+    {
+      "peer": "agent-exec",
+      "protocol_version": "v1",
+      "advertised_tools": 19,
+      "signature_is_object": true,
+      "signature_key_matches_discovery": true,
+      "valid_under_hub_manifest_canonical": true,
+      "modified_description_valid": false,
+      "canonical_sha256": "b153818a0f2fbe52d5b161ef16e4b7f64be9fd8e526200094ca89fe6c47d16de"
+    },
+    {
+      "peer": "machina",
+      "protocol_version": "v2",
+      "advertised_tools": 8,
+      "signature_is_object": false,
+      "signature_key_matches_discovery": false,
+      "valid_under_hub_manifest_canonical": false,
+      "modified_description_valid": false,
+      "canonical_sha256": "ffa92d3826cfad640eacee9415bedd0e6f695cc4f11846837e52b2eedddaa8e6"
+    }
+  ]
+}

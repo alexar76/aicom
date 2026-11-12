@@ -1,0 +1,19 @@
+[Unit]
+Description=Credential-free fixed QA worker
+Requires=docker.service multica-egress-firewall.service
+After=docker.service multica-egress-firewall.service
+BindsTo=multica-egress-firewall.service
+PartOf=multica-egress-firewall.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker start -a qa-worker
+ExecStop=/usr/bin/docker stop -t 10 qa-worker
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target

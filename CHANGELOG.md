@@ -11,7 +11,83 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 
 ## [Unreleased]
 
+### Releases prepared on 2026-11-11
+
+- **Hub 3.20.0** (PyPI `aimarket-hub`). It ships the hub entries below that are not marked with an earlier version:
+  the x402 bridge, the honest map and onboarding funnel, index-only hubs admitted on witnesses, and observed sellers
+  that list Bazaar items under `resources[]`. It also ships the fixes from the money-flow audit of 2026-11-11
+  (`artifacts/money-flow-audit-2026-11-11/REPORT.md`: 75 findings, 10 of them high, each with a regression test):
+  - x402 bridge: a buyer's uncharged losses count against what the buyer paid in.
+  - Escrow rail and HORKOS: canonical receipts; a superseded call's withdrawal no longer blocks collection; failed
+    broadcasts are retried or resolved.
+  - Top-ups and deposits: a quote binds only a full payment; an overpaid top-up is listed in `/admin/deposits` until
+    the operator resolves it; the deposit watcher keeps a 150-block overlap and an hourly deep rescan.
+  - Local invoke: the answer is checked before the charge; an x402 quote holds when the listing is repriced.
+  - Pay-on-Verified: the jury sees the request input, and a verified sale pays the seller's share.
+  - Federation resale is bound to the quoted price; mandated subcontracting allowances are journaled.
+  - Channels:
+    - open and close run the ledger in a worker thread;
+    - rate buckets are charged only after the wallet is proven;
+    - an overpaid deposit is credited the received units in whole cents.
+  - Collateral returns are capped by the stake that is left.
+  - Receipt binding (spec §7.3.9): a delivered invoke answer with a `result` or `output` carries a
+    `receipt_binding`, signed by the hub that answered, over the request input, the answer and the buyer's `X-Client-Nonce` (echoed in
+    `X-Client-Nonce-Echo`); `/receipts/verify` checks a peer's receipt against the key pinned for that peer and
+    checks a binding. Live on the hubs as an overlay since 2026-10-30 but missing from main until 2026-11-11, so
+    modelmarket.dev had lost it in a later redeploy. Ships with **aimarket-provenance 2.3.2** (`outputDigestOf`,
+    `gatewayReceiptDigest`).
+
+  Migrations 068 and 069 apply on start.
+- **MOMUS 0.2.1** (PyPI `aimarket-momus`), from the same audit (satellites-6, satellites-7):
+  - a gate-approved UNI share reserves what it needs from a funded vault, and a final answer hands the reservation
+    back;
+  - only an authenticated refusal returns a reservation;
+  - the per-scanner claim cooldown records claims and is keyed on the bug's content;
+  - the free self-audit settles in its own sandbox, not the operator vault.
+- **Treasury 0.1.5** (PyPI `aimarket-treasury`): `/explain` is a dry run (see `treasury/CHANGELOG.md`).
+- **HISTOR 0.9.0** (PyPI `aimarket-histor`): see `histor/CHANGELOG.md`.
+
 ### Added
+- **Hub: the x402 bridge.** A buyer paying in credits buys from an x402 seller (a federated peer that bills at its own
+  door, or an observed seller through the new `POST /ai-market/v2/observed/invoke`): the hub pays the seller's 402
+  from its own wallet and charges the buyer what it paid, once the seller delivered. Off unless
+  `AIMARKET_X402_BRIDGE=1` with an owner-only key file (`python -m aimarket_hub.x402_bridge keygen PATH`). Only
+  `exact` USDC on Base, only to a payee the seller published, never above the listed price; caps per call ($0.05),
+  per seller per day ($0.50), optional per day, and the wallet balance minus payments in flight, so a top-up raises
+  the limit at once. Every payment is a ledger row written before signing (migration 067, `x402_bridge_payments`).
+  Only topped-up credit reaches an outside seller; grants buy the hub's own resources, except on the operator's own
+  accounts. When the bridge declines, the buyer gets the seller's own 402 with an `x402_bridge` note, as before.
+  Public status at `GET /ai-market/v2/x402-bridge`. `CreditsLedger.capture_hold` takes `amount_mc` to capture less
+  than was held (`artifacts/x402-bridge-2026-11-08/`).
+- **Hub: the honest map, the onboarding funnel and knock verdicts.** A peer no crawl has reached for more than
+  `AIMARKET_PEER_SILENT_DAYS` (7) is labelled `silent` on /hubs and in `/federation/peers`, never removed.
+  /hubs and `GET /ai-market/v2/federation/funnel` show each hub's knock, assay, admission, first routed and first
+  paid call; totals count hubs that are not the operator's own. A knock answers with the last assay verdict and its
+  blockers.
+- **Hub: index-only hubs are admitted on witnesses.** A hub with nothing to probe passes the assay when admitted
+  hubs on `AIMARKET_FEDERATION_INDEX_WITNESSES` (2) different sites list it as admitted under the key it
+  advertises (`federation_assay.gather_index_witnesses`, check `index_witnesses`).
+- **Multica operator kit** (`multica/operator-kit/onboard.sh`): one command next to a Multica self-host sets up the
+  daemon container, the egress allowlist, the WARDEN guard (checked against npm's checksums, root-owned) and the
+  hub's MCP server, and checks them from inside the daemon; `--check` changes nothing.
+
+- **Hub 3.19.0: a crawl refuses a peer catalogue older than the newest one it already verified from that peer**
+  under the same pinned key (discovery draft -04 §5). The refusal counts as a failed retrieval: stored entries stay
+  and nothing is pruned. The time is recorded after each verified catalogue (migration 066,
+  `peer_catalogue_watermarks`). A new pinned key starts a new record, and a time more than an hour ahead of the hub's
+  clock is never recorded. `delete_peer` forgets the record, and `aimarket peers --reset-catalogue-time <url>`
+  clears it for a peer whose clock went back. The pending-peer preview applies the same floor.
+- **Hub 3.19.0: the operator's own providers are told who the buyer is (`X-AIMarket-Buyer-Ref`).** This is one
+  stable pseudonym per buyer the hub authenticated:
+  - a credit account;
+  - an agent spending a principal's account under a mandate (as that agent, not as the principal);
+  - the wallet of a verified x402 payment;
+  - a payment channel whose secret was checked.
+
+  Trials, anonymous calls, calls paid from someone else's subcontract allowance and calls routed in by another hub
+  name nobody. Attested Memory took the memory owner from `X-Payment-Channel`, so every buyer who did not pay from a
+  channel shared one owner, and could read the others' "private" memories (`aimarket_hub/provider_buyer_ref.py`).
+
 - **Hub 3.18.0: the catalogue for Agent Resource Discovery (ARD) clients.** ARD is the set of IETF DAWN drafts submitted 2026-10-30 (draft-jimenez-dawn-ard-initial-contact-00, draft-bu-dawn-ard-discovery-00). Every hub now serves `/.well-known/ard.json` (`application/ard+json`: its registry, A2A card, MCP card and discovery document, the cards pinned by SHA-256 of the bytes served), a `rel="ard"` Link on `HEAD /`, a `did:web` document at `/.well-known/did.json`, and an ARD registry at `/ard/v1` (`POST /search`, `POST /explore`, `GET /agents`, and a descriptor per capability). Each catalogue capability becomes an entry `urn:air:<publisher>:<product_id>:<capability_id>` whose descriptor holds the v2 invoke request; entries this hub publishes carry a `trustManifest` (detached EdDSA JWS over JCS, `did:web:<host>`), a peer's listings stay unsigned hints. Search reuses the hub's catalogue search; unknown filter terms are refused (problem details), page tokens are bound to their query. Read-only, no change to Protocol v2. The manifest, a list page and a search request/response validate against the drafts' CDDL (two edits needed to make that CDDL compile, documented). `aimarket-hub/docs/ard.md` (EN·RU·ES·FR·ZH).
 - **HISTOR 0.3.0: a restart no longer costs the crawl.** A redeploy continues the interrupted cycle however long it has run, as long as it was making progress (only a process down for a whole interval starts afresh); until now a cycle was dropped once its start was a day old, and on 2026-10-22 one 42 hours and six restarts in was dialled again from the first server. A cycle plans its packages once and keeps the plan (migration 012, `crawl_plans`), so a continued run skips the hour of npm/PyPI version lookups and the sandbox budget and the classifier budget are the cycle's, not each run's. A run saves its counts every 30 s; an interrupted run is marked with its cycle's totals read back from the database; `/api/v1/stats` reports the cycle (`lastRun.cycle`) and counts progress over it (`crawl.progress.thisRun` beside it). `docs/operations.md` § A restart mid-crawl, five languages.
 - **HISTOR 0.3.0: what a tool list costs, part by part, per change and in a package's CI.** Every count is split into the tool names, the descriptions, the input schemas and the keys and punctuation around them (they add up to the total; output schemas and the list as listed beside it), counted as `histor/docs/tool-list-cost.md` counts (`o200k_base`), and each top-level input property is counted too, so a diff names the field that grew. The service gives each change its cost diff (`/api/v1/changes/<id>/cost`), a server its current cost and the totals of its last changes (`/api/v1/servers/<id>/cost`) and any stored set its cost (`/api/v1/cost/toolsets/<digest>`); the image bakes the tokenizer table in, and a deployment without the new `cost` extra answers 503. `histor tool-cost snapshot | check | diff` counts a server started over stdio, a streamable HTTP endpoint or a saved tools/list, compares it with a committed baseline and exits 1 when the total, the descriptions or the input schemas grow past a limit, with a Markdown table for the job summary. The public counter at modelmarket.dev/tools/tool-list-cost shows the same split (`parts`, and description and input schema per heavy tool); the split is identical in both, checked on the same tools. Asked for by a reader of the tool-list-cost post (Raju Dandigam).
@@ -25,12 +101,37 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 - **Hub discovery declares `credits_eligible`.** Buyers can filter out seller-direct or federated offers before making a credits-funded call; the predicate matches invoke admission.
 
 ### Changed
+- **modelmarket.dev home page: one line for people who came for the checks.** Above the hub's own heading:
+  "Checks and a witnessed public record for the tools AI agents use: HISTOR · WARDEN · Free checks", in five
+  languages. Only the hub named `modelmarket.dev` shows it; every other hub drops the marked block
+  (`pages.py`), so a stranger's hub never advertises ours. Live on modelmarket.dev since 2026-11-11
+  (`artifacts/hub-apex-tools-line-2026-11-11/ROLLOUT.md`). The profile README headline says the same in five
+  languages (positioning of 2026-11-11).
+- **Hub 3.19.0: federation and provider hardening (commit 9f9230743, 2026-11-08).** Work started by unauthenticated
+  federation announcements is bounded (`assay_limits.py`). Synchronous DNS and URL guards run off the event loop with
+  bounded capacity (`dns_limits.py`). Federation URLs get a cheap preflight that never opens a socket, and the outbound
+  transport checks every DNS answer and pins the public address it connects to (`federation_urls.py`,
+  `outbound_http.py`). Untrusted HTTP bodies are read without unbounded decompression (`response_limits.py`).
+  Operator rejections of peer URLs and provider invoke resources persist next to the database and apply to every
+  federation entry point (`peer_rejections.py`). The same commit closes untrusted internal dispatch, schema
+  reference fetches and callback transport gaps, binds privileged provider access to exact operator grants, and adds
+  request-bound provider response signatures.
+- **Hub 3.19.0: MCP tool definitions no longer carry prices.** A direct tool's description says whether it is paid
+  and points to `market_search` for the current price, without the amount or the trial size. Every price edit used to
+  change the definitions, and clients that pin them (WARDEN, ARGUS, mcp-scan) stopped using the hub until someone
+  re-approved it. The MCP server version is now 1.3.0.
+- **Hub 3.19.0: the public manifest shows the hub for an operator gateway provider**, instead of its private address
+  (modelmarket.dev listed `http://aicom-diagnostics:8124/diagnose`). Routing still uses the stored address.
+- Hub 3.19.0 needs `fastapi>=0.162.0` and `cryptography>=50.0.2`.
 - **Hub 3.17.1: a channel refund obligation closes only against a payout the hub has checked on chain.** `POST /channel/obligations/{channel_id}/paid` used to accept any well-formed transaction hash as the operator's word. It now needs a finalized, successful transfer of the obligation's stablecoin on its EVM chain, from the hub's payment wallet (`AIMARKET_PAYMENT_RECIPIENT`) to the depositor's wallet, made after the debt was recorded and covering the amount owed; the deposit transaction itself does not count. One payout transaction closes one obligation (`channel_payout_claims`, migration 065). Obligations on non-EVM chains can no longer be marked paid this way.
 - **Hub catalogue settle is seller-direct, like HESTIA.** A buyer pays USDC on-chain to the listing's `payout_address`; the hub verifies `PAYMENT-SIGNATURE` / the transfer (`aimarket_hub/settle.py`) and never holds the money. Wallet publishers are the payee. Channels remain the KI-11 custodial rail.
 - **HESTIA well-known publishes `mcp_endpoint`.** Without it the Hub POSTed `/capabilities/{product}/{cap}/invoke` after a seller-direct settle; this host does not serve that path, so a paid catalogue sale 502'd. The field names `/ai-market/v2/invoke`, where agents are dispatched by `capability_id`.
 - **Hub: a call that arrived without coordinates is incomplete input, not a refusal and not a miss.** `outcome=incomplete` stays on the live tape with its own counter; `refused` is a policy decision; only `ok`/`fail` move `success_rate` (API, SSR ticker, trust, i18n). Historical `fail` rows can be re-marked with `aimarket-hub/scripts/reclassify_incomplete_input.py` (dry-run default; `--apply` requires a live `--probe-url`).
 
 ### Fixed
+- **Hub: observed sellers whose discovery document lists Bazaar items under `resources[]` are read.**
+  PriorSeal's `/.well-known/x402.json` names each route in `resource`, not `url`, and the hub found 0 of its 4 routes.
+  Such entries are now read like `items[]`: the route, the method, and the price from the first USDC offer.
 - **Hub 3.17.1: payment recovery (2026-11-03).** Found by a read-only reconciliation of the hubs' ledgers (`artifacts/payment-reconciliation-2026-11-03/`).
   - A seller-direct x402 payment marks its invoice spent and records the payment in one transaction, and a refused call restores both together. A crash between the two used to leave an invoice spent with no payment behind it; only the original transfer can now repair such an invoice.
   - The work receipt of a delivered seller-direct call is written onto its payment row (`receipt_id`). 13 settled payments on two hubs had none.

@@ -1,0 +1,67 @@
+{
+  "checkpoints": [
+    {
+      "file": "histor-checkpoint.raw",
+      "origin": "histor.modelmarket.dev/log",
+      "tree_size": 1975211,
+      "root_base64": "n/oyIbxHcBYFyv16/zbCH/66vzYxDNlihmSI4dR9SiY=",
+      "signatures": [
+        {
+          "name": "histor.modelmarket.dev/log",
+          "type": 1,
+          "signature_valid": true,
+          "negative_control_rejected": true
+        }
+      ]
+    },
+    {
+      "file": "crawlcheck-histor-checkpoint.raw",
+      "origin": "histor.modelmarket.dev/log",
+      "tree_size": 1975254,
+      "root_base64": "tlUjZ+PWJMoNciGgTp+pbmyhQpWd0Hci2R7Y0FbT29Y=",
+      "signatures": [
+        {
+          "name": "histor.modelmarket.dev/log",
+          "type": 1,
+          "signature_valid": true,
+          "negative_control_rejected": true
+        },
+        {
+          "name": "crawlcheck.io/witness",
+          "type": 4,
+          "cosignature_time_utc": "2026-11-10T18:20:39+00:00",
+          "signature_valid": true,
+          "negative_control_rejected": true
+        }
+      ]
+    },
+    {
+      "file": "markovian-histor-checkpoint.txt",
+      "origin": "histor.modelmarket.dev/log",
+      "tree_size": 1975254,
+      "root_base64": "tlUjZ+PWJMoNciGgTp+pbmyhQpWd0Hci2R7Y0FbT29Y=",
+      "signatures": [
+        {
+          "name": "histor.modelmarket.dev/log",
+          "type": 1,
+          "signature_valid": true,
+          "negative_control_rejected": true
+        },
+        {
+          "name": "markovianprotocol.com/witness",
+          "type": 4,
+          "cosignature_time_utc": "2026-11-10T18:20:38+00:00",
+          "signature_valid": true,
+          "negative_control_rejected": true
+        }
+      ]
+    }
+  ],
+  "same_head_on_two_external_witnesses": true,
+  "key_sources": [
+    "histor-issuer.raw",
+    "crawlcheck-witness-machine.raw",
+    "markovian-about.raw"
+  ],
+  "freshness_limit": "Timestamps are signed claims of the witness, not independently validated wall clocks. No new checkpoint was submitted by this audit."
+}

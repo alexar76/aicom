@@ -4,6 +4,7 @@ Operational playbooks for ecosystem content, MCP registries, and awesome-list su
 
 | Doc | Purpose |
 |-----|---------|
+| [ecosystem-growth-audit-2026-11-11.ru.md](./ecosystem-growth-audit-2026-11-11.ru.md) | GitHub, social and product funnel audit; independent adoption signals and 30-day experiments. |
 | [external-use-pass8-2026-10-30.ru.md](./external-use-pass8-2026-10-30.ru.md) | External protocol observations of Attested Memory, SYMMARTYS and GAIA, an education-course citation, and broader ecosystem adoption checks. |
 | [external-use-pass7-2026-10-30.ru.md](./external-use-pass7-2026-10-30.ru.md) | Concrete transaction evidence for the third AER payer candidate, bounded payment context, and broader social/regional searches. |
 | [external-use-pass6-2026-10-30.ru.md](./external-use-pass6-2026-10-30.ru.md) | Payer attribution correction: own probe and known UseTested test within AER's displayed organic list; deeper code and regional checks. |

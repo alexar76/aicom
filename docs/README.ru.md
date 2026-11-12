@@ -45,7 +45,7 @@ AI-Factory превращает один промпт в отгружаемый 
 git clone https://github.com/alexar76/aicom && cd aicom && cp .env.demo .env && ./start.sh
 ```
 
-Из публичного репозитория `./start.sh` запускает Фабрику (в `.env` нужен один ключ LLM). Свой хаб ставится отдельно: `pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "Мой хаб"` → `aimarket serve`. Ярусы `--full` и `--everything` собирают спутники вместе с Фабрикой и работают только из полного монорепо.
+Из публичной копии `./start.sh` запускает Factory с Prometheus и Grafana. Factory доступна по адресу `http://localhost:9080`. Для сборки с ИИ-агентами добавьте ключ LLM в `.env`. До этого Factory использует шаблоны. Свой хаб можно запустить командами `pip install "aimarket-hub[pqc]"` → `aimarket quickstart --name "Мой хаб"` → `aimarket serve`. Ярусы `--full` и `--everything` собирают спутники вместе с Factory и требуют полного монорепозитория.
 
 ## Документация
 

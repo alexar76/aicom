@@ -1,0 +1,102 @@
+[
+  {
+    "query": "\"histor.modelmarket.dev/datasets/\" (site:qiita.com OR site:zenn.dev OR site:note.com OR site:hatena.ne.jp)",
+    "response_file": "search-1.json",
+    "response_status": "robots_blocked_batch_coverage_unknown"
+  },
+  {
+    "query": "\"github.com/alexar76/warden\" (site:csdn.net OR site:cnblogs.com OR site:segmentfault.com OR site:juejin.cn)",
+    "response_file": "search-1.json",
+    "response_status": "robots_blocked_batch_coverage_unknown"
+  },
+  {
+    "query": "\"github.com/alexar76/histor\" (site:ithelp.ithome.com.tw OR site:blog.gslin.org OR site:dcard.tw OR site:ptt.cc)",
+    "response_file": "search-1.json",
+    "response_status": "robots_blocked_batch_coverage_unknown"
+  },
+  {
+    "query": "\"modelmarket.dev\" (site:lihkg.com OR site:ithome.com.tw OR site:hksilicon.com OR site:unwire.hk)",
+    "response_file": "search-1.json",
+    "response_status": "robots_blocked_batch_coverage_unknown"
+  },
+  {
+    "query": "\"aimarket-hestia\" (\"智能体\" OR \"代理\" OR \"エージェント\" OR \"에이전트\")",
+    "response_file": "search-2.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"aimarket-metis\" -site:github.com -site:pypi.org -site:modelmarket.dev -site:dev.to",
+    "response_file": "search-2.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"attestedmemory.net\" (\"台湾\" OR \"台灣\" OR \"日本\" OR \"한국\")",
+    "response_file": "search-2.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"magic-ai-factory.com\" (\"中国\" OR \"日本\" OR \"한국\" OR \"台湾\")",
+    "response_file": "search-2.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"Artamokhov\" (\"エージェント\" OR \"人工知能\" OR \"MCP\") -site:github.com -site:modelmarket.dev -site:dev.to -site:ietf.org -site:ietf.potaroo.net",
+    "response_file": "search-3.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"alexar76\" \"工具\" -site:github.com -site:modelmarket.dev -site:dev.to -site:huggingface.co -site:glama.ai",
+    "response_file": "search-3.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"modelmarket.dev/start\" (\"日本語\" OR \"한국어\" OR \"中文\") -site:modelmarket.dev -site:github.com",
+    "response_file": "search-3.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"magic-ai-factory\" (site:qiita.com OR site:zenn.dev OR site:csdn.net OR site:tistory.com)",
+    "response_file": "search-3.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"histor.modelmarket.dev\" \"MCP\" (\"台湾\" OR \"台灣\" OR \"香港\")",
+    "response_file": "search-4.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"warden.modelmarket.dev\" -site:modelmarket.dev -site:github.com -site:dev.to -site:medium.com",
+    "response_file": "search-4.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"metis.modelmarket.dev\" (\"中文\" OR \"日本語\" OR \"한국어\") -site:modelmarket.dev -site:github.com",
+    "response_file": "search-4.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"github.com/alexar76/aimarket-plugins\" (\"日本語\" OR \"한국어\" OR \"中文\") -site:github.com",
+    "response_file": "search-4.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"HISTOR\" \"MCP\" (\"ニュースレター\" OR \"週刊\" OR \"週間\") -site:modelmarket.dev -site:github.com",
+    "response_file": "search-5.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"Artamokhov\" (\"중국\" OR \"日本\" OR \"中文\") -site:github.com -site:modelmarket.dev -site:dev.to",
+    "response_file": "search-5.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"AIMarket\" \"Multica\" (\"日本\" OR \"中文\" OR \"한국\") -site:github.com -site:dev.to -site:modelmarket.dev",
+    "response_file": "search-5.json",
+    "response_status": "returned_combined_response"
+  },
+  {
+    "query": "\"attested-memory\" (\"技術\" OR \"教程\" OR \"후기\") -site:github.com -site:dev.to -site:modelmarket.dev -site:attestedmemory.net",
+    "response_file": "search-5.json",
+    "response_status": "returned_combined_response"
+  }
+]

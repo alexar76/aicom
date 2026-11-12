@@ -1,0 +1,74 @@
+# Overlay for Linux Docker Engine bridge networking. Requires Compose >= 2.24.4.
+# Paths are explicit because overlay paths otherwise resolve relative to the base file.
+services:
+  daemon:
+    networks: !override
+      qa_agent:
+        ipv4_address: 10.250.0.10
+    dns: !override [127.0.0.1]
+    ports: !override []
+    user: "1000:1000"
+    privileged: false
+    cap_add: !override []
+    cap_drop: [ALL]
+    devices: !override []
+    security_opt: !override [no-new-privileges:true]
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: "1"
+    environment:
+      http_proxy: http://egress:8888
+      https_proxy: http://egress:8888
+      HTTP_PROXY: http://egress:8888
+      HTTPS_PROXY: http://egress:8888
+      ALL_PROXY: ""
+      all_proxy: ""
+      NO_PROXY: backend,localhost,127.0.0.1
+      no_proxy: backend,localhost,127.0.0.1
+  backend:
+    # Preserve the base backend networks and additionally expose its API here.
+    networks:
+      qa_agent:
+        ipv4_address: 10.250.0.30
+  egress: !override
+    build:
+      context: ${QA_EGRESS_DIR:?absolute path to multica/security/egress}
+    image: multica-qa-egress:local
+    user: "65534:65534"
+    networks:
+      qa_agent:
+        ipv4_address: 10.250.0.20
+      qa_egress_out:
+        ipv4_address: 10.251.0.20
+    dns: ["${QA_DNS_IP:?approved IPv4 DNS resolver}"]
+    read_only: true
+    tmpfs: [/tmp:mode=1777,size=8m]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: "1"
+    mem_limit: 128m
+    cpus: 0.5
+    pids_limit: 64
+    volumes:
+      - type: bind
+        source: ${QA_ALLOWLIST_FILE:?absolute path to the operator-owned allowlist}
+        target: /etc/tinyproxy/allow
+        read_only: true
+        bind:
+          create_host_path: false
+networks:
+  qa_agent:
+    driver: bridge
+    internal: true
+    enable_ipv6: false
+    driver_opts:
+      com.docker.network.bridge.name: br-multica-qa
+    ipam:
+      config: [{subnet: 10.250.0.0/24}]
+  qa_egress_out:
+    driver: bridge
+    enable_ipv6: false
+    driver_opts:
+      com.docker.network.bridge.name: br-multica-out
+    ipam:
+      config: [{subnet: 10.251.0.0/24}]

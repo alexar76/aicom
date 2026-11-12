@@ -1,0 +1,65 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/deps/pytest/__main__.py", line 9, in <module>
+    raise SystemExit(pytest.console_main())
+                     ~~~~~~~~~~~~~~~~~~~^^
+  File "/deps/_pytest/config/__init__.py", line 223, in console_main
+    code = main()
+  File "/deps/_pytest/config/__init__.py", line 193, in main
+    config = _prepareconfig(new_args, plugins)
+  File "/deps/_pytest/config/__init__.py", line 361, in _prepareconfig
+    config: Config = pluginmanager.hook.pytest_cmdline_parse(
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        pluginmanager=pluginmanager, args=args
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/deps/pluggy/_caller.py", line 197, in __call__
+    return self._hookexec(
+           ~~~~~~~~~~~~~~^
+        self.name, self._hookimpls.copy(), call_kwargs, firstresult
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/deps/pluggy/_manager.py", line 183, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/deps/pluggy/_execution.py", line 195, in _multicall
+    raise exception
+  File "/deps/pluggy/_execution.py", line 167, in _multicall
+    teardown.throw(exception)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/deps/_pytest/helpconfig.py", line 124, in pytest_cmdline_parse
+    config = yield
+             ^^^^^
+  File "/deps/pluggy/_execution.py", line 147, in _multicall
+    res = hook_impl.function(*args)
+  File "/deps/_pytest/config/__init__.py", line 1192, in pytest_cmdline_parse
+    self.parse(args)
+    ~~~~~~~~~~^^^^^^
+  File "/deps/_pytest/config/__init__.py", line 1501, in parse
+    rootpath, inipath, inicfg, ignored_config_files = determine_setup(
+                                                      ~~~~~~~~~~~~~~~^
+        inifile=ns.inifilename,
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        invocation_dir=self.invocation_params.dir,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/deps/_pytest/config/findpaths.py", line 309, in determine_setup
+    inicfg = load_config_dict_from_file(inipath_) or {}
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/deps/_pytest/config/findpaths.py", line 102, in load_config_dict_from_file
+    toml_text = filepath.read_text(encoding="utf-8")
+  File "/usr/local/lib/python3.13/pathlib/_local.py", line 546, in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/pathlib/_abc.py", line 632, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/source/independent/kova-gateway/pyproject.toml'

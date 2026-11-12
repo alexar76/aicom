@@ -1,0 +1,376 @@
+<!doctype html><html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Without this the browser keeps native form controls light in dark mode: the search box
+     and the e-mail field would stay white rectangles on a dark page. -->
+<meta name="color-scheme" content="light dark"><meta name="theme-color" content="#193e35" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#17171c" media="(prefers-color-scheme: dark)"><script>(function(){var d=document.documentElement,t='';try{var m=document.cookie.match(/(?:^|; )theme=(dark|light)/);t=localStorage.getItem('theme')||(m?m[1]:'')}catch(e){}if(t!=='dark'&&t!=='light')t='';if(t)d.setAttribute('data-theme',t);d.setAttribute('data-mode',t||((window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'))})();</script>
+<!-- Baidu site ownership. Baiduspider asking for / is answered 302 -> /en/, so the tag
+     has to live on the pages head() renders rather than on /index.html. Removing it
+     drops the property in the Baidu console. -->
+<meta name="baidu-site-verification" content="codeva-OL8aclMjoN"><meta name="msvalidate.01" content="EAA04D4E6DEAB2C21864AD9DA49E7285">
+<title>alexar76/aimarket-plugins · MCP 服务 · MCP 服务器 · Anclum</title><meta name="description" content="15 个 AIMarket 枢纽插件——TEE 托管、频道、信誉、安全等。">
+<link rel="canonical" href="https://anclum.com/zh/s/alexar76-aimarket-plugins/">
+<link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"><link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="alexar76/aimarket-plugins · MCP 服务 · MCP 服务器 · Anclum"><meta property="og:description" content="15 个 AIMarket 枢纽插件——TEE 托管、频道、信誉、安全等。">
+<meta property="og:url" content="https://anclum.com/zh/s/alexar76-aimarket-plugins/"><meta property="og:type" content="website">
+<meta property="og:image" content="https://anclum.com/og.zh.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<link rel="alternate" type="application/rss+xml" title="Anclum" href="/zh/feed.xml">
+<link rel="alternate" hreflang="zh" href="https://anclum.com/zh/s/alexar76-aimarket-plugins/"><link rel="alternate" hreflang="en" href="https://anclum.com/en/s/alexar76-aimarket-plugins/">
+<link rel="alternate" hreflang="x-default" href="https://anclum.com/en/s/alexar76-aimarket-plugins/">
+<!-- 2026-10-24 拆渲染阻塞: 这个 Google Fonts 的 CSS 原来是同步阻塞首屏的，
+     Lighthouse 移动端实测浪费 1814ms（第三方域要先建连再取 CSS）。现在用
+     media=print 先异步取，加载完再切回 all；首屏立刻用系统字体栈画出来
+     （-apple-system / Segoe UI / Roboto 兜底，URL 已带 display=swap）。
+     无 JS 时 noscript 兜底，行为与改动前一致。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=DM+Mono:wght@400;500&amp;display=swap" fetchpriority="high">
+<link rel="stylesheet" href="/site.css?v=71f6ff39"><meta property="og:site_name" content="Anclum">
+<meta name="application-name" content="Anclum">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://anclum.com/#org", "name": "Anclum", "alternateName": ["Anclum", "技能潮", "anclum.com"], "url": "https://anclum.com/", "logo": {"@type": "ImageObject", "url": "https://anclum.com/favicon-192.png", "width": 192, "height": 192}, "description": "面向开发者与 AI Agent 的独立索引：MCP 服务、Agent 技能与开源 AI 工具。", "sameAs": ["https://github.com/wdfdaivd/skilltide-mcp"]}, {"@type": "WebSite", "name": "Anclum", "alternateName": ["Anclum", "技能潮"], "url": "https://anclum.com/", "description": "面向开发者与 AI Agent 的独立索引：MCP 服务、Agent 技能与开源 AI 工具。", "publisher": {"@id": "https://anclum.com/#org"}, "inLanguage": ["en", "zh"], "potentialAction": {"@type": "SearchAction", "target": {"@type": "EntryPoint", "urlTemplate": "https://anclum.com/zh/?q={search_term_string}"}, "query-input": "required name=search_term_string"}}]}</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-WNKGF1WB1T"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-WNKGF1WB1T",{anonymize_ip:true});</script><meta name="robots" content="noindex,follow"></head><body>
+<div class="cmdk st-cmdk" id="cmdk" role="dialog" aria-modal="true">
+  <div class="panel">
+    <div class="in">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="cmdq" placeholder="搜索全站 9,759 条条目" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
+    </div>
+    <div class="list" id="cmdlist"></div>
+    <div class="foot"><span><kbd>↑</kbd><kbd>↓</kbd> 选择</span><span><kbd>↵</kbd> 打开</span><span><kbd>⌘K</kbd> 唤起</span></div>
+  </div>
+</div>
+<nav class="tabbar st-tabbar" aria-label="Mobile navigation"><div class="t">
+  <a href="/zh/" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg>首页</a>
+  <a href="/zh/mcp-directory/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg>MCP</a>
+  <a href="/zh/ai/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v2M14 3v2M10 19v2M14 19v2M3 10h2M3 14h2M19 10h2M19 14h2"/></svg>AI</a>
+  <a href="/zh/r/top/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6L5.7 21l2.3-7.2-6-4.4h7.6z"/></svg>榜单</a>
+  <details class="tabmore"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>更多</summary><div class="sheet">
+    <a href="/zh/ai/ai-agent/">智能体</a>
+    <a href="/zh/task/">任务</a>
+    <a href="/en/compare/">对比</a>
+    <a href="/zh/section/">专区</a>
+    <a href="/zh/clients/">客户端与 CLI</a>
+  </div></details>
+  <a href="/zh/search/" onclick="window.anclumCmdk&&anclumCmdk.open()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>搜索</a>
+</div></nav>
+<script>
+(function(){
+  var MSG = {"ph": "搜索全站 9,759 条条目", "recent": "最近看过", "jump": "快捷跳转", "none": "没有对得上的条目", "hint": "换个工具名、领域名，或去领域页翻", "of": "共", "items": "条", "nav": "选择", "open": "打开", "toggle": "唤起", "save": "收藏", "saved": "已收藏"};
+  var FAVK = 'anclum-fav', RECK = 'anclum-recent';
+  function favs(){ try { return JSON.parse(localStorage.getItem(FAVK) || '[]'); } catch(e){ return []; } }
+  function recent(){ try { return JSON.parse(localStorage.getItem(RECK) || '[]'); } catch(e){ return []; } }
+  function paint(){
+    document.querySelectorAll('[data-fav]').forEach(function(b){
+      var on = favs().indexOf(b.getAttribute('data-fav')) >= 0;
+      b.classList.toggle('on', on);
+      if (b.hasAttribute('data-fav-label')) b.innerHTML = (on ? '\u2605 ' : '\u2606 ') + (on ? MSG.saved : MSG.save);
+    });
+  }
+  document.addEventListener('click', function(e){
+    var b = e.target && e.target.closest ? e.target.closest('[data-fav]') : null;
+    if (!b) return;
+    var s = b.getAttribute('data-fav'), a = favs(), i = a.indexOf(s);
+    if (i >= 0) a.splice(i, 1); else a.push(s);
+    try { localStorage.setItem(FAVK, JSON.stringify(a)); } catch(err){}
+    paint();
+  });
+  paint();
+
+  // ---- command palette ----
+  var box = document.getElementById('cmdk'), input = document.getElementById('cmdq'),
+      list = document.getElementById('cmdlist'), index = null, sel = 0, rows = [];
+
+  function esc(s){ var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  // ★ 2026-10-23: 多词检索。旧版把整串查询当一个子串去 indexOf ——
+  //   "pdf table sql" 必须是连着的三个词才命中，所以自然语言查询 0 结果，而单个词能搜到，
+  //   看起来"能用"。现在: 每个词都必须命中(AND)，名字命中权重最高，整串命中额外加分。
+  // ★ 2026-10-23 v2: 两档检索。
+  //   ① 每个词都命中（AND）→ 按"名字命中 > 词首命中 > 整串命中"打分；
+  //   ② 一条 AND 都没有时，退一档：按"命中了几个词"排序（至少 2 个词，或 1 个词的查询命中 1 个）。
+  //   为什么要 ②: 索引里的说明只存前 80 字，用户写一句自然语言时 AND 必然太严 ——
+  //   实测"pdf table sql"在 ① 档 0 条，而库里明明有 PDF 工具。退一档比空结果诚实，也比放宽成 OR 更少噪音。
+  //   停用词只去【纯英文】的功能词（a/to/and/how…）；中文不分词，整串当一个 token，
+  //   所以绝不对中文做停用词处理 —— 把"做"去掉会让"做PPT"搜不到。
+  // ★ 2026-10-23 v3: 三档检索（每档都要能单独解释清楚，不靠玄学权重）。
+  //   ① 严格档：每个词都命中（AND）—— 名字命中 > 词首命中 > 整串命中，按分排序；
+  //   ② 退让档：一条 AND 都没有时，按"命中了几个词"排序（至少 2 个词）；
+  //   ③ 中文切分档：中文没有空格，"视频剪辑"在库里是"视频"和"剪辑"分散出现的，
+  //      整串必然搜不到。所以中文串长度 ≥3 时切成 2 字片段（视频/频剪/剪辑），
+  //      命中 ≥2 个片段就算候选。这是补召回，不是补发明 —— 只对库里确有这些字串的条目排序。
+  //   为什么要②③: 旧版把整串当一个子串 indexOf，实测"pdf table sql""screenshot website"
+  //   在 8k 条里全是 0 条，而库里明明有这些工具 —— 看起来能用，其实只会单词检索。
+  var STOP = {a:1,an:1,the:1,to:1,for:1,of:1,in:1,on:1,at:1,with:1,and:1,or:1,that:1,
+              this:1,it:1,is:1,are:1,be:1,i:1,my:1,me:1,we:1,you:1,your:1,need:1,want:1,
+              find:1,looking:1,how:1,what:1,which:1,can:1,some:1,any:1,from:1,into:1,do:1,
+              make:1,using:1,use:1,tool:1,tools:1,best:1,good:1};
+  // 中文只在【词首】剥掉这些动词/客套词（"做ppt"→"ppt"）；不从中间删，
+  // 因为"做"出现在"做法"里时不能动。中文不分词、不整体当停用词。
+  var CJPRE = ['帮我找', '帮我', '我要', '我想', '求推荐', '推荐', '怎么', '如何', '有没有', '做', '用', '找', '要'];
+  function stripCjk(t){
+    for (var guard = 0; guard < 4; guard++){
+      var cut = false;
+      for (var i = 0; i < CJPRE.length; i++){
+        var p = CJPRE[i];
+        if (t.length > p.length && t.indexOf(p) === 0){ t = t.slice(p.length); cut = true; break; }
+      }
+      if (!cut) break;
+    }
+    return t;
+  }
+  function grams(t){
+    if (t.length >= 3 && /[一-鿿]/.test(t)) {
+      var g = [];
+      for (var i = 0; i + 2 <= t.length; i++) g.push(t.slice(i, i + 2));
+      return g;
+    }
+    return [t];
+  }
+  function rank(idx, q, cap){
+    if (!idx) return [];
+    var raw = (q || '').trim().toLowerCase();
+    var CJ1 = {'做':1,'用':1,'要':1,'找':1,'的':1,'了':1,'和':1,'与':1,'或':1,'个':1,'些':1};
+    var orig = raw.split(/\s+/).filter(Boolean);
+    var toks = orig.filter(function(t){
+                 return !(STOP[t] === 1) && !(t.length === 1 && CJ1[t] === 1);
+               }).map(stripCjk).filter(Boolean).slice(0, 8);
+    if (!toks.length) toks = orig.slice(0, 8);
+    if (!toks.length) return [];
+    var strict = [], loose = [], weak = [], allg = [];
+    // 最弱一档只对中文开: 中文没有空格，切分错是常态；英文查询走弱档只会变噪音。
+    var hasCjk = /[一-鿿]/.test(raw);
+    for (var k = 0; k < toks.length; k++){
+      var gg = grams(toks[k]);
+      for (var m = 0; m < gg.length; m++) allg.push(gg[m]);
+    }
+    var needStrict = toks.length, needLoose = toks.length > 1 ? 2 : 1;
+    for (var i = 0; i < idx.length; i++){
+      var x = idx[i], nm = (x.n || '').toLowerCase();
+      var hay = (nm + ' ' + (x.d || '') + ' ' + (x.f || '')).toLowerCase();
+      var sc = 0, hit = 0, ghit = 0;
+      for (var t = 0; t < toks.length; t++){
+        var at = hay.indexOf(toks[t]);
+        if (at < 0) continue;
+        hit++; sc += 10;
+        if (nm.indexOf(toks[t]) >= 0) sc += 12;
+        if (at === 0 || hay.charAt(at - 1) === ' ') sc += 4;
+      }
+      for (var u = 0; u < allg.length; u++){
+        if (hay.indexOf(allg[u]) >= 0) ghit++;
+      }
+      if (hit === needStrict){
+        if (hay.indexOf(raw) >= 0) sc += 30;
+        strict.push([sc, ghit, i, x]);
+      } else if (hit >= needLoose){
+        loose.push([hit * 100 + sc, ghit, i, x]);
+      } else if (allg.length > 1 && ghit >= 2){
+        loose.push([ghit * 50 + sc, ghit, i, x]);
+      } else if (hasCjk && ghit >= 1){
+        weak.push([ghit * 10 + sc, ghit, i, x]);
+      }
+    }
+    var res = strict.length ? strict : (loose.length ? loose : weak);
+    res.sort(function(a, b){ return b[0] - a[0] || b[1] - a[1] || a[2] - b[2]; });
+    return res.slice(0, cap).map(function(p){ return p[3]; });
+  }
+  window.anclumRank = rank;
+  function load(){
+    if (index) return index;
+    list.innerHTML = '<div class="grp">\u2026</div>';
+    fetch('/search-index.json', {cache: 'force-cache'}).then(function(r){ return r.json(); })
+      .then(function(j){ index = j; render(input.value); })
+      .catch(function(){ list.innerHTML = '<div class="grp">' + esc(MSG.hint) + '</div>'; });
+    return null;
+  }
+  function item(it){
+    return '<div class="it" data-slug="' + esc(it.s) + '">' +
+      '<div class="t"><div class="n">' + esc(it.n) + '</div><div class="d">' + esc(it.d || '') + '</div></div>' +
+      '<div class="r"><span class="tag">' + esc(it.f || '') + '</span>' + esc(it.s || '') + '</div></div>';
+  }
+  function jumpRow(u, t){
+    return '<div class="it" data-jump="' + esc(u) + '"><div class="t"><div class="n">' + esc(t) +
+           '</div></div><div class="r">\u21b5</div></div>';
+  }
+  var JUMPS = [["/zh/f/mcp/", "MCP 服务"], ["/zh/r/new/", "最近收录"], ["/zh/r/stars/", "GitHub Star 榜"], ["/zh/", "按领域浏览"]];
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    var html = '';
+    if (!q){
+      var rec = recent();
+      if (rec.length){
+        html += '<div class="grp">' + esc(MSG.recent) + '</div>';
+        rec.slice(0, 5).forEach(function(s){
+          var it = index && index.find(function(x){ return x.s === s; });
+          if (it) html += item(it);
+        });
+      }
+      html += '<div class="grp">' + esc(MSG.jump) + '</div>';
+      JUMPS.forEach(function(j){ html += jumpRow(j[0], j[1]); });
+      rows = [];
+    } else {
+      var hits = rank(index, q, 8);
+      html += '<div class="grp">' + hits.length + ' ' + esc(MSG.of) + ' ' + (index ? index.length : 0) + ' ' + esc(MSG.items) + '</div>';
+      if (!hits.length && index) html += '<div class="it"><div class="t"><div class="n">' + esc(MSG.none) + '</div><div class="d">' + esc(MSG.hint) + '</div></div></div>';
+      hits.forEach(function(it){ html += item(it); });
+      rows = hits;
+    }
+    list.innerHTML = html;
+    sel = 0; mark();
+  }
+  function mark(){
+    var its = list.querySelectorAll('.it');
+    its.forEach(function(el, i){ el.classList.toggle('sel', i === sel); });
+    if (its[sel]) its[sel].scrollIntoView({block: 'nearest'});
+  }
+  function go(el){
+    if (!el) return;
+    var s = el.getAttribute('data-slug'), u = el.getAttribute('data-jump');
+    if (s){
+      var r = recent().filter(function(x){ return x !== s; });
+      r.unshift(s);
+      try { localStorage.setItem(RECK, JSON.stringify(r.slice(0, 10))); } catch(e){}
+      location.href = '/zh/s/' + s + '/';
+    } else if (u){
+      location.href = u;
+    }
+  }
+  list.addEventListener('click', function(e){
+    var el = e.target && e.target.closest ? e.target.closest('.it') : null;
+    if (el) go(el);
+  });
+  input.addEventListener('input', function(){ if (index) render(input.value); });
+  document.addEventListener('keydown', function(e){
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){
+      e.preventDefault(); box.classList.contains('open') ? close() : open();
+    } else if (e.key === 'Escape'){ close(); }
+    else if (box.classList.contains('open') && (e.key === 'ArrowDown' || e.key === 'ArrowUp')){
+      e.preventDefault();
+      var n = list.querySelectorAll('.it').length;
+      if (n){ sel = (sel + (e.key === 'ArrowDown' ? 1 : -1) + n) % n; mark(); }
+    } else if (box.classList.contains('open') && e.key === 'Enter'){
+      e.preventDefault();
+      var its = list.querySelectorAll('.it');
+      if (its[sel]) go(its[sel]);
+    }
+  });
+  // ★ 2026-10-17 首页减法 ①: open(v) 接受首页大搜索框交来的查询词。
+  //   不传 = 原来的行为（清空并显示最近/跳转），所以导航栏那个搜索图标一个字没变。
+  function open(v){ box.classList.add('open'); input.value = v || ''; load(); render(input.value); setTimeout(function(){ input.focus(); }, 30); }
+  function close(){ box.classList.remove('open'); }
+  box.addEventListener('click', function(e){ if (e.target === box) close(); });
+  // 2026-10-20 mobile bar "More" sheet: <details> does not close on outside click or
+  // Esc, so without this it stays open and covers the bar it lives in.
+  function closeTabMore(){
+    document.querySelectorAll('.tabbar details.tabmore[open]').forEach(function(d){
+      d.removeAttribute('open');
+    });
+  }
+  document.addEventListener('click', function(e){
+    var tg = e.target;
+    if (!tg || !tg.closest || !tg.closest('.tabbar details.tabmore')) closeTabMore();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeTabMore();
+  });
+  window.anclumCmdk = { open: open, close: close };
+})();
+</script>
+<div class="truststrip"><div class="wrap ts-in">
+<span class="ts-dot"></span>
+独立运营 · 不出售排名位置
+&nbsp;·&nbsp;<a href="/zh/about/">我们怎么评估工具 &rarr;</a>
+</div></div>
+<header><div class="wrap hd">
+  <a class="brand" href="/zh/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<defs>
+<linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#193e35"/>
+<stop offset="1" stop-color="#4c1d95"/>
+</linearGradient>
+</defs>
+<circle cx="16" cy="16" r="15" fill="url(#g)"/>
+<path d="M6.5 21.5c2.2-4.2 5.6-5.8 9-4.7 2.5.8 4.3.1 6.3-2" fill="none" stroke="#eef4e4" stroke-width="2.8" stroke-linecap="round"/>
+</svg>
+<span>Anclum</span></a>
+  <nav class="top"><a href="/zh/mcp-directory/"><span class="nic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/><path d="M8 7V4M16 7V4M8 17v3M16 17v3"/></svg></span>MCP 服务</a>
+    <a href="/zh/t/skill/"><span class="nic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg></span>Agent 技能</a>
+    <a href="/zh/ai/"><span class="nic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v2M14 3v2M10 19v2M14 19v2M3 10h2M3 14h2M19 10h2M19 14h2"/></svg></span>AI 工具</a>
+    <a href="/zh/ai/ai-agent/"><span class="nic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4M8 13h.01M16 13h.01M9 19v2M15 19v2"/></svg></span>AI 智能体</a>
+    <a href="/zh/task/"><span class="nic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5h10M9 12h10M9 19h10"/><path d="M4 5l1 1 2-2M4 12l1 1 2-2M4 19l1 1 2-2"/></svg></span>按任务</a>
+    <details class="navbrowse"><summary><span class="nic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2 5.2-5.2 2 2-5.2z"/></svg></span>浏览<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="menu"><a href="/en/compare/">对比</a><a href="/zh/section/">专区</a></div></details>
+    <a href="/zh/clients/"><span class="nic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="m7 9 2.5 2.5L7 14"/><path d="M12.5 14H17"/><path d="M8 21h8"/></svg></span>客户端与 CLI</a>
+    <a href="/zh/r/"><span class="nic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>榜单</a></nav>
+  <form class="hdr-search" role="search" action="/zh/search/" method="get"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/>
+    <path d="m20 20-3.5-3.5"/></svg><input class="hdr-q" type="search" name="q" autocomplete="off"
+    aria-label="搜索 MCP 服务、技能和 AI 工具"
+    placeholder="搜索"><kbd class="kbd" type="button"
+    onclick="window.anclumCmdk&&anclumCmdk.open()" title="Search all items">⌘K</kbd></form>
+  <a class="cta" href="/zh/#submitform">提交收录</a>
+  <div class="hdact"><a class="lang" href="/setlang?l=en">English</a><button class="tgl" id="tgl" type="button" aria-label="暗色模式" aria-pressed="false" data-dark="切换到暗色" data-light="切换到亮色" title="切换到暗色"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.3A8.5 8.5 0 0 1 9.7 3.5a8.5 8.5 0 1 0 10.8 10.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg></button></div>
+</div></header><script>
+(function(){var d=document.documentElement,b=document.getElementById('tgl');
+if(!b)return;
+function sys(){return (window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';}
+function eff(){var t=d.getAttribute('data-theme');return (t==='dark'||t==='light')?t:sys();}
+function paint(m){d.setAttribute('data-mode',m);b.setAttribute('aria-pressed',m==='dark'?'true':'false');
+ b.setAttribute('title',m==='dark'?b.dataset.light:b.dataset.dark);}
+// The click sets an explicit choice. Clicking always lands on the opposite of what is on screen,
+// including when the screen is dark because the OS is dark.
+b.addEventListener('click',function(){var n=eff()==='dark'?'light':'dark';
+ d.setAttribute('data-theme',n);
+ try{localStorage.setItem('theme',n);document.cookie='theme='+n+';path=/;max-age=31536000;SameSite=Lax';}catch(e){}
+ paint(n);});
+paint(eff());
+// With no explicit choice the page follows the OS, so the icon has to follow it too - otherwise
+// the button shows a moon while the page is already dark.
+if(window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').addEventListener){
+ matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){
+  if(!d.getAttribute('data-theme'))paint(sys());});}
+})();
+</script><main><div class="wrap"><div class="item">
+  <div class="crumb"><a href="/zh/">首页</a> / <a href="/zh/mcp-directory/">MCP 目录</a> / <a href="/zh/mcp-directory/ai/">AI 与模型工具</a> / <a href="/zh/mcp-directory/ai/general/">其他 AI 工具</a></div>
+  <div style="display:flex;gap:14px;align-items:center;margin-bottom:6px">
+    <span class="ico fb" style="width:44px;height:44px;border-radius:10px;font-size:18px;background:hsl(294,52%,52%)">A</span>
+    <div>
+      <h1 style="margin:0">alexar76/aimarket-plugins</h1>
+      
+    </div>
+  </div>
+  
+  <div class="lead">15 个 AIMarket 枢纽插件——TEE 托管、频道、信誉、安全等。</div>
+  <div class="facts"><span title="GitHub 报告的许可证">MIT 许可证</span><span class="dot">·</span><span title="仓库根目录有 SECURITY.md（只核存在，未核内容）">SECURITY.md ✓</span></div>
+  <div class="actions"><button class="btn ghost" data-fav="alexar76-aimarket-plugins" data-fav-label>☆ 收藏</button><a class="btn ghost" href="https://github.com/alexar76/aimarket-plugins" rel="nofollow noopener" target="_blank">在 GitHub 查看 ↗</a><span class="linknote">链接已于 2026-11-03 核查 · HTTP 200 · 打开的是厂商自己的官网</span></div>
+  
+  
+  
+  
+  
+  <p class="cfgnote" style="margin:10px 0 0">我们没有从<a href="https://github.com/alexar76/aimarket-plugins" rel="nofollow noopener" target="_blank">该仓库</a>取到可核对的安装命令，也没有公开的远端端点。这两样都没有时，我们不出配置——编一条出来比不给更糟。 <a href="/zh/clients/">各客户端的接法 →</a></p>
+  <dl class="prov"><dt>★ 数取值</dt><dd>2 ★ · <span class="mono">alexar76/aimarket-plugins</span> · 取自该仓库的 GitHub 页面 · （2026-11-09 20:00:47 核对）</dd><dt>来源明细</dt><dd>收录自 punkpeye/awesome-mcp-servers 榜单（我们从中收集的条目之一） · 条目类型：MCP 服务</dd><dt>收录与活跃</dt><dd>收录于 2026-10-09 · 最近见到 2026-11-10 · 共见到 60 次 · 被 32 个来源列出</dd><dt>评分构成</dt><dd>综合分 3,203 · 2 ★ · 32 个来源 · mcp</dd></dl>
+  <div class="faqblock"><div class="faqh">常见问题（答案都来自我们的记录）</div><details class="faq"><summary>它适合谁 / 用来做什么？</summary><div class="faqa">我们把它归在这些标签下: MCP 服务。标签来自条目自身，不是我们强加的分类。</div></details><details class="faq"><summary>谁维护它、还在更新吗？</summary><div class="faqa">仓库 <code>alexar76/aimarket-plugins</code>；我们收录于 2026-10-09；最近见到 2026-11-10。这里没有"官方认证"或"质量评级"——我们只记录来源与时间。</div></details></div>
+  <div class="qbadges"><span class="qbl">第三方质量标记</span><img class="qbadge" src="https://img.shields.io/github/license/alexar76/aimarket-plugins" loading="lazy" alt="" height="20"><img class="qbadge" src="https://img.shields.io/github/v/release/alexar76/aimarket-plugins?sort=semver" loading="lazy" alt="" height="20"><img class="qbadge" src="https://img.shields.io/github/v/tag/alexar76/aimarket-plugins" loading="lazy" alt="" height="20"><img class="qbadge" src="https://img.shields.io/github/actions/workflow/status/alexar76/aimarket-plugins/ci.yml?branch=main" loading="lazy" alt="" height="20"><img class="qbadge" src="https://img.shields.io/github/contributors/alexar76/aimarket-plugins" loading="lazy" alt="" height="20"><img class="qbadge" src="https://img.shields.io/github/last-commit/alexar76/aimarket-plugins" loading="lazy" alt="" height="20"></div>
+  
+  <section class="rd"><h2>&gt; 🔄 Synced from a monorepo — but with a live history. aimarket-plugins mirrors t</h2><p class="rdnote">以下摘录自该仓库的 README（片段） · <a href="https://github.com/alexar76/aimarket-plugins#readme" rel="nofollow noopener" target="_blank">在 GitHub 读完整 README →</a></p><div class="rdbody">&gt; canonical AI-Factory monorepo. History here is append-only (no force-push).<br>&gt; Pull requests are welcome — merged PRs are imported back into the monorepo<br>&gt; and re-synced here, so your contribution becomes canonical.<br>&gt; 💬 Issues · Pull requests both welcome.<br># AIMarket Hub Plugins<br>&gt; Ecosystem: AICOM overview &amp; live demos · Community: Discord · Pollux · Telegram · Castor<br>15 protocol plugins extend hub invoke, settlement, compliance, and data planes without forking core.<br>Verifiable math lives in the separate oracles monorepo (Platon, Chronos, Murmuration, Lumen, …) — listed on the hub like any capability. aimarket-reputation scores sellers; Lumen oracle supplies PageRank/EigenTrust-style trust artifacts agents can invoke and audit.<br>## Install<br>PyPI (top-5): docs/install.md<br>| Package | PyPI status |<br>| aimarket-hub | ✅ 3.0.0 |<br>| aimarket-tee, aimarket-channels, aimarket-reputation | ✅ 2.0.0 |<br>| aimarket-safety, aimarket-mcp-packager | ⏳ pending (PyPI new-project rate limit — install from source until published) |<br>| aimarket-zk | ⏳ monorepo only — pip install -e plugins/aimarket-zk until PyPI publish |<br>Docker: all 15 plugins ship in the production hub image — ./scripts/deployhub.sh from the factory monorepo.<br>Source: pip install -e plugins/aimarket-tee after cloning this repo.<br>## TEE Escrow<br>Smart-contract escrow in a Trusted Execution Environment — buyer funds stay held until attested invoke succeeds; seller is paid only on proof; failures refund on-channel.<br>| What | aimarket-tee + provenance + safety → hold → invoke → release/refund |<br>| Why | Micropay scale with both-side protection — no human escrow desk |<br>| Deep dive | docs/killer-feature-tee-escrow.md · Ecosystem capabilities |<br>## MCP server — aimarket-mcp-packager<br>One of the 15 plugins is a full Model Context Protocol server — stdio transport, built on the official MCP Python SDK. aimarket-mcp-packager turns any AIMarket capability into a self-hosted MCP product (Docker image, MCP manifest, and a ready claudedesktopconfig.json) that runs in Claude Desktop, Cursor, Glama, or any stdio MCP client.<br>| Run | python plugins/aimarket-mcp-packager/mcpstdioserver.py (stdio) · docker build from repo root |<br>| Tools | packagecapability · generatedockerfile · generateclaudedesktopconfig |<br>| Registry | Listed on Glama (score badge above) — see aimarket-mcp-packager/ for the server, glama.json, and Dockerfile |<br>## MCP server — aimarket-oracle-gateway (standalone repo)<br>A second MCP server ships as its own satellite repo alexar76/aimarket-oracle-gateway for Glama indexing. aimarket-oracle-gateway exposes Platon randomness, Chronos VDF, and LUMEN reputation as agent-callable tools — pay-per-call over AIMarket, every result independently verifiable.<br>| Run | AIMARKETHUBURL=https://modelmarket.dev python mcpstdioserver.py |<br>| Tools | getrandom · computevdf · getreputationscores · listoraclecapabilities · … |<br>| Registry | — glama.json + Dockerfile |<br>## Plugin index<br>| Plugin | Role |<br>| aimarket-safety | Pre-invoke policy, signed reject |</div></section>
+  <div class="cfgblock" style="margin-top:14px"><div class="cfgh">收录徽章（可选）</div><div class="cfgnote">想把收录标记放进 README 就复制这行，可选，不影响收录。</div><div class="cfgwrap"><pre class="cfgpre">[![Listed on Anclum](https://anclum.com/badge/listed.svg)](https://anclum.com/zh/s/alexar76-aimarket-plugins/)</pre><button class="btn copy cfgcopy" data-c="[![Listed on Anclum](https://anclum.com/badge/listed.svg)](https://anclum.com/zh/s/alexar76-aimarket-plugins/)">复制</button></div></div>
+  <dl>
+    <dt>来源</dt><dd>awesome
+       · <a href="https://github.com/alexar76/aimarket-plugins" rel="nofollow noopener" target="_blank">https://github.com/alexar76/aimarket-plugins</a></dd>
+    <dt>按领域浏览</dt><dd>MCP 服务</dd>
+    
+    <dt>Traction</dt><dd>2 ★</dd>
+    <dt>收录来源</dt><dd>32 个独立来源</dd>
+    <dt>收录于</dt><dd>今天</dd>
+    <dt>安全策略</dt><dd>该仓库根目录有 <code>SECURITY.md</code>（我们只核文件存在，未核内容）</dd>
+  </dl>
+  <section class="nb-block pairs"><h2 class="nb-h">同类里的其他东西</h2><div class="nb-grid"><a class="nb-card" href="/zh/s/oneirocom-magick/"><span class="nb-nm" style="font-size:13.5px">Magick</span><span class="nb-tags"><em class="nb-tag">项目</em></span></a><a class="nb-card" href="/zh/s/liuhong6-awesome-short-drama-skills/"><span class="nb-nm" style="font-size:13.5px">LiuHong6/awesome-short-drama-skills</span><span class="nb-tags"><em class="nb-tag">项目</em></span></a><a class="nb-card" href="/zh/s/kartalbas-setup-ai-core/"><span class="nb-nm" style="font-size:13.5px">kartalbas/setup-ai-core</span><span class="nb-tags"><em class="nb-tag">项目</em></span></a><a class="nb-card" href="/zh/s/brutal-45-brutal-ai/"><span class="nb-nm" style="font-size:13.5px">brutal-45/Brutal-ai</span><span class="nb-tags"><em class="nb-tag">项目</em></span></a><a class="nb-card" href="/zh/s/mixpeek-amux/"><span class="nb-nm" style="font-size:13.5px">mixpeek/amux</span><span class="nb-tags"><em class="nb-tag">项目</em></span></a><a class="nb-card" href="/zh/s/kortix-ai-suna/"><span class="nb-nm" style="font-size:13.5px">kortix-ai/suna</span><span class="nb-tags"><em class="nb-tag">项目</em></span></a></div></section>
+  <section><h2>同类推荐</h2><div class="rows cards"><a class="row" href="/zh/s/juspay-neurolink/"><b>juspay/neurolink</b><span class="nb-tag">MCP 服务</span></a><a class="row" href="/zh/s/rohitg00-kubectl-mcp-server/"><b>rohitg00/kubectl-mcp-server</b><span class="nb-tag">MCP 服务</span></a><a class="row" href="/zh/s/microsoft-playwright-mcp/"><b>microsoft/playwright-mcp</b><span class="nb-tag">MCP 服务</span></a><a class="row" href="/zh/s/nwiizo-tfmcp/"><b>nwiizo/tfmcp</b><span class="nb-tag">MCP 服务</span></a><a class="row" href="/zh/s/waystation-ai-mcp/"><b>WayStation-ai/mcp</b><span class="nb-tag">MCP 服务</span></a><a class="row" href="/zh/s/julien040-anyquery/"><b>julien040/anyquery</b><span class="nb-tag">MCP 服务</span></a></div><p class="rowmore"><a href="/zh/f/mcp/">全部 6,221 →</a></p></section>
+  <section class="tcloud"><h2>所属领域与标签</h2><div class="tcloud-tags"><a class="tcloud-tag" href="/zh/f/mcp/">MCP 服务<span class="tcloud-n">6,221 条</span></a><a class="tcloud-tag" href="/zh/t/mcp/">MCP 服务端<span class="tcloud-n">6,541 条</span></a><a class="tcloud-tag" href="/zh/t/from-awesome/">入选精选清单<span class="tcloud-n">6,615 条</span></a><a class="tcloud-tag" href="/zh/t/has-readme/">有 README<span class="tcloud-n">6,110 条</span></a></div><p class="tcloud-note">每个标签都能点进去看同类的全部条目。数字是当前库里的真实条数。</p><p class="rowmore"><a href="/zh/f/">浏览全部领域 →</a></p></section>
+  <p style="margin-top:22px"><a href="/zh/" style="color:var(--accent)">← 返回索引</a></p>
+</div></div>
+</main>
+<footer><div class="wrap"><div>内容聚合自公开来源，链接于 2026-11-03 核查，失效的已标注。</div></div></footer>
+<script>document.querySelectorAll('.copy').forEach(function(b){b.onclick=function(){
+ navigator.clipboard.writeText(b.dataset.c);var t=b.textContent;b.textContent='已复制';
+ setTimeout(function(){b.textContent=t;},1200);};});</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "alexar76/aimarket-plugins", "applicationCategory": "MCP servers", "operatingSystem": "Any", "url": "https://anclum.com/zh/s/alexar76-aimarket-plugins/", "description": "15 个 AIMarket 枢纽插件——TEE 托管、频道、信誉、安全等。", "sameAs": "https://github.com/alexar76/aimarket-plugins"}</script>
+</body></html>

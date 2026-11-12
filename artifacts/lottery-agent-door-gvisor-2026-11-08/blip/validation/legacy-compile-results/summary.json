@@ -1,0 +1,70 @@
+{
+  "compilerErrorCount": 0,
+  "creationCodeBytes": 21421,
+  "creationCodeSha256": "6ffd56874292941de7168435b6bfa174cb538638422eaddd42f631a5aa275fde",
+  "format": "aicom.exact-legacy-solidity-compile/v1",
+  "legacyPaidSwitchAbsent": true,
+  "legacySourceSha256": "6866ae731c24e699facb1d4cf4efaecae837e1dfb76cfdd5db9a7f8d71d0d854",
+  "liveBytecodeIdentityClaim": false,
+  "nativeExitCode": 0,
+  "openzeppelinArchiveSha512": "2f2e9296c549de68fe6f5f16dd1f2036e7c1edd4c8093d74e5f261a1d1801a0c82da8aa704086a4a234327c57c0cb634e5c0b3f3518b234094e6f358035102ff",
+  "openzeppelinVersion": "5.6.1",
+  "passed": true,
+  "runtimeTemplateBytes": 18663,
+  "runtimeTemplateSha256": "8d6600ce22bbbcc30e209e594ee95efefeb7e18b23e21d34fa5f3153d6a80a3b",
+  "scope": "Exact historical Solidity source with recorded compiler/OZ dependencies; no live bytecode/state comparison.",
+  "seconds": 7.599,
+  "settings": {
+    "evmVersion": "cancun",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    },
+    "viaIR": true
+  },
+  "solcBinarySha256": "9a0fb7e0db2c0641dbae1c5cc645dc686820c83af516226abb1c0a2f76636f25",
+  "solcVersion": "solc, the solidity compiler commandline interface\nVersion: 0.8.28+commit.7893614a.Linux.g++",
+  "sourceGit": "e60aa7218",
+  "sourceHashes": {
+    "@openzeppelin/contracts/access/AccessControl.sol": "97abba9ae4ee97f16f17b7b688d90f6f1195b79edfba344eacc58406e088b51e",
+    "@openzeppelin/contracts/access/IAccessControl.sol": "140304b7e99d517c57a13f391dfd3b550ca633a507f7b2af130f391b6cd89cc5",
+    "@openzeppelin/contracts/access/extensions/AccessControlDefaultAdminRules.sol": "cc0b38f69eeab2f55a7f65d6ea8a513c879cdc9d8b8dea82f5d378036712029c",
+    "@openzeppelin/contracts/access/extensions/IAccessControlDefaultAdminRules.sol": "cfcb24ffcd5901a1f4293356f35ea01388f8b82f994a7a0f2a7187d651095c99",
+    "@openzeppelin/contracts/interfaces/IERC1363.sol": "9c3a75a925a6dac9e88b03cddc58d42fe3131b0aaaad84408521f3f7af2f991b",
+    "@openzeppelin/contracts/interfaces/IERC165.sol": "dfb3f56fa928a7c6cae41a7ce2c86b9210fa18d33fa26389099d66a0fa790368",
+    "@openzeppelin/contracts/interfaces/IERC20.sol": "0158e2d3e0e28bedd99eec13dcf1a8aa3a70a5b7e4bb2ad709609c95fcc740d1",
+    "@openzeppelin/contracts/interfaces/IERC5267.sol": "f89772d2d4fafcbef8b73bb10ee9a3373edec2eedb2f1b302320915b351dc3d1",
+    "@openzeppelin/contracts/interfaces/IERC5313.sol": "9c99e3d0f9a47337d59b7e245819b07860e329789aafb5d1275ffd27491686f0",
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": "01b6f5c4fa45fd38822b286ecef6daf983d27306dd6362496fa71b3e4600b72c",
+    "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": "c2394cb2a327f234711da34884947f4aa0f6dd2791d1d6303a0c7acfaf81bca3",
+    "@openzeppelin/contracts/utils/Bytes.sol": "3ce9120a27934c75a074cb785d3a88868069ef6529dbe4dc6b845af0836f3c70",
+    "@openzeppelin/contracts/utils/Context.sol": "847fda5460fee70f56f4200f59b82ae622bb03c79c77e67af010e31b7e2cc5b6",
+    "@openzeppelin/contracts/utils/Panic.sol": "270fc8401c1a13fae6a7a4a2dd6e381b95d658896701e51f0d3e2688acab3dec",
+    "@openzeppelin/contracts/utils/Pausable.sol": "2c26130748f06552c65ca74d89eaf78c9324a3cbac3ba6fdbadaa8beba0cb0b4",
+    "@openzeppelin/contracts/utils/ReentrancyGuard.sol": "94e409e8f6e3184236651a6cc2b1a6a3ea0f0a25eb85b71e524ad5791bb2fbc8",
+    "@openzeppelin/contracts/utils/ShortStrings.sol": "1cfa08d3c551e9ec0b9cd249b09987f04e7e90f352e1a5e3b0d6a3bc426b3de7",
+    "@openzeppelin/contracts/utils/StorageSlot.sol": "75704538dcb223239280c6726d9a31cf769a7816718517c997fc7d63bdb70778",
+    "@openzeppelin/contracts/utils/Strings.sol": "e318709bbe73a7831d64c1351e8bdc43780b245f25191234e361e6ab9b98c67b",
+    "@openzeppelin/contracts/utils/cryptography/ECDSA.sol": "ba7c2d314fcd61c9783e0b3f0c664d004b76b408fda6a84edc8267d17c5012d6",
+    "@openzeppelin/contracts/utils/cryptography/EIP712.sol": "2845caaaf70757b6cce612ae4ffbec2c382cb3d1cb9765c98fa649c0f5f1c794",
+    "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol": "538a0d7c4f0ec5a8562f58561890f7b49d14580674ecf58bc5f505b45c73df65",
+    "@openzeppelin/contracts/utils/introspection/ERC165.sol": "61a2b12c96857aaa35f48aeda67a4281637a42494c0b3795be0ae976aa7b3793",
+    "@openzeppelin/contracts/utils/introspection/IERC165.sol": "9055c2994b37dea1a41b7b7926dcb510f05dbe2540b0aafc5fbee9558fffd0ca",
+    "@openzeppelin/contracts/utils/math/Math.sol": "bdfdbe133991c0c78042957ff5cd97167926fcaf6d15664f3835a076cb066457",
+    "@openzeppelin/contracts/utils/math/SafeCast.sol": "5779bc848bde39f1ad7bc02b4f708a0040888e0083b1a33f119cd94639350134",
+    "@openzeppelin/contracts/utils/math/SignedMath.sol": "1ed50b1056af886752f0fb48a0165d381e69bb4a4b18b893b066dc144a7e08d7",
+    "AIAgentLottery.sol": "6866ae731c24e699facb1d4cf4efaecae837e1dfb76cfdd5db9a7f8d71d0d854",
+    "BigMath.sol": "f244464637fc6ca94f9847dc0e9e0da2e25ae7335ed631d0810c2c2f54aedf36",
+    "ChronosVDF.sol": "418fe9132883960cf1ed6034d75d43a93750643042f225de982a63c78706b264"
+  },
+  "transitiveSourceFiles": 30
+}

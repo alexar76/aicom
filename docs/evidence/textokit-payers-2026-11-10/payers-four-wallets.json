@@ -1,0 +1,437 @@
+{
+  "schema": "histor.payer-audit/v1",
+  "seller": "0x6b5af9924f4cd35643c11a9fd1c983f77261a6e1",
+  "network": "eip155:8453",
+  "asset": {
+    "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "decimals": 6,
+    "symbol": "USDC"
+  },
+  "ledger_generated_at": null,
+  "input_sha256": "efea1aebf8c76e0e5691a75d521b586415565242f8c101392002977466aaffca",
+  "annotations_sha256": null,
+  "policy": {
+    "id": "broad-small-singleton-transfers/v1",
+    "min_transfers": 50,
+    "min_recipients": 50,
+    "min_singleton_recipient_fraction": "0.9",
+    "small_transfer_max_atomic": 10000,
+    "min_small_transfer_fraction": "0.9",
+    "calibrated": false
+  },
+  "chain_window": {
+    "from_block": 53147009,
+    "to_block": 55512942,
+    "from_at": "2026-10-27T06:42:45+00:00",
+    "to_at": "2026-11-10T06:42:44+00:00",
+    "from_block_hash": "0x04cc902a468704ea5d44fff87976c16d6f6b1d74812e418c66e5aa39adb97958",
+    "to_block_hash": "0xab6aea7aa4040c93d350e8762d1f23b5e822bc12ca797a279e32703b3e87299f",
+    "complete": true,
+    "failed_ranges": [],
+    "confirmations_buffer": 12,
+    "available": true,
+    "queried_payers": [
+      "0x7722dfae6bbed2fd02dc07455c2f5bf14be25e4a",
+      "0xa1d1c0cf717402ff3651aa4873ccf96410b01978",
+      "0xc9c7b38c0942914fc8ea12063bc92dcd3b581670",
+      "0xec2abd3eda89bed90124736e317e847d5fb6d034"
+    ],
+    "rpc": "https://base.gateway.tenderly.co",
+    "source_sha256": "9d7499a23a2054c58d78e193bc53f16d5325a3991eeea14025d7cb561e8684a7"
+  },
+  "summary": {
+    "sales": 34,
+    "salesFromOwnWallets": 0,
+    "externalPayers": 4,
+    "amount_atomic": 80000,
+    "amount_usdc": "0.080000",
+    "external_sales": 34,
+    "external_amount_atomic": 80000,
+    "external_amount_usdc": "0.080000",
+    "external_settlements_verified": 34,
+    "external_verified_amount_atomic": 80000,
+    "external_verified_amount_usdc": "0.080000",
+    "external_labels": {
+      "unknown": 4
+    },
+    "duplicate_receipts_ignored": 0
+  },
+  "payers": [
+    {
+      "payer": "0x7722dfae6bbed2fd02dc07455c2f5bf14be25e4a",
+      "ownership": "seller-reported-external",
+      "label": "unknown",
+      "buyer_intent": "unknown",
+      "sales": 1,
+      "amount_atomic": 1000,
+      "amount_usdc": "0.001000",
+      "first_at": "2026-10-23T22:13:32.660Z",
+      "last_at": "2026-10-23T22:13:32.660Z",
+      "services": {
+        "cuit-ar": 1
+      },
+      "settlements_verified": 1,
+      "verified_amount_atomic": 1000,
+      "verified_amount_usdc": "0.001000",
+      "settlements": [
+        {
+          "transaction": "0x8d2ccd6a3e04a769ecc680f298999dd082a0a2eba936f00a96c0e4ec5902b934",
+          "at": "2026-10-23T22:13:32.660Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        }
+      ],
+      "pattern_signals": [
+        "broad-recipient-spread",
+        "majority-transfers-at-most-0.01-USDC",
+        "majority-recipients-paid-once"
+      ],
+      "chain_activity": {
+        "available": true,
+        "complete": true,
+        "transfers": 153,
+        "recipients": 88,
+        "singleton_recipients": 80,
+        "small_transfers": 135,
+        "singleton_recipient_fraction": "0.909091",
+        "small_transfer_fraction": "0.882353"
+      },
+      "evidence": []
+    },
+    {
+      "payer": "0xa1d1c0cf717402ff3651aa4873ccf96410b01978",
+      "ownership": "seller-reported-external",
+      "label": "unknown",
+      "buyer_intent": "unknown",
+      "sales": 2,
+      "amount_atomic": 2000,
+      "amount_usdc": "0.002000",
+      "first_at": "2026-10-21T21:18:17.136Z",
+      "last_at": "2026-11-05T15:18:43.085Z",
+      "services": {
+        "cuit-ar": 1,
+        "x402-ping": 1
+      },
+      "settlements_verified": 2,
+      "verified_amount_atomic": 2000,
+      "verified_amount_usdc": "0.002000",
+      "settlements": [
+        {
+          "transaction": "0x58ddb2e77e574ddda75fd74df6f3dbf94e2795e22c36f8a01a506c544ff4ada3",
+          "at": "2026-10-21T21:18:17.136Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x28a7e23d4f32f0d7485cabd9a394706ea15fdf099cfd7eda40231f940962afe5",
+          "at": "2026-11-05T15:18:43.085Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        }
+      ],
+      "pattern_signals": [
+        "broad-recipient-spread",
+        "majority-transfers-at-most-0.01-USDC",
+        "majority-recipients-paid-once"
+      ],
+      "chain_activity": {
+        "available": true,
+        "complete": true,
+        "transfers": 2022,
+        "recipients": 1969,
+        "singleton_recipients": 1929,
+        "small_transfers": 1543,
+        "singleton_recipient_fraction": "0.979685",
+        "small_transfer_fraction": "0.763106"
+      },
+      "evidence": []
+    },
+    {
+      "payer": "0xc9c7b38c0942914fc8ea12063bc92dcd3b581670",
+      "ownership": "seller-reported-external",
+      "label": "unknown",
+      "buyer_intent": "unknown",
+      "sales": 9,
+      "amount_atomic": 11000,
+      "amount_usdc": "0.011000",
+      "first_at": "2026-10-20T15:31:14.134Z",
+      "last_at": "2026-11-07T12:02:30.609Z",
+      "services": {
+        "comparar-textos": 1,
+        "crypto-prices": 1,
+        "cuit-ar": 1,
+        "dev-utils": 1,
+        "fx-rates": 1,
+        "polymarket-markets": 1,
+        "source-bounded-summary": 1,
+        "url-text": 1,
+        "x402-ping": 1
+      },
+      "settlements_verified": 9,
+      "verified_amount_atomic": 11000,
+      "verified_amount_usdc": "0.011000",
+      "settlements": [
+        {
+          "transaction": "0x3ca4f2791f4f851a574f4abd7cb949e1b05fb00dadeb77b83fb3d0e36a608fb2",
+          "at": "2026-10-20T15:31:14.134Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x5065b5ed0458a0a505ad71a009e8cd13abe35d0d7dcedb95f806390c825895fc",
+          "at": "2026-10-27T08:02:30.682Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x46a62512522da6c6288b5f09c866700d42346e25873f29c053127adb82047ca4",
+          "at": "2026-10-28T00:02:19.600Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x51ff7635860a9bd6c4211d598b6858ea6be1d6f3052dad40549d87497d705a39",
+          "at": "2026-10-28T03:32:30.001Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0xf871fe56eeba5fee8b462dcafa94a29ee9cf1fea97b62748c8577d69ed6a180f",
+          "at": "2026-10-28T03:32:31.434Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0xbb562671d4b194273d5b4ea9e8bebd172751f6b9db928f87b26c0d3b95a0b51d",
+          "at": "2026-10-28T06:02:14.627Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0xb3a434661618abf08f667d0f28fdf7432dcc7ed5695f2487839d4ae0cfcbc4ab",
+          "at": "2026-11-05T06:02:25.182Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x9979b87fe06d6b143338e21b8dfafca092cb0298131ca9a3fbd8a65af38f9f75",
+          "at": "2026-11-05T09:32:20.991Z",
+          "amount_atomic": 2000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0xf12ac45c6aa4871eaf060f47865f553ca30e538cda58579b13e50aa4512ba035",
+          "at": "2026-11-07T12:02:30.609Z",
+          "amount_atomic": 2000,
+          "status": "verified"
+        }
+      ],
+      "pattern_signals": [
+        "broad-recipient-spread",
+        "majority-transfers-at-most-0.01-USDC",
+        "majority-recipients-paid-once"
+      ],
+      "chain_activity": {
+        "available": true,
+        "complete": true,
+        "transfers": 1518,
+        "recipients": 542,
+        "singleton_recipients": 334,
+        "small_transfers": 1280,
+        "singleton_recipient_fraction": "0.616236",
+        "small_transfer_fraction": "0.843215"
+      },
+      "evidence": []
+    },
+    {
+      "payer": "0xec2abd3eda89bed90124736e317e847d5fb6d034",
+      "ownership": "seller-reported-external",
+      "label": "unknown",
+      "buyer_intent": "unknown",
+      "sales": 22,
+      "amount_atomic": 66000,
+      "amount_usdc": "0.066000",
+      "first_at": "2026-10-20T07:06:48.303Z",
+      "last_at": "2026-10-26T14:04:35.613Z",
+      "services": {
+        "bcra-indicadores": 1,
+        "cartas-ar": 1,
+        "comparar-textos": 1,
+        "crypto-prices": 1,
+        "cuit-ar": 1,
+        "dev-utils": 1,
+        "direcciones-ar": 1,
+        "dolar-ar": 1,
+        "fx-rates": 1,
+        "normativa-ar": 5,
+        "polymarket-markets": 1,
+        "source-bounded-summary": 1,
+        "translate-es": 1,
+        "url-text": 1,
+        "web-read": 1,
+        "x402-adoption": 2,
+        "x402-ping": 1
+      },
+      "settlements_verified": 22,
+      "verified_amount_atomic": 66000,
+      "verified_amount_usdc": "0.066000",
+      "settlements": [
+        {
+          "transaction": "0x8c0acafc219977d53b7431c734b1d29b7ef6db90cab5091c7aabe4a0f69a2c0a",
+          "at": "2026-10-20T07:06:48.303Z",
+          "amount_atomic": 5000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0xef5f2a2c81b7f6021c73a966eceb453055481a333256a2475a8ac8f011183ffd",
+          "at": "2026-10-20T07:06:50.956Z",
+          "amount_atomic": 2000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0xcc3231d1e3d39a27838c4e3fbb87db85fb61da5048c49690e5511e844fc83b7e",
+          "at": "2026-10-20T08:53:02.123Z",
+          "amount_atomic": 5000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0xa7662362f207a4d0059b32c1204f1171fa7ec7fae9b8567b9ef7cc6cd1f37885",
+          "at": "2026-10-20T09:22:56.140Z",
+          "amount_atomic": 5000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0xd197a66ab0eb069c0acfddfd280dcefe123ec576878d1a924f5407e8f87afda9",
+          "at": "2026-10-20T09:23:04.623Z",
+          "amount_atomic": 3000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x68a7bb46a2839d40c1001e1bf1dab036abb849939203e7a4131183581158d8ce",
+          "at": "2026-10-20T09:37:52.467Z",
+          "amount_atomic": 2000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x4f712436cfe5bb039f55d2a536a484b2847e5e29cb86edc97ec6c33552bd9c13",
+          "at": "2026-10-20T09:37:55.306Z",
+          "amount_atomic": 2000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x9fe21127d045e4398ca6b9d6889241a15c861f7f08d812d7ef66e1846e8cfe04",
+          "at": "2026-10-20T09:38:05.942Z",
+          "amount_atomic": 2000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x23207988c28a9bd13e4d2fcd3dffd4e1ae47594077802890ca57fafeb4215bb0",
+          "at": "2026-10-20T09:42:40.287Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x0e65e22cea86dadeeb4bb1736f94bd8f28538011e8024c98eb4d4fc7d25d4121",
+          "at": "2026-10-20T09:42:42.520Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x56eafab52aa8a3889b97ba4a013ea3f508cafa934c0acb7958bbd3ec43d78bb6",
+          "at": "2026-10-20T09:42:44.460Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x55049b036d022dc9970490abbdf079d70bf15f8afdf35f65782472b8f115ef89",
+          "at": "2026-10-20T09:47:30.569Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x6322b987ed57b94367753a7cfdb4bb1b31bf9efaf183d2ccf0036a057c75959f",
+          "at": "2026-10-20T11:01:38.859Z",
+          "amount_atomic": 5000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x415ec0e389ce17a9936de89a28b7ba0fc1717b2f50e756196e074851d712bd9b",
+          "at": "2026-10-20T11:02:51.471Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x4feb47e132ac06e7b5081756cdfb8b6b5436fae1ab62701d04139982b74f0186",
+          "at": "2026-10-20T11:02:54.060Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x9bb91375a64c6da4a5fc78e8df817fe86b51487a36c3c98a73a78513edd4d637",
+          "at": "2026-10-20T11:02:56.134Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x3bc01e29b53d187320b18bd1794526c85b8addc456fc0e8e7756fd17fd971ea6",
+          "at": "2026-10-20T11:07:48.402Z",
+          "amount_atomic": 1000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x068b1930266c6235ee31cbfa87690b8ef14c519bba4f1dafd0b36872b836fe95",
+          "at": "2026-10-20T12:38:16.775Z",
+          "amount_atomic": 2000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x4700749eb35c98129e0abc6adb2f9ee66d76dc7bc8ba2e509341f858146d35d6",
+          "at": "2026-10-24T11:57:43.813Z",
+          "amount_atomic": 5000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0xf93149b946d87295924977c2d46f76f163b4d93354bc3fa7aa1f5c04e392736d",
+          "at": "2026-10-24T14:01:45.472Z",
+          "amount_atomic": 5000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x00e5835652622f42021c5ecfab0f7747d392b0061d405a383701a09c02688c50",
+          "at": "2026-10-25T07:13:41.917Z",
+          "amount_atomic": 10000,
+          "status": "verified"
+        },
+        {
+          "transaction": "0x2615dad16387c63ad964f375c50747ba860cdf21a90e2aacd305af611c75607f",
+          "at": "2026-10-26T14:04:35.613Z",
+          "amount_atomic": 5000,
+          "status": "verified"
+        }
+      ],
+      "pattern_signals": [
+        "majority-transfers-at-most-0.01-USDC"
+      ],
+      "chain_activity": {
+        "available": true,
+        "complete": true,
+        "transfers": 244,
+        "recipients": 19,
+        "singleton_recipients": 4,
+        "small_transfers": 210,
+        "singleton_recipient_fraction": "0.210526",
+        "small_transfer_fraction": "0.860656"
+      },
+      "evidence": []
+    }
+  ],
+  "warnings": [],
+  "limits": [
+    "Seller ownership flags and annotations are source claims, not independently established identities.",
+    "Labels describe these observations; they do not establish a wallet's permanent purpose.",
+    "Recipients are USDC addresses, not verified sellers or x402 services.",
+    "The pattern rule is an uncalibrated heuristic, not a probability or proof of intent.",
+    "All amounts remain in totals regardless of label. Unknown is not evidence of no demand.",
+    "RPC verification trusts the supplied Base node; it is not an independently verified chain proof."
+  ]
+}

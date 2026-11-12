@@ -1,0 +1,1217 @@
+{
+  "date_client": "2026-11-10",
+  "baseline_reports": [
+    "artifacts/external-links-2026-11-10/report.ru.md",
+    "artifacts/external-signals-2026-11-09/report.ru.md",
+    "artifacts/external-social-regional-2026-11-09/report.ru.md",
+    "artifacts/external-social-regional-deeper-2026-11-09/report.ru.md"
+  ],
+  "candidate_pages": 38,
+  "candidates": [
+    {
+      "id": 1,
+      "label": "CrawlCheck registry response",
+      "source_url": "https://github.com/modelcontextprotocol/registry/issues/82#issuecomment-6711311079",
+      "classification": "external_technical_reply",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "HISTOR extras alignment; reported 30/30 is external author's measurement.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/final-reads-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/registry82-comments.raw",
+          "captured_at_utc": "2026-11-09T19:25:46.893247+00:00",
+          "status": 200,
+          "sha256": "0d7dd4619e70278942760bae91a47242e45c0bbbe9fa9044750a3767295bf5d9",
+          "body_hash_valid": true,
+          "selected_comment_only": true,
+          "capture_url": "https://api.github.com/repos/modelcontextprotocol/registry/issues/82/comments?per_page=100"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 2,
+      "label": "CrawlCheck OWASP response",
+      "source_url": "https://github.com/OWASP/secure-agent-playbook/issues/33#issuecomment-6712103956",
+      "classification": "external_technical_reply",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Own text of response, separate from quoted owner material.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/followup-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/owasp33-comments.raw",
+          "captured_at_utc": "2026-11-09T19:24:50.737718+00:00",
+          "status": 200,
+          "sha256": "02aabb41d6d8af84d702167d42d85e543f4da52d59691fb45c8c5c6b127f3f64",
+          "body_hash_valid": true,
+          "selected_comment_only": true,
+          "capture_url": "https://api.github.com/repos/OWASP/secure-agent-playbook/issues/33/comments?per_page=100"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 3,
+      "label": "CrawlCheck specification",
+      "source_url": "https://crawlcheck.io/spec/mcp-lockfile#jcs-v1",
+      "classification": "external_spec_alignment",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Published interface change; not full canonicalizer equivalence.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/final-reads-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/crawlcheck-spec.raw",
+          "captured_at_utc": "2026-11-09T19:25:46.892022+00:00",
+          "status": 200,
+          "sha256": "2bb3360645b2afc448816de2089808cc84a1e35fc13b4854c3c4d5e815c4a869",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://crawlcheck.io/spec/mcp-lockfile"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 4,
+      "label": "ACS avp9-nexus snapshot review",
+      "source_url": "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6545176155",
+      "classification": "external_dataset_analysis",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Third-party account's detailed analysis; 250 labels not re-run by baseline.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/followup-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/acs38-comments.raw",
+          "captured_at_utc": "2026-11-09T19:24:50.101384+00:00",
+          "status": 200,
+          "sha256": "95024d82263f1ae8784e448d6512e868d996f7eb986034c9f8e001a9ca979a70",
+          "body_hash_valid": true,
+          "selected_comment_only": true,
+          "capture_url": "https://api.github.com/repos/GenAI-Security-Project/agent-control-standard/issues/38/comments?per_page=100"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://doi.org/10.5281/zenodo.23512760",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://github.com/alexar76/histor/tree/410ee418a7116639cb2a3e477599108e1acb8588",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 5,
+      "label": "ACS Mayur021 code review",
+      "source_url": "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6572123939",
+      "classification": "external_code_discussion",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Code-reading statement and proposal discussion; no adopted standard.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/followup-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/acs38-comments.raw",
+          "captured_at_utc": "2026-11-09T19:24:50.101384+00:00",
+          "status": 200,
+          "sha256": "95024d82263f1ae8784e448d6512e868d996f7eb986034c9f8e001a9ca979a70",
+          "body_hash_valid": true,
+          "selected_comment_only": true,
+          "capture_url": "https://api.github.com/repos/GenAI-Security-Project/agent-control-standard/issues/38/comments?per_page=100"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 6,
+      "label": "AgentAvow response",
+      "source_url": "https://github.com/AgentAvow/AgentAvow/issues/240#issuecomment-6714769340",
+      "classification": "external_technical_reply",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Request to link; no added backlink verified in baseline.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/final-reads-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/agentavow240-comments.raw",
+          "captured_at_utc": "2026-11-09T19:25:47.429607+00:00",
+          "status": 200,
+          "sha256": "066f309ff4a70ee798fc15453dc6c1b19fa87ad7663f268e10c2afb44353f67b",
+          "body_hash_valid": true,
+          "selected_comment_only": true,
+          "capture_url": "https://api.github.com/repos/AgentAvow/AgentAvow/issues/240/comments?per_page=100"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 7,
+      "label": "Industrial pinned dependency",
+      "source_url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/blob/main/aimarket-sentinel/requirements.txt",
+      "classification": "external_source_dependency",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Git-pinned Hub source retained; old runtime endpoint was HTTP404 on Nov9.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/http-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/industrial-requirements.raw",
+          "captured_at_utc": "2026-11-09T19:23:44.049253+00:00",
+          "status": 200,
+          "sha256": "a32ecd725282ec79f7a44563d9828509fe2a8f1a96564bebd7fb296fc6220fe0",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/aimarket-sentinel/requirements.txt"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/aimarket-hub.git@2310569f1e4e50e1062d80725bd69ae313042a69",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 8,
+      "label": "Industrial federation adapter",
+      "source_url": "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/blob/main/gateway/aimarket-federation.mjs",
+      "classification": "external_adapter_source",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Source compatibility is not current deployment.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/http-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/industrial-adapter.raw",
+          "captured_at_utc": "2026-11-09T19:23:44.080553+00:00",
+          "status": 200,
+          "sha256": "42172f87ffb273dfa1b275b8d14872d0fe9cbd74a7e0345ed969ef4dc3b04687",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/gateway/aimarket-federation.mjs"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 9,
+      "label": "RugSnare",
+      "source_url": "https://github.com/Paraphern/rugsnare",
+      "classification": "external_research_reuse",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "README cites HISTOR dataset/DOI; known historical case.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/http-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/rugsnare-readme.raw",
+          "captured_at_utc": "2026-11-09T19:23:45.001523+00:00",
+          "status": 200,
+          "sha256": "e5ec6407b374924c4251d97ce3585e2689e9e6d7d3080f9901154cb49282970b",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://raw.githubusercontent.com/Paraphern/rugsnare/main/README.md"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://doi.org/10.5281/zenodo.23512760",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 10,
+      "label": "Witness technical reply",
+      "source_url": "https://lists.witness-network.org/mailman3/hyperkitty/list/participate@lists.witness-network.org/message/762ZAYCAXMZPHXAMX3UZ5OARJHJWCWVZ/",
+      "classification": "external_technical_reply",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Nov4 staging admission; not production audit.",
+      "baseline_primary_captures": [],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 11,
+      "label": "Witness staging log list",
+      "source_url": "https://staging.witness-network.org/log-list-10qps-4klogs.1",
+      "classification": "external_configuration_reference",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Exact HISTOR key presence; not runtime application adoption.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-social-regional-2026-11-09/social/witness-evidence-index.json",
+          "body": "artifacts/external-social-regional-2026-11-09/social/raw/witness-current-staging-list.txt",
+          "captured_at_utc": "2026-11-09T20:04:54.262958+00:00",
+          "status": 200,
+          "sha256": "1437cafb6052455741574c5efcf8ac215add61a771d315e18e54cc227840f8b8",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://staging.witness-network.org/log-list-10qps-4klogs.1"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 12,
+      "label": "IETF Du response",
+      "source_url": "https://mailarchive.ietf.org/arch/msg/dawn/GbumKwLL1oy3I7h7GFmgAkNJAkQ/",
+      "classification": "external_technical_reply",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Read original reply before owner quotations; individual draft, not RFC.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-social-regional-2026-11-09/root/ietf-http-index.json",
+          "body": "artifacts/external-social-regional-2026-11-09/root/ietf-du-reply.raw",
+          "captured_at_utc": "2026-11-09T20:06:54.667795+00:00",
+          "status": 200,
+          "sha256": "d96b18d22a50f6b99cc5b5c298b860a25ec444bf019920a68e5c58c716f1577c",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://mailarchive.ietf.org/arch/msg/dawn/GbumKwLL1oy3I7h7GFmgAkNJAkQ/"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 13,
+      "label": "IETF Linda response",
+      "source_url": "https://mailarchive.ietf.org/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8/",
+      "classification": "external_technical_reply",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Marketplace/bootstrap discussion; company endorsement not established.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-social-regional-deeper-2026-11-09/root/followup-index.json",
+          "body": "artifacts/external-social-regional-deeper-2026-11-09/root/ietf-linda-reply.raw",
+          "captured_at_utc": "2026-11-09T20:43:51.636292+00:00",
+          "status": 200,
+          "sha256": "ef226a04f452549e25918cd26fc1125a17fe7cc15f2031ea36e3c5f569f6d667",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://mailarchive.ietf.org/arch/msg/dawn/6m1_jcurI0F0_LadffO71f0d4m8/"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 14,
+      "label": "IETF MDI draft",
+      "source_url": "https://datatracker.ietf.org/doc/draft-cui-dawn-mdi-model/",
+      "classification": "external_document_acknowledgment",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Acknowledgment and selected changes; individual Internet-Draft.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-social-regional-2026-11-09/root/ietf-draft-http-index.json",
+          "body": "artifacts/external-social-regional-2026-11-09/root/ietf-datatracker.raw",
+          "captured_at_utc": "2026-11-09T20:08:44.147247+00:00",
+          "status": 200,
+          "sha256": "86371af249a0c79aceeaf4393f418b3cad6303a358a58a565aeee2cf528d54c6",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://datatracker.ietf.org/doc/draft-cui-dawn-mdi-model/"
+        }
+      ],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 15,
+      "label": "Qiita Skillselion response",
+      "source_url": "https://qiita.com/qwezzy721/items/4dfe9dc2fbe9d69b1fb7#comment-a71ae02460f429b7606e",
+      "classification": "external_technical_reply",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Oct24 cache/TTL discussion; owner article edits are not new external responses.",
+      "baseline_primary_captures": [],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 16,
+      "label": "1gateway AIMarket",
+      "source_url": "https://1gateway.dev/market/modelmarket.dev",
+      "classification": "automated_protocol_observation",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Published unpaid quote checks; not paid delivery.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-social-regional-deeper-2026-11-09/root/followup-index.json",
+          "body": "artifacts/external-social-regional-deeper-2026-11-09/root/one-gateway-market.raw",
+          "captured_at_utc": "2026-11-09T20:43:51.637096+00:00",
+          "status": 200,
+          "sha256": "3ee670e0a4328e6b98460ff05b09ef2cc0005a74ac6c4e89c75e3e77699251fc",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://1gateway.dev/market/modelmarket.dev"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://modelmarket.dev/x402/air-quality-now",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/fair-random",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/histor-check",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/mcp-diff",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/nearby-sensors",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/warden-scan",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/weather-now",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 17,
+      "label": "LupaRiel AIMarket",
+      "source_url": "https://lupariel.com/fichas/aimarket-hub/",
+      "classification": "automated_catalog_with_probe_claim",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Historical Oct30 unpaid probe; review dated Oct31.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-social-regional-deeper-2026-11-09/root/followup-index.json",
+          "body": "artifacts/external-social-regional-deeper-2026-11-09/root/lupariel-hub.raw",
+          "captured_at_utc": "2026-11-09T20:43:51.636776+00:00",
+          "status": 200,
+          "sha256": "fbbe29d777eba326b7feb45e92301983030026c1d33e3d625221c3d8888a920f",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://lupariel.com/fichas/aimarket-hub/"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://modelmarket.dev/llms.txt",
+          "form": "html_href"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/x402-check",
+          "form": "html_href"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 18,
+      "label": "VerifyMCP AIMarket",
+      "source_url": "https://verifymcp.io/servers/alexar76-aimarket-hub/modelmarket",
+      "classification": "automated_protocol_observation",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Nov10 surface scan and tools inventory, not safety certification.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/root/http-index.json",
+          "body": "artifacts/external-links-2026-11-10/root/verify-mcp-hub.raw",
+          "captured_at_utc": "2026-11-10T04:46:47.798090+00:00",
+          "status": 200,
+          "sha256": "8a1bdc76f03d90c50c2e60e6655be20a3acd8f0e4d15e9e5523f5ffafd62b78c",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://verifymcp.io/servers/alexar76-aimarket-hub/modelmarket"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/aimarket-hub",
+          "form": "html_href"
+        },
+        {
+          "url": "https://modelmarket.dev/mcp",
+          "form": "html_href"
+        },
+        {
+          "url": "http://modelmarket.dev/mcp",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/mcp'",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/mcp",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 19,
+      "label": "AgentRank Metis",
+      "source_url": "https://agentrank-ai.com/tool/alexar76--metis/",
+      "classification": "automated_catalog",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Same operator as other AgentRank cards; no publication date established.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/social/followup-index.json",
+          "body": "artifacts/external-links-2026-11-10/social/agentrank-metis.raw",
+          "captured_at_utc": "2026-11-10T04:47:06.069006+00:00",
+          "status": 200,
+          "sha256": "9b6441af533b97d013de72cea3417843d318280f8509e41a78bfb7047acd90f0",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://agentrank-ai.com/tool/alexar76--metis/"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/metis",
+          "form": "html_href"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 20,
+      "label": "AgentRank Hub",
+      "source_url": "https://agentrank-ai.com/tool/alexar76--aimarket-hub/",
+      "classification": "automated_catalog",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Catalog link, no installation or paid use established.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/social/followup-index.json",
+          "body": "artifacts/external-links-2026-11-10/social/agentrank-hub.raw",
+          "captured_at_utc": "2026-11-10T04:47:06.069156+00:00",
+          "status": 200,
+          "sha256": "2d38a5830a33fbc05144da6e1fe59ec097405412ee2077db54819dab2d0314cd",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://agentrank-ai.com/tool/alexar76--aimarket-hub/"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/aimarket-hub",
+          "form": "html_href"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 21,
+      "label": "AgentRank Agent",
+      "source_url": "https://agentrank-ai.com/tool/alexar76--aimarket-agent/",
+      "classification": "automated_catalog",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Catalog link, no installation or paid use established.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/social/followup-index.json",
+          "body": "artifacts/external-links-2026-11-10/social/agentrank-agent.raw",
+          "captured_at_utc": "2026-11-10T04:47:06.069275+00:00",
+          "status": 200,
+          "sha256": "b3eff1b2598142a2fba7af8edc978d99448e26a5432b26fb3a4d95231ae9146b",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://agentrank-ai.com/tool/alexar76--aimarket-agent/"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/aimarket-agent",
+          "form": "html_href"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 22,
+      "label": "AgentRank Attested",
+      "source_url": "https://agentrank-ai.com/tool/alexar76--attested-memory/",
+      "classification": "automated_catalog",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Known Oct30 card; not new Nov10.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/social/followup-index.json",
+          "body": "artifacts/external-links-2026-11-10/social/agentrank-attested.raw",
+          "captured_at_utc": "2026-11-10T04:47:06.068630+00:00",
+          "status": 200,
+          "sha256": "c338ebb6b6165a9f1a06b3f30d2625330cb41b982b37a971fe173cec9e1c2d06",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://agentrank-ai.com/tool/alexar76--attested-memory/"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/attested-memory",
+          "form": "html_href"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 23,
+      "label": "AgentsShipped factory",
+      "source_url": "https://agentsshipped.com/l/alexar76-aicom",
+      "classification": "catalog",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Visible May11 date semantics unknown; not assumed publication date.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/asia/detail-index.json",
+          "body": "artifacts/external-links-2026-11-10/asia/agents-shipped-aicom.raw",
+          "captured_at_utc": "2026-11-10T04:47:07.945023+00:00",
+          "status": 200,
+          "sha256": "0d7d03737c045d3f9cf19c444449f6c88ffe39e3061c414a10e564c5f3f3e35e",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://agentsshipped.com/l/alexar76-aicom"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/aicom",
+          "form": "html_href"
+        },
+        {
+          "url": "https://github.com/alexar76/aicom",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 24,
+      "label": "Anclum plugins",
+      "source_url": "https://anclum.com/zh/s/alexar76-aimarket-plugins/",
+      "classification": "aggregated_catalog",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "README/awesome-derived; Chinese UI does not establish operator country.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/asia/detail-index.json",
+          "body": "artifacts/external-links-2026-11-10/asia/anclum-aimarket-plugins.raw",
+          "captured_at_utc": "2026-11-10T04:47:07.945423+00:00",
+          "status": 200,
+          "sha256": "2c1ffc08d204f3abc109381df533a7d126431010b9c2a7c52ff5e880a547fb68",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://anclum.com/zh/s/alexar76-aimarket-plugins/"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/aimarket-plugins",
+          "form": "html_href"
+        },
+        {
+          "url": "https://github.com/alexar76/aimarket-plugins#readme",
+          "form": "html_href"
+        },
+        {
+          "url": "https://modelmarket.dev",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 25,
+      "label": "TeckDeck cache churn",
+      "source_url": "https://teckdeck.io/posts/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-prompt-cache-write",
+      "classification": "derived_summary_of_owner_article",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Exact Nov3 article; same known aggregator.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/social/http-index.json",
+          "body": "artifacts/external-links-2026-11-10/social/teckdeck-cache-churn.raw",
+          "captured_at_utc": "2026-11-10T04:46:21.520163+00:00",
+          "status": 200,
+          "sha256": "e2107831d62c11093657d47b4697befd9e3ce7e76ec2c1e17b142fc866ec9385",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://teckdeck.io/posts/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-prompt-cache-write"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2",
+          "form": "html_href"
+        },
+        {
+          "url": "https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 26,
+      "label": "Gemivo cache churn",
+      "source_url": "https://ainews.gemivo.de/news/we-found-331-mcp-tool-list-changes-in-one-week-that-only-cmw03yqv3005",
+      "classification": "redistribution_of_owner_article",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Own English article under German UI, not independent research.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-social-regional-deeper-2026-11-09/root/http-index.json",
+          "body": "artifacts/external-social-regional-deeper-2026-11-09/root/gemivo-cache-churn.raw",
+          "captured_at_utc": "2026-11-09T20:42:45.489322+00:00",
+          "status": 200,
+          "sha256": "9c7c59c72b3d07d1f68d9d1e65328321735f5bc40952b87511b72b0f1e977f68",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://ainews.gemivo.de/news/we-found-331-mcp-tool-list-changes-in-one-week-that-only-cmw03yqv3005"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2",
+          "form": "html_href"
+        },
+        {
+          "url": "https://dev.to/alexar76/we-found-331-mcp-tool-list-changes-in-one-week-that-only-moved-a-date-each-one-costs-a-26p2",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://histor.modelmarket.dev/api/v1/changes",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://histor.modelmarket.dev/datasets/cache-churn-2026-11-01/",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 27,
+      "label": "Web Pulse scanner comparison",
+      "source_url": "https://wpnews.pro/news/we-ran-three-mcp-security-scanners-on-a-tool-poisoning-benchmark-and-986-real",
+      "classification": "redistribution_of_owner_article",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Historical Oct9 comparison, not current scanner benchmark.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/regions/http-index.json",
+          "body": "artifacts/external-links-2026-11-10/regions/wpnews-comparison.raw",
+          "captured_at_utc": "2026-11-10T04:46:56.350183+00:00",
+          "status": 200,
+          "sha256": "1594a6dc95883754e5208a460f1ae7cfe13cf9a0a21a4e3df2869c20a9933cb1",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://wpnews.pro/news/we-ran-three-mcp-security-scanners-on-a-tool-poisoning-benchmark-and-986-real"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://dev.to/alexar76/we-ran-three-mcp-security-scanners-on-a-tool-poisoning-benchmark-and-986-real-servers-1klb",
+          "form": "html_href"
+        },
+        {
+          "url": "https://github.com/alexar76/warden/issues",
+          "form": "html_href"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 28,
+      "label": "Hlido passport",
+      "source_url": "https://hlido.eu/passport/alexar76-aimarket-plugins/",
+      "classification": "external_review_catalog",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Known Aug5 review; legal/compliance labels unverified.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-links-2026-11-10/root/http-index.json",
+          "body": "artifacts/external-links-2026-11-10/root/hlido-passport.raw",
+          "captured_at_utc": "2026-11-10T04:46:47.798235+00:00",
+          "status": 200,
+          "sha256": "aac01982ebaa86716f27f7902a19db0277a3ca4306f469d7634699cbc6f6f1b5",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://hlido.eu/passport/alexar76-aimarket-plugins/"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://alexar76.github.io/aicom/",
+          "form": "html_href"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 29,
+      "label": "APIs.io Attested",
+      "source_url": "https://apis.io/providers/attestedmemory-net/",
+      "classification": "automated_api_profile",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Harvested registry profile; generated contracts/skills not adoption.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/root/http-followup-index.json",
+          "body": "artifacts/external-signals-2026-11-09/root/apis-attested.raw",
+          "captured_at_utc": "2026-11-09T19:24:28.940026+00:00",
+          "status": 200,
+          "sha256": "876410d1690327d7b7f1f6bf999a60a1ef13f6fb7e109c3639fca35fd3cd6892",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://apis.io/providers/attestedmemory-net/"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://attestedmemory.net/",
+          "form": "html_href"
+        },
+        {
+          "url": "https://attestedmemory.net/billing",
+          "form": "html_href"
+        },
+        {
+          "url": "https://attestedmemory.net/developers",
+          "form": "html_href"
+        },
+        {
+          "url": "https://attestedmemory.net/docs",
+          "form": "html_href"
+        },
+        {
+          "url": "https://attestedmemory.net/start",
+          "form": "html_href"
+        },
+        {
+          "url": "https://attestedmemory.net/attested-social.png",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://attestedmemory.net/memory",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://attestedmemory.net/use-cases",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 30,
+      "label": "Agenstry marketplace",
+      "source_url": "https://agenstry.com/agents/modelmarket.dev",
+      "classification": "automated_protocol_observation",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Directory direct probes; baseline last7d invocations zero.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/root/http-index.json",
+          "body": "artifacts/external-signals-2026-11-09/root/agenstry.raw",
+          "captured_at_utc": "2026-11-09T19:23:16.656437+00:00",
+          "status": 200,
+          "sha256": "5b19bef624e29fa0c6ecd20020cda639d8f544fc17258c8c870f96d416fe218f",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://agenstry.com/agents/modelmarket.dev"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://modelmarket.dev",
+          "form": "html_href"
+        },
+        {
+          "url": "https://modelmarket.dev/.well-known/agent-card.json",
+          "form": "html_href"
+        },
+        {
+          "url": "https://modelmarket.dev/developers",
+          "form": "html_href"
+        },
+        {
+          "url": "https://modelmarket.dev/a2a\"",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/developers\"",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 31,
+      "label": "Agent Economy Report",
+      "source_url": "https://agenteconomy.report/s/modelmarket.dev.json",
+      "classification": "automated_market_observation",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Organic labels have owner-test contamination; method changed Nov2/8.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/root/http-index.json",
+          "body": "artifacts/external-signals-2026-11-09/root/aer.raw",
+          "captured_at_utc": "2026-11-09T19:23:16.243833+00:00",
+          "status": 200,
+          "sha256": "f7e3c8ec72216ab5cf0a4d821d93ec564f38bd10a1a36ad57439a0d3f4b708b5",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://agenteconomy.report/s/modelmarket.dev.json"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://modelmarket.dev/",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/air-quality-now",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/fair-random",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/histor-check",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/mcp-diff",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/nearby-sensors",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/warden-scan",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/weather-now",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/x402-check",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 32,
+      "label": "Agent402 seller index",
+      "source_url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+      "classification": "external_router_listing",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Eight paid routes marked dispatch-ineligible settlement_self_funded Nov9.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/root/http-index.json",
+          "body": "artifacts/external-signals-2026-11-09/root/agent402-index.raw",
+          "captured_at_utc": "2026-11-09T19:23:16.666160+00:00",
+          "status": 200,
+          "sha256": "e92ec494a866742fa506736163c59eb2c34103fe16df8318a469802111ca67ca",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://agent402.tools/api/index?seller=modelmarket.dev"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://modelmarket.dev",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/x402/histor-check",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 33,
+      "label": "UseTested review",
+      "source_url": "https://usetested.com/v1/review?service=modelmarket.dev",
+      "classification": "paid_measurement_bot_test",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "One historical Oct27 test; review refresh not new purchase.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/root/http-index.json",
+          "body": "artifacts/external-signals-2026-11-09/root/usetested.raw",
+          "captured_at_utc": "2026-11-09T19:23:16.600385+00:00",
+          "status": 200,
+          "sha256": "d8f2c9e720e7e01cc4494826dba9130fc0f17139276f07fae75084ea098086de",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://usetested.com/v1/review?service=modelmarket.dev"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://modelmarket.dev/x402/histor-check",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 34,
+      "label": "ShortformKit MCP index",
+      "source_url": "https://github.com/shortformkit/free-remote-mcp-servers/blob/main/data/servers.json",
+      "classification": "automated_protocol_index",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Attested/domain/weather; protocol inventory, not tools/call.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/http-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/shortformkit-data.raw",
+          "captured_at_utc": "2026-11-09T19:23:45.891780+00:00",
+          "status": 200,
+          "sha256": "047d219fbb91f73bceb80e7dfd9654d23c80a5c229438cc0167ec84bb1193b67",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://raw.githubusercontent.com/shortformkit/free-remote-mcp-servers/main/data/servers.json"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/attested-memory",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://github.com/alexar76/domain-operator-kit",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://github.com/alexar76/gaia",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://hub.attestedmemory.net/mcp",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/tools/",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/tools/mcp/domains",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/tools/mcp/weather",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 35,
+      "label": "ragmap EMPORION index",
+      "source_url": "https://github.com/khalidsaidi/ragmap/blob/main/data/servers.json",
+      "classification": "automated_protocol_index",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "EMPORION lastOk Nov9 and eight tools; business function use not established.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-signals-2026-11-09/code/final-reads-index.json",
+          "body": "artifacts/external-signals-2026-11-09/code/ragmap-servers.raw",
+          "captured_at_utc": "2026-11-09T19:25:47.597429+00:00",
+          "status": 200,
+          "sha256": "db7310fb412b24e678de77e34ecc2730b415858a703f8949a418869fae226170",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://raw.githubusercontent.com/khalidsaidi/ragmap/main/data/servers.json"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://github.com/alexar76/emporion",
+          "form": "text_or_markdown_url"
+        },
+        {
+          "url": "https://modelmarket.dev/tools/mcp/emporion",
+          "form": "text_or_markdown_url"
+        }
+      ],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 36,
+      "label": "Hubwiz security article",
+      "source_url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+      "classification": "derived_technical_article",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Known Oct15 Chinese retelling; no independent rerun established.",
+      "baseline_primary_captures": [],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 37,
+      "label": "Juejin security article",
+      "source_url": "https://juejin.cn/post/7696713457148952630",
+      "classification": "derived_technical_article",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Known Oct15 retelling with historical WARDEN0.9 table.",
+      "baseline_primary_captures": [],
+      "captured_own_target_references": [],
+      "has_captured_html_href": false,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    },
+    {
+      "id": 38,
+      "label": "Radyz HISTOR dataset",
+      "source_url": "https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/",
+      "classification": "derived_technical_article",
+      "ownership": "External account/site surface; operator independence or human identity not established unless noted by baseline.",
+      "scope_limit": "Known Oct22 dataset note, not runtime integration.",
+      "baseline_primary_captures": [
+        {
+          "index": "artifacts/external-social-regional-2026-11-09/europe-cis/http-index.json",
+          "body": "artifacts/external-social-regional-2026-11-09/europe-cis/radyz-known.raw",
+          "captured_at_utc": null,
+          "status": 200,
+          "sha256": "674ed3e7fc5fdc714aff2e3ad93452ff1a5de841bd35b3b12bbc6eea29288264",
+          "body_hash_valid": true,
+          "selected_comment_only": false,
+          "capture_url": "https://radyz.cz/rychle-zpravy/histor-otevrel-dataset-zmen-nastroju-mcp-nikoli-seznam-skodlivych-serveru/"
+        }
+      ],
+      "captured_own_target_references": [
+        {
+          "url": "https://histor.modelmarket.dev/datasets/",
+          "form": "html_href"
+        }
+      ],
+      "has_captured_html_href": true,
+      "current_availability": "not_rechecked_by_baseline_agent",
+      "novelty": "already_in_baseline"
+    }
+  ],
+  "controls_not_backlinks": [
+    {
+      "source_url": "https://vouch-protocol.com/agent-trust-index/",
+      "classification": "mention_without_backlink",
+      "scope_limit": "Six exact ecosystem rows, zero HTML href in those rows. DID/key checks, not behavior/safety."
+    },
+    {
+      "source_url": "https://www.agent-router.org/agents",
+      "classification": "search_only_candidate",
+      "scope_limit": "Direct HTML app shell, current card not primary-confirmed."
+    },
+    {
+      "source_url": "https://ainews.gemivo.de/",
+      "classification": "false_positive_control",
+      "scope_limit": "How to give an AI agent a record it can't rewrite originates with dev.to/datafund, not Attested Memory."
+    },
+    {
+      "source_url": "https://modelcontextproblems.com/",
+      "classification": "negative_control",
+      "scope_limit": "No exact ecosystem identifiers found in saved Nov10 body; thematic similarity not attribution."
+    }
+  ],
+  "limitations": [
+    "Local evidence inventory only; no network recheck performed.",
+    "Target references retain href versus plain text/Markdown distinction.",
+    "For GitHub comments only matched comment body is extracted; quoted owner text can still occur within a comment and needs semantic review.",
+    "Source code URL literals are references, not necessarily HTML backlinks.",
+    "Some report-backed sources have no matching capture URL in these bounded indexes; source report is the provenance, not fabricated primary evidence."
+  ]
+}
