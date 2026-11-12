@@ -643,6 +643,12 @@ satellites:
       # monorepo for local scans; do not copy it into the public GitHub mirror.
       # Judgments and the language pages stay in the mirror.
       - scripts/scanner-comparison/results/manifest-2026-10-16.json
+      # 2026-11-12: release evidence for 0.26.0 names a private HISTOR host IP.
+      # Keep the rest of the evidence folder (README, logs, artifact) public;
+      # leave these three out of the GitHub mirror (colleague-tasks §101).
+      - docs/evidence/warden-release-0.26.0-2026-11-11/quality/Dockerfile.candidate
+      - docs/evidence/warden-release-0.26.0-2026-11-11/quality/switch.sh
+      - docs/evidence/warden-release-0.26.0-2026-11-11/supp06-gate-check.md
     registries:
       - npm:@aimarket/warden
       - mcp-registry:io.github.alexar76/warden
@@ -1729,6 +1735,35 @@ satellites:
       Excluded from the trimmed factory alexar76/aicom like every satellite. The demo at
       esim.modelmarket.dev runs both halves with DEMO_MODE=1; it sells nothing.
 
+  - id: mcp-tool-set-digest
+    # Specification: one digest for what an MCP server lists as its tools (contract + extras),
+    # with vectors and Python/JavaScript/Go references. Live on GitHub after colleague-tasks §101
+    # step 1 (2026-11-12): https://github.com/alexar76/mcp-tool-set-digest
+    repo: mcp-tool-set-digest
+    description: "One way to hash what an MCP server says about its tools: a specification, 68 test vectors, and references in Python, JavaScript and Go."
+    description_i18n:
+      ru: "Единый способ хешировать то, что сервер MCP сообщает о своих инструментах: спецификация, 68 тестовых векторов и эталоны на Python, JavaScript и Go."
+      es: "Una forma de calcular el hash de lo que un servidor MCP dice de sus herramientas: especificación, 68 vectores de prueba y referencias en Python, JavaScript y Go."
+      fr: "Une façon de hacher ce qu'un serveur MCP dit de ses outils : spécification, 68 vecteurs de test et références en Python, JavaScript et Go."
+      zh: "对 MCP 服务器所声明工具进行哈希的统一方法：规范、68 个测试向量，以及 Python、JavaScript 和 Go 参考实现。"
+    topics:
+      - mcp
+      - model-context-protocol
+      - mcp-security
+      - specification
+      - json-canonicalization
+      - rfc8785
+      - test-vectors
+    # Text CC BY 4.0; code and vectors Apache-2.0 OR MIT. The folder ships its own LICENSE,
+    # LICENSE-MIT and LICENSE-APACHE, which the mirror keeps.
+    license: "Apache-2.0 OR MIT"
+    github_published: true
+    history: live
+    paths:
+      - mcp-tool-set-digest
+    export_layout:
+      root_from: mcp-tool-set-digest
+    registries: []
   - id: domain-kit
     # Same shape as esim-kit: monorepo directory domain-kit/, GitHub repo domain-operator-kit.
     # The kit sells domain registrations. SYMMARTYS RDAP is a separate registry-fact product.
