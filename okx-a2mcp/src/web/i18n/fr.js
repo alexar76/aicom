@@ -3,7 +3,7 @@ export default {
   site: {
     skip: "Aller à la vérification",
     tools: "Outils",
-    footer: "Des vérifications gratuites pour les humains. Les agents IA achètent les mêmes réponses via x402.",
+    footer: "Vérifications gratuites dans le navigateur. Quatre ont aussi des endpoints x402 payants.",
     language: "Langue",
   },
   ui: {
@@ -52,12 +52,12 @@ export default {
     description: "Cinq vérifications gratuites pour développeurs : compter combien de tokens la liste d'outils d'un serveur MCP ajoute à chaque requête, déboguer la signature d'un paiement x402, comparer les outils d'un serveur MCP pour repérer un rug pull, analyser des définitions d'outils avec WARDEN et consulter l'historique d'un serveur dans le journal de transparence HISTOR.",
     eyebrow: "Outils gratuits pour développeurs",
     h1: "Collez. Obtenez un diagnostic.",
-    lead: "Cinq vérifications pour qui construit avec les serveurs MCP et les paiements x402. Gratuites ici : sans compte, sans portefeuille. Les agents IA achètent quatre de ces mêmes réponses via x402 pour une fraction de centime ; cette page ouvre aux humains ce qu'ils paient.",
-    howTitle: "Déterministes, signées, identiques pour tous",
+    lead: "Cinq vérifications dans le navigateur pour les listes d’outils MCP et les paiements x402. Aucun compte ni portefeuille requis. Quatre sont aussi accessibles via x402, en USDC sur Base.",
+    howTitle: "Comment fonctionnent les vérifications",
     how: [
-      ["Déterministes", "Même entrée, même réponse. Les règles et la cryptographie décident, pas l'humeur d'un modèle."],
+      ["Règles et cryptographie", "Selon la saisie, les vérifications appliquent des règles explicites, consultent des observations publiées ou vérifient les signatures."],
       ["Signées", "Les réponses x402 et du diff portent une signature Ed25519 de notre environnement HESTIA ; HISTOR signe les siennes."],
-      ["Payées par les agents", "Les mêmes vérifications sont vendues aux agents IA via x402, en USDC sur Base. C'est ce qui rend cette page gratuite."],
+      ["Accès facultatif via x402", "Quatre de ces vérifications sont accessibles via x402, avec un prix par appel."],
     ],
   },
   tools: {
@@ -189,13 +189,13 @@ export default {
       title: "Scanner d'empoisonnement d'outils MCP — WARDEN",
       description: "Analyse gratuite des définitions d'outils MCP : collez le tools/list d'un serveur et WARDEN, le pare-feu MCP open source, examine chaque nom, description, schéma et annotation à la recherche de prompt injection, d'exfiltration et de vol d'identifiants. Autoriser ou bloquer, avec la règle déclenchée.",
       eyebrow: "MCP · prompt injection · WARDEN",
-      h1: "Peut-on montrer cette liste d'outils MCP à un modèle ?",
+      h1: "Que signale WARDEN dans cette liste d’outils MCP ?",
       lead: "Collez le tools/list d'un serveur. WARDEN — le pare-feu MCP open source publié sur npm — applique ses règles statiques et sa liste de menaces à chaque définition d'outil : noms, descriptions, schémas d'entrée et de sortie, annotations. Vous obtenez autoriser ou bloquer, et chaque constat avec la règle déclenchée et son emplacement.",
       fields: {
         tools: { label: "tools/list", hint: "Une liste d'outils, {\"tools\": […]} ou la réponse JSON-RPC du serveur." },
       },
       howToTitle: "Analysez les serveurs que lancent vos propres clients",
-      howTo: "Les mêmes règles, en local : il lit les configurations MCP de Claude Code, Claude Desktop, Cursor, VS Code et Windsurf, liste les outils de chaque serveur et n'en appelle aucun.",
+      howTo: "Pour une analyse ponctuelle, WARDEN lit les configurations compatibles. Il peut lancer des programmes stdio configurés ou se connecter à des serveurs distants pour lister les outils. Il ne les appelle pas.",
       exampleNote: "Exemple : un outil de notes qui demande aussi une clé SSH",
       checks: [
         "Instructions visant le modèle : formules de priorité, dissimulation à l'utilisateur, ordres d'appeler ou de réécrire d'autres outils.",
@@ -207,13 +207,13 @@ export default {
       notChecked: "Seulement les définitions d'outils. L'origine et l'épinglage relèvent de l'état de votre machine et demandent l'analyse locale ; le classificateur sémantique optionnel ne tourne pas ici.",
       faq: [
         ["Qu'est-ce que l'empoisonnement d'outils ?", "Des instructions cachées dans la description ou le schéma d'un outil. L'utilisateur voit un nom ; le modèle lit toute la définition et peut lui obéir. WARDEN lit la définition comme la lit le modèle."],
-        ["Quelle différence avec l'analyse locale ?", "Mêmes règles. L'analyse locale se connecte en plus à vos serveurs, épingle ce qu'ils ont servi et bloque quand une définition dérive ; cette page vérifie une liste que vous collez."],
+        ["Quelle différence avec l'analyse locale ?", "Le navigateur analyse une liste. L’analyse locale peut comparer les définitions actuelles à un fichier de verrouillage. Utilisez le proxy stdio pour appliquer les définitions validées pendant l’utilisation."],
         ["WARDEN peut-il se placer devant mes serveurs ?", "Oui : warden-mcp wrap lance un serveur derrière le pare-feu, et son plugin pour Claude Code refuse les appels aux serveurs bloqués. Le README sur npm et GitHub décrit l'installation."],
       ],
       privacy: "Ce que vous collez est envoyé à modelmarket.dev, analysé en mémoire par WARDEN, puis renvoyé. Rien n'est conservé.",
       labels: {
         verdict: { allow: "Autorisé", block: "Bloqué" },
-        verdictNote: { allow: "Aucun constat bloquant : WARDEN laisserait un modèle voir ces définitions.", block: "Au moins un constat bloquant : WARDEN tiendrait ces outils à l'écart du modèle." },
+        verdictNote: { allow: "Aucun résultat ne dépasse le seuil de blocage selon ces règles. Examinez les définitions avant de les autoriser.", block: "Au moins un résultat atteint le seuil de blocage. Examinez la règle et le texte qui l’a déclenchée." },
         engine: "Moteur",
         ruleset: "règles",
         blocked: "Outils bloqués",

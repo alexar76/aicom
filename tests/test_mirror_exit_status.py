@@ -43,7 +43,7 @@ def _run_mirror(
             '#!/usr/bin/env bash\n[[ "$#" -eq 1 && "$1" == --dry-run ]] || exit 97\n'
         )
 
-    env = {**os.environ, "GH_PAT": "", "GITHUB_TOKEN": ""}
+    env = {**os.environ, "GH_PAT": "", "GITHUB_TOKEN": "", "MIRROR_SKIP_PROFILE": "1"}
     return subprocess.run(
         ["bash", str(entrypoint), "--dry-run"],
         cwd=tmp_path, env=env, capture_output=True, text=True, timeout=20,
@@ -80,3 +80,42 @@ def test_publish_wrapper_propagates_mirror_status(tmp_path: Path, missing_source
     else:
         assert result.returncode == 0, result.stdout + result.stderr
         assert "publish_all_repos finished successfully" in result.stdout
+
+
+@pytest.mark.parametrize("args", [
+    ["--no-push"],
+    ["--satellite", "histor", "--push-only"],
+])
+def test_publish_preview_and_scoped_push_do_not_mutate_github_metadata(
+    tmp_path: Path, args: list[str],
+) -> None:
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    for script in ("publish_all_repos.sh", "mirror_satellites.sh"):
+        shutil.copy2(ROOT / "scripts" / script, scripts / script)
+    mirror = scripts / "mirror_satellites.sh"
+    mirror.rename(scripts / "mirror-library.sh")
+    mirror.write_text(
+        '#!/usr/bin/env bash\n'
+        'export AICOM_MIRROR_LIBRARY_ONLY=1\n'
+        'source "$(dirname "$0")/mirror-library.sh"\n'
+        'if [[ "$1" == --no-push ]]; then\n'
+        '  [[ "$2" == --keep-workdir ]] || exit 96\n'
+        '  NO_PUSH=1\n'
+        'fi\n'
+        'if _satellite_admin_allowed; then exit 97; fi\n'
+    )
+    (scripts / "publish_aicom_factory.sh").write_text(
+        '#!/usr/bin/env bash\n[[ "$#" -eq 1 && "$1" == --no-push ]] || exit 98\n'
+    )
+    marker = tmp_path / "metadata-called"
+    for field in ("descriptions", "topics"):
+        (scripts / f"sync_github_repo_{field}.py").write_text(
+            f"from pathlib import Path\nPath({str(marker)!r}).touch()\n"
+        )
+    result = subprocess.run(
+        ["bash", str(scripts / "publish_all_repos.sh"), *args],
+        cwd=tmp_path, capture_output=True, text=True, timeout=20,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert not marker.exists()

@@ -3,7 +3,7 @@ export default {
   site: {
     skip: "Ir a la comprobación",
     tools: "Herramientas",
-    footer: "Comprobaciones gratuitas para personas. Los agentes de IA compran las mismas respuestas por x402.",
+    footer: "Comprobaciones gratuitas en el navegador. Cuatro también tienen endpoints x402 de pago.",
     language: "Idioma",
   },
   ui: {
@@ -52,12 +52,12 @@ export default {
     description: "Cinco comprobaciones gratuitas para desarrolladores: contar cuántos tokens añade a cada petición la lista de herramientas de un servidor MCP, depurar la firma de un pago x402, comparar las herramientas de un servidor MCP en busca de un rug pull, escanear definiciones de herramientas con WARDEN y consultar el historial de un servidor en el registro de transparencia HISTOR.",
     eyebrow: "Herramientas gratuitas para desarrolladores",
     h1: "Pégalo. Obtén un diagnóstico.",
-    lead: "Cinco comprobaciones para quien construye con servidores MCP y pagos x402. Aquí son gratis: sin cuenta y sin monedero. Los agentes de IA compran cuatro de estas mismas respuestas por x402 por una fracción de céntimo; esta página abre a las personas lo que ellos pagan.",
-    howTitle: "Deterministas, firmadas, iguales para todos",
+    lead: "Cinco comprobaciones en el navegador para listas de herramientas MCP y pagos x402. No necesitas cuenta ni monedero. Cuatro también tienen endpoints x402 que aceptan USDC en Base.",
+    howTitle: "Cómo funcionan las comprobaciones",
     how: [
-      ["Deterministas", "La misma entrada, la misma respuesta. Deciden las reglas y la criptografía, no el humor de un modelo."],
+      ["Reglas y criptografía", "Según la entrada, se aplican reglas explícitas, se consultan observaciones publicadas o se verifican firmas."],
       ["Firmadas", "Las respuestas de x402 y del diff llevan una firma Ed25519 de nuestro entorno HESTIA; HISTOR firma las suyas."],
-      ["Pagadas por agentes", "Las mismas comprobaciones se venden a agentes de IA por x402, en USDC sobre Base. Por eso aquí son gratis."],
+      ["Acceso opcional por x402", "Cuatro de estas comprobaciones están disponibles por x402 con un precio por llamada."],
     ],
   },
   tools: {
@@ -189,13 +189,13 @@ export default {
       title: "Escáner de envenenamiento de herramientas MCP — WARDEN",
       description: "Escaneo gratuito de definiciones de herramientas MCP: pega el tools/list de un servidor y WARDEN, el cortafuegos MCP de código abierto, revisa cada nombre, descripción, esquema y anotación en busca de prompt injection, exfiltración y robo de credenciales. Permitir o bloquear, con la regla que saltó.",
       eyebrow: "MCP · prompt injection · WARDEN",
-      h1: "¿Es seguro mostrar esta lista de herramientas MCP a un modelo?",
+      h1: "¿Qué señala WARDEN en esta lista de herramientas MCP?",
       lead: "Pega el tools/list de un servidor. WARDEN —el cortafuegos MCP de código abierto en npm— pasa su conjunto de reglas estáticas y su lista de amenazas por cada definición: nombres, descripciones, esquemas de entrada y salida, anotaciones. Obtienes permitir o bloquear y cada hallazgo, con la regla que saltó y dónde.",
       fields: {
         tools: { label: "tools/list", hint: "Una lista de herramientas, {\"tools\": […]} o la respuesta JSON-RPC del servidor." },
       },
       howToTitle: "Escanea los servidores que arrancan tus propios clientes",
-      howTo: "Las mismas reglas, en local: lee las configuraciones MCP de Claude Code, Claude Desktop, Cursor, VS Code y Windsurf, lista las herramientas de cada servidor y no llama a ninguna.",
+      howTo: "Para un análisis puntual, WARDEN lee las configuraciones compatibles. Puede arrancar programas stdio configurados o conectarse a servidores remotos para listar herramientas. No las invoca.",
       exampleNote: "Ejemplo: una herramienta de notas que además pide una clave SSH",
       checks: [
         "Instrucciones dirigidas al modelo: anulación y reclamos de prioridad, ocultación al usuario, órdenes de llamar o reescribir otras herramientas.",
@@ -207,13 +207,13 @@ export default {
       notChecked: "Solo definiciones de herramientas. El origen y el pinning son estado de tu máquina y requieren el escaneo local; el clasificador semántico opcional no se ejecuta aquí.",
       faq: [
         ["¿Qué es el envenenamiento de herramientas?", "Instrucciones escondidas en la descripción o el esquema de una herramienta. El usuario ve un nombre; el modelo lee la definición completa y puede obedecerla. WARDEN lee la definición como la lee el modelo."],
-        ["¿En qué se diferencia del escaneo local?", "Mismas reglas. El escaneo local además se conecta a tus servidores, fija lo que sirvieron y bloquea cuando una definición cambia; esta página comprueba una lista que pegas."],
+        ["¿En qué se diferencia del escaneo local?", "El navegador analiza una lista. El análisis local puede comparar las definiciones actuales con un archivo de bloqueo. Usa el proxy stdio para aplicar las definiciones revisadas durante el uso."],
         ["¿Puede WARDEN ir delante de mis servidores?", "Sí: warden-mcp wrap arranca un servidor detrás del cortafuegos, y su plugin para Claude Code rechaza las llamadas a servidores bloqueados. El README en npm y GitHub explica la configuración."],
       ],
       privacy: "Lo que pegas se envía a modelmarket.dev, WARDEN lo escanea en memoria y se responde. No se guarda.",
       labels: {
         verdict: { allow: "Permitido", block: "Bloqueado" },
-        verdictNote: { allow: "Ningún hallazgo bloqueante: WARDEN dejaría que un modelo viera estas definiciones.", block: "Al menos un hallazgo bloqueante: WARDEN mantendría estas herramientas lejos del modelo." },
+        verdictNote: { allow: "Ningún hallazgo alcanza el umbral de bloqueo con estas reglas. Revisa las definiciones antes de permitirlas.", block: "Al menos un hallazgo alcanza el umbral de bloqueo. Revisa la regla y el texto que la activó." },
         engine: "Motor",
         ruleset: "reglas",
         blocked: "Herramientas bloqueadas",

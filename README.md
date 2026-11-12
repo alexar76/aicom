@@ -20,7 +20,7 @@
 
 <p align="center">
   <strong>MIT · self-hosted · idea → shippable web product</strong><br/>
-  Part of the <a href="https://ecosystem.modelmarket.dev/">AICOM open agent economy</a>.<br/>
+  Part of the <a href="https://ecosystem.modelmarket.dev/">AICOM research and demo ecosystem</a>.<br/>
   <strong>Factory &amp; storefront:</strong> <a href="https://magic-ai-factory.com">magic-ai-factory.com</a> ·
   <strong>Community:</strong> <a href="https://t.me/next_agent_market_bot">Ask Castor (bot)</a> ·
   <a href="https://t.me/just_for_agents">Castor channel</a> ·
@@ -29,11 +29,12 @@
   <a href="https://modeldev.modelmarket.dev/">Factory landing</a> · <a href="https://ecosystem.modelmarket.dev/">Ecosystem landing</a> · <a href="#demo-video">Demo video</a> · <a href="#build-replays">Build Replays</a> · <a href="#factory-hold">Factory hold</a> · <a href="#gallery">Gallery</a> · <a href="#factory-iq">Factory IQ</a> · <a href="#ecosystem-companions">Ecosystem</a> · <a href="#quick-start">Quick start</a>
 </p>
 
+**Reviewing MCP tool changes?** [See a recorded change in HISTOR](https://histor.modelmarket.dev/s/236eb5f0481cc99c), [scan a tool list with WARDEN](https://modelmarket.dev/tools/warden-scan), or [implement the tool-set digest](https://github.com/alexar76/mcp-tool-set-digest).
+
 <!-- aicom-readme-badges -->
 <p align="center">
   <a href="https://github.com/alexar76/aicom/actions/workflows/ci.yml"><img src="https://github.com/alexar76/aicom/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <img src="docs/badges/status.svg" alt="Base mainnet: demo" />
-  <a href="https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg"><img src="https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg" alt="Test coverage" /></a>
   <a href="LICENSE"><img src="docs/badges/license.svg" alt="License: MIT" /></a>
 </p>
 <!-- /aicom-readme-badges -->
@@ -70,7 +71,7 @@
 
 
 
-> ### 🟢 Try the live agent economy in 30 seconds — **no wallet, no Docker, no clone**
+> ### 🟢 Try the live MCP demo — **no wallet, no Docker, no clone**
 > Paste this one URL into any MCP client (Claude Desktop, Cursor, Windsurf, …):
 >
 > ## &nbsp;&nbsp;&nbsp;`https://modelmarket.dev/mcp`
@@ -156,12 +157,14 @@ calibration. The number should climb.
 <tr>
 <td>
 
-**Separate repos — not part of the factory install.** Optional satellites around the same AIMarket economy. Full map: **[ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/)** · [knowledge base](docs/ecosystem/knowledge-base.md).
+**Separate repos — not part of the factory install.** Full map: **[ecosystem.modelmarket.dev](https://ecosystem.modelmarket.dev/)** · [knowledge base](docs/ecosystem/knowledge-base.md).
 
 | | One line | Links |
 |---|----------|-------|
 | 🛡️ **ARGUS-3** | Demand-side agent · WARDEN MCP firewall · crypto off by default | [landing](https://magic-ai-factory.com/argus/) · [`argus`](https://github.com/alexar76/argus) · `npm i -g @alexar76/argus3@0.3.3` |
-| 🧱 **WARDEN** | The MCP firewall on its own: static scan → threat feed → origin → pinning, in front of **any** MCP host. Zero runtime dependencies | [`warden`](https://github.com/alexar76/warden) · `npm i @aimarket/warden` |
+| 🧱 **MCP tool firewall (WARDEN)** | Review advertised tool definitions or enforce pins in a stdio wrapper. Zero runtime dependencies | [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) · [source](https://github.com/alexar76/warden) |
+| **MCP tool history (HISTOR)** | Signed observations of what servers advertised and when their tool definitions changed | [history and checks](https://histor.modelmarket.dev/) |
+| **Solidity scanner (BASANOS)** | Signed findings for Solidity at a pinned source commit | [source](https://github.com/alexar76/basanos) |
 | 👽 **Alien Monitor** | 3D graph of Hub, Factory, chain metrics | [LIVE](https://monitor.modelmarket.dev/) · [UNI](https://monitor-uni.modelmarket.dev/) · [split](./docs/uni-and-live.md) · [`alien-monitor`](https://github.com/alexar76/alien-monitor) |
 | 🔮 **Oracles** | 17 signed math capabilities (randomness, VDF, reputation, …) | [portal](https://oracles.modelmarket.dev/) · [`oracles`](https://github.com/alexar76/oracles) |
 | 🌍 **GAIA** | Physical-world oracle gateway · attested IoT sensors · plausibility verify | [`gaia`](https://github.com/alexar76/gaia) |
@@ -463,7 +466,7 @@ Before **screen recordings** or **streaming**, avoid showing `git remote -v` if 
 ## CI/CD
 
 - Gitea: `.gitea/workflows/deploy.yml`
-- GitHub: `.github/workflows/ci.yml` — `pytest -q --cov` + coverage badge + `npm run build`
+- GitHub: `.github/workflows/ci.yml` runs pytest and the frontend build. The backend job attaches its coverage report to the run.
 - **Pre-release:** [docs/github-release-checklist.md](docs/github-release-checklist.md)
 
 ### Full Pipeline Smoke
@@ -852,7 +855,7 @@ Tables: `products`, `tasks` — nested fields stored as JSON.
 
 <h2 id="testing-coverage">Testing</h2>
 
-[![coverage](https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg)](https://raw.githubusercontent.com/alexar76/aicom/refs/heads/main/docs/badges/coverage.svg) — backend line coverage. The local [.coveragerc](.coveragerc) includes `core/`, `llm/`, `security/`, `web/`, `agents/`, `orchestrator/`, `director/`, and `pipeline_worker.py`. The hosted badge reflects its last published run and may use the older scope. Refresh locally with:
+Open a [CI run](https://github.com/alexar76/aicom/actions/workflows/ci.yml) for its commit and look for the `coverage-report` artifact after the backend job passes. The local [.coveragerc](.coveragerc) includes `core/`, `llm/`, `security/`, `web/`, `agents/`, `orchestrator/`, `director/`, and `pipeline_worker.py`. To measure coverage locally, run:
 
 ```bash
 USE_SQLITE=true pytest -q --cov --cov-report=term --cov-report=json:coverage.json

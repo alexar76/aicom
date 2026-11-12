@@ -1,7 +1,7 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-[HISTOR](https://histor.modelmarket.dev/) · [WARDEN](https://warden.modelmarket.dev/) · [Comprobaciones gratuitas](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76)
+[Ver un cambio registrado en herramientas MCP](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Analizar una lista de herramientas con WARDEN](https://modelmarket.dev/tools/warden-scan) · [Implementar la huella del conjunto de herramientas](https://github.com/alexar76/mcp-tool-set-digest)
 <!-- /ecosystem-entry-points -->
 
 <p align="center"><b>Comprobaciones y un registro público con testigos de las herramientas que usan los agentes de IA.</b></p>
@@ -27,7 +27,7 @@
 
 | | Lo que obtienes | Abrir |
 | --- | --- | --- |
-| **WARDEN** | Revisa cada servidor MCP de tu máquina antes de que sus herramientas lleguen a tu modelo — sin cuenta ni clave | `npx -y @aimarket/warden scan` · [warden.modelmarket.dev](https://warden.modelmarket.dev/) |
+| **Cortafuegos de herramientas MCP (WARDEN)** | Analiza una vez los servidores configurados. Para aplicar las definiciones revisadas durante el uso, configura el proxy stdio. | `npx -y @aimarket/warden@0.26.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **Datos abiertos de HISTOR** | Lo que anunció cada servidor MCP remoto del registro oficial y cada cambio, firmado, cada mes (CC BY 4.0) | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [DOI de Zenodo](https://doi.org/10.5281/zenodo.23512759) |
 | **Comprobaciones gratuitas** | Endpoint x402, MCP diff, escaneo WARDEN, consulta HISTOR y coste en tokens de la lista de herramientas — en el navegador | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | Envía una lectura GAIA incluida en la allowlist a través de Hub y Metis; después inspecciona el recibo firmado | [play.modelmarket.dev](https://play.modelmarket.dev/) · [código fuente](https://github.com/alexar76/aimarket-playground) |

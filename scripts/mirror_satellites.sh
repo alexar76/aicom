@@ -24,6 +24,7 @@ GITHUB_HOST="${SATELLITE_GITHUB_HOST:-github.com}"
 BRANCH="${SATELLITE_BRANCH:-main}"
 DRY_RUN=0
 NO_PUSH=0
+PUSH_ONLY="${AICOM_MIRROR_PUSH_ONLY:-0}"
 SINGLE_SATELLITE=""
 WORKDIR=""
 KEEP_WORKDIR=0
@@ -188,6 +189,16 @@ git_auth() {
   fi
 }
 
+# Preview and push-only runs work against existing repositories via Git.
+_satellite_admin_allowed() {
+  [[ "$DRY_RUN" -eq 0 && "$NO_PUSH" -eq 0 && "$PUSH_ONLY" -eq 0 ]]
+}
+
+_ensure_satellite_repo() {
+  _satellite_admin_allowed || return 0
+  python3 "$ROOT/scripts/ensure_github_repo.py" "$@"
+}
+
 # Why a mirror push was refused, from what GitHub answered. A refusal is not always the remote moving
 # ahead: on 2026-10-27 push protection refused alexar76/warden over a synthetic test key, and the old
 # message sent the operator to reverse-import a PR that did not exist.
@@ -271,7 +282,7 @@ for s in m.get("satellites") or []:
         break
 PY
 )"
-  python3 "$ROOT/scripts/ensure_github_repo.py" "$GITHUB_ORG" "$repo" "$desc" || return 1
+  _ensure_satellite_repo "$GITHUB_ORG" "$repo" "$desc" || return 1
 
   local clone="$WORKDIR/${repo}"
 
@@ -402,7 +413,7 @@ _post_push_satellite_hook() {
   local clone="$2"
   local repo="$3"
 
-  [[ "$DRY_RUN" -eq 1 ]] && return 0
+  _satellite_admin_allowed || return 0
   [[ -f "$clone/docs/landing/index.html" || -f "$clone/index.html" ]] || return 0
 
   python3 "$ROOT/scripts/ensure_github_pages.py" "$GITHUB_ORG" "$repo" --dispatch-pages || true
@@ -961,8 +972,10 @@ for s in m.get("satellites") or []:
         break
 PY
 )"
-  python3 "$ROOT/scripts/ensure_github_repo.py" "$GITHUB_ORG" "$repo" "$desc" || return 1
-  python3 "$ROOT/scripts/ensure_github_pages.py" "$GITHUB_ORG" "$repo" || true
+  _ensure_satellite_repo "$GITHUB_ORG" "$repo" "$desc" || return 1
+  if _satellite_admin_allowed; then
+    python3 "$ROOT/scripts/ensure_github_pages.py" "$GITHUB_ORG" "$repo" || true
+  fi
 
   local clone="$WORKDIR/${repo}"
 
@@ -1292,7 +1305,7 @@ export_oracles() {
     return 0
   fi
 
-  python3 "$ROOT/scripts/ensure_github_repo.py" "$GITHUB_ORG" "$repo" \
+  _ensure_satellite_repo "$GITHUB_ORG" "$repo" \
     "Verifiable AI-economy oracles — Platon, Chronos, Lattice, Murmuration, Lumen, Colony, and Turing on shared oracle-core." \
     || return 1
 
@@ -1407,7 +1420,7 @@ export_aicom_products() {
     return 0
   fi
 
-  python3 "$ROOT/scripts/ensure_github_repo.py" "$GITHUB_ORG" "$repo" \
+  _ensure_satellite_repo "$GITHUB_ORG" "$repo" \
     "Selective catalog of full AI-Factory products (prod-*) — shell from monorepo, trees published on demand." \
     || return 1
 
@@ -1479,7 +1492,7 @@ export_platon() {
     return 0
   fi
 
-  python3 "$ROOT/scripts/ensure_github_repo.py" "$GITHUB_ORG" "$repo" \
+  _ensure_satellite_repo "$GITHUB_ORG" "$repo" \
     "Platon UMBRAL — educational cave app for oracle #1: 32D dynamical shadow oracle with live AIMarket backend." \
     || return 1
 
@@ -1585,7 +1598,7 @@ export_lottery() {
     return 0
   fi
 
-  python3 "$ROOT/scripts/ensure_github_repo.py" "$GITHUB_ORG" "$repo" \
+  _ensure_satellite_repo "$GITHUB_ORG" "$repo" \
     "AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner." \
     || return 1
 
@@ -1712,7 +1725,7 @@ export_oracle_gateway() {
     return 0
   fi
 
-  python3 "$ROOT/scripts/ensure_github_repo.py" "$GITHUB_ORG" "$repo" \
+  _ensure_satellite_repo "$GITHUB_ORG" "$repo" \
     "MCP server: verifiable oracle services (Platon VRF, Chronos VDF, LUMEN reputation) for AI agents — pay-per-call over the AIMarket protocol, every result independently verifiable." \
     || return 1
 
@@ -2103,7 +2116,7 @@ export_wiki_generic() {
   # of the same tree under another branch name.
   [[ "$pushed" -eq 0 ]] || return "$pushed"
 
-  if [[ "$wiki_branch" == "master" ]] \
+  if _satellite_admin_allowed && [[ "$wiki_branch" == "master" ]] \
      && git_auth ls-remote "$remote_url" "refs/heads/main" &>/dev/null; then
     echo "  ↳ syncing main branch from master …"
     # Inside the wiki clone, to the wiki remote. `_commit_and_push` runs in a subshell, so
@@ -2236,7 +2249,7 @@ PY
 # moves on with every sync. Moving a tag rewrites no branch history.
 _move_glama_tag() {
   local sat_id="$1"
-  if [[ "$sat_id" == "aimarket-mcp" || "$sat_id" == "aimarket-oracle-gateway" ]]; then
+  if _satellite_admin_allowed && [[ "$sat_id" == "aimarket-mcp" || "$sat_id" == "aimarket-oracle-gateway" ]]; then
     git tag -f glama-build HEAD
     git_auth push --force origin refs/tags/glama-build 2>/dev/null || true
     echo "  🏷️  Updated tag glama-build (pin this on Glama, not an old commit SHA)"
@@ -2262,6 +2275,10 @@ _commit_and_push() (
 
   local mode
   mode="$(_satellite_history_mode "$sat_id")"
+  if [[ "$PUSH_ONLY" -eq 1 && "$mode" != "live" ]]; then
+    echo "  ⛔ ${repo}: --push-only refuses a history rewrite." >&2
+    return 1
+  fi
 
   # SAFETY: satellites publish to GitHub ONLY. A misconfigured SATELLITE_GITHUB_HOST
   # must never force-push a satellite onto Gitea (canon) or anywhere else.
@@ -2307,6 +2324,16 @@ _commit_and_push() (
   fi
 
   git add -A
+
+  # Optional publication guard: only publish the tree and parent seen in a
+  # preceding local preview, before an operator or another run changes either.
+  if [[ -n "${AICOM_MIRROR_EXPECTED_PARENT:-}" || -n "${AICOM_MIRROR_EXPECTED_TREE:-}" ]]; then
+    if [[ "$PUSH_ONLY" -ne 1 || "$(git rev-parse HEAD)" != "${AICOM_MIRROR_EXPECTED_PARENT:-}" \
+       || "$(git write-tree)" != "${AICOM_MIRROR_EXPECTED_TREE:-}" ]]; then
+      echo "  ⛔ ${repo}: branch or export changed since review. Nothing pushed." >&2
+      return 1
+    fi
+  fi
 
   # A workflow add, edit, or delete is rejected without the `workflow` scope, and
   # GitHub may strip the file. Warden must keep the blob already on the tip.
@@ -2409,7 +2436,7 @@ PY
       return 1
     fi
     _move_glama_tag "$sat_id"
-    if command -v python3 >/dev/null 2>&1; then
+    if _satellite_admin_allowed && command -v python3 >/dev/null 2>&1; then
       python3 "$ROOT/scripts/prune_github_collaborators.py" "$GITHUB_ORG" "$repo" 2>/dev/null || true
     fi
     echo "  ✅ Pushed ${sat_id} (live history)"
@@ -2442,7 +2469,7 @@ PY
     return 1
   fi
   _move_glama_tag "$sat_id"
-  if command -v python3 >/dev/null 2>&1; then
+  if _satellite_admin_allowed && command -v python3 >/dev/null 2>&1; then
     python3 "$ROOT/scripts/prune_github_collaborators.py" "$GITHUB_ORG" "$repo" 2>/dev/null || true
   fi
   echo "  ✅ Pushed ${sat_id}"

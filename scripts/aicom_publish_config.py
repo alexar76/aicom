@@ -62,7 +62,7 @@ DEFAULT_RSYNC_EXCLUDES = [
     # secrets and a public push. Keep aligned with .gitignore's secret rules.
     ".env",
     ".env.*",
-    ".mirror-forbidden-hosts",  # local scan policy contains private infrastructure addresses
+    ".mirror-forbidden-hosts*",  # local scan policy and backups contain private infrastructure addresses
     # Per-service env files cut from .env by scripts/security/service_env.py. They hold the
     # same secrets, and neither pattern above matches them (the basename is factory.env).
     "deploy/env",
@@ -195,7 +195,7 @@ FACTORY_LOCAL_EXCLUDES = [
     # Gitea; the public factory must not receive that host.
     "docs/evidence/mcp-sdk-recovery-2026-10-24",
     # Remove a previously copied policy file from existing factory clones too.
-    "scripts/.mirror-forbidden-hosts",
+    "scripts/.mirror-forbidden-hosts*",
     # Fleet diagnostics and security rollout inventories are operator evidence,
     # not public factory documentation. Keep them in the Gitea monorepo.
     "artifacts/security-rollout-*",

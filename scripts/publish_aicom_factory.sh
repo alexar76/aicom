@@ -66,8 +66,8 @@ done
 # Partial by nature and honest about it — it can only ask providers we hold a key for,
 # and anything it cannot ask is reported as unverifiable and never blocks. On a laptop
 # that usually means DeepSeek alone, which happens to be the example's default_provider.
-# Skipped on --dry-run: nothing is published, so there is nothing to protect.
-if [[ "$DRY_RUN" -eq 0 && -f "$ROOT/scripts/lib/common.sh" ]]; then
+# Skip provider requests when building a preview.
+if [[ "$DRY_RUN" -eq 0 && "$NO_PUSH" -eq 0 && -z "$EXPORT_DIR" && -f "$ROOT/scripts/lib/common.sh" ]]; then
   # shellcheck source=scripts/lib/common.sh
   . "$ROOT/scripts/lib/common.sh"
   model_id_gate "$ROOT" "$ROOT/data/config/model_providers.example.yaml"
@@ -619,6 +619,14 @@ if [[ "$HOLD_STUDY" -eq 1 ]] && ! git diff --cached --quiet HEAD -- "${HELD_PATH
   echo "ERROR: held study paths would change on GitHub before ${held_until:-their publication date} — refusing to push:" >&2
   git diff --cached --name-status HEAD -- "${HELD_PATHS[@]}" >&2
   exit 1
+fi
+
+if [[ -n "${AICOM_MIRROR_EXPECTED_PARENT:-}" || -n "${AICOM_MIRROR_EXPECTED_TREE:-}" ]]; then
+  if [[ "${AICOM_MIRROR_PUSH_ONLY:-0}" -ne 1 || "$(git rev-parse HEAD)" != "${AICOM_MIRROR_EXPECTED_PARENT:-}" \
+      || "$(git write-tree)" != "${AICOM_MIRROR_EXPECTED_TREE:-}" ]]; then
+    echo "ERROR: factory branch or export changed since review. Nothing pushed." >&2
+    exit 1
+  fi
 fi
 
 # ── Divergence guard (live mode, same as metis) ───────────────────────────

@@ -1,7 +1,7 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-[HISTOR](https://histor.modelmarket.dev/) · [WARDEN](https://warden.modelmarket.dev/) · [Vérifications gratuites](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76)
+[Voir une modification d’outils MCP enregistrée](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Analyser une liste d’outils avec WARDEN](https://modelmarket.dev/tools/warden-scan) · [Implémenter l’empreinte du jeu d’outils](https://github.com/alexar76/mcp-tool-set-digest)
 <!-- /ecosystem-entry-points -->
 
 <p align="center"><b>Des vérifications et un registre public attesté des outils qu’utilisent les agents IA.</b></p>
@@ -27,7 +27,7 @@
 
 | | Ce que vous obtenez | Ouvrir |
 | --- | --- | --- |
-| **WARDEN** | Vérifiez chaque serveur MCP de votre machine avant que ses outils n’atteignent votre modèle — sans compte ni clé | `npx -y @aimarket/warden scan` · [warden.modelmarket.dev](https://warden.modelmarket.dev/) |
+| **Pare-feu pour outils MCP (WARDEN)** | Analysez une fois les serveurs configurés. Pour imposer les définitions validées pendant l’utilisation, configurez le proxy stdio. | `npx -y @aimarket/warden@0.26.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **Données ouvertes HISTOR** | Ce qu’a annoncé chaque serveur MCP distant du registre officiel, et chaque changement, signé, chaque mois (CC BY 4.0) | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [DOI Zenodo](https://doi.org/10.5281/zenodo.23512759) |
 | **Vérifications gratuites** | Endpoint x402, MCP diff, scan WARDEN, contrôle HISTOR et coût en tokens de la liste d’outils — dans le navigateur | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | Envoyez une lecture GAIA figurant sur l’allowlist via Hub et Metis, puis examinez le reçu signé | [play.modelmarket.dev](https://play.modelmarket.dev/) · [source](https://github.com/alexar76/aimarket-playground) |

@@ -11,6 +11,10 @@ with `scripts/publish_pypi.sh aimarket-histor --dry-run`, Python 3.12.13, hatchl
 The files are in the main checkout at `artifacts/pypi-release-histor-0.8.0-2026-11-11/` (git-ignored), with
 `SHA256SUMS` and `build.log`.
 
+**Publication confirmed 2026-11-12.** The [PyPI release files](https://pypi.org/project/aimarket-histor/0.8.0/#files)
+record uploads of both files on 2026-11-11 and show the two SHA-256 values above. The build checks below
+describe the pre-upload run.
+
 ## Why this release
 
 PyPI's newest HISTOR is 0.7.0 (2026-11-08). It has no `histor revision` command, so the check that our

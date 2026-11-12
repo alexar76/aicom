@@ -58,7 +58,7 @@ done
 # The private-host policy is read from the trusted workspace, never shipped in
 # the candidate tree. It is excluded from its own content rule below, so reject
 # the file explicitly rather than allowing its address list to leave unnoticed.
-if find "$clone" -type d -name .git -prune -o -name .mirror-forbidden-hosts -print -quit | grep -q .; then
+if find "$clone" -type d -name .git -prune -o -name '.mirror-forbidden-hosts*' -print -quit | grep -q .; then
   echo "error: internal private-host policy file in mirror tree" >&2
   fail=1
 fi

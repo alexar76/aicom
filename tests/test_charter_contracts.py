@@ -382,7 +382,10 @@ ARGS = {"roster_digest": "a3f1", "alpha": "seed", "k": 3, "population": 12}
 
 
 @pytest.fixture()
-def sampler_product(tmp_path):
+def sampler_product(tmp_path, monkeypatch):
+    # These tests execute only the checked-in SAMPLERS above in a temporary
+    # directory. Production still requires an isolated worker.
+    monkeypatch.setenv("AIFACTORY_UNSAFE_ALLOW_HOST_GENERATED_CODE", "1")
     (tmp_path / "app").mkdir()
     (tmp_path / "app" / "__init__.py").write_text("", encoding="utf-8")
     (tmp_path / "app" / "sampling.py").write_text(SAMPLERS, encoding="utf-8")

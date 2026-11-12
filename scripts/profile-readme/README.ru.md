@@ -1,7 +1,7 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-[HISTOR](https://histor.modelmarket.dev/) · [WARDEN](https://warden.modelmarket.dev/) · [Бесплатные проверки](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76)
+[Посмотреть зафиксированное изменение MCP](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Проверить список инструментов в WARDEN](https://modelmarket.dev/tools/warden-scan) · [Реализовать хеш набора инструментов](https://github.com/alexar76/mcp-tool-set-digest)
 <!-- /ecosystem-entry-points -->
 
 <p align="center"><b>Проверки и публичная история с подписями свидетелей для инструментов, которыми пользуются ИИ-агенты.</b></p>
@@ -27,7 +27,7 @@
 
 | | Что вы получаете | Открыть |
 | --- | --- | --- |
-| **WARDEN** | Проверьте все MCP-серверы на своей машине, прежде чем их инструменты попадут к модели — без аккаунта и ключа | `npx -y @aimarket/warden scan` · [warden.modelmarket.dev](https://warden.modelmarket.dev/) |
+| **Файрвол инструментов MCP (WARDEN)** | Разовая проверка серверов из конфигурации. Для контроля утверждённых определений при работе подключите stdio-обёртку. | `npx -y @aimarket/warden@0.26.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **Открытые данные HISTOR** | Что объявлял каждый удалённый MCP-сервер из официального реестра и каждое изменение — подписано, раз в месяц (CC BY 4.0) | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [Zenodo DOI](https://doi.org/10.5281/zenodo.23512759) |
 | **Бесплатные проверки** | x402-эндпоинт, MCP diff, скан WARDEN, проверка HISTOR и стоимость списка инструментов в токенах — в браузере | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | Отправьте одно разрешённое показание GAIA через Hub и Metis, затем изучите подписанную квитанцию | [play.modelmarket.dev](https://play.modelmarket.dev/) · [исходный код](https://github.com/alexar76/aimarket-playground) |

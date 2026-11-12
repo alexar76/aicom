@@ -59,6 +59,8 @@ certifi==2026.10.19
 pillow==13.0.0
 # Hybrid manifest signatures (ML-DSA-65) — see services/ai_market_protocol/signing.py.
 dilithium-py==1.4.0
+# Give concurrent ML-DSA operations independent SHAKE streams.
+xoflib==0.4.0
 python-multipart>=0.0.31
 pywebpush==1.14.1
 

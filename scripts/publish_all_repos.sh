@@ -29,6 +29,7 @@ MODE="all"
 SATELLITE=""
 DRY_RUN=0
 NO_PUSH=0
+PUSH_ONLY=0
 FACTORY_ARGS=()
 MIRROR_ARGS=()
 
@@ -44,7 +45,8 @@ Modes:
 
 Options:
   --dry-run           Preview without network writes
-  --no-push           Commit locally in temp clones only
+  --no-push           Keep local preview commits; no GitHub writes
+  --push-only         Fast-forward source branches only; no GitHub API writes
   --list              List satellite ids from satellite-map.yaml
   -h, --help          This help
 
@@ -131,7 +133,8 @@ while [[ $# -gt 0 ]]; do
     --factory-only)    MODE="factory"; shift ;;
     --satellite)       MODE="single"; SATELLITE="${2:-}"; shift 2 ;;
     --dry-run)         DRY_RUN=1; MIRROR_ARGS+=(--dry-run); FACTORY_ARGS+=(--dry-run); shift ;;
-    --no-push)         NO_PUSH=1; MIRROR_ARGS+=(--no-push); FACTORY_ARGS+=(--no-push); shift ;;
+    --no-push)         NO_PUSH=1; MIRROR_ARGS+=(--no-push --keep-workdir); FACTORY_ARGS+=(--no-push); shift ;;
+    --push-only)       PUSH_ONLY=1; export AICOM_MIRROR_PUSH_ONLY=1; shift ;;
     --list)            list_satellites; exit 0 ;;
     -h|--help)         usage; exit 0 ;;
     -*)                echo "unknown option: $1" >&2; usage; exit 1 ;;
@@ -196,15 +199,10 @@ case "$MODE" in
     ;;
 esac
 
-echo ""
-echo "Syncing GitHub repo descriptions …"
-if [[ "$DRY_RUN" -eq 0 ]]; then
+if [[ "$DRY_RUN" -eq 0 && "$NO_PUSH" -eq 0 && "$PUSH_ONLY" -eq 0 && "$MODE" == all && "$errors" -eq 0 ]]; then
+  echo ""
+  echo "Syncing GitHub repo descriptions and topics …"
   python3 "$ROOT/scripts/sync_github_repo_descriptions.py" || true
-fi
-
-echo ""
-echo "Syncing GitHub repo topics …"
-if [[ "$DRY_RUN" -eq 0 ]]; then
   python3 "$ROOT/scripts/sync_github_repo_topics.py" || true
 fi
 

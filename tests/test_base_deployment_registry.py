@@ -126,13 +126,19 @@ _ADDRESS_SKIP_DIRS = {
     # generated files are theirs to keep in sync, not this tree's.
     ".claude", ".upstreams",
 }
+# Dated observations and copies of old release trees preserve what ran then.
+_ADDRESS_EVIDENCE_DIRS = {"artifacts", "docs/evidence"}
 
 
 def _source_paths(root: Path):
-    """Apply the existing exclusions before entering dependency directories."""
+    """Scan executable source and configuration, excluding historical captures."""
     extensions = {".py", ".ts", ".tsx", ".js", ".json", ".sh", ".yml", ".yaml", ".env", ".example"}
     for directory, dirs, files in os.walk(root):
-        dirs[:] = [name for name in dirs if name not in _ADDRESS_SKIP_DIRS]
+        dirs[:] = [
+            name for name in dirs
+            if name not in _ADDRESS_SKIP_DIRS
+            and (Path(directory) / name).relative_to(root).as_posix() not in _ADDRESS_EVIDENCE_DIRS
+        ]
         for name in files:
             path = Path(directory) / name
             if path.suffix in extensions and path.is_file():
@@ -143,6 +149,13 @@ def test_source_scan_prunes_dependencies_without_losing_first_party_files(tmp_pa
     dependency = tmp_path / "node_modules"
     dependency.mkdir()
     (dependency / "vendored.py").touch()
+    for historical in ("artifacts", "docs/evidence"):
+        snapshot = tmp_path / historical
+        snapshot.mkdir(parents=True)
+        (snapshot / "released-config.json").touch()
+    runtime = tmp_path / "core" / "artifacts"
+    runtime.mkdir(parents=True)
+    (runtime / "active-config.json").touch()
     for name in ("runtime.py", "config.json", "notes.md"):
         (tmp_path / name).touch()
     original_scandir = os.scandir
@@ -152,7 +165,9 @@ def test_source_scan_prunes_dependencies_without_losing_first_party_files(tmp_pa
         return original_scandir(path)
 
     monkeypatch.setattr(os, "scandir", scan)
-    assert {path.name for path in _source_paths(tmp_path)} == {"runtime.py", "config.json"}
+    assert {path.name for path in _source_paths(tmp_path)} == {
+        "runtime.py", "config.json", "active-config.json",
+    }
 
 
 def test_no_source_file_anywhere_hardcodes_a_live_address():

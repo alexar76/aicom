@@ -1,7 +1,7 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-[HISTOR](https://histor.modelmarket.dev/) · [WARDEN](https://warden.modelmarket.dev/) · [免费检查](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76)
+[查看已记录的 MCP 工具变更](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [用 WARDEN 扫描工具列表](https://modelmarket.dev/tools/warden-scan) · [实现工具集摘要](https://github.com/alexar76/mcp-tool-set-digest)
 <!-- /ecosystem-entry-points -->
 
 <p align="center"><b>为 AI 智能体所用的工具提供检查和有见证的公开记录。</b></p>
@@ -27,7 +27,7 @@
 
 | | 你将获得 | 打开 |
 | --- | --- | --- |
-| **WARDEN** | 在工具到达模型之前，检查你机器上的每个 MCP 服务器——无需账号和密钥 | `npx -y @aimarket/warden scan` · [warden.modelmarket.dev](https://warden.modelmarket.dev/) |
+| **MCP 工具防火墙（WARDEN）** | 对已配置的服务器执行一次扫描。若要在运行时强制使用已审核的定义，请配置 stdio 代理。 | `npx -y @aimarket/warden@0.26.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **HISTOR 开放数据** | 官方注册表中每个远程 MCP 服务器公布的内容及每次变更，已签名，每月一次（CC BY 4.0） | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [Zenodo DOI](https://doi.org/10.5281/zenodo.23512759) |
 | **免费检查** | x402 端点、MCP diff、WARDEN 扫描、HISTOR 检查和工具列表的 token 成本——在浏览器中完成 | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | 将一条 allowlist 内的 GAIA 读数经由 Hub 和 Metis 发送，然后查看签名收据 | [play.modelmarket.dev](https://play.modelmarket.dev/) · [源码](https://github.com/alexar76/aimarket-playground) |

@@ -6,7 +6,7 @@ export default {
   site: {
     skip: "Skip to the check",
     tools: "Tools",
-    footer: "Free checks for people. AI agents buy the same answers over x402.",
+    footer: "Free browser checks for developers. Four also have paid x402 endpoints.",
     language: "Language",
   },
   ui: {
@@ -55,12 +55,12 @@ export default {
     description: "Five free developer checks: count what an MCP server's tool list costs in tokens on every request, debug an x402 payment signature, diff an MCP server's tools for a rug pull, scan tool definitions for poisoning with WARDEN, and look up a server's history in the HISTOR transparency log.",
     eyebrow: "Free tools for developers",
     h1: "Paste it. Get a diagnosis.",
-    lead: "Five checks for people who build with MCP servers and x402 payments. Free here: no account, no wallet. AI agents buy four of the very same answers over x402 for a fraction of a cent — this page opens what they pay for to people.",
-    howTitle: "Deterministic, signed, the same for everyone",
+    lead: "Five browser checks for MCP tool lists and x402 payments. No account or wallet is required. Four checks also have x402 endpoints that accept USDC on Base.",
+    howTitle: "How the checks work",
     how: [
-      ["Deterministic", "Same input, same answer. Rules and cryptography decide the verdict, not a model's mood."],
+      ["Rules and cryptography", "Checks use explicit rules, published observations or signature verification, depending on the input."],
       ["Signed", "The x402 and diff answers carry an Ed25519 signature of our HESTIA runtime; HISTOR signs its own."],
-      ["Paid for by agents", "The same checks are sold to AI agents over x402, USDC on Base. That is what keeps this page free."],
+      ["Optional x402 access", "Four of these checks are available over x402 with per-call pricing."],
     ],
   },
   tools: {
@@ -192,13 +192,13 @@ export default {
       title: "MCP tool poisoning scanner — WARDEN",
       description: "Free MCP tool-definition scan: paste a server's tools/list and WARDEN, the open-source MCP firewall, checks every name, description, schema and annotation for prompt injection, exfiltration and credential theft. Allow or block, with the rule that fired.",
       eyebrow: "MCP · prompt injection · WARDEN",
-      h1: "Is this MCP tool list safe to show a model?",
+      h1: "What does WARDEN flag in this MCP tool list?",
       lead: "Paste a server's tools/list. WARDEN — the open-source MCP firewall on npm — runs its static ruleset and its threat list over every tool definition: names, descriptions, input and output schemas, annotations. You get allow or block, and every finding with the rule that fired and where.",
       fields: {
         tools: { label: "tools/list", hint: "A list of tools, {\"tools\": […]}, or the server's JSON-RPC answer." },
       },
       howToTitle: "Scan the servers your own clients start",
-      howTo: "The same rules, run locally: it reads the MCP configs of Claude Code, Claude Desktop, Cursor, VS Code and Windsurf, lists every server's tools and never calls one.",
+      howTo: "For a one-time scan, WARDEN reads supported client configs. It may start configured stdio programs or connect to remote servers to list tools. It does not call the tools.",
       exampleNote: "Example: a note-reading tool that also asks for an SSH key",
       checks: [
         "Instructions aimed at the model: override and priority claims, concealment from the user, orders to call or rewrite other tools.",
@@ -210,13 +210,13 @@ export default {
       notChecked: "Tool definitions only. Origin and pinning are state on your machine and need the local scan; the opt-in semantic classifier does not run here.",
       faq: [
         ["What is tool poisoning?", "Instructions hidden in a tool's description or schema. The user sees a tool name; the model reads the whole definition and may follow it. WARDEN reads the definition the way the model does."],
-        ["How is this different from the local scan?", "Same rules. The local scan also connects to your servers, pins what they served and blocks when a definition drifts; this page checks one list you paste."],
+        ["How is this different from the local scan?", "The browser checks one list. A local scan can compare live definitions to a lock file. Use the stdio wrapper to enforce reviewed definitions during use."],
         ["Can WARDEN sit in front of my servers?", "Yes: warden-mcp wrap starts a server behind the firewall, and its Claude Code plugin refuses calls to blocked servers. The README on npm and GitHub has the setup."],
       ],
       privacy: "What you paste is sent to modelmarket.dev, scanned in memory by WARDEN and answered. It is not stored.",
       labels: {
         verdict: { allow: "Allowed", block: "Blocked" },
-        verdictNote: { allow: "No blocking finding: WARDEN would let a model see these definitions.", block: "At least one blocking finding: WARDEN would keep these tools away from the model." },
+        verdictNote: { allow: "No blocking finding under these rules. Review the tool definitions before allowing them.", block: "At least one finding met the blocking threshold. Review the rule and the matched text." },
         engine: "Engine",
         ruleset: "ruleset",
         blocked: "Blocked tools",
