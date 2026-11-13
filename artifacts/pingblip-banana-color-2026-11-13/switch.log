@@ -1,0 +1,50 @@
+time="2026-11-13T15:33:05-05:00" level=warning msg="volume \"blip_pgdata\" already exists but was created for project \"blip\" (expected \"pingblip\"). Use `external: true` to use an existing volume"
+ Container pingblip-pingblip-1 Recreate 
+ Container pingblip-pingblip-1 Recreated 
+ Container pingblip-pingblip-1 Starting 
+ Container pingblip-pingblip-1 Started 
+ Container pingblip-pingblip-1 Waiting 
+ Container pingblip-pingblip-1 Healthy 
+curl: (56) Recv failure: Connection reset by peer
+curl: (52) Empty reply from server
+curl: (56) Recv failure: Connection reset by peer
+curl: (52) Empty reply from server
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (52) Empty reply from server
+curl: (52) Empty reply from server
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (52) Empty reply from server
+curl: (56) Recv failure: Connection reset by peer
+curl: (52) Empty reply from server
+curl: (52) Empty reply from server
+curl: (52) Empty reply from server
+curl: (56) Recv failure: Connection reset by peer
+curl: (52) Empty reply from server
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (52) Empty reply from server
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (52) Empty reply from server
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (52) Empty reply from server
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (56) Recv failure: Connection reset by peer
+curl: (28) Operation timed out after 5002 milliseconds with 0 bytes received
+curl: (28) Operation timed out after 5002 milliseconds with 0 bytes received
+curl: (28) Operation timed out after 5002 milliseconds with 0 bytes received
+Switch failed; restoring pingblip-pingblip:before-banana-20261113-898f3a19
+time="2026-11-13T15:34:53-05:00" level=warning msg="volume \"blip_pgdata\" already exists but was created for project \"blip\" (expected \"pingblip\"). Use `external: true` to use an existing volume"
+ Container pingblip-pingblip-1 Recreate 
+ Container pingblip-pingblip-1 Recreated 
+ Container pingblip-pingblip-1 Starting 
+ Container pingblip-pingblip-1 Started 
+ Container pingblip-pingblip-1 Waiting 
+ Container pingblip-pingblip-1 Healthy 

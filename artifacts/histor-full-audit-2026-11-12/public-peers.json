@@ -1,0 +1,90 @@
+{
+  "kind": "histor-peer-cross-checks",
+  "v": 1,
+  "generated_at": "2026-11-12T12:12:55Z",
+  "about": "Observers HISTOR compares its records with, and where each comparison is published. Method and verdicts: https://github.com/alexar76/histor/blob/main/docs/cross-check.md",
+  "peers": [
+    {
+      "slug": "crawlcheck",
+      "name": "CrawlCheck",
+      "operator": "VSNARY",
+      "contact": "contact@crawlcheck.io",
+      "page": "https://crawlcheck.io/spec/mcp-lockfile",
+      "since": "2026-11-07",
+      "method": "digest",
+      "schedule": "daily 12:00 UTC (histor-peers.timer)",
+      "path": "/datasets/peers/crawlcheck/",
+      "sources": [
+        {
+          "name": "feed",
+          "url": "https://crawlcheck.io/api/v1/mcp/changes?limit=500"
+        },
+        {
+          "name": "list",
+          "url": "https://crawlcheck.io/data/xcheck/histor/latest.jsonl"
+        }
+      ],
+      "window_hours": 24,
+      "aliases": [
+        "/datasets/xcheck-crawlcheck/"
+      ],
+      "last_day": "2026-11-12",
+      "last_results": {
+        "feed": {
+          "rows": 445,
+          "counts": {
+            "agree": 340,
+            "agree_nearby": 0,
+            "disagree": 4,
+            "histor_no_digest": 101,
+            "not_listed": 0,
+            "theirs_no_digest": 0,
+            "bad_row": 0
+          }
+        },
+        "list": {
+          "rows": 30,
+          "counts": {
+            "agree": 30,
+            "agree_nearby": 0,
+            "disagree": 0,
+            "histor_no_digest": 0,
+            "not_listed": 0,
+            "theirs_no_digest": 0,
+            "bad_row": 0
+          }
+        }
+      }
+    },
+    {
+      "slug": "scraperwatch",
+      "name": "ScraperWatch",
+      "contact": "ops@scraperwatch.com",
+      "page": "https://scraperwatch.com/mcp-changes/",
+      "since": "2026-11-01",
+      "method": "field-diff",
+      "schedule": "daily 12:00 UTC (histor-peers.timer)",
+      "path": "/datasets/peers/scraperwatch/",
+      "last_day": "2026-11-09",
+      "last_results": {
+        "days": [
+          "2026-11-06"
+        ],
+        "forward": {
+          "same change in HISTOR": 36,
+          "server instructions only (HISTOR does not record them)": 3,
+          "partly in HISTOR": 3,
+          "not seen as a change in HISTOR": 1,
+          "HISTOR has no definitions in the window": 1
+        },
+        "reverse": {
+          "only members the peer does not hash changed": 52,
+          "back to the same definitions by the second read": 9,
+          "only dates, version strings, numbers or whitespace changed": 1,
+          "listed by the peer the day before": 1
+        },
+        "likelyMisses": 0
+      }
+    }
+  ]
+}

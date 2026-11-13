@@ -1,7 +1,7 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-[Ver un cambio registrado en herramientas MCP](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Analizar una lista de herramientas con WARDEN](https://modelmarket.dev/tools/warden-scan) · [Implementar la huella del conjunto de herramientas](https://github.com/alexar76/mcp-tool-set-digest)
+[Ver un cambio registrado en herramientas MCP](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Analizar una lista de herramientas con WARDEN](https://modelmarket.dev/tools/warden-scan) · [Implementar la huella del conjunto de herramientas](https://github.com/alexar76/mcp-tool-set-digest) · [Las once puertas de entrada](https://ecosystem.modelmarket.dev/#ways-in)
 <!-- /ecosystem-entry-points -->
 
 <p align="center"><b>Comprobaciones y un registro público con testigos de las herramientas que usan los agentes de IA.</b></p>
@@ -293,6 +293,7 @@ solo conoces un nombre, salta al [índice A–Z](#az).
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury** — pagador independiente de recompensas para MOMUS (clave y contenedor propios); solo paga tras una verificación independiente · [en vivo](https://momus.modelmarket.dev/treasury) · [landing](https://alexar76.github.io/treasury/) | tras la verificación |
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN** — **firewall de seguridad MCP** sin dependencias: biblioteca, CLI y servidor MCP stdio local, no un servicio alojado: escaneo estático de definiciones de herramientas → feed de amenazas firmado → origen → pinning · [landing](https://warden.modelmarket.dev/) · [estudio de campo: 1.108 servidores MCP públicos](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.es.md) | antes de que una herramienta de terceros llegue a un host |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR** (ἵστωρ) — **registro de transparencia público de las definiciones de herramientas MCP**: lee lo que anuncia cada endpoint remoto del registro oficial de MCP (nunca llama a una herramienta), lo firma como etiquetas MTL/1, las añade a un árbol de Merkle RFC 9162 con encabezados de árbol firmados y fecha cada cambio con su diff. Nunca declara seguro a un servidor · [en vivo](https://histor.modelmarket.dev) · [landing](https://alexar76.github.io/histor/) | a diario, sobre cada endpoint remoto del registro oficial · y en `/check` |
+| [**mcp-tool-set-digest**](https://github.com/alexar76/mcp-tool-set-digest) | **Huella del conjunto de herramientas MCP** — la especificación `mcp-tool-set-digest/1` (borrador del 2026-11-13): una forma de calcular el hash de lo que un servidor MCP dice de sus herramientas, para que dos partes que nunca intercambiaron ese texto puedan saber si recibieron lo mismo; una huella del contrato y otra de los campos extra, 73 vectores de prueba e implementaciones de referencia sin dependencias en Python, JavaScript y Go · la huella que comparan HISTOR, WARDEN y CrawlCheck | cuando se fija o se compara una lista de herramientas |
 
 ### 🧠 Memoria verificable — lo que los agentes conservan
 <sub>Escribir, buscar y compartir memoria que otros agentes pueden comprobar.</sub>
@@ -401,6 +402,7 @@ El índice canónico está en la [versión en inglés](README.md#az); si una tra
 | [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) | Aplicación de ejemplo | Flutter + SDK, producto real |
 | [logos](https://github.com/alexar76/logos) | Observabilidad | análisis de solo lectura de la federación |
 | [lottery](https://github.com/alexar76/lottery) | Cómputo verificable | sorteos on-chain no manipulables · UBI para máquinas |
+| [mcp-tool-set-digest](https://github.com/alexar76/mcp-tool-set-digest) | Confianza y seguridad | hash de la lista de herramientas de un servidor MCP |
 | [metis](https://github.com/alexar76/metis) | Cómputo verificable | nivel de verificación |
 | [momus](https://github.com/alexar76/momus) | Confianza y seguridad | equipo rojo de HTTP/federación |
 | [oracles](https://github.com/alexar76/oracles) | Cómputo verificable | 17 capacidades matemáticas firmadas |

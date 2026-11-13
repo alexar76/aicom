@@ -1,0 +1,45 @@
+{
+    "production_image": "sha256:7c41749d850ce4569cf755570fc8bf8de97f563ffdd7ff13cc8f74d36acef9e8",
+    "scenarios": [
+        {
+            "crash_window": "before-credit-commit",
+            "forced_exit_code": 43,
+            "after_crash": {
+                "obligation_millicents": 700,
+                "obligation_acknowledged": false,
+                "debit_cents": 1,
+                "publisher_payout_count": 0,
+                "publisher_balance_millicents": 0
+            },
+            "after_app_start_and_replay": {
+                "obligation_millicents": 700,
+                "obligation_acknowledged": true,
+                "debit_cents": 1,
+                "publisher_payout_count": 1,
+                "publisher_balance_millicents": 700
+            }
+        },
+        {
+            "crash_window": "after-credit-commit",
+            "forced_exit_code": 43,
+            "after_crash": {
+                "obligation_millicents": 700,
+                "obligation_acknowledged": false,
+                "debit_cents": 1,
+                "publisher_payout_count": 1,
+                "publisher_balance_millicents": 700
+            },
+            "after_app_start_and_replay": {
+                "obligation_millicents": 700,
+                "obligation_acknowledged": true,
+                "debit_cents": 1,
+                "publisher_payout_count": 1,
+                "publisher_balance_millicents": 700
+            }
+        }
+    ],
+    "network": "none",
+    "production_volume_mounts": false,
+    "storage": "disposable SQLite",
+    "funds": "synthetic"
+}

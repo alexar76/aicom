@@ -93,28 +93,38 @@ if command -v docker >/dev/null 2>&1; then
   while read -r name image; do
     # Rebuilt security images may be named after the service (emberline-db),
     # so image-name matching silently misses real PostgreSQL databases.
-    docker exec "$name" sh -c 'command -v postgres >/dev/null && command -v pg_dumpall >/dev/null' 2>/dev/null || continue
+    # Every docker call here is bounded. An exec into a container that is just exiting (the many
+    # short-lived gVisor sandbox and scan containers) can hang for ever: on 2026-11-13 the nightly
+    # runs of pingblip and competing-lab hung here for six hours, until systemd killed them, and no
+    # archive was made. A probe that times out skips that container and says so.
+    timeout 30 docker exec "$name" sh -c 'command -v postgres >/dev/null && command -v pg_dumpall >/dev/null' 2>/dev/null
+    probe=$?
+    if (( probe == 124 )); then
+      warnings+=("docker exec probe of $name timed out after 30 s: skipped")
+      continue
+    fi
+    (( probe == 0 )) || continue
     # A container from a postgres image with no server up (a throwaway restore, a one-off
     # psql) is not a database to dump; its files stay in the archive as they are.
-    if ! docker exec "$name" pg_isready -q >/dev/null 2>&1; then
+    if ! timeout 60 docker exec "$name" pg_isready -q >/dev/null 2>&1; then
       warnings+=("postgres in $name is not accepting connections: not dumped, files kept raw")
       continue
     fi
     # --rsyncable: a plain gzip stream changes from the first changed row onward, so borg found
     # nothing to share between nights and stored the whole dump again. On admin-vps that was HISTOR's
     # 3.25 GB dump, 3.1 GB of new data a night, and the 30 GB quota ran out on 2026-11-07.
-    if docker exec "$name" sh -c 'export PGPASSWORD="${POSTGRES_PASSWORD:-}"; if [ -n "${POSTGRES_PASSWORD_FILE:-}" ]; then export PGPASSWORD="$(cat "$POSTGRES_PASSWORD_FILE")"; fi; exec pg_dumpall -w -U "${POSTGRES_USER:-postgres}" --clean --if-exists' \
+    if timeout "${AICOM_BACKUP_PG_TIMEOUT:-7200}" docker exec "$name" sh -c 'export PGPASSWORD="${POSTGRES_PASSWORD:-}"; if [ -n "${POSTGRES_PASSWORD_FILE:-}" ]; then export PGPASSWORD="$(cat "$POSTGRES_PASSWORD_FILE")"; fi; exec pg_dumpall -w -U "${POSTGRES_USER:-postgres}" --clean --if-exists' \
          2> "$STAGE/pg/$name.err" | gzip -1n --rsyncable > "$STAGE/pg/$name.sql.gz" \
          && gzip -t "$STAGE/pg/$name.sql.gz"; then
       pg_count=$((pg_count + 1))
       rm -f "$STAGE/pg/$name.err"
       # the data directory itself stays out: the dump is the backup
-      src="$(docker inspect -f '{{range .Mounts}}{{if eq .Destination "/var/lib/postgresql/data"}}{{.Source}}{{end}}{{end}}' "$name")"
+      src="$(timeout 30 docker inspect -f '{{range .Mounts}}{{if eq .Destination "/var/lib/postgresql/data"}}{{.Source}}{{end}}{{end}}' "$name")"
       [[ -n "$src" ]] && echo "pp:${src%/_data}" >> "$exclude_list"
     else
       errors+=("pg_dumpall in $name failed: $(head -c 200 "$STAGE/pg/$name.err" | tr '\n' ' ')")
     fi
-  done < <(docker ps --format '{{.Names}} {{.Image}}')
+  done < <(timeout 60 docker ps --format '{{.Names}} {{.Image}}')
 fi
 if systemctl is-active --quiet postgresql 2>/dev/null; then
   if (cd / && runuser -u postgres -- pg_dumpall --clean --if-exists) 2> "$STAGE/pg/host.err" | gzip -1n --rsyncable > "$STAGE/pg/host-postgresql.sql.gz" \

@@ -5,5 +5,6 @@ Documentation=file:///usr/local/sbin/aicom-disk-cleanup
 [Service]
 Type=oneshot
 ExecStart=/usr/local/sbin/aicom-disk-cleanup --if-needed
+TimeoutStartSec=30min
 Nice=10
 IOSchedulingClass=idle

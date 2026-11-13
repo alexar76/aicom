@@ -1,0 +1,21 @@
+---
+description: Never delete study or research data on servers; never lift chattr flags; disk reclaim is ask-first.
+alwaysApply: true
+---
+
+# Deleting files on servers
+
+User rule of 2026-11-13. A disk-reclaim agent removed the malware-feed study's repeat-run
+workspace and its off-host custody copy (after running `chattr -i` on it) during the repeat
+measurement. Full rule: `AGENTS.md`, section "Deleting files on servers".
+
+- Never delete, move or truncate any path whose name starts with `mfa-`, anything under
+  `research/` or `/root/mfa-study/`, or the `mfa-*` units, timers and holder containers.
+  A date in a folder name does not make it scrap.
+- Never run `chattr -i` / `chattr -a`, and never change permissions or ownership to make a
+  deletion work. An immutable flag means stop and ask the user.
+- Disk reclaim is ask-first: report the survey, then delete only paths this session created
+  or the user approved by exact path. Never brief another agent with "old MFA/test scrap".
+- No `docker container|volume|image prune` on hosts with study or HISTOR sandbox services;
+  holder containers keep needed images.
+- No `logrotate -f` and no deleting rotated logs or `wtmp` to free space.

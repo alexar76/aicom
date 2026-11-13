@@ -41,7 +41,18 @@ flock -n 9 || { echo "another cleanup is running"; exit 0; }
 mkdir -p "$(dirname "$STAMP")"
 
 log() { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$LOG"; }
-run() { if [[ $DRY == 1 ]]; then log "DRY-RUN: $*"; else log "RUN: $*"; "$@" >>"$LOG" 2>&1 || log "  (exit $?)"; fi; }
+# Keep the clock outside each pipeline and its background subprocesses. The unit has a final bound
+# even when a Docker client is stuck in uninterruptible kernel I/O.
+bounded_docker() { timeout --foreground --kill-after=10s 120s docker "$@"; }
+run() {
+  if [[ $DRY == 1 ]]; then log "DRY-RUN: $*"; return; fi
+  log "RUN: $*"
+  if [[ $1 == docker ]]; then
+    bounded_docker "${@:2}" >>"$LOG" 2>&1 || log "  (exit $?)"
+  else
+    "$@" >>"$LOG" 2>&1 || log "  (exit $?)"
+  fi
+}
 use_pct() { df --output=pcent / | tail -1 | tr -dc '0-9'; }
 df_line() { df -h / | awk 'NR==2 {print $3 " used of " $2 ", " $4 " free (" $5 ")"}'; }
 
@@ -53,7 +64,7 @@ if [[ $IF_NEEDED == 1 ]]; then
 fi
 log "=== aicom disk cleanup on $(hostname) (dry_run=$DRY) — before: $(df_line) ==="
 
-if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+clean_docker() {
   run docker builder prune -f --filter until=72h
   run docker image prune -f
 
@@ -68,14 +79,19 @@ if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
     (( now - t > keep_s )) || continue
     log "  rollback container ${name#/}, finished $fin"
     run docker rm "$id"
-  done < <(docker ps -aq -f status=exited -f status=created | xargs -r docker inspect -f '{{.Id}} {{.Name}} {{.State.FinishedAt}} {{.Created}}' 2>/dev/null)
+  done < <(bounded_docker ps -aq -f status=exited -f status=created | xargs -r timeout --foreground --kill-after=10s 120s docker inspect -f '{{.Id}} {{.Name}} {{.State.FinishedAt}} {{.Created}}' 2>/dev/null)
 
   # Images every container still uses (by id), and every image a compose file on this host names.
-  used=$(docker ps -aq | xargs -r docker inspect -f '{{.Image}}' 2>/dev/null | sort -u)
+  # A stopped or slow daemon can return a partial inventory. Keep all tagged images in that case.
+  if ! used=$(bounded_docker ps -aq | xargs -r timeout --foreground --kill-after=10s 120s docker inspect -f '{{.Image}}' 2>/dev/null | sort -u) ||
+     ! images=$(bounded_docker images --no-trunc --format '{{.Repository}}:{{.Tag}} {{.ID}} {{.CreatedAt}}'); then
+    log '  Docker inventory incomplete; skipping tagged image cleanup'
+    return
+  fi
   named=$(find /opt /root /srv /home -maxdepth 4 \( -name 'docker-compose*.y*ml' -o -name 'compose*.y*ml' \) -type f 2>/dev/null \
             | xargs -r grep -h -E '^\s*image:' 2>/dev/null | sed -E 's/^\s*image:\s*//; s/["'\'']//g; s/\s+#.*$//' | sort -u)
   # Newest image id per repository, by creation time.
-  newest=$(docker images --no-trunc --format '{{.Repository}} {{.ID}} {{.CreatedAt}}' | grep -v '^<none>' \
+  newest=$(printf '%s\n' "$images" | sed -E 's/:[^: ]+( )/\1/' | grep -v '^<none>' \
              | sort -k1,1 -k3,4r | awk '!seen[$1]++ {print $2}' | sort -u)
   # Images the host lists as kept: /etc/aicom-disk-cleanup.keep, one shell glob per line matched against the
   # repository or the full reference (histor-node, histor-node:22, ghcr.io/org/*), # starts a comment.
@@ -99,10 +115,13 @@ if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
     t=$(date -d "${created% *}" +%s 2>/dev/null) || continue
     (( now - t > keep_s )) || continue
     listed "$ref" && { kept "$ref" "listed in $KEEP_FILE"; continue; }
-    labels=$(docker image inspect -f '{{json .Config.Labels}}' "$id" 2>/dev/null)
+    if ! labels=$(bounded_docker image inspect -f '{{json .Config.Labels}}' "$id" 2>/dev/null); then
+      log "  keep $ref: Docker could not read image labels"
+      continue
+    fi
     [[ $labels =~ \"org\.modelmarket\.(keep|histor\.sandbox)\" ]] && { kept "$ref" "label"; continue; }
     cands+=("$ref")
-  done < <(docker images --no-trunc --format '{{.Repository}}:{{.Tag}} {{.ID}} {{.CreatedAt}}')
+  done <<< "$images"
 
   # References: a program that runs `docker run histor-node:22` needs that image although no container and no
   # compose file holds it. Search units, cron tables, /usr/local programs and the scripts and configs under
@@ -130,6 +149,10 @@ if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
     run docker rmi "$ref"
   done
   run docker image prune -f
+}
+
+if command -v docker >/dev/null 2>&1 && bounded_docker info >/dev/null 2>&1; then
+  clean_docker
 fi
 
 command -v journalctl >/dev/null && run journalctl --vacuum-size=200M

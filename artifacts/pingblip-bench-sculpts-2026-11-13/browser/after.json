@@ -1,0 +1,60 @@
+{
+  "phase": "after",
+  "startedAt": "2026-11-13T11:51:37.605Z",
+  "expectedHash": "5bc90e809b0852b4a3a221810f6f4d61781298d1dba6b4df21de697e20e0039f",
+  "benchUrl": "https://pingblip.com/bench?lang=en",
+  "renders": [
+    {
+      "viewport": "desktop",
+      "pageErrors": [],
+      "consoleErrors": [],
+      "models": [
+        {
+          "url": "https://pingblip.com/models/glaze-donut.glb?v=5bc90e809b",
+          "status": 200,
+          "sha256": "5bc90e809b0852b4a3a221810f6f4d61781298d1dba6b4df21de697e20e0039f",
+          "bytes": 1151396,
+          "icingNodes": [
+            "Thick pink glaze"
+          ]
+        }
+      ],
+      "canvas": {
+        "x": 154,
+        "y": 53,
+        "width": 576,
+        "height": 987
+      },
+      "pinkPixelFraction": 0.02225106945851627,
+      "canvasScreenshot": "after-desktop-canvas.png",
+      "benchScreenshot": "after-desktop-bench.png"
+    },
+    {
+      "viewport": "mobile",
+      "pageErrors": [],
+      "consoleErrors": [],
+      "models": [
+        {
+          "url": "https://pingblip.com/models/glaze-donut.glb?v=5bc90e809b",
+          "status": 200,
+          "sha256": "5bc90e809b0852b4a3a221810f6f4d61781298d1dba6b4df21de697e20e0039f",
+          "bytes": 1151396,
+          "icingNodes": [
+            "Thick pink glaze"
+          ]
+        }
+      ],
+      "canvas": {
+        "x": 0,
+        "y": 108,
+        "width": 390,
+        "height": 239.03125
+      },
+      "pinkPixelFraction": 0.023033000949667617,
+      "canvasScreenshot": "after-mobile-canvas.png",
+      "benchScreenshot": "after-mobile-bench.png"
+    }
+  ],
+  "passed": true,
+  "finishedAt": "2026-11-13T11:51:50.203Z"
+}

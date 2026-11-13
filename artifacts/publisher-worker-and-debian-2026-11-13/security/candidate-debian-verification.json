@@ -1,0 +1,93 @@
+{
+  "checked_at_utc": "2026-11-13T04:56:33.258854+00:00",
+  "previous_image": "sha256:7c41749d850ce4569cf755570fc8bf8de97f563ffdd7ff13cc8f74d36acef9e8",
+  "candidate_image": "sha256:c62951ec599a46c74c1792dd47f7a50af6a025c3c3eb78334d798a8dbd19e211",
+  "scope": "ephemeral candidate image, network disabled, read-only root, no service data mounted; Debian trixie apt and zlib source packages only",
+  "python_version": "3.12.15",
+  "unchanged_python_distributions": 76,
+  "os_binary_packages_compared": 133,
+  "os_binary_package_versions_changed": {
+    "apt": {
+      "previous": "3.0.3",
+      "updated": "3.0.4"
+    },
+    "libapt-pkg7.0:amd64": {
+      "previous": "3.0.3",
+      "updated": "3.0.4"
+    },
+    "zlib1g:amd64": {
+      "previous": "1:1.3.dfsg+really1.3.1-1+b1",
+      "updated": "1:1.3.dfsg+really1.3.1-1+deb13u1"
+    }
+  },
+  "dpkg_audit_clean": true,
+  "tracker": {
+    "url": "https://security-tracker.debian.org/tracker/data/json",
+    "download_sha256": "381d034de452e953cff39643622d6ca4b9dd2e89d0a1a6c00b4dc15c19f8a304",
+    "downloaded_at_utc": "2026-11-13T04:55:27.453976+00:00",
+    "records_checked": 38,
+    "version_comparisons_with_dpkg": 29
+  },
+  "target_cves_fixed": [
+    {
+      "cve": "CVE-2026-109518",
+      "package": "apt",
+      "installed": "3.0.4",
+      "status": "resolved",
+      "fixed": "3.0.4",
+      "urgency": "not yet assigned"
+    },
+    {
+      "cve": "CVE-2026-27171",
+      "package": "zlib",
+      "installed": "1:1.3.dfsg+really1.3.1-1+deb13u1",
+      "status": "resolved",
+      "fixed": "1:1.3.dfsg+really1.3.1-1+deb13u1",
+      "urgency": "not yet assigned"
+    },
+    {
+      "cve": "CVE-2026-76844",
+      "package": "zlib",
+      "installed": "1:1.3.dfsg+really1.3.1-1+deb13u1",
+      "status": "resolved",
+      "fixed": "1:1.3.dfsg+really1.3.1-1+deb13u1",
+      "urgency": "not yet assigned"
+    },
+    {
+      "cve": "CVE-2026-85091",
+      "package": "zlib",
+      "installed": "1:1.3.dfsg+really1.3.1-1+deb13u1",
+      "status": "resolved",
+      "fixed": "1:1.3.dfsg+really1.3.1-1+deb13u1",
+      "urgency": "not yet assigned"
+    }
+  ],
+  "previous_affected_cves": [
+    "CVE-2011-3374",
+    "CVE-2026-109518",
+    "CVE-2026-27171",
+    "CVE-2026-76844",
+    "CVE-2026-85091"
+  ],
+  "candidate_affected_cves": [
+    "CVE-2011-3374"
+  ],
+  "fixed_since_prior_check": [
+    "CVE-2026-109518",
+    "CVE-2026-27171",
+    "CVE-2026-76844",
+    "CVE-2026-85091"
+  ],
+  "new_since_prior_check": [],
+  "candidate_uncertain": [],
+  "candidate_affected": [
+    {
+      "cve": "CVE-2011-3374",
+      "package": "apt",
+      "installed": "3.0.4",
+      "status": "open",
+      "fixed": null,
+      "urgency": "unimportant"
+    }
+  ]
+}

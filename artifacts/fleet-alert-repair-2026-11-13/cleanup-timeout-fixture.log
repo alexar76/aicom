@@ -1,0 +1,7 @@
+[2026-11-13T09:49:02Z] === aicom disk cleanup on hub.modelmarket.dev (dry_run=1) — before: 74G used of 95G, 17G free (82%) ===
+[2026-11-13T09:49:02Z] DRY-RUN: docker builder prune -f --filter until=72h
+[2026-11-13T09:49:02Z] DRY-RUN: docker image prune -f
+[2026-11-13T09:49:03Z]   Docker inventory incomplete; skipping tagged image cleanup
+[2026-11-13T09:49:03Z] DRY-RUN: journalctl --vacuum-size=200M
+[2026-11-13T09:49:03Z] DRY-RUN: apt-get clean
+[2026-11-13T09:49:03Z] === done — after: 74G used of 95G, 17G free (82%) ===

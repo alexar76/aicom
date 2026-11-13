@@ -1,0 +1,631 @@
+{
+  "scope": "Read-only comparison of the public apex ModelMarket manifest and observed sellers against seven dated production SQLite backups. Historical manifest membership reconstructed from snapshot flags, using the same execution, public-access and route-freshness predicates and the live six-hour peer threshold. No paid invokes or production writes.",
+  "current_manifest": {
+    "url": "https://modelmarket.dev/ai-market/v2/manifest",
+    "generated_at_utc": "2026-11-13T08:59:24Z",
+    "body_sha256": "f57324845245d751a3e77dec636309a4bb4c39214ff8924eced46fdc8bd41ecb",
+    "total": 286,
+    "local": 5,
+    "federated": 281,
+    "hubs_indexed": 22,
+    "local_offers": [
+      {
+        "source_hub": "local",
+        "product_id": "aicom-diagnostics",
+        "capability_id": "aicom.diagnose@v1",
+        "price_per_call_usd": 0.1,
+        "routed_price_usd": 0.1
+      },
+      {
+        "source_hub": "local",
+        "product_id": "factorworks",
+        "capability_id": "math.factor@v1",
+        "price_per_call_usd": 0.05,
+        "routed_price_usd": 0.05
+      },
+      {
+        "source_hub": "local",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.actuate@v1",
+        "price_per_call_usd": 0.05,
+        "routed_price_usd": 0.05
+      },
+      {
+        "source_hub": "local",
+        "product_id": "hephaestus",
+        "capability_id": "pipeline.run@v1",
+        "price_per_call_usd": 0.0,
+        "routed_price_usd": 0.0
+      },
+      {
+        "source_hub": "local",
+        "product_id": "weather-witness",
+        "capability_id": "weather.witness@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.002
+      }
+    ]
+  },
+  "current_observed_sellers": {
+    "url": "https://modelmarket.dev/ai-market/v2/federation/observed-sellers",
+    "route_count": 36,
+    "routes_by_origin": {
+      "https://aemb.pro": 1,
+      "https://priorseal.xyz": 4,
+      "https://tienda.textokit.store": 20,
+      "https://www.oracleinsight.xyz": 11
+    }
+  },
+  "current_x402_bridge": {
+    "url": "https://modelmarket.dev/ai-market/v2/x402-bridge",
+    "enabled": true,
+    "network": "eip155:8453",
+    "scheme": "exact",
+    "balance_usd": 0.0,
+    "today": {
+      "spent_usd": 0.0,
+      "in_flight_usd": 0.0,
+      "delivered": 0
+    }
+  },
+  "current_ai_catalog": {
+    "url": "https://modelmarket.dev/ai-catalog/v1/capabilities.json",
+    "entry_count": 285,
+    "manifest_only": [
+      {
+        "source_hub": "local",
+        "product_id": "hephaestus",
+        "capability_id": "pipeline.run@v1"
+      }
+    ],
+    "ai_catalog_only": []
+  },
+  "historical_comparisons": [
+    {
+      "snapshot_at_utc": "2026-11-08T09:17:19Z",
+      "raw_capability_rows": 306,
+      "reconstructed_callable_offers": 286,
+      "excluded_by_reason": {
+        "local_without_execution_path": 12,
+        "operator_gated": 4,
+        "stale_peer": 4
+      },
+      "current_offers_added": [],
+      "current_offers_removed": [],
+      "current_offers_repriced": [],
+      "observed_seller_routes": 21,
+      "observed_routes_and_prices_match_current": false,
+      "current_observed_routes_added_by_origin": {
+        "https://priorseal.xyz": 4,
+        "https://www.oracleinsight.xyz": 11
+      }
+    },
+    {
+      "snapshot_at_utc": "2026-11-11T04:54:57Z",
+      "raw_capability_rows": 306,
+      "reconstructed_callable_offers": 286,
+      "excluded_by_reason": {
+        "local_without_execution_path": 12,
+        "operator_gated": 4,
+        "stale_peer": 4
+      },
+      "current_offers_added": [],
+      "current_offers_removed": [],
+      "current_offers_repriced": [],
+      "observed_seller_routes": 21,
+      "observed_routes_and_prices_match_current": false,
+      "current_observed_routes_added_by_origin": {
+        "https://priorseal.xyz": 4,
+        "https://www.oracleinsight.xyz": 11
+      }
+    },
+    {
+      "snapshot_at_utc": "2026-11-11T10:20:20Z",
+      "raw_capability_rows": 306,
+      "reconstructed_callable_offers": 286,
+      "excluded_by_reason": {
+        "local_without_execution_path": 12,
+        "operator_gated": 4,
+        "stale_peer": 4
+      },
+      "current_offers_added": [],
+      "current_offers_removed": [],
+      "current_offers_repriced": [],
+      "observed_seller_routes": 21,
+      "observed_routes_and_prices_match_current": false,
+      "current_observed_routes_added_by_origin": {
+        "https://priorseal.xyz": 4,
+        "https://www.oracleinsight.xyz": 11
+      }
+    },
+    {
+      "snapshot_at_utc": "2026-11-11T17:37:45Z",
+      "raw_capability_rows": 306,
+      "reconstructed_callable_offers": 286,
+      "excluded_by_reason": {
+        "local_without_execution_path": 12,
+        "operator_gated": 4,
+        "stale_peer": 4
+      },
+      "current_offers_added": [],
+      "current_offers_removed": [],
+      "current_offers_repriced": [],
+      "observed_seller_routes": 36,
+      "observed_routes_and_prices_match_current": true,
+      "current_observed_routes_added_by_origin": {}
+    },
+    {
+      "snapshot_at_utc": "2026-11-12T12:20:39Z",
+      "raw_capability_rows": 306,
+      "reconstructed_callable_offers": 286,
+      "excluded_by_reason": {
+        "local_without_execution_path": 12,
+        "operator_gated": 4,
+        "stale_peer": 4
+      },
+      "current_offers_added": [],
+      "current_offers_removed": [],
+      "current_offers_repriced": [],
+      "observed_seller_routes": 36,
+      "observed_routes_and_prices_match_current": true
+    },
+    {
+      "snapshot_at_utc": "2026-11-12T20:15:40Z",
+      "raw_capability_rows": 306,
+      "reconstructed_callable_offers": 286,
+      "excluded_by_reason": {
+        "local_without_execution_path": 12,
+        "operator_gated": 4,
+        "stale_peer": 4
+      },
+      "current_offers_added": [],
+      "current_offers_removed": [],
+      "current_offers_repriced": [],
+      "observed_seller_routes": 36,
+      "observed_routes_and_prices_match_current": true
+    },
+    {
+      "snapshot_at_utc": "2026-11-13T04:15:04Z",
+      "raw_capability_rows": 306,
+      "reconstructed_callable_offers": 286,
+      "excluded_by_reason": {
+        "local_without_execution_path": 12,
+        "operator_gated": 4,
+        "stale_peer": 4
+      },
+      "current_offers_added": [],
+      "current_offers_removed": [],
+      "current_offers_repriced": [],
+      "observed_seller_routes": 36,
+      "observed_routes_and_prices_match_current": true
+    }
+  ],
+  "public_browse_comparison": {
+    "url": "https://modelmarket.dev/ai-market/v2/search?limit=0",
+    "baseline_file": "artifacts/hub-3.17.0-2026-10-31/public-after.json",
+    "baseline_checked_at_utc": "2026-10-31T12:33:33.464544+00:00",
+    "current_checked_on": "2026-11-13",
+    "current_body_sha256": "c2ffa782985136b532507353d7ea4dd0c807eb2f4348e3c867caac58001c758c",
+    "baseline_total": 263,
+    "current_total": 285,
+    "added_by_source": {
+      "https://agent-exec.448c.org": 4,
+      "https://hestia.modelmarket.dev": 2,
+      "https://hub.attestedmemory.net": 2,
+      "https://iot.modelmarket.dev": 18
+    },
+    "added": [
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "",
+        "capability_id": "get_flights_UAL1",
+        "price_per_call_usd": 0.01,
+        "routed_price_usd": 0.0101
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "check_counterparty",
+        "price_per_call_usd": 0.02,
+        "routed_price_usd": 0.0202
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "relay",
+        "price_per_call_usd": 0.02,
+        "routed_price_usd": 0.0202
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "rpc",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://hestia.modelmarket.dev",
+        "product_id": "blackwell-storefront",
+        "capability_id": "blackwell.storefront.search@v1",
+        "price_per_call_usd": 0.001,
+        "routed_price_usd": 0.00101
+      },
+      {
+        "source_hub": "https://hestia.modelmarket.dev",
+        "product_id": "hestia-agents",
+        "capability_id": "base.gas.price@v1",
+        "price_per_call_usd": 0.0,
+        "routed_price_usd": 0.0
+      },
+      {
+        "source_hub": "https://hub.attestedmemory.net",
+        "product_id": "github-digest-order",
+        "capability_id": "github.digest.order@v1",
+        "price_per_call_usd": 0.05,
+        "routed_price_usd": 0.0505
+      },
+      {
+        "source_hub": "https://hub.attestedmemory.net",
+        "product_id": "github-digest-result",
+        "capability_id": "github.digest.result@v1",
+        "price_per_call_usd": 0.0,
+        "routed_price_usd": 0.0
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.aviation.hazards.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.bikeshare.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.bridge.clearance.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.ev.charging.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.fire.hotspots.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.fire.perimeters.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.groundwater.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.hf.absorption.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.ocean.drifters.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.ocean.observations.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.pollen.read@v1",
+        "price_per_call_usd": 0.001,
+        "routed_price_usd": 0.00101
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.power.outages.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.radiation.ambient.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.river.forecast.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.road.events.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.smoke.forecast.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.storm.reports.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      },
+      {
+        "source_hub": "https://iot.modelmarket.dev",
+        "product_id": "gaia.gateway",
+        "capability_id": "gaia.volcanic.ash.read@v1",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202
+      }
+    ],
+    "removed": [
+      {
+        "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+        "product_id": "industrial-sentinel",
+        "capability_id": "industrial.sentinel.install@v1",
+        "price_per_call_usd": 0.0,
+        "routed_price_usd": 0.0
+      },
+      {
+        "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+        "product_id": "industrial-sentinel",
+        "capability_id": "industrial.sentinel.transaction-watch-bootstrap@v1",
+        "price_per_call_usd": 0.0,
+        "routed_price_usd": 0.0
+      },
+      {
+        "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+        "product_id": "industrial-sentinel",
+        "capability_id": "industrial.sentinel.treasury-monitor-bootstrap@v1",
+        "price_per_call_usd": 0.0,
+        "routed_price_usd": 0.0
+      },
+      {
+        "source_hub": "https://x402-gateway-production-1f21.up.railway.app",
+        "product_id": "industrial-sentinel",
+        "capability_id": "industrial.sentinel.wallet-monitor-bootstrap@v1",
+        "price_per_call_usd": 0.0,
+        "routed_price_usd": 0.0
+      }
+    ],
+    "repriced": [
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "attest",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.008,
+          "routed_price_usd": 0.00808
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "check_address",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.02,
+          "routed_price_usd": 0.0202
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "check_url",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.02,
+          "routed_price_usd": 0.0202
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "claim",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.0052,
+          "routed_price_usd": 0.005252
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "deadman",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.0054,
+          "routed_price_usd": 0.005454
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "dns",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.5,
+          "routed_price_usd": 0.505
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "drift",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.0061,
+          "routed_price_usd": 0.006161
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "execute",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.001,
+          "routed_price_usd": 0.00101
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "handoff",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.0053,
+          "routed_price_usd": 0.005353
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "inbox",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.02,
+          "routed_price_usd": 0.0202
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "listings_promote",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.0667,
+          "routed_price_usd": 0.067367
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "pay",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.02,
+          "routed_price_usd": 0.0202
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "placement",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.25,
+          "routed_price_usd": 0.2525
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "storage",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.0051,
+          "routed_price_usd": 0.005151
+        }
+      },
+      {
+        "source_hub": "https://agent-exec.448c.org",
+        "product_id": "agent-exec.448c.org",
+        "capability_id": "watch",
+        "before": {
+          "price_per_call_usd": 0.35,
+          "routed_price_usd": 0.3535
+        },
+        "after": {
+          "price_per_call_usd": 0.0058,
+          "routed_price_usd": 0.005858
+        }
+      }
+    ],
+    "baseline_observed_seller_count": 0,
+    "current_observed_seller_count": 4
+  }
+}

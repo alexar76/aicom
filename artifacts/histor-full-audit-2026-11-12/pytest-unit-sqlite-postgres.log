@@ -1,0 +1,100 @@
+........................................................................ [  4%]
+........................................................................ [  9%]
+........................................................................ [ 13%]
+........................................................................ [ 18%]
+.......................ssssssss......................................... [ 22%]
+........................................................................ [ 27%]
+........................................................................ [ 31%]
+........................................................................ [ 36%]
+........................................................................ [ 41%]
+........................................................................ [ 45%]
+........................................................................ [ 50%]
+........................................................................ [ 54%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 68%]
+........................................................................ [ 73%]
+........................................................................ [ 77%]
+........................................................................ [ 82%]
+........................................................................ [ 86%]
+........................................................................ [ 91%]
+........................................................................ [ 95%]
+.................................................................        [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /Users/alex/Desktop/ai_tests/aicompany/aicom/histor/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.12.13-final-0 _______________
+
+Name                           Stmts   Miss Branch BrPart  Cover
+----------------------------------------------------------------
+histor/__init__.py                 1      0      0      0   100%
+histor/__main__.py               104     49     54     14    54%
+histor/app.py                    874     69    244     35    90%
+histor/audit.py                   97     12     34      8    85%
+histor/badge.py                   31      0     10      0   100%
+histor/cards.py                  253      9     98      6    96%
+histor/check.py                  237     15    110      5    94%
+histor/checkpoint.py             168     26     62     21    79%
+histor/classifier.py             135     17     44      4    86%
+histor/config.py                 153      0     28      0   100%
+histor/cosign_cli.py             125     64     50      5    48%
+histor/crawler.py               1109     80    350     43    91%
+histor/dataset.py                265     27     98     25    85%
+histor/dataset_index.py          126     12     24      2    89%
+histor/dataset_schema.py          31      0     12      0   100%
+histor/db.py                     117      2     10      2    97%
+histor/declared.py               160      4     68      1    98%
+histor/diffing.py                126      0     74      1    99%
+histor/digest_xcheck.py          199     19     80      8    90%
+histor/exit_reasons.py           154      2     80      3    98%
+histor/extras.py                 110      7     56      8    91%
+histor/extras_rekey.py           115     28     40      5    76%
+histor/fingerprints.py           120      3     60      5    96%
+histor/journey.py                  2      0      0      0   100%
+histor/keys.py                    59      4     20      2    92%
+histor/labels.py                 125      2     36      1    98%
+histor/launch_profiles.py          7      0      0      0   100%
+histor/logbook.py                 84      3     16      2    95%
+histor/lookalike.py               87      1     40      1    98%
+histor/mcp_stdio.py              139     94     58      0    29%
+histor/mcpclient.py              470     22    188     11    95%
+histor/merkle.py                 103      4     50      4    95%
+histor/migrations.py             113      6     22      2    94%
+histor/netguard.py                67      5     22      1    93%
+histor/packages.py               334     28    100     13    90%
+histor/payer_audit.py            301     41    170     43    82%
+histor/payer_audit_cli.py         38      3     10      3    88%
+histor/payer_collect.py          188     90     64     10    49%
+histor/peer_xcheck.py            416     60    188     31    82%
+histor/peers.py                  214     26     82      8    88%
+histor/receipts.py               126      6     40      6    93%
+histor/registry.py               192      5     86      5    96%
+histor/remote_schedule.py         49      1     12      1    97%
+histor/revision.py               245     72     72     11    68%
+histor/revision_monitor.py        69     23     24      4    62%
+histor/robots.py                 233      2     60      3    98%
+histor/scanner.py                 60      0     16      0   100%
+histor/security_events.py        151      6     42      2    96%
+histor/server_page_text.py         2      0      0      0   100%
+histor/service.py                156     26     38      8    80%
+histor/signed_revisions.py       224    104     64     11    48%
+histor/signing.py                130     12     32      8    88%
+histor/stdio.py                   45      5     20      2    89%
+histor/store.py                  483     13    120     12    96%
+histor/subject.py                170      4     62      5    96%
+histor/tiles.py                  107      6     40      6    92%
+histor/toolcost.py               173      5     54      4    96%
+histor/toolcost_cli.py           279     33     90     13    87%
+histor/untrusted.py               35      1     14      1    96%
+histor/upgrade_brief.py          423     22    228     19    94%
+histor/upgrade_brief_cli.py       46      2     12      3    91%
+histor/upgrade_brief_i18n.py      24      2     14      2    89%
+histor/upgrade_capture.py         59      4     14      3    90%
+histor/watch_paid.py             453     91    168     35    77%
+histor/witness.py                123     20     60      9    80%
+----------------------------------------------------------------
+TOTAL                          11614   1299   4134    506    87%

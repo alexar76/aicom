@@ -1,0 +1,28 @@
+{
+  "date_utc": "2026-11-13",
+  "product": "Co-Working & Startup Office Icon Pack",
+  "published_minimum_usd_cents": 299,
+  "authorized_ceiling_usd_cents": 500,
+  "zip_filename": "Co_Working_Startup_Office_Icon_Pack.zip",
+  "owner_browser": {
+    "receipt_address_configured": true,
+    "furthest_observed_step": "Billing address"
+  },
+  "attested_preflight": {
+    "prepare_fields_present": ["bp", "csrf_token"],
+    "browser_context_had_itchio_session_cookie": true,
+    "prepare_origin_and_referrer_matched": true,
+    "prepare_response_status": 302,
+    "prepare_response_target": "checkout_session",
+    "checkout_response_status": 302,
+    "checkout_response_target": "itch.io_homepage",
+    "charge_sent": false
+  },
+  "laso_after_session_refresh": {
+    "card_ready": true,
+    "available_balance_usd_cents": 500,
+    "matching_itch_debits": 0
+  },
+  "paid_receipt_observed": false,
+  "zip_delivery_observed": false
+}

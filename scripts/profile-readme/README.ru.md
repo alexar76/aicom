@@ -1,7 +1,7 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-[Посмотреть зафиксированное изменение MCP](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Проверить список инструментов в WARDEN](https://modelmarket.dev/tools/warden-scan) · [Реализовать хеш набора инструментов](https://github.com/alexar76/mcp-tool-set-digest)
+[Посмотреть зафиксированное изменение MCP](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Проверить список инструментов в WARDEN](https://modelmarket.dev/tools/warden-scan) · [Реализовать хеш набора инструментов](https://github.com/alexar76/mcp-tool-set-digest) · [Все одиннадцать входов](https://ecosystem.modelmarket.dev/#ways-in)
 <!-- /ecosystem-entry-points -->
 
 <p align="center"><b>Проверки и публичная история с подписями свидетелей для инструментов, которыми пользуются ИИ-агенты.</b></p>
@@ -293,6 +293,7 @@ cp .env.demo .env
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury** — отдельный плательщик вознаграждений для MOMUS (собственный ключ и контейнер); платит только после независимой верификации · [живой сервис](https://momus.modelmarket.dev/treasury) · [лендинг](https://alexar76.github.io/treasury/) | после верификации |
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN** — **файрвол безопасности MCP** без зависимостей: библиотека, CLI и локальный stdio MCP-сервер, а не облачный сервис: статическое сканирование описания инструмента → подписанный поток угроз → происхождение → закрепление · [лендинг](https://warden.modelmarket.dev/) · [исследование: 1 108 публичных серверов MCP](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.ru.md) | до попадания стороннего инструмента на хост |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR** (ἵστωρ) — публичный **журнал прозрачности определений инструментов MCP**: читает, что объявляет каждый удалённый эндпоинт из официального реестра MCP (никогда не вызывает инструменты), подписывает это метками MTL/1, добавляет их в дерево Меркла по RFC 9162 с подписанными вершинами и датирует каждое изменение с диффом. Безопасным сервер не называет никогда · [live](https://histor.modelmarket.dev) · [лендинг](https://alexar76.github.io/histor/) | ежедневно, по всем удалённым эндпоинтам официального реестра · и по запросу `/check` |
+| [**mcp-tool-set-digest**](https://github.com/alexar76/mcp-tool-set-digest) | **Хеш набора инструментов MCP** — спецификация `mcp-tool-set-digest/1` (черновик от 2026-11-13): один способ хешировать то, что сервер MCP сообщает о своих инструментах, чтобы две стороны, не обменивавшиеся текстом инструментов, могли проверить, что получили одно и то же; хеш контракта и хеш дополнительных полей, 73 тестовых вектора, эталонные реализации без зависимостей на Python, JavaScript и Go · этот хеш сравнивают HISTOR, WARDEN и CrawlCheck | когда список инструментов закрепляют или сравнивают |
 
 ### 🧠 Проверяемая память — что агенты хранят
 <sub>Запись, поиск и обмен памятью, которую другие агенты могут проверить.</sub>
@@ -401,6 +402,7 @@ cp .env.demo .env
 | [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) | Пример приложения | Flutter + SDK, реальный продукт |
 | [logos](https://github.com/alexar76/logos) | Наблюдаемость | аналитика федерации только для чтения |
 | [lottery](https://github.com/alexar76/lottery) | Верифицируемые вычисления | неподдающиеся манипуляции ончейн-розыгрыши · machine UBI |
+| [mcp-tool-set-digest](https://github.com/alexar76/mcp-tool-set-digest) | Доверие и безопасность | хеш списка инструментов сервера MCP |
 | [metis](https://github.com/alexar76/metis) | Верифицируемые вычисления | уровень верификации |
 | [momus](https://github.com/alexar76/momus) | Доверие и безопасность | красная команда HTTP/федерации |
 | [oracles](https://github.com/alexar76/oracles) | Верифицируемые вычисления | 17 подписанных математических возможностей |

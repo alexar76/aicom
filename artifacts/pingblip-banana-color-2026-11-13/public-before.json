@@ -1,0 +1,56 @@
+{
+  "phase": "public-before",
+  "startedAt": "2026-11-13T20:52:55.212Z",
+  "expectedHash": "e23d6f0f63898e23751e875b092ebafda0b98a15924a70da5d4cd746cf7e777f",
+  "benchUrl": "https://pingblip.com/bench?lang=en",
+  "renders": [
+    {
+      "viewport": "desktop",
+      "pageErrors": [],
+      "consoleErrors": [],
+      "models": [
+        {
+          "url": "https://pingblip.com/models/bruised-banana.glb?v=e23d6f0f63",
+          "status": 200,
+          "sha256": "e23d6f0f63898e23751e875b092ebafda0b98a15924a70da5d4cd746cf7e777f",
+          "bytes": 1006872,
+          "vertexPaint": true
+        }
+      ],
+      "canvas": {
+        "x": 154,
+        "y": 53,
+        "width": 576,
+        "height": 987
+      },
+      "nearWhiteFraction": 0.13835064167510977,
+      "yellowFraction": 0.06001632331419565,
+      "canvasScreenshot": "public-before-desktop-canvas.png"
+    },
+    {
+      "viewport": "mobile",
+      "pageErrors": [],
+      "consoleErrors": [],
+      "models": [
+        {
+          "url": "https://pingblip.com/models/bruised-banana.glb?v=e23d6f0f63",
+          "status": 200,
+          "sha256": "e23d6f0f63898e23751e875b092ebafda0b98a15924a70da5d4cd746cf7e777f",
+          "bytes": 1006872,
+          "vertexPaint": true
+        }
+      ],
+      "canvas": {
+        "x": 0,
+        "y": 108,
+        "width": 390,
+        "height": 239.03125
+      },
+      "nearWhiteFraction": 0.00021011396011396012,
+      "yellowFraction": 0.018066239316239317,
+      "canvasScreenshot": "public-before-mobile-canvas.png"
+    }
+  ],
+  "passed": true,
+  "finishedAt": "2026-11-13T20:53:40.813Z"
+}

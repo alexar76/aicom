@@ -1,0 +1,5 @@
+both ledger backups: /root/hub-backups/publisher-debian-20261113T041504Z-3Q8H6ZUt
+{"container": "modelmarket-hub", "healthy": true, "image": "sha256:c62951ec599a46c74c1792dd47f7a50af6a025c3c3eb78334d798a8dbd19e211", "previous_container": "modelmarket-hub-security-prev-1794543305334115850", "removed_env_names": [], "image_env_names": ["AIMARKET_CRAWL_INTERVAL_S", "AIMARKET_DB_PATH", "AIMARKET_OPERATOR_ACCOUNTS", "AIMARKET_PEER_REJECTIONS_FILE", "AIMARKET_SEED_LIST", "AIMARKET_SIGNING_KEY_PATH", "AIMARKET_ZK_BACKEND", "AIMARKET_ZK_NULLIFIER_DB", "AIMARKET_ZK_VERIFIER_SOL", "AIMARKET_ZK_VKEY_JSON", "AIMARKET_ZK_WASM", "AIMARKET_ZK_ZKEY", "GPG_KEY", "LANG", "PATH", "PYTHON_SHA256", "PYTHON_VERSION"], "set_env_names": [], "borrowers": {"themis": "themis-security-prev-1794543305334115850"}, "snapshot": "/root/security-rollbacks/modelmarket-hub-1794543305334115850/inspect.json"}
+apt	3.0.4
+libapt-pkg7.0:amd64	3.0.4
+zlib1g:amd64	1:1.3.dfsg+really1.3.1-1+deb13u1

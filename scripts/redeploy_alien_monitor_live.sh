@@ -65,13 +65,11 @@ with open(env_path, "w", encoding="utf-8") as fh:
             fh.write(entry + "\n")
 # Mount modes. `docker inspect` reports the mode of the container being REPLACED, which is
 # only trustworthy while nothing has ever recreated it wrongly — and an earlier run of this
-# script forced :ro on everything, so the inspected mode became the mistake. So the one
-# destination the image genuinely writes to is pinned here, from docker-compose.prod.yml
-# which declares it without :ro: the UNI realm stores its Anvil state and
-# universe_config.json under /app/data/universe, and a read-only bind there loses the
-# bubble chain on the next restart. Everything else is config the container has no business
-# editing, and is mounted read-only whatever the old container said.
-WRITABLE = {"/app/data/universe"}
+# script forced :ro on everything, so the inspected mode became the mistake. Pin the
+# writable state directories here. UNI keeps the bubble chain and universe_config.json
+# under /app/data/universe, and LIVE stores provider event counters under
+# /app/data/provider-events. Configuration and token mounts remain read-only.
+WRITABLE = {"/app/data/universe", "/app/data/provider-events"}
 mounts = []
 writable_sources = []
 for m in spec.get("Mounts") or []:

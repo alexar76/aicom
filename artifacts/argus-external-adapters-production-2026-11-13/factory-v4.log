@@ -1,0 +1,95 @@
+/root/argus-vendors-v4-20261113.fdAZ56/package.tar.gz: OK
+overlay/dist/economy/external-payment.js: OK
+overlay/dist/economy/external-payment.js.map: OK
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 112B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/aicom-security:argus-vendors-v3-20261113
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 22.39kB done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/aicom-security:argus-vendors-v3-20261113@sha256:4921eb243957452bdab1ccb7c7d4cd28d1d14ba5831eccb035083c1a9832beb3
+#5 resolve docker.io/library/aicom-security:argus-vendors-v3-20261113@sha256:4921eb243957452bdab1ccb7c7d4cd28d1d14ba5831eccb035083c1a9832beb3 0.0s done
+#5 DONE 0.2s
+
+#6 [2/2] COPY overlay/ /app/
+#6 DONE 0.1s
+
+#7 exporting to image
+#7 exporting layers 0.1s done
+#7 exporting manifest sha256:7310c36e50c5e60b802d5f705357ee75c67681f3a6b84615fed1e336f45e773c 0.0s done
+#7 exporting config sha256:73047513d09293b5fc90426199a84e039a74fd82652179ba569d6c01db63bb52 done
+#7 exporting attestation manifest sha256:ccc71593e1cd2d0984ff75b953dbef605f261c99b6a9575fa29f1ae42e500605 0.0s done
+#7 exporting manifest list sha256:8e9878daeb8a761fdddd4a1ba5784dca5e268b53e0bc29c85500adeba5bedc19 0.0s done
+#7 naming to docker.io/library/aicom-security:argus-vendors-v4-20261113 0.0s done
+#7 unpacking to docker.io/library/aicom-security:argus-vendors-v4-20261113 0.0s done
+#7 DONE 0.3s
+{"runtime_mode_gates":["live-configured","live-no-wallet","live-crypto-off","uni-with-key","test-with-key"],"synthetic_provider_tests":["CMC pinned EIP-3009 and amount cap","Tavily first-party rotating payee","Laso one-use quote and private link"],"approval_checks":["no --yes bypass for exact tools without TTY","non-owner and group callback rejected","private owner callback accepted"],"no_live_network_or_funds":true,"node":"v22.23.4","warden":"0.8.2"}
+{"exact_agent_telegram_tool":["cmc_buy_quotes","tavily_buy_search","laso_buy_card"],"default_deny":true,"owner_callback_replay_denied":true,"laso_no_static_token_registration":true,"test_and_uni_gated":true,"nonce_bound_base_recovery":true,"no_network_or_funds":true}
+{"proprietary_cmc_receipt":"exact Base receipt and transfer verified","hash_hint_skips_log_scan":true,"canonical_receipt_required":true,"data_quote_complete":true,"no_real_network_or_funds":true}
+{"laso_atoms_signed":5000000,"paid_request_count":1,"above_below_and_wrong_recipient_rejected_before_signing":true,"standard_base_receipt_validated":true,"no_network_no_funds":true}
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 112B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/aicom-security:argus-uni-vendors-v3-20261113
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 225B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/aicom-security:argus-uni-vendors-v3-20261113@sha256:2183ebdb33561649a7c7484a58ba53daff816dfb331ac25b800f0734980288d3
+#5 resolve docker.io/library/aicom-security:argus-uni-vendors-v3-20261113@sha256:2183ebdb33561649a7c7484a58ba53daff816dfb331ac25b800f0734980288d3 0.0s done
+#5 DONE 0.1s
+
+#6 [2/2] COPY overlay/ /app/
+#6 DONE 0.0s
+
+#7 exporting to image
+#7 exporting layers 0.1s done
+#7 exporting manifest sha256:39a0bc6d17fcbebeb1e284f5e0f544debdb26cba1ef16977f504546c99c3d750
+#7 exporting manifest sha256:39a0bc6d17fcbebeb1e284f5e0f544debdb26cba1ef16977f504546c99c3d750 done
+#7 exporting config sha256:81f741d15d3a37371aafc9acfb92841699b3603d8825d8a31b5139400e460fc9 done
+#7 exporting attestation manifest sha256:cb70df7eaec97f6a2cef1a7f18a3211efce47d80e110540bd54763297c183f15 0.0s done
+#7 exporting manifest list sha256:a018b7a687d1f15a45afb61e132f58cdea296d476ece18aa08ac513a3e2c7a4d done
+#7 naming to docker.io/library/aicom-security:argus-uni-vendors-v4-20261113 done
+#7 unpacking to docker.io/library/aicom-security:argus-uni-vendors-v4-20261113 0.0s done
+#7 DONE 0.2s
+{"runtime_mode_gates":["live-configured","live-no-wallet","live-crypto-off","uni-with-key","test-with-key"],"synthetic_provider_tests":["CMC pinned EIP-3009 and amount cap","Tavily first-party rotating payee","Laso one-use quote and private link"],"approval_checks":["no --yes bypass for exact tools without TTY","non-owner and group callback rejected","private owner callback accepted"],"no_live_network_or_funds":true,"node":"v22.23.4","warden":"0.8.2"}
+{"exact_agent_telegram_tool":["cmc_buy_quotes","tavily_buy_search","laso_buy_card"],"default_deny":true,"owner_callback_replay_denied":true,"laso_no_static_token_registration":true,"test_and_uni_gated":true,"nonce_bound_base_recovery":true,"no_network_or_funds":true}
+{"proprietary_cmc_receipt":"exact Base receipt and transfer verified","hash_hint_skips_log_scan":true,"canonical_receipt_required":true,"data_quote_complete":true,"no_real_network_or_funds":true}
+{"laso_atoms_signed":5000000,"paid_request_count":1,"above_below_and_wrong_recipient_rejected_before_signing":true,"standard_base_receipt_validated":true,"no_network_no_funds":true}
+time="2026-11-13T06:16:41-05:00" level=warning msg="volume \"argus_argus-state\" already exists but was not created by Docker Compose. Use `external: true` to use an existing volume"
+ Container argus Recreate 
+ Container argus Recreated 
+ Container argus Starting 
+ Container argus Started 
+{"economy": "on", "mcp": {"blocked": 0, "connected": 1, "failed": 0}, "mode": "live", "status": "ok", "version": "0.3.4"}
+time="2026-11-13T06:16:51-05:00" level=warning msg="volume \"argus_argus-uni-state\" already exists but was not created by Docker Compose. Use `external: true` to use an existing volume"
+time="2026-11-13T06:16:51-05:00" level=warning msg="volume \"argus_argus-state\" already exists but was not created by Docker Compose. Use `external: true` to use an existing volume"
+ Container argus-uni Recreate 
+ Container argus-uni Recreated 
+ Container argus-uni Starting 
+ Container argus-uni Started 
+{"economy": "on", "mcp": {"blocked": 0, "connected": 1, "failed": 0}, "mode": "uni", "status": "ok", "version": "0.3.4"}
+{"service": "argus", "image_id": "sha256:8e9878daeb8a761fdddd4a1ba5784dca5e268b53e0bc29c85500adeba5bedc19", "health": "healthy", "restarts": 0, "runtime_config_preserved": true}
+{"service": "argus-uni", "image_id": "sha256:a018b7a687d1f15a45afb61e132f58cdea296d476ece18aa08ac513a3e2c7a4d", "health": "healthy", "restarts": 0, "runtime_config_preserved": true}
+rollback Compose file: /root/claudecode/aicom/argus/docker-compose.yml.pre-vendors-v4-20261113

@@ -1,0 +1,124 @@
+TAP version 13
+# Subtest: a hanging peer request never holds new feeds or their Live status
+ok 1 - a hanging peer request never holds new feeds or their Live status
+  ---
+  duration_ms: 38.25375
+  type: 'test'
+  ...
+# Subtest: a stalled stats request times out, prevents overlap and then recovers
+ok 2 - a stalled stats request times out, prevents overlap and then recovers
+  ---
+  duration_ms: 0.798833
+  type: 'test'
+  ...
+# Subtest: the request deadline also covers a stalled JSON body
+ok 3 - the request deadline also covers a stalled JSON body
+  ---
+  duration_ms: 1.039625
+  type: 'test'
+  ...
+# Subtest: a peer JSON body also times out and releases its retry slot
+ok 4 - a peer JSON body also times out and releases its retry slot
+  ---
+  duration_ms: 0.930583
+  type: 'test'
+  ...
+# Subtest: the unapproved-hub list is asked again after a minute and redrawn only when it changed
+ok 5 - the unapproved-hub list is asked again after a minute and redrawn only when it changed
+  ---
+  duration_ms: 0.835833
+  type: 'test'
+  ...
+# Subtest: a Live badge expires even when browser suspension delays request deadlines
+ok 6 - a Live badge expires even when browser suspension delays request deadlines
+  ---
+  duration_ms: 1.040667
+  type: 'test'
+  ...
+# Subtest: online, restored pages and visible tabs immediately retry; hidden tabs do not
+ok 7 - online, restored pages and visible tabs immediately retry; hidden tabs do not
+  ---
+  duration_ms: 1.237292
+  type: 'test'
+  ...
+# Subtest: a render failure cannot claim Live and does not block the next update
+ok 8 - a render failure cannot claim Live and does not block the next update
+  ---
+  duration_ms: 0.520375
+  type: 'test'
+  ...
+# Subtest: malformed stats preserve the last rendered event and show reconnection
+ok 9 - malformed stats preserve the last rendered event and show reconnection
+  ---
+  duration_ms: 0.65175
+  type: 'test'
+  ...
+# Subtest: observed-only search is a result, never a sandbox invocation
+ok 10 - observed-only search is a result, never a sandbox invocation
+  ---
+  duration_ms: 7.189083
+  type: 'test'
+  ...
+# Subtest: catalog indexes remain correct with filtered and observed results
+ok 11 - catalog indexes remain correct with filtered and observed results
+  ---
+  duration_ms: 0.768541
+  type: 'test'
+  ...
+# Subtest: only recorded catalogue verification produces a signed badge
+ok 12 - only recorded catalogue verification produces a signed badge
+  ---
+  duration_ms: 0.738458
+  type: 'test'
+  ...
+# Subtest: observed offers cannot promote their own metadata into a signed badge
+ok 13 - observed offers cannot promote their own metadata into a signed badge
+  ---
+  duration_ms: 0.872333
+  type: 'test'
+  ...
+# Subtest: seller text is escaped and unsafe endpoint links are omitted
+ok 14 - seller text is escaped and unsafe endpoint links are omitted
+  ---
+  duration_ms: 1.983833
+  type: 'test'
+  ...
+# Subtest: language changes preserve observed-only results in all five languages
+ok 15 - language changes preserve observed-only results in all five languages
+  ---
+  duration_ms: 0.7655
+  type: 'test'
+  ...
+# Subtest: empty search resets prior results and missing timestamps stay unknown
+ok 16 - empty search resets prior results and missing timestamps stay unknown
+  ---
+  duration_ms: 0.561708
+  type: 'test'
+  ...
+# Subtest: external-only search links to first-party documentation without sandbox invocation
+ok 17 - external-only search links to first-party documentation without sandbox invocation
+  ---
+  duration_ms: 0.607792
+  type: 'test'
+  ...
+# Subtest: home directory renders all three cards and stays absent on other hubs
+ok 18 - home directory renders all three cards and stays absent on other hubs
+  ---
+  duration_ms: 1.185042
+  type: 'test'
+  ...
+# Subtest: external entries never change callable catalogue indexes or accept unsafe documentation links
+ok 19 - external entries never change callable catalogue indexes or accept unsafe documentation links
+  ---
+  duration_ms: 0.690417
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 95.655417

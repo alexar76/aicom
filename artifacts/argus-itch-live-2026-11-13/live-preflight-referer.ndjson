@@ -1,0 +1,10 @@
+{"request":"GET","host":"aiimperium.itch.io","shape":"/co-working-startup-office-icon-pack/purchase","nav":true}
+{"response":200,"host":"aiimperium.itch.io","shape":"/co-working-startup-office-icon-pack/purchase"}
+{"request":"POST","host":"aiimperium.itch.io","shape":"/co-working-startup-office-icon-pack/purchase","nav":true}
+{"prepareRequestAllowed":true}
+{"purpose":"prepare","status":302,"nextHost":"itch.io","nextSegment":"checkout","root":false,"depth":2,"hadRequestCookies":true,"cookies":[{"name":"itchio_token","domain":".itch.io"}],"setCookie":[]}
+{"response":200,"host":"aiimperium.itch.io","shape":"/co-working-startup-office-icon-pack/purchase"}
+{"request":"GET","host":"itch.io","shape":"/checkout/[opaque]","nav":true}
+{"purpose":"prepare-navigation","status":302,"nextHost":"itch.io","nextSegment":"[opaque]","root":true,"depth":0,"hadRequestCookies":false,"cookies":[{"name":"itchio_token","domain":".itch.io"},{"name":"ref%3aregister%3areferrer","domain":".itch.io"}],"setCookie":["ref%3aregister%3areferrer"]}
+{"diagnostic":[],"type":"Error"}
+{"code":"checkout_changed","chargeSent":false}

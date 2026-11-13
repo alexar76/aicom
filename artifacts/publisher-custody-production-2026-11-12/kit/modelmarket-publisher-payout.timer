@@ -1,0 +1,11 @@
+[Unit]
+Description=Poll the ModelMarket publisher payout queue
+
+[Timer]
+OnBootSec=1min
+OnUnitInactiveSec=1min
+AccuracySec=5s
+Unit=modelmarket-publisher-payout.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-13",
+  "instance": "Attested live",
+  "image": "sha256:6a4da6b760a693b12b4fb1794980c3ad1d792f2b5a23251784c7590c2d68b1a2",
+  "mode": "live",
+  "method": "Build the agent tool registry from the deployed image and its effective configuration. Do not invoke the tools.",
+  "count": 31,
+  "builtin": [
+    "web_fetch",
+    "recall_memory",
+    "oracle_call",
+    "oracle_random",
+    "lottery_status",
+    "lottery_enter",
+    "lottery_buy",
+    "acex_status",
+    "acex_trade",
+    "hub_discover",
+    "hub_invoke",
+    "subcontract_invoke",
+    "esim_offers",
+    "esim_buy",
+    "esim_status",
+    "esim_refund",
+    "travel_resy_link",
+    "cmc_buy_quotes"
+  ],
+  "mcp": [
+    "aimarket-web__market_search",
+    "aimarket-web__market_invoke",
+    "aimarket-web__pipeline_prepare",
+    "aimarket-web__pipeline_invoke",
+    "aimarket-web__pipeline_status",
+    "aimarket-web__pipeline_refund_prepare",
+    "aimarket-web__pipeline_refund",
+    "aimarket-web__pipeline_refund_status",
+    "aimarket-web__weather_now",
+    "aimarket-web__air_quality_now",
+    "aimarket-web__nearby_sensors",
+    "aimarket-web__fair_random",
+    "aimarket-web__x402_check"
+  ]
+}

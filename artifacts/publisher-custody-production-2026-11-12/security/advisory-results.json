@@ -1,0 +1,62 @@
+{
+  "checked_at_utc": "2026-11-12T21:15:33.186350+00:00",
+  "inventory": "apex-installed.json",
+  "image": "sha256:0d2aeefc891cec1ee470b5437c67034ac515fea6b4af253f1dfb7099d0e6166f",
+  "python": "3.12.15",
+  "package_count": 76,
+  "osv": {
+    "records_checked": 26231,
+    "record_families": {
+      "GHSA": 6594,
+      "MAL": 11995,
+      "PYSEC": 7631,
+      "other": 11
+    },
+    "findings": [],
+    "matching_errors": [],
+    "dataset": {
+      "file": "PyPI.zip",
+      "bytes": 37790549,
+      "sha256": "c7ea4e15b83912960fc5cbd42c6003dd630e422ec4dfbfc4ed19445573e1b08c",
+      "url": "https://osv-vulnerabilities.storage.googleapis.com/PyPI/all.zip",
+      "retrieved_at_utc": "2026-11-12T21:08:07.664869+00:00"
+    }
+  },
+  "vulnetix": {
+    "records_checked": 17976,
+    "record_families": {
+      "GCVE": 17976
+    },
+    "findings": [],
+    "matching_errors": [],
+    "dataset": {
+      "commit": "5f0afbd5a343a1dbc5571574e2d4e3c610be14e8",
+      "commit_date": "2026-11-12T18:50:59Z",
+      "record_tree_sha256": "5f647d2ab01d4a433ec2e1873f54c5f5dbf43f834571c8f64be8e54ab07ddcb9",
+      "families": {
+        "OSM": 16850,
+        "PYPI": 228,
+        "VULN-PYPI": 898
+      },
+      "manifest": {
+        "file": "vulnetix-manifest.json",
+        "bytes": 37068726,
+        "sha256": "7147bbd38f1c63d28bfdc0c1f7bdf2610257884cc24ceea29554b3f65d19b4e1",
+        "url": "https://raw.githubusercontent.com/Vulnetix/advisory-database/5f0afbd5a343a1dbc5571574e2d4e3c610be14e8/index/manifest.json",
+        "retrieved_at_utc": "2026-11-12T21:09:19.964178+00:00"
+      }
+    }
+  },
+  "cisa_kev": {
+    "catalog_version": "2026.11.10",
+    "records_checked": 1779,
+    "affected_cve_matches": [],
+    "dataset": {
+      "file": "cisa-kev.json",
+      "bytes": 1850831,
+      "sha256": "41c8091ad62d508d6f8906ad5cd26b20efe551f7d51b95ecc8a6981fa640b4ea",
+      "url": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+      "retrieved_at_utc": "2026-11-12T21:07:52.718355+00:00"
+    }
+  }
+}

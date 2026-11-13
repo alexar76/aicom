@@ -1,0 +1,32 @@
+{
+  "conflicting_amount_refused": true,
+  "fixture_removed": true,
+  "payer_entries": [
+    {
+      "amount_mc": 2,
+      "kind": "hold"
+    },
+    {
+      "amount_mc": 2,
+      "kind": "capture"
+    }
+  ],
+  "receipt_replayed": true,
+  "sale": {
+    "first_idempotency": "stored",
+    "price_usd": 2e-05,
+    "receipt_id": "rcpt_ee6d172db08ebb1f727bd2315bac59cd",
+    "replay_idempotency": "replayed"
+  },
+  "seller_entries": [
+    {
+      "amount_mc": 1,
+      "kind": "payout"
+    },
+    {
+      "amount_mc": 1,
+      "kind": "publisher_cash_accrual"
+    }
+  ],
+  "topup_tx": "0x46929e16ed8c343ba875b426bb1ff81105354b67aa0664f6de7e27a9ede24c23"
+}

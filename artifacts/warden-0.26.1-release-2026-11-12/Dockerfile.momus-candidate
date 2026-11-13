@@ -1,0 +1,16 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+ARG SOURCE_COMMIT
+ARG TARBALL_SHA256
+ARG WARDEN_BUILD_DIGEST
+USER 0:0
+RUN rm -rf /app/scanner/node_modules/@aimarket/warden /opt/warden-source/src
+COPY package/ /app/scanner/node_modules/@aimarket/warden/
+COPY src/ /opt/warden-source/src/
+LABEL skopos.source.commit="${SOURCE_COMMIT}" \
+      aicom.histor.overlay="warden-0261-candidate-20261112" \
+      org.aimarket.release.candidate="warden-0.26.1" \
+      org.aimarket.release.tarball-sha256="${TARBALL_SHA256}" \
+      org.aimarket.release.warden-build="${WARDEN_BUILD_DIGEST}"
+USER 65532:65532
+RUN node --input-type=module -e "import {readFileSync} from 'node:fs'; import {buildDigest} from '/app/scanner/node_modules/@aimarket/warden/scripts/check-quality-gate.mjs'; const dir='/app/scanner/node_modules/@aimarket/warden'; const pkg=JSON.parse(readFileSync(dir+'/package.json','utf8')); if(pkg.name!=='@aimarket/warden'||pkg.version!=='0.26.1'||buildDigest(dir)!==process.argv[1]) process.exit(1)" "$WARDEN_BUILD_DIGEST"

@@ -290,7 +290,7 @@ C4 visual + despliegue: [ecosystem-architecture.md](../ecosystem-architecture.md
 ### Component registry
 
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
-Run: python3 scripts/sync_knowledge_base.py --write (54 components).
+Run: python3 scripts/sync_knowledge_base.py --write (55 components).
 
 - acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
@@ -332,6 +332,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (54 components).
 - linkedin-profile-coach (repo linked-in-profile-coach): LinkedIn Profile Coach — Flutter desktop/mobile app for 24 LinkedIn sections, AI draft, scoring, and .docx resume support. · https://alexar76.github.io/linked-in-profile-coach/
 - logos: Read-only federation intelligence: periodic source snapshots across Hub, MOMUS, Treasury, SKOPOS and Metis, rolling z-score anomaly detection over them, and cross-system correlation. It observes and explains; it never acts on what it finds. · https://logos.modelmarket.dev · port 9460
 - lottery: AI-Agent Oracle Lottery — an on-chain lottery that is an economic actor of the AI ecosystem: agents buy tickets, an unbiasable Platon+Chronos oracle beacon draws a LUMEN-reputation-weighted winner. · https://lottery.modelmarket.dev/
+- mcp-tool-set-digest: Una forma de calcular el hash de lo que un servidor MCP dice de sus herramientas: especificación, vectores de prueba y referencias en Python, JavaScript y Go.
 - metis: Cognitive verification tier: Understanding Council, fail-closed confidence gate, layered MoA, grounded verifier. Also available to MOMUS as an independent external verifier of a finding. · https://metis.modelmarket.dev
 - momus: Adversarial-audit red team. Runs safe, read-only conformance probes against the ecosystem's own components and emits Ed25519-signed findings. It FINDS and SIGNS but can never pay itself — a separate Treasury key releases bounties, and only on independent verification. Honest outcomes: FINDING / NO_FINDING / INCONCLUSIVE (an unreachable target is neither a finding nor a pass). · https://momus.modelmarket.dev · port 9410
 - oracles: Verifiable AI-economy oracles — 17 signed capabilities (Platon randomness, Chronos VDF, Lumen reputation, Turing, Fourier and more) on shared oracle-core. · https://oracles.modelmarket.dev/

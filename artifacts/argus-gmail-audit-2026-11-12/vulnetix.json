@@ -1,0 +1,32 @@
+{
+  "method": "Pinned public advisory data matched locally without uploading the lockfile",
+  "lockfile_sha256": "d00dbfd56f9f6337ec1d9e7c20d1fac23856a0f91c41137833df2cc8f48205fe",
+  "lockfile_dependency_paths": 291,
+  "unique_package_versions_including_project": 288,
+  "runtime_unique_versions_including_project": 160,
+  "kev": {
+    "source": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+    "catalog_version": "2026.11.10",
+    "sha256": "41c8091ad62d508d6f8906ad5cd26b20efe551f7d51b95ecc8a6981fa640b4ea"
+  },
+  "scanned_at_utc": "2026-11-12T21:13:24.186517+00:00",
+  "source": {
+    "source": "https://raw.githubusercontent.com/Vulnetix/advisory-database/5f0afbd5a343a1dbc5571574e2d4e3c610be14e8/",
+    "commit": "5f0afbd5a343a1dbc5571574e2d4e3c610be14e8",
+    "commit_utc": "2026-11-12T18:50:59Z",
+    "manifest_sha256": "7147bbd38f1c63d28bfdc0c1f7bdf2610257884cc24ceea29554b3f65d19b4e1",
+    "manifest_record_count": 61428,
+    "selected_by_family": {
+      "NPM": 324,
+      "OSM": 16850,
+      "VULN-NPM": 524
+    },
+    "reused_verified_manifest_rows": 17590,
+    "refreshed_records": 108
+  },
+  "advisory_counts": {
+    "read": 17698
+  },
+  "findings": [],
+  "matching_errors": []
+}

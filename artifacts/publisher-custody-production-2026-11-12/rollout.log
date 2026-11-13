@@ -1,0 +1,22 @@
+both ledger backups: /root/hub-backups/publisher-custody-20261112T201540Z
+{"container": "modelmarket-hub", "healthy": true, "image": "sha256:7c41749d850ce4569cf755570fc8bf8de97f563ffdd7ff13cc8f74d36acef9e8", "previous_container": "modelmarket-hub-security-prev-1794514540912042656", "removed_env_names": [], "image_env_names": ["AIMARKET_CRAWL_INTERVAL_S", "AIMARKET_DB_PATH", "AIMARKET_OPERATOR_ACCOUNTS", "AIMARKET_PEER_REJECTIONS_FILE", "AIMARKET_SEED_LIST", "AIMARKET_SIGNING_KEY_PATH", "AIMARKET_ZK_BACKEND", "AIMARKET_ZK_NULLIFIER_DB", "AIMARKET_ZK_VERIFIER_SOL", "AIMARKET_ZK_VKEY_JSON", "AIMARKET_ZK_WASM", "AIMARKET_ZK_ZKEY", "GPG_KEY", "LANG", "PATH", "PYTHON_SHA256", "PYTHON_VERSION"], "set_env_names": ["AIMARKET_PUBLISHER_PAYOUT_FROM"], "borrowers": {"themis": "themis-security-prev-1794514540912042656"}, "snapshot": "/root/security-rollbacks/modelmarket-hub-1794514540912042656/inspect.json"}
+api.py: OK
+channel_ledger/opening.py: OK
+channel_ledger/spending.py: OK
+channel_ledger/sweeps.py: OK
+channels.py: OK
+credits.py: OK
+deposit_verify.py: OK
+deposit_watch.py: OK
+hub_lifespan.py: OK
+hub_routes/invoke_parts/federated_delivery.py: OK
+hub_routes/invoke_parts/local_delivery.py: OK
+hub_routes/payments.py: OK
+idempotency.py: OK
+migrations.py: OK
+settlement_service/finalizing.py: OK
+topup.py: OK
+hub_routes/publisher_withdrawals.py: OK
+publisher_withdrawal_chain.py: OK
+publisher_withdrawal_cli.py: OK
+publisher_withdrawals.py: OK

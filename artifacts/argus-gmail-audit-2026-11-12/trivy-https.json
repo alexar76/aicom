@@ -1,0 +1,506 @@
+{
+  "scanner": "Trivy 0.76.2",
+  "db_updated_at": "2026-11-12T18:57:38.498853214Z",
+  "image_config": "sha256:b592cb4d0e469e7ff9bb9a1348cfda863533dae40771fd8ad695e21a2ea86e75",
+  "image_tag": "aicom-security:argus-gmail-https-20261112",
+  "findings": [
+    {
+      "class": "os-pkgs",
+      "target": "/scan/argus-https-image.tar (debian 13.7)",
+      "severities": {
+        "HIGH": 56,
+        "LOW": 73,
+        "MEDIUM": 83,
+        "UNKNOWN": 14
+      },
+      "paths": [],
+      "high_or_critical": [
+        {
+          "VulnerabilityID": "CVE-2026-109518",
+          "PkgName": "apt",
+          "InstalledVersion": "3.0.3",
+          "FixedVersion": "3.0.4",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "bsdutils",
+          "InstalledVersion": "1:2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "bsdutils",
+          "InstalledVersion": "1:2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "bsdutils",
+          "InstalledVersion": "1:2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "bsdutils",
+          "InstalledVersion": "1:2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-24882",
+          "PkgName": "gpgv",
+          "InstalledVersion": "2.4.7-21+deb13u1+b5",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-54369",
+          "PkgName": "libacl1",
+          "InstalledVersion": "2.4.0-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-109518",
+          "PkgName": "libapt-pkg6.0",
+          "InstalledVersion": "2.6.1",
+          "FixedVersion": "3.0.4",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-109518",
+          "PkgName": "libapt-pkg7.0",
+          "InstalledVersion": "3.0.3",
+          "FixedVersion": "3.0.4",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "libblkid1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "libblkid1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "libblkid1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "libblkid1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "liblastlog2-2",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "liblastlog2-2",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "liblastlog2-2",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "liblastlog2-2",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "libmount1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "libmount1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "libmount1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "libmount1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "libsmartcols1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "libsmartcols1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "libsmartcols1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "libsmartcols1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-119373",
+          "PkgName": "libsqlite3-0",
+          "InstalledVersion": "3.46.1-7+deb13u2",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-119374",
+          "PkgName": "libsqlite3-0",
+          "InstalledVersion": "3.46.1-7+deb13u2",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-119379",
+          "PkgName": "libsqlite3-0",
+          "InstalledVersion": "3.46.1-7+deb13u2",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-16742",
+          "PkgName": "libsystemd0",
+          "InstalledVersion": "257.13-1~deb13u1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-69720",
+          "PkgName": "libtinfo6",
+          "InstalledVersion": "6.6+20260608-2~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-16742",
+          "PkgName": "libudev1",
+          "InstalledVersion": "257.13-1~deb13u1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "libuuid1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "libuuid1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "libuuid1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "libuuid1",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "login",
+          "InstalledVersion": "1:4.16.0-2+really2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "login",
+          "InstalledVersion": "1:4.16.0-2+really2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "login",
+          "InstalledVersion": "1:4.16.0-2+really2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "login",
+          "InstalledVersion": "1:4.16.0-2+really2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "mount",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "mount",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "mount",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "mount",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-69720",
+          "PkgName": "ncurses-base",
+          "InstalledVersion": "6.6+20260608-2~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-69720",
+          "PkgName": "ncurses-bin",
+          "InstalledVersion": "6.6+20260608-2~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-9538",
+          "PkgName": "perl-base",
+          "InstalledVersion": "5.40.1-6+deb13u1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "util-linux",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "util-linux",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "util-linux",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "util-linux",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76642",
+          "PkgName": "util-linux-extra",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78408",
+          "PkgName": "util-linux-extra",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78409",
+          "PkgName": "util-linux-extra",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-78410",
+          "PkgName": "util-linux-extra",
+          "InstalledVersion": "2.42.4-1~aicom13.1",
+          "FixedVersion": null,
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-76844",
+          "PkgName": "zlib1g",
+          "InstalledVersion": "1:1.3.dfsg+really1.3.1-1+b1",
+          "FixedVersion": "1:1.3.dfsg+really1.3.1-1+deb13u1",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-85091",
+          "PkgName": "zlib1g",
+          "InstalledVersion": "1:1.3.dfsg+really1.3.1-1+b1",
+          "FixedVersion": "1:1.3.dfsg+really1.3.1-1+deb13u1",
+          "Severity": "HIGH"
+        }
+      ]
+    },
+    {
+      "class": "lang-pkgs",
+      "target": "Node.js",
+      "severities": {
+        "MEDIUM": 12,
+        "HIGH": 10,
+        "LOW": 1
+      },
+      "paths": [
+        "usr/local/lib/node_modules/npm/node_modules/@npmcli/metavuln-calculator/node_modules/pacote",
+        "usr/local/lib/node_modules/npm/node_modules/@sigstore/core",
+        "usr/local/lib/node_modules/npm/node_modules/brace-expansion",
+        "usr/local/lib/node_modules/npm/node_modules/glob",
+        "usr/local/lib/node_modules/npm/node_modules/ip-address",
+        "usr/local/lib/node_modules/npm/node_modules/minimatch",
+        "usr/local/lib/node_modules/npm/node_modules/pacote",
+        "usr/local/lib/node_modules/npm/node_modules/picomatch",
+        "usr/local/lib/node_modules/npm/node_modules/postcss-selector-parser",
+        "usr/local/lib/node_modules/npm/node_modules/sigstore"
+      ],
+      "high_or_critical": [
+        {
+          "VulnerabilityID": "CVE-2026-102276",
+          "PkgName": "brace-expansion",
+          "InstalledVersion": "2.0.2",
+          "FixedVersion": "5.0.10, 3.0.7, 2.1.5, 1.1.19",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-102278",
+          "PkgName": "brace-expansion",
+          "InstalledVersion": "2.0.2",
+          "FixedVersion": "5.0.11, 3.0.8, 2.1.6, 1.1.20",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-13149",
+          "PkgName": "brace-expansion",
+          "InstalledVersion": "2.0.2",
+          "FixedVersion": "5.0.7, 1.1.16, 2.1.2",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-14257",
+          "PkgName": "brace-expansion",
+          "InstalledVersion": "2.0.2",
+          "FixedVersion": "5.0.8, 3.0.3, 2.1.3, 1.1.17",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-69152",
+          "PkgName": "brace-expansion",
+          "InstalledVersion": "2.0.2",
+          "FixedVersion": "1.1.18, 2.1.4, 3.0.6, 5.0.9",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-69192",
+          "PkgName": "ip-address",
+          "InstalledVersion": "10.1.0",
+          "FixedVersion": "10.3.1",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-9496",
+          "PkgName": "pacote",
+          "InstalledVersion": "19.0.2",
+          "FixedVersion": "21.5.1",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-9496",
+          "PkgName": "pacote",
+          "InstalledVersion": "20.0.1",
+          "FixedVersion": "21.5.1",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-33671",
+          "PkgName": "picomatch",
+          "InstalledVersion": "4.0.3",
+          "FixedVersion": "4.0.4, 3.0.2, 2.3.2",
+          "Severity": "HIGH"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-48815",
+          "PkgName": "sigstore",
+          "InstalledVersion": "3.1.0",
+          "FixedVersion": "4.1.1",
+          "Severity": "HIGH"
+        }
+      ]
+    }
+  ]
+}

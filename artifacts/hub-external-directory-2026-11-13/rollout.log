@@ -1,0 +1,6 @@
+both ledger backups: /root/hub-backups/external-directory-20261113T114645Z-bdLSiWYx
+{"container": "modelmarket-hub", "healthy": true, "image": "sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12", "previous_container": "modelmarket-hub-security-prev-1794570406579813059", "removed_env_names": [], "image_env_names": ["AIMARKET_CRAWL_INTERVAL_S", "AIMARKET_DB_PATH", "AIMARKET_OPERATOR_ACCOUNTS", "AIMARKET_PEER_REJECTIONS_FILE", "AIMARKET_SEED_LIST", "AIMARKET_SIGNING_KEY_PATH", "AIMARKET_ZK_BACKEND", "AIMARKET_ZK_NULLIFIER_DB", "AIMARKET_ZK_VERIFIER_SOL", "AIMARKET_ZK_VKEY_JSON", "AIMARKET_ZK_WASM", "AIMARKET_ZK_ZKEY", "GPG_KEY", "LANG", "PATH", "PYTHON_SHA256", "PYTHON_VERSION"], "set_env_names": [], "borrowers": {"themis": "themis-security-prev-1794570406579813059"}, "snapshot": "/root/security-rollbacks/modelmarket-hub-1794570406579813059/inspect.json"}
+terminal-home.html: OK
+hub-ui-i18n.json: OK
+aimarket_hub/hub_routes/catalog.py: OK
+aimarket_hub/external_services.py: OK

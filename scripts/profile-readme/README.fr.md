@@ -1,7 +1,7 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-[Voir une modification d’outils MCP enregistrée](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Analyser une liste d’outils avec WARDEN](https://modelmarket.dev/tools/warden-scan) · [Implémenter l’empreinte du jeu d’outils](https://github.com/alexar76/mcp-tool-set-digest)
+[Voir une modification d’outils MCP enregistrée](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Analyser une liste d’outils avec WARDEN](https://modelmarket.dev/tools/warden-scan) · [Implémenter l’empreinte du jeu d’outils](https://github.com/alexar76/mcp-tool-set-digest) · [Les onze portes d’entrée](https://ecosystem.modelmarket.dev/#ways-in)
 <!-- /ecosystem-entry-points -->
 
 <p align="center"><b>Des vérifications et un registre public attesté des outils qu’utilisent les agents IA.</b></p>
@@ -292,6 +292,7 @@ Ci-dessous, chaque repo apparaît dans **un seul** groupe — celui du rôle qu�
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury** — payeur de primes distinct pour MOMUS (sa propre clé et son propre conteneur) ; ne paie qu’après vérification indépendante · [LIVE](https://momus.modelmarket.dev/treasury) · [landing](https://alexar76.github.io/treasury/) | après vérification |
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN** — **pare-feu de sécurité MCP** sans dépendance : bibliothèque, CLI et serveur MCP stdio local, pas un service hébergé : scan statique des définitions d’outils → flux de menaces signé → origine → épinglage · [landing](https://warden.modelmarket.dev/) · [étude de terrain : 1 108 serveurs MCP publics](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.fr.md) | avant qu’un outil tiers n’atteigne un hôte |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR** (ἵστωρ) — **journal de transparence public des définitions d’outils MCP** : lit ce qu’annonce chaque point de terminaison distant du registre officiel MCP (n’appelle jamais un outil), le signe en étiquettes MTL/1, les ajoute à un arbre de Merkle RFC 9162 avec des têtes d’arbre signées et date chaque modification avec son diff. Ne déclare jamais un serveur sûr · [live](https://histor.modelmarket.dev) · [landing](https://alexar76.github.io/histor/) | chaque jour, sur chaque point de terminaison distant du registre officiel · et sur `/check` |
+| [**mcp-tool-set-digest**](https://github.com/alexar76/mcp-tool-set-digest) | **Empreinte du jeu d’outils MCP** — la spécification `mcp-tool-set-digest/1` (brouillon du 2026-11-13) : une façon de hacher ce qu’un serveur MCP dit de ses outils, pour que deux parties qui n’ont jamais échangé ce texte puissent savoir si elles ont reçu la même chose ; une empreinte du contrat et une des champs annexes, 73 vecteurs de test, implémentations de référence sans dépendance en Python, JavaScript et Go · l’empreinte que comparent HISTOR, WARDEN et CrawlCheck | quand une liste d’outils est épinglée ou comparée |
 
 ### 🧠 Mémoire vérifiable — ce que les agents gardent
 <sub>Écrire, chercher et partager une mémoire que d’autres agents peuvent vérifier.</sub>
@@ -399,6 +400,7 @@ L’index de référence se trouve dans la [version anglaise](README.md#az) ; si
 | [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) | Application d’exemple | Flutter + SDK, produit réel |
 | [logos](https://github.com/alexar76/logos) | Observabilité | analyses en lecture seule de la fédération |
 | [lottery](https://github.com/alexar76/lottery) | Calcul vérifiable | tirages on-chain impartiaux · UBI machine |
+| [mcp-tool-set-digest](https://github.com/alexar76/mcp-tool-set-digest) | Confiance et sécurité | hachage de la liste d’outils d’un serveur MCP |
 | [metis](https://github.com/alexar76/metis) | Calcul vérifiable | niveau de vérification |
 | [momus](https://github.com/alexar76/momus) | Confiance et sécurité | équipe rouge HTTP/fédération |
 | [oracles](https://github.com/alexar76/oracles) | Calcul vérifiable | 17 capacités mathématiques signées |

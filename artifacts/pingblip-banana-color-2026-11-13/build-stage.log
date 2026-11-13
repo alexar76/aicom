@@ -1,0 +1,129 @@
+
+> pingblip@1.0.0 prebuild
+> npm run test:dependency-security && node scripts/link-assets.mjs
+
+
+> pingblip@1.0.0 test:dependency-security
+> node ../memeforge/vendor/next-root-glob/test.cjs
+
+TAP version 13
+# Subtest: Next uses the adapter and no vulnerable glob packages remain
+ok 1 - Next uses the adapter and no vulnerable glob packages remain
+  ---
+  duration_ms: 105.622881
+  type: 'test'
+  ...
+# Subtest: Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+ok 2 - Next rootDir supports default, literal, wildcard, braces, arrays and missing roots
+  ---
+  duration_ms: 402.155218
+  type: 'test'
+  ...
+# Subtest: deeply nested brace and parenthesis patterns do not exhaust the stack
+ok 3 - deeply nested brace and parenthesis patterns do not exhaust the stack
+  ---
+  duration_ms: 1190.164347
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1899.175435
+link-assets: public/{models,fonts,dex} already linked
+model versions: 80 sculpts, none changed
+   ▲ Next.js 15.5.28
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 12.7min
+   Linting and checking validity of types ...
+
+./src/app/api/live/route.ts
+2:22  Warning: 'requirePlayer' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/shelf/route.ts
+4:22  Warning: 'requirePlayer' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/proof/[id]/opengraph-image.tsx
+151:14  Warning: Unused eslint-disable directive (no problems were reported from '@next/next/no-img-element').
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/196) ...
+   Generating static pages (25/196) 
+   Generating static pages (49/196) 
+   Generating static pages (98/196) 
+   Generating static pages (139/196) 
+   Generating static pages (147/196) 
+   Generating static pages (171/196) 
+   Generating static pages (187/196) 
+ ✓ Generating static pages (196/196)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                   Size  First Load JS
+┌ ○ /                                      46.6 kB         682 kB
+├ ○ /_not-found                              225 B         103 kB
+├ ○ /admin                                 5.54 kB         112 kB
+├ ƒ /admin/funnel                            165 B         106 kB
+├ ƒ /api/admin/funnel                        225 B         103 kB
+├ ƒ /api/admin/overview                      225 B         103 kB
+├ ƒ /api/admin/players                       225 B         103 kB
+├ ƒ /api/admin/players/[id]                  225 B         103 kB
+├ ƒ /api/auth/admin                          225 B         103 kB
+├ ƒ /api/auth/admin/logout                   225 B         103 kB
+├ ƒ /api/bench                               225 B         103 kB
+├ ƒ /api/catch                               225 B         103 kB
+├ ƒ /api/credits                             225 B         103 kB
+├ ƒ /api/egg                                 225 B         103 kB
+├ ƒ /api/events                              225 B         103 kB
+├ ƒ /api/feed                                225 B         103 kB
+├ ƒ /api/finale                              225 B         103 kB
+├ ƒ /api/hatch                               225 B         103 kB
+├ ƒ /api/live                                225 B         103 kB
+├ ƒ /api/merkle                              225 B         103 kB
+├ ƒ /api/proof/[id]                          225 B         103 kB
+├ ƒ /api/scan                                225 B         103 kB
+├ ƒ /api/session                             225 B         103 kB
+├ ƒ /api/shelf                               225 B         103 kB
+├ ƒ /api/station                             225 B         103 kB
+├ ƒ /api/watch                               225 B         103 kB
+├ ○ /bench                                 7.93 kB         647 kB
+├ ○ /clip                                  1.07 kB         538 kB
+├ ○ /finale                                1.47 kB         634 kB
+├ ƒ /go/[video]                              225 B         103 kB
+├ ○ /guide                                 1.38 kB         209 kB
+├ ○ /how                                   1.73 kB         210 kB
+├ ○ /look                                  1.35 kB         634 kB
+├ ○ /map                                    4.6 kB         638 kB
+├ ƒ /proof/[id]                            2.08 kB         204 kB
+├ ƒ /proof/[id]/opengraph-image              225 B         103 kB
+├ ○ /robots.txt                              225 B         103 kB
+├ ○ /rules                                   736 B         203 kB
+├ ● /s/[species]                             936 B         104 kB
+├   ├ /s/goblin-frog
+├   ├ /s/dumpster-raccoon
+├   ├ /s/chonk-capy
+├   └ [+77 more paths]
+├ ● /s/[species]/opengraph-image             225 B         103 kB
+├   ├ /s/goblin-frog/opengraph-image
+├   ├ /s/dumpster-raccoon/opengraph-image
+├   ├ /s/chonk-capy/opengraph-image
+├   └ [+77 more paths]
+├ ○ /shelf                                 1.18 kB         203 kB
+└ ○ /stations                              2.84 kB         208 kB
++ First Load JS shared by all               103 kB
+  ├ chunks/1255-dc3ddf72a1dc71a7.js        46.6 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js    54.2 kB
+  └ other shared chunks (total)            1.93 kB
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+CANDIDATE_OK sha256:4515f20465508381aad7045f18629ee8458712c7b68762188cc00492758ff825 D8vKmoqngN-5Ym5_WMvOh .next/static/chunks/8294-110b7270e1df4645.js

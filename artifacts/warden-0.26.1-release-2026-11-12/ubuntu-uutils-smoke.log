@@ -1,0 +1,8 @@
+v22.23.4
+rust-coreutils	0.10.0-1ubuntu2~26.04.1
+/usr/lib/cargo/bin/coreutils/cat
+/usr/lib/cargo/bin/coreutils/ls
+0.26.0 dist/flow-guard-codex.js {"systemCat":"deny","systemAbsoluteCat":"allow","systemLs":"deny","systemAbsoluteLs":"allow","workspaceExecutable":"deny","workspaceShellLink":"allow","workspaceSameNameLink":"deny"}
+0.26.0 codex-hooks/scripts/flow-guard-codex.mjs {"systemCat":"deny","systemAbsoluteCat":"allow","systemLs":"deny","systemAbsoluteLs":"allow","workspaceExecutable":"deny","workspaceShellLink":"allow","workspaceSameNameLink":"deny"}
+0.26.1 dist/flow-guard-codex.js {"systemCat":"allow","systemAbsoluteCat":"allow","systemLs":"allow","systemAbsoluteLs":"allow","workspaceExecutable":"deny","workspaceShellLink":"deny","workspaceSameNameLink":"deny"}
+0.26.1 codex-hooks/scripts/flow-guard-codex.mjs {"systemCat":"allow","systemAbsoluteCat":"allow","systemLs":"allow","systemAbsoluteLs":"allow","workspaceExecutable":"deny","workspaceShellLink":"deny","workspaceSameNameLink":"deny"}

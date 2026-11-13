@@ -1,0 +1,73 @@
+{
+    "image": "sha256:3f372add6d130032e21248a8c0e5211dc201980c6c9683e2e072f776ceb074ee",
+    "method": "installed probe_route and outbound HTTPS",
+    "file_sha256": {
+        "observed_sellers.py": "ad2d1299e395d8e226970b3b8950507dd05f0a3ae4e5ca00e2ddf28d1df71aee",
+        "x402_bridge.py": "cf6114d5561385465faa528bd8c090ffc10347ec352cbccb92a16f0ab8cbf2e3"
+    },
+    "url": "https://pro-api.coinmarketcap.com/x402/v3/cryptocurrency/quotes/latest?id=1,1027",
+    "cases": [
+        {
+            "case": "pin_from_prior_unpaid_quotes",
+            "calls": [
+                {
+                    "method": "HEAD",
+                    "status": 200
+                },
+                {
+                    "method": "GET",
+                    "status": 402
+                }
+            ],
+            "result": {
+                "http_status": 402,
+                "result": "quoted",
+                "probe_method": "GET",
+                "price_usd": 0.01,
+                "amount_atomic": "10000",
+                "network": "eip155:8453",
+                "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                "scheme": "exact",
+                "pay_to": "0x3C5f3a6cE224BB89D72f5EB4232ecC27F67B3eeA",
+                "x402_version": 2
+            }
+        },
+        {
+            "case": "substituted_pin",
+            "calls": [
+                {
+                    "method": "HEAD",
+                    "status": 200
+                },
+                {
+                    "method": "GET",
+                    "status": 402
+                }
+            ],
+            "result": {
+                "http_status": 402,
+                "result": "no_offer",
+                "probe_method": "GET",
+                "detail": "402 has no matching Base USDC offer for this route and pinned recipient"
+            }
+        },
+        {
+            "case": "head_only_without_explicit_get",
+            "calls": [
+                {
+                    "method": "HEAD",
+                    "status": 200
+                }
+            ],
+            "result": {
+                "http_status": 200,
+                "result": "not_priced",
+                "probe_method": "HEAD",
+                "detail": "answered without asking for payment"
+            }
+        }
+    ],
+    "ledger_access": false,
+    "vendor_registration": false,
+    "payment_signature": false
+}

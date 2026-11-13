@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-12",
+  "scope": "Loopback Anvil chain and temporary SQLite database with synthetic funds. Credit funding was seeded as a Base USDC deposit. The paid invoke and publisher withdrawal used the Hub API. The operator processor signed through local RPC and the CLI reconciled the finalized receipt in a separate process.",
+  "network": {
+    "chain_id": 8453,
+    "rpc": "loopback only",
+    "token": "MockUSDC fixture at canonical Base USDC address"
+  },
+  "sale": {
+    "http_status": 200,
+    "buyer_spent_usd": 0.1,
+    "publisher_accrual_usd": 0.07
+  },
+  "request": {
+    "http_status": 202,
+    "replay_returned_same_withdrawal": true,
+    "modified_amount_replay_refused": true,
+    "withdrawal_id": "pwd_fb851786c13242a0abcedff4a25ad862"
+  },
+  "broadcast": {
+    "first_rpc_reply_lost_after_acceptance": true,
+    "status_after_timeout": "signed",
+    "retry_used_identical_signed_bytes": true,
+    "rpc_attempts": 2
+  },
+  "finalized": {
+    "status": "paid",
+    "local_tx_hash": "0xd1949d34f48a8cfb21f51f1a1133d6e4ee547f4f9062e22612c482efb8bc46ec",
+    "operator_cli_reconciled": true,
+    "receipt_block": 2,
+    "recipient_balance_atomic": 70000,
+    "incorrect_expected_amount_refused": true,
+    "repeat_reconciliation_kept_same_transaction": true,
+    "request_ledger_entries": 1,
+    "paid_ledger_entries": 1,
+    "publisher_balance_usd": 0.0
+  }
+}

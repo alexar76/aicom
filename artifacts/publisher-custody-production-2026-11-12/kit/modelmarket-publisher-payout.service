@@ -1,0 +1,11 @@
+[Unit]
+Description=Process one ModelMarket publisher payout on Base
+After=docker.service network-online.target
+Requires=docker.service
+ConditionPathExists=/root/modelmarket-publisher-payout-20261112/signer.key
+
+[Service]
+Type=oneshot
+UMask=0077
+TimeoutStartSec=180
+ExecStart=/root/publisher-custody-20261112/payout-worker.sh run-once

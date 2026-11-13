@@ -1,0 +1,129 @@
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 711B 0.0s done
+#1 WARN: InvalidDefaultArgInFrom: Default value for ARG ${BASE} results in empty or invalid base image name (line 2)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/modelmarket-debian-base:7c41749d850c
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 3.01MB 0.1s done
+#4 DONE 0.1s
+
+#5 [stage-0 1/2] FROM docker.io/library/modelmarket-debian-base:7c41749d850c@sha256:7c41749d850ce4569cf755570fc8bf8de97f563ffdd7ff13cc8f74d36acef9e8
+#5 resolve docker.io/library/modelmarket-debian-base:7c41749d850c@sha256:7c41749d850ce4569cf755570fc8bf8de97f563ffdd7ff13cc8f74d36acef9e8
+#5 resolve docker.io/library/modelmarket-debian-base:7c41749d850c@sha256:7c41749d850ce4569cf755570fc8bf8de97f563ffdd7ff13cc8f74d36acef9e8 0.1s done
+#5 DONE 1.0s
+
+#6 [stage-0 2/2] RUN --mount=type=bind,source=bundle,target=/verified,ro     set -eu;     test "$(dpkg --print-architecture)" = amd64;     sqv --keyring /usr/share/keyrings/debian-archive-keyring.gpg --signatures=2         --output /tmp/publisher-Debian-Release --cleartext /verified/InRelease;     python /verified/verify-debian.py /verified /tmp/publisher-Debian-Release;     rm /tmp/publisher-Debian-Release;     dpkg -i /verified/libapt-pkg7.0_3.0.4_amd64.deb             /verified/apt_3.0.4_amd64.deb             /verified/zlib1g_1.3.dfsg+really1.3.1-1+deb13u1_amd64.deb;     test -z "$(dpkg --audit)"
+#6 0.337 05AB90340C0C5E797F44A8C8254CF3B5AEC0A8F0
+#6 0.337 5E04A1E3223A19A20706E20F9904613D4CCE68C6
+#6 0.717 {"date": "Thu, 12 Nov 2026 23:08:29 UTC", "index": {"bytes": 301552, "file": "Packages.xz", "sha256": "30de550dfeda80b5d8c4ab0fb63ae33234791eae9d90ff9ff1a8795f440f4ceb"}, "packages": {"apt": {"bytes": 1453228, "file": "apt_3.0.4_amd64.deb", "sha256": "15c2030e0fb46580af4f1b4cc303f4bd26da781b004e99763bc9eff7cf8e19b8", "version": "3.0.4"}, "libapt-pkg7.0": {"bytes": 1113872, "file": "libapt-pkg7.0_3.0.4_amd64.deb", "sha256": "577eb8f489de419290102364892dbd13ca256297b61f96d61b114fd4ac18be41", "version": "3.0.4"}, "zlib1g": {"bytes": 88720, "file": "zlib1g_1.3.dfsg+really1.3.1-1+deb13u1_amd64.deb", "sha256": "8c27c342230503b73dfde629642c3b352e87b554e06d60cf58772f236a305ceb", "version": "1:1.3.dfsg+really1.3.1-1+deb13u1"}}, "signed_archive": "trixie-security", "valid_until": "Thu, 19 Nov 2026 23:08:29 UTC"}
+#6 0.816 (Reading database ... 7003 files and directories currently installed.)
+#6 0.817 Preparing to unpack .../libapt-pkg7.0_3.0.4_amd64.deb ...
+#6 0.825 Unpacking libapt-pkg7.0:amd64 (3.0.4) over (3.0.3) ...
+#6 0.965 Preparing to unpack /verified/apt_3.0.4_amd64.deb ...
+#6 1.046 Unpacking apt (3.0.4) over (3.0.3) ...
+#6 1.228 Preparing to unpack .../zlib1g_1.3.dfsg+really1.3.1-1+deb13u1_amd64.deb ...
+#6 1.232 Unpacking zlib1g:amd64 (1:1.3.dfsg+really1.3.1-1+deb13u1) over (1:1.3.dfsg+really1.3.1-1+b1) ...
+#6 1.259 Setting up zlib1g:amd64 (1:1.3.dfsg+really1.3.1-1+deb13u1) ...
+#6 1.266 Setting up libapt-pkg7.0:amd64 (3.0.4) ...
+#6 1.270 Setting up apt (3.0.4) ...
+#6 1.663 Processing triggers for libc-bin (2.41-12+deb13u4) ...
+#6 DONE 1.8s
+
+#7 exporting to image
+#7 exporting layers
+#7 exporting layers 0.6s done
+#7 exporting manifest sha256:133e1f0560b730f60101374ea52d5aecdc78644d3a06516878ef3a904a8f1558 0.0s done
+#7 exporting config sha256:26aa4e2e52756b7587ae24e2c9ca95d009f9a18cae8160e1c50da42595f53e49 done
+#7 exporting attestation manifest sha256:c70cee625f047743420bbf7bdccd1624d2d9287c70f80f93024dc3832ef13a3b done
+#7 exporting manifest list sha256:c62951ec599a46c74c1792dd47f7a50af6a025c3c3eb78334d798a8dbd19e211 done
+#7 naming to docker.io/library/modelmarket-hub:debian-apt-zlib-20261113-7c41749d850c done
+#7 unpacking to docker.io/library/modelmarket-hub:debian-apt-zlib-20261113-7c41749d850c
+#7 unpacking to docker.io/library/modelmarket-hub:debian-apt-zlib-20261113-7c41749d850c 0.2s done
+#7 DONE 1.2s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - InvalidDefaultArgInFrom: Default value for ARG ${BASE} results in empty or invalid base image name (line 2)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+{
+  "changed_debian_packages": {
+    "apt": [
+      "3.0.3",
+      "3.0.4"
+    ],
+    "libapt-pkg7.0:amd64": [
+      "3.0.3",
+      "3.0.4"
+    ],
+    "zlib1g:amd64": [
+      "1:1.3.dfsg+really1.3.1-1+b1",
+      "1:1.3.dfsg+really1.3.1-1+deb13u1"
+    ]
+  },
+  "debian_count": 129,
+  "python_count": 76,
+  "hub_source_sha256": "0c58c24842b67462dd7d305f84d9a6d0268efd72428ef6bcf30aebbd0ed1af55",
+  "dpkg_audit_clean": true,
+  "apt_get_check": true,
+  "zlib_gzip_roundtrip": true
+}
+/usr/local/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+SQLite path data/sandbox_trials.db was requested explicitly; ignoring AIMARKET_DB_PATH=/smoke/hub.db for this backend. These were the SAME file before (the env var overrode the argument) — point this subsystem's own path variable at /smoke/hub.db if a shared file was intended.
+data/sandbox_trials.db does not exist yet while /smoke/hub.db does: if this hub ran with the env var set, THIS SUBSYSTEM'S EXISTING TABLES ARE STILL IN /smoke/hub.db and the new file starts empty. Migrate them (or point this subsystem's own path variable at /smoke/hub.db) BEFORE serving — for the channel ledger an empty database also resets the single-use deposit guard.
+NEW Ed25519 signing key generated at /tmp/debian-custody-smoke-h1lx6ycq/smoke.key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+NEW post-quantum (ML-DSA-65) signing key generated at /tmp/debian-custody-smoke-h1lx6ycq/smoke.key_mldsa. Back it up together with the Ed25519 key beside it. Peers pin it; an existing identity requires explicit trust reconciliation.
+SQLite path /smoke/provenance.db was requested explicitly; ignoring AIMARKET_DB_PATH=/smoke/hub.db for this backend. These were the SAME file before (the env var overrode the argument) — point this subsystem's own path variable at /smoke/hub.db if a shared file was intended.
+/smoke/provenance.db does not exist yet while /smoke/hub.db does: if this hub ran with the env var set, THIS SUBSYSTEM'S EXISTING TABLES ARE STILL IN /smoke/hub.db and the new file starts empty. Migrate them (or point this subsystem's own path variable at /smoke/hub.db) BEFORE serving — for the channel ledger an empty database also resets the single-use deposit guard.
+NEW Ed25519 signing key generated at data/hub_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+InMemoryNFTRegistry initialized — DEVELOPMENT ONLY. NFTs lose state on restart. Use OnChainNFTRegistry in production.
+Generated new dataset salt at data/dataset_salt — back this up if you want anonymized IDs to stay stable across deploys.
+[crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+NEW Ed25519 signing key generated at data/provenance_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+No AIMARKET_PROVENANCE_API_TOKEN set — /attest is disabled (503). Set this env var to enable manual attestation.
+{"http_status": {"/ai-market/v2/health": 200, "/.well-known/ai-market.json": 200, "/ai-market/v2/account/withdrawals": 401}, "database_migrations_added": 0, "sqlite_checks": 2}
+/usr/local/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+SQLite path data/sandbox_trials.db was requested explicitly; ignoring AIMARKET_DB_PATH=/smoke/hub.db for this backend. These were the SAME file before (the env var overrode the argument) — point this subsystem's own path variable at /smoke/hub.db if a shared file was intended.
+data/sandbox_trials.db does not exist yet while /smoke/hub.db does: if this hub ran with the env var set, THIS SUBSYSTEM'S EXISTING TABLES ARE STILL IN /smoke/hub.db and the new file starts empty. Migrate them (or point this subsystem's own path variable at /smoke/hub.db) BEFORE serving — for the channel ledger an empty database also resets the single-use deposit guard.
+NEW Ed25519 signing key generated at /tmp/debian-custody-smoke-v0c7gndw/smoke.key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+NEW post-quantum (ML-DSA-65) signing key generated at /tmp/debian-custody-smoke-v0c7gndw/smoke.key_mldsa. Back it up together with the Ed25519 key beside it. Peers pin it; an existing identity requires explicit trust reconciliation.
+NEW Ed25519 signing key generated at data/hub_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+InMemoryNFTRegistry initialized — DEVELOPMENT ONLY. NFTs lose state on restart. Use OnChainNFTRegistry in production.
+Generated new dataset salt at data/dataset_salt — back this up if you want anonymized IDs to stay stable across deploys.
+[crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+AIMARKET_ADMIN_TOKEN not set — public Hub observations still land in quarantine, but federation approval and crawl-control requests will be rejected. Set this env var to enable operator actions.
+Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+NEW Ed25519 signing key generated at data/provenance_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+No AIMARKET_PROVENANCE_API_TOKEN set — /attest is disabled (503). Set this env var to enable manual attestation.
+{"http_status": {"/ai-market/v2/health": 200, "/.well-known/ai-market.json": 200, "/ai-market/v2/account/withdrawals": 401}, "database_migrations_added": 0, "sqlite_checks": 2}
+sha256:7c41749d850ce4569cf755570fc8bf8de97f563ffdd7ff13cc8f74d36acef9e8 -> sha256:c62951ec599a46c74c1792dd47f7a50af6a025c3c3eb78334d798a8dbd19e211

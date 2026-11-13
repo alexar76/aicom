@@ -1,0 +1,137 @@
+[
+  {
+    "method": "GET",
+    "url": "https://pro-api.coinmarketcap.com/.well-known/x402",
+    "status": 404,
+    "x402_version": null,
+    "resource": null,
+    "offers": []
+  },
+  {
+    "method": "GET",
+    "url": "https://pro-api.coinmarketcap.com/.well-known/x402.json",
+    "status": 404,
+    "x402_version": null,
+    "resource": null,
+    "offers": []
+  },
+  {
+    "method": "HEAD",
+    "url": "https://pro-api.coinmarketcap.com/x402/v3/cryptocurrency/quotes/latest?id=1,1027",
+    "status": 200,
+    "x402_version": null,
+    "resource": null,
+    "offers": []
+  },
+  {
+    "method": "GET",
+    "url": "https://pro-api.coinmarketcap.com/x402/v3/cryptocurrency/quotes/latest?id=1,1027",
+    "status": 402,
+    "x402_version": 2,
+    "resource": "https://pro-api.coinmarketcap.com/x402/v3/cryptocurrency/quotes/latest",
+    "offers": [
+      {
+        "network": "eip155:8453",
+        "scheme": "exact",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "amount": "10000",
+        "payTo": "0x3C5f3a6cE224BB89D72f5EB4232ecC27F67B3eeA",
+        "transfer_method": "eip3009",
+        "domain_name": "USD Coin",
+        "domain_version": "2"
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "https://pro-api.coinmarketcap.com/x402/v3/cryptocurrency/quotes/latest?id=1,1027",
+    "status": 402,
+    "x402_version": 2,
+    "resource": "https://pro-api.coinmarketcap.com/x402/v3/cryptocurrency/quotes/latest",
+    "offers": [
+      {
+        "network": "eip155:8453",
+        "scheme": "exact",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "amount": "10000",
+        "payTo": "0x3C5f3a6cE224BB89D72f5EB4232ecC27F67B3eeA",
+        "transfer_method": "eip3009",
+        "domain_name": "USD Coin",
+        "domain_version": "2"
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "https://x402.tavily.com/.well-known/x402",
+    "status": 404,
+    "x402_version": null,
+    "resource": null,
+    "offers": []
+  },
+  {
+    "method": "GET",
+    "url": "https://x402.tavily.com/.well-known/x402.json",
+    "status": 404,
+    "x402_version": null,
+    "resource": null,
+    "offers": []
+  },
+  {
+    "method": "POST",
+    "url": "https://x402.tavily.com/search",
+    "status": 402,
+    "x402_version": 2,
+    "resource": "https://x402.tavily.com/search",
+    "offers": [
+      {
+        "network": "eip155:8453",
+        "scheme": "exact",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "amount": "10000",
+        "payTo": "0xbcf9add75bc16115789cffa0305d22182cae140a",
+        "transfer_method": null,
+        "domain_name": "USD Coin",
+        "domain_version": "2"
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "url": "https://x402.tavily.com/search",
+    "status": 402,
+    "x402_version": 2,
+    "resource": "https://x402.tavily.com/search",
+    "offers": [
+      {
+        "network": "eip155:8453",
+        "scheme": "exact",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "amount": "10000",
+        "payTo": "0xebed377063507f66518a129e94832ac5188b9aba",
+        "transfer_method": null,
+        "domain_name": "USD Coin",
+        "domain_version": "2"
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "url": "https://x402.tavily.com/search",
+    "status": 402,
+    "x402_version": 2,
+    "resource": "https://x402.tavily.com/search",
+    "offers": [
+      {
+        "network": "eip155:8453",
+        "scheme": "exact",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "amount": "10000",
+        "payTo": "0x46876ad141bdd5598fd7480f088d60231c102173",
+        "transfer_method": null,
+        "domain_name": "USD Coin",
+        "domain_version": "2"
+      }
+    ]
+  }
+]

@@ -1,0 +1,167 @@
+{
+  "existing_topup_tx": "0x46929e16ed8c343ba875b426bb1ff81105354b67aa0664f6de7e27a9ede24c23",
+  "new_topup": false,
+  "sale": {
+    "first_idempotency": "stored",
+    "price_usd": 2e-05,
+    "receipt_id": "rcpt_bc8e127bddc09a433764fbbca4ee53dd",
+    "replay_idempotency": "replayed"
+  },
+  "status": "paid",
+  "withdrawal": {
+    "amount_atomic": "10",
+    "amount_usdc": 1e-05,
+    "chain_id": 8453,
+    "created_at": 1794560382,
+    "recipient": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+    "request_id": "publisher-custody-canary-c62951ec599a46c7",
+    "sender": "0xb35100405f7aea3e11de2f5bf18316be507f6eba",
+    "status": "paid",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "tx_hash": "0x4f2fea9a34d1e50291d36f76540f39cb71270898ca6273818b896f8eced6eb8d",
+    "updated_at": 1794561801,
+    "withdrawal_id": "pwd_86535455c02e4e8c9b82ed2cd8553f60"
+  },
+  "withdrawal_entries": [
+    {
+      "amount_mc": 1,
+      "kind": "publisher_withdraw_requested"
+    },
+    {
+      "amount_mc": 1,
+      "kind": "publisher_withdraw_paid"
+    }
+  ],
+  "image": "sha256:c62951ec599a46c74c1792dd47f7a50af6a025c3c3eb78334d798a8dbd19e211",
+  "worker_journal_matched": true,
+  "systemd_observations": [
+    {
+      "invocation_id": "11d9e0c856844667839cd93f1334c110",
+      "timestamp_us": "1794560447009772",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": false
+    },
+    {
+      "invocation_id": "9824972f86cf4e6a8403b8be5e7ef6a1",
+      "timestamp_us": "1794560512830621",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "460e7ed628cc4e1c848663acc4004fa7",
+      "timestamp_us": "1794560581244657",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "12edba77a84f4953abff0d63032f53bc",
+      "timestamp_us": "1794560649509126",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "d09cec6a3cab42b0a75a7f1579203a2b",
+      "timestamp_us": "1794560718282173",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "9020e924bc194681959cfc0019b17fcc",
+      "timestamp_us": "1794560782294127",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "c08b6c7bab2c4a048a552ca7982cdc2b",
+      "timestamp_us": "1794560850439041",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "273b254b00e74ab3bf0916c3a308b8f3",
+      "timestamp_us": "1794560915192967",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "cc915e67ed1547cc9a4b8cd559bbe0cd",
+      "timestamp_us": "1794560982561167",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "efc606c2245342589529f8c874c4f012",
+      "timestamp_us": "1794561047074623",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "bccc0767da8b4965b9f5546c4bcea54f",
+      "timestamp_us": "1794561111468474",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "738d12d0970d4a6bb3a46dc8a4bbd809",
+      "timestamp_us": "1794561179286657",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "9280120e748a4aa1b9ca9717dedd5b13",
+      "timestamp_us": "1794561247335824",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "97801166a0ab4272a2a01b3b9df23c5c",
+      "timestamp_us": "1794561312572791",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "dbeb01b30a4a44f38647d0fd0c2faec5",
+      "timestamp_us": "1794561381499742",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "99d7df69c827457896af3a54b601e381",
+      "timestamp_us": "1794561446979491",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "c805494055e0491d83c8edff9bdd5be2",
+      "timestamp_us": "1794561513159037",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "36caefd2d91c4d30b2052e2ec07bd9a1",
+      "timestamp_us": "1794561582484258",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "dd22bf978b0d45ef8c9bca13a9b2e3ee",
+      "timestamp_us": "1794561651405252",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "41f6940d0ee94fd483a2a5c6d413f9a0",
+      "timestamp_us": "1794561717046664",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    },
+    {
+      "invocation_id": "a919ef9ea5aa4a8d8aa3ea81e680a8b0",
+      "timestamp_us": "1794561782345276",
+      "reported_status": "broadcast",
+      "broadcast_unconfirmed": true
+    }
+  ],
+  "manual_worker_launch": false,
+  "manual_reconcile": false
+}

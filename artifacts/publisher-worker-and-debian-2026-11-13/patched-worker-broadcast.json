@@ -1,0 +1,45 @@
+{
+  "image": "sha256:c62951ec599a46c74c1792dd47f7a50af6a025c3c3eb78334d798a8dbd19e211",
+  "observed_api": {
+    "sale": {
+      "first_idempotency": "stored",
+      "price_usd": 2e-05,
+      "receipt_id": "rcpt_bc8e127bddc09a433764fbbca4ee53dd",
+      "replay_idempotency": "replayed"
+    },
+    "status": "broadcast",
+    "withdrawal": {
+      "amount_atomic": "10",
+      "amount_usdc": 1e-05,
+      "chain_id": 8453,
+      "created_at": 1794560382,
+      "recipient": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "request_id": "publisher-custody-canary-c62951ec599a46c7",
+      "sender": "0xb35100405f7aea3e11de2f5bf18316be507f6eba",
+      "status": "broadcast",
+      "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "tx_hash": "0x4f2fea9a34d1e50291d36f76540f39cb71270898ca6273818b896f8eced6eb8d",
+      "updated_at": 1794560447,
+      "withdrawal_id": "pwd_86535455c02e4e8c9b82ed2cd8553f60"
+    }
+  },
+  "systemd_unit": "modelmarket-publisher-payout.service",
+  "worker_invocation_id": "11d9e0c856844667839cd93f1334c110",
+  "worker_journal_timestamp_us": "1794560447009772",
+  "worker_report": {
+    "withdrawal_id": "pwd_86535455c02e4e8c9b82ed2cd8553f60",
+    "request_id": "publisher-custody-canary-c62951ec599a46c7",
+    "recipient": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+    "sender": "0xb35100405f7aea3e11de2f5bf18316be507f6eba",
+    "status": "broadcast",
+    "created_at": 1794560382,
+    "updated_at": 1794560447,
+    "tx_hash": "0x4f2fea9a34d1e50291d36f76540f39cb71270898ca6273818b896f8eced6eb8d",
+    "amount_usdc": 1e-05,
+    "amount_atomic": "10",
+    "chain_id": 8453,
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+  },
+  "broadcast_delay_s": 65,
+  "manual_worker_launch": false
+}

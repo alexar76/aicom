@@ -1,0 +1,39 @@
+{
+  "phase": "before",
+  "startedAt": "2026-11-13T11:10:45.542Z",
+  "expectedHash": "3c8babfb401565c98b10fc53b11257275bce1f1cc1735fe58fdc3d5878d1354f",
+  "benchUrl": "https://pingblip.com/bench?lang=en",
+  "renders": [
+    {
+      "viewport": "desktop",
+      "pageErrors": [],
+      "consoleErrors": [],
+      "models": [
+        {
+          "url": "https://pingblip.com/models/glaze-donut.glb?v=3c8babfb40",
+          "status": 200,
+          "sha256": "3c8babfb401565c98b10fc53b11257275bce1f1cc1735fe58fdc3d5878d1354f",
+          "bytes": 946632,
+          "icingNodes": [
+            "Glaze drip.0",
+            "Glaze drip.1",
+            "Glaze drip.2",
+            "Glaze drip.3",
+            "Thick pink glaze"
+          ]
+        }
+      ],
+      "canvas": {
+        "x": 154,
+        "y": 53,
+        "width": 576,
+        "height": 987
+      },
+      "pinkPixelFraction": 0.09021269559833389,
+      "canvasScreenshot": "before-desktop-canvas.png",
+      "benchScreenshot": "before-desktop-bench.png"
+    }
+  ],
+  "passed": true,
+  "finishedAt": "2026-11-13T11:11:06.228Z"
+}

@@ -1,0 +1,44 @@
+
+> histor-scanner@0.1.0 test
+> node --test check-build.test.mjs
+
+TAP version 13
+# Subtest: the installed local scanner is the pinned accepted 0.26.0 build
+ok 1 - the installed local scanner is the pinned accepted 0.26.0 build
+  ---
+  duration_ms: 14.0355
+  type: 'test'
+  ...
+# Subtest: rejects an older installed version even when the source lock is current
+ok 2 - rejects an older installed version even when the source lock is current
+  ---
+  duration_ms: 270.535042
+  type: 'test'
+  ...
+# Subtest: rejects changed runtime bytes even when the installed version is current
+ok 3 - rejects changed runtime bytes even when the installed version is current
+  ---
+  duration_ms: 178.5585
+  type: 'test'
+  ...
+# Subtest: rejects changed module routing even when version and dist bytes are current
+ok 4 - rejects changed module routing even when version and dist bytes are current
+  ---
+  duration_ms: 195.179167
+  type: 'test'
+  ...
+# Subtest: rejects a modified vendored archive before accepting installed code
+ok 5 - rejects a modified vendored archive before accepting installed code
+  ---
+  duration_ms: 222.75375
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 973.250458

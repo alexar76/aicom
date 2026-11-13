@@ -1,0 +1,41 @@
+HISTOR full test and optional HF reader verification, 2026-11-12
+Source: aicom f1c579ab4 HISTOR Python code. Run from histor/ using its existing Python 3.12.13 environment.
+
+1. Full suite with disposable SQLite and PostgreSQL
+
+histor_pg_tmp=$(mktemp -d /tmp/aicom-histor-pg.XXXXXX)
+histor_pg_port=$(.venv/bin/python -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1]); s.close()')
+initdb -D "$histor_pg_tmp/data" --no-locale -E UTF8 -A trust -U histor
+pg_ctl -D "$histor_pg_tmp/data" -l "$histor_pg_tmp/postgres.log" -o "-h 127.0.0.1 -k $histor_pg_tmp -p $histor_pg_port" -w start
+createdb -h 127.0.0.1 -p "$histor_pg_port" -U histor histor_test
+HISTOR_TEST_DATABASE_URL="postgresql://histor@127.0.0.1:$histor_pg_port/histor_test" \
+  PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -o addopts='' -q --tb=short -rs \
+  -o "cache_dir=$histor_pg_tmp/pytest-cache" tests
+pg_ctl -D "$histor_pg_tmp/data" -m fast -w stop
+rm -rf -- "$histor_pg_tmp"
+
+Observed terminal summary (exec session 19422):
+SKIPPED [8] tests/test_dataset_schema.py:53: HF reader regression needs optional datasets
+1581 passed, 8 skipped, 1 warning in 152.24s (0:02:32)
+
+2. The eight skipped Hugging Face reader cases, using local fixtures and an isolated dependency target
+
+histor_hf_tmp=$(mktemp -d /tmp/aicom-histor-hf.XXXXXX)
+uv pip install --index https://pypi.org/simple --python .venv/bin/python --target "$histor_hf_tmp/deps" 'datasets==4.8.5'
+PYTHONPATH="$histor_hf_tmp/deps" HF_HOME="$histor_hf_tmp/hf" HF_DATASETS_OFFLINE=1 HF_HUB_OFFLINE=1 \
+  PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -o addopts='' -q \
+  -o "cache_dir=$histor_hf_tmp/pytest-cache" tests/test_dataset_schema.py -k hf_loader
+rm -rf -- "$histor_hf_tmp"
+
+Observed terminal summary (exec session 26856):
+8 passed, 7 deselected in 15.96s
+
+3. Scanner version, bytes and rollback tests
+
+npm --prefix scanner run check:build && npm --prefix scanner test
+
+Observed terminal summary (exec session 41057):
+Verified @aimarket/warden@0.26.0: de9f98d627832446e0433cd112898d1106758f89f31506feeed71a7903530ec8
+# tests 5
+# pass 5
+# fail 0

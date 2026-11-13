@@ -1,0 +1,35 @@
+{
+  "existing_topup_tx": "0x46929e16ed8c343ba875b426bb1ff81105354b67aa0664f6de7e27a9ede24c23",
+  "new_topup": false,
+  "sale": {
+    "first_idempotency": "stored",
+    "price_usd": 2e-05,
+    "receipt_id": "rcpt_368bd1e7b832568d6cb09871ee05859d",
+    "replay_idempotency": "replayed"
+  },
+  "status": "paid",
+  "withdrawal": {
+    "amount_atomic": "10",
+    "amount_usdc": 1e-05,
+    "chain_id": 8453,
+    "created_at": 1794542040,
+    "recipient": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+    "request_id": "publisher-custody-canary-855517601a6ded75",
+    "sender": "0xb35100405f7aea3e11de2f5bf18316be507f6eba",
+    "status": "paid",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "tx_hash": "0x8bb4a42077f06a900fc1456910fcd002fe626a0a6dcbd20cef5e860b038b868c",
+    "updated_at": 1794543225,
+    "withdrawal_id": "pwd_cddb98bea2fe4d1da2f0fddf2b769ec5"
+  },
+  "withdrawal_entries": [
+    {
+      "amount_mc": 1,
+      "kind": "publisher_withdraw_requested"
+    },
+    {
+      "amount_mc": 1,
+      "kind": "publisher_withdraw_paid"
+    }
+  ]
+}

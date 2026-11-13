@@ -1,0 +1,28 @@
+{
+  "head": "409ba4f2ae7f5845f6acf50f6b99197a05395e1c",
+  "files": [
+    "aimarket-hub/aimarket_hub/channel_ledger/spending.py",
+    "aimarket-hub/aimarket_hub/channel_ledger/sweeps.py",
+    "aimarket-hub/aimarket_hub/credits.py",
+    "aimarket-hub/aimarket_hub/deposit_verify.py",
+    "aimarket-hub/aimarket_hub/deposit_watch.py",
+    "aimarket-hub/aimarket_hub/hub_routes/publisher_withdrawals.py",
+    "aimarket-hub/aimarket_hub/publisher_withdrawal_chain.py",
+    "aimarket-hub/aimarket_hub/publisher_withdrawal_cli.py",
+    "aimarket-hub/aimarket_hub/publisher_withdrawals.py"
+  ],
+  "existing_alert_count": 9,
+  "current_alert_count": 10,
+  "high_critical_count": 0,
+  "new_alerts": [
+    {
+      "filename": "./aimarket-hub/aimarket_hub/publisher_withdrawals.py",
+      "line_number": 92,
+      "test_id": "B608",
+      "issue_severity": "MEDIUM",
+      "issue_confidence": "MEDIUM",
+      "issue_text": "Possible SQL injection vector through string-based query construction."
+    }
+  ],
+  "disposition": "Fixed internal SQL predicate selected from two literal strings by a boolean. No caller-controlled SQL text. Row limit is passed as a bound SQL parameter."
+}

@@ -1,0 +1,76 @@
+{
+  "checked_at": "2026-11-13T12:45:25.469159+00:00",
+  "directory": [
+    {
+      "id": "coinmarketcap",
+      "name": "CoinMarketCap",
+      "description": "Latest cryptocurrency market quotes by CoinMarketCap ID.",
+      "documentation_url": "https://coinmarketcap.com/api/documentation/ai-agent-hub/x402",
+      "endpoint": "https://pro-api.coinmarketcap.com/x402/v3/cryptocurrency/quotes/latest",
+      "method": "GET",
+      "payment_networks": [
+        "base"
+      ],
+      "published_price_usd": 0.01,
+      "price_basis": "per_request",
+      "payment_protocol": "x402",
+      "asset": "USDC",
+      "payment_recipient": "provider",
+      "hub_invoke": false
+    },
+    {
+      "id": "tavily",
+      "name": "Tavily",
+      "description": "Advanced web search with ranked sources and snippets.",
+      "documentation_url": "https://docs.tavily.com/documentation/machine-payments/x402",
+      "endpoint": "https://x402.tavily.com/search",
+      "method": "POST",
+      "payment_networks": [
+        "base"
+      ],
+      "published_price_usd": 0.01,
+      "price_basis": "per_request",
+      "payment_protocol": "x402",
+      "asset": "USDC",
+      "payment_recipient": "provider",
+      "hub_invoke": false
+    },
+    {
+      "id": "laso",
+      "name": "Laso",
+      "description": "Non-reloadable U.S. prepaid card. Check merchant acceptance before loading the card.",
+      "documentation_url": "https://docs.laso.finance/guides/usa-prepaid-card",
+      "endpoint": "https://laso.finance/get-card",
+      "method": "GET",
+      "payment_networks": [
+        "base",
+        "solana"
+      ],
+      "published_price_usd": 5,
+      "price_basis": "minimum_load",
+      "payment_protocol": "x402",
+      "asset": "USDC",
+      "payment_recipient": "provider",
+      "hub_invoke": false
+    }
+  ],
+  "search": {
+    "CMC": [
+      "coinmarketcap"
+    ],
+    "Tavily": [
+      "tavily"
+    ],
+    "Laso": [
+      "laso"
+    ]
+  },
+  "manifest_capabilities": 286,
+  "observed_routes": 36,
+  "esim": {
+    "capability_id": "esim.quote@v1",
+    "product_id": "esim-modelmarket",
+    "source_hub": "https://esim.modelmarket.dev",
+    "price_per_call_usd": 0.0
+  }
+}

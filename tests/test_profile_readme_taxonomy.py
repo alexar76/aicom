@@ -212,7 +212,7 @@ def test_translations_point_at_the_english_index(lang):
 def test_no_repo_link_was_lost_in_the_restructure():
     """The catalogue IS the sitemap: a repo linked in prose but in no group cannot be found.
 
-    Currently every one of the 41 linked repos is catalogued, so this holds with no exemptions —
+    Every linked repo is catalogued, so this holds with no exemptions —
     if a future edit needs one, that is the signal the repo belongs in a group.
     """
     text = EN.read_text(encoding="utf-8")

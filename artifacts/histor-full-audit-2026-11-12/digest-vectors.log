@@ -1,0 +1,22 @@
+vectors.json is current
+python: 68 vectors, 0 failed
+javascript: 68 vectors, 0 failed
+go: 68 vectors, 0 failed
+command lines agree: {"contract": "sha256-O9giGPAiI6NZN2/IYyfnd/mkbuVHYefe0PCfmDnZqmQ=", "extras": "sha256-NvbKgUuaEI09qfLgqcSMXECEgRggIOAKARAdTUArlgc="}
+command lines reject partial pages
+histor: 68 vectors; contract digest 68 agree
+  extras digest, legacy: 55 agree, 13 differ as documented
+  extras digest, rfc8785: 58 agree, 10 differ as documented
+  documented difference, number-overflow-in-extras: HISTOR stores a number with no double as null and digests the rest
+  documented difference, lone-surrogate-in-extras: HISTOR replaces an unpaired surrogate with U+FFFD and digests the result
+  documented difference, duplicate-names-both-with-extras: HISTOR keeps the extras of the tool listed last
+  documented difference, tool-is-string: HISTOR passes over an entry that is not a tool
+  documented difference, tool-is-null: HISTOR passes over an entry that is not a tool
+  documented difference, tool-is-array: HISTOR passes over an entry that is not a tool
+  documented difference, name-missing: HISTOR passes over an entry that is not a tool
+  documented difference, name-empty: HISTOR passes over an entry that is not a tool
+  documented difference, name-not-string: HISTOR passes over an entry that is not a tool
+  documented difference, one-bad-among-good: HISTOR passes over an entry that is not a tool
+  0 failed
+warden: 68 vectors, contract and extras digests, 0 failed
+all checks passed

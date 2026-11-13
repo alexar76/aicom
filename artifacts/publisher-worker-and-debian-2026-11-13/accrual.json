@@ -1,0 +1,33 @@
+{
+  "buyer_balance_after_usdc": 0.00996,
+  "buyer_balance_before_usdc": 0.00998,
+  "buyer_entries": [
+    {
+      "amount_mc": 2,
+      "kind": "hold"
+    },
+    {
+      "amount_mc": 2,
+      "kind": "capture"
+    }
+  ],
+  "existing_topup_tx": "0x46929e16ed8c343ba875b426bb1ff81105354b67aa0664f6de7e27a9ede24c23",
+  "fixture_removed": true,
+  "new_topup": false,
+  "publisher_entries": [
+    {
+      "amount_mc": 1,
+      "kind": "payout"
+    },
+    {
+      "amount_mc": 1,
+      "kind": "publisher_cash_accrual"
+    }
+  ],
+  "sale": {
+    "first_idempotency": "stored",
+    "price_usd": 2e-05,
+    "receipt_id": "rcpt_368bd1e7b832568d6cb09871ee05859d",
+    "replay_idempotency": "replayed"
+  }
+}

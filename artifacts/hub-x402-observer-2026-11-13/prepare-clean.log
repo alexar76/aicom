@@ -1,0 +1,90 @@
+hub_routes/bridge.py: OK
+hub_routes/federation.py: OK
+observed_sellers.py: OK
+x402_bridge.py: OK
+hub_routes/bridge.py: OK
+hub_routes/federation.py: OK
+observed_sellers.py: OK
+x402_bridge.py: OK
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 132B done
+#1 WARN: InvalidDefaultArgInFrom: Default value for ARG ${BASE} results in empty or invalid base image name (line 2)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/modelmarket-observer-base:c62951ec599a
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 129.10kB done
+#4 DONE 0.1s
+
+#5 [1/2] FROM docker.io/library/modelmarket-observer-base:c62951ec599a@sha256:c62951ec599a46c74c1792dd47f7a50af6a025c3c3eb78334d798a8dbd19e211
+#5 resolve docker.io/library/modelmarket-observer-base:c62951ec599a@sha256:c62951ec599a46c74c1792dd47f7a50af6a025c3c3eb78334d798a8dbd19e211 0.1s done
+#5 CACHED
+
+#6 [2/2] COPY overlay/ /app/aimarket_hub/
+#6 DONE 0.0s
+
+#7 exporting to image
+#7 exporting layers 0.1s done
+#7 exporting manifest sha256:ef9e4e5d90d181acf28a8a2c373f74aa6316c8ddf52a2efbec8a42c0a6db0095 done
+#7 exporting config sha256:7babe6bc2c7d1a76f04427bf141af669cf365c9a6ad2447432431f3b93300ff8 done
+#7 exporting attestation manifest sha256:c8498f82f64b781bd56740a6f4a4ec5df6daf956c4b4ca2a0c99f3c7996ce443 done
+#7 exporting manifest list sha256:3f372add6d130032e21248a8c0e5211dc201980c6c9683e2e072f776ceb074ee done
+#7 naming to docker.io/library/modelmarket-hub:x402-observer-d6a77ce9f-c62951ec599a done
+#7 unpacking to docker.io/library/modelmarket-hub:x402-observer-d6a77ce9f-c62951ec599a 0.0s done
+#7 DONE 0.5s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - InvalidDefaultArgInFrom: Default value for ARG ${BASE} results in empty or invalid base image name (line 2)
+hub_routes/bridge.py: OK
+hub_routes/federation.py: OK
+observed_sellers.py: OK
+x402_bridge.py: OK
+{
+  "changed_source": {
+    "hub_routes/bridge.py": "0e48f1155e910f3cd874d53bbfde81a7c3b90076bb0c4d64164f0d650976f132",
+    "hub_routes/federation.py": "ff3a16dcbedda14af44802071b79b30fa780b962feb0a4d8fafc41b0878a71eb",
+    "observed_sellers.py": "ad2d1299e395d8e226970b3b8950507dd05f0a3ae4e5ca00e2ddf28d1df71aee",
+    "x402_bridge.py": "cf6114d5561385465faa528bd8c090ffc10347ec352cbccb92a16f0ab8cbf2e3"
+  },
+  "unchanged_python": 76,
+  "unchanged_debian": 129
+}
+/usr/local/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+SQLite path data/sandbox_trials.db was requested explicitly; ignoring AIMARKET_DB_PATH=/smoke/hub.db for this backend. These were the SAME file before (the env var overrode the argument) — point this subsystem's own path variable at /smoke/hub.db if a shared file was intended.
+data/sandbox_trials.db does not exist yet while /smoke/hub.db does: if this hub ran with the env var set, THIS SUBSYSTEM'S EXISTING TABLES ARE STILL IN /smoke/hub.db and the new file starts empty. Migrate them (or point this subsystem's own path variable at /smoke/hub.db) BEFORE serving — for the channel ledger an empty database also resets the single-use deposit guard.
+NEW Ed25519 signing key generated at /tmp/hub-x402-smoke-98gx0go2/smoke.key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+NEW post-quantum (ML-DSA-65) signing key generated at /tmp/hub-x402-smoke-98gx0go2/smoke.key_mldsa. Back it up together with the Ed25519 key beside it. Peers pin it; an existing identity requires explicit trust reconciliation.
+SQLite path /smoke/provenance.db was requested explicitly; ignoring AIMARKET_DB_PATH=/smoke/hub.db for this backend. These were the SAME file before (the env var overrode the argument) — point this subsystem's own path variable at /smoke/hub.db if a shared file was intended.
+/smoke/provenance.db does not exist yet while /smoke/hub.db does: if this hub ran with the env var set, THIS SUBSYSTEM'S EXISTING TABLES ARE STILL IN /smoke/hub.db and the new file starts empty. Migrate them (or point this subsystem's own path variable at /smoke/hub.db) BEFORE serving — for the channel ledger an empty database also resets the single-use deposit guard.
+NEW Ed25519 signing key generated at data/hub_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+InMemoryNFTRegistry initialized — DEVELOPMENT ONLY. NFTs lose state on restart. Use OnChainNFTRegistry in production.
+Generated new dataset salt at data/dataset_salt — back this up if you want anonymized IDs to stay stable across deploys.
+[crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+NEW Ed25519 signing key generated at data/provenance_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+No AIMARKET_PROVENANCE_API_TOKEN set — /attest is disabled (503). Set this env var to enable manual attestation.
+{"fixed_get": {"price_atomic": 10000, "removing_opt_in_hides_route": true, "unsigned_request_sequence": ["GET", "GET", "HEAD", "GET"], "wrong_terms_refused": 3}, "health": {"/ai-market/v2/account/withdrawals": 401, "/ai-market/v2/federation/observed-sellers": 200, "/ai-market/v2/health": 200, "/ai-market/v2/x402-bridge": 200}, "migrations_added": 0, "mode": "candidate", "operator_auth_required": true}
+/usr/local/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+SQLite path data/sandbox_trials.db was requested explicitly; ignoring AIMARKET_DB_PATH=/smoke/hub.db for this backend. These were the SAME file before (the env var overrode the argument) — point this subsystem's own path variable at /smoke/hub.db if a shared file was intended.
+data/sandbox_trials.db does not exist yet while /smoke/hub.db does: if this hub ran with the env var set, THIS SUBSYSTEM'S EXISTING TABLES ARE STILL IN /smoke/hub.db and the new file starts empty. Migrate them (or point this subsystem's own path variable at /smoke/hub.db) BEFORE serving — for the channel ledger an empty database also resets the single-use deposit guard.
+NEW Ed25519 signing key generated at /tmp/hub-x402-smoke-winwhdu9/smoke.key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+NEW post-quantum (ML-DSA-65) signing key generated at /tmp/hub-x402-smoke-winwhdu9/smoke.key_mldsa. Back it up together with the Ed25519 key beside it. Peers pin it; an existing identity requires explicit trust reconciliation.
+NEW Ed25519 signing key generated at data/hub_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+InMemoryNFTRegistry initialized — DEVELOPMENT ONLY. NFTs lose state on restart. Use OnChainNFTRegistry in production.
+Generated new dataset salt at data/dataset_salt — back this up if you want anonymized IDs to stay stable across deploys.
+[crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+NEW Ed25519 signing key generated at data/provenance_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+No AIMARKET_PROVENANCE_API_TOKEN set — /attest is disabled (503). Set this env var to enable manual attestation.
+{"health": {"/ai-market/v2/account/withdrawals": 401, "/ai-market/v2/federation/observed-sellers": 200, "/ai-market/v2/health": 200, "/ai-market/v2/x402-bridge": 200}, "migrations_added": 0, "mode": "base", "operator_auth_required": true}
+sha256:c62951ec599a46c74c1792dd47f7a50af6a025c3c3eb78334d798a8dbd19e211 -> sha256:3f372add6d130032e21248a8c0e5211dc201980c6c9683e2e072f776ceb074ee

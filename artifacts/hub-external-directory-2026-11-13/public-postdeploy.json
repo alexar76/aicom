@@ -1,0 +1,48 @@
+{
+  "checked_at_utc": "2026-11-13T12:45:26.084Z",
+  "health": "ok",
+  "providers": [
+    "coinmarketcap",
+    "tavily",
+    "laso"
+  ],
+  "searches": [
+    [
+      "coinmarketcap"
+    ],
+    [
+      "tavily"
+    ],
+    [
+      "laso"
+    ]
+  ],
+  "budget_and_local_filters": true,
+  "prior_apex_cta": true,
+  "languages": [
+    "en",
+    "ru",
+    "es",
+    "fr",
+    "zh"
+  ],
+  "manifest_count": 286,
+  "external_rows_in_manifest_or_matches": 0,
+  "observedCounts": {
+    "https://tienda.textokit.store": 20,
+    "https://aemb.pro": 1,
+    "https://priorseal.xyz": 4,
+    "https://www.oracleinsight.xyz": 11
+  },
+  "bridge": {
+    "enabled": true,
+    "balance_usd": 0,
+    "limits": {
+      "per_call_usd": 0.05,
+      "per_seller_day_usd": 0.5,
+      "day_usd": null,
+      "wallet": "the wallet balance minus payments in flight"
+    }
+  },
+  "unauthenticated_withdrawals": 401
+}

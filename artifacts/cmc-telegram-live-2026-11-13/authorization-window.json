@@ -1,0 +1,109 @@
+{
+  "checked_at": "2026-11-13T21:56:10.043Z",
+  "chain_id": 8453,
+  "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+  "payer": "0x1cdb27372ed3d5d37080a5a3256512b17ea321bc",
+  "recipient": "0x3c5f3a6ce224bb89d72f5eb4232ecc27f67b3eea",
+  "transaction_hash": "0x9ad76626d4ad1505363ecec1f4005e7840abdb516a3877fca39f736d81098ecc",
+  "canonical_rpc_confirmations": 3,
+  "finalized_rpc_confirmations": 0,
+  "rpcs": [
+    {
+      "rpc": "https://base-rpc.publicnode.com",
+      "status": "transfer_canonical_awaiting_finality",
+      "transaction_hash": "0x9ad76626d4ad1505363ecec1f4005e7840abdb516a3877fca39f736d81098ecc",
+      "block": "57065273",
+      "block_hash": "0x53a13bf7bba2bdeb85ed16b725f3d4dec12c1f5219a0c7d6e57a4e5097ca264c",
+      "confirmations": "327",
+      "finalized_head": "57059511",
+      "nonce": "0x9007dc583f38ecfa17e617c998e3a89483936181de403cc6976f299922a18f20",
+      "nonce_unused_at_baseline": true,
+      "nonce_used_at_observed_head": true,
+      "authorization_log_index": "5",
+      "transfer_log_index": "6",
+      "new_authorizations": 1,
+      "amount_atomic": "10000",
+      "exact_balance_delta": true,
+      "baseline": {
+        "block": "57063721",
+        "balance_atomic": "10000"
+      },
+      "current": {
+        "block": "57065599",
+        "balance_atomic": "0",
+        "balance_delta_atomic": "-10000"
+      }
+    },
+    {
+      "rpc": "https://mainnet.base.org",
+      "status": "transfer_canonical_awaiting_finality",
+      "transaction_hash": "0x9ad76626d4ad1505363ecec1f4005e7840abdb516a3877fca39f736d81098ecc",
+      "block": "57065273",
+      "block_hash": "0x53a13bf7bba2bdeb85ed16b725f3d4dec12c1f5219a0c7d6e57a4e5097ca264c",
+      "confirmations": "333",
+      "finalized_head": "57061459",
+      "nonce": "0x9007dc583f38ecfa17e617c998e3a89483936181de403cc6976f299922a18f20",
+      "nonce_unused_at_baseline": true,
+      "nonce_used_at_observed_head": true,
+      "authorization_log_index": "5",
+      "transfer_log_index": "6",
+      "new_authorizations": null,
+      "amount_atomic": "10000",
+      "exact_balance_delta": true,
+      "baseline": {
+        "block": "57063721",
+        "balance_atomic": "10000"
+      },
+      "current": {
+        "block": "57065605",
+        "balance_atomic": "0",
+        "balance_delta_atomic": "-10000"
+      },
+      "log_scan_unavailable": "eth_getLogs: HTTP 429"
+    },
+    {
+      "rpc": "https://base.drpc.org",
+      "status": "transfer_canonical_awaiting_finality",
+      "transaction_hash": "0x9ad76626d4ad1505363ecec1f4005e7840abdb516a3877fca39f736d81098ecc",
+      "block": "57065273",
+      "block_hash": "0x53a13bf7bba2bdeb85ed16b725f3d4dec12c1f5219a0c7d6e57a4e5097ca264c",
+      "confirmations": "332",
+      "finalized_head": "57059511",
+      "nonce": "0x9007dc583f38ecfa17e617c998e3a89483936181de403cc6976f299922a18f20",
+      "nonce_unused_at_baseline": true,
+      "nonce_used_at_observed_head": true,
+      "authorization_log_index": "5",
+      "transfer_log_index": "6",
+      "new_authorizations": null,
+      "amount_atomic": "10000",
+      "exact_balance_delta": true,
+      "baseline": {
+        "block": "57063721",
+        "balance_atomic": "10000"
+      },
+      "current": {
+        "block": "57065604",
+        "balance_atomic": "0",
+        "balance_delta_atomic": "-10000"
+      },
+      "log_scan_unavailable": "eth_getLogs: HTTP 400"
+    }
+  ],
+  "monitor": {
+    "url": "https://monitor.modelmarket.dev/api/provider-events",
+    "stream": "coinmarketcap/argus/quotes",
+    "window_seconds": 86400,
+    "baseline": {
+      "succeeded": 0,
+      "failed": 0,
+      "attempted": 0
+    },
+    "current": {
+      "succeeded": 1,
+      "failed": 0,
+      "attempted": 0
+    },
+    "one_new_success": true,
+    "correlation": "aggregate only; event does not include a transaction hash or nonce"
+  }
+}

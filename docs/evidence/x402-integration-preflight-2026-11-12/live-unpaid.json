@@ -1,0 +1,195 @@
+{
+  "checked_at_utc": "2026-11-12T20:15:47+00:00",
+  "scope": "Public unpaid HTTP requests and local offer selection. No credentials, signatures, settlements, or writes to production.",
+  "test_payee_basis": "Recipient from a separate earlier unpaid request to the same first-party URL. Used only as a local compatibility fixture, without production admission or seller confirmation.",
+  "modelmarket": {
+    "bridge_http_status": 200,
+    "observed_sellers_http_status": 200,
+    "observed_sellers_count": 4,
+    "candidate_origins_present": [],
+    "enabled": true,
+    "network": "eip155:8453",
+    "scheme": "exact",
+    "limits": {
+      "per_call_usd": 0.05,
+      "per_seller_day_usd": 0.5,
+      "day_usd": null,
+      "wallet": "the wallet balance minus payments in flight"
+    },
+    "balance_usd": 0.0,
+    "today": {
+      "spent_usd": 0.0,
+      "in_flight_usd": 0.0,
+      "delivered": 0
+    }
+  },
+  "candidates": [
+    {
+      "name": "Tavily Search",
+      "method": "POST",
+      "url": "https://x402.tavily.com/search",
+      "input": {
+        "query": "RFC 9110 status code 402",
+        "search_depth": "advanced",
+        "max_results": 1
+      },
+      "http_status": 402,
+      "x402_version": 2,
+      "advertised_offer_count": 2,
+      "test_payee": "0x977f24ec7675e45445c349bb855c3ddd14aaf00b",
+      "bridge_refused": "no offer the bridge may pay: a recipient other than the ones this seller published; an offer has no valid amount or recipient",
+      "discovery": [
+        {
+          "path": "/.well-known/x402",
+          "http_status": 404,
+          "lists_exact_sample_url": false
+        },
+        {
+          "path": "/.well-known/x402.json",
+          "http_status": 404,
+          "lists_exact_sample_url": false
+        }
+      ],
+      "observer_probe": {
+        "http_status": 402,
+        "probe_method": "POST",
+        "result": "quoted",
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "price_usd": 0.01,
+        "pay_to": "0xf4e588fa44fa7a42fa0d4d4a6c4563920a445ed9"
+      }
+    },
+    {
+      "name": "CoinMarketCap Quotes",
+      "method": "GET",
+      "url": "https://pro-api.coinmarketcap.com/x402/v3/cryptocurrency/quotes/latest?id=1,1027",
+      "input": null,
+      "http_status": 402,
+      "x402_version": 2,
+      "advertised_offer_count": 7,
+      "test_payee": "0x3C5f3a6cE224BB89D72f5EB4232ecC27F67B3eeA",
+      "bridge_selected": {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "pay_to": "0x3C5f3a6cE224BB89D72f5EB4232ecC27F67B3eeA",
+        "amount_atomic": 10000,
+        "amount_usd": 0.01,
+        "max_timeout_seconds": 30,
+        "advertised_transfer_method": "eip3009"
+      },
+      "rejects_no_pin": true,
+      "rejects_wrong_pin": true,
+      "rejects_below_quote": true,
+      "discovery": [
+        {
+          "path": "/.well-known/x402",
+          "http_status": 404,
+          "lists_exact_sample_url": false
+        },
+        {
+          "path": "/.well-known/x402.json",
+          "http_status": 404,
+          "lists_exact_sample_url": false
+        }
+      ],
+      "observer_probe": {
+        "http_status": 200,
+        "probe_method": "HEAD",
+        "result": "not_priced"
+      }
+    }
+  ],
+  "additional_quotes": [
+    {
+      "name": "Tavily Search",
+      "url": "https://x402.tavily.com/search",
+      "method": "POST",
+      "input": {
+        "query": "RFC 9110 status code 402",
+        "search_depth": "advanced",
+        "max_results": 1
+      },
+      "user_agent": "Python-urllib/3.9",
+      "http_status": 402,
+      "x402_version": 2,
+      "base_usdc_offers": [
+        {
+          "amount_atomic": "10000",
+          "pay_to": "0xe2fa9319a1ef61dbba8cb61e0fb09e31c8a78a8f",
+          "scheme": "exact",
+          "advertised_transfer_method": null
+        }
+      ]
+    },
+    {
+      "name": "Tavily Search",
+      "url": "https://x402.tavily.com/search",
+      "method": "POST",
+      "input": {
+        "query": "RFC 9110 status code 402",
+        "search_depth": "advanced",
+        "max_results": 1
+      },
+      "user_agent": "AIMarket-Hub live compatibility check",
+      "http_status": 402,
+      "x402_version": 2,
+      "base_usdc_offers": [
+        {
+          "amount_atomic": "10000",
+          "pay_to": "0x3e996ef0ac840f8364b8a27d5f257acff227ea01",
+          "scheme": "exact",
+          "advertised_transfer_method": null
+        }
+      ]
+    },
+    {
+      "name": "You.com agent search",
+      "url": "https://api.you.com/v1/agents/search",
+      "method": "POST",
+      "input": {
+        "query": "RFC 9110 status code 402",
+        "count": 1
+      },
+      "user_agent": "AIMarket-Hub live compatibility check",
+      "http_status": 200,
+      "x402_version": null,
+      "base_usdc_offers": []
+    },
+    {
+      "name": "DeskCrew paid ping",
+      "url": "https://deskcrew.io/api/x402/paid/ping",
+      "method": "GET",
+      "input": null,
+      "user_agent": "AIMarket-Hub live compatibility check",
+      "http_status": 402,
+      "x402_version": 2,
+      "base_usdc_offers": [
+        {
+          "amount_atomic": "20000",
+          "pay_to": "0xB075aA8206D6De88EDEeD0eE4015a1a33D3659D8",
+          "scheme": "exact",
+          "advertised_transfer_method": null
+        }
+      ]
+    }
+  ],
+  "previous_observer_sample": {
+    "checked_at_utc": "2026-11-12T20:14:39+00:00",
+    "tavily": {
+      "http_status": 402,
+      "probe_method": "POST",
+      "result": "quoted",
+      "scheme": "exact",
+      "network": "eip155:8453",
+      "price_usd": 0.01,
+      "pay_to": "0x09a2b0999af9fc19d52ab754c5e28606a0903982"
+    },
+    "coinmarketcap": {
+      "http_status": 200,
+      "probe_method": "HEAD",
+      "result": "not_priced"
+    }
+  }
+}

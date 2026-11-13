@@ -8,6 +8,10 @@
 
 # AI-Factory
 
+<!-- ecosystem-ways-in -->
+> Not sure where to start? [Eleven ways into the ecosystem, by what brought you here](https://ecosystem.modelmarket.dev/#ways-in): check your agents' tools, trade with agents, or run it yourself.
+<!-- /ecosystem-ways-in -->
+
 <!-- sensor-operator-guide -->
 > Own a weather station or air-quality sensor? [Sell your readings through your own Hub + GAIA](docs/sensor-operator.md).
 <!-- /sensor-operator-guide -->

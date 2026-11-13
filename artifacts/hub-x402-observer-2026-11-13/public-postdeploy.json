@@ -1,0 +1,39 @@
+{
+  "checked_at_utc": "2026-11-13T10:24:44.541700+00:00",
+  "health": {
+    "status": "ok",
+    "service": "aimarket-hub",
+    "version": "3.21.0",
+    "database_backend": "sqlite",
+    "payment_ready": true,
+    "pqc_ready": true,
+    "pqc_can_verify": true,
+    "pq_unverifiable_refusals": 0,
+    "uptime_seconds": 51
+  },
+  "observer_enabled": true,
+  "served_by_origin": {
+    "https://tienda.textokit.store": 20,
+    "https://aemb.pro": 1,
+    "https://priorseal.xyz": 4,
+    "https://www.oracleinsight.xyz": 11
+  },
+  "bridge": {
+    "enabled": true,
+    "network": "eip155:8453",
+    "scheme": "exact",
+    "balance_usd": 0.0,
+    "today": {
+      "spent_usd": 0.0,
+      "in_flight_usd": 0.0,
+      "delivered": 0
+    }
+  },
+  "http_status": {
+    "health": 200,
+    "observed_sellers": 200,
+    "bridge": 200,
+    "unauthenticated_registration": 401,
+    "unauthenticated_withdrawals": 401
+  }
+}

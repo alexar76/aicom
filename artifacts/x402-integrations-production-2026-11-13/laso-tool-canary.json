@@ -1,0 +1,35 @@
+{
+  "payer": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+  "requests": [
+    {
+      "path": "/auth",
+      "status": 402
+    },
+    {
+      "path": "/auth",
+      "status": 200
+    },
+    {
+      "path": "/search-merchants",
+      "status": 200
+    },
+    {
+      "path": "/search-merchants",
+      "status": 200
+    }
+  ],
+  "token_cache_verified": true,
+  "paid": false,
+  "results": [
+    {
+      "merchant": "Uber",
+      "quote_accepted": false,
+      "payment_without_approval_denied": true
+    },
+    {
+      "merchant": "Amazon",
+      "quote_accepted": true,
+      "payment_without_approval_denied": true
+    }
+  ]
+}

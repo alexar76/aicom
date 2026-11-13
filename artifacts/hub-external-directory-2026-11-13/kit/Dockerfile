@@ -1,0 +1,6 @@
+ARG BASE
+FROM ${BASE}
+USER root
+COPY overlay/ /app/
+ARG RUN_USER
+USER ${RUN_USER}

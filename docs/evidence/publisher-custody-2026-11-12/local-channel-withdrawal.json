@@ -1,0 +1,32 @@
+{
+  "date_utc": "2026-11-12",
+  "environment": {
+    "chain": "isolated local Anvil",
+    "chain_id": 8453,
+    "fork": false,
+    "asset_fixture": "MockUSDC from contracts/evm/test/MarketSplitter.t.sol",
+    "asset_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "asset_decimals": 6,
+    "funds": "synthetic"
+  },
+  "channel": {
+    "funding": "ordinary custodial channel with EIP-191 depositor proof and RPC-verified transfer",
+    "deposit_tx": "0x71dd1481ba79f2e0b1964f0954c655edebc75591e0d7d474c4304a37ee114dbd",
+    "deposit_atomic": 1000000,
+    "capture_usd": "0.40",
+    "receipt_id": "anvil-custodial-share-001",
+    "publisher_share_usd": "0.28",
+    "outbox_credits_first_attempt": 1,
+    "outbox_credits_repeat_attempt": 0
+  },
+  "withdrawal": {
+    "requested_usdc": "0.28",
+    "broadcast_status": "broadcast",
+    "reconciled_status": "paid",
+    "payout_tx": "0x90b1d368b0a35b4b25a140392bd697764f3f5b40b08297b9bb319f283c8ec923",
+    "recipient_balance_atomic": 280000,
+    "repeated_reservation_returned_same_id": true,
+    "repeated_processing_returned_same_hash": true,
+    "sender_transaction_count": 1
+  }
+}

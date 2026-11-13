@@ -1,0 +1,6 @@
+WARDEN 0.26.1 build 08b21736ee3da474a56b80ef2374f9745b5e093ca993e8900bc79e912bab907a
+Before {"ok":true,"service":"histor","version":"0.7.0","profile":"prod","store":"postgresql","tree_size":2164301,"crawl_running":true,"last_crawl_error":null}
+Rollback backup /root/warden-0261-prod.MEMPaBNu/compose-before.yml
+After {"ok":true,"service":"histor","version":"0.7.0","profile":"prod","store":"postgresql","tree_size":2164301,"crawl_running":false,"last_crawl_error":"interrupted: the process restarted before the crawl finished"}
+PostgreSQL container unchanged and healthy
+Restarted the interrupted crawl

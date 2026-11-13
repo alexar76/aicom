@@ -1,7 +1,7 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
 <!-- ecosystem-entry-points -->
-[查看已记录的 MCP 工具变更](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [用 WARDEN 扫描工具列表](https://modelmarket.dev/tools/warden-scan) · [实现工具集摘要](https://github.com/alexar76/mcp-tool-set-digest)
+[查看已记录的 MCP 工具变更](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [用 WARDEN 扫描工具列表](https://modelmarket.dev/tools/warden-scan) · [实现工具集摘要](https://github.com/alexar76/mcp-tool-set-digest) · [全部十一个入口](https://ecosystem.modelmarket.dev/#ways-in)
 <!-- /ecosystem-entry-points -->
 
 <p align="center"><b>为 AI 智能体所用的工具提供检查和有见证的公开记录。</b></p>
@@ -292,6 +292,7 @@ cp .env.demo .env
 | [**treasury**](https://github.com/alexar76/treasury) | **Treasury**——MOMUS 的独立赏金支付方（自有密钥和容器）；仅在独立验证后付款 · [实时](https://momus.modelmarket.dev/treasury) · [落地页](https://alexar76.github.io/treasury/) | 验证后 |
 | [**warden**](https://github.com/alexar76/warden) | **WARDEN**——零依赖的 **MCP 安全防火墙**：一个库、一个 CLI 和一个本地 stdio MCP 服务器，而不是托管服务：静态工具定义扫描 → 签名威胁源 → 来源 → 固定 · [落地页](https://warden.modelmarket.dev/) · [实地调研：1,108 个公开 MCP 服务器](https://github.com/alexar76/warden/blob/main/docs/mcp-survey.zh.md) | 第三方工具到达宿主前 |
 | [**histor**](https://github.com/alexar76/histor) | **HISTOR**（ἵστωρ）——公开的 **MCP 工具定义透明日志**：读取官方 MCP 注册表中每个远程端点公布的内容（从不调用工具），签名为 MTL/1 标签，追加到带签名树头的 RFC 9162 默克尔树，并为每次变更标注日期和差异。从不宣称任何服务器安全 · [在线](https://histor.modelmarket.dev) · [落地页](https://alexar76.github.io/histor/) | 每日，覆盖官方注册表中的所有远程端点 · 以及 `/check` 时 |
+| [**mcp-tool-set-digest**](https://github.com/alexar76/mcp-tool-set-digest) | **MCP 工具集摘要**——规范 `mcp-tool-set-digest/1`（2026-11-13 草案）：一种对 MCP 服务器所声明工具内容取哈希的方法，让从未交换过工具文本的双方也能判断收到的是否相同；包含契约摘要与附加字段摘要、73 个测试向量，以及无依赖的 Python、JavaScript 和 Go 参考实现 · HISTOR、WARDEN 和 CrawlCheck 比较的就是这个摘要 | 固定或比较工具列表时 |
 
 ### 🧠 可验证记忆 — 智能体保存的内容
 <sub>写入、检索、共享，其他智能体可以核验。</sub>
@@ -399,6 +400,7 @@ cp .env.demo .env
 | [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) | 示例应用 | Flutter + SDK，真实产品 |
 | [logos](https://github.com/alexar76/logos) | 可观测性 | 只读联邦分析 |
 | [lottery](https://github.com/alexar76/lottery) | 可验证计算 | 不可操纵的链上抽奖 · 机器 UBI |
+| [mcp-tool-set-digest](https://github.com/alexar76/mcp-tool-set-digest) | 信任与安全 | MCP 服务器工具列表的哈希 |
 | [metis](https://github.com/alexar76/metis) | 可验证计算 | 验证层级 |
 | [momus](https://github.com/alexar76/momus) | 信任与安全 | HTTP/联邦红队 |
 | [oracles](https://github.com/alexar76/oracles) | 可验证计算 | 17 项签名数学能力 |
