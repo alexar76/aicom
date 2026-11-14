@@ -441,7 +441,9 @@ def main(argv: list[str] | None = None) -> int:
             findings += scan_index(args.root)
     except Exception as exc:
         # Error strings may include parser input or file contents; emit only type.
-        print(f"error: structured secret scan failed ({type(exc).__name__})", file=sys.stderr)
+        detail = getattr(exc, "filename", None) or getattr(exc, "filename2", None) or ""
+        extra = f": {detail}" if detail else f": {exc!s}"[:120]
+        print(f"error: structured secret scan failed ({type(exc).__name__}{extra})", file=sys.stderr)
         return 2
     if findings:
         print(json.dumps({"structured_secret_findings": [asdict(f) for f in findings]}, sort_keys=True))
