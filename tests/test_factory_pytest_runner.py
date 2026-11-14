@@ -12,13 +12,33 @@ import pytest
 from scripts import run_factory_pytest_ci as runner
 
 
+def _is_coverage_export_cmd(cmd) -> bool:
+    """True for the runner's post-success coverage / payment-coverage steps only.
+
+    Patching ``subprocess.run`` on the shared module also sees unrelated callers
+    (session docker sandbox cleanup, etc.), so assertions must ignore those.
+    """
+    if not isinstance(cmd, (list, tuple)) or not cmd:
+        return False
+    joined = " ".join(str(part) for part in cmd)
+    return "coverage" in joined or "check_payment_coverage" in joined
+
+
 @pytest.fixture
 def harness(tmp_path, monkeypatch):
     monkeypatch.setattr(runner, "ROOT", tmp_path)
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("AIFACTORY_PYTEST_HARD_CAP_SEC", "10")
+    real_run = subprocess.run
     export = Mock(return_value=subprocess.CompletedProcess([], 0))
-    monkeypatch.setattr(runner.subprocess, "run", export)
+
+    def run_proxy(*args, **kwargs):
+        cmd = args[0] if args else kwargs.get("args")
+        if _is_coverage_export_cmd(cmd):
+            return export(*args, **kwargs)
+        return real_run(*args, **kwargs)
+
+    monkeypatch.setattr(runner.subprocess, "run", run_proxy)
     return tmp_path, export
 
 
@@ -57,7 +77,14 @@ def test_deadline_fails_even_if_coverage_exists_and_sigterm_exits_zero(harness, 
     monkeypatch.setattr(runner, "_pytest_argv", lambda: [sys.executable, "-c", script])
     assert runner.main() == 124
     assert (root / ".coverage").exists() is coverage_exists
-    export.assert_not_called()
+    # runner.subprocess is the stdlib module, so this mock also sees unrelated
+    # session teardown (docker ps / volume ls). Only coverage export is forbidden.
+    coverage_calls = [
+        c for c in export.call_args_list
+        if c.args and any("coverage" in str(part) or "check_payment_coverage" in str(part)
+                          for part in c.args[0])
+    ]
+    assert not coverage_calls
 
 
 @pytest.mark.parametrize("value", ["0", "-1", "nan", "abc"])
