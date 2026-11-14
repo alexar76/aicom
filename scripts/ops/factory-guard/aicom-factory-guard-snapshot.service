@@ -1,0 +1,9 @@
+[Unit]
+Description=aicom factory guard: hourly copy of /root/claudecode/aicom into /var/lib/aicom-factory-keep
+After=docker.service
+
+[Service]
+Type=oneshot
+Nice=10
+IOSchedulingClass=idle
+ExecStart=/usr/local/sbin/aicom-factory-guard snapshot

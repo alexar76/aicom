@@ -98,11 +98,11 @@ playwright==1.47.0
 # ── Monitoring ─────────────────────────────────────────────────────────────
 prometheus-client==0.20.0
 psutil==6.0.0
-# 1.45.1 fixes quadratic parsing of untrusted tracestate headers
-# (GHSA-xcq7-p3pf-p88h). Keep the API, SDK and exporter on the same release.
-opentelemetry-api==1.45.1
-opentelemetry-sdk==1.45.1
-opentelemetry-exporter-otlp-proto-http==1.45.1
+# 1.45.2 fixes ReDoS in TraceContextTextMapPropagator.extract (GHSA-mf5v-w3w3-f6cg);
+# 1.45.1 fixed quadratic tracestate parsing (GHSA-xcq7-p3pf-p88h). Keep API/SDK/exporter aligned.
+opentelemetry-api==1.45.2
+opentelemetry-sdk==1.45.2
+opentelemetry-exporter-otlp-proto-http==1.45.2
 
 # ── Market Research ──────────────────────────────────────────────────────────
 duckduckgo_search==7.5.1

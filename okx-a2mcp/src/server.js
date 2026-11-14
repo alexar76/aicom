@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { createApp } from "./app.js";
+import { createReviewStore } from "./web/review.js";
 import { resilientPaywall } from "./x402.js";
 
 const port = Number(process.env.PORT || 9480);
@@ -20,7 +21,18 @@ const paywall = resilientPaywall({
     ...(process.env.HEARTH_API_KEY_FILE ? ["x402-check", "mcp-diff"] : [])],
 });
 
+// Sellers' review before publication (src/web/review.js): the sellers' private tokens and the gate's
+// token are files beside the other secrets; the answers live on a docker volume. All or nothing.
+const review = process.env.REVIEW_SELLERS_FILE && process.env.REVIEW_ADMIN_TOKEN_FILE && process.env.REVIEW_DATA_FILE
+  ? {
+      reviewSellers: JSON.parse(readFileSync(process.env.REVIEW_SELLERS_FILE, "utf8")).sellers || {},
+      reviewAdminToken: readFileSync(process.env.REVIEW_ADMIN_TOKEN_FILE, "utf8").trim(),
+      reviewStore: createReviewStore({ file: process.env.REVIEW_DATA_FILE }),
+    }
+  : {};
+
 const app = createApp({
+  ...review,
   historUrl: process.env.HISTOR_URL || "https://histor.modelmarket.dev",
   publicUrl,
   perMinute: Number(process.env.RATE_PER_MINUTE || 30),

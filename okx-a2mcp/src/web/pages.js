@@ -10,6 +10,7 @@ import { readFileSync } from "node:fs";
 import { HUB_TOOLS } from "../hub.js";
 import { priceOf } from "../x402.js";
 import { EXAMPLES } from "./examples.js";
+import { VET402_RECORD_URL } from "./vet402.js";
 import { HTML_LANG, LANGS, OG_LOCALE, STRINGS } from "./i18n/index.js";
 
 export const NEARBY_SENSORS_PATH = "/tools/nearby-sensors";
@@ -153,6 +154,11 @@ export function renderIndex(lang, { origin, verification = "" }) {
 </header>
 <section class="tool-grid" aria-label="${esc(t.site.tools)}">
 ${cards}
+</section>
+<section class="section vet402" aria-labelledby="vet402-title">
+<h2 class="section-title" id="vet402-title">${esc(t.index.vetTitle)}</h2>
+<p>${esc(t.index.vetLead)}</p>
+<a class="vet402-badge" href="${VET402_RECORD_URL}" rel="noopener external"><img src="/tools/badge/vet402.svg" width="415" height="38" alt="${esc(t.index.vetAlt)}" decoding="async"></a>
 </section>
 <section class="section" lang="en">
 <h2 class="section-title">Find public sensors near a point</h2>

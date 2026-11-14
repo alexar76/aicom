@@ -187,3 +187,7 @@
 @media (prefers-reduced-motion: reduce) {
   .field textarea, .field input { transition: none; }
 }
+
+/* vet402's badge (served from /tools/badge/vet402.svg): keeps its 415×38 shape, shrinks on phones */
+.vet402 .vet402-badge { display: inline-block; margin-top: 12px; max-width: 100%; }
+.vet402 .vet402-badge img { display: block; max-width: 100%; height: auto; border-radius: 4px; }

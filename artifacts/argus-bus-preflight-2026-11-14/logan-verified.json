@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-11-14T05:24:44.605Z",
+  "fare": {
+    "source": "https://loganexpress.com/wp-content/plugins/lex_app/api.php?method=getProductById&productId=6",
+    "productId": 6,
+    "currency": "USD",
+    "fares": [
+      {
+        "from": "Back Bay Logan Express - 800 Boylston Street",
+        "to": "Boston Logan International Airport",
+        "direction": "one_way",
+        "kind": "Regular",
+        "fareCents": 300
+      },
+      {
+        "from": "Back Bay Logan Express - Back Bay Station",
+        "to": "Boston Logan International Airport",
+        "direction": "one_way",
+        "kind": "Regular",
+        "fareCents": 300
+      }
+    ]
+  },
+  "browser": {
+    "checkout": "https://loganexpress.com/#/buy-bus-tickets-back-bay",
+    "state": "checkout_control_unavailable",
+    "publicGetResponses": {
+      "https://loganexpress.com/": 200,
+      "https://loganexpress.com/wp-includes/js/jquery/jquery.min.js": 200,
+      "https://smartstubs-application-releases.s3.amazonaws.com/smartstubsExternalWebsites/lex/lex-app-plugin/aws-0.1/app.css": 200,
+      "https://loganexpress.com/wp-includes/js/jquery/jquery-migrate.min.js": 200,
+      "https://smartstubs-application-releases.s3.amazonaws.com/smartstubsExternalWebsites/lex/lex-app-plugin/aws-0.1/app.js": 200,
+      "https://smartstubs-application-releases.s3.amazonaws.com/smartstubsExternalWebsites/lex/lex-app-plugin/aws-0.1/chunk-vendors.js": 200,
+      "https://loganexpress.com/wp-content/plugins/lex_app/api.php/getAllPublicNotifications": 200,
+      "https://loganexpress.com/wp-content/plugins/lex_app/api.php/getProductById": 200,
+      "https://www.google.com/recaptcha/api.js": 200,
+      "https://www.gstatic.com/recaptcha/releases/4i3aN5wAweL7i3ADI7BSX4B-/recaptcha__en.js": 200,
+      "https://www.google.com/recaptcha/api2/anchor": 200,
+      "https://www.gstatic.com/recaptcha/releases/4i3aN5wAweL7i3ADI7BSX4B-/styles__ltr.css": 200,
+      "https://www.google.com/recaptcha/api2/webworker.js": 200,
+      "https://www.gstatic.com/recaptcha/api2/logo_48.png": 200
+    },
+    "blocked": {
+      "nonGet": 1,
+      "outsideAllowlist": 39
+    }
+  }
+}

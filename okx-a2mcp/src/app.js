@@ -6,6 +6,7 @@ import { hearthServices } from "./hearth.js";
 import { hubServices } from "./hub.js";
 import { openapiDocument, priceOf, wellKnownManifest } from "./x402.js";
 import { mountTools } from "./web/routes.js";
+import { mountReview } from "./web/review.js";
 import { mountMcp } from "./mcp/server.js";
 
 /** The paying wallet named inside an x402 payment header (base64 JSON), lower-cased, or "". */
@@ -128,6 +129,12 @@ export function createApp({
   freeHearthPerMinute = 60,
   // Google Search Console's HTML-tag token for the https://modelmarket.dev/tools/ property (public).
   siteVerification = "",
+  vet402Badge, // tests pass a stub; production fetches vet402's badge (src/web/vet402.js)
+  // Sellers' review before publication (src/web/review.js): {id: {token, name, rule}}, the gate's
+  // Bearer token, and the store. Without all three nothing under /tools/review exists.
+  reviewSellers = {},
+  reviewAdminToken = "",
+  reviewStore = null,
   // Our own addresses (AICOM_OWN_IPS on the host): left out of the MCP request counters.
   ownIps = new Set(),
   // Start the tool-list counter's worker at boot and keep it (src/toolcost.js); the server does.
@@ -143,6 +150,9 @@ export function createApp({
   const app = express();
   app.disable("x-powered-by");
   app.set("trust proxy", trustProxy);  // behind the host's nginx: the caller is X-Forwarded-For
+  // Before the JSON parser below: the review page posts an ordinary url-encoded form.
+  mountReview(app, { sellers: reviewSellers, adminToken: reviewAdminToken, store: reviewStore,
+                     origin: publicUrl || "https://modelmarket.dev", now });
   // Any content type: agents send JSON without always saying so. An empty body is skipped.
   app.use(express.json({ limit: "1mb", type: () => true }));
 
@@ -202,6 +212,7 @@ export function createApp({
     callerIdOf: (ip) => callerIdFor(ip, callerSecret),
     origin: publicUrl || "https://modelmarket.dev",
     verification: siteVerification,
+    badge: vet402Badge,
   });
 
   if (paywall) {

@@ -1,0 +1,10 @@
+[Unit]
+Description=aicom factory guard snapshot every hour
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

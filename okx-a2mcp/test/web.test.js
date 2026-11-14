@@ -240,3 +240,64 @@ test("IndexNow's key is served under /tools/, and a Search Console token lands i
     assert.ok(!(await (await plain.call("/tools/")).text()).includes("google-site-verification"));
   } finally { await plain.close(); }
 });
+
+// vet402's badge: the gateway fetches it and serves it from /tools/, because the page's CSP allows
+// images from this origin only.
+const VET402_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="415" height="38" role="img" aria-label="vet402 measured modelmarket.dev"><title>t</title><rect width="415" height="38" fill="#111111"/><text x="29" y="23">vet402</text></svg>';
+const svgResponse = (body, type = "image/svg+xml; charset=utf-8", status = 200) =>
+  new Response(body, { status, headers: { "content-type": type } });
+
+test("vet402 badge: only a plain SVG is accepted", async () => {
+  const { safeBadge } = await import("../src/web/vet402.js");
+  assert.equal(safeBadge(VET402_SVG), VET402_SVG);
+  for (const bad of [
+    VET402_SVG.replace("<title>", "<script>alert(1)</script><title>"),
+    VET402_SVG.replace("<rect ", '<rect onload="x()" '),
+    VET402_SVG.replace("<title>t</title>", '<a href="https://x.invalid"><text>t</text></a>'),
+    VET402_SVG.replace("<title>t</title>", '<image href="https://x.invalid/p.png"/>'),
+    VET402_SVG.replace("<title>t</title>", "<style>@import url(https://x.invalid)</style>"),
+    VET402_SVG.replace("<title>t</title>", "<foreignObject><div/></foreignObject>"),
+    "<html></html>", "", "<svg>" + "x".repeat(20_001) + "</svg>",
+  ]) assert.equal(safeBadge(bad), null, bad.slice(0, 80));
+});
+
+test("vet402 badge: fetched once per hour, the last good copy survives a failed refresh", async () => {
+  const { createBadgeCache } = await import("../src/web/vet402.js");
+  let t = 0; const calls = []; let answer = () => svgResponse(VET402_SVG);
+  const cache = createBadgeCache({ now: () => t, fetchFn: async (url, init) => { calls.push({ url, init }); return answer(); } });
+  assert.equal((await cache.get()).svg, VET402_SVG);
+  assert.equal(calls[0].url, "https://vet402.com/api/badge/host/modelmarket.dev.svg");
+  assert.equal(calls[0].init.redirect, "error");
+  t = 3_599_000; await cache.get(); assert.equal(calls.length, 1, "within the hour: no new fetch");
+  answer = () => svgResponse(VET402_SVG.replace("<title>", "<script>x</script><title>"));
+  t = 3_600_000; assert.equal((await cache.get()).svg, VET402_SVG, "an unsafe refresh keeps the old copy");
+  await new Promise((r) => setImmediate(r));
+  answer = () => { throw new Error("down"); };
+  t = 4_300_000; assert.equal((await cache.get()).svg, VET402_SVG, "a failed refresh keeps the old copy");
+  const empty = createBadgeCache({ now: () => 0, fetchFn: async () => svgResponse("<p>no</p>", "text/html") });
+  assert.equal(await empty.get(), null);
+});
+
+test("vet402 badge: /tools/badge/vet402.svg serves the copy with its own CSP, and every index page shows it", async () => {
+  const stub = { get: async () => ({ svg: VET402_SVG, fetchedAt: Date.UTC(2026, 10, 14) }) };
+  const { call, close } = await serve({ vet402Badge: stub });
+  try {
+    const res = await call("/tools/badge/vet402.svg");
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get("content-type"), /^image\/svg\+xml/);
+    assert.match(res.headers.get("content-security-policy"), /default-src 'none'.*sandbox/);
+    assert.equal(res.headers.get("x-content-type-options"), "nosniff");
+    assert.equal(await res.text(), VET402_SVG);
+    for (const lang of LANGS) {
+      const page = await (await call(pathFor(lang))).text();
+      assert.match(page, /<a class="vet402-badge" href="https:\/\/vet402\.com\/sellers\/modelmarket\.dev"[^>]*><img src="\/tools\/badge\/vet402\.svg"/, lang);
+      assert.ok(page.includes(STRINGS[lang].index.vetTitle), lang);
+    }
+  } finally { await close(); }
+  const none = await serve({ vet402Badge: { get: async () => null } });
+  try {
+    const res = await none.call("/tools/badge/vet402.svg");
+    assert.equal(res.status, 404);
+    assert.equal(res.headers.get("cache-control"), "no-store");
+  } finally { await none.close(); }
+});

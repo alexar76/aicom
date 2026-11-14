@@ -1,0 +1,11 @@
+# aimarket-hub full suite, worktree with the change (.venv: fastapi 0.141.1), 2026-11-14
+FAILED tests/test_db_backend.py::TestSplitAliasedDatabase::test_it_copies_the_ledger_into_its_own_file_and_verifies_the_counts
+FAILED tests/test_db_backend.py::TestSplitAliasedDatabase::test_dry_run_writes_nothing
+FAILED tests/test_mandates_hardening.py::TestJobTree::test_each_receipt_commits_to_its_own_children_by_their_receipt_ids
+FAILED tests/test_mcp_stdio.py::test_cli_protocol_and_tools - ValueError: fil...
+FAILED tests/test_mcp_stdio.py::test_stdio_account_uses_this_hub_without_a_listening_socket
+FAILED tests/test_pipeline_provider.py::test_free_graph_needs_no_wallet_and_returns_one_sub1_tree
+6 failed, 4295 passed, 68 skipped, 15 warnings in 546.69s (0:09:06)
+
+# the same 4 non-stdio failures on unchanged main 4a16d654b (separate checkout, same venv): 4 failed, 9 passed
+# test_mcp_stdio: known fd flakes; observed-seller tests: 77 passed; files mentioning observed sellers: 359 passed

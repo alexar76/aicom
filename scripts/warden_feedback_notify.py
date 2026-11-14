@@ -104,7 +104,8 @@ def main() -> None:
     elif state["fetch_fail"] >= FETCH_FAIL_RUNS and now - state.get("unreachable_sent", 0) > 86400:
         send(f"WARDEN · отзывы ERC-8004: сводка {SUMMARY_URL} не читается {state['fetch_fail']} ч подряд "
              f"({fetch_error}). Последний известный запуск {last} — по расписанию всё в порядке, "
-             "проблема в доступе к histor.modelmarket.dev (admin-vps: nginx, сеть).")
+             "проблема в доступе к histor.modelmarket.dev: его край (хост HISTOR) проксирует сводку "
+             "с admin-vps — смотри /var/log/nginx/error.log на краю и связь край → admin-vps.")
         state["unreachable_sent"] = now
     bal = run.get("balanceEth")
     if isinstance(bal, (int, float)) and bal < LOW_ETH and now - state.get("low_sent", 0) > 86400:

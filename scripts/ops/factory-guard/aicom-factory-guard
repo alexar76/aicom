@@ -1,0 +1,221 @@
+#!/usr/bin/env python3
+"""aicom-factory-guard: keep factory-vps's live factory tree from disappearing again.
+
+On 2026-11-13 a disk-reclaim agent deleted /root/claudecode as "dated scrap". It was the compose
+project of aicom-app-1 and the bind source of ten running containers (the factory backend, the apex
+hub's deposit claims, the UNI anvil chain, prometheus, grafana, argus). They kept running on deleted
+inodes for 12 hours; the factory answered 500 and its admin said "Admin not configured".
+
+Three modes:
+
+  snapshot  copy the tree into KEEP (hourly). SQLite files go through the backup API; the anvil
+            state is copied as one file. Refuses when the live tree is incomplete, so a deleted tree
+            can never overwrite the copy. Never deletes anything from KEEP.
+  check     report only: missing files that running containers bind, and containers still bound to
+            a deleted inode. Exit 1 when anything is wrong.
+  repair    check, then copy back from KEEP only what is missing (never overwrites a live file) and
+            restart each container whose bind no longer matches the path on disk. For alien-monitor
+            the live anvil chain is dumped into the restored state file first, alone in its folder
+            (alien-monitor resets the chain when that folder exceeds its size cap).
+
+Every problem is logged as a line starting with ✖, every recovery with ✔ (journalctl -u 'aicom-factory-guard*').
+"""
+from __future__ import annotations
+
+import gzip
+import json
+import os
+import shutil
+import sqlite3
+import subprocess
+import sys
+import time
+import urllib.request
+from pathlib import Path
+
+TREE = Path(os.environ.get("FACTORY_TREE", "/root/claudecode/aicom"))
+KEEP = Path(os.environ.get("FACTORY_KEEP", "/var/lib/aicom-factory-keep"))
+KEEP_TREE = KEEP / "tree"
+STATUS = KEEP / "status.json"
+# Paths that must exist for the tree to count as whole, besides every bind source of a running container.
+REQUIRED = ["docker-compose.yml", "docker-compose.host-docker.yml", "data/secrets", "data/config", "data/state",
+            "pov-demo/journey.py", "PROD-LIVE-DO-NOT-DELETE.md"]
+EXCLUDES = [".git", "node_modules", ".venv", "venv", "__pycache__", ".next", ".cache", ".npm", ".pytest_cache",
+            ".mypy_cache", ".ruff_cache", "data/prometheus", "data/alien-monitor/universe/anvil-state",
+            "*.db", "*.db-wal", "*.db-shm", "*.sqlite3", "*.sqlite3-wal", "*.sqlite3-shm", "*.part-*",
+            "anvil-state.unreadable-*", "anvil.log", "logs/*.log"]
+ANVIL_STATE = "data/alien-monitor/universe/anvil-state/state.json"
+ANVIL_CONTAINER = "alien-monitor"
+
+
+def log(mark: str, msg: str) -> None:
+    print(f"{mark} {msg}", flush=True)
+
+
+def run(*cmd: str, check: bool = True) -> str:
+    return subprocess.run(cmd, check=check, capture_output=True, text=True).stdout
+
+
+def containers() -> list[dict]:
+    ids = run("docker", "ps", "-q").split()
+    if not ids:
+        return []
+    return json.loads(run("docker", "inspect", *ids))
+
+
+def tree_binds(cs: list[dict]) -> list[tuple[str, str, str, int]]:
+    """(container, host source, destination, pid) for every bind mount that comes from TREE."""
+    out = []
+    for c in cs:
+        for m in c.get("Mounts", []):
+            src = m.get("Source", "")
+            if m.get("Type") == "bind" and (src == str(TREE) or src.startswith(str(TREE) + "/")):
+                out.append((c["Name"].lstrip("/"), src, m["Destination"], c["State"]["Pid"]))
+    return out
+
+
+def missing_paths(binds) -> list[str]:
+    miss = [str(TREE / p) for p in REQUIRED if not (TREE / p).exists()]
+    if (TREE / "data/secrets").is_dir() and not any((TREE / "data/secrets").iterdir()):
+        miss.append(str(TREE / "data/secrets") + " (empty)")
+    miss += [src for _, src, _, _ in binds if not os.path.exists(src)]
+    return sorted(set(miss))
+
+
+def stale_containers(binds) -> list[str]:
+    """Containers whose bind no longer points at the inode now at the host path."""
+    stale = set()
+    for name, src, dest, pid in binds:
+        try:
+            inside = os.stat(f"/proc/{pid}/root{dest}")
+        except FileNotFoundError:
+            stale.add(name)
+            continue
+        try:
+            host = os.stat(src)
+        except FileNotFoundError:
+            stale.add(name)
+            continue
+        if (inside.st_dev, inside.st_ino) != (host.st_dev, host.st_ino) or inside.st_nlink == 0:
+            stale.add(name)
+    return sorted(stale)
+
+
+def sqlite_copy(src: Path, dst: Path) -> None:
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dst.with_name(dst.name + ".tmp")
+    s = sqlite3.connect(f"file:{src}?mode=ro", uri=True, timeout=30)
+    d = sqlite3.connect(tmp)
+    with d:
+        s.backup(d)
+    s.close()
+    d.close()
+    st = src.stat()
+    os.chown(tmp, st.st_uid, st.st_gid)
+    os.chmod(tmp, st.st_mode & 0o7777)
+    os.replace(tmp, dst)
+
+
+def snapshot() -> int:
+    cs = containers()
+    miss = missing_paths(tree_binds(cs))
+    if miss:
+        log("✖", f"snapshot refused: the live tree is incomplete ({len(miss)} missing, first {miss[0]}); run repair")
+        return 1
+    KEEP_TREE.mkdir(parents=True, exist_ok=True)
+    os.chmod(KEEP, 0o700)
+    args = ["rsync", "-a", "--no-specials", "--no-devices"]
+    for e in EXCLUDES:
+        args += ["--exclude", e]
+    subprocess.run(args + [f"{TREE}/", f"{KEEP_TREE}/"], check=True)
+    n = 0
+    for pat in ("*.db", "*.sqlite3"):
+        for f in TREE.rglob(pat):
+            rel = f.relative_to(TREE)
+            if any(part in (".git", "node_modules", ".venv", "venv") for part in rel.parts) or not f.is_file():
+                continue
+            try:
+                sqlite_copy(f, KEEP_TREE / rel)
+                n += 1
+            except sqlite3.Error as err:
+                log("✖", f"snapshot: {rel}: {err}")
+    a = TREE / ANVIL_STATE
+    if a.is_file():
+        (KEEP_TREE / ANVIL_STATE).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(a, KEEP_TREE / ANVIL_STATE)
+    STATUS.write_text(json.dumps({"snapshot_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                                  "sqlite_copies": n}) + "\n")
+    log("✔", f"snapshot: tree copied, {n} SQLite copies")
+    return 0
+
+
+def anvil_dump(dest: Path) -> bool:
+    """Write the live anvil chain of alien-monitor to dest, alone in its folder. False if unreachable."""
+    code = ("import json,urllib.request,gzip,sys\n"
+            "r=urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:8545',json.dumps("
+            "{'jsonrpc':'2.0','id':1,'method':'anvil_dumpState','params':[]}).encode(),"
+            "{'content-type':'application/json'}),timeout=120)\n"
+            "h=json.load(r)['result'];b=bytes.fromhex(h[2:] if h.startswith('0x') else h)\n"
+            "try: b=gzip.decompress(b)\nexcept OSError: pass\nsys.stdout.buffer.write(b)\n")
+    p = subprocess.run(["docker", "exec", ANVIL_CONTAINER, "python", "-c", code], capture_output=True)
+    if p.returncode != 0 or not p.stdout.startswith(b"{"):
+        return False
+    json.loads(p.stdout)  # refuse to write a partial dump
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    for other in dest.parent.iterdir():
+        if other != dest:
+            other.unlink()
+    tmp = dest.with_name("state.json.tmp")
+    tmp.write_bytes(p.stdout)
+    os.chown(tmp, 10001, 10001)
+    os.replace(tmp, dest)
+    os.chown(dest.parent, 10001, 10001)
+    return True
+
+
+def repair() -> int:
+    cs = containers()
+    binds = tree_binds(cs)
+    miss = missing_paths(binds)
+    if miss:
+        log("✖", f"{len(miss)} paths missing from {TREE}: {', '.join(miss[:6])}")
+        if not KEEP_TREE.is_dir():
+            log("✖", f"no copy in {KEEP_TREE}; restore from borg (aicom-borg extract) by hand")
+            return 1
+        TREE.mkdir(parents=True, exist_ok=True)
+        # check=False: TREE and its parent are chattr +i, so rsync cannot set the top folder's times and
+        # exits 23 even when every missing file came back. What counts is what is still missing.
+        rc = subprocess.run(["rsync", "-a", "--ignore-existing", f"{KEEP_TREE}/", f"{TREE}/"]).returncode
+        if rc not in (0, 23):
+            log("✖", f"rsync from {KEEP_TREE} exited {rc}")
+        left = missing_paths(binds)
+        log("✔" if not left else "✖", f"restored missing files from {KEEP_TREE}" + (f"; still missing {left[:4]}" if left else ""))
+    stale = stale_containers(binds)
+    for name in stale:
+        if name == ANVIL_CONTAINER:
+            if anvil_dump(TREE / ANVIL_STATE):
+                log("✔", "anvil chain dumped into the restored state file")
+            else:
+                log("✖", "anvil chain not reachable; alien-monitor starts from the copied state")
+        run("docker", "restart", "-t", "30", name)
+        log("✔", f"restarted {name}: its bind pointed at a deleted path")
+    if not miss and not stale:
+        log("✔", "factory tree whole; every container bound to it")
+    return 0
+
+
+def check() -> int:
+    binds = tree_binds(containers())
+    miss, stale = missing_paths(binds), stale_containers(binds)
+    for m in miss:
+        log("✖", f"missing {m}")
+    for s in stale:
+        log("✖", f"{s} is bound to a deleted path")
+    if not miss and not stale:
+        log("✔", f"factory tree whole; {len(binds)} binds in {len({b[0] for b in binds})} containers match")
+    return 1 if (miss or stale) else 0
+
+
+if __name__ == "__main__":
+    mode = sys.argv[1] if len(sys.argv) > 1 else "check"
+    sys.exit({"snapshot": snapshot, "check": check, "repair": repair}.get(mode, check)())

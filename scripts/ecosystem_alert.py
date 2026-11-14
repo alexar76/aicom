@@ -405,6 +405,19 @@ def probe_uptime(url: str, label: str, timeout: float = DEFAULT_UPTIME_TIMEOUT) 
     return [Check(f"hub_up@{label}", ok, detail)]
 
 
+def probe_service(url: str, label: str, timeout: float = DEFAULT_UPTIME_TIMEOUT) -> list[Check]:
+    """The same "does it answer 2xx" question for a public service that is not a hub.
+
+    THEMIS (themis.modelmarket.dev) shares the apex hub container's network namespace. On
+    2026-11-14 the hub was restarted in place at 05:30Z, THEMIS stayed in the dead namespace
+    and its page answered 502 until 09:07Z, while its container reported "healthy" the whole
+    time (the healthcheck runs inside that dead namespace) and this alerter had no check for
+    it. Only a request from outside sees that failure.
+    """
+    [check] = probe_uptime(url, label, timeout)
+    return [Check(f"service_up@{label}", check.ok, check.detail)]
+
+
 def probe_hub(hub: str, timeout: float = 20.0) -> list[Check]:
     """What a customer sees: the catalogue, and whether it still says it takes money."""
     base = hub.rstrip("/")
@@ -1307,6 +1320,9 @@ _EN: dict[str, tuple[str, str, str]] = {
     "hub_up": (
         "hub {t} is not answering", "hub {t} answers again",
         "the hub is down for everyone: buyers, agents and peer hubs"),
+    "service_up": (
+        "{t} is not answering", "{t} answers again",
+        "everyone who calls the service gets an error, even if its container reports healthy"),
     "hub_manifest": (
         "hub {t} is not serving its catalogue", "hub {t} is serving its catalogue again",
         "buyers and agents cannot see the storefront"),
@@ -1561,6 +1577,9 @@ _RU: dict[str, tuple[str, str, str]] = {
     "hub_up": (
         "хаб {t} не отвечает", "хаб {t} снова отвечает",
         "хаб недоступен всем: покупателям, агентам и соседним хабам"),
+    "service_up": (
+        "{t} не отвечает", "{t} снова отвечает",
+        "все, кто обращается к сервису, получают ошибку, даже если его контейнер считает себя здоровым"),
     "hub_manifest": (
         "хаб {t} не отдаёт каталог", "хаб {t} снова отдаёт каталог",
         "покупатели и агенты не видят витрину"),
@@ -2039,6 +2058,11 @@ def extra_settlements_from_env(raw: str | None = None) -> list[tuple[str, str]]:
     return out
 
 
+def service_urls_from_env(raw: str | None = None) -> list[tuple[str, str]]:
+    """``AICOM_ALERT_SERVICE_URLS=label=https://…,…``, read like the uptime URLs."""
+    return uptime_urls_from_env(os.environ.get("AICOM_ALERT_SERVICE_URLS", "") if raw is None else raw)
+
+
 def uptime_urls_from_env(raw: str | None = None) -> list[tuple[str, str]]:
     """``AICOM_ALERT_UPTIME_URLS=label=https://…,…`` → [(label, url)], https and named only.
 
@@ -2170,7 +2194,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
             sellers: list[str] | None = None, scope: Scope | None = None,
             wallet_history: dict[str, Any] | None = None,
             extra_settlements: list[tuple[str, str]] | None = None,
-            uptime: list[tuple[str, str]] | None = None) -> list[Check]:
+            uptime: list[tuple[str, str]] | None = None,
+            services: list[tuple[str, str]] | None = None) -> list[Check]:
     scope = scope if scope is not None else Scope.from_env()
     checks: list[Check] = []
     # Named one by one by the owner, like the extra settlements below, so not filtered by
@@ -2182,6 +2207,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         uptime_timeout = DEFAULT_UPTIME_TIMEOUT
     for label, url in uptime if uptime is not None else uptime_urls_from_env():
         checks += probe_uptime(url, label, min(timeout, uptime_timeout))
+    for label, url in services if services is not None else service_urls_from_env():
+        checks += probe_service(url, label, min(timeout, uptime_timeout))
     sellers = sellers if sellers is not None else sellers_from_env()
     checks += probe_credit_rail([s for s in sellers if scope.allows(s)], min(timeout, 10.0))
     checks += probe_dns(hub)

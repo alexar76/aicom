@@ -25,6 +25,11 @@ X402=""
 [ -f "$SECRETS/google_site_verification" ] && X402="$X402 -e GOOGLE_SITE_VERIFICATION=$(tr -cd 'A-Za-z0-9_-' < "$SECRETS/google_site_verification")"
 # Our own addresses (the demand exporter's list), so the MCP request counters leave them out.
 [ -f /etc/aicom-demand/own-ips.env ] && X402="$X402 --env-file /etc/aicom-demand/own-ips.env"
+# Sellers' review before publication (src/web/review.js): their private tokens and the gate's token are
+# files beside the secrets; the answers are on the okx-a2mcp-review volume, which a redeploy keeps.
+[ -f "$SECRETS/review_sellers.json" ] && [ -f "$SECRETS/review_admin_token" ] && \
+  X402="$X402 -v okx-a2mcp-review:/data/review -e REVIEW_DATA_FILE=/data/review/state.json \
+-e REVIEW_SELLERS_FILE=/run/secrets/okx/review_sellers.json -e REVIEW_ADMIN_TOKEN_FILE=/run/secrets/okx/review_admin_token"
 docker rm -f okx-a2mcp-prev >/dev/null 2>&1 || true
 if docker inspect okx-a2mcp >/dev/null 2>&1; then docker stop okx-a2mcp >/dev/null; docker rename okx-a2mcp okx-a2mcp-prev; fi
 # shellcheck disable=SC2086

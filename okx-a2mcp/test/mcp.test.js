@@ -189,3 +189,32 @@ test("the documentation and privacy pages list every server and its address", as
     assert.equal((await fetch(`${s.base}/tools/mcp/`, { redirect: "manual" })).status, 301);
   } finally { await s.close(); }
 });
+
+test("the old EMPORION address serves the SYMMARTYS profile, with its budget and counters", async () => {
+  const s = await serve();
+  try {
+    const old = await s.rpc("emporion", "tools/list");
+    const now = await s.rpc("symmartys", "tools/list");
+    assert.equal(old.status, 200);
+    assert.deepEqual(old.body.result.tools.map((t) => t.name), now.body.result.tools.map((t) => t.name));
+    const init = await s.rpc("emporion", "initialize", { protocolVersion: "2025-06-18" });
+    assert.equal(init.body.result.serverInfo.name, "modelmarket-symmartys");
+    const fx = await s.rpc("emporion", "tools/call", { name: "fx_rate", arguments: { base: "USD", quote: "JPY" } });
+    assert.equal(fx.body.result.isError, false);
+    assert.equal(s.u.calls.at(-1).body.source_hub, "https://modelmarket.dev/providers/symmartys");
+    assert.equal(s.u.calls.at(-1).body.capability_id, "symmartys.fx.rate@v1");
+    // One budget for both names: drain it through the new name, the old one is out too.
+    for (let i = 1; i < PROFILES.symmartys.perMinute; i++) await s.rpc("symmartys", "tools/call", { name: "fx_rate", arguments: { base: "USD", quote: "JPY" } });
+    assert.match((await s.rpc("emporion", "tools/call", { name: "fx_rate", arguments: { base: "USD", quote: "JPY" } })).body.result.structuredContent.message, /per-minute/);
+    // Names that are not profiles stay unknown, including inherited object keys.
+    for (const name of ["toString", "__proto__", "nope"]) assert.equal((await s.rpc(name, "tools/list")).status, 404, name);
+  } finally { await s.close(); }
+});
+
+test("GET on the old EMPORION address is the same 405 as on SYMMARTYS; a non-profile name is a 404", async () => {
+  const s = await serve();
+  try {
+    for (const name of ["emporion", "symmartys"]) assert.equal((await fetch(`${s.base}/tools/mcp/${name}`)).status, 405, name);
+    for (const name of ["toString", "nope"]) assert.equal((await fetch(`${s.base}/tools/mcp/${name}`)).status, 404, name);
+  } finally { await s.close(); }
+});

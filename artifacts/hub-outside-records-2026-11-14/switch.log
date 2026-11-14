@@ -1,0 +1,4 @@
+both ledger backups: /root/hub-backups/outside-records-20261114T090746Z-7SevLfq2
+{"container": "modelmarket-hub", "healthy": true, "image": "sha256:f2f06e99ff730edc8ffcc7b20f41ed90fbe9aafbb0174cfb6df32f8251267878", "previous_container": "modelmarket-hub-security-prev-1794647267205156637", "removed_env_names": [], "image_env_names": ["AIMARKET_CRAWL_INTERVAL_S", "AIMARKET_DB_PATH", "AIMARKET_OPERATOR_ACCOUNTS", "AIMARKET_PEER_REJECTIONS_FILE", "AIMARKET_SEED_LIST", "AIMARKET_SIGNING_KEY_PATH", "AIMARKET_ZK_BACKEND", "AIMARKET_ZK_NULLIFIER_DB", "AIMARKET_ZK_VERIFIER_SOL", "AIMARKET_ZK_VKEY_JSON", "AIMARKET_ZK_WASM", "AIMARKET_ZK_ZKEY", "GPG_KEY", "LANG", "PATH", "PYTHON_SHA256", "PYTHON_VERSION"], "set_env_names": [], "borrowers": {"themis": "themis-security-prev-1794647267205156637"}, "snapshot": "/root/security-rollbacks/modelmarket-hub-1794647267205156637/inspect.json"}
+aimarket_hub/observed_sellers.py: OK
+aimarket_hub/hub_routes/federation.py: OK

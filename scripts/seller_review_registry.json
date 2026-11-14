@@ -1,0 +1,12 @@
+{
+  "api": "https://modelmarket.dev/tools/review/api",
+  "sellers": {
+    "yutao": {
+      "name": "YuTao — Insight and PriorSeal",
+      "asked": "alexar76/aimarket-hub#23, issuecomment-6854476512, 2026-11-13T13:34:47Z: 'We will review any proposed aggregate text and every attributed Insight or PriorSeal number before publication.'",
+      "patterns": ["\\bInsight\\b", "oracleinsight", "PriorSeal", "priorseal", "imokokok"],
+      "window_hours": 72,
+      "silence_is_consent": false
+    }
+  }
+}

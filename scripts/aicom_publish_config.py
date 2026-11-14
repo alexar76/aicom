@@ -226,6 +226,13 @@ FACTORY_LOCAL_EXCLUDES = [
     "artifacts/histor-hf-viewer-fix-2026-11-09",
     # Operator HISTOR AI Catalog rollout kit embeds the private host; Gitea only.
     "artifacts/histor-ai-catalog-rollout-2026-11-12",
+    # Operator HISTOR RFC 8785 rollout kit; Gitea only (host literals / ops paths).
+    "artifacts/histor-rfc8785-rollout-2026-11-14",
+    # Local hub release kit with a checked-in release-venv (broken symlinks trip
+    # verify_mirror_secrets wc redirects and stall the factory publish). Gitea only.
+    "artifacts/hub-3.17.0-2026-10-31",
+    "**/release-venv",
+    "**/release-venv/**",
     "docs/evidence/histor-migration-check-2026-11-11",
     # pytest tracebacks print the API keys the tests mint in temporary hub databases (aimk_…, 14 of them).
     # They are not real keys, but the token gate rightly refuses literals; Gitea keeps the logs.
@@ -353,6 +360,10 @@ FACTORY_LOCAL_EXCLUDES = [
     # 2026-11-06/07 fleet ops / hub / lottery evidence: private IPs and a raw
     # key-shaped seed in a dind log. Stay on Gitea; factory secret scan refuses them.
     "artifacts/security-audit-2026-11-06",
+    # Ops-only vulnetix / OSSGadget dumps. Concurrent factory rsyncs raced on
+    # nested dirs and a large JSON under these trees (rm ENOTDIR / utimensat EOF).
+    "artifacts/security-audit-2026-11-07",
+    "artifacts/security-review-2026-10-30",
     "artifacts/backup-admin-repair-2026-11-07",
     "artifacts/backup-dedup-2026-11-07",
     "artifacts/fleet-resource-check-2026-11-07",

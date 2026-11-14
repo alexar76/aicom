@@ -1,0 +1,10 @@
+both ledger backups: /root/hub-backups/outside-records-20261114T090539Z-uED5DGwV
+Traceback (most recent call last):
+  File "/root/hub-3.21.0-rollout-20261112/kit/rollout_container.py", line 442, in <module>
+    main()
+  File "/root/hub-3.21.0-rollout-20261112/kit/rollout_container.py", line 381, in main
+    health(url, 5)
+  File "/root/hub-3.21.0-rollout-20261112/kit/rollout_container.py", line 78, in health
+    raise RuntimeError("Health check failed")
+RuntimeError: Health check failed
+deploy.sh: line 34: restore_timer: unbound variable

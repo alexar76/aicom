@@ -56,6 +56,9 @@ export default {
     eyebrow: "Free tools for developers",
     h1: "Paste it. Get a diagnosis.",
     lead: "Five browser checks for MCP tool lists and x402 payments. No account or wallet is required. Four checks also have x402 endpoints that accept USDC on Base.",
+    vetTitle: "Checked by someone else",
+    vetLead: "vet402 is an independent service that pays x402 sellers and publishes what each paid call returned. Its current record for the paid routes of this site:",
+    vetAlt: "vet402's record of its paid calls to modelmarket.dev",
     howTitle: "How the checks work",
     how: [
       ["Rules and cryptography", "Checks use explicit rules, published observations or signature verification, depending on the input."],

@@ -2186,3 +2186,32 @@ def test_ages_do_not_move_with_the_hosts_summer_time(monkeypatch):
     finally:
         monkeypatch.undo()
         time.tzset()
+
+
+def test_a_named_service_is_watched_like_a_hub_but_named_as_a_service(monkeypatch):
+    """2026-11-14: themis.modelmarket.dev answered 502 for 3.5 h while its container said
+    healthy; only a request from outside sees that."""
+    monkeypatch.setenv("AICOM_ALERT_SERVICE_URLS", "themis.modelmarket.dev=https://themis.modelmarket.dev/health")
+    assert alert.service_urls_from_env() == [("themis.modelmarket.dev", "https://themis.modelmarket.dev/health")]
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (502, None, "HTTP 502"))
+    [check] = alert.probe_service("https://themis.modelmarket.dev/health", "themis.modelmarket.dev")
+    assert check.name == "service_up@themis.modelmarket.dev" and not check.ok and check.critical
+    fail, back, impact = alert._describe(check.name, "https://modelmarket.dev")
+    assert fail == "themis.modelmarket.dev is not answering" and "hub" not in fail and impact
+    fail_ru, _, _ = alert._describe(check.name, "https://modelmarket.dev", "ru")
+    assert fail_ru.startswith("themis.modelmarket.dev")
+
+
+def test_services_are_off_unless_named_and_collected_when_named(monkeypatch):
+    monkeypatch.delenv("AICOM_ALERT_SERVICE_URLS", raising=False)
+    assert alert.service_urls_from_env() == []
+    seen = []
+    monkeypatch.setattr(alert, "probe_service", lambda url, label, timeout=5.0: seen.append((label, url)) or [])
+    for name in ("probe_uptime", "probe_credit_rail", "probe_dns", "probe_tls_expiry", "probe_hub",
+                 "probe_federation", "probe_status_page", "probe_security_posture", "probe_settlement"):
+        monkeypatch.setattr(alert, name, lambda *a, **k: [])
+    alert.collect("quick", hub="https://modelmarket.dev", signer="", status_url="", settlement_url="",
+                  timeout=5, sellers=[], federation_hubs=[], extra_settlements=[], uptime=[],
+                  scope=alert.Scope(("modelmarket.dev",)),
+                  services=[("themis.modelmarket.dev", "https://themis.modelmarket.dev/health")])
+    assert seen == [("themis.modelmarket.dev", "https://themis.modelmarket.dev/health")]

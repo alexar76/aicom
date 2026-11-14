@@ -1,0 +1,160 @@
+{
+  "date_utc": "2026-11-14",
+  "budget_usd_cents": 500,
+  "laso": {
+    "checked_at": "2026-11-14T05:13:34.043Z",
+    "card_type": "Non-Reloadable U.S.",
+    "card_ready": true,
+    "available_usd_cents": 500,
+    "merchant_lookup_http": 200,
+    "merchants": {
+      "Hudson Link": "no_exact_match",
+      "Coach USA": "unknown",
+      "Logan Express": "no_exact_match",
+      "Massport": "no_exact_match",
+      "Greyhound Lines, Inc.": "accepted",
+      "NJ TRANSIT Mobile": "accepted",
+      "Megabus": "unknown"
+    }
+  },
+  "hudson_link": {
+    "origin": "Palisades Center (lot J), West Nyack, NY",
+    "destination": "Depot Plaza (train station), Tarrytown, NY",
+    "route": "H07",
+    "offer_type": "Single Ride, Adult",
+    "usd_cents": 275,
+    "guest_checkout_total_usd_cents": 275,
+    "guest_email_required_to_advance": true,
+    "guest_checkout_navigation_attempted": true,
+    "checkout_document_http": 403,
+    "checkout_page_data_http": 403,
+    "payment_form_observed": false,
+    "validity_days_from_purchase": 365,
+    "merchant_documents_printable_barcode": true,
+    "merchant_documents_emailed_receipt_and_ticket_link": true,
+    "offer_observed_in_attested_browser": true
+  },
+  "logan_express": {
+    "origin": "Back Bay, Boston, MA",
+    "destination": "Boston Logan International Airport",
+    "offer_type": "Regular, One Way",
+    "subtotal_usd_cents": 300,
+    "merchant_documents_emailed_ticket_download": true,
+    "guest_checkout_visible_in_local_browser": true,
+    "attested_guest_checkout_control_available": false,
+    "invisible_recaptcha_present": true,
+    "verification_after_submit_observed": false
+  },
+  "other_candidates": {
+    "Greyhound Fairmont to Morgantown": { "published_minimum_usd_cents": 699 },
+    "NJ TRANSIT": { "published_minimum_usd_cents": 190, "ticket_requires_app": true },
+    "Megabus": { "limited_base_fare_usd_cents": 100, "online_fee_usd_cents": 399, "qualifying_live_offer_observed": false }
+  },
+  "argus_live": {
+    "private_telegram_owner_configured": true,
+    "receipt_address_configured": true,
+    "receipt_mailbox_connected": false,
+    "hudson_command_enabled": true,
+    "argus_image_healthy": "aicom-security:argus-hudson-20261114",
+    "before_owner_approval": {
+      "journal_stage": "no_submission",
+      "laso_balance_usd_cents": 500,
+      "matching_hudson_275_cents_debits": 0
+    }
+  },
+  "hudson_http_followup": {
+    "direct_http_get_both_official_hosts": 200,
+    "attested_headless_chromium_checkout_http": 403,
+    "attested_headed_chromium_checkout_http": 200,
+    "sandbox_smoke_passed": true,
+    "native_card_button_observed": true,
+    "print_to_pdf_available": true,
+    "initial_browser_memory_mib": 768,
+    "initial_oom_kills_observed": 1,
+    "dedicated_browser_memory_limit_mib": 1536,
+    "live_adapter_guest_total_usd_cents": 275,
+    "live_adapter_processor_fields_verified": true,
+    "payment_submitted": false
+  },
+  "laso_session_recovery": {
+    "date_utc": "2026-11-14",
+    "expired_session_merchant_lookup_http": 401,
+    "short_session_reconnected": true,
+    "verified_available_usd_cents": 500,
+    "matching_hudson_275_cents_debits": 0,
+    "journal_stage": "no_submission"
+  },
+  "hudson_card_expiry_format_fix": {
+    "production_laso_expiry_year_digits": 2,
+    "accepted_expiry_year_digits_after_fix": [2, 4],
+    "chromium_fixture_cases_passed": 4,
+    "checkout_and_telegram_unit_tests_passed": 25,
+    "argus_image_healthy": "aicom-security:argus-hudson-card-formats-20261114",
+    "live_adapter_reopened_checkout_total_usd_cents": 275,
+    "verified_available_usd_cents_before_retest": 500,
+    "journal_stage_before_retest": "no_submission"
+  },
+  "hudson_merchant_marketing_opt_out_fix": {
+    "merchant_form_marketing_opt_in_defaults_to_true": true,
+    "argus_unchecks_marketing_before_submission": true,
+    "order_guard_requires_marketing_opt_in_false": true,
+    "chromium_fixture_cases_passed": 4,
+    "argus_image_healthy": "aicom-security:argus-hudson-marketing-opt-out-20261114"
+  },
+  "latest_card_check_after_deploy": {
+    "journal_stage": "no_submission",
+    "available_usd_cents": 500,
+    "matching_hudson_275_cents_debits": 0
+  },
+  "hudson_billing_address_fix": {
+    "owner_approval_ui_total_usd_cents": 275,
+    "owner_approved_attempt_stopped_before_order_submission": true,
+    "real_card_separate_tokenization_probe_http": 201,
+    "merchant_order_submission_blocked_in_probe": true,
+    "allowed_checkout_only_geo_get_paths": ["/countries", "/countries/US/states"],
+    "full_live_merchant_form_preflight_used_synthetic_token": true,
+    "final_order_matched_guard_before_intentional_abort": true,
+    "final_order_guard_reverified_on_attested_after_deploy": true,
+    "chromium_fixture_cases_passed": 4,
+    "argus_image_healthy": "aicom-security:argus-hudson-billing-20261114"
+  },
+  "hudson_preapproval_browser_incident": {
+    "time_local": "2026-11-14T13:04+01:00",
+    "time_zone": "Europe/Amsterdam",
+    "source": "owner_screenshot",
+    "given_name_reply_accepted": true,
+    "surname_reply_accepted": true,
+    "approval_prompt_shown_in_incident": false,
+    "failure": "unclassified_browser_form_failure",
+    "cause_confirmed": false,
+    "journal_stage": "no_submission",
+    "available_usd_cents": 500,
+    "matching_hudson_275_cents_debits": 0,
+    "browser_memory": {
+      "inherited_cumulative_oom_kills": 1,
+      "oom_kills_observed_in_incident_window": 0
+    },
+    "immediate_followup": {
+      "production_adapter_consecutive_guest_form_opens": 3,
+      "guest_checkout_total_usd_cents": 275,
+      "production_configured_bot_handler_reached_approval_gate": true,
+      "diagnostic_approval_decision": "declined",
+      "merchant_order_submitted": false
+    }
+  },
+  "hudson_preapproval_browser_update": {
+    "argus_image_healthy": "aicom-security:argus-hudson-opening-20261114",
+    "opening_failure_phase_and_http_status_logged": true,
+    "opening_retries_once_on_browser_transport_failure": true,
+    "browser_and_purchase_tests_passed": 17,
+    "protected_403_fixture_retried": false,
+    "production_configured_bot_handler_reached_approval_gate": true,
+    "guest_checkout_total_usd_cents": 275,
+    "diagnostic_approval_decision": "declined",
+    "merchant_order_submitted": false
+  },
+  "telegram_approval_sent": true,
+  "payment_submitted": false,
+  "receipt_observed": false,
+  "ticket_delivered": false
+}

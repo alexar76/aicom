@@ -114,3 +114,9 @@ export const PROFILES = {
     ],
   },
 };
+
+// Old addresses that keep working. EMPORION was renamed SYMMARTYS (2026-10-29); clients and
+// directory listings still POST to /tools/mcp/emporion (about 7,000 calls in the two weeks to
+// 2026-11-14), so that name serves the same profile, under the same budget and counters.
+export const PROFILE_ALIASES = { emporion: "symmartys" };
+

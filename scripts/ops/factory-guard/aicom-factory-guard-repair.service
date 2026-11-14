@@ -1,0 +1,7 @@
+[Unit]
+Description=aicom factory guard: bring back missing files of /root/claudecode/aicom and rebind containers
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/aicom-factory-guard repair

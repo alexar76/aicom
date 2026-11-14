@@ -7,6 +7,7 @@ import { failure } from "../a2mcp.js";
 import { readFileSync } from "node:fs";
 import { LANGS } from "./i18n/index.js";
 import { ASSETS, TOOL_IDS, renderIndex, renderNearbySensors, renderNotFound, renderTool, robots, sitemap } from "./pages.js";
+import { createBadgeCache } from "./vet402.js";
 
 // Scripts only from this origin; styles and fonts only from this origin (the hub serves
 // /assets/*); the form talks to this origin only. Nothing may frame the page.
@@ -29,7 +30,7 @@ export function html(res, status, body) {
   }).send(body);
 }
 
-export function mountTools(app, { services, allow, callerIdOf, origin, verification = "" }) {
+export function mountTools(app, { services, allow, callerIdOf, origin, verification = "", badge = createBadgeCache() }) {
   const opts = { origin, verification };
   const isLang = (l) => LANGS.includes(l) && l !== "en";
   const isTool = (id) => TOOL_IDS.includes(id) && services.has(id);
@@ -53,6 +54,20 @@ export function mountTools(app, { services, allow, callerIdOf, origin, verificat
       "X-Content-Type-Options": "nosniff",
       "Cache-Control": immutable ? "public, max-age=31536000, immutable" : "public, max-age=300",
     }).send(a.body);
+  });
+
+  // vet402's badge for this site, fetched by the gateway and served from here (see vet402.js). The
+  // SVG gets its own CSP: as an <img> it cannot run anything, and opened directly it cannot either.
+  r.get("/badge/vet402.svg", async (_req, res) => {
+    const b = await badge.get();
+    if (!b) return res.status(404).set("Cache-Control", "no-store").type("text/plain").send("not available");
+    return res.set({
+      "Content-Type": "image/svg+xml; charset=utf-8",
+      "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "X-Content-Type-Options": "nosniff",
+      "Cache-Control": "public, max-age=3600",
+      "Last-Modified": new Date(b.fetchedAt).toUTCString(),
+    }).send(b.svg);
   });
 
   r.post("/api/:service", async (req, res) => {

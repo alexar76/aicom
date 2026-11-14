@@ -1,0 +1,456 @@
+aimarket_hub/observed_sellers.py: OK
+aimarket_hub/hub_routes/federation.py: OK
+aimarket_hub/observed_sellers.py: OK
+aimarket_hub/hub_routes/federation.py: OK
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 119B done
+#1 WARN: InvalidDefaultArgInFrom: Default value for ARG ${BASE} results in empty or invalid base image name (line 2)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/modelmarket-outside-records-base:60b41cad9c31
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 60B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 75.04kB done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 resolve docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 resolve docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12 0.1s done
+#5 DONE 18.4s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:ecc510c1e359bdc007b39802570bb7e4dec7d6ebccf357c3201a74299113e05e
+#5 extracting sha256:ecc510c1e359bdc007b39802570bb7e4dec7d6ebccf357c3201a74299113e05e 1.2s done
+#5 DONE 19.6s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:75b6a36c64a1cf3520fc4b4aae4739d5caa8a6a05c27835a920a61784c9c32f8 0.1s done
+#5 DONE 19.7s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4
+#5 extracting sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 0.6s done
+#5 DONE 20.3s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:bbc5a12237474ec0b23b5051260d56d6436a24d70d9cad961adebe7a037ed813 0.0s done
+#5 extracting sha256:9d70da4c2d178f44748769db5a836096a71219ab93b5e01142f310df5335ab2e 0.0s done
+#5 extracting sha256:41be90a0bbf307af491dc08786f5e119994e9eafb560722c4aa80e9eca9579d1
+#5 extracting sha256:41be90a0bbf307af491dc08786f5e119994e9eafb560722c4aa80e9eca9579d1 6.7s done
+#5 DONE 27.1s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:6fa52e92e5af1c53e167ff1fc471dbc5f00109b745cc44cd65e2a1920108c4b7 0.0s done
+#5 extracting sha256:f42ea5aac37b54286038f053a0b0f1bb20c49ede13e675e614a6d90eada3a66b 0.1s done
+#5 extracting sha256:291898e502b414468a4b8ee2ce37c41456c090ba81cc6ba15bfc057a208ac626 0.0s done
+#5 DONE 27.2s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:ab6e69f8dce3f5cd1de87041cba7eeb5a44d5b63c3c60fc5ab14cfdb80b74a82 0.0s done
+#5 extracting sha256:980dfe4423b551afc5099f1e7ca40eef78208422163bf068ce93829a4828ab13 0.0s done
+#5 extracting sha256:a8155f096de93d9a5c573fe1583a432c48501e732e3161f8510a01e4e3d20c02 0.0s done
+#5 extracting sha256:cb77d8a9b2338db93a385b4c89387e7dcf33145d0907963c6e3427b0f40ea47c 0.0s done
+#5 extracting sha256:88b7b6ab377bb14ebb5015a4ea9f3b98065ddd4140f1efba19946987aca0ef66 0.0s done
+#5 extracting sha256:f4a4f85f973f9b6fa6a2fd22720632ba0576f55d61241fb22057df625fbe8dd0
+#5 extracting sha256:f4a4f85f973f9b6fa6a2fd22720632ba0576f55d61241fb22057df625fbe8dd0 0.5s done
+#5 DONE 27.8s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:d272774922b36c247a665782498c81372a44eefd442407d51490cd461348863b 0.0s done
+#5 extracting sha256:a060a1afae42ed5e066d98d30172eaaee974b578166c3afcc8496688ae25b51f
+#5 extracting sha256:a060a1afae42ed5e066d98d30172eaaee974b578166c3afcc8496688ae25b51f 0.3s done
+#5 DONE 28.1s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:e650bcd599656da6299f2e7d90d95190fcaa62f061840b7944c316914c1daa0b
+#5 extracting sha256:e650bcd599656da6299f2e7d90d95190fcaa62f061840b7944c316914c1daa0b 1.2s done
+#5 DONE 29.3s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:d9545fbed4f6d76d7ec6ea19933c8c78962a433b5d3a638d8ac31c8214efd542 0.0s done
+#5 extracting sha256:d7f94c7970aa4000e912e6328953cc8aa86726036ab538f315140a9b4fbdc9b7 0.0s done
+#5 extracting sha256:7a8e5f34682b002a7528df78afb7a8e704efdb322027d79b00e887b396d01c5c 0.0s done
+#5 extracting sha256:0739c1afe5cce675988528676d4bf528e65261824167f9a9593433a68cb25f9b 0.0s done
+#5 extracting sha256:20bce469f9317b52c793251f104972d6659355b3113141fcb5f7c805b16b1dc8 0.1s done
+#5 DONE 29.4s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:a467604cc6237ab74c141981a5e139a73854a0f9661f11d70668a5bbc9771870
+#5 extracting sha256:a467604cc6237ab74c141981a5e139a73854a0f9661f11d70668a5bbc9771870 0.2s done
+#5 DONE 29.6s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:0e9362f988ba4e10ce7d4114e3a708b81df6db0785dc7f9231cc18c18b8e4db2 0.0s done
+#5 extracting sha256:eccbe4a9a5da8360bdbf720e5e89f4e463a8dfece7788547479a5734615373a7 0.0s done
+#5 extracting sha256:caf6aeefbbd7478e649474836df49a5e19abdedeca3f8ea27588599749c7b53a 0.0s done
+#5 extracting sha256:86b69f65fc26b38e261786e117d7143518cb8e61b6f714be403c82deef40dc89 0.0s done
+#5 extracting sha256:65d40624ad2346d19454d8243106f007c3a78fdfe85d33f2602d449136462806
+#5 extracting sha256:65d40624ad2346d19454d8243106f007c3a78fdfe85d33f2602d449136462806 1.8s done
+#5 DONE 31.4s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:98c1531be4b065c064ef6f5029b7e136a6971b1df9c3dcb047f4b4a53247a84e 0.0s done
+#5 extracting sha256:4e89a5b4517e5e893e99a98ee17941aafa0eae31d070b94831d0a4370decb7dd 0.1s done
+#5 DONE 31.6s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:df66d669b6e32c9ffb99a1b4d98f7c018f99e9a72f4ba27e4d988773ab50b393 0.0s done
+#5 extracting sha256:1a1c8795e1309dcf1682cf57591a161456c978196bdd1432df1b517518b613aa
+#5 extracting sha256:1a1c8795e1309dcf1682cf57591a161456c978196bdd1432df1b517518b613aa 0.2s done
+#5 DONE 31.8s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:7f9b63f1801540acac7c85e0270b01a54fe52ab7472db63b83efaf73cf89d55c 0.1s done
+#5 extracting sha256:f9d69fc50f3fc93d4fc1b9568c232c7c74aa738d355d3d3d4fbcfcaffea7b458 0.1s done
+#5 DONE 31.9s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:8661b223d6a7e5be93a09b058d7c60dd843558a208a60c802de4656decc7b29d 0.1s done
+#5 extracting sha256:02b7133b4f5f621dfe017891d04901773aea66f5c9ce55502c8db6ab973ce13f 0.1s done
+#5 DONE 32.1s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:21f0fa14084623bfb06ef787103774134881239992c81986e6d5c92307d34ff4 0.0s done
+#5 extracting sha256:2bd2cd59f6481a092fab369acc2781c55b1d7fb145902f1c8ba58d1d1d7deb98 0.1s done
+#5 DONE 32.2s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:60205a3ec593c381b2962ffa0d788f295adf62769f1ac5a24d9e0487db8391b0 0.1s done
+#5 extracting sha256:9b1316282950e0fb725c3edf39f9fdca1dbf7dcf385a1593b578f042202f09f1 0.0s done
+#5 extracting sha256:17d7367a6484f15c8a53e9da23114f9e7a40f215a6a3e205a6cfeca14957e526 0.0s done
+#5 DONE 32.3s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:04b3f047cf3559c8e31a758c46a0ed2794b349ded1f3dfba30dee27b16b9ad4f 0.0s done
+#5 extracting sha256:0f7b1efa1818239270d5ad880cca4e4e2c855d022cb03cb454a1b70c81225399 0.0s done
+#5 extracting sha256:109412be27200e3e482a35d5940f72883dcde008b5a648c3dd147ff451d96760 0.0s done
+#5 extracting sha256:e96fe814fe073ff8de36ffe3259e121132cde5a64f1cd21eff69ae314b0c157f 0.0s done
+#5 extracting sha256:13142d28ba89d7965989d235da7c835433134ba7b2a10b3c268f5a25c958e0b4 0.0s done
+#5 extracting sha256:0ff3ef4f9f2eb7a4bd0af55a475d304b5887d4b71a2fa4eacac8a645929a9dc4 0.0s done
+#5 extracting sha256:1ffae4ed6f863fa6cf1494d87d6578a8fd21a3a66d1478773f74ba0ac2b8f120 0.0s done
+#5 DONE 32.4s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:ec2506aa8d0337ae5f9cdac2ba49a45d9e70230fd296f8d4e33abcf7416796cb 0.0s done
+#5 extracting sha256:7bfe9190d87a6aa41d48742ba72bd17a3df29b997ee86425b9f30066a9386208 0.0s done
+#5 extracting sha256:845bfa582457bb2d01d74b40d024be5a304a6d5d84debd02fcab7a5ddb7219e5 0.1s done
+#5 DONE 32.5s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:1b283e9b46310de9aa5f2bdee0aa9d9db454c1c0f4539dbd7b3ea8ee387b560e 0.0s done
+#5 extracting sha256:8496ff3044c67b69219302f11c503c9ed52606a56966654c2c4811cde76497e6 0.1s done
+#5 extracting sha256:72ed734e4ecb996af11ac988d45d261f6b2f09aae7d7856fda86f1165dbae957 0.0s done
+#5 extracting sha256:65c6ee0ac3a175fde2836c5e54ad0e75e8dd1cef5dbea9b0da6ec263ed43efe9 0.0s done
+#5 extracting sha256:a9d2607bb536e71dedde7f8788c48759f627d09f4839ccc4bf417c216bc49583
+#5 extracting sha256:a9d2607bb536e71dedde7f8788c48759f627d09f4839ccc4bf417c216bc49583 1.9s done
+#5 DONE 34.5s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:e6936b110d6367a5090074a5298520bd053b8e9ba61d0edf01ba7e3089cdefc5 0.0s done
+#5 extracting sha256:474fba4ec5abc5b7930e021f67f71778c6295f7c98ce014affbbd568f88fa599 0.0s done
+#5 extracting sha256:fbfe2b691eb47191798b794df819401093a0efd805253e2dbbeface2beeb9e66 0.0s done
+#5 extracting sha256:62a4eb0e285d05a71be376803009e849f4a9fcda79d5277ba3fd38f4cc99afdd 0.0s done
+#5 extracting sha256:5289f74af48ed795612ba371db2feb339e6bbbebc276b0ebd95f698c20a4520d 0.0s done
+#5 extracting sha256:0682d2b2f6a4cbc08ab8fac91dcd661e744bd650a1293b56d3e8e2da50f6f207 0.0s done
+#5 extracting sha256:a7a1eb54a3eba7710f35399c6aa44baccff98c662aeaadd38f97139c4ad3fa87 0.0s done
+#5 extracting sha256:3fc1c4e44f3b6df3064ed2be33bc4a3aea8c5a892471449a885556a3b3b58e7d
+#5 extracting sha256:3fc1c4e44f3b6df3064ed2be33bc4a3aea8c5a892471449a885556a3b3b58e7d 0.0s done
+#5 extracting sha256:e1f3775e937c1d6b160f032b329ba70ae7a2a099665bda25b483a503f8443cd5 0.1s done
+#5 extracting sha256:a8ec0cf33f2a1935c1974e2eed358dba410c7d604adf0fc82ddb9f348dd05568 0.1s done
+#5 DONE 34.8s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:65f775da8c25024c7269d7ed0cac655256fc724a0fd859ed86f1b342601d8d16 0.1s done
+#5 extracting sha256:db205bb19b84c23b8c1860da9d688814321f207b5faa95290d4e428da0cbf7d4 0.1s done
+#5 DONE 35.0s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:4bac7398ca225c13a80a476f0904930e0fadd9d9b73c5db333affc0ddb1a769c 0.0s done
+#5 extracting sha256:30853586aef40d1ef940ae6e92b8aae5dded95663ff05ba05b3e353be3de271c 0.0s done
+#5 extracting sha256:00dfba18701b9f8f841e9a0abbc6f7b1407dff360b58560831e3645b195203f0 0.0s done
+#5 extracting sha256:620ae55a5e9825824c7ca1aeca5ab480b5d8c2ed986f91f19f6c4581861526a5 0.0s done
+#5 extracting sha256:b6a537f27f04e9119fda3629dbe3d083be04f34faac84d777d7882777d8c42e6 0.0s done
+#5 extracting sha256:c466662a772b42a66c82a23213d17d0fe180f850ce0b18c7b6534e55eb2f9f38 0.0s done
+#5 extracting sha256:2bc043a55ad158f247515aeab7ca3e773eed194fc8a4d5e58e8f326c241a07d9 0.0s done
+#5 extracting sha256:5a9d136f64deefe135b883ccc1deb1539f187ae597ca5b4ac917b34ecf454163
+#5 extracting sha256:5a9d136f64deefe135b883ccc1deb1539f187ae597ca5b4ac917b34ecf454163 0.0s done
+#5 extracting sha256:184719ecd041679deadc0e94a472dc07456dc83bc1a01c423e6d4c832dfef93f 0.0s done
+#5 extracting sha256:f3b8649056fb6ec29377a63a464626b681fcf1857b98db1103bb5ee301057922 0.0s done
+#5 extracting sha256:637ad5744796dcd6012ca905138716e830ace46233eb0da1b8f40cd420d1ac0b 0.0s done
+#5 extracting sha256:29abf318d3560ba28f639d59df7152dc396719fcdce5eeebf4c4e33ebf0f2888 0.0s done
+#5 extracting sha256:001ec9e6ac2774ea1d4e4fdf7faf64e7b90bda23dda6e071bd94ddf17dc16412 0.0s done
+#5 extracting sha256:992e76215c45a1b33c08814ea7e457316b8149a1c645fe1bd31296d7be5e5c61 0.0s done
+#5 DONE 35.2s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:a56e98dcd64eb6642f0fcbdcc1e4fba457bd4e6b22512f06847b7625aeaef2da 0.0s done
+#5 extracting sha256:55e9b57d88859c67716c0b09788f6b7d5a58a22b9db71c43ed2c4ce4c84c4436 0.0s done
+#5 extracting sha256:99758a3607ff021dd2be56b8bd6b62dfc3117064fc13b0cdb042d23149d01798 0.0s done
+#5 extracting sha256:780e022608a79650d2102e7a2b29ace5e0d87fbd3eaf3fe040cf546aacd9b186 0.0s done
+#5 extracting sha256:e76ac0ec2ee78d95173f69a293dc95d308ca63fbabdf1267c15fe9eb556852a1 0.0s done
+#5 extracting sha256:172e2ecd9ee2a05c93923a6454cce128f106ef6ca8a16ef95b05e471315abe21 0.0s done
+#5 DONE 35.3s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:aa2c821073e8e92e0e61a38e6caf1d6c4d46a2d0a89aa4d69c9be039831de2ca 0.0s done
+#5 extracting sha256:8db8c5fcc31a01f1a85cf0c6e4c49b174a422dfb880c59de0384d849dea0bfd9 0.0s done
+#5 extracting sha256:1b3f3380a13478de835f46ca151f2044a0812efc755ceb10c231945fe71616d4 0.0s done
+#5 extracting sha256:d18c3f071890298c8ee36c5fea6b2e28efdfdc229a8bfd720a06effc3281fc43 0.0s done
+#5 extracting sha256:227788f6e83afa3bb6e78dd0fb2db8eccf90a6605fc13f4efeb34595e9724b34 0.0s done
+#5 extracting sha256:addf208892081098189943cf4fd97cfc3b60bbc56c043c6bd6df33009cab3e23 0.0s done
+#5 extracting sha256:6e424fd007045f8b931a7692951b982d7fa99392f6b497de0010afcd361ac21a 0.0s done
+#5 DONE 35.4s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:5ada552f6041e671d4a45111e001d28f7e72212e36b9ed6ce52ae062c6a2219f 0.0s done
+#5 extracting sha256:7e160c8e4d940f1d0cfd3c2fb411fb97ffa69c76343d3894889624563bd39e51 0.0s done
+#5 extracting sha256:7262bd73c986616aa2c7a4f84022a89a3c366e86f8db0f92fcdf4730d4f1b506 0.0s done
+#5 extracting sha256:2b551f989618c35b19978b9606e9640a898480d8eb75fef594370a642d876269 0.0s done
+#5 extracting sha256:b4cfd781b9cd40c17a034e66f4ce7b6d02d8517a7bf18325a79f3f984b8b0e37 0.0s done
+#5 extracting sha256:e2f7283b71b139e456bdcf644025d43f1417b5f99ccb31cc0eb467577da2fb10 0.0s done
+#5 extracting sha256:2bef13dab9d3950f9c718812a53943752b7073aa72a552a95a0bfbd4639582d1 0.0s done
+#5 DONE 35.5s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:c54ce1d7def0bc309776c55477cd8fb9796b64f63445260faa4476a4dd391a88 0.0s done
+#5 extracting sha256:7f69e775c99a833ca13383cf76dbb6ebe59f68e5d334790d67b3454a2cc0e09b 0.0s done
+#5 extracting sha256:d7ca580258241d0f85b1279a06b1fad1da3c90ee8f90c97553d83c92a34b62cf 0.0s done
+#5 extracting sha256:2441c451d8392a14db8f2fb5854138d368b4a467937c84fba642cd279339b062 0.0s done
+#5 extracting sha256:4851b409de33b73b23150bda61f3dcba165ec3b4b2bd76610e8e7defd922c21b 0.0s done
+#5 extracting sha256:55c570ca21b89a298f12fc87572a0acf5723846539d49c526f5282f2d282b6a8 0.0s done
+#5 extracting sha256:ab26c5b30b36e51509cd75280df8d7c0aedb16d94b98124b0837491555179655 0.0s done
+#5 extracting sha256:7291e125c9facf0a9a602c8b2564706264815c958438c5447f2bc7d8a7e450f2 0.0s done
+#5 DONE 35.7s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:7bebd76cc50fbabc0b926d3051b20695d06763cda38d2db54e6627d7d3c55a5e 0.0s done
+#5 extracting sha256:7ea2c33c22cff603fb1c689d1b5c3fbb0d2fbd0764804555d4ec151b750d4d6a 0.0s done
+#5 extracting sha256:98f907e004d31953603eb22f0f9babbb45ef458f85db51a2b95d94747a8529e3 0.0s done
+#5 extracting sha256:50984edc1b023b41504fb9e69991425a4b854da6bee109e72cf83f5dbd99f054 0.0s done
+#5 extracting sha256:d275459a52e4e6f42b7e9e47580be7abeca6b44c991ff30fa0d6fbc50d0f9920 0.0s done
+#5 extracting sha256:52063b38265b9e5f70a27f27354eedfdce5d7af328f62c5edbea06d5c9adbcc2 0.0s done
+#5 extracting sha256:7da82156948bbea43bea2e794b7759b128f340b07c98fcd1cebfb58c48429da6 0.0s done
+#5 extracting sha256:3889cf959621d99eb83aaba8a408405074845c1252471808bb92f12d5ca8e4df 0.0s done
+#5 DONE 35.8s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:5175ab9d9cf5b6b87e86d22ad533652da372b5fc9d347955cdbf5c190f2da312 0.0s done
+#5 extracting sha256:a5921b090fe2f81a6136c026b4f9cdfdade945ebcda8c44e2a1b67dc76c861d2 0.0s done
+#5 extracting sha256:3c301d5107a3c40bb80235c3e8bcbb7074976f2262310ef146d51482aa056f48 0.0s done
+#5 extracting sha256:98c59ee61daf366a03249ac7be955d02f029ff77fb4b4655bdd33e841f171f53 0.0s done
+#5 extracting sha256:5fc887eb1b26d261849a761fe292eca367875a7d0032e36361446aeba26e127c 0.0s done
+#5 DONE 35.9s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:7f84ee38ee704d0141e270b1ffda268fdc12e6114cda86604612e4391481cc16 0.0s done
+#5 extracting sha256:5e4f074594645614b79b70b3ea0c3a047e7d488930a62451ba6a57ac46b353c6 0.0s done
+#5 extracting sha256:87d994c872f96fb9632cf0f8a0e1503abfcd39335cf1e2d63b45d6f7edb66d4f 0.0s done
+#5 extracting sha256:43c879d6f33ee67b4571218bea2136db731e740bfbb937818550e75f44e2c1a7 0.0s done
+#5 extracting sha256:345762e9e7a607e86587306777928e6c9c66ea59319dc46873309e859439b6b9
+#5 extracting sha256:345762e9e7a607e86587306777928e6c9c66ea59319dc46873309e859439b6b9 0.0s done
+#5 extracting sha256:d1f8933aab3988351d2b76babdc880cbfca6c7279480dbce574421d111e5f563 0.0s done
+#5 extracting sha256:a338c6264d09660c8f2676384bda4fe2914c40404c5d57d7b85eecedfccc649e 0.0s done
+#5 extracting sha256:e4db3b27558e7316ed9042285e5e31ea3e88741baf9398455f84dc347cf0d24d 0.0s done
+#5 extracting sha256:8e633a192528c0e6e482a506b0b6080939c6a00c5718e98484f5260db9d3373f 0.0s done
+#5 DONE 36.1s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:7e9b86b9ce5d0f8f59f6c9f39eb552b511e31639b7faf5dc342de55235a15c19 0.0s done
+#5 extracting sha256:6208a0205a72ac176be24cb7e198de7ebc428c89a708a6531e15b41c8b522a9c 0.0s done
+#5 extracting sha256:a4ad30f764695d152fbb0e6ba98dc731d25f1192ff12a2fe2b69fc153ee81c15 0.0s done
+#5 extracting sha256:5f583b41d3436f24f492cd57e73070c062b527394f89d148e8d9cef9d8592dd0 0.0s done
+#5 extracting sha256:85f38bdbbe993616bb63ebda52f51852a3e626ec49ebdc5b3bc362b65a809fb5 0.0s done
+#5 extracting sha256:8e9ea7df627993e8e27d14fa2e5ff136c95d7bd90d4bbee2527966052b5edecd
+#5 extracting sha256:8e9ea7df627993e8e27d14fa2e5ff136c95d7bd90d4bbee2527966052b5edecd 0.2s done
+#5 DONE 36.4s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:8b1ecafa81f8d923bc1f854d8626e03799904038c8dfbe8840c9ef8f42745a58
+#5 extracting sha256:8b1ecafa81f8d923bc1f854d8626e03799904038c8dfbe8840c9ef8f42745a58 0.2s done
+#5 DONE 36.6s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:021cdb1f7434b68ae27926671be56a47060afc9709aa85b4254b87061af7dde1 0.0s done
+#5 extracting sha256:0afe5b8366d4d0b827724dccfdcffc7321094fa742ba58911119654bca821e4f 0.1s done
+#5 extracting sha256:49a0dd146b3939c16b4ac543c1c8afdf3405475f514ec21921a8cfcc308173d4
+#5 extracting sha256:49a0dd146b3939c16b4ac543c1c8afdf3405475f514ec21921a8cfcc308173d4 0.2s done
+#5 DONE 36.8s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:3c91b4f73045fe94c230125c2ecc453513222f0c5b9a584e99e7a82a4ed7d8ec 0.0s done
+#5 extracting sha256:c288cc6e8d06966830881badab4f4268987886cf48bd7507e44bea1dd8c52038 0.0s done
+#5 extracting sha256:dab0dc36e8454e9126dcfc7e88d55a10275461579c1462fe5c7bf41647ccbfe7 0.1s done
+#5 DONE 37.0s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:826682e521e4938cb1aea9f91b811ff16dab9bffc63559c19512fcb154c06bae
+#5 extracting sha256:826682e521e4938cb1aea9f91b811ff16dab9bffc63559c19512fcb154c06bae 1.0s done
+#5 extracting sha256:946b753d90ebc45ce38bcedaf9a654917ae3bab8e42089a60ea82512bbfda1a9
+#5 extracting sha256:946b753d90ebc45ce38bcedaf9a654917ae3bab8e42089a60ea82512bbfda1a9 0.4s done
+#5 DONE 38.4s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:842af659f033fb5304ac276d39f39c6a86f4066ca1e0f8ad3410a7db1dea6d41 0.0s done
+#5 extracting sha256:fe1e13e1b04f44e8f8f4c2e39fa2ead7fc3dbc7c292dd339562d95bf16521f3f 0.0s done
+#5 extracting sha256:bc8e647a9a6993769c67cce76116fb7637c2d75bf07e04fe6fbf947f3d3120e3 0.0s done
+#5 extracting sha256:c57e6029de10a5cdfae40386535f05ff27bc907743156ce3c1cce123f656e501 0.0s done
+#5 extracting sha256:f039051669ae1d724f9f386a1f1d444a1fb71955d5b44f86c8aa2bb461d76c85 0.0s done
+#5 extracting sha256:077f36bdc867c38f872467a2b48d1738eb9f24cf7a52381aa416b349641a0a13 0.0s done
+#5 extracting sha256:e1cb4786444e89bacd62d3bc85d15ffbfddc88270fd01cfa10855965ec6f9bb7 0.0s done
+#5 DONE 38.6s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:c0efdae6c6a8909645ec73a7fd2c647233cd6db0848218e6bc980a40127d462c 0.0s done
+#5 extracting sha256:72571aba443ad49128d72ee8193280d74895832313058a495c046af13cfb8ee6 0.0s done
+#5 extracting sha256:c108574203a87130cfab082fdfe9e19405ffc780cd0cac40c3c454a2801e5942 0.0s done
+#5 extracting sha256:7ea60dcce3473ddff49c5df56cba9cef66493e5dba21b766de479ed530fe5977 0.0s done
+#5 extracting sha256:1013463061c5553abe09861ec91f4abfb88421ef78d3b80b28d9c6831cd9b6e7 0.0s done
+#5 extracting sha256:3dc40504d3afc9c03476f10ea58c879d2b7d7f4af53e40d9f132461cf9a63616 0.0s done
+#5 extracting sha256:ed8d784525d96a339fa10eee5d8ffba5e1b0bf375f144d44a18836615515be5d 0.0s done
+#5 DONE 38.7s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:4a1f1b120352918dad75a014f3d231cb0107a6dec88fd0d560e4ec4a022a9fd1 0.0s done
+#5 extracting sha256:b6c769de874b48ff072f95699da9dd4efc84cc9461d767117527598e4509a02d 0.0s done
+#5 extracting sha256:287f51744494a8f6127998b661e60cd9373de710f380e38073af932d9fbc82aa 0.0s done
+#5 extracting sha256:91dcebe5af0b67e5f2efced2456b76ca0b2cb4639292fdc45b5e93e03fa56a4a 0.0s done
+#5 extracting sha256:b5b6e5d84ffc6d2e5aefe6ec89ebc6fe1d5e74ceef561c267b7cec3212286a73 0.0s done
+#5 extracting sha256:af9f2f5085404b806e188afebd455b0998f9e6d5368e353439c7f3901907dba9 0.0s done
+#5 extracting sha256:95d0d330e77df00918365b844a3d7638d56fdd07e00b2f5c57c80c813fae38ad 0.0s done
+#5 DONE 38.8s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:55494f536b3148ff2396b3d9e30b5291f2f6b13d649a47ba78d64550e25894ea 0.0s done
+#5 extracting sha256:7544b5cdbe727c6f2dde4a278668b766333547b1f16aae1d971b6f7a3a3fec5d 0.0s done
+#5 extracting sha256:71cedf4182f01a670b624f887bedff936e79517ce5c6b9efbc5fc31aabaa0cb8 0.0s done
+#5 extracting sha256:e426c3f3f84c7f105c209faf3ba5d1f61259a1717fa6838398a378ac32d9fd50 0.0s done
+#5 extracting sha256:e5299fd38513c274d6492194f3ecc0e9e666e63d41b5666293fb99c455a036ef 0.0s done
+#5 extracting sha256:1d4097bb12ad3c2194cb37798bec59abc09e9686961f21eaffbf86260ce7334d 0.0s done
+#5 extracting sha256:b07379995d1ba1a4cf9099c6494c282165aab5d6f83d1e223c15975abd94a6be 0.0s done
+#5 extracting sha256:94db1a47c1a9f3d4d04e69f019d59103c1e2bc8b55234fbb2e104ade4dabc190 0.0s done
+#5 DONE 38.9s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:3a5d71941b62eab23c4aa1a3e1b8789f620ec19dec88f818a939e71a10d71257 0.0s done
+#5 extracting sha256:12294794a75d37ba343df5c023fcee976fecaec9cdaab3315a5aacff38907a2f 0.0s done
+#5 extracting sha256:c148533eca0d6d7e1f4c06be54deb25a18b34f79c059d4077f8ee8966b191335 0.0s done
+#5 extracting sha256:e2d3e4ad7803462667f5dec0afbaf31aa216df4b16dba5b62e1c9dff1b997d4b 0.0s done
+#5 extracting sha256:df827e9f076bde9d3d397f4ad05ef598fc54c5b65cf7d5539b4fe0ab6cb2694d 0.0s done
+#5 extracting sha256:634194f70872e5bc2082fcb3741c59b0ba69f993cbd8998ef7b65e040a7c388c 0.0s done
+#5 extracting sha256:415d4349aff503c7816f1ee33b2061870e52ac6c900ab7a3abe28881ca2f6f90 0.0s done
+#5 extracting sha256:d560869609d199cbd4d0e993d61068c3511c3674c6b6614ed7ba1d7c1e0bfb1e 0.0s done
+#5 DONE 39.0s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:c4c44edac9013c8b2a2753dc6bc4860ad18defde26ad92fd566499756f39e29c 0.0s done
+#5 extracting sha256:a5863ffcbed3ba84d6497201660181611563fa3ec65ecac38ca5f8667b63bdcd 0.0s done
+#5 extracting sha256:d2c6d05a297ec34f83c9803cce1e690ff9d84863fea19e0c7f774081a7676887 0.0s done
+#5 extracting sha256:d26de74fab180c8fd356144c4c745b58d1e13599947a76b032bca2e010b28ae4 0.0s done
+#5 extracting sha256:dde7a4d3209af654adc26b4ad7316f1a11c31c260c1d1dd094f160b2fd5252c9 0.0s done
+#5 extracting sha256:aaaeaf4f3f12e56920c44bfdf66380508c7701664519b69da6be5f0c86964013 0.0s done
+#5 extracting sha256:03cbc36217963fa5ca2e55afb2547ee5f932a1e1a4061cfda4a125dcea5f73e9 0.0s done
+#5 DONE 39.1s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:91ade0544ef21377e5ddcb19f266db59a661535a848cd075c85e2bbd41f22a1d 0.0s done
+#5 extracting sha256:86f0bc56c99c5091134672f8e7b94ac2643c3b67273acb2253de0bb3ae657b87 0.0s done
+#5 extracting sha256:93db9ed935670b7b8a94d8a1e124d21efe1c6eb5ea76bd33fcef08918250dea6 0.0s done
+#5 extracting sha256:2dc00f87f5a257b32a304cc75763312f369cbec33c685d0cd02ca17b9f1f3c7d 0.0s done
+#5 extracting sha256:2a63b291c462907ad7bcc7e96759fa4e367c1b76bc9755e0fc36568ed3419e68 0.0s done
+#5 DONE 39.2s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:dfd25bb820aadefdd480f47904aaa32b2e107f0ad0e463bade916d47f2c0c996 0.0s done
+#5 extracting sha256:224ae28043022ca83040bc02112979ac94ea1582f424cddd33a6176772efa634 0.0s done
+#5 extracting sha256:16d54b66b2d63ff628908006207094a0e1b2f77d62fa786e669e3518e2149b7d 0.0s done
+#5 extracting sha256:39a30253fecf705109ecd52b17863c77f4c16a09d37879338d0021dfae3c66c3 0.0s done
+#5 extracting sha256:5e18c43fa383baa91dda10a75a46db78a2411dc89ae15d4e1373948c366290fc 0.0s done
+#5 extracting sha256:d7a0b1c147f88551a2e299fedfa104452fa5010ae44707ab38456785cad03268 0.0s done
+#5 DONE 39.3s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:a335cdeef6b27c257f628bad3221f8a34318b5f838991c83f82adc872cff1901
+#5 extracting sha256:a335cdeef6b27c257f628bad3221f8a34318b5f838991c83f82adc872cff1901 0.3s done
+#5 extracting sha256:a22805e3947eb003426dfa5df10ff2aa370d60f3f66402f3b9f9aa1b5166a8de
+#5 extracting sha256:a22805e3947eb003426dfa5df10ff2aa370d60f3f66402f3b9f9aa1b5166a8de 0.0s done
+#5 extracting sha256:21ff95560572524f0799509a28663a95e0a8165ed3d57c7d3a2c0355f233f430 0.0s done
+#5 extracting sha256:28ffec3e8c54a13fd970ad2ea2917d7f4de51f6fefa3872c0376c883e4f05c67
+#5 extracting sha256:28ffec3e8c54a13fd970ad2ea2917d7f4de51f6fefa3872c0376c883e4f05c67 0.2s done
+#5 DONE 39.9s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:7581865a29d9c73855c3efab50945f51b91f681489ac0a53a61e1674bfb71297 0.0s done
+#5 extracting sha256:9ef1d049e70eb8bfd158abd7c1dbf6d6b8969acab5e7b5193e5eb76764ba40ad 0.0s done
+#5 extracting sha256:d0ee895d033ad8515c0c9d2473ecaeb8df1a4fb6c02339aef612daaade1e857e 0.1s done
+#5 DONE 40.0s
+
+#5 [1/2] FROM docker.io/library/modelmarket-outside-records-base:60b41cad9c31@sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12
+#5 extracting sha256:86ade6f8007cc6817843bd6ba35a4f211c627275d95b39d7bf717d0bf951b8e0 0.0s done
+#5 extracting sha256:1a51fd52234576bd7432e1105cf6bedffe1311bbb304bfba6c89cd56b7fc3605 0.0s done
+#5 extracting sha256:0ef1281821b918e5e8dd792c6577db5374e73e6aa87ba230d20dc5a1c2253b06 0.0s done
+#5 DONE 40.1s
+
+#6 [2/2] COPY overlay/ /app/
+#6 DONE 0.2s
+
+#7 exporting to image
+#7 exporting layers 0.1s done
+#7 exporting manifest sha256:7822055ac3a693c27263fa5dae287d7d2af0709d0c5b58c70dac7a7818f0759e 0.0s done
+#7 exporting config sha256:496f1fb67f527be3e46105a73559d4b7a67c6aaa9518485aae671b3a5d454bb2 done
+#7 exporting attestation manifest sha256:34db5604fc325f75345e744124ef95d254dadf26bfac32a7864c27dadd55b25f done
+#7 exporting manifest list sha256:f2f06e99ff730edc8ffcc7b20f41ed90fbe9aafbb0174cfb6df32f8251267878 done
+#7 naming to docker.io/library/modelmarket-hub:outside-records-60b41cad9c31 done
+#7 unpacking to docker.io/library/modelmarket-hub:outside-records-60b41cad9c31 0.1s done
+#7 DONE 1.0s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - InvalidDefaultArgInFrom: Default value for ARG ${BASE} results in empty or invalid base image name (line 2)
+aimarket_hub/observed_sellers.py: OK
+aimarket_hub/hub_routes/federation.py: OK
+{
+  "changed_source": {
+    "aimarket_hub/hub_routes/federation.py": "10b64a46f97951957eba5a4dae97a9f34ef5f8a0714659d4c480a3e42beb3571",
+    "aimarket_hub/observed_sellers.py": "1849b70d6731bcfb80d529cf797a884151ba9bd3fb6f8d1b3df51affa7e0e273"
+  },
+  "unchanged_python": 76,
+  "unchanged_debian": 129
+}
+/usr/local/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+SQLite path data/sandbox_trials.db was requested explicitly; ignoring AIMARKET_DB_PATH=/smoke/hub.db for this backend. These were the SAME file before (the env var overrode the argument) — point this subsystem's own path variable at /smoke/hub.db if a shared file was intended.
+data/sandbox_trials.db does not exist yet while /smoke/hub.db does: if this hub ran with the env var set, THIS SUBSYSTEM'S EXISTING TABLES ARE STILL IN /smoke/hub.db and the new file starts empty. Migrate them (or point this subsystem's own path variable at /smoke/hub.db) BEFORE serving — for the channel ledger an empty database also resets the single-use deposit guard.
+NEW Ed25519 signing key generated at /tmp/outside-records-smoke-oqpe9afq/smoke.key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+NEW post-quantum (ML-DSA-65) signing key generated at /tmp/outside-records-smoke-oqpe9afq/smoke.key_mldsa. Back it up together with the Ed25519 key beside it. Peers pin it; an existing identity requires explicit trust reconciliation.
+SQLite path /smoke/provenance.db was requested explicitly; ignoring AIMARKET_DB_PATH=/smoke/hub.db for this backend. These were the SAME file before (the env var overrode the argument) — point this subsystem's own path variable at /smoke/hub.db if a shared file was intended.
+/smoke/provenance.db does not exist yet while /smoke/hub.db does: if this hub ran with the env var set, THIS SUBSYSTEM'S EXISTING TABLES ARE STILL IN /smoke/hub.db and the new file starts empty. Migrate them (or point this subsystem's own path variable at /smoke/hub.db) BEFORE serving — for the channel ledger an empty database also resets the single-use deposit guard.
+NEW Ed25519 signing key generated at data/hub_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+InMemoryNFTRegistry initialized — DEVELOPMENT ONLY. NFTs lose state on restart. Use OnChainNFTRegistry in production.
+Generated new dataset salt at data/dataset_salt — back this up if you want anonymized IDs to stay stable across deploys.
+[crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+NEW Ed25519 signing key generated at data/provenance_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+No AIMARKET_PROVENANCE_API_TOKEN set — /attest is disabled (503). Set this env var to enable manual attestation.
+{"health": {"/ai-market/v2/account/withdrawals": 401, "/ai-market/v2/federation/observed-sellers": 200, "/ai-market/v2/health": 200, "/ai-market/v2/x402-bridge": 200}, "linked_records": ["https://vet402.com/sellers/tienda.textokit.store", "https://vet402.com/sellers/aemb.pro", "https://vet402.com/sellers/priorseal.xyz", "https://vet402.com/sellers/www.oracleinsight.xyz"], "migrations_added": 0, "mode": "candidate", "snapshot": {"bridge": {"balance_usd": null, "enabled": false, "limits": {"day_usd": null, "per_call_usd": 0.05, "per_seller_day_usd": 0.5, "wallet": "the wallet balance minus payments in flight"}, "network": "eip155:8453"}, "manifest_count": 286, "manifest_tools_digest": "5391edb381d3f96d0b61b8c618b6e62b905dcee63cfbe52a09a28c9e6f8bcd4c", "observed_listing_digest": "07129fa3e5d6804b00a5113ccc2150309b1c4e157462c349384a377b10f184e7", "observed_origins_and_counts": [["https://aemb.pro", 1], ["https://priorseal.xyz", 4], ["https://tienda.textokit.store", 0], ["https://www.oracleinsight.xyz", 11]], "search_matches_digest": "d4ecb220daba3c0ef416d8895bf590b26804315f026092455405382b60546a8d", "search_observed_digest": "412dd7b253a505c1f6cd7a4addd44507b9c65d0215a33fb6f277bec10a72fcdb"}}
+/usr/local/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+SQLite path data/sandbox_trials.db was requested explicitly; ignoring AIMARKET_DB_PATH=/smoke/hub.db for this backend. These were the SAME file before (the env var overrode the argument) — point this subsystem's own path variable at /smoke/hub.db if a shared file was intended.
+data/sandbox_trials.db does not exist yet while /smoke/hub.db does: if this hub ran with the env var set, THIS SUBSYSTEM'S EXISTING TABLES ARE STILL IN /smoke/hub.db and the new file starts empty. Migrate them (or point this subsystem's own path variable at /smoke/hub.db) BEFORE serving — for the channel ledger an empty database also resets the single-use deposit guard.
+NEW Ed25519 signing key generated at /tmp/outside-records-smoke-d8vq8fun/smoke.key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+NEW post-quantum (ML-DSA-65) signing key generated at /tmp/outside-records-smoke-d8vq8fun/smoke.key_mldsa. Back it up together with the Ed25519 key beside it. Peers pin it; an existing identity requires explicit trust reconciliation.
+NEW Ed25519 signing key generated at data/hub_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+InMemoryNFTRegistry initialized — DEVELOPMENT ONLY. NFTs lose state on restart. Use OnChainNFTRegistry in production.
+Generated new dataset salt at data/dataset_salt — back this up if you want anonymized IDs to stay stable across deploys.
+[crypto-disabled] AIFACTORY_CRYPTO_ENABLED=0 — payment channels offline; prepaid credits can still enforce 402 via X-API-Key; no on-chain verification/escrow; NFT minting blocked. Manifest/receipt signing and federation are unaffected. Set AIFACTORY_CRYPTO_ENABLED=1 to enable the on-chain economy.
+Supply-chain admission is off: set AIMARKET_SUPPLY_CHAIN_AUDITOR_PUBKEY to record verdicts, or AIMARKET_SUPPLY_CHAIN_ADMISSION_MODE=off to silence this.
+NEW Ed25519 signing key generated at data/provenance_signing_key. Back it up now. An existing peer identity requires explicit trust reconciliation.
+No AIMARKET_PROVENANCE_API_TOKEN set — /attest is disabled (503). Set this env var to enable manual attestation.
+{"health": {"/ai-market/v2/account/withdrawals": 401, "/ai-market/v2/federation/observed-sellers": 200, "/ai-market/v2/health": 200, "/ai-market/v2/x402-bridge": 200}, "linked_records": [], "migrations_added": 0, "mode": "base", "snapshot": {"bridge": {"balance_usd": null, "enabled": false, "limits": {"day_usd": null, "per_call_usd": 0.05, "per_seller_day_usd": 0.5, "wallet": "the wallet balance minus payments in flight"}, "network": "eip155:8453"}, "manifest_count": 286, "manifest_tools_digest": "5391edb381d3f96d0b61b8c618b6e62b905dcee63cfbe52a09a28c9e6f8bcd4c", "observed_listing_digest": "07129fa3e5d6804b00a5113ccc2150309b1c4e157462c349384a377b10f184e7", "observed_origins_and_counts": [["https://aemb.pro", 1], ["https://priorseal.xyz", 4], ["https://tienda.textokit.store", 0], ["https://www.oracleinsight.xyz", 11]], "search_matches_digest": "d4ecb220daba3c0ef416d8895bf590b26804315f026092455405382b60546a8d", "search_observed_digest": "412dd7b253a505c1f6cd7a4addd44507b9c65d0215a33fb6f277bec10a72fcdb"}}
+identical manifest, observed listing (minus outside links), search and bridge; links: https://vet402.com/sellers/tienda.textokit.store, https://vet402.com/sellers/aemb.pro, https://vet402.com/sellers/priorseal.xyz, https://vet402.com/sellers/www.oracleinsight.xyz
+sha256:60b41cad9c31f0188b1a0104df053c104fce9a89c2bc9ed8cc99d2c4f420ca12 -> sha256:f2f06e99ff730edc8ffcc7b20f41ed90fbe9aafbb0174cfb6df32f8251267878

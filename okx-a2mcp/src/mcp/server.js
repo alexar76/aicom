@@ -4,7 +4,7 @@
 import express from "express";
 import { hubInvoke } from "../hub.js";
 import { WARDEN_VERSION } from "../services.js";
-import { PROFILES } from "./profiles.js";
+import { PROFILE_ALIASES, PROFILES } from "./profiles.js";
 import { renderMcpDocs, renderPrivacy } from "./pages.js";
 import { html } from "../web/routes.js";
 
@@ -135,16 +135,18 @@ export function mountMcp(app, { services, hub, origin, callerIdOf, perIpPerMinut
   // The documentation of these servers; the trailing-slash spelling goes to it.
   r.get("/", (req, res) => (req.originalUrl.split("?")[0].endsWith("/")
     ? res.redirect(301, "/tools/mcp") : html(res, 200, renderMcpDocs(origin))));
+  const canonical = (name) => (Object.hasOwn(PROFILE_ALIASES, name) ? PROFILE_ALIASES[name] : name);
+  const profileOf = (id) => (Object.hasOwn(PROFILES, id) ? PROFILES[id] : undefined);
   r.get("/:profile", (req, res) => {
-    const profile = PROFILES[req.params.profile];
+    const profile = profileOf(canonical(req.params.profile));
     if (!profile) return res.status(404).json({ error: "unknown_profile", profiles: Object.keys(PROFILES) });
     // No server-to-client stream: a GET says so, as the Streamable HTTP transport allows.
     return res.status(405).set("Allow", "POST").json({ error: "method_not_allowed", message: "POST JSON-RPC messages here" });
   });
   r.delete("/:profile", (_req, res) => res.status(405).set("Allow", "POST").end());
   r.post("/:profile", async (req, res) => {
-    const profileId = req.params.profile;
-    const profile = PROFILES[profileId];
+    const profileId = canonical(req.params.profile);
+    const profile = profileOf(profileId);
     res.set("Cache-Control", "no-store");
     if (!profile || !available(profile)) return res.status(404).json(rpcError(null, -32601, "unknown MCP server"));
     const ip = req.ip || "unknown";

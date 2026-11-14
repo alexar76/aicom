@@ -16,3 +16,16 @@ fi
 if [[ -f atlas/pyproject.toml ]]; then
   pip install --no-cache-dir -e ./atlas
 fi
+
+# Optional satellite packages used by factory signing / registry tests.
+for path in \
+  oracles/core \
+  platon/backend \
+  oracles/oracles/platon/backend \
+  aimarket-hub/plugins/aimarket-provenance \
+  plugins/aimarket-provenance
+do
+  if [[ -f "$path/pyproject.toml" || -f "$path/setup.py" ]]; then
+    pip install --no-cache-dir -e "./$path"
+  fi
+done

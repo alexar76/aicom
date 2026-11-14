@@ -53,6 +53,9 @@ export default {
     eyebrow: "Outils gratuits pour développeurs",
     h1: "Collez. Obtenez un diagnostic.",
     lead: "Cinq vérifications dans le navigateur pour les listes d’outils MCP et les paiements x402. Aucun compte ni portefeuille requis. Quatre sont aussi accessibles via x402, en USDC sur Base.",
+    vetTitle: "Vérifié par un tiers",
+    vetLead: "vet402 est un service indépendant qui paie des vendeurs x402 et publie ce que chaque appel payé a renvoyé. Son relevé actuel pour les routes payantes de ce site :",
+    vetAlt: "Relevé de vet402 sur ses appels payés à modelmarket.dev",
     howTitle: "Comment fonctionnent les vérifications",
     how: [
       ["Règles et cryptographie", "Selon la saisie, les vérifications appliquent des règles explicites, consultent des observations publiées ou vérifient les signatures."],

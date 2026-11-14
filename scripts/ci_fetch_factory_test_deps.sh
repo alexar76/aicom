@@ -65,6 +65,14 @@ clone_if_missing acex acex
 clone_if_missing aimarket-hub aimarket-hub
 # physical_capabilities / knowledge sync import atlas.products + atlas.stations
 clone_if_missing atlas atlas
+# Signing-identity + deployment-registry tests import these packages by path.
+clone_if_missing oracles oracles
+clone_if_missing platon platon
+clone_if_missing alien-monitor alien-monitor
+clone_if_missing argus argus
+clone_if_missing metis metis
+clone_if_missing treasury treasury
+clone_if_missing aimarket-mcp aimarket-mcp
 ensure_hub_prod_forbidden_gate
 
 if [[ ! -d plugins/aimarket-mcp-packager ]]; then
@@ -74,4 +82,10 @@ if [[ ! -d plugins/aimarket-mcp-packager ]]; then
   mkdir -p plugins
   cp -R "$tmp_plugins/plugins/." plugins/
   rm -rf "$tmp_plugins"
+fi
+
+# Hub satellite ships provenance; keep an editable install path for factory tests.
+if [[ ! -d plugins/aimarket-provenance && -d aimarket-hub/plugins/aimarket-provenance ]]; then
+  mkdir -p plugins
+  cp -R aimarket-hub/plugins/aimarket-provenance plugins/aimarket-provenance
 fi
