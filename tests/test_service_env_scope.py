@@ -752,6 +752,8 @@ ENTRY_POINTS = {
 
 @pytest.mark.parametrize("path,up", sorted(ENTRY_POINTS.items()), ids=sorted(ENTRY_POINTS))
 def test_every_entry_point_generates_before_compose_starts(path, up):
+    if not (ROOT / path).is_file():
+        pytest.skip(f"{path} absent (factory trim)")
     text = (ROOT / path).read_text(encoding="utf-8")
     starts = [m.start() for m in re.finditer(up, text)]
     assert starts, f"{path}: no compose start found — the pattern here is stale"

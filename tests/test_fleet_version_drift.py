@@ -125,6 +125,8 @@ def test_plain_versions_are_accepted(mod, ok):
 
 def test_a_suspect_version_is_dropped_from_the_report_body(mod, monkeypatch):
     """Not merely unformatted — absent. `served_version` must be None when the gate refused it."""
+    if not (ROOT / "basanos" / "pyproject.toml").is_file():
+        pytest.skip("basanos/ absent (factory trimmed tree)")
     monkeypatch.setattr(mod, "observe", lambda p: {"served": "9.9.9\x1b[1A", "authority": "unsigned",
                                                    "detail": ""})
     report = mod.collect(["basanos"])
@@ -253,6 +255,8 @@ def test_every_recipe_naming_a_script_names_one_that_exists(mod):
 
 
 def test_advisory_output_never_contains_a_served_string_verbatim(mod, monkeypatch):
+    if not (ROOT / "basanos" / "pyproject.toml").is_file():
+        pytest.skip("basanos/ absent (factory trimmed tree)")
     monkeypatch.setattr(mod, "observe", lambda p: {"served": "0.0.1", "authority": "unsigned",
                                                    "detail": ""})
     report = mod.collect(["basanos"])

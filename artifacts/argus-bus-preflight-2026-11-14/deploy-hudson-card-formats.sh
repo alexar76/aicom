@@ -15,24 +15,35 @@ compose=(docker compose --project-directory "$root" -f "$root/docker-compose.yml
 test "$(docker inspect -f '{{.Image}}' argus)" = "$(docker image inspect -f '{{.Id}}' "$base")"
 test "$(docker inspect -f '{{.State.Running}}' argus-hudson-browser)" = true
 sha256sum --check --quiet overlay.sha256
+mkdir -p runtime-deps
 docker build --network none -f - -t "$image" --build-arg "ARGUS_BASE_IMAGE=$base" . <<'DOCKERFILE'
 ARG ARGUS_BASE_IMAGE=aicom-security:argus-hudson-20261114
 FROM ${ARGUS_BASE_IMAGE}
 COPY overlay/ /app/dist/
+COPY runtime-deps/ /app/node_modules/
 DOCKERFILE
 docker run --rm --network none --read-only --cap-drop ALL --entrypoint node "$image" --input-type=module -e '
   const { openHudsonCheckout } = await import("./dist/checkout/hudson-browser.js");
   const { configuredHudsonPurchase } = await import("./dist/checkout/hudson-purchase.js");
   const { LasoCheckoutAuthError } = await import("./dist/checkout/laso-card.js");
   if (!openHudsonCheckout || !configuredHudsonPurchase || !LasoCheckoutAuthError) process.exit(1);
+  if (await import("node:fs").then(fs => fs.existsSync("./dist/checkout/hudson-receipt.js"))) {
+    const { getDocument } = await import("pdfjs-dist/legacy/build/pdf.mjs");
+    if (typeof getDocument !== "function" || typeof DOMMatrix !== "function") process.exit(1);
+  }
 '
 
 docker exec -i -w /app argus node --input-type=module - <<'NODE'
-import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { loadConfig } from "./dist/config.js";
-if (existsSync(join(loadConfig().config.stateDir, "hudson-link-purchase.json"))) {
-  throw new Error("Purchase journal is present. Reconcile before replacing a running checkout.");
+import { readPrivateCheckoutFile } from "./dist/checkout/itch-purchase.js";
+try {
+  const row = JSON.parse(readPrivateCheckoutFile(join(loadConfig().config.stateDir, "hudson-link-purchase.json"), 4096));
+  if (row.v !== 1 || row.stage !== "delivered") {
+    throw new Error("Reconcile the in-progress Hudson Link purchase before replacing the checkout.");
+  }
+} catch (error) {
+  if (error.code !== "ENOENT") throw error;
 }
 NODE
 

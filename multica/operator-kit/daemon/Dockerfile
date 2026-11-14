@@ -1,6 +1,6 @@
 # The Multica daemon in a container, as our own installation runs it (multica/manual §2): the Multica CLI
 # from its official release, checksum-verified, and OpenCode, at the versions onboard.sh pins.
-FROM node:22-bookworm-slim
+FROM node:22.23.4-bookworm-slim
 ARG MULTICA_VERSION
 ARG OPENCODE_VERSION
 ARG TARGETARCH

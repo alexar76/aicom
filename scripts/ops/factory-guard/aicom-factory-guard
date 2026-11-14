@@ -46,6 +46,7 @@ EXCLUDES = [".git", "node_modules", ".venv", "venv", "__pycache__", ".next", ".c
             "anvil-state.unreadable-*", "anvil.log", "logs/*.log"]
 ANVIL_STATE = "data/alien-monitor/universe/anvil-state/state.json"
 ANVIL_CONTAINER = "alien-monitor"
+ANVIL_UID = 10001  # the `monitor` user alien-monitor runs as
 
 
 def log(mark: str, msg: str) -> None:
@@ -143,6 +144,10 @@ def snapshot() -> int:
     if a.is_file():
         (KEEP_TREE / ANVIL_STATE).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(a, KEEP_TREE / ANVIL_STATE)
+        # repair copies KEEP back with rsync -a, owners included: a root-owned folder here would come back
+        # root-owned and alien-monitor could no longer reset its chain (see anvil_owner).
+        os.chown(KEEP_TREE / ANVIL_STATE, ANVIL_UID, ANVIL_UID)
+        os.chown((KEEP_TREE / ANVIL_STATE).parent, ANVIL_UID, ANVIL_UID)
     STATUS.write_text(json.dumps({"snapshot_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                                   "sqlite_copies": n}) + "\n")
     log("✔", f"snapshot: tree copied, {n} SQLite copies")
@@ -167,15 +172,37 @@ def anvil_dump(dest: Path) -> bool:
             other.unlink()
     tmp = dest.with_name("state.json.tmp")
     tmp.write_bytes(p.stdout)
-    os.chown(tmp, 10001, 10001)
+    os.chown(tmp, ANVIL_UID, ANVIL_UID)
     os.replace(tmp, dest)
-    os.chown(dest.parent, 10001, 10001)
+    os.chown(dest.parent, ANVIL_UID, ANVIL_UID)
     return True
+
+
+def anvil_owner(fix: bool) -> list[str]:
+    """Paths in alien-monitor's anvil-state folder that its user does not own; given back when fix is true.
+
+    alien-monitor (uid 10001) resets its demo chain by deleting state.json once the folder passes its size
+    cap. The 2026-11-14 restore left the folder owned by root: the file could still be rewritten, but not
+    deleted, so the reset raised PermissionError on every retry and the UNI demo chain stayed down from
+    11:16Z until the folder was given back at 11:56Z. This only sets the owner of the monitor's own working
+    folder; it never deletes anything.
+    """
+    d = (TREE / ANVIL_STATE).parent
+    if not d.is_dir():
+        return []
+    wrong = [p for p in [d, *d.iterdir()] if p.stat().st_uid != ANVIL_UID]
+    if fix:
+        for p in wrong:
+            os.chown(p, ANVIL_UID, ANVIL_UID)
+    return [str(p) for p in wrong]
 
 
 def repair() -> int:
     cs = containers()
     binds = tree_binds(cs)
+    fixed = anvil_owner(fix=True)
+    if fixed:
+        log("✔", f"gave {len(fixed)} anvil-state paths back to uid {ANVIL_UID}: {', '.join(fixed[:4])}")
     miss = missing_paths(binds)
     if miss:
         log("✖", f"{len(miss)} paths missing from {TREE}: {', '.join(miss[:6])}")
@@ -190,6 +217,7 @@ def repair() -> int:
             log("✖", f"rsync from {KEEP_TREE} exited {rc}")
         left = missing_paths(binds)
         log("✔" if not left else "✖", f"restored missing files from {KEEP_TREE}" + (f"; still missing {left[:4]}" if left else ""))
+        anvil_owner(fix=True)  # a copy taken before 2026-11-14 carries root as the owner
     stale = stale_containers(binds)
     for name in stale:
         if name == ANVIL_CONTAINER:
@@ -211,9 +239,12 @@ def check() -> int:
         log("✖", f"missing {m}")
     for s in stale:
         log("✖", f"{s} is bound to a deleted path")
-    if not miss and not stale:
+    owner = anvil_owner(fix=False)
+    for p in owner:
+        log("✖", f"{p} is not owned by uid {ANVIL_UID}: alien-monitor cannot reset its chain")
+    if not miss and not stale and not owner:
         log("✔", f"factory tree whole; {len(binds)} binds in {len({b[0] for b in binds})} containers match")
-    return 1 if (miss or stale) else 0
+    return 1 if (miss or stale or owner) else 0
 
 
 if __name__ == "__main__":

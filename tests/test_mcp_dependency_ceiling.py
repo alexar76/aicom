@@ -19,7 +19,11 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-SKIP_PARTS = ("node_modules", ".upstreams", ".venv", ".git", ".claude", "site-packages")
+SKIP_PARTS = (
+    "node_modules", ".upstreams", ".venv", ".git", ".claude", "site-packages",
+    # Evidence / artifact trees copy package sources without their pyproject pins.
+    "docs", "artifacts",
+)
 
 #: The v1-only entry points. `mcp.server.mcpserver` is the v2 name and is fine.
 _V1_API = re.compile(r"from\s+mcp\.server\.fastmcp\s+import|from\s+mcp\.server\s+import\s+FastMCP")

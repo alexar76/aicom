@@ -2,12 +2,17 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_forge_domain_is_the_hephaestus_landing_not_basanos():
+    landing_path = ROOT / "hephaestus/docs/landing/index.html"
+    if not landing_path.is_file():
+        pytest.skip("hephaestus landing absent (factory trimmed tree)")
     nginx = (ROOT / "deploy/nginx/forge.modelmarket.dev.conf").read_text(encoding="utf-8")
-    landing = (ROOT / "hephaestus/docs/landing/index.html").read_text(encoding="utf-8")
+    landing = landing_path.read_text(encoding="utf-8")
     assert "server_name forge.modelmarket.dev" in nginx
     assert "hephaestus/docs/landing" in nginx
     assert "BASANOS" in nginx  # named so operators do not put the touchstone here
@@ -20,8 +25,11 @@ def test_forge_domain_is_the_hephaestus_landing_not_basanos():
 
 
 def test_basanos_vhost_proxies_loopback_and_is_not_the_forge():
+    compose_path = ROOT / "basanos/docker-compose.yml"
+    if not compose_path.is_file():
+        pytest.skip("basanos compose absent (factory trimmed tree)")
     nginx = (ROOT / "deploy/nginx/basanos.modelmarket.dev.conf").read_text(encoding="utf-8")
-    compose = (ROOT / "basanos/docker-compose.yml").read_text(encoding="utf-8")
+    compose = compose_path.read_text(encoding="utf-8")
     assert "server_name basanos.modelmarket.dev" in nginx
     assert "127.0.0.1:9470" in nginx
     assert "forge.modelmarket.dev" in nginx

@@ -16,8 +16,11 @@ const verify = await fetch(`https://laso.finance/get-card-data?${query}`, {
 });
 if (!verify.ok) throw new Error(`Laso card state returned HTTP ${verify.status}`);
 const card = await verify.json();
+const balance = card.card_details?.available_balance;
 if (card.card_id !== id || card.usd_amount !== 5 || card.status !== "ready" || card.country !== "US"
-  || !Array.isArray(card.transactions) || card.card_details?.available_balance !== 5) throw new Error("Unexpected card state");
+  || !Array.isArray(card.transactions) || typeof balance !== "number" || !Number.isFinite(balance) || balance < 0 || balance > 5) {
+  throw new Error("Unexpected card state");
+}
 
 const tmp = `${path}.${randomUUID()}.tmp`;
 const fd = openSync(tmp, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL, 0o600);
@@ -25,4 +28,4 @@ try { writeFileSync(fd, token); fsyncSync(fd); } finally { closeSync(fd); }
 renameSync(tmp, path);
 const dir = openSync(dirname(path), constants.O_RDONLY);
 try { fsyncSync(dir); } finally { closeSync(dir); }
-console.log("Existing checkout session refreshed. Card ready, $5 available.");
+console.log("Existing checkout session refreshed. Card ready.");

@@ -33,8 +33,10 @@ const { private_key: raw } = JSON.parse(readFileSync(file, "utf8"));
 const key = raw.startsWith("0x") ? raw : `0x${raw}`;
 if (privateKeyToAccount(key).address.toLowerCase() !== "0x097e3f339d0b023605e12a6b81e2d6cb7571475a") throw new Error("Unexpected checkout wallet");
 const token = await lasoWalletAuth(() => key)();
+const installer = readFileSync(new URL("./install-existing-laso-session.mjs", import.meta.url), "utf8");
+const shellQuote = value => "'" + value.replace(/'/g, "'\\''") + "'";
 const install = spawn("ssh", ["-T", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8", "attested",
-  "docker exec -i argus node --input-type=module -e \"\$(cat /root/argus-hudson-20261114/install-existing-laso-session.mjs)\""],
+  "docker exec -i argus node --input-type=module -e " + shellQuote(installer)],
 { stdio: ["pipe", "inherit", "inherit"] });
 install.stdin.on("error", () => {});
 install.stdin.end(token);

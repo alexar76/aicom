@@ -73,6 +73,25 @@ clone_if_missing argus argus
 clone_if_missing metis metis
 clone_if_missing treasury treasury
 clone_if_missing aimarket-mcp aimarket-mcp
+# Factory pytest imports / reads these satellites (trimmed out of alexar76/aicom).
+clone_if_missing momus momus
+clone_if_missing skopos skopos
+clone_if_missing lottery lottery
+clone_if_missing ai-service-mesh ai-service-mesh
+clone_if_missing aimarket-agent aimarket-agent
+clone_if_missing aimarket-bridges aimarket-bridges
+clone_if_missing gaia gaia
+clone_if_missing hephaestus hephaestus
+clone_if_missing basanos basanos
+clone_if_missing histor histor
+clone_if_missing warden warden
+clone_if_missing aimarket-protocol aimarket-protocol
+clone_if_missing themis themis
+clone_if_missing create-aimarket-agent create-aimarket-agent
+clone_if_missing cite-desks cite-desks
+clone_if_missing dioscuri dioscuri
+# courses/ is published as alexar76/aimarket-courses
+clone_if_missing courses aimarket-courses
 ensure_hub_prod_forbidden_gate
 
 if [[ ! -d plugins/aimarket-mcp-packager ]]; then

@@ -107,7 +107,10 @@ def test_the_registry_defaults_to_where_the_factory_writes_it():
     assert default, "the host directory is no longer configurable"
     # The Factory's default: $AIFACTORY_DATA_ROOT/state/ai_market/deposit_claims, with ./data
     # bind-mounted from the runtime tree the CI deploy syncs into.
-    deploy = (ROOT / ".gitea" / "workflows" / "deploy.yml").read_text(encoding="utf-8")
+    deploy_path = ROOT / ".gitea" / "workflows" / "deploy.yml"
+    if not deploy_path.is_file():
+        pytest.skip(".gitea/workflows/deploy.yml absent (factory trim)")
+    deploy = deploy_path.read_text(encoding="utf-8")
     dest = re.search(r"DEST=(\S+)", deploy).group(1)
     assert default.group(1) == f"{dest}/data/" + "/".join(factory_claims._SHARED_CLAIMS_SUBPATH)
 

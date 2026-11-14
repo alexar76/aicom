@@ -25,7 +25,10 @@ SCRIPT = ROOT / "themis" / "deploy" / "deploy_prod.sh"
 sys.path.insert(0, str(ROOT / "scripts" / "security"))
 from service_env import filtered  # noqa: E402
 
-pytestmark = pytest.mark.skipif(os.name != "posix", reason="bash deploy script")
+pytestmark = [
+    pytest.mark.skipif(os.name != "posix", reason="bash deploy script"),
+    pytest.mark.skipif(not SCRIPT.is_file(), reason="themis deploy script absent (factory trim)"),
+]
 
 # What `docker inspect modelmarket-hub` reports: hub settings plus shared ones it must not keep.
 LIVE_HUB_ENV = [

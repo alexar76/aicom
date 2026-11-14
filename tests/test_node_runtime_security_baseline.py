@@ -70,7 +70,10 @@ def test_tracked_docker_and_compose_node_images_meet_security_floor():
     "independent/verified-execution-hub/docker/relay.Dockerfile",
 ])
 def test_downloaded_node_archives_have_matching_version_and_checksums(relative):
-    source = (ROOT / relative).read_text()
+    path = ROOT / relative
+    if not path.is_file():
+        pytest.skip(f"{relative} absent (independent/ unpublished on factory)")
+    source = path.read_text()
     assert "ARG NODE_VERSION=22.23.4" in source
     for arch, expected in ARCHIVE_SHA256.items():
         match = re.search(rf'node_arch="{arch}"; node_sha="([a-f0-9]+)"', source)
@@ -94,12 +97,15 @@ def test_root_apt_install_guard_rejects_old_runtime_versions():
 
 @pytest.mark.parametrize("relative", ["docker-compose.everything.yml", "lottery/docker-compose.yml"])
 def test_updated_compose_files_parse_and_select_the_patched_node_image(relative):
+    path = ROOT / relative
+    if not path.is_file():
+        pytest.skip(f"{relative} absent (factory trimmed tree)")
     # Compose's !override is a data tag; accept it without enabling any Python
     # object constructors while parsing the merged-stack source.
     class ComposeLoader(yaml.SafeLoader):
         pass
 
     ComposeLoader.add_constructor("!override", lambda loader, node: loader.construct_sequence(node))
-    document = yaml.load((ROOT / relative).read_text(), Loader=ComposeLoader)
+    document = yaml.load(path.read_text(), Loader=ComposeLoader)
     images = [service.get("image", "") for service in document["services"].values()]
     assert "node:22.23.4-alpine" in images

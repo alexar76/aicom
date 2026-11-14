@@ -11,7 +11,10 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "independent/kova-gateway/backend"))
+_KOVA_BACKEND = ROOT / "independent/kova-gateway/backend"
+sys.path.insert(0, str(_KOVA_BACKEND))
+# independent/ is never published to GitHub (factory trim + github_published: false).
+_KOVA_AVAILABLE = (_KOVA_BACKEND / "kova").is_dir()
 
 
 @pytest.fixture(params=["sqlite", "postgres"])
@@ -96,6 +99,8 @@ def checkout(isolated, monkeypatch):
 
 
 def test_kova_refuses_transfer_older_than_invoice(isolated, monkeypatch):
+    if not _KOVA_AVAILABLE:
+        pytest.skip("independent/kova-gateway absent (factory trim / unpublished)")
     from kova.invoices import TRANSFER_TOPIC, InvoiceBook
     from kova.provider_pool import ProviderPool
     from kova.settings import load_settings
@@ -124,6 +129,8 @@ def test_kova_refuses_transfer_older_than_invoice(isolated, monkeypatch):
 
 
 def test_saas_old_transfer_refused_then_bound_payment_issues_one_key(isolated, monkeypatch):
+    if not _KOVA_AVAILABLE:
+        pytest.skip("independent/kova-gateway absent (factory trim / unpublished)")
     from fastapi.testclient import TestClient
     from kova.invoices import TRANSFER_TOPIC, InvoiceBook
     from kova.provider_pool import ProviderPool

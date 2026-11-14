@@ -18,14 +18,20 @@ CATALOGS = ("om_mesh_cities.yaml", "sc_mesh_cities.yaml", "extra_sensors.yaml")
 
 @pytest.mark.parametrize("name", CATALOGS)
 def test_atlas_packaged_copy_equals_the_canonical_catalog(name: str) -> None:
-    canonical = (ROOT / "gaia" / "config" / name).read_bytes()
+    canonical_path = ROOT / "gaia" / "config" / name
+    if not canonical_path.is_file():
+        pytest.skip(f"gaia/config/{name} absent (factory trimmed tree)")
+    canonical = canonical_path.read_bytes()
     assert (ROOT / "atlas" / "atlas" / "_config" / name).read_bytes() == canonical, (
         f"atlas/atlas/_config/{name} out of sync — run ./scripts/sync_physical_sensor_catalogs.sh"
     )
 
 
 def test_gaia_wheel_force_includes_every_catalog() -> None:
-    project = tomllib.loads((ROOT / "gaia" / "pyproject.toml").read_text(encoding="utf-8"))
+    gaia_proj = ROOT / "gaia" / "pyproject.toml"
+    if not gaia_proj.is_file():
+        pytest.skip("gaia/pyproject.toml absent (factory trimmed tree)")
+    project = tomllib.loads(gaia_proj.read_text(encoding="utf-8"))
     hatch = project["tool"]["hatch"]["build"]["targets"]
     forced = hatch["wheel"]["force-include"]
     sdist = hatch["sdist"]["include"]

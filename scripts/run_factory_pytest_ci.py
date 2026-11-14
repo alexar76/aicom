@@ -14,6 +14,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def _pytest_argv() -> list[str]:
+    # Monorepo-topology tests assert unpublished satellite-map entries, .gitea
+    # workflows, ecosystem-README, cross-satellite badge/workflow counts, or
+    # excluded artifact trees — they belong on the full tree, not the trimmed
+    # factory mirror (even after ci_fetch_factory_test_deps.sh clones satellites).
     common = [
         "-q",
         "--timeout=45",
@@ -22,6 +26,18 @@ def _pytest_argv() -> list[str]:
         "--ignore=tests/test_browser_fastapi_login_integration.py",
         "--ignore=tests/test_visual_standards_playwright.py",
         "--ignore=tests/test_diagram_golden_visual.py",
+        "--ignore=tests/test_mirror_ships_published_map.py",
+        "--ignore=tests/test_markdown_links_resolve.py",
+        "--ignore=tests/test_workflow_supply_chain.py",
+        "--ignore=tests/test_test_count_badges_agree.py",
+        "--ignore=tests/test_satellite_local_exports.py",
+        "--ignore=tests/test_profile_readme_taxonomy.py",
+        "--ignore=tests/test_onboarding_surfaces_i18n.py",
+        "--ignore=tests/test_secondary_publish_paths.py",
+        "--ignore=tests/test_npm_security_coverage.py",
+        # SCOPES vs import-closure drifts when satellites are CI-cloned into the
+        # trimmed tree; the monorepo workflow still runs this gate.
+        "--ignore=tests/test_service_env_scope.py",
         "-k",
         "not test_full_software_browser_e2e",
     ]

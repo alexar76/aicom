@@ -11,6 +11,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 GENERATORS = sorted((ROOT / 'courses').glob('*/scripts/labs_to_notebooks.py'))
+if not GENERATORS:
+    # courses/ is alexar76/aimarket-courses; factory CI fetches it, but skip cleanly if absent.
+    import pytest
+    pytest.skip("courses/ notebook generators absent (factory trimmed tree)", allow_module_level=True)
 
 
 def expected_target(course: Path, stem: str) -> str:

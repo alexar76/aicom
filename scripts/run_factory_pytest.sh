@@ -34,6 +34,16 @@ fi
   --ignore=tests/test_browser_fastapi_login_integration.py \
   --ignore=tests/test_visual_standards_playwright.py \
   --ignore=tests/test_diagram_golden_visual.py \
+  --ignore=tests/test_mirror_ships_published_map.py \
+  --ignore=tests/test_markdown_links_resolve.py \
+  --ignore=tests/test_workflow_supply_chain.py \
+  --ignore=tests/test_test_count_badges_agree.py \
+  --ignore=tests/test_satellite_local_exports.py \
+  --ignore=tests/test_profile_readme_taxonomy.py \
+  --ignore=tests/test_onboarding_surfaces_i18n.py \
+  --ignore=tests/test_secondary_publish_paths.py \
+  --ignore=tests/test_npm_security_coverage.py \
+  --ignore=tests/test_service_env_scope.py \
   -k "not test_full_software_browser_e2e" \
   --cov \
   --cov-report=term-missing:skip-covered \

@@ -101,7 +101,7 @@
     "chromium_fixture_cases_passed": 4,
     "argus_image_healthy": "aicom-security:argus-hudson-marketing-opt-out-20261114"
   },
-  "latest_card_check_after_deploy": {
+  "card_check_before_live_purchase": {
     "journal_stage": "no_submission",
     "available_usd_cents": 500,
     "matching_hudson_275_cents_debits": 0
@@ -153,8 +153,71 @@
     "diagnostic_approval_decision": "declined",
     "merchant_order_submitted": false
   },
+  "hudson_live_purchase": {
+    "date_local": "2026-11-14",
+    "time_zone": "Europe/Amsterdam",
+    "approval_prompt_time_local": "13:15",
+    "ticket_delivery_time_local": "13:16",
+    "argus_image": "aicom-security:argus-hudson-opening-20261114",
+    "approved_total_usd_cents": 275,
+    "order_type": "one adult one-way ticket",
+    "production_journal_stage": "delivered",
+    "telegram_pdf": {
+      "filename": "hudson-link-ticket.pdf",
+      "observed_in_owner_chat": true,
+      "owner_opened_file": true,
+      "route_and_printable_barcode_visible": true
+    },
+    "laso": {
+      "available_before_usd_cents": 500,
+      "available_after_usd_cents": 225,
+      "matching_noncredit_activity_rows_direct_read": 1,
+      "matching_amount_usd_cents": 275,
+      "merchant_descriptor_matched": true,
+      "amount_field_type": "string",
+      "argus_automated_reconciliation_confirmed": false,
+      "explicit_posting_status_exposed": false
+    },
+    "separate_merchant_receipt_amount_verified": false
+  },
+  "hudson_post_delivery_reconciliation": {
+    "date_local": "2026-11-14",
+    "production_image_healthy": "aicom-security:argus-hudson-reconcile-20261114",
+    "laso_amount_string_supported": true,
+    "targeted_tests_passed": 27,
+    "same_purchase": true,
+    "production_journal_stage": "delivered",
+    "issuer_reconciled": true,
+    "merchant_receipt_verified": true,
+    "laso_matching_debits_at_275_cents": 1,
+    "laso_available_after_usd_cents": 225,
+    "issuer_final_posting_status_exposed": false,
+    "merchant_order_http": 200,
+    "merchant_receipt_http": 200,
+    "merchant_order_and_delivered_ticket_linked": true,
+    "merchant_receipt_status": "Captured",
+    "merchant_receipt_order_total_usd_cents": 275,
+    "merchant_receipt_amount_paid_usd_cents": 275,
+    "merchant_receipt_card_suffix_matched": true,
+    "new_merchant_order_submitted": false
+  },
+  "hudson_automatic_receipt_reconciliation": {
+    "date_local": "2026-11-14",
+    "production_image_healthy": "aicom-security:argus-hudson-auto-receipt-20261114",
+    "targeted_tests_passed": 35,
+    "existing_delivered_purchase_preserved": true,
+    "merchant_order_id_saved": true,
+    "merchant_receipt_sha256_saved": true,
+    "merchant_order_and_receipt_read_by_get": true,
+    "merchant_receipt_verified": true,
+    "issuer_reconciled": true,
+    "laso_matching_debits_at_275_cents": 1,
+    "laso_available_after_usd_cents": 225,
+    "repeat_check_returned_saved_result": true,
+    "payment_post_sent": false
+  },
   "telegram_approval_sent": true,
-  "payment_submitted": false,
-  "receipt_observed": false,
-  "ticket_delivered": false
+  "payment_submitted": true,
+  "receipt_observed": true,
+  "ticket_delivered": true
 }
