@@ -2,7 +2,7 @@
 # Backup receiver: keeps other hosts' borg repositories without being able to read them.
 #
 #   receiver.sh setup                          borg, the aicom-backup user, weekly compact + check
-#   receiver.sh add-client LABEL QUOTA < key   let one ssh public key reach
+#   receiver.sh add-client LABEL QUOTA [IP] < key   let one ssh public key (from IP only) reach
 #                                              /srv/aicom-backups/LABEL and nothing else
 #   receiver.sh status-page                    publish status.json for the alerter (every 10 min)
 #
@@ -61,13 +61,18 @@ UNIT
 }
 
 add_client() {
-  local label="$1" quota="$2" key
+  local label="$1" quota="$2" from="${3:-}" key opts=""
   [[ "$label" =~ ^[a-z0-9][a-z0-9-]{1,40}$ ]] || { echo "bad label: $label" >&2; exit 2; }
   [[ "$quota" =~ ^[0-9]+[GT]$ ]] || { echo "bad quota: $quota" >&2; exit 2; }
+  if [[ -n "$from" ]]; then
+    # The client's own address: a copy of its key used from anywhere else is refused.
+    [[ "$from" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}$ ]] || { echo "bad client address: $from" >&2; exit 2; }
+    opts="from=\"$from\","
+  fi
   read -r key
   [[ "$key" =~ ^ssh-ed25519\ [A-Za-z0-9+/=]+ ]] || { echo "not an ed25519 public key" >&2; exit 2; }
   key="$(awk '{print $1" "$2}' <<<"$key")"
-  local line="command=\"borg serve --append-only --restrict-to-repository $ROOT/$label --storage-quota $quota\",restrict $key aicom-backup@$label"
+  local line="${opts}command=\"borg serve --append-only --restrict-to-repository $ROOT/$label --storage-quota $quota\",restrict $key aicom-backup@$label"
   local keys="$ROOT/.ssh/authorized_keys"
   grep -v " aicom-backup@$label\$" "$keys" > "$keys.new" || true
   echo "$line" >> "$keys.new"
@@ -103,7 +108,7 @@ UNIT
 
 case "${1:-}" in
   setup) setup ;;
-  add-client) add_client "${2:?label}" "${3:?quota, e.g. 30G}" ;;
+  add-client) add_client "${2:?label}" "${3:?quota, e.g. 30G}" "${4:-}" ;;
   status-page) status_page ;;
-  *) echo "usage: $0 setup | add-client LABEL QUOTA < pubkey | status-page" >&2; exit 2 ;;
+  *) echo "usage: $0 setup | add-client LABEL QUOTA [CLIENT_IP] < pubkey | status-page" >&2; exit 2 ;;
 esac

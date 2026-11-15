@@ -649,6 +649,13 @@ satellites:
       - docs/evidence/warden-release-0.26.0-2026-11-11/quality/Dockerfile.candidate
       - docs/evidence/warden-release-0.26.0-2026-11-11/quality/switch.sh
       - docs/evidence/warden-release-0.26.0-2026-11-11/supp06-gate-check.md
+      # 2026-11-15: the 0.27.0 evidence has the same two kinds of file (the HISTOR host IP
+      # is in the candidate Dockerfile and the switch script), for the live candidate and
+      # for the superseded one.
+      - docs/evidence/warden-release-0.27.0-2026-11-14/quality/Dockerfile.candidate
+      - docs/evidence/warden-release-0.27.0-2026-11-14/quality/switch.sh
+      - docs/evidence/warden-release-0.27.0-2026-11-14/quality-superseded-0a2f06e4/Dockerfile.candidate
+      - docs/evidence/warden-release-0.27.0-2026-11-14/quality-superseded-0a2f06e4/switch.sh
     registries:
       - npm:@aimarket/warden
       - mcp-registry:io.github.alexar76/warden

@@ -1,0 +1,60 @@
+diff --git a/helios/helios/calliope.py b/helios/helios/calliope.py
+index 37439ca0c..3583ee829 100644
+--- a/helios/helios/calliope.py
++++ b/helios/helios/calliope.py
+@@ -305,12 +305,19 @@ def _validate_segment(
+     return {"vo": vo, "caption": caption, "visual": safe_visual}
+ 
+ 
++def _cut_on_space(text: str, limit: int) -> str:
++    """At most `limit` characters, cut at whitespace so a link or word is never left half-written."""
++    if len(text) <= limit:
++        return text
++    return text[:limit + 1].rsplit(None, 1)[0].rstrip()
++
++
+ def parse_script(data: dict[str, Any]) -> EpisodeScript:
+     segments_raw = data.get("segments") or []
+     if not segments_raw:
+         raise ValueError("script has no segments")
+     title = sanitize_text(str(data.get("title", "Ecosystem update")), max_len=100)
+-    desc = sanitize_text(str(data.get("description", "")), max_len=4000)
++    desc = _cut_on_space(sanitize_text(str(data.get("description", "")), max_len=4001), 4000)
+     tags = [sanitize_text(str(t), max_len=40) for t in (data.get("tags") or ["AIAgents", "OpenSource"])][:15]
+     topic = sanitize_text(str(data.get("topic", title)), max_len=200)
+     repos = [re.sub(r"[^a-zA-Z0-9._-]", "", str(r))[:64] for r in (data.get("repos") or [])][:10]
+diff --git a/helios/helios/director.py b/helios/helios/director.py
+index 26e7504b6..b23ce8eb3 100644
+--- a/helios/helios/director.py
++++ b/helios/helios/director.py
+@@ -26,6 +26,21 @@ priority 100 = upload first (backlog episodes in season order).
+ """
+ 
+ 
++# YouTube's own limit for a description: the reviewer reads what will be published, all of it.
++# Until 2026-11-15 it read the first 500 characters; a 505-character description ending in
++# https://oracles.modelmarket.dev reached it as "https://oracles.modelmarke", and the video was
++# blocked for a truncated link that was never truncated.
++REVIEW_DESCRIPTION_MAX = 5000
++
++
++def description_for_review(desc: str) -> str:
++    """The description as the reviewer should see it: whole, or cut at a space and labelled as cut."""
++    if len(desc) <= REVIEW_DESCRIPTION_MAX:
++        return desc
++    head = desc[:REVIEW_DESCRIPTION_MAX].rsplit(None, 1)[0]
++    return head + " [description continues; shortened for this review, not in the video]"
++
++
+ class Director:
+     def __init__(self, cfg: HeliosConfig, store: QueueStore) -> None:
+         self.cfg = cfg
+@@ -37,7 +52,7 @@ class Director:
+         if not self.llm or not job.youtube:
+             return {"approve": True, "reason": "director disabled or no metadata", "priority": 50}
+         title = job.youtube.get("title", "")
+-        desc = (job.youtube.get("description") or "")[:500]
++        desc = description_for_review(job.youtube.get("description") or "")
+         try:
+             result = self.llm.json_chat([
+                 {"role": "system", "content": DIRECTOR_SYSTEM},

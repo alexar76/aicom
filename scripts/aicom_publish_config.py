@@ -208,6 +208,9 @@ FACTORY_LOCAL_EXCLUDES = [
     # Summaries stay in the factory; Gitea keeps the full monorepo copies.
     "artifacts/external-signals-2026-11-09/audience/raw",
     "artifacts/external-links-deeper-2026-11-10/code/bodies",
+    # Regional social scrape: root search JSON embeds S3 pre-signed X-Amz-Credential
+    # (temporary ASIA… key IDs). GitHub secret scanning #1 on alexar76/aicom 2026-11-12.
+    "artifacts/external-social-regional-deeper-2026-11-09/root",
     # Operator migration / fleet audits embed private host literals. Gitea keeps
     # the full trees; the trimmed factory must not.
     "artifacts/admin-vps-backup-move-2026-11-10",
@@ -228,6 +231,8 @@ FACTORY_LOCAL_EXCLUDES = [
     "artifacts/histor-ai-catalog-rollout-2026-11-12",
     # Operator HISTOR RFC 8785 rollout kit; Gitea only (host literals / ops paths).
     "artifacts/histor-rfc8785-rollout-2026-11-14",
+    # HISTOR backup move kit names private hosts; blocked factory publish 2026-11-15.
+    "artifacts/histor-backup-move-2026-11-14",
     # Local hub release kit with a checked-in release-venv (broken symlinks trip
     # verify_mirror_secrets wc redirects and stall the factory publish). Gitea only.
     "artifacts/hub-3.17.0-2026-10-31",

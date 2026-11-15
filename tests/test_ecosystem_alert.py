@@ -1752,6 +1752,36 @@ def test_an_unreachable_uni_monitor_pages(monkeypatch):
 
 def test_the_uni_demo_chain_check_has_both_languages():
     assert "uni_demo_chain_up" in alert._EN and "uni_demo_chain_up" in alert._RU
+    assert "uni_lottery_rounds" in alert._EN and "uni_lottery_rounds" in alert._RU
+
+
+def test_a_lottery_address_that_is_another_contract_pages(monkeypatch):
+    """2026-11-14: the saved lottery was the NFT; "lottery set" stayed green for two weeks."""
+    body = _uni_health(True, lottery="0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0")
+    body["contracts"]["evm_nft"] = "0x9FE46736679D2D9A65F0992F2272DE9F3C7FA6E0"
+    body["lottery_feed"] = {"fresh": True, "age_s": 3.0, "round": 5}
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, body, ""))
+    bad = {c.name: c.detail for c in alert.probe_uni_demo_chain("https://x/api/health") if not c.ok}
+    assert list(bad) == ["uni_lottery_rounds"] and "evm_nft" in bad["uni_lottery_rounds"]
+
+
+@pytest.mark.parametrize("feed,ok", [
+    ({"fresh": True, "age_s": 4.2, "round": 13}, True),
+    ({"fresh": False, "age_s": 600.0, "round": 13}, True),        # a restart, not a stop
+    ({"fresh": False, "age_s": 3 * 3600.0, "round": 13}, False),  # rounds stopped
+    ({"fresh": False, "age_s": None, "round": None}, False),      # nothing since the monitor started
+])
+def test_lottery_rounds_follow_the_relayer_feed(monkeypatch, feed, ok):
+    body = _uni_health(True)
+    body["lottery_feed"] = feed
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, body, ""))
+    got = {c.name: c.ok for c in alert.probe_uni_demo_chain("https://x/api/health")}
+    assert got == {"uni_demo_chain_up": True, "uni_lottery_rounds": ok}
+
+
+def test_a_monitor_without_the_feed_field_adds_no_lottery_check(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _uni_health(True), ""))
+    assert [c.name for c in alert.probe_uni_demo_chain("https://x/api/health")] == ["uni_demo_chain_up"]
 
 
 
@@ -2215,3 +2245,67 @@ def test_services_are_off_unless_named_and_collected_when_named(monkeypatch):
                   scope=alert.Scope(("modelmarket.dev",)),
                   services=[("themis.modelmarket.dev", "https://themis.modelmarket.dev/health")])
     assert seen == [("themis.modelmarket.dev", "https://themis.modelmarket.dev/health")]
+
+
+def _momus_receipt(age_h: float, *, status: str = "passed", smoke_incomplete: int = 0,
+                   smoke_missed: int = 0) -> dict:
+    import base64 as _b64
+    smoke_ok = not smoke_incomplete and not smoke_missed
+    report = {"type": "momus.release-quality/v1", "status": status, "run": "20261114T033000",
+              "evaluatedAt": time.time() - age_h * 3600,
+              "suites": {"holdout": {"passed": True, "counts": {"missed": 0, "falsePositives": 0, "incomplete": 0}}},
+              "behaviour": {"passed": True, "executed": 72, "missed": 0, "falsePositives": 0, "incomplete": 0},
+              "behaviourSmoke": {"passed": smoke_ok, "executed": 3, "missed": smoke_missed, "falsePositives": 0,
+                                 "incomplete": smoke_incomplete, "observerSha256": "fd969fc1816b3a68" + "0" * 48},
+              "discovery": {"status": "complete"}}
+    return {"payload": _b64.b64encode(json.dumps(report).encode()).decode(), "signature": "x"}
+
+
+def test_a_fresh_passed_momus_receipt_is_quiet(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _momus_receipt(3), ""))
+    assert all(c.ok for c in alert.probe_momus_quality("https://x/latest.json"))
+
+
+def test_a_failed_momus_receipt_names_the_part_and_the_observer_pin(monkeypatch):
+    """2026-11-14: observer patched on 11-13, MOMUS still pinned the old one; 3 of 3 smoke cases
+    incomplete, nothing missed. Nothing read the receipt for 16 hours."""
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (
+        200, _momus_receipt(3, status="failed", smoke_incomplete=3), ""))
+    bad = [c for c in alert.probe_momus_quality("https://x/latest.json") if not c.ok]
+    assert [c.name for c in bad] == ["momus_quality_passed"]
+    assert "daily live sandbox check" in bad[0].detail and "incomplete 3 of 3" in bad[0].detail
+    assert "observerSha256 fd969fc1816b" in bad[0].detail
+
+
+def test_a_momus_miss_is_not_blamed_on_the_observer_pin(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (
+        200, _momus_receipt(3, status="failed", smoke_missed=1), ""))
+    bad = [c for c in alert.probe_momus_quality("https://x/latest.json") if not c.ok]
+    assert bad and "observerSha256" not in bad[0].detail and "missed 1" in bad[0].detail
+
+
+def test_a_momus_receipt_without_a_new_run_is_stale(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _momus_receipt(31), ""))
+    assert not {c.name: c.ok for c in alert.probe_momus_quality("https://x/latest.json")}["momus_quality_fresh"]
+
+
+@pytest.mark.parametrize("answer", [(404, None, "HTTP 404"), (200, {"payload": "%%%"}, ""),
+                                    (200, {"payload": "WzFd"}, "")])
+def test_an_unreadable_momus_receipt_pages(monkeypatch, answer):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: answer)
+    assert [c.name for c in alert.probe_momus_quality("https://x/latest.json")] == ["momus_quality_published"]
+
+
+@pytest.mark.parametrize("name", ["momus_quality_published", "momus_quality_fresh", "momus_quality_passed"])
+def test_momus_checks_are_worded_in_both_languages(name):
+    for lang in ("en", "ru"):
+        fail, back, impact = alert._describe(name, "https://modelmarket.dev", lang)
+        assert fail != name and impact
+
+
+def test_a_running_momus_cycle_is_quiet_until_it_looks_stuck(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _momus_receipt(0.5, status="running"), ""))
+    assert all(c.ok for c in alert.probe_momus_quality("https://x/latest.json"))
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _momus_receipt(3, status="running"), ""))
+    bad = [c for c in alert.probe_momus_quality("https://x/latest.json") if not c.ok]
+    assert [c.name for c in bad] == ["momus_quality_passed"] and "stuck" in bad[0].detail

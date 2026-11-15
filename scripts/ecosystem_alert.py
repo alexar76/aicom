@@ -59,6 +59,7 @@ Environment (values never come from argv — argv is world-readable in `ps`):
                                  by the scope, e.g. attested=https://hub.attestedmemory.net/ai-market/v2/health
     AICOM_ALERT_JOURNEY_URL      the UNI stranger-journey canary's uni-journey.json ("" = off)
     AICOM_ALERT_UNI_CHAIN_URL    the UNI monitor's /api/health, for its demo chain ("" = off)
+    AICOM_ALERT_QUALITY_URL      the signed MOMUS receipt for the live WARDEN build ("" = off)
     AICOM_ALERT_DEPOSIT_HUBS     hubs whose top-up wallet the hub watches, comma-separated ("" = off).
                                  Named one by one, so NOT filtered by the scope, e.g.
                                  https://hub.attestedmemory.net,https://independentai.network/hub
@@ -78,6 +79,7 @@ alerter that depends on a package index is an alerter that stops working during 
 from __future__ import annotations
 
 import argparse
+import base64
 import calendar
 import datetime
 import email.utils
@@ -106,6 +108,7 @@ DEFAULT_STATUS = "https://verify.modelmarket.dev/status.json"
 DEFAULT_SETTLEMENT = "https://verify.modelmarket.dev/settlement.json"
 DEFAULT_JOURNEY = "https://verify.modelmarket.dev/uni-journey.json"
 DEFAULT_UNI_CHAIN = "https://monitor-uni.modelmarket.dev/api/health"
+DEFAULT_QUALITY = "https://histor.modelmarket.dev/security-quality/latest.json"
 # Hubs with a dedicated top-up wallet (AIMARKET_TOPUP_PAY_TO), watched by the hub itself.
 # Hubs whose deposit watcher MUST be on, by the operator's own declaration — none by default:
 # a hub with no dedicated top-up wallet is not watching on purpose, and that is no page. Only
@@ -114,6 +117,13 @@ DEFAULT_DEPOSIT_HUBS = ""
 #: A watcher that has not read its wallet for this long is not watching, whatever it says.
 DEPOSIT_WATCH_STALE_S = 15 * 60
 JOURNEY_STALE_HOURS = 13.0   # runs every 6 h; two misses in a row is a dead timer
+# The UNI lottery relayer reports to its monitor several times a minute while rounds run; a
+# quarter of an hour of silence is a stopped lottery, not a slow round or a restart.
+UNI_LOTTERY_FEED_STALE_S = 15 * 60
+# MOMUS runs once a day (03:26–03:30 UTC); its receipt expires after 48 h. A day and a quarter
+# without a new run is a dead timer, with most of a day left to fix it before releases stop.
+MOMUS_QUALITY_STALE_HOURS = 30.0
+MOMUS_QUALITY_RUNNING_HOURS = 2.0
 # Every server's nightly backup lands on the PingBlip host, which publishes when each
 # repository last took a commit — readable from this host's address only (deploy/backup/).
 DEFAULT_BACKUP = "https://pingblip.com/.aicom/backup-status.json"
@@ -669,9 +679,84 @@ def probe_uni_demo_chain(url: str, timeout: float = 20.0) -> list[Check]:
     ready = bool(body.get("blockchain_ready"))
     lottery = str(contracts.get("evm_lottery") or "")
     ok = ready and bool(lottery)
-    return [Check("uni_demo_chain_up", ok,
-                  "demo chain up, lottery " + lottery[:10] if ok else
-                  f"blockchain_ready={ready}, lottery={'set' if lottery else 'missing'}")]
+    checks = [Check("uni_demo_chain_up", ok,
+                    "demo chain up, lottery " + lottery[:10] if ok else
+                    f"blockchain_ready={ready}, lottery={'set' if lottery else 'missing'}")]
+    if not ok:
+        return checks
+    # 2026-11-14: for two weeks or more the lottery address was the NFT's, so no lottery was
+    # deployed and every round reverted; this check said "lottery set" the whole time.
+    twin = next((k for k, v in contracts.items()
+                 if k != "evm_lottery" and str(v or "").lower() == lottery.lower()), "")
+    feed = body.get("lottery_feed")
+    if twin:
+        checks.append(Check("uni_lottery_rounds", False,
+                            f"the lottery address {lottery[:10]} is the {twin} contract's: no lottery is deployed"))
+    elif isinstance(feed, dict):  # monitors before 2026-11-14 do not publish it
+        age = feed.get("age_s")
+        fresh = isinstance(age, (int, float)) and age <= UNI_LOTTERY_FEED_STALE_S
+        checks.append(Check("uni_lottery_rounds", fresh,
+                            f"round {feed.get('round')} reported {age:.0f} s ago" if fresh else
+                            "the relayer has reported no round since the monitor started" if age is None else
+                            f"no round reported for {age / 60:.0f} min (last: round {feed.get('round')})"))
+    return checks
+
+
+def probe_momus_quality(url: str, timeout: float = 20.0, now: float | None = None) -> list[Check]:
+    """Does MOMUS's signed receipt for the live WARDEN build still say "passed"? Every HISTOR
+    deploy and every WARDEN publish refuses to go ahead without it. On 2026-11-14 the daily run
+    failed because the sandbox observer had been patched the day before and MOMUS still pinned
+    the old one (3 of 3 live sandbox cases incomplete, nothing missed). Nothing read the receipt,
+    and it surfaced 16 hours later when a release stopped at the gate."""
+    now = time.time() if now is None else now
+    status, body, err = _get(url, timeout)
+    if status != 200 or not isinstance(body, dict):
+        return [Check("momus_quality_published", False, f"{url} -> {err or status}")]
+    try:
+        report = json.loads(base64.b64decode(str(body.get("payload", "")), validate=True))
+    except (ValueError, TypeError):
+        report = None
+    if not isinstance(report, dict):
+        return [Check("momus_quality_published", False, "the receipt's payload is not readable JSON")]
+    run = str(report.get("run") or "?")
+    evaluated = report.get("evaluatedAt")
+    age = (now - evaluated) / 3600 if isinstance(evaluated, (int, float)) else None
+    fresh = age is not None and age <= MOMUS_QUALITY_STALE_HOURS
+    checks = [Check("momus_quality_fresh", fresh,
+                    f"run {run}, {age:.1f}h ago" if fresh else
+                    "the receipt has no evaluatedAt" if age is None else
+                    f"STALE: run {run} was {age:.1f}h ago (momus-quality.timer on admin-vps dead?)")]
+    if report.get("status") == "passed":
+        return checks + [Check("momus_quality_passed", True, f"run {run} passed")]
+    if report.get("status") == "running":
+        # The receipt says "running" while a cycle runs: about 2 minutes daily, about 40 when the
+        # observer pin changed. Dropping the check instead would drop an open alert's state.
+        stuck = age is None or age > MOMUS_QUALITY_RUNNING_HOURS
+        return checks + [Check("momus_quality_passed", not stuck,
+                               f"run {run} is still running after {age:.1f}h (stuck?)" if stuck and age is not None
+                               else "a running receipt has no evaluatedAt" if stuck
+                               else f"run {run} in progress")]
+    why: list[str] = []
+    for name, suite in sorted((report.get("suites") or {}).items()):
+        if isinstance(suite, dict) and not suite.get("passed"):
+            c = suite.get("counts") or {}
+            why.append(f"{name}: missed {c.get('missed')}, false positives {c.get('falsePositives')}, "
+                       f"incomplete {c.get('incomplete')}")
+    for key, label in (("behaviour", "behaviour campaign"), ("behaviourSmoke", "daily live sandbox check")):
+        part = report.get(key)
+        if not isinstance(part, dict) or part.get("passed"):
+            continue
+        why.append(f"{label}: missed {part.get('missed')}, false positives {part.get('falsePositives')}, "
+                   f"incomplete {part.get('incomplete')} of {part.get('executed')}")
+        if part.get("incomplete") and not part.get("missed") and not part.get("falsePositives"):
+            # The 2026-10-12 and 2026-11-14 failures: a changed observer, an old pin.
+            why.append(f"only incomplete: compare MOMUS's observerSha256 {str(part.get('observerSha256'))[:12]}… "
+                       "with sha256 of /usr/local/bin/histor-observe on the sandbox hosts")
+    discovery = report.get("discovery") or {}
+    if isinstance(discovery, dict) and discovery.get("status") not in (None, "complete"):
+        why.append(f"adversarial discovery: {discovery.get('status')}")
+    return checks + [Check("momus_quality_passed", False,
+                           f"run {run} {report.get('status')}: " + ("; ".join(why) or "no failing part named"))]
 
 
 def probe_deposit_watch(hubs: list[str], timeout: float = 20.0, scope: Scope | None = None,
@@ -1383,9 +1468,21 @@ _EN: dict[str, tuple[str, str, str]] = {
     "uni_journey_ok": (
         "an outside buyer can no longer buy end to end", "an outside buyer can buy again",
         "a step a real buyer needs is broken — the failing step is in uni-journey.json"),
+    "momus_quality_published": (
+        "the MOMUS quality receipt cannot be read", "the MOMUS quality receipt can be read again",
+        "HISTOR deploys and WARDEN releases stop at the quality gate"),
+    "momus_quality_fresh": (
+        "the daily MOMUS quality run has not run", "the daily MOMUS quality run runs again",
+        "the receipt expires 48 h after the last run, and then HISTOR deploys and WARDEN releases stop"),
+    "momus_quality_passed": (
+        "the MOMUS quality gate failed", "the MOMUS quality gate passes again",
+        "HISTOR deploys and WARDEN releases are blocked — the failing part is in the detail"),
     "uni_demo_chain_up": (
         "the UNI demo chain is down", "the UNI demo chain is up again",
         "the charity lottery and ACEX in the UNI realm do not work — see the UNI monitor's anvil.log"),
+    "uni_lottery_rounds": (
+        "the UNI charity lottery runs no rounds", "the UNI charity lottery runs rounds again",
+        "the relayer's rounds fail — see `docker logs ailottery-relayer-uni` on factory-vps"),
     "deposit_watch_on": (
         "{t} is not watching its top-up wallet", "{t} watches its top-up wallet again",
         "USDC sent to that hub's top-up wallet is not credited automatically"),
@@ -1639,9 +1736,21 @@ _RU: dict[str, tuple[str, str, str]] = {
         "сторонний покупатель больше не может пройти покупку до конца",
         "сторонний покупатель снова может купить",
         "сломан шаг, нужный настоящему покупателю — какой именно, в uni-journey.json"),
+    "momus_quality_published": (
+        "квитанция качества MOMUS не читается", "квитанция качества MOMUS снова читается",
+        "деплой HISTOR и релизы WARDEN останавливаются на проверке качества"),
+    "momus_quality_fresh": (
+        "ежедневная проверка качества MOMUS не запускалась", "ежедневная проверка качества MOMUS снова запускается",
+        "через 48 ч после последнего прогона квитанция истекает, и деплой HISTOR и релизы WARDEN встают"),
+    "momus_quality_passed": (
+        "проверка качества MOMUS провалена", "проверка качества MOMUS снова проходит",
+        "деплой HISTOR и релизы WARDEN заблокированы — что именно упало, в подробностях"),
     "uni_demo_chain_up": (
         "демо-цепочка UNI лежит", "демо-цепочка UNI снова работает",
         "благотворительная лотерея и ACEX в мире UNI не работают — смотри anvil.log монитора UNI"),
+    "uni_lottery_rounds": (
+        "благотворительная лотерея UNI не проводит раунды", "благотворительная лотерея UNI снова проводит раунды",
+        "раунды relayer падают — смотри `docker logs ailottery-relayer-uni` на factory-vps"),
     "deposit_watch_on": (
         "{t} не следит за своим кошельком пополнений", "{t} снова следит за своим кошельком пополнений",
         "USDC, присланный на кошелёк пополнений этого хаба, не зачисляется автоматически"),
@@ -2186,7 +2295,7 @@ def probe_tls_expiry(names: list[str], timeout: float = 8.0,
 
 
 def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url: str,
-            timeout: float, journey_url: str = "", uni_chain_url: str = "",
+            timeout: float, journey_url: str = "", uni_chain_url: str = "", quality_url: str = "",
             deposit_hubs: list[str] | None = None,
             backup_url: str = "", backup_hosts: list[str] | None = None,
             fleet_url: str = "", fleet_token: str = "",
@@ -2238,6 +2347,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_journey(journey_url, timeout)
     if uni_chain_url.strip():
         checks += probe_uni_demo_chain(uni_chain_url, timeout)
+    if quality_url.strip():
+        checks += probe_momus_quality(quality_url, timeout)
     # Named one by one by the owner, like the uptime URLs, so not filtered by the scope: Attested and
     # Independent stay outside it as ecosystems (2026-09-24, 2026-10-04), yet the Independent node's
     # watcher read nothing from 2026-10-08 to 10-21 while this probe skipped it. Asked on 2026-10-22
@@ -2303,6 +2414,7 @@ def main(argv: list[str] | None = None) -> int:
     settlement_url = os.environ.get("AICOM_ALERT_SETTLEMENT_URL", DEFAULT_SETTLEMENT)
     journey_url = os.environ.get("AICOM_ALERT_JOURNEY_URL", DEFAULT_JOURNEY)
     uni_chain_url = os.environ.get("AICOM_ALERT_UNI_CHAIN_URL", DEFAULT_UNI_CHAIN)
+    quality_url = os.environ.get("AICOM_ALERT_QUALITY_URL", DEFAULT_QUALITY)
     deposit_hubs = [h.strip() for h in os.environ.get("AICOM_ALERT_DEPOSIT_HUBS", DEFAULT_DEPOSIT_HUBS).split(",")
                     if h.strip()]
     backup_url = os.environ.get("AICOM_ALERT_BACKUP_URL", DEFAULT_BACKUP)
@@ -2345,7 +2457,7 @@ def main(argv: list[str] | None = None) -> int:
     state = load_state(args.state)
     checks = collect(args.mode, hub=hub, signer=signer, status_url=status_url,
                      settlement_url=settlement_url, timeout=args.timeout, journey_url=journey_url,
-                     uni_chain_url=uni_chain_url, deposit_hubs=deposit_hubs,
+                     uni_chain_url=uni_chain_url, quality_url=quality_url, deposit_hubs=deposit_hubs,
                      backup_url=backup_url, backup_hosts=backup_hosts,
                      fleet_url=fleet_url, fleet_token=fleet_token,
                      federation_hubs=federation_hubs_from_env(hub), scope=scope,

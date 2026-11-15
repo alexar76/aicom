@@ -1,0 +1,34 @@
+{
+  "checked_at": "2026-11-14T14:39:31.000Z",
+  "endpoint": "https://x402.tavily.com/search",
+  "chain_id": 8453,
+  "base_head": "57383971",
+  "base_head_utc": "2026-11-14T14:39:29.000Z",
+  "host_offset_seconds": 3473,
+  "offer": {
+    "scheme": "exact",
+    "amount_atomic": "10000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "ttl_seconds": 60,
+    "resource": "https://x402.tavily.com/search"
+  },
+  "same_request_new_recipient": true,
+  "networks": [
+    "eip155:8453",
+    "aws:base"
+  ],
+  "quote_extensions": [
+    "bazaar"
+  ],
+  "challenge_sets_cookie": false,
+  "signed": {
+    "version": 2,
+    "remaining_seconds": 60,
+    "recovered_signer_matches": true,
+    "quote_selection_matches": true,
+    "contract_domain_matches": true,
+    "payload_extensions": []
+  },
+  "signed_requests_sent_to_provider": 0,
+  "pilot_balance_atomic": "8158"
+}

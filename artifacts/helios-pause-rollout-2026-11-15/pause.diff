@@ -1,0 +1,89 @@
+diff --git a/helios/helios/queue.py b/helios/helios/queue.py
+index 0d674fa63..649999bfc 100644
+--- a/helios/helios/queue.py
++++ b/helios/helios/queue.py
+@@ -8,7 +8,7 @@ import tempfile
+ import fcntl
+ from contextlib import contextmanager
+ from dataclasses import asdict, dataclass, field
+-from datetime import datetime, timezone
++from datetime import datetime, timedelta, timezone
+ from pathlib import Path
+ from typing import Any, Literal
+ from uuid import uuid4
+@@ -337,5 +337,25 @@ class QueueStore:
+     def can_upload_today(self, max_per_day: int) -> bool:
+         return self.daily_upload_count() < max_per_day
+ 
++    def pause_uploads(self, seconds: int, reason: str) -> str:
++        """Hold every render and upload until now + seconds (YouTube's channel upload cap)."""
++        until = (datetime.now(timezone.utc) + timedelta(seconds=seconds)).strftime("%Y-%m-%dT%H:%M:%SZ")
++        state = self.load_upload_state()
++        state["paused_until"] = until
++        state["paused_reason"] = reason[:300]
++        self.save_upload_state(state)
++        return until
++
++    def uploads_paused_until(self) -> str | None:
++        """The pause end while one is in force, else None (an unreadable value is no pause)."""
++        raw = self.load_upload_state().get("paused_until")
++        if not isinstance(raw, str) or not raw:
++            return None
++        try:
++            until = datetime.fromisoformat(raw.replace("Z", "+00:00"))
++        except ValueError:
++            return None
++        return raw if until > datetime.now(timezone.utc) else None
++
+     def pending_count(self) -> int:
+         return len([j for j in self.list_jobs() if j.status == "pending"])
+diff --git a/helios/helios/worker.py b/helios/helios/worker.py
+index c7369f3e6..78d7624d6 100644
+--- a/helios/helios/worker.py
++++ b/helios/helios/worker.py
+@@ -320,6 +320,10 @@ def _recover_unpublished_jobs(store: QueueStore, audit: AuditLog) -> bool:
+     return complete
+ 
+ 
++# YouTube's per-channel upload cap counts a rolling day; a refused upload waits this long before
++# the worker renders and tries again.
++UPLOAD_LIMIT_PAUSE_SEC = 6 * 3600
++
+ def run_worker(cfg: HeliosConfig | None = None, *, max_jobs: int | None = None) -> int:
+     cfg = cfg or load_config()
+     store = QueueStore(cfg.data_dir, file_roots=file_roots(cfg))
+@@ -361,6 +365,9 @@ def run_worker(cfg: HeliosConfig | None = None, *, max_jobs: int | None = None)
+         pending = store.list_jobs(status="pending")
+         ordered = director.prioritize(pending)
+         limit = max_jobs or cfg.max_uploads_per_day
++        if pending and store.uploads_paused_until():
++            # YouTube refused uploads for this channel: rendering again now would only be refused again.
++            ordered, exit_code = [], 2
+ 
+         for job in ordered[:limit]:
+             if not store.can_upload_today(cfg.max_uploads_per_day):
+@@ -384,9 +391,14 @@ def run_worker(cfg: HeliosConfig | None = None, *, max_jobs: int | None = None)
+             except Exception as exc:
+                 job.retries += 1
+                 err = f"{type(exc).__name__}: {exc}"
+-                if "uploadLimitExceeded" in err or "uploadLimit" in err:
++                upload_cap = "uploadLimitExceeded" in err or "uploadLimit" in err
++                if upload_cap:
++                    # The channel's upload cap, not this job's fault: keep it, and pause instead of
++                    # re-rendering every cycle (2026-11-15: 12 renders in 40 min, each refused).
+                     job.status = "pending"
+                     exit_code = 2
++                    until = store.pause_uploads(UPLOAD_LIMIT_PAUSE_SEC, err)
++                    audit.append("upload.paused", job_id=job.id, data={"until": until, "reason": "uploadLimitExceeded"})
+                 elif job.retries >= cfg.max_job_retries:
+                     job.status = "failed"
+                     job.error = err
+@@ -395,6 +407,8 @@ def run_worker(cfg: HeliosConfig | None = None, *, max_jobs: int | None = None)
+                     job.status = "pending"
+                 store.update_job(job)
+                 audit.append("job.error", job_id=job.id, data={"error": err, "retries": job.retries})
++                if upload_cap:
++                    break
+ 
+         if cfg.auto_approve and not cfg.dry_run:
+             for job in store.list_jobs(status="awaiting_approval"):
